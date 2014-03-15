@@ -33,6 +33,7 @@ namespace SketcherGui {
 class ViewProviderSketch;
 
 class EditDatumDialog {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::EditDatumDialog)
 public:
     EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr);
     EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr);
