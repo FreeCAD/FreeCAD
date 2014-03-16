@@ -1231,8 +1231,8 @@ CmdSketcherCreateArc::CmdSketcherCreateArc()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Create arc");
-    sToolTipText    = QT_TR_NOOP("Create an arc in the sketch");
+    sMenuText       = QT_TR_NOOP("Create arc by center");
+    sToolTipText    = QT_TR_NOOP("Create an arc by its center and by its end points");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateArc";
@@ -1484,8 +1484,8 @@ CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Create a 3 point arc");
-    sToolTipText    = QT_TR_NOOP("Create an arc in the sketch");
+    sMenuText       = QT_TR_NOOP("Create arc by three points");
+    sToolTipText    = QT_TR_NOOP("Create an arc by its end points and a point along the arc");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create3PointArc";
