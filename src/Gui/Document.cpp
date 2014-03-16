@@ -42,6 +42,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 
 #include "Application.h"
 #include "MainWindow.h"
@@ -887,6 +888,33 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     }
 
     xmlReader.readEndElement("Document");
+}
+
+void Document::addRootObjectsToGroup(const std::vector<App::DocumentObject*>& obj, App::DocumentObjectGroup* grp)
+{
+    std::map<App::DocumentObject*, bool> rootMap;
+    for (std::vector<App::DocumentObject*>::const_iterator it = obj.begin(); it != obj.end(); ++it) {
+        rootMap[*it] = true;
+    }
+    // get the view providers and check which objects are children
+    for (std::vector<App::DocumentObject*>::const_iterator it = obj.begin(); it != obj.end(); ++it) {
+        Gui::ViewProvider* vp = getViewProvider(*it);
+        if (vp) {
+            std::vector<App::DocumentObject*> child = vp->claimChildren();
+            for (std::vector<App::DocumentObject*>::iterator jt = child.begin(); jt != child.end(); ++jt) {
+                std::map<App::DocumentObject*, bool>::iterator kt = rootMap.find(*jt);
+                if (kt != rootMap.end()) {
+                    kt->second = false;
+                }
+            }
+        }
+    }
+
+    // all objects that are not children of other objects can be added to the group
+    for (std::map<App::DocumentObject*, bool>::iterator it = rootMap.begin(); it != rootMap.end(); ++it) {
+        if (it->second)
+            grp->addObject(it->first);
+    }
 }
 
 void Document::createView(const char* sType) 

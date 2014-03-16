@@ -60,6 +60,7 @@
 #include <Base/Writer.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 
 #include "MainWindow.h"
 #include "Application.h"
@@ -1521,7 +1522,13 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
         std::istream in(0);
         in.rdbuf(&buf);
         MergeDocuments mimeView(doc);
-        mimeView.importObjects(in);
+        std::vector<App::DocumentObject*> newObj = mimeView.importObjects(in);
+        std::vector<App::DocumentObjectGroup*> grp = Gui::Selection().getObjectsOfType<App::DocumentObjectGroup>();
+        if (grp.size() == 1) {
+            Gui::Document* gui = Application::Instance->getDocument(doc);
+            if (gui)
+                gui->addRootObjectsToGroup(newObj, grp.front());
+        }
     }
     else if (mimeData->hasFormat(QLatin1String("application/x-documentobject-file"))) {
         QByteArray res = mimeData->data(QLatin1String("application/x-documentobject-file"));
@@ -1531,8 +1538,14 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
         Base::FileInfo fi((const char*)res);
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
         MergeDocuments mimeView(doc);
-        mimeView.importObjects(str);
+        std::vector<App::DocumentObject*> newObj = mimeView.importObjects(str);
         str.close();
+        std::vector<App::DocumentObjectGroup*> grp = Gui::Selection().getObjectsOfType<App::DocumentObjectGroup>();
+        if (grp.size() == 1) {
+            Gui::Document* gui = Application::Instance->getDocument(doc);
+            if (gui)
+                gui->addRootObjectsToGroup(newObj, grp.front());
+        }
     }
     else if (mimeData->hasUrls()) {
         // load the files into the active document if there is one, otherwise let create one

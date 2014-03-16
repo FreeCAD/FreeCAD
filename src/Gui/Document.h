@@ -37,9 +37,12 @@
 
 class SoPath;
 
-namespace Base
-{
-  class Matrix4D;
+namespace Base {
+class Matrix4D;
+}
+
+namespace App {
+class DocumentObjectGroup;
 }
 
 namespace Gui {
@@ -122,6 +125,8 @@ public:
     virtual void RestoreDocFile(Base::Reader &reader);
     void exportObjects(const std::vector<App::DocumentObject*>&, Base::Writer&);
     void importObjects(const std::vector<App::DocumentObject*>&, Base::Reader&);
+    /// Add all root objects of the given array to a group
+    void addRootObjectsToGroup(const std::vector<App::DocumentObject*>&, App::DocumentObjectGroup*);
     //@}
 
     /// Observer message from the App doc
