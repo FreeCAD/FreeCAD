@@ -124,8 +124,11 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
     _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
+    // describes a minor error but trying to fix it leads to a major issue
+    // http://forum.freecadweb.org/viewtopic.php?f=3&t=6085&sid=3f4bcab8007b96aaf31928b564190fd7
+    // so the change is commented out
     // By default, the wheel events are processed by the 3d view AND the mdi area.
-    _viewer->getGLWidget()->setAttribute(Qt::WA_NoMousePropagation);
+    //_viewer->getGLWidget()->setAttribute(Qt::WA_NoMousePropagation);
     setCentralWidget(stack);
 #else
     _viewer = new View3DInventorViewer(this);
