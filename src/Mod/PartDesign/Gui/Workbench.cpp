@@ -260,8 +260,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
     geom->setCommand("Sketcher geometries");
     *geom << "Sketcher_CreatePoint"
-          << "Sketcher_CreateArc"
-          << "Sketcher_Create3PointArc"
+          << "Sketcher_CompCreateArc"
           << "Sketcher_CreateCircle"
           << "Sketcher_CreateLine"
           << "Sketcher_CreatePolyline"

@@ -24,12 +24,15 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/nodes/SoPickStyle.h>
+# include <QApplication>
 #endif
 
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Base/Console.h>
 
+#include <Gui/Action.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
@@ -1502,6 +1505,83 @@ bool CmdSketcherCreate3PointArc::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+DEF_STD_CMD_ACL(CmdSketcherCompCreateArc);
+
+CmdSketcherCompCreateArc::CmdSketcherCompCreateArc()
+  : Command("Sketcher_CompCreateArc")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create arc");
+    sToolTipText    = QT_TR_NOOP("Create an arc in the sketcher");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+void CmdSketcherCompCreateArc::activated(int iMsg)
+{
+    if (iMsg==0)
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerArc());
+    else if (iMsg==1)
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandler3PointArc());
+    else
+        return;
+
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompCreateArc::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(pcAction);
+
+    QAction* arc1 = pcAction->addAction(QString());
+    arc1->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateArc", QSize(24,24)));
+    QAction* arc2 = pcAction->addAction(QString());
+    arc2->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_Create3PointArc", QSize(24,24)));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(arc1->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateArc::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* arc1 = a[0];
+    arc1->setText(QApplication::translate("CmdSketcherCompCreateArc","Center and end points"));
+    arc1->setToolTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
+    arc1->setStatusTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
+    QAction* arc2 = a[1];
+    arc2->setText(QApplication::translate("CmdSketcherCompCreateArc","End point and rim point"));
+    arc2->setToolTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
+    arc2->setStatusTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
+}
+
+bool CmdSketcherCompCreateArc::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
 
 
 // ======================================================================================
@@ -2432,6 +2512,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreatePoint());
     rcCmdMgr.addCommand(new CmdSketcherCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreate3PointArc());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreateCircle());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
