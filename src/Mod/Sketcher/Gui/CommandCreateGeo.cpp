@@ -51,6 +51,7 @@
 using namespace std;
 using namespace SketcherGui;
 
+
 /* helper functions ======================================================*/
 
 // Return counter-clockwise angle from horizontal out of p1 to p2 in radians.
@@ -78,14 +79,13 @@ Base::Vector2D GetCircleCenter (const Base::Vector2D &p1, const Base::Vector2D &
 {
   double m12p = (p1.fX - p2.fX) / (p2.fY - p1.fY);
   double m23p = (p2.fX - p3.fX) / (p3.fY - p2.fY);
-  double x = 1/( 2*(m12p - m23p) ) * ( (pow(p3.fX, 2) - pow(p2.fX, 2)) / (p3.fY - p2.fY) -
-                                       (pow(p2.fX, 2) - pow(p1.fX, 2)) / (p2.fY - p1.fY) +
-                                        p3.fY - p1.fY );
+  double x = 1/( 2*(m12p - m23p) ) * ( m12p*(p1.fX + p2.fX) -
+                                       m23p*(p2.fX + p3.fX) +
+                                       p3.fY - p1.fY );
   double y = m12p * ( x - (p1.fX + p2.fX)/2 ) + (p1.fY + p2.fY)/2;
 
   return Base::Vector2D(x, y);
 }
-
 
 void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler)
 {
@@ -120,6 +120,7 @@ SketcherGui::ViewProviderSketch* getSketchViewprovider(Gui::Document *doc)
     }
     return 0;
 }
+
 
 /* Sketch commands =======================================================*/
 
@@ -255,8 +256,6 @@ protected:
     std::vector<Base::Vector2D> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
-
-
 
 DEF_STD_CMD_A(CmdSketcherCreateLine);
 
@@ -463,8 +462,6 @@ protected:
     std::vector<Base::Vector2D> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
-
-
 
 DEF_STD_CMD_A(CmdSketcherCreateRectangle);
 
@@ -989,7 +986,6 @@ protected:
     }
 };
 
-
 DEF_STD_CMD_A(CmdSketcherCreatePolyline);
 
 CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
@@ -1014,6 +1010,7 @@ bool CmdSketcherCreatePolyline::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
+
 
 // ======================================================================================
 
@@ -1363,19 +1360,39 @@ public:
             double angle2 = GetPointAngle(CenterPoint, SecondPoint);
             double angle3 = GetPointAngle(CenterPoint, onSketchPos);
 
-            // angle3 == angle1 or angle2 shouldn't be allowed but not sure...catch/try?
+            // Always build arc counter-clockwise
             // Point 3 is between Point 1 and 2
             if ( angle3 > min(angle1, angle2) && angle3 < max(angle1, angle2) ) {
-                EditCurve[0] =  angle2 > angle1 ? FirstPoint  : SecondPoint;
-                EditCurve[29] = angle2 > angle1 ? SecondPoint : FirstPoint;
+                if (angle2 > angle1) {
+                    EditCurve[0] =  FirstPoint;
+                    EditCurve[29] = SecondPoint;
+                    arcPos1 = Sketcher::start;
+                    arcPos2 = Sketcher::end;
+                }
+                else {
+                    EditCurve[0] =  SecondPoint;
+                    EditCurve[29] = FirstPoint;
+                    arcPos1 = Sketcher::end;
+                    arcPos2 = Sketcher::start;
+                }
                 startAngle = min(angle1, angle2);
                 endAngle   = max(angle1, angle2);
                 arcAngle = endAngle - startAngle;
             }
             // Point 3 is not between Point 1 and 2
             else {
-                EditCurve[0] =  angle2 > angle1 ? SecondPoint : FirstPoint;
-                EditCurve[29] = angle2 > angle1 ? FirstPoint  : SecondPoint;
+                if (angle2 > angle1) {
+                    EditCurve[0] =  SecondPoint;
+                    EditCurve[29] = FirstPoint;
+                    arcPos1 = Sketcher::end;
+                    arcPos2 = Sketcher::start;
+                }
+                else {
+                    EditCurve[0] =  FirstPoint;
+                    EditCurve[29] = SecondPoint;
+                    arcPos1 = Sketcher::start;
+                    arcPos2 = Sketcher::end;
+                }
                 startAngle = max(angle1, angle2);
                 endAngle   = min(angle1, angle2);
                 arcAngle = 2*M_PI - (startAngle - endAngle);
@@ -1394,6 +1411,9 @@ public:
 
             sketchgui->drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0))) {
+                // seekAutoConstraint doesn't handle this correctly because Coincident
+                // cannot snap to an arc yet it picks coincident because I click a point.
+                sugConstr3.back().Type = Sketcher::PointOnObject;
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
@@ -1447,21 +1467,21 @@ public:
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
 
-            // Auto Constraint center point
+            // Auto Constraint first picked point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
+                createAutoConstraints(sugConstr1, getHighestCurveIndex(), arcPos1);
                 sugConstr1.clear();
             }
 
-            // Auto Constraint first picked point
+            // Auto Constraint second picked point
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex(), (arcAngle > 0) ? Sketcher::start : Sketcher::end );
+                createAutoConstraints(sugConstr2, getHighestCurveIndex(), arcPos2);
                 sugConstr2.clear();
             }
 
-            // Auto Constraint second picked point
+            // Auto Constraint third picked point
             if (sugConstr3.size() > 0) {
-                createAutoConstraints(sugConstr3, getHighestCurveIndex(), (arcAngle > 0) ? Sketcher::end : Sketcher::start);
+                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::none);
                 sugConstr3.clear();
             }
 
@@ -1477,8 +1497,8 @@ protected:
     Base::Vector2D CenterPoint, FirstPoint, SecondPoint;
     double radius, startAngle, endAngle, arcAngle;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
+    Sketcher::PointPos arcPos1, arcPos2;
 };
-
 
 DEF_STD_CMD_A(CmdSketcherCreate3PointArc);
 
@@ -1504,6 +1524,7 @@ bool CmdSketcherCreate3PointArc::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
+
 
 DEF_STD_CMD_ACL(CmdSketcherCompCreateArc);
 
@@ -1581,7 +1602,6 @@ bool CmdSketcherCompCreateArc::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
-
 
 
 // ======================================================================================
@@ -1760,6 +1780,7 @@ bool CmdSketcherCreateCircle::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+
 // ======================================================================================
 
 /* XPM */
@@ -1858,7 +1879,6 @@ protected:
     std::vector<AutoConstraint> sugConstr;
 };
 
-
 DEF_STD_CMD_A(CmdSketcherCreatePoint);
 
 CmdSketcherCreatePoint::CmdSketcherCreatePoint()
@@ -1883,6 +1903,7 @@ bool CmdSketcherCreatePoint::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
+
 
 // ======================================================================================
 
@@ -1910,6 +1931,7 @@ bool CmdSketcherCreateText::isActive(void)
     return false;
 }
 
+
 // ======================================================================================
 
 DEF_STD_CMD_A(CmdSketcherCreateDraftLine);
@@ -1935,6 +1957,7 @@ bool CmdSketcherCreateDraftLine::isActive(void)
 {
     return false;
 }
+
 
 // ======================================================================================
 
@@ -1979,6 +2002,7 @@ namespace SketcherGui {
         }
     };
 };
+
 
 /* XPM */
 static const char *cursor_createfillet[]={
@@ -2183,6 +2207,8 @@ bool CmdSketcherCreateFillet::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
+
+
 // ======================================================================================
 
 namespace SketcherGui {
@@ -2214,6 +2240,7 @@ namespace SketcherGui {
         }
     };
 };
+
 
 /* XPM */
 static const char *cursor_trimming[]={
@@ -2335,6 +2362,7 @@ bool CmdSketcherTrimming::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+
 // ======================================================================================
 
 namespace SketcherGui {
@@ -2365,6 +2393,7 @@ namespace SketcherGui {
         }
     };
 };
+
 
 /* XPM */
 static const char *cursor_external[]={
