@@ -127,7 +127,7 @@ SbVec2s ViewProviderSketch::newCursorPos;
 //**************************************************************************
 // Edit data structure
 
-/// Data structure while edit the sketch
+/// Data structure while editing the sketch
 struct EditData {
     EditData():
     sketchHandler(0),
