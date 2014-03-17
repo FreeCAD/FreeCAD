@@ -56,6 +56,7 @@
 #include <App/PropertyGeo.h>
 #include <App/GeoFeature.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
+#include <Inventor/nodes/SoResetTransform.h>
 #if (COIN_MAJOR_VERSION > 2)
 #include <Inventor/nodes/SoDepthBuffer.h>
 #endif
@@ -162,20 +163,11 @@ void ViewProviderGeometryObject::attach(App::DocumentObject *pcObj)
 void ViewProviderGeometryObject::updateData(const App::Property* prop)
 {
     if (prop->isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+        // Note: When the placement of non-parametric objects changes there is currently no update
+        // of the bounding box information.
         Base::BoundBox3d box = static_cast<const App::PropertyComplexGeoData*>(prop)->getBoundingBox();
         pcBoundingBox->minBounds.setValue(box.MinX, box.MinY, box.MinZ);
         pcBoundingBox->maxBounds.setValue(box.MaxX, box.MaxY, box.MaxZ);
-        if (pcBoundSwitch) {
-            SoGroup* grp = static_cast<SoGroup*>(pcBoundSwitch->getChild(0));
-            SoTransform* trf = static_cast<SoTransform*>(grp->getChild(2));
-            SbMatrix m;
-            m.setTransform(pcTransform->translation.getValue(),
-                           pcTransform->rotation.getValue(),
-                           pcTransform->scaleFactor.getValue(),
-                           pcTransform->scaleOrientation.getValue(),
-                           pcTransform->center.getValue());
-            trf->setMatrix(m.inverse());
-        }
     }
     else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
              strcmp(prop->getName(), "Placement") == 0) {
@@ -562,7 +554,7 @@ void ViewProviderGeometryObject::showBoundingBox(bool show)
         color->rgb.setValue(r, g, b);
         pBoundingSep->addChild(color);
 
-        pBoundingSep->addChild(new SoTransform());
+        pBoundingSep->addChild(new SoResetTransform());
         pBoundingSep->addChild(pcBoundingBox);
         pcBoundingBox->coordsOn.setValue(false);
         pcBoundingBox->dimensionsOn.setValue(true);
