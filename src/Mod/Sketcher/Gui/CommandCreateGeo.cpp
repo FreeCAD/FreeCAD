@@ -1593,7 +1593,7 @@ void CmdSketcherCompCreateArc::languageChange()
     arc1->setToolTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
     arc1->setStatusTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdSketcherCompCreateArc","End point and rim point"));
+    arc2->setText(QApplication::translate("CmdSketcherCompCreateArc","End points and rim point"));
     arc2->setToolTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
     arc2->setStatusTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
 }
