@@ -132,6 +132,7 @@ struct EditData {
     EditData():
     sketchHandler(0),
     editDatumDialog(false),
+    buttonPress(false),
     DragPoint(-1),
     DragCurve(-1),
     DragConstraint(-1),
@@ -154,6 +155,7 @@ struct EditData {
     // pointer to the active handler for new sketch objects
     DrawSketchHandler *sketchHandler;
     bool editDatumDialog;
+    bool buttonPress;
 
     // dragged point
     int DragPoint;
@@ -357,6 +359,14 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                     Mode = STATUS_NONE;
                 }
                 return true;
+            }
+            if (edit) {
+                // #0001479: 'Escape' key dismissing dialog cancels Sketch editing
+                // If we receive a button release event but not a press event before
+                // then ignore this one.
+                if (!pressed && !edit->buttonPress)
+                    return true;
+                edit->buttonPress = pressed;
             }
             return false;
         }
