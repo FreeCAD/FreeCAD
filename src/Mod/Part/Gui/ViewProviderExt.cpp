@@ -731,7 +731,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         for (int i=0;i < numNorms;i++)
             norms[i]= SbVec3f(0.0,0.0,0.0);
 
-        int ii = 0,FaceNodeOffset=0,FaceTriaOffset=0;
+        int ii = 0,faceNodeOffset=0,faceTriaOffset=0;
         for (Ex.Init(cShape, TopAbs_FACE); Ex.More(); Ex.Next(),ii++) {
             TopLoc_Location aLoc;
             const TopoDS_Face &actFace = TopoDS::Face(Ex.Current());
@@ -779,26 +779,26 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                     V3.Transform(myTransf);
                 }
                 
-                // calculating per vertex normals                    
+                // calculating per vertex normals
                 // Calculate triangle normal
                 gp_Vec v1(V1.X(),V1.Y(),V1.Z()),v2(V2.X(),V2.Y(),V2.Z()),v3(V3.X(),V3.Y(),V3.Z());
                 gp_Vec Normal = (v2-v1)^(v3-v1); 
 
                 // add the triangle normal to the vertex normal for all points of this triangle
-                norms[FaceNodeOffset+N1-1] += SbVec3f(Normal.X(),Normal.Y(),Normal.Z());
-                norms[FaceNodeOffset+N2-1] += SbVec3f(Normal.X(),Normal.Y(),Normal.Z());
-                norms[FaceNodeOffset+N3-1] += SbVec3f(Normal.X(),Normal.Y(),Normal.Z());                 
+                norms[faceNodeOffset+N1-1] += SbVec3f(Normal.X(),Normal.Y(),Normal.Z());
+                norms[faceNodeOffset+N2-1] += SbVec3f(Normal.X(),Normal.Y(),Normal.Z());
+                norms[faceNodeOffset+N3-1] += SbVec3f(Normal.X(),Normal.Y(),Normal.Z());
 
                 // set the vertices
-                verts[FaceNodeOffset+N1-1].setValue((float)(V1.X()),(float)(V1.Y()),(float)(V1.Z()));
-                verts[FaceNodeOffset+N2-1].setValue((float)(V2.X()),(float)(V2.Y()),(float)(V2.Z()));
-                verts[FaceNodeOffset+N3-1].setValue((float)(V3.X()),(float)(V3.Y()),(float)(V3.Z()));
+                verts[faceNodeOffset+N1-1].setValue((float)(V1.X()),(float)(V1.Y()),(float)(V1.Z()));
+                verts[faceNodeOffset+N2-1].setValue((float)(V2.X()),(float)(V2.Y()),(float)(V2.Z()));
+                verts[faceNodeOffset+N3-1].setValue((float)(V3.X()),(float)(V3.Y()),(float)(V3.Z()));
 
                 // set the index vector with the 3 point indexes and the end delimiter
-                index[FaceTriaOffset*4+4*(g-1)]   = FaceNodeOffset+N1-1; 
-                index[FaceTriaOffset*4+4*(g-1)+1] = FaceNodeOffset+N2-1; 
-                index[FaceTriaOffset*4+4*(g-1)+2] = FaceNodeOffset+N3-1; 
-                index[FaceTriaOffset*4+4*(g-1)+3] = SO_END_FACE_INDEX;
+                index[faceTriaOffset*4+4*(g-1)]   = faceNodeOffset+N1-1;
+                index[faceTriaOffset*4+4*(g-1)+1] = faceNodeOffset+N2-1;
+                index[faceTriaOffset*4+4*(g-1)+2] = faceNodeOffset+N3-1;
+                index[faceTriaOffset*4+4*(g-1)+3] = SO_END_FACE_INDEX;
             }
 
             parts[ii] = nbTriInFace; // new part
@@ -808,10 +808,10 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             for(Exp.Init(actFace,TopAbs_EDGE);Exp.More();Exp.Next()) {
                 const TopoDS_Edge &curEdge = TopoDS::Edge(Exp.Current());
                 // get the overall index of this edge
-                int idx = edgeMap.FindIndex(curEdge);
-                edgeVector.push_back((int32_t)idx-1);
+                int edgeIndex = edgeMap.FindIndex(curEdge);
+                edgeVector.push_back((int32_t)edgeIndex-1);
                 // already processed this index ?
-                if (edgeIdxSet.find(idx)!=edgeIdxSet.end()) {
+                if (edgeIdxSet.find(edgeIndex)!=edgeIdxSet.end()) {
                     
                     // this holds the indices of the edge's triangulation to the current polygon
                     Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
@@ -821,31 +821,32 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                     // getting the indexes of the edge polygon
                     const TColStd_Array1OfInteger& indices = aPoly->Nodes();
                     for (Standard_Integer i=indices.Lower();i <= indices.Upper();i++) {
-                        int inx = indices(i);
-                        indxVector.push_back(FaceNodeOffset+inx-1);
+                        int nodeIndex = indices(i);
+                        int index = faceNodeOffset+nodeIndex-1;
+                        indxVector.push_back(index);
 
                         // usually the coordinates for this edge are already set by the
                         // triangles of the face this edge belongs to. However, there are
                         // rare cases where some points are only referenced by the polygon
                         // but not by any triangle. Thus, we must apply the coordinates to
                         // make sure that everything is properly set.
-                        gp_Pnt p(Nodes(inx));
+                        gp_Pnt p(Nodes(nodeIndex));
                         if (!identity)
                             p.Transform(myTransf);
-                        verts[FaceNodeOffset+inx-1].setValue((float)(p.X()),(float)(p.Y()),(float)(p.Z()));
+                        verts[index].setValue((float)(p.X()),(float)(p.Y()),(float)(p.Z()));
                     }
                     indxVector.push_back(-1);
 
                     // remove the handled edge index from the set
-                    edgeIdxSet.erase(idx);
+                    edgeIdxSet.erase(edgeIndex);
                 }
             }
 
             edgeVector.push_back(-1);
             
             // counting up the per Face offsets
-            FaceNodeOffset += nbNodesInFace;
-            FaceTriaOffset += nbTriInFace;
+            faceNodeOffset += nbNodesInFace;
+            faceTriaOffset += nbTriInFace;
         }
 
         // handling of the free edges
@@ -873,21 +874,22 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                         pnt = aNodes(j);
                         if (!identity)
                             pnt.Transform(myTransf);
-                        verts[FaceNodeOffset+j-1].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
-                        indxVector.push_back(FaceNodeOffset+j-1);
+                        int index = faceNodeOffset+j-1;
+                        verts[index].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
+                        indxVector.push_back(index);
                     }
 
                     indxVector.push_back(-1);
-                    FaceNodeOffset += nbNodesInEdge;
+                    faceNodeOffset += nbNodesInEdge;
                 }
             }
         }
 
-        nodeset->startIndex.setValue(FaceNodeOffset);
+        nodeset->startIndex.setValue(faceNodeOffset);
         for (int i=0; i<vertexMap.Extent(); i++) {
             const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i+1));
             gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
-            verts[FaceNodeOffset+i].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
+            verts[faceNodeOffset+i].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
         }
 
         // normalize all normals 
