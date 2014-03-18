@@ -680,9 +680,10 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         TopTools_IndexedMapOfShape edgeMap;
         TopExp::MapShapes(cShape, TopAbs_EDGE, edgeMap);
 
-        std::set<int>         edgeIdxSet;
-        std::vector<int32_t>  indxVector;
-        std::vector<int32_t>  edgeVector;
+         // key is the edge number, value the coord indexes. This is needed to keep the same order as the edges.
+        std::map<int, std::vector<int32_t> > lineSetMap;
+        std::set<int>          edgeIdxSet;
+        std::vector<int32_t>   edgeVector;
 
         // count and index the edges
         for (int i=1; i <= edgeMap.Extent(); i++) {
@@ -708,8 +709,6 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                 }
             }
         }
-        // reserve some memory
-        indxVector.reserve(numEdges*8);
 
         // handling of the vertices
         TopTools_IndexedMapOfShape vertexMap;
@@ -823,7 +822,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                     for (Standard_Integer i=indices.Lower();i <= indices.Upper();i++) {
                         int nodeIndex = indices(i);
                         int index = faceNodeOffset+nodeIndex-1;
-                        indxVector.push_back(index);
+                        lineSetMap[edgeIndex].push_back(index);
 
                         // usually the coordinates for this edge are already set by the
                         // triangles of the face this edge belongs to. However, there are
@@ -835,7 +834,6 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                             p.Transform(myTransf);
                         verts[index].setValue((float)(p.X()),(float)(p.Y()),(float)(p.Z()));
                     }
-                    indxVector.push_back(-1);
 
                     // remove the handled edge index from the set
                     edgeIdxSet.erase(edgeIndex);
@@ -876,10 +874,9 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                             pnt.Transform(myTransf);
                         int index = faceNodeOffset+j-1;
                         verts[index].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
-                        indxVector.push_back(index);
+                        lineSetMap[i].push_back(index);
                     }
 
-                    indxVector.push_back(-1);
                     faceNodeOffset += nbNodesInEdge;
                 }
             }
@@ -896,13 +893,19 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         for (int i = 0; i< numNorms ;i++)
             norms[i].normalize();
         
+        std::vector<int32_t> lineSetCoords;
+        for (std::map<int, std::vector<int32_t> >::iterator it = lineSetMap.begin(); it != lineSetMap.end(); ++it) {
+            lineSetCoords.insert(lineSetCoords.end(), it->second.begin(), it->second.end());
+            lineSetCoords.push_back(-1);
+        }
+
         // preset the index vector size
-        numLines =  indxVector.size();
+        numLines =  lineSetCoords.size();
         lineset ->coordIndex .setNum(numLines);
         int32_t* lines = lineset ->coordIndex  .startEditing();
 
         int l=0;
-        for (std::vector<int32_t>::const_iterator it=indxVector.begin();it!=indxVector.end();++it,l++)
+        for (std::vector<int32_t>::const_iterator it=lineSetCoords.begin();it!=lineSetCoords.end();++it,l++)
             lines[l] = *it;
 
         // end the editing of the nodes
