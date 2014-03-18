@@ -639,7 +639,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
 
     // time measurement and book keeping
     Base::TimeInfo start_time;
-    int nbrTriangles=0,nbrNodes=0,nbrNorms=0,nbrFaces=0,nbrEdges=0,nbrLines=0;
+    int numTriangles=0,numNodes=0,numNorms=0,numFaces=0,numEdges=0,numLines=0;
     std::set<int> faceEdges;
 
     try {
@@ -665,31 +665,31 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(Ex.Current()), aLoc);
             // Note: we must also count empty faces
             if (!mesh.IsNull()) {
-                nbrTriangles += mesh->NbTriangles();
-                nbrNodes     += mesh->NbNodes();
-                nbrNorms     += mesh->NbNodes();
+                numTriangles += mesh->NbTriangles();
+                numNodes     += mesh->NbNodes();
+                numNorms     += mesh->NbNodes();
             }
 
             TopExp_Explorer xp;
             for (xp.Init(Ex.Current(),TopAbs_EDGE);xp.More();xp.Next())
                 faceEdges.insert(xp.Current().HashCode(INT_MAX));
-            nbrFaces++;
+            numFaces++;
         }
 
         // get an indexed map of edges
-        TopTools_IndexedMapOfShape M;
-        TopExp::MapShapes(cShape, TopAbs_EDGE, M);
+        TopTools_IndexedMapOfShape edgeMap;
+        TopExp::MapShapes(cShape, TopAbs_EDGE, edgeMap);
 
         std::set<int>         edgeIdxSet;
         std::vector<int32_t>  indxVector;
         std::vector<int32_t>  edgeVector;
 
         // count and index the edges
-        for (int i=1; i <= M.Extent(); i++) {
+        for (int i=1; i <= edgeMap.Extent(); i++) {
             edgeIdxSet.insert(i);
-            nbrEdges++;
+            numEdges++;
 
-            const TopoDS_Edge& aEdge = TopoDS::Edge(M(i));
+            const TopoDS_Edge& aEdge = TopoDS::Edge(edgeMap(i));
             TopLoc_Location aLoc;
 
             // handling of the free edge that are not associated to a face
@@ -704,23 +704,23 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                 Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(aEdge, aLoc);
                 if (!aPoly.IsNull()) {
                     int nbNodesInEdge = aPoly->NbNodes();
-                    nbrNodes += nbNodesInEdge;
+                    numNodes += nbNodesInEdge;
                 }
             }
         }
         // reserve some memory
-        indxVector.reserve(nbrEdges*8);
+        indxVector.reserve(numEdges*8);
 
         // handling of the vertices
-        TopTools_IndexedMapOfShape V;
-        TopExp::MapShapes(cShape, TopAbs_VERTEX, V);
-        nbrNodes += V.Extent();
+        TopTools_IndexedMapOfShape vertexMap;
+        TopExp::MapShapes(cShape, TopAbs_VERTEX, vertexMap);
+        numNodes += vertexMap.Extent();
 
         // create memory for the nodes and indexes
-        coords  ->point      .setNum(nbrNodes);
-        norm    ->vector     .setNum(nbrNorms);
-        faceset ->coordIndex .setNum(nbrTriangles*4);
-        faceset ->partIndex  .setNum(nbrFaces);
+        coords  ->point      .setNum(numNodes);
+        norm    ->vector     .setNum(numNorms);
+        faceset ->coordIndex .setNum(numTriangles*4);
+        faceset ->partIndex  .setNum(numFaces);
         // get the raw memory for fast fill up
         SbVec3f* verts = coords  ->point       .startEditing();
         SbVec3f* norms = norm    ->vector      .startEditing();
@@ -728,7 +728,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         int32_t* parts = faceset ->partIndex   .startEditing();
 
         // preset the normal vector with null vector
-        for (int i=0;i < nbrNorms;i++) 
+        for (int i=0;i < numNorms;i++)
             norms[i]= SbVec3f(0.0,0.0,0.0);
 
         int ii = 0,FaceNodeOffset=0,FaceTriaOffset=0;
@@ -806,15 +806,15 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             // handling the edges lying on this face
             TopExp_Explorer Exp;
             for(Exp.Init(actFace,TopAbs_EDGE);Exp.More();Exp.Next()) {
-                const TopoDS_Edge &actEdge = TopoDS::Edge(Exp.Current());
+                const TopoDS_Edge &curEdge = TopoDS::Edge(Exp.Current());
                 // get the overall index of this edge
-                int idx = M.FindIndex(actEdge);
+                int idx = edgeMap.FindIndex(curEdge);
                 edgeVector.push_back((int32_t)idx-1);
                 // already processed this index ?
                 if (edgeIdxSet.find(idx)!=edgeIdxSet.end()) {
                     
                     // this holds the indices of the edge's triangulation to the current polygon
-                    Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(actEdge, mesh, aLoc);
+                    Handle(Poly_PolygonOnTriangulation) aPoly = BRep_Tool::PolygonOnTriangulation(curEdge, mesh, aLoc);
                     if (aPoly.IsNull())
                         continue; // polygon does not exist
                     
@@ -849,8 +849,8 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         }
 
         // handling of the free edges
-        for (int i=1; i <= M.Extent(); i++) {
-            const TopoDS_Edge& aEdge = TopoDS::Edge(M(i));
+        for (int i=1; i <= edgeMap.Extent(); i++) {
+            const TopoDS_Edge& aEdge = TopoDS::Edge(edgeMap(i));
             Standard_Boolean identity = true;
             gp_Trsf myTransf;
             TopLoc_Location aLoc;
@@ -884,19 +884,19 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         }
 
         nodeset->startIndex.setValue(FaceNodeOffset);
-        for (int i=0; i<V.Extent(); i++) {
-            const TopoDS_Vertex& aVertex = TopoDS::Vertex(V(i+1));
+        for (int i=0; i<vertexMap.Extent(); i++) {
+            const TopoDS_Vertex& aVertex = TopoDS::Vertex(vertexMap(i+1));
             gp_Pnt pnt = BRep_Tool::Pnt(aVertex);
             verts[FaceNodeOffset+i].setValue((float)(pnt.X()),(float)(pnt.Y()),(float)(pnt.Z()));
         }
 
         // normalize all normals 
-        for (int i = 0; i< nbrNorms ;i++)
+        for (int i = 0; i< numNorms ;i++)
             norms[i].normalize();
         
         // preset the index vector size
-        nbrLines =  indxVector.size();
-        lineset ->coordIndex .setNum(nbrLines);
+        numLines =  indxVector.size();
+        lineset ->coordIndex .setNum(numLines);
         int32_t* lines = lineset ->coordIndex  .startEditing();
 
         int l=0;
@@ -917,7 +917,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
 #   ifdef FC_DEBUG
         // printing some informations
         Base::Console().Log("ViewProvider update time: %f s\n",Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo()));
-        Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",nbrFaces,nbrEdges,nbrNodes,nbrTriangles,nbrLines);
-#   endif 
+        Base::Console().Log("Shape tria info: Faces:%d Edges:%d Nodes:%d Triangles:%d IdxVec:%d\n",numFaces,numEdges,numNodes,numTriangles,numLines);
+#   endif
     VisualTouched = false;
 }
