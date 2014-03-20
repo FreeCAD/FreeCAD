@@ -191,6 +191,11 @@ QString Action::whatsThis() const
     return _action->whatsThis();
 }
 
+void Action::setMenuRole(QAction::MenuRole menuRole)
+{
+    _action->setMenuRole(menuRole); 
+}
+
 // --------------------------------------------------------------------
 
 /**
