@@ -61,7 +61,7 @@ public:
   inline bool      operator== (const Vector2D &rclVct) const;
   inline Vector2D  operator+ (const Vector2D &rclVct) const;
   inline Vector2D  operator- (const Vector2D &rclVct) const;
-  inline Vector2D  operator/ (const double x) const;
+  inline Vector2D  operator/ (double c) const;
 
   inline void Set (double fPX, double fPY);
   inline void Scale (double fS);
@@ -222,9 +222,9 @@ inline double Vector2D::operator* (const Vector2D &rclVct) const
   return (fX * rclVct.fX) + (fY * rclVct.fY);
 }
 
-inline Vector2D Vector2D::operator/ (const double x) const
+inline Vector2D Vector2D::operator/ (double c) const
 {
-  return Vector2D(fX / x, fY / x);
+  return Vector2D(fX / c, fY / c);
 }
 
 inline void Vector2D::Scale (double fS)
