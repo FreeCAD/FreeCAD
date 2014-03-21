@@ -69,6 +69,8 @@ private:
     void onSelectionChanged(const SelectionChanges& msg);
 
 private:
+    struct PropInfo;
+    struct PropFind;
     QTabWidget* tabs;
 };
 

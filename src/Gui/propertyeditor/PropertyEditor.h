@@ -31,6 +31,7 @@
 #include <QTreeView>
 
 #include "PropertyItem.h"
+#include "PropertyModel.h"
 
 namespace App {
 class Property;
@@ -49,7 +50,7 @@ public:
     ~PropertyEditor();
 
     /** Builds up the list view with the properties. */
-    void buildUp(const std::map<std::string, std::vector<App::Property*> >& props);
+    void buildUp(const PropertyModel::PropertyList& props);
     void setAutomaticDocumentUpdate(bool);
     bool isAutomaticDocumentUpdate(bool) const;
 

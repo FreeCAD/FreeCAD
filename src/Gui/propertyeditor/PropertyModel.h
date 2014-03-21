@@ -41,6 +41,8 @@ class PropertyModel : public QAbstractItemModel
     Q_OBJECT
 
 public:
+    typedef std::vector< std::pair< std::string, std::vector<App::Property*> > > PropertyList;
+
     PropertyModel(QObject* parent);
     virtual ~PropertyModel();
 
@@ -54,7 +56,7 @@ public:
     int rowCount (const QModelIndex & parent = QModelIndex()) const;
     QVariant headerData (int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     bool setHeaderData (int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole);
-    void buildUp(const std::map<std::string, std::vector<App::Property*> >& props);
+    void buildUp(const PropertyList& props);
     QStringList propertyPathFromIndex(const QModelIndex&) const;
     QModelIndex propertyIndexFromPath(const QStringList&) const;
 
