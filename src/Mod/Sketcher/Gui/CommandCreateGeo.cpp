@@ -1784,6 +1784,282 @@ bool CmdSketcherCreateCircle::isActive(void)
 // ======================================================================================
 
 /* XPM */
+static const char *cursor_create3pointcircle[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+........#######..........",
+"......+......##.......##........",
+"......+.....#...........#.......",
+"......+....#.............#......",
+"......+...#...............#.....",
+".........#.................#....",
+".......###.................###..",
+".......#.#.................#.#..",
+".......###.................###..",
+".......#.....................#..",
+".......#.........###.........#..",
+".......#.........#.#.........#..",
+".......#.........###.........#..",
+".......#.....................#..",
+".......#.....................#..",
+"........#...................#...",
+"........#...................#...",
+".........#.................#....",
+"..........#...............#.....",
+"...........#.............#......",
+"............#...........#.......",
+".............##..###..##........",
+"...............###.###..........",
+".................###............"};
+
+class DrawSketchHandler3PointCircle : public DrawSketchHandler
+{
+public:
+    DrawSketchHandler3PointCircle()
+      : Mode(STATUS_SEEK_First),EditCurve(2){}
+    virtual ~DrawSketchHandler3PointCircle(){}
+    /// mode table
+    enum SelectMode {
+        STATUS_SEEK_First,      /**< enum value ----. */
+        STATUS_SEEK_Second,     /**< enum value ----. */
+        STATUS_SEEK_Third,      /**< enum value ----. */
+        STATUS_End
+    };
+
+    virtual void activated(ViewProviderSketch *sketchgui)
+    {
+        setCursor(QPixmap(cursor_create3pointcircle),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2D onSketchPos)
+    {
+        if (Mode==STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr1);
+                return;
+            }
+        }
+        else if (Mode==STATUS_SEEK_Second) {
+            CenterPoint  = EditCurve[0] = (onSketchPos - FirstPoint)/2 + FirstPoint;
+            EditCurve[1] = EditCurve[33] = onSketchPos;
+            radius = (onSketchPos - CenterPoint).Length();
+            double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
+
+            // Build a 32 point circle ignoring already constructed points
+            for (int i=1; i <= 32; i++) {
+                // Start at current angle
+                double angle = (i-1)*2*M_PI/32.0 + lineAngle; // N point closed circle has N segments
+                if (i != 1 && i != 17 ) {
+                    EditCurve[i] = Base::Vector2D(CenterPoint.fX + radius*cos(angle),
+                                                  CenterPoint.fY + radius*sin(angle));
+                }
+            }
+
+            // Display radius and start angle
+            // This lineAngle will report counter-clockwise from +X, not relatively
+            SbString text;
+            text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) lineAngle * 180 / M_PI);
+            setPositionText(onSketchPos, text);
+
+            sketchgui->drawEdit(EditCurve);
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr2);
+                return;
+            }
+        }
+        else if (Mode==STATUS_SEEK_Third) {
+            /*
+            Centerline inverts when the arc flips sides.  Easily taken care of by replacing
+            centerline with a point.  It happens because the direction the curve is being drawn
+            reverses.
+            */
+            CenterPoint = EditCurve[30] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+            radius = (SecondPoint - CenterPoint).Length();
+
+            double angle1 = GetPointAngle(CenterPoint, FirstPoint);
+            double angle2 = GetPointAngle(CenterPoint, SecondPoint);
+            double angle3 = GetPointAngle(CenterPoint, onSketchPos);
+
+            // Always build arc counter-clockwise
+            // Point 3 is between Point 1 and 2
+            if ( angle3 > min(angle1, angle2) && angle3 < max(angle1, angle2) ) {
+                if (angle2 > angle1) {
+                    EditCurve[0] =  FirstPoint;
+                    EditCurve[29] = SecondPoint;
+                    arcPos1 = Sketcher::start;
+                    arcPos2 = Sketcher::end;
+                }
+                else {
+                    EditCurve[0] =  SecondPoint;
+                    EditCurve[29] = FirstPoint;
+                    arcPos1 = Sketcher::end;
+                    arcPos2 = Sketcher::start;
+                }
+                startAngle = min(angle1, angle2);
+                endAngle   = max(angle1, angle2);
+                arcAngle = endAngle - startAngle;
+            }
+            // Point 3 is not between Point 1 and 2
+            else {
+                if (angle2 > angle1) {
+                    EditCurve[0] =  SecondPoint;
+                    EditCurve[29] = FirstPoint;
+                    arcPos1 = Sketcher::end;
+                    arcPos2 = Sketcher::start;
+                }
+                else {
+                    EditCurve[0] =  FirstPoint;
+                    EditCurve[29] = SecondPoint;
+                    arcPos1 = Sketcher::start;
+                    arcPos2 = Sketcher::end;
+                }
+                startAngle = max(angle1, angle2);
+                endAngle   = min(angle1, angle2);
+                arcAngle = 2*M_PI - (startAngle - endAngle);
+            }
+
+            // Build a 30 point circle ignoring already constructed points
+            for (int i=1; i <= 28; i++) {
+                double angle = startAngle + i*arcAngle/29.0; // N point arc has N-1 segments
+                EditCurve[i] = Base::Vector2D(CenterPoint.fX + radius*cos(angle),
+                                              CenterPoint.fY + radius*sin(angle));
+            }
+
+            SbString text;
+            text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) arcAngle * 180 / M_PI);
+            setPositionText(onSketchPos, text);
+
+            sketchgui->drawEdit(EditCurve);
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0))) {
+                // seekAutoConstraint doesn't handle this correctly because Coincident
+                // cannot snap to an arc yet it picks coincident because I click a point.
+                sugConstr3.back().Type = Sketcher::PointOnObject;
+                renderSuggestConstraintsCursor(sugConstr3);
+                return;
+            }
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2D onSketchPos)
+    {
+        if (Mode==STATUS_SEEK_First){
+            // 32 point curve + center + endpoint
+            EditCurve.resize(34);
+            // 17 is circle halfway point (1+32/2)
+            FirstPoint = EditCurve[17] = onSketchPos;
+
+            Mode = STATUS_SEEK_Second;
+        }
+        else if (Mode==STATUS_SEEK_Second){
+            // 30 point arc and center point
+            EditCurve.resize(31);
+            SecondPoint = onSketchPos;
+
+            Mode = STATUS_SEEK_Third;
+        }
+        else {
+            EditCurve.resize(30);
+
+            sketchgui->drawEdit(EditCurve);
+            applyCursor();
+            Mode = STATUS_End;
+        }
+
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    {
+        // Need to look at.  rx might need fixing.
+        if (Mode==STATUS_End) {
+            unsetCursor();
+            resetPositionText();
+            Gui::Command::openCommand("Add sketch arc");
+            Gui::Command::doCommand(Gui::Command::Doc,
+                "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
+                "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),"
+                "%f,%f))",
+                      sketchgui->getObject()->getNameInDocument(),
+                      CenterPoint.fX, CenterPoint.fY, radius,
+                      startAngle, endAngle);
+
+            Gui::Command::commitCommand();
+            Gui::Command::updateActive();
+
+            // Auto Constraint first picked point
+            if (sugConstr1.size() > 0) {
+                createAutoConstraints(sugConstr1, getHighestCurveIndex(), arcPos1);
+                sugConstr1.clear();
+            }
+
+            // Auto Constraint second picked point
+            if (sugConstr2.size() > 0) {
+                createAutoConstraints(sugConstr2, getHighestCurveIndex(), arcPos2);
+                sugConstr2.clear();
+            }
+
+            // Auto Constraint third picked point
+            if (sugConstr3.size() > 0) {
+                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::none);
+                sugConstr3.clear();
+            }
+
+            EditCurve.clear();
+            sketchgui->drawEdit(EditCurve);
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        }
+        return true;
+    }
+protected:
+    SelectMode Mode;
+    std::vector<Base::Vector2D> EditCurve;
+    Base::Vector2D CenterPoint, FirstPoint, SecondPoint;
+    double radius, startAngle, endAngle, arcAngle;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
+    Sketcher::PointPos arcPos1, arcPos2;
+};
+
+DEF_STD_CMD_A(CmdSketcherCreate3PointCircle);
+
+CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
+  : Command("Sketcher_Create3PointCircle")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create circle by three points");
+    sToolTipText    = QT_TR_NOOP("Create a circle by 3 perimeter points");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Create3PointCircle";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreate3PointCircle::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandler3PointCircle() );
+}
+
+bool CmdSketcherCreate3PointCircle::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+// ======================================================================================
+
+/* XPM */
 static const char *cursor_createpoint[]={
 "32 32 3 1",
 "+ c white",
@@ -2543,6 +2819,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreate3PointArc());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreateCircle());
+    rcCmdMgr.addCommand(new CmdSketcherCreate3PointCircle());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
