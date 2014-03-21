@@ -1,32 +1,63 @@
 # FreeCAD module provding base classes for document objects and view provider  
 # (c) 2011 Werner Mayer LGPL
 
+import FreeCAD
+
 class DocumentObject(object):
-    """The Document object is the base class for all FreeCAD objects.
-    Example of use:
+    """The Document object is the base class for all FreeCAD objects."""
     
-    import FreeCAD
-    
-    doc=FreeCAD.newDocument()
-    
-    myobj = doc.addObject("Mesh::FeaturePython","MyName")
-    
-    myobj.addProperty("App::PropertyLinkList","Layers","Base", "Layers")"""
     def __init__(self):
         self.__object__=None
+        self.initialised=False
+    #------------------------------Methods for the user to override :
+    
     def execute(self):
         "this method is executed on object creation and whenever the document is recomputed"
         raise Exception("Not yet implemented")
-    #def onChanged(self,prop):
-    #    return None
-    #def __getattr__(self, attr):
-    #    if hasattr(self.__object__,attr):
-    #        return getattr(self.__object__,attr)
-    #    else:
-    #        return object.__getattribute__(self,attr)
-    def addProperty(self,type,name='',group='',doc='',attr=0,readonly=False,hidden=False):
+
+    def init(self):
+        #will be called just after object creation, you can use this for example to create properties
+        pass
+    def propertyChanged(self,prop):
+        #will be called each time a property is changed
+        pass
+    #--------------------------------
+    
+
+    def __getattr__(self, attr):
+        if attr !="__object__" and hasattr(self.__object__,attr):
+            return getattr(self.__object__,attr)
+        else:
+            return object.__getattribute__(self,attr)
+    def __setattr__(self, attr, value):
+        if attr !="__object__" and hasattr(self.__object__,attr):
+            setattr(self.__object__,attr,value)
+        else:
+            object.__setattr__(self,attr,value)
+    def onChanged(self,prop):
+        if prop=="Proxy":
+            #recreate the functions in the __object__
+            d = self.__class__.__dict__
+            for key in d:
+                item = d[key]
+                #check if the function is valid
+                if hasattr(item, '__call__') and key!="onChanged" and key!="execute" and key!="init" and key[0]!="_":
+                    #check if the function doesn't already exist in the object:
+                    if not(hasattr(self.__object__,key)):
+                        #add a link to the Proxy function in the __object__ :
+                        self.addProperty("App::PropertyPythonObject", key, "", "",2)
+                        setattr(self.__object__,key,getattr(self,key))
+                    else:
+                        FreeCAD.Console.PrintWarning('!!! The function : "'+key+'" already exist in the object, cannot override. !!!\n')
+            #call the init function
+            if hasattr(self,'initialised'):
+                if self.initialised==False:
+                    self.init()
+                    self.initialised = True
+        self.propertyChanged(prop)
+    def addProperty(self,typ,name='',group='',doc='',attr=0,readonly=False,hidden=False):
         "adds a new property to this object"
-        self.__object__.addProperty(type,name,group,doc,attr,readonly,hidden)
+        return self.__object__.addProperty(typ,name,group,doc,attr,readonly,hidden)
     def supportedProperties(self):
         "lists the property types supported by this object"
         return self.__object__.supportedProperties()
@@ -112,6 +143,9 @@ class DocumentObject(object):
         "lists the children of this object"
         return self.__object__.OutList
 
+
+
+
 class ViewProvider(object):
     """The ViewProvider is the counterpart of the DocumentObject in
     the GUI space. It is only present when FreeCAD runs in GUI mode.
@@ -122,7 +156,7 @@ class ViewProvider(object):
     #def getIcon(self):
     #    return ""
     #def claimChildren(self):
-    #    return []
+    #    return self.__vobject__.Object.OutList
     #def setEdit(self,mode):
     #    return False
     #def unsetEdit(self,mode):
@@ -194,6 +228,13 @@ class ViewProvider(object):
     def getDocumentationOfProperty(self,attr):
         "returns the documentation string of a given property"
         return self.__vobject__.getDocumentationOfProperty(attr)
+    def __setstate__(self,value):
+        """allows to save custom attributes of this object as strings, so
+        they can be saved when saving the FreeCAD document"""
+        return None
+    def __getstate__(self):
+        """reads values previously saved with __setstate__()"""
+        return None
     @property
     def Annotation(self):
         "returns the Annotation coin node of this object"
@@ -233,18 +274,46 @@ class ViewProvider(object):
         return self.__vobject__.Object
 
 
-### Examples
+#Example : 
+import Part
 
+class Box(DocumentObject):
+    #type :
+    type = "Part::FeaturePython"
+    
+    #-----------------------------INIT----------------------------------------
+    def init(self):
+        self.addProperty("App::PropertyLength","Length","Box","Length of the box").Length=1.0
+        self.addProperty("App::PropertyLength","Width","Box","Width of the box").Width=1.0
+        self.addProperty("App::PropertyLength","Height","Box", "Height of the box").Height=1.0
+        
+    #-----------------------------BEHAVIOR------------------------------------
+    def propertyChanged(self,prop):
+        FreeCAD.Console.PrintMessage("Box property changed : "+ prop+ "\n")
+        if prop == "Length" or prop == "Width" or prop == "Height":
+            self._recomputeShape()
 
-class MyFeature(DocumentObject):
     def execute(self):
-        print "Execute my feature"
-    def onChanged(self,prop):
-        print "Property %s has changed" % (prop)
+        FreeCAD.Console.PrintMessage("Recompute Python Box feature\n")
+        self._recomputeShape()
+        
+    #---------------------------PUBLIC FUNCTIONS-------------------------------
+    #These functions will be present in the object
+    def customFunctionSetLength(self,attr):
+        self.Length = attr
+        self._privateFunctionExample(attr)
+        
+    #---------------------------PRIVATE FUNCTIONS------------------------------
+    #These function won't be present in the object (begin with '_')
+    def _privateFunctionExample(self,attr):
+        FreeCAD.Console.PrintMessage("The lenght : "+str(attr)+"\n")
+        
+    def _recomputeShape(self):
+        if hasattr(self,"Length") and hasattr(self,"Width") and hasattr(self,"Height"):
+            self.Shape = Part.makeBox(self.Length,self.Width,self.Height)
+        
 
-def testMethod():
-    import FreeCAD
-    doc=FreeCAD.newDocument()
-    obj=MyFeature()
-    doc.addObject("Mesh::FeaturePython","MyName",obj,None)
-    obj.addProperty("App::PropertyLinkList","Layers","Base", "Layers")
+def makeBox():
+    FreeCAD.newDocument()
+    box = FreeCAD.ActiveDocument.addObject(Box.type,"MyBox",Box(),None)
+    box.customFunctionSetLength(4)
