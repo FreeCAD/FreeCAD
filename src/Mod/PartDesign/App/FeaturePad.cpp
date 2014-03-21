@@ -57,11 +57,11 @@ PROPERTY_SOURCE(PartDesign::Pad, PartDesign::Additive)
 
 Pad::Pad()
 {
-    ADD_PROPERTY(Type,((long)0));
+    ADD_PROPERTY_TYPE(Type,((long)0),"Pad",App::Prop_None,"Pad type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY(Length,(100.0));
-    ADD_PROPERTY(Length2,(100.0));
-    ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",(App::PropertyType)(App::Prop_None),"Face where feature will end");
+    ADD_PROPERTY_TYPE(Length,(100.0),"Pad",App::Prop_None,"Pad length");
+    ADD_PROPERTY_TYPE(Length2,(100.0),"Pad",App::Prop_None,"P");
+    ADD_PROPERTY_TYPE(UpToFace,(0),"Pad",App::Prop_None,"Face where pad will end");
 }
 
 short Pad::mustExecute() const
