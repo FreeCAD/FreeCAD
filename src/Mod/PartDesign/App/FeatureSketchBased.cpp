@@ -98,7 +98,7 @@ PROPERTY_SOURCE(PartDesign::SketchBased, PartDesign::Feature)
 
 SketchBased::SketchBased()
 {
-    ADD_PROPERTY(Sketch,(0));
+    ADD_PROPERTY_TYPE(Sketch,(0),"SketchBased", App::Prop_None, "Reference to sketch");
     ADD_PROPERTY_TYPE(Midplane,(0),"SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0),"SketchBased", App::Prop_None, "Reverse extrusion direction");
 }

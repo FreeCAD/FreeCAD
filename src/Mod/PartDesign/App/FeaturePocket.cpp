@@ -58,10 +58,10 @@ PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::Subtractive)
 
 Pocket::Pocket()
 {
-    ADD_PROPERTY(Type,((long)0));
+    ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
-    ADD_PROPERTY(Length,(100.0));
-    ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",(App::PropertyType)(App::Prop_None),"Face where feature will end");
+    ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
+    ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
 }
 
 short Pocket::mustExecute() const
