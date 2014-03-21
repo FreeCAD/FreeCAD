@@ -199,15 +199,14 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
     return parent;
 }
 
-void PropertyModel::buildUp(const std::map<std::string, std::vector<App::Property*> >& props)
+void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
 {
     // fill up the listview with the properties
     rootItem->reset();
 
     // sort the properties into their groups
     std::map<std::string, std::vector<std::vector<App::Property*> > > propGroup;
-    std::map<std::string, std::vector<App::Property*> >
-        ::const_iterator jt;
+    PropertyModel::PropertyList::const_iterator jt;
     for (jt = props.begin(); jt != props.end(); ++jt) {
         App::Property* prop = jt->second.front();
         const char* group = prop->getGroup();

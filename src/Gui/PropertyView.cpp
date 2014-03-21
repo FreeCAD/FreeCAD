@@ -29,7 +29,6 @@
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>
@@ -78,6 +77,23 @@ PropertyView::~PropertyView()
 {
 }
 
+struct PropertyView::PropInfo
+{
+    std::string propName;
+    int propId;
+    std::vector<App::Property*> propList;
+};
+
+struct PropertyView::PropFind {
+    const PropInfo& item;
+    PropFind(const PropInfo& item) : item(item) {}
+    bool operator () (const PropInfo& elem) const
+    {
+        return (elem.propId == item.propId) &&
+               (elem.propName == item.propName);
+    }
+};
+
 void PropertyView::onSelectionChanged(const SelectionChanges& msg)
 {
     if (msg.Type != SelectionChanges::AddSelection &&
@@ -85,44 +101,67 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         msg.Type != SelectionChanges::SetSelection &&
         msg.Type != SelectionChanges::ClrSelection)
         return;
+
     // group the properties by <name,id>
-    std::map<std::pair<std::string, int>, std::vector<App::Property*> > propDataMap;
-    std::map<std::pair<std::string, int>, std::vector<App::Property*> > propViewMap;
+    std::vector<PropInfo> propDataMap;
+    std::vector<PropInfo> propViewMap;
     std::vector<SelectionSingleton::SelObj> array = Gui::Selection().getCompleteSelection();
     for (std::vector<SelectionSingleton::SelObj>::const_iterator it = array.begin(); it != array.end(); ++it) {
         App::DocumentObject *ob=0;
         ViewProvider *vp=0;
 
-        std::map<std::string,App::Property*> dataMap;
-        std::map<std::string,App::Property*> viewMap;
+        std::vector<App::Property*> dataList;
+        std::map<std::string, App::Property*> viewList;
         if ((*it).pObject) {
-            (*it).pObject->getPropertyMap(dataMap);
+            (*it).pObject->getPropertyList(dataList);
             ob = (*it).pObject;
 
             // get also the properties of the associated view provider
             Gui::Document* doc = Gui::Application::Instance->getDocument(it->pDoc);
             vp = doc->getViewProvider((*it).pObject);
             if(!vp) continue;
-            vp->getPropertyMap(viewMap);
+            // get the properties as map here because it doesn't matter to have them sorted alphabetically
+            vp->getPropertyMap(viewList);
         }
 
         // store the properties with <name,id> as key in a map
-        std::map<std::string,App::Property*>::iterator pt;
+        std::vector<App::Property*>::iterator pt;
         if (ob) {
-            for (pt = dataMap.begin(); pt != dataMap.end(); ++pt) {
-                std::pair<std::string, int> nameType = std::make_pair
-                    <std::string, int>(pt->first, pt->second->getTypeId().getKey());
-                if (!ob->isHidden(pt->second) && !pt->second->StatusBits.test(3))
-                    propDataMap[nameType].push_back(pt->second);
+            for (pt = dataList.begin(); pt != dataList.end(); ++pt) {
+                PropInfo nameType;
+                nameType.propName = ob->getName(*pt);
+                nameType.propId = (*pt)->getTypeId().getKey();
+
+                if (!ob->isHidden(*pt) && !(*pt)->StatusBits.test(3)) {
+                    std::vector<PropInfo>::iterator pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
+                    if (pi != propDataMap.end()) {
+                        pi->propList.push_back(*pt);
+                    }
+                    else {
+                        nameType.propList.push_back(*pt);
+                        propDataMap.push_back(nameType);
+                    }
+                }
             }
         }
         // the same for the view properties
         if (vp) {
-            for(pt = viewMap.begin(); pt != viewMap.end(); ++pt) {
-                std::pair<std::string, int> nameType = std::make_pair
-                    <std::string, int>( pt->first, pt->second->getTypeId().getKey());
-                if (!vp->isHidden(pt->second) && !pt->second->StatusBits.test(3))
-                    propViewMap[nameType].push_back(pt->second);
+            std::map<std::string, App::Property*>::iterator pt;
+            for (pt = viewList.begin(); pt != viewList.end(); ++pt) {
+                PropInfo nameType;
+                nameType.propName = pt->first;
+                nameType.propId = pt->second->getTypeId().getKey();
+
+                if (!vp->isHidden(pt->second) && !pt->second->StatusBits.test(3)) {
+                    std::vector<PropInfo>::iterator pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
+                    if (pi != propViewMap.end()) {
+                        pi->propList.push_back(pt->second);
+                    }
+                    else {
+                        nameType.propList.push_back(pt->second);
+                        propViewMap.push_back(nameType);
+                    }
+                }
             }
         }
     }
@@ -130,20 +169,19 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
     // the property must be part of each selected object, i.e. the number
     // of selected objects is equal to the number of properties with same
     // name and id
-    std::map<std::pair<std::string, int>, std::vector<App::Property*> >
-        ::const_iterator it;
-    std::map<std::string, std::vector<App::Property*> > dataProps;
+    std::vector<PropInfo>::const_iterator it;
+    PropertyModel::PropertyList dataProps;
     for (it = propDataMap.begin(); it != propDataMap.end(); ++it) {
-        if (it->second.size() == array.size()) {
-            dataProps[it->first.first] = it->second;
+        if (it->propList.size() == array.size()) {
+            dataProps.push_back(std::make_pair(it->propName, it->propList));
         }
     }
     propertyEditorData->buildUp(dataProps);
 
-    std::map<std::string, std::vector<App::Property*> > viewProps;
+    PropertyModel::PropertyList viewProps;
     for (it = propViewMap.begin(); it != propViewMap.end(); ++it) {
-        if (it->second.size() == array.size()) {
-            viewProps[it->first.first] = it->second;
+        if (it->propList.size() == array.size()) {
+            viewProps.push_back(std::make_pair(it->propName, it->propList));
         }
     }
     propertyEditorView->buildUp(viewProps);
