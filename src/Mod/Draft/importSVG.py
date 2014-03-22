@@ -964,7 +964,7 @@ class svgHandler(xml.sax.ContentHandler):
                 
         def characters(self,content):
                 if self.text:
-                        FreeCAD.Console.PrintMessage("reading characters %s\n" % str(content))
+                        FreeCAD.Console.PrintMessage("reading characters %s\n" % content)
                         obj=self.doc.addObject("App::Annotation",'Text')
                         obj.LabelText = content.encode('latin1')
                         vec = Vector(self.x,-self.y,0)
