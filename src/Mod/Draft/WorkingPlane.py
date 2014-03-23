@@ -136,6 +136,64 @@ class plane:
         # FreeCAD.Console.PrintMessage("(position = " + str(self.position) + ")\n")
         # FreeCAD.Console.PrintMessage("Current workplane: x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))+"\n")
 
+    def alignToPointAndAxis_SVG(self, point, axis, offset):
+        # based on cases table
+        self.doc = FreeCAD.ActiveDocument
+        self.axis = axis;
+        self.axis.normalize()
+        ref_vec = Vector(0.0, 1.0, 0.0)
+
+        if ((abs(axis.x) > abs(axis.y)) and (abs(axis.y) > abs(axis.z))):
+            ref_vec = Vector(0.0, 0., 1.0)
+            self.u = axis.negative().cross(ref_vec)
+            self.u.normalize()
+            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            #projcase = "Case new"
+        
+        elif ((abs(axis.y) > abs(axis.z)) and (abs(axis.z) >= abs(axis.x))):
+            ref_vec = Vector(1.0, 0.0, 0.0)
+            self.u = axis.negative().cross(ref_vec)
+            self.u.normalize()
+            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            #projcase = "Y>Z, View Y"
+
+        elif ((abs(axis.y) >= abs(axis.x)) and (abs(axis.x) > abs(axis.z))):
+            ref_vec = Vector(0.0, 0., 1.0)
+            self.u = axis.cross(ref_vec)
+            self.u.normalize()
+            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            #projcase = "ehem. XY, Case XY"
+
+        elif ((abs(axis.x) > abs(axis.z)) and (abs(axis.z) >= abs(axis.y))):
+            self.u = axis.cross(ref_vec)
+            self.u.normalize()
+            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            #projcase = "X>Z, View X"
+
+        elif ((abs(axis.z) >= abs(axis.y)) and (abs(axis.y) > abs(axis.x))):
+            ref_vec = Vector(1.0, 0., 0.0)
+            self.u = axis.cross(ref_vec)
+            self.u.normalize()
+            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            #projcase = "Y>X, Case YZ"
+
+        else:
+            self.u = axis.negative().cross(ref_vec)
+            self.u.normalize()
+            self.v = DraftVecUtils.rotate(self.u, math.pi/2, self.axis)
+            #projcase = "else"
+
+        #spat_vec = self.u.cross(self.v)
+        #spat_res = spat_vec.dot(axis)
+        #FreeCAD.Console.PrintMessage(projcase + " spat Prod = " + str(spat_res) + "\n")
+        
+        offsetVector = Vector(axis); offsetVector.multiply(offset)
+        self.position = point.add(offsetVector)
+        self.weak = False
+        # FreeCAD.Console.PrintMessage("(position = " + str(self.position) + ")\n")
+        # FreeCAD.Console.PrintMessage("Current workplane: x="+str(DraftVecUtils.rounded(self.u))+" y="+str(DraftVecUtils.rounded(self.v))+" z="+str(DraftVecUtils.rounded(self.axis))+"\n")
+
+
     def alignToCurve(self, shape, offset):
         if shape.ShapeType == 'Edge':
             #??? TODO: process curve here.  look at shape.edges[0].Curve

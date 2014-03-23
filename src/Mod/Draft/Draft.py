@@ -1549,7 +1549,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if isinstance(direction,FreeCAD.Vector):
             if direction != Vector(0,0,0):
                 plane = WorkingPlane.plane()
-                plane.alignToPointAndAxis(Vector(0,0,0),direction.negative(),0)
+                plane.alignToPointAndAxis_SVG(Vector(0,0,0),direction.negative().negative(),0)
         elif isinstance(direction,WorkingPlane.plane):
             plane = direction
 
