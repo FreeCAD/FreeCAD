@@ -499,17 +499,28 @@ void FemMesh::readNastran(const std::string &Filename)
 			//we have to take care of that
 			//At a first step we only extract Quadratic Tetrahedral Elements
 			std::getline(inputfile,line2);
-			element_id.push_back(atoi(line1.substr(8,16).c_str()));
+            unsigned int id = atoi(line1.substr(8,16).c_str());
+            int offset = 0;
+
+            if(id < 1000000)
+                offset = 0;
+            else if (id < 10000000)
+                offset = 1;
+            else if (id < 100000000)
+                offset = 2;
+            
+
+			element_id.push_back(id);
 			tetra_element.push_back(atoi(line1.substr(24,32).c_str()));
 			tetra_element.push_back(atoi(line1.substr(32,40).c_str()));
 			tetra_element.push_back(atoi(line1.substr(40,48).c_str()));
 			tetra_element.push_back(atoi(line1.substr(48,56).c_str()));
 			tetra_element.push_back(atoi(line1.substr(56,64).c_str()));
 			tetra_element.push_back(atoi(line1.substr(64,72).c_str()));
-			tetra_element.push_back(atoi(line2.substr(8,16).c_str()));
-			tetra_element.push_back(atoi(line2.substr(16,24).c_str()));
-			tetra_element.push_back(atoi(line2.substr(24,32).c_str()));
-			tetra_element.push_back(atoi(line2.substr(32,40).c_str()));
+			tetra_element.push_back(atoi(line2.substr(8+offset,16+offset).c_str()));
+			tetra_element.push_back(atoi(line2.substr(16+offset,24+offset).c_str()));
+			tetra_element.push_back(atoi(line2.substr(24+offset,32+offset).c_str()));
+			tetra_element.push_back(atoi(line2.substr(32+offset,40+offset).c_str()));
 
 			all_elements.push_back(tetra_element);
 		}
