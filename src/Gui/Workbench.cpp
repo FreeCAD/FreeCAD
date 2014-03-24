@@ -56,7 +56,7 @@ using namespace Gui;
     The idea behind this concept is that the user should see only the functions that are required for the task that he is doing at this moment and not to show dozens of unneeded functions which the user never uses.
 
     \section stepbystep Step by step
-    Here follows a short description of how an own workbench can be added to a module.
+    Here follows a short description of how your own workbench can be added to a module.
 
     \subsection newClass Inherit either from Workbench or StdWorkbench
     First you have to subclass either \ref Gui::Workbench "Workbench" or \ref Gui::StdWorkbench "StdWorkbench" and reimplement the methods \ref Gui::Workbench::setupMenuBar() "setupMenuBar()", \ref Gui::Workbench::setupToolBars() "setupToolBars()", \ref Gui::Workbench::setupCommandBars() "setupCommandBars()" and \ref Gui::Workbench::setupDockWindows() "setupDockWindows()".
