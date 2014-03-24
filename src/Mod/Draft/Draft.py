@@ -4539,8 +4539,9 @@ class _Clone(_DraftObject):
                 sh = o.Shape.copy()
                 m = FreeCAD.Matrix()
                 if hasattr(obj,"Scale") and not sh.isNull():
-                    m.scale(obj.Scale)
-                    sh = sh.transformGeometry(m)
+                    if not DraftVecUtils.equals(obj.Scale,Vector(1,1,1)):
+                        m.scale(obj.Scale)
+                        sh = sh.transformGeometry(m)
                 if not sh.isNull():
                     shapes.append(sh)
         if shapes:
