@@ -1845,14 +1845,13 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
-                // seekAutoConstraint guessed wrong
-                sugConstr1.back().Type = Sketcher::PointOnObject;
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f), 
+                                   AutoConstraint::TargetType::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
-        else {
+        else if (Mode == STATUS_SEEK_Second || Mode == STATUS_SEEK_Third) {
             if (Mode == STATUS_SEEK_Second)
                 CenterPoint  = EditCurve[N+1] = (onSketchPos - FirstPoint)/2 + FirstPoint;
             else
@@ -1877,20 +1876,19 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (Mode == STATUS_SEEK_Second &&
-                seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f)))
-            {
-                // seekAutoConstraint guessed wrong
-                sugConstr2.back().Type = Sketcher::PointOnObject;
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
+            if (Mode == STATUS_SEEK_Second) {
+                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f), 
+                                       AutoConstraint::TargetType::CURVE)) {
+                    renderSuggestConstraintsCursor(sugConstr2);
+                    return;
+                }
             }
-            else if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0)))
-            {
-                // seekAutoConstraint guessed wrong
-                sugConstr3.back().Type = Sketcher::PointOnObject;
-                renderSuggestConstraintsCursor(sugConstr3);
-                return;
+            else {
+                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0), 
+                                       AutoConstraint::TargetType::CURVE)) {
+                    renderSuggestConstraintsCursor(sugConstr3);
+                    return;
+                }
             }
         }
         applyCursor();
