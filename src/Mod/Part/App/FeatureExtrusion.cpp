@@ -172,16 +172,28 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
             // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
             myShape = BRepBuilderAPI_Copy(myShape).Shape();
             if (makeSolid && myShape.ShapeType() != TopAbs_FACE) {
+                std::vector<TopoDS_Wire> wires;
                 TopTools_IndexedMapOfShape mapOfWires;
                 TopExp::MapShapes(myShape, TopAbs_WIRE, mapOfWires);
-                if (!mapOfWires.IsEmpty()) {
-                    try {
-                        std::vector<TopoDS_Wire> wires;
-                        wires.reserve(mapOfWires.Extent());
-                        for (int i=1; i<=mapOfWires.Extent(); i++) {
-                            wires.push_back(TopoDS::Wire(mapOfWires.FindKey(i)));
-                        }
 
+                // if there are no wires then check also for edges
+                if (mapOfWires.IsEmpty()) {
+                    TopTools_IndexedMapOfShape mapOfEdges;
+                    TopExp::MapShapes(myShape, TopAbs_EDGE, mapOfEdges);
+                    for (int i=1; i<=mapOfEdges.Extent(); i++) {
+                        BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mapOfEdges.FindKey(i)));
+                        wires.push_back(mkWire.Wire());
+                    }
+                }
+                else {
+                    wires.reserve(mapOfWires.Extent());
+                    for (int i=1; i<=mapOfWires.Extent(); i++) {
+                        wires.push_back(TopoDS::Wire(mapOfWires.FindKey(i)));
+                    }
+                }
+
+                if (!wires.empty()) {
+                    try {
                         TopoDS_Shape res = makeFace(wires);
                         if (!res.IsNull())
                             myShape = res;
