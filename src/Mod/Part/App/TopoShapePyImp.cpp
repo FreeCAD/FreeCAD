@@ -1491,17 +1491,17 @@ PyObject* _getSupportIndex(char* suppStr, TopoShape* ts, TopoDS_Shape suppShape)
     TopoDS_Shape subShape;
 
     unsigned long nSubShapes = ts->countSubShapes(suppStr);
-    PyObject* pSupportIndex = PyInt_FromLong(-1);
+    long supportIndex = -1;
     for (unsigned long j=1; j<=nSubShapes; j++){
         ss.str("");
         ss << suppStr << j;
         subShape = ts->getSubShape(ss.str().c_str());
         if (subShape.IsEqual(suppShape)) {
-            pSupportIndex = PyInt_FromLong(j-1);
+            supportIndex = j-1;
             break;
         }
     }
-    return pSupportIndex;
+    return PyInt_FromLong(supportIndex);
 }
 
 PyObject* TopoShapePy::distToShape(PyObject *args)
