@@ -1411,7 +1411,7 @@ public:
 
             sketchgui->drawEdit(EditCurve);
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0),
-                                   AutoConstraint::TargetType::CURVE)) {
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
