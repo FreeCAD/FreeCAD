@@ -1846,7 +1846,7 @@ public:
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f), 
-                                   AutoConstraint::TargetType::CURVE)) {
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
@@ -1878,14 +1878,14 @@ public:
             sketchgui->drawEdit(EditCurve);
             if (Mode == STATUS_SEEK_Second) {
                 if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f), 
-                                       AutoConstraint::TargetType::CURVE)) {
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
             }
             else {
                 if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0), 
-                                       AutoConstraint::TargetType::CURVE)) {
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
