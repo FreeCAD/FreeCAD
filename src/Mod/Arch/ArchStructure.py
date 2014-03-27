@@ -481,11 +481,12 @@ class _CommandStructure:
         
     def update(self,point,info):
         "this function is called by the Snapper when the mouse is moved"
-        if self.Height >= self.Length:
-            delta = Vector(0,0,self.Height/2)
-        else:
-            delta = Vector(self.Length/2,0,0)
-        self.tracker.pos(point.add(delta))
+        if FreeCADGui.Control.activeDialog():
+            if self.Height >= self.Length:
+                delta = Vector(0,0,self.Height/2)
+            else:
+                delta = Vector(self.Length/2,0,0)
+            self.tracker.pos(point.add(delta))
         
     def setWidth(self,d):
         self.Width = d

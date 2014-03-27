@@ -246,20 +246,21 @@ class _CommandWall:
 
     def update(self,point,info):
         "this function is called by the Snapper when the mouse is moved"
-        b = self.points[0]
-        n = FreeCAD.DraftWorkingPlane.axis
-        bv = point.sub(b)
-        dv = bv.cross(n)
-        dv = DraftVecUtils.scaleTo(dv,self.Width/2)
-        if self.Align == "Center":
-            self.tracker.update([b,point])
-        elif self.Align == "Left":
-            self.tracker.update([b.add(dv),point.add(dv)])
-        else:
-            dv = dv.negative()
-            self.tracker.update([b.add(dv),point.add(dv)])
-        if self.Length:
-            self.Length.setValue(bv.Length)
+        if FreeCADGui.Control.activeDialog():
+            b = self.points[0]
+            n = FreeCAD.DraftWorkingPlane.axis
+            bv = point.sub(b)
+            dv = bv.cross(n)
+            dv = DraftVecUtils.scaleTo(dv,self.Width/2)
+            if self.Align == "Center":
+                self.tracker.update([b,point])
+            elif self.Align == "Left":
+                self.tracker.update([b.add(dv),point.add(dv)])
+            else:
+                dv = dv.negative()
+                self.tracker.update([b.add(dv),point.add(dv)])
+            if self.Length:
+                self.Length.setValue(bv.Length)
 
     def taskbox(self):
         "sets up a taskbox widget"
