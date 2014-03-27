@@ -678,7 +678,7 @@ void TopoShape::write(const char *FileName) const
     }
     else if (File.hasExtension("stl")) {
         // read brep-file
-        exportStl(File.filePath().c_str());
+        exportStl(File.filePath().c_str(),0);
     }
     else{
         throw Base::Exception("Unknown extension");
@@ -754,11 +754,13 @@ void TopoShape::dump(std::ostream& out) const
     BRepTools::Dump(this->_Shape, out);
 }
 
-void TopoShape::exportStl(const char *filename) const
+void TopoShape::exportStl(const char *filename, double deflection) const
 {
     StlAPI_Writer writer;
-    //writer.RelativeMode() = false;
-    //writer.SetDeflection(0.1);
+    if (deflection > 0) {
+        writer.RelativeMode() = false;
+        writer.SetDeflection(deflection);
+    }
     QString fn = QString::fromUtf8(filename);
     writer.Write(this->_Shape,(const Standard_CString)fn.toLocal8Bit());
 }
