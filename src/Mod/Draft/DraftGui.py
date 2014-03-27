@@ -561,6 +561,12 @@ class DraftToolBar:
             # create a dummy task to block the UI during the works
             class dummy:
                 "an empty dialog"
+                def __init__(self,extra=None):
+                    if extra:
+                        if isinstance(extra,list):
+                            self.form = extra
+                        else:
+                            self.form = [extra]
                 def getStandardButtons(self):
                     return int(QtGui.QDialogButtonBox.Cancel)
                 def accept(self):
@@ -571,8 +577,9 @@ class DraftToolBar:
                     FreeCADGui.draftToolBar.escape()
                     FreeCADGui.ActiveDocument.resetEdit()
                     return True
-            if not FreeCADGui.Control.activeDialog():
-                todo.delay(FreeCADGui.Control.showDialog,dummy())
+            if FreeCADGui.Control.activeDialog():
+                FreeCADGui.Control.closeDialog()
+            todo.delay(FreeCADGui.Control.showDialog,dummy(extra))
         self.setTitle(title)
         
     def redraw(self):
