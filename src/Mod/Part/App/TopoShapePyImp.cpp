@@ -424,12 +424,13 @@ PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
 PyObject*  TopoShapePy::exportStl(PyObject *args)
 {
     char* filename;
-    if (!PyArg_ParseTuple(args, "s", &filename))
+    double deflection = 0;
+    if (!PyArg_ParseTuple(args, "s|d", &filename, &deflection))
         return NULL;
 
     try {
         // write stl file
-        getTopoShapePtr()->exportStl(filename);
+        getTopoShapePtr()->exportStl(filename, deflection);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_Exception,e.what());
