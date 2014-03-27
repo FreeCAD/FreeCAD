@@ -2800,7 +2800,7 @@ class _ViewProviderDraft:
                         "Draft","Defines a hatch pattern")
         vobj.addProperty("App::PropertyFloat","PatternSize",
                         "Draft","Sets the size of the pattern")
-        vobj.Pattern = [translate("draft","None")]+svgpatterns().keys()
+        vobj.Pattern = ["None"]+svgpatterns().keys()
         vobj.PatternSize = 1
 
     def __getstate__(self):
