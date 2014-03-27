@@ -898,6 +898,7 @@ def export(exportList,filename):
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scaling = p.GetFloat("IfcScalingFactor",1.0)
     exporttxt = p.GetBool("IfcExportList",False)
+    forcebrep = p.GetBool("ifcExportAsBrep",False)
     application = "FreeCAD"
     ver = FreeCAD.Version()
     version = ver[0]+"."+ver[1]+" build"+ver[2]
@@ -930,9 +931,13 @@ def export(exportList,filename):
         otype = Draft.getType(obj)
         name = str(obj.Label)
         parent = Arch.getHost(obj)
-        gdata = Arch.getExtrusionData(obj,scaling)
+        gdata = None
+        if not forcebrep:
+            gdata = Arch.getExtrusionData(obj,scaling)
+            if DEBUG: print "extrusion data for ",obj.Label," : ",gdata
         if not gdata:
             fdata = Arch.getBrepFacesData(obj,scaling)
+            if DEBUG: print "brep data for ",obj.Label," : ",fdata
             if not fdata:
                 if obj.isDerivedFrom("Part::Feature"):
                     print "IFC export: error retrieving the shape of object ", obj.Name
@@ -978,6 +983,7 @@ def export(exportList,filename):
                 elif obj.Role == "Foundation":
                     role = "IfcFooting"
             if gdata:
+                #ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
                 if FreeCAD.Vector(gdata[1]).getAngle(FreeCAD.Vector(0,0,1)) < .01:
                     # Workaround for non-Z extrusions, apparently not supported by ifc++ TODO: fix this
                     ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )

@@ -266,6 +266,26 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox">
+          <property name="toolTip">
+           <string>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</string>
+          </property>
+          <property name="text">
+           <string>Force export as Breps</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcExportAsBrep</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
