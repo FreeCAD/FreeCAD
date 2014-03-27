@@ -1848,7 +1848,7 @@ public:
             if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f), 
                                    AutoConstraint::CURVE)) {
                 // Disable tangent snap on 1st point
-                if (sugConstr1.back().Type = Sketcher::Tangent)
+                if (sugConstr1.back().Type == Sketcher::Tangent)
                     sugConstr1.pop_back();
                 else
                     renderSuggestConstraintsCursor(sugConstr1);
@@ -1884,7 +1884,7 @@ public:
                 if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f), 
                                        AutoConstraint::CURVE)) {
                     // Disable tangent snap on 2nd point
-                    if (sugConstr2.back().Type = Sketcher::Tangent)
+                    if (sugConstr2.back().Type == Sketcher::Tangent)
                         sugConstr2.pop_back();
                     else
                         renderSuggestConstraintsCursor(sugConstr2);
