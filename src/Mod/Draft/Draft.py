@@ -282,8 +282,10 @@ def shapify(obj):
     shape = obj.Shape
     if len(shape.Faces) == 1:
         name = "Face"
-    elif len(shape.Solids) > 0:
+    elif len(shape.Solids) == 1:
         name = "Solid"
+    elif len(shape.Solids) > 1:
+        name = "Compound"
     elif len(shape.Faces) > 1:
         name = "Shell"
     elif len(shape.Wires) == 1:
@@ -2595,7 +2597,7 @@ def downgrade(objects,delete=False,force=None):
     an object or a list of objects). If delete is True, old objects are deleted.
     The force attribute can be used to
     force a certain way of downgrading. It can be: explode, shapify, subtr,
-    splitFaces, cut2, getWire, splitWires.
+    splitFaces, cut2, getWire, splitWires, splitCompounds.
     Returns a dictionnary containing two lists, a list of new objects and a list 
     of objects to be deleted"""
     
@@ -2630,6 +2632,19 @@ def downgrade(objects,delete=False,force=None):
             addList.append(newobj)
             return newobj
         return None
+
+    def splitCompounds(objects):
+        """split solids contained in compound objects into new objects"""
+        result = False
+        for o in objects:
+            if o.Shape.Solids:
+                for s in o.Shape.Solids:
+                    newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Solid")
+                    newobj.Shape = s
+                    addList.append(newobj)
+                result = True
+                deleteList.append(o)
+        return result
         
     def splitFaces(objects):
         """split faces contained in objects into new objects"""
@@ -2691,9 +2706,12 @@ def downgrade(objects,delete=False,force=None):
     edges = []
     onlyedges = True
     parts = []
+    solids = []
 
     for o in objects:
         if o.isDerivedFrom("Part::Feature"):
+            for s in o.Shape.Solids:
+                solids.append(s)
             for f in o.Shape.Faces:
                 faces.append(f)
             for e in o.Shape.Edges:
@@ -2718,6 +2736,12 @@ def downgrade(objects,delete=False,force=None):
         if (len(objects) == 1) and (getType(objects[0]) == "Block"):
             result = explode(objects[0])
             if result: msg(translate("draft", "Found 1 block: exploding it\n"))
+
+        # we have one multi-solids compound object: extract its solids
+        elif (len(objects) == 1) and (getType(objects[0]) == "Part") and (len(solids) > 1):
+            result = splitCompounds(objects)
+            print result
+            if result: msg(translate("draft", "Found 1 multi-solids compound: exploding it\n"))
             
         # special case, we have one parametric object: we "de-parametrize" it
         elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
