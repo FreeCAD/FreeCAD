@@ -309,17 +309,27 @@ def makeStructure(baseobj=None,length=0,width=0,height=0,name=translate("Arch","
     obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     return obj
 
-def makeStructuralSystem(objects,axes):
+def makeStructuralSystem(objects,axes,name=translate("Arch","StructuralSystem")):
     '''makeStructuralSystem(objects,axes): makes a structural system
     based on the given objects and axes'''
     result = []
     if objects and axes:
+        if not isinstance(objects,list):
+            objects = [objects]
         for o in objects:
-            s = makeStructure(o)
-            s.Axes = axes
-            result.append(s)
+            obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+            _StructuralSystem(obj)
+            _ViewProviderStructuralSystem(obj.ViewObject)
+            obj.Base = o
+            obj.Axes = axes
+            result.append(obj)
+            o.ViewObject.hide()
+            Draft.formatObject(obj,o)
         FreeCAD.ActiveDocument.recompute()
-    return result
+    if len(result) == 1:
+        return result[0]
+    else:
+        return result
     
 def makeProfile(W=46,H=80,tw=3.8,tf=5.2,name="Profile"):
     '''makeProfile(W,H,tw,tf): returns a shape with one face describing 
@@ -335,7 +345,6 @@ def makeProfile(W=46,H=80,tw=3.8,tf=5.2,name="Profile"):
     obj.FlangeThickness = tf
     Draft._ViewProviderDraft(obj.ViewObject)
     return obj
-
 
 class _CommandStructure:
     "the Arch Structure command definition"
@@ -354,19 +363,20 @@ class _CommandStructure:
         self.continueCmd = False
         sel = FreeCADGui.Selection.getSelection()
         if sel:
-            if Draft.getType(sel[0]) != "Structure":
-                # direct creation
+            st = Draft.getObjectsOfType(sel,"Structure")
+            ax = Draft.getObjectsOfType(sel,"Axis")
+            if st and ax:
+                FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structural System")))
+                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
+                FreeCAD.ActiveDocument.commitTransaction()
+                FreeCAD.ActiveDocument.recompute()
+                return
+            elif not(ax) and not(st):
                 FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
                 FreeCADGui.doCommand("import Arch")
-                # if selection contains structs and axes, make a system
-                st = Draft.getObjectsOfType(sel,"Structure")
-                ax = Draft.getObjectsOfType(sel,"Axis")
-                if st and ax:
-                    FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
-                else:
-                    # else, do normal structs
-                    for obj in sel:
-                        FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
+                for obj in sel:
+                    FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 return
@@ -530,10 +540,8 @@ class _Structure(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic"))
-        obj.addProperty("App::PropertyLinkList","Axes","Arch",translate("Arch","Axes systems this structure is built on"))
         obj.addProperty("App::PropertyLinkList","Armatures","Arch",translate("Arch","Armatures contained in this element"))
         obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
-        obj.addProperty("App::PropertyIntegerList","Exclude","Arch",translate("Arch","The element numbers to exclude when this structure is based on axes"))
         obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this structural element"))
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",translate("Arch","The structural nodes of this element"))
         self.Type = "Structure"
@@ -638,36 +646,17 @@ class _Structure(ArchComponent.Component):
         base = self.processSubShapes(obj,base,pl)
             
         if base:
-            # applying axes
-            pts = self.getAxisPoints(obj)
-            apl = self.getAxisPlacement(obj)
-            if pts:
-                fsh = []
-                for i in range(len(pts)):
-                    if hasattr(obj,"Exclude"):
-                        if i in obj.Exclude:
-                            continue
-                    sh = base.copy()
-                    if apl:
-                        sh.Placement.Rotation = apl.Rotation
-                    sh.translate(pts[i])
-                    fsh.append(sh)
-                    obj.Shape = Part.makeCompound(fsh)
-
-            # finalizing
-            else:
-                if base:
-                    if not base.isNull():
-                        if base.isValid() and base.Solids:
-                            if base.Volume < 0:
-                                base.reverse()
-                            if base.Volume < 0:
-                                FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
-                                return
-                            base = base.removeSplitter()
-                            obj.Shape = base
-                if not pl.isNull():
-                    obj.Placement = pl
+            if not base.isNull():
+                if base.isValid() and base.Solids:
+                    if base.Volume < 0:
+                        base.reverse()
+                    if base.Volume < 0:
+                        FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
+                        return
+                    base = base.removeSplitter()
+                    obj.Shape = base
+                    if not pl.isNull():
+                        obj.Placement = pl
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
@@ -694,27 +683,7 @@ class _Structure(ArchComponent.Component):
                     self.nodes = [p1,p2]
                     #print "calculating nodes: ",self.nodes
                     obj.Nodes = self.nodes
-        
-    def getAxisPoints(self,obj):
-        "returns the gridpoints of linked axes"
-        import DraftGeomUtils
-        pts = []
-        if len(obj.Axes) == 1:
-            for e in obj.Axes[0].Shape.Edges:
-                pts.append(e.Vertexes[0].Point)
-        elif len(obj.Axes) >= 2:
-            set1 = obj.Axes[0].Shape.Edges
-            set2 = obj.Axes[1].Shape.Edges
-            for e1 in set1:
-                for e2 in set2: 
-                    pts.extend(DraftGeomUtils.findIntersection(e1,e2))
-        return pts
 
-    def getAxisPlacement(self,obj):
-        "returns an axis placement"
-        if obj.Axes:
-            return obj.Axes[0].Placement
-        return None
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"
@@ -782,7 +751,6 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                 self.pointstyle.pointSize = vobj.NodeSize
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
-
 class _Profile(Draft._DraftObject):
     "A parametric beam profile object"
     
@@ -812,6 +780,93 @@ class _Profile(Draft._DraftObject):
         p = Part.Face(p)
         obj.Shape = p
         obj.Placement = pl
+
+class _StructuralSystem(ArchComponent.Component):
+    "The Structural System object"
+    def __init__(self,obj):
+        ArchComponent.Component.__init__(self,obj)
+        obj.addProperty("App::PropertyLinkList","Axes","Arch",translate("Arch","Axes systems this structure is built on"))
+        obj.addProperty("App::PropertyIntegerList","Exclude","Arch",translate("Arch","The element numbers to exclude when this structure is based on axes"))
+        self.Type = "StructuralSystem"
+        
+    def execute(self,obj):
+        "creates the structure shape"
+        
+        import Part, DraftGeomUtils
+        
+        # creating base shape
+        pl = obj.Placement
+        if obj.Base:
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                if obj.Base.Shape.isNull():
+                    return
+                if not obj.Base.Shape.Solids:
+                    return
+
+                base = None
+                                
+                # applying axes
+                pts = self.getAxisPoints(obj)
+                apl = self.getAxisPlacement(obj)
+
+                if pts:
+                    fsh = []
+                    for i in range(len(pts)):
+                        sh = obj.Base.Shape.copy()
+                        if hasattr(obj,"Exclude"):
+                            if i in obj.Exclude:
+                                continue
+                        if apl:
+                            sh.Placement.Rotation = sh.Placement.Rotation.multiply(apl.Rotation)
+                        sh.translate(pts[i])
+                        fsh.append(sh)
+
+                    if fsh:
+                        base = Part.makeCompound(fsh)
+                        base = self.processSubShapes(obj,base,pl)
+
+                if base:
+                    if not base.isNull():
+                        if base.isValid() and base.Solids:
+                            if base.Volume < 0:
+                                base.reverse()
+                            if base.Volume < 0:
+                                FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
+                                return
+                            base = base.removeSplitter()
+                            obj.Shape = base
+                            if not pl.isNull():
+                                obj.Placement = pl
+        
+    def getAxisPoints(self,obj):
+        "returns the gridpoints of linked axes"
+        import DraftGeomUtils
+        pts = []
+        if len(obj.Axes) == 1:
+            for e in obj.Axes[0].Shape.Edges:
+                pts.append(e.Vertexes[0].Point)
+        elif len(obj.Axes) >= 2:
+            set1 = obj.Axes[0].Shape.Edges
+            set2 = obj.Axes[1].Shape.Edges
+            for e1 in set1:
+                for e2 in set2: 
+                    pts.extend(DraftGeomUtils.findIntersection(e1,e2))
+        return pts
+
+    def getAxisPlacement(self,obj):
+        "returns an axis placement"
+        if obj.Axes:
+            return obj.Axes[0].Placement
+        return None
+
+
+class _ViewProviderStructuralSystem(ArchComponent.ViewProviderComponent):
+    "A View Provider for the Structural System object"
+
+    def getIcon(self):
+        import Arch_rc
+        return ":/icons/Arch_StructuralSystem_Tree.svg"
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Structure',_CommandStructure())

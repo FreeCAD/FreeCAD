@@ -331,10 +331,15 @@ class Snapper:
                             snaps.append([obj.ViewObject.Proxy.p3,'endpoint',self.toWP(obj.ViewObject.Proxy.p3)])
                     #for pt in [obj.Start,obj.End,obj.Dimline]:
                     #    snaps.append([pt,'endpoint',self.toWP(pt)])
+
+                elif Draft.getType(obj) == "Axis":
+                    for edge in obj.Shape.Edges:
+                        snaps.extend(self.snapToEndpoints(edge))
                         
                 elif Draft.getType(obj) == "Mesh":
                     # for meshes we only snap to vertices
                     snaps.extend(self.snapToEndpoints(obj.Mesh))
+
                 elif Draft.getType(obj) == "Points":
                     # for points we only snap to points
                     snaps.extend(self.snapToEndpoints(obj.Points))
