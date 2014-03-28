@@ -1049,6 +1049,7 @@ def makePathArray(baseobject,pathobject,count,xlate=None,align=False,pathobjsubs
     if gui:
         _ViewProviderDraftArray(obj.ViewObject)  
         baseobject.ViewObject.hide()
+        formatObject(obj,obj.Base)
         select(obj)
     return obj
 
@@ -4412,7 +4413,7 @@ class _PathArray(_DraftObject):
         return(edge.getParameterByLength(length))
         
     def orientShape(self,shape,edge,offset,RefPt,xlate,align):
-        '''Orient shape to edge tangent at offset.'''
+        '''Orient shape to tangent at parm offset along edge.'''
         import Part
         import DraftGeomUtils
         import math
@@ -4420,7 +4421,9 @@ class _PathArray(_DraftObject):
         y = FreeCAD.Vector(0,1,0)                                    # unit +Y
         x = FreeCAD.Vector(1,0,0)                                    # unit +X
         nullv = FreeCAD.Vector(0,0,0)
+        nullPlace =FreeCAD.Placement()
         ns = shape.copy()
+        ns.Placement = nullPlace                                     # reset Placement so translate goes to right place.
         ns.translate(RefPt+xlate)
         if not align:
             return ns

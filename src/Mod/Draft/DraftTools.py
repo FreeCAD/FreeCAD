@@ -4012,6 +4012,7 @@ class PathArray(Modifier):
             FreeCAD.ActiveDocument.openTransaction("PathArray")
             Draft.makePathArray(base,path,defCount,defXlate,defAlign,pathsubs)
             FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()                                  # feature won't appear until recompute.
         self.finish()
 
 class Point(Creator):
