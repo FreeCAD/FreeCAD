@@ -40,7 +40,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(_TEMPLATE_ PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
     set_target_properties(_TEMPLATE_ PROPERTIES PREFIX "")
-    set_target_properties(Fem PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(_TEMPLATE_ PROPERTIES INSTALL_RPATH "\\\$ORIGIN")
 endif(MSVC)
 
 install(TARGETS _TEMPLATE_ DESTINATION lib)

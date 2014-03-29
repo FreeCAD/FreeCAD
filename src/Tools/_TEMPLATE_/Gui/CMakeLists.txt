@@ -50,7 +50,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(_TEMPLATE_Gui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
     set_target_properties(_TEMPLATE_Gui PROPERTIES PREFIX "")
-    set_target_properties(Fem PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(_TEMPLATE_Gui PROPERTIES INSTALL_RPATH "\\\$ORIGIN")
 endif(MSVC)
 
 install(TARGETS _TEMPLATE_Gui DESTINATION lib)
