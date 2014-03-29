@@ -88,7 +88,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(StartGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Start)
     set_target_properties(StartGui PROPERTIES PREFIX "")
-    set_target_properties(StartGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(StartGui PROPERTIES INSTALL_RPATH "\\\$ORIGIN")
 endif(MSVC)
 
 INSTALL(TARGETS StartGui DESTINATION lib)

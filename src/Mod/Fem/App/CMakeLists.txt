@@ -169,7 +169,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(Fem PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Fem)
     set_target_properties(Fem PROPERTIES PREFIX "")
-    set_target_properties(Fem PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(Fem PROPERTIES INSTALL_RPATH "\\\$ORIGIN")
 endif(MSVC)
 
 INSTALL(TARGETS Fem DESTINATION lib)

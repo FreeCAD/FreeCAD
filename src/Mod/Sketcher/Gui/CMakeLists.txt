@@ -127,7 +127,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(SketcherGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Sketcher)
     set_target_properties(SketcherGui PROPERTIES PREFIX "")
-    set_target_properties(SketcherGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(SketcherGui PROPERTIES INSTALL_RPATH "\\\$ORIGIN")
 endif(MSVC)
 
 INSTALL(TARGETS SketcherGui DESTINATION lib)

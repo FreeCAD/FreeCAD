@@ -364,7 +364,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(Mesh PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Mesh)
     set_target_properties(Mesh PROPERTIES PREFIX "")
-    set_target_properties(Mesh PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(Mesh PROPERTIES INSTALL_RPATH "\\\$ORIGIN")
 endif(MSVC)
 
 INSTALL(TARGETS Mesh DESTINATION lib)

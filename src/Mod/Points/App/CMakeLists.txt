@@ -63,7 +63,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(Points PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Points)
     set_target_properties(Points PROPERTIES PREFIX "")
-    set_target_properties(Points PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(Points PROPERTIES INSTALL_RPATH "\\\$ORIGIN")
 endif(MSVC)
 
 INSTALL(TARGETS Points DESTINATION lib)
