@@ -670,7 +670,7 @@ def makeDimension(p1,p2,p3=None,p4=None):
             obj.ViewObject.Override = "R $dim"
         elif p3 == "diameter":
             l.append((p1,"Diameter"))
-            obj.ViewObject.Override = "D $dim"
+            obj.ViewObject.Override = "Ø $dim"
         obj.LinkedGeometry = l
         obj.Support = p1
         p3 = p4
@@ -876,8 +876,11 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     if not isinstance(stringslist,list): stringslist = [stringslist]
     textbuffer = []
     for l in stringslist: 
-        #textbuffer.append(l.decode("utf8").encode('latin1'))
-        textbuffer.append(str(l))
+        try:
+            # only available in Coin3D >= 4.0
+            textbuffer.append(str(l))
+        except:
+            textbuffer.append(l.decode("utf8").encode('latin1'))
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
     obj.LabelText=textbuffer
     obj.Position=point
@@ -1706,7 +1709,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += 'scale(1,-1) '
         svg += '" freecad:skip="1"'
         svg += '>\n'
-        svg += text
+        try:
+            svg += text
+        except:
+            svg += text.decode("utf8")
         svg += '</text>\n'
         return svg
 
@@ -1840,8 +1846,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += 'font-family:'+obj.ViewObject.FontName+'" '
         svg += 'transform="'
         if obj.ViewObject.RotationAxis == 'Z':
-            if obj.ViewObject.Rotation != 0:
-                svg += 'rotate('+str(obj.ViewObject.Rotation)
+            if obj.ViewObject.Rotation.getValueAs("deg") != 0:
+                svg += 'rotate('+str(obj.ViewObject.Rotation.getValueAs("deg"))
                 svg += ','+ str(p.x) + ',' + str(p.y) + ') '
         svg += 'translate(' + str(p.x) + ',' + str(p.y) + ') '
         #svg +='scale('+str(tmod/2000)+','+str(-tmod/2000)+')'
@@ -3182,7 +3188,11 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 fstring = "%." + str(getParam("dimPrecision",2)) + "f"
             self.string = (fstring % l)
             if obj.ViewObject.Override:
-                self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
+                try:
+                    # only available in Coin3D >= 4.0
+                    self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
+                except:
+                    self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
             self.text.string = self.text3d.string = self.string
 
             # set the distance property
