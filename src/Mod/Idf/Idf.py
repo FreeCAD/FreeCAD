@@ -88,8 +88,8 @@ def process_emn(doc,filename):
    section_counter=0
    for emnline in emnlines:
        emnrecords=split_records(emnline)
-+      if len( emnrecords )==0 : continue
-+      if len( emnrecords[0] )>4 and emnrecords[0][0:4]==".END":
+       if len( emnrecords )==0 : continue
+       if len( emnrecords[0] )>4 and emnrecords[0][0:4]==".END":
           passed_sections.append(current_section)
           current_section=""
        elif emnrecords[0][0]==".":
@@ -242,8 +242,8 @@ def process_emp(doc,filename,placement,board_thickness):
    comps=[]
    for empline in emplines:
      emprecords=split_records(empline)
-+    if len( emnrecords )==0 : continue
-+    if len( emnrecords[0] )>4 and emnrecords[0][0:4]==".END":
+     if len( emnrecords )==0 : continue
+     if len( emnrecords[0] )>4 and emnrecords[0][0:4]==".END":
         current_section=""
         passed_sections.append(current_section)
         if comp_PartNumber!="":
