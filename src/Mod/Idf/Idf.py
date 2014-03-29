@@ -35,13 +35,13 @@ import ImportGui
 
 ## path to table file (simple comma separated values)
 
-model_tab_filename = FreeCAD.getResourceDir()+ "Mod/Idf/lib/footprints_models.csv"
+model_tab_filename = FreeCAD.getHomePath()+ "/Mod/Idf/idflibs/footprints_models.csv"
 
 ## path to directory containing step models
 
-step_path=FreeCAD.getResourceDir()+ "Mod/Idf/lib/"
+step_path=FreeCAD.getHomePath()+ "/Mod/Idf/idflibs/"
 
-ignore_hole_size=1 # size in MM to prevent huge number of drilled holes
+ignore_hole_size=0.5 # size in MM to prevent huge number of drilled holes
 EmpDisplayMode=2 # 0='Flat Lines', 1='Shaded', 2='Wireframe', 3='Points'; recommended 2 or 0
 
 IDF_sort=0 # 0-sort per refdes [1 - part number (not preffered)/refdes] 2-sort per footprint/refdes
@@ -60,7 +60,6 @@ def open(filename):
 	"""called when freecad opens an Emn file"""
 	docname = os.path.splitext(os.path.basename(filename))[0]
 	doc = FreeCAD.newDocument(docname)
-	FreeCAD.setActiveDocument(docname)
 	message='Started with opening of "'+filename+'" file\n'
 	FreeCAD.Console.PrintMessage(message)
 	process_emn(doc,filename)
@@ -246,6 +245,8 @@ def process_emp(doc,filename,placement,board_thickness):
         current_section=""
         passed_sections.append(current_section)
         if comp_PartNumber!="":
+          if comp_height==0:
+            comp_height=0.1	
           comps.append((comp_PartNumber,[Process_comp_outline(doc,comp_outline,comp_height),comp_GeometryName]))
           comp_PartNumber=""
           comp_outline=[]
