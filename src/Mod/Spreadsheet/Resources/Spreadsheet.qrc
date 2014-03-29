@@ -2,5 +2,6 @@
     <qresource> 
 		<file>icons/Spreadsheet.svg</file>
         <file>icons/SpreadsheetController.svg</file>
+        <file>icons/SpreadsheetPropertyController.svg</file>
     </qresource>
 </RCC> 
