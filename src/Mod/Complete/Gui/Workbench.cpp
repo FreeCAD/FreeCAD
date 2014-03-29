@@ -457,7 +457,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Separator"
           << "Std_Refresh"
           << "Separator"
-          //<< "Std_Workbench"
+          << "Std_Workbench"
           << "Std_WhatsThis";
 
     // Macro
