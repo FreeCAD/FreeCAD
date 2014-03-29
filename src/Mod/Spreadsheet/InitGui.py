@@ -54,7 +54,7 @@ class SpreadsheetWorkbench(Workbench):
     def Initialize(self):
         import Spreadsheet,Spreadsheet_rc
         from DraftTools import translate
-        commands = ["Spreadsheet_Create","Spreadsheet_Controller"]
+        commands = ["Spreadsheet_Create","Spreadsheet_Controller","Spreadsheet_PropertyController"]
         self.appendToolbar(str(translate("Spreadsheet","Spreadsheet tools")),commands)
         self.appendMenu(str(translate("Spreadsheet","&Spreadsheet")),commands)
         FreeCADGui.addIconPath(":/icons")
