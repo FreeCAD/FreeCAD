@@ -1388,9 +1388,9 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         bh = p[3].sub(p[0])
         nb = DraftVecUtils.project(diag,bb)
         nh = DraftVecUtils.project(diag,bh)
-        if obj.Length < 0: l = -nb.Length
+        if obj.Length.Value < 0: l = -nb.Length
         else: l = nb.Length
-        if obj.Height < 0: h = -nh.Length
+        if obj.Height.Value < 0: h = -nh.Length
         else: h = nh.Length
         return l,h,pl
 

@@ -2507,7 +2507,8 @@ class Offset(Modifier):
                         d = DraftVecUtils.toString(self.dvec)
                     self.commit(translate("draft","Offset"),
                                 ['import Draft',
-                                 'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')'])
+                                 'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')',
+                                 'FreeCAD.ActiveDocument.recompute()'])
                 if hasMod(arg,MODALT):
                     self.extendedCopy = True
                 else:
@@ -2536,7 +2537,8 @@ class Offset(Modifier):
                 d = DraftVecUtils.toString(self.dvec)
             self.commit(translate("draft","Offset"),
                         ['import Draft',
-                         'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')'])
+                         'Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+d+',copy='+str(copymode)+',occ='+str(occmode)+')',
+                         'FreeCAD.ActiveDocument.recompute()'])
             self.finish()
 
 
