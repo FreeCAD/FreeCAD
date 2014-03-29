@@ -649,7 +649,11 @@ class SpreadsheetPropertyController:
         obj.addProperty("App::PropertyString","Cell","Base","The cell that contains the value to apply to the property")
         
     def execute(self,obj):
-        pass
+        if obj.Cell and obj.TargetObject and obj.TargetProperty and obj.InList:
+            sp = obj.InList[0]
+            import Draft
+            if Draft.getType(sp) == "Spreadsheet":
+                sp.Proxy.updateControlledProperties(obj.Cell)
         
     def __getstate__(self):
         return self.Type
