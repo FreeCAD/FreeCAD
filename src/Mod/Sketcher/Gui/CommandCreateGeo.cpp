@@ -1410,10 +1410,8 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0))) {
-                // seekAutoConstraint doesn't handle this correctly because Coincident
-                // cannot snap to an arc yet it picks coincident because I click a point.
-                sugConstr3.back().Type = Sketcher::PointOnObject;
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0),
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
