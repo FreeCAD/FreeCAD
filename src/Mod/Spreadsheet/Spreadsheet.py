@@ -246,7 +246,7 @@ class Spreadsheet:
                 if not r in self.rows:
                     self.rows.append(r)
                     self.rows.sort()
-            self.updateControlledProperties(key)
+            self._updateControllers()
         else:
             self.__dict__.__setitem__(key,value)
 
@@ -311,6 +311,18 @@ class Spreadsheet:
                     self._relations[a].append(key)
             else:
                 self._relations[a] = [key]
+
+    def _updateControllers(self):
+        "triggers the property controllers"
+        if hasattr(self,"Object"):
+            obj = FreeCAD.ActiveDocument.getObject(self.Object)
+            if obj:
+                import Draft
+                if Draft.getType(obj) == "Spreadsheet":
+                    if hasattr(obj,"Controllers"):
+                        for co in obj.Controllers:
+                            if Draft.getType(co) == "SpreadsheetPropertyController":
+                                co.Proxy.execute(co)
 
     def execute(self,obj):
         self.setControlledCells(obj)
@@ -454,32 +466,6 @@ class Spreadsheet:
                     if co.Cell:
                         cells.append(co.Cell.lower())
         return cells
-
-    def updateControlledProperties(self,key):
-        "updates the properties of controlled objects"
-        if hasattr(self,"Object"):
-            obj = FreeCAD.ActiveDocument.getObject(self.Object)
-            if obj:
-                import Draft
-                if Draft.getType(obj) == "Spreadsheet":
-                    if hasattr(obj,"Controllers"):
-                        for co in obj.Controllers:
-                            if Draft.getType(co) == "SpreadsheetPropertyController":
-                                if co.Cell.upper() == key.upper():
-                                    if co.TargetObject and co.TargetProperty:
-                                        b = co.TargetObject
-                                        props = co.TargetProperty.split(".")
-                                        for p in props:
-                                            if hasattr(b,p):
-                                                if p != props[-1]:
-                                                    b = getattr(b,p)
-                                            else:
-                                                return
-                                        try:
-                                            setattr(b,p,self._cells[key])
-                                            if DEBUG: print "setting property ",co.TargetProperty, " of object ",co.TargetObject.Name, " to ",self._cells[key]
-                                        except:
-                                            if DEBUG: print "unable to set property ",co.TargetProperty, " of object ",co.TargetObject.Name, " to ",self._cells[key]
 
 
 class ViewProviderSpreadsheet(object):
@@ -644,16 +630,47 @@ class SpreadsheetPropertyController:
     def __init__(self,obj):
         obj.Proxy = self
         self.Type = "SpreadsheetPropertyController"
+        obj.addProperty("App::PropertyEnumeration","TargetType","Base","The type of item to control")
         obj.addProperty("App::PropertyLink","TargetObject","Base","The object that must be controlled")
-        obj.addProperty("App::PropertyString","TargetProperty","Base","The property of the target object to control")
+        obj.addProperty("App::PropertyString","TargetProperty","Base","The property or constraint of the target object to control")
         obj.addProperty("App::PropertyString","Cell","Base","The cell that contains the value to apply to the property")
+        obj.TargetType = ["Property","Constraint"]
         
     def execute(self,obj):
         if obj.Cell and obj.TargetObject and obj.TargetProperty and obj.InList:
             sp = obj.InList[0]
             import Draft
             if Draft.getType(sp) == "Spreadsheet":
-                sp.Proxy.updateControlledProperties(obj.Cell)
+                try:
+                    value = getattr(sp.Proxy,obj.Cell)
+                except:
+                    if DEBUG: print "No value for cell ",obj.Cell," in spreadsheet."
+                    return
+                if obj.TargetType == "Property":
+                    b = obj.TargetObject
+                    props = obj.TargetProperty.split(".")
+                    for p in props:
+                        if hasattr(b,p):
+                            if p != props[-1]:
+                                b = getattr(b,p)
+                        else:
+                            return
+                    try:
+                        setattr(b,p,value)
+                        if DEBUG: print "setting property ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                    except:
+                        if DEBUG: print "unable to set property ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                else:
+                    if Draft.getType(obj.TargetObject) == "Sketch":
+                        if obj.TargetProperty.isdigit():
+                            try:
+                                c = int(obj.TargetProperty)
+                                obj.TargetObject.setDatum(c,float(value))
+                                FreeCAD.ActiveDocument.recompute()
+                                if DEBUG: print "setting constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                            except:
+                                if DEBUG: print "unable to set constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+
         
     def __getstate__(self):
         return self.Type
