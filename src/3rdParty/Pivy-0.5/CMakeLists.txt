@@ -54,19 +54,18 @@ elseif(MINGW)
     set_target_properties(coin PROPERTIES PREFIX "")
 else(MSVC)
     set_target_properties(coin PROPERTIES OUTPUT_NAME "_coin")
-    set_target_properties(coin PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/pivy)
+    set_target_properties(coin PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/pivy)
     set_target_properties(coin PROPERTIES PREFIX "")
-    set_target_properties(coin PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/bin/pivy)
 endif(MSVC)
 
-fc_copy_sources(coin "${CMAKE_BINARY_DIR}/bin/pivy"
+fc_copy_sources(coin "${CMAKE_BINARY_DIR}/Mod/pivy"
     __init__.py
     coin.py
     sogui.py
 )
 
-install(TARGETS coin DESTINATION bin/pivy)
-install(FILES __init__.py coin.py sogui.py DESTINATION bin/pivy)
+install(TARGETS coin DESTINATION Mod/pivy)
+install(FILES __init__.py coin.py sogui.py DESTINATION Mod/pivy)
 
 ########################### SoQtPy ###########################
 
@@ -112,15 +111,15 @@ elseif(MINGW)
     set_target_properties(soqt PROPERTIES PREFIX "")
 else(MSVC)
     set_target_properties(soqt PROPERTIES OUTPUT_NAME "_soqt")
-    set_target_properties(soqt PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/pivy/gui)
+    set_target_properties(soqt PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/pivy/gui)
     set_target_properties(soqt PROPERTIES PREFIX "")
-    set_target_properties(soqt PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/bin/pivy/gui)
 endif(MSVC)
 
-fc_copy_sources(soqt "${CMAKE_BINARY_DIR}/bin/pivy"
+fc_copy_sources(soqt "${CMAKE_BINARY_DIR}/Mod/pivy"
     gui/soqt.py
     gui/__init__.py
 )
 
-install(TARGETS soqt DESTINATION bin/pivy/gui)
-install(FILES gui/__init__.py soqt.py DESTINATION bin/pivy/gui)
+install(TARGETS soqt DESTINATION Mod/pivy/gui)
+install(FILES gui/__init__.py soqt.py DESTINATION Mod/pivy/gui)
+
