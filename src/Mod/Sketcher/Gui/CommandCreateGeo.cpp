@@ -1784,6 +1784,305 @@ bool CmdSketcherCreateCircle::isActive(void)
 // ======================================================================================
 
 /* XPM */
+static const char *cursor_create3pointcircle[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+........#######..........",
+"......+......##.......##........",
+"......+.....#...........#.......",
+"......+....#.............#......",
+"......+...#...............#.....",
+".........#.................#....",
+".......###.................###..",
+".......#.#.................#.#..",
+".......###.................###..",
+".......#.....................#..",
+".......#.........###.........#..",
+".......#.........#.#.........#..",
+".......#.........###.........#..",
+".......#.....................#..",
+".......#.....................#..",
+"........#...................#...",
+"........#...................#...",
+".........#.................#....",
+"..........#...............#.....",
+"...........#.............#......",
+"............#...........#.......",
+".............##..###..##........",
+"...............###.###..........",
+".................###............"};
+
+class DrawSketchHandler3PointCircle : public DrawSketchHandler
+{
+public:
+    DrawSketchHandler3PointCircle()
+      : Mode(STATUS_SEEK_First),EditCurve(2),N(32.0){}
+    virtual ~DrawSketchHandler3PointCircle(){}
+    /// mode table
+    enum SelectMode {
+        STATUS_SEEK_First,      /**< enum value ----. */
+        STATUS_SEEK_Second,     /**< enum value ----. */
+        STATUS_SEEK_Third,      /**< enum value ----. */
+        STATUS_End
+    };
+
+    virtual void activated(ViewProviderSketch *sketchgui)
+    {
+        setCursor(QPixmap(cursor_create3pointcircle),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2D onSketchPos)
+    {
+        if (Mode == STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f), 
+                                   AutoConstraint::CURVE)) {
+                // Disable tangent snap on 1st point
+                if (sugConstr1.back().Type == Sketcher::Tangent)
+                    sugConstr1.pop_back();
+                else
+                    renderSuggestConstraintsCursor(sugConstr1);
+                return;
+            }
+        }
+        else if (Mode == STATUS_SEEK_Second || Mode == STATUS_SEEK_Third) {
+            if (Mode == STATUS_SEEK_Second)
+                CenterPoint  = EditCurve[N+1] = (onSketchPos - FirstPoint)/2 + FirstPoint;
+            else
+                CenterPoint = EditCurve[N+1] = GetCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+            radius = (onSketchPos - CenterPoint).Length();
+            double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
+
+            // Build a N point circle
+            for (int i=1; i < N; i++) {
+                // Start at current angle
+                double angle = i*2*M_PI/N + lineAngle; // N point closed circle has N segments
+                EditCurve[i] = Base::Vector2D(CenterPoint.fX + radius*cos(angle),
+                                              CenterPoint.fY + radius*sin(angle));
+            }
+            // Beginning and end of curve should be exact
+            EditCurve[0] = EditCurve[N] = onSketchPos;
+            
+            // Display radius and start angle
+            // This lineAngle will report counter-clockwise from +X, not relatively
+            SbString text;
+            text.sprintf(" (%.1fR,%.1fdeg)", (float) radius, (float) lineAngle * 180 / M_PI);
+            setPositionText(onSketchPos, text);
+
+            sketchgui->drawEdit(EditCurve);
+            if (Mode == STATUS_SEEK_Second) {
+                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f), 
+                                       AutoConstraint::CURVE)) {
+                    // Disable tangent snap on 2nd point
+                    if (sugConstr2.back().Type == Sketcher::Tangent)
+                        sugConstr2.pop_back();
+                    else
+                        renderSuggestConstraintsCursor(sugConstr2);
+                    return;
+                }
+            }
+            else {
+                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0), 
+                                       AutoConstraint::CURVE)) {
+                    renderSuggestConstraintsCursor(sugConstr3);
+                    return;
+                }
+            }
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2D onSketchPos)
+    {
+        if (Mode == STATUS_SEEK_First) {
+            // N point curve + center + endpoint
+            EditCurve.resize(N+2);
+            FirstPoint = onSketchPos;
+
+            Mode = STATUS_SEEK_Second;
+        }
+        else if (Mode == STATUS_SEEK_Second) {
+            SecondPoint = onSketchPos;
+
+            Mode = STATUS_SEEK_Third;
+        }
+        else {
+            EditCurve.resize(N);
+
+            sketchgui->drawEdit(EditCurve);
+            applyCursor();
+            Mode = STATUS_End;
+        }
+
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    {
+        // Need to look at.  rx might need fixing.
+        if (Mode==STATUS_End) {
+            unsetCursor();
+            resetPositionText();
+            Gui::Command::openCommand("Add sketch circle");
+            Gui::Command::doCommand(Gui::Command::Doc,
+                "App.ActiveDocument.%s.addGeometry(Part.Circle"
+                "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f))",
+                      sketchgui->getObject()->getNameInDocument(),
+                      CenterPoint.fX, CenterPoint.fY,
+                      radius);
+
+            Gui::Command::commitCommand();
+            Gui::Command::updateActive();
+
+            // Auto Constraint first picked point
+            if (sugConstr1.size() > 0) {
+                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::none);
+                sugConstr1.clear();
+            }
+
+            // Auto Constraint second picked point
+            if (sugConstr2.size() > 0) {
+                createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::none);
+                sugConstr2.clear();
+            }
+
+            // Auto Constraint third picked point
+            if (sugConstr3.size() > 0) {
+                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::none);
+                sugConstr3.clear();
+            }
+
+            EditCurve.clear();
+            sketchgui->drawEdit(EditCurve);
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        }
+        return true;
+    }
+protected:
+    SelectMode Mode;
+    std::vector<Base::Vector2D> EditCurve;
+    Base::Vector2D CenterPoint, FirstPoint, SecondPoint;
+    double radius, N; // N should be even
+    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
+};
+
+DEF_STD_CMD_A(CmdSketcherCreate3PointCircle);
+
+CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
+  : Command("Sketcher_Create3PointCircle")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create circle by three points");
+    sToolTipText    = QT_TR_NOOP("Create a circle by 3 perimeter points");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Create3PointCircle";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreate3PointCircle::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandler3PointCircle() );
+}
+
+bool CmdSketcherCreate3PointCircle::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+DEF_STD_CMD_ACL(CmdSketcherCompCreateCircle);
+
+CmdSketcherCompCreateCircle::CmdSketcherCompCreateCircle()
+  : Command("Sketcher_CompCreateCircle")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create circle");
+    sToolTipText    = QT_TR_NOOP("Create a circle in the sketcher");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+void CmdSketcherCompCreateCircle::activated(int iMsg)
+{
+    if (iMsg==0)
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerCircle());
+    else if (iMsg==1)
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandler3PointCircle());
+    else
+        return;
+
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompCreateCircle::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(pcAction);
+
+    QAction* arc1 = pcAction->addAction(QString());
+    arc1->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateCircle", QSize(24,24)));
+    QAction* arc2 = pcAction->addAction(QString());
+    arc2->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_Create3PointCircle", QSize(24,24)));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(arc1->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateCircle::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* arc1 = a[0];
+    arc1->setText(QApplication::translate("CmdSketcherCompCreateCircle", "Center and rim point"));
+    arc1->setToolTip(QApplication::translate("Sketcher_CreateCircle", "Create a circle by its center and by a rim point"));
+    arc1->setStatusTip(QApplication::translate("Sketcher_CreateCircle", "Create a circle by its center and by a rim point"));
+    QAction* arc2 = a[1];
+    arc2->setText(QApplication::translate("CmdSketcherCompCreateCircle", "3 rim points"));
+    arc2->setToolTip(QApplication::translate("Sketcher_Create3PointCircle", "Create a circle by 3 rim points"));
+    arc2->setStatusTip(QApplication::translate("Sketcher_Create3PointCircle", "Create a circle by 3 rim points"));
+}
+
+bool CmdSketcherCompCreateCircle::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+    
+
+// ======================================================================================
+
+/* XPM */
 static const char *cursor_createpoint[]={
 "32 32 3 1",
 "+ c white",
@@ -2543,6 +2842,8 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreate3PointArc());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateArc());
     rcCmdMgr.addCommand(new CmdSketcherCreateCircle());
+    rcCmdMgr.addCommand(new CmdSketcherCreate3PointCircle());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateCircle());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
