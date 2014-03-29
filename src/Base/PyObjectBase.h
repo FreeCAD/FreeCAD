@@ -71,7 +71,7 @@
 
 /** Python static class macro for implementation
  * used to set up a implementation for PYFUNCDEF_S definition.
- * Its a pure confiniance macro. You can also do
+ * Its a pure convenience macro. You can also do
  * it by hand if you want. It looks like that:
  * \code
  * PyObject* CLASS::SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
@@ -124,7 +124,7 @@ inline void Assert(int expr, char *msg)         // C++ assert
 
 /// some basic python macros
 #define Py_NEWARGS 1
-/// return with no retrnvalue if nothin happens
+/// return with no return value if nothing happens
 #define Py_Return Py_INCREF(Py_None); return Py_None;
 /// returns an error
 #define Py_Error(E, M)   {PyErr_SetString(E, M); return NULL;}
@@ -177,12 +177,12 @@ namespace Base
  *  very important because nearly all important classes in FreeCAD
  *  are visible in python for macro recording and automation purpose.
  *  The class App::Document is a good expample for an exported class.
- *  There are some conveniance macros to make it easier to inherit
+ *  There are some convenience macros to make it easier to inherit
  *  from this class and defining new methods exported to python.
  *  PYFUNCDEF_D defines a new exported method.
  *  PYFUNCIMP_D defines the implementation of the new exported method.
  *  In the implementation you can use Py_Return, Py_Error, Py_Try and Py_Assert.
- *  PYMETHODEDEF makes the entry in the python method tabel.
+ *  PYMETHODEDEF makes the entry in the python method table.
  *  @see Document
  *  @see PYFUNCDEF_D
  *  @see PYFUNCIMP_D
@@ -206,7 +206,7 @@ protected:
 
 public:  
     /** Constructor
-     *  Sets the Type of the object (for inherintance) and decrease the
+     *  Sets the Type of the object (for inheritance) and decrease the
      *  the reference count of the PyObject.
      */
     PyObjectBase(void*, PyTypeObject *T);
@@ -219,20 +219,20 @@ public:
     PyObjectBase* DecRef(void) {Py_DECREF(this);return this;}
 
     /** GetAttribute implementation
-     *  This method implements the retriavel of object attributes.
+     *  This method implements the retrieval of object attributes.
      *  If you want to implement attributes in your class, reimplement
      *  this method.
      *  You have to call the method of the base class.
      *  Note: if you reimplement _gettattr() in a inheriting class you
      *  need to call the method of the base class! Otherwise even the 
-     *  methods of the object will disapiear!
+     *  methods of the object will disappear!
      */
     virtual PyObject *_getattr(char *attr);
     /// static wrapper for pythons _getattr()
     static  PyObject *__getattr(PyObject * PyObj, char *attr);
 
     /** SetAttribute implementation
-     *  This method implements the seting of object attributes.
+     *  This method implements the setting of object attributes.
      *  If you want to implement attributes in your class, reimplement
      *  this method.
      *  You have to call the method of the base class.
@@ -242,14 +242,14 @@ public:
     static  int __setattr(PyObject *PyObj, char *attr, PyObject *value);
 
     /** _repr method
-    * Overide this method to return a string object with some
-    * invormation about the object.
+    * Override this method to return a string object with some
+    * information about the object.
     * \code
     * PyObject *MeshFeaturePy::_repr(void)
     * {
     *   std::stringstream a;
     *   a << "MeshFeature: [ ";
-    *   a << "some realy important info about the object!";
+    *   a << "some really important info about the object!";
     *   a << "]" << std::endl;
     *   return Py_BuildValue("s", a.str().c_str());
     * }
@@ -266,7 +266,7 @@ public:
     }
 
     /** PyInit method
-    * Overide this method to initialize a newly created
+    * Override this method to initialize a newly created
     * instance of the class (Constuctor)
     */
     virtual int PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
@@ -336,8 +336,8 @@ protected:
 static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){return (( CLASS *)self)-> DFUNC (args);};
 
 /** Python dynamic class macro for implementation
- * used to set up a impementation for PYFUNCDEF_D definition.
- * Its a pure confiniance macro. You can also do
+ * used to set up an implementation for PYFUNCDEF_D definition.
+ * Its a pure convenience macro. You can also do
  * it by hand if you want. It looks like that:
  * \code
  * PyObject *FCPyParametrGrp::PyGetGrp(PyObject *args)
@@ -353,7 +353,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
 
 /** Python dynamic class macro for the method list
  * used to fill the method list of a class derived from PyObjectBase.
- * Its a pure confiniance macro. You can also do
+ * Its a pure convenience macro. You can also do
  * it by hand if you want. It looks like that:
  * \code
  * PyMethodDef DocTypeStdPy::Methods[] = {

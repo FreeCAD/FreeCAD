@@ -155,7 +155,7 @@ protected:
     //@{
     /// Methods which gets called when activated, needs to be reimplemented!
     virtual void activated(int iMsg)=0;
-    /// Overite this method if your Cmd is not always active
+    /// Override this method if your Cmd is not always active
     virtual bool isActive(void){return true;} 
     /// Creates the used Action
     virtual Action * createAction(void);
