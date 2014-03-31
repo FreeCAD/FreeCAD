@@ -156,6 +156,8 @@ class _CommandWall:
         self.Height = p.GetFloat("WallHeight",3000)
         self.JOIN_WALLS_SKETCHES = p.GetBool("joinWallSketches",False)
         self.AUTOJOIN = p.GetBool("autoJoinWalls",True)
+        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+        self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
         sel = FreeCADGui.Selection.getSelectionEx()
         done = False
         self.existing = []
@@ -260,12 +262,12 @@ class _CommandWall:
                 dv = dv.negative()
                 self.tracker.update([b.add(dv),point.add(dv)])
             if self.Length:
-                self.Length.setValue(bv.Length)
+                self.Length.setText(self.FORMAT % bv.Length)
 
     def taskbox(self):
         "sets up a taskbox widget"
-        d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
+        ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Wall options").decode("utf8"))
         lay0 = QtGui.QVBoxLayout(w)
         
@@ -273,27 +275,24 @@ class _CommandWall:
         lay0.addLayout(lay5)
         label5 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
         lay5.addWidget(label5)
-        self.Length = QtGui.QDoubleSpinBox()
-        self.Length.setDecimals(d)
-        self.Length.setValue(0.00)
+        self.Length = ui.createWidget("Gui::InputField")
+        self.Length.setText("0.00 mm")
         lay5.addWidget(self.Length)
         
         lay1 = QtGui.QHBoxLayout()
         lay0.addLayout(lay1)
         label1 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         lay1.addWidget(label1)
-        value1 = QtGui.QDoubleSpinBox()
-        value1.setDecimals(d)
-        value1.setValue(self.Width)
+        value1 = ui.createWidget("Gui::InputField")
+        value1.setText(self.FORMAT % self.Width)
         lay1.addWidget(value1)
         
         lay2 = QtGui.QHBoxLayout()
         lay0.addLayout(lay2)
         label2 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
         lay2.addWidget(label2)
-        value2 = QtGui.QDoubleSpinBox()
-        value2.setDecimals(d)
-        value2.setValue(self.Height)
+        value2 = ui.createWidget("Gui::InputField")
+        value2.setText(self.FORMAT % self.Height)
         lay2.addWidget(value2)
         
         lay3 = QtGui.QHBoxLayout()
@@ -306,12 +305,19 @@ class _CommandWall:
         value3.setCurrentIndex(items.index(self.Align))
         lay3.addWidget(value3)
         
-        value4 = QtGui.QCheckBox(translate("Arch","Con&tinue").decode("utf8"))
+        lay4 = QtGui.QHBoxLayout()
+        lay0.addLayout(lay4)
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
+        lay4.addWidget(label4)
+        value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
-        lay0.addWidget(value4)
+        value4.setLayoutDirection(QtCore.Qt.RightToLeft)
+        label4.setBuddy(value4)
+        lay4.addWidget(value4)
         if hasattr(FreeCADGui,"draftToolBar"):
             value4.setChecked(FreeCADGui.draftToolBar.continueMode)
             self.continueCmd = FreeCADGui.draftToolBar.continueMode
+
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
