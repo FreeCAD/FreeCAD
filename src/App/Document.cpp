@@ -1386,7 +1386,9 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
     else {
         returnCode->Which = Feat;
         _RecomputeLog.push_back(returnCode);
+#ifdef FC_DEBUG
         Base::Console().Error("%s\n",returnCode->Why.c_str());
+#endif
         Feat->setError();
     }
     return false;
