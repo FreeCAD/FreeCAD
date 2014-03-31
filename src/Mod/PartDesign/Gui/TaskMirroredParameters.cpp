@@ -333,14 +333,19 @@ bool TaskDlgMirroredParameters::accept()
         TaskMirroredParameters* mirrorParameter = static_cast<TaskMirroredParameters*>(parameter);
         std::string mirrorPlane = mirrorParameter->getMirrorPlane();
         if (!mirrorPlane.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+            App::DocumentObject* sketch = 0;
             if (mirrorPlane == "H_Axis" || mirrorPlane == "V_Axis" ||
                 (mirrorPlane.size() > 4 && mirrorPlane.substr(0,4) == "Axis"))
-                buf = buf.arg(QString::fromUtf8(mirrorParameter->getSketchObject()->getNameInDocument()));
+                sketch = mirrorParameter->getSketchObject();
             else
-                buf = buf.arg(QString::fromUtf8(mirrorParameter->getSupportObject()->getNameInDocument()));
-            buf = buf.arg(QString::fromUtf8(mirrorPlane.c_str()));
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = %s", name.c_str(), buf.toStdString().c_str());
+                sketch = mirrorParameter->getSupportObject();
+
+            if (sketch) {
+                QString buf = QString::fromLatin1("(App.ActiveDocument.%1,[\"%2\"])");
+                buf = buf.arg(QString::fromLatin1(sketch->getNameInDocument()));
+                buf = buf.arg(QString::fromLatin1(mirrorPlane.c_str()));
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = %s", name.c_str(), buf.toStdString().c_str());
+            }
         } else
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MirrorPlane = None", name.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");

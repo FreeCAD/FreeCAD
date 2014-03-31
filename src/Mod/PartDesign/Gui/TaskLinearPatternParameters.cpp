@@ -429,10 +429,10 @@ bool TaskDlgLinearPatternParameters::accept()
             else
                 sketch = linearpatternParameter->getSupportObject();
 
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
             if (sketch) {
+                QString buf = QString::fromLatin1("(App.ActiveDocument.%1,[\"%2\"])");
                 buf = buf.arg(QString::fromLatin1(sketch->getNameInDocument()));
-                buf = buf.arg(QString::fromUtf8(direction.c_str()));
+                buf = buf.arg(QString::fromLatin1(direction.c_str()));
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Direction = %s", name.c_str(), buf.toStdString().c_str());
             }
         } else
