@@ -112,6 +112,7 @@ class ArchWorkbench(Workbench):
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")
+        FreeCADGui.addPreferencePage(":/ui/archprefs-defaults.ui","Arch")
         FreeCADGui.addPreferencePage(":/ui/archprefs-import.ui","Arch")
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
