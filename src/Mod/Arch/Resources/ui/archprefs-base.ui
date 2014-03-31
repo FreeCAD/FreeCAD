@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>571</width>
-    <height>552</height>
+    <width>561</width>
+    <height>550</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Default settings</string>
+      <string>Default settings (in millimeters)</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
