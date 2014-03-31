@@ -204,6 +204,8 @@ class _CommandWall:
             return
         self.points.append(point)
         if len(self.points) == 1:
+            self.tracker.width(self.Width)
+            self.tracker.height(self.Height)
             self.tracker.on()
             FreeCADGui.Snapper.getPoint(last=self.points[0],callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
         elif len(self.points) == 2:
@@ -269,54 +271,47 @@ class _CommandWall:
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Wall options").decode("utf8"))
-        lay0 = QtGui.QVBoxLayout(w)
+        grid = QtGui.QGridLayout(w)
         
-        lay5 = QtGui.QHBoxLayout()
-        lay0.addLayout(lay5)
         label5 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
-        lay5.addWidget(label5)
         self.Length = ui.createWidget("Gui::InputField")
         self.Length.setText("0.00 mm")
-        lay5.addWidget(self.Length)
+        grid.addWidget(label5,0,0,1,1)
+        grid.addWidget(self.Length,0,1,1,1)
         
-        lay1 = QtGui.QHBoxLayout()
-        lay0.addLayout(lay1)
         label1 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
-        lay1.addWidget(label1)
         value1 = ui.createWidget("Gui::InputField")
         value1.setText(self.FORMAT % self.Width)
-        lay1.addWidget(value1)
+        grid.addWidget(label1,1,0,1,1)
+        grid.addWidget(value1,1,1,1,1)
         
-        lay2 = QtGui.QHBoxLayout()
-        lay0.addLayout(lay2)
         label2 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
-        lay2.addWidget(label2)
         value2 = ui.createWidget("Gui::InputField")
         value2.setText(self.FORMAT % self.Height)
-        lay2.addWidget(value2)
+        grid.addWidget(label2,2,0,1,1)
+        grid.addWidget(value2,2,1,1,1)
         
-        lay3 = QtGui.QHBoxLayout()
-        lay0.addLayout(lay3)
         label3 = QtGui.QLabel(translate("Arch","Alignment").decode("utf8"))
-        lay3.addWidget(label3)
         value3 = QtGui.QComboBox()
         items = ["Center","Left","Right"]
         value3.addItems(items)
         value3.setCurrentIndex(items.index(self.Align))
-        lay3.addWidget(value3)
+        grid.addWidget(label3,3,0,1,1)
+        grid.addWidget(value3,3,1,1,1)
         
-        lay4 = QtGui.QHBoxLayout()
-        lay0.addLayout(lay4)
         label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
-        lay4.addWidget(label4)
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
         value4.setLayoutDirection(QtCore.Qt.RightToLeft)
         label4.setBuddy(value4)
-        lay4.addWidget(value4)
         if hasattr(FreeCADGui,"draftToolBar"):
             value4.setChecked(FreeCADGui.draftToolBar.continueMode)
             self.continueCmd = FreeCADGui.draftToolBar.continueMode
+        grid.addWidget(label4,4,0,1,1)
+        grid.addWidget(value4,4,1,1,1)
+
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        grid.addItem(spacerItem, 4, 0, 1, 2)
 
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
