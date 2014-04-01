@@ -423,6 +423,12 @@ for p in mesh.Points:
 			</Documentation>
 			<Parameter Name="CountPoints" Type="Int" />
 		</Attribute>
+		<Attribute Name="CountEdges" ReadOnly="true">
+			<Documentation>
+				<UserDocu>Return the number of edges of the mesh object.</UserDocu>
+			</Documentation>
+			<Parameter Name="CountEdges" Type="Int" />
+		</Attribute>
 		<Attribute Name="Facets" ReadOnly="true">
 			<Documentation>
 				<UserDocu>A collection of facets

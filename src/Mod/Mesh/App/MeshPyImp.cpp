@@ -1498,6 +1498,11 @@ Py::Int MeshPy::getCountPoints(void) const
     return Py::Int((long)getMeshObjectPtr()->countPoints());
 }
 
+Py::Int MeshPy::getCountEdges(void) const
+{
+    return Py::Int((long)getMeshObjectPtr()->countEdges());
+}
+
 Py::Int MeshPy::getCountFacets(void) const
 {
     return Py::Int((long)getMeshObjectPtr()->countFacets());
