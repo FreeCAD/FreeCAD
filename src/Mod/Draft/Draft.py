@@ -2049,7 +2049,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
             # TODO add Radius constraits
             ok = True
         elif tp == "Rectangle":
-            if obj.FilletRadius == 0:
+            if obj.FilletRadius.Value == 0:
                 for edge in obj.Shape.Edges:
                     nobj.addGeometry(edge.Curve)
                 if autoconstraints:
@@ -2066,7 +2066,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                     nobj.addConstraint(Constraint("Vertical",last))
                 ok = True
         elif tp in ["Wire","Polygon"]:
-            if obj.FilletRadius == 0:
+            if obj.FilletRadius.Value == 0:
                 closed = False
                 if tp == "Polygon":
                     closed = True
@@ -3196,7 +3196,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
             self.text.string = self.text3d.string = self.string
 
             # set the distance property
-            if round(obj.Distance,precision()) != round(l,precision()):
+            if round(obj.Distance.Value,precision()) != round(l,precision()):
                 obj.Distance = l
                 
             # set the lines
