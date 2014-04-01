@@ -59,6 +59,8 @@ PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Quantity.h>
+#include <Base/QuantityPy.h>
 
 
 #include "WidgetFactory.h"
@@ -68,9 +70,65 @@ PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 
 using namespace Gui;
 
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+namespace Shiboken {
+template<> struct Converter<Base::Quantity>
+{
+    static inline bool checkType(PyObject* pyObj) {
+        return PyObject_TypeCheck(pyObj, &(Base::QuantityPy::Type));
+    }
+    static inline bool isConvertible(PyObject* pyObj) {
+        return PyObject_TypeCheck(pyObj, &(Base::QuantityPy::Type));
+    }
+    static inline PyObject* toPython(void* cppobj) {
+        return toPython(*reinterpret_cast<Base::Quantity*>(cppobj));
+    }
+    static inline PyObject* toPython(Base::Quantity cpx) {
+        return new Base::QuantityPy(new Base::Quantity(cpx));
+    }
+    static inline Base::Quantity toCpp(PyObject* pyobj) {
+        Base::Quantity q = *static_cast<Base::QuantityPy*>(pyobj)->getQuantityPtr();
+        return q;
+    }
+};
+}
+
+PyObject* toPythonFuncQuantity(const void* cpp)
+{
+    return Shiboken::Converter<Base::Quantity>::toPython(const_cast<void*>(cpp));
+}
+
+void toCppPointerConvFuncQuantity(PyObject*,void*)
+{
+}
+
+PythonToCppFunc toCppPointerCheckFuncQuantity(PyObject* obj)
+{
+    if (Shiboken::Converter<Base::Quantity>::isConvertible(obj))
+        return toCppPointerConvFuncQuantity;
+    else
+        return 0;
+}
+
+void registerTypes()
+{
+    SbkConverter* convert = Shiboken::Conversions::createConverter(&Base::QuantityPy::Type, toPythonFuncQuantity);
+    Shiboken::Conversions::setPythonToCppPointerFunctions(convert, toCppPointerConvFuncQuantity, toCppPointerCheckFuncQuantity);
+    Shiboken::Conversions::registerConverterName(convert, "Base::Quantity");
+}
+#endif
+
+// --------------------------------------------------------
 
 PythonWrapper::PythonWrapper()
 {
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    static bool init = false;
+    if (!init) {
+        init = true;
+        registerTypes();
+    }
+#endif
 }
 
 bool PythonWrapper::toCString(const Py::Object& pyobject, std::string& str)

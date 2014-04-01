@@ -31,6 +31,8 @@
 #include "SpinBox.h"
 #include "FileDialog.h"
 
+Q_DECLARE_METATYPE(Base::Quantity)
+
 namespace Gui {
 
 
@@ -47,24 +49,25 @@ class GuiExport InputField : public QLineEdit
 {
     Q_OBJECT
 
-    Q_PROPERTY( QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath )
+    Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath )
     Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep )
     Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
     Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
     Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
     Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText )
+    Q_PROPERTY(Base::Quantity quantity READ getQuantity WRITE setValue )
 
 
 public:
     InputField ( QWidget * parent = 0 );
     virtual ~InputField();
 
-    /// sets the field with a quantity
+    /// set the field with a quantity
     void setValue(const Base::Quantity&);
-    /// get the actual value
+    /// get the current value
     Base::Quantity getQuantity(void)const{return this->actQuantity;}
-    /** sets the Unit this field working with. 
-     *  After seting the Unit the field will only acceppt
+    /** sets the Unit this field is working with. 
+     *  After setting the Unit the field will only accept
      *  user input with this unit type. Or if the user input 
      *  a value without unit, this one will be added to the resulting
      *  Quantity. 
@@ -98,9 +101,9 @@ public:
 
     /** @name history and default management */
     //@{
-    /// the param group path where the widget write and read the dafault values
+    /// the param group path where the widget writes and reads the default values
     QByteArray paramGrpPath () const;
-    /// set the param group path where the widget write and read the dafault values
+    /// set the param group path where the widget writes and reads the default values
     void  setParamGrpPath  ( const QByteArray& name );
     /// push a new value to the history, if no string given the actual text of the input field is used. 
     void pushToHistory(const QString &valueq = QString());
@@ -114,14 +117,14 @@ public:
 
 Q_SIGNALS:
     /** gets emitted if the user has entered a VALID input
-     *  Valid means the user inputted string obays all restrictions
+     *  Valid means the user inputted string obeys all restrictions
      *  like: minimum, maximum and/or the right Unit (if specified). 
      *  If you want the unfiltered/unvalidated input use textChanged(const QString&) 
      *  instead:
      */
     void valueChanged(const Base::Quantity&);
     /** gets emitted if the user has entered a VALID input
-     *  Valid means the user inputted string obays all restrictions
+     *  Valid means the user inputted string obeys all restrictions
      *  like: minimum, maximum and/or the right Unit (if specified). 
      *  If you want the unfiltered/unvalidated input use textChanged(const QString&) 
      *  instead:
