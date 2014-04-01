@@ -47,6 +47,7 @@
 # include <Handle_Poly_Triangulation.hxx>
 # include <Poly_Array1OfTriangle.hxx>
 # include <Poly_Triangulation.hxx>
+# include <Standard_Version.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
@@ -653,7 +654,11 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             Deviation.getValue();
 
         // create or use the mesh on the data structure
+#if OCC_VERSION_HEX >= 0x060600
+        BRepMesh_IncrementalMesh myMesh(cShape,deflection,Standard_False,0.5,Standard_True);
+#else
         BRepMesh_IncrementalMesh myMesh(cShape,deflection);
+#endif
         // We must reset the location here because the transformation data
         // are set in the placement property
         TopLoc_Location aLoc;
