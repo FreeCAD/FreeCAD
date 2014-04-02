@@ -52,6 +52,8 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/PlacementPy.h>
+#include <Base/Rotation.h>
+#include <Base/RotationPy.h>
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
@@ -102,6 +104,7 @@ void View3DInventorPy::init_type()
     add_varargs_method("getViewDirection",&View3DInventorPy::getViewDirection,"getViewDirection()");
     add_varargs_method("setCamera",&View3DInventorPy::setCamera,"setCamera()");
     add_varargs_method("setCameraOrientation",&View3DInventorPy::setCameraOrientation,"setCameraOrientation()");
+    add_varargs_method("getCameraOrientation",&View3DInventorPy::getCameraOrientation,"getCameraOrientation()");
     add_varargs_method("getCameraType",&View3DInventorPy::getCameraType,"getCameraType()");
     add_varargs_method("setCameraType",&View3DInventorPy::setCameraType,"setCameraType()");
     add_varargs_method("listCameraTypes",&View3DInventorPy::listCameraTypes,"listCameraTypes()");
@@ -530,16 +533,30 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
 {
     PyObject* o;
     PyObject* m=Py_False;
-    if (!PyArg_ParseTuple(args.ptr(), "O!|O!", &PyTuple_Type, &o, &PyBool_Type, &m))
+    if (!PyArg_ParseTuple(args.ptr(), "O|O!", &o, &PyBool_Type, &m))
         throw Py::Exception();
 
     try {
-        Py::Tuple tuple(o);
-        float q0 = (float)Py::Float(tuple[0]);
-        float q1 = (float)Py::Float(tuple[1]);
-        float q2 = (float)Py::Float(tuple[2]);
-        float q3 = (float)Py::Float(tuple[3]);
-        _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), PyObject_IsTrue(m));
+        if (PyTuple_Check(o)) {
+            Py::Tuple tuple(o);
+            float q0 = (float)Py::Float(tuple[0]);
+            float q1 = (float)Py::Float(tuple[1]);
+            float q2 = (float)Py::Float(tuple[2]);
+            float q3 = (float)Py::Float(tuple[3]);
+            _view->getViewer()->setCameraOrientation(SbRotation(q0, q1, q2, q3), PyObject_IsTrue(m));
+        }
+        else if (PyObject_TypeCheck(o, &Base::RotationPy::Type)) {
+            Base::Rotation r = (Base::Rotation)Py::Rotation(o,false);
+            double q0, q1, q2, q3;
+            r.getValue(q0, q1, q2, q3);
+            _view->getViewer()->setCameraOrientation(SbRotation((float)q0, (float)q1, (float)q2, (float)q3), PyObject_IsTrue(m));
+        }
+        else {
+            throw Py::ValueError("Neither tuple nor rotation object");
+        }
+    }
+    catch (const Py::Exception&) {
+        throw; // re-throw
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());
@@ -552,6 +569,16 @@ Py::Object View3DInventorPy::setCameraOrientation(const Py::Tuple& args)
     }
 
     return Py::None();
+}
+
+Py::Object View3DInventorPy::getCameraOrientation(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
+    SbRotation rot = _view->getViewer()->getCameraOrientation();
+    float q0,q1,q2,q3;
+    rot.getValue(q0,q1,q2,q3);
+    return Py::Rotation(Base::Rotation(q0,q1,q2,q3));
 }
 
 Py::Object View3DInventorPy::viewPosition(const Py::Tuple& args)

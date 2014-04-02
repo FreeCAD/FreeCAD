@@ -1296,6 +1296,14 @@ SbVec3f View3DInventorViewer::getUpDirection() const
     return upvec;
 }
 
+SbRotation View3DInventorViewer::getCameraOrientation() const
+{
+    SoCamera* cam = this->getCamera();
+    if (!cam)
+        return SbRotation(0,0,0,1); // this is the default
+    return cam->orientation.getValue();
+}
+
 SbVec3f View3DInventorViewer::getPointOnScreen(const SbVec2s& pnt) const
 {
     const SbViewportRegion& vp = this->getViewportRegion();
