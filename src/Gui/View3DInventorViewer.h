@@ -230,6 +230,8 @@ public:
     SbVec3f getViewDirection() const;
     /** Returns the up direction */
     SbVec3f getUpDirection() const;
+    /** Returns the orientation of the camera. */
+    SbRotation getCameraOrientation() const; 
     /** Returns the 3d point on the focal plane to the given 2d point. */
     SbVec3f getPointOnScreen(const SbVec2s&) const;
     /** Returns the near plane represented by its normal and base point. */
