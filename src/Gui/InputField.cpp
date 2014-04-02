@@ -366,21 +366,35 @@ void InputField::selectNumber(void)
 
 }
 
-void InputField::wheelEvent ( QWheelEvent * event )
+void InputField::keyPressEvent(QKeyEvent *event)
 {
-     int numDegrees = event->delta() / 8;
-     int numSteps = numDegrees / 15;
+    switch (event->key()) {
+    case Qt::Key_Up:
+        {
+            double val = actUnitValue + StepSize;
+            this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+            event->accept();
+        }
+        break;
+    case Qt::Key_Down:
+        {
+            double val = actUnitValue - StepSize;
+            this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+            event->accept();
+        }
+        break;
+    default:
+        QLineEdit::keyPressEvent(event);
+        break;
+    }
+}
 
-     double val = actUnitValue + numSteps;
-
-     this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
-
-     //if (event->orientation() == Qt::Horizontal) {
-     //    scrollHorizontally(numSteps);
-     //} else {
-     //    scrollVertically(numSteps);
-     //}
-     event->accept();
+void InputField::wheelEvent (QWheelEvent * event)
+{
+    double step = event->delta() > 0 ? StepSize : -StepSize;
+    double val = actUnitValue + step;
+    this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+    event->accept();
 }
 // --------------------------------------------------------------------
 
