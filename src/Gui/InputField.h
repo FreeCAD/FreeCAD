@@ -139,6 +139,7 @@ protected Q_SLOTS:
     void updateIconLabel(const QString& text);
 
 protected:
+    virtual void keyPressEvent(QKeyEvent * event);
     virtual void wheelEvent(QWheelEvent * event);
     virtual void contextMenuEvent(QContextMenuEvent * event);
     virtual void resizeEvent(QResizeEvent*);
