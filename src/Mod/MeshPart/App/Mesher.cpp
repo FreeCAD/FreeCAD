@@ -152,7 +152,7 @@ Mesh::MeshObject* Mesher::createMesh() const
         hypoth.push_back(alg2d);
     } break;
 #endif
-#if !defined (_MSC_VER)
+#if defined (HAVE_MEFISTO)
     case Mefisto: {
         if (maxLength > 0) {
             StdMeshers_MaxLength* hyp1d = new StdMeshers_MaxLength(hyp++, 0, meshgen);

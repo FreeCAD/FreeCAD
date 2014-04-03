@@ -4,6 +4,10 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+if (FREECAD_BUILD_SMESH)
+    add_definitions(-DHAVE_SMESH -DHAVE_MEFISTO)
+endif(FREECAD_BUILD_SMESH)
+
 if(FREECAD_BUILD_FEM_NETGEN)
     add_definitions(-DHAVE_NETGEN)
 endif(FREECAD_BUILD_FEM_NETGEN)
