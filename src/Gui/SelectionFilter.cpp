@@ -33,6 +33,7 @@
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentObject.h>
 #include <Base/Interpreter.h>
+#include <CXX/Objects.hxx>
 
 #include "Selection.h"
 #include "SelectionFilter.h"
@@ -69,6 +70,63 @@ SelectionFilterGate::~SelectionFilterGate()
 bool SelectionFilterGate::allow(App::Document*pDoc,App::DocumentObject*pObj, const char*sSubName)
 {
     return Filter->test(pObj,sSubName);
+}
+
+// ----------------------------------------------------------------------------
+
+SelectionGatePython::SelectionGatePython(const Py::Object& obj)
+  : gate(obj)
+{
+}
+
+SelectionGatePython::~SelectionGatePython()
+{
+}
+
+bool SelectionGatePython::allow(App::Document* doc, App::DocumentObject* obj, const char* sub)
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (this->gate.hasAttr(std::string("allow"))) {
+            Py::Callable method(this->gate.getAttr(std::string("allow")));
+            Py::Object pyDoc = Py::asObject(doc->getPyObject());
+            Py::Object pyObj = Py::asObject(obj->getPyObject());
+            Py::String pySub;
+            if (sub)
+                pySub = std::string(sub);
+            Py::Tuple args(3);
+            args.setItem(0, pyDoc);
+            args.setItem(1, pyObj);
+            args.setItem(2, pySub);
+            Py::Boolean ok(method.apply(args));
+            return (bool)ok;
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+
+    return true;
+}
+
+// ----------------------------------------------------------------------------
+
+SelectionFilterGatePython::SelectionFilterGatePython(SelectionFilterPy* obj) : filter(obj)
+{
+    Base::PyGILStateLocker lock;
+    Py_INCREF(filter);
+}
+
+SelectionFilterGatePython::~SelectionFilterGatePython()
+{
+    Base::PyGILStateLocker lock;
+    Py_DECREF(filter);
+}
+
+bool SelectionFilterGatePython::allow(App::Document*, App::DocumentObject* obj, const char* sub)
+{
+    return filter->filter.test(obj, sub);
 }
 
 // ----------------------------------------------------------------------------
@@ -185,6 +243,7 @@ void SelectionFilterPy::init_type()
     add_varargs_method("match",&SelectionFilterPy::match,"match()");
     add_varargs_method("result",&SelectionFilterPy::result,"result()");
     add_varargs_method("test",&SelectionFilterPy::test,"test()");
+    add_varargs_method("setFilter",&SelectionFilterPy::setFilter,"setFilter()");
 }
 
 PyObject *SelectionFilterPy::PyMake(struct _typeobject *, PyObject *args, PyObject *)
@@ -219,7 +278,7 @@ Py::Object SelectionFilterPy::match(const Py::Tuple& args)
 
 Py::Object SelectionFilterPy::test(const Py::Tuple& args)
 {
-    PyObject * pcObj ;
+    PyObject * pcObj;
     char* text=0;
     if (!PyArg_ParseTuple(args.ptr(), "O!|s",&(App::DocumentObjectPy::Type),&pcObj,&text))
         throw Py::Exception();
@@ -238,14 +297,21 @@ Py::Object SelectionFilterPy::result(const Py::Tuple&)
         Py::Tuple tuple(it->size());
         int index=0;
         for (jt = it->begin(); jt != it->end(); ++jt) {
-            tuple[index++] = Py::asObject(jt->getObject()->getPyObject());
+            tuple[index++] = Py::asObject(jt->getPyObject());
         }
         list.append(tuple);
     }
     return list;
 }
 
-
+Py::Object SelectionFilterPy::setFilter(const Py::Tuple& args)
+{
+    char* text=0;
+    if (!PyArg_ParseTuple(args.ptr(), "s",&text))
+        throw Py::Exception();
+    filter.setFilter(text);
+    return Py::None();
+}
 
 // === Parser & Scanner stuff ===============================================
 
