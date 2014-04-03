@@ -65,7 +65,7 @@ Tessellation::Tessellation(QWidget* parent)
     ui->comboFineness->setCurrentIndex(2);
     on_comboFineness_currentIndexChanged(2);
 
-#if defined (_MSC_VER)
+#if !defined (HAVE_MEFISTO)
     ui->radioButtonMefisto->setDisabled(true);
 #else
     ui->radioButtonMefisto->setChecked(true);
