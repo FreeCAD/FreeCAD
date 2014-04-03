@@ -71,7 +71,7 @@ bool SelectionFilterGate::allow(App::Document*pDoc,App::DocumentObject*pObj, con
     return Filter->test(pObj,sSubName);
 }
 
-
+// ----------------------------------------------------------------------------
 
 SelectionFilter::SelectionFilter(const char* filter)
   : Ast(0)
@@ -171,17 +171,7 @@ void SelectionFilter::addError(const char* e)
     Errors += '\n';
 }
 
-
-//const App::DocumentObject * SelectionFilter::getObject(void) const
-//{
-//	if(DocName != ""){
-//		App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
-//		if(doc && FeatName != "")
-//			return doc->getObject(FeatName.c_str());
-//	}
-//	return 0;
-//}
-
+// ----------------------------------------------------------------------------
 
 void SelectionFilterPy::init_type()
 {
