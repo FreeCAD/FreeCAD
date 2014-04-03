@@ -43,21 +43,6 @@ SelectionObject::SelectionObject()
 {
 }
 
-//SelectionObject::SelectionObject( const Gui::SelectionSingleton::SelObj &Obj )
-//{
-//	// moving the information over
-//	// no pointer is copied, cause is to dangerous to keep pointers to 
-//	// the document outside....
-//	DocName  = Obj.DocName;
-//	FeatName = Obj.FeatName;
-//	SubName  = Obj.SubName;
-//	TypeName = Obj.TypeName;
-//	x = Obj.x;
-//	y = Obj.y;
-//	z = Obj.z;
-//
-//}
-
 SelectionObject::~SelectionObject()
 {
 }
