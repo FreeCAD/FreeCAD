@@ -85,7 +85,7 @@ public:
     //virtual void GLRender(SoGLRenderAction * action);
 
     virtual void handleEvent(SoHandleEventAction * action);
-    //virtual void GLRenderBelowPath(SoGLRenderAction * action);
+    virtual void GLRenderBelowPath(SoGLRenderAction * action);
     //virtual void GLRenderInPath(SoGLRenderAction * action);
     //static  void turnOffCurrentHighlight(SoGLRenderAction * action);
 
@@ -107,6 +107,8 @@ private:
     static SoFullPath * currenthighlight;
 
     SbBool highlighted;
+    // -1 = not handled, 0 = not selected, 1 = selected
+    int32_t preSelection;
     SoColorPacker colorpacker;
 };
 
