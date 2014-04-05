@@ -103,6 +103,7 @@ SoFCUnifiedSelection::SoFCUnifiedSelection() : pcDocument(0)
     SO_NODE_SET_SF_ENUM_TYPE (highlightMode, HighlightModes);
 
     highlighted = FALSE;
+    preSelection = -1;
 }
 
 /*!
@@ -360,6 +361,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                 std::string objectName = vpd->getObject()->getNameInDocument();
                 std::string subElementName = vpd->getElement(pp ? pp->getDetail() : 0);
 
+                this->preSelection = 1;
                 static char buf[513];
                 snprintf(buf,512,"Preselected: %s.%s.%s (%f,%f,%f)",documentName.c_str()
                                            ,objectName.c_str()
@@ -394,6 +396,15 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                         currenthighlight = static_cast<SoFullPath*>(sa.getPath()->copy());
                         currenthighlight->ref();
                     }
+                }
+            }
+            // nothing picked
+            else if (!pp) {
+                if (this->preSelection > 0) {
+                    this->preSelection = 0;
+                    // touch() makes sure to call GLRenderBelowPath so that the cursor can be updated
+                    // because only from there the SoGLWidgetElement delivers the OpenGL window
+                    this->touch();
                 }
             }
 
@@ -511,6 +522,29 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
     }
 
     inherited::handleEvent(action);
+}
+
+void SoFCUnifiedSelection::GLRenderBelowPath(SoGLRenderAction * action)
+{
+    inherited::GLRenderBelowPath(action);
+
+    // nothing picked, so restore the arrow cursor if needed
+    if (this->preSelection == 0) {
+        // this is called when a selection gate forbad to select an object
+        // and the user moved the mouse to an empty area
+        this->preSelection = -1;
+        QGLWidget* window;
+        SoState *state = action->getState();
+        SoGLWidgetElement::get(state, window);
+        QWidget* parent = window ? window->parentWidget() : 0;
+        if (parent) {
+            QCursor c = parent->cursor();
+            if (c.shape() == Qt::ForbiddenCursor) {
+                c.setShape(Qt::ArrowCursor);
+                parent->setCursor(c);
+            }
+        }
+    }
 }
 
 // ---------------------------------------------------------------
