@@ -361,6 +361,8 @@ class _CommandStructure:
         self.Height = p.GetFloat("StructureHeight",1000)
         self.Profile = 0
         self.continueCmd = False
+        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+        self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             st = Draft.getObjectsOfType(sel,"Structure")
@@ -420,67 +422,58 @@ class _CommandStructure:
 
     def taskbox(self):
         "sets up a taskbox widget"
-        d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         w = QtGui.QWidget()
+        ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Structure options").decode("utf8"))
-        lay0 = QtGui.QVBoxLayout(w)
+        grid = QtGui.QGridLayout(w)
         
         # presets box
-        layp = QtGui.QHBoxLayout()
-        lay0.addLayout(layp)
         labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
-        layp.addWidget(labelp)
         valuep = QtGui.QComboBox()
         fpresets = [" "]
         for p in Presets[1:]:
             fpresets.append(str(translate("Arch",p[0]))+" "+p[1]+" ("+str(p[2])+"x"+str(p[3])+"mm)")
         valuep.addItems(fpresets)
-        layp.addWidget(valuep)
+        grid.addWidget(labelp,0,0,1,1)
+        grid.addWidget(valuep,0,1,1,1)
         
         # length
-        lay1 = QtGui.QHBoxLayout()
-        lay0.addLayout(lay1)
         label1 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
-        lay1.addWidget(label1)
-        self.vLength = QtGui.QDoubleSpinBox()
-        self.vLength.setDecimals(d)
-        self.vLength.setMaximum(99999.99)
-        self.vLength.setValue(self.Length)
-        lay1.addWidget(self.vLength)
+        self.vLength = ui.createWidget("Gui::InputField")
+        self.vLength.setText(self.FORMAT % self.Length)
+        grid.addWidget(label1,1,0,1,1)
+        grid.addWidget(self.vLength,1,1,1,1)
         
         # width
-        lay2 = QtGui.QHBoxLayout()
-        lay0.addLayout(lay2)
         label2 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
-        lay2.addWidget(label2)
-        self.vWidth = QtGui.QDoubleSpinBox()
-        self.vWidth.setDecimals(d)
-        self.vWidth.setMaximum(99999.99)
-        self.vWidth.setValue(self.Width)
-        lay2.addWidget(self.vWidth)
+        self.vWidth = ui.createWidget("Gui::InputField")
+        self.vWidth.setText(self.FORMAT % self.Width)
+        grid.addWidget(label2,2,0,1,1)
+        grid.addWidget(self.vWidth,2,1,1,1)
 
         # height
-        lay3 = QtGui.QHBoxLayout()
-        lay0.addLayout(lay3)
         label3 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
-        lay3.addWidget(label3)
-        self.vHeight = QtGui.QDoubleSpinBox()
-        self.vHeight.setDecimals(d)
-        self.vHeight.setMaximum(99999.99)
-        self.vHeight.setValue(self.Height)
-        lay3.addWidget(self.vHeight)
+        self.vHeight = ui.createWidget("Gui::InputField")
+        self.vHeight.setText(self.FORMAT % self.Height)
+        grid.addWidget(label3,3,0,1,1)
+        grid.addWidget(self.vHeight,3,1,1,1)
         
         # horizontal button
         value5 = QtGui.QPushButton(translate("Arch","Rotate").decode("utf8"))
-        lay0.addWidget(value5)
+        grid.addWidget(value5,4,0,1,2)
 
         # continue button
-        value4 = QtGui.QCheckBox(translate("Arch","Con&tinue").decode("utf8"))
+        label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
+        value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
-        lay0.addWidget(value4)
+        value4.setLayoutDirection(QtCore.Qt.RightToLeft)
+        label4.setBuddy(value4)
         if hasattr(FreeCADGui,"draftToolBar"):
             value4.setChecked(FreeCADGui.draftToolBar.continueMode)
             self.continueCmd = FreeCADGui.draftToolBar.continueMode
+        grid.addWidget(label4,5,0,1,1)
+        grid.addWidget(value4,5,1,1,1)
+
         QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
         QtCore.QObject.connect(self.vLength,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(self.vWidth,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
@@ -517,8 +510,8 @@ class _CommandStructure:
         
     def setPreset(self,i):
         if i > 0:
-            self.vLength.setValue(float(Presets[i][2]))
-            self.vWidth.setValue(float(Presets[i][3]))
+            self.vLength.setText(self.FORMAT % float(Presets[i][2]))
+            self.vWidth.setText(self.FORMAT % float(Presets[i][3]))
         if len(Presets[i]) == 6:
             self.Profile = i
         else:
@@ -528,9 +521,9 @@ class _CommandStructure:
         l = self.Length
         w = self.Width
         h = self.Height
-        self.vLength.setValue(h)
-        self.vHeight.setValue(w)
-        self.vWidth.setValue(l)
+        self.vLength.setText(self.FORMAT % h)
+        self.vHeight.setText(self.FORMAT % w)
+        self.vWidth.setText(self.FORMAT % l)
        
 class _Structure(ArchComponent.Component):
     "The Structure object"
