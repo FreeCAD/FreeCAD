@@ -310,9 +310,6 @@ class _CommandWall:
         grid.addWidget(label4,4,0,1,1)
         grid.addWidget(value4,4,1,1,1)
 
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        grid.addItem(spacerItem, 4, 0, 1, 2)
-
         QtCore.QObject.connect(value1,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
         QtCore.QObject.connect(value2,QtCore.SIGNAL("valueChanged(double)"),self.setHeight)
         QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
