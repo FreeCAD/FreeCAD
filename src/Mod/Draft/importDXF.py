@@ -966,7 +966,7 @@ def addToBlock(obj,layer):
     else:
         layerBlocks[layer] = [obj]
 
-def processdxf(document,filename):
+def processdxf(document,filename,getShapes=False):
     "this does the translation of the dxf contents into FreeCAD Part objects"
     global drawing # for debugging - so drawing is still accessible to python after the script ran
     FreeCAD.Console.PrintMessage("opening "+filename+"...\n")
@@ -1003,7 +1003,7 @@ def processdxf(document,filename):
                             sketch = shape
                     else:
                         shape = Draft.makeSketch(shape,autoconstraints=True)
-                elif dxfJoin:
+                elif dxfJoin or getShapes:
                     if isinstance(shape,Part.Shape):
                         shapes.append(shape)
                     else:                                        
@@ -1048,7 +1048,7 @@ def processdxf(document,filename):
                             sketch = shape
                     else:
                         shape = Draft.makeSketch(shape,autoconstraints=True)
-                elif dxfJoin:
+                elif dxfJoin or getShapes:
                     if isinstance(shape,Part.Shape):
                         shapes.append(shape)
                     else:
@@ -1077,7 +1077,7 @@ def processdxf(document,filename):
                             sketch = shape
                     else:
                         shape = Draft.makeSketch(shape,autoconstraints=True)
-                elif dxfJoin:
+                elif dxfJoin or getShapes:
                     if isinstance(shape,Part.Shape):
                         shapes.append(shape)
                     else:
@@ -1118,6 +1118,11 @@ def processdxf(document,filename):
                         shape = Draft.makeSketch(shape,autoconstraints=True)
                 elif dxfMakeBlocks:
                     addToBlock(shape,circle.layer)
+                elif getShapes:
+                    if isinstance(shape,Part.Shape):
+                        shapes.append(shape)
+                    else:
+                        shapes.append(shape.Shape)
                 else:
                     newob = addObject(shape,"Circle",circle.layer)
                     if gui: formatObject(newob,circle)
@@ -1133,6 +1138,11 @@ def processdxf(document,filename):
             if shape:
                 if dxfMakeBlocks:
                     addToBlock(shape,lay)
+                elif getShapes:
+                    if isinstance(shape,Part.Shape):
+                        shapes.append(shape)
+                    else:
+                        shapes.append(shape.Shape)
                 else:
                     newob = addObject(shape,"Solid",lay)
                     if gui: formatObject(newob,solid)
@@ -1148,6 +1158,11 @@ def processdxf(document,filename):
             if shape:
                 if dxfMakeBlocks:
                     addToBlock(shape,lay)
+                elif getShapes:
+                    if isinstance(shape,Part.Shape):
+                        shapes.append(shape)
+                    else:
+                        shapes.append(shape.Shape)
                 else:
                     newob = addObject(shape,"Spline",lay)
                     if gui: formatObject(newob,spline)
@@ -1163,6 +1178,11 @@ def processdxf(document,filename):
             if shape:
                 if dxfMakeBlocks:
                     addToBlock(shape,lay)
+                elif getShapes:
+                    if isinstance(shape,Part.Shape):
+                        shapes.append(shape)
+                    else:
+                        shapes.append(shape.Shape)
                 else:
                     newob = addObject(shape,"Ellipse",lay)
                     if gui: formatObject(newob,ellipse)
@@ -1187,8 +1207,14 @@ def processdxf(document,filename):
     for face3d in faces3d:
         shape = drawFace(face3d)
         if shape:
-            newob = addObject(shape,"Face",face3d.layer)
-            if gui: formatObject(newob,face3d)
+            if getShapes:
+                if isinstance(shape,Part.Shape):
+                    shapes.append(shape)
+                else:
+                    shapes.append(shape.Shape)
+            else:
+                newob = addObject(shape,"Face",face3d.layer)
+                if gui: formatObject(newob,face3d)
     if meshes: FreeCAD.Console.PrintMessage("drawing "+str(len(meshes))+" 3dmeshes...\n")
     for mesh in meshes:
         me = drawMesh(mesh)
@@ -1198,6 +1224,11 @@ def processdxf(document,filename):
             lay.addObject(newob)
             newob.Mesh = me
             if gui: formatObject(newob,mesh)
+
+    # end of shape-based objects, return if we are just getting shapes
+
+    if getShapes and shapes:
+        return(shapes)
 
     # drawing dims
 
@@ -1419,6 +1450,11 @@ def insert(filename,docname):
         processdxf(doc,filename)
         for l in layers:
             importgroup.addObject(l)
+
+def getShapes(filename):
+    "reads a dxf file and returns a list of shapes from its contents"
+    if dxfReader:
+        return processdxf(None,filename,getShapes=True)
 
 		
 # EXPORT ########################################################################
