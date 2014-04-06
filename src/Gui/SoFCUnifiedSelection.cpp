@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <qstatusbar.h>
 # include <qstring.h>
+# include <QGLWidget>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
 #endif
