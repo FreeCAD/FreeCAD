@@ -472,7 +472,7 @@ Py::List DocumentPy::getRedoNames(void) const
 Py::String  DocumentPy::getDependencyGraph(void) const
 {
     std::stringstream out;
-    getDocumentPtr()->writeDependencyGraphViz(out);
+    getDocumentPtr()->exportGraphviz(out);
     return Py::String(out.str());
 }
 
