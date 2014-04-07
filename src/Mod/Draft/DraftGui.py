@@ -141,7 +141,7 @@ class DraftTaskPanel:
         else:
             self.form = widget
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Cancel)
+        return int(QtGui.QDialogButtonBox.Close)
     def accept(self):
         FreeCADGui.ActiveDocument.resetEdit()
         return True
@@ -238,6 +238,16 @@ class DraftToolBar:
         lineedit.setMaximumSize(QtCore.QSize(width,22))
         layout.addWidget(lineedit)
         return lineedit
+
+    def _inputfield (self,name, layout, hide=True, width=None):
+        ui = FreeCADGui.UiLoader()
+        inputfield = ui.createWidget("Gui::InputField")
+        inputfield.setObjectName(name)
+        if hide: inputfield.hide()
+        if not width: width = 800
+        inputfield.setMaximumSize(QtCore.QSize(width,22))
+        layout.addWidget(inputfield)
+        return inputfield
 
     def _spinbox (self,name, layout, val=None, vmax=None, hide=True, double=False, size=None):
         if double:
@@ -568,7 +578,7 @@ class DraftToolBar:
                         else:
                             self.form = [extra]
                 def getStandardButtons(self):
-                    return int(QtGui.QDialogButtonBox.Cancel)
+                    return int(QtGui.QDialogButtonBox.Close)
                 def accept(self):
                     FreeCADGui.ActiveDocument.resetEdit()
                     return True
@@ -905,7 +915,7 @@ class DraftToolBar:
                 if extra:
                     self.form = [extra]
             def getStandardButtons(self):
-                return int(QtGui.QDialogButtonBox.Cancel)
+                return int(QtGui.QDialogButtonBox.Close)
             def reject(self):
                 if callback:
                     callback()
