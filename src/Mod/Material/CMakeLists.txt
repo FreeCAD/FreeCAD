@@ -20,20 +20,22 @@ SET (MaterialLib_Files
 )
 SOURCE_GROUP("MatLib" FILES ${MaterialLib_Files})
 
-SET(all_files ${Material_SRCS}  ${MaterialLib_Files} )
-
 ADD_CUSTOM_TARGET(Material ALL
-    SOURCES ${all_files}
+    SOURCES ${Material_SRCS}
 )
-
-#fc_copy_sources(Material "${CMAKE_BINARY_DIR}/Mod/Material" ${Material_SRCS})
 
 fc_target_copy_resource(Material 
     ${CMAKE_SOURCE_DIR}/src/Mod/Material
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${Material_SRCS})
 
-fc_target_copy_resource(Material 
+ADD_CUSTOM_TARGET(MaterialLib ALL
+    SOURCES ${MaterialLib_Files}
+)
+
+# When a target copies files to different output directories then apparently it always builds the project
+# which is very annoying. So, the trick is to split this into two targets to avoid this behaviour.
+fc_target_copy_resource(MaterialLib 
     ${CMAKE_SOURCE_DIR}/src/Mod/Material
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material
     ${MaterialLib_Files})
