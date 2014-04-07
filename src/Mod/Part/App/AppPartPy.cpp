@@ -1281,14 +1281,19 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
     PyObject *pcObj;
     PyObject *psolid=Py_False;
     PyObject *pruled=Py_False;
-    if (!PyArg_ParseTuple(args, "O|O!O!", &pcObj,
+    PyObject *pclosed=Py_False;
+    if (!PyArg_ParseTuple(args, "O|O!O!O!", &pcObj,
                                           &(PyBool_Type), &psolid,
-                                          &(PyBool_Type), &pruled))
+                                          &(PyBool_Type), &pruled,
+                                          &(PyBool_Type), &pclosed)) {
+        Base::Console().Message("Part.makeLoft Parameter Error\n");
         return NULL;
+    }
 
     try {
         TopTools_ListOfShape profiles;
         Py::Sequence list(pcObj);
+
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                 const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
@@ -1300,11 +1305,13 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
         TopoShape myShape;
         Standard_Boolean anIsSolid = PyObject_IsTrue(psolid) ? Standard_True : Standard_False;
         Standard_Boolean anIsRuled = PyObject_IsTrue(pruled) ? Standard_True : Standard_False;
-        TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled);
+        Standard_Boolean anIsClosed = PyObject_IsTrue(pclosed) ? Standard_True : Standard_False;
+        TopoDS_Shape aResult = myShape.makeLoft(profiles, anIsSolid, anIsRuled,anIsClosed);
         return new TopoShapePy(new TopoShape(aResult));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
+        Base::Console().Message("debug: Part.makeLoft catching 'Standard_Failure' msg: '%s'\n", e->GetMessageString());
         PyErr_SetString(PyExc_Exception, e->GetMessageString());
         return 0;
     }

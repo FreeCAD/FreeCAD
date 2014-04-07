@@ -69,6 +69,7 @@ public:
     App::PropertyLinkList Sections;
     App::PropertyBool Solid;
     App::PropertyBool Ruled;
+    App::PropertyBool Closed;
 
     /** @name methods override feature */
     //@{
