@@ -167,6 +167,7 @@ set(Gui_MOC_HDRS
     EditorView.h
     FileDialog.h
     Flag.h
+    GraphvizView.h
     GuiApplicationNativeEventAware.h
     HelpView.h
     InputVector.h
@@ -748,7 +749,6 @@ SOURCE_GROUP("View3D\\Inventor" FILES ${Inventor_SRCS})
 SET(Widget_CPP_SRCS
     FileDialog.cpp
     MainWindow.cpp
-    MDIView.cpp
     PrefWidgets.cpp
     InputField.cpp
     ProgressBar.cpp
@@ -761,7 +761,6 @@ SET(Widget_CPP_SRCS
 SET(Widget_HPP_SRCS
     FileDialog.h
     MainWindow.h
-    MDIView.h
     PrefWidgets.h
     InputField.h
     ProgressBar.h
@@ -776,6 +775,21 @@ SET(Widget_SRCS
     ${Widget_HPP_SRCS}
 )
 SOURCE_GROUP("Widget" FILES ${Widget_SRCS})
+
+# The view sources
+SET(View_CPP_SRCS
+    MDIView.cpp
+    GraphvizView.cpp
+)
+SET(View_HPP_SRCS
+    MDIView.h
+    GraphvizView.h
+)
+SET(View_SRCS
+    ${View_CPP_SRCS}
+    ${View_HPP_SRCS}
+)
+SOURCE_GROUP("View" FILES ${View_SRCS})
 
 # The workbench sources
 SET(Workbench_CPP_SRCS
@@ -879,6 +893,7 @@ SET(FreeCADGui_SRCS
     ${View3D_SRCS}
     ${Viewprovider_SRCS}
     ${Widget_SRCS}
+    ${View_SRCS}
     ${Workbench_SRCS}
     ${Selection_SRCS}
     ${FreeCADGui_SRCS}

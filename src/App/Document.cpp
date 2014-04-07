@@ -201,6 +201,32 @@ void Document::writeDependencyGraphViz(std::ostream &out)
     out << "}" << endl;
 }
 
+void Document::exportGraphviz(std::ostream& out)
+{
+    std::vector<std::string> names;
+    names.reserve(d->objectMap.size());
+    DependencyList DepList;
+    std::map<DocumentObject*,Vertex> VertexObjectList;
+
+    // Filling up the adjacency List
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        // add the object as Vertex and remember the index
+        VertexObjectList[It->second] = add_vertex(DepList);
+        names.push_back(It->second->Label.getValue());
+    }
+    // add the edges
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        std::vector<DocumentObject*> OutList = It->second->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+            if (*It2)
+                add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
+        }
+    }
+
+    if (!names.empty())
+        boost::write_graphviz(out, DepList, boost::make_label_writer(&(names[0])));
+}
+
 //bool _has_cycle_dfs(const DependencyList & g, vertex_t u, default_color_type * color)
 //{
 //  color[u] = gray_color;
@@ -904,32 +930,6 @@ unsigned int Document::getMemSize (void) const
     size += getUndoMemSize();
 
     return size;
-}
-
-void Document::exportGraphviz(std::ostream& out)
-{
-    std::vector<std::string> names;
-    names.reserve(d->objectMap.size());
-    DependencyList DepList;
-    std::map<DocumentObject*,Vertex> VertexObjectList;
-
-    // Filling up the adjacency List
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        // add the object as Vertex and remember the index
-        VertexObjectList[It->second] = add_vertex(DepList);
-        names.push_back(It->second->Label.getValue());
-    }
-    // add the edges
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-            if (*It2)
-                add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
-        }
-    }
-
-    if (!names.empty())
-        boost::write_graphviz(out, DepList, boost::make_label_writer(&(names[0])));
 }
 
 bool Document::saveAs(const char* file)
