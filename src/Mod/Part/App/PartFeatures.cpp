@@ -207,6 +207,7 @@ Loft::Loft()
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Solid,(false),"Loft",App::Prop_None,"Create solid");
     ADD_PROPERTY_TYPE(Ruled,(false),"Loft",App::Prop_None,"Ruled surface");
+    ADD_PROPERTY_TYPE(Closed,(false),"Loft",App::Prop_None,"Close Last to First Profile");
 }
 
 short Loft::mustExecute() const
@@ -216,6 +217,8 @@ short Loft::mustExecute() const
     if (Solid.isTouched())
         return 1;
     if (Ruled.isTouched())
+        return 1;
+    if (Closed.isTouched())
         return 1;
     return 0;
 }
@@ -262,9 +265,10 @@ App::DocumentObjectExecReturn *Loft::execute(void)
 
         Standard_Boolean isSolid = Solid.getValue() ? Standard_True : Standard_False;
         Standard_Boolean isRuled = Ruled.getValue() ? Standard_True : Standard_False;
+        Standard_Boolean isClosed = Closed.getValue() ? Standard_True : Standard_False;
 
         TopoShape myShape;
-        this->Shape.setValue(myShape.makeLoft(profiles, isSolid, isRuled));
+        this->Shape.setValue(myShape.makeLoft(profiles, isSolid, isRuled,isClosed));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
