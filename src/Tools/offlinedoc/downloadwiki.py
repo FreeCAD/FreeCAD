@@ -183,15 +183,15 @@ def getimagelinks(html):
 def cleanhtml(html):
     "cleans given html code from dirty script stuff"
     html = html.replace('\n','Wlinebreak') # removing linebreaks for regex processing
-    html = re.compile('(.*)<div[^>]+column-content+[^>]+>').sub('',html) # stripping before content
-    html = re.compile('<div[^>]+column-one+[^>]+>.*').sub('',html) # stripping after content
+    html = re.compile('(.*)<div id=\"content+[^>]+>').sub('',html) # stripping before content
+    html = re.compile('<div id="mw-head+[^>]+>.*').sub('',html) # stripping after content
     html = re.compile('<!--[^>]+-->').sub('',html) # removing comment tags
     html = re.compile('<script[^>]*>.*?</script>').sub('',html) # removing script tags
     html = re.compile('<!--\[if[^>]*>.*?endif\]-->').sub('',html) # removing IE tags
     html = re.compile('<div id="jump-to-nav"[^>]*>.*?</div>').sub('',html) # removing nav div
     html = re.compile('<h3 id="siteSub"[^>]*>.*?</h3>').sub('',html) # removing print subtitle
     html = re.compile('Retrieved from').sub('Online version:',html) # changing online title
-    html = re.compile('<div id="mw-normal-catlinks[^>]>.*?</div>').sub('',html) # removing catlinks
+    html = re.compile('<div id="mw-normal-catlinks.*?</div>').sub('',html) # removing catlinks
     html = re.compile('<div class="NavHead.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavContent.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavEnd.*?</div>').sub('',html) # removing nav stuff
@@ -278,12 +278,12 @@ def webroot(url):
 
 def output(html,page):
     "encapsulates raw html code into nice html body"
+    title = page.replace("_"," ")
     header = "<html><head>"
-    header += "<title>"
-    header += page
-    header += "</title>"
+    header += "<title>" + title + "</title>"
     header += "<link type='text/css' href='wiki.css' rel='stylesheet'>"
     header += "</head><body>"
+    header += "<h1>" + title + "</h1>"
     footer = "</body></html>"
     html = header+html+footer
     filename = local(page.replace("/","-"))
