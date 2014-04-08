@@ -150,10 +150,11 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action)
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
 
-    const int32_t* id = &(this->hl[0]);
     int num = (int)this->hl.size();
-
-    renderShape(static_cast<const SoGLCoordinateElement*>(coords), id, num);
+    if (num > 0) {
+        const int32_t* id = &(this->hl[0]);
+        renderShape(static_cast<const SoGLCoordinateElement*>(coords), id, num);
+    }
     state->pop();
 }
 
