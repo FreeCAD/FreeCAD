@@ -38,7 +38,7 @@ from urllib2 import urlopen, HTTPError
 
 URL = "http://www.freecadweb.org/wiki" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
-NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site'] # pages that won't be fetched (kept online)
+NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','Interesting_links','Syndication_feeds'] # pages that won't be fetched (kept online)
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
@@ -114,8 +114,10 @@ def cleanhtml(html):
     html = re.compile('<div class="NavHead.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavContent.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavEnd.*?</div>').sub('',html) # removing nav stuff
+    html = re.compile('<div class="mw-pt-translate-header.*?</div>').sub('',html) # removing translations links
     if not GETTRANSLATIONS:
         html = re.compile('<div class="languages.*?</div>').sub('',html) # removing translations links
+        html = re.compile('<div class="mw-pt-languages.*?</div>').sub('',html) # removing translations links
     html = re.compile('Wlinebreak').sub('\n',html) # restoring original linebreaks
     return html
     
@@ -140,6 +142,8 @@ def getlinks(html):
                 if not GETTRANSLATIONS:
                     NORETRIEVE.append(rg)
             pages.append(rg)
+            if not rg in NORETRIEVE:
+                print "got link: ",rg
     return pages
 
 def getimagelinks(html):
@@ -148,6 +152,7 @@ def getimagelinks(html):
 
 def fetchpage(page):
     "retrieves given page from the wiki"
+    print "fetching: ",page
     failcount = 0
     while failcount < MAXFAIL:
         try:

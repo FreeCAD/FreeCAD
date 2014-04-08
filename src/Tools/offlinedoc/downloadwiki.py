@@ -196,8 +196,10 @@ def cleanhtml(html):
     html = re.compile('<div class="NavContent.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavEnd.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="docnav.*?</div></div>').sub('',html) # removing docnav
+    html = re.compile('<div class="mw-pt-translate-header.*?</div>').sub('',html) # removing translations links
     if not GETTRANSLATIONS:
         html = re.compile('<div class="languages.*?</div>').sub('',html) # removing translations links
+        html = re.compile('<div class="mw-pt-languages.*?</div>').sub('',html) # removing translations links
     html = re.compile('Wlinebreak').sub('\n',html) # restoring original linebreaks
     return html
     
@@ -225,6 +227,7 @@ def cleanimagelinks(html,links=None):
 
 def fetchpage(page):
     "retrieves given page from the wiki"
+    print "fetching: ",page
     failcount = 0
     while failcount < MAXFAIL:
         try:
