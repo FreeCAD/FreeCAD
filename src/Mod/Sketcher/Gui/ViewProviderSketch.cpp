@@ -3297,11 +3297,11 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     ShowGrid.setValue(false);
     TightGrid.setValue(true);
 
-    edit->EditRoot->removeAllChildren();
-    pcRoot->removeChild(edit->EditRoot);
-
     if (edit->sketchHandler)
         deactivateHandler();
+
+    edit->EditRoot->removeAllChildren();
+    pcRoot->removeChild(edit->EditRoot);
 
     if (edit->visibleBeforeEdit)
         this->show();
