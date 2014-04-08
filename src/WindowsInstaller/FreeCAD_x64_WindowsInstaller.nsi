@@ -24,6 +24,7 @@
 # include the Version information
 !include Version.nsi
 !include "MUI2.nsh"
+!include "Sections.nsh"
 
 
 # All the other settings can be tweaked by editing the !defines at the top of this script
@@ -58,6 +59,7 @@ outFile "..\..\${INSTNAME}.${VERSIONBUILD}_x64_unstable_setup.exe"
 # rtf or txt file - remember if it is txt, it must be in the DOS text format (\r\n)
 !insertmacro MUI_PAGE_LICENSE "License.rtf"
 !insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
 
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -79,9 +81,11 @@ ${EndIf}
 function .onInit
 	setShellVarContext all
 	!insertmacro VerifyUserIsAdmin
+	Call unSelectPythonPath
 functionEnd
 
-section "install"
+section "FreeCAD (Required)"
+	SectionIn RO
 	# Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
 	setOutPath $INSTDIR\bin
 	# Files added here should be removed by the uninstaller (see section "uninstall")
@@ -127,9 +131,25 @@ section "install"
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "NoRepair" 1
 	# Set the INSTALLSIZE constant (!defined at the top of this script) so Add/Remove Programs can accurately report the size
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${FULLNAME}" "EstimatedSize" ${INSTALLSIZE}
+sectionEnd
+
+section "Add to PYTHONPATH" PythonPathSection
 	# Set PYTHONPATH for FreeCAD
 	WriteRegStr HKLM "Software\Python\PythonCore\2.7\PythonPath\${FULLNAME}" "" "$INSTDIR\bin"
 sectionEnd
+
+# http://forums.winamp.com/showthread.php?t=255747
+function unSelectPythonPath
+	# Unselect the PYTHONPATH option
+	!insertmacro UnselectSection ${PythonPathSection}
+functionEnd
+
+LangString DESC_PythonPathSection ${LANG_ENGLISH} "Add the FreeCAD installation directory to PYTHONPATH in the registry."
+
+!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+	!insertmacro MUI_DESCRIPTION_TEXT ${PythonPathSection} $(DESC_PythonPathSection)
+!insertmacro MUI_FUNCTION_DESCRIPTION_END
+
 
 # Uninstaller
 
