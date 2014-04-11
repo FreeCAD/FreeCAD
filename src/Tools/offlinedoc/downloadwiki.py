@@ -97,10 +97,6 @@ a:hover {
   font-size: 0.8em;
   }
 
-#toc,.docnav {
-  display: none;
-  }
-
 .ct, .ctTitle, .ctOdd, .ctEven th {
   text-align: left;
   width: 200px;
@@ -111,6 +107,7 @@ a:hover {
 
 def crawl():
     "downloads an entire wiki site"
+    global processed
     processed = []
     if VERBOSE: print "crawling ", URL, ", saving in ", FOLDER
     if not os.path.isdir(FOLDER): os.mkdir(FOLDER)
@@ -141,7 +138,6 @@ def crawl():
 def get(page):
     "downloads a single page, returns the other pages it links to"
     if page[-4:] in [".png",".jpg",".svg",".gif","jpeg"]:
-        print "getting image",page
         fetchimage(page)
     elif not exists(page):
         html = fetchpage(page)
@@ -151,7 +147,7 @@ def get(page):
         html = cleanimagelinks(html)
         output(html,page)
     else:
-        if VERBOSE: print "skipping",page
+        if VERBOSE: print "    skipping",page
 
 def getlinks(html):
     "returns a list of wikipage links in html file"
@@ -183,6 +179,7 @@ def getimagelinks(html):
 def cleanhtml(html):
     "cleans given html code from dirty script stuff"
     html = html.replace('\n','Wlinebreak') # removing linebreaks for regex processing
+    html = html.replace('\t','') # removing tab marks
     html = re.compile('(.*)<div id=\"content+[^>]+>').sub('',html) # stripping before content
     html = re.compile('<div id="mw-head+[^>]+>.*').sub('',html) # stripping after content
     html = re.compile('<!--[^>]+-->').sub('',html) # removing comment tags
@@ -195,7 +192,9 @@ def cleanhtml(html):
     html = re.compile('<div class="NavHead.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavContent.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavEnd.*?</div>').sub('',html) # removing nav stuff
-    html = re.compile('<div class="docnav.*?</div></div>').sub('',html) # removing docnav
+    html = re.compile('<table id="toc.*?</table>').sub('',html) # removing toc
+    html = re.compile('width=\"100%\" style=\"float: right; width: 230px; margin-left: 1em\"').sub('',html) # removing command box styling
+    html = re.compile('<div class="docnav.*?</div>Wlinebreak</div>').sub('',html) # removing docnav
     html = re.compile('<div class="mw-pt-translate-header.*?</div>').sub('',html) # removing translations links
     if not GETTRANSLATIONS:
         html = re.compile('<div class="languages.*?</div>').sub('',html) # removing translations links
@@ -227,7 +226,7 @@ def cleanimagelinks(html,links=None):
 
 def fetchpage(page):
     "retrieves given page from the wiki"
-    print "fetching: ",page
+    print "    fetching: ",page
     failcount = 0
     while failcount < MAXFAIL:
         try:
@@ -243,22 +242,25 @@ def fetchimage(imagelink):
         print "Skipping file page link"
         return
     filename = re.findall('.*/(.*)',imagelink)[0]
-    print "saving",filename
     if not exists(filename,image=True):
         failcount = 0
         while failcount < MAXFAIL:
             try:
-                if VERBOSE: print "Fetching " + filename
+                if VERBOSE: print "    fetching " + filename
                 data = (urlopen(webroot(URL) + imagelink).read())
                 path = local(filename,image=True)
                 file = open(path,'wb')
                 file.write(data)
                 file.close()
-                processed.append(filename)
-                return
             except:
                 failcount += 1
+            else:
+                processed.append(filename)
+                if VERBOSE: print "    saving",local(filename,image=True)
+                return
         print 'Error: unable to fetch file ' + filename
+    else:
+        if VERBOSE: print "    skipping",filename
 
 def local(page,image=False):
     "returns a local path for a given page/image"
@@ -281,13 +283,14 @@ def output(html,page):
     title = page.replace("_"," ")
     header = "<html><head>"
     header += "<title>" + title + "</title>"
+    header += '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'
     header += "<link type='text/css' href='wiki.css' rel='stylesheet'>"
     header += "</head><body>"
     header += "<h1>" + title + "</h1>"
     footer = "</body></html>"
     html = header+html+footer
     filename = local(page.replace("/","-"))
-    print "saving",filename
+    print "    saving",filename
     file = open(filename,'wb')
     file.write(html)
     file.close()
