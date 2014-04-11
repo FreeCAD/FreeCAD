@@ -319,19 +319,7 @@ add_library(FreeCADBase SHARED ${FreeCADBase_SRCS})
 
 target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
 
-# Note this is IDE specific, not necessarily platform specific
-if(MSVC)
-    set_target_properties(FreeCADBase PROPERTIES DEBUG_OUTPUT_NAME "FreeCADBaseD")
-    set_target_properties(FreeCADBase PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-    # dirty hack to avoid Debug/Release subdirectory
-    set_target_properties(FreeCADBase PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(FreeCADBase PROPERTIES DEBUG_OUTPUT_NAME "FreeCADBaseD")
-    set_target_properties(FreeCADBase PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-else(MSVC)
-    set_target_properties(FreeCADBase PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-    set_target_properties(FreeCADBase PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+SET_BIN_DIR(FreeCADBase "FreeCADBase" "/bin")
 
 if(WIN32)
     INSTALL(TARGETS FreeCADBase

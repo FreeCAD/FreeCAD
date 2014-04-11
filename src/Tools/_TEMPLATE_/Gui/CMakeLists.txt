@@ -37,20 +37,9 @@ fc_target_copy_resource(_TEMPLATE_Gui
     ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_
     InitGui.py)
 
-if(MSVC)
+SET_BIN_DIR(_TEMPLATE_Gui "_TEMPLATE_Gui" "/Mod/_TEMPLATE_")
+if(WIN32)
     set_target_properties(_TEMPLATE_Gui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(_TEMPLATE_Gui PROPERTIES DEBUG_OUTPUT_NAME "_TEMPLATE_Gui_d")
-    set_target_properties(_TEMPLATE_Gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
-    set_target_properties(_TEMPLATE_Gui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(_TEMPLATE_Gui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(_TEMPLATE_Gui PROPERTIES DEBUG_OUTPUT_NAME "_TEMPLATE_Gui_d")
-    set_target_properties(_TEMPLATE_Gui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
-    set_target_properties(_TEMPLATE_Gui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(_TEMPLATE_Gui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
-    set_target_properties(_TEMPLATE_Gui PROPERTIES PREFIX "")
-    set_target_properties(Fem PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
-
+endif(WIN32)
+    
 install(TARGETS _TEMPLATE_Gui DESTINATION lib)
