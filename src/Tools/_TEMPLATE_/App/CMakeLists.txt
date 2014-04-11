@@ -27,20 +27,9 @@ fc_target_copy_resource(_TEMPLATE_
     ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_
     Init.py)
 
-if(MSVC)
+SET_BIN_DIR(_TEMPLATE_ "_TEMPLATE_" "/Mod/_TEMPLATE_")
+if(WIN32)
     set_target_properties(_TEMPLATE_ PROPERTIES SUFFIX ".pyd")
-    set_target_properties(_TEMPLATE_ PROPERTIES DEBUG_OUTPUT_NAME "_TEMPLATE__d")
-    set_target_properties(_TEMPLATE_ PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
-    set_target_properties(_TEMPLATE_ PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(_TEMPLATE_ PROPERTIES SUFFIX ".pyd")
-    set_target_properties(_TEMPLATE_ PROPERTIES DEBUG_OUTPUT_NAME "_TEMPLATE__d")
-    set_target_properties(_TEMPLATE_ PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
-    set_target_properties(_TEMPLATE_ PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(_TEMPLATE_ PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_)
-    set_target_properties(_TEMPLATE_ PROPERTIES PREFIX "")
-    set_target_properties(Fem PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 install(TARGETS _TEMPLATE_ DESTINATION lib)
