@@ -351,20 +351,9 @@ fc_target_copy_resource(Mesh
     ${CMAKE_BINARY_DIR}/Mod/Mesh
     MeshTestsApp.py)
 
-if(MSVC)
+SET_BIN_DIR(Mesh "Mesh" "/Mod/Mesh")
+if(WIN32)
     set_target_properties(Mesh PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Mesh PROPERTIES DEBUG_OUTPUT_NAME "Mesh_d")
-    set_target_properties(Mesh PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Mesh)
-    set_target_properties(Mesh PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(Mesh PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Mesh PROPERTIES DEBUG_OUTPUT_NAME "Mesh_d")
-    set_target_properties(Mesh PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Mesh)
-    set_target_properties(Mesh PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(Mesh PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Mesh)
-    set_target_properties(Mesh PROPERTIES PREFIX "")
-    set_target_properties(Mesh PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS Mesh DESTINATION lib)

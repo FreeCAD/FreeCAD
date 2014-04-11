@@ -84,20 +84,9 @@ fc_target_copy_resource(RaytracingGui
     ${CMAKE_BINARY_DIR}/Mod/Raytracing
     InitGui.py)
 
-if(MSVC)
+SET_BIN_DIR(RaytracingGui "RaytracingGui" "/Mod/Raytracing")
+if(WIN32)
     set_target_properties(RaytracingGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(RaytracingGui PROPERTIES DEBUG_OUTPUT_NAME "RaytracingGui_d")
-    set_target_properties(RaytracingGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Raytracing)
-    set_target_properties(RaytracingGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(RaytracingGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(RaytracingGui PROPERTIES DEBUG_OUTPUT_NAME "RaytracingGui_d")
-    set_target_properties(RaytracingGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Raytracing)
-    set_target_properties(RaytracingGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(RaytracingGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Raytracing)
-    set_target_properties(RaytracingGui PROPERTIES PREFIX "")
-    set_target_properties(RaytracingGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS RaytracingGui DESTINATION lib)

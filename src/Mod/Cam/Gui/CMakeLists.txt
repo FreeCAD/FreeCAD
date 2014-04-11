@@ -71,20 +71,9 @@ fc_target_copy_resource(CamGui
     ${CMAKE_BINARY_DIR}/Mod/Cam
     InitGui.py)
 
-if(MSVC)
+SET_BIN_DIR(CamGui "CamGui" "/Mod/Cam")
+if(WIN32)
     set_target_properties(CamGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(CamGui PROPERTIES DEBUG_OUTPUT_NAME "CamGui_d")
-    set_target_properties(CamGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Cam)
-    set_target_properties(CamGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(CamGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(CamGui PROPERTIES DEBUG_OUTPUT_NAME "CamGui_d")
-    set_target_properties(CamGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Cam)
-    set_target_properties(CamGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(CamGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Cam)
-    set_target_properties(CamGui PROPERTIES PREFIX "")
-    SET_TARGET_PROPERTIES(CamGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS CamGui DESTINATION lib)

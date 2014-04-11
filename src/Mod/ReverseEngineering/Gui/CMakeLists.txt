@@ -46,22 +46,9 @@ fc_target_copy_resource(ReverseEngineeringGui
     ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering
     InitGui.py)
 
-if(MSVC)
+SET_BIN_DIR(ReverseEngineeringGui "ReverseEngineeringGui" "/Mod/ReverseEngineering")
+if(WIN32)
     set_target_properties(ReverseEngineeringGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(ReverseEngineeringGui PROPERTIES DEBUG_OUTPUT_NAME "ReverseEngineeringGui_d")
-    set_target_properties(ReverseEngineeringGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering)
-    set_target_properties(ReverseEngineeringGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(ReverseEngineeringGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(ReverseEngineeringGui PROPERTIES DEBUG_OUTPUT_NAME "ReverseEngineeringGui_d")
-    set_target_properties(ReverseEngineeringGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering)
-    set_target_properties(ReverseEngineeringGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(ReverseEngineeringGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering)
-    set_target_properties(ReverseEngineeringGui PROPERTIES PREFIX "")
-    set_target_properties(ReverseEngineeringGui
-                          PROPERTIES INSTALL_RPATH ${INSTALL_RPATH}
-    )
-endif(MSVC)
+endif(WIN32)
 
 install(TARGETS ReverseEngineeringGui DESTINATION lib)

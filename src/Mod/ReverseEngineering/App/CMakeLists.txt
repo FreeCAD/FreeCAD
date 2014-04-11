@@ -39,20 +39,9 @@ fc_target_copy_resource(ReverseEngineering
     ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering
     Init.py)
 
-if(MSVC)
+SET_BIN_DIR(ReverseEngineering "ReverseEngineering" "/Mod/ReverseEngineering")
+if(WIN32)
     set_target_properties(ReverseEngineering PROPERTIES SUFFIX ".pyd")
-    set_target_properties(ReverseEngineering PROPERTIES DEBUG_OUTPUT_NAME "ReverseEngineering_d")
-    set_target_properties(ReverseEngineering PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering)
-    set_target_properties(ReverseEngineering PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(ReverseEngineering PROPERTIES SUFFIX ".pyd")
-    set_target_properties(ReverseEngineering PROPERTIES DEBUG_OUTPUT_NAME "ReverseEngineering_d")
-    set_target_properties(ReverseEngineering PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering)
-    set_target_properties(ReverseEngineering PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(ReverseEngineering PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering)
-    set_target_properties(ReverseEngineering PROPERTIES PREFIX "")
-    set_target_properties(ReverseEngineering PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS ReverseEngineering DESTINATION lib)

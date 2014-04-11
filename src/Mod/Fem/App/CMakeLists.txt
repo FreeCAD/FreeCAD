@@ -155,21 +155,9 @@ fc_target_copy_resource(Fem
     ${FemScripts_SRCS}
     )
 
-	
-if(MSVC)
+SET_BIN_DIR(Fem "Fem" "/Mod/Fem")
+if(WIN32)
     set_target_properties(Fem PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Fem PROPERTIES DEBUG_OUTPUT_NAME "Fem_d")
-    set_target_properties(Fem PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Fem)
-    set_target_properties(Fem PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(Fem PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Fem PROPERTIES DEBUG_OUTPUT_NAME "Fem_d")
-    set_target_properties(Fem PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Fem)
-    set_target_properties(Fem PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(Fem PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Fem)
-    set_target_properties(Fem PROPERTIES PREFIX "")
-    set_target_properties(Fem PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS Fem DESTINATION lib)

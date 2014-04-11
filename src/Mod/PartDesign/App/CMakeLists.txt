@@ -126,21 +126,10 @@ fc_target_copy_resource(PartDesign
     ${CMAKE_BINARY_DIR}/Mod/PartDesign
     ${PartDesign_Scripts})
 
-if(MSVC)
+SET_BIN_DIR(PartDesign "PartDesign" "/Mod/PartDesign")
+if(WIN32)
     set_target_properties(PartDesign PROPERTIES SUFFIX ".pyd")
-    set_target_properties(PartDesign PROPERTIES DEBUG_OUTPUT_NAME "PartDesign_d")
-    set_target_properties(PartDesign PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
-    set_target_properties(PartDesign PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(PartDesign PROPERTIES SUFFIX ".pyd")
-    set_target_properties(PartDesign PROPERTIES DEBUG_OUTPUT_NAME "PartDesign_d")
-    set_target_properties(PartDesign PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
-    set_target_properties(PartDesign PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(PartDesign PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/PartDesign)
-    set_target_properties(PartDesign PROPERTIES PREFIX "")
-    set_target_properties(PartDesign PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/Mod/PartDesign)
-endif(MSVC)
+endif(WIN32)
 
 # The PartDesign module must go to where the __init__.py file is
 INSTALL(TARGETS PartDesign DESTINATION Mod/PartDesign)

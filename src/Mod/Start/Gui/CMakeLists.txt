@@ -75,20 +75,9 @@ fc_target_copy_resource(StartGui
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start
     ${StartPage_Resources})
 
-if(MSVC)
+SET_BIN_DIR(StartGui "StartGui" "/Mod/Start")
+if(WIN32)
     set_target_properties(StartGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(StartGui PROPERTIES DEBUG_OUTPUT_NAME "StartGui_d")
-    set_target_properties(StartGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Start)
-    set_target_properties(StartGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(StartGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(StartGui PROPERTIES DEBUG_OUTPUT_NAME "StartGui_d")
-    set_target_properties(StartGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Start)
-    set_target_properties(StartGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(StartGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Start)
-    set_target_properties(StartGui PROPERTIES PREFIX "")
-    set_target_properties(StartGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS StartGui DESTINATION lib)

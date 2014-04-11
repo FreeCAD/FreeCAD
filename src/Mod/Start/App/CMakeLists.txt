@@ -29,20 +29,9 @@ fc_target_copy_resource(Start
     ${CMAKE_BINARY_DIR}/Mod/Start
     Init.py)
 
-if(MSVC)
+SET_BIN_DIR(Start "Start" "/Mod/Start")
+if(WIN32)
     set_target_properties(Start PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Start PROPERTIES DEBUG_OUTPUT_NAME "Start_d")
-    set_target_properties(Start PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Start)
-    set_target_properties(Start PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(Start PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Start PROPERTIES DEBUG_OUTPUT_NAME "Start_d")
-    set_target_properties(Start PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Start)
-    set_target_properties(Start PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(Start PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Start)
-    set_target_properties(Start PROPERTIES PREFIX "")
-    set_target_properties(Start PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS Start DESTINATION lib)
