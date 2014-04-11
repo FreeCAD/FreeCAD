@@ -59,20 +59,9 @@ fc_target_copy_resource(InspectionGui
     ${CMAKE_BINARY_DIR}/Mod/Inspection
     InitGui.py)
 
-if(MSVC)
+SET_BIN_DIR(InspectionGui "InspectionGui" "/Mod/Inspection")
+if(WIN32)
     set_target_properties(InspectionGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(InspectionGui PROPERTIES DEBUG_OUTPUT_NAME "InspectionGui_d")
-    set_target_properties(InspectionGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Inspection)
-    set_target_properties(InspectionGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(InspectionGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(InspectionGui PROPERTIES DEBUG_OUTPUT_NAME "InspectionGui_d")
-    set_target_properties(InspectionGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Inspection)
-    set_target_properties(InspectionGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(InspectionGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Inspection)
-    set_target_properties(InspectionGui PROPERTIES PREFIX "")
-    set_target_properties(InspectionGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS InspectionGui DESTINATION lib)

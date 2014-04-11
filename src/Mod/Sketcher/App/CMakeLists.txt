@@ -117,20 +117,9 @@ fc_target_copy_resource(Sketcher
     ${CMAKE_BINARY_DIR}/Mod/Sketcher
     ${Sketcher_Scripts})
 
-if(MSVC)
+SET_BIN_DIR(Sketcher "Sketcher" "/Mod/Sketcher")
+if(WIN32)
     set_target_properties(Sketcher PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Sketcher PROPERTIES DEBUG_OUTPUT_NAME "Sketcher_d")
-    set_target_properties(Sketcher PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Sketcher)
-    set_target_properties(Sketcher PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(Sketcher PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Sketcher PROPERTIES DEBUG_OUTPUT_NAME "Sketcher_d")
-    set_target_properties(Sketcher PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Sketcher)
-    set_target_properties(Sketcher PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(Sketcher PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Sketcher)
-    set_target_properties(Sketcher PROPERTIES PREFIX "")
-    set_target_properties(Sketcher PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS Sketcher DESTINATION lib)

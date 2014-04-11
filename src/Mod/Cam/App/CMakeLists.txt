@@ -94,20 +94,9 @@ fc_target_copy_resource(Cam
     ${CMAKE_BINARY_DIR}/Mod/Cam
     Init.py)
 
-if(MSVC)
+SET_BIN_DIR(Cam "Cam" "/Mod/Cam")
+if(WIN32)
     set_target_properties(Cam PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Cam PROPERTIES DEBUG_OUTPUT_NAME "Cam_d")
-    set_target_properties(Cam PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Cam)
-    set_target_properties(Cam PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(Image PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Image PROPERTIES DEBUG_OUTPUT_NAME "Cam_d")
-    set_target_properties(Image PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Cam)
-    set_target_properties(Image PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(Cam PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Cam)
-    set_target_properties(Cam PROPERTIES PREFIX "")
-    SET_TARGET_PROPERTIES(Cam PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS Cam DESTINATION lib)

@@ -204,20 +204,9 @@ fc_target_copy_resource(FemGui
     MechanicalAnalysis.ui
     )
 
-if(MSVC)
+SET_BIN_DIR(FemGui "FemGui" "/Mod/Fem")
+if(WIN32)
     set_target_properties(FemGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(FemGui PROPERTIES DEBUG_OUTPUT_NAME "FemGui_d")
-    set_target_properties(FemGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Fem)
-    set_target_properties(FemGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(FemGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(FemGui PROPERTIES DEBUG_OUTPUT_NAME "FemGui_d")
-    set_target_properties(FemGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Fem)
-    set_target_properties(FemGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(FemGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Fem)
-    set_target_properties(FemGui PROPERTIES PREFIX "")
-    set_target_properties(FemGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS FemGui DESTINATION lib)

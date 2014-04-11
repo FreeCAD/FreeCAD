@@ -230,20 +230,9 @@ fc_target_copy_resource(PartGui
     ${CMAKE_BINARY_DIR}/Mod/Part
     ${PartGui_Scripts})
 
-if(MSVC)
+SET_BIN_DIR(PartGui "PartGui" "/Mod/Part")
+if(WIN32)
     set_target_properties(PartGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(PartGui PROPERTIES DEBUG_OUTPUT_NAME "PartGui_d")
-    set_target_properties(PartGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Part)
-    set_target_properties(PartGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(PartGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(PartGui PROPERTIES DEBUG_OUTPUT_NAME "PartGui_d")
-    set_target_properties(PartGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Part)
-    set_target_properties(PartGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(PartGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Part)
-    set_target_properties(PartGui PROPERTIES PREFIX "")
-    set_target_properties(PartGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS PartGui DESTINATION lib)

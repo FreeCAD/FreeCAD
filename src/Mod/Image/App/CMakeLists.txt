@@ -37,20 +37,9 @@ fc_target_copy_resource(Image
     ${CMAKE_BINARY_DIR}/Mod/Image
     Init.py)
 
-if(MSVC)
+SET_BIN_DIR(Image "Image" "/Mod/Image")
+if(WIN32)
     set_target_properties(Image PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Image PROPERTIES DEBUG_OUTPUT_NAME "Image_d")
-    set_target_properties(Image PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Image)
-    set_target_properties(Image PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(Image PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Image PROPERTIES DEBUG_OUTPUT_NAME "Image_d")
-    set_target_properties(Image PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Image)
-    set_target_properties(Image PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(Image PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Image)
-    set_target_properties(Image PROPERTIES PREFIX "")
-    set_target_properties(Image PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS Image DESTINATION lib)

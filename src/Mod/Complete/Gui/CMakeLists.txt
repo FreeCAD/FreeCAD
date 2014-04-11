@@ -36,20 +36,9 @@ fc_target_copy_resource(CompleteGui
     ${CMAKE_BINARY_DIR}/Mod/Complete
     InitGui.py)
 
-if(MSVC)
+SET_BIN_DIR(CompleteGui "CompleteGui" "/Mod/Complete")
+if(WIN32)
     set_target_properties(CompleteGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(CompleteGui PROPERTIES DEBUG_OUTPUT_NAME "CompleteGui_d")
-    set_target_properties(CompleteGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Complete)
-    set_target_properties(CompleteGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(CompleteGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(CompleteGui PROPERTIES DEBUG_OUTPUT_NAME "CompleteGui_d")
-    set_target_properties(CompleteGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Complete)
-    set_target_properties(CompleteGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(CompleteGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Complete)
-    set_target_properties(CompleteGui PROPERTIES PREFIX "")
-    set_target_properties(CompleteGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 install(TARGETS CompleteGui DESTINATION lib)
