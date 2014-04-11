@@ -204,6 +204,7 @@ MACRO(GET_MSVC_PRECOMPILED_SOURCE PrecompiledSource SourcesVar)
   ENDIF(MSVC)
 ENDMACRO(GET_MSVC_PRECOMPILED_SOURCE)
 
+# Macro to replace all the binary output locations
 MACRO(SET_BIN_DIR ProjectName OutputName OutputDir)
     set_target_properties(${ProjectName} PROPERTIES OUTPUT_NAME ${OutputName})
     if(WIN32)
@@ -215,6 +216,7 @@ MACRO(SET_BIN_DIR ProjectName OutputName OutputDir)
     endif(WIN32)
 
     if(MSVC_IDE)
+        # dirty hack to avoid Debug/Release subdirectory
         set_target_properties(${ProjectName} PROPERTIES PREFIX "../")
     endif(MSVC_IDE)
 ENDMACRO(SET_BIN_DIR)

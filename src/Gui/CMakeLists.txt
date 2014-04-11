@@ -932,19 +932,7 @@ add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
 
 target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
 
-# Note this is IDE specific, not necessarily platform specific
-if(MSVC)
-    set_target_properties(FreeCADGui PROPERTIES DEBUG_OUTPUT_NAME "FreeCADGuiD")
-    set_target_properties(FreeCADGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-    # dirty hack to avoid Debug/Release subdirectory
-    set_target_properties(FreeCADGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(FreeCADGui PROPERTIES DEBUG_OUTPUT_NAME "FreeCADGuiD")
-    set_target_properties(FreeCADGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-else(MSVC)
-    set_target_properties(FreeCADGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-    set_target_properties(FreeCADGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+SET_BIN_DIR(FreeCADGui "FreeCADGui" "/bin")
 
 if(WIN32)
     INSTALL(TARGETS FreeCADGui
