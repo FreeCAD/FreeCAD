@@ -46,20 +46,9 @@ fc_target_copy_resource(Web
     ${CMAKE_BINARY_DIR}/Mod/Web
     Init.py)
 
-if(MSVC)
+SET_BIN_DIR(Web "Web" "/Mod/Web")
+if(WIN32)
     set_target_properties(Web PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Web PROPERTIES DEBUG_OUTPUT_NAME "Web_d")
-    set_target_properties(Web PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Web)
-    set_target_properties(Web PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(Web PROPERTIES SUFFIX ".pyd")
-    set_target_properties(Web PROPERTIES DEBUG_OUTPUT_NAME "Web_d")
-    set_target_properties(Web PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Web)
-    set_target_properties(Web PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(Web PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Web)
-    set_target_properties(Web PROPERTIES PREFIX "")
-    set_target_properties(Web PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 install(TARGETS Web DESTINATION lib)

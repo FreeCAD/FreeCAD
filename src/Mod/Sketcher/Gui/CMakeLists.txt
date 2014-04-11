@@ -114,20 +114,9 @@ fc_target_copy_resource(SketcherGui
     ${CMAKE_BINARY_DIR}/Mod/Sketcher
     ${SketcherGui_Scripts})
 
-if(MSVC)
+SET_BIN_DIR(SketcherGui "SketcherGui" "/Mod/Sketcher")
+if(WIN32)
     set_target_properties(SketcherGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(SketcherGui PROPERTIES DEBUG_OUTPUT_NAME "SketcherGui_d")
-    set_target_properties(SketcherGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Sketcher)
-    set_target_properties(SketcherGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(SketcherGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(SketcherGui PROPERTIES DEBUG_OUTPUT_NAME "SketcherGui_d")
-    set_target_properties(SketcherGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Sketcher)
-    set_target_properties(SketcherGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(SketcherGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Sketcher)
-    set_target_properties(SketcherGui PROPERTIES PREFIX "")
-    set_target_properties(SketcherGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS SketcherGui DESTINATION lib)

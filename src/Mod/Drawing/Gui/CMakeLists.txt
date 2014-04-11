@@ -95,20 +95,9 @@ fc_target_copy_resource(DrawingGui
     ${CMAKE_BINARY_DIR}/Mod/Drawing
     InitGui.py)
 
-if(MSVC)
+SET_BIN_DIR(DrawingGui "DrawingGui" "/Mod/Drawing")
+if(WIN32)
     set_target_properties(DrawingGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(DrawingGui PROPERTIES DEBUG_OUTPUT_NAME "DrawingGui_d")
-    set_target_properties(DrawingGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Drawing)
-    set_target_properties(DrawingGui PROPERTIES PREFIX "../")
-elseif(MINGW)
-    set_target_properties(DrawingGui PROPERTIES SUFFIX ".pyd")
-    set_target_properties(DrawingGui PROPERTIES DEBUG_OUTPUT_NAME "DrawingGui_d")
-    set_target_properties(DrawingGui PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Drawing)
-    set_target_properties(DrawingGui PROPERTIES PREFIX "")
-else(MSVC)
-    set_target_properties(DrawingGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Drawing)
-    set_target_properties(DrawingGui PROPERTIES PREFIX "")
-    set_target_properties(DrawingGui PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-endif(MSVC)
+endif(WIN32)
 
 INSTALL(TARGETS DrawingGui DESTINATION lib)
