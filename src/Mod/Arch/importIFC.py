@@ -32,7 +32,7 @@ __url__ = "http://www.freecadweb.org"
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
 SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp"
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
-ADDPLACEMENT = False # if True, placements get computed (only for newer ifcopenshell)
+ADDPLACEMENT = True # if True, placements get computed (only for newer ifcopenshell)
 # end config
 
 if open.__module__ == '__builtin__':
@@ -106,11 +106,11 @@ def read(filename):
         # use the IfcOpenShell parser
         
         # check for IFcOpenShellVersion
-        global IOC_ADVANCED
+        global IFCOPENSHELL5
         if hasattr(IfcImport,"IfcFile"):
-            IOC_ADVANCED = True
+            IFCOPENSHELL5 = True
         else:
-            IOC_ADVANCED = False
+            IFCOPENSHELL5 = False
         
         # preparing IfcOpenShell
         if DEBUG: global ifcObjects,ifcParents
@@ -122,8 +122,10 @@ def read(filename):
         else:
             SKIP.append("IfcOpeningElement")
         useShapes = False
-        if IOC_ADVANCED:
+        if IFCOPENSHELL5:
             useShapes = True
+            if hasattr(IfcImport,"clean"):
+                IfcImport.clean()
         elif hasattr(IfcImport,"USE_BREP_DATA"):
             IfcImport.Settings(IfcImport.USE_BREP_DATA,True)
             useShapes = True
@@ -131,7 +133,7 @@ def read(filename):
             if DEBUG: print "Warning: IfcOpenShell version very old, unable to handle Brep data"
 
         # opening file
-        if IOC_ADVANCED:
+        if IFCOPENSHELL5:
             global ifc
             ifc = IfcImport.open(filename)
             objects = ifc.by_type("IfcProduct")
@@ -149,7 +151,7 @@ def read(filename):
         # processing geometry
         idx = 0
         while True:
-            if IOC_ADVANCED:
+            if IFCOPENSHELL5:
                 obj = objects[idx]
                 idx += 1
                 objid = int(str(obj).split("=")[0].strip("#"))
@@ -265,7 +267,7 @@ def read(filename):
                 ifcObjects[objid] = nobj
                 processedIds.append(objid)
             
-            if IOC_ADVANCED:
+            if IFCOPENSHELL5:
                 if idx >= len(objects):
                     break
             else:
@@ -297,7 +299,7 @@ def read(filename):
                             parent = ifcObjects[grandparent_id]
             else:
                 # creating parent if needed
-                if IOC_ADVANCED:
+                if IFCOPENSHELL5:
                     parent_ifcobj = ifc.by_id(parent_id)
                     parentid = int(str(obj).split("=")[0].strip("#"))
                     parentname = obj.get_argument(obj.get_argument_index("Name"))
@@ -327,7 +329,7 @@ def read(filename):
                     if DEBUG: print "Fixme: skipping unhandled parent: ", parentid, " ", parenttype
                     parent = None
                 # registering object number and parent
-                if not IOC_ADVANCED:
+                if not IFCOPENSHELL5:
                     if parent_ifcobj.parent_id > 0:
                             ifcParents[parentid] = [parent_ifcobj.parent_id,True]
                             parents_temp[parentid] = [parent_ifcobj.parent_id,True]
@@ -343,7 +345,7 @@ def read(filename):
                     else:
                         if DEBUG: print "removing ",ifcObjects[id].Name, " from ",parent.Name
                         ArchCommands.removeComponents(ifcObjects[id],parent)
-        if not IOC_ADVANCED:
+        if not IFCOPENSHELL5:
             IfcImport.CleanUp()
         
     else:
@@ -420,8 +422,6 @@ def makeWall(entity,shape=None,name="Wall"):
                 body.Mesh = shape
             wall = Arch.makeWall(body,name=name)
             wall.Label = name
-            if IOC_ADVANCED and ADDPLACEMENT:
-                wall.Placement = getPlacement(getAttr(entity,"ObjectPlacement"))
             if DEBUG: print "made wall object ",entity,":",wall
             return wall
             
@@ -468,7 +468,7 @@ def makeWindow(entity,shape=None,name="Window"):
                 window = Arch.makeWindow(name=name)
                 window.Shape = shape
                 window.Label = name
-                if IOC_ADVANCED and ADDPLACEMENT:
+                if IFCOPENSHELL5 and ADDPLACEMENT:
                     window.Placement = getPlacement(getAttr(entity,"ObjectPlacement"))
                 if DEBUG: print "made window object  ",entity,":",window
                 return window
@@ -517,9 +517,6 @@ def makeStructure(entity,shape=None,ifctype=None,name="Structure"):
                 structure.Role = "Slab"
             elif ifctype == "IfcFooting":
                 structure.Role = "Foundation"
-            print "current placement: ",shape.Placement
-            if IOC_ADVANCED and ADDPLACEMENT:
-                structure.Placement = getPlacement(getAttr(entity,"ObjectPlacement"))
             if DEBUG: print "made structure object  ",entity,":",structure," (type: ",ifctype,")"
             return structure
             
@@ -603,7 +600,7 @@ def makeRoof(entity,shape=None,name="Roof"):
 
 def getMesh(obj):
     "gets mesh and placement from an IfcOpenShell object"
-    if IOC_ADVANCED:
+    if IFCOPENSHELL5:
         return None,None
         print "fixme: mesh data not yet supported" # TODO implement this with OCC tessellate
     import Mesh
@@ -635,7 +632,7 @@ def getShape(obj,objid):
     import Part
     sh=Part.Shape()
     brep_data = None
-    if IOC_ADVANCED:
+    if IFCOPENSHELL5:
         try:
             brep_data = IfcImport.create_shape(obj)
         except:
@@ -657,6 +654,9 @@ def getShape(obj,objid):
         except:
             print "Error: malformed shape"
             return None
+        else:
+            if IFCOPENSHELL5 and ADDPLACEMENT:
+                sh.Placement = getPlacement(getAttr(obj,"ObjectPlacement"))
     if not sh.Solids:
         # try to extract a solid shape
         if sh.Faces:
@@ -671,7 +671,7 @@ def getShape(obj,objid):
                 if DEBUG: print "failed to retrieve solid from object ",objid
         else:
             if DEBUG: print "object ", objid, " doesn't contain any geometry"
-    if not IOC_ADVANCED:
+    if not IFCOPENSHELL5:
         m = obj.matrix
         mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
                              m[1], m[4], m[7], m[10],
@@ -688,7 +688,7 @@ def getPlacement(entity):
     if DEBUG: print "    getting placement ",entity
     if not entity: 
         return None
-    if IOC_ADVANCED:
+    if IFCOPENSHELL5:
         if isinstance(entity,int):
             entity = ifc.by_id(entity)
         entitytype = str(entity).split("=")[1].split("(")[0].upper()
@@ -721,7 +721,7 @@ def getPlacement(entity):
     
 def getAttr(entity,attr):
     "returns the given attribute from the given entity"
-    if IOC_ADVANCED:
+    if IFCOPENSHELL5:
         if isinstance(entity,int):
             entity = ifc.by_id(entity)
         i = entity.get_argument_index(attr)
@@ -732,7 +732,7 @@ def getAttr(entity,attr):
 def getVector(entity):
     "returns a vector from the given entity"
     if DEBUG: print "    getting point from ",entity
-    if IOC_ADVANCED:
+    if IFCOPENSHELL5:
         if isinstance(entity,int):
             entity = ifc.by_id(entity)
         entitytype = str(entity).split("=")[1].split("(")[0].upper()
