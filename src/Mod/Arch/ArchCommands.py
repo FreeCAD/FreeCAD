@@ -87,16 +87,17 @@ def addComponents(objectsList,host):
         if hasattr(host,"Axes"):
             x = host.Axes
         for o in objectsList:
-            if DraftGeomUtils.isValidPath(o.Shape) and (hostType == "Structure"):
-                if o.Support == host:
-                    o.Support = None
-                host.Tool = o
-            elif Draft.getType(o) == "Axis":
-                if not o in x:
-                    x.append(o) 
-            elif not o in a:
-                if hasattr(o,"Shape"):
-                    a.append(o)
+            if o.isDerivedFrom("Part::Feature"):
+                if DraftGeomUtils.isValidPath(o.Shape) and (hostType == "Structure"):
+                    if o.Support == host:
+                        o.Support = None
+                    host.Tool = o
+                elif Draft.getType(o) == "Axis":
+                    if not o in x:
+                        x.append(o) 
+                elif not o in a:
+                    if hasattr(o,"Shape"):
+                        a.append(o)
         host.Additions = a
         if hasattr(host,"Axes"):
             host.Axes = x

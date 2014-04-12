@@ -331,6 +331,7 @@ class Component:
     def processSubShapes(self,obj,base,pl=None):
         "Adds additions and subtractions to a base shape"
         import Draft,Part
+        #print "Processing subshapes of ",obj.Label, " : ",obj.Additions
         
         if pl:
             if pl.isNull():
@@ -342,43 +343,46 @@ class Component:
         # treat additions
         for o in obj.Additions:
             
-            if base:
+            if not base:
+                if o.isDerivedFrom("Part::Feature"):
+                    base = o.Shape
+            else:             
                 if base.isNull():
-                    base = None
+                    if o.isDerivedFrom("Part::Feature"):
+                        base = o.Shape
+                else:  
+                    # special case, both walls with coinciding endpoints
+                    import ArchWall
+                    js = ArchWall.mergeShapes(o,obj)
+                    if js:
+                        add = js.cut(base)
+                        if pl:
+                            add.Placement = add.Placement.multiply(pl)
+                        base = base.fuse(add)
 
-            if base:     
-                # special case, both walls with coinciding endpoints
-                import ArchWall
-                js = ArchWall.mergeShapes(o,obj)
-                if js:
-                    add = js.cut(base)
-                    if pl:
-                        add.Placement = add.Placement.multiply(pl)
-                    base = base.fuse(add)
-
-                elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
-                    f = o.Proxy.getSubVolume(o)
-                    if f:
-                        if base.Solids and f.Solids:
-                            if pl:
-                                f.Placement = f.Placement.multiply(pl)
-                            base = base.cut(f)
-                            
-                elif o.isDerivedFrom("Part::Feature"):
-                    if o.Shape:
-                        if not o.Shape.isNull():
-                            if o.Shape.Solids:
-                                s = o.Shape.copy()
+                    elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
+                        f = o.Proxy.getSubVolume(o)
+                        if f:
+                            if base.Solids and f.Solids:
                                 if pl:
-                                    s.Placement = s.Placement.multiply(pl)
-                                if base:
-                                    if base.Solids:
-                                        try:
-                                            base = base.fuse(s)
-                                        except:
-                                            print "Arch: unable to fuse object ",obj.Name, " with ", o.Name
-                                else:
-                                    base = s
+                                    f.Placement = f.Placement.multiply(pl)
+                                base = base.cut(f)
+                                
+                    elif o.isDerivedFrom("Part::Feature"):
+                        if o.Shape:
+                            if not o.Shape.isNull():
+                                if o.Shape.Solids:
+                                    s = o.Shape.copy()
+                                    if pl:
+                                        s.Placement = s.Placement.multiply(pl)
+                                    if base:
+                                        if base.Solids:
+                                            try:
+                                                base = base.fuse(s)
+                                            except:
+                                                print "Arch: unable to fuse object ",obj.Name, " with ", o.Name
+                                    else:
+                                        base = s
         
         # treat subtractions
         for o in obj.Subtractions:

@@ -32,7 +32,7 @@ __url__ = "http://www.freecadweb.org"
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
 SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp"
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
-ADDPLACEMENT = True # if True, placements get computed (only for newer ifcopenshell)
+ADDPLACEMENT = False # if True, placements get computed (only for newer ifcopenshell)
 # end config
 
 if open.__module__ == '__builtin__':
