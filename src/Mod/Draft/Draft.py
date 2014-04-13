@@ -2614,7 +2614,7 @@ def downgrade(objects,delete=False,force=None):
     if not isinstance(objects,list):
         objects = [objects]
 
-    global deleteList, newList
+    global deleteList, addList
     deleteList = []
     addList = []
         
@@ -2753,7 +2753,10 @@ def downgrade(objects,delete=False,force=None):
         # special case, we have one parametric object: we "de-parametrize" it
         elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
             result = shapify(objects[0])
-            if result: msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
+            if result: 
+                msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
+                addList.append(result)
+                #deleteList.append(objects[0])
 
         # we have only 2 objects: cut 2nd from 1st
         elif len(objects) == 2:
