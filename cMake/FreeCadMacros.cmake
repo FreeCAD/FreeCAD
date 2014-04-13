@@ -211,8 +211,25 @@ MACRO(SET_BIN_DIR ProjectName OutputName OutputDir)
         set_target_properties(${ProjectName} PROPERTIES DEBUG_OUTPUT_NAME "${OutputName}_d")
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}${OutputDir})
     else(WIN32)
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}${OutputDir})
-        set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}${OutputDir})
+        SET(COND_IS_FREECAD_BIN ${OutputName} STREQUAL "FreeCADMain" OR
+                                ${OutputName} STREQUAL "FreeCADMainCmd")
+        SET(COND_IS_FREECAD_LIB ${OutputName} STREQUAL "FreeCADApp"    OR
+                                ${OutputName} STREQUAL "FreeCADBase"   OR
+                                ${OutputName} STREQUAL "FreeCADGui"    OR
+                                ${OutputName} STREQUAL "FreeCADMainPy" OR
+                                ${OutputName} STREQUAL "FreeCADGuiPy")
+
+        IF(${COND_IS_FREECAD_BIN})
+            set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}${OutputDir})
+        ELSEIF(${COND_IS_FREECAD_LIB})
+            set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+        ELSE(${COND_IS_FREECAD_BIN})
+            set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}${OutputDir})
+        ENDIF(${COND_IS_FREECAD_BIN})
+        
+        set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+        UNSET(COND_IS_FREECAD_BIN)
+        UNSET(COND_IS_FREECAD_LIB)
     endif(WIN32)
 
     if(MSVC_IDE)
