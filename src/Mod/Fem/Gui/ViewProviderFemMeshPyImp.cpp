@@ -44,6 +44,8 @@ App::Color calcColor(double value,double min, double max)
         return App::Color (0.0,0.0,1.0);    
     if (value > max)
         return App::Color (1.0,0.0,0.0);
+    if (value == 0.0)
+        return App::Color (0.0,1.0,0.0);
     if ( value > max/2.0 )
         return App::Color (1.0,1-((value-(max/2.0)) / (max/2.0)),0.0);
     if ( value > 0.0 )
