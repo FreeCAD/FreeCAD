@@ -35,11 +35,11 @@ import ImportGui
 
 ## path to table file (simple comma separated values)
 
-model_tab_filename = FreeCAD.getHomePath()+ "Mod/Idf/idflibs/footprints_models.csv"
+model_tab_filename = FreeCAD.getHomePath()+ "Mod/Idf/Idflibs/footprints_models.csv"
 
 ## path to directory containing step models
 
-step_path=FreeCAD.getHomePath()+ "Mod/Idf/idflibs/"
+step_path=FreeCAD.getHomePath()+ "Mod/Idf/Idflibs/"
 
 ignore_hole_size=0.5 # size in MM to prevent huge number of drilled holes
 EmpDisplayMode=2 # 0='Flat Lines', 1='Shaded', 2='Wireframe', 3='Points'; recommended 2 or 0
