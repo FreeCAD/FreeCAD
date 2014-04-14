@@ -1539,8 +1539,8 @@ def draftify(objectslist,makeblock=False,delete=True):
             return newobjlist[0]
         return newobjlist
 
-def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None):
-    '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle]):
+def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None):
+    '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color]):
     returns a string containing a SVG representation of the given object,
     with the given linewidth and fontsize (used if the given object contains
     any text). You can also supply an arbitrary projection vector. the
@@ -1558,6 +1558,12 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 plane.alignToPointAndAxis_SVG(Vector(0,0,0),direction.negative().negative(),0)
         elif isinstance(direction,WorkingPlane.plane):
             plane = direction
+    stroke = "#000000"
+    if color:
+        stroke = getrgb(color)
+    elif gui:
+        if hasattr(obj.ViewObject,"LineColor"):
+            stroke = getrgb(obj.ViewObject.LineColor)
 
     def getLineStyle():
         "returns a linestyle"
@@ -1673,14 +1679,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if obj.ViewObject.ArrowType == "Circle":
             svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
             svg += '" r="'+str(arrowsize)+'" '
-            svg += 'fill="none" stroke="'+ getrgb(color) + '" '
+            svg += 'fill="none" stroke="'+ color + '" '
             svg += 'style="stroke-width:'+ str(linewidth) + ';stroke-miterlimit:4;stroke-dasharray:none" '
             svg += 'freecad:skip="1"'
             svg += '/>\n'
         elif obj.ViewObject.ArrowType == "Dot":
             svg += '<circle cx="'+str(point.x)+'" cy="'+str(point.y)
             svg += '" r="'+str(arrowsize)+'" '
-            svg += 'fill="'+ getrgb(color) +'" stroke="none" '
+            svg += 'fill="'+ color +'" stroke="none" '
             svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
             svg += 'freecad:skip="1"'
             svg += '/>\n'
@@ -1689,7 +1695,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += ','+ str(point.x) + ',' + str(point.y) + ') '
             svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
             svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
-            svg += 'fill="'+ getrgb(color) +'" stroke="none" '
+            svg += 'fill="'+ color +'" stroke="none" '
             svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
             svg += 'd="M 0 0 L 4 1 L 4 -1 Z"/>\n'
         else:
@@ -1698,7 +1704,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         
     def getText(color,fontsize,fontname,angle,base,text):
         svg = '<text fill="'
-        svg += getrgb(color) +'" font-size="'
+        svg += color +'" font-size="'
         svg += str(fontsize) + '" '
         svg += 'style="text-anchor:middle;text-align:center;'
         svg += 'font-family:'+ fontname +'" '
@@ -1759,7 +1765,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg += 'L '+str(p4.x)+' '+str(p4.y)+'" ' 
 
                 svg += 'fill="none" stroke="'
-                svg += getrgb(obj.ViewObject.LineColor) + '" '
+                svg += stroke + '" '
                 svg += 'stroke-width="' + str(linewidth) + ' px" '
                 svg += 'style="stroke-width:'+ str(linewidth)
                 svg += ';stroke-miterlimit:4;stroke-dasharray:none" '
@@ -1774,11 +1780,11 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     if hasattr(obj.ViewObject,"FlipArrows"):
                         if obj.ViewObject.FlipArrows:
                             angle = angle+math.pi
-                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,obj.ViewObject.LineColor,linewidth,angle)
-                    svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,obj.ViewObject.LineColor,linewidth,angle+math.pi)
+                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle)
+                    svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle+math.pi)
                 
                 # drawing text
-                svg += getText(obj.ViewObject.LineColor,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
+                svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
                 
     elif getType(obj) == "AngularDimension":
         if obj.ViewObject.Proxy:
@@ -1787,7 +1793,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 
                 # drawing arc
                 fill= "none"
-                stroke = getrgb(obj.ViewObject.LineColor)
                 lstyle = getLineStyle()
                 if obj.ViewObject.DisplayMode == "2D":
                     svg += getPath([prx.circle])
@@ -1812,8 +1817,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         if obj.ViewObject.FlipArrows:
                             angle1 = angle1+math.pi
                             angle2 = angle2+math.pi
-                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,obj.ViewObject.LineColor,linewidth,angle1)
-                    svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,obj.ViewObject.LineColor,linewidth,angle2)
+                    svg += getArrow(obj.ViewObject.ArrowType,p2,arrowsize,stroke,linewidth,angle1)
+                    svg += getArrow(obj.ViewObject.ArrowType,p3,arrowsize,stroke,linewidth,angle2)
                     
                 # drawing text
                 if obj.ViewObject.DisplayMode == "2D":
@@ -1828,13 +1833,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 else:
                     tangle = 0
                     tbase = getProj(prx.tbase)
-                svg += getText(obj.ViewObject.LineColor,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
+                svg += getText(stroke,fontsize,obj.ViewObject.FontName,tangle,tbase,prx.string)
 
     elif getType(obj) == "Annotation":
         "returns an svg representation of a document annotation"
         p = getProj(obj.Position)
         svg = '<text id="' + obj.Name + '" fill="'
-        svg += getrgb(obj.ViewObject.TextColor)
+        svg += stroke
         svg += '" font-size="'+str(fontsize)
         svg += '" style="'
         if obj.ViewObject.Justification == "Left":
@@ -1864,9 +1869,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
-        color = getrgb(obj.ViewObject.LineColor)
         lorig = getLineStyle()
-        stroke = getrgb(obj.ViewObject.LineColor)
         fill = 'none'
         invpl = obj.Placement.inverse()
         n = 0
@@ -1881,7 +1884,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             center = p2.add(dv.scale(rad,rad,rad))
             lstyle = "none"
             svg += getCircle(Part.makeCircle(rad,center))
-            svg += '<text fill="' + color + '" '
+            svg += '<text fill="' + stroke + '" '
             svg += 'font-size="' + str(rad) + '" '
             svg += 'style="text-anchor:middle;'
             svg += 'text-align:center;'
@@ -1895,10 +1898,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull(): 
             return ''
-        if gui:
-            color = getrgb(obj.ViewObject.LineColor)
-        else:
-            color = "#000000"
         # setting fill
         if obj.Shape.Faces:
             if gui:
@@ -1919,20 +1918,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             fill = 'none'
         lstyle = getLineStyle()
-        if gui:
-            try:
-                try:
-                    m = obj.ViewObject.DisplayMode
-                except:
-                    m = None
-                if m == "Shaded":
-                    stroke = "none"
-                else:
-                    stroke = getrgb(obj.ViewObject.LineColor)
-            except:
-                stroke = "#000000"
-        else:
-            stroke = "#000000"
         
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []
@@ -1987,9 +1972,12 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None):
         viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View"+obj.Name)
         _DrawingView(viewobj)
         page.addObject(viewobj)
-        viewobj.Scale = page.ViewObject.HintScale
-        viewobj.X = page.ViewObject.HintOffsetX
-        viewobj.Y = page.ViewObject.HintOffsetY
+        if hasattr(page.ViewObject,"HintScale"):
+            viewobj.Scale = page.ViewObject.HintScale
+        if hasattr(page.ViewObject,"HintOffsetX"):
+            viewobj.X = page.ViewObject.HintOffsetX
+        if hasattr(page.ViewObject,"HintOffsetY"):
+            viewobj.Y = page.ViewObject.HintOffsetY
         viewobj.Source = obj
         if lwmod: viewobj.LineweightModifier = lwmod
         if tmod: viewobj.TextModifier = tmod
@@ -1998,6 +1986,10 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None):
                 viewobj.FillStyle = str(obj.ViewObject.Pattern)
         if hasattr(obj.ViewObject,"DrawStyle"):
             viewobj.LineStyle = obj.ViewObject.DrawStyle
+        if hasattr(obj.ViewObject,"LineColor"):
+            viewobj.LineColor = obj.ViewObject.LineColor
+        elif hasattr(obj.ViewObject,"TextColor"):
+            viewobj.LineColor = obj.ViewObject.TextColor
     return viewobj
 
 def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
@@ -3940,6 +3932,7 @@ class _DrawingView(_DraftObject):
         obj.addProperty("App::PropertyVector","Direction","Shape View","Projection direction")
         obj.addProperty("App::PropertyFloat","LineWidth","View Style","The width of the lines inside this object")
         obj.addProperty("App::PropertyLength","FontSize","View Style","The size of the texts inside this object")
+        obj.addProperty("App::PropertyColor","LineColor","View Style","The color of the projected objects")
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.addProperty("App::PropertyEnumeration","FillStyle","View Style","Shape Fill Style")
         obj.addProperty("App::PropertyEnumeration","LineStyle","View Style","Line Style")
@@ -3956,15 +3949,19 @@ class _DrawingView(_DraftObject):
                     ls = obj.LineStyle
                 else:
                     ls = None
+                if hasattr(obj,"LineColor"):
+                    lc = obj.LineColor
+                else:
+                    lc = None
                 if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
                     svg = ""
                     shapes = []
                     others = []
                     for o in obj.Source.Group:
                         if o.ViewObject.isVisible():
-                            svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls)
+                            svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc)
                 else:
-                    svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls)
+                    svg = getSVG(obj.Source,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc)
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
                 result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
