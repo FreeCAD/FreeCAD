@@ -147,8 +147,17 @@ void InputField::newInput(const QString & text)
 
     QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
-
     ErrorText = "";
+
+	if (res.getValue() > Maximum){
+		res.setValue(Maximum);
+		ErrorText = "Maximum reached";
+	}
+	if (res.getValue() < Minimum){
+		res.setValue(Minimum);
+		ErrorText = "Minimum reached";
+	}
+
     this->setToolTip(QString::fromAscii(ErrorText.c_str()));
     actQuantity = res;
     double dFactor;
@@ -278,6 +287,12 @@ QByteArray InputField::paramGrpPath() const
 void InputField::setValue(const Base::Quantity& quant)
 {
     actQuantity = quant;
+	// check limits
+	if (actQuantity.getValue() > Maximum)
+		actQuantity.setValue(Maximum);
+	if (actQuantity.getValue() < Minimum)
+		actQuantity.setValue(Minimum);
+
     if(!quant.getUnit().isEmpty())
         actUnit = quant.getUnit();
 
@@ -315,6 +330,8 @@ double InputField::maximum(void)const
 void InputField::setMaximum(double m)
 {
     Maximum = m;
+	if (actQuantity.getValue() > Maximum)
+		actQuantity.setValue(Maximum);
 }
 
 /// get the value of the minimum property
@@ -327,6 +344,8 @@ double InputField::minimum(void)const
 void InputField::setMinimum(double m)
 {
     Minimum = m;
+	if (actQuantity.getValue() < Minimum)
+		actQuantity.setValue(Minimum);
 }
 
 void InputField::setUnitText(QString str)
@@ -393,6 +412,7 @@ void InputField::wheelEvent (QWheelEvent * event)
 {
     double step = event->delta() > 0 ? StepSize : -StepSize;
     double val = actUnitValue + step;
+
     this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
     event->accept();
 }
