@@ -20,6 +20,7 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(Import_LIBS
     Part
+    Assembly
     ${OCC_OCAF_LIBRARIES}
     ${OCC_OCAF_DEBUG_LIBRARIES}
 )
@@ -29,6 +30,8 @@ SET(Import_SRCS
     AppImportPy.cpp
     ImportOCAF.cpp
     ImportOCAF.h
+    ImportOCAFAssembly.cpp
+    ImportOCAFAssembly.h
     StepShapePy.xml
     StepShape.h
     StepShape.cpp

@@ -88,6 +88,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
             << "Assembly_AddNewComponent"
             << "Assembly_AddExistingComponent";
 
+    Gui::MenuItem* impCmd = new Gui::MenuItem();
+    root->insertItem(asmCmd, impCmd);
+    impCmd->setCommand("&Import");
+    *impCmd << "Assembly_Import";
+
 
     return root;
 }
