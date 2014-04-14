@@ -92,10 +92,10 @@ ImportOCAFAssembly::~ImportOCAFAssembly()
 void ImportOCAFAssembly::loadShapes()
 {
     myRefShapes.clear();
-    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false);
+    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false,0);
 }
 
-void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, const std::string& defaultname, const std::string& assembly, bool isRef)
+void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, const std::string& defaultname, const std::string& assembly, bool isRef, int dep)
 {
     int hash = 0;
     TopoDS_Shape aShape;
@@ -137,7 +137,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Locatio
     }
 
 #ifdef FC_DEBUG
-    Base::Console().Message("H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
+    Base::Console().Message("H:%-9d \tN:%-30s \tT:%d \tA:%d \tS:%d \tC:%d \tSS:%d \tF:%d \tR:%d \tC:%d \tSS:%d\t-- %d  \n",
         hash,
         part_name.c_str(),
         aShapeTool->IsTopLevel(label),
@@ -148,7 +148,8 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Locatio
         aShapeTool->IsFree(label),
         aShapeTool->IsReference(label),
         aShapeTool->IsComponent(label),
-        aShapeTool->IsSubShape(label)
+        aShapeTool->IsSubShape(label),
+        dep
     );
 #endif
 
@@ -159,7 +160,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Locatio
 
     TDF_Label ref;
     if (aShapeTool->IsReference(label) && aShapeTool->GetReferredShape(label, ref)) {
-        loadShapes(ref, part_loc, part_name, asm_name, true);
+        loadShapes(ref, part_loc, part_name, asm_name, true,dep + 1);
     }
 
     if (isRef || myRefShapes.find(hash) == myRefShapes.end()) {
@@ -177,7 +178,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Locatio
         }
         else {
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
-                loadShapes(it.Value(), part_loc, part_name, asm_name, isRef);
+                loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, dep+1);
             }
         }
     }
@@ -257,12 +258,6 @@ void ImportOCAFAssembly::createShape(const TopoDS_Shape& aShape, const TopLoc_Lo
 
     if (found_face_color) {
         applyColors(part, faceColors);
-#if 0//TODO
-        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
-        if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
-            static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.setValues(faceColors);
-        }
-#endif
     }
 }
 
