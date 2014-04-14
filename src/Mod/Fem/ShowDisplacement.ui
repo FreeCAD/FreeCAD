@@ -41,10 +41,13 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="lineEdit_Avg">
+           <widget class="Gui::InputField" name="lineEdit_Avg">
             <property name="readOnly">
              <bool>true</bool>
             </property>
+           <property name="unit" stdset="0">
+            <string>mm</string>
+           </property>
            </widget>
           </item>
           <item row="1" column="0">
@@ -55,10 +58,13 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="lineEdit_Max">
+           <widget class="Gui::InputField" name="lineEdit_Max">
             <property name="readOnly">
              <bool>true</bool>
             </property>
+           <property name="unit" stdset="0">
+            <string>mm</string>
+           </property>
            </widget>
           </item>
           <item row="2" column="0">
@@ -69,10 +75,13 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="lineEdit_Min">
+           <widget class="Gui::InputField" name="lineEdit_Min">
             <property name="readOnly">
              <bool>true</bool>
             </property>
+           <property name="unit" stdset="0">
+            <string>mm</string>
+           </property>
            </widget>
           </item>
          </layout>
@@ -108,13 +117,13 @@
           <item>
            <widget class="QSpinBox" name="spinBox_DisplacementFactor">
             <property name="readOnly">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="maximum">
              <number>99999</number>
             </property>
             <property name="singleStep">
-             <number>2</number>
+             <number>10</number>
             </property>
             <property name="value">
              <number>1</number>
@@ -135,13 +144,13 @@
           <item>
            <widget class="QSpinBox" name="spinBox_SliderFactor">
             <property name="readOnly">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="maximum">
              <number>99999</number>
             </property>
             <property name="singleStep">
-             <number>5</number>
+             <number>10</number>
             </property>
             <property name="value">
              <number>100</number>
@@ -186,6 +195,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
