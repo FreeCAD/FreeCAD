@@ -31,6 +31,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
+#include <Gui/WaitCursor.h>
 
 #include <Mod/Assembly/App/ItemAssembly.h>
 
@@ -182,31 +183,88 @@ void CmdAssemblyAddExistingComponent::activated(int iMsg)
     // asking for file name (only step at the moment) 
     QStringList filter;
     filter << QString::fromAscii("STEP (*.stp *.step)");
-    filter << QString::fromAscii("STEP with colors (*.stp *.step)");
     filter << QString::fromAscii("IGES (*.igs *.iges)");
-    filter << QString::fromAscii("IGES with colors (*.igs *.iges)");
     filter << QString::fromAscii("BREP (*.brp *.brep)");
+    filter << QString::fromAscii("Mesh (*.stl *.obj)");
+    filter << QString::fromAscii("VRML (*.wrl)");
 
     QString select;
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
     if (!fn.isEmpty()) {
-
-
-        openCommand("Import ExtPart");
-        addModule(Doc,"Part");
-        addModule(Doc,"PartDesign");
-        addModule(Gui,"PartDesignGui");
-        addModule(Gui,"AssemblyGui");
-        addModule(Gui,"AssemblyLib");
-
-        std::string fName( (const char*)fn.toUtf8());
-
-        doCommand(Gui,"AssemblyLib.importAssembly('%s',App.ActiveDocument.%s)",fName.c_str(), dest->getNameInDocument());
-
+        Gui::WaitCursor wc;
+        App::Document* pDoc = getDocument();
+        if (!pDoc) return; // no document
+        openCommand("Import an Assembly");
+        if (select == filter[1] ||
+            select == filter[3]) {
+            doCommand(Doc, "import ImportGui");
+            doCommand(Doc, "ImportGui.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
+        }
+        else {
+            doCommand(Doc, "import Part");
+            doCommand(Doc, "Part.insert(\"%s\",\"%s\")", (const char*)fn.toUtf8(), pDoc->getName());
+        }
+        commitCommand();
         this->updateActive();
     }      
 }
 
+//===========================================================================
+
+DEF_STD_CMD(CmdAssemblyImport);
+
+CmdAssemblyImport::CmdAssemblyImport()
+	:Command("Assembly_Import")
+{
+    sAppModule      = "Assembly";
+    sGroup          = QT_TR_NOOP("Assembly");
+    sMenuText       = QT_TR_NOOP("Import assembly...");
+    sToolTipText    = QT_TR_NOOP("Import one or more files and create a assembly structure.");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = 0;
+}
+
+
+void CmdAssemblyImport::activated(int iMsg)
+{
+    Assembly::ItemAssembly *dest = 0;
+
+    unsigned int n = getSelection().countObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+    if (n >= 1) {
+        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+        dest = dynamic_cast<Assembly::ItemAssembly*>(Sel.front());
+    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
+        dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+    }
+
+    // asking for file name (only step at the moment) 
+    QStringList filter;
+    filter << QString::fromAscii("STEP (*.stp *.step)");
+    filter << QString::fromAscii("IGES (*.igs *.iges)");
+    filter << QString::fromAscii("BREP (*.brp *.brep)");
+    filter << QString::fromAscii("Mesh (*.stl *.obj)");
+    filter << QString::fromAscii("VRML (*.wrl)");
+
+    QString select;
+    QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), filter.join(QLatin1String(";;")), &select);
+    if (!fn.isEmpty()) {
+        Gui::WaitCursor wc;
+        App::Document* pDoc = getDocument();
+        if (!pDoc) return; // no document
+        openCommand("Import an Assembly");
+        if (select == filter[0] ||
+            select == filter[1]) {
+            doCommand(Doc, "import Import");
+            doCommand(Doc, "Import.importAssembly('%s')", (const char*)fn.toUtf8());
+        }
+        else {
+			return;
+		}
+        commitCommand();
+        this->updateActive();
+    }      
+}
 void CreateAssemblyCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -214,4 +272,5 @@ void CreateAssemblyCommands(void)
     rcCmdMgr.addCommand(new CmdAssemblyAddNewPart());
     rcCmdMgr.addCommand(new CmdAssemblyAddNewComponent());
     rcCmdMgr.addCommand(new CmdAssemblyAddExistingComponent());
+    rcCmdMgr.addCommand(new CmdAssemblyImport());
  }
