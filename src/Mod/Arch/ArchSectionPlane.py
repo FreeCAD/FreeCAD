@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,ArchComponent,WorkingPlane,math,Draft,ArchCommands,DraftVecUtils
+import FreeCAD,WorkingPlane,math,Draft,ArchCommands,DraftVecUtils
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -122,7 +122,7 @@ class _SectionPlane:
         if state:
             self.Type = state
 
-class _ViewProviderSectionPlane(ArchComponent.ViewProviderComponent):
+class _ViewProviderSectionPlane:
     "A View Provider for Section Planes"
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","DisplaySize","Arch",translate("Arch","The display size of this section plane"))
@@ -399,7 +399,7 @@ class _ArchDrawingView:
         result += ' transform="'
         result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
         result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
-        result += 'scale('+str(obj.Scale)+','+str(-obj.Scale)+')'
+        result += 'scale('+str(obj.Scale)+','+str(obj.Scale)+')'
         result += '">\n'
         result += svg
         result += '</g>\n'
