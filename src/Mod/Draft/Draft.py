@@ -2614,7 +2614,7 @@ def downgrade(objects,delete=False,force=None):
     if not isinstance(objects,list):
         objects = [objects]
 
-    global deleteList, newList
+    global deleteList, addList
     deleteList = []
     addList = []
         
@@ -2753,7 +2753,10 @@ def downgrade(objects,delete=False,force=None):
         # special case, we have one parametric object: we "de-parametrize" it
         elif (len(objects) == 1) and (objects[0].isDerivedFrom("Part::Feature")) and ("Base" in objects[0].PropertiesList):
             result = shapify(objects[0])
-            if result: msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
+            if result: 
+                msg(translate("draft", "Found 1 parametric object: breaking its dependencies\n"))
+                addList.append(result)
+                #deleteList.append(objects[0])
 
         # we have only 2 objects: cut 2nd from 1st
         elif len(objects) == 2:
@@ -3125,10 +3128,11 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 if proj:
                     self.p2 = self.p1.add(proj.negative())
                     self.p3 = self.p4.add(proj.negative())
-                    dmax = obj.ViewObject.ExtLines.Value
-                    if dmax and (proj.Length > dmax):
-                        self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
-                        self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
+                    if hasattr(obj.ViewObject,"ExtLines"):
+                        dmax = obj.ViewObject.ExtLines.Value
+                        if dmax and (proj.Length > dmax):
+                            self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
+                            self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
                 else:
                     self.p2 = self.p1
                     self.p3 = self.p4
@@ -3187,12 +3191,13 @@ class _ViewProviderDimension(_ViewProviderDraft):
             else:
                 fstring = "%." + str(getParam("dimPrecision",2)) + "f"
             self.string = (fstring % l)
-            if obj.ViewObject.Override:
-                try:
-                    # only available in Coin3D >= 4.0
-                    self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
-                except:
-                    self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
+            if hasattr(obj.ViewObject,"Override"):
+                if obj.ViewObject.Override:
+                    try:
+                        # only available in Coin3D >= 4.0
+                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
+                    except:
+                        self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
             self.text.string = self.text3d.string = self.string
 
             # set the distance property
@@ -3225,22 +3230,22 @@ class _ViewProviderDimension(_ViewProviderDraft):
     def onChanged(self, vobj, prop):
         "called when a view property has changed"
         
-        if prop == "FontSize":
+        if (prop == "FontSize") and hasattr(vobj,"FontSize"):
             if hasattr(self,"font"):
                 self.font.size = vobj.FontSize.Value
             if hasattr(self,"font3d"):
                 self.font3d.size = vobj.FontSize.Value*100
-        elif prop == "FontName":
+        elif (prop == "FontName") and hasattr(vobj,"FontName"):
             if hasattr(self,"font") and hasattr(self,"font3d"):
                 self.font.name = self.font3d.name = str(vobj.FontName)
-        elif prop == "LineColor":
+        elif (prop == "LineColor") and hasattr(vobj,"LineColor"):
             if hasattr(self,"color"):
                 c = vobj.LineColor
                 self.color.rgb.setValue(c[0],c[1],c[2])
-        elif prop == "LineWidth":
+        elif (prop == "LineWidth") and hasattr(vobj,"LineWidth"):
             if hasattr(self,"drawstyle"):
                 self.drawstyle.lineWidth = vobj.LineWidth
-        elif prop in ["ArrowSize","ArrowType"]:
+        elif (prop in ["ArrowSize","ArrowType"]) and hasattr(vobj,"ArrowSize"):
             if hasattr(self,"node") and hasattr(self,"p2"):
                 from pivy import coin
                 
