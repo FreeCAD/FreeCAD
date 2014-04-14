@@ -149,14 +149,14 @@ void InputField::newInput(const QString & text)
     iconLabel->setPixmap(pixmap);
     ErrorText = "";
 
-	if (res.getValue() > Maximum){
-		res.setValue(Maximum);
-		ErrorText = "Maximum reached";
-	}
-	if (res.getValue() < Minimum){
-		res.setValue(Minimum);
-		ErrorText = "Minimum reached";
-	}
+    if (res.getValue() > Maximum){
+        res.setValue(Maximum);
+        ErrorText = "Maximum reached";
+    }
+    if (res.getValue() < Minimum){
+        res.setValue(Minimum);
+        ErrorText = "Minimum reached";
+    }
 
     this->setToolTip(QString::fromAscii(ErrorText.c_str()));
     actQuantity = res;
@@ -224,7 +224,6 @@ void InputField::setToLastUsedValue(void)
          this->setValue(Base::Quantity::parse(hist[0]));
 }
 
-
 void InputField::pushToSavedValues(const QString &valueq)
 {
     std::string value;
@@ -269,10 +268,9 @@ std::vector<QString> InputField::getSavedValues(void)
 /** Sets the preference path to \a path. */
 void InputField::setParamGrpPath( const QByteArray& path )
 {
-   
-  _handle = App::GetApplication().GetParameterGroupByPath( path);
-  if (_handle.isValid())
-      sGroupString = (const char*)path;
+    _handle = App::GetApplication().GetParameterGroupByPath( path);
+    if (_handle.isValid())
+        sGroupString = (const char*)path;
 }
 
 /** Returns the widget's preferences path. */
@@ -287,13 +285,13 @@ QByteArray InputField::paramGrpPath() const
 void InputField::setValue(const Base::Quantity& quant)
 {
     actQuantity = quant;
-	// check limits
-	if (actQuantity.getValue() > Maximum)
-		actQuantity.setValue(Maximum);
-	if (actQuantity.getValue() < Minimum)
-		actQuantity.setValue(Minimum);
+    // check limits
+    if (actQuantity.getValue() > Maximum)
+        actQuantity.setValue(Maximum);
+    if (actQuantity.getValue() < Minimum)
+        actQuantity.setValue(Minimum);
 
-    if(!quant.getUnit().isEmpty())
+    if (!quant.getUnit().isEmpty())
         actUnit = quant.getUnit();
 
     double dFactor;
@@ -305,8 +303,6 @@ void InputField::setUnit(const Base::Unit& unit)
 {
     actUnit = unit;
 }
-
-
 
 /// get the value of the singleStep property
 double InputField::singleStep(void)const
@@ -330,8 +326,8 @@ double InputField::maximum(void)const
 void InputField::setMaximum(double m)
 {
     Maximum = m;
-	if (actQuantity.getValue() > Maximum)
-		actQuantity.setValue(Maximum);
+    if (actQuantity.getValue() > Maximum)
+        actQuantity.setValue(Maximum);
 }
 
 /// get the value of the minimum property
@@ -344,8 +340,8 @@ double InputField::minimum(void)const
 void InputField::setMinimum(double m)
 {
     Minimum = m;
-	if (actQuantity.getValue() < Minimum)
-		actQuantity.setValue(Minimum);
+    if (actQuantity.getValue() < Minimum)
+        actQuantity.setValue(Minimum);
 }
 
 void InputField::setUnitText(QString str)
@@ -353,7 +349,7 @@ void InputField::setUnitText(QString str)
     Base::Quantity quant = Base::Quantity::parse(str);
     setUnit(quant.getUnit());
 }
-  
+
 QString InputField::getUnitText(void)
 {
     return actUnitStr;
@@ -364,6 +360,7 @@ int InputField::historySize(void)const
 {
     return HistorySize;
 }
+
 // set the value of the minimum property 
 void InputField::setHistorySize(int i)
 {
@@ -382,7 +379,6 @@ void InputField::selectNumber(void)
         i++;
 
     setSelection(0,i);
-
 }
 
 void InputField::keyPressEvent(QKeyEvent *event)
@@ -416,6 +412,7 @@ void InputField::wheelEvent (QWheelEvent * event)
     this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
     event->accept();
 }
+
 // --------------------------------------------------------------------
 
 
