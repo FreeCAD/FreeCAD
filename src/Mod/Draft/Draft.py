@@ -1075,6 +1075,7 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
             obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
+    FreeCAD.ActiveDocument.recompute()
     return obj
 
 def extrude(obj,vector):
@@ -2008,6 +2009,7 @@ def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
     if facenumbers:
         obj.FaceNumbers = facenumbers
     select(obj)
+    FreeCAD.ActiveDocument.recompute()
     return obj
 
 def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="Sketch"):
