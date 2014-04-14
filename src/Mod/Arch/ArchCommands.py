@@ -105,8 +105,7 @@ def addComponents(objectsList,host):
         a = host.Objects
         for o in objectsList:
             if not o in a:
-                if hasattr(o,"Shape"):
-                    a.append(o)
+                a.append(o)
         host.Objects = a
     elif host.isDerivedFrom("App::DocumentObjectGroup"):
         c = host.Group

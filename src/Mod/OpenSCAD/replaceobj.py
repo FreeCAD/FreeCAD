@@ -44,15 +44,31 @@ def replaceobj(parent,oldchild,newchild):
     parent.touch()
 
 def replaceobjfromselection(objs):
-    assert(len(objs)==3)
-    if objs[2] in objs[0].InList: oldchild, newchild, parent = objs
-    elif objs[0] in objs[1].InList: parent, oldchild, newchild = objs
-    elif objs[0] in objs[2].InList: parent, newchild, oldchild = objs
-    elif objs[1] in objs[0].InList: oldchild, parent, newchild = objs
-    elif objs[1] in objs[2].InList: newchild, parent, oldchild = objs
-    elif objs[2] in objs[1].InList: newchild, oldchild, parent = objs
-    else: assert(False)
+    # The Parent can be ommited as long as one object is orphaned
+    if len(objs)==2:
+        InListLength= tuple((len(obj.InList)) for obj in objs)
+        if InListLength == (0,1):
+            newchild,oldchild  = objs
+            parent = oldchild.InList[0]
+        elif InListLength == (1,0):
+            oldchild,newchild  = objs
+            parent = oldchild.InList[0]
+        else:
+            raise ValueError("Selection ambiguous. Please select oldchild,\
+            newchild and parent")
+    elif len(objs)==3:
+        if objs[2] in objs[0].InList: oldchild, newchild, parent = objs
+        elif objs[0] in objs[1].InList: parent, oldchild, newchild = objs
+        elif objs[0] in objs[2].InList: parent, newchild, oldchild = objs
+        elif objs[1] in objs[0].InList: oldchild, parent, newchild = objs
+        elif objs[1] in objs[2].InList: newchild, parent, oldchild = objs
+        elif objs[2] in objs[1].InList: newchild, oldchild, parent = objs
+        else:
+            raise ValueError("Cannot determin current parent-child relationship")
+    else:
+        raise ValueError("Wrong number of selected objects")
     replaceobj(parent,oldchild,newchild)
+    parent.Document.recompute()
 
 if __name__ == '__main__':
     import FreeCAD,FreeCADGui
