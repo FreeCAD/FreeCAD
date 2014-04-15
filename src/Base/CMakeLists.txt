@@ -319,7 +319,7 @@ add_library(FreeCADBase SHARED ${FreeCADBase_SRCS})
 
 target_link_libraries(FreeCADBase ${FreeCADBase_LIBS})
 
-SET_BIN_DIR(FreeCADBase "FreeCADBase" "/bin")
+SET_BIN_DIR(FreeCADBase FreeCADBase)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADBase
