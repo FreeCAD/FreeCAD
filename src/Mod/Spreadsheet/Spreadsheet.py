@@ -479,7 +479,7 @@ class ViewProviderSpreadsheet(object):
     def attach(self,vobj):
         self.Object = vobj.Object
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self,vobj,mode=0):
         if hasattr(self,"editor"):
             pass
         else:
@@ -487,9 +487,11 @@ class ViewProviderSpreadsheet(object):
             addSpreadsheetView(self.editor)
         return True
     
-    def unsetEdit(self,vobj,mode):
-        del self.editor
+    def unsetEdit(self,vobj,mode=0):
         return False
+
+    def doubleClicked(self,vobj):
+        self.setEdit(vobj)
         
     def claimChildren(self):
         if hasattr(self,"Object"):
@@ -543,21 +545,23 @@ class SpreadsheetController:
             baseset = FreeCAD.ActiveDocument.Objects
             if obj.FilterType == "Object Type":
                 for o in baseset:
-                    t = Draft.getType(o)
-                    if t == "Part":
-                        t = obj.TypeId
-                    if obj.Filter:
-                        if obj.Filter in t:
-                            result.append(obj)
-                    else:
-                        result.append(obj)
+                    if not ("Spreadsheet" in Draft.getType(o)):
+                        t = Draft.getType(o)
+                        if t == "Part":
+                            t = obj.TypeId
+                        if obj.Filter:
+                            if obj.Filter in t:
+                                result.append(o)
+                        else:
+                            result.append(o)
             elif obj.FilterType == "Object Name":
                 for o in baseset:
-                    if obj.Filter:
-                        if obj.Filter in o.Label:
+                    if not ("Spreadsheet" in Draft.getType(o)):
+                        if obj.Filter:
+                            if obj.Filter in o.Label:
+                                    result.append(o)
+                        else:
                             result.append(o)
-                    else:
-                        result.append(o)
         return result
 
     def getCells(self,obj,spreadsheet):
@@ -728,10 +732,9 @@ class SpreadsheetView(QtGui.QWidget):
         QtCore.QObject.connect(self.table, QtCore.SIGNAL("cellChanged(int,int)"), self.changeCell)
         QtCore.QObject.connect(self.table, QtCore.SIGNAL("currentCellChanged(int,int,int,int)"), self.setEditLine)
         QtCore.QObject.connect(self.lineEdit, QtCore.SIGNAL("returnPressed()"), self.getEditLine)
-        QtCore.QObject.connect(self, QtCore.SIGNAL("destroyed()"), self.destroy)
 
-    def destroy(self):
-        if DEBUG: print "Closing spreadsheet view"
+    def closeEvent(self, event):
+        #if DEBUG: print "Closing spreadsheet view"
         if self.spreadsheet:
             # before deleting this view, we remove the reference to it in the object
             if hasattr(self.spreadsheet,"ViewObject"):
@@ -748,7 +751,7 @@ class SpreadsheetView(QtGui.QWidget):
             controlled = self.spreadsheet.Proxy.getControlledCells(self.spreadsheet)
             controlling = self.spreadsheet.Proxy.getControllingCells(self.spreadsheet)
             for cell in self.spreadsheet.Proxy._cells.keys():
-                if cell != "Type":
+                if not cell in ["Type","Object"]:
                     c,r = self.spreadsheet.Proxy.splitKey(cell)
                     c = "abcdefghijklmnopqrstuvwxyz".index(c)
                     r = int(str(r))-1
@@ -834,9 +837,10 @@ class _Command_Spreadsheet_Create:
         from DraftTools import translate
         FreeCAD.ActiveDocument.openTransaction(str(translate("Spreadsheet","Create Spreadsheet")))
         FreeCADGui.doCommand("import Spreadsheet")
-        FreeCADGui.doCommand("Spreadsheet.makeSpreadsheet()")
+        FreeCADGui.doCommand("s = Spreadsheet.makeSpreadsheet()")
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
+        FreeCADGui.doCommand("FreeCADGui.ActiveDocument.setEdit(s.Name,0)")
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
 
 
 class _Command_Spreadsheet_Controller:
