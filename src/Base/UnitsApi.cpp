@@ -88,6 +88,7 @@ void UnitsApi::setSchema(UnitSystem s)
         case SI1 : UserPrefSystem = new UnitsSchemaInternal(); break;
         case SI2 : UserPrefSystem = new UnitsSchemaMKS(); break;
         case Imperial1: UserPrefSystem = new UnitsSchemaImperial1(); break;
+        case ImperialDecimal: UserPrefSystem = new UnitsSchemaImperialDecimal(); break;
     }
     actSystem = s;
     UserPrefSystem->setSchemaUnits(); // if necesarry a unit schema can change the constants in Quantity (e.g. mi=1.8km rather then 1.6km).
