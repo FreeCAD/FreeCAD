@@ -126,6 +126,8 @@ fc_target_copy_resource(PartDesign
     ${CMAKE_BINARY_DIR}/Mod/PartDesign
     ${PartDesign_Scripts})
 
+# See link for why this module is installed differently from the other modules:
+# http://forum.freecadweb.org/viewtopic.php?f=19&t=5444
 SET_BIN_DIR(PartDesign PartDesign /Mod/PartDesign /Mod/PartDesign)
 if(WIN32)
     set_target_properties(PartDesign PROPERTIES SUFFIX ".pyd")
