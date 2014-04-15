@@ -40,7 +40,7 @@ fc_target_copy_resource(AssemblyGui
     ${CMAKE_BINARY_DIR}/Mod/Assembly
     InitGui.py)
 
-SET_BIN_DIR(AssemblyGui "AssemblyGui" "/Mod/Assembly")
+SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 if(WIN32)
     set_target_properties(AssemblyGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

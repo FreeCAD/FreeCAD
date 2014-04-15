@@ -75,7 +75,7 @@ fc_target_copy_resource(StartGui
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start
     ${StartPage_Resources})
 
-SET_BIN_DIR(StartGui "StartGui" "/Mod/Start")
+SET_BIN_DIR(StartGui StartGui /Mod/Start)
 if(WIN32)
     set_target_properties(StartGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

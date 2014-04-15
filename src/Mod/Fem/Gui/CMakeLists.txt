@@ -204,7 +204,7 @@ fc_target_copy_resource(FemGui
     MechanicalAnalysis.ui
     )
 
-SET_BIN_DIR(FemGui "FemGui" "/Mod/Fem")
+SET_BIN_DIR(FemGui FemGui /Mod/Fem)
 if(WIN32)
     set_target_properties(FemGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

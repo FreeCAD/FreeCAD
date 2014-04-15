@@ -29,7 +29,7 @@ fc_target_copy_resource(Start
     ${CMAKE_BINARY_DIR}/Mod/Start
     Init.py)
 
-SET_BIN_DIR(Start "Start" "/Mod/Start")
+SET_BIN_DIR(Start Start /Mod/Start)
 if(WIN32)
     set_target_properties(Start PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

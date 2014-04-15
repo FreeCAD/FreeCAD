@@ -37,7 +37,7 @@ fc_target_copy_resource(_TEMPLATE_Gui
     ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_
     InitGui.py)
 
-SET_BIN_DIR(_TEMPLATE_Gui "_TEMPLATE_Gui" "/Mod/_TEMPLATE_")
+SET_BIN_DIR(_TEMPLATE_Gui _TEMPLATE_Gui /Mod/_TEMPLATE_)
 if(WIN32)
     set_target_properties(_TEMPLATE_Gui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

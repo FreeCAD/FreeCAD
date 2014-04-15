@@ -230,7 +230,7 @@ fc_target_copy_resource(PartGui
     ${CMAKE_BINARY_DIR}/Mod/Part
     ${PartGui_Scripts})
 
-SET_BIN_DIR(PartGui "PartGui" "/Mod/Part")
+SET_BIN_DIR(PartGui PartGui /Mod/Part)
 if(WIN32)
     set_target_properties(PartGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

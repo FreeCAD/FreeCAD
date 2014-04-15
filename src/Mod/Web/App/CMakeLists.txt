@@ -46,7 +46,7 @@ fc_target_copy_resource(Web
     ${CMAKE_BINARY_DIR}/Mod/Web
     Init.py)
 
-SET_BIN_DIR(Web "Web" "/Mod/Web")
+SET_BIN_DIR(Web Web /Mod/Web)
 if(WIN32)
     set_target_properties(Web PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

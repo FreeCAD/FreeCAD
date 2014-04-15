@@ -42,7 +42,7 @@ fc_target_copy_resource(Inspection
     ${CMAKE_BINARY_DIR}/Mod/Inspection
     Init.py)
 
-SET_BIN_DIR(Inspection "Inspection" "/Mod/Inspection")
+SET_BIN_DIR(Inspection Inspection /Mod/Inspection)
 if(WIN32)
     set_target_properties(Inspection PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

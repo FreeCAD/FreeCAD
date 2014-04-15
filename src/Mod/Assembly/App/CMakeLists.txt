@@ -30,7 +30,7 @@ fc_target_copy_resource(Assembly
     ${CMAKE_BINARY_DIR}/Mod/Assembly
     Init.py)
 
-SET_BIN_DIR(Assembly "Assembly" "/Mod/Assembly")
+SET_BIN_DIR(Assembly Assembly /Mod/Assembly)
 if(WIN32)
     set_target_properties(Assembly PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
