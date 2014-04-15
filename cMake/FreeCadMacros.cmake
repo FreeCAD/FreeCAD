@@ -204,36 +204,34 @@ MACRO(GET_MSVC_PRECOMPILED_SOURCE PrecompiledSource SourcesVar)
   ENDIF(MSVC)
 ENDMACRO(GET_MSVC_PRECOMPILED_SOURCE)
 
-# Macro to replace all the binary output locations
-MACRO(SET_BIN_DIR ProjectName OutputName OutputDir)
+# Macro to replace all the binary output locations.  {ARGVN} is zero based so
+# the 3rd element is ${ARGV2}.  When the 3rd element is empty, Runtime and Lib
+# directories default to /bin and /lib.  When present, the 3rd element specifies
+# both Runtime and Lib directories.
+MACRO(SET_BIN_DIR ProjectName OutputName)
     set_target_properties(${ProjectName} PROPERTIES OUTPUT_NAME ${OutputName})
+    if(${ARGC} STREQUAL 3)
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${ARGV2})
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${ARGV2})
+        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${ARGV2})
+    else(${ARGC} STREQUAL 3)
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/bin)
+        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/lib)        
+    endif(${ARGC} STREQUAL 3)
+
     if(WIN32)
-        set_target_properties(${ProjectName} PROPERTIES DEBUG_OUTPUT_NAME "${OutputName}_d")
-        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}${OutputDir})
+        set_target_properties(${ProjectName} PROPERTIES DEBUG_OUTPUT_NAME ${OutputName}_d)
     else(WIN32)
-        SET(COND_IS_FREECAD_BIN ${OutputName} STREQUAL "FreeCADMain" OR
-                                ${OutputName} STREQUAL "FreeCADMainCmd")
-        SET(COND_IS_FREECAD_LIB ${OutputName} STREQUAL "FreeCADApp"    OR
-                                ${OutputName} STREQUAL "FreeCADBase"   OR
-                                ${OutputName} STREQUAL "FreeCADGui"    OR
-                                ${OutputName} STREQUAL "FreeCADMainPy" OR
-                                ${OutputName} STREQUAL "FreeCADGuiPy")
-
-        IF(${COND_IS_FREECAD_BIN})
-            set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}${OutputDir})
-        ELSEIF(${COND_IS_FREECAD_LIB})
-            set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-        ELSE(${COND_IS_FREECAD_BIN})
-            set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}${OutputDir})
-        ENDIF(${COND_IS_FREECAD_BIN})
+        set_target_properties(${ProjectName} PROPERTIES PREFIX "")
         
-        set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-        UNSET(COND_IS_FREECAD_BIN)
-        UNSET(COND_IS_FREECAD_LIB)
+        SET(COND_IS_PART_DESIGN ${ProjectName} STREQUAL PartDesign OR
+                                ${ProjectName} STREQUAL PartDesignGui)
+        if(${COND_IS_PART_DESIGN})
+            set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}${ARGV2})
+        else(${COND_IS_PART_DESIGN})
+            set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+        endif(${COND_IS_PART_DESIGN})
+        UNSET(COND_IS_PART_DESIGN)
     endif(WIN32)
-
-    if(MSVC_IDE)
-        # dirty hack to avoid Debug/Release subdirectory
-        set_target_properties(${ProjectName} PROPERTIES PREFIX "../")
-    endif(MSVC_IDE)
 ENDMACRO(SET_BIN_DIR)
