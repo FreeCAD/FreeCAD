@@ -3137,13 +3137,19 @@ class _ViewProviderDimension(_ViewProviderDraft):
             self.coord2.point.setValue((self.p3.x,self.p3.y,self.p3.z))
             
             # calculate the text position and orientation
-            if DraftVecUtils.isNull(obj.Normal):
-                if not proj: 
-                    norm = Vector(0,0,1)
-                else: 
-                    norm = (self.p3.sub(self.p2).cross(proj)).negative()
+            if hasattr(obj,"Normal"):
+                if DraftVecUtils.isNull(obj.Normal):
+                    if proj: 
+                        norm = (self.p3.sub(self.p2).cross(proj)).negative()
+                    else: 
+                        norm = Vector(0,0,1)
+                else:
+                    norm = obj.Normal
             else:
-                norm = obj.Normal
+                if proj:
+                    norm = (self.p3.sub(self.p2).cross(proj)).negative() 
+                else: 
+                    norm = Vector(0,0,1)
             if not DraftVecUtils.isNull(norm):
                 norm.normalize()
             u = self.p3.sub(self.p2)
