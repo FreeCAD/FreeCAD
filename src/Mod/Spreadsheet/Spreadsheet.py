@@ -325,7 +325,7 @@ class Spreadsheet:
                                 co.Proxy.execute(co)
 
     def execute(self,obj):
-        self.setControlledCells(obj)
+        pass
 
     def isFunction(self,key):
         "isFunction(cell): returns True if the given cell or value is a function"
@@ -437,21 +437,23 @@ class Spreadsheet:
             raise Exception(msg)
         return result
         
-    def setControlledCells(self,obj):
-        "Fills the cells that are controlled by a controller"
+    def recompute(self,obj):
+        "Fills the controlled cells  and properties"
         if obj:
             if hasattr(obj,"Controllers"):
+                import Draft
                 for co in obj.Controllers:
-                    import Draft
                     if Draft.getType(co) == "SpreadsheetController":
                         co.Proxy.setCells(co,obj)
+                    elif Draft.getType(co) == "SpreadsheetPropertyController":
+                        co.Proxy.compute(co)
                     
     def getControlledCells(self,obj):
         "returns a list of cells managed by controllers"
         cells = []
         if hasattr(obj,"Controllers"):
+            import Draft
             for co in obj.Controllers:
-                import Draft
                 if Draft.getType(co) == "SpreadsheetController":
                     cells.extend(co.Proxy.getCells(co,obj))
         return cells
@@ -460,8 +462,8 @@ class Spreadsheet:
         "returns a list of controlling cells managed by controllers"
         cells = []
         if hasattr(obj,"Controllers"):
+            import Draft
             for co in obj.Controllers:
-                import Draft
                 if Draft.getType(co) == "SpreadsheetPropertyController":
                     if co.Cell:
                         cells.append(co.Cell.lower())
@@ -574,6 +576,7 @@ class SpreadsheetController:
                 # get the correct cell key
                 c,r = spreadsheet.Proxy.splitKey(obj.BaseCell)
                 if obj.Direction == "Horizontal":
+                    c = c.lower()
                     c = "abcdefghijklmnopqrstuvwxyz".index(c)
                     c += i
                     c = "abcdefghijklmnopqrstuvwxyz"[c]
@@ -597,6 +600,7 @@ class SpreadsheetController:
                     # get the correct cell key
                     c,r = spreadsheet.Proxy.splitKey(obj.BaseCell)
                     if obj.Direction == "Horizontal":
+                        c = c.lower()
                         c = "abcdefghijklmnopqrstuvwxyz".index(c)
                         c += i
                         c = "abcdefghijklmnopqrstuvwxyz"[c]
@@ -641,6 +645,9 @@ class SpreadsheetPropertyController:
         obj.TargetType = ["Property","Constraint"]
         
     def execute(self,obj):
+        pass
+
+    def compute(self,obj):
         if obj.Cell and obj.TargetObject and obj.TargetProperty and obj.InList:
             sp = obj.InList[0]
             import Draft
@@ -713,10 +720,25 @@ class SpreadsheetView(QtGui.QWidget):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.label = QtGui.QLabel(self)
         self.label.setMinimumSize(QtCore.QSize(82, 0))
-        self.label.setText(str(translate("Spreadsheet","Cell"))+" A1 :")
-        self.horizontalLayout.addWidget(self.label)
+        self.label.setText(translate("Spreadsheet","Cell")+" A1 :")
         self.lineEdit = QtGui.QLineEdit(self)
+        self.applyButton = QtGui.QPushButton(self)
+        self.applyButton.setText(translate("Spreadsheet","Apply"))
+        self.applyButton.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
+        self.applyButton.setToolTip(translate("Spreadsheet","Apply the changes to the current cell"))
+        self.wipeButton = QtGui.QPushButton(self)
+        self.wipeButton.setText(translate("Spreadsheet","Delete"))
+        self.wipeButton.setIcon(QtGui.QIcon(":/icons/process-stop.svg"))
+        self.wipeButton.setToolTip(translate("Spreadsheet","Deletes the contents of the current cell"))
+        self.computeButton = QtGui.QPushButton(self)
+        self.computeButton.setText(translate("Spreadsheet","Compute"))
+        self.computeButton.setIcon(QtGui.QIcon(":/icons/view-refresh.svg"))
+        self.computeButton.setToolTip(translate("Spreadsheet","Updates the values handled by controllers"))
+        self.horizontalLayout.addWidget(self.label)
         self.horizontalLayout.addWidget(self.lineEdit)
+        self.horizontalLayout.addWidget(self.applyButton)
+        self.horizontalLayout.addWidget(self.wipeButton)
+        self.horizontalLayout.addWidget(self.computeButton)
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         # add table
@@ -732,6 +754,9 @@ class SpreadsheetView(QtGui.QWidget):
         QtCore.QObject.connect(self.table, QtCore.SIGNAL("cellChanged(int,int)"), self.changeCell)
         QtCore.QObject.connect(self.table, QtCore.SIGNAL("currentCellChanged(int,int,int,int)"), self.setEditLine)
         QtCore.QObject.connect(self.lineEdit, QtCore.SIGNAL("returnPressed()"), self.getEditLine)
+        QtCore.QObject.connect(self.applyButton, QtCore.SIGNAL("clicked()"), self.getEditLine)
+        QtCore.QObject.connect(self.wipeButton, QtCore.SIGNAL("clicked()"), self.wipeCell)
+        QtCore.QObject.connect(self.computeButton, QtCore.SIGNAL("clicked()"), self.recompute)
 
     def closeEvent(self, event):
         #if DEBUG: print "Closing spreadsheet view"
@@ -775,6 +800,10 @@ class SpreadsheetView(QtGui.QWidget):
                         brush.setStyle(QtCore.Qt.Dense6Pattern)
                         if self.table.item(r,c):
                             self.table.item(r,c).setBackground(brush)
+                    else:
+                        brush = QtGui.QBrush()
+                        if self.table.item(r,c):
+                            self.table.item(r,c).setBackground(brush)
 
     def changeCell(self,r,c,value=None):
         "changes the contens of a cell"
@@ -783,21 +812,28 @@ class SpreadsheetView(QtGui.QWidget):
             self.doNotChange = False
         elif self.spreadsheet:
             key = "abcdefghijklmnopqrstuvwxyz"[c]+str(r+1)
-            if not value:
+            if value == None:
                 value = self.table.item(r,c).text()
-            if DEBUG: print "Changing "+key+" to "+value
-            # store the entry as best as possible
-            try:
-                v = int(value)
-            except:
+            if value == "":
+                if DEBUG: print "Wiping "+key
+                if self.table.item(r,c):
+                    self.table.item(r,c).setText("")
+                if key in self.spreadsheet.Proxy._cells.keys():
+                    del self.spreadsheet.Proxy._cells[key]
+            else:
+                if DEBUG: print "Changing "+key+" to "+value
+                # store the entry as best as possible
                 try:
-                    v = float(value)
+                    v = int(value)
                 except:
                     try:
-                        v = v = str(value)
+                        v = float(value)
                     except:
-                        v = value
-            setattr(self.spreadsheet.Proxy,key,v)
+                        try:
+                            v = v = str(value)
+                        except:
+                            v = value
+                setattr(self.spreadsheet.Proxy,key,v)
             self.update()
             # TODO do not update the whole spreadsheet when only one cell has changed:
             # use the _relations table and recursively update only cells based on this one
@@ -820,11 +856,19 @@ class SpreadsheetView(QtGui.QWidget):
         "called when something has been entered in the edit line"
         txt = str(self.lineEdit.text())
         if DEBUG: print "Text edited ",txt
-        if txt:
-            r = self.table.currentRow()
-            c = self.table.currentColumn()
-            self.changeCell(r,c,txt)
+        r = self.table.currentRow()
+        c = self.table.currentColumn()
+        self.changeCell(r,c,txt)
 
+    def wipeCell(self):
+        if DEBUG: print "Wiping cell"
+        self.lineEdit.setText("")
+        self.getEditLine()
+
+    def recompute(self):
+        if self.spreadsheet:
+            self.spreadsheet.Proxy.recompute(self.spreadsheet)
+        self.update()
 
 class _Command_Spreadsheet_Create:
     "the Spreadsheet_Create FreeCAD command"
