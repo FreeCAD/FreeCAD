@@ -1276,9 +1276,9 @@ void DocumentObjectItem::testStatus()
         QStyleOptionViewItem opt;
         opt.initFrom(this->treeWidget());
 #if QT_VERSION >= 0x040200
-        this->setForeground(0, opt.palette.color(QPalette::Disabled,QPalette::Dark));
+        this->setForeground(0, opt.palette.color(QPalette::Disabled,QPalette::Text));
 #else
-        this->setTextColor(0, opt.palette.color(QPalette::Disabled,QPalette::Dark));
+        this->setTextColor(0, opt.palette.color(QPalette::Disabled,QPalette::Text);
 #endif
         mode = QIcon::Disabled;
     }
