@@ -47,22 +47,22 @@ public:
 
     void saveSettings();
     void loadSettings();
+	void setInitGridSize(double val);
 
 Q_SIGNALS:
     void setGridSnap(int Type);
     void emitToggleGridView(bool);
     void emitToggleGridSnap(int);
-    void emitSetGridSize(const QString&);
+    void emitSetGridSize(double);
     void emitToggleAutoconstraints(int);
 
 public Q_SLOTS:
     void toggleGridView(bool on);
-    void setGridSize(const QString& val);
+    void setGridSize(double val);
     void toggleGridSnap(int state);
 
 protected:
     void changeEvent(QEvent *e);
-    void fillGridCombo(void);
 
 private:
     Ui_TaskSketcherGeneral* ui;
@@ -85,7 +85,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void toggleGridView(bool on);
-    void setGridSize(const QString& val);
+    void setGridSize(double val);
     void toggleGridSnap(int state);
     void toggleAutoconstraints(int state);
 
