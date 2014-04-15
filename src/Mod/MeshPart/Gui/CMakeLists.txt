@@ -69,7 +69,7 @@ fc_target_copy_resource(MeshPartGui
     ${CMAKE_BINARY_DIR}/Mod/MeshPart
     InitGui.py)
 
-SET_BIN_DIR(MeshPartGui "MeshPartGui" "/Mod/MeshPart")
+SET_BIN_DIR(MeshPartGui MeshPartGui /Mod/MeshPart)
 if(WIN32)
     set_target_properties(MeshPartGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

@@ -39,7 +39,7 @@ fc_target_copy_resource(ReverseEngineering
     ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering
     Init.py)
 
-SET_BIN_DIR(ReverseEngineering "ReverseEngineering" "/Mod/ReverseEngineering")
+SET_BIN_DIR(ReverseEngineering ReverseEngineering /Mod/ReverseEngineering)
 if(WIN32)
     set_target_properties(ReverseEngineering PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

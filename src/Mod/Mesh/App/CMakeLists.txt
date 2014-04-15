@@ -351,7 +351,7 @@ fc_target_copy_resource(Mesh
     ${CMAKE_BINARY_DIR}/Mod/Mesh
     MeshTestsApp.py)
 
-SET_BIN_DIR(Mesh "Mesh" "/Mod/Mesh")
+SET_BIN_DIR(Mesh Mesh /Mod/Mesh)
 if(WIN32)
     set_target_properties(Mesh PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

@@ -67,7 +67,7 @@ fc_target_copy_resource(MeshPart
     ${CMAKE_BINARY_DIR}/Mod/MeshPart
     Init.py)
 
-SET_BIN_DIR(MeshPart "MeshPart" "/Mod/MeshPart")
+SET_BIN_DIR(MeshPart MeshPart /Mod/MeshPart)
 if(WIN32)
     set_target_properties(MeshPart PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

@@ -50,7 +50,7 @@ fc_target_copy_resource(Points
     ${CMAKE_BINARY_DIR}/Mod/Points
     Init.py)
 
-SET_BIN_DIR(Points "Points" "/Mod/Points")
+SET_BIN_DIR(Points Points /Mod/Points)
 if(WIN32)
     set_target_properties(Points PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

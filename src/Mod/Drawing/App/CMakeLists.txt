@@ -85,7 +85,7 @@ fc_target_copy_resource(Drawing
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Drawing
     ${Drawing_Templates})
 
-SET_BIN_DIR(Drawing "Drawing" "/Mod/Drawing")
+SET_BIN_DIR(Drawing Drawing /Mod/Drawing)
 if(WIN32)
     set_target_properties(Drawing PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

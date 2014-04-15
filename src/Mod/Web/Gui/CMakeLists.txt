@@ -43,7 +43,7 @@ fc_target_copy_resource(WebGui
     ${CMAKE_BINARY_DIR}/Mod/Web
     Init.py InitGui.py)
 
-SET_BIN_DIR(WebGui "WebGui" "/Mod/Web")
+SET_BIN_DIR(WebGui WebGui /Mod/Web)
 if(WIN32)
     set_target_properties(WebGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

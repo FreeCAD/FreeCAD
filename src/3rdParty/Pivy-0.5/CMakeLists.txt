@@ -40,7 +40,7 @@ add_library(coin SHARED ${CoinPy_SRCS})
 
 target_link_libraries(coin ${CoinPy_LIBS})
 
-SET_BIN_DIR(coin "_coin" "/bin/pivy")
+SET_BIN_DIR(coin _coin /bin/pivy)
 if(WIN32)
     set_target_properties(coin PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
@@ -84,7 +84,7 @@ add_library(soqt SHARED ${SoQtPy_SRCS})
 
 target_link_libraries(soqt ${SoQtPy_LIBS})
 
-SET_BIN_DIR(soqt "_soqt" "/bin/pivy/gui")
+SET_BIN_DIR(soqt _soqt /bin/pivy/gui)
 if(WIN32)
     set_target_properties(soqt PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

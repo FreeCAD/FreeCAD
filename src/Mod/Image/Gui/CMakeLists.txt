@@ -69,7 +69,7 @@ fc_target_copy_resource(ImageGui
     ${CMAKE_BINARY_DIR}/Mod/Image
     InitGui.py)
 
-SET_BIN_DIR(ImageGui "ImageGui" "/Mod/Image")
+SET_BIN_DIR(ImageGui ImageGui /Mod/Image)
 if(WIN32)
     set_target_properties(ImageGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

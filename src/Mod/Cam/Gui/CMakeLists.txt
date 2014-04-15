@@ -71,7 +71,7 @@ fc_target_copy_resource(CamGui
     ${CMAKE_BINARY_DIR}/Mod/Cam
     InitGui.py)
 
-SET_BIN_DIR(CamGui "CamGui" "/Mod/Cam")
+SET_BIN_DIR(CamGui CamGui /Mod/Cam)
 if(WIN32)
     set_target_properties(CamGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
