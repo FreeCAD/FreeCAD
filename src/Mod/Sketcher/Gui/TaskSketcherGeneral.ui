@@ -34,14 +34,26 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBoxGridSize">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="currentIndex">
-        <number>-1</number>
-       </property>
-      </widget>
+       <widget class="Gui::InputField" name="gridSize">
+         <property name="unit" stdset="0">
+           <string>mm</string>
+         </property>
+         <property name="decimals" stdset="0">
+           <number>3</number>
+         </property>
+         <property name="maximum" stdset="0">
+           <double>99999999.0</double>
+         </property>
+         <property name="minimum" stdset="0">
+           <double>0.2</double>
+         </property>
+         <property name="singleStep" stdset="0">
+           <double>1.000000000000000</double>
+         </property>
+         <property name="value" stdset="0">
+           <double>0.0000001</double>
+         </property>
+       </widget>
      </item>
     </layout>
    </item>
@@ -71,5 +83,13 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+  <customwidgets>
+    <customwidget>
+      <class>Gui::InputField</class>
+      <extends>QLineEdit</extends>
+      <header>Gui/InputField.h</header>
+    </customwidget>
+  </customwidgets>
+
+  <connections/>
 </ui>
