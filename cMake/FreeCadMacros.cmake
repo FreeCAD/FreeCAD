@@ -204,34 +204,31 @@ MACRO(GET_MSVC_PRECOMPILED_SOURCE PrecompiledSource SourcesVar)
   ENDIF(MSVC)
 ENDMACRO(GET_MSVC_PRECOMPILED_SOURCE)
 
-# Macro to replace all the binary output locations.  {ARGVN} is zero based so
-# the 3rd element is ${ARGV2}.  When the 3rd element is empty, Runtime and Lib
-# directories default to /bin and /lib.  When present, the 3rd element specifies
-# both Runtime and Lib directories.
+# Macro to replace all the binary output locations.  Takes 2 optional parameters.
+# ${ARGVN} is zero based so the 3rd element is ${ARGV2}.  When the 3rd element is missing,
+# Runtime and Lib directories default to /bin and /lib.  When present, the 3rd element
+# specifies both Runtime and Lib directories.  4th specifies linux install path.
 MACRO(SET_BIN_DIR ProjectName OutputName)
     set_target_properties(${ProjectName} PROPERTIES OUTPUT_NAME ${OutputName})
-    if(${ARGC} STREQUAL 3)
+    if(${ARGC} GREATER 2)
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${ARGV2})
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${ARGV2})
         set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${ARGV2})
-    else(${ARGC} STREQUAL 3)
+    else(${ARGC} GREATER 2)
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/bin)
-        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/lib)        
-    endif(${ARGC} STREQUAL 3)
+        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/lib)
+    endif(${ARGC} GREATER 2)
 
     if(WIN32)
         set_target_properties(${ProjectName} PROPERTIES DEBUG_OUTPUT_NAME ${OutputName}_d)
     else(WIN32)
         set_target_properties(${ProjectName} PROPERTIES PREFIX "")
         
-        SET(COND_IS_PART_DESIGN ${ProjectName} STREQUAL PartDesign OR
-                                ${ProjectName} STREQUAL PartDesignGui)
-        if(${COND_IS_PART_DESIGN})
-            set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}${ARGV2})
-        else(${COND_IS_PART_DESIGN})
+        if(${ARGC} STREQUAL 4)
+            set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}${ARGV3})
+        else(${ARGC} STREQUAL 4)
             set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
-        endif(${COND_IS_PART_DESIGN})
-        UNSET(COND_IS_PART_DESIGN)
+        endif(${ARGC} STREQUAL 4)
     endif(WIN32)
 ENDMACRO(SET_BIN_DIR)
