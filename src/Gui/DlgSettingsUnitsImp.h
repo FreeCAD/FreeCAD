@@ -49,8 +49,6 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
-    void fillUpListBox(void);
-
 public Q_SLOTS:
     void on_comboBox_ViewSystem_currentIndexChanged(int index);
 

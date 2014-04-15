@@ -63,18 +63,6 @@ DlgSettingsUnitsImp::~DlgSettingsUnitsImp()
     delete ui;
 }
 
-void DlgSettingsUnitsImp::fillUpListBox()
-{
-    //tableWidget->setRowCount(10);
-    //for (int i = 0 ; i<9;i++) {
-    //    QTableWidgetItem *newItem = new QTableWidgetItem(UnitsApi::getQuantityName((Base::QuantityType)i));
-    //    tableWidget->setItem(i, 0, newItem);
-    //    
-    //    newItem = new QTableWidgetItem(UnitsApi::getPrefUnitOf((Base::QuantityType)i));
-    //    tableWidget->setItem(i, 1, newItem);
-    //}
-}
-
 void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
 {
     if (index < 0)
@@ -82,7 +70,6 @@ void DlgSettingsUnitsImp::on_comboBox_ViewSystem_currentIndexChanged(int index)
 
     UnitsApi::setSchema((UnitSystem)index);
 
-    fillUpListBox();
 }
 
 void DlgSettingsUnitsImp::saveSettings()
