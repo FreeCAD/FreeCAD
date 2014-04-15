@@ -781,7 +781,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if self.Object.Base:
             self.Object.Base.ViewObject.hide()
         FreeCADGui.Control.closeDialog()
-        return False
+        return
         
     def colorize(self,obj):
         "setting different part colors"
@@ -915,7 +915,7 @@ class _ArchWindowTaskPanel:
         return True
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+        return int(QtGui.QDialogButtonBox.Close)
 
     def check(self,wid,col):
         self.editButton.setEnabled(True)
@@ -1083,7 +1083,7 @@ class _ArchWindowTaskPanel:
         self.createButton.setVisible(False)
         self.addButton.setEnabled(True)
     
-    def accept(self):
+    def reject(self):
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
