@@ -177,7 +177,7 @@ add_library(FreeCADApp SHARED ${FreeCADApp_SRCS})
 
 target_link_libraries(FreeCADApp ${FreeCADApp_LIBS})
 
-SET_BIN_DIR(FreeCADApp "FreeCADApp" "/bin")
+SET_BIN_DIR(FreeCADApp FreeCADApp)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADApp

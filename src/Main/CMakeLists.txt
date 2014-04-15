@@ -45,7 +45,7 @@ if(FREECAD_BUILD_GUI)
     add_executable(FreeCADMain WIN32 ${FreeCAD_SRCS})
     target_link_libraries(FreeCADMain ${FreeCAD_LIBS})
 
-    SET_BIN_DIR(FreeCADMain "FreeCADMain" "/bin")
+    SET_BIN_DIR(FreeCADMain FreeCAD)
 
     if(WIN32)
         INSTALL(TARGETS FreeCADMain
@@ -71,7 +71,7 @@ target_link_libraries(FreeCADMainCmd
     ${QT_LIBRARIES}
 )
 
-SET_BIN_DIR(FreeCADMainCmd "FreeCADMainCmd" "/bin")
+SET_BIN_DIR(FreeCADMainCmd FreeCADCmd)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADMainCmd
@@ -94,7 +94,7 @@ add_library(FreeCADMainPy SHARED ${FreeCADMainPy_SRCS})
 
 target_link_libraries(FreeCADMainPy FreeCADApp)
 
-SET_BIN_DIR(FreeCADMainPy "FreeCADMainPy" "/bin")
+SET_BIN_DIR(FreeCADMainPy FreeCAD)
 if(WIN32)
     set_target_properties(FreeCADMainPy PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
@@ -121,7 +121,7 @@ if(FREECAD_BUILD_GUI)
 
     target_link_libraries(FreeCADGuiPy FreeCADGui)
 
-    SET_BIN_DIR(FreeCADGuiPy "FreeCADGuiPy" "/bin")
+    SET_BIN_DIR(FreeCADGuiPy FreeCADGui)
     if(WIN32)
         set_target_properties(FreeCADGuiPy PROPERTIES SUFFIX ".pyd")
     endif(WIN32)
