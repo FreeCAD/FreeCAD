@@ -932,7 +932,7 @@ add_library(FreeCADGui SHARED ${FreeCADGui_SRCS})
 
 target_link_libraries(FreeCADGui ${FreeCADGui_LIBS})
 
-SET_BIN_DIR(FreeCADGui "FreeCADGui" "/bin")
+SET_BIN_DIR(FreeCADGui FreeCADGui)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADGui

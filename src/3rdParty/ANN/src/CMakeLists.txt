@@ -26,4 +26,4 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/src/Main)
 add_library(ANN SHARED ${ANN_SRCS})
 target_link_libraries(ANN ${ANN_LIBS})
 
-SET_BIN_DIR(ANN "ANN" "/bin")
+SET_BIN_DIR(ANN ANN)
