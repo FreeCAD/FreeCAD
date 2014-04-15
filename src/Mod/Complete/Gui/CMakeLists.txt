@@ -36,7 +36,7 @@ fc_target_copy_resource(CompleteGui
     ${CMAKE_BINARY_DIR}/Mod/Complete
     InitGui.py)
 
-SET_BIN_DIR(CompleteGui "CompleteGui" "/Mod/Complete")
+SET_BIN_DIR(CompleteGui CompleteGui /Mod/Complete)
 if(WIN32)
     set_target_properties(CompleteGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

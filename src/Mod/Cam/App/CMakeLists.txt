@@ -94,7 +94,7 @@ fc_target_copy_resource(Cam
     ${CMAKE_BINARY_DIR}/Mod/Cam
     Init.py)
 
-SET_BIN_DIR(Cam "Cam" "/Mod/Cam")
+SET_BIN_DIR(Cam Cam /Mod/Cam)
 if(WIN32)
     set_target_properties(Cam PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

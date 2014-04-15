@@ -30,7 +30,7 @@ fc_target_copy_resource(Complete
     ${CMAKE_BINARY_DIR}/Mod/Complete
     Init.py)
 
-SET_BIN_DIR(Complete "Complete" "/Mod/Complete")
+SET_BIN_DIR(Complete Complete /Mod/Complete)
 if(WIN32)
     set_target_properties(Complete PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

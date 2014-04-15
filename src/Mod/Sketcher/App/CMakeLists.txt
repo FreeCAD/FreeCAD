@@ -117,7 +117,7 @@ fc_target_copy_resource(Sketcher
     ${CMAKE_BINARY_DIR}/Mod/Sketcher
     ${Sketcher_Scripts})
 
-SET_BIN_DIR(Sketcher "Sketcher" "/Mod/Sketcher")
+SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)
 if(WIN32)
     set_target_properties(Sketcher PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

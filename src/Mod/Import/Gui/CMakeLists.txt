@@ -46,7 +46,7 @@ fc_target_copy_resource(ImportGui
     ${CMAKE_BINARY_DIR}/Mod/Import
     Init.py InitGui.py)
 
-SET_BIN_DIR(ImportGui "ImportGui" "/Mod/Import")
+SET_BIN_DIR(ImportGui ImportGui /Mod/Import)
 if(WIN32)
     set_target_properties(ImportGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

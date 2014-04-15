@@ -37,7 +37,7 @@ fc_target_copy_resource(Image
     ${CMAKE_BINARY_DIR}/Mod/Image
     Init.py)
 
-SET_BIN_DIR(Image "Image" "/Mod/Image")
+SET_BIN_DIR(Image Image /Mod/Image)
 if(WIN32)
     set_target_properties(Image PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

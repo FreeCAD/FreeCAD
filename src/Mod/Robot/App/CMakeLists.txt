@@ -138,7 +138,7 @@ fc_target_copy_resource(Robot
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot
     ${Robot_Resources})
 
-SET_BIN_DIR(Robot "Robot" "/Mod/Robot")
+SET_BIN_DIR(Robot Robot /Mod/Robot)
 if(WIN32)
     set_target_properties(Robot PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

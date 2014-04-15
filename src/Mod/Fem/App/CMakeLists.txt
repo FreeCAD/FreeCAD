@@ -155,7 +155,7 @@ fc_target_copy_resource(Fem
     ${FemScripts_SRCS}
     )
 
-SET_BIN_DIR(Fem "Fem" "/Mod/Fem")
+SET_BIN_DIR(Fem Fem /Mod/Fem)
 if(WIN32)
     set_target_properties(Fem PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

@@ -59,7 +59,7 @@ fc_target_copy_resource(InspectionGui
     ${CMAKE_BINARY_DIR}/Mod/Inspection
     InitGui.py)
 
-SET_BIN_DIR(InspectionGui "InspectionGui" "/Mod/Inspection")
+SET_BIN_DIR(InspectionGui InspectionGui /Mod/Inspection)
 if(WIN32)
     set_target_properties(InspectionGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

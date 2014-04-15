@@ -69,7 +69,7 @@ fc_target_copy_resource(ImportPy
     ${CMAKE_BINARY_DIR}/Mod/Import
     ${SCL_Resources})
 
-SET_BIN_DIR(Import "Import" "/Mod/Import")
+SET_BIN_DIR(Import Import /Mod/Import)
 if(WIN32)
     set_target_properties(Import PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

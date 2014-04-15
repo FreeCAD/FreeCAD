@@ -27,7 +27,7 @@ fc_target_copy_resource(_TEMPLATE_
     ${CMAKE_BINARY_DIR}/Mod/_TEMPLATE_
     Init.py)
 
-SET_BIN_DIR(_TEMPLATE_ "_TEMPLATE_" "/Mod/_TEMPLATE_")
+SET_BIN_DIR(_TEMPLATE_ _TEMPLATE_ /Mod/_TEMPLATE_)
 if(WIN32)
     set_target_properties(_TEMPLATE_ PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

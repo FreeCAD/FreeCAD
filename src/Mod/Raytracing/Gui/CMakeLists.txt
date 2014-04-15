@@ -84,7 +84,7 @@ fc_target_copy_resource(RaytracingGui
     ${CMAKE_BINARY_DIR}/Mod/Raytracing
     InitGui.py)
 
-SET_BIN_DIR(RaytracingGui "RaytracingGui" "/Mod/Raytracing")
+SET_BIN_DIR(RaytracingGui RaytracingGui /Mod/Raytracing)
 if(WIN32)
     set_target_properties(RaytracingGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)

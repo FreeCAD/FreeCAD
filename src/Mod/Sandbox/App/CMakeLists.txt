@@ -38,7 +38,7 @@ fc_target_copy_resource(Sandbox
     ${CMAKE_BINARY_DIR}/Mod/Sandbox
     Init.py)
 
-SET_BIN_DIR(Sandbox "Sandbox" "/Mod/Sandbox")
+SET_BIN_DIR(Sandbox Sandbox /Mod/Sandbox)
 if(WIN32)
     set_target_properties(Sandbox PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
