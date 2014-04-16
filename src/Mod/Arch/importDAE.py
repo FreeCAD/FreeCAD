@@ -84,6 +84,9 @@ def decode(name):
 def read(filename):
     global col
     col = collada.Collada(filename, ignore=[collada.DaeUnsupportedError])
+    # Read the unitmeter info from dae file and compute unit to convert to mm
+    unitmeter = col.assetInfo.unitmeter or 1
+    unit = unitmeter / 0.001
     for geom in col.scene.objects('geometry'):
     #for geom in col.geometries:
         for prim in geom.primitives():
@@ -97,6 +100,7 @@ def read(filename):
             for tri in tset:
                 face = []
                 for v in tri.vertices:
+                    v = [x * unit for x in v]
                     face.append([v[0],v[1],v[2]])
                 meshdata.append(face)
             #print meshdata
@@ -108,6 +112,8 @@ def read(filename):
 def export(exportList,filename):
     "called when freecad exports a file"
     if not checkCollada(): return
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    scale = p.GetFloat("ColladaScalingFactor",1.0)
     colmesh = collada.Collada()
     colmesh.assetInfo.upaxis = collada.asset.UP_AXIS.Z_UP
     effect = collada.material.Effect("effect0", [], "phong", diffuse=(.7,.7,.7), specular=(1,1,1))
@@ -125,7 +131,7 @@ def export(exportList,filename):
             findex = []
             # vertex indices
             for v in m[0]:
-                vindex.extend([v.x,v.y,v.z])
+                vindex.extend([v.x*scale,v.y*scale,v.z*scale])
             # normals
             for f in obj.Shape.Faces:
                 n = f.normalAt(0,0)
@@ -143,7 +149,7 @@ def export(exportList,filename):
             findex = []
             # vertex indices
             for v in m.Topology[0]:
-                vindex.extend([v.x,v.y,v.z])
+                vindex.extend([v.x*scale,v.y*scale,v.z*scale])
             # normals
             for f in m.Facets:
                 n = f.Normal
