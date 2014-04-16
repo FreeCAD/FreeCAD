@@ -103,6 +103,8 @@ SET(Sketcher_Scripts
     Init.py
     SketcherExample.py
 	TestSketcherApp.py
+	Profiles.py
+	ProfileLib/Hexagon.py
 )
 
 add_library(Sketcher SHARED ${Sketcher_SRCS})
