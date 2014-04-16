@@ -4443,7 +4443,8 @@ class _PathArray(_DraftObject):
         nullv = FreeCAD.Vector(0,0,0)
         nullPlace =FreeCAD.Placement()
         ns = shape.copy()
-        ns.Placement = nullPlace                                     # reset Placement so translate goes to right place.
+        ns.Placement.Base = nullPlace.Base                           # reset Placement point so translate goes to right place.
+        ns.Placement.Rotation = shape.Placement.Rotation             # preserve global orientation
         ns.translate(RefPt+xlate)
         if not align:
             return ns
