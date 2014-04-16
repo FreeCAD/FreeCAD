@@ -24,6 +24,7 @@
 #ifndef GUI_INPUTFIELD_H
 #define GUI_INPUTFIELD_H
 
+#include <QValidator>
 #include <Base/Parameter.h>
 #include <Base/Quantity.h>
 #include "Widgets.h"
@@ -98,6 +99,10 @@ public:
     QString getUnitText(void); 
     /// set the number portion selected (use after setValue()) 
     void selectNumber(void);
+    /// input validation
+    void fixup(QString& input) const;
+    /// input validation
+    QValidator::State validate(QString& input, int& pos) const;
 
     /** @name history and default management */
     //@{
@@ -164,8 +169,6 @@ private:
     int HistorySize;
     int SaveSize;
 };
-
-
 
 } // namespace Gui
 
