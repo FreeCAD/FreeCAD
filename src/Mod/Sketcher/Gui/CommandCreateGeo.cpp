@@ -2899,17 +2899,42 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            float dx = onSketchPos.fX - EditCurve[0].fX;
-            float dy = onSketchPos.fY - EditCurve[0].fY;
+            float dx = onSketchPos.fX - StartPos.fX;
+            float dy = onSketchPos.fY - StartPos.fY;
+
+			lx=0;ly=0;a=0;
+			if(fabs(dx) > fabs(dy)){
+				lx = dx;
+				r = dy;
+				rev = dx/fabs(dx);
+			}else{
+				ly = dy;
+				r = dx;
+				a = 8;
+				rev = dy/fabs(dy);
+			}
+
+            for (int i=0; i < 17; i++) {
+                double angle = (i+a)*M_PI/16.0;
+                double rx = -fabs(r)* rev * sin(angle) ;
+                double ry = fabs(r) * rev *cos(angle) ;
+                EditCurve[i] = Base::Vector2D(StartPos.fX + rx, StartPos.fY + ry);
+                EditCurve[18+i] = Base::Vector2D(StartPos.fX - rx+lx, StartPos.fY - ry+ly);
+            }
+			EditCurve[17] = EditCurve[16] + Base::Vector2D(lx,ly);
+			EditCurve[35] = EditCurve[0] ;
+            //EditCurve[34] = EditCurve[0];
+
+            // Display radius for user
+            float radius = (onSketchPos - EditCurve[0]).Length();
+
             SbString text;
-            text.sprintf(" (%.1f x %.1f)", dx, dy);
+            text.sprintf(" (%.1fR %.1fL)", r,lx);
             setPositionText(onSketchPos, text);
 
-            EditCurve[2] = onSketchPos;
-            EditCurve[1] = Base::Vector2D(onSketchPos.fX ,EditCurve[0].fY);
-            EditCurve[3] = Base::Vector2D(EditCurve[0].fX,onSketchPos.fY);
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.0,0.0))) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -2920,15 +2945,10 @@ public:
     virtual bool pressButton(Base::Vector2D onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
-            EditCurve[0] = onSketchPos;
-            EditCurve[4] = onSketchPos;
+            StartPos = onSketchPos;
             Mode = STATUS_SEEK_Second;
         }
         else {
-            EditCurve[2] = onSketchPos;
-            EditCurve[1] = Base::Vector2D(onSketchPos.fX ,EditCurve[0].fY);
-            EditCurve[3] = Base::Vector2D(EditCurve[0].fX,onSketchPos.fY);
-            sketchgui->drawEdit(EditCurve);
             Mode = STATUS_End;
         }
         return true;
@@ -2939,48 +2959,68 @@ public:
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
-            Gui::Command::openCommand("Add sketch box");
+            Gui::Command::openCommand("Add slot");
             int firstCurve = getHighestCurveIndex() + 1;
-            // add the four line geos
+            // add the geometry to the sketch
+			double start, end;
+			if(fabs(lx)>fabs(ly)){
+				start = M_PI/2;
+				end = -M_PI/2;
+			}else{
+				start = 0;
+				end = M_PI;
+			}
+			if(ly>0 || lx <0){
+				double temp = start;
+				start = end;
+				end = temp;
+			}
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
+                      sketchgui->getObject()->getNameInDocument(),
+                      StartPos.fX,StartPos.fY,	// center of the  arc
+					  fabs(r),					// radius
+					  start,end	// start and end angle
+					  );
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
+                      sketchgui->getObject()->getNameInDocument(),
+                      StartPos.fX+lx,StartPos.fY+ly,	// center of the  arc
+					  fabs(r),							// radius
+					  end,start			// start and end angle
+					  );
+
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
                       sketchgui->getObject()->getNameInDocument(),
-                      EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
+                      EditCurve[16].fX,EditCurve[16].fY,EditCurve[17].fX,EditCurve[17].fY);
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
                       sketchgui->getObject()->getNameInDocument(),
-                      EditCurve[1].fX,EditCurve[1].fY,EditCurve[2].fX,EditCurve[2].fY);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                      sketchgui->getObject()->getNameInDocument(),
-                      EditCurve[2].fX,EditCurve[2].fY,EditCurve[3].fX,EditCurve[3].fY);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                      sketchgui->getObject()->getNameInDocument(),
-                      EditCurve[3].fX,EditCurve[3].fY,EditCurve[0].fX,EditCurve[0].fY);
-            // add the four coincidents to ty them together
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve,firstCurve+1);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+1,firstCurve+2);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+2,firstCurve+3);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+3,firstCurve);
-            // add the horizontal constraints
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+2);
-            // add the vertical constraints
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+1);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+3);
+                      EditCurve[0].fX,EditCurve[0].fY,EditCurve[34].fX,EditCurve[34].fY);
+            //// add the four coincidents to ty them together
+            //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
+            //         ,sketchgui->getObject()->getNameInDocument()
+            //         ,firstCurve,firstCurve+1);
+            //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
+            //         ,sketchgui->getObject()->getNameInDocument()
+            //         ,firstCurve+1,firstCurve+2);
+            //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
+            //         ,sketchgui->getObject()->getNameInDocument()
+            //         ,firstCurve+2,firstCurve+3);
+            //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
+            //         ,sketchgui->getObject()->getNameInDocument()
+            //         ,firstCurve+3,firstCurve);
+            //// add the horizontal constraints
+            //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
+            //         ,sketchgui->getObject()->getNameInDocument()
+            //         ,firstCurve);
+            //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
+            //         ,sketchgui->getObject()->getNameInDocument()
+            //         ,firstCurve+2);
+            //// add the vertical constraints
+            //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
+            //         ,sketchgui->getObject()->getNameInDocument()
+            //         ,firstCurve+1);
+            //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
+            //         ,sketchgui->getObject()->getNameInDocument()
+            //         ,firstCurve+3);
 
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
@@ -3005,6 +3045,8 @@ public:
     }
 protected:
     BoxMode Mode;
+	Base::Vector2D StartPos;
+	double lx,ly,r,a,rev;
     std::vector<Base::Vector2D> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
