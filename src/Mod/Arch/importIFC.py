@@ -927,24 +927,33 @@ def export(exportList,filename):
 
     # process objects
     for obj in objectslist:
-        if DEBUG: print "adding ",obj.Label
         otype = Draft.getType(obj)
         name = str(obj.Label)
         parent = Arch.getHost(obj)
         gdata = None
+
+        if otype in ["Group"]:
+            # unsupported objects. TODO: support
+            continue
+
+        if DEBUG: print "adding ",obj.Label
+
         if not forcebrep:
             gdata = Arch.getExtrusionData(obj,scaling)
-            if DEBUG: print "extrusion data for ",obj.Label," : ",gdata
+            #if DEBUG: print "extrusion data for ",obj.Label," : ",gdata
         if not gdata:
             fdata = Arch.getBrepFacesData(obj,scaling)
-            if DEBUG: print "brep data for ",obj.Label," : ",fdata
+            #if DEBUG: print "brep data for ",obj.Label," : ",fdata
+            if DEBUG: print "   Brep"
             if not fdata:
                 if obj.isDerivedFrom("Part::Feature"):
                     print "IFC export: error retrieving the shape of object ", obj.Name
                     continue
+        else:
+            if DEBUG: print "   Extrusion"
 
         spacer = ""
-        for i in range(30-len(obj.Name)):
+        for i in range(36-len(obj.Label)):
             spacer += " "
         if otype in ["Structure","Window"]:
             if hasattr(obj,"Role"):
@@ -953,7 +962,7 @@ def export(exportList,filename):
                 tp = otype
         else:
             tp = otype
-        txt.append(obj.Name + spacer + tp)
+        txt.append(obj.Label + spacer + tp)
                     
         if otype == "Building":
             ifc.addBuilding( name=name )

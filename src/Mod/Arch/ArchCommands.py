@@ -602,8 +602,8 @@ def addFixture(fixture,baseobject):
     else:
         FreeCAD.Console.PrintMessage(translate("Arch","This object has no support for fixtures"))
 
-def getTuples(data,scale=1,placement=None):
-    """getTuples(data,[scale,placement]): returns a tuple or a list of tuples from a vector
+def getTuples(data,scale=1,placement=None,normal=None):
+    """getTuples(data,[scale,placement,normal]): returns a tuple or a list of tuples from a vector
     or from the vertices of a shape. Scale can indicate a scale factor"""
     import Part
     if isinstance(data,FreeCAD.Vector):
@@ -616,7 +616,12 @@ def getTuples(data,scale=1,placement=None):
             import Part,DraftGeomUtils
             data = Part.Wire(DraftGeomUtils.sortEdges(data.Wires[0].Edges))
             verts = data.Vertexes
-            #verts.reverse()
+            try:
+                if DraftVecUtils.angle(verts[1].Point,verts[0].Point,normal) >= 0:
+                    # inverting verts order if the direction is couterclockwise
+                    verts.reverse()
+            except:
+                pass
             for v in verts:
                 pt = v.Point
                 if placement:
@@ -662,7 +667,8 @@ def getBrepFacesData(obj,scale=1):
                         for face in obj.Shape.Faces:
                             f = []
                             for wire in face.Wires:
-                                f.append(getTuples(wire,scale))
+                                t = getTuples(wire,scale,normal=face.normalAt(0,0))
+                                f.append(t)
                             s.append(f)
                         sols.append(s)
                     return sols
