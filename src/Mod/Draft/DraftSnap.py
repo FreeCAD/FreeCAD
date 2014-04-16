@@ -813,13 +813,13 @@ class Snapper:
         "setCursor(self,mode=None): sets or resets the cursor to the given mode or resets"
         if self.selectMode:
             mw = FreeCADGui.getMainWindow()
-            for w in mw.findChildren(QtGui.QWidget):
+            for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
                 if w.metaObject().className() == "SoQtGLArea":
                     w.unsetCursor()
             self.cursorMode = None
         elif not mode:
             mw = FreeCADGui.getMainWindow()
-            for w in mw.findChildren(QtGui.QWidget):
+            for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
                 if w.metaObject().className() == "SoQtGLArea":
                     w.unsetCursor()
             self.cursorMode = None
@@ -837,7 +837,7 @@ class Snapper:
                 qp.end()
                 cur = QtGui.QCursor(newicon,8,8)
                 mw = FreeCADGui.getMainWindow()
-                for w in mw.findChildren(QtGui.QWidget):
+                for w in mw.findChild(QtGui.QMdiArea).findChildren(QtGui.QWidget):
                     if w.metaObject().className() == "SoQtGLArea":
                         w.setCursor(cur)
                 self.cursorMode = mode
