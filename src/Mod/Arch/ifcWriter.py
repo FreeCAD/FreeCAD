@@ -435,7 +435,7 @@ class IfcDocument(object):
         else:
             create(self._fileobject,"IfcRelAggregates",[uid(),self._owner,'Relationship','',container,entities])
 
-    def addWall(self,shapes,storey=None,placement=None,name="Default wall",description=None):
+    def addWall(self,shapes,storey=None,placement=None,name="Default wall",description=None,standard=False):
         """addWall(shapes,[storey,placement,name,description]): creates a wall from the given representation shape(s)"""
         if not placement:
             placement = self.addPlacement()
@@ -443,7 +443,10 @@ class IfcDocument(object):
             shapes = [shapes]
         reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]]) for shape in shapes]
         prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps])
-        wal = create(self._fileobject,"IfcWallStandardCase",[uid(),self._owner,name,description,None,placement,prd,None])
+        if standard:
+            wal = create(self._fileobject,"IfcWallStandardCase",[uid(),self._owner,name,description,None,placement,prd,None])
+        else:
+            wal = create(self._fileobject,"IfcWall",[uid(),self._owner,name,description,None,placement,prd,None])
         self.BuildingProducts.append(wal)
         if not storey:
             if self.Storeys:
