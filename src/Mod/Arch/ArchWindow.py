@@ -53,6 +53,8 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Ar
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Window(obj)
     _ViewProviderWindow(obj.ViewObject)
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
     if width:
         obj.Width = width
     if height:
