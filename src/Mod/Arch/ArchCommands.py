@@ -617,7 +617,10 @@ def getTuples(data,scale=1,placement=None,normal=None):
             data = Part.Wire(DraftGeomUtils.sortEdges(data.Wires[0].Edges))
             verts = data.Vertexes
             try:
-                if DraftVecUtils.angle(verts[1].Point,verts[0].Point,normal) >= 0:
+                c = data.CenterOfMass
+                v1 = verts[0].Point.sub(c)
+                v2 = verts[1].Point.sub(c)
+                if DraftVecUtils.angle(v2,v1,normal) >= 0:
                     # inverting verts order if the direction is couterclockwise
                     verts.reverse()
             except:
@@ -666,9 +669,10 @@ def getBrepFacesData(obj,scale=1):
                         s = []
                         for face in obj.Shape.Faces:
                             f = []
+                            f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0)))
                             for wire in face.Wires:
-                                t = getTuples(wire,scale,normal=face.normalAt(0,0))
-                                f.append(t)
+                                if wire.hashCode() != face.OuterWire.hashCode():
+                                    f.append(getTuples(wire,scale,normal=DraftVecUtils.neg(face.normalAt(0,0))))
                             s.append(f)
                         sols.append(s)
                     return sols
