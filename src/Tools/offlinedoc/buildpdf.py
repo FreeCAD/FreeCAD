@@ -36,7 +36,7 @@ from urllib2 import urlopen, HTTPError
 #    CONFIGURATION       #################################################
 
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
-PDFCONVERTOR = 'firefox' # can be 'pisa', 'htmldoc', 'wkhtmltopdf' or 'firefox'
+PDFCONVERTOR = 'wkhtmltopdf' # can be 'pisa', 'htmldoc', 'wkhtmltopdf' or 'firefox'
 VERBOSE = True # set true to get output messages
 INCLUDECOMMANDS = True # if true, the command pages of each workbench are included after each WB page
 OVERWRITE = True # if true, pdf files are recreated even if already existing
