@@ -40,6 +40,23 @@ using namespace Base;
 
 // --------------------------------------------------------------------
 
+namespace Gui {
+class InputValidator : public QValidator
+{
+public:
+    InputValidator(InputField* parent);
+    ~InputValidator();
+
+    void fixup(QString& input) const;
+    State validate(QString& input, int& pos) const;
+
+private:
+    InputField* dptr;
+};
+}
+
+// --------------------------------------------------------------------
+
 InputField::InputField ( QWidget * parent )
   : QLineEdit(parent), 
   StepSize(1.0), 
@@ -48,6 +65,7 @@ InputField::InputField ( QWidget * parent )
   HistorySize(5),
   SaveSize(5)
 {
+    setValidator(new InputValidator(this));
     iconLabel = new QLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
     QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
@@ -408,12 +426,61 @@ void InputField::wheelEvent (QWheelEvent * event)
 {
     double step = event->delta() > 0 ? StepSize : -StepSize;
     double val = actUnitValue + step;
+    if (val > Maximum)
+        val = Maximum;
+    else if (val < Minimum)
+        val = Minimum;
 
-    this->setText( QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+    this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
     event->accept();
 }
 
+void InputField::fixup(QString& input) const
+{
+}
+
+QValidator::State InputField::validate(QString& input, int& pos) const
+{
+    try {
+        Quantity res;
+        res = Quantity::parse(input);
+
+        double factor;
+        QString unitStr;
+        res.getUserString(factor, unitStr);
+        double value = res.getValue()/factor;
+        // disallow to enter numbers out of range
+        if (value > this->Maximum || value < this->Minimum)
+            return QValidator::Invalid;
+    }
+    catch(Base::Exception&) {
+        // Actually invalid input but the newInput slot gives
+        // some feedback
+        return QValidator::Intermediate;
+    }
+
+    return QValidator::Acceptable;
+}
+
 // --------------------------------------------------------------------
+
+InputValidator::InputValidator(InputField* parent) : QValidator(parent), dptr(parent)
+{
+}
+
+InputValidator::~InputValidator()
+{
+}
+
+void InputValidator::fixup(QString& input) const
+{
+    dptr->fixup(input);
+}
+
+QValidator::State InputValidator::validate(QString& input, int& pos) const
+{
+    return dptr->validate(input, pos);
+}
 
 
 #include "moc_InputField.cpp"
