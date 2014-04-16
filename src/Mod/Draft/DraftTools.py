@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2009, 2010                                              *  
@@ -79,6 +81,12 @@ def msg(text=None,mode=None):
             FreeCAD.Console.PrintError(text)
         else:
             FreeCAD.Console.PrintMessage(text)
+
+def formatUnit(exp,unit="mm"):
+    '''returns a formatting string to set a number to the correct unit'''
+    d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+    f =  "%." + str(d) + "f " + unit
+    return f % exp
 
 def selectObject(arg):
     '''this is a scene even handler, to be called from the Draft tools
@@ -1065,7 +1073,7 @@ class Arc(Creator):
                     angle = DraftVecUtils.angle(plane.u, self.point.sub(self.center), plane.axis)
                 else: angle = 0
                 self.linetrack.p2(DraftVecUtils.scaleTo(self.point.sub(self.center),self.rad).add(self.center))
-                self.ui.setRadiusValue(math.degrees(angle))
+                self.ui.setRadiusValue(math.degrees(angle),unit="°")
                 self.firstangle = angle
             else: # choose second angle
                 currentrad = DraftVecUtils.dist(self.point,self.center)
@@ -1073,7 +1081,7 @@ class Arc(Creator):
                     angle = DraftVecUtils.angle(plane.u, self.point.sub(self.center), plane.axis)
                 else: angle = 0
                 self.linetrack.p2(DraftVecUtils.scaleTo(self.point.sub(self.center),self.rad).add(self.center))
-                self.ui.setRadiusValue(math.degrees(angle))
+                self.ui.setRadiusValue(math.degrees(angle),unit="°")
                 self.updateAngle(angle)
                 self.arctrack.setApertureAngle(self.angle)
 
@@ -1275,6 +1283,7 @@ class Polygon(Creator):
             self.ui.pointUi(name)
             self.ui.extUi()
             self.ui.numFaces.show()
+            self.ui.numFacesLabel.show()
             self.altdown = False
             self.ui.sourceCmd = self
             self.arctrack = arcTracker()
@@ -2286,7 +2295,7 @@ class Rotate(Modifier):
                 if (currentrad != 0):
                     angle = DraftVecUtils.angle(plane.u, self.point.sub(self.center), plane.axis)
                 else: angle = 0
-                self.ui.radiusValue.setText("%.2f" % math.degrees(angle))
+                self.ui.radiusValue.setText(formatUnit(math.degrees(angle)))
                 self.firstangle = angle
                 self.ui.radiusValue.setFocus()
                 self.ui.radiusValue.selectAll()
@@ -2303,7 +2312,7 @@ class Rotate(Modifier):
                 if self.ghost:
                     self.ghost.rotate(plane.axis,sweep)
                     self.ghost.on()
-                self.ui.radiusValue.setText("%.2f" % math.degrees(sweep))
+                self.ui.radiusValue.setText(formatUnit(math.degrees(sweep)))
                 self.ui.radiusValue.setFocus()
                 self.ui.radiusValue.selectAll()
 
@@ -2478,7 +2487,7 @@ class Offset(Modifier):
                 self.linetrack.on()
                 self.linetrack.p1(self.point)
                 self.linetrack.p2(self.point.add(dist[0]))
-                self.ui.radiusValue.setText("%.2f" % dist[0].Length)
+                self.ui.radiusValue.setText(formatUnit(dist[0].Length))
             else:
                 self.dvec = None
                 self.ghost.off()
@@ -2703,7 +2712,7 @@ class Trimex(Modifier):
                 dist = self.extrude(self.shift)
             else:
                 dist = self.redraw(self.point,self.snapped,self.shift,self.alt)
-            self.ui.radiusValue.setText("%.2f" % dist)
+            self.ui.radiusValue.setText(formatUnit(dist))
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
 
