@@ -976,7 +976,7 @@ def export(exportList,filename):
             if parent:
                 parent = ifc.findByName("IfcBuildingStorey",str(parent.Label))
             if gdata:
-                ifc.addWall( ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
+                ifc.addWall( ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name, standard=True )
             elif fdata:
                 ifc.addWall( [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
                 
