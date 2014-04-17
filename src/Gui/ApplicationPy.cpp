@@ -788,7 +788,17 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
 
     Application::Instance->commandManager().addCommand(new PythonCommand(pName,pcCmdObj,source.c_str()));
 #else
-    Application::Instance->commandManager().addCommand(new PythonCommand(pName,pcCmdObj,pSource));
+    try {
+		Application::Instance->commandManager().addCommand(new PythonCommand(pName,pcCmdObj,pSource));
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception, e.what());
+        return 0;
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_Exception, "Unknown C++ exception raised in Application::sAddCommand()");
+        return 0;
+    }
 #endif
     Py_INCREF(Py_None);
     return Py_None;
