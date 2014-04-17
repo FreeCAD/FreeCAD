@@ -32,7 +32,6 @@ __url__ = "http://www.freecadweb.org"
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
 SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp"
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
-ADDPLACEMENT = False # if True, placements get computed (only for newer ifcopenshell)
 # end config
 
 if open.__module__ == '__builtin__':
@@ -61,7 +60,7 @@ def insert(filename,docname):
     
 def getConfig():
     "Gets Arch IFC import preferences"
-    global CREATE_IFC_GROUPS, ASMESH, DEBUG, SKIP, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS
+    global CREATE_IFC_GROUPS, ASMESH, DEBUG, SKIP, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS
     CREATE_IFC_GROUPS = False
     IMPORT_IFC_FURNITURE = False
     DEBUG = False
@@ -71,17 +70,21 @@ def getConfig():
     FORCE_PYTHON_PARSER = False
     SEPARATE_OPENINGS = False
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    CREATE_IFC_GROUPS = p.GetBool("createIfcGroups")
-    FORCE_PYTHON_PARSER = p.GetBool("forceIfcPythonParser") 
-    DEBUG = p.GetBool("ifcDebug")
-    SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings")
-    PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers")
-    skiplist = p.GetString("ifcSkip")
+    CREATE_IFC_GROUPS = p.GetBool("createIfcGroups",False)
+    FORCE_PYTHON_PARSER = p.GetBool("forceIfcPythonParser",False) 
+    DEBUG = p.GetBool("ifcDebug",False)
+    SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
+    SEPARATE_PLACEMENTS = p.GetBool("ifcSeparatePlacements",False)
+    PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
+    skiplist = p.GetString("ifcSkip","")
     if skiplist:
         SKIP = skiplist.split(",")
-    asmeshlist = p.GetString("ifcAsMesh")
+    asmeshlist = p.GetString("ifcAsMesh","")
     if asmeshlist:
         ASMESH = asmeshlist.split(",")
+
+    # TODO provisorily skipped objects
+    SKIP.extend(["IfcAnnotation"])
 
 def getIfcOpenShell():
     "locates and imports ifcopenshell"
@@ -116,9 +119,10 @@ def read(filename):
         if DEBUG: global ifcObjects,ifcParents
         ifcObjects = {} # a table to relate ifc id with freecad object
         ifcParents = {} # a table to relate ifc id with parent id
-        if SEPARATE_OPENINGS:
-            if hasattr(IfcImport,"DISABLE_OPENING_SUBTRACTIONS"):
-                IfcImport.Settings(IfcImport.DISABLE_OPENING_SUBTRACTIONS,True)
+        if SEPARATE_OPENINGS: 
+            if not IFCOPENSHELL5:
+                if hasattr(IfcImport,"DISABLE_OPENING_SUBTRACTIONS"):
+                    IfcImport.Settings(IfcImport.DISABLE_OPENING_SUBTRACTIONS,True)
         else:
             SKIP.append("IfcOpeningElement")
         useShapes = False
@@ -151,25 +155,25 @@ def read(filename):
         # processing geometry
         idx = 0
         while True:
+            objparentid = []
             if IFCOPENSHELL5:
                 obj = objects[idx]
                 idx += 1
                 objid = int(str(obj).split("=")[0].strip("#"))
                 objname = obj.get_argument(obj.get_argument_index("Name"))
                 objtype = str(obj).split("=")[1].split("(")[0]
-                objparentid = -1
                 for r in relations:
                     if r.is_a("IfcRelAggregates"):
                         for c in getAttr(r,"RelatedObjects"):
                             if str(obj) == str(c):
-                                objparentid = int(str(getAttr(r,"RelatingObject")).split("=")[0].strip("#"))
+                                objparentid.append(int(str(getAttr(r,"RelatingObject")).split("=")[0].strip("#")))
                     elif r.is_a("IfcRelContainedInSpatialStructure"):
                         for c in getAttr(r,"RelatedElements"):
                             if str(obj) == str(c):
-                                objparentid = int(str(getAttr(r,"RelatingStructure")).split("=")[0].strip("#"))
+                                objparentid.append(int(str(getAttr(r,"RelatingStructure")).split("=")[0].strip("#")))
                     elif r.is_a("IfcRelVoidsElement"):
                         if str(obj) == str(getAttr(r,"RelatedOpeningElement")):
-                            objparentid = int(str(getAttr(r,"RelatingBuildingElement")).split("=")[0].strip("#"))
+                            objparentid.append(int(str(getAttr(r,"RelatingBuildingElement")).split("=")[0].strip("#")))
                     
             else:
                 if hasattr(IfcImport, 'GetBrepData'):
@@ -180,7 +184,7 @@ def read(filename):
                 idx = objid
                 objname = obj.name
                 objtype = obj.type
-                objparentid = obj.parent_id
+                objparentid.append(obj.parent_id)
             if DEBUG: print "["+str(int((float(idx)/num_lines)*100))+"%] parsing ",objid,": ",objname," of type ",objtype
 
             # retrieving name
@@ -242,7 +246,7 @@ def read(filename):
                     
                 elif shape:
                     # treat as dumb parts
-                    #if DEBUG: print "Fixme: Shape-containing object not handled: ",obj.id, " ", obj.type 
+                    if DEBUG: print "Fixme: Shape-containing object not handled: ",objid, " ", objtype 
                     nobj = FreeCAD.ActiveDocument.addObject("Part::Feature",n)
                     nobj.Label = n
                     nobj.Shape = shape
@@ -262,8 +266,10 @@ def read(filename):
                         if DEBUG: print "Error: Skipping object without mesh: ",objid, " ", objtype
                     
                 # registering object number and parent
-                if objparentid > 0:
-                    ifcParents[objid] = [objparentid,not (objtype in subtractiveTypes)]
+                if objparentid:
+                    ifcParents[objid] = []
+                    for p in objparentid:
+                        ifcParents[objid].append([p,not (objtype in subtractiveTypes)])
                 ifcObjects[objid] = nobj
                 processedIds.append(objid)
             
@@ -281,70 +287,72 @@ def read(filename):
         #print parents_temp
 
         while parents_temp:
-            id, c = parents_temp.popitem()
-            parent_id = c[0]
-            additive = c[1]
-            
-            if (id <= 0) or (parent_id <= 0):
-                # root dummy object
-                parent = None
+            id, comps = parents_temp.popitem()
+            for c in comps:
+                parent_id = c[0]
+                additive = c[1]
+                
+                if (id <= 0) or (parent_id <= 0):
+                    # root dummy object
+                    parent = None
 
-            elif parent_id in ifcObjects:
-                parent = ifcObjects[parent_id]
-                # check if parent is a subtraction, if yes parent to grandparent
-                if parent_id in ifcParents:
-                    if ifcParents[parent_id][1] == False:
-                        grandparent_id = ifcParents[parent_id][0]
-                        if grandparent_id in ifcObjects:
-                            parent = ifcObjects[grandparent_id]
-            else:
-                # creating parent if needed
-                if IFCOPENSHELL5:
-                    parent_ifcobj = ifc.by_id(parent_id)
-                    parentid = int(str(obj).split("=")[0].strip("#"))
-                    parentname = obj.get_argument(obj.get_argument_index("Name"))
-                    parenttype = str(obj).split("=")[1].split("(")[0]
+                elif parent_id in ifcObjects:
+                    parent = ifcObjects[parent_id]
+                    # check if parent is a subtraction, if yes parent to grandparent
+                    if parent_id in ifcParents:
+                        for p in ifcParents[parent_id]:
+                            if p[1] == False:
+                                grandparent_id = p[0]
+                                if grandparent_id in ifcObjects:
+                                    parent = ifcObjects[grandparent_id]
                 else:
-                    parent_ifcobj = IfcImport.GetObject(parent_id)
-                    parentid = obj.id
-                    parentname = obj.name
-                    parenttype = obj.type
-                #if DEBUG: print "["+str(int((float(idx)/num_lines)*100))+"%] parsing ",parentid,": ",parentname," of type ",parenttype
-                n = getCleanName(parentname,parentid,parenttype)
-                if parentid <= 0:
-                    parent = None
-                elif parenttype == "IfcBuildingStorey":
-                    parent = Arch.makeFloor(name=n)
-                    parent.Label = n
-                elif parenttype == "IfcBuilding":
-                    parent = Arch.makeBuilding(name=n)
-                    parent.Label = n
-                elif parenttype == "IfcSite":
-                    parent = Arch.makeSite(name=n)
-                    parent.Label = n
-                elif parenttype == "IfcWindow":
-                    parent = Arch.makeWindow(name=n)
-                    parent.Label = n
-                else:
-                    if DEBUG: print "Fixme: skipping unhandled parent: ", parentid, " ", parenttype
-                    parent = None
-                # registering object number and parent
-                if not IFCOPENSHELL5:
-                    if parent_ifcobj.parent_id > 0:
-                            ifcParents[parentid] = [parent_ifcobj.parent_id,True]
-                            parents_temp[parentid] = [parent_ifcobj.parent_id,True]
-                    if parent and (not parentid in ifcObjects):
-                        ifcObjects[parentid] = parent
-            
-            # attributing parent
-            if parent and (id in ifcObjects):
-                if ifcObjects[id] and (ifcObjects[id].Name != parent.Name):
-                    if additive:
-                        if DEBUG: print "adding ",ifcObjects[id].Name, " to ",parent.Name
-                        ArchCommands.addComponents(ifcObjects[id],parent)
+                    # creating parent if needed
+                    if IFCOPENSHELL5:
+                        parent_ifcobj = ifc.by_id(parent_id)
+                        parentid = int(str(obj).split("=")[0].strip("#"))
+                        parentname = obj.get_argument(obj.get_argument_index("Name"))
+                        parenttype = str(obj).split("=")[1].split("(")[0]
                     else:
-                        if DEBUG: print "removing ",ifcObjects[id].Name, " from ",parent.Name
-                        ArchCommands.removeComponents(ifcObjects[id],parent)
+                        parent_ifcobj = IfcImport.GetObject(parent_id)
+                        parentid = obj.id
+                        parentname = obj.name
+                        parenttype = obj.type
+                    #if DEBUG: print "["+str(int((float(idx)/num_lines)*100))+"%] parsing ",parentid,": ",parentname," of type ",parenttype
+                    n = getCleanName(parentname,parentid,parenttype)
+                    if parentid <= 0:
+                        parent = None
+                    elif parenttype == "IfcBuildingStorey":
+                        parent = Arch.makeFloor(name=n)
+                        parent.Label = n
+                    elif parenttype == "IfcBuilding":
+                        parent = Arch.makeBuilding(name=n)
+                        parent.Label = n
+                    elif parenttype == "IfcSite":
+                        parent = Arch.makeSite(name=n)
+                        parent.Label = n
+                    elif parenttype == "IfcWindow":
+                        parent = Arch.makeWindow(name=n)
+                        parent.Label = n
+                    else:
+                        if DEBUG: print "Fixme: skipping unhandled parent: ", parentid, " ", parenttype
+                        parent = None
+                    # registering object number and parent
+                    if not IFCOPENSHELL5:
+                        if parent_ifcobj.parent_id > 0:
+                                ifcParents[parentid] = [parent_ifcobj.parent_id,True]
+                                parents_temp[parentid] = [parent_ifcobj.parent_id,True]
+                        if parent and (not parentid in ifcObjects):
+                            ifcObjects[parentid] = parent
+            
+                # attributing parent
+                if parent and (id in ifcObjects):
+                    if ifcObjects[id] and (ifcObjects[id].Name != parent.Name):
+                        if additive:
+                            if DEBUG: print "adding ",ifcObjects[id].Name, " to ",parent.Name
+                            ArchCommands.addComponents(ifcObjects[id],parent)
+                        else:
+                            if DEBUG: print "removing ",ifcObjects[id].Name, " from ",parent.Name
+                            ArchCommands.removeComponents(ifcObjects[id],parent)
         if not IFCOPENSHELL5:
             IfcImport.CleanUp()
         
@@ -468,8 +476,6 @@ def makeWindow(entity,shape=None,name="Window"):
                 window = Arch.makeWindow(name=name)
                 window.Shape = shape
                 window.Label = name
-                if IFCOPENSHELL5 and ADDPLACEMENT:
-                    window.Placement = getPlacement(getAttr(entity,"ObjectPlacement"))
                 if DEBUG: print "made window object  ",entity,":",window
                 return window
             
@@ -634,7 +640,16 @@ def getShape(obj,objid):
     brep_data = None
     if IFCOPENSHELL5:
         try:
-            brep_data = IfcImport.create_shape(obj)
+            if SEPARATE_OPENINGS and hasattr(IfcImport,"DISABLE_OPENING_SUBTRACTIONS"):
+                if SEPARATE_PLACEMENTS and hasattr(IfcImport,"DISABLE_OBJECT_PLACEMENT"):
+                    brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OPENING_SUBTRACTIONS | IfcImport.DISABLE_OBJECT_PLACEMENT)
+                else:
+                    brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OPENING_SUBTRACTIONS)
+            else:
+                if SEPARATE_PLACEMENTS and hasattr(IfcImport,"DISABLE_OBJECT_PLACEMENT"):
+                    brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OBJECT_PLACEMENT)
+                else:
+                    brep_data = IfcImport.create_shape(obj)
         except:
             print "Unable to retrieve shape data"
     else:
@@ -655,7 +670,7 @@ def getShape(obj,objid):
             print "Error: malformed shape"
             return None
         else:
-            if IFCOPENSHELL5 and ADDPLACEMENT:
+            if IFCOPENSHELL5 and SEPARATE_PLACEMENTS:
                 sh.Placement = getPlacement(getAttr(obj,"ObjectPlacement"))
     if not sh.Solids:
         # try to extract a solid shape
