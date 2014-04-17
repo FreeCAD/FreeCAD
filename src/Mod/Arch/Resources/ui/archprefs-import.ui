@@ -107,6 +107,26 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_2">
+          <property name="toolTip">
+           <string>If this is checked, placements will be recomputed and applied to the objects as they were in the IFC file (slower)</string>
+          </property>
+          <property name="text">
+           <string>Separate placements</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcSeparatePlacements</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
@@ -144,37 +164,10 @@
            <string/>
           </property>
           <property name="placeholderText">
-           <string>IfcSpace,IfcBuildingElementProxy,IfcFlowTerminal,IfcFurnishingElement</string>
+           <string>IfcBuildingElementProxy,IfcFlowTerminal,IfcFurnishingElement</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcSkip</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_16">
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Import as meshes:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefLineEdit" name="gui::preflineedit_2">
-          <property name="toolTip">
-           <string>A comma-separated list of IFC types that must be imported as meshes</string>
-          </property>
-          <property name="placeholderText">
-           <string>IfcFurnishingElement</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcAsMesh</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
