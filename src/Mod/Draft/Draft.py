@@ -1078,10 +1078,10 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeLayer(group=None):
+def makeLayer(group=None,name="Layer"):
     '''makeLayer([group]): creates a Layer object in the given group, or in the
     active document if no group is given'''
-    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","Layer")
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Layer(obj)
     if FreeCAD.GuiUp:
         _ViewProviderLayer(obj.ViewObject)

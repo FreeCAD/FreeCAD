@@ -134,13 +134,16 @@ def deformat(text):
     #print "output text: ",t
     return t
 
-def locateLayer(wantedLayer):
+def locateLayer(wantedLayer,color=None):
     "returns layer group and creates it if needed"
     wantedLayerName = decodeName(wantedLayer)
     for l in layers:
         if wantedLayerName==l.Label:
             return l
-    newLayer = doc.addObject("App::DocumentObjectGroup",wantedLayer)
+    if dxfUseDraftLayers:
+        newLayer = Draft.makeLayer(name=wantedLayer)   
+    else:
+        newLayer = doc.addObject("App::DocumentObjectGroup",wantedLayer)
     newLayer.Label = wantedLayerName
     layers.append(newLayer)
     return newLayer
@@ -172,7 +175,7 @@ def calcBulge(v1,bulge,v2):
 def getGroup(ob):
     "checks if the object is part of a group"
     for i in FreeCAD.ActiveDocument.Objects:
-        if (i.TypeId == "App::DocumentObjectGroup"):
+        if i.isDerivedFrom("App::DocumentObjectGroup"):
             for j in i.Group:
                 if (j == ob):
                     return i.Label
@@ -1828,5 +1831,6 @@ dxfImportPoints = p.GetBool("dxfImportPoints",False)
 dxfImportHatches = p.GetBool("importDxfHatches",False)
 dxfUseStandardSize = p.GetBool("dxfStdSize",False)
 dxfGetColors = p.GetBool("dxfGetOriginalColors",False)
+dxfUseDraftLayers = p.GetBool("dxfUseDraftLayers",False)
 dxfBrightBackground = isBrightBackground()
 dxfDefaultColor = getColor()
