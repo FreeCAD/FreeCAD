@@ -1078,6 +1078,18 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
+def makeLayer(group=None):
+    '''makeLayer([group]): creates a Layer object in the given group, or in the
+    active document if no group is given'''
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","Layer")
+    _Layer(obj)
+    if FreeCAD.GuiUp:
+        _ViewProviderLayer(obj.ViewObject)
+        formatObject(obj)
+    if group:
+        group.addObject(obj)
+    return obj
+
 def extrude(obj,vector):
     '''makeExtrusion(object,vector): extrudes the given object
     in the direction given by the vector. The original object
@@ -4783,6 +4795,82 @@ class _Facebinder(_DraftObject):
                             objs.append((o.Object,el))
         obj.Faces = objs
         self.execute(obj)
+
+class _Layer:
+    "The Layer object"
+    def __init__(self,obj):
+        self.Type = "Layer"
+        obj.Proxy = self
+        self.Object = obj
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+
+    def execute(self,obj):
+        pass
+    
+class _ViewProviderLayer:
+    "A View Provider for the Floor object"
+    def __init__(self,vobj):
+        vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.addProperty("App::PropertyColor","ShapeColor","Base","")
+        vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
+        vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
+        vobj.addProperty("App::PropertyInteger","Transparency","Base","")
+        vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
+        vobj.LineWidth = 1
+        vobj.LineColor = (0.13,0.15,0.37)
+        vobj.DrawStyle = "Solid"
+        vobj.Proxy = self
+
+    def getIcon(self):
+        import Arch_rc
+        return ":/icons/Draft_Layer.svg"
+
+    def attach(self,vobj):
+        self.Object = vobj.Object
+        return
+    
+    def claimChildren(self):
+        return self.Object.Group
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self,state):
+        return None
+
+    def updateData(self,obj,prop):
+        if prop == "Group":
+            if obj.ViewObject:
+                obj.ViewObject.Proxy.onChanged(obj.ViewObject,"LineColor")
+
+    def onChanged(self,vobj,prop):
+        if hasattr(vobj,"Object"):
+            if vobj.Object:
+                if hasattr(vobj.Object,"Group"):
+                    if vobj.Object.Group:
+                        for o in vobj.Object.Group:
+                            if o.ViewObject:
+                                for p in ["LineColor","ShapeColor","LineWidth","DrawStyle","Transparency"]:
+                                    if hasattr(o.ViewObject,p):
+                                        setattr(o.ViewObject,p,getattr(vobj,p))
+                                    elif hasattr(o,p):
+                                        # for Drawing views
+                                        setattr(o,p,getattr(vobj,p))
+                                    elif (p == "DrawStyle") and hasattr(o,"LineStyle"):
+                                        # Special case in Drawing views
+                                        setattr(o,"LineStyle",getattr(vobj,p))
+                                if vobj.Object.InList:
+                                    # touch the page if something was changed
+                                    if vobj.Object.InList[0].isDerivedFrom("Drawing::FeaturePage"):
+                                        vobj.Object.InList[0].touch()
+
+
 
 
 #----End of Python Features Definitions----#
