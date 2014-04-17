@@ -163,6 +163,16 @@ void InputField::newInput(const QString & text)
         return;
     }
 
+	// check if unit fits!
+	if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
+	    this->setToolTip(QString::fromAscii("Wrong unit"));
+        QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
+        iconLabel->setPixmap(pixmap);
+        parseError(QString::fromAscii("Wrong unit"));
+        return;
+    }
+
+
     QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
     ErrorText = "";
