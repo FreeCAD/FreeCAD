@@ -2885,7 +2885,7 @@ public:
 
     virtual void activated(ViewProviderSketch *sketchgui)
     {
-        setCursor(QPixmap(cursor_createbox),7,7);
+        setCursor(QPixmap(cursor_creatslot),7,7);
     }
 
     virtual void mouseMove(Base::Vector2D onSketchPos)
