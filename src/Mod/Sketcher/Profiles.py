@@ -20,8 +20,14 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, FreeCADGui, Sketcher
+import FreeCAD, Sketcher
 
+if FreeCAD.GuiUp:
+    import FreeCADGui,SketcherGui
+    from PySide import QtCore, QtGui
+    from PySide.QtCore import Qt
+    from PySide.QtGui import QApplication, QCursor
+    from FreeCADGui import PySideUic as uic
 
 __title__="Sketcher profile lib handling"
 __author__ = "Juergen Riegel"
@@ -35,7 +41,7 @@ class _CommandProfileHexagon1:
     "The basis hexagon profile command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Sketcher_Hexagon',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Creates a hexagon profile in the sketch"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagon profile in the sketch"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagon profile in the sketch")}
         
@@ -43,11 +49,11 @@ class _CommandProfileHexagon1:
 
         FreeCAD.ActiveDocument.openTransaction("Create hexagon profile")
         FreeCADGui.addModule("ProfileLib.Hexagon")
-        FreeCADGui.doCommand("Hexagon.makeHexagonSimple()")
+        FreeCADGui.doCommand("ProfileLib.Hexagon.makeHexagonSimple()")
         
     def IsActive(self):
         return isProfileActive()
 
-       
-         
+
+        
 FreeCADGui.addCommand('Sketcher_ProfilesHexagon1',_CommandProfileHexagon1())
