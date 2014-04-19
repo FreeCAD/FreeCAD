@@ -4193,11 +4193,11 @@ class _Shape2DView(_DraftObject):
             if obj.HiddenLines:
                 for g in groups[5:]:
                     edges.append(g)
-        #return Part.makeCompound(edges)
-        if hasattr(obj,"Tessellation"):
-            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation)
-        else:
-            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+        return Part.makeCompound(edges)
+        #if hasattr(obj,"Tessellation"):
+            #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation)
+        #else:
+            #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def execute(self,obj):
         import DraftGeomUtils
