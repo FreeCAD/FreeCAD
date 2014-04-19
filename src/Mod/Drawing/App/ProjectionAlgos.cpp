@@ -122,6 +122,18 @@ TopoDS_Shape ProjectionAlgos::invertY(const TopoDS_Shape& shape)
 }
 */
 
+
+//added by tanderson. aka blobfish.
+//projection algorithms build a 2d curve(pcurve) but no 3d curve.
+//this causes problems with meshing algorithms after save and load.
+static const TopoDS_Shape& build3dCurves(const TopoDS_Shape &shape)
+{
+  TopExp_Explorer it;
+  for (it.Init(shape, TopAbs_EDGE); it.More(); it.Next())
+    BRepLib::BuildCurve3d(TopoDS::Edge(it.Current()));
+  return shape;
+}
+
 void ProjectionAlgos::execute(void)
 {
     Handle( HLRBRep_Algo ) brep_hlr = new HLRBRep_Algo;
@@ -141,17 +153,16 @@ void ProjectionAlgos::execute(void)
     // extracting the result sets:
     HLRBRep_HLRToShape shapes( brep_hlr );
 
-    V  = shapes.VCompound       ();// hard edge visibly
-    V1 = shapes.Rg1LineVCompound();// Smoth edges visibly
-    VN = shapes.RgNLineVCompound();// contour edges visibly
-    VO = shapes.OutLineVCompound();// contours apparents visibly
-    VI = shapes.IsoLineVCompound();// isoparamtriques   visibly
-    H  = shapes.HCompound       ();// hard edge       invisibly
-    H1 = shapes.Rg1LineHCompound();// Smoth edges  invisibly
-    HN = shapes.RgNLineHCompound();// contour edges invisibly
-    HO = shapes.OutLineHCompound();// contours apparents invisibly
-    HI = shapes.IsoLineHCompound();// isoparamtriques   invisibly
-
+    V  = build3dCurves(shapes.VCompound       ());// hard edge visibly
+    V1 = build3dCurves(shapes.Rg1LineVCompound());// Smoth edges visibly
+    VN = build3dCurves(shapes.RgNLineVCompound());// contour edges visibly
+    VO = build3dCurves(shapes.OutLineVCompound());// contours apparents visibly
+    VI = build3dCurves(shapes.IsoLineVCompound());// isoparamtriques   visibly
+    H  = build3dCurves(shapes.HCompound       ());// hard edge       invisibly
+    H1 = build3dCurves(shapes.Rg1LineHCompound());// Smoth edges  invisibly
+    HN = build3dCurves(shapes.RgNLineHCompound());// contour edges invisibly
+    HO = build3dCurves(shapes.OutLineHCompound());// contours apparents invisibly
+    HI = build3dCurves(shapes.IsoLineHCompound());// isoparamtriques   invisibly
 }
 
 std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double tolerance, double hiddenscale)
