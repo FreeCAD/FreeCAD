@@ -60,7 +60,7 @@
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepMesh.hxx>
-
+#include <BRepLib.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <Handle_BRepAdaptor_HCompCurve.hxx>
 #include <Approx_Curve3d.hxx>
