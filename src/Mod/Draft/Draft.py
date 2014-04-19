@@ -3209,7 +3209,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                         # only available in Coin3D >= 4.0
                         self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
                     except:
-                        self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
+                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1")
             self.text.string = self.text3d.string = self.string
 
             # set the distance property
