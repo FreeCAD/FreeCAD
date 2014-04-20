@@ -671,7 +671,9 @@ def getShape(obj,objid):
             return None
         else:
             if IFCOPENSHELL5 and SEPARATE_PLACEMENTS:
-                sh.Placement = getPlacement(getAttr(obj,"ObjectPlacement"))
+                p = getPlacement(getAttr(obj,"ObjectPlacement"))
+                if p:
+                    sh.Placement = p
     if not sh.Solids:
         # try to extract a solid shape
         if sh.Faces:
@@ -700,9 +702,9 @@ def getShape(obj,objid):
     
 def getPlacement(entity):
     "returns a placement from the given entity"
-    if DEBUG: print "    getting placement ",entity
     if not entity: 
         return None
+    if DEBUG: print "    getting placement ",entity
     if IFCOPENSHELL5:
         if isinstance(entity,int):
             entity = ifc.by_id(entity)
@@ -715,6 +717,8 @@ def getPlacement(entity):
     if entitytype == "IFCAXIS2PLACEMENT3D":
         x = getVector(getAttr(entity,"RefDirection"))
         z = getVector(getAttr(entity,"Axis"))
+        if not(x) or not(y):
+            return None
         y = z.cross(x)
         loc = getVector(getAttr(entity,"Location"))
         m = DraftVecUtils.getPlaneRotation(x,y,z)
@@ -746,6 +750,8 @@ def getAttr(entity,attr):
         
 def getVector(entity):
     "returns a vector from the given entity"
+    if not entity:
+        return None
     if DEBUG: print "    getting point from ",entity
     if IFCOPENSHELL5:
         if isinstance(entity,int):
