@@ -36,7 +36,11 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
-Presets = [None]
+Presets = [None,
+           ["Plywoood 12mm, 1220 x 2440",1200,2400,18],
+           ["Plywoood 15mm, 1220 x 2440",1200,2400,18],
+           ["Plywoood 18mm, 1220 x 2440",1200,2400,18],
+           ["Plywoood 25mm, 1220 x 2440",1200,2400,18]]
 
 
 def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name=translate("Arch","Panel")):
@@ -60,6 +64,25 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name=tran
     return obj
 
 
+def makePanelView(panel,page=None,name="PanelView"):
+    """makePanelView(panel,[page]) : Creates a Drawing view of the given panel
+    in the given or active Page object (a new page will be created if none exists)."""
+    if not page:
+        for o in FreeCAD.ActiveDocument.Objects:
+            if o.isDerivedFrom("Drawing::FeaturePage"):
+                page = o
+                break
+        if not page:
+            page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",translate("Arch","Page"))
+            page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
+    view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython",name)
+    page.addObject(view)
+    _PanelView(view)
+    view.Source = panel
+    view.Label = translate("Arch","View of")+" "+panel.Name
+    return view
+
+
 class _CommandPanel:
     "the Arch Panel command definition"
     def GetResources(self):
@@ -75,10 +98,14 @@ class _CommandPanel:
         self.Thickness = p.GetFloat("PanelThickness",10)
         self.Profile = None
         self.continueCmd = False
+        self.rotated = False
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
         sel = FreeCADGui.Selection.getSelection()
         if sel:
+            if len(sel) == 1:
+                if Draft.getType(sel[0]) == "Panel":
+                    return
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Panel")))
             FreeCADGui.doCommand("import Arch")
             for obj in sel:
@@ -114,6 +141,8 @@ class _CommandPanel:
         else:
             FreeCADGui.doCommand('s = Arch.makePanel(length='+str(self.Length)+',width='+str(self.Width)+',thickness='+str(self.Thickness)+')')
         FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
+        if self.rotated:
+            FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(FreeCAD.Vector(1.00,0.00,0.00),90.00)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         if self.continueCmd:
@@ -131,7 +160,7 @@ class _CommandPanel:
         valuep = QtGui.QComboBox()
         fpresets = [" "]
         for p in Presets[1:]:
-            fpresets.append(str(translate("Arch",p[0]))+" "+p[1]+" ("+str(p[2])+"x"+str(p[3])+"mm)")
+            fpresets.append(translate("Arch",p[0]))
         valuep.addItems(fpresets)
         grid.addWidget(labelp,0,0,1,1)
         grid.addWidget(valuep,0,1,1,1)
@@ -184,20 +213,24 @@ class _CommandPanel:
     def update(self,point,info):
         "this function is called by the Snapper when the mouse is moved"
         if FreeCADGui.Control.activeDialog():
-            delta = Vector(self.Length/2,0,0)
-            self.tracker.pos(point.add(delta))
+            self.tracker.pos(point)
+            if self.rotated:
+                self.tracker.width(self.Thickness)
+                self.tracker.height(self.Width)
+                self.tracker.length(self.Length)
+            else:
+                self.tracker.width(self.Width)
+                self.tracker.height(self.Thickness)
+                self.tracker.length(self.Length)
         
     def setWidth(self,d):
         self.Width = d
-        self.tracker.width(d)
 
     def setThickness(self,d):
         self.Thickness = d
-        self.tracker.height(d)
 
     def setLength(self,d):
         self.Length = d
-        self.tracker.length(d)
 
     def setContinue(self,i):
         self.continueCmd = bool(i)
@@ -206,29 +239,24 @@ class _CommandPanel:
         
     def setPreset(self,i):
         if i > 0:
-            self.vLength.setText(self.FORMAT % float(Presets[i][2]))
-            self.vWidth.setText(self.FORMAT % float(Presets[i][3]))
-        if len(Presets[i]) == 6:
-            self.Profile = i
-        else:
-            self.Profile = 0
+            self.vLength.setText(self.FORMAT % float(Presets[i][1]))
+            self.vWidth.setText(self.FORMAT % float(Presets[i][2]))
+            self.vHeight.setText(self.FORMAT % float(Presets[i][3]))
             
     def rotate(self):
-        l = self.Length
-        w = self.Width
-        h = self.Height
-        self.vLength.setText(self.FORMAT % h)
-        self.vHeight.setText(self.FORMAT % w)
-        self.vWidth.setText(self.FORMAT % l)
+        self.rotated = not self.rotated
 
 
-class _Structure(ArchComponent.Component):
-    "The Structure object"
+class _Panel(ArchComponent.Component):
+    "The Panel object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Thickness","Arch",translate("Arch","The thickness or extrusion depth of this element"))
+        obj.addProperty("App::PropertyString","Tag","Arch",translate("Arch","An identification tag to be printed on the panel"))
+        obj.addProperty("App::PropertyInteger","Sheets","Arch",translate("Arch","The number of sheets to use"))
+        obj.Sheets = 1
         self.Type = "Panel"
         
     def execute(self,obj):
@@ -265,6 +293,7 @@ class _Structure(ArchComponent.Component):
         # creating base shape
         pl = obj.Placement
         base = None
+        normal = None
         if obj.Base:
             p = FreeCAD.Placement(obj.Base.Placement)
             normal = p.Rotation.multVec(Vector(0,0,1))
@@ -302,6 +331,15 @@ class _Structure(ArchComponent.Component):
             self.BaseProfile = base
             base = base.extrude(self.ExtrusionVector)
 
+        if base and (obj.Sheets > 1) and normal and thickness:
+            bases = [base]
+            for i in range(1,obj.Sheets):
+                n = FreeCAD.Vector(normal).normalize().multiply(i*thickness)
+                b = base.copy()
+                b.translate(n)
+                bases.append(b)
+            base = Part.makeCompound(bases)
+
         # process subshapes
         base = self.processSubShapes(obj,base,pl)
             
@@ -329,6 +367,81 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Panel_Tree.svg"
+
+
+class _PanelView:
+    "A Drawing view for Arch Panels"
+
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyLink","Source","Base","The linked object")
+        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view","The line width of the rendered objects")
+        obj.addProperty("App::PropertyColor","LineColor","Drawing view","The color of the panel outline")
+        obj.addProperty("App::PropertyLength","FontSize","Tag view","The size of the tag text")
+        obj.addProperty("App::PropertyColor","TextColor","Tag view","The color of the tag text")
+        obj.addProperty("App::PropertyFloat","TextX","Tag view","The X offset of the tag text")
+        obj.addProperty("App::PropertyFloat","TextY","Tag view","The Y offset of the tag text")
+        obj.addProperty("App::PropertyString","FontName","Tag view","The font of the tag text")
+        obj.Proxy = self
+        self.Type = "PanelView"
+        obj.LineWidth = 0.35
+        obj.LineColor = (0.0,0.0,0.0)
+        obj.TextColor = (0.0,0.0,1.0)
+        obj.X = 10
+        obj.Y = 10
+        obj.TextX = 10
+        obj.TextY = 10
+        obj.FontName = "sans"
+
+    def execute(self, obj):
+        if obj.Source:
+            if hasattr(obj.Source.Proxy,"BaseProfile"):
+                p = obj.Source.Proxy.BaseProfile
+                n = obj.Source.Proxy.ExtrusionVector
+                import Drawing
+                svg1 = ""
+                svg2 = ""
+                result = ""
+                svg1 = Drawing.projectToSVG(p,DraftVecUtils.neg(n))
+                if svg1:
+                    w = str(obj.LineWidth/obj.Scale) #don't let linewidth be influenced by the scale...
+                    svg1 = svg1.replace('stroke-width="0.35"','stroke-width="'+w+'"')
+                    svg1 = svg1.replace('stroke-width="1"','stroke-width="'+w+'"')
+                    svg1 = svg1.replace('stroke-width:0.01','stroke-width:'+w)
+                    svg1 = svg1.replace('scale(1,-1)','scale('+str(obj.Scale)+',-'+str(obj.Scale)+')')
+                if obj.Source.Tag:
+                    svg2 = '<text id="tag'+obj.Name+'"'
+                    svg2 += ' fill="'+Draft.getrgb(obj.TextColor)+'"'
+                    svg2 += ' font-size="'+str(obj.FontSize)+'"'
+                    svg2 += ' style="text-anchor:start;text-align:left;'
+                    svg2 += ' font-family:'+obj.FontName+'" '
+                    svg2 += ' transform="translate(' + str(obj.TextX) + ',' + str(obj.TextY) + ')">'
+                    svg2 += '<tspan>'+obj.Source.Tag+'</tspan></text>\n'
+                result += '<g id="' + obj.Name + '"'
+                result += ' transform="'
+                result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
+                result += 'translate('+str(obj.X)+','+str(obj.Y)+')'
+                result += '">\n  '
+                result += svg1
+                result += svg2
+                result += '</g>'
+                obj.ViewResult = result
+            
+    def onChanged(self, obj, prop):
+        pass
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self,state):
+        if state:
+            self.Type = state
+
+    def getDisplayModes(self,vobj):
+        modes=["Default"]
+        return modes
+
+    def setDisplayMode(self,mode):
+        return mode
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Panel',_CommandPanel())
