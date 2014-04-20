@@ -1808,10 +1808,12 @@ def curvetowire(obj,steps):
         p0 = p
     return edgelist
 
-def cleanProjection(shape,tessellate=False):
+def cleanProjection(shape,tessellate=True,seglength=.05):
     "returns a valid compound of edges, by recreating them"
     # this is because the projection algorithm somehow creates wrong shapes.
     # they dispay fine, but on loading the file the shape is invalid
+    # Now with tanderson's fix to ProjectionAlgos, that isn't the case, but this
+    # can be used for tessellating ellipses and splines for DXF output-DF
     oldedges = shape.Edges
     newedges = []
     for e in oldedges:
@@ -1826,15 +1828,18 @@ def cleanProjection(shape,tessellate=False):
                 else:
                     newedges.append(e.Curve.toShape())
             elif geomType(e) == "Ellipse":
-                if len(e.Vertexes) > 1:
-                    a = Part.Arc(e.Curve,e.FirstParameter,e.LastParameter).toShape()
-                    newedges.append(a)
+                if tessellate:
+                    newedges.append(Part.Wire(curvetowire(e, seglength)))
                 else:
-                    newedges.append(e.Curve.toShape())
+                    if len(e.Vertexes) > 1:
+                        a = Part.Arc(e.Curve,e.FirstParameter,e.LastParameter).toShape()
+                        newedges.append(a)
+                    else:
+                        newedges.append(e.Curve.toShape())
             elif geomType(e) == "BSplineCurve" or \
                  geomType(e) == "BezierCurve":
                 if tessellate:
-                    newedges.append(Part.Wire(curvetowire(e,e.Curve.NbPoles)))
+                    newedges.append(Part.Wire(curvetowire(e,seglength)))
                 else:
                     if isLine(e.Curve):
                         l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
@@ -1847,6 +1852,36 @@ def cleanProjection(shape,tessellate=False):
             print "Debug: error cleaning edge ",e
     return Part.makeCompound(newedges)
     
+def curvetosegment(curve,seglen):
+    points = curve.discretize(seglen)
+    p0 = points[0]
+    edgelist = []
+    for p in points[1:]:
+        edge = Part.makeLine((p0.x,p0.y,p0.z),(p.x,p.y,p.z))
+        edgelist.append(edge)
+        p0 = p
+    return edgelist
+
+def tessellateProjection(shape,seglen):
+    ''' Returns projection with BSplines and Ellipses broken into line segments.
+        Useful for exporting projected views to *dxf files.'''
+    oldedges = shape.Edges
+    newedges = []
+    for e in oldedges:
+        try:
+            if geomType(e) == "Line":
+                newedges.append(e.Curve.toShape())
+            elif geomType(e) == "Circle":
+                newedges.append(e.Curve.toShape())
+            elif geomType(e) == "Ellipse":
+                newedges.append(Part.Wire(curvetosegment(e,seglen)))
+            elif geomType(e) == "BSplineCurve":
+                newedges.append(Part.Wire(curvetosegment(e,seglen)))
+            else:
+                newedges.append(e)
+        except:
+            print "Debug: error cleaning edge ",e
+    return Part.makeCompound(newedges)
 
 # circle functions *********************************************************
 
