@@ -37,17 +37,17 @@ MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad 
 if open.__module__ == '__builtin__':
     pyopen = open # because we'll redefine open below
 
-def open(filename):
+def open(filename,skip=None):
     "called when freecad opens a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = decode(docname)
     FreeCAD.ActiveDocument = doc
     getConfig()
-    read(filename)
+    read(filename,skip)
     return doc
 
-def insert(filename,docname):
+def insert(filename,docname,skip=None):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
@@ -55,7 +55,7 @@ def insert(filename,docname):
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     getConfig()
-    read(filename)
+    read(filename,skip)
     return doc
     
 def getConfig():
@@ -97,13 +97,18 @@ def getIfcOpenShell():
     else:
         return True
 
-def read(filename):
+def read(filename,skip=None):
     "Parses an IFC file"
 
     # parsing the IFC file
     t1 = time.time()
     
     processedIds = []
+    skipIds = skip
+    if not skipIds:
+        skipIds = []
+    elif isinstance(skipIds,int):
+        skipIds = [skipIds]
     
     if getIfcOpenShell() and not FORCE_PYTHON_PARSER:
         # use the IfcOpenShell parser
@@ -189,9 +194,14 @@ def read(filename):
 
             # retrieving name
             n = getCleanName(objname,objid,objtype)
-        
+
+            # skip IDs
+            if objid in skipIds:
+                if DEBUG: print "skipping because object ID is in skip list"
+                nobj = None
+
             # skip types
-            if objtype in SKIP:
+            elif objtype in SKIP:
                 if DEBUG: print "skipping because type is in skip list"
                 nobj = None
             
@@ -717,7 +727,7 @@ def getPlacement(entity):
     if entitytype == "IFCAXIS2PLACEMENT3D":
         x = getVector(getAttr(entity,"RefDirection"))
         z = getVector(getAttr(entity,"Axis"))
-        if not(x) or not(y):
+        if not(x) or not(z):
             return None
         y = z.cross(x)
         loc = getVector(getAttr(entity,"Location"))
