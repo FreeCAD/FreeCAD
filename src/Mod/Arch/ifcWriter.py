@@ -240,7 +240,7 @@ def makeWall(ifcdoc,storey,owner,context,shape,placement=None,name="Default wall
     in the given ifc document"""
     if not placement:
         placement = makePlacement(ifcdoc)
-    rep = create(ifcdoc,"IfcShapeRepresentation",[context,'Body','SweptSolid',[shape]])
+    rep = create(ifcdoc,"IfcShapeRepresentation",[context,'Body','SolidModel',[shape]])
     prd = create(ifcdoc,"IfcProductDefinitionShape",[None,None,[rep]])
     wal = create(ifcdoc,"IfcWallStandardCase",[uid(),owner,name,description,
                                                None,placement,prd,None])
@@ -375,6 +375,9 @@ class IfcDocument(object):
                 elif "FILE_NAME" in l:
                     # bug 4: incomplete file name entry
                     l = l.replace("FILE_NAME('','',(''),('',''),'IfcOpenShell','IfcOpenShell','');","FILE_NAME('"+path+"','"+now(string=True)+"',('"+self.Owner+"'),('',''),'IfcOpenShell','IfcOpenShell','');")
+                elif "IFCSIUNIT" in l:
+                    # bug 5: no way to insert * character
+                    l = l.replace("IFCSIUNIT(#13,","IFCSIUNIT(*,")
                 lines.append(l)
             f.close()
             f = open(path,"wb")
@@ -441,7 +444,11 @@ class IfcDocument(object):
             placement = self.addPlacement()
         if not isinstance(shapes,list):
             shapes = [shapes]
-        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]]) for shape in shapes]
+        if standard:
+            solidType = "SweptSolid"
+        else:
+            solidType = "Brep"
+        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body',solidType,[shape]]) for shape in shapes]
         prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps])
         if standard:
             wal = create(self._fileobject,"IfcWallStandardCase",[uid(),self._owner,name,description,None,placement,prd,None])
@@ -456,14 +463,18 @@ class IfcDocument(object):
         self._relate(storey,wal)
         return wal
         
-    def addStructure(self,ifctype,shapes,storey=None,placement=None,name="Default Structure",description=None):
+    def addStructure(self,ifctype,shapes,storey=None,placement=None,name="Default Structure",description=None,standard=False):
         """addStructure(ifctype,shapes,[storey,placement,name,description]): creates a structure 
         from the given representation shape(s). Ifctype is the type of structural object (IfcBeam, IfcColumn, etc)"""
         if not placement:
             placement = self.addPlacement()
         if not isinstance(shapes,list):
             shapes = [shapes]
-        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]]) for shape in shapes]
+        if standard:
+            solidType = "SweptSolid"
+        else:
+            solidType = "Brep"
+        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body',solidType,[shape]]) for shape in shapes]
         prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps])
         if ifctype in ["IfcSlab","IfcFooting"]:
             stt = create(self._fileobject,ifctype,[uid(),self._owner,name,description,None,placement,prd,None,"NOTDEFINED"])
@@ -485,7 +496,7 @@ class IfcDocument(object):
             placement = self.addPlacement()
         if not isinstance(shapes,list):
             shapes = [shapes]
-        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SweptSolid',[shape]]) for shape in shapes]
+        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body','SolidModel',[shape]]) for shape in shapes]
         prd = create(self._fileobject,"IfcProductDefinitionShape",[None,None,reps])
         win = create(self._fileobject,ifctype,[uid(),self._owner,name,description,None,placement,prd,None,float(height),float(width)])
         self.BuildingProducts.append(win)

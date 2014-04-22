@@ -602,7 +602,7 @@ def addFixture(fixture,baseobject):
     else:
         FreeCAD.Console.PrintMessage(translate("Arch","This object has no support for fixtures"))
 
-def getTuples(data,scale=1,placement=None,normal=None):
+def getTuples(data,scale=1,placement=None,normal=None,close=True):
     """getTuples(data,[scale,placement,normal]): returns a tuple or a list of tuples from a vector
     or from the vertices of a shape. Scale can indicate a scale factor"""
     import Part
@@ -630,7 +630,8 @@ def getTuples(data,scale=1,placement=None,normal=None):
                 if placement:
                     pt = placement.multVec(pt)
                 t.append((pt.x*scale,pt.y*scale,pt.z*scale))
-            t.append(t[0]) # for IFC verts lists must be closed
+            if close:
+                t.append(t[0]) # for IFC verts lists must be closed
         else:
             print "Arch.getTuples(): Wrong profile data"
         return t
@@ -669,10 +670,10 @@ def getBrepFacesData(obj,scale=1):
                         s = []
                         for face in obj.Shape.Faces:
                             f = []
-                            f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0)))
+                            f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0),close=False))
                             for wire in face.Wires:
                                 if wire.hashCode() != face.OuterWire.hashCode():
-                                    f.append(getTuples(wire,scale,normal=DraftVecUtils.neg(face.normalAt(0,0))))
+                                    f.append(getTuples(wire,scale,normal=DraftVecUtils.neg(face.normalAt(0,0)),close=False))
                             s.append(f)
                         sols.append(s)
                     return sols

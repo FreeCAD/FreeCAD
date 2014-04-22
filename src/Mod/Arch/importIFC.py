@@ -30,8 +30,10 @@ __url__ = "http://www.freecadweb.org"
 
 # config
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
-SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp"
+SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp" # only for internal prser
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
+DEBUG = True # this is only for the python console, this value is overridden when importing through the GUI
+SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"] # default. overwritten by the GUI options
 # end config
 
 if open.__module__ == '__builtin__':
@@ -60,11 +62,9 @@ def insert(filename,docname,skip=None):
     
 def getConfig():
     "Gets Arch IFC import preferences"
-    global CREATE_IFC_GROUPS, ASMESH, DEBUG, SKIP, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS
+    global CREATE_IFC_GROUPS, ASMESH, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS
     CREATE_IFC_GROUPS = False
     IMPORT_IFC_FURNITURE = False
-    DEBUG = False
-    SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"]
     ASMESH = ["IfcFurnishingElement"]
     PREFIX_NUMBERS = False
     FORCE_PYTHON_PARSER = False
@@ -197,17 +197,17 @@ def read(filename,skip=None):
 
             # skip IDs
             if objid in skipIds:
-                if DEBUG: print "skipping because object ID is in skip list"
+                if DEBUG: print "    skipping because object ID is in skip list"
                 nobj = None
 
             # skip types
             elif objtype in SKIP:
-                if DEBUG: print "skipping because type is in skip list"
+                if DEBUG: print "    skipping because type is in skip list"
                 nobj = None
             
             # check if object was already processed, to workaround an ifcopenshell bug
             elif objid in processedIds:
-                if DEBUG: print "skipping because this object was already processed"
+                if DEBUG: print "    skipping because this object was already processed"
 
             else:
                 # build shape
@@ -318,12 +318,12 @@ def read(filename,skip=None):
                 else:
                     # creating parent if needed
                     if IFCOPENSHELL5:
-                        parent_ifcobj = ifc.by_id(parent_id)
+                        obj = ifc.by_id(parent_id)
                         parentid = int(str(obj).split("=")[0].strip("#"))
                         parentname = obj.get_argument(obj.get_argument_index("Name"))
                         parenttype = str(obj).split("=")[1].split("(")[0]
                     else:
-                        parent_ifcobj = IfcImport.GetObject(parent_id)
+                        obj = IfcImport.GetObject(parent_id)
                         parentid = obj.id
                         parentname = obj.name
                         parenttype = obj.type
@@ -343,6 +343,8 @@ def read(filename,skip=None):
                     elif parenttype == "IfcWindow":
                         parent = Arch.makeWindow(name=n)
                         parent.Label = n
+                    elif parenttype == "IfcProject":
+                        parent = None
                     else:
                         if DEBUG: print "Fixme: skipping unhandled parent: ", parentid, " ", parenttype
                         parent = None
@@ -440,24 +442,24 @@ def makeWall(entity,shape=None,name="Wall"):
                 body.Mesh = shape
             wall = Arch.makeWall(body,name=name)
             wall.Label = name
-            if DEBUG: print "made wall object ",entity,":",wall
+            if DEBUG: print "    made wall object ",entity,":",wall
             return wall
             
         # use internal parser
         if DEBUG: print "=====> making wall",entity.id
         placement = wall = wire = body = width = height = None
         placement = getPlacement(entity.ObjectPlacement)
-        if DEBUG: print "got wall placement",entity.id,":",placement
+        if DEBUG: print "    got wall placement",entity.id,":",placement
         width = entity.getProperty("Width")
         height = entity.getProperty("Height")
         if width and height:
-                if DEBUG: print "got width, height ",entity.id,":",width,"/",height
+                if DEBUG: print "    got width, height ",entity.id,":",width,"/",height
                 for r in entity.Representation.Representations:
                     if r.RepresentationIdentifier == "Axis":
                         wire = getWire(r.Items,placement)
                         wall = Arch.makeWall(wire,width,height,align="Center",name="Wall"+str(entity.id))
         else:
-                if DEBUG: print "no height or width properties found..."
+                if DEBUG: print "    no height or width properties found..."
                 for r in entity.Representation.Representations:
                     if r.RepresentationIdentifier == "Body":
                         for b in r.Items:
@@ -468,12 +470,12 @@ def makeWall(entity,shape=None,name="Wall"):
                                 wall = Arch.makeWall(wire,width=0,height=b.Depth,name="Wall"+str(entity.id))
                                 wall.Normal = norm
         if wall:
-            if DEBUG: print "made wall object  ",entity.id,":",wall
+            if DEBUG: print "    made wall object  ",entity.id,":",wall
             return wall
-        if DEBUG: print "error: skipping wall",entity.id
+        if DEBUG: print "    error: skipping wall",entity.id
         return None
     except:
-        if DEBUG: print "error: skipping wall",entity
+        if DEBUG: print "    error: skipping wall",entity
         return None
 
 
@@ -486,7 +488,7 @@ def makeWindow(entity,shape=None,name="Window"):
                 window = Arch.makeWindow(name=name)
                 window.Shape = shape
                 window.Label = name
-                if DEBUG: print "made window object  ",entity,":",window
+                if DEBUG: print "    made window object  ",entity,":",window
                 return window
             
         # use internal parser
@@ -503,12 +505,12 @@ def makeWindow(entity,shape=None,name="Window"):
                         wire = getWire(b.SweptArea,placement)
                         window = Arch.makeWindow(wire,width=b.Depth,name=objtype+str(entity.id))
         if window:
-            if DEBUG: print "made window object  ",entity.id,":",window
+            if DEBUG: print "    made window object  ",entity.id,":",window
             return window
-        if DEBUG: print "error: skipping window",entity.id
+        if DEBUG: print "    error: skipping window",entity.id
         return None
     except:
-        if DEBUG: print "error: skipping window",entity
+        if DEBUG: print "    error: skipping window",entity
         return None
 
 
@@ -533,7 +535,7 @@ def makeStructure(entity,shape=None,ifctype=None,name="Structure"):
                 structure.Role = "Slab"
             elif ifctype == "IfcFooting":
                 structure.Role = "Foundation"
-            if DEBUG: print "made structure object  ",entity,":",structure," (type: ",ifctype,")"
+            if DEBUG: print "    made structure object  ",entity,":",structure," (type: ",ifctype,")"
             return structure
             
         # use internal parser
@@ -550,12 +552,12 @@ def makeStructure(entity,shape=None,ifctype=None,name="Structure"):
                         wire = getWire(b.SweptArea,placement)
                         structure = Arch.makeStructure(wire,height=b.Depth,name=objtype+str(entity.id))
         if structure:
-            if DEBUG: print "made structure object  ",entity.id,":",structure
+            if DEBUG: print "    made structure object  ",entity.id,":",structure
             return structure
-        if DEBUG: print "error: skipping structure",entity.id
+        if DEBUG: print "    error: skipping structure",entity.id
         return None
     except:
-        if DEBUG: print "error: skipping structure",entity
+        if DEBUG: print "    error: skipping structure",entity
         return None
 
 
@@ -575,7 +577,7 @@ def makeSite(entity,shape=None,name="Site"):
         site.Label = name
         if body:
             site.Terrain = body
-        if DEBUG: print "made site object  ",entity,":",site
+        if DEBUG: print "    made site object  ",entity,":",site
         return site
     except:
         return None
@@ -592,7 +594,7 @@ def makeSpace(entity,shape=None,name="Space"):
                 body.Shape = shape
                 space.Base = body
                 body.ViewObject.hide()
-                if DEBUG: print "made space object  ",entity,":",space
+                if DEBUG: print "    made space object  ",entity,":",space
                 return space
     except:
         return None
@@ -607,7 +609,7 @@ def makeRoof(entity,shape=None,name="Roof"):
                 roof = Arch.makeRoof(name=name)
                 roof.Label = name
                 roof.Shape = shape
-                if DEBUG: print "made roof object  ",entity,":",roof
+                if DEBUG: print "    made roof object  ",entity,":",roof
                 return roof
     except:
         return None
@@ -677,7 +679,7 @@ def getShape(obj,objid):
             else:
                 sh.importBrepFromString(brep_data)
         except:
-            print "Error: malformed shape"
+            print "    error: malformed shape"
             return None
         else:
             if IFCOPENSHELL5 and SEPARATE_PLACEMENTS:
@@ -688,16 +690,16 @@ def getShape(obj,objid):
         # try to extract a solid shape
         if sh.Faces:
             try:
-                if DEBUG: print "Malformed solid. Attempting to fix..."
+                if DEBUG: print "    malformed solid. Attempting to fix..."
                 shell = Part.makeShell(sh.Faces)
                 if shell:
                     solid = Part.makeSolid(shell)
                     if solid:
                         sh = solid
             except:
-                if DEBUG: print "failed to retrieve solid from object ",objid
+                if DEBUG: print "    failed to retrieve solid from object ",objid
         else:
-            if DEBUG: print "object ", objid, " doesn't contain any geometry"
+            if DEBUG: print "    object ", objid, " doesn't contain any geometry"
     if not IFCOPENSHELL5:
         m = obj.matrix
         mat = FreeCAD.Matrix(m[0], m[3], m[6], m[9],
@@ -1026,7 +1028,7 @@ def export(exportList,filename):
                 #ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
                 if FreeCAD.Vector(gdata[1]).getAngle(FreeCAD.Vector(0,0,1)) < .01:
                     # Workaround for non-Z extrusions, apparently not supported by ifc++ TODO: fix this
-                    ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
+                    ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name, standard=True )
                 else:
                     fdata = Arch.getBrepFacesData(obj,scaling)
                     ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
@@ -1037,11 +1039,13 @@ def export(exportList,filename):
             if parent:
                 p = ifc.findByName("IfcWallStandardCase",str(parent.Label))
                 if not p:
-                    p = ifc.findByName("IfcColumn",str(parent.Label))
+                    p = ifc.findByName("IfcWall",str(parent.Label))
                     if not p:
-                        p = ifc.findByName("IfcBeam",str(parent.Label))
+                        p = ifc.findByName("IfcColumn",str(parent.Label))
                         if not p:
-                            p = ifc.findByName("IfcSlab",str(parent.Label))
+                            p = ifc.findByName("IfcBeam",str(parent.Label))
+                            if not p:
+                                p = ifc.findByName("IfcSlab",str(parent.Label))
                 parent = p
             role = "IfcWindow"
             if hasattr(obj,"Role"):
