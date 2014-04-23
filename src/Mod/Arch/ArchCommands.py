@@ -649,11 +649,15 @@ def getExtrusionData(obj,scale=1):
             return None
     if hasattr(obj,"Proxy"):
         if hasattr(obj.Proxy,"BaseProfile") and hasattr(obj.Proxy,"ExtrusionVector"):
+            import Part
             pl = FreeCAD.Placement(obj.Placement)
             r = FreeCAD.Rotation(obj.Placement.Rotation)
             if pl.isNull():
                 pl = r = None
-            return getTuples(obj.Proxy.BaseProfile,scale,pl), getTuples(obj.Proxy.ExtrusionVector,scale,r)
+            if len(obj.Proxy.BaseProfile.Edges) == 1:
+                if isinstance(obj.Proxy.BaseProfile.Edges[0].Curve,Part.Circle):
+                    return "circle", getTuples(obj.Proxy.BaseProfile.Edges[0].Curve.Center,scale), obj.Proxy.BaseProfile.Edges[0].Curve.Radius*scale, getTuples(obj.Proxy.ExtrusionVector,scale,r)
+            return "polyline", getTuples(obj.Proxy.BaseProfile,scale,pl), getTuples(obj.Proxy.ExtrusionVector,scale,r)
     return None   
     
 def getBrepFacesData(obj,scale=1):

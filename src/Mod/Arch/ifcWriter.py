@@ -463,14 +463,14 @@ class IfcDocument(object):
         self._relate(storey,wal)
         return wal
         
-    def addStructure(self,ifctype,shapes,storey=None,placement=None,name="Default Structure",description=None,standard=False):
+    def addStructure(self,ifctype,shapes,storey=None,placement=None,name="Default Structure",description=None,extrusion=False):
         """addStructure(ifctype,shapes,[storey,placement,name,description]): creates a structure 
         from the given representation shape(s). Ifctype is the type of structural object (IfcBeam, IfcColumn, etc)"""
         if not placement:
             placement = self.addPlacement()
         if not isinstance(shapes,list):
             shapes = [shapes]
-        if standard:
+        if extrusion:
             solidType = "SweptSolid"
         else:
             solidType = "Brep"
@@ -508,17 +508,23 @@ class IfcDocument(object):
         """addPolyline(points): creates a polyline from the given points"""
         pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)) for p in points]
         pol = create(self._fileobject,"IfcPolyline",[pts])
-        return pol
+        area = create(self._fileobject,"IfcArbitraryClosedProfileDef",["AREA",None,pol])
+        return area
+
+    def addCircle(self,radius):
+        """addCircle(radius): creates a polyline from the given points"""
+        lpl = self.addPlacement()
+        cir = create(self._fileobject,"IfcCircleProfileDef",["AREA",None,lpl,float(radius)])
+        return cir
     
-    def addExtrusion(self,polyline,extrusion,placement=None):
-        """addExtrusion(polyline,extrusion,[placement]): makes an
+    def addExtrusion(self,profile,extrusion,placement=None):
+        """addExtrusion(profile,extrusion,[placement]): makes an
         extrusion of the given polyline with the given extrusion vector"""
         if not placement:
             placement = self.addPlacement(local=False)
         value,norm = getValueAndDirection(extrusion)
         edir = create(self._fileobject,"IfcDirection",[norm])
-        area = create(self._fileobject,"IfcArbitraryClosedProfileDef",["AREA",None,polyline])
-        solid = create(self._fileobject,"IfcExtrudedAreaSolid",[area,placement,edir,value])
+        solid = create(self._fileobject,"IfcExtrudedAreaSolid",[profile,placement,edir,value])
         return solid
         
     def addExtrudedPolyline(self,points,extrusion,placement=None):
@@ -526,6 +532,15 @@ class IfcDocument(object):
         from the given points and the given extrusion vector"""
         pol = self.addPolyline(points)
         exp = self.addExtrusion(pol,extrusion,placement)
+        return exp
+
+    def addExtrudedCircle(self,center,radius,extrusion,placement=None):
+        """addExtrudedCircle(radius,extrusion,[placement]): makes an extruded circle
+        from the given radius and the given extrusion vector"""
+        cir = self.addCircle(radius)
+        if not placement:
+            placement = self.addPlacement(origin=center)
+        exp = self.addExtrusion(cir,extrusion,placement)
         return exp
         
     def addFace(self,face):
