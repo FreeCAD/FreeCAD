@@ -247,9 +247,9 @@ std::vector<QString> InputField::getHistory(void)
 
 void InputField::setToLastUsedValue(void)
 {
-     std::vector<QString> hist = getHistory();
-     if(hist.size()>0)
-         this->setValue(Base::Quantity::parse(hist[0]));
+    std::vector<QString> hist = getHistory();
+    if(!hist.empty())
+        this->setText(hist[0]);
 }
 
 void InputField::pushToSavedValues(const QString &valueq)
