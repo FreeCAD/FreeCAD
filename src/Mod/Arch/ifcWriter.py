@@ -385,6 +385,18 @@ class IfcDocument(object):
                 f.write(l)
             f.close()
 
+    def union(self,solids):
+        """union(solids): creates a boolean union between all the solids of the list"""
+        if len(solids) == 1:
+            return solids[0]
+        else:
+            s1 = solids.pop(0)
+            s2 = solids.pop(0)
+            base = create(self._fileobject,"IfcBooleanResult",["UNION",s1,s2])
+            for s in solids:
+                base = create(self._fileobject,"IfcBooleanResult",["UNION",base,s])
+            return base
+
     def addPlacement(self,reference=None,origin=(0,0,0),xaxis=(1,0,0),zaxis=(0,0,1),local=True):
         """addPlacement([reference,origin,xaxis,zaxis,local]): adds a placement. origin,
         xaxis and zaxis can be either tuples or 3d vectors. If local is False, a global
