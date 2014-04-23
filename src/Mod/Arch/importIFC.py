@@ -34,6 +34,7 @@ SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
 DEBUG = True # this is only for the python console, this value is overridden when importing through the GUI
 SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"] # default. overwritten by the GUI options
+TOUCH = True # arch objects based on profiles need to be reexecuted after loading the file (this is temporary)
 # end config
 
 if open.__module__ == '__builtin__':
@@ -923,9 +924,9 @@ def export(exportList,filename):
                      version of IfcOpenShell available from https://github.com/aothms/IfcOpenShell"""
             return
         import ifcWriter
+    import Arch,Draft
 
     # creating base IFC project
-    import Arch,Draft
     getConfig()
     ifcWriter.PRECISION = Draft.precision()
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
@@ -944,6 +945,13 @@ def export(exportList,filename):
     # get all children and reorder list to get buildings and floors processed first
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
+
+    # workaround: loaded objects loose their profile info - needs to recompute...
+    if TOUCH:
+        for o in objectslist:
+            if Draft.getType(o) in ["Wall", "Structure"]:
+                o.Proxy.execute(o)
+
     buildings = []
     floors = []
     others = []
@@ -971,20 +979,45 @@ def export(exportList,filename):
 
         if DEBUG: print "adding ",obj.Label
 
+        # getting geometry
         if not forcebrep:
             gdata = Arch.getExtrusionData(obj,scaling)
             #if DEBUG: print "extrusion data for ",obj.Label," : ",gdata
         if not gdata:
             fdata = Arch.getBrepFacesData(obj,scaling)
             #if DEBUG: print "brep data for ",obj.Label," : ",fdata
-            if DEBUG: print "   Brep"
             if not fdata:
                 if obj.isDerivedFrom("Part::Feature"):
                     print "IFC export: error retrieving the shape of object ", obj.Name
                     continue
+                else:
+                    if DEBUG: print "   No geometry"
+            else:
+                if DEBUG: print "   Brep"
         else:
             if DEBUG: print "   Extrusion"
 
+        # compute final placement
+        basepoint = None
+        if obj.isDerivedFrom("Part::Feature"):
+            b1 = None
+            b2 = None
+            if hasattr(obj,"Base"):
+                if obj.Base:
+                    b1 = FreeCAD.Vector(obj.Base.Placement.Base).multiply(scaling)
+            if hasattr(obj,"Placement"):
+                b2 = FreeCAD.Vector(obj.Placement.Base).multiply(scaling)
+            if b2:
+                if b1:
+                    basepoint = b2.add(b1)
+                else:
+                    basepoint = b2
+            elif b1:
+                basepoint = b1
+        if basepoint:
+            basepoint = Arch.getTuples(basepoint)
+
+        # writing text log
         spacer = ""
         for i in range(36-len(obj.Label)):
             spacer += " "
@@ -996,7 +1029,8 @@ def export(exportList,filename):
         else:
             tp = otype
         txt.append(obj.Label + spacer + tp)
-                    
+                 
+        # writing IFC data   
         if otype == "Building":
             ifc.addBuilding( name=name )
             
@@ -1009,11 +1043,15 @@ def export(exportList,filename):
             if parent:
                 parent = ifc.findByName("IfcBuildingStorey",str(parent.Label))
             if gdata:
-                ifc.addWall( ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name, standard=True )
+                if gdata[0] == "polyline":
+                    ifc.addWall( ifc.addExtrudedPolyline(gdata[1], gdata[2]), storey=parent, name=name, standard=True )
+                elif gdata[0] == "circle":
+                    ifc.addWall( ifc.addExtrudedCircle(gdata[1], gdata[2], gdata[3]), storey=parent, name=name )
             elif fdata:
                 ifc.addWall( [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
                 
         elif otype == "Structure":
+            placement = None
             if parent:
                 parent = ifc.findByName("IfcBuildingStorey",str(parent.Label))
             role = "IfcBeam"
@@ -1025,13 +1063,24 @@ def export(exportList,filename):
                 elif obj.Role == "Foundation":
                     role = "IfcFooting"
             if gdata:
-                #ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
-                if FreeCAD.Vector(gdata[1]).getAngle(FreeCAD.Vector(0,0,1)) < .01:
-                    # Workaround for non-Z extrusions, apparently not supported by ifc++ TODO: fix this
-                    ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name, standard=True )
-                else:
-                    fdata = Arch.getBrepFacesData(obj,scaling)
-                    ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
+                if gdata[0] == "polyline":
+                    #ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
+                    if FreeCAD.Vector(gdata[2]).getAngle(FreeCAD.Vector(0,0,1)) < .01:
+                        # the placement of polylines is weird... The Z values from the polyline info is not used,
+                        # so we need to give it now as a placement.
+                        if basepoint:
+                            if round(basepoint[2],Draft.precision()) != 0:
+                                placement = ifc.addPlacement(origin=(0.0,0.0,basepoint[2]))
+                        ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[1],gdata[2]), storey=parent, placement=placement, name=name, extrusion=True )
+                    else:
+                        # Workaround for non-Z extrusions, apparently not supported by ifc++ TODO: fix this
+                        print "    switching to Brep"
+                        fdata = Arch.getBrepFacesData(obj,scaling)
+                        ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
+                elif gdata[0] == "circle":
+                    if basepoint:
+                        placement = ifc.addPlacement(origin=basepoint)
+                    ifc.addStructure( role, ifc.addExtrudedCircle(gdata[1], gdata[2], gdata[3]), storey=parent, placement=placement, name=name, extrusion=True )
             elif fdata:
                 ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
                 
@@ -1052,7 +1101,8 @@ def export(exportList,filename):
                 if obj.Role == "Door":
                     role = "IfcDoor"
             if gdata:
-                ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, ifc.addExtrudedPolyline(gdata[0],gdata[1]), host=parent, name=name )
+                if gdata[0] == "polyline":
+                    ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, ifc.addExtrudedPolyline(gdata[1], gdata[2]), host=parent, name=name )
             elif fdata:
                 ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, [ifc.addFacetedBrep(f) for f in fdata], host=parent, name=name )
 
@@ -1081,6 +1131,8 @@ def export(exportList,filename):
         f = pyopen(txtfile,"wb")
         f.write(txtstring)
         f.close()
+
+    FreeCAD.ActiveDocument.recompute()
 
 
 def explore(filename=None):
