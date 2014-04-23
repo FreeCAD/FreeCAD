@@ -4179,7 +4179,7 @@ class _Shape2DView(_DraftObject):
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines","Cutfaces"]
         obj.HiddenLines = False
-        obj.Tessellation = True
+        obj.Tessellation = False
         obj.SegmentLength = .05
         _DraftObject.__init__(self,obj,"Shape2DView")
 
