@@ -63,7 +63,7 @@ def insert(filename,docname,skip=None):
     
 def getConfig():
     "Gets Arch IFC import preferences"
-    global CREATE_IFC_GROUPS, ASMESH, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS
+    global CREATE_IFC_GROUPS, ASMESH, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS, JOINSOLIDS
     CREATE_IFC_GROUPS = False
     IMPORT_IFC_FURNITURE = False
     ASMESH = ["IfcFurnishingElement"]
@@ -77,6 +77,7 @@ def getConfig():
     SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
     SEPARATE_PLACEMENTS = p.GetBool("ifcSeparatePlacements",False)
     PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
+    JOINSOLIDS = p.GetBool("ifcJoinSolids",False)
     skiplist = p.GetString("ifcSkip","")
     if skiplist:
         SKIP = skiplist.split(",")
@@ -1048,7 +1049,10 @@ def export(exportList,filename):
                 elif gdata[0] == "circle":
                     ifc.addWall( ifc.addExtrudedCircle(gdata[1], gdata[2], gdata[3]), storey=parent, name=name )
             elif fdata:
-                ifc.addWall( [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
+                if JOINSOLIDS:
+                    ifc.addWall( ifc.join([ifc.addFacetedBrep(f) for f in fdata]), storey=parent, name=name )
+                else:
+                    ifc.addWall( [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
                 
         elif otype == "Structure":
             placement = None
@@ -1082,7 +1086,10 @@ def export(exportList,filename):
                         placement = ifc.addPlacement(origin=basepoint)
                     ifc.addStructure( role, ifc.addExtrudedCircle(gdata[1], gdata[2], gdata[3]), storey=parent, placement=placement, name=name, extrusion=True )
             elif fdata:
-                ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
+                if JOINSOLIDS:
+                    ifc.addStructure( role, ifc.join([ifc.addFacetedBrep(f) for f in fdata]), storey=parent, name=name )
+                else:
+                    ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
                 
         elif otype == "Window":
             if parent:
@@ -1104,7 +1111,10 @@ def export(exportList,filename):
                 if gdata[0] == "polyline":
                     ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, ifc.addExtrudedPolyline(gdata[1], gdata[2]), host=parent, name=name )
             elif fdata:
-                ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, [ifc.addFacetedBrep(f) for f in fdata], host=parent, name=name )
+                if JOINSOLIDS:
+                    ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, ifc.union([ifc.addFacetedBrep(f) for f in fdata]), host=parent, name=name )
+                else:
+                    ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, [ifc.addFacetedBrep(f) for f in fdata], host=parent, name=name )
 
         else:
             print "IFC export: object type ", otype, " is not supported yet."
