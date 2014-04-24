@@ -678,11 +678,16 @@ void DlgFilletEdges::on_selectAllButton_clicked()
 void DlgFilletEdges::on_selectNoneButton_clicked()
 {
     QAbstractItemModel* model = ui->treeView->model();
+    bool block = model->blockSignals(true); // do not call toggleCheckState
     for (int i=0; i<model->rowCount(); ++i) {
         Qt::CheckState checkState = Qt::Unchecked;
         QVariant value(static_cast<int>(checkState));
         model->setData(model->index(i,0), value, Qt::CheckStateRole);
     }
+    model->blockSignals(block);
+
+    App::Document* doc = d->object->getDocument();
+    Gui::Selection().clearSelection(doc->getName());
 }
 
 void DlgFilletEdges::on_filletType_activated(int index)
