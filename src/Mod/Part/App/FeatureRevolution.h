@@ -41,6 +41,7 @@ public:
     App::PropertyVector Base;
     App::PropertyVector Axis;
     App::PropertyFloatConstraint Angle;
+    App::PropertyBool Solid;
 
     /** @name methods override feature */
     //@{

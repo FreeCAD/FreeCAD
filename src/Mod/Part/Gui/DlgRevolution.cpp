@@ -47,6 +47,9 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/Tools.h>
+#include <Base/Console.h>
+
+
 
 using namespace PartGui;
 
@@ -178,8 +181,12 @@ void DlgRevolution::accept()
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     activeDoc->openTransaction("Revolve");
 
-    QString shape, type, name;
+    QString shape, type, name, solid;
     QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
+    if (ui->checkSolid->isChecked()) {
+        solid = QString::fromAscii("True");}
+    else {
+        solid = QString::fromAscii("False");}
     for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
         shape = (*it)->data(0, Qt::UserRole).toString();
         type = QString::fromAscii("Part::Revolution");
@@ -192,6 +199,7 @@ void DlgRevolution::accept()
             "FreeCAD.ActiveDocument.%2.Axis = (%4,%5,%6)\n"
             "FreeCAD.ActiveDocument.%2.Base = (%7,%8,%9)\n"
             "FreeCAD.ActiveDocument.%2.Angle = %10\n"
+            "FreeCAD.ActiveDocument.%2.Solid = %11\n"
             "FreeCADGui.ActiveDocument.%3.Visibility = False\n")
             .arg(type).arg(name).arg(shape)
             .arg(axis.x,0,'f',2)
@@ -200,7 +208,9 @@ void DlgRevolution::accept()
             .arg(ui->xPos->value(),0,'f',2)
             .arg(ui->yPos->value(),0,'f',2)
             .arg(ui->zPos->value(),0,'f',2)
-            .arg(ui->angle->value(),0,'f',2);
+            .arg(ui->angle->value(),0,'f',2)
+            .arg(solid)
+            ;
         Gui::Application::Instance->runPythonCode((const char*)code.toAscii());
         QByteArray to = name.toAscii();
         QByteArray from = shape.toAscii();
