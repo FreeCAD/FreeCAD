@@ -42,6 +42,7 @@
 # include <QVBoxLayout>
 # include <QItemSelection>
 # include <QItemSelectionModel>
+# include <QTimer>
 # include <boost/signal.hpp>
 # include <boost/bind.hpp>
 # include <Inventor/actions/SoSearchAction.h>
@@ -181,6 +182,7 @@ namespace PartGui {
         App::DocumentObject* object;
         EdgeFaceSelection* selection;
         Part::FilletBase* fillet;
+        QTimer* highlighttimer;
         FilletType filletType;
         std::vector<int> edge_ids;
         TopTools_IndexedMapOfShape all_edges;
@@ -216,6 +218,12 @@ DlgFilletEdges::DlgFilletEdges(FilletType type, Part::FilletBase* fillet, QWidge
     connect(model, SIGNAL(toggleCheckState(const QModelIndex&)),
             this, SLOT(toggleCheckState(const QModelIndex&)));
     model->insertColumns(0,3);
+
+    // timer for highlighting
+    d->highlighttimer = new QTimer(this);
+    d->highlighttimer->setSingleShot(true);
+    connect(d->highlighttimer,SIGNAL(timeout()),
+            this, SLOT(onHighlightEdges()));
 
     d->filletType = type;
     if (d->filletType == DlgFilletEdges::CHAMFER) {
@@ -282,7 +290,7 @@ void DlgFilletEdges::onSelectionChanged(const Gui::SelectionChanges& msg)
 
     if (msg.Type != Gui::SelectionChanges::SetPreselect &&
         msg.Type != Gui::SelectionChanges::RmvPreselect)
-        QTimer::singleShot(20, this, SLOT(onHighlightEdges()));
+        d->highlighttimer->start(20);
 }
 
 void DlgFilletEdges::onHighlightEdges()
