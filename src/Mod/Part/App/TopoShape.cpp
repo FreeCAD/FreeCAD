@@ -51,6 +51,7 @@
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
+# include <BRepBuilderAPI_MakeShell.hxx>
 # include <BRepBuilderAPI_NurbsConvert.hxx>
 # include <BRepBuilderAPI_FaceError.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
@@ -1864,10 +1865,41 @@ TopoDS_Shape TopoShape::makePrism(const gp_Vec& vec) const
     return mkPrism.Shape();
 }
 
-TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d) const
+TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean isSolid) const
 {
-    if (this->_Shape.IsNull()) Standard_Failure::Raise("cannot sweep empty shape");
-    BRepPrimAPI_MakeRevol mkRevol(this->_Shape, axis,d);
+    if (this->_Shape.IsNull()) Standard_Failure::Raise("cannot revolve empty shape");
+
+    TopoDS_Face f; 
+    TopoDS_Wire w;
+    TopoDS_Edge e;
+    Standard_Boolean convertFailed = false;
+
+    TopoDS_Shape base = this->_Shape; 
+    if ((isSolid) && (BRep_Tool::IsClosed(base)) &&
+        ((base.ShapeType() == TopAbs_EDGE) || (base.ShapeType() == TopAbs_WIRE))) {
+        if (base.ShapeType() == TopAbs_EDGE) {
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(base));
+            if (mkWire.IsDone()) {
+                w = mkWire.Wire(); }
+            else {
+                convertFailed = true; }
+        }
+        else {
+             w = TopoDS::Wire(base);}
+        if (!convertFailed) {       
+            BRepBuilderAPI_MakeFace mkFace(w);
+            if (mkFace.IsDone()) {
+                f = mkFace.Face(); 
+                base = f; }
+            else {
+                convertFailed = true; }
+        }  
+    }        
+    
+    if (convertFailed) {
+        Base::Console().Message("TopoShape::revolve could not make Solid from Wire/Edge.\n");}
+
+    BRepPrimAPI_MakeRevol mkRevol(base, axis,d);
     return mkRevol.Shape();
 }
 
