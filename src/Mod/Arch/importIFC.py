@@ -63,7 +63,7 @@ def insert(filename,docname,skip=None):
     
 def getConfig():
     "Gets Arch IFC import preferences"
-    global CREATE_IFC_GROUPS, ASMESH, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS, JOINSOLIDS
+    global CREATE_IFC_GROUPS, ASMESH, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS, JOINSOLIDS, AGGREGATE_WINDOWS
     CREATE_IFC_GROUPS = False
     IMPORT_IFC_FURNITURE = False
     ASMESH = ["IfcFurnishingElement"]
@@ -78,6 +78,7 @@ def getConfig():
     SEPARATE_PLACEMENTS = p.GetBool("ifcSeparatePlacements",False)
     PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
     JOINSOLIDS = p.GetBool("ifcJoinSolids",False)
+    AGGREGATE_WINDOWS = p.GetBool("ifcAggregateWindows",False)
     skiplist = p.GetString("ifcSkip","")
     if skiplist:
         SKIP = skiplist.split(",")
@@ -1092,17 +1093,26 @@ def export(exportList,filename):
                     ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
                 
         elif otype == "Window":
-            if parent:
-                p = ifc.findByName("IfcWallStandardCase",str(parent.Label))
-                if not p:
-                    p = ifc.findByName("IfcWall",str(parent.Label))
+            if AGGREGATE_WINDOWS:
+                if parent:
+                    p = ifc.findByName("IfcWallStandardCase",str(parent.Label))
                     if not p:
-                        p = ifc.findByName("IfcColumn",str(parent.Label))
+                        p = ifc.findByName("IfcWall",str(parent.Label))
                         if not p:
-                            p = ifc.findByName("IfcBeam",str(parent.Label))
+                            p = ifc.findByName("IfcColumn",str(parent.Label))
                             if not p:
-                                p = ifc.findByName("IfcSlab",str(parent.Label))
-                parent = p
+                                p = ifc.findByName("IfcBeam",str(parent.Label))
+                                if not p:
+                                    p = ifc.findByName("IfcSlab",str(parent.Label))
+                    parent = p
+            else:
+                if parent:
+                    p = Arch.getHost(parent)
+                    if p:
+                        parent = ifc.findByName("IfcBuildingStorey",str(p.Label))
+                    else:
+                        parent = None
+
             role = "IfcWindow"
             if hasattr(obj,"Role"):
                 if obj.Role == "Door":
