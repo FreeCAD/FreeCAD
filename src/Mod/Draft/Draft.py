@@ -4174,11 +4174,13 @@ class _Shape2DView(_DraftObject):
         obj.addProperty("App::PropertyEnumeration","ProjectionMode","Draft","The way the viewed object must be projected")
         obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft","The indices of the faces to be projected in Individual Faces mode")
         obj.addProperty("App::PropertyBool","HiddenLines","Draft","Show hidden lines")
-        obj.addProperty("App::PropertyBool","Tessellation","Draft","Tessellate BSplines into line segments using number of spline poles")
+        obj.addProperty("App::PropertyBool","Tessellation","Draft","Tessellate Ellipses and BSplines into line segments")
+        obj.addProperty("App::PropertyFloat","SegmentLength","Draft","Length of line segments if tessellating Ellipses or BSplines into line segments")
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines","Cutfaces"]
         obj.HiddenLines = False
-        obj.Tessellation = True
+        obj.Tessellation = False
+        obj.SegmentLength = .05
         _DraftObject.__init__(self,obj,"Shape2DView")
 
     def getProjected(self,obj,shape,direction):
@@ -4195,9 +4197,10 @@ class _Shape2DView(_DraftObject):
                     edges.append(g)
         #return Part.makeCompound(edges)
         if hasattr(obj,"Tessellation"):
-            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation)
+            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation,obj.SegmentLength)
         else:
-            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+            return Part.makeCompound(edges)
+            #return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
 
     def execute(self,obj):
         import DraftGeomUtils
