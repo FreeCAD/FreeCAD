@@ -694,7 +694,7 @@ def getHost(obj,strict=True):
     import Draft
     t = Draft.getType(obj)
     for par in obj.InList:
-        if par.isDerivedFrom("Part::Feature"):
+        if par.isDerivedFrom("Part::Feature") or par.isDerivedFrom("App::DocumentObjectGroup"):
             if strict:
                 if Draft.getType(par) != t:
                     return par
