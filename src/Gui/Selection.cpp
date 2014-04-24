@@ -627,7 +627,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
     if (isSelected(pDocName, pObjectName, pSubName))
         return true;
 
-     _SelObj temp;
+    _SelObj temp;
 
     temp.pDoc = getDocument(pDocName);
 
@@ -681,8 +681,62 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         // allow selection
         return true;
     }
-    else { // neither an existing nor active document available 
-        //assert(0);
+    else {
+        // neither an existing nor active document available 
+        // this can often happen when importing .iv files
+        Base::Console().Error("Cannot add to selection: no document '%s' found.\n", pDocName);
+        return false;
+    }
+}
+
+bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectName, const std::vector<std::string>& pSubNames)
+{
+    // already in ?
+    //if (isSelected(pDocName, pObjectName, pSubName))
+    //    return true;
+
+    _SelObj temp;
+
+    temp.pDoc = getDocument(pDocName);
+
+    if (temp.pDoc) {
+        if(pObjectName)
+            temp.pObject = temp.pDoc->getObject(pObjectName);
+        else
+            temp.pObject = 0;
+
+        if (temp.pObject)
+            temp.TypeName = temp.pObject->getTypeId().getName();
+
+        temp.DocName  = pDocName;
+        temp.FeatName = pObjectName ? pObjectName : "";
+        for (std::vector<std::string>::const_iterator it = pSubNames.begin(); it != pSubNames.end(); ++it) {
+            temp.SubName  = it->c_str();
+            temp.x        = 0;
+            temp.y        = 0;
+            temp.z        = 0;
+
+            _SelList.push_back(temp);
+        }
+
+        SelectionChanges Chng;
+
+        Chng.pDocName  = pDocName;
+        Chng.pObjectName = pObjectName ? pObjectName : "";
+        Chng.pSubName  = "";
+        Chng.x         = 0;
+        Chng.y         = 0;
+        Chng.z         = 0;
+        Chng.Type      = SelectionChanges::AddSelection;
+
+        Notify(Chng);
+        signalSelectionChanged(Chng);
+
+        // allow selection
+        return true;
+    }
+    else {
+        // neither an existing nor active document available 
         // this can often happen when importing .iv files
         Base::Console().Error("Cannot add to selection: no document '%s' found.\n", pDocName);
         return false;

@@ -540,7 +540,10 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
         ui->shapeObject->setCurrentIndex(current_index);
         on_shapeObject_activated(current_index);
         ui->shapeObject->setEnabled(false);
+
+        std::vector<std::string> subElements;
         QStandardItemModel *model = qobject_cast<QStandardItemModel*>(ui->treeView->model());
+        bool block = model->blockSignals(true); // do not call toggleCheckState
         for (std::vector<Part::FilletElement>::const_iterator et = e.begin(); et != e.end(); ++et) {
             std::vector<int>::iterator it = std::find(d->edge_ids.begin(), d->edge_ids.end(), et->edgeid);
             if (it != d->edge_ids.end()) {
@@ -548,8 +551,19 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
                 model->setData(model->index(index, 0), Qt::Checked, Qt::CheckStateRole);
                 model->setData(model->index(index, 1), QVariant(QLocale::system().toString(et->radius1,'f',Base::UnitsApi::getDecimals())));
                 model->setData(model->index(index, 2), QVariant(QLocale::system().toString(et->radius2,'f',Base::UnitsApi::getDecimals())));
+
+                int id = model->index(index, 0).data(Qt::UserRole).toInt();
+                std::stringstream str;
+                str << "Edge" << id;
+                subElements.push_back(str.str());
             }
         }
+        model->blockSignals(block);
+
+        App::Document* doc = d->object->getDocument();
+        Gui::Selection().addSelection(doc->getName(),
+            d->object->getNameInDocument(),
+            subElements);
     }
 }
 
@@ -667,12 +681,32 @@ void DlgFilletEdges::on_selectFaces_toggled(bool on)
 
 void DlgFilletEdges::on_selectAllButton_clicked()
 {
+    std::vector<std::string> subElements;
     QAbstractItemModel* model = ui->treeView->model();
+    bool block = model->blockSignals(true); // do not call toggleCheckState
     for (int i=0; i<model->rowCount(); ++i) {
+        QModelIndex index = model->index(i,0);
+
+        // is not yet checked?
+        QVariant check = index.data(Qt::CheckStateRole);
+        Qt::CheckState state = static_cast<Qt::CheckState>(check.toInt());
+        if (state == Qt::Unchecked) {
+            int id = index.data(Qt::UserRole).toInt();
+            std::stringstream str;
+            str << "Edge" << id;
+            subElements.push_back(str.str());
+        }
+
         Qt::CheckState checkState = Qt::Checked;
         QVariant value(static_cast<int>(checkState));
-        model->setData(model->index(i,0), value, Qt::CheckStateRole);
+        model->setData(index, value, Qt::CheckStateRole);
     }
+    model->blockSignals(block);
+
+    App::Document* doc = d->object->getDocument();
+    Gui::Selection().addSelection(doc->getName(),
+        d->object->getNameInDocument(),
+        subElements);
 }
 
 void DlgFilletEdges::on_selectNoneButton_clicked()
