@@ -126,6 +126,12 @@ FilletRadiusModel::FilletRadiusModel(QObject * parent) : QStandardItemModel(pare
 {
 }
 
+void FilletRadiusModel::updateCheckStates()
+{
+    // See http://www.qtcentre.org/threads/18856-Checkboxes-in-Treeview-do-not-get-refreshed?s=b0fea2bfc66da1098413ae9f2a651a68&p=93201#post93201
+    /*emit*/ layoutChanged();
+}
+
 Qt::ItemFlags FilletRadiusModel::flags (const QModelIndex & index) const
 {
     Qt::ItemFlags fl = QStandardItemModel::flags(index);
@@ -682,7 +688,7 @@ void DlgFilletEdges::on_selectFaces_toggled(bool on)
 void DlgFilletEdges::on_selectAllButton_clicked()
 {
     std::vector<std::string> subElements;
-    QAbstractItemModel* model = ui->treeView->model();
+    FilletRadiusModel* model = static_cast<FilletRadiusModel*>(ui->treeView->model());
     bool block = model->blockSignals(true); // do not call toggleCheckState
     for (int i=0; i<model->rowCount(); ++i) {
         QModelIndex index = model->index(i,0);
@@ -702,6 +708,7 @@ void DlgFilletEdges::on_selectAllButton_clicked()
         model->setData(index, value, Qt::CheckStateRole);
     }
     model->blockSignals(block);
+    model->updateCheckStates();
 
     App::Document* doc = d->object->getDocument();
     Gui::Selection().addSelection(doc->getName(),
@@ -711,7 +718,7 @@ void DlgFilletEdges::on_selectAllButton_clicked()
 
 void DlgFilletEdges::on_selectNoneButton_clicked()
 {
-    QAbstractItemModel* model = ui->treeView->model();
+    FilletRadiusModel* model = static_cast<FilletRadiusModel*>(ui->treeView->model());
     bool block = model->blockSignals(true); // do not call toggleCheckState
     for (int i=0; i<model->rowCount(); ++i) {
         Qt::CheckState checkState = Qt::Unchecked;
@@ -719,6 +726,7 @@ void DlgFilletEdges::on_selectNoneButton_clicked()
         model->setData(model->index(i,0), value, Qt::CheckStateRole);
     }
     model->blockSignals(block);
+    model->updateCheckStates();
 
     App::Document* doc = d->object->getDocument();
     Gui::Selection().clearSelection(doc->getName());
