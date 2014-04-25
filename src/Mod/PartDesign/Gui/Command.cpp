@@ -40,6 +40,7 @@
 #include <sstream>
 #include <algorithm>
 
+#include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -69,7 +70,16 @@ void validateSketches(std::vector<App::DocumentObject*>& sketches, const bool su
 
     while (s != sketches.end()) {
         // Check whether this sketch is already being used by another feature
-        if ((*s)->getInList().size() != 0) {
+        std::vector<App::DocumentObject*> ref = (*s)->getInList();
+        std::vector<App::DocumentObject*>::iterator r = ref.begin();
+        while (r != ref.end()) {
+            if ((*r)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
+                r = ref.erase(r);
+                continue;
+            }
+            ++r;
+        }
+        if (!ref.empty()) {
             // TODO: Display some information message that this sketch was removed?
             s = sketches.erase(s);
             continue;
@@ -205,6 +215,13 @@ void CmdPartDesignPad::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Pad\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
+    App::DocumentObjectGroup* grp = sketch->getGroup();
+    if (grp) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),sketch->getNameInDocument());
+    }
     updateActive();
     if (isActiveObjectValid()) {
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
@@ -276,6 +293,13 @@ void CmdPartDesignPocket::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Pocket\",\"%s\")",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Sketch = App.activeDocument().%s",FeatName.c_str(),sketch->getNameInDocument());
     doCommand(Doc,"App.activeDocument().%s.Length = 5.0",FeatName.c_str());
+    App::DocumentObjectGroup* grp = sketch->getGroup();
+    if (grp) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),sketch->getNameInDocument());
+    }
     updateActive();
     if (isActiveObjectValid()) {
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
@@ -346,6 +370,13 @@ void CmdPartDesignRevolution::activated(int iMsg)
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(getDocument()->getObject(FeatName.c_str()));
     if (pcRevolution && pcRevolution->suggestReversed())
         doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
+    App::DocumentObjectGroup* grp = sketch->getGroup();
+    if (grp) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),sketch->getNameInDocument());
+    }
     updateActive();
     if (isActiveObjectValid()) {
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
@@ -419,6 +450,13 @@ void CmdPartDesignGroove::activated(int iMsg)
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(getDocument()->getObject(FeatName.c_str()));
     if (pcGroove && pcGroove->suggestReversed())
         doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
+    App::DocumentObjectGroup* grp = sketch->getGroup();
+    if (grp) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),sketch->getNameInDocument());
+    }
     updateActive();
     if (isActiveObjectValid()) {
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());

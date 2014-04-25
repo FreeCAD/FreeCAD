@@ -31,6 +31,7 @@
 #include "Document.h"
 #include "DocumentObject.h"
 #include "DocumentObjectPy.h"
+#include "DocumentObjectGroup.h"
 #include "PropertyLinks.h"
 #define new DEBUG_CLIENTBLOCK
 using namespace App;
@@ -156,6 +157,11 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
         return _pDoc->getInList(this);
     else
         return std::vector<App::DocumentObject*>();
+}
+
+DocumentObjectGroup* DocumentObject::getGroup() const
+{
+    return DocumentObjectGroup::getGroupOfObject(this);
 }
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)
