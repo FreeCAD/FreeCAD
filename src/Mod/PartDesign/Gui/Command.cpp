@@ -612,6 +612,11 @@ void CmdPartDesignFillet::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
     doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",selection[0].getFeatName());
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    App::DocumentObjectGroup* grp = base->getGroup();
+    if (grp) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),FeatName.c_str());
+    }
 
     copyVisual(FeatName.c_str(), "ShapeColor", selection[0].getFeatName());
     copyVisual(FeatName.c_str(), "LineColor",  selection[0].getFeatName());
@@ -759,6 +764,11 @@ void CmdPartDesignChamfer::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
     doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",selection[0].getFeatName());
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    App::DocumentObjectGroup* grp = base->getGroup();
+    if (grp) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),FeatName.c_str());
+    }
 
     copyVisual(FeatName.c_str(), "ShapeColor", selection[0].getFeatName());
     copyVisual(FeatName.c_str(), "LineColor",  selection[0].getFeatName());
@@ -870,6 +880,11 @@ void CmdPartDesignDraft::activated(int iMsg)
         doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",selection[0].getFeatName());
     }
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    App::DocumentObjectGroup* grp = base->getGroup();
+    if (grp) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),FeatName.c_str());
+    }
 
     copyVisual(FeatName.c_str(), "ShapeColor", selection[0].getFeatName());
     copyVisual(FeatName.c_str(), "LineColor",  selection[0].getFeatName());
@@ -1023,6 +1038,13 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    App::DocumentObjectGroup* grp = sketch->getGroup();
+    if (grp) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),sketch->getNameInDocument());
+    }
 
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
     copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
@@ -1099,6 +1121,13 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    App::DocumentObjectGroup* grp = sketch->getGroup();
+    if (grp) {
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
+                     ,grp->getNameInDocument(),sketch->getNameInDocument());
+    }
 
     copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
     copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
