@@ -103,7 +103,7 @@ DocumentObject *DocumentObjectGroup::getObject(const char *Name) const
     return 0;
 }
 
-bool DocumentObjectGroup::hasObject(DocumentObject* obj) const
+bool DocumentObjectGroup::hasObject(const DocumentObject* obj) const
 {
     const std::vector<DocumentObject*>& grp = Group.getValues();
     for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
@@ -114,7 +114,7 @@ bool DocumentObjectGroup::hasObject(DocumentObject* obj) const
     return false;
 }
 
-bool DocumentObjectGroup::isChildOf(DocumentObjectGroup* group) const
+bool DocumentObjectGroup::isChildOf(const DocumentObjectGroup* group) const
 {
     const std::vector<DocumentObject*>& grp = group->Group.getValues();
     for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
@@ -158,7 +158,7 @@ int DocumentObjectGroup::countObjectsOfType(const Base::Type& typeId) const
     return type;
 }
 
-DocumentObjectGroup* DocumentObjectGroup::getGroupOfObject(DocumentObject* obj)
+DocumentObjectGroup* DocumentObjectGroup::getGroupOfObject(const DocumentObject* obj)
 {
     const Document* doc = obj->getDocument();
     std::vector<DocumentObject*> grps = doc->getObjectsOfType(DocumentObjectGroup::getClassTypeId());

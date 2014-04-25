@@ -36,6 +36,7 @@
 namespace App
 {
 class Document;
+class DocumentObjectGroup;
 class DocumentObjectPy;
 
 enum ObjectStatus {
@@ -122,6 +123,8 @@ public:
     std::vector<App::DocumentObject*> getOutList(void) const;
     /// get all objects link to this object
     std::vector<App::DocumentObject*> getInList(void) const;
+    /// get group if object is part of a group, otherwise 0 is returned
+    DocumentObjectGroup* getGroup() const;
 
 
 public:

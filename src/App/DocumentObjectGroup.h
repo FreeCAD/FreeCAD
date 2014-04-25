@@ -65,12 +65,12 @@ public:
     /**
      * Checks whether the object \a obj is part of this group.
      */
-    bool hasObject(DocumentObject* obj) const;
+    bool hasObject(const DocumentObject* obj) const;
     /**
      * Checks whether this group object is a child (or sub-child)
      * of the given group object.
      */
-    bool isChildOf(DocumentObjectGroup*) const;
+    bool isChildOf(const DocumentObjectGroup*) const;
     /** Returns a list of all objects this group does have.
      */
     std::vector<DocumentObject*> getObjects() const;
@@ -83,7 +83,7 @@ public:
     /** Returns the object group of the document which the given object \a obj is part of.
      * In case this object is not part of a group 0 is returned.
      */
-    static DocumentObjectGroup* getGroupOfObject(DocumentObject* obj);
+    static DocumentObjectGroup* getGroupOfObject(const DocumentObject* obj);
     //@}
 
     /// returns the type name of the ViewProvider
