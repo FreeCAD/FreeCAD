@@ -118,7 +118,7 @@
        <item row="4" column="0">
         <widget class="QLabel" name="labelPlatform">
          <property name="text">
-          <string>Platform</string>
+          <string>Program type</string>
          </property>
         </widget>
        </item>
