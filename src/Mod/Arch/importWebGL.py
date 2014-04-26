@@ -32,7 +32,73 @@ else:
     FreeCADGui = None
 
 tab = "                "
-addWireframe = False
+wireframeStyle = "faceloop" # this can be "faceloop", "multimaterial" or None
+
+
+template = """<!DOCTYPE html>
+        <html>
+        <head>
+            <title>FreeCAD model</title>
+            <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r50/three.min.js"></script>
+            
+            <script>
+            
+            var camera, controls, scene, renderer;
+            
+            window.onload = function() {
+
+                var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+                var VIEW_ANGLE = 35, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+
+                renderer = new THREE.WebGLRenderer();
+                renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+                document.body.appendChild( renderer.domElement );
+        
+                scene = new THREE.Scene();
+        
+                camera = new THREE.PerspectiveCamera(
+                    VIEW_ANGLE,      // Field of view
+                    ASPECT,          // Aspect ratio
+                    NEAR,            // Near plane
+                    FAR              // Far plane
+                );
+                $CameraData // placeholder for the FreeCAD camera
+                
+                controls = new THREE.TrackballControls( camera );
+                controls.rotateSpeed = 1.0;
+                controls.zoomSpeed = 1.2;
+                controls.panSpeed = 0.8;
+                controls.noZoom = false;
+                controls.noPan = false;
+                controls.staticMoving = true;
+                controls.dynamicDampingFactor = 0.3;
+                controls.keys = [ 65, 83, 68 ]; 
+        
+                $ObjectsData // placeholder for the FreeCAD objects
+        
+                var light = new THREE.PointLight( 0xFFFF00 );
+                light.position.set( -10000, -10000, 10000 );
+                scene.add( light );
+        
+                renderer.render( scene, camera );
+                
+                animate();
+            };
+            
+            function animate(){
+                requestAnimationFrame( animate );
+                render();
+            };
+            
+            function render(){
+                controls.update();
+                renderer.render( scene, camera );
+            };
+            </script>
+        </head>
+        <body></body>
+        </html>"""
+
 
 if open.__module__ == '__builtin__':
     pythonopen = open
@@ -53,10 +119,9 @@ def getHTML(objectsList):
     objectsData = ''
     for obj in objectsList:
         objectsData += getObjectData(obj)
-    template = getTemplate()
-    template = template.replace("$CameraData",getCameraData())
-    template = template.replace("$ObjectsData",objectsData)
-    return template
+    t = template.replace("$CameraData",getCameraData())
+    t = t.replace("$ObjectsData",objectsData)
+    return t
     
 def getCameraData():
     "returns the position and direction of the camera as three.js snippet"
@@ -75,7 +140,7 @@ def getCameraData():
     # print result
     return result
     
-def getObjectData(obj,wireframeMode="faceloop"):
+def getObjectData(obj,wireframeMode=wireframeStyle):
     """returns the geometry data of an object as three.js snippet. wireframeMode
     can be multimaterial, faceloop or None"""
     
@@ -155,74 +220,5 @@ def getObjectData(obj,wireframeMode="faceloop"):
             result += tab+"var mesh = new THREE.Mesh( geom, basematerial );\n"
             result += tab+"scene.add( mesh );\n"+tab
         
-    return result
-
-def getTemplate():
-    "returns a html template"
-    
-    result = """<!DOCTYPE html>
-        <html>
-        <head>
-            <title>FreeCAD model</title>
-            <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/three.js/r50/three.min.js"></script>
-            
-            <script>
-            
-            var camera, controls, scene, renderer;
-            
-            window.onload = function() {
-
-                var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
-                var VIEW_ANGLE = 35, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
-
-                renderer = new THREE.WebGLRenderer();
-                renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-                document.body.appendChild( renderer.domElement );
-        
-                scene = new THREE.Scene();
-        
-                camera = new THREE.PerspectiveCamera(
-                    VIEW_ANGLE,      // Field of view
-                    ASPECT,          // Aspect ratio
-                    NEAR,            // Near plane
-                    FAR              // Far plane
-                );
-                $CameraData // placeholder for the FreeCAD camera
-                
-                controls = new THREE.TrackballControls( camera );
-                controls.rotateSpeed = 1.0;
-                controls.zoomSpeed = 1.2;
-                controls.panSpeed = 0.8;
-                controls.noZoom = false;
-                controls.noPan = false;
-                controls.staticMoving = true;
-                controls.dynamicDampingFactor = 0.3;
-                controls.keys = [ 65, 83, 68 ]; 
-        
-                $ObjectsData // placeholder for the FreeCAD objects
-        
-                var light = new THREE.PointLight( 0xFFFF00 );
-                light.position.set( -10000, -10000, 10000 );
-                scene.add( light );
-        
-                renderer.render( scene, camera );
-                
-                animate();
-            };
-            
-            function animate(){
-                requestAnimationFrame( animate );
-                render();
-            };
-            
-            function render(){
-                controls.update();
-                renderer.render( scene, camera );
-            };
-            </script>
-        </head>
-        <body></body>
-        </html>"""
-    
     return result
         
