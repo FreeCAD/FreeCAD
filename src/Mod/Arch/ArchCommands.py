@@ -606,8 +606,8 @@ def addFixture(fixture,baseobject):
     else:
         FreeCAD.Console.PrintMessage(translate("Arch","This object has no support for fixtures"))
 
-def getTuples(data,scale=1,placement=None,normal=None,close=True):
-    """getTuples(data,[scale,placement,normal]): returns a tuple or a list of tuples from a vector
+def getTuples(data,scale=1,placement=None,normal=None,close=True,flatten=False):
+    """getTuples(data,[scale,placement,normal,flatten]): returns a tuple or a list of tuples from a vector
     or from the vertices of a shape. Scale can indicate a scale factor"""
     import Part
     if isinstance(data,FreeCAD.Vector):
@@ -633,16 +633,20 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
                 pt = v.Point
                 if placement:
                     pt = placement.multVec(pt)
-                t.append((pt.x*scale,pt.y*scale,pt.z*scale))
+                if flatten:
+                    t.append((pt.x*scale,pt.y*scale,0))
+                else:
+                    t.append((pt.x*scale,pt.y*scale,pt.z*scale))
             if close:
                 t.append(t[0]) # for IFC verts lists must be closed
         else:
             print "Arch.getTuples(): Wrong profile data"
         return t
 
-def getExtrusionData(obj,scale=1):
-    """getExtrusionData(obj,[scale]): returns a closed path (a list of tuples) and a tuple expressing an extrusion
-    vector, or None, if a base loop and an extrusion direction cannot be extracted. Scale can indicate a scale factor."""
+def getExtrusionData(obj,scale=1,flatten=True):
+    """getExtrusionData(obj,[scale,flatten]): returns a closed path (a list of tuples) and a tuple expressing an extrusion
+    vector, or None, if a base loop and an extrusion direction cannot be extracted. Scale can indicate a scale factor.
+    if flatten is True (default), the profile stays in the XY plane (IFC default)"""
     if hasattr(obj,"Additions"):
         if obj.Additions:
             # provisorily treat objs with additions as breps
@@ -660,8 +664,8 @@ def getExtrusionData(obj,scale=1):
                 pl = r = None
             if len(obj.Proxy.BaseProfile.Edges) == 1:
                 if isinstance(obj.Proxy.BaseProfile.Edges[0].Curve,Part.Circle):
-                    return "circle", getTuples(obj.Proxy.BaseProfile.Edges[0].Curve.Center,scale), obj.Proxy.BaseProfile.Edges[0].Curve.Radius*scale, getTuples(obj.Proxy.ExtrusionVector,scale,r)
-            return "polyline", getTuples(obj.Proxy.BaseProfile,scale,pl), getTuples(obj.Proxy.ExtrusionVector,scale,r)
+                    return "circle", getTuples(obj.Proxy.BaseProfile.Edges[0].Curve.Center,scale,flatten=flatten), obj.Proxy.BaseProfile.Edges[0].Curve.Radius*scale, getTuples(obj.Proxy.ExtrusionVector,scale,r)
+            return "polyline", getTuples(obj.Proxy.BaseProfile,scale,pl,flatten=flatten), getTuples(obj.Proxy.ExtrusionVector,scale,r)
     return None   
     
 def getBrepFacesData(obj,scale=1):

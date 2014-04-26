@@ -21,7 +21,11 @@
 #*                                                                         *
 #***************************************************************************
 
-"FreeCAD webgl exporter"
+"""FreeCAD webgl exporter
+
+options: importWebGL.wireframeStyle = "faceloop" (can also be "multimaterial" or None)
+importWebGL.template = a complete html file, where $CameraData is a placeholder for the 
+FreeCAD camera, and $ObjectsData a placeholder for the FreeCAD objects."""
 
 import FreeCAD,Draft,Part,DraftGeomUtils
 from DraftTools import translate
@@ -31,10 +35,8 @@ if FreeCAD.GuiUp:
 else:
     FreeCADGui = None
 
-tab = "                "
+tab = "                " # the tab size
 wireframeStyle = "faceloop" # this can be "faceloop", "multimaterial" or None
-
-
 template = """<!DOCTYPE html>
         <html>
         <head>
