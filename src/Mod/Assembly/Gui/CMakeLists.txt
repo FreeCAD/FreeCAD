@@ -19,6 +19,8 @@ include_directories(
     ${EIGEN3_INCLUDE_DIR}
 )
 
+link_directories(${OCC_LIBRARY_DIR})
+
 set(AssemblyGui_LIBS
     #${ODE_LIBRARIES}
     Assembly
