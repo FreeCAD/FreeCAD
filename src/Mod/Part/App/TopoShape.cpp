@@ -1610,11 +1610,13 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
 
     gp_Pnt2d aPnt(0, 0);
     gp_Dir2d aDir(2. * M_PI, pitch);
+    Standard_Real coneDir = 1.0;
     if (leftHanded) {
         //aPnt.SetCoord(0.0, height);
         //aDir.SetCoord(2.0 * PI, -pitch);
         aPnt.SetCoord(2. * M_PI, 0.0);
         aDir.SetCoord(-2. * M_PI, pitch);
+        coneDir = -1.0;
     }
     gp_Ax2d aAx2d(aPnt, aDir);
 
@@ -1627,7 +1629,7 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
         if (angle >= Precision::Confusion()) {
             // calculate end point for conical helix
             Standard_Real v = height / cos(angle);
-            Standard_Real u = (height/pitch) * 2.0 * M_PI;
+            Standard_Real u = coneDir * (height/pitch) * 2.0 * M_PI;
             gp_Pnt2d cend(u, v);
             end = cend;
         }
