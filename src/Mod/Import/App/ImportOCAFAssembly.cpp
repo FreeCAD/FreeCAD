@@ -27,6 +27,7 @@
 #endif
 #ifndef _PreComp_
 # include <climits>
+# include <sstream>
 # include <Standard_Version.hxx>
 # include <BRep_Builder.hxx>
 # include <Handle_TDocStd_Document.hxx>
@@ -137,7 +138,15 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Locatio
     }
 
 #ifdef FC_DEBUG
-    Base::Console().Message("H:%-9d \tN:%-30s \tT:%d \tA:%d \tS:%d \tC:%d \tSS:%d \tF:%d \tR:%d \tC:%d \tSS:%d\t-- %d  \n",
+    const char *s;
+    if( !hLoc.IsNull() )
+        s = hLoc->Get().IsIdentity()?"0":"1";
+    else
+        s = "-1";
+
+    std::stringstream str;
+
+    Base::Console().Message("H:%-9d \tN:%-30s \tT:%d \tA:%d \tS:%d \tC:%d \tSS:%d \tF:%d \tR:%d \tC:%d \tSS:%d\tTrf:%s-- %d  \n",
         hash,
         part_name.c_str(),
         aShapeTool->IsTopLevel(label),
@@ -149,8 +158,12 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Locatio
         aShapeTool->IsReference(label),
         aShapeTool->IsComponent(label),
         aShapeTool->IsSubShape(label),
+        s,
         dep
     );
+
+    label.Dump(str);
+    Base::Console().Message(str.str().c_str() );
 #endif
 
     std::string asm_name = assembly;
