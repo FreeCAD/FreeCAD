@@ -28,12 +28,14 @@ importWebGL.template = a complete html file, where $CameraData is a placeholder 
 FreeCAD camera, and $ObjectsData a placeholder for the FreeCAD objects."""
 
 import FreeCAD,Draft,Part,DraftGeomUtils
-from DraftTools import translate
 
 if FreeCAD.GuiUp:
     import FreeCADGui
+    from DraftTools import translate
 else:
     FreeCADGui = None
+    def translate(ctxt,txt):
+        return txt
 
 tab = "                " # the tab size
 wireframeStyle = "faceloop" # this can be "faceloop", "multimaterial" or None
