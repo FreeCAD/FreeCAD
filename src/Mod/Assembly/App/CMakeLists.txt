@@ -19,6 +19,8 @@ include_directories(
 
 )
 
+link_directories(${OCC_LIBRARY_DIR})
+
 set(Assembly_LIBS
     ${ODE_LIBRARIES}
     ${OCC_LIBRARIES}
