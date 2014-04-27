@@ -858,12 +858,19 @@ static PyObject * makeTorus(PyObject *self, PyObject *args)
 static PyObject * makeHelix(PyObject *self, PyObject *args)
 {
     double pitch, height, radius, angle=-1.0;
-    if (!PyArg_ParseTuple(args, "ddd|d", &pitch, &height, &radius, &angle))
+    PyObject *pleft=Py_False;
+    PyObject *pvertHeight=Py_False;
+    if (!PyArg_ParseTuple(args, "ddd|dO!O!", &pitch, &height, &radius, &angle,
+                                             &(PyBool_Type), &pleft,
+                                             &(PyBool_Type), &pvertHeight))
         return 0;
 
     try {
         TopoShape helix;
-        TopoDS_Shape wire = helix.makeHelix(pitch, height, radius, angle);
+        Standard_Boolean anIsLeft = PyObject_IsTrue(pleft) ? Standard_True : Standard_False;
+        Standard_Boolean anIsVertHeight = PyObject_IsTrue(pvertHeight) ? Standard_True : Standard_False;
+        TopoDS_Shape wire = helix.makeHelix(pitch, height, radius, angle,
+                                            anIsLeft, anIsVertHeight);
         return new TopoShapeWirePy(new TopoShape(wire));
     }
     catch (Standard_Failure) {
