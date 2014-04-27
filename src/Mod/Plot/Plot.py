@@ -80,7 +80,20 @@ def getPlot():
             return i
     return None
 
-
+def closePlot():
+    """ closePlot(): Close the active plot window. """
+    # Get active tab
+    mdi = getMdiArea()
+    if not mdi:
+        return None
+    sub = mdi.activeSubWindow()
+    if not sub:
+        return None
+    # Explore childrens looking for Plot class
+    for i in sub.children():
+        if i.metaObject().className() == "Plot":
+            sub.close()
+    
 def figure(winTitle="plot"):
     """Create a new plot subwindow/tab.
 
