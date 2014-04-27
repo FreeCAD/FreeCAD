@@ -37,6 +37,7 @@ else:
 
 tab = "                " # the tab size
 wireframeStyle = "faceloop" # this can be "faceloop", "multimaterial" or None
+cameraPosition = None # set this to a tuple to change, for ex. (0,0,0)
 template = """<!DOCTYPE html>
         <html>
         <head>
@@ -129,7 +130,9 @@ def getCameraData():
     "returns the position and direction of the camera as three.js snippet"
     
     result = ""
-    if FreeCADGui:
+    if cameraPosition:
+        result += "camera.position.set("+str(cameraPosition[0])+","+str(cameraPosition[1])+","+str(cameraPosition[2])+");\n"
+    elif FreeCADGui:
         # getting camera position
         pos = FreeCADGui.ActiveDocument.ActiveView.viewPosition().Base
         result += "camera.position.set( "
