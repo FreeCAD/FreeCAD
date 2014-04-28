@@ -47,9 +47,9 @@ class TaskPanel:
         form.length = self.widget(QtGui.QDoubleSpinBox, "Length")
         form.breadth = self.widget(QtGui.QDoubleSpinBox, "Breadth")
         form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
-        obj.Length = form.length.value()
-        obj.Breadth = form.breadth.value()
-        obj.Draft = form.draft.value()
+        obj.Length = '{} m'.format(form.length.value())
+        obj.Breadth = '{} m'.format(form.breadth.value())
+        obj.Draft = '{} m'.format(form.draft.value())
         App.ActiveDocument.recompute()
         return True
 
