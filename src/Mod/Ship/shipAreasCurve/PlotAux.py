@@ -83,7 +83,7 @@ class Plot(object):
         areas.line.set_linewidth(2.0)
         areas.line.set_color((0.0, 0.0, 0.0))
         # Get perpendiculars data
-        Lpp = ship.Length
+        Lpp = ship.Length.getValueAs('m').Value
         FPx = 0.5 * Lpp
         APx = -0.5 * Lpp
         maxArea = max(y)
@@ -177,7 +177,7 @@ class Plot(object):
         Output.write(" ######################################################"
                      "###########\n")
         # Get perpendiculars data
-        Lpp = ship.Length
+        Lpp = ship.Length.getValueAs('m').Value
         FPx = 0.5 * Lpp
         APx = -0.5 * Lpp
         maxArea = max(y)
