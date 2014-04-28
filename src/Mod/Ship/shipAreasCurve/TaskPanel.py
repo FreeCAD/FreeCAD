@@ -176,23 +176,19 @@ class TaskPanel:
         bbox = self.ship.Shape.BoundBox
         form.draft.setMaximum(bbox.ZMax / Units.Metre.Value)
         form.draft.setMinimum(bbox.ZMin / Units.Metre.Value)
-        form.draft.setValue(self.ship.Draft)
+        form.draft.setValue(self.ship.Draft.getValueAs('m').Value)
         # Try to use saved values
         props = self.ship.PropertiesList
-        flag = True
         try:
             props.index("AreaCurveDraft")
+            form.draft.setValue(self.ship.AreaCurveDraft.getValueAs('m').Value)
         except ValueError:
-            flag = False
-        if flag:
-            form.draft.setValue(self.ship.AreaCurveDraft)
-        flag = True
+            form.draft.setValue(self.ship.Draft.getValueAs('m').Value)
         try:
             props.index("AreaCurveTrim")
+            form.trim.setValue(self.ship.AreaCurveTrim.getValueAs('deg').Value)
         except ValueError:
-            flag = False
-        if flag:
-            form.trim.setValue(self.ship.AreaCurveTrim)
+            form.trim.setValue(0.0)
         # Update GUI
         self.preview.update(form.draft.value(), form.trim.value(), self.ship)
         self.onUpdate()
@@ -244,7 +240,8 @@ class TaskPanel:
         form.output = self.widget(QtGui.QTextEdit, "OutputData")
         # Calculate the drafts at each perpendicular
         angle = math.radians(form.trim.value())
-        L = self.ship.Length
+        L = self.ship.Length.getValueAs('m').Value
+        B = self.ship.Breadth.getValueAs('m').Value
         draftAP = form.draft.value() + 0.5 * L * math.tan(angle)
         if draftAP < 0.0:
             draftAP = 0.0
@@ -257,8 +254,8 @@ class TaskPanel:
                                          0.0,
                                          form.trim.value())
         # Setup the html string
-        string = 'L = {0} [m]<BR>'.format(self.ship.Length)
-        string = string + 'B = {0} [m]<BR>'.format(self.ship.Breadth)
+        string = 'L = {0} [m]<BR>'.format(L)
+        string = string + 'B = {0} [m]<BR>'.format(B)
         string = string + 'T = {0} [m]<HR>'.format(form.draft.value())
         string = string + 'Trim = {0} [degrees]<BR>'.format(form.trim.value())
         string = string + 'T<sub>AP</sub> = {0} [m]<BR>'.format(draftAP)
@@ -290,11 +287,11 @@ class TaskPanel:
                     QtGui.QApplication.UnicodeUTF8))
             except:
                 tooltip = "Areas curve tool draft selected [m]"
-            self.ship.addProperty("App::PropertyFloat",
+            self.ship.addProperty("App::PropertyLength",
                                   "AreaCurveDraft",
                                   "Ship",
                                   tooltip)
-        self.ship.AreaCurveDraft = form.draft.value()
+        self.ship.AreaCurveDraft = '{} m'.format(form.draft.value())
         try:
             props.index("AreaCurveTrim")
         except ValueError:
@@ -306,11 +303,11 @@ class TaskPanel:
                     QtGui.QApplication.UnicodeUTF8))
             except:
                 tooltip = "Areas curve tool trim selected [deg]"
-            self.ship.addProperty("App::PropertyFloat",
+            self.ship.addProperty("App::PropertyAngle",
                                   "AreaCurveTrim",
                                   "Ship",
                                   tooltip)
-        self.ship.AreaCurveTrim = form.trim.value()
+        self.ship.AreaCurveTrim = '{} deg'.format(form.trim.value())
 
 
 def createTask():
