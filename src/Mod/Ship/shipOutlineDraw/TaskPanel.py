@@ -99,9 +99,9 @@ class TaskPanel:
         if self.initValues():
             return True
         self.retranslateUi()
-        self.obj = self.preview.update(self.ship.Length,
-                                       self.ship.Breadth,
-                                       self.ship.Draft,
+        self.obj = self.preview.update(self.ship.Length.getValueAs('m').Value,
+                                       self.ship.Breadth.getValueAs('m').Value,
+                                       self.ship.Draft.getValueAs('m').Value,
                                        self.LSections,
                                        self.BSections,
                                        self.TSections,
@@ -281,9 +281,9 @@ class TaskPanel:
             item = QtGui.QTableWidgetItem(string)
             form.sections.setItem(i, 0, item)
         self.skip = False
-        self.obj = self.preview.update(self.ship.Length,
-                                       self.ship.Breadth,
-                                       self.ship.Draft,
+        self.obj = self.preview.update(self.ship.Length.getValueAs('m').Value,
+                                       self.ship.Breadth.getValueAs('m').Value,
+                                       self.ship.Draft.getValueAs('m').Value,
                                        self.LSections,
                                        self.BSections,
                                        self.TSections,
@@ -340,9 +340,9 @@ class TaskPanel:
             self.BSections = SectionList[:]
         elif ID == 2:
             self.TSections = SectionList[:]
-        self.obj = self.preview.update(self.ship.Length,
-                                       self.ship.Breadth,
-                                       self.ship.Draft,
+        self.obj = self.preview.update(self.ship.Length.getValueAs('m').Value,
+                                       self.ship.Breadth.getValueAs('m').Value,
+                                       self.ship.Draft.getValueAs('m').Value,
                                        self.LSections,
                                        self.BSections,
                                        self.TSections,
@@ -383,15 +383,15 @@ class TaskPanel:
         L = 0.0
         ID = form.sectionType.currentIndex()
         if ID == 0:
-            L = self.ship.Length
+            L = self.ship.Length.getValueAs('m').Value
             d = L / (nSections - 1)
             start = - L / 2.0
         elif ID == 1:
-            L = -0.5 * self.ship.Breadth
+            L = -0.5 * self.ship.Breadth.getValueAs('m').Value
             d = L / (nSections + 1)
             start = d
         elif ID == 2:
-            L = self.ship.Draft
+            L = self.ship.Draft.getValueAs('m').Value
             d = L / (nSections)
             start = d
         # Compute the sections positions
