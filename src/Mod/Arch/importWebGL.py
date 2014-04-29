@@ -25,7 +25,8 @@
 
 options: importWebGL.wireframeStyle = "faceloop" (can also be "multimaterial" or None)
 importWebGL.template = a complete html file, where $CameraData is a placeholder for the 
-FreeCAD camera, and $ObjectsData a placeholder for the FreeCAD objects."""
+FreeCAD camera, and $ObjectsData a placeholder for the FreeCAD objects.
+importWebGL.linewidth = an integer, specifyig the width of lines in "faceloop" mode"""
 
 import FreeCAD,Draft,Part,DraftGeomUtils
 
@@ -40,6 +41,7 @@ else:
 tab = "                " # the tab size
 wireframeStyle = "faceloop" # this can be "faceloop", "multimaterial" or None
 cameraPosition = None # set this to a tuple to change, for ex. (0,0,0)
+linewidth = 1
 template = """<!DOCTYPE html>
         <html>
         <head>
@@ -205,7 +207,7 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
             # adding the mesh to the scene with a wireframe copy
             result += tab+"var mesh = new THREE.Mesh( geom, basematerial );\n"
             result += tab+"scene.add( mesh );\n"
-            result += tab+"var linematerial = new THREE.LineBasicMaterial({color: 0x000000,});\n"
+            result += tab+"var linematerial = new THREE.LineBasicMaterial({linewidth: %d, color: 0x000000,});\n" % linewidth
             for w in wires:
                 result += tab+"var wire = new THREE.Geometry();\n"
                 for p in w:
