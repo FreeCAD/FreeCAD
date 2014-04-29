@@ -1715,11 +1715,19 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             print "getSVG: arrow type not implemented"
         return svg
         
-    def getText(color,fontsize,fontname,angle,base,text):
+    def getText(color,fontsize,fontname,angle,base,text,linespacing=0.5,align="center"):
+        if not isinstance(text,list):
+            text = text.split("\n")
+        if align.lower() == "center":
+            anchor = "middle"
+        elif align.lower() == "left":
+            anchor = "start"
+        else:
+            anchor = "end"
         svg = '<text fill="'
         svg += color +'" font-size="'
         svg += str(fontsize) + '" '
-        svg += 'style="text-anchor:middle;text-align:center;'
+        svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
         svg += 'font-family:'+ fontname +'" '
         svg += 'transform="rotate('+str(math.degrees(angle))
         svg += ','+ str(base.x) + ',' + str(base.y) + ') '
@@ -1728,11 +1736,24 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += 'scale(1,-1) '
         svg += '" freecad:skip="1"'
         svg += '>\n'
-        try:
-            svg += text
-        except:
-            svg += text.decode("utf8")
+        if len(text) == 1:
+            try:
+                svg += text[0]
+            except:
+                svg += text[0].decode("utf8")
+        else:
+            for i in range(len(text)):
+                if i == 0:
+                    svg += '<tspan>'
+                else:
+                    svg += '<tspan x="0" dy="'+str(linespacing)+'">'
+                try:
+                    svg += text[i]
+                except:
+                    svg += text[i].decode("utf8")
+                svg += '</tspan>\n'
         svg += '</text>\n'
+        print svg
         return svg
 
         
@@ -1850,35 +1871,12 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     elif getType(obj) == "Annotation":
         "returns an svg representation of a document annotation"
-        p = getProj(obj.Position)
-        svg = '<text id="' + obj.Name + '" fill="'
-        svg += stroke
-        svg += '" font-size="'+str(fontsize)
-        svg += '" style="'
-        if obj.ViewObject.Justification == "Left":
-            svg += 'text-anchor:start;text-align:left;'
-        elif obj.ViewObject.Justification == "Right":
-            svg += 'text-anchor:end;text-align:right;'
-        else:
-            svg += 'text-anchor:middle;text-align:center;'
-        svg += 'font-family:'+obj.ViewObject.FontName+'" '
-        svg += 'transform="'
-        if obj.ViewObject.RotationAxis == 'Z':
-            if obj.ViewObject.Rotation.getValueAs("deg") != 0:
-                svg += 'rotate('+str(obj.ViewObject.Rotation.getValueAs("deg"))
-                svg += ','+ str(p.x) + ',' + str(p.y) + ') '
-        svg += 'translate(' + str(p.x) + ',' + str(p.y) + ') '
-        #svg +='scale('+str(tmod/2000)+','+str(-tmod/2000)+')'
-        svg += 'scale(1,-1) '
-        svg += '">\n'
-        for i in range(len(obj.LabelText)):
-            if i == 0:
-                svg += '<tspan>'
-            else:
-                svg += '<tspan x="0" dy="'+str(obj.ViewObject.LineSpacing/2)+'">'
-            svg += obj.LabelText[i]+'</tspan>\n'
-        svg += '</text>\n'
-        #print svg
+        n = obj.ViewObject.FontName
+        a = obj.ViewObject.Rotation.getValueAs("rad")
+        t = obj.LabelText
+        l = obj.ViewObject.LineSpacing/2
+        j = obj.ViewObject.Justification
+        svg += getText(stroke,fontsize,n,a,getProj(obj.Position),t,l,j)
 
     elif getType(obj) == "Axis":
         "returns the SVG representation of an Arch Axis system"
