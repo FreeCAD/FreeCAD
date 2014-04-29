@@ -5,7 +5,6 @@ data_DATA = \
 	InitGui.py \
 	ShipGui.py \
 	Instance.py \
-	SimInstance.py \
 	TankInstance.py \
 	Ship_rc.py
 
@@ -14,10 +13,6 @@ nobase_data_DATA = \
 	resources/examples/s60_katamaran.fcstd \
 	resources/examples/wigley.fcstd \
 	resources/examples/wigley_katamaran.fcstd \
-	resources/opencl/matrixGen.cl \
-	resources/opencl/jacobi.cl \
-	resources/opencl/minres.cl \
-	resources/opencl/lsqr.cl \
 	shipLoadExample/__init__.py \
 	shipLoadExample/TaskPanel.py \
 	shipLoadExample/TaskPanel.ui \
@@ -53,31 +48,7 @@ nobase_data_DATA = \
 	tankGZ/__init__.py \
 	tankGZ/PlotAux.py \
 	tankGZ/TaskPanel.py \
-	tankGZ/TaskPanel.ui \
-	simCreate/__init__.py \
-	simCreate/TaskPanel.py \
-	simCreate/TaskPanel.ui \
-	simRun/__init__.py \
-	simRun/Simulation.py \
-	simRun/TaskPanel.py \
-	simRun/TaskPanel.ui \
-	simRun/clSim/__init__.py \
-	simRun/clSim/initialization.py \
-	simRun/clSim/matrixGen.py \
-	simRun/clSim/BEMsolver.py \
-	simRun/clSim/evolution.py \
-	simRun/clSim/clUtils.py \
-	simRun/clSim/bem_jacobi_cl.py \
-	simRun/clSim/bem_minres_cl.py \
-	simRun/clSim/bem_lsqr_cl.py \
-	simRun/Sim/__init__.py \
-	simRun/Sim/initialization.py \
-	simRun/Sim/matrixGen.py \
-	simRun/Sim/BEMsolver.py \
-	simRun/Sim/evolution.py \
-	simPost/__init__.py \
-	simPost/TaskPanel.py \
-	simPost/TaskPanel.ui
+	tankGZ/TaskPanel.ui
 
 CLEANFILES = $(BUILT_SOURCES)
 
