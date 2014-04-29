@@ -2,7 +2,6 @@ SET(ShipMain_SRCS
 	InitGui.py
 	ShipGui.py
     Instance.py
-    SimInstance.py
     TankInstance.py
 	Ship_rc.py
 )
@@ -15,14 +14,6 @@ SET(ShipExamples_SRCS
 	resources/examples/wigley_katamaran.fcstd
 )
 SOURCE_GROUP("shipexamples" FILES ${ShipExamples_SRCS})
-
-SET(ShipOpenCL_SRCS
-	resources/opencl/matrixGen.cl
-	resources/opencl/jacobi.cl
-	resources/opencl/minres.cl
-	resources/opencl/lsqr.cl
-)
-SOURCE_GROUP("shipopencl" FILES ${ShipOpenCL_SRCS})
 
 SET(ShipLoadExample_SRCS
 	shipLoadExample/__init__.py
@@ -96,43 +87,7 @@ SET(ShipGZ_SRCS
 )
 SOURCE_GROUP("shipgz" FILES ${ShipGZ_SRCS})
 
-SET(SimCreate_SRCS
-	simCreate/__init__.py
-	simCreate/TaskPanel.py
-	simCreate/TaskPanel.ui
-)
-SOURCE_GROUP("simcreate" FILES ${SimCreate_SRCS})
-
-SET(SimRun_SRCS
-	simRun/__init__.py
-	simRun/Simulation.py
-	simRun/TaskPanel.py
-	simRun/TaskPanel.ui
-	simRun/clSim/__init__.py
-	simRun/clSim/initialization.py
-	simRun/clSim/matrixGen.py
-	simRun/clSim/BEMsolver.py
-	simRun/clSim/evolution.py
-	simRun/clSim/clUtils.py
-	simRun/clSim/bem_jacobi_cl.py
-	simRun/clSim/bem_minres_cl.py
-	simRun/clSim/bem_lsqr_cl.py
-	simRun/Sim/__init__.py
-	simRun/Sim/initialization.py
-	simRun/Sim/matrixGen.py
-	simRun/Sim/BEMsolver.py
-	simRun/Sim/evolution.py
-)
-SOURCE_GROUP("simrun" FILES ${SimRun_SRCS})
-
-SET(SimPost_SRCS
-	simPost/__init__.py
-	simPost/TaskPanel.py
-	simPost/TaskPanel.ui
-)
-SOURCE_GROUP("simpost" FILES ${SimPost_SRCS})
-
-SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipOpenCL_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS} ${ShipGZ_SRCS} ${SimCreate_SRCS} ${SimRun_SRCS} ${SimPost_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS} ${ShipGZ_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -145,12 +100,6 @@ INSTALL(
         ${ShipExamples_SRCS}
     DESTINATION
         Mod/Ship/resources/examples
-)
-INSTALL(
-    FILES
-        ${ShipOpenCL_SRCS}
-    DESTINATION
-        Mod/Ship/resources/opencl
 )
 INSTALL(
     FILES
@@ -205,24 +154,6 @@ INSTALL(
         ${ShipGZ_SRCS}
     DESTINATION
         Mod/Ship/tankGZ
-)
-INSTALL(
-    FILES
-        ${SimCreate_SRCS}
-    DESTINATION
-        Mod/Ship/simCreate
-)
-INSTALL(
-    FILES
-        ${SimRun_SRCS}
-    DESTINATION
-        Mod/Ship/simRun
-)
-INSTALL(
-    FILES
-        ${SimPost_SRCS}
-    DESTINATION
-        Mod/Ship/simPost
 )
 INSTALL(
     FILES

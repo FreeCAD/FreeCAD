@@ -28,7 +28,6 @@
             <File Id="ShipInstance" Name="Instance.py" DiskId="1" />
             <File Id="ShipGuiPy" Name="ShipGui.py" DiskId="1" />
             <File Id="ShipResources" Name="Ship_rc.py" DiskId="1" />
-            <File Id="ShipSimInstance" Name="SimInstance.py" DiskId="1" />
             <File Id="ShipTankInstance" Name="TankInstance.py" DiskId="1" />
         </Component>
 		<Directory Id="ModShipResources" Name="resources" FileSource="../../Mod/Ship/resources" >
@@ -43,14 +42,6 @@
 			<Directory Id="ModShipIcons" Name="icons" FileSource="../../Mod/Ship/resources/icons" >
 				<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
 					<File Id="ShipIcons01" Name="Ico.xpm"   />
-				</Component>
-			</Directory>
-			<Directory Id="ModShipOpenCL" Name="opencl" FileSource="../../Mod/Ship/resources/opencl" >
-				<Component Id="CompModShipOpenCL"  Guid="f01b3ecd-e90b-44b3-8494-fc49f1e9f6f5" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="ShipOpenCL01" Name="jacobi.cl" />
-					<File Id="ShipOpenCL02" Name="lsqr.cl" />
-					<File Id="ShipOpenCL03" Name="matrixGen.cl" />
-					<File Id="ShipOpenCL04" Name="minres.cl" />
 				</Component>
 			</Directory>
 		</Directory>
@@ -102,53 +93,6 @@
 				<File Id="shipUtils02" Name="Math.py"   />
 				<File Id="shipUtils03" Name="Paths.py"   />
 			</Component>
-		</Directory>
-		<Directory Id="ModsimCreate" Name="simCreate" FileSource="../../Mod/Ship/simCreate" >
-			<Component Id="CompModsimCreate"  Guid="b56debf6-3221-4bd6-9799-f1c1928878fc" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="simCreate01" Name="__init__.py"   />
-				<File Id="simCreate02" Name="TaskPanel.py"   />
-				<File Id="simCreate03" Name="TaskPanel.ui"   />
-			</Component>
-		</Directory>
-		<Directory Id="ModsimPost" Name="simPost" FileSource="../../Mod/Ship/simPost" >
-			<Component Id="CompModsimPost"  Guid="137caeea-fc08-49d7-ad75-29147e122617" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="simPost01" Name="__init__.py"   />
-				<File Id="simPost02" Name="TaskPanel.py"   />
-				<File Id="simPost03" Name="TaskPanel.ui"   />
-			</Component>
-		</Directory>
-		<Directory Id="ModsimRun" Name="simRun" FileSource="../../Mod/Ship/simRun" >
-			<Component Id="CompModsimRun"  Guid="8a7ad993-1006-4837-9d55-315e3721dd39" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="simRun01" Name="__init__.py"   />
-				<File Id="simRun02" Name="Simulation.py"   />
-				<File Id="simRun03" Name="TaskPanel.py"   />
-				<File Id="simRun04" Name="TaskPanel.ui"   />
-			</Component>
-			<Directory Id="ModsimRunCL" Name="clSim" FileSource="../../Mod/Ship/simRun/clSim" >
-				<Component Id="CompModsimRunCL"  Guid="577e944a-9f25-4279-ab3a-dd464f60c229" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="simRunCL01" Name="bem_jacobi_cl.py"   />
-					<File Id="simRunCL02" Name="bem_lsqr_cl.py"   />
-					<File Id="simRunCL03" Name="bem_minres_cl.py"   />
-					<File Id="simRunCL04" Name="BEMsolver.py"   />
-					<File Id="simRunCL05" Name="clUtils.py"   />
-					<File Id="simRunCL06" Name="evolution.py"   />
-					<File Id="simRunCL07" Name="initialization.py"   />
-					<File Id="simRunCL08" Name="__init__.py"   />
-					<File Id="simRunCL09" Name="matrixGen.py"   />
-					<File Id="simRunCL10" Name="Utils.py"   />
-				</Component>
-			</Directory>
-			<Directory Id="ModsimRunNoCL" Name="Sim" FileSource="../../Mod/Ship/simRun/Sim" >
-				<Component Id="CompModsimRunNoCL"  Guid="c8655a85-20de-4f30-9924-de34a79ffa2e" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="simRunNoCL01" Name="BEMsolver.py"   />
-					<File Id="simRunNoCL02" Name="computeSources.py"   />
-					<File Id="simRunNoCL03" Name="evolution.py"   />
-					<File Id="simRunNoCL04" Name="fsEvolution.py"   />
-					<File Id="simRunNoCL05" Name="initialization.py"   />
-					<File Id="simRunNoCL06" Name="__init__.py"   />
-					<File Id="simRunNoCL07" Name="matrixGen.py"   />
-				</Component>
-			</Directory>
 		</Directory>
 		<Directory Id="ModtankCreateTank" Name="tankCreateTank" FileSource="../../Mod/Ship/tankCreateTank" >
 			<Component Id="CompModtankCreateTank"  Guid="1cc53994-9e82-4731-bd37-2705a31388c6" Win64='$(var.Win_64)' KeyPath="yes">
