@@ -52,9 +52,4 @@ if(WIN32)
     set_target_properties(ImportGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 
-if(MSVC)
-    # Set special compiler flag to convert a SIGSEV into an exception
-    set_target_properties(ImportGui PROPERTIES COMPILE_FLAGS "/EHa")
-endif(MSVC)
-
 INSTALL(TARGETS ImportGui DESTINATION lib)
