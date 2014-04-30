@@ -32,6 +32,19 @@ def f2s(n):
     #return str(float(n))
     return ('%0.18f' % n).rstrip('0')
 
+def isDraftFeature(ob):
+    if ob.isDerivedFrom('Part::FeaturePython') and \
+            hasattr(ob.Proxy,'__module__') and \
+            ob.Proxy.__module__ == 'Draft':
+        return True
+
+def isDraftClone(ob):
+    if ob.isDerivedFrom('Part::FeaturePython') and \
+            hasattr(ob.Proxy,'__module__') and \
+            ob.Proxy.__module__ == 'Draft':
+        import Draft
+        return isinstance(ob.Proxy,Draft._Clone) 
+    
 def isOpenSCADFeature(ob):
     if ob.isDerivedFrom('Part::FeaturePython') and \
             hasattr(ob.Proxy,'__module__') and \
@@ -53,6 +66,8 @@ def isDeform(ob):
     # TBD decompose complex matrix operations
     return isOpenSCADMultMatrixFeature(ob) and \
             ob.Matrix.analyze().startswith('Scale [')
+
+
 
 def process_object(csg,ob,filename):
     d1 = {'name':ob.Name}
@@ -152,6 +167,39 @@ def process_object(csg,ob,filename):
         if m.A14 > 1e-8 or m.A24 > 1e-8 or m.A34 > 1e-8:
             csg.write("ttranslate %s %s %s %s\n" % \
                 (ob.Name,f2s(m.A14),f2s(m.A24),f2s(m.A34)))
+    elif isDraftClone(ob):
+        x,y,z=ob.Scale.x
+        if x == y == z: #uniform scaling
+            d1['scale']=f2s(x)
+        else:
+            d1['cx']=f2s(x)
+            d1['cy']=f2s(y)
+            d1['cz']=f2s(z)
+        if len(ob.Objects) == 1:
+            d1['basename']=ob.Objects[0].Name
+            process_object(csg,ob.Objects[0],filename)
+            if x == y == z: #uniform scaling
+                csg.write('tcopy %(basename)s %(name)s\n' % d1)
+                csg.write('pscale %(name)s 0 0 0 %(scale)s\n' % d1)
+            else:
+                csg.write('deform %(name)s %(basename)s'\
+                        ' %(cx)s %(cy)s %(cz)s\n' % d1)
+        else: #compound
+            newnames=[]
+            for i,subobj in enumerate(ob.Objects):
+                process_object(csg,subobj,filename)
+                d1['basename']=subobj.Name
+                newname='%s-%2d' % (ob.Name,i)
+                d1['newname']=newname
+                newnames.append(newname)
+                if x == y == z: #uniform scaling
+                    csg.write('tcopy %(basename)s %(newname)s\n' % d1)
+                    csg.write('pscale %(newname)s 0 0 0 %(scale)s\n' % d1)
+                else:
+                    csg.write('deform %(newname)s %(basename)s'\
+                            ' %(cx)s %(cy)s %(cz)s\n' % d1)
+            csg.write('compound %s %s\n' % (' '.join(newnames),ob.Name))
+        
     #elif ob.isDerivedFrom('Part::FeaturePython') and \
     #    hasattr(ob.Proxy,'__module__'):
     #    pass
