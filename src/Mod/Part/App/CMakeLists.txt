@@ -268,10 +268,4 @@ if(WIN32)
     set_target_properties(Part PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 
-if(MSVC)
-    # Set special compiler flag to convert a SIGSEV into an exception
-    # to fix issue #0000215, #0001155, ...
-    set_target_properties(Part PROPERTIES COMPILE_FLAGS "/EHa")
-endif(MSVC)
-
 INSTALL(TARGETS Part DESTINATION lib)

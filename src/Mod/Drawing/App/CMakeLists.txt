@@ -91,10 +91,4 @@ if(WIN32)
     set_target_properties(Drawing PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 
-if(MSVC)
-    # Set special compiler flag to convert a SIGSEV into an exception
-    # to fix issue #0000478
-    set_target_properties(Drawing PROPERTIES COMPILE_FLAGS "/EHa")
-endif(MSVC)
-
 INSTALL(TARGETS Drawing DESTINATION lib)
