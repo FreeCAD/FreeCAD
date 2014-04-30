@@ -173,7 +173,7 @@ MACRO(ADD_MSVC_PRECOMPILED_HEADER TargetName PrecompiledHeader PrecompiledSource
     GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
     IF(MSVC_IDE)
       SET(PrecompiledBinary "$(IntDir)\\$(TargetName).pch")
-    ELSEIF(MSVC_IDE)
+    ELSE(MSVC_IDE)
       SET(PrecompiledBinary ${CMAKE_CURRENT_BINARY_DIR}/${TargetName}.pch)
     ENDIF(MSVC_IDE)
     SET(Sources ${${SourcesVar}})
