@@ -42,6 +42,7 @@ fc_target_copy_resource(AssemblyGui
 
 SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 if(WIN32)
+    set_target_properties(AssemblyGui PROPERTIES PREFIX "")
     set_target_properties(AssemblyGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

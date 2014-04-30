@@ -232,6 +232,7 @@ fc_target_copy_resource(PartGui
 
 SET_BIN_DIR(PartGui PartGui /Mod/Part)
 if(WIN32)
+    set_target_properties(PartGui PROPERTIES PREFIX "")
     set_target_properties(PartGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

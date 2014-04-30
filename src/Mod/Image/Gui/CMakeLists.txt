@@ -71,6 +71,7 @@ fc_target_copy_resource(ImageGui
 
 SET_BIN_DIR(ImageGui ImageGui /Mod/Image)
 if(WIN32)
+    set_target_properties(ImageGui PROPERTIES PREFIX "")
     set_target_properties(ImageGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

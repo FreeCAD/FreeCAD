@@ -41,6 +41,7 @@ fc_target_copy_resource(ReverseEngineering
 
 SET_BIN_DIR(ReverseEngineering ReverseEngineering /Mod/ReverseEngineering)
 if(WIN32)
+    set_target_properties(ReverseEngineering PROPERTIES PREFIX "")
     set_target_properties(ReverseEngineering PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

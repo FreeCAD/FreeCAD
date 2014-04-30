@@ -97,6 +97,7 @@ fc_target_copy_resource(DrawingGui
 
 SET_BIN_DIR(DrawingGui DrawingGui /Mod/Drawing)
 if(WIN32)
+    set_target_properties(DrawingGui PROPERTIES PREFIX "")
     set_target_properties(DrawingGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

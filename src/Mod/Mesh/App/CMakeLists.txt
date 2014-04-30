@@ -353,6 +353,7 @@ fc_target_copy_resource(Mesh
 
 SET_BIN_DIR(Mesh Mesh /Mod/Mesh)
 if(WIN32)
+    set_target_properties(Mesh PROPERTIES PREFIX "")
     set_target_properties(Mesh PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

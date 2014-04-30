@@ -69,6 +69,7 @@ fc_target_copy_resource(MeshPart
 
 SET_BIN_DIR(MeshPart MeshPart /Mod/MeshPart)
 if(WIN32)
+    set_target_properties(MeshPart PROPERTIES PREFIX "")
     set_target_properties(MeshPart PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

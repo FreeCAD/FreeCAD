@@ -264,6 +264,7 @@ fc_target_copy_resource(Part
 
 SET_BIN_DIR(Part Part /Mod/Part)
 if(WIN32)
+    set_target_properties(Part PROPERTIES PREFIX "")
     set_target_properties(Part PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

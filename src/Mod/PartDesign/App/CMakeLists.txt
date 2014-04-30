@@ -130,6 +130,7 @@ fc_target_copy_resource(PartDesign
 # http://forum.freecadweb.org/viewtopic.php?f=19&t=5444
 SET_BIN_DIR(PartDesign PartDesign /Mod/PartDesign /Mod/PartDesign)
 if(WIN32)
+    set_target_properties(PartDesign PROPERTIES PREFIX "")
     set_target_properties(PartDesign PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

@@ -51,6 +51,7 @@ fc_target_copy_resource(SandboxGui
 
 SET_BIN_DIR(SandboxGui SandboxGui /Mod/Sandbox)
 if(WIN32)
+    set_target_properties(SandboxGui PROPERTIES PREFIX "")
     set_target_properties(SandboxGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 
