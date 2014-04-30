@@ -312,7 +312,7 @@ endif(FREECAD_USE_EXTERNAL_ZIPIOS)
 
 if(MSVC)
 add_definitions(-D_PreComp_)
-ADD_MSVC_PRECOMPILED_HEADER("PreCompiled.h" "PreCompiled.cpp" FreeCADBase_CPP_SRCS)
+ADD_MSVC_PRECOMPILED_HEADER(FreeCADBase PreCompiled.h PreCompiled.cpp FreeCADBase_CPP_SRCS)
 endif(MSVC)
 
 add_library(FreeCADBase SHARED ${FreeCADBase_SRCS})
