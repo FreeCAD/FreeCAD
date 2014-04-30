@@ -85,7 +85,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(Import PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/Import)
     set_target_properties(Import PROPERTIES PREFIX "")
-    set_target_properties(Import PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+    set_target_properties(Import PROPERTIES INSTALL_RPATH "\\\$ORIGIN")
 endif(MSVC)
 
 INSTALL(TARGETS Import DESTINATION lib)

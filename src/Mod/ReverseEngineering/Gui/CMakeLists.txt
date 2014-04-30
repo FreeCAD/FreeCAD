@@ -59,9 +59,7 @@ elseif(MINGW)
 else(MSVC)
     set_target_properties(ReverseEngineeringGui PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Mod/ReverseEngineering)
     set_target_properties(ReverseEngineeringGui PROPERTIES PREFIX "")
-    set_target_properties(ReverseEngineeringGui
-                          PROPERTIES INSTALL_RPATH ${INSTALL_RPATH}
-    )
+    set_target_properties(ReverseEngineeringGui PROPERTIES INSTALL_RPATH "\\\$ORIGIN")
 endif(MSVC)
 
 install(TARGETS ReverseEngineeringGui DESTINATION lib)
