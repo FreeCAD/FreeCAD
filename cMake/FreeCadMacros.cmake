@@ -168,10 +168,10 @@ endmacro(generate_from_py)
 #endmacro(qt4_wrap_ui)
 
 
-MACRO(ADD_MSVC_PRECOMPILED_HEADER PrecompiledHeader PrecompiledSource SourcesVar)
+MACRO(ADD_MSVC_PRECOMPILED_HEADER TargetName PrecompiledHeader PrecompiledSource SourcesVar)
   IF(MSVC)
     GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
-    SET(PrecompiledBinary "$(IntDir)\\$(TargetName).pch")
+    SET(PrecompiledBinary ${CMAKE_CURRENT_BINARY_DIR}/${TargetName}.pch)
     SET(Sources ${${SourcesVar}})
 
     SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource}
@@ -203,3 +203,37 @@ MACRO(GET_MSVC_PRECOMPILED_SOURCE PrecompiledSource SourcesVar)
     ENDFOREACH (it)
   ENDIF(MSVC)
 ENDMACRO(GET_MSVC_PRECOMPILED_SOURCE)
+
+# Macro to replace all the binary output locations.  Takes 2 optional parameters.
+# ${ARGVN} is zero based so the 3rd element is ${ARGV2}.  When the 3rd element is missing,
+# Runtime and Lib directories default to /bin and /lib.  When present, the 3rd element
+# specifies both Runtime and Lib directories.  4th specifies linux install path.
+MACRO(SET_BIN_DIR ProjectName OutputName)
+    set_target_properties(${ProjectName} PROPERTIES OUTPUT_NAME ${OutputName})
+    if(${ARGC} GREATER 2)
+        # VS_IDE (and perhaps others) make Release and Debug subfolders.  This removes them.
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${ARGV2})
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${ARGV2})
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${ARGV2})
+        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${ARGV2})
+    else(${ARGC} GREATER 2)
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/bin)
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
+        set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/bin)
+        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/lib)
+    endif(${ARGC} GREATER 2)
+
+    if(WIN32)
+        set_target_properties(${ProjectName} PROPERTIES DEBUG_OUTPUT_NAME ${OutputName}_d)
+    else(WIN32)
+        if(NOT ${ProjectName} MATCHES "^FreeCAD(App|Base|Gui|Main|MainCmd)$")
+            set_target_properties(${ProjectName} PROPERTIES PREFIX "")
+        endif(NOT ${ProjectName} MATCHES "^FreeCAD(App|Base|Gui|Main|MainCmd)$")
+        
+        if(${ARGC} STREQUAL 4)
+            set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}${ARGV3})
+        else(${ARGC} STREQUAL 4)
+            set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${INSTALL_RPATH})
+        endif(${ARGC} STREQUAL 4)
+    endif(WIN32)
+ENDMACRO(SET_BIN_DIR)

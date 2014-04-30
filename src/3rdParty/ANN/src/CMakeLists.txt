@@ -26,11 +26,4 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/src/Main)
 add_library(ANN SHARED ${ANN_SRCS})
 target_link_libraries(ANN ${ANN_LIBS})
 
-if(WIN32)
-		 set_target_properties(ANN PROPERTIES DEBUG_OUTPUT_NAME "ANN_D")
-		 set_target_properties(ANN PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/)
-		 set_target_properties(ANN PROPERTIES PREFIX "../")
-else(WIN32)
-		 set_target_properties(ANN PROPERTIES PREFIX "")
-endif(WIN32)
-
+SET_BIN_DIR(ANN ANN)
