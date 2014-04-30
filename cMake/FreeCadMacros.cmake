@@ -171,7 +171,11 @@ endmacro(generate_from_py)
 MACRO(ADD_MSVC_PRECOMPILED_HEADER TargetName PrecompiledHeader PrecompiledSource SourcesVar)
   IF(MSVC)
     GET_FILENAME_COMPONENT(PrecompiledBasename ${PrecompiledHeader} NAME_WE)
-    SET(PrecompiledBinary ${CMAKE_CURRENT_BINARY_DIR}/${TargetName}.pch)
+    IF(MSVC_IDE)
+      SET(PrecompiledBinary "$(IntDir)\\$(TargetName).pch")
+    ELSEIF(MSVC_IDE)
+      SET(PrecompiledBinary ${CMAKE_CURRENT_BINARY_DIR}/${TargetName}.pch)
+    ENDIF(MSVC_IDE)
     SET(Sources ${${SourcesVar}})
 
     SET_SOURCE_FILES_PROPERTIES(${PrecompiledSource}
