@@ -31,6 +31,7 @@ fc_target_copy_resource(Start
 
 SET_BIN_DIR(Start Start /Mod/Start)
 if(WIN32)
+    set_target_properties(Start PROPERTIES PREFIX "")
     set_target_properties(Start PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

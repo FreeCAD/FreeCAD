@@ -42,6 +42,7 @@ target_link_libraries(coin ${CoinPy_LIBS})
 
 SET_BIN_DIR(coin _coin /bin/pivy)
 if(WIN32)
+    set_target_properties(coin PROPERTIES PREFIX "")
     set_target_properties(coin PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 
@@ -86,6 +87,7 @@ target_link_libraries(soqt ${SoQtPy_LIBS})
 
 SET_BIN_DIR(soqt _soqt /bin/pivy/gui)
 if(WIN32)
+    set_target_properties(soqt PROPERTIES PREFIX "")
     set_target_properties(soqt PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

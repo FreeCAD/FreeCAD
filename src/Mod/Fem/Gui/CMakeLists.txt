@@ -206,6 +206,7 @@ fc_target_copy_resource(FemGui
 
 SET_BIN_DIR(FemGui FemGui /Mod/Fem)
 if(WIN32)
+    set_target_properties(FemGui PROPERTIES PREFIX "")
     set_target_properties(FemGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

@@ -61,6 +61,7 @@ fc_target_copy_resource(InspectionGui
 
 SET_BIN_DIR(InspectionGui InspectionGui /Mod/Inspection)
 if(WIN32)
+    set_target_properties(InspectionGui PROPERTIES PREFIX "")
     set_target_properties(InspectionGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

@@ -85,6 +85,7 @@ fc_target_copy_resource(Raytracing
 
 SET_BIN_DIR(Raytracing Raytracing /Mod/Raytracing)
 if(WIN32)
+    set_target_properties(Raytracing PROPERTIES PREFIX "")
     set_target_properties(Raytracing PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

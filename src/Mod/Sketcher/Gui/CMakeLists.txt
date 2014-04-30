@@ -116,6 +116,7 @@ fc_target_copy_resource(SketcherGui
 
 SET_BIN_DIR(SketcherGui SketcherGui /Mod/Sketcher)
 if(WIN32)
+    set_target_properties(SketcherGui PROPERTIES PREFIX "")
     set_target_properties(SketcherGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

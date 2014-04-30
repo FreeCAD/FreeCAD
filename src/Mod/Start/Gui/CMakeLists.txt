@@ -77,6 +77,7 @@ fc_target_copy_resource(StartGui
 
 SET_BIN_DIR(StartGui StartGui /Mod/Start)
 if(WIN32)
+    set_target_properties(StartGui PROPERTIES PREFIX "")
     set_target_properties(StartGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

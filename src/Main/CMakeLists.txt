@@ -96,6 +96,7 @@ target_link_libraries(FreeCADMainPy FreeCADApp)
 
 SET_BIN_DIR(FreeCADMainPy FreeCAD)
 if(WIN32)
+    set_target_properties(FreeCADMainPy PROPERTIES PREFIX "")
     set_target_properties(FreeCADMainPy PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 
@@ -123,6 +124,7 @@ if(FREECAD_BUILD_GUI)
 
     SET_BIN_DIR(FreeCADGuiPy FreeCADGui)
     if(WIN32)
+        set_target_properties(FreeCADGuiPy PROPERTIES PREFIX "")
         set_target_properties(FreeCADGuiPy PROPERTIES SUFFIX ".pyd")
     endif(WIN32)
     

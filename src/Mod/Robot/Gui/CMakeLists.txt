@@ -155,6 +155,7 @@ fc_target_copy_resource(RobotGui
 
 SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
 if(WIN32)
+    set_target_properties(RobotGui PROPERTIES PREFIX "")
     set_target_properties(RobotGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

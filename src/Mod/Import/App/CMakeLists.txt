@@ -71,6 +71,7 @@ fc_target_copy_resource(ImportPy
 
 SET_BIN_DIR(Import Import /Mod/Import)
 if(WIN32)
+    set_target_properties(Import PROPERTIES PREFIX "")
     set_target_properties(Import PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 

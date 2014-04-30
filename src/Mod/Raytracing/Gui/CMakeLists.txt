@@ -86,6 +86,7 @@ fc_target_copy_resource(RaytracingGui
 
 SET_BIN_DIR(RaytracingGui RaytracingGui /Mod/Raytracing)
 if(WIN32)
+    set_target_properties(RaytracingGui PROPERTIES PREFIX "")
     set_target_properties(RaytracingGui PROPERTIES SUFFIX ".pyd")
 endif(WIN32)
 
