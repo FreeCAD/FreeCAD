@@ -49,6 +49,7 @@ protected:
     void contextMenuEvent (QContextMenuEvent* event);
 
 protected Q_SLOTS:
+    void modifyCurrentItem();
     void renameCurrentItem();
     void deleteSelectedItems();
 };
