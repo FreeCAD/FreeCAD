@@ -231,9 +231,6 @@ fc_target_copy_resource(PartGui
     ${PartGui_Scripts})
 
 SET_BIN_DIR(PartGui PartGui /Mod/Part)
-if(WIN32)
-    set_target_properties(PartGui PROPERTIES PREFIX "")
-    set_target_properties(PartGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(PartGui)
 
 INSTALL(TARGETS PartGui DESTINATION lib)

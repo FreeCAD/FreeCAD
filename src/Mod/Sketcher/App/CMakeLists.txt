@@ -118,9 +118,6 @@ fc_target_copy_resource(Sketcher
     ${Sketcher_Scripts})
 
 SET_BIN_DIR(Sketcher Sketcher /Mod/Sketcher)
-if(WIN32)
-    set_target_properties(Sketcher PROPERTIES PREFIX "")
-    set_target_properties(Sketcher PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Sketcher)
 
 INSTALL(TARGETS Sketcher DESTINATION lib)

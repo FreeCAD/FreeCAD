@@ -86,9 +86,6 @@ fc_target_copy_resource(Drawing
     ${Drawing_Templates})
 
 SET_BIN_DIR(Drawing Drawing /Mod/Drawing)
-if(WIN32)
-    set_target_properties(Drawing PROPERTIES PREFIX "")
-    set_target_properties(Drawing PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Drawing)
 
 INSTALL(TARGETS Drawing DESTINATION lib)

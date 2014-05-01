@@ -43,9 +43,6 @@ fc_target_copy_resource(Inspection
     Init.py)
 
 SET_BIN_DIR(Inspection Inspection /Mod/Inspection)
-if(WIN32)
-    set_target_properties(Inspection PROPERTIES PREFIX "")
-    set_target_properties(Inspection PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Inspection)
 
 INSTALL(TARGETS Inspection DESTINATION lib)

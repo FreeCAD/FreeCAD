@@ -84,9 +84,6 @@ fc_target_copy_resource(Raytracing
     ${Raytracing_Templates})
 
 SET_BIN_DIR(Raytracing Raytracing /Mod/Raytracing)
-if(WIN32)
-    set_target_properties(Raytracing PROPERTIES PREFIX "")
-    set_target_properties(Raytracing PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Raytracing)
 
 INSTALL(TARGETS Raytracing DESTINATION lib)

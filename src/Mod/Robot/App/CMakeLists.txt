@@ -139,9 +139,6 @@ fc_target_copy_resource(Robot
     ${Robot_Resources})
 
 SET_BIN_DIR(Robot Robot /Mod/Robot)
-if(WIN32)
-    set_target_properties(Robot PROPERTIES PREFIX "")
-    set_target_properties(Robot PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Robot)
 
 INSTALL(TARGETS Robot DESTINATION lib)

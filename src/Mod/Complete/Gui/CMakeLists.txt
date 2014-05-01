@@ -37,9 +37,6 @@ fc_target_copy_resource(CompleteGui
     InitGui.py)
 
 SET_BIN_DIR(CompleteGui CompleteGui /Mod/Complete)
-if(WIN32)
-    set_target_properties(CompleteGui PROPERTIES PREFIX "")
-    set_target_properties(CompleteGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(CompleteGui)
 
 install(TARGETS CompleteGui DESTINATION lib)

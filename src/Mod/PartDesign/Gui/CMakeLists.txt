@@ -191,10 +191,7 @@ fc_target_copy_resource(PartDesignGui
 # See link for why this module is installed differently from the other modules:
 # http://forum.freecadweb.org/viewtopic.php?f=19&t=5444
 SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign /Mod/PartDesign)
-if(WIN32)
-    set_target_properties(PartDesignGui PROPERTIES PREFIX "")
-    set_target_properties(PartDesignGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)
 
 # The PartDesign module must go to where the __init__.py file is
 INSTALL(TARGETS PartDesignGui DESTINATION Mod/PartDesign)

@@ -56,10 +56,7 @@ add_dependencies(QtUnitGui Test)
 fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/Mod/Test" qtunittest.py)
 
 SET_BIN_DIR(QtUnitGui QtUnitGui /Mod/Test)
-if(WIN32)
-    set_target_properties(QtUnitGui PROPERTIES PREFIX "")
-    set_target_properties(QtUnitGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(QtUnitGui)
 
 INSTALL(TARGETS QtUnitGui DESTINATION lib)
 INSTALL(FILES ${TestGuiPy_SRCS} DESTINATION Mod/Test)

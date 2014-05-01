@@ -62,9 +62,6 @@ fc_target_copy_resource(PointsGui
     InitGui.py)
 
 SET_BIN_DIR(PointsGui PointsGui /Mod/Points)
-if(WIN32)
-    set_target_properties(PointsGui PROPERTIES PREFIX "")
-    set_target_properties(PointsGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(PointsGui)
 
 INSTALL(TARGETS PointsGui DESTINATION lib)

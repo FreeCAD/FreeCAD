@@ -95,10 +95,7 @@ add_library(FreeCADMainPy SHARED ${FreeCADMainPy_SRCS})
 target_link_libraries(FreeCADMainPy FreeCADApp)
 
 SET_BIN_DIR(FreeCADMainPy FreeCAD)
-if(WIN32)
-    set_target_properties(FreeCADMainPy PROPERTIES PREFIX "")
-    set_target_properties(FreeCADMainPy PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(FreeCADMainPy)
 
 if(WIN32)
     INSTALL(TARGETS FreeCADMainPy
@@ -123,10 +120,10 @@ if(FREECAD_BUILD_GUI)
     target_link_libraries(FreeCADGuiPy FreeCADGui)
 
     SET_BIN_DIR(FreeCADGuiPy FreeCADGui)
+    SET_PYTHON_PREFIX_SUFFIX(FreeCADGuiPy)
     if(WIN32)
-        set_target_properties(FreeCADGuiPy PROPERTIES PREFIX "")
-        set_target_properties(FreeCADGuiPy PROPERTIES SUFFIX ".pyd")
         # Name clash with target "FreeCADGui"
+        # Must be called "FreeCADGuiPy_d" and "FreeCADGuiPy" to work so override default
         set_target_properties(FreeCADGuiPy PROPERTIES PDB_NAME_DEBUG "FreeCADGuiPy_d")
         set_target_properties(FreeCADGuiPy PROPERTIES PDB_NAME_RELEASE "FreeCADGuiPy")
     endif(WIN32)

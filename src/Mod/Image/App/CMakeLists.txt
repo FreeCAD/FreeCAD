@@ -38,9 +38,6 @@ fc_target_copy_resource(Image
     Init.py)
 
 SET_BIN_DIR(Image Image /Mod/Image)
-if(WIN32)
-    set_target_properties(Image PROPERTIES PREFIX "")
-    set_target_properties(Image PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Image)
 
 INSTALL(TARGETS Image DESTINATION lib)

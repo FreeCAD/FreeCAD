@@ -96,9 +96,6 @@ fc_target_copy_resource(DrawingGui
     InitGui.py)
 
 SET_BIN_DIR(DrawingGui DrawingGui /Mod/Drawing)
-if(WIN32)
-    set_target_properties(DrawingGui PROPERTIES PREFIX "")
-    set_target_properties(DrawingGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(DrawingGui)
 
 INSTALL(TARGETS DrawingGui DESTINATION lib)

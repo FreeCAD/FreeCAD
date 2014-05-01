@@ -154,9 +154,6 @@ fc_target_copy_resource(RobotGui
     InitGui.py MovieTool.py)
 
 SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
-if(WIN32)
-    set_target_properties(RobotGui PROPERTIES PREFIX "")
-    set_target_properties(RobotGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(RobotGui)
 
 INSTALL(TARGETS RobotGui DESTINATION lib)
