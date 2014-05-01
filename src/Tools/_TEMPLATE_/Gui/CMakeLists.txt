@@ -38,9 +38,6 @@ fc_target_copy_resource(_TEMPLATE_Gui
     InitGui.py)
 
 SET_BIN_DIR(_TEMPLATE_Gui _TEMPLATE_Gui /Mod/_TEMPLATE_)
-if(WIN32)
-    set_target_properties(_TEMPLATE_Gui PROPERTIES PREFIX "")
-    set_target_properties(_TEMPLATE_Gui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(_TEMPLATE_Gui)
     
 install(TARGETS _TEMPLATE_Gui DESTINATION lib)

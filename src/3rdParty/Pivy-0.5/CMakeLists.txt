@@ -41,10 +41,7 @@ add_library(coin SHARED ${CoinPy_SRCS})
 target_link_libraries(coin ${CoinPy_LIBS})
 
 SET_BIN_DIR(coin _coin /bin/pivy)
-if(WIN32)
-    set_target_properties(coin PROPERTIES PREFIX "")
-    set_target_properties(coin PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(coin)
 
 fc_copy_sources(coin "${CMAKE_BINARY_DIR}/bin/pivy"
     __init__.py
@@ -86,10 +83,7 @@ add_library(soqt SHARED ${SoQtPy_SRCS})
 target_link_libraries(soqt ${SoQtPy_LIBS})
 
 SET_BIN_DIR(soqt _soqt /bin/pivy/gui)
-if(WIN32)
-    set_target_properties(soqt PROPERTIES PREFIX "")
-    set_target_properties(soqt PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(soqt)
 
 fc_copy_sources(soqt "${CMAKE_BINARY_DIR}/bin/pivy"
     gui/soqt.py

@@ -31,9 +31,6 @@ fc_target_copy_resource(Assembly
     Init.py)
 
 SET_BIN_DIR(Assembly Assembly /Mod/Assembly)
-if(WIN32)
-    set_target_properties(Assembly PROPERTIES PREFIX "")
-    set_target_properties(Assembly PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Assembly)
 
 INSTALL(TARGETS Assembly DESTINATION lib)

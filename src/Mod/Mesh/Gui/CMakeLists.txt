@@ -130,9 +130,6 @@ fc_target_copy_resource(MeshGui
     InitGui.py)
 
 SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
-if(WIN32)
-    set_target_properties(MeshGui PROPERTIES PREFIX "")
-    set_target_properties(MeshGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(MeshGui)
 
 INSTALL(TARGETS MeshGui DESTINATION lib)

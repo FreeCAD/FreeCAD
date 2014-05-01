@@ -47,9 +47,6 @@ fc_target_copy_resource(ImportGui
     Init.py InitGui.py)
 
 SET_BIN_DIR(ImportGui ImportGui /Mod/Import)
-if(WIN32)
-    set_target_properties(ImportGui PROPERTIES PREFIX "")
-    set_target_properties(ImportGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(ImportGui)
 
 INSTALL(TARGETS ImportGui DESTINATION lib)

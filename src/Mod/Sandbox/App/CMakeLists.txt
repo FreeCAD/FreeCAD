@@ -39,9 +39,6 @@ fc_target_copy_resource(Sandbox
     Init.py)
 
 SET_BIN_DIR(Sandbox Sandbox /Mod/Sandbox)
-if(WIN32)
-    set_target_properties(Sandbox PROPERTIES PREFIX "")
-    set_target_properties(Sandbox PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Sandbox)
 
 INSTALL(TARGETS Sandbox DESTINATION lib)

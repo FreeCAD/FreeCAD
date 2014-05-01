@@ -47,9 +47,6 @@ fc_target_copy_resource(Web
     Init.py)
 
 SET_BIN_DIR(Web Web /Mod/Web)
-if(WIN32)
-    set_target_properties(Web PROPERTIES PREFIX "")
-    set_target_properties(Web PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Web)
 
 install(TARGETS Web DESTINATION lib)

@@ -76,9 +76,6 @@ fc_target_copy_resource(StartGui
     ${StartPage_Resources})
 
 SET_BIN_DIR(StartGui StartGui /Mod/Start)
-if(WIN32)
-    set_target_properties(StartGui PROPERTIES PREFIX "")
-    set_target_properties(StartGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(StartGui)
 
 INSTALL(TARGETS StartGui DESTINATION lib)

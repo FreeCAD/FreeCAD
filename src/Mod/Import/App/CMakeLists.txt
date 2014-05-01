@@ -70,9 +70,6 @@ fc_target_copy_resource(ImportPy
     ${SCL_Resources})
 
 SET_BIN_DIR(Import Import /Mod/Import)
-if(WIN32)
-    set_target_properties(Import PROPERTIES PREFIX "")
-    set_target_properties(Import PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Import)
 
 INSTALL(TARGETS Import DESTINATION lib)

@@ -44,9 +44,6 @@ fc_target_copy_resource(WebGui
     Init.py InitGui.py)
 
 SET_BIN_DIR(WebGui WebGui /Mod/Web)
-if(WIN32)
-    set_target_properties(WebGui PROPERTIES PREFIX "")
-    set_target_properties(WebGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(WebGui)
 
 INSTALL(TARGETS WebGui DESTINATION lib)

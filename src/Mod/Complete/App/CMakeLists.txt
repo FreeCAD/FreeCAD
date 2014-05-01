@@ -31,9 +31,6 @@ fc_target_copy_resource(Complete
     Init.py)
 
 SET_BIN_DIR(Complete Complete /Mod/Complete)
-if(WIN32)
-    set_target_properties(Complete PROPERTIES PREFIX "")
-    set_target_properties(Complete PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Complete)
 
 INSTALL(TARGETS Complete DESTINATION lib)

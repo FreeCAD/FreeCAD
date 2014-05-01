@@ -156,9 +156,6 @@ fc_target_copy_resource(Fem
     )
 
 SET_BIN_DIR(Fem Fem /Mod/Fem)
-if(WIN32)
-    set_target_properties(Fem PROPERTIES PREFIX "")
-    set_target_properties(Fem PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Fem)
 
 INSTALL(TARGETS Fem DESTINATION lib)

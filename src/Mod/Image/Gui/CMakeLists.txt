@@ -70,9 +70,6 @@ fc_target_copy_resource(ImageGui
     InitGui.py)
 
 SET_BIN_DIR(ImageGui ImageGui /Mod/Image)
-if(WIN32)
-    set_target_properties(ImageGui PROPERTIES PREFIX "")
-    set_target_properties(ImageGui PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(ImageGui)
 
 INSTALL(TARGETS ImageGui DESTINATION lib)

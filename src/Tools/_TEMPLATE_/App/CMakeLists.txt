@@ -28,9 +28,6 @@ fc_target_copy_resource(_TEMPLATE_
     Init.py)
 
 SET_BIN_DIR(_TEMPLATE_ _TEMPLATE_ /Mod/_TEMPLATE_)
-if(WIN32)
-    set_target_properties(_TEMPLATE_ PROPERTIES PREFIX "")
-    set_target_properties(_TEMPLATE_ PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(_TEMPLATE_)
 
 install(TARGETS _TEMPLATE_ DESTINATION lib)

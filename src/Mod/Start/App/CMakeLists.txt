@@ -30,9 +30,6 @@ fc_target_copy_resource(Start
     Init.py)
 
 SET_BIN_DIR(Start Start /Mod/Start)
-if(WIN32)
-    set_target_properties(Start PROPERTIES PREFIX "")
-    set_target_properties(Start PROPERTIES SUFFIX ".pyd")
-endif(WIN32)
+SET_PYTHON_PREFIX_SUFFIX(Start)
 
 INSTALL(TARGETS Start DESTINATION lib)
