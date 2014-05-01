@@ -1189,10 +1189,10 @@ int SketchObject::delConstraintsToExternal()
 {
     const std::vector< Constraint * > &constraints = Constraints.getValues();
     std::vector< Constraint * > newConstraints(0);
-    int GeoId = -3;
+    int GeoId = -3, NullId = -2000;
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
-        if ((*it)->First > GeoId && (*it)->Second > GeoId) {
+        if ((*it)->First > GeoId && ((*it)->Second > GeoId || (*it)->Second == NullId) && ((*it)->Third > GeoId || (*it)->Third == NullId)) {
             newConstraints.push_back(*it);
         }
     }
