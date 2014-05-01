@@ -104,20 +104,29 @@ ConstraintView::~ConstraintView()
 void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
 {
     QMenu menu;
+    QListWidgetItem* item = currentItem();
+    QList<QListWidgetItem *> items = selectedItems();
+
+    QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
+    QVariant v = item ? item->data(Qt::UserRole) : QVariant();
+    change->setEnabled(v.isValid());
 
     QAction* rename = menu.addAction(tr("Rename"), this, SLOT(renameCurrentItem())
 #ifndef Q_WS_MAC // on Mac F2 doesn't seem to trigger an edit signal
         ,QKeySequence(Qt::Key_F2)
 #endif
         );
-    QListWidgetItem* item = currentItem();
     rename->setEnabled(item != 0);
 
-    QList<QListWidgetItem *> items = selectedItems();
     QAction* remove = menu.addAction(tr("Delete"), this, SLOT(deleteSelectedItems()),
         QKeySequence(QKeySequence::Delete));
     remove->setEnabled(!items.isEmpty());
     menu.exec(event->globalPos());
+}
+
+void ConstraintView::modifyCurrentItem()
+{
+    /*emit*/itemActivated(currentItem());
 }
 
 void ConstraintView::renameCurrentItem()
