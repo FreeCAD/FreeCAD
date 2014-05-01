@@ -126,6 +126,9 @@ if(FREECAD_BUILD_GUI)
     if(WIN32)
         set_target_properties(FreeCADGuiPy PROPERTIES PREFIX "")
         set_target_properties(FreeCADGuiPy PROPERTIES SUFFIX ".pyd")
+        # Name clash with target "FreeCADGui"
+        set_target_properties(FreeCADGuiPy PROPERTIES PDB_NAME_DEBUG "FreeCADGuiPy_d")
+        set_target_properties(FreeCADGuiPy PROPERTIES PDB_NAME_RELEASE "FreeCADGuiPy")
     endif(WIN32)
     
     if(WIN32)
