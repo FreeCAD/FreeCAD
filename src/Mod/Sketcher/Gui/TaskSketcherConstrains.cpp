@@ -28,16 +28,19 @@
 # include <QString>
 #endif
 
-#include "ui_TaskSketcherConstrains.h"
 #include "TaskSketcherConstrains.h"
+#include "ui_TaskSketcherConstrains.h"
 #include "EditDatumDialog.h"
 #include "ViewProviderSketch.h"
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include <Base/Tools.h>
+#include <App/Application.h>
+#include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Selection.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/BitmapFactory.h>
@@ -47,7 +50,7 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 
 // helper class to store additional information about the listWidget entry.
-class ConstraintItem:public QListWidgetItem
+class ConstraintItem : public QListWidgetItem
 {
 public:
     ConstraintItem(const QIcon & icon, const QString & text,int ConstNbr,Sketcher::ConstraintType t)
@@ -60,9 +63,87 @@ public:
     {
         this->setFlags(this->flags() | Qt::ItemIsEditable);
     }
+    ~ConstraintItem()
+    {
+    }
+    void setData(int role, const QVariant & value)
+    {
+        if (role == Qt::UserRole) {
+            quantity = value;
+            return;
+        }
+        QListWidgetItem::setData(role, value);
+    }
+    QVariant data (int role) const
+    {
+        if (role == Qt::UserRole) {
+            return quantity;
+        }
+        else if (role == Qt::DisplayRole && quantity.isValid()) {
+            return quantity;
+        }
+        return QListWidgetItem::data(role);
+    }
+
     int ConstraintNbr;
     Sketcher::ConstraintType Type;
+
+private:
+    QVariant quantity;
 };
+
+ConstraintView::ConstraintView(QWidget *parent)
+    : QListWidget(parent)
+{
+}
+
+ConstraintView::~ConstraintView()
+{
+}
+
+void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
+{
+    QMenu menu;
+
+    QAction* rename = menu.addAction(tr("Rename"), this, SLOT(renameCurrentItem())
+#ifndef Q_WS_MAC // on Mac F2 doesn't seem to trigger an edit signal
+        ,QKeySequence(Qt::Key_F2)
+#endif
+        );
+    QListWidgetItem* item = currentItem();
+    rename->setEnabled(item != 0);
+
+    QList<QListWidgetItem *> items = selectedItems();
+    QAction* remove = menu.addAction(tr("Delete"), this, SLOT(deleteSelectedItems()),
+        QKeySequence(QKeySequence::Delete));
+    remove->setEnabled(!items.isEmpty());
+    menu.exec(event->globalPos());
+}
+
+void ConstraintView::renameCurrentItem()
+{
+    QListWidgetItem* item = currentItem();
+    if (item)
+        editItem(item);
+}
+
+void ConstraintView::deleteSelectedItems()
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc) return;
+
+    doc->openTransaction("Delete");
+    std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
+    for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
+        Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(ft->getObject());
+        if (vp) {
+            vp->onDelete(ft->getSubNames());
+        }
+    }
+    doc->commitTransaction();
+}
+
+// ----------------------------------------------------------------------------
 
 TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
     : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Constraints"),true, 0)
@@ -198,7 +279,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     const std::vector< Sketcher::Constraint * > &vals = sketchView->getSketchObject()->Constraints.getValues();
     Sketcher::Constraint* v = vals[it->ConstraintNbr];
 
-    QString name = it->text();
+    QString name = it->data(Qt::EditRole).toString();
     if (name.isEmpty())
         name = QString::fromLatin1("Constraint%1").arg(it->ConstraintNbr+1);
 
@@ -226,7 +307,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
     v->Name = (const char*)name.toUtf8();
     if (!unitStr.isEmpty()) {
         inEditMode = true;
-        item->setText(QString::fromLatin1("%1 (%2)")
+        item->setData(Qt::UserRole, QString::fromLatin1("%1 (%2)")
             .arg(name)
             .arg(unitStr));
         inEditMode = false;
@@ -269,69 +350,79 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
 
         switch((*it)->Type){
             case Sketcher::Horizontal:
-                if(Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || !(*it)->Name.empty())
                     ui->listWidgetConstraints->addItem(new ConstraintItem(horiz,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Vertical:
-                if(Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || !(*it)->Name.empty())
                     ui->listWidgetConstraints->addItem(new ConstraintItem(vert,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Coincident:
-                if(Filter<1 || !(*it)->Name.empty())
+                if (Filter<1 || !(*it)->Name.empty())
                     ui->listWidgetConstraints->addItem(new ConstraintItem(coinc,name,i-1,(*it)->Type));
                 break;
             case Sketcher::PointOnObject:
-                if(Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || !(*it)->Name.empty())
                     ui->listWidgetConstraints->addItem(new ConstraintItem(pntoo,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Parallel:
-                if(Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || !(*it)->Name.empty())
                     ui->listWidgetConstraints->addItem(new ConstraintItem(para,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Perpendicular:
-                if(Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || !(*it)->Name.empty())
                     ui->listWidgetConstraints->addItem(new ConstraintItem(perp,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Tangent:
-                if(Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || !(*it)->Name.empty())
                     ui->listWidgetConstraints->addItem(new ConstraintItem(tang,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Equal:
-                if(Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || !(*it)->Name.empty())
                     ui->listWidgetConstraints->addItem(new ConstraintItem(equal,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Symmetric:
-                if(Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || !(*it)->Name.empty())
                     ui->listWidgetConstraints->addItem(new ConstraintItem(symm,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Distance:
-                if(Filter<3 || !(*it)->Name.empty()) {
+                if (Filter<3 || !(*it)->Name.empty()) {
+                    ConstraintItem* item = new ConstraintItem(dist,name,i-1,(*it)->Type);
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
-                    ui->listWidgetConstraints->addItem(new ConstraintItem(dist,name,i-1,(*it)->Type));
+                    item->setData(Qt::UserRole, name);
+                    ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             case Sketcher::DistanceX:
-                if(Filter<3 || !(*it)->Name.empty()) {
+                if (Filter<3 || !(*it)->Name.empty()) {
+                    ConstraintItem* item = new ConstraintItem(hdist,name,i-1,(*it)->Type);
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
-                    ui->listWidgetConstraints->addItem(new ConstraintItem(hdist,name,i-1,(*it)->Type));
+                    item->setData(Qt::UserRole, name);
+                    ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             case Sketcher::DistanceY:
-                if(Filter<3 || !(*it)->Name.empty()) {
+                if (Filter<3 || !(*it)->Name.empty()) {
+                    ConstraintItem* item = new ConstraintItem(vdist,name,i-1,(*it)->Type);
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
-                    ui->listWidgetConstraints->addItem(new ConstraintItem(vdist,name,i-1,(*it)->Type));
+                    item->setData(Qt::UserRole, name);
+                    ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             case Sketcher::Radius:
-                if(Filter<3 || !(*it)->Name.empty()) {
+                if (Filter<3 || !(*it)->Name.empty()) {
+                    ConstraintItem* item = new ConstraintItem(radi,name,i-1,(*it)->Type);
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
-                    ui->listWidgetConstraints->addItem(new ConstraintItem(radi,name,i-1,(*it)->Type));
+                    item->setData(Qt::UserRole, name);
+                    ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             case Sketcher::Angle:
-                if(Filter<3 || !(*it)->Name.empty()) {
+                if (Filter<3 || !(*it)->Name.empty()) {
+                    ConstraintItem* item = new ConstraintItem(angl,name,i-1,(*it)->Type);
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(Base::toDegrees<double>(std::abs((*it)->Value)),Base::Unit::Angle).getUserString());
-                    ui->listWidgetConstraints->addItem(new ConstraintItem(angl,name,i-1,(*it)->Type));
+                    item->setData(Qt::UserRole, name);
+                    ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             default:
