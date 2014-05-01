@@ -28,8 +28,6 @@
 #include <Gui/Selection.h>
 #include <boost/signals.hpp>
 
-class Ui_TaskSketcherConstrains;
-
 namespace App {
 class Property;
 }
@@ -37,6 +35,23 @@ class Property;
 namespace SketcherGui {
 
 class ViewProviderSketch;
+class Ui_TaskSketcherConstrains;
+
+class ConstraintView : public QListWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ConstraintView(QWidget *parent = 0);
+    ~ConstraintView();
+
+protected:
+    void contextMenuEvent (QContextMenuEvent* event);
+
+protected Q_SLOTS:
+    void renameCurrentItem();
+    void deleteSelectedItems();
+};
 
 class TaskSketcherConstrains : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
