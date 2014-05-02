@@ -1584,11 +1584,10 @@ void SketchObject::onChanged(const App::Property* prop)
     else if (prop == &Support) {
         // make sure not to change anything while restoring this object
         if (!isRestoring()) {
-            // if support face was cleared then also clear the external geometry
-            if (!Support.getValue()) {
-                std::vector<DocumentObject*> obj;
-                std::vector<std::string> sub;
-                ExternalGeometry.setValues(obj, sub);
+            // if support face has changed then clear the external geometry
+            delConstraintsToExternal();
+            for (int i=0; i < getExternalGeometryCount(); i++) {
+                delExternal(0);
             }
         }
     }
