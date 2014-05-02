@@ -2,15 +2,11 @@
     <qresource> 
         <file>icons/Ship_AreaCurve.svg</file>
         <file>icons/Ship_Instance.svg</file>
+        <file>icons/Ship_Hydrostatics.svg</file>
         <file>icons/Ship_Load.svg</file>
         <file>icons/Ship_Logo.svg</file>
         <file>icons/Ship_Module.svg</file>
         <file>icons/Ship_OutlineDraw.svg</file>
-        <file>icons/HydrostaticsIco.png</file>
-        <file>icons/SimCreateIco.png</file>
-        <file>icons/SimPostIco.png</file>
-        <file>icons/SimRunIco.png</file>
-        <file>icons/SimStopIco.png</file>
         <file>icons/Tank.png</file>
         <file>icons/Weight.png</file>
         <file>translations/Ship.qm</file>
