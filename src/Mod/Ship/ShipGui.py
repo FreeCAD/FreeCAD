@@ -114,7 +114,7 @@ class Hydrostatics:
         ToolTip = QtCore.QT_TRANSLATE_NOOP(
             'Ship_Hydrostatics',
             'Plot the ship hydrostatics')
-        return {'Pixmap': 'HydrostaticsIco',
+        return {'Pixmap': 'Ship_Hydrostatics',
                 'MenuText': MenuText,
                 'ToolTip': ToolTip}
 
@@ -170,74 +170,6 @@ class GZ:
                 'ToolTip': ToolTip}
 
 
-class CreateSim:
-    def Activated(self):
-        import simCreate
-        simCreate.load()
-
-    def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_CreateSim',
-            'Create a new simulation')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_CreateSim',
-            'Create a new simulation in order to process later')
-        return {'Pixmap': 'SimCreateIco',
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
-
-
-class RunSim:
-    def Activated(self):
-        import simRun
-        simRun.load()
-
-    def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_RunSim',
-            'Run a simulation')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_RunSim',
-            'Run a simulation')
-        return {'Pixmap': 'SimRunIco',
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
-
-
-class StopSim:
-    def Activated(self):
-        import simRun
-        simRun.stop()
-
-    def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_StopSim',
-            'Stop active simulation')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_StopSim',
-            'Stop active simulation')
-        return {'Pixmap': 'SimStopIco',
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
-
-
-class TrackSim:
-    def Activated(self):
-        import simPost
-        simPost.load()
-
-    def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_TrackSim',
-            'Track simulation')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_TrackSim',
-            'Track simulation')
-        return {'Pixmap': 'SimPostIco',
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
-
-
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
@@ -246,4 +178,3 @@ FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
 FreeCADGui.addCommand('Ship_Weights', SetWeights())
 FreeCADGui.addCommand('Ship_CreateTank', CreateTank())
 FreeCADGui.addCommand('Ship_GZ', GZ())
-FreeCADGui.addCommand('Ship_CreateSim', CreateSim())

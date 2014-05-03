@@ -45,20 +45,16 @@ class ShipWorkbench(Workbench):
                 QtGui.QApplication.UnicodeUTF8)
             FreeCAD.Console.PrintMessage(msg + '\n')
         # ToolBar
-        """
         shiplist = ["Ship_LoadExample",
                     "Ship_CreateShip",
                     "Ship_OutlineDraw",
                     "Ship_AreasCurve",
                     "Ship_Hydrostatics"]
+        """
         weightslist = ["Ship_Weights",
                        "Ship_CreateTank",
                        "Ship_GZ"]
         """
-        shiplist = ["Ship_LoadExample",
-                    "Ship_CreateShip",
-                    "Ship_OutlineDraw",
-                    "Ship_AreasCurve"]
         weightslist = []
         self.appendToolbar(
             str(QtCore.QT_TRANSLATE_NOOP("Ship", "Ship design")),
@@ -72,47 +68,5 @@ class ShipWorkbench(Workbench):
         self.appendMenu(
             str(QtCore.QT_TRANSLATE_NOOP("Ship", "Weights")),
             weightslist)
-
-        # Simulation tools will be added only if pyOpenCL & numpy are present
-        # Simulations are in development, so keep it disabled except for
-        # development purposes
-        hasSim = False
-        if hasSim:
-            hasOpenCL = True
-            hasNumpy = True
-            try:
-                import pyopencl
-            except ImportError:
-                hasOpenCL = False
-                msg = QtGui.QApplication.translate(
-                    "ship_console",
-                    "pyOpenCL not installed, simulation tools will disabled"
-                    " therefore",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
-                FreeCAD.Console.PrintMessage(msg + '\n')
-            try:
-                import numpy
-            except ImportError:
-                hasNumpy = False
-                msg = QtGui.QApplication.translate(
-                    "ship_console",
-                    "numpy not installed, simulation tools will disabled"
-                    " therefore",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
-                FreeCAD.Console.PrintMessage(msg + '\n')
-            if hasOpenCL and hasNumpy:
-                simlist = ["Ship_CreateSim",
-                           "Ship_RunSim",
-                           "Ship_StopSim",
-                           "Ship_TrackSim"]
-                self.appendToolbar(
-                    str(QtCore.QT_TRANSLATE_NOOP("Ship", "Simulation")),
-                    simlist)
-                self.appendMenu(
-                    str(QtCore.QT_TRANSLATE_NOOP("Ship", "Simulation")),
-                    simlist)
-
 
 Gui.addWorkbench(ShipWorkbench())
