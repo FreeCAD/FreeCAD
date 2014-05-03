@@ -450,8 +450,17 @@ void TaskCheckGeometryResults::goCheck()
         else
         {
           //BOPAlgo_ArgumentAnalyzer can be really slow!
-          //so only run it when the shape seems valid to BRepCheck_Analyzer
-          invalidShapes += goBOPSingleCheck(shape, theRoot, baseName);
+          //so only run it when the shape seems valid to BRepCheck_Analyzer And
+          //when the option is set.
+          
+          ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod")->GetGroup("Part")->GetGroup("CheckGeometry");
+          bool runSignal = group->GetBool("RunBOPCheck", false);
+          //for now, user has edit the config file to turn it on.
+          //following line ensures that the config file has the setting.
+          group->SetBool("RunBOPCheck", runSignal);
+          if (runSignal)
+            invalidShapes += goBOPSingleCheck(shape, theRoot, baseName);
         }
     }
     model->setResults(theRoot);
