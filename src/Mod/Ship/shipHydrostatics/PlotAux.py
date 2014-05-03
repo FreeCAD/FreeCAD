@@ -196,7 +196,7 @@ class Plot(object):
         serie.line.set_linestyle('-')
         serie.line.set_linewidth(2.0)
         serie.line.set_color((0.0, 0.0, 0.0))
-        Plot.xlabel(r'$T \; \left[ \mathrm{m}$ \right]')
+        Plot.xlabel(r'$T \; \left[ \mathrm{m} \right]$')
         Plot.ylabel(r'$\bigtriangleup \; \left[ \mathrm{tons} \right]$')
         plt.axes.xaxis.label.set_fontsize(15)
         plt.axes.yaxis.label.set_fontsize(15)
