@@ -22,7 +22,7 @@
 #ifndef SKETCHERGUI_EditDatumDialog_H
 #define SKETCHERGUI_EditDatumDialog_H
 
-class SoSensor;
+#include <QObject>
 
 namespace Sketcher {
 class Constraint;
@@ -32,15 +32,15 @@ class SketchObject;
 namespace SketcherGui {
 class ViewProviderSketch;
 
-class EditDatumDialog {
+class EditDatumDialog : public QObject {
     Q_DECLARE_TR_FUNCTIONS(SketcherGui::EditDatumDialog)
 public:
     EditDatumDialog(ViewProviderSketch* vp, int ConstrNbr);
     EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr);
     ~EditDatumDialog();
 
-    static void run(void * data, SoSensor * sensor);   
     void exec(bool atCursor=true);
+    void customEvent(QEvent*);
 
 private:
     Sketcher::SketchObject* sketch;
