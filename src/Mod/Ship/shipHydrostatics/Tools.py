@@ -147,9 +147,9 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
     # Create the "sea" box to intersect the ship
     L = xmax - xmin
     B = bbox.YMax - bbox.YMin
-    p = Vector(-1.5*L, -1.5*B, bbox.ZMin)
+    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
     try:
-        box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin, p)
+        box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
     except:
         return [0.0, Vector(), 0.0]
 
@@ -206,12 +206,13 @@ def wettedArea(shape, draft, trim):
     nObjects = 0
 
     shape = shape.copy()
-    shape.translate(Vector(0.0, 0.0, -draft))
+    shape.translate(Vector(0.0, 0.0, -draft * Units.Metre.Value))
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, -1.0, 0.0), trim)
 
     bbox = shape.BoundBox
     xmin = bbox.XMin
     xmax = bbox.XMax
+
     # Create the "sea" box
     L = xmax - xmin
     B = bbox.YMax - bbox.YMin
@@ -238,7 +239,9 @@ def moment(ship, draft, trim, disp, xcb):
     @note Moment is positive when produce positive trim.
     """
     factor = 10.0
-    angle = factor * math.degrees(math.atan2(0.01, 0.5 * ship.Length))
+    angle = factor * math.degrees(math.atan2(
+        0.01,
+        0.5 * ship.Length.getValueAs('m').Value))
     newTrim = trim + angle
     data = displacement(ship, draft, 0.0, newTrim, 0.0)
     mom0 = -disp * xcb
@@ -261,22 +264,23 @@ def FloatingArea(ship, draft, trim):
     minY = 0.0
 
     shape = ship.Shape.copy()
-    shape.translate(Vector(0.0, 0.0, -draft))
+    shape.translate(Vector(0.0, 0.0, -draft * Units.Metre.Value))
     shape.rotate(Vector(0.0, 0.0, 0.0), Vector(0.0, -1.0, 0.0), trim)
 
     bbox = shape.BoundBox
     xmin = bbox.XMin
     xmax = bbox.XMax
+
     # Create the "sea" box
     L = xmax - xmin
     B = bbox.YMax - bbox.YMin
     p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
     box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
 
-    maxX = bbox.XMin
-    minX = bbox.XMax
-    maxY = bbox.YMin
-    minY = bbox.YMax
+    maxX = bbox.XMin / Units.Metre.Value
+    minX = bbox.XMax / Units.Metre.Value
+    maxY = bbox.YMin / Units.Metre.Value
+    minY = bbox.YMax / Units.Metre.Value
     for s in shape.Solids:
         try:
             common = box.common(s)
@@ -301,11 +305,11 @@ def FloatingArea(ship, draft, trim):
             if abs(faceBounds.ZMax) > 0.00001:
                 continue
 
-            area = area + f.Area
-            maxX = max(maxX, faceBounds.XMax)
-            minX = min(minX, faceBounds.XMin)
-            maxY = max(maxY, faceBounds.YMax)
-            minY = min(minY, faceBounds.YMin)
+            area = area + f.Area / Units.Metre.Value**2
+            maxX = max(maxX, faceBounds.XMax / Units.Metre.Value)
+            minX = min(minX, faceBounds.XMin / Units.Metre.Value)
+            maxY = max(maxY, faceBounds.YMax / Units.Metre.Value)
+            minY = min(minY, faceBounds.YMin / Units.Metre.Value)
         App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
 
     dx = maxX - minX
@@ -353,7 +357,7 @@ def mainFrameCoeff(ship, draft):
     minY = 0.0
 
     shape = ship.Shape.copy()
-    shape.translate(Vector(0.0, 0.0, -draft))
+    shape.translate(Vector(0.0, 0.0, -draft * Units.Metre.Value))
     x = 0.0
     area = 0.0
 
@@ -367,8 +371,8 @@ def mainFrameCoeff(ship, draft):
     p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
     box = Part.makeBox(1.5*L + x, 3.0*B, - bbox.ZMin + 1.0, p)
 
-    maxY = bbox.YMin
-    minY = bbox.YMax
+    maxY = bbox.YMin / Units.Metre.Value
+    minY = bbox.YMax / Units.Metre.Value
     for s in shape.Solids:
         try:
             common = box.common(s)
@@ -393,9 +397,9 @@ def mainFrameCoeff(ship, draft):
             if abs(faceBounds.XMax - x) > 0.00001:
                 continue
 
-            area = area + f.Area
-            maxY = max(maxY, faceBounds.YMax)
-            minY = min(minY, faceBounds.YMin)
+            area = area + f.Area / Units.Metre.Value**2
+            maxY = max(maxY, faceBounds.YMax / Units.Metre.Value)
+            minY = min(minY, faceBounds.YMin / Units.Metre.Value)
         App.ActiveDocument.removeObject(App.ActiveDocument.Objects[-1].Name)
 
     dy = maxY - minY
