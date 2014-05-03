@@ -342,6 +342,7 @@ def removeHidden(objectslist):
     for o in objectslist:
         if o.ViewObject:
             if not o.ViewObject.isVisible():
+
                 newlist.remove(o)
     return newlist
 
@@ -877,8 +878,11 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     textbuffer = []
     for l in stringslist: 
         try:
-            # only available in Coin3D >= 4.0
-            textbuffer.append(str(l))
+            from pivy import coin
+            if coin.COIN_MAJOR_VERSION >= 4:
+                textbuffer.append(str(l))
+            else:
+                textbuffer.append(l.decode("utf8").encode('latin1'))
         except:
             textbuffer.append(l.decode("utf8").encode('latin1'))
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
@@ -1753,7 +1757,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     svg += text[i].decode("utf8")
                 svg += '</tspan>\n'
         svg += '</text>\n'
-        print svg
         return svg
 
         
@@ -3204,8 +3207,11 @@ class _ViewProviderDimension(_ViewProviderDraft):
             if hasattr(obj.ViewObject,"Override"):
                 if obj.ViewObject.Override:
                     try:
-                        # only available in Coin3D >= 4.0
-                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
+                        from pivy import coin
+                        if coin.COIN_MAJOR_VERSION >= 4:
+                            self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
+                        else:
+                            self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1")
                     except:
                         self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1")
             self.text.string = self.text3d.string = self.string
