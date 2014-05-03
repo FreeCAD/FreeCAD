@@ -386,6 +386,8 @@ class DraftToolBar:
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.changeXValue)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.changeYValue)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.changeZValue)
+        QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
+        QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("valueChanged(double)"),self.changeOffsetValue)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("returnPressed()"),self.checky)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
@@ -1031,14 +1033,16 @@ class DraftToolBar:
         if self.sourceCmd or self.pointcallback:
             if (self.labelRadius.isVisible()):
                 try:
-                    rad=float(self.radiusValue.text())
+                    #rad=float(self.radiusValue.text())
+                    rad = self.radius
                 except ValueError:
                     pass
                 else:
                     self.sourceCmd.numericRadius(rad)
             elif (self.offsetLabel.isVisible()):
                 try:
-                    offset=float(self.offsetValue.text())
+                    #offset=float(self.offsetValue.text())
+                    offset = self.offset
                 except ValueError:
                     pass
                 else:
@@ -1516,6 +1520,12 @@ class DraftToolBar:
 
     def changeZValue(self,d):
         self.z = d
+
+    def changeRadiusValue(self,d):
+        self.radius = d
+
+    def changeOffsetValue(self,d):
+        self.offset = d
 
 #---------------------------------------------------------------------------
 # TaskView operations
