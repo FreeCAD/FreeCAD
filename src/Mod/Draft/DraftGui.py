@@ -179,14 +179,22 @@ class DraftToolBar:
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
         self.uiloader = FreeCADGui.UiLoader()
-
-        # set default to taskbar mode
-        if self.taskmode == None:
-            self.taskmode = 1
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
             self.baseWidget = QtGui.QWidget()
+            self.tray = QtGui.QToolBar(None)
+            self.tray.setObjectName("Draft tray")
+            self.tray.setWindowTitle("Draft tray")
+            self.toptray = self.tray
+            self.bottomtray = self.tray
+            self.setupTray()
+            self.setupStyle()
+            mw = FreeCADGui.getMainWindow()
+            mw.addToolBar(self.tray)
+            self.tray.setParent(mw)
+            self.tray.show()
+
         else:
             # create the draft Toolbar                
             self.draftWidget = QtGui.QDockWidget()
@@ -378,6 +386,8 @@ class DraftToolBar:
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.changeXValue)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.changeYValue)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.changeZValue)
+        QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
+        QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("valueChanged(double)"),self.changeOffsetValue)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("returnPressed()"),self.checky)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
@@ -479,6 +489,8 @@ class DraftToolBar:
         style += "#tangentButton:Checked, #symmetricButton:checked {"
         style += "background-color: rgb(20,100,250) }"
         self.baseWidget.setStyleSheet(style)
+        #if hasattr(self,"tray"):
+        #    self.tray.setStyleSheet(style)
 
 
 #---------------------------------------------------------------------------
@@ -1021,14 +1033,16 @@ class DraftToolBar:
         if self.sourceCmd or self.pointcallback:
             if (self.labelRadius.isVisible()):
                 try:
-                    rad=float(self.radiusValue.text())
+                    #rad=float(self.radiusValue.text())
+                    rad = self.radius
                 except ValueError:
                     pass
                 else:
                     self.sourceCmd.numericRadius(rad)
             elif (self.offsetLabel.isVisible()):
                 try:
-                    offset=float(self.offsetValue.text())
+                    #offset=float(self.offsetValue.text())
+                    offset = self.offset
                 except ValueError:
                     pass
                 else:
@@ -1507,6 +1521,12 @@ class DraftToolBar:
     def changeZValue(self,d):
         self.z = d
 
+    def changeRadiusValue(self,d):
+        self.radius = d
+
+    def changeOffsetValue(self,d):
+        self.offset = d
+
 #---------------------------------------------------------------------------
 # TaskView operations
 #---------------------------------------------------------------------------
@@ -1533,25 +1553,26 @@ class DraftToolBar:
                 self.title = "Modify objects"
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument != None) and (FreeCADGui.Selection.getSelection() != [])
-                        
-        class DraftTrayWatcher:
-            def __init__(self,traywidget):
-                self.form = traywidget
-                self.widgets = [self.form]
-            def shouldShow(self):
-                return True
 
-        self.traywidget = QtGui.QWidget()
-        self.tray = QtGui.QVBoxLayout(self.traywidget)
-        self.tray.setObjectName("traylayout")
-        self.toptray = QtGui.QHBoxLayout()
-        self.bottomtray = QtGui.QHBoxLayout()
-        self.tray.addLayout(self.toptray)
-        self.tray.addLayout(self.bottomtray)
-        self.setupTray()
-        self.setupStyle()
-        w = DraftTrayWatcher(self.traywidget)        
-        FreeCADGui.Control.addTaskWatcher([w,DraftCreateWatcher(),DraftModifyWatcher()])
+        # OBSOLETE               
+        #class DraftTrayWatcher:
+        #    def __init__(self,traywidget):
+        #        self.form = traywidget
+        #        self.widgets = [self.form]
+        #    def shouldShow(self):
+        #        return True
+        #self.traywidget = QtGui.QWidget()
+        #self.tray = QtGui.QVBoxLayout(self.traywidget)
+        #self.tray.setObjectName("traylayout")
+        #self.toptray = QtGui.QHBoxLayout()
+        #self.bottomtray = QtGui.QHBoxLayout()
+        #self.tray.addLayout(self.toptray)
+        #self.tray.addLayout(self.bottomtray)
+        #self.setupTray()
+        #self.setupStyle()
+        #w = DraftTrayWatcher(self.traywidget)        
+        #FreeCADGui.Control.addTaskWatcher([w,DraftCreateWatcher(),DraftModifyWatcher()])
+        FreeCADGui.Control.addTaskWatcher([DraftCreateWatcher(),DraftModifyWatcher()])
                                 
     def changeEvent(self, event):
         if event.type() == QtCore.QEvent.LanguageChange:
@@ -1561,6 +1582,8 @@ class DraftToolBar:
     def Activated(self):
         if self.taskmode:
             self.setWatchers()
+            if hasattr(self,"tray"):
+                self.tray.show()
         else:
             self.draftWidget.setVisible(True)
             self.draftWidget.toggleViewAction().setVisible(True)
@@ -1571,7 +1594,9 @@ class DraftToolBar:
             FreeCAD.activeDraftCommand.finish()
         if self.taskmode:
             FreeCADGui.Control.clearTaskWatcher()
-            self.tray = None
+            #self.tray = None
+            if hasattr(self,"tray"):
+                self.tray.hide()
         else:
             self.draftWidget.setVisible(False)
             self.draftWidget.toggleViewAction().setVisible(False)
