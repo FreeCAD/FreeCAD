@@ -245,8 +245,6 @@ class TaskPanel:
             form.minDraft.setValue(
                 self.ship.HydrostaticsMinDraft.getValueAs('m').Value)
         except ValueError:
-            App.Console.PrintWarning(0.9 * self.ship.Draft.getValueAs('m').Value)
-            App.Console.PrintWarning('\n')
             form.minDraft.setValue(
                 0.9 * self.ship.Draft.getValueAs('m').Value)
         try:
@@ -254,19 +252,13 @@ class TaskPanel:
             form.maxDraft.setValue(
                 self.ship.HydrostaticsMaxDraft.getValueAs('m').Value)
         except ValueError:
-            App.Console.PrintWarning(1.1 * self.ship.Draft.getValueAs('m').Value)
-            App.Console.PrintWarning('\n')
             form.maxDraft.setValue(
                 1.1 * self.ship.Draft.getValueAs('m').Value)
 
-        App.Console.PrintWarning(form.minDraft.value())
-        App.Console.PrintWarning('\n')
         form.maxDraft.setMaximum(bbox.ZMax / Units.Metre.Value)
         form.minDraft.setMinimum(bbox.ZMin / Units.Metre.Value)
         form.maxDraft.setMinimum(form.minDraft.value())
         form.minDraft.setMaximum(form.maxDraft.value())
-        App.Console.PrintWarning(form.minDraft.value())
-        App.Console.PrintWarning('\n')
 
         try:
             props.index("HydrostaticsNDraft")
