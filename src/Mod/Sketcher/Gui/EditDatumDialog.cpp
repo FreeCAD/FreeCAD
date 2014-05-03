@@ -62,12 +62,10 @@ EditDatumDialog::EditDatumDialog(Sketcher::SketchObject* pcSketch, int ConstrNbr
 
 EditDatumDialog::~EditDatumDialog(){}
 
-void EditDatumDialog::run(void * data, SoSensor * sensor)
+void EditDatumDialog::customEvent(QEvent*)
 {
-    EditDatumDialog* self = reinterpret_cast<EditDatumDialog*>(data);
-    self->exec();
-    delete self;
-    delete sensor;
+    this->exec();
+    this->deleteLater();
 }
 
 void EditDatumDialog::exec(bool atCursor)

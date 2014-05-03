@@ -52,7 +52,6 @@
 # include <Inventor/nodes/SoText2.h>
 # include <Inventor/nodes/SoFont.h>
 # include <Inventor/nodes/SoPickStyle.h>
-# include <Inventor/sensors/SoIdleSensor.h>
 # include <Inventor/nodes/SoCamera.h>
 
 /// Qt Include Files
@@ -876,9 +875,9 @@ void ViewProviderSketch::editDoubleClicked(void)
             Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY ||
             Constr->Type == Sketcher::Radius || Constr->Type == Sketcher::Angle) {
 
+            // Coin's SoIdleSensor causes problems on some platform while Qt seems to work properly (#0001517)
             EditDatumDialog * editDatumDialog = new EditDatumDialog(this, edit->PreselectConstraint);
-            SoIdleSensor* sensor = new SoIdleSensor(EditDatumDialog::run, editDatumDialog);
-            sensor->schedule();
+            QCoreApplication::postEvent(editDatumDialog, new QEvent(QEvent::User));
             edit->editDatumDialog = true; // avoid to double handle "ESC"
         }
     }
