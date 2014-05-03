@@ -5,7 +5,6 @@ data_DATA = \
 	InitGui.py \
 	ShipGui.py \
 	Instance.py \
-	TankInstance.py \
 	Ship_rc.py
 
 nobase_data_DATA = \

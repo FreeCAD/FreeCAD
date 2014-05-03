@@ -2,7 +2,6 @@ SET(ShipMain_SRCS
 	InitGui.py
 	ShipGui.py
     Instance.py
-    TankInstance.py
 	Ship_rc.py
 )
 SOURCE_GROUP("" FILES ${ShipMain_SRCS})
