@@ -4013,7 +4013,12 @@ class _BSpline(_DraftObject):
                 spline.interpolate(obj.Points, True)
                 # DNC: bug fix: convert to face if closed
                 shape = Part.Wire(spline.toShape())
-                shape = Part.Face(shape)
+                # Creating a face from a closed spline cannot be expected to always work
+                # Usually, if the spline is not flat the call of Part.Face() fails
+                try:
+                    shape = Part.Face(shape)
+                except:
+                    pass
                 obj.Shape = shape
             else:   
                 spline = Part.BSplineCurve()
