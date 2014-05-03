@@ -74,13 +74,13 @@ namespace Gui {
 class PropertyEvent : public QEvent
 {
 public:
-    PropertyEvent(App::Property* p1, App::Property* p2)
-        : QEvent(QEvent::Type(QEvent::User)), p1(p1), p2(p2)
+    PropertyEvent(const Gui::ViewProvider* vp, App::Property* p)
+        : QEvent(QEvent::Type(QEvent::User)), view(vp), prop(p)
     {
     }
 
-    App::Property* p1;
-    App::Property* p2;
+    const Gui::ViewProvider* view;
+    App::Property* prop;
 };
 
 class ViewProviderPythonFeatureObserver : public QObject
@@ -98,8 +98,16 @@ private:
     void customEvent(QEvent* e)
     {
         PropertyEvent* pe = static_cast<PropertyEvent*>(e);
-        pe->p1->Paste(*pe->p2);
-        delete pe->p2;
+        std::set<const Gui::ViewProvider*>::iterator it = viewMap.find(pe->view);
+        // Make sure that the object hasn't been deleted in the meantime (#0001522)
+        if (it != viewMap.end()) {
+            viewMap.erase(it);
+            App::Property* prop = pe->view->getPropertyByName("Proxy");
+            if (prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
+                prop->Paste(*pe->prop);
+            }
+        }
+        delete pe->prop;
     }
     static ViewProviderPythonFeatureObserver* _singleton;
 
@@ -111,6 +119,7 @@ private:
             > ObjectProxy;
 
     std::map<const App::Document*, ObjectProxy> proxyMap;
+    std::set<const Gui::ViewProvider*> viewMap;
 };
 
 }
@@ -155,7 +164,9 @@ void ViewProviderPythonFeatureObserver::slotAppendObject(const Gui::ViewProvider
                 App::Property* prop = vp.getPropertyByName("Proxy");
                 if (prop && prop->isDerivedFrom(App::PropertyPythonObject::getClassTypeId())) {
                     // make this delayed so that the corresponding item in the tree view is accessible
-                    QApplication::postEvent(this, new PropertyEvent(prop, jt->second));
+                    QApplication::postEvent(this, new PropertyEvent(&vp, jt->second));
+                    // needed in customEvent()
+                    viewMap.insert(&vp);
                     it->second.erase(jt);
                 }
             }
@@ -172,6 +183,10 @@ void ViewProviderPythonFeatureObserver::slotAppendObject(const Gui::ViewProvider
 
 void ViewProviderPythonFeatureObserver::slotDeleteObject(const Gui::ViewProvider& obj)
 {
+    // check this in customEvent() if the object is still there
+    std::set<const Gui::ViewProvider*>::iterator it = viewMap.find(&obj);
+    if (it != viewMap.end())
+        viewMap.erase(it);
     if (!obj.isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId()))
         return;
     const Gui::ViewProviderDocumentObject& vp = static_cast<const Gui::ViewProviderDocumentObject&>(obj);
