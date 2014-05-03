@@ -64,30 +64,7 @@ SET(ShipUtils_SRCS
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(ShipWeights_SRCS
-	tankWeights/__init__.py
-	tankWeights/Preview.py
-	tankWeights/TaskPanel.py
-	tankWeights/TaskPanel.ui
-)
-SOURCE_GROUP("shipweights" FILES ${ShipWeights_SRCS})
-
-SET(ShipCreateTank_SRCS
-	tankCreateTank/__init__.py
-	tankCreateTank/TaskPanel.py
-	tankCreateTank/TaskPanel.ui
-)
-SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
-
-SET(ShipGZ_SRCS
-	tankGZ/__init__.py
-	tankGZ/PlotAux.py
-	tankGZ/TaskPanel.py
-	tankGZ/TaskPanel.ui
-)
-SOURCE_GROUP("shipgz" FILES ${ShipGZ_SRCS})
-
-SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS} ${ShipWeights_SRCS} ${ShipCreateTank_SRCS} ${ShipGZ_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
@@ -136,24 +113,6 @@ INSTALL(
         ${ShipUtils_SRCS}
     DESTINATION
         Mod/Ship/shipUtils
-)
-INSTALL(
-    FILES
-        ${ShipWeights_SRCS}
-    DESTINATION
-        Mod/Ship/tankWeights
-)
-INSTALL(
-    FILES
-        ${ShipCreateTank_SRCS}
-    DESTINATION
-        Mod/Ship/tankCreateTank
-)
-INSTALL(
-    FILES
-        ${ShipGZ_SRCS}
-    DESTINATION
-        Mod/Ship/tankGZ
 )
 INSTALL(
     FILES

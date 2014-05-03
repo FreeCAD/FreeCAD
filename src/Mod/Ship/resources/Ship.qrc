@@ -7,8 +7,6 @@
         <file>icons/Ship_Logo.svg</file>
         <file>icons/Ship_Module.svg</file>
         <file>icons/Ship_OutlineDraw.svg</file>
-        <file>icons/Tank.png</file>
-        <file>icons/Weight.png</file>
         <file>translations/Ship.qm</file>
         <file>translations/Ship_af.qm</file>
         <file>translations/Ship_cs.qm</file>

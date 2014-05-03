@@ -119,62 +119,8 @@ class Hydrostatics:
                 'ToolTip': ToolTip}
 
 
-class SetWeights:
-    def Activated(self):
-        import tankWeights
-        tankWeights.load()
-
-    def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_Weights',
-            'Set ship weights')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_Weights',
-            'Set the ship weights (tanks must be added later)')
-        return {'Pixmap': 'Weight',
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
-
-
-class CreateTank:
-    def Activated(self):
-        import tankCreateTank
-        tankCreateTank.load()
-
-    def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_CreateTank',
-            'Create a new tank')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_CreateTank',
-            'Create a new ship tank')
-        return {'Pixmap': 'Tank',
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
-
-
-class GZ:
-    def Activated(self):
-        import tankGZ
-        tankGZ.load()
-
-    def GetResources(self):
-        MenuText = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_GZ',
-            'GZ curve')
-        ToolTip = QtCore.QT_TRANSLATE_NOOP(
-            'Ship_GZ',
-            'Transversal stability GZ curve computation')
-        return {'Pixmap': 'HydrostaticsIco',
-                'MenuText': MenuText,
-                'ToolTip': ToolTip}
-
-
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
 FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
 FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
-FreeCADGui.addCommand('Ship_Weights', SetWeights())
-FreeCADGui.addCommand('Ship_CreateTank', CreateTank())
-FreeCADGui.addCommand('Ship_GZ', GZ())

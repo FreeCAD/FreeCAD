@@ -94,28 +94,5 @@
 				<File Id="shipUtils03" Name="Paths.py"   />
 			</Component>
 		</Directory>
-		<Directory Id="ModtankCreateTank" Name="tankCreateTank" FileSource="../../Mod/Ship/tankCreateTank" >
-			<Component Id="CompModtankCreateTank"  Guid="1cc53994-9e82-4731-bd37-2705a31388c6" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="tankCreateTank01" Name="__init__.py"   />
-				<File Id="tankCreateTank02" Name="TaskPanel.py"   />
-				<File Id="tankCreateTank03" Name="TaskPanel.ui"   />
-			</Component>
-		</Directory>
-		<Directory Id="ModtankGZ" Name="tankGZ" FileSource="../../Mod/Ship/tankGZ" >
-			<Component Id="CompModtankGZ"  Guid="ef798f90-0c85-4c5e-a637-22b97bf05303" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="tankGZ01" Name="__init__.py"   />
-				<File Id="tankGZ02" Name="PlotAux.py"   />
-				<File Id="tankGZ03" Name="TaskPanel.py"   />
-				<File Id="tankGZ04" Name="TaskPanel.ui"   />
-			</Component>
-		</Directory>
-		<Directory Id="ModtankWeights" Name="tankWeights" FileSource="../../Mod/Ship/tankWeights" >
-			<Component Id="CompModtankWeights"  Guid="77f12d48-58b0-4c95-8bee-7c4f709379d8" Win64='$(var.Win_64)' KeyPath="yes">
-				<File Id="tankWeights01" Name="__init__.py"   />
-				<File Id="tankWeights03" Name="Preview.py"   />
-				<File Id="tankWeights04" Name="TaskPanel.py"   />
-				<File Id="tankWeights05" Name="TaskPanel.ui"   />
-			</Component>
-		</Directory>
 	</Directory>
 </Include>

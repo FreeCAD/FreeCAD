@@ -37,18 +37,7 @@ nobase_data_DATA = \
 	shipHydrostatics/Tools.py \
 	shipUtils/__init__.py \
 	shipUtils/Math.py \
-	shipUtils/Paths.py \
-	tankWeights/__init__.py \
-	tankWeights/Preview.py \
-	tankWeights/TaskPanel.py \
-	tankWeights/TaskPanel.ui \
-	tankCreateTank/__init__.py \
-	tankCreateTank/TaskPanel.py \
-	tankCreateTank/TaskPanel.ui \
-	tankGZ/__init__.py \
-	tankGZ/PlotAux.py \
-	tankGZ/TaskPanel.py \
-	tankGZ/TaskPanel.ui
+	shipUtils/Paths.py
 
 CLEANFILES = $(BUILT_SOURCES)
 
