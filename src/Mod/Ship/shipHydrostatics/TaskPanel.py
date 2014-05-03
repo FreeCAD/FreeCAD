@@ -48,9 +48,16 @@ class TaskPanel:
             return
         self.save()
 
-        min_draft = self.form.minDraft.value()
-        max_draft = self.form.maxDraft.value()
-        n_draft = self.form.nDraft.value()
+        mw = self.getMainWindow()
+        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
+        form.minDraft = self.widget(QtGui.QDoubleSpinBox, "MinDraft")
+        form.maxDraft = self.widget(QtGui.QDoubleSpinBox, "MaxDraft")
+        form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
+
+        min_draft = form.minDraft.value()
+        max_draft = form.maxDraft.value()
+        n_draft = form.nDraft.value()
 
         draft = min_draft
         drafts = [draft]
@@ -95,13 +102,13 @@ class TaskPanel:
             point = Tools.Point(self.ship,
                                 faces,
                                 draft,
-                                self.form.trim.value())
+                                form.trim.value())
             points.append(point)
             self.timer.start(0.0)
             self.loop.exec_()
             if(not self.running):
                 break
-        PlotAux.Plot(self.ship, self.form.trim.value(), points)
+        PlotAux.Plot(self.ship, form.trim.value(), points)
         return True
 
     def reject(self):
