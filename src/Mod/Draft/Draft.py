@@ -342,7 +342,6 @@ def removeHidden(objectslist):
     for o in objectslist:
         if o.ViewObject:
             if not o.ViewObject.isVisible():
-
                 newlist.remove(o)
     return newlist
 

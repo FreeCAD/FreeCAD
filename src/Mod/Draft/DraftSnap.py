@@ -1032,7 +1032,7 @@ class Snapper:
             FreeCADGui.Snapper.off()
             self.ui.offUi()
             if callback:
-                if len(inspect.getargspec(callback).args) > 2:
+                if len(inspect.getargspec(callback).args) > 1:
                     callback(self.pt,obj)
                 else:
                     callback(self.pt)
