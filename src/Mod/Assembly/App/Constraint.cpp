@@ -50,8 +50,8 @@
 #include "Constraint.h"
 #include "ConstraintPy.h"
 #include "Item.h"
-#include "ItemPart.h"
-#include "ItemAssembly.h"
+#include "PartRef.h"
+#include "Product.h"
 
 
 using namespace Assembly;
@@ -129,13 +129,13 @@ boost::shared_ptr<Geometry3D> Constraint::initLink(App::PropertyLinkSub& link) {
     if(!link.getValue())
         return boost::shared_ptr<Geometry3D>();
 
-    //check if we have Assembly::ItemPart
-    if(link.getValue()->getTypeId() != ItemPart::getClassTypeId()) {
+    //check if we have Assembly::PartRef
+    if(link.getValue()->getTypeId() != PartRef::getClassTypeId()) {
         throw ConstraintLinkException();
         return boost::shared_ptr<Geometry3D>();
     };
 
-    Assembly::ItemPart* part = static_cast<Assembly::ItemPart*>(link.getValue());
+    Assembly::PartRef* part = static_cast<Assembly::PartRef*>(link.getValue());
 
     if(!part)
         throw ConstraintPartException();
@@ -147,18 +147,18 @@ boost::shared_ptr<Geometry3D> Constraint::initLink(App::PropertyLinkSub& link) {
 }
 
 
-void Constraint::init(Assembly::ItemAssembly* ass)
+void Constraint::init(Assembly::Product* ass)
 {
-    Assembly::ItemPart* part1, *part2;
+    Assembly::PartRef* part1, *part2;
 
     if(First.getValue()) {
         m_first_geom = initLink(First);
-        part1 = static_cast<Assembly::ItemPart*>(First.getValue());
+        part1 = static_cast<Assembly::PartRef*>(First.getValue());
     }
 
     if(Second.getValue()) {
         m_second_geom = initLink(Second);
-        part2= static_cast<Assembly::ItemPart*>(Second.getValue());
+        part2= static_cast<Assembly::PartRef*>(Second.getValue());
     }
 
     //fix constraint

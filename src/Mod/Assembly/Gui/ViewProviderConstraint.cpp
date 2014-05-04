@@ -25,7 +25,7 @@
 #include "TaskAssemblyConstraints.h"
 #include "TaskDlgAssemblyConstraints.h"
 #include "Mod/Assembly/App/Constraint.h"
-#include "Mod/Assembly/App/ItemPart.h"
+#include "Mod/Assembly/App/PartRef.h"
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
 #include <App/Application.h>
@@ -262,7 +262,7 @@ void ViewProviderConstraint::draw()
     if(!obj1)
         return;
 
-    Assembly::ItemPart* part1 = static_cast<Assembly::ItemPart*>(obj1);
+    Assembly::PartRef* part1 = static_cast<Assembly::PartRef*>(obj1);
 
     if(!part1)
         return;
@@ -296,7 +296,7 @@ void ViewProviderConstraint::draw()
 
     //here it's a bit more involved, as the coind tree structure let's the first transform  node
     //transform the second part too.
-    Assembly::ItemPart* part2 = static_cast<Assembly::ItemPart*>(obj2);
+    Assembly::PartRef* part2 = static_cast<Assembly::PartRef*>(obj2);
 
     if(!part2)
         return;
@@ -321,13 +321,13 @@ void ViewProviderConstraint::upstream_placement(Base::Placement& p, Assembly::It
 
     typedef std::vector<App::DocumentObject*>::const_iterator iter;
 
-    //get all links to this item and see if we have more ItemAssemblys
+    //get all links to this item and see if we have more Products
     const std::vector<App::DocumentObject*>& vector = item->getInList();
     for(iter it=vector.begin(); it != vector.end(); it++) {
 
-        if((*it)->getTypeId() == Assembly::ItemAssembly::getClassTypeId()) {
+        if((*it)->getTypeId() == Assembly::Product::getClassTypeId()) {
 
-            upstream_placement(p, static_cast<Assembly::ItemAssembly*>(*it));
+            upstream_placement(p, static_cast<Assembly::Product*>(*it));
             return;
         }
     };
@@ -361,7 +361,7 @@ TopoDS_Shape ViewProviderConstraint::getConstraintShape(int link)
         if(!obj1)
             return TopoDS_Shape();
 
-        Assembly::ItemPart* part1 = static_cast<Assembly::ItemPart*>(obj1);
+        Assembly::PartRef* part1 = static_cast<Assembly::PartRef*>(obj1);
 
         if(!part1)
             return TopoDS_Shape();
@@ -387,7 +387,7 @@ TopoDS_Shape ViewProviderConstraint::getConstraintShape(int link)
         if(!obj2)
             return TopoDS_Shape();
 
-        Assembly::ItemPart* part2 = static_cast<Assembly::ItemPart*>(obj2);
+        Assembly::PartRef* part2 = static_cast<Assembly::PartRef*>(obj2);
 
         if(!part2)
             return TopoDS_Shape();

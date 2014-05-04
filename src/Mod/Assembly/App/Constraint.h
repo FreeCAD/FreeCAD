@@ -31,7 +31,7 @@
 #include <TopoDS_Shape.hxx>
 
 #include "Solver/Solver.h"
-#include "ItemAssembly.h"
+#include "Product.h"
 
 
 namespace Assembly
@@ -52,7 +52,7 @@ public:
 
     App::PropertyLinkSub        First;
     App::PropertyLinkSub        Second;
-    App::PropertyFloat   	Value;
+    App::PropertyFloat   	    Value;
     App::PropertyEnumeration 	Orientation;
     App::PropertyEnumeration 	SolutionSpace;
     App::PropertyEnumeration 	Type;
@@ -70,7 +70,7 @@ public:
     
     /** @brief initialize the constraint in the assembly solver 
      */
-    void init(Assembly::ItemAssembly* ass);    
+    void init(Assembly::Product* ass);    
 };
 
 } //namespace Assembly

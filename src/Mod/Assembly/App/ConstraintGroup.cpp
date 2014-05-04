@@ -31,8 +31,8 @@
 
 #include "ConstraintGroupPy.h"
 #include "ConstraintGroup.h"
-#include "ItemPart.h"
-#include "ItemAssembly.h"
+#include "PartRef.h"
+#include "Product.h"
 
 
 using namespace Assembly;
@@ -72,7 +72,7 @@ App::DocumentObjectExecReturn *ConstraintGroup::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintGroup::init(ItemAssembly* ass) {
+void ConstraintGroup::init(Product* ass) {
 
     std::vector<App::DocumentObject*> obj = Constraints.getValues();
 

@@ -66,6 +66,7 @@ SET(Document_CPP_SRCS
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
+    Part.cpp
     InventorObject.cpp
     MeasureDistance.cpp
     Placement.cpp
@@ -93,6 +94,7 @@ SET(Document_HPP_SRCS
     FeaturePythonPyImp.inl
     FeatureTest.h
     GeoFeature.h
+    Part.h
     InventorObject.h
     MeasureDistance.h
     Placement.h
