@@ -101,6 +101,55 @@ def translate(context,text):
                                             QtGui.QApplication.UnicodeUTF8)
 
 #---------------------------------------------------------------------------
+# UNITS handling
+#---------------------------------------------------------------------------
+def getDefaultUnit(dim):
+    '''return default Unit of Measure for a Dimension based on user preference
+    Units Schema'''
+    # only Length and Angle so far
+    from FreeCAD import Units
+    if dim == 'Length':
+        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Length)
+        UOM = qty.getUserPreferred()[2]
+    elif dim == 'Angle':
+        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Angle)
+        UOM = qty.getUserPreferred()[2]
+    else:
+        UOM = "xx"
+    return UOM
+ 
+def makeFormatSpec(decimals=4,dim='Length'):
+    ''' return a % format spec with specified decimals for a specified 
+    dimension based on on user preference Units Schema'''
+    if dim == 'Length':
+        fmtSpec = "%." + str(decimals) + "f "+ getDefaultUnit('Length')
+    elif dim == 'Angle':
+        fmtSpec = "%." + str(decimals) + "f "+ getDefaultUnit('Angle')
+    else:
+        fmtSpec = "%." + str(decimals) + "f " + "??"
+    return fmtSpec
+
+def displayExternal(internValue,decimals=4,dim='Length'):
+    '''return an internal value (ie mm) Length converted for display according 
+    to Units Schema in use.'''
+    from FreeCAD import Units
+    if dim == 'Length':
+        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
+        parts = (qty.getUserPreferred()[0]).split()
+    elif dim == 'Angle':
+        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle)
+        pref=qty.getUserPreferred()
+        parts = (qty.getUserPreferred()[0]).split()
+        val = (qty.getUserPreferred()[0]).split()[0]
+        um = parts[1].decode('latin-1')
+        parts = (val,um)
+    else:
+        parts = (internValue,'??')
+    fmt = "{0:."+ str(decimals) + "f} "+ parts[1]
+    displayExt = fmt.format(float(parts[0]))
+    return displayExt
+
+#---------------------------------------------------------------------------
 # Customized widgets
 #---------------------------------------------------------------------------
 
@@ -177,7 +226,8 @@ class DraftToolBar:
         self.fillmode = Draft.getParam("fillmode",False)
         self.mask = None
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
+        self.FORMAT = makeFormatSpec(self.DECIMALS,'Length')
+        self.AFORMAT = makeFormatSpec(self.DECIMALS,'Angle')
         self.uiloader = FreeCADGui.UiLoader()
         
         if self.taskmode:
@@ -705,6 +755,7 @@ class DraftToolBar:
         self.isCopy.show()
         self.occOffset.show()
         self.labelRadius.setText(translate("draft","Distance"))
+        self.radiusValue.setText(self.FORMAT % 0)
         self.radiusValue.setFocus()
         self.radiusValue.selectAll()
 
@@ -761,6 +812,7 @@ class DraftToolBar:
         self.taskUi(title)
         self.radiusUi()
         self.labelRadius.setText(translate("draft","Distance"))
+        self.radiusValue.setText(self.FORMAT % 0)
         self.radiusValue.setFocus()
         self.radiusValue.selectAll()
 
@@ -1305,20 +1357,20 @@ class DraftToolBar:
 
             # set widgets
             if self.mask in ['y','z']:
-                self.xValue.setText(self.FORMAT % 0)
+                self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
             else:
                 if dp:
-                    self.xValue.setText(self.FORMAT % dp.x)
+                    self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
             if self.mask in ['x','z']:
-                self.yValue.setText(self.FORMAT % 0)
+                self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
             else:
                 if dp:
-                    self.yValue.setText(self.FORMAT % dp.y)
+                    self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
             if self.mask in ['x','y']:
-                self.zValue.setText(self.FORMAT % 0)
+                self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
             else:
                 if dp:
-                    self.zValue.setText(self.FORMAT % dp.z)
+                    self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
 
             # set masks
             if (mask == "x") or (self.mask == "x"):
@@ -1466,11 +1518,18 @@ class DraftToolBar:
             self.addButton.setChecked(False)
             self.delButton.setChecked(False)
 
-    def setRadiusValue(self,val,unit="mm"):
-        t = self.FORMAT.replace("mm",unit) % val
-        self.radiusValue.setText(t.decode("utf8".encode("latin1")))
+    def setRadiusValue(self,val,unit=None):
+        #print "DEBUG: setRadiusValue val: ", val, " unit: ", unit
+        if  not isinstance(val, (int, long, float)):       #??some code passes strings or ??? 
+            t = val
+        elif unit:
+            t= displayExternal(val,self.DECIMALS, unit)
+        else:
+            print "Error: setRadiusValue called for number without Dimension"
+            t = displayExternal(val,self.DECIMALS, None)
+        self.radiusValue.setText(t)
         self.radiusValue.setFocus()
-        self.radiusValue.selectAll()
+        
 
     def show(self):
         if not self.taskmode:
