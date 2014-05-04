@@ -142,7 +142,7 @@ void ImportOCAFAssembly::loadShapes(const TDF_Label& label, const TopLoc_Locatio
     if( !hLoc.IsNull() )
         s = hLoc->Get().IsIdentity()?"0":"1";
     else
-        s = "-1";
+        s = "0";
 
     std::stringstream str;
 

@@ -165,7 +165,7 @@ class SimpleParser:
 
 if __name__ == "__main__":
     sys.path.append('..') # path where config_control_design.py is found
-    parser = SimpleParser("Aufspannung.stp") # simple test file
+    parser = SimpleReader("Aufspannung.stp") # simple test file
     #parser.instaciate()
     parser.writeGraphViz('TestGrap.gv')
     #dot.exe -Tsvg -o Test.svg e:\fem-dev\src\Mod\Import\App\SCL\TestGrap-geo.gv

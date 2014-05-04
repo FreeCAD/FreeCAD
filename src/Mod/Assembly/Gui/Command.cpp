@@ -33,7 +33,7 @@
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
 
-#include <Mod/Assembly/App/ItemAssembly.h>
+#include <Mod/Assembly/App/Product.h>
 
 
 using namespace std;
@@ -60,14 +60,14 @@ CmdAssemblyAddNewPart::CmdAssemblyAddNewPart()
 
 void CmdAssemblyAddNewPart::activated(int iMsg)
 {
-    Assembly::ItemAssembly *dest = 0;
+    Assembly::Product *dest = 0;
 
-    unsigned int n = getSelection().countObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+    unsigned int n = getSelection().countObjectsOfType(Assembly::Product::getClassTypeId());
     if (n >= 1) {
-        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
-        dest = dynamic_cast<Assembly::ItemAssembly*>(Sel.front());
-    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
-        dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::Product::getClassTypeId());
+        dest = dynamic_cast<Assembly::Product*>(Sel.front());
+    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
+        dest = dynamic_cast<Assembly::Product*>(ActiveAsmObject);
     }else {
 
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active or selected assembly"),
@@ -127,19 +127,19 @@ CmdAssemblyAddNewComponent::CmdAssemblyAddNewComponent()
 
 void CmdAssemblyAddNewComponent::activated(int iMsg)
 {
-    Assembly::ItemAssembly *dest = 0;
+    Assembly::Product *dest = 0;
 
-    unsigned int n = getSelection().countObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+    unsigned int n = getSelection().countObjectsOfType(Assembly::Product::getClassTypeId());
     if (n >= 1) {
-        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
-        dest = dynamic_cast<Assembly::ItemAssembly*>(Sel.front());
-    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
-        dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::Product::getClassTypeId());
+        dest = dynamic_cast<Assembly::Product*>(Sel.front());
+    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
+        dest = dynamic_cast<Assembly::Product*>(ActiveAsmObject);
     }
 
     openCommand("Insert Component");
     std::string CompName = getUniqueObjectName("Assembly");
-    doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','%s')",CompName.c_str());
+    doCommand(Doc,"App.activeDocument().addObject('Assembly::Product','%s')",CompName.c_str());
     if(dest){
         std::string fatherName = dest->getNameInDocument();
         doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),CompName.c_str());
@@ -165,14 +165,14 @@ CmdAssemblyAddExistingComponent::CmdAssemblyAddExistingComponent()
 
 void CmdAssemblyAddExistingComponent::activated(int iMsg)
 {
-    Assembly::ItemAssembly *dest = 0;
+    Assembly::Product *dest = 0;
 
-    unsigned int n = getSelection().countObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+    unsigned int n = getSelection().countObjectsOfType(Assembly::Product::getClassTypeId());
     if (n >= 1) {
-        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
-        dest = dynamic_cast<Assembly::ItemAssembly*>(Sel.front());
-    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
-        dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::Product::getClassTypeId());
+        dest = dynamic_cast<Assembly::Product*>(Sel.front());
+    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
+        dest = dynamic_cast<Assembly::Product*>(ActiveAsmObject);
     }else {
       
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active or selected assembly"),
@@ -228,14 +228,14 @@ CmdAssemblyImport::CmdAssemblyImport()
 
 void CmdAssemblyImport::activated(int iMsg)
 {
-    Assembly::ItemAssembly *dest = 0;
+    Assembly::Product *dest = 0;
 
-    unsigned int n = getSelection().countObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
+    unsigned int n = getSelection().countObjectsOfType(Assembly::Product::getClassTypeId());
     if (n >= 1) {
-        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::ItemAssembly::getClassTypeId());
-        dest = dynamic_cast<Assembly::ItemAssembly*>(Sel.front());
-    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
-        dest = dynamic_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+        std::vector<App::DocumentObject*> Sel = getSelection().getObjectsOfType(Assembly::Product::getClassTypeId());
+        dest = dynamic_cast<Assembly::Product*>(Sel.front());
+    }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
+        dest = dynamic_cast<Assembly::Product*>(ActiveAsmObject);
     }
 
     // asking for file name (only step at the moment) 

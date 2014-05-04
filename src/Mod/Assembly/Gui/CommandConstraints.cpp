@@ -36,8 +36,9 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 
-#include <Mod/Assembly/App/ItemAssembly.h>
-#include <Mod/Assembly/App/ItemPart.h>
+#include <Mod/Assembly/App/Product.h>
+#include <Mod/Assembly/App/ProductRef.h>
+#include <Mod/Assembly/App/PartRef.h>
 #include <Mod/Assembly/App/ConstraintGroup.h>
 #include <Mod/Assembly/Gui/TaskDlgAssemblyConstraints.h>
 
@@ -48,7 +49,7 @@ extern Assembly::Item* ActiveAsmObject;
 
 // Helper methods ===========================================================
 
-Assembly::ConstraintGroup* getConstraintGroup(Assembly::ItemAssembly* Asm)
+Assembly::ConstraintGroup* getConstraintGroup(Assembly::ProductRef* Asm)
 {
     Assembly::ConstraintGroup* ConstGrp = 0;
 
@@ -64,15 +65,15 @@ Assembly::ConstraintGroup* getConstraintGroup(Assembly::ItemAssembly* Asm)
     return ConstGrp;
 }
 
-bool getConstraintPrerequisits(Assembly::ItemAssembly** Asm, Assembly::ConstraintGroup** ConstGrp)
+bool getConstraintPrerequisits(Assembly::ProductRef** Asm, Assembly::ConstraintGroup** ConstGrp)
 {
-    if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
+    if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ProductRef::getClassTypeId())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
                              QObject::tr("You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click)."));
         return true;
     }
 
-    *Asm = static_cast<Assembly::ItemAssembly*>(ActiveAsmObject);
+    *Asm = static_cast<Assembly::ProductRef*>(ActiveAsmObject);
 
     // find the Constraint group of the active Assembly
     *ConstGrp = getConstraintGroup(*Asm);
@@ -96,7 +97,7 @@ bool getConstraintPrerequisits(Assembly::ItemAssembly** Asm, Assembly::Constrain
 
 }
 
-std::string asSubLinkString(Assembly::ItemPart* part, std::string element)
+std::string asSubLinkString(Assembly::PartRef* part, std::string element)
 {
     std::string buf;
     buf += "(App.ActiveDocument.";
@@ -126,67 +127,67 @@ CmdAssemblyConstraint::CmdAssemblyConstraint()
 
 void CmdAssemblyConstraint::activated(int iMsg)
 {
-    Assembly::ItemAssembly* Asm = 0;
-    Assembly::ConstraintGroup* ConstGrp = 0;
+    //Assembly::ProductRef* Asm = 0;
+    //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    // retrive the standard objects needed
-    if(getConstraintPrerequisits(&Asm, &ConstGrp))
-        return;
+    //// retrive the standard objects needed
+    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //    return;
 
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
 
-    if(objs.size() > 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Only two geometries supported by constraints"));
-        return;
-    };
+    //if(objs.size() > 2) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("Only two geometries supported by constraints"));
+    //    return;
+    //};
 
-    std::stringstream typestr1, typestr2;
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part1, part2;
-    if(objs.size()>=1) {
-        part1 = Asm->getContainingPart(objs[0].getObject());
-        //checking the parts is enough, both or non!
-        if(!part1.first) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
-            return;
-        };
-        typestr1 << "App.activeDocument().ActiveObject.First = " << asSubLinkString(part1.first, objs[0].getSubNames()[0]);
-    }
-    if(objs.size()>=2) {
-        part2 = Asm->getContainingPart(objs[1].getObject());
-        //checking the parts is enough, both or non!
-        if(!part2.first) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
-            return;
-        };
-        typestr2 << "App.activeDocument().ActiveObject.Second = " << asSubLinkString(part2.first, objs[1].getSubNames()[0]);
-    }
+    //std::stringstream typestr1, typestr2;
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part1, part2;
+    //if(objs.size()>=1) {
+    //    part1 = Asm->getContainingPart(objs[0].getObject());
+    //    //checking the parts is enough, both or non!
+    //    if(!part1.first) {
+    //        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                             QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
+    //        return;
+    //    };
+    //    typestr1 << "App.activeDocument().ActiveObject.First = " << asSubLinkString(part1.first, objs[0].getSubNames()[0]);
+    //}
+    //if(objs.size()>=2) {
+    //    part2 = Asm->getContainingPart(objs[1].getObject());
+    //    //checking the parts is enough, both or non!
+    //    if(!part2.first) {
+    //        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                             QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
+    //        return;
+    //    };
+    //    typestr2 << "App.activeDocument().ActiveObject.Second = " << asSubLinkString(part2.first, objs[1].getSubNames()[0]);
+    //}
 
 
-    //check if this is the right place for the constraint
-    if(part1.first && part2.first && (part1.second == part2.second) && part1.second != Asm) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
-        return;
-    }
+    ////check if this is the right place for the constraint
+    //if(part1.first && part2.first && (part1.second == part2.second) && part1.second != Asm) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
+    //    return;
+    //}
 
-    openCommand("Insert Constraint Distance");
-    std::string ConstrName = getUniqueObjectName("Constraint");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
-    if(objs.size()>=1)
-      doCommand(Doc, typestr1.str().c_str());
-    if(objs.size()>=2)
-      doCommand(Doc, typestr2.str().c_str());
-    doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
+    //openCommand("Insert Constraint Distance");
+    //std::string ConstrName = getUniqueObjectName("Constraint");
+    //doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    //if(objs.size()>=1)
+    //  doCommand(Doc, typestr1.str().c_str());
+    //if(objs.size()>=2)
+    //  doCommand(Doc, typestr2.str().c_str());
+    //doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    //updateActive();
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+    ////updateActive();
+    //doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
-    commitCommand();
+    //commitCommand();
 
-    Gui::Selection().clearCompleteSelection();
+    //Gui::Selection().clearCompleteSelection();
 }
 
 
@@ -210,52 +211,52 @@ CmdAssemblyConstraintDistance::CmdAssemblyConstraintDistance()
 
 void CmdAssemblyConstraintDistance::activated(int iMsg)
 {
-    Assembly::ItemAssembly* Asm = 0;
-    Assembly::ConstraintGroup* ConstGrp = 0;
+    //Assembly::ProductRef* Asm = 0;
+    //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    // retrive the standard objects needed
-    if(getConstraintPrerequisits(&Asm, &ConstGrp))
-        return;
+    //// retrive the standard objects needed
+    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //    return;
 
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
 
-    if(objs.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You need to select two geometries on two different parts"));
-        return;
-    };
+    //if(objs.size() != 2) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("You need to select two geometries on two different parts"));
+    //    return;
+    //};
 
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part1 = Asm->getContainingPart(objs[0].getObject());
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part2 = Asm->getContainingPart(objs[1].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part1 = Asm->getContainingPart(objs[0].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part2 = Asm->getContainingPart(objs[1].getObject());
 
-    //checking the parts is enough, both or non!
-    if(!part1.first || !part2.first) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
-        return;
-    };
+    ////checking the parts is enough, both or non!
+    //if(!part1.first || !part2.first) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
+    //    return;
+    //};
 
-    //check if this is the right place for the constraint
-    if((part1.second == part2.second) && part1.second != Asm) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
-        return;
-    }
+    ////check if this is the right place for the constraint
+    //if((part1.second == part2.second) && part1.second != Asm) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
+    //    return;
+    //}
 
-    openCommand("Insert Constraint Distance");
-    std::string ConstrName = getUniqueObjectName("Distance");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Distance'");
-    doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
+    //openCommand("Insert Constraint Distance");
+    //std::string ConstrName = getUniqueObjectName("Distance");
+    //doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Distance'");
+    //doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    //updateActive();
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+    ////updateActive();
+    //doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
-    commitCommand();
+    //commitCommand();
 
-    Gui::Selection().clearCompleteSelection();
+    //Gui::Selection().clearCompleteSelection();
 }
 
 /******************************************************************************************/
@@ -277,48 +278,48 @@ CmdAssemblyConstraintFix::CmdAssemblyConstraintFix()
 
 void CmdAssemblyConstraintFix::activated(int iMsg)
 {
-    Assembly::ItemAssembly* Asm = 0;
-    Assembly::ConstraintGroup* ConstGrp = 0;
+    //Assembly::ProductRef* Asm = 0;
+    //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    // retrive the standard objects needed
-    if(getConstraintPrerequisits(&Asm, &ConstGrp))
-        return;
+    //// retrive the standard objects needed
+    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //    return;
 
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
 
-    if(objs.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You need to select one part only"));
-        return;
-    };
+    //if(objs.size() != 1) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("You need to select one part only"));
+    //    return;
+    //};
 
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part = Asm->getContainingPart(objs[0].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part = Asm->getContainingPart(objs[0].getObject());
 
-    if(!part.first) {
-        Base::Console().Message("The selected part need to belong to the active assembly\n");
-        return;
-    };
+    //if(!part.first) {
+    //    Base::Console().Message("The selected part need to belong to the active assembly\n");
+    //    return;
+    //};
 
-    if(part.second != Asm) {
-        Base::Console().Message("The selected part need belongs to an subproduct, please add constraint there\n");
-        return;
-    }
+    //if(part.second != Asm) {
+    //    Base::Console().Message("The selected part need belongs to an subproduct, please add constraint there\n");
+    //    return;
+    //}
 
-    openCommand("Insert Constraint Fix");
+    //openCommand("Insert Constraint Fix");
 
-    std::string ConstrName = getUniqueObjectName("Fix");
+    //std::string ConstrName = getUniqueObjectName("Fix");
 
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Fix'");
-    doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part.first, objs[0].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
+    //doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Fix'");
+    //doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part.first, objs[0].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    //updateActive();
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+    ////updateActive();
+    //doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
-    commitCommand();
-    
-    Gui::Selection().clearCompleteSelection();
+    //commitCommand();
+    //
+    //Gui::Selection().clearCompleteSelection();
 }
 
 
@@ -342,52 +343,52 @@ CmdAssemblyConstraintAngle::CmdAssemblyConstraintAngle()
 
 void CmdAssemblyConstraintAngle::activated(int iMsg)
 {
-    Assembly::ItemAssembly* Asm = 0;
-    Assembly::ConstraintGroup* ConstGrp = 0;
+    //Assembly::ProductRef* Asm = 0;
+    //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    // retrive the standard objects needed
-    if(getConstraintPrerequisits(&Asm, &ConstGrp))
-        return;
+    //// retrive the standard objects needed
+    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //    return;
 
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
 
-    if(objs.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You need to select two geometries on two different parts"));
-        return;
-    };
+    //if(objs.size() != 2) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("You need to select two geometries on two different parts"));
+    //    return;
+    //};
 
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part1 = Asm->getContainingPart(objs[0].getObject());
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part2 = Asm->getContainingPart(objs[1].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part1 = Asm->getContainingPart(objs[0].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part2 = Asm->getContainingPart(objs[1].getObject());
 
-    //checking the parts is enough, both or non!
-    if(!part1.first || !part2.first) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
-        return;
-    };
+    ////checking the parts is enough, both or non!
+    //if(!part1.first || !part2.first) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
+    //    return;
+    //};
 
-    //check if this is the right place for the constraint
-    if(((part1.second == part2.second) && part1.second != Asm) && part1.second != Asm) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
-        return;
-    }
+    ////check if this is the right place for the constraint
+    //if(((part1.second == part2.second) && part1.second != Asm) && part1.second != Asm) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
+    //    return;
+    //}
 
-    openCommand("Insert Constraint Angle");
-    std::string ConstrName = getUniqueObjectName("Angle");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Angle'");
-    doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
+    //openCommand("Insert Constraint Angle");
+    //std::string ConstrName = getUniqueObjectName("Angle");
+    //doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Angle'");
+    //doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    //updateActive();
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+    ////updateActive();
+    //doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
-    commitCommand();
+    //commitCommand();
 
-    Gui::Selection().clearCompleteSelection();
+    //Gui::Selection().clearCompleteSelection();
 }
 
 
@@ -411,52 +412,52 @@ CmdAssemblyConstraintOrientation::CmdAssemblyConstraintOrientation()
 
 void CmdAssemblyConstraintOrientation::activated(int iMsg)
 {
-    Assembly::ItemAssembly* Asm = 0;
-    Assembly::ConstraintGroup* ConstGrp = 0;
+    //Assembly::ProductRef* Asm = 0;
+    //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    // retrive the standard objects needed
-    if(getConstraintPrerequisits(&Asm, &ConstGrp))
-        return;
+    //// retrive the standard objects needed
+    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //    return;
 
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
 
-    if(objs.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You need to select two geometries on two different parts"));
-        return;
-    };
+    //if(objs.size() != 2) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("You need to select two geometries on two different parts"));
+    //    return;
+    //};
 
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part1 = Asm->getContainingPart(objs[0].getObject());
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part2 = Asm->getContainingPart(objs[1].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part1 = Asm->getContainingPart(objs[0].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part2 = Asm->getContainingPart(objs[1].getObject());
 
-    //checking the parts is enough, both or non!
-    if(!part1.first || !part2.first) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
-        return;
-    };
+    ////checking the parts is enough, both or non!
+    //if(!part1.first || !part2.first) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
+    //    return;
+    //};
 
-    //check if this is the right place for the constraint
-    if((part1.second == part2.second) && part1.second != Asm) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
-        return;
-    }
+    ////check if this is the right place for the constraint
+    //if((part1.second == part2.second) && part1.second != Asm) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
+    //    return;
+    //}
 
-    openCommand("Insert Constraint Orientation");
-    std::string ConstrName = getUniqueObjectName("Orientation");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Orientation'");
-    doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
+    //openCommand("Insert Constraint Orientation");
+    //std::string ConstrName = getUniqueObjectName("Orientation");
+    //doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Orientation'");
+    //doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    //updateActive();
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+    ////updateActive();
+    //doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
-    commitCommand();
-    
-    Gui::Selection().clearCompleteSelection();
+    //commitCommand();
+    //
+    //Gui::Selection().clearCompleteSelection();
 }
 
 /******************************************************************************************/
@@ -479,52 +480,52 @@ CmdAssemblyConstraintCoincidence::CmdAssemblyConstraintCoincidence()
 
 void CmdAssemblyConstraintCoincidence::activated(int iMsg)
 {
-    Assembly::ItemAssembly* Asm = 0;
-    Assembly::ConstraintGroup* ConstGrp = 0;
+    //Assembly::ProductRef* Asm = 0;
+    //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    // retrive the standard objects needed
-    if(getConstraintPrerequisits(&Asm, &ConstGrp))
-        return;
+    //// retrive the standard objects needed
+    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //    return;
 
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
 
-    if(objs.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You need to select two geometries on two different parts"));
-        return;
-    };
+    //if(objs.size() != 2) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("You need to select two geometries on two different parts"));
+    //    return;
+    //};
 
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part1 = Asm->getContainingPart(objs[0].getObject());
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part2 = Asm->getContainingPart(objs[1].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part1 = Asm->getContainingPart(objs[0].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part2 = Asm->getContainingPart(objs[1].getObject());
 
-    //checking the parts is enough, both or non!
-    if(!part1.first || !part2.first) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
-        return;
-    };
+    ////checking the parts is enough, both or non!
+    //if(!part1.first || !part2.first) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
+    //    return;
+    //};
 
-    //check if this is the right place for the constraint
-    if((part1.second == part2.second) && part1.second != Asm) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
-        return;
-    }
+    ////check if this is the right place for the constraint
+    //if((part1.second == part2.second) && part1.second != Asm) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
+    //    return;
+    //}
 
-    openCommand("Insert Constraint Coincidence");
-    std::string ConstrName = getUniqueObjectName("Coincidence");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Coincident'");
-    doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
+    //openCommand("Insert Constraint Coincidence");
+    //std::string ConstrName = getUniqueObjectName("Coincidence");
+    //doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Coincident'");
+    //doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    //updateActive();
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+    ////updateActive();
+    //doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
-    commitCommand();
-    
-    Gui::Selection().clearCompleteSelection();
+    //commitCommand();
+    //
+    //Gui::Selection().clearCompleteSelection();
 }
 
 /******************************************************************************************/
@@ -547,52 +548,52 @@ CmdAssemblyConstraintAlignment::CmdAssemblyConstraintAlignment()
 
 void CmdAssemblyConstraintAlignment::activated(int iMsg)
 {
-    Assembly::ItemAssembly* Asm = 0;
-    Assembly::ConstraintGroup* ConstGrp = 0;
+    //Assembly::ProductRef* Asm = 0;
+    //Assembly::ConstraintGroup* ConstGrp = 0;
 
-    // retrive the standard objects needed
-    if(getConstraintPrerequisits(&Asm, &ConstGrp))
-        return;
+    //// retrive the standard objects needed
+    //if(getConstraintPrerequisits(&Asm, &ConstGrp))
+    //    return;
 
-    std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    //std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
 
-    if(objs.size() != 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("You need to select two geometries on two different parts"));
-        return;
-    };
+    //if(objs.size() != 2) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("You need to select two geometries on two different parts"));
+    //    return;
+    //};
 
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part1 = Asm->getContainingPart(objs[0].getObject());
-    std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part2 = Asm->getContainingPart(objs[1].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part1 = Asm->getContainingPart(objs[0].getObject());
+    //std::pair<Assembly::PartRef*, Assembly::ProductRef*> part2 = Asm->getContainingPart(objs[1].getObject());
 
-    //checking the parts is enough, both or non!
-    if(!part1.first || !part2.first) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
-        return;
-    };
+    ////checking the parts is enough, both or non!
+    //if(!part1.first || !part2.first) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts need to belong to the active assembly (active product or one of it's subproducts)"));
+    //    return;
+    //};
 
-    //check if this is the right place for the constraint
-    if((part1.second == part2.second) && part1.second != Asm) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
-        return;
-    }
+    ////check if this is the right place for the constraint
+    //if((part1.second == part2.second) && part1.second != Asm) {
+    //    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+    //                         QObject::tr("The selected parts belong both to the same subassembly, please add constraints there"));
+    //    return;
+    //}
 
-    openCommand("Insert Constraint Alignment");
-    std::string ConstrName = getUniqueObjectName("Alignment");
-    doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Align'");
-    doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
-    doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
+    //openCommand("Insert Constraint Alignment");
+    //std::string ConstrName = getUniqueObjectName("Alignment");
+    //doCommand(Doc, "App.activeDocument().addObject('Assembly::Constraint','%s')", ConstrName.c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Type = 'Align'");
+    //doCommand(Doc, "App.activeDocument().ActiveObject.First = %s", asSubLinkString(part1.first, objs[0].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().ActiveObject.Second = %s", asSubLinkString(part2.first, objs[1].getSubNames()[0]).c_str());
+    //doCommand(Doc, "App.activeDocument().%s.Constraints = App.activeDocument().%s.Constraints + [App.activeDocument().ActiveObject]", ConstGrp->getNameInDocument(), ConstGrp->getNameInDocument());
 
-    //updateActive();
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
+    ////updateActive();
+    //doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", ConstrName.c_str());
 
-    commitCommand();
-    
-    Gui::Selection().clearCompleteSelection();
+    //commitCommand();
+    //
+    //Gui::Selection().clearCompleteSelection();
 }
 
 void CreateAssemblyConstraintCommands(void)

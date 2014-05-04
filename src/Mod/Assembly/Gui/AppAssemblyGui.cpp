@@ -33,12 +33,14 @@
 #include "Workbench.h"
 
 #include "ViewProvider.h"
-#include "ViewProviderPart.h"
-#include "ViewProviderAssembly.h"
+#include "ViewProviderPartRef.h"
+#include "ViewProviderProduct.h"
+#include "ViewProviderProductRef.h"
 #include "ViewProviderConstraintGroup.h"
 #include "ViewProviderConstraint.h"
 
-#include <Mod/Assembly/App/ItemAssembly.h>
+#include <Mod/Assembly/App/Product.h>
+#include <Mod/Assembly/App/ProductRef.h>
 
 //#include "resources/qrc_Assembly.cpp"
 
@@ -81,8 +83,9 @@ void AssemblyGuiExport initAssemblyGui()
     AssemblyGui::Workbench::init();
 
     AssemblyGui::ViewProviderItem        ::init();
-    AssemblyGui::ViewProviderItemPart    ::init();
-    AssemblyGui::ViewProviderItemAssembly::init();
+    AssemblyGui::ViewProviderPartRef     ::init();
+    AssemblyGui::ViewProviderProduct     ::init();
+    AssemblyGui::ViewProviderProductRef  ::init();
 
     AssemblyGui::ViewProviderConstraintGroup::init();
     AssemblyGui::ViewProviderConstraint::init();

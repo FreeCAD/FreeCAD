@@ -32,7 +32,7 @@
 #include "TaskAssemblyConstraints.h"
 
 #include <Constraint.h>
-#include <ItemPart.h>
+#include <PartRef.h>
 
 #include <Base/Tools.h>
 #include <Base/Console.h>
@@ -63,14 +63,14 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
     ui->orientation_widget->hide();
 
     //set all basic values
-    Assembly::ItemAssembly* ass = NULL;
+    Assembly::Product* ass = NULL;
     Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(vp->getObject());
 
     if(obj->First.getValue()) {
         QString str;
         str = QString::fromAscii(obj->First.getValue()->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(obj->First.getSubValues().front());
         ui->first_geom->setText(str);
-        ass = dynamic_cast<Assembly::ItemPart*>(obj->First.getValue())->getParentAssembly();
+        ass = dynamic_cast<Assembly::PartRef*>(obj->First.getValue())->getParentAssembly();
     };
 
     if(obj->Second.getValue()) {
@@ -79,7 +79,7 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
         ui->second_geom->setText(str);
 
         if(!ass)
-            ass = dynamic_cast<Assembly::ItemPart*>(obj->Second.getValue())->getParentAssembly();
+            ass = dynamic_cast<Assembly::PartRef*>(obj->Second.getValue())->getParentAssembly();
     };
 
     if(ass)
@@ -249,13 +249,13 @@ void TaskAssemblyConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
             std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
             Assembly::Constraint* con =  dynamic_cast<Assembly::Constraint*>(view->getObject());
 
-            if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
+            if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
                                      QObject::tr("You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click)."));
                 return;
             }
 
-            std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part1 = static_cast<Assembly::ItemAssembly*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
+            std::pair<Assembly::PartRef*, Assembly::Product*> part1 = static_cast<Assembly::Product*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
             con->First.setValue(part1.first, objs.back().getSubNames());
             QString str;
             str = QString::fromAscii(part1.first->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(con->First.getSubValues().front());
@@ -272,13 +272,13 @@ void TaskAssemblyConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
             std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
             Assembly::Constraint* con =  dynamic_cast<Assembly::Constraint*>(view->getObject());
 
-            if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ItemAssembly::getClassTypeId())) {
+            if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
                                      QObject::tr("You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click)."));
                 return;
             }
 
-            std::pair<Assembly::ItemPart*, Assembly::ItemAssembly*> part2 = static_cast<Assembly::ItemAssembly*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
+            std::pair<Assembly::PartRef*, Assembly::Product*> part2 = static_cast<Assembly::Product*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
             con->Second.setValue(part2.first, objs.back().getSubNames());
             QString str;
             str = QString::fromAscii(part2.first->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(con->Second.getSubValues().front());
@@ -290,7 +290,7 @@ void TaskAssemblyConstraints::onSelectionChanged(const Gui::SelectionChanges& ms
             view->draw();
             return;
         }
-    };
+    }
 }
 
 void TaskAssemblyConstraints::on_constraint_selection(bool clicked)
@@ -395,12 +395,12 @@ void TaskAssemblyConstraints::setPossibleOptions() {
 
     if(obj->First.getValue()) {
 
-        Assembly::ItemPart* p1 = dynamic_cast<Assembly::ItemPart*>(obj->First.getValue());
+        Assembly::PartRef* p1 = dynamic_cast<Assembly::PartRef*>(obj->First.getValue());
 
         if(!p1)
             return;
 
-        Assembly::ItemAssembly* ass = p1->getParentAssembly();
+        Assembly::Product* ass = p1->getParentAssembly();
 
         //extract the geometries to use for comparison
         boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
@@ -410,7 +410,7 @@ void TaskAssemblyConstraints::setPossibleOptions() {
 
         if(obj->Second.getValue()) {
 
-            Assembly::ItemPart* p2 = dynamic_cast<Assembly::ItemPart*>(obj->Second.getValue());
+            Assembly::PartRef* p2 = dynamic_cast<Assembly::PartRef*>(obj->Second.getValue());
 
             if(!p2)
                 return;
@@ -498,12 +498,12 @@ void TaskAssemblyConstraints::setPossibleConstraints()
 
     if(obj->First.getValue()) {
 
-        Assembly::ItemPart* p1 = dynamic_cast<Assembly::ItemPart*>(obj->First.getValue());
+        Assembly::PartRef* p1 = dynamic_cast<Assembly::PartRef*>(obj->First.getValue());
 
         if(!p1)
             return;
 
-        Assembly::ItemAssembly* ass = p1->getParentAssembly();
+        Assembly::Product* ass = p1->getParentAssembly();
 
         //extract the geometries to use for comparison
         boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
@@ -521,7 +521,7 @@ void TaskAssemblyConstraints::setPossibleConstraints()
 
         if(obj->Second.getValue()) {
 
-            Assembly::ItemPart* p2 = dynamic_cast<Assembly::ItemPart*>(obj->Second.getValue());
+            Assembly::PartRef* p2 = dynamic_cast<Assembly::PartRef*>(obj->Second.getValue());
 
             if(!p2)
                 return;

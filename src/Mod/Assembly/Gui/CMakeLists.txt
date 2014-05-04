@@ -45,10 +45,12 @@ qt4_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
 SET(AssemblyGuiViewProvider_SRCS
     ViewProvider.cpp
     ViewProvider.h
-    ViewProviderPart.cpp
-    ViewProviderPart.h
-    ViewProviderAssembly.cpp
-    ViewProviderAssembly.h
+    ViewProviderPartRef.cpp
+    ViewProviderPartRef.h
+    ViewProviderProduct.cpp
+    ViewProviderProduct.h
+    ViewProviderProductRef.cpp
+    ViewProviderProductRef.h
     ViewProviderConstraint.cpp
     ViewProviderConstraint.h
     ViewProviderConstraintGroup.cpp

@@ -31,18 +31,20 @@ set(Assembly_LIBS
 )
 
 generate_from_xml(ItemPy)
-generate_from_xml(ItemAssemblyPy)
-generate_from_xml(ItemPartPy)
+generate_from_xml(ProductRefPy)
+generate_from_xml(PartRefPy)
 generate_from_xml(ConstraintPy)
 generate_from_xml(ConstraintGroupPy)
 
 SET(Features_SRCS
     Item.cpp
     Item.h
-    ItemPart.cpp
-    ItemPart.h
-    ItemAssembly.cpp
-    ItemAssembly.h
+    PartRef.cpp
+    PartRef.h
+    Product.cpp
+    Product.h
+    ProductRef.cpp
+    ProductRef.h
     Constraint.cpp
     Constraint.h
     ConstraintGroup.cpp
@@ -80,10 +82,10 @@ SOURCE_GROUP("Solver" FILES ${Solver_SRC})
 SET(Python_SRCS
     ItemPy.xml
     ItemPyImp.cpp
-    ItemAssemblyPy.xml
-    ItemAssemblyPyImp.cpp
-    ItemPartPy.xml
-    ItemPartPyImp.cpp
+    ProductRefPy.xml
+    ProductRefPyImp.cpp
+    PartRefPy.xml
+    PartRefPyImp.cpp
     ConstraintPy.xml
     ConstraintPyImp.cpp
     ConstraintGroupPy.xml

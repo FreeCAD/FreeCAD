@@ -31,8 +31,9 @@
 #include <Base/Interpreter.h>
 
 #include "Item.h"
-#include "ItemAssembly.h"
-#include "ItemPart.h"
+#include "Product.h"
+#include "ProductRef.h"
+#include "PartRef.h"
 
 #include "Constraint.h"
 #include "ConstraintGroup.h"
@@ -69,9 +70,10 @@ void AssemblyExport initAssembly()
     // This function is responsible for adding inherited slots from a type's base class.
  
     // Item hirachy
-    Assembly::Item            ::init();
-    Assembly::ItemAssembly    ::init();
-    Assembly::ItemPart        ::init();
+    Assembly::Item          ::init();
+    Assembly::Product       ::init();
+    Assembly::ProductRef    ::init();
+    Assembly::PartRef       ::init();
 
     // constraint hirachy
     Assembly::Constraint        ::init();

@@ -54,6 +54,10 @@ SET(SCL_Resources
     SCL/SimpleDataTypes.py
     SCL/TypeChecker.py
     SCL/Utils.py
+    SCL/SimpleReader.py
+    SCL/Aufspannung.stp
+    SCL/gasket1.p21
+    SCL/Product1.stp
     automotive_design.py     # AP214e3
     ifc2x3.py                # IFC
     ifc4.py                  # IFC 4
