@@ -45,7 +45,11 @@ endif(WIN32)
 
 # ================================================================================
 
-if(CMAKE_COMPILER_IS_GNUCXX)
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+    set(CMAKE_COMPILER_IS_CLANGXX TRUE)
+endif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
     add_definitions(-DHAVE_CONFIG_H)
@@ -55,7 +59,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     if(UNIX)
     #    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
     endif(UNIX)
-endif(CMAKE_COMPILER_IS_GNUCXX)
+endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 
 # ================================================================================

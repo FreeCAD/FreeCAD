@@ -176,6 +176,7 @@ private:
 class SelectionGate 
 {
 public:
+    virtual ~SelectionGate(){}
     virtual bool allow(App::Document*,App::DocumentObject*, const char*)=0;
 };
 

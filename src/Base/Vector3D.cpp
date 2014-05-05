@@ -411,5 +411,7 @@ void Vector3<_Precision>::TransformToCoordinateSystem (const Vector3 &rclBase,
 }
 
 // explicit template instantiation
+namespace Base {
 template class BaseExport Vector3<float>;
 template class BaseExport Vector3<double>;
+}
