@@ -130,13 +130,18 @@ bool SweepWidget::accept()
 
     // get the selected object
     std::string selection;
+    std::string spineObject, spineLabel;
     if (matchEdge) {
         const std::vector<Gui::SelectionObject>& result = edgeFilter.Result[0];
         selection = result.front().getAsPropertyLinkSubString();
+        spineObject = result.front().getFeatName();
+        spineLabel = result.front().getObject()->Label.getValue();
     }
     else {
         const std::vector<Gui::SelectionObject>& result = partFilter.Result[0];
         selection = result.front().getAsPropertyLinkSubString();
+        spineObject = result.front().getFeatName();
+        spineLabel = result.front().getObject()->Label.getValue();
     }
 
     QString list, solid, frenet;
@@ -160,6 +165,11 @@ bool SweepWidget::accept()
     for (int i=0; i<count; i++) {
         QTreeWidgetItem* child = d->ui.selector->selectedTreeWidget()->topLevelItem(i);
         QString name = child->data(0, Qt::UserRole).toString();
+        if (name == QLatin1String(spineObject.c_str())) {
+            QMessageBox::critical(this, tr("Wrong selection"), tr("'%1' cannot be used as profile and path.")
+                .arg(QString::fromUtf8(spineLabel.c_str())));
+            return false;
+        }
         str << "App.getDocument('" << d->document.c_str() << "')." << name << ", ";
     }
 
