@@ -9,6 +9,7 @@ if(FREECAD_BUILD_FEM_NETGEN)
 endif(FREECAD_BUILD_FEM_NETGEN)
 
 include_directories(
+    ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
