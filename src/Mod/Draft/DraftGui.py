@@ -380,11 +380,11 @@ class DraftToolBar:
         # shapestring
         
         self.labelSSize = self._label("labelSize", self.layout)
-        self.SSizeValue = self._lineedit("SSizeValue", self.layout, width=60)      
-        self.SSizeValue.setText("200.0")
+        self.SSizeValue = self._inputfield("SSizeValue", self.layout)           #, width=60)      
+        self.SSizeValue.setText(self.FORMAT % 1.0)
         self.labelSTrack = self._label("labelTracking", self.layout)
-        self.STrackValue = self._lineedit("STrackValue", self.layout, width=60)    
-        self.STrackValue.setText("0")
+        self.STrackValue = self._inputfield("STrackValue", self.layout)         #, width=60)    
+        self.STrackValue.setText(self.FORMAT % 0)
         self.labelSString = self._label("labelString", self.layout)
         self.SStringValue = self._lineedit("SStringValue", self.layout)      
         self.SStringValue.setText("")
@@ -392,6 +392,8 @@ class DraftToolBar:
         self.FFileValue = self._lineedit("FFileValue", self.layout)
         self.chooserButton = self._pushbutton("chooserButton", self.layout, width=26)
         self.chooserButton.setText("...")
+        self.SSize = 1
+        self.STrack = 0 
  
         # options
         fl = QtGui.QHBoxLayout()
@@ -481,8 +483,10 @@ class DraftToolBar:
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
+        QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSSizeValue)
         QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("returnPressed()"),self.validateSNumeric)
         QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("escaped()"),self.escape)
+        QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSTrackValue)
         QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("returnPressed()"),self.validateSNumeric)
         QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.SStringValue,QtCore.SIGNAL("returnPressed()"),self.validateSString)
@@ -846,7 +850,7 @@ class DraftToolBar:
         self.SStringValue.hide()
         self.continueCmd.hide()
         self.labelSSize.show()
-        self.SSizeValue.setText('200.0')
+        self.SSizeValue.setText(self.FORMAT % 1.0)
         self.SSizeValue.show()
         self.SSizeValue.setFocus()
 
@@ -855,7 +859,7 @@ class DraftToolBar:
         self.labelSSize.hide()
         self.SSizeValue.hide()
         self.labelSTrack.show()
-        self.STrackValue.setText('0')
+        self.STrackValue.setText(self.FORMAT % 0)
         self.STrackValue.show()
         self.STrackValue.setFocus()
         
@@ -1136,20 +1140,20 @@ class DraftToolBar:
         if self.sourceCmd: 
             if (self.labelSSize.isVisible()):
                 try:
-                    SSize=float(self.SSizeValue.text())
+                    SSize=float(self.SSize)
                 except ValueError:
                     FreeCAD.Console.PrintMessage(translate("draft", "Invalid Size value. Using 200.0."))                     
-                    self.sourceCmd.numericSSize(unicode("200.0"))
+                    self.sourceCmd.numericSSize(200.0)
                 else:
-                    self.sourceCmd.numericSSize(unicode(SSize))
+                    self.sourceCmd.numericSSize(SSize)
             elif (self.labelSTrack.isVisible()):
                 try:
-                    track=int(self.STrackValue.text())
+                    track=int(self.STrack)
                 except ValueError:
                     FreeCAD.Console.PrintMessage(translate("draft", "Invalid Tracking value. Using 0."))                     
-                    self.sourceCmd.numericSTrack(unicode("0"))
+                    self.sourceCmd.numericSTrack(0)
                 else:
-                    self.sourceCmd.numericSTrack(unicode(track))
+                    self.sourceCmd.numericSTrack(track)
 
     def validateSString(self):
         ''' send a valid text string to ShapeString as unicode '''
@@ -1585,6 +1589,12 @@ class DraftToolBar:
 
     def changeOffsetValue(self,d):
         self.offset = d
+
+    def changeSSizeValue(self,d):
+        self.SSize = d
+
+    def changeSTrackValue(self,d):
+        self.STrack = d
 
 #---------------------------------------------------------------------------
 # TaskView operations
