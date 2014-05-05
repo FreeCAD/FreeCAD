@@ -3095,6 +3095,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
             
     def updateData(self, obj, prop):
         "called when the base object is changed"
+        import DraftGui
         if prop in ["Start","End","Dimline","Direction"]:
             
             if obj.Start == obj.End:
@@ -3199,10 +3200,9 @@ class _ViewProviderDimension(_ViewProviderDraft):
             # set text value
             l = self.p3.sub(self.p2).Length
             if hasattr(obj.ViewObject,"Decimals"):
-                fstring = "%." + str(obj.ViewObject.Decimals) + "f"
+                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length')
             else:
-                fstring = "%." + str(getParam("dimPrecision",2)) + "f"
-            self.string = (fstring % l)
+                self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length')
             if hasattr(obj.ViewObject,"Override"):
                 if obj.ViewObject.Override:
                     try:
