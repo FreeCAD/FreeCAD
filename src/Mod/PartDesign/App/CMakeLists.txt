@@ -5,6 +5,7 @@ else(MSVC)
 endif(MSVC)
 
 include_directories(
+    ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
