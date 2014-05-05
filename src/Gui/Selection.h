@@ -173,7 +173,7 @@ private:
  * The selection gate allows or disallows selection of certain types.
  * It has to be registered to the selection.
  */
-class SelectionGate 
+class GuiExport SelectionGate
 {
 public:
     virtual ~SelectionGate(){}
