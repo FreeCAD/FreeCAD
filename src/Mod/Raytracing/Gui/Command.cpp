@@ -558,7 +558,7 @@ CmdRaytracingRender::CmdRaytracingRender()
 void CmdRaytracingRender::activated(int iMsg)
 {
     // determining render type
-    const char* renderType;
+    std::string renderType;
     unsigned int n1 = getSelection().countObjectsOfType(Raytracing::RayProject::getClassTypeId());
     if (n1 != 1) {
         unsigned int n2 = getSelection().countObjectsOfType(Raytracing::LuxProject::getClassTypeId());

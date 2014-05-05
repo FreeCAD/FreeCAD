@@ -50,6 +50,7 @@ enum UnitSystem {
 class UnitsSchema 
 {
 public:
+    virtual ~UnitsSchema(){}
     /** get called if this schema gets activated.
       * Here its theoretical possible that you can change the static factors 
       * for certain Units (e.g. mi = 1,8km instead of mi=1.6km). 
@@ -59,7 +60,7 @@ public:
     virtual void resetSchemaUnits(void){}
 
     /// this methode translate the quantity in a string as the user may expect it
-	virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)=0;
+    virtual QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)=0;
 };
 
 
