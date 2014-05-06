@@ -31,7 +31,6 @@ SOURCE_GROUP("shipcreateship" FILES ${ShipCreateShip_SRCS})
 
 SET(ShipOutlineDraw_SRCS
 	shipOutlineDraw/__init__.py
-	shipOutlineDraw/Plot.py
 	shipOutlineDraw/Preview.py
 	shipOutlineDraw/TaskPanel.py
 	shipOutlineDraw/TaskPanel.ui

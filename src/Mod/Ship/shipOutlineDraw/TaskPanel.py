@@ -22,10 +22,11 @@
 #***************************************************************************
 
 import FreeCAD as App
+from FreeCAD import Base, Vector
 import FreeCADGui as Gui
+import Part
 from PySide import QtGui, QtCore
 import Preview
-import Plot
 import Instance
 from shipUtils import Paths
 
@@ -42,17 +43,47 @@ class TaskPanel:
         self.preview = Preview.Preview()
 
     def accept(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.scale = self.widget(QtGui.QSpinBox, "Scale")
-
         self.saveSections()
-        self.obj = Plot.Plot(form.scale.value(),
-                             self.obj.Shape,
-                             self.ship.Shape)
+        # Add ship edges to the object
+        edges = self.getEdges([self.ship.Shape])
+        border = edges[0]
+        for i in range(len(edges)):
+            border = border.oldFuse(edges[i])
+            border = border.oldFuse(edges[i].mirror(Vector(0.0, 0.0, 0.0),
+                                                    Vector(0.0, 1.0, 0.0)))
+        obj = border.oldFuse(self.obj.Shape)
+
+        # Send the generated object to the scene
+        Part.show(obj)
+        objs = App.ActiveDocument.Objects
+        self.obj = objs[len(objs) - 1]
+
         self.preview.clean()
         self.obj.Label = 'OutlineDraw'
         return True
+
+    def getEdges(self, objs):
+        """Return object edges (as a list)
+        """
+        edges = []
+        if not objs:
+            return None
+        for i in range(len(objs)):
+            obj = objs[i]
+            if obj.isDerivedFrom('Part::Feature'):
+                # get shape
+                shape = obj.Shape
+                if not shape:
+                    return None
+                obj = shape
+            if not obj.isDerivedFrom('Part::TopoShape'):
+                return None
+            objEdges = obj.Edges
+            if not objEdges:
+                continue
+            for j in range(0, len(objEdges)):
+                edges.append(objEdges[j])
+        return edges
 
     def reject(self):
         self.preview.clean()
@@ -93,7 +124,6 @@ class TaskPanel:
         form.deleteButton = self.widget(QtGui.QPushButton, "DeleteButton")
         form.nSections = self.widget(QtGui.QSpinBox, "NSections")
         form.createButton = self.widget(QtGui.QPushButton, "CreateButton")
-        form.scale = self.widget(QtGui.QSpinBox, "Scale")
         self.form = form
         # Initial values
         if self.initValues():
@@ -201,12 +231,6 @@ class TaskPanel:
             QtGui.QApplication.translate(
                 "ship_outline",
                 "Auto create",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
-        self.widget(QtGui.QGroupBox, "ScaleBox").setTitle(
-            QtGui.QApplication.translate(
-                "ship_outline",
-                "Scale",
                 None,
                 QtGui.QApplication.UnicodeUTF8))
         self.widget(QtGui.QPushButton, "DeleteButton").setText(
@@ -425,7 +449,6 @@ class TaskPanel:
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.sectionType = self.widget(QtGui.QComboBox, "SectionType")
-        form.scale = self.widget(QtGui.QSpinBox, "Scale")
 
         # Load sections
         props = self.ship.PropertiesList
@@ -438,14 +461,6 @@ class TaskPanel:
             self.LSections = self.ship.LSections[:]
             self.BSections = self.ship.BSections[:]
             self.TSections = self.ship.TSections[:]
-        # Load scale too
-        flag = True
-        try:
-            props.index("PlotScale")
-        except ValueError:
-            flag = False
-        if flag:
-            form.scale.setValue(self.ship.PlotScale)
         # Set UI
         self.setSectionType(form.sectionType.currentIndex())
 
@@ -454,7 +469,6 @@ class TaskPanel:
         """
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.scale = self.widget(QtGui.QSpinBox, "Scale")
 
         props = self.ship.PropertiesList
         try:
@@ -491,20 +505,6 @@ class TaskPanel:
         self.ship.LSections = self.LSections[:]
         self.ship.BSections = self.BSections[:]
         self.ship.TSections = self.TSections[:]
-        # Save the scale as well
-        try:
-            props.index("PlotScale")
-        except ValueError:
-            tooltip = str(QtGui.QApplication.translate(
-                "ship_outline",
-                "Plot scale (1:scale format)",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
-            self.ship.addProperty("App::PropertyInteger",
-                                  "PlotScale",
-                                  "Ship",
-                                  tooltip).PlotScale = 250
-        self.ship.PlotScale = form.scale.value()
 
 
 def createTask():

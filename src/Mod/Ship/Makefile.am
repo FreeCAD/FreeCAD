@@ -20,7 +20,6 @@ nobase_data_DATA = \
 	shipCreateShip/TaskPanel.py \
 	shipCreateShip/TaskPanel.ui \
 	shipOutlineDraw/__init__.py \
-	shipOutlineDraw/Plot.py \
 	shipOutlineDraw/Preview.py \
 	shipOutlineDraw/TaskPanel.py \
 	shipOutlineDraw/TaskPanel.ui \
