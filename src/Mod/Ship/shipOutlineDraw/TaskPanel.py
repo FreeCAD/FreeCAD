@@ -317,21 +317,33 @@ class TaskPanel:
         elif ID == 2:
             SectionList = self.TSections[:]
         item = form.sections.item(row, column)
-        (number, flag) = item.text().toFloat()
-        if not flag:
-            if len(SectionList) > nRow - 1:
-                number = SectionList[nRow - 1]
+        try:
+            if 'toFloat' in dir(item.text()):
+                (number, flag) = item.text().toFloat()
+                if not flag:
+                    raise ValueError('The string cannot be converted into a'
+                                     ' number')
             else:
-                number = 0.0
-        string = '{0}'.format(number)
+                number = float(item.text())
+        except:
+            number = 0.0
+        string = '{}'.format(number)
         item.setText(string)
         # Regenerate the list
         SectionList = []
         for i in range(0, nRow):
             item = form.sections.item(i, 0)
-            if item:
-                (number, flag) = item.text().toFloat()
-                SectionList.append(number)
+            try:
+                if 'toFloat' in dir(item.text()):
+                    (number, flag) = item.text().toFloat()
+                    if not flag:
+                        raise ValueError('The string cannot be converted into a'
+                                         ' number')
+                else:
+                    number = float(item.text())
+            except:
+                continue
+            SectionList.append(number)
         # Paste it into the section type list
         ID = form.sectionType.currentIndex()
         if ID == 0:
