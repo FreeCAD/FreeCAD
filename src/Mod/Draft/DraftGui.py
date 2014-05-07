@@ -146,7 +146,7 @@ def displayExternal(internValue,decimals=4,dim='Length'):
     else:
         parts = (internValue,'??')
     fmt = "{0:."+ str(decimals) + "f} "+ parts[1]
-    displayExt = fmt.format(float(parts[0]))
+    displayExt = fmt.format(float(parts[0].replace(",",".")))
     return displayExt
 
 #---------------------------------------------------------------------------
