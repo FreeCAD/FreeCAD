@@ -33,11 +33,11 @@
 # define PartGuiExport  __declspec(dllimport)
 # define SketcherGuiExport __declspec(dllexport)
 #else // for Linux
-# define SketcherExport 
+# define SketcherExport
 # define PartExport
-# define PartAppExport     
-# define PartGuiExport     
-# define SketcherGuiExport 
+# define PartAppExport
+# define PartGuiExport
+# define SketcherGuiExport
 #endif
 
 
@@ -60,6 +60,7 @@
 #include <bitset>
 
 #ifdef FC_OS_WIN32
+#define NOMINMAX
 # include <windows.h>
 #endif
 
