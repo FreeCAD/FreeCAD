@@ -1245,8 +1245,8 @@ int Sketch::addDistanceConstraint(int geoId, double value)
 // line to line distance constraint
 int Sketch::addDistanceConstraint(int geoId1, int geoId2, double value)
 {
-    geoId1 = checkGeoId(geoId1);
-    geoId2 = checkGeoId(geoId2);
+    //geoId1 = checkGeoId(geoId1);
+    //geoId2 = checkGeoId(geoId2);
 
     //assert(Geoms[geoId1].type == Line);
     //assert(Geoms[geoId2].type == Line);

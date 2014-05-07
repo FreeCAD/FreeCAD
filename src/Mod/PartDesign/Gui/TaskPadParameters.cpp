@@ -528,8 +528,8 @@ bool TaskDlgPadParameters::reject()
 {
     // get the support and Sketch
     PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject()); 
-    Sketcher::SketchObject *pcSketch;
-    App::DocumentObject    *pcSupport;
+    Sketcher::SketchObject *pcSketch = 0;
+    App::DocumentObject    *pcSupport = 0;
     if (pcPad->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
         pcSupport = pcSketch->Support.getValue();

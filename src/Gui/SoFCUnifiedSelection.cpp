@@ -355,7 +355,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
             if (vp && vp->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
                 vpd = static_cast<ViewProviderDocumentObject*>(vp);
 
-            SbBool old_state = highlighted;
+            //SbBool old_state = highlighted;
             highlighted = FALSE;
             if (vpd && vpd->useNewSelectionModel() && vpd->isSelectable()) {
                 std::string documentName = vpd->getObject()->getDocument()->getName();
@@ -391,7 +391,7 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
                             action.apply(currenthighlight);
                             currenthighlight->unref();
                             currenthighlight = 0;
-                            old_state = !highlighted;
+                            //old_state = !highlighted;
                         }
 
                         currenthighlight = static_cast<SoFullPath*>(sa.getPath()->copy());

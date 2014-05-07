@@ -313,7 +313,7 @@ void DlgPrimitives::executeCallback(Picker* p)
             viewer->setEditing(true);
             viewer->setRedirectToSceneGraph(true);
             SoNode* root = viewer->getSceneGraph();
-            int mode;
+            int mode = 0;
             if (root && root->getTypeId().isDerivedFrom(Gui::SoFCUnifiedSelection::getClassTypeId())) {
                 mode = static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.getValue();
                 static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionMode.setValue(Gui::SoFCUnifiedSelection::OFF);

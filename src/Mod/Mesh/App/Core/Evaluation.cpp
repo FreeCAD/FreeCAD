@@ -198,7 +198,6 @@ std::vector<unsigned long> MeshEvalOrientation::GetIndices() const
     MeshFacetArray::_TConstIterator iBeg = rFAry.begin();
     MeshFacetArray::_TConstIterator iEnd = rFAry.end();
 
-    ulVisited = 0;
     ulStartFacet = 0;
 
     std::vector<unsigned long> uIndices, uComplement;

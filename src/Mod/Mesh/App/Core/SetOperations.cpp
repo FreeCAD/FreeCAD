@@ -344,7 +344,6 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
     Vector3f dirY = dirX % normal;
 
     // project points to 2D plane
-    i = 0;
     std::vector<Vector3f>::iterator it;
     std::vector<Vector3f> vertices;
     for (it = points.begin(); it != points.end(); it++)

@@ -304,8 +304,8 @@ bool TaskDlgGrooveParameters::reject()
 {
     // get the support and Sketch
     PartDesign::Groove* pcGroove = static_cast<PartDesign::Groove*>(GrooveView->getObject());
-    Sketcher::SketchObject *pcSketch;
-    App::DocumentObject    *pcSupport;
+    Sketcher::SketchObject *pcSketch = 0;
+    App::DocumentObject    *pcSupport = 0;
     if (pcGroove->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcGroove->Sketch.getValue());
         pcSupport = pcSketch->Support.getValue();
