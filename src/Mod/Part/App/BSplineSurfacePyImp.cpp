@@ -1292,27 +1292,32 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
             }
         }
 
-        if(continuity<0 || continuity>3){
+        if (continuity<0 || continuity>3) {
             Standard_Failure::Raise("continuity must be between 0 and 3");
-        }
-        GeomAbs_Shape c;
-        switch(continuity){
-        case 0:
-            c = GeomAbs_C0;
-        case 1:
-            c = GeomAbs_C1;
-        case 2:
-            c = GeomAbs_C2;
-        case 3:
-            c = GeomAbs_C3;
         }
 
         if (interpolationPoints.RowLength() < 2 || interpolationPoints.ColLength() < 2) {
             Standard_Failure::Raise("not enough points given");
         }
 
+        GeomAbs_Shape c;
+        switch(continuity){
+        case 0:
+            c = GeomAbs_C0;
+            break;
+        case 1:
+            c = GeomAbs_C1;
+            break;
+        case 2:
+            c = GeomAbs_C2;
+            break;
+        case 3:
+            c = GeomAbs_C3;
+            break;
+        }
+
         GeomAPI_PointsToBSplineSurface surInterpolation;
-        if(len == 5){
+        if (len == 5) {
             surInterpolation.Init(interpolationPoints, degMin, degMax, c, tol3d);
         }
         else {
@@ -1334,7 +1339,6 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
 PyObject* BSplineSurfacePy::interpolate(PyObject *args)
 {
     PyObject* obj;
-    Standard_Real tol3d = Precision::Approximation();
     Standard_Real X0=0;
     Standard_Real dX=0;
     Standard_Real Y0=0;

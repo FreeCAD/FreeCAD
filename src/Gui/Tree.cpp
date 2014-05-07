@@ -204,10 +204,12 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
             action->setData(QByteArray((*it)->getName()));
             if (*it == activeDoc) active = action;
         }
-        if (active) active->setChecked(true);
-        active = subMenuGroup.checkedAction();
+
+        if (active)
+            active->setChecked(true);
         subMenu.addActions(subMenuGroup.actions());
     }
+
     if (contextMenu.actions().count() > 0)
         contextMenu.exec(QCursor::pos());
 }

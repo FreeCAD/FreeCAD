@@ -645,10 +645,9 @@ bool MeshFixDeformedFacets::Fixup()
     if ( !it->IsDegenerated() )
     {
       // store the angles to avoid to compute twice
-      float fCosAngles[3];
+      float fCosAngles[3] = {0,0,0};
       bool done=false;
 
-      // first check for angle > 120°: in this case we swap with the opposite edge
       for (int i=0; i<3; i++)
       {
         u = it->_aclPoints[(i+1)%3]-it->_aclPoints[i];
@@ -658,7 +657,12 @@ bool MeshFixDeformedFacets::Fixup()
 
         float fCosAngle = u * v;
         fCosAngles[i] = fCosAngle;
+      }
 
+      // first check for angle > 120°: in this case we swap with the opposite edge
+      for (int i=0; i<3; i++)
+      {
+        float fCosAngle = fCosAngles[i];
         if (fCosAngle < -0.5f) {
           const MeshFacet& face = it.GetReference();
           unsigned long uNeighbour = face._aulNeighbours[(i+1)%3];

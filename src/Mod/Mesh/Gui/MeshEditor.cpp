@@ -425,7 +425,6 @@ MeshFillHole::MeshFillHole(MeshHoleFiller& hf, Gui::View3DInventor* parent)
 
     SoBaseColor * markcol = new SoBaseColor;
     markcol->rgb.setValue(1.0f, 1.0f, 0.0f);
-    SoPointSet* marker = new SoPointSet();
     myBridgeRoot->addChild(markcol);
 
     myVertex = new SoCoordinate3();

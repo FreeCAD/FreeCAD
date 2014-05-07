@@ -482,8 +482,8 @@ bool TaskDlgPocketParameters::reject()
 {
     // get the support and Sketch
     PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject()); 
-    Sketcher::SketchObject *pcSketch;
-    App::DocumentObject    *pcSupport;
+    Sketcher::SketchObject *pcSketch = 0;
+    App::DocumentObject    *pcSupport = 0;
     if (pcPocket->Sketch.getValue()) {
         pcSketch = static_cast<Sketcher::SketchObject*>(pcPocket->Sketch.getValue()); 
         pcSupport = pcSketch->Support.getValue();

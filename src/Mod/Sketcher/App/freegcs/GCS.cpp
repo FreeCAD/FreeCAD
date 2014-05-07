@@ -158,7 +158,7 @@ System::System(std::vector<Constraint *> clist_)
     // create own (shallow) copy of constraints
     for (std::vector<Constraint *>::iterator constr=clist_.begin();
          constr != clist_.end(); ++constr) {
-        Constraint *newconstr;
+        Constraint *newconstr = 0;
         switch ((*constr)->getTypeId()) {
             case Equal: {
                 ConstraintEqual *oldconstr = static_cast<ConstraintEqual *>(*constr);

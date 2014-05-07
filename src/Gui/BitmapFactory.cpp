@@ -240,14 +240,12 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
 
     // try to find it in the given directories
     if (icon.isNull()) {
-        bool found = false;
         QList<QByteArray> formats = QImageReader::supportedImageFormats();
         formats.prepend("SVG"); // check first for SVG to use special import mechanism
-        for (QStringList::ConstIterator pt = d->paths.begin(); pt != d->paths.end() && !found; ++pt) {
+        for (QStringList::ConstIterator pt = d->paths.begin(); pt != d->paths.end(); ++pt) {
             QDir d(*pt);
             QString fileName = d.filePath(fn);
             if (loadPixmap(fileName, icon)) {
-                found = true;
                 break;
             }
             else {
@@ -256,7 +254,6 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
                     QString path = QString::fromAscii("%1.%2").arg(fileName).
                         arg(QString::fromAscii((*fm).toLower().constData()));
                     if (loadPixmap(path, icon)) {
-                        found = true;
                         break;
                     }
                 }

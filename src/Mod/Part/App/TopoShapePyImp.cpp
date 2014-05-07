@@ -1602,7 +1602,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
             pts = PyTuple_New(2);
             PyTuple_SetItem(pts,0,pPt1);
             PyTuple_SetItem(pts,1,pPt2);
-            int PyErr = PyList_Append(solnPts, pts);
+            PyList_Append(solnPts, pts);
 
             geom = PyTuple_New(6);
             PyTuple_SetItem(geom,0,pSuppType1);
@@ -1611,7 +1611,7 @@ PyObject* TopoShapePy::distToShape(PyObject *args)
             PyTuple_SetItem(geom,3,pSuppType2);
             PyTuple_SetItem(geom,4,pSupportIndex2);
             PyTuple_SetItem(geom,5,pParm2);
-            PyErr = PyList_Append(solnGeom, geom);
+            PyList_Append(solnGeom, geom);
         }
     }
     else {

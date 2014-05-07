@@ -1235,7 +1235,6 @@ bool MeshInput::LoadInventor (std::istream &rstrIn)
         else if (points && line.find("INDEXEDFACESET {") != std::string::npos) {
             unsigned long ulPoints[3];
             facets = true;
-            flag = true;
             unsigned long ulCt = 0;
             // Get the next line and check for the index field which might begin
             // with the first index already.

@@ -39,7 +39,7 @@ bool Py::Vector::accepts (PyObject *obj) const
     if (obj && Vector_TypeCheck (obj)) {
         return true;
     }
-    else if (PyTuple_Check(obj)) {
+    else if (obj && PyTuple_Check(obj)) {
         return (PyTuple_Size(obj) == 3);
     }
 

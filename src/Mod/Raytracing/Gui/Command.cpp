@@ -102,60 +102,59 @@ void CmdRaytracingWriteCamera::activated(int iMsg)
             if (ret != QMessageBox::Yes)
                 return;
         }
+
+        SoInput in;
+        in.setBuffer((void*)ppReturn,std::strlen(ppReturn));
+
+        SoNode* rootNode;
+        SoDB::read(&in,rootNode);
+
+        if (!rootNode || !rootNode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId()))
+            throw Base::Exception("CmdRaytracingWriteCamera::activated(): Could not read "
+                                  "camera information from ASCII stream....\n");
+
+        // root-node returned from SoDB::readAll() has initial zero
+        // ref-count, so reference it before we start using it to
+        // avoid premature destruction.
+        SoCamera * Cam = static_cast<SoCamera*>(rootNode);
+        Cam->ref();
+
+        SbRotation camrot = Cam->orientation.getValue();
+
+        SbVec3f upvec(0, 1, 0); // init to default up vector
+        camrot.multVec(upvec, upvec);
+
+        SbVec3f lookat(0, 0, -1); // init to default view direction vector
+        camrot.multVec(lookat, lookat);
+
+        SbVec3f pos = Cam->position.getValue();
+        float Dist = Cam->focalDistance.getValue();
+
+        QStringList filter;
+        filter << QObject::tr("Povray(*.pov)");
+        filter << QObject::tr("All Files (*.*)");
+        QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
+        if (fn.isEmpty()) 
+            return;
+        std::string cFullName = (const char*)fn.toUtf8();
+
+        // building up the python string
+        std::stringstream out;
+        out << "Raytracing.writeCameraFile(\"" << strToPython(cFullName) << "\"," 
+            << "(" << pos.getValue()[0]    <<"," << pos.getValue()[1]    <<"," << pos.getValue()[2]    <<")," 
+            << "(" << lookat.getValue()[0] <<"," << lookat.getValue()[1] <<"," << lookat.getValue()[2] <<")," ;
+        lookat *= Dist;
+        lookat += pos;
+        out << "(" << lookat.getValue()[0] <<"," << lookat.getValue()[1] <<"," << lookat.getValue()[2] <<")," 
+            << "(" << upvec.getValue()[0]  <<"," << upvec.getValue()[1]  <<"," << upvec.getValue()[2]  <<") )" ;
+
+        doCommand(Doc,"import Raytracing");
+        doCommand(Gui,out.str().c_str());
+
+        // Bring ref-count of root-node back to zero to cause the
+        // destruction of the camera.
+        Cam->unref();
     }
-
-    SoInput in;
-    in.setBuffer((void*)ppReturn,std::strlen(ppReturn));
-
-    SoNode* rootNode;
-    SoDB::read(&in,rootNode);
-
-    if (!rootNode || !rootNode->getTypeId().isDerivedFrom(SoCamera::getClassTypeId()))
-        throw Base::Exception("CmdRaytracingWriteCamera::activated(): Could not read "
-                              "camera information from ASCII stream....\n");
-
-    // root-node returned from SoDB::readAll() has initial zero
-    // ref-count, so reference it before we start using it to
-    // avoid premature destruction.
-    SoCamera * Cam = static_cast<SoCamera*>(rootNode);
-    Cam->ref();
-
-    SbRotation camrot = Cam->orientation.getValue();
-
-    SbVec3f upvec(0, 1, 0); // init to default up vector
-    camrot.multVec(upvec, upvec);
-
-    SbVec3f lookat(0, 0, -1); // init to default view direction vector
-    camrot.multVec(lookat, lookat);
-
-    SbVec3f pos = Cam->position.getValue();
-    float Dist = Cam->focalDistance.getValue();
-
-    QStringList filter;
-    filter << QObject::tr("Povray(*.pov)");
-    filter << QObject::tr("All Files (*.*)");
-    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
-    if (fn.isEmpty()) 
-        return;
-    std::string cFullName = (const char*)fn.toUtf8();
-
-    // building up the python string
-    std::stringstream out;
-    out << "Raytracing.writeCameraFile(\"" << strToPython(cFullName) << "\"," 
-        << "(" << pos.getValue()[0]    <<"," << pos.getValue()[1]    <<"," << pos.getValue()[2]    <<")," 
-        << "(" << lookat.getValue()[0] <<"," << lookat.getValue()[1] <<"," << lookat.getValue()[2] <<")," ;
-    lookat *= Dist;
-    lookat += pos;
-    out << "(" << lookat.getValue()[0] <<"," << lookat.getValue()[1] <<"," << lookat.getValue()[2] <<")," 
-        << "(" << upvec.getValue()[0]  <<"," << upvec.getValue()[1]  <<"," << upvec.getValue()[2]  <<") )" ;
-
-    doCommand(Doc,"import Raytracing");
-    doCommand(Gui,out.str().c_str());
-
-
-    // Bring ref-count of root-node back to zero to cause the
-    // destruction of the camera.
-    Cam->unref();
 }
 
 bool CmdRaytracingWriteCamera::isActive(void)

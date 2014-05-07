@@ -261,21 +261,17 @@ ByteArrayOStreambuf::seekoff(std::streambuf::off_type off,
                              std::ios_base::seekdir way,
                              std::ios_base::openmode /*mode*/)
 {
-    off_type begpos = 0;
     off_type endpos = 0;
     off_type curpos = _buffer->pos();
     switch (way) {
         case std::ios_base::beg:
-            begpos = 0;
             endpos = off;
             break;
         case std::ios_base::cur:
-            begpos = curpos;
-            endpos = begpos + off;
+            endpos = curpos + off;
             break;
         case std::ios_base::end:
-            begpos = _buffer->size();
-            endpos = begpos;
+            endpos = _buffer->size();
             break;
         default:
             return pos_type(off_type(-1));
@@ -401,21 +397,17 @@ IODeviceOStreambuf::seekoff(std::streambuf::off_type off,
                             std::ios_base::seekdir way,
                             std::ios_base::openmode /*mode*/)
 {
-    off_type begpos = 0;
     off_type endpos = 0;
     off_type curpos = device->pos();
     switch (way) {
         case std::ios_base::beg:
-            begpos = 0;
             endpos = off;
             break;
         case std::ios_base::cur:
-            begpos = curpos;
-            endpos = begpos + off;
+            endpos = curpos + off;
             break;
         case std::ios_base::end:
-            begpos = device->size();
-            endpos = begpos;
+            endpos = device->size();
             break;
         default:
             return pos_type(off_type(-1));
@@ -499,21 +491,17 @@ IODeviceIStreambuf::seekoff(std::streambuf::off_type off,
                             std::ios_base::seekdir way,
                             std::ios_base::openmode /*mode*/)
 {
-    off_type begpos = 0;
     off_type endpos = 0;
     off_type curpos = device->pos();
     switch (way) {
         case std::ios_base::beg:
-            begpos = 0;
             endpos = off;
             break;
         case std::ios_base::cur:
-            begpos = curpos;
-            endpos = begpos + off;
+            endpos = curpos + off;
             break;
         case std::ios_base::end:
-            begpos = device->size();
-            endpos = begpos;
+            endpos = device->size();
             break;
         default:
             return pos_type(off_type(-1));
