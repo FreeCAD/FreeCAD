@@ -228,26 +228,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
-          <property name="toolTip">
-           <string>If this is checked, objects will appear as filled as default. Otherwise, they will appear as wireframe</string>
-          </property>
-          <property name="text">
-           <string>Fill objects by default</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>fillmode</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="QLabel" name="label_11">
