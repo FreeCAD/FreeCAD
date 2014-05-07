@@ -573,6 +573,7 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
         n = "Circle"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",n)
     _Circle(obj)
+    obj.MakeFace = face
     if isinstance(radius,Part.Edge):
         edge = radius
         if DraftGeomUtils.geomType(edge) == "Circle":
@@ -598,7 +599,6 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderDraft(obj.ViewObject)
-        if not face: obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
     FreeCAD.ActiveDocument.recompute()
@@ -616,10 +616,10 @@ def makeRectangle(length, height, placement=None, face=True, support=None):
     obj.Length = length
     obj.Height = height
     obj.Support = support
+    obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderRectangle(obj.ViewObject)
-        if not face: obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
     FreeCAD.ActiveDocument.recompute()
@@ -752,10 +752,10 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     obj.Points = pointslist
     obj.Closed = closed
     obj.Support = support
+    obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderWire(obj.ViewObject)
-        if not face: obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
     FreeCAD.ActiveDocument.recompute()
@@ -773,6 +773,7 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=True,support=
     _Polygon(obj)
     obj.FacesNumber = nfaces
     obj.Radius = radius
+    obj.MakeFace = face
     if inscribed:
         obj.DrawMode = "inscribed"
     else:
@@ -781,7 +782,6 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=True,support=
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderDraft(obj.ViewObject)
-        if not face: obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
     FreeCAD.ActiveDocument.recompute()
@@ -824,16 +824,16 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
     obj.Closed = closed
     obj.Points = pointslist
     obj.Support = support
+    obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderWire(obj.ViewObject)
-        if not face: obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeBezCurve(pointslist,closed=False,placement=None,support=None,Degree=None):
+def makeBezCurve(pointslist,closed=False,placement=None,face=True,support=None,Degree=None):
     '''makeBezCurve(pointslist,[closed],[placement]): Creates a Bezier Curve object
     from the given list of vectors.   Instead of a pointslist, you can also pass a Part Wire.'''
     if not isinstance(pointslist,list):
@@ -855,12 +855,13 @@ def makeBezCurve(pointslist,closed=False,placement=None,support=None,Degree=None
             Part.BezierCurve().MaxDegree)
     obj.Closed = closed
     obj.Support = support
+    obj.MakeFace = face
     obj.Proxy.resetcontinuity(obj)
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderWire(obj.ViewObject)
 #        if not face: obj.ViewObject.DisplayMode = "Wireframe"
-        obj.ViewObject.DisplayMode = "Wireframe"
+#        obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
     FreeCAD.ActiveDocument.recompute()
@@ -3684,6 +3685,8 @@ class _Rectangle(_DraftObject):
         obj.addProperty("App::PropertyDistance","Height","Draft","Height of the rectange")
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
+        obj.MakeFace = True
         obj.Length=1
         obj.Height=1
 
@@ -3706,7 +3709,11 @@ class _Rectangle(_DraftObject):
                     w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
                     if w:
                         shape = w
-            shape = Part.Face(shape)
+            if hasattr(obj,"MakeFace"):
+                if obj.MakeFace:
+                    shape = Part.Face(shape)
+            else:
+                shape = Part.Face(shape)
             obj.Shape = shape
             obj.Placement = plm
 
@@ -3724,6 +3731,8 @@ class _Circle(_DraftObject):
         obj.addProperty("App::PropertyAngle","FirstAngle","Draft","Start angle of the arc")
         obj.addProperty("App::PropertyAngle","LastAngle","Draft","End angle of the arc (for a full circle, give it same value as First Angle)")
         obj.addProperty("App::PropertyLength","Radius","Draft","Radius of the circle")
+        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
+        obj.MakeFace = True
 
     def execute(self, obj):
         import Part
@@ -3731,7 +3740,11 @@ class _Circle(_DraftObject):
         shape = Part.makeCircle(obj.Radius.Value,Vector(0,0,0),Vector(0,0,1),obj.FirstAngle.Value,obj.LastAngle.Value)
         if obj.FirstAngle.Value == obj.LastAngle.Value:
             shape = Part.Wire(shape)
-            shape = Part.Face(shape)
+            if hasattr(obj,"MakeFace"):
+                if obj.MakeFace:
+                    shape = Part.Face(shape)
+            else:
+                shape = Part.Face(shape)
         obj.Shape = shape
         obj.Placement = plm
         
@@ -3742,6 +3755,8 @@ class _Ellipse(_DraftObject):
         _DraftObject.__init__(self,obj,"Ellipse")
         obj.addProperty("App::PropertyLength","MinorRadius","Draft","The minor radius of the ellipse")
         obj.addProperty("App::PropertyLength","MajorRadius","Draft","The major radius of the ellipse")
+        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
+        obj.MakeFace = True
 
     def execute(self, obj):
         import Part
@@ -3752,7 +3767,11 @@ class _Ellipse(_DraftObject):
         if obj.MajorRadius.Value and obj.MinorRadius.Value:
             shape = Part.Ellipse(Vector(0,0,0),obj.MajorRadius.Value,obj.MinorRadius.Value).toShape()
             shape = Part.Wire(shape)
-            shape = Part.Face(shape)
+            if hasattr(obj,"MakeFace"):
+                if obj.MakeFace:
+                    shape = Part.Face(shape)
+            else:
+                shape = Part.Face(shape)
             obj.Shape = shape
             obj.Placement = plm
 
@@ -3769,6 +3788,8 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyVector","End","Draft","The end point of this line")
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this object is closed")
+        obj.MakeFace = True
         obj.Closed = False
 
     def execute(self, obj):
@@ -3778,7 +3799,11 @@ class _Wire(_DraftObject):
             if obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                 shape = obj.Base.Shape.copy()
                 if obj.Base.Shape.isClosed():
-                    shape = Part.Face(shape)
+                    if hasattr(obj,"MakeFace"):
+                        if obj.MakeFace:
+                            shape = Part.Face(shape)
+                    else:
+                        shape = Part.Face(shape)
                 obj.Shape = shape
         elif obj.Base and obj.Tool:
             if obj.Base.isDerivedFrom("Part::Feature") and obj.Tool.isDerivedFrom("Part::Feature"):
@@ -3804,7 +3829,11 @@ class _Wire(_DraftObject):
                         if w:
                             shape = w
                 try:
-                    shape = Part.Face(shape)
+                    if hasattr(obj,"MakeFace"):
+                        if obj.MakeFace:
+                            shape = Part.Face(shape)
+                    else:
+                        shape = Part.Face(shape)
                 except:
                     pass
             else:
@@ -3915,6 +3944,8 @@ class _Polygon(_DraftObject):
         obj.addProperty("App::PropertyEnumeration","DrawMode","Draft","How the polygon must be drawn from the control circle")
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
+        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
+        obj.MakeFace = True
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 0
         obj.Radius = 1
@@ -3944,7 +3975,11 @@ class _Polygon(_DraftObject):
                     w = DraftGeomUtils.filletWire(shape,obj.FilletRadius.Value)
                     if w:
                         shape = w
-            shape = Part.Face(shape)
+            if hasattr(obj,"MakeFace"):
+                if obj.MakeFace:
+                    shape = Part.Face(shape)
+            else:
+                shape = Part.Face(shape)
             obj.Shape = shape
             obj.Placement = plm
 
@@ -4002,6 +4037,8 @@ class _BSpline(_DraftObject):
         _DraftObject.__init__(self,obj,"BSpline")
         obj.addProperty("App::PropertyVectorList","Points","Draft", "The points of the b-spline")
         obj.addProperty("App::PropertyBool","Closed","Draft","If the b-spline is closed or not")
+        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this spline is closed")
+        obj.MakeFace = True
         obj.Closed = False
         obj.Points = []
 
@@ -4021,7 +4058,11 @@ class _BSpline(_DraftObject):
                 # Creating a face from a closed spline cannot be expected to always work
                 # Usually, if the spline is not flat the call of Part.Face() fails
                 try:
-                    shape = Part.Face(shape)
+                    if hasattr(obj,"MakeFace"):
+                        if obj.MakeFace:
+                            shape = Part.Face(shape)
+                    else:
+                        shape = Part.Face(shape)
                 except:
                     pass
                 obj.Shape = shape
@@ -4047,6 +4088,8 @@ class _BezCurve(_DraftObject):
                         "Continuity")
         obj.addProperty("App::PropertyBool","Closed","Draft",
                         "If the Bezier curve should be closed or not")
+        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this curve is closed")
+        obj.MakeFace = True
         obj.Closed = False
         obj.Degree = 3
         obj.Continuity = []
@@ -4106,7 +4149,11 @@ class _BezCurve(_DraftObject):
             w = Part.Wire(edges)
             if fp.Closed and w.isClosed():
                 try:
-                    w = Part.Face(w)
+                    if hasattr(fp,"MakeFace"):
+                        if fp.MakeFace:
+                            w = Part.Face(w)
+                    else:
+                        w = Part.Face(w)
                 except:
                     pass
             fp.Shape = w
