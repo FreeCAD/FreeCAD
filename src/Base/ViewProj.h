@@ -36,8 +36,8 @@ namespace Base {
 class BaseExport ViewProjMethod
 {
 public:
-    virtual ~ViewProjMethod(){};
-    virtual bool isValid() const { return true; };
+    virtual ~ViewProjMethod(){}
+    virtual bool isValid() const { return true; }
     /** Convert 3D point to 2D projection plane */
     virtual Vector3f operator()(const Vector3f &rclPt) const = 0;
     /** Convert 3D point to 2D projection plane */
@@ -50,7 +50,7 @@ public:
     virtual Matrix4D getProjectionMatrix (void) const = 0; 
 
 protected:
-    ViewProjMethod(){};
+    ViewProjMethod(){}
 };
 
 /**
@@ -60,8 +60,8 @@ protected:
 class BaseExport ViewProjMatrix : public ViewProjMethod
 {
 public:
-    ViewProjMatrix (const Matrix4D &rclMtx) : _clMtx(rclMtx) {  _clMtxInv = _clMtx; _clMtxInv.inverse(); };
-    virtual ~ViewProjMatrix(){};
+    ViewProjMatrix (const Matrix4D &rclMtx) : _clMtx(rclMtx) {  _clMtxInv = _clMtx; _clMtxInv.inverse(); }
+    virtual ~ViewProjMatrix(){}
 
     inline Vector3f operator()(const Vector3f &rclPt) const;
     inline Vector3d operator()(const Vector3d &rclPt) const;

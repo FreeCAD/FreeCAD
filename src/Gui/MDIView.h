@@ -45,7 +45,7 @@ class Document;
  */
 class GuiExport MDIView : public QMainWindow, public BaseView
 {
-    Q_OBJECT;
+    Q_OBJECT
 
     TYPESYSTEM_HEADER();
 

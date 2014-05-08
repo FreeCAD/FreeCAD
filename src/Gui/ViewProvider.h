@@ -124,7 +124,7 @@ public:
     virtual std::vector<Base::Vector3d> getPickedPoints(const SoPickedPoint *) const;
     /// return the higlight lines for a given element or the whole shape
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const
-    { return std::vector<Base::Vector3d>(); };
+    { return std::vector<Base::Vector3d>(); }
     /// get called if the object is about to get deleted. Here you can delete other objects to or switch visibility of others.
     virtual bool onDelete(const std::vector<std::string> &)
     { return true;}

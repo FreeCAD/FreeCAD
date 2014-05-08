@@ -108,7 +108,7 @@ PyObject* FT2FC(const Py_UNICODE *PyUString,
    std::stringstream ErrorMsg;
    double PenPos = 0, scalefactor;
    UNICHAR prevchar = 0, currchar = 0;
-   int  cadv, PyErr;
+   int  cadv;
    size_t i;
    PyObject *WireList, *CharList;
    
@@ -266,10 +266,9 @@ static FT_Outline_Funcs FTcbFuncs = {
 PyObject* getGlyphContours(FT_Face FTFont, UNICHAR currchar, double PenPos, double Scale) {
    FT_Error error = 0;
    std::stringstream ErrorMsg;
-   int PyErr;
    gp_Pnt origin = gp_Pnt(0.0,0.0,0.0);
    FTDC_Ctx ctx;
- 
+
    ctx.currchar = currchar;
    ctx.surf = new Geom_Plane(origin,gp::DZ());
 

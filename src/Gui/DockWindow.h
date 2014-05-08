@@ -46,7 +46,7 @@ class Application;
  */
 class GuiExport DockWindow : public QWidget, public BaseView
 {
-  Q_OBJECT;
+  Q_OBJECT
 
 public:
   /** View constructor
@@ -64,13 +64,13 @@ public:
    */
   //@{
   /// get called when the document is updated
-  virtual void onUpdate(void){};
+  virtual void onUpdate(void){}
   /// returns the name of the view (important for messages)
-  virtual const char *getName(void) const { return "DockWindow"; };
+  virtual const char *getName(void) const { return "DockWindow"; }
   /// Message handler
-  virtual bool onMsg(const char* pMsg,const char** ppReturn){ return false; };
+  virtual bool onMsg(const char* pMsg,const char** ppReturn){ return false; }
   /// Message handler test
-  virtual bool onHasMsg(const char* pMsg) const { return false; };
+  virtual bool onHasMsg(const char* pMsg) const { return false; }
   /// overwrite when checking on close state
   virtual bool canClose(void){return true;}
   //@}

@@ -52,7 +52,7 @@
  
 namespace Base {
 class ConsoleSingleton;
-}; // namespace Base
+} // namespace Base
 
 typedef Base::ConsoleSingleton ConsoleMsgType;
 typedef unsigned int ConsoleMsgFlags;
@@ -72,13 +72,13 @@ public:
         :bErr(true),bMsg(true),bLog(true),bWrn(true) {}
     virtual ~ConsoleObserver() {}
     /// get calles when a Warning is issued
-    virtual void Warning(const char *){};
+    virtual void Warning(const char *){}
     /// get calles when a Message is issued
-    virtual void Message(const char *){};
+    virtual void Message(const char *){}
     /// get calles when a Error is issued
     virtual void Error  (const char *)=0;
     /// get calles when a Log Message is issued
-    virtual void Log    (const char *){};
+    virtual void Log    (const char *){}
 
     virtual const char *Name(void){return 0L;}
     bool bErr,bMsg,bLog,bWrn;
