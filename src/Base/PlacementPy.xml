@@ -27,7 +27,7 @@ Placement(Base, Axis, Angle) -- define position and rotation
 		</UserDocu>
 		<DeveloperDocu>Placement</DeveloperDocu>
 	</Documentation>
-        <Methode Name="copy">>
+        <Methode Name="copy" Const="true">
             <Documentation>
                 <UserDocu>
                     copy()
@@ -43,7 +43,7 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="multiply">
+                <Methode Name="multiply" Const="true">
 			<Documentation>
 				<UserDocu>
 					multiply(Placement)
@@ -51,7 +51,7 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="multVec">
+                <Methode Name="multVec" Const="true">
 			<Documentation>
 				<UserDocu>
 					multVector(Vector) -> Vector
@@ -59,7 +59,7 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="toMatrix">
+                <Methode Name="toMatrix" Const="true">
 			<Documentation>
 				<UserDocu>
 					toMatrix()
@@ -67,7 +67,7 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="inverse">
+                <Methode Name="inverse" Const="true">
 			<Documentation>
 				<UserDocu>
 					inverse() -> Placement
@@ -75,7 +75,7 @@ Placement(Base, Axis, Angle) -- define position and rotation
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isNull">
+                <Methode Name="isNull" Const="true">
 			<Documentation>
 				<UserDocu>
 					isNull() -> Bool

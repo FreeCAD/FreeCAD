@@ -34,7 +34,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="multiply">
+                <Methode Name="multiply" Const="true">
 			<Documentation>
 				<UserDocu>
 					multiply(Rotation)
@@ -42,7 +42,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="multVec">
+                <Methode Name="multVec" Const="true">
 			<Documentation>
 				<UserDocu>
 					multVec(Vector) -> Vector
@@ -50,7 +50,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="toEuler">
+                <Methode Name="toEuler" Const="true">
 			<Documentation>
 				<UserDocu>
 					toEuler(Vector) -> list
@@ -58,7 +58,7 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="isNull">
+                <Methode Name="isNull" Const="true">
 			<Documentation>
 				<UserDocu>
 					isNull() -> Bool
