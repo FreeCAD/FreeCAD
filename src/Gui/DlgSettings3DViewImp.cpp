@@ -31,6 +31,7 @@
 #include "DlgSettings3DViewImp.h"
 #include "NavigationStyle.h"
 #include "PrefWidgets.h"
+#include "View3DInventorViewer.h"
 #include "ui_MouseButtons.h"
 #include <App/Application.h>
 #include <Base/Console.h>
@@ -71,11 +72,13 @@ void DlgSettings3DViewImp::saveSettings()
 
     int index = comboOrbitStyle->currentIndex();
     hGrp->SetInt("OrbitStyle", index);
+    
+    index = this->comboAliasing->currentIndex();
+    hGrp->SetInt("AntiAliasing", index);
 
     checkBoxZoomAtCursor->onSave();
     checkBoxInvertZoom->onSave();
     spinBoxZoomStep->onSave();
-    checkBoxAntiAliasing->onSave();
     CheckBox_CornerCoordSystem->onSave();
     CheckBox_ShowFPS->onSave();
     CheckBox_UseAutoRotation->onSave();
@@ -92,7 +95,6 @@ void DlgSettings3DViewImp::loadSettings()
     checkBoxZoomAtCursor->onRestore();
     checkBoxInvertZoom->onRestore();
     spinBoxZoomStep->onRestore();
-    checkBoxAntiAliasing->onRestore();
     CheckBox_CornerCoordSystem->onRestore();
     CheckBox_ShowFPS->onRestore();
     CheckBox_UseAutoRotation->onRestore();
@@ -112,6 +114,10 @@ void DlgSettings3DViewImp::loadSettings()
     index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::Trackball));
     index = Base::clamp(index, 0, comboOrbitStyle->count()-1);
     comboOrbitStyle->setCurrentIndex(index);
+    
+    index = hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None));
+    index = Base::clamp(index, 0, comboAliasing->count()-1);
+    comboAliasing->setCurrentIndex(index);
 }
 
 void DlgSettings3DViewImp::on_mouseButton_clicked()
@@ -148,10 +154,12 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         int navigation = comboNavigationStyle->currentIndex();
         int orbit = comboOrbitStyle->currentIndex();
+	int aliasing = comboAliasing->currentIndex();
         retranslateUi(this);
         retranslate();
         comboNavigationStyle->setCurrentIndex(navigation);
         comboOrbitStyle->setCurrentIndex(orbit);
+	comboAliasing->setCurrentIndex(aliasing);
     }
     else {
         QWidget::changeEvent(e);
