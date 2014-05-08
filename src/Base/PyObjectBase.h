@@ -66,7 +66,7 @@
  * @see PYFUNCIMP_S
  * @see FCPythonExport
  */
-#define PYFUNCDEF_S(SFUNC)   static PyObject* SFUNC (PyObject *self,PyObject *args,PyObject *kwd);
+#define PYFUNCDEF_S(SFUNC)   static PyObject* SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
 
 
 /** Python static class macro for implementation
@@ -104,7 +104,7 @@ namespace Base
 {
 
 inline int streq(const char *A, const char *B)  // define "streq"
-{ return strcmp(A,B) == 0;};
+{ return strcmp(A,B) == 0;}
 
 
 inline void Assert(int expr, char *msg)         // C++ assert
@@ -144,7 +144,7 @@ public:                                                     \
     static PyTypeObject   Type;                             \
     static PyMethodDef    Methods[];                        \
     static PyParentObject Parents[];                        \
-    virtual PyTypeObject *GetType(void) {return &Type;};    \
+    virtual PyTypeObject *GetType(void) {return &Type;}     \
     virtual PyParentObject *GetParents(void) {return Parents;}
 
 /** This defines the _getattr_up macro
@@ -198,7 +198,7 @@ class BaseExport PyObjectBase : public PyObject
      *  Every PyObjectBase object is also a python object. So you can use
      *  every Python C-Library function also on a PyObjectBase object
      */
-    Py_Header;
+    Py_Header
 
 protected:
     /// destructor

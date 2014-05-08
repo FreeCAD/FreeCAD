@@ -46,7 +46,7 @@ public:
     Placement(const Vector3d& Pos, const Rotation &Rot);
     Placement(const Vector3d& Pos, const Rotation &Rot, const Vector3d& Cnt);
     /// Destruction
-    ~Placement () {};
+    ~Placement () {}
 
     Matrix4D toMatrix(void) const;
     void fromMatrix(const Matrix4D& m);

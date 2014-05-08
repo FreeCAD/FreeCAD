@@ -47,7 +47,7 @@ public:
     Quantity(const Quantity&);
     Quantity(double Value, const Unit& unit=Unit());
     /// Destruction
-    ~Quantity () {};
+    ~Quantity () {}
 
     /** Operators. */
     //@{

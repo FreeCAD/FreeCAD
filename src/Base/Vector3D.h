@@ -218,7 +218,7 @@ template <class _Pr1, class _Pr2>
 inline Vector3<_Pr1> toVector(const Vector3<_Pr2>& v)
 {
     return Vector3<_Pr1>((_Pr1)v.x,(_Pr1)v.y,(_Pr1)v.z);
-};
+}
 
 typedef Vector3<float>  Vector3f;
 typedef Vector3<double> Vector3d;
@@ -260,7 +260,7 @@ inline _Vec1 convertTo(const _Vec2& v)
     typedef typename traits_out::float_type float_type;
     traits_type t(v);
     return _Vec1((float_type)t.x(),(float_type)t.y(),(float_type)t.z());
-};
+}
 
 
 } // namespace Base

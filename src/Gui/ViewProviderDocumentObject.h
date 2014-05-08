@@ -77,7 +77,7 @@ public:
     /// Run a redraw
     void updateView();
     /// Gets called if some of the property hade bin changed
-    virtual void updateData(const App::Property*){};
+    virtual void updateData(const App::Property*){}
     /// Get the object of this ViewProvider object
     App::DocumentObject *getObject(void) const {return pcObject;}
     /// Get the python wrapper for that ViewProvider

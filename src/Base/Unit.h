@@ -57,7 +57,7 @@ public:
     Unit(const Unit&);
     Unit(const std::string& Pars);
     /// Destruction
-    ~Unit () {};
+    ~Unit () {}
 
 
     /** Operators. */

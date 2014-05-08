@@ -373,7 +373,7 @@ public:
     
     /** Sets the property 
      */
-    void setValue(void){};
+    void setValue(void){}
     void setValue(const std::string& key,const std::string& value);
     void setValues(const std::map<std::string,std::string>&);
     
@@ -525,7 +525,7 @@ public:
      */
     void setValue(double);
 
-    void setValue (void){};
+    void setValue (void){}
     
     /// index operator
     double operator[] (const int idx) const {return _lValueList.operator[] (idx);} 
