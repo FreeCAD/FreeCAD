@@ -7,26 +7,20 @@
     <x>0</x>
     <y>0</y>
     <width>477</width>
-    <height>495</height>
+    <height>505</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>3D View</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout3">
-   <property name="margin">
-    <number>11</number>
-   </property>
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
     <widget class="QGroupBox" name="GroupBox12">
      <property name="title">
       <string>3D View settings</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_CornerCoordSystem">
         <property name="text">
          <string>Show coordinate system in the corner</string>
@@ -42,7 +36,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_ShowFPS">
         <property name="text">
          <string>Show counter of frames per second</string>
@@ -55,7 +49,7 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item>
        <widget class="Gui::PrefCheckBox" name="CheckBox_UseAutoRotation">
         <property name="enabled">
          <bool>true</bool>
@@ -74,7 +68,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item>
        <layout class="QGridLayout" name="gridLayout2">
         <item row="0" column="0">
          <widget class="QLabel" name="navigationLabel">
@@ -127,9 +121,51 @@
           </item>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="aliasingLAbel">
+          <property name="text">
+           <string>Anti-Aliasing</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::PrefComboBox" name="comboAliasing">
+          <property name="prefEntry" stdset="0">
+           <cstring>AntiAliasing</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>View</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>None</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Line Smoothing</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>MSAA 2x</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>MSAA 4x</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>MSAA 8x</string>
+           </property>
+          </item>
+         </widget>
+        </item>
        </layout>
       </item>
-      <item row="4" column="0">
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
@@ -188,13 +224,13 @@
         </item>
        </layout>
       </item>
-      <item row="5" column="0">
+      <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxInvertZoom">
-	   <property name="checked">
-		   <bool>true</bool>
-	   </property>
-       <property name="text">
+        <property name="text">
          <string>Invert zoom</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>InvertZoom</cstring>
@@ -204,20 +240,7 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxAntiAliasing">
-        <property name="text">
-         <string>Enable anti-aliasing (slower)</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>UseAntialiasing</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
+      <item>
        <widget class="Line" name="line1">
         <property name="frameShape">
          <enum>QFrame::HLine</enum>
@@ -230,7 +253,7 @@
         </property>
        </widget>
       </item>
-      <item row="8" column="0">
+      <item>
        <layout class="QHBoxLayout" name="eyedistanceLayout">
         <property name="spacing">
          <number>6</number>
@@ -272,7 +295,7 @@
         </item>
        </layout>
       </item>
-      <item row="9" column="0">
+      <item>
        <layout class="QGridLayout" name="backlightLayout">
         <property name="margin">
          <number>11</number>
@@ -362,7 +385,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QGroupBox" name="groupBoxCamera">
      <property name="title">
       <string>Camera type</string>
@@ -406,7 +429,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <spacer>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -449,6 +472,11 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -464,7 +492,6 @@
   <tabstop>checkBoxZoomAtCursor</tabstop>
   <tabstop>spinBoxZoomStep</tabstop>
   <tabstop>checkBoxInvertZoom</tabstop>
-  <tabstop>checkBoxAntiAliasing</tabstop>
   <tabstop>FloatSpinBox_EyeDistance</tabstop>
   <tabstop>checkBoxBacklight</tabstop>
   <tabstop>backlightColor</tabstop>
