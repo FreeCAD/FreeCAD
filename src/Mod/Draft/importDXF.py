@@ -1506,6 +1506,8 @@ def getArcData(edge):
         a2 = -DraftVecUtils.angle(ve2.sub(ce))
         if round(a1,Draft.precision()) == round(a2,Draft.precision()):
             return None,None, None, None
+        if edge.Curve.Axis.z < 0.0:
+            ang1, ang2 = ang2, ang1
         pseudoarc = Part.ArcOfCircle(edge.Curve,a1,a2).toShape()
         if round(pseudoarc.Length,Draft.precision()) != round(edge.Length,Draft.precision()):
             ang1, ang2 = ang2, ang1

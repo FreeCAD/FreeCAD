@@ -130,23 +130,24 @@ def makeFormatSpec(decimals=4,dim='Length'):
     return fmtSpec
 
 def displayExternal(internValue,decimals=4,dim='Length'):
-    '''return an internal value (ie mm) Length converted for display according 
+    '''return an internal value (ie mm) Length or Angle converted for display according 
     to Units Schema in use.'''
     from FreeCAD import Units
     if dim == 'Length':
-        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
-        parts = (qty.getUserPreferred()[0]).split()
+        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Length)
+        pref = qty.getUserPreferred()
+        conversion = pref[1]
+        uom = pref[2]
     elif dim == 'Angle':
-        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle)
+        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Angle)
         pref=qty.getUserPreferred()
-        parts = (qty.getUserPreferred()[0]).split()
-        val = (qty.getUserPreferred()[0]).split()[0]
-        um = parts[1].decode('latin-1')
-        parts = (val,um)
+        conversion = pref[1]
+        uom = pref[2].decode('latin-1')
     else:
-        parts = (internValue,'??')
-    fmt = "{0:."+ str(decimals) + "f} "+ parts[1]
-    displayExt = fmt.format(float(parts[0]))
+        conversion = 1.0
+        uom = "??"
+    fmt = "{0:."+ str(decimals) + "f} "+ uom
+    displayExt = fmt.format(float(internValue) / float(conversion))
     return displayExt
 
 #---------------------------------------------------------------------------
@@ -380,11 +381,11 @@ class DraftToolBar:
         # shapestring
         
         self.labelSSize = self._label("labelSize", self.layout)
-        self.SSizeValue = self._lineedit("SSizeValue", self.layout, width=60)      
-        self.SSizeValue.setText("200.0")
+        self.SSizeValue = self._inputfield("SSizeValue", self.layout)           #, width=60)      
+        self.SSizeValue.setText(self.FORMAT % 1.0)
         self.labelSTrack = self._label("labelTracking", self.layout)
-        self.STrackValue = self._lineedit("STrackValue", self.layout, width=60)    
-        self.STrackValue.setText("0")
+        self.STrackValue = self._inputfield("STrackValue", self.layout)         #, width=60)    
+        self.STrackValue.setText(self.FORMAT % 0)
         self.labelSString = self._label("labelString", self.layout)
         self.SStringValue = self._lineedit("SStringValue", self.layout)      
         self.SStringValue.setText("")
@@ -392,6 +393,8 @@ class DraftToolBar:
         self.FFileValue = self._lineedit("FFileValue", self.layout)
         self.chooserButton = self._pushbutton("chooserButton", self.layout, width=26)
         self.chooserButton.setText("...")
+        self.SSize = 1
+        self.STrack = 0 
  
         # options
         fl = QtGui.QHBoxLayout()
@@ -481,8 +484,10 @@ class DraftToolBar:
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
+        QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSSizeValue)
         QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("returnPressed()"),self.validateSNumeric)
         QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("escaped()"),self.escape)
+        QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSTrackValue)
         QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("returnPressed()"),self.validateSNumeric)
         QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("escaped()"),self.escape)
         QtCore.QObject.connect(self.SStringValue,QtCore.SIGNAL("returnPressed()"),self.validateSString)
@@ -846,7 +851,7 @@ class DraftToolBar:
         self.SStringValue.hide()
         self.continueCmd.hide()
         self.labelSSize.show()
-        self.SSizeValue.setText('200.0')
+        self.SSizeValue.setText(self.FORMAT % 1.0)
         self.SSizeValue.show()
         self.SSizeValue.setFocus()
 
@@ -855,7 +860,7 @@ class DraftToolBar:
         self.labelSSize.hide()
         self.SSizeValue.hide()
         self.labelSTrack.show()
-        self.STrackValue.setText('0')
+        self.STrackValue.setText(self.FORMAT % 0)
         self.STrackValue.show()
         self.STrackValue.setFocus()
         
@@ -1136,20 +1141,20 @@ class DraftToolBar:
         if self.sourceCmd: 
             if (self.labelSSize.isVisible()):
                 try:
-                    SSize=float(self.SSizeValue.text())
+                    SSize=float(self.SSize)
                 except ValueError:
                     FreeCAD.Console.PrintMessage(translate("draft", "Invalid Size value. Using 200.0."))                     
-                    self.sourceCmd.numericSSize(unicode("200.0"))
+                    self.sourceCmd.numericSSize(200.0)
                 else:
-                    self.sourceCmd.numericSSize(unicode(SSize))
+                    self.sourceCmd.numericSSize(SSize)
             elif (self.labelSTrack.isVisible()):
                 try:
-                    track=int(self.STrackValue.text())
+                    track=int(self.STrack)
                 except ValueError:
                     FreeCAD.Console.PrintMessage(translate("draft", "Invalid Tracking value. Using 0."))                     
-                    self.sourceCmd.numericSTrack(unicode("0"))
+                    self.sourceCmd.numericSTrack(0)
                 else:
-                    self.sourceCmd.numericSTrack(unicode(track))
+                    self.sourceCmd.numericSTrack(track)
 
     def validateSString(self):
         ''' send a valid text string to ShapeString as unicode '''
@@ -1585,6 +1590,12 @@ class DraftToolBar:
 
     def changeOffsetValue(self,d):
         self.offset = d
+
+    def changeSSizeValue(self,d):
+        self.SSize = d
+
+    def changeSTrackValue(self,d):
+        self.STrack = d
 
 #---------------------------------------------------------------------------
 # TaskView operations
