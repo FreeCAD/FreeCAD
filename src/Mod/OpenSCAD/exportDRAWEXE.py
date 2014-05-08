@@ -27,10 +27,45 @@ import FreeCAD, Part
 
 if open.__module__ == '__builtin__':
         pythonopen = open
+
 def f2s(n):
     '''convert to numerical value to string'''
     #return str(float(n))
     return ('%0.18f' % n).rstrip('0')
+
+def placement2draw(placement,name='object'):
+    """converts a FreeCAD Placement to trotate and ttranslate commands"""
+    drawcommand=''
+    if not placement.Rotation.isNull():
+        import math
+        dx,dy,dz=placement.Rotation.Axis
+        an=math.degrees(placement.Rotation.Angle)
+        drawcommand += "trotate %s 0 0 0 %s %s %s %s\n" % \
+            (name,f2s(dx),f2s(dy),f2s(dz),f2s(an))
+    if placement.Base.Length > 1e-8:
+        x,y,z=placement.Base
+        drawcommand += "ttranslate %s %s %s %s\n" % \
+            (name,f2s(x),f2s(y),f2s(z))
+    return drawcommand
+
+def saveShape(csg,filename,shape,name,hasplacement = True):
+    import os
+    spath,sname = os.path.split(filename)
+    sname=sname.replace('.','-')
+    uname='%s-%s' %(sname,name)
+    breppath=os.path.join(spath,'%s.brep'%uname)
+    csg.write("restore %s.brep\n"%uname)
+    csg.write("renamevar %s %s\n"%(uname,name))
+    if hasplacement is None:  # saved with placement
+        hasplacement = False # saved with placement
+        shape.exportBrep(breppath)
+    elif not hasplacement: #doesn't matter
+        shape.exportBrep(breppath)
+    else: #remove placement
+        sh=shape.copy()
+        sh.Placement=FreeCAD.Placement()
+        sh.exportBrep(breppath)
+    return hasplacement
 
 def isDraftFeature(ob):
     if ob.isDerivedFrom('Part::FeaturePython') and \
@@ -134,6 +169,7 @@ def process_object(csg,ob,filename):
                 process_object(csg,nxt,filename)
                 csg.write("%s %s %s %s\n"%(command,nxtname,curname,nxt.Name))
                 curname=nxtname
+                i+=1
     elif ob.TypeId == "Part::Prism" :
         import math
         polyname = '%s-polyline' % d1['name']
@@ -155,6 +191,62 @@ def process_object(csg,ob,filename):
         csg.write('mkplane %s %s\n' % (facename,polyname))
         csg.write('prism %s %s 0 0 %s\n' % (d1['name'],facename,\
             f2s(ob.Height.Value)))
+    elif ob.TypeId == "Part::Sweep" and True:
+        import Part
+        spine,subshapelst=ob.Spine
+        #process_object(csg,spine,filename)
+        try:
+            path=Part.Wire([spine.Shape.getElement(subshapename) for \
+                    subshapename in spine,subshapelst])
+        except: # BRep_API: command not done
+            if spine.Shape.ShapeType == 'Edge':
+                path = spine.Shape
+            elif spine.Shape.ShapeType == 'Wire':
+                path = Part.Wire(spine.Shape)
+            else:
+                raise ValueError('Unsuitabel Shape Type')
+        spinename = '%s-0-spine' % ob.Name
+        hasplacement = saveShape(csg,filename, path,spinename,None) # placement with shape
+        #safePlacement(ob.Placement,ob.Name)
+        csg.write('mksweep %s\n' % spinename)
+        #setsweep
+        setoptions=[]
+        buildoptions=[]
+        if ob.Frenet:
+            setoptions.append('-FR')
+        else:
+            setoptions.append('-CF')
+        if ob.Transition == 'Transformed':
+            buildoptions.append('-M')
+        elif ob.Transition == 'Right Corner':
+            buildoptions.append('-C')
+        elif ob.Solid:
+            buildoptions.append('-S')
+        csg.write('setsweep %s\n' % (" ".join(setoptions)))
+        #addsweep
+
+
+        sections=ob.Sections
+        sectionnames = []
+        for i,subobj in enumerate(ob.Sections):
+            #process_object(csg,subobj,filename)
+            #sectionsnames.append(subobj.Name)
+            #d1['basename']=subobj.Name
+            sectionname = '%s-0-section-%02d-%s' % (ob.Name,i,subobj.Name)
+            addoptions=[]
+            sh = subobj.Shape
+            if sh.ShapeType == 'Vertex':
+                pass
+            elif sh.ShapeType == 'Wire' or sh.ShapeType == 'Edge':
+                sh = Part.Wire(sh)
+            elif sh.ShapeType == 'Face':
+                sh = sh.OuterWire
+            else:
+                raise ValueError
+            hasplacement = saveShape(csg,filename,sh,sectionname,None) # placement with shape
+            csg.write('addsweep %s %s\n' % (sectionname," ".join(addoptions)))
+        csg.write('buildsweep %s %s\n' % (ob.Name," ".join(buildoptions)))
+
     elif isDeform(ob): #non-uniform scaling
         m=ob.Matrix
         process_object(csg,ob.Base,filename)
@@ -206,33 +298,9 @@ def process_object(csg,ob,filename):
     elif ob.isDerivedFrom('Part::Feature') :
         if ob.Shape.isNull(): #would crash in exportBrep otherwise
             raise ValueError
-        import os
-        spath,sname = os.path.split(filename)
-        sname.replace('.','-')
-        uname='%s-%s' %(sname,d1['name'])
-        breppath=os.path.join(spath,'%s.brep'%uname)
-        csg.write("restore %s.brep\n"%uname)
-        csg.write("renamevar %s %s\n"%(uname,d1['name']))
-        if False:  # saved with placement
-            hasplacement = False # saved with placement
-            ob.Shape.exportBrep(breppath)
-        if not hasplacement: #doesn't matter
-            ob.Shape.exportBrep(breppath)
-        else: #remove placement
-            sh=ob.Shape.copy()
-            sh.Placement=FreeCAD.Placement()
-            sh.exportBrep(breppath)
+        hasplacement = saveShape(csg,filename,ob.Shape,ob.Name,hasplacement)
     if hasplacement:
-        if not ob.Placement.Rotation.isNull():
-            import math
-            dx,dy,dz=ob.Placement.Rotation.Axis
-            an=math.degrees(ob.Placement.Rotation.Angle)
-            csg.write("trotate %s 0 0 0 %s %s %s %s\n" % \
-                (ob.Name,f2s(dx),f2s(dy),f2s(dz),f2s(an)))
-        if ob.Placement.Base.Length > 1e-8:
-            x,y,z=ob.Placement.Base
-            csg.write("ttranslate %s %s %s %s\n" % \
-                (ob.Name,f2s(x),f2s(y),f2s(z)))
+        csg.write(placement2draw(ob.Placement,ob.Name))
 
 def export(exportList,filename):
     "called when freecad exports a file"
