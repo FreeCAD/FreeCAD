@@ -130,23 +130,24 @@ def makeFormatSpec(decimals=4,dim='Length'):
     return fmtSpec
 
 def displayExternal(internValue,decimals=4,dim='Length'):
-    '''return an internal value (ie mm) Length converted for display according 
+    '''return an internal value (ie mm) Length or Angle converted for display according 
     to Units Schema in use.'''
     from FreeCAD import Units
     if dim == 'Length':
-        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
-        parts = (qty.getUserPreferred()[0]).split()
+        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Length)
+        pref = qty.getUserPreferred()
+        conversion = pref[1]
+        uom = pref[2]
     elif dim == 'Angle':
-        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle)
+        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Angle)
         pref=qty.getUserPreferred()
-        parts = (qty.getUserPreferred()[0]).split()
-        val = (qty.getUserPreferred()[0]).split()[0]
-        um = parts[1].decode('latin-1')
-        parts = (val,um)
+        conversion = pref[1]
+        uom = pref[2].decode('latin-1')
     else:
-        parts = (internValue,'??')
-    fmt = "{0:."+ str(decimals) + "f} "+ parts[1]
-    displayExt = fmt.format(float(parts[0].replace(",",".")))
+        conversion = 1.0
+        uom = "??"
+    fmt = "{0:."+ str(decimals) + "f} "+ uom
+    displayExt = fmt.format(float(internValue) / float(conversion))
     return displayExt
 
 #---------------------------------------------------------------------------
