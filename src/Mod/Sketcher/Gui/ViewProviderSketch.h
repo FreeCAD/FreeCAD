@@ -264,6 +264,7 @@ protected:
     // reference coordinates for relative operations
     double xInit,yInit;
     bool relative;
+    int antiAliasing;
 };
 
 } // namespace PartGui

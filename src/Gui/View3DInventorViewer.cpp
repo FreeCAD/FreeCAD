@@ -1012,6 +1012,10 @@ void View3DInventorViewer::renderFramebuffer()
     glEnable(GL_DEPTH_TEST);
 }
 
+//#define ENABLE_GL_DEPTH_RANGE
+// The calls of glDepthRange inside renderScene() causes problems with transparent objects
+// so that's why it is disabled now: http://forum.freecadweb.org/viewtopic.php?f=3&t=6037&hilit=transparency
+
 // Documented in superclass. Overrides this method to be able to draw
 // the axis cross, if selected, and to keep a continuous animation
 // upon spin.
@@ -1051,8 +1055,10 @@ void View3DInventorViewer::renderScene(void)
     glClearColor(col[0], col[1], col[2], 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+#if defined(ENABLE_GL_DEPTH_RANGE)
     // using 90% of the z-buffer for the background and the main node
     glDepthRange(0.1,1.0);
+#endif
 
     // Render our scenegraph with the image.
     SoGLRenderAction * glra = this->getGLRenderAction();
@@ -1074,16 +1080,20 @@ void View3DInventorViewer::renderScene(void)
             QObject::tr("Not enough memory available to display the data."));
     }
 
+#if defined (ENABLE_GL_DEPTH_RANGE)
     // using 10% of the z-buffer for the foreground node
     glDepthRange(0.0,0.1);
+#endif
 
     // Render overlay front scenegraph.
     glra->apply(this->foregroundroot);
 
     if (this->axiscrossEnabled) { this->drawAxisCross(); }
-   
+
+#if defined (ENABLE_GL_DEPTH_RANGE)
     // using the main portion of z-buffer again (for frontbuffer highlighting)
     glDepthRange(0.1,1.0);
+#endif
 
     // Immediately reschedule to get continous spin animation.
     if (this->isAnimating()) { this->scheduleRedraw(); }

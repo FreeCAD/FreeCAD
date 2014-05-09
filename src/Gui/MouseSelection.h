@@ -87,6 +87,7 @@ protected:
     QCursor m_cPrevCursor;
     int  m_iXold, m_iYold;
     int  m_iXnew, m_iYnew;
+    int m_antiAliasing;
     SbBool m_bInner;
     SbBool mustRedraw;
     std::vector<SbVec2s> _clPoly;
