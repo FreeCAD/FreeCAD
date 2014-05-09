@@ -55,6 +55,8 @@ void AbstractMouseSelection::grabMouseModel( Gui::View3DInventorViewer* viewer )
 {
     _pcView3D = viewer;
     m_cPrevCursor = _pcView3D->getWidget()->cursor();
+    m_antiAliasing = (int)_pcView3D->getAntiAliasingMode();
+    _pcView3D->setAntiAliasingMode(View3DInventorViewer::None);
 
     // do initialization of your mousemodel
     initialize();
@@ -67,6 +69,7 @@ void AbstractMouseSelection::releaseMouseModel()
         terminate();
 
         _pcView3D->getWidget()->setCursor(m_cPrevCursor);
+        _pcView3D->setAntiAliasingMode(View3DInventorViewer::AntiAliasing(m_antiAliasing));
         _pcView3D = 0;
     }
 }

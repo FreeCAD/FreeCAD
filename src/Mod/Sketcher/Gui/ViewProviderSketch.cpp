@@ -3338,10 +3338,15 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     viewer->setEditing(TRUE);
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+    antiAliasing = (int)viewer->getAntiAliasingMode();
+    if (antiAliasing != Gui::View3DInventorViewer::None)
+        viewer->setAntiAliasingMode(Gui::View3DInventorViewer::None);
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
+    if (antiAliasing != Gui::View3DInventorViewer::None)
+        viewer->setAntiAliasingMode(Gui::View3DInventorViewer::AntiAliasing(antiAliasing));
     viewer->setEditing(FALSE);
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
