@@ -112,7 +112,8 @@ def getParamType(param):
         return "float"
     elif param in ["selectBaseObjects","alwaysSnap","grid","fillmode","saveonexit","maxSnap",
                    "SvgLinesBlack","dxfStdSize","showSnapBar","hideSnapBar","alwaysShowGrid",
-                   "renderPolylineWidth","showPlaneTracker","UsePartPrimitives","DiscretizeEllipses"]:
+                   "renderPolylineWidth","showPlaneTracker","UsePartPrimitives","DiscretizeEllipses",
+                   "showUnit"]:
         return "bool"
     elif param in ["color","constructioncolor","snapcolor"]:
         return "unsigned"
@@ -3031,6 +3032,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
         obj.addProperty("App::PropertyLength","ExtLines","Draft","Length of the extension lines")
         obj.addProperty("App::PropertyBool","FlipArrows","Draft","Rotate the dimension arrows 180 degrees")
+        obj.addProperty("App::PropertyBool","ShowUnit","Draft","Show the unit suffix")        
         obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Draft","Text override. Use $dim to insert the dimension length")
         obj.FontSize = getParam("textheight",0.20)
@@ -3041,6 +3043,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
         obj.ExtLines = getParam("extlines",0.3)
         obj.Decimals = getParam("dimPrecision",2)
+        obj.ShowUnit = getParam("showUnit",True)
         _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
@@ -3197,13 +3200,16 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     tbase = obj.ViewObject.TextPosition
             self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
             self.textpos.rotation = coin.SbRotation(rot1[0],rot1[1],rot1[2],rot1[3])
+            su = True
+            if hasattr(obj.ViewObject,"ShowUnit"):
+                su = obj.ViewObject.ShowUnit
             
             # set text value
             l = self.p3.sub(self.p2).Length
             if hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length')
+                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su)
             else:
-                self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length')
+                self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length',su)
             if hasattr(obj.ViewObject,"Override"):
                 if obj.ViewObject.Override:
                     try:
@@ -3390,6 +3396,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyFloat","LineWidth","Draft","Line width")
         obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
         obj.addProperty("App::PropertyBool","FlipArrows","Draft","Rotate the dimension arrows 180 degrees")
+        obj.addProperty("App::PropertyBool","ShowUnit","Draft","Show the unit suffix")
         obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
         obj.addProperty("App::PropertyString","Override","Draft","Text override. Use 'dim' to insert the dimension length")
         obj.FontSize = getParam("textheight",0.20)
@@ -3400,6 +3407,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
         obj.Override = ''
         obj.Decimals = getParam("dimPrecision",2)
+        obj.ShowUnit = getParam("showUnit",True)
         _ViewProviderDraft.__init__(self,obj)
 
     def attach(self, vobj):
@@ -3478,14 +3486,15 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 a = obj.LastAngle.Value - obj.FirstAngle.Value
             else:
                 a = (360 - obj.FirstAngle.Value) + obj.LastAngle.Value
+            su = True
+            if hasattr(obj.ViewObject,"ShowUnit"):
+                su = obj.ViewObject.ShowUnit
             if hasattr(obj.ViewObject,"Decimals"):
-                fstring = "%." + str(obj.ViewObject.Decimals) + "f"
+                self.string = DraftGui.displayExternal(a,obj.ViewObject.Decimals,'Angle',su)
             else:
-                fstring = "%." + str(getParam("dimPrecision",2)) + "f"
-            self.string = (fstring % a)
-            self.string += " d"
+                self.string = DraftGui.displayExternal(a,getParam("dimPrecision",2),'Angle',su)
             if obj.ViewObject.Override:
-                self.string = unicode(obj.ViewObject.Override).encode("latin1").replace("$dim",self.string)
+                self.string = obj.ViewObject.Override.decode("utf8").encode("latin1").replace("$dim",self.string)
             self.text.string = self.text3d.string = self.string
             
             # check display mode
