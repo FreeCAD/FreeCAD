@@ -287,7 +287,7 @@ public:
      */
     //@{
     void setAntiAliasingMode(AntiAliasing mode);
-    AntiAliasing getAntiAliasingMode();
+    AntiAliasing getAntiAliasingMode() const;
     //@}
 
     /**
