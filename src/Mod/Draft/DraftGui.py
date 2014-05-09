@@ -134,12 +134,12 @@ def displayExternal(internValue,decimals=4,dim='Length'):
     to Units Schema in use.'''
     from FreeCAD import Units
     if dim == 'Length':
-        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Length)
+        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
         pref = qty.getUserPreferred()
         conversion = pref[1]
         uom = pref[2]
     elif dim == 'Angle':
-        qty = FreeCAD.Units.Quantity(1.0,FreeCAD.Units.Angle)
+        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle)
         pref=qty.getUserPreferred()
         conversion = pref[1]
         uom = pref[2].decode('latin-1')
