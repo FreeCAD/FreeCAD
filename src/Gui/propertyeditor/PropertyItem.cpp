@@ -547,30 +547,6 @@ QVariant PropertyFloatItem::toString(const QVariant& prop) const
 {
     double value = prop.toDouble();
     QString data = QLocale::system().toString(value, 'f', decimals());
-    const std::vector<App::Property*>& props = getPropertyData();
-    if (!props.empty()) {
-        if (props.front()->getTypeId().isDerivedFrom(App::PropertyDistance::getClassTypeId())) {
-            QString unit = QString::fromAscii("mm");
-            unit.prepend(QLatin1String(" "));
-            data += unit;
-        }
-        else if (props.front()->getTypeId().isDerivedFrom(App::PropertyLength::getClassTypeId())) {
-            QString unit = QString::fromAscii("mm");
-            unit.prepend(QLatin1String(" "));
-            data += unit;
-        }
-        else if (props.front()->getTypeId().isDerivedFrom(App::PropertySpeed::getClassTypeId())) {
-            //QString unit = Base::UnitsApi::getPrefUnitOf(Base::Acceleration);
-            //unit.prepend(QLatin1String(" "));
-            //data += unit;
-        }
-        else if (props.front()->getTypeId().isDerivedFrom(App::PropertyAcceleration::getClassTypeId())) {
-            QString unit = QString::fromAscii("mm/s^2");
-            unit.prepend(QLatin1String(" "));
-            data += unit;
-        }
-    }
-
     return QVariant(data);
 }
 
@@ -605,32 +581,6 @@ void PropertyFloatItem::setEditorData(QWidget *editor, const QVariant& data) con
     QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
     sb->setRange((double)INT_MIN, (double)INT_MAX);
     sb->setValue(data.toDouble());
-    const std::vector<App::Property*>& prop = getPropertyData();
-    if (prop.empty())
-        return;
-    else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyDistance::getClassTypeId())) {
-        QString unit = QString::fromAscii("mm");
-        unit.prepend(QLatin1String(" "));
-        sb->setSuffix(unit);
-    }
-    else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyLength::getClassTypeId())) {
-        sb->setMinimum(0.0);
-        QString unit = QString::fromAscii("mm");
-        unit.prepend(QLatin1String(" "));
-        sb->setSuffix(unit);
-    }
-    else if (prop.front()->getTypeId().isDerivedFrom(App::PropertySpeed::getClassTypeId())) {
-        //sb->setMinimum(0.0);
-        //QString unit = Base::UnitsApi::getPrefUnitOf(Base::Acceleration);
-        //unit.prepend(QLatin1String(" "));
-        //sb->setSuffix(unit);
-    }
-    else if (prop.front()->getTypeId().isDerivedFrom(App::PropertyAcceleration::getClassTypeId())) {
-        sb->setMinimum(0.0);
-        QString unit = QString::fromAscii("mm/s^2");
-        unit.prepend(QLatin1String(" "));
-        sb->setSuffix(unit);
-    }
 }
 
 QVariant PropertyFloatItem::editorData(QWidget *editor) const
@@ -674,34 +624,60 @@ void PropertyUnitItem::setValue(const QVariant& value)
 
 QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    QDoubleSpinBox *sb = new QDoubleSpinBox(parent);
-    sb->setFrame(false);
-    sb->setDecimals(std::max<int>(5,decimals()));
-    QObject::connect(sb, SIGNAL(valueChanged(double)), receiver, method);
-    return sb;
+    Gui::InputField *infield = new Gui::InputField(parent);
+    infield->setFrame(false);
+    infield->setMinimumHeight(0);
+    QObject::connect(infield, SIGNAL(valueChanged(double)), receiver, method);
+    return infield;
 }
 
 void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
     const Base::Quantity& value = data.value<Base::Quantity>();
 
-    QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
-    sb->setRange((double)INT_MIN, (double)INT_MAX);
-    //sb->setValue(value.getValue());
-    //sb->setSuffix(value.getUnit().getString());
-    double factor;
-    QString unitStr;
-    value.getUserString(factor, unitStr);
-    double unitValue = value.getValue() / factor; 
-    sb->setValue(unitValue);
-    sb->setSuffix(unitStr);
+    Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
+    infield->setValue(value);
 }
 
 QVariant PropertyUnitItem::editorData(QWidget *editor) const
 {
-    QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
-    Base::Quantity value = Base::Quantity::parse(sb->text());
+    Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
+    Base::Quantity value = infield->getQuantity();
     return QVariant::fromValue<Base::Quantity>(value);
+}
+
+// --------------------------------------------------------------------
+
+
+TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyUnitConstraintItem, Gui::PropertyEditor::PropertyUnitItem);
+
+PropertyUnitConstraintItem::PropertyUnitConstraintItem()
+{
+  
+}
+
+void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& data) const
+{
+    const Base::Quantity& value = data.value<Base::Quantity>();
+    
+    Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
+    infield->setValue(value);
+    
+    const std::vector<App::Property*>& items = getPropertyData();
+    App::PropertyQuantityConstraint* prop = (App::PropertyQuantityConstraint*)items[0];
+
+    const App::PropertyQuantityConstraint::Constraints* c = 
+        ((App::PropertyQuantityConstraint*)prop)->getConstraints();
+
+    if (c) {
+        infield->setMinimum(c->LowerBound);
+        infield->setMaximum(c->UpperBound);
+        infield->setSingleStep(c->StepSize);
+    }
+    else {
+        infield->setMinimum((double)INT_MIN);
+        infield->setMaximum((double)INT_MAX);
+    }
 }
 
 // --------------------------------------------------------------------

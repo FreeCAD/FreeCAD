@@ -241,6 +241,20 @@ protected:
 };
 
 /**
+ * Change a Unit based floating point number withing constraints.
+ * \author Stefan Troeger
+ */
+class GuiExport PropertyUnitConstraintItem: public PropertyUnitItem
+{
+    TYPESYSTEM_HEADER();
+
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+
+protected:
+    PropertyUnitConstraintItem();
+};
+
+/**
  * Change a floating point number with constraints.
  * \author Werner Mayer
  */
