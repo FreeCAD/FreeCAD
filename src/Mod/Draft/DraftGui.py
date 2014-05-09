@@ -129,7 +129,7 @@ def makeFormatSpec(decimals=4,dim='Length'):
         fmtSpec = "%." + str(decimals) + "f " + "??"
     return fmtSpec
 
-def displayExternal(internValue,decimals=4,dim='Length'):
+def displayExternal(internValue,decimals=4,dim='Length',showUnit=True):
     '''return an internal value (ie mm) Length or Angle converted for display according 
     to Units Schema in use.'''
     from FreeCAD import Units
@@ -146,6 +146,8 @@ def displayExternal(internValue,decimals=4,dim='Length'):
     else:
         conversion = 1.0
         uom = "??"
+    if not showUnit:
+        uom = ""
     fmt = "{0:."+ str(decimals) + "f} "+ uom
     displayExt = fmt.format(float(internValue) / float(conversion))
     return displayExt
@@ -525,7 +527,7 @@ class DraftToolBar:
         self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
         self.widthButton = self._spinbox("widthButton", self.bottomtray, val=self.linewidth,hide=False,size=(50,22))
         self.widthButton.setSuffix("px")
-        self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,hide=False,double=True,size=(50,22))
+        self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(65,22))
         self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',width=22)
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
