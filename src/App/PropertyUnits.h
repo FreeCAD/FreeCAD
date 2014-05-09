@@ -100,9 +100,7 @@ public:
     const Constraints*  getConstraints(void) const;
     //@}
 
-    virtual const char* getEditorName(void) const
-    { return "Gui::PropertyEditor::PropertyFloatConstraintItem"; }
-
+    virtual const char* getEditorName(void) const;
     virtual void setPyObject(PyObject *);
 
 
@@ -126,7 +124,7 @@ public:
  * This is a property for representing lengths. It is basically a float
  * property which must not be negative. On the Gui it has a quantity like m or mm.
  */
-class AppExport PropertyLength : public PropertyQuantity
+class AppExport PropertyLength : public PropertyQuantityConstraint
 {
     TYPESYSTEM_HEADER();
 public:
@@ -157,7 +155,6 @@ class AppExport PropertySpeed: public PropertyQuantity
 public:
     PropertySpeed(void);
     virtual ~PropertySpeed(){}
-    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyFloatItem"; }
 };
 
 /** Acceleration property
@@ -170,7 +167,6 @@ class AppExport PropertyAcceleration: public PropertyQuantity
 public:
     PropertyAcceleration(void);
     virtual ~PropertyAcceleration(){}
-    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyFloatItem"; }
 };
 
 /** Pressure property
@@ -183,7 +179,6 @@ class AppExport PropertyPressure: public PropertyQuantity
 public:
     PropertyPressure(void);
     virtual ~PropertyPressure(){}
-    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyFloatItem"; }
 };
 
 /** Force property
@@ -196,7 +191,6 @@ class AppExport PropertyForce: public PropertyQuantity
 public:
     PropertyForce(void);
     virtual ~PropertyForce(){}
-    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyFloatItem"; }
 };
 
 
