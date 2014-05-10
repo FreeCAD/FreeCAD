@@ -1643,13 +1643,13 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     QString data = QString::fromAscii("App.Placement("
                                       "App.Vector(%1,%2,%3),"
                                       "App.Rotation(App.Vector(%4,%5,%6),%7))")
-                    .arg(pos.x,0,'f',decimals())
-                    .arg(pos.y,0,'f',decimals())
-                    .arg(pos.z,0,'f',decimals())
-                    .arg(rot_axis.x,0,'f',decimals())
-                    .arg(rot_axis.y,0,'f',decimals())
-                    .arg(rot_axis.z,0,'f',decimals())
-                    .arg(rot_angle,0,'f',decimals());
+                    .arg(pos.x)
+                    .arg(pos.y)
+                    .arg(pos.z)
+                    .arg(rot_axis.x)
+                    .arg(rot_axis.y)
+                    .arg(rot_axis.z)
+                    .arg(rot_angle,0);
     setPropertyValue(data);
 }
 
