@@ -160,6 +160,7 @@ void InputField::newInput(const QString & text)
         QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
         parseError(QString::fromAscii(ErrorText.c_str()));
+	validInput = false;
         return;
     }
 
@@ -169,6 +170,7 @@ void InputField::newInput(const QString & text)
         QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
         parseError(QString::fromAscii("Wrong unit"));
+	validInput = false;
         return;
     }
 
@@ -176,6 +178,7 @@ void InputField::newInput(const QString & text)
     QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
     ErrorText = "";
+    validInput = true;
 
     if (res.getValue() > Maximum){
         res.setValue(Maximum);
@@ -325,11 +328,23 @@ void InputField::setValue(const Base::Quantity& quant)
     double dFactor;
     setText(quant.getUserString(dFactor,actUnitStr));
     actUnitValue = quant.getValue()/dFactor;
+    validInput = true;
 }
+
+void InputField::setValue(const double& value)
+{
+    setValue(Base::Quantity(value, actUnit));
+}
+
 
 void InputField::setUnit(const Base::Unit& unit)
 {
     actUnit = unit;
+}
+
+Base::Unit InputField::getUnit()
+{
+    return actUnit;
 }
 
 /// get the value of the singleStep property
