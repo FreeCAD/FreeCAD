@@ -88,4 +88,4 @@ fc_target_copy_resource(RaytracingGui
 SET_BIN_DIR(RaytracingGui RaytracingGui /Mod/Raytracing)
 SET_PYTHON_PREFIX_SUFFIX(RaytracingGui)
 
-INSTALL(TARGETS RaytracingGui DESTINATION lib)
+INSTALL(TARGETS RaytracingGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

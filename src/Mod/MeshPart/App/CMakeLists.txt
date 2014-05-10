@@ -70,4 +70,4 @@ fc_target_copy_resource(MeshPart
 SET_BIN_DIR(MeshPart MeshPart /Mod/MeshPart)
 SET_PYTHON_PREFIX_SUFFIX(MeshPart)
 
-INSTALL(TARGETS MeshPart DESTINATION lib)
+INSTALL(TARGETS MeshPart DESTINATION ${CMAKE_INSTALL_LIBDIR})

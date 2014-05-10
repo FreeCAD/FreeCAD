@@ -25,7 +25,6 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-
 class PartDesignDocument:
 	"PartDesign document"
 	def Info(self):

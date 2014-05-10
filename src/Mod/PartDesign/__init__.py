@@ -1,2 +1,2 @@
-import PartDesign
-makeFilletArc = PartDesign.makeFilletArc
+import Scripts.FilletArc
+makeFilletArc = Scripts.FilletArc.makeFilletArc

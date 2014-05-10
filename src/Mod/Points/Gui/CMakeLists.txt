@@ -64,4 +64,4 @@ fc_target_copy_resource(PointsGui
 SET_BIN_DIR(PointsGui PointsGui /Mod/Points)
 SET_PYTHON_PREFIX_SUFFIX(PointsGui)
 
-INSTALL(TARGETS PointsGui DESTINATION lib)
+INSTALL(TARGETS PointsGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

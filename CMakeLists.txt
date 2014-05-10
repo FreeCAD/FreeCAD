@@ -69,13 +69,20 @@ if(WIN32)
     SET(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install CACHE PATH "Installation root directory")
 else(WIN32)
     SET(CMAKE_INSTALL_PREFIX "/usr/lib${LIB_SUFFIX}/freecad" CACHE PATH "Installation root directory")
-    SET(INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 endif(WIN32)
 
 SET(CMAKE_INSTALL_DATADIR data CACHE PATH "Output directory for data and resource files")
 SET(CMAKE_INSTALL_INCLUDEDIR include CACHE PATH "Output directory for header files")
 SET(CMAKE_INSTALL_DOCDIR doc CACHE PATH "Output directory for documentation and license files")
- 
+# Don't set it without manual adaption of LibDir variable in src/App/FreeCADInit.py
+SET(CMAKE_INSTALL_LIBDIR lib CACHE PATH "Output directory for libraries")
+
+if(NOT WIN32)
+    if(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
+	    SET(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+    endif(NOT IS_ABSOLUTE ${CMAKE_INSTALL_LIBDIR})
+endif(NOT WIN32)
+
 SET(PYCXX_INCLUDE_DIR
     "${CMAKE_SOURCE_DIR}/src" CACHE PATH
     "Path to the directory containing PyCXX's CXX/Config.hxx include file")
@@ -91,6 +98,7 @@ MESSAGE(STATUS "prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "datadir: ${CMAKE_INSTALL_DATADIR}")
 MESSAGE(STATUS "docdir: ${CMAKE_INSTALL_DOCDIR}")
 MESSAGE(STATUS "includedir: ${CMAKE_INSTALL_INCLUDEDIR}")
+MESSAGE(STATUS "libdir: ${CMAKE_INSTALL_LIBDIR}")
 
 # ==============================================================================
 # == Win32 is default behaviour use the LibPack copied in Source tree ==========

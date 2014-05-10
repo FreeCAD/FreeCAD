@@ -43,4 +43,4 @@ fc_target_copy_resource(AssemblyGui
 SET_BIN_DIR(AssemblyGui AssemblyGui /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(AssemblyGui)
 
-INSTALL(TARGETS AssemblyGui DESTINATION lib)
+INSTALL(TARGETS AssemblyGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

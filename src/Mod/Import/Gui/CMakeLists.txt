@@ -50,4 +50,4 @@ fc_target_copy_resource(ImportGui
 SET_BIN_DIR(ImportGui ImportGui /Mod/Import)
 SET_PYTHON_PREFIX_SUFFIX(ImportGui)
 
-INSTALL(TARGETS ImportGui DESTINATION lib)
+INSTALL(TARGETS ImportGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

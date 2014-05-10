@@ -189,11 +189,8 @@ fc_target_copy_resource(PartDesignGui
     ${CMAKE_BINARY_DIR}/Mod/PartDesign
     ${PartDesignGui_Scripts})
 
-# See link for why this module is installed differently from the other modules:
-# http://forum.freecadweb.org/viewtopic.php?f=19&t=5444
-SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign /Mod/PartDesign)
+SET_BIN_DIR(PartDesignGui PartDesignGui /Mod/PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)
 
-# The PartDesign module must go to where the __init__.py file is
-INSTALL(TARGETS PartDesignGui DESTINATION Mod/PartDesign)
+INSTALL(TARGETS PartDesignGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 

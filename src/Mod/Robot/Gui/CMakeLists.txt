@@ -157,4 +157,4 @@ fc_target_copy_resource(RobotGui
 SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
 SET_PYTHON_PREFIX_SUFFIX(RobotGui)
 
-INSTALL(TARGETS RobotGui DESTINATION lib)
+INSTALL(TARGETS RobotGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

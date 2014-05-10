@@ -87,4 +87,4 @@ fc_target_copy_resource(Raytracing
 SET_BIN_DIR(Raytracing Raytracing /Mod/Raytracing)
 SET_PYTHON_PREFIX_SUFFIX(Raytracing)
 
-INSTALL(TARGETS Raytracing DESTINATION lib)
+INSTALL(TARGETS Raytracing DESTINATION ${CMAKE_INSTALL_LIBDIR})

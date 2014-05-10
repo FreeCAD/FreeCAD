@@ -78,4 +78,4 @@ fc_target_copy_resource(StartGui
 SET_BIN_DIR(StartGui StartGui /Mod/Start)
 SET_PYTHON_PREFIX_SUFFIX(StartGui)
 
-INSTALL(TARGETS StartGui DESTINATION lib)
+INSTALL(TARGETS StartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

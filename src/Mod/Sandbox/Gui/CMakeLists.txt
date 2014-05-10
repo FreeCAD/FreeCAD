@@ -52,4 +52,4 @@ fc_target_copy_resource(SandboxGui
 SET_BIN_DIR(SandboxGui SandboxGui /Mod/Sandbox)
 SET_PYTHON_PREFIX_SUFFIX(SandboxGui)
 
-INSTALL(TARGETS SandboxGui DESTINATION lib)
+INSTALL(TARGETS SandboxGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

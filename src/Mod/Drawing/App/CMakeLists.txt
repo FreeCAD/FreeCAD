@@ -89,4 +89,4 @@ fc_target_copy_resource(Drawing
 SET_BIN_DIR(Drawing Drawing /Mod/Drawing)
 SET_PYTHON_PREFIX_SUFFIX(Drawing)
 
-INSTALL(TARGETS Drawing DESTINATION lib)
+INSTALL(TARGETS Drawing DESTINATION ${CMAKE_INSTALL_LIBDIR})

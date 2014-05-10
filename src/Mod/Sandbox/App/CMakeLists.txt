@@ -41,4 +41,4 @@ fc_target_copy_resource(Sandbox
 SET_BIN_DIR(Sandbox Sandbox /Mod/Sandbox)
 SET_PYTHON_PREFIX_SUFFIX(Sandbox)
 
-INSTALL(TARGETS Sandbox DESTINATION lib)
+INSTALL(TARGETS Sandbox DESTINATION ${CMAKE_INSTALL_LIBDIR})

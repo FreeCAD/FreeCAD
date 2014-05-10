@@ -62,4 +62,4 @@ fc_target_copy_resource(InspectionGui
 SET_BIN_DIR(InspectionGui InspectionGui /Mod/Inspection)
 SET_PYTHON_PREFIX_SUFFIX(InspectionGui)
 
-INSTALL(TARGETS InspectionGui DESTINATION lib)
+INSTALL(TARGETS InspectionGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

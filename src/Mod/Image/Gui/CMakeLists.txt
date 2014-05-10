@@ -72,4 +72,4 @@ fc_target_copy_resource(ImageGui
 SET_BIN_DIR(ImageGui ImageGui /Mod/Image)
 SET_PYTHON_PREFIX_SUFFIX(ImageGui)
 
-INSTALL(TARGETS ImageGui DESTINATION lib)
+INSTALL(TARGETS ImageGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
