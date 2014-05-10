@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #include <QSignalMapper>
 #include <QDockWidget>
+#include <QMessageBox>
 
 #include "Placement.h"
 #include "ui_Placement.h"
@@ -81,22 +82,17 @@ Placement::Placement(QWidget* parent, Qt::WFlags fl)
     propertyName = "Placement"; // default name
     ui = new Ui_PlacementComp(this);
     ui->applyPlacementChange->hide();
-
-    ui->xPos->setDecimals(Base::UnitsApi::getDecimals());
-    ui->yPos->setDecimals(Base::UnitsApi::getDecimals());
-    ui->zPos->setDecimals(Base::UnitsApi::getDecimals());
-    ui->xCnt->setDecimals(Base::UnitsApi::getDecimals());
-    ui->yCnt->setDecimals(Base::UnitsApi::getDecimals());
-    ui->zCnt->setDecimals(Base::UnitsApi::getDecimals());
-    ui->yawAngle->setDecimals(Base::UnitsApi::getDecimals());
-    ui->pitchAngle->setDecimals(Base::UnitsApi::getDecimals());
-    ui->rollAngle->setDecimals(Base::UnitsApi::getDecimals());
-    ui->angle->setDecimals(Base::UnitsApi::getDecimals());
-
-    ui->angle->setSuffix(QString::fromUtf8(" \xc2\xb0"));
-    ui->yawAngle->setSuffix(QString::fromUtf8(" \xc2\xb0"));
-    ui->pitchAngle->setSuffix(QString::fromUtf8(" \xc2\xb0"));
-    ui->rollAngle->setSuffix(QString::fromUtf8(" \xc2\xb0"));
+    
+    ui->xPos->setUnit(Base::Unit::Length);
+    ui->yPos->setUnit(Base::Unit::Length);
+    ui->zPos->setUnit(Base::Unit::Length);
+    ui->xCnt->setValue(Base::Quantity(0, Base::Unit::Length));
+    ui->yCnt->setValue(Base::Quantity(0, Base::Unit::Length));
+    ui->zCnt->setValue(Base::Quantity(0, Base::Unit::Length));
+    ui->angle->setUnit(Base::Unit::Angle);
+    ui->yawAngle->setUnit(Base::Unit::Angle);
+    ui->pitchAngle->setUnit(Base::Unit::Angle);
+    ui->rollAngle->setUnit(Base::Unit::Angle);
 
     // create a signal mapper in order to have one slot to perform the change
     signalMapper = new QSignalMapper(this);
@@ -135,6 +131,17 @@ void Placement::slotActiveDocument(const Gui::Document& doc)
 {
     documents.insert(doc.getDocument()->getName());
 }
+
+bool Placement::hasValidInputs()
+{
+    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
+    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+        if(!(*it)->hasValidInput())
+	    return false;
+    }
+    return true;
+}
+
 
 void Placement::revertTransformation()
 {
@@ -290,6 +297,15 @@ void Placement::accept()
 
 void Placement::on_applyButton_clicked()
 {
+    //only process things when we have valid inputs!
+    if(!hasValidInputs()) {
+	QMessageBox msg;
+	msg.setIcon(QMessageBox::Critical);
+	msg.setText(QString::fromAscii("There are input fields with incorrect input, please ensure valid placement values!"));
+	msg.exec();
+	return;
+    }
+    
     // If there are listeners to the 'placementChanged' signal we rely
     // on that the listener updates any placement. If no listeners
     // are connected the placement is applied to all selected objects
@@ -302,10 +318,10 @@ void Placement::on_applyButton_clicked()
     /*emit*/ placementChanged(data, incr, true);
 
     if (ui->applyIncrementalPlacement->isChecked()) {
-        QList<QDoubleSpinBox*> sb = this->findChildren<QDoubleSpinBox*>();
-        for (QList<QDoubleSpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+        QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
+        for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
             (*it)->blockSignals(true);
-            (*it)->setValue(0.0);
+            (*it)->setValue(0);
             (*it)->blockSignals(false);
         }
     }
@@ -313,10 +329,10 @@ void Placement::on_applyButton_clicked()
 
 void Placement::on_resetButton_clicked()
 {
-    QList<QDoubleSpinBox*> sb = this->findChildren<QDoubleSpinBox*>();
-    for (QList<QDoubleSpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
+    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         (*it)->blockSignals(true);
-        (*it)->setValue(0.0);
+        (*it)->setValue(0);
         (*it)->blockSignals(false);
     }
 
@@ -343,22 +359,22 @@ void Placement::setPlacement(const Base::Placement& p)
 void Placement::setPlacementData(const Base::Placement& p)
 {
     signalMapper->blockSignals(true);
-    ui->xPos->setValue(p.getPosition().x);
-    ui->yPos->setValue(p.getPosition().y);
-    ui->zPos->setValue(p.getPosition().z);
+    ui->xPos->setValue(Base::Quantity(p.getPosition().x, Base::Unit::Length));
+    ui->yPos->setValue(Base::Quantity(p.getPosition().y, Base::Unit::Length));
+    ui->zPos->setValue(Base::Quantity(p.getPosition().z, Base::Unit::Length));
 
     double Y,P,R;
     p.getRotation().getYawPitchRoll(Y,P,R);
-    ui->yawAngle->setValue(Y);
-    ui->pitchAngle->setValue(P);
-    ui->rollAngle->setValue(R);
+    ui->yawAngle->setValue(Base::Quantity(Y, Base::Unit::Angle));
+    ui->pitchAngle->setValue(Base::Quantity(P, Base::Unit::Angle));
+    ui->rollAngle->setValue(Base::Quantity(R, Base::Unit::Angle));
 
     // check if the user-defined direction is already there
     bool newitem = true;
     double angle;
     Base::Vector3d axis;
     p.getRotation().getValue(axis, angle);
-    ui->angle->setValue(angle*180.0/D_PI);
+    ui->angle->setValue(Base::Quantity(angle*180.0/D_PI, Base::Unit::Angle));
     Base::Vector3d dir(axis.x,axis.y,axis.z);
     for (int i=0; i<ui->direction->count()-1; i++) {
         QVariant data = ui->direction->itemData (i);
@@ -398,18 +414,18 @@ Base::Placement Placement::getPlacementData() const
     Base::Vector3d pos;
     Base::Vector3d cnt;
 
-    pos = Base::Vector3d(ui->xPos->value(),ui->yPos->value(),ui->zPos->value());
-    cnt = Base::Vector3d(ui->xCnt->value(),ui->yCnt->value(),ui->zCnt->value());
+    pos = Base::Vector3d(ui->xPos->getQuantity().getValue(),ui->yPos->getQuantity().getValue(),ui->zPos->getQuantity().getValue());
+    cnt = Base::Vector3d(ui->xCnt->getQuantity().getValue(),ui->yCnt->getQuantity().getValue(),ui->zCnt->getQuantity().getValue());
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),Base::toRadians(ui->angle->value()));
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),Base::toRadians(ui->angle->getQuantity().getValue()));
     }
     else if (index == 1) {
         rot.setYawPitchRoll(
-            ui->yawAngle->value(),
-            ui->pitchAngle->value(),
-            ui->rollAngle->value());
+            ui->yawAngle->getQuantity().getValue(),
+            ui->pitchAngle->getQuantity().getValue(),
+            ui->rollAngle->getQuantity().getValue());
     }
 
     Base::Placement p(pos, rot, cnt);
@@ -425,29 +441,29 @@ QString Placement::getPlacementString() const
         Base::Vector3d dir = getDirection();
         cmd = QString::fromAscii(
             "App.Placement(App.Vector(%1,%2,%3), App.Rotation(App.Vector(%4,%5,%6),%7), App.Vector(%8,%9,%10))")
-            .arg(ui->xPos->value(),0,'g',ui->xPos->decimals())
-            .arg(ui->yPos->value(),0,'g',ui->yPos->decimals())
-            .arg(ui->zPos->value(),0,'g',ui->zPos->decimals())
-            .arg(dir.x,0,'g',Base::UnitsApi::getDecimals())
-            .arg(dir.y,0,'g',Base::UnitsApi::getDecimals())
-            .arg(dir.z,0,'g',Base::UnitsApi::getDecimals())
-            .arg(ui->angle->value(),0,'g',ui->angle->decimals())
-            .arg(ui->xCnt->value(),0,'g',ui->xCnt->decimals())
-            .arg(ui->yCnt->value(),0,'g',ui->yCnt->decimals())
-            .arg(ui->zCnt->value(),0,'g',ui->zCnt->decimals());
+            .arg(ui->xPos->getQuantity().getValue())
+            .arg(ui->yPos->getQuantity().getValue())
+            .arg(ui->zPos->getQuantity().getValue())
+            .arg(dir.x)
+            .arg(dir.y)
+            .arg(dir.z)
+            .arg(ui->angle->getQuantity().getValue())
+            .arg(ui->xCnt->getQuantity().getValue())
+            .arg(ui->yCnt->getQuantity().getValue())
+            .arg(ui->zCnt->getQuantity().getValue());
     }
     else if (index == 1) {
         cmd = QString::fromAscii(
             "App.Placement(App.Vector(%1,%2,%3), App.Rotation(%4,%5,%6), App.Vector(%7,%8,%9))")
-            .arg(ui->xPos->value(),0,'g',ui->xPos->decimals())
-            .arg(ui->yPos->value(),0,'g',ui->yPos->decimals())
-            .arg(ui->zPos->value(),0,'g',ui->zPos->decimals())
-            .arg(ui->yawAngle->value(),0,'g',ui->yawAngle->decimals())
-            .arg(ui->pitchAngle->value(),0,'g',ui->pitchAngle->decimals())
-            .arg(ui->rollAngle->value(),0,'g',ui->rollAngle->decimals())
-            .arg(ui->xCnt->value(),0,'g',ui->xCnt->decimals())
-            .arg(ui->yCnt->value(),0,'g',ui->yCnt->decimals())
-            .arg(ui->zCnt->value(),0,'g',ui->zCnt->decimals());
+            .arg(ui->xPos->getQuantity().getValue())
+            .arg(ui->yPos->getQuantity().getValue())
+            .arg(ui->zPos->getQuantity().getValue())
+            .arg(ui->yawAngle->getQuantity().getValue())
+            .arg(ui->pitchAngle->getQuantity().getValue())
+            .arg(ui->rollAngle->getQuantity().getValue())
+            .arg(ui->xCnt->getQuantity().getValue())
+            .arg(ui->yCnt->getQuantity().getValue())
+            .arg(ui->zCnt->getQuantity().getValue());
     }
 
     return cmd;

@@ -309,11 +309,6 @@ Transform::Transform(QWidget* parent, Qt::WFlags fl)
     ui->applyPlacementChange->hide();
     ui->applyIncrementalPlacement->hide();
 
-    ui->angle->setSuffix(QString::fromUtf8(" \xc2\xb0"));
-    ui->yawAngle->setSuffix(QString::fromUtf8(" \xc2\xb0"));
-    ui->pitchAngle->setSuffix(QString::fromUtf8(" \xc2\xb0"));
-    ui->rollAngle->setSuffix(QString::fromUtf8(" \xc2\xb0"));
-
     ui->closeButton->setText(tr("Cancel"));
     this->setWindowTitle(tr("Transform"));
 
@@ -323,8 +318,8 @@ Transform::Transform(QWidget* parent, Qt::WFlags fl)
     signalMapper->setMapping(this, 0);
 
     int id = 1;
-    QList<QDoubleSpinBox*> sb = this->findChildren<QDoubleSpinBox*>();
-    for (QList<QDoubleSpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
+    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         connect(*it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
         signalMapper->setMapping(*it, id++);
     }
@@ -349,9 +344,9 @@ void Transform::setTransformStrategy(TransformStrategy* ts)
         delete strategy;
     strategy = ts;
     Base::Vector3d cnt = strategy->getRotationCenter();
-    ui->xCnt->setValue(cnt.x);
-    ui->yCnt->setValue(cnt.y);
-    ui->zCnt->setValue(cnt.z);
+    ui->xCnt->setValue(Base::Quantity(cnt.x, Base::Unit::Length));
+    ui->yCnt->setValue(Base::Quantity(cnt.y, Base::Unit::Length));
+    ui->zCnt->setValue(Base::Quantity(cnt.z, Base::Unit::Length));
     this->setDisabled(strategy->transformObjects().empty());
 }
 
@@ -388,17 +383,17 @@ void Transform::on_applyButton_clicked()
     strategy->commitTransform(mat);
 
     // nullify the values
-    QList<QDoubleSpinBox*> sb = this->findChildren<QDoubleSpinBox*>();
-    for (QList<QDoubleSpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
+    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         (*it)->blockSignals(true);
         (*it)->setValue(0.0);
         (*it)->blockSignals(false);
     }
 
     Base::Vector3d cnt = strategy->getRotationCenter();
-    ui->xCnt->setValue(cnt.x);
-    ui->yCnt->setValue(cnt.y);
-    ui->zCnt->setValue(cnt.z);
+    ui->xCnt->setValue(Base::Quantity(cnt.x, Base::Unit::Length));
+    ui->yCnt->setValue(Base::Quantity(cnt.y, Base::Unit::Length));
+    ui->zCnt->setValue(Base::Quantity(cnt.z, Base::Unit::Length));
 }
 
 void Transform::directionActivated(int index)
@@ -420,18 +415,18 @@ Base::Placement Transform::getPlacementData() const
     Base::Vector3d pos;
     Base::Vector3d cnt;
 
-    pos = Base::Vector3d(ui->xPos->value(),ui->yPos->value(),ui->zPos->value());
-    cnt = Base::Vector3d(ui->xCnt->value(),ui->yCnt->value(),ui->zCnt->value());
+    pos = Base::Vector3d(ui->xPos->getQuantity().getValue(),ui->yPos->getQuantity().getValue(),ui->zPos->getQuantity().getValue());
+    cnt = Base::Vector3d(ui->xCnt->getQuantity().getValue(),ui->yCnt->getQuantity().getValue(),ui->zCnt->getQuantity().getValue());
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value()*D_PI/180.0);
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->getQuantity().getValue()*D_PI/180.0);
     }
     else if (index == 1) {
         rot.setYawPitchRoll(
-            ui->yawAngle->value(),
-            ui->pitchAngle->value(),
-            ui->rollAngle->value());
+            ui->yawAngle->getQuantity().getValue(),
+            ui->pitchAngle->getQuantity().getValue(),
+            ui->rollAngle->getQuantity().getValue());
     }
 
     Base::Placement p(pos, rot, cnt);

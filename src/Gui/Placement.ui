@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>271</width>
-    <height>410</height>
+    <width>277</width>
+    <height>474</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Placement</string>
@@ -26,55 +32,7 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="zPos">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimum">
-         <double>-2147480000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>2147480000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="yPos">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimum">
-         <double>-2147480000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>2147480000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="xPos">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimum">
-         <double>-2147480000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>2147480000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <spacer>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -87,7 +45,7 @@
         </property>
        </spacer>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="TextLabelZ">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -100,7 +58,7 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="2" column="0">
        <widget class="QLabel" name="TextLabelY">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -126,6 +84,15 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="Gui::InputField" name="xPos"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::InputField" name="yPos"/>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::InputField" name="zPos"/>
+      </item>
      </layout>
     </widget>
    </item>
@@ -141,54 +108,6 @@
       <property name="spacing">
        <number>6</number>
       </property>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="zCnt">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimum">
-         <double>-2147480000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>2147480000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="yCnt">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimum">
-         <double>-2147480000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>2147480000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="xCnt">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimum">
-         <double>-2147480000.000000000000000</double>
-        </property>
-        <property name="maximum">
-         <double>2147480000.000000000000000</double>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="1">
        <spacer>
         <property name="orientation">
@@ -241,6 +160,15 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <widget class="Gui::InputField" name="xCnt"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::InputField" name="yCnt"/>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::InputField" name="zCnt"/>
+      </item>
      </layout>
     </widget>
    </item>
@@ -277,16 +205,6 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="angle">
-              <property name="minimum">
-               <double>-360.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>360.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="textLabelAngle">
               <property name="sizePolicy">
@@ -320,6 +238,9 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="angle"/>
+            </item>
            </layout>
           </item>
          </layout>
@@ -340,26 +261,6 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="yawAngle">
-              <property name="minimum">
-               <double>-360.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>360.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="pitchAngle">
-              <property name="minimum">
-               <double>-360.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>360.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="TextLabelZ_3">
               <property name="sizePolicy">
@@ -370,16 +271,6 @@
               </property>
               <property name="text">
                <string>Pitch:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="rollAngle">
-              <property name="minimum">
-               <double>-360.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>360.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -408,6 +299,15 @@
                <string>Yaw:</string>
               </property>
              </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="yawAngle"/>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="pitchAngle"/>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::InputField" name="rollAngle"/>
             </item>
            </layout>
           </item>
@@ -458,6 +358,12 @@
    </item>
    <item row="3" column="0" colspan="2">
     <widget class="QCheckBox" name="applyIncrementalPlacement">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>Apply incremental changes to object placement</string>
      </property>
@@ -531,19 +437,16 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header location="global">Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
-  <tabstop>xPos</tabstop>
-  <tabstop>yPos</tabstop>
-  <tabstop>zPos</tabstop>
   <tabstop>rotationInput</tabstop>
   <tabstop>direction</tabstop>
-  <tabstop>angle</tabstop>
-  <tabstop>yawAngle</tabstop>
-  <tabstop>pitchAngle</tabstop>
-  <tabstop>rollAngle</tabstop>
-  <tabstop>xCnt</tabstop>
-  <tabstop>yCnt</tabstop>
-  <tabstop>zCnt</tabstop>
   <tabstop>applyPlacementChange</tabstop>
   <tabstop>applyIncrementalPlacement</tabstop>
   <tabstop>oKButton</tabstop>

@@ -73,6 +73,7 @@ private:
     void applyPlacement(const QString& p, bool incremental);
     void revertTransformation();
     void slotActiveDocument(const Gui::Document&);
+    bool hasValidInputs();
 
 Q_SIGNALS:
     void placementChanged(const QVariant &, bool, bool);
