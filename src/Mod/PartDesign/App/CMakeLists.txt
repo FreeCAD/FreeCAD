@@ -108,6 +108,7 @@ SET(PartDesign_Scripts
     Scripts/Gear.py
     Scripts/DistanceBolt.py
     Scripts/Epitrochoid.py
+    Scripts/FilletArc.py
     Scripts/RadialCopy.py
     Scripts/Parallelepiped.py
     Scripts/Spring.py
@@ -127,11 +128,8 @@ fc_target_copy_resource(PartDesign
     ${CMAKE_BINARY_DIR}/Mod/PartDesign
     ${PartDesign_Scripts})
 
-# See link for why this module is installed differently from the other modules:
-# http://forum.freecadweb.org/viewtopic.php?f=19&t=5444
-SET_BIN_DIR(PartDesign PartDesign /Mod/PartDesign /Mod/PartDesign)
+SET_BIN_DIR(PartDesign PartDesign /Mod/PartDesign)
 SET_PYTHON_PREFIX_SUFFIX(PartDesign)
 
-# The PartDesign module must go to where the __init__.py file is
-INSTALL(TARGETS PartDesign DESTINATION Mod/PartDesign)
+INSTALL(TARGETS PartDesign DESTINATION ${CMAKE_INSTALL_LIBDIR})
 

@@ -33,4 +33,4 @@ fc_target_copy_resource(Complete
 SET_BIN_DIR(Complete Complete /Mod/Complete)
 SET_PYTHON_PREFIX_SUFFIX(Complete)
 
-INSTALL(TARGETS Complete DESTINATION lib)
+INSTALL(TARGETS Complete DESTINATION ${CMAKE_INSTALL_LIBDIR})

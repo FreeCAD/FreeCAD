@@ -73,4 +73,4 @@ fc_target_copy_resource(ImportPy
 SET_BIN_DIR(Import Import /Mod/Import)
 SET_PYTHON_PREFIX_SUFFIX(Import)
 
-INSTALL(TARGETS Import DESTINATION lib)
+INSTALL(TARGETS Import DESTINATION ${CMAKE_INSTALL_LIBDIR})

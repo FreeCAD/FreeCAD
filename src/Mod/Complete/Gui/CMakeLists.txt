@@ -39,4 +39,4 @@ fc_target_copy_resource(CompleteGui
 SET_BIN_DIR(CompleteGui CompleteGui /Mod/Complete)
 SET_PYTHON_PREFIX_SUFFIX(CompleteGui)
 
-install(TARGETS CompleteGui DESTINATION lib)
+install(TARGETS CompleteGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

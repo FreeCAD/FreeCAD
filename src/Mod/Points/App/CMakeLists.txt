@@ -53,4 +53,4 @@ fc_target_copy_resource(Points
 SET_BIN_DIR(Points Points /Mod/Points)
 SET_PYTHON_PREFIX_SUFFIX(Points)
 
-INSTALL(TARGETS Points DESTINATION lib)
+INSTALL(TARGETS Points DESTINATION ${CMAKE_INSTALL_LIBDIR})

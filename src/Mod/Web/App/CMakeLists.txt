@@ -49,4 +49,4 @@ fc_target_copy_resource(Web
 SET_BIN_DIR(Web Web /Mod/Web)
 SET_PYTHON_PREFIX_SUFFIX(Web)
 
-install(TARGETS Web DESTINATION lib)
+install(TARGETS Web DESTINATION ${CMAKE_INSTALL_LIBDIR})

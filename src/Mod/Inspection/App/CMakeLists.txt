@@ -46,4 +46,4 @@ fc_target_copy_resource(Inspection
 SET_BIN_DIR(Inspection Inspection /Mod/Inspection)
 SET_PYTHON_PREFIX_SUFFIX(Inspection)
 
-INSTALL(TARGETS Inspection DESTINATION lib)
+INSTALL(TARGETS Inspection DESTINATION ${CMAKE_INSTALL_LIBDIR})

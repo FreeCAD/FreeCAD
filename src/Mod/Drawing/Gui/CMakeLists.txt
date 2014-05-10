@@ -99,4 +99,4 @@ fc_target_copy_resource(DrawingGui
 SET_BIN_DIR(DrawingGui DrawingGui /Mod/Drawing)
 SET_PYTHON_PREFIX_SUFFIX(DrawingGui)
 
-INSTALL(TARGETS DrawingGui DESTINATION lib)
+INSTALL(TARGETS DrawingGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

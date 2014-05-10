@@ -33,4 +33,4 @@ fc_target_copy_resource(Assembly
 SET_BIN_DIR(Assembly Assembly /Mod/Assembly)
 SET_PYTHON_PREFIX_SUFFIX(Assembly)
 
-INSTALL(TARGETS Assembly DESTINATION lib)
+INSTALL(TARGETS Assembly DESTINATION ${CMAKE_INSTALL_LIBDIR})

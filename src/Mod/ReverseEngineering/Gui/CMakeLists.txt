@@ -50,4 +50,4 @@ fc_target_copy_resource(ReverseEngineeringGui
 SET_BIN_DIR(ReverseEngineeringGui ReverseEngineeringGui /Mod/ReverseEngineering)
 SET_PYTHON_PREFIX_SUFFIX(ReverseEngineeringGui)
 
-install(TARGETS ReverseEngineeringGui DESTINATION lib)
+install(TARGETS ReverseEngineeringGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
