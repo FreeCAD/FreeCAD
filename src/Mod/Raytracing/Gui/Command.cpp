@@ -131,7 +131,7 @@ void CmdRaytracingWriteCamera::activated(int iMsg)
         float Dist = Cam->focalDistance.getValue();
 
         QStringList filter;
-        filter << QObject::tr("Povray(*.pov)");
+        filter << QObject::tr("Povray (*.pov)");
         filter << QObject::tr("All Files (*.*)");
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
         if (fn.isEmpty()) 
