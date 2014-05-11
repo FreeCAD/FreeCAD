@@ -308,7 +308,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Platform</source>
-        <translation>Plataforma</translation>
+        <translation type="obsolete">Plataforma</translation>
     </message>
     <message>
         <source>License...</source>
@@ -321,6 +321,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>Operating system</source>
         <translation>Sistema operativo</translation>
+    </message>
+    <message>
+        <source>Word size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1576,6 +1580,25 @@ Especifique otro directorio, por favor.</translation>
     </message>
 </context>
 <context>
+    <name>Gui::Dialog::DlgPropertyLink</name>
+    <message>
+        <source>Link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show all object types</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No selection</source>
+        <translation type="unfinished">Ninguna selección</translation>
+    </message>
+    <message>
+        <source>Please select an object of the list</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
         <source>Output window</source>
@@ -1693,7 +1716,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Enable anti-aliasing (slower)</source>
-        <translation>Activar anti-aliasing (más lento)</translation>
+        <translation type="obsolete">Activar anti-aliasing (más lento)</translation>
     </message>
     <message>
         <source>Eye to eye distance for stereo modes:</source>
@@ -1754,6 +1777,30 @@ Especifique otro directorio, por favor.</translation>
     <message>
         <source>Zoom step</source>
         <translation>Paso de zoom</translation>
+    </message>
+    <message>
+        <source>Anti-Aliasing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line Smoothing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MSAA 2x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MSAA 4x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MSAA 8x</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2283,6 +2330,10 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imperial decimal (in/lb)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3272,6 +3323,37 @@ Desea guardar los cambios?</translation>
     <message>
         <source>Remove</source>
         <translation>Quitar</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::GraphvizView</name>
+    <message>
+        <source>PNG format (*.png)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap format (*.bmp)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GIF format (*.gif)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JPG format (*.jpg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG format (*.svg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF format (*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export graph</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

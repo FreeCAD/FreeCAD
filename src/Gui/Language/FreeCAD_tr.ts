@@ -308,7 +308,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Platform</source>
-        <translation>Platform</translation>
+        <translation type="obsolete">Platform</translation>
     </message>
     <message>
         <source>License...</source>
@@ -321,6 +321,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>Operating system</source>
         <translation>Operating system</translation>
+    </message>
+    <message>
+        <source>Word size</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1574,6 +1578,25 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
 </context>
 <context>
+    <name>Gui::Dialog::DlgPropertyLink</name>
+    <message>
+        <source>Link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show all object types</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No selection</source>
+        <translation type="unfinished">Seçim yok</translation>
+    </message>
+    <message>
+        <source>Please select an object of the list</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
         <source>Output window</source>
@@ -1691,7 +1714,7 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
         <source>Enable anti-aliasing (slower)</source>
-        <translation>Örtüşme önlemeyi etkinleştir (yavaş)</translation>
+        <translation type="obsolete">Örtüşme önlemeyi etkinleştir (yavaş)</translation>
     </message>
     <message>
         <source>Eye to eye distance for stereo modes:</source>
@@ -1752,6 +1775,30 @@ Lütfen başka bir dizin belirtin.</translation>
     <message>
         <source>Zoom step</source>
         <translation>Zoom adımı</translation>
+    </message>
+    <message>
+        <source>Anti-Aliasing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line Smoothing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MSAA 2x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MSAA 4x</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MSAA 8x</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2281,6 +2328,10 @@ Lütfen başka bir dizin belirtin.</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imperial decimal (in/lb)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3267,6 +3318,37 @@ Do you want to save your changes?</source>
     <message>
         <source>Remove</source>
         <translation>Kaldır</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::GraphvizView</name>
+    <message>
+        <source>PNG format (*.png)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap format (*.bmp)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GIF format (*.gif)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JPG format (*.jpg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG format (*.svg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF format (*.pdf)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Export graph</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

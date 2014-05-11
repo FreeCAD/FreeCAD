@@ -2,9 +2,65 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>CmdSketcherCompCreateArc</name>
+    <message>
+        <location filename="../../CommandCreateGeo.cpp" line="+1533"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Skizze</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create arc</source>
+        <translation type="unfinished">Bogen erstellen</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an arc in the sketcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+55"/>
+        <source>Center and end points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>End points and rim point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCompCreateCircle</name>
+    <message>
+        <location line="+415"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Skizze</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create circle</source>
+        <translation type="unfinished">Kreis erstellen</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a circle in the sketcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+55"/>
+        <source>Center and rim point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>3 rim points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+1498"/>
+        <location filename="../../CommandConstraints.cpp" line="+1504"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -288,27 +344,71 @@
     </message>
 </context>
 <context>
+    <name>CmdSketcherCreate3PointArc</name>
+    <message>
+        <location filename="../../CommandCreateGeo.cpp" line="-563"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Skizze</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create arc by three points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an arc by its end points and a point along the arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCreate3PointCircle</name>
+    <message>
+        <location line="+474"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Skizze</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create circle by three points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a circle by 3 perimeter points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherCreateArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="+1198"/>
+        <location line="-752"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Create arc</source>
-        <translation>Bogen erstellen</translation>
+        <source>Create arc by center</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Create an arc by its center and by its end points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create arc</source>
+        <translation type="obsolete">Bogen erstellen</translation>
+    </message>
+    <message>
         <source>Create an arc in the sketch</source>
-        <translation>Bogen in der Skizze erstellen</translation>
+        <translation type="obsolete">Bogen in der Skizze erstellen</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-        <location line="+174"/>
+        <location line="+527"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -326,7 +426,7 @@
 <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-        <location line="+175"/>
+        <location line="+476"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -344,7 +444,7 @@
 <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-        <location line="+244"/>
+        <location line="+246"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -366,7 +466,7 @@
 <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-        <location line="-1570"/>
+        <location line="-2224"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -384,7 +484,7 @@
 <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-        <location line="+1267"/>
+        <location line="+1917"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -402,7 +502,7 @@
 <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-        <location line="-539"/>
+        <location line="-1192"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -424,7 +524,7 @@
 <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-        <location line="-526"/>
+        <location line="-525"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -440,9 +540,27 @@
     </message>
 </context>
 <context>
+    <name>CmdSketcherCreateSlot</name>
+    <message>
+        <location line="+2599"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Skizze</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create slot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a slot in the sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherCreateText</name>
     <message>
-        <location line="+1086"/>
+        <location line="-862"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -460,7 +578,7 @@
 <context>
     <name>CmdSketcherExternal</name>
     <message>
-        <location line="+584"/>
+        <location line="+598"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -478,7 +596,7 @@
 <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-        <location filename="../../Command.cpp" line="+358"/>
+        <location filename="../../Command.cpp" line="+364"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -514,7 +632,7 @@
 <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-        <location line="-199"/>
+        <location line="-204"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -551,7 +669,7 @@
 <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-        <location line="+113"/>
+        <location line="+118"/>
         <source>Sketcher</source>
         <translation type="unfinished">Skizze</translation>
     </message>
@@ -587,7 +705,7 @@
 <context>
     <name>CmdSketcherTrimming</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-165"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-173"/>
         <source>Sketcher</source>
         <translation>Skizze</translation>
     </message>
@@ -1075,7 +1193,7 @@
         <translation>Wählen Sie genau zwei Elemente aus der Skizze aus.</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+2914"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+2955"/>
         <source>Edit sketch</source>
         <translation>Skizze bearbeiten</translation>
     </message>
@@ -1090,7 +1208,7 @@
         <translation>Möchten Sie dieses Dialogfeld schließen?</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-309"/>
+        <location filename="../../Command.cpp" line="-314"/>
         <source>Several sub-elements selected</source>
         <translation>Mehrere Unter-Elemente selektiert</translation>
     </message>
@@ -1130,7 +1248,7 @@
         <translation>Der Wert kann nicht geändert werden, da die Skizze Randbedingungskonflikte enthält</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+78"/>
         <source>Dimensional constraint</source>
         <translation>Dimensionale Beschränkung</translation>
     </message>
@@ -1169,6 +1287,57 @@
     <message>
         <source>Offset:</source>
         <translation type="obsolete">Offset:</translation>
+    </message>
+</context>
+<context>
+    <name>SketcherGui::ConstraintView</name>
+    <message>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+110"/>
+        <source>Change value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SketcherGui::EditDatumDialog</name>
+    <message>
+        <location filename="../../EditDatumDialog.cpp" line="-62"/>
+        <source>Insert angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Angle:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Insert radius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Insert length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Length:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1278,6 +1447,16 @@
     </message>
     <message>
         <location line="+26"/>
+        <source>External geometry</source>
+        <translation type="unfinished">Externe Geometrie</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>The color of external geometry in edit mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
         <source>Fully constrained geometry</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1314,12 +1493,12 @@
         <location line="-67"/>
         <location line="+35"/>
         <location line="+35"/>
-        <location line="+88"/>
+        <location line="+75"/>
         <source>px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-133"/>
+        <location line="-120"/>
         <source>Default vertex size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1334,13 +1513,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+29"/>
         <source>Sketch editing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Font size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Grid line pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Ask for value after creating a distance constraint</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1400,7 +1589,7 @@
         <translation>Genannt</translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+68"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+37"/>
         <source>Constraints</source>
         <translation>Einschränkungen</translation>
     </message>
@@ -1423,7 +1612,12 @@
         <translation>Rastergröße:</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+7"/>
+        <source>mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>Grid snap</source>
         <translation>Am Gitter ausrichten</translation>
     </message>
@@ -1513,7 +1707,7 @@
         <translation type="obsolete">Automatische Beschränkungen</translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherGeneral.cpp" line="+185"/>
+        <location filename="../../TaskSketcherGeneral.cpp" line="+123"/>
         <source>Edit controls</source>
         <translation>Bedienelemente bearbeiten</translation>
     </message>
@@ -1557,7 +1751,7 @@
 <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+78"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+86"/>
         <source>Please remove the following constraint:</source>
         <translation>Bitte folgende Beschränkung entfernen:</translation>
     </message>
@@ -1623,9 +1817,45 @@
     </message>
 </context>
 <context>
+    <name>Sketcher_Create3PointArc</name>
+    <message>
+        <location filename="../../CommandCreateGeo.cpp" line="-1049"/>
+        <location line="+1"/>
+        <source>Create an arc by its end points and a point along the arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_Create3PointCircle</name>
+    <message>
+        <location line="+475"/>
+        <location line="+1"/>
+        <source>Create a circle by 3 rim points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateArc</name>
+    <message>
+        <location line="-481"/>
+        <location line="+1"/>
+        <source>Create an arc by its center and by its end points</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateCircle</name>
+    <message>
+        <location line="+475"/>
+        <location line="+1"/>
+        <source>Create a circle by its center and by a rim point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-        <location filename="../../Command.cpp" line="+84"/>
+        <location filename="../../Command.cpp" line="+89"/>
         <source>Sketch has support</source>
         <translation type="unfinished"></translation>
     </message>

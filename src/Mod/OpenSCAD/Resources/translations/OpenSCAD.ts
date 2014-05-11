@@ -166,7 +166,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="194"/>
+        <location filename="OpenSCADCommands.py" line="199"/>
         <source>Please select 3 objects first</source>
         <translation type="unfinished"></translation>
     </message>
@@ -181,42 +181,42 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importCSG.py" line="1093"/>
+        <location filename="importCSG.py" line="1091"/>
         <source>Projection Not yet Coded waiting for Peter Li</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importCSG.py" line="1093"/>
+        <location filename="importCSG.py" line="1091"/>
         <source> Press OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="238"/>
+        <location filename="OpenSCADCommands.py" line="243"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="239"/>
+        <location filename="OpenSCADCommands.py" line="244"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="240"/>
+        <location filename="OpenSCADCommands.py" line="245"/>
         <source>as Mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="241"/>
+        <location filename="OpenSCADCommands.py" line="246"/>
         <source>Add OpenSCAD Element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="314"/>
+        <location filename="OpenSCADCommands.py" line="319"/>
         <source>Perform</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="315"/>
+        <location filename="OpenSCADCommands.py" line="320"/>
         <source>Mesh Boolean</source>
         <translation type="unfinished"></translation>
     </message>
@@ -229,12 +229,12 @@
 <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="356"/>
+        <location filename="OpenSCADCommands.py" line="361"/>
         <source>Add OpenSCAD Element...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="358"/>
+        <location filename="OpenSCADCommands.py" line="363"/>
         <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
         <translation type="unfinished"></translation>
     </message>
@@ -289,12 +289,12 @@
 <context>
     <name>OpenSCAD_Hull</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="391"/>
+        <location filename="OpenSCADCommands.py" line="396"/>
         <source>Hull</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="393"/>
+        <location filename="OpenSCADCommands.py" line="398"/>
         <source>Perform Hull</source>
         <translation type="unfinished"></translation>
     </message>
@@ -315,12 +315,12 @@
 <context>
     <name>OpenSCAD_MeshBoolean</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="370"/>
+        <location filename="OpenSCADCommands.py" line="375"/>
         <source>Mesh Boolean...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="372"/>
+        <location filename="OpenSCADCommands.py" line="377"/>
         <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -328,12 +328,12 @@
 <context>
     <name>OpenSCAD_Minkowski</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="412"/>
+        <location filename="OpenSCADCommands.py" line="417"/>
         <source>Minkowski</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="414"/>
+        <location filename="OpenSCADCommands.py" line="419"/>
         <source>Perform Minkowski</source>
         <translation type="unfinished"></translation>
     </message>
@@ -354,12 +354,12 @@
 <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="213"/>
+        <location filename="OpenSCADCommands.py" line="218"/>
         <source>Remove Objects and their Children</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="215"/>
+        <location filename="OpenSCADCommands.py" line="220"/>
         <source>Removes the selected objects and all children that are not referenced from other objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -367,12 +367,12 @@
 <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-        <location filename="OpenSCADCommands.py" line="198"/>
+        <location filename="OpenSCADCommands.py" line="203"/>
         <source>Replace Object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="OpenSCADCommands.py" line="200"/>
+        <location filename="OpenSCADCommands.py" line="205"/>
         <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
         <translation type="unfinished"></translation>
     </message>
