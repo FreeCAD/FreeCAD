@@ -67,7 +67,7 @@ void DlgPropertyLink::accept()
 {
     QList<QListWidgetItem*> items = ui->listWidget->selectedItems();
     if (items.isEmpty()) {
-        QMessageBox::warning(this, tr("No selection"), tr("Please select an object of the list"));
+        QMessageBox::warning(this, tr("No selection"), tr("Please select an object from the list"));
     }
     else {
         QDialog::accept();
