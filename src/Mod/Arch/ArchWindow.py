@@ -383,7 +383,8 @@ class _CommandWindow:
         self.baseFace = None
         self.wparams = ["Width","Height","H1","H2","H3","W1","W2","O1","O2"]
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
+        import DraftGui
+        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         
         # auto mode
         if sel:
@@ -810,7 +811,8 @@ class _ArchWindowTaskPanel:
 
         self.obj = None
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
+        import DraftGui
+        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.form)

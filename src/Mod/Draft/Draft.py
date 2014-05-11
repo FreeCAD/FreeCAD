@@ -326,7 +326,7 @@ def getGroupContents(objectslist,walls=False,addgroups=False):
             #print "adding ",obj.Name
             newlist.append(obj)
             if walls:
-                if getType(obj) == "Wall":
+                if getType(obj) in ["Wall","Structure"]:
                     for o in obj.OutList:
                         if (getType(o) == "Window") or isClone(o,"Window"):
                             newlist.append(o)

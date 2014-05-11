@@ -168,6 +168,8 @@ def getRotation(vector,reference=Vector(1,0,0)):
     representing a quaternion rotation between the reference
     (or X axis if omitted) and the vector'''
     c = vector.cross(reference)
+    if isNull(c):
+        return (0,0,0,1.0)
     c.normalize()
     return (c.x,c.y,c.z,math.sqrt((vector.Length ** 2) * (reference.Length ** 2)) + vector.dot(reference))
     

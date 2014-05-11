@@ -35,6 +35,9 @@ __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+# Possible roles for walls
+Roles = ['Wall','Wall Layer','Beam','Column','Curtain Wall']
+
 def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name=translate("Arch","Wall")):
     '''makeWall([obj],[length],[width],[height],[align],[face],[name]): creates a wall based on the
     given object, which can be a sketch, a draft object, a face or a solid, or no object at
@@ -157,7 +160,8 @@ class _CommandWall:
         self.JOIN_WALLS_SKETCHES = p.GetBool("joinWallSketches",False)
         self.AUTOJOIN = p.GetBool("autoJoinWalls",True)
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
+        import DraftGui
+        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         sel = FreeCADGui.Selection.getSelectionEx()
         done = False
         self.existing = []
@@ -387,15 +391,12 @@ class _Wall(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
         obj.addProperty("App::PropertyEnumeration","Align","Arch",translate("Arch","The alignment of this wall on its base object, if applicable"))
         obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
-        obj.addProperty("App::PropertyBool","ForceWire","Arch",translate("Arch","If True, if this wall is based on a face, it will use its border wire as trace, and disconsider the face."))
         obj.addProperty("App::PropertyInteger","Face","Arch",translate("Arch","The face number of the base object used to build this wall"))
         obj.addProperty("App::PropertyLength","Offset","Arch",translate("Arch","The offset between this wall and its baseline (only for left and right alignments)"))
+        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this wall"))
         obj.Align = ['Left','Right','Center']
-        obj.ForceWire = False
+        obj.Role = Roles
         self.Type = "Wall"
-        obj.Width = 1
-        obj.Height = 1
-        obj.Length = 1
         
     def execute(self,obj):
         "builds the wall shape"
@@ -404,62 +405,50 @@ class _Wall(ArchComponent.Component):
         pl = obj.Placement
         normal,length,width,height = self.getDefaultValues(obj)
         base = None
-        
-        # computing a shape from scratch
-        if not obj.Base:
-            if length and width and height:
-                base = Part.makeBox(length,width,height)
-            else:
-                FreeCAD.Console.PrintError(str(translate("Arch","Error: Unable to compute a base shape")))
-                return
-        else:
+        face = None
+
+        if obj.Base:
             # computing a shape from a base object
             if obj.Base.isDerivedFrom("Part::Feature"):
-                if not obj.Base.Shape.isNull():
-                    if obj.Base.Shape.isValid():
-                        base = obj.Base.Shape.copy()
-                        face = None
-                        if hasattr(obj,"Face"):
-                            if obj.Face:
-                                if len(base.Faces) >= obj.Face:
-                                    face = base.Faces[obj.Face-1]
-                        if face:
-                            # wall is based on a face
-                            normal = face.normalAt(0,0)
-                            if normal.getAngle(Vector(0,0,1)) > math.pi/4:
-                                normal.multiply(width)
-                                base = face.extrude(normal)
-                                if obj.Align == "Center":
-                                    base.translate(normal.negative().multiply(0.5))
-                                elif obj.Align == "Right":
-                                    base.translate(normal.negative())
-                            else:
-                                normal.multiply(height)
-                                base = face.extrude(normal)
-                        elif base.Solids:
-                            pass
-                        elif (len(base.Faces) == 1) and (not obj.ForceWire):
-                            if height:
-                                normal.multiply(height)
-                                base = base.extrude(normal)
-                        elif len(base.Wires) >= 1:
-                            temp = None
-                            for wire in obj.Base.Shape.Wires:
-                                sh = self.getBase(obj,wire,normal,width,height)
-                                if temp:
-                                    temp = temp.fuse(sh)
-                                else:
-                                    temp = sh
-                            base = temp
-                        elif base.Edges:
-                            wire = Part.Wire(base.Edges)
-                            if wire:
-                                sh = self.getBase(obj,wire,normal,width,height)
-                                if sh:
-                                    base = sh
-                        else:
-                            base = None
-                            FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
+                if obj.Base.Shape.isNull():
+                    return
+                if not obj.Base.Shape.isValid():
+                    return
+                    
+                if hasattr(obj,"Face"):
+                    if obj.Face > 0:
+                        if len(obj.Base.Shape.Faces) >= obj.Face:
+                            face = obj.Base.Shape.Faces[obj.Face-1]
+                if face:
+                    # case 1: this wall is based on a specific face of its base object
+                    normal = face.normalAt(0,0)
+                    if normal.getAngle(Vector(0,0,1)) > math.pi/4:
+                        normal.multiply(width)
+                        base = face.extrude(normal)
+                        if obj.Align == "Center":
+                            base.translate(normal.negative().multiply(0.5))
+                        elif obj.Align == "Right":
+                            base.translate(normal.negative())
+                    else:
+                        normal.multiply(height)
+                        base = face.extrude(normal)
+                elif obj.Base.Shape.Solids:
+                    # case 2: the base is already a solid
+                    base = obj.Base.Shape.copy()
+                elif obj.Base.Shape.Edges:
+                    # case 3: the base is flat, we need to extrude it
+                    profiles = self.getProfiles(obj)
+                    normal.multiply(height)
+                    base = profiles.pop()
+                    base.fix(0.1,0,1)
+                    base = base.extrude(normal)
+                    for p in profiles:
+                        p.fix(0.1,0,1)
+                        p = p.extrude(normal)
+                        base = base.fuse(p)
+                else:
+                    base = None
+                    FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
                         
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
@@ -470,24 +459,13 @@ class _Wall(ArchComponent.Component):
                         else:
                             FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
                             obj.Base.ViewObject.show()
+        else:
+            # computing a shape from scratch
+            if length and width and height:
+                base = Part.makeBox(length,width,height)
                         
         base = self.processSubShapes(obj,base,pl)
-        
-        if base:
-            if not base.isNull():
-                if base.isValid() and base.Solids:
-                    if base.Volume < 0:
-                        base.reverse()
-                    if base.Volume < 0:
-                        FreeCAD.Console.PrintError(str(translate("Arch","Couldn't compute the wall shape")))
-                        return
-                    try:
-                        base = base.removeSplitter()
-                    except:
-                        FreeCAD.Console.PrintError(str(translate("Arch","Error removing splitter from wall shape")))
-                    obj.Shape = base
-                    if not pl.isNull():
-                        obj.Placement = pl
+        self.applyShape(obj,base,pl)
         
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
@@ -503,77 +481,6 @@ class _Wall(ArchComponent.Component):
                             if (Draft.getType(o) == "Window") or Draft.isClone(o,"Window"):
                                 o.Placement.move(delta)
         ArchComponent.Component.onChanged(self,obj,prop)
-                    
-    def getDefaultValues(self,obj):
-        "returns normal,width,height values from this wall"
-        length = 1
-        if hasattr(obj,"Length"):
-            if obj.Length.Value:
-                length = obj.Length.Value
-        width = 1
-        if hasattr(obj,"Width"):
-            if obj.Width.Value:
-                width = obj.Width.Value
-        height = 1
-        if hasattr(obj,"Height"):
-            if obj.Height.Value:
-                height = obj.Height.Value
-            else:
-                for p in obj.InList:
-                    if Draft.getType(p) == "Floor":
-                        if p.Height.Value:
-                            height = p.Height.Value
-        normal = None
-        if hasattr(obj,"Normal"):
-            if obj.Normal == Vector(0,0,0):
-                normal = Vector(0,0,1)
-            else:
-                normal = Vector(obj.Normal)
-        else:
-            normal = Vector(0,0,1)
-        return normal,length,width,height
-            
-    def getBase(self,obj,wire,normal,width,height):
-        "returns a full shape from a base wire"
-        import DraftGeomUtils,Part
-        flat = False
-        if hasattr(obj.ViewObject,"DisplayMode"):
-            flat = (obj.ViewObject.DisplayMode == "Flat 2D")
-        dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(normal)
-        if not DraftVecUtils.isNull(dvec):
-            dvec.normalize()
-        if obj.Align == "Left":
-            dvec.multiply(width)
-            if hasattr(obj,"Offset"):
-                if obj.Offset.Value:
-                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
-                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
-            w2 = DraftGeomUtils.offsetWire(wire,dvec)
-            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
-            sh = DraftGeomUtils.bind(w1,w2)
-        elif obj.Align == "Right":
-            dvec.multiply(width)
-            dvec = dvec.negative()
-            if hasattr(obj,"Offset"):
-                if obj.Offset.Value:
-                    dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
-                    wire = DraftGeomUtils.offsetWire(wire,dvec2)
-            w2 = DraftGeomUtils.offsetWire(wire,dvec)
-            w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
-            sh = DraftGeomUtils.bind(w1,w2)
-        elif obj.Align == "Center":
-            dvec.multiply(width/2)
-            w1 = DraftGeomUtils.offsetWire(wire,dvec)
-            dvec = dvec.negative()
-            w2 = DraftGeomUtils.offsetWire(wire,dvec)
-            sh = DraftGeomUtils.bind(w1,w2)
-        # fixing self-intersections
-        sh.fix(0.1,0,1)
-        self.BaseProfile = sh
-        if height and (not flat):
-            self.ExtrusionVector = Vector(normal).multiply(height)
-            sh = sh.extrude(self.ExtrusionVector)
-        return sh
 
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
