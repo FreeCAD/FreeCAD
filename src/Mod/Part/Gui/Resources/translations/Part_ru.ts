@@ -1135,7 +1135,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+896"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+951"/>
         <source>Chamfer Edges</source>
         <translation>Притупить ребра фаской</translation>
     </message>
@@ -1287,7 +1287,7 @@
         <translation>Нет выбора</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-674"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-715"/>
         <source>Length:</source>
         <translation type="unfinished">Длина:</translation>
     </message>
@@ -1308,12 +1308,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+466"/>
+        <location line="+507"/>
         <source>Start length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-465"/>
+        <location line="-506"/>
         <source>End length</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1324,17 +1324,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+463"/>
+        <location line="+504"/>
         <source>Start radius</source>
         <translation>Начальный радиус</translation>
     </message>
     <message>
-        <location line="-462"/>
+        <location line="-503"/>
         <source>End radius</source>
         <translation>Конечный радиус</translation>
     </message>
     <message>
-        <location line="+452"/>
+        <location line="+493"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1366,13 +1366,13 @@ Please check one or more edge entities first.</source>
         <translation>Ничего</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-219"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-246"/>
         <location line="+60"/>
         <source>Edge%1</source>
         <translation>Грань%1</translation>
     </message>
     <message>
-        <location line="+108"/>
+        <location line="+135"/>
         <source>No shape selected</source>
         <translation>Профиль не выбран</translation>
     </message>
@@ -2021,7 +2021,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Ось:</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+38"/>
         <source>Shape</source>
         <translation>Форма</translation>
     </message>
@@ -2031,7 +2031,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Select line in 3D view</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+173"/>
+        <location line="+7"/>
+        <source>Create Solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DlgRevolution.cpp" line="+176"/>
         <source>Select a shape for revolution, first.</source>
         <translation>Сначала выберите фигуру для революции.</translation>
     </message>
@@ -2297,18 +2302,18 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location filename="../../TaskLoft.cpp" line="+72"/>
-        <location line="+125"/>
+        <location line="+131"/>
         <source>Vertex/Edge/Wire/Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-124"/>
-        <location line="+125"/>
+        <location line="-130"/>
+        <location line="+131"/>
         <source>Loft</source>
         <translation>Лофт</translation>
     </message>
     <message>
-        <location line="-62"/>
+        <location line="-63"/>
         <source>Too few elements</source>
         <translation>Слишком мало элементов</translation>
     </message>
@@ -2318,7 +2323,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+33"/>
         <source>Input error</source>
         <translation type="unfinished">Ошибка ввода</translation>
     </message>
@@ -2480,18 +2485,18 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::SweepWidget</name>
     <message>
-        <location filename="../../TaskSweep.cpp" line="+224"/>
+        <location filename="../../TaskSweep.cpp" line="+234"/>
         <source>Vertex/Wire</source>
         <translation>Вершина/проволока</translation>
     </message>
     <message>
-        <location line="-150"/>
-        <location line="+151"/>
+        <location line="-160"/>
+        <location line="+161"/>
         <source>Sweep</source>
         <translation>Сдвиг</translation>
     </message>
     <message>
-        <location line="-152"/>
+        <location line="-162"/>
         <source>Vertex/Edge/Wire/Face</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2506,7 +2511,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Select an edge or wire you want to sweep along.</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+35"/>
         <source>Too few elements</source>
         <translation>Слишком мало элементов</translation>
     </message>
@@ -2516,7 +2521,17 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>At least one edge or wire is required.</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+7"/>
+        <source>Wrong selection</source>
+        <translation type="unfinished">Неправильный выбор</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>&apos;%1&apos; cannot be used as profile and path.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+36"/>
         <source>Input error</source>
         <translation type="unfinished">Ошибка ввода</translation>
     </message>
@@ -2524,7 +2539,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="+539"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="+548"/>
         <source>Shape Content</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2532,7 +2547,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-        <location line="-502"/>
+        <location line="-511"/>
         <source>Check Geometry</source>
         <translation>Проверка геометрии</translation>
     </message>
@@ -2780,6 +2795,11 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+7"/>
         <source>Ruled surface</source>
         <translation>Поверхность по закону</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Closed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3067,7 +3087,7 @@ Do you want to continue?</source>
         <translation>Изменение краев ленты</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+586"/>
+        <location filename="../../ViewProviderExt.cpp" line="+587"/>
         <source>Set colors...</source>
         <translation>Установите цвета ...</translation>
     </message>
@@ -3353,7 +3373,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <location line="+284"/>
-        <location line="+153"/>
+        <location line="+162"/>
         <source>Invalid</source>
         <translation>Invalid</translation>
     </message>

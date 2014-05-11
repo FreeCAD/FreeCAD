@@ -4,7 +4,7 @@
 <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-        <location filename="../../Command.cpp" line="+490"/>
+        <location filename="../../Command.cpp" line="+489"/>
         <source>File</source>
         <translation>Datei</translation>
     </message>
@@ -140,7 +140,7 @@
 <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-687"/>
+        <location line="-686"/>
         <source>Raytracing</source>
         <translation>Raytracing</translation>
     </message>
@@ -158,7 +158,7 @@
 <context>
     <name>CmdRaytracingWritePart</name>
     <message>
-        <location line="+92"/>
+        <location line="+91"/>
         <source>Raytracing</source>
         <translation>Raytracing</translation>
     </message>
@@ -176,16 +176,16 @@
 <context>
     <name>CmdRaytracingWriteView</name>
     <message>
-        <location line="-80"/>
-        <location line="+140"/>
+        <location line="-79"/>
+        <location line="+139"/>
         <location line="+87"/>
         <location line="+359"/>
         <source>No perspective camera</source>
         <translation>Keine perspektivische Kamera</translation>
     </message>
     <message>
-        <location line="-585"/>
-        <location line="+140"/>
+        <location line="-584"/>
+        <location line="+139"/>
         <location line="+87"/>
         <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
 Do you want to continue?</source>
@@ -310,7 +310,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <location line="+10"/>
-        <source>Rendered image(*.png)</source>
+        <source>Rendered image (*.png)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

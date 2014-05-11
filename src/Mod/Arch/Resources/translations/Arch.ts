@@ -3,7 +3,7 @@
 <context>
     <name>Arch</name>
     <message>
-        <location filename="ArchWindow.py" line="1088"/>
+        <location filename="ArchWindow.py" line="1103"/>
         <source>Components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,32 +43,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1082"/>
+        <location filename="ArchWindow.py" line="1097"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1083"/>
+        <location filename="ArchWindow.py" line="1098"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchAxis.py" line="419"/>
-        <source>Distances and angles between axes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchAxis.py" line="420"/>
+        <location filename="ArchAxis.py" line="424"/>
         <source>Axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchAxis.py" line="420"/>
+        <location filename="ArchAxis.py" line="424"/>
         <source>Distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchAxis.py" line="420"/>
+        <location filename="ArchAxis.py" line="424"/>
         <source>Angle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -103,52 +98,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="577"/>
+        <location filename="ArchCommands.py" line="581"/>
         <source>is not closed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="579"/>
+        <location filename="ArchCommands.py" line="583"/>
         <source>is not valid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="581"/>
+        <location filename="ArchCommands.py" line="585"/>
         <source>doesn&apos;t contain any solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="587"/>
+        <location filename="ArchCommands.py" line="591"/>
         <source>contains a non-closed solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="589"/>
+        <location filename="ArchCommands.py" line="593"/>
         <source>contains faces that are not part of any solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1088"/>
+        <location filename="ArchCommands.py" line="867"/>
         <source>Grouping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="877"/>
+        <location filename="ArchCommands.py" line="902"/>
         <source>Ungrouping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="911"/>
+        <location filename="ArchCommands.py" line="936"/>
         <source>Split Mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="954"/>
+        <location filename="ArchCommands.py" line="979"/>
         <source>Mesh to Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1038"/>
+        <location filename="ArchCommands.py" line="1063"/>
         <source>All good! no problems found</source>
         <translation type="unfinished"></translation>
     </message>
@@ -173,7 +168,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="506"/>
+        <location filename="ArchComponent.py" line="685"/>
         <source>closing Sketch edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -258,172 +253,157 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="391"/>
+        <location filename="ArchStructure.py" line="414"/>
         <source>Create Structure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="529"/>
+        <location filename="ArchStructure.py" line="545"/>
         <source>The length of this element, if not based on a profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="530"/>
+        <location filename="ArchStructure.py" line="546"/>
         <source>The width of this element, if not based on a profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="531"/>
+        <location filename="ArchStructure.py" line="547"/>
         <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="532"/>
+        <location filename="ArchStructure.py" line="745"/>
         <source>Axes systems this structure is built on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="390"/>
+        <location filename="ArchWall.py" line="393"/>
         <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="535"/>
+        <location filename="ArchStructure.py" line="746"/>
         <source>The element numbers to exclude when this structure is based on axes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="483"/>
-        <source>Couldn&apos;t compute the wall shape</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchWall.py" line="38"/>
+        <location filename="ArchWall.py" line="41"/>
         <source>Wall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="211"/>
+        <location filename="ArchWall.py" line="219"/>
         <source>Create Wall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="243"/>
+        <location filename="ArchWall.py" line="251"/>
         <source>WallTrace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="268"/>
+        <location filename="ArchWall.py" line="277"/>
         <source>Wall options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="282"/>
+        <location filename="ArchWall.py" line="286"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="291"/>
+        <location filename="ArchWall.py" line="292"/>
         <source>Height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="300"/>
+        <location filename="ArchWall.py" line="298"/>
         <source>Alignment</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="387"/>
+        <location filename="ArchWall.py" line="390"/>
         <source>The width of this wall. Not used if this wall is based on a face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="388"/>
+        <location filename="ArchWall.py" line="391"/>
         <source>The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="389"/>
+        <location filename="ArchWall.py" line="392"/>
         <source>The alignment of this wall on its base object, if applicable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="391"/>
-        <source>If True, if this wall is based on a face, it will use its border wire as trace, and disconsider the face.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchWall.py" line="463"/>
+        <location filename="ArchWall.py" line="451"/>
         <source>Error: Invalid base object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="472"/>
+        <location filename="ArchWall.py" line="460"/>
         <source>This mesh is an invalid solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="488"/>
-        <source>Error removing splitter from wall shape</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchWindow.py" line="44"/>
+        <location filename="ArchWindow.py" line="45"/>
         <source>Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="447"/>
+        <location filename="ArchWindow.py" line="459"/>
         <source>Create Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="577"/>
+        <location filename="ArchWindow.py" line="586"/>
         <source>the components of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1084"/>
+        <location filename="ArchWindow.py" line="1099"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1085"/>
+        <location filename="ArchWindow.py" line="1100"/>
         <source>Create/update component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1086"/>
+        <location filename="ArchWindow.py" line="1101"/>
         <source>Base 2D object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1092"/>
+        <location filename="ArchWindow.py" line="1107"/>
         <source>Wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1089"/>
+        <location filename="ArchWindow.py" line="1104"/>
         <source>Create new component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1090"/>
+        <location filename="ArchWindow.py" line="1105"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1091"/>
+        <location filename="ArchWindow.py" line="1106"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1093"/>
+        <location filename="ArchWindow.py" line="1108"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1094"/>
+        <location filename="ArchWindow.py" line="1109"/>
         <source>Z offset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -433,30 +413,30 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importDAE.py" line="174"/>
+        <location filename="importDAE.py" line="180"/>
         <source>file %s successfully created.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importIFC.py" line="765"/>
+        <location filename="importIFC.py" line="811"/>
         <source>Error: Couldn&apos;t determine character encoding
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importIFC.py" line="92"/>
+        <location filename="importIFC.py" line="108"/>
         <source>Couldn&apos;t locate IfcOpenShell
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importIFC.py" line="359"/>
+        <location filename="importIFC.py" line="394"/>
         <source>IFC Schema not found, IFC import disabled.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importWebGL.py" line="47"/>
+        <location filename="importWebGL.py" line="123"/>
         <source>successfully written </source>
         <translation type="unfinished"></translation>
     </message>
@@ -476,17 +456,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="603"/>
-        <source>This object has no support for fixtures</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchCommands.py" line="838"/>
+        <location filename="ArchCommands.py" line="863"/>
         <source>Add space boundary</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="873"/>
+        <location filename="ArchCommands.py" line="898"/>
         <source>Remove space boundary</source>
         <translation type="unfinished"></translation>
     </message>
@@ -511,12 +486,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchFrame.py" line="39"/>
+        <location filename="ArchFrame.py" line="41"/>
         <source>Frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchFrame.py" line="62"/>
+        <location filename="ArchFrame.py" line="64"/>
         <source>Create Frame</source>
         <translation type="unfinished"></translation>
     </message>
@@ -693,143 +668,138 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="415"/>
+        <location filename="ArchStructure.py" line="439"/>
         <source>Structure options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="498"/>
+        <location filename="ArchWindow.py" line="508"/>
         <source>Preset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="273"/>
+        <location filename="ArchWall.py" line="280"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="464"/>
+        <location filename="ArchStructure.py" line="474"/>
         <source>Rotate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="308"/>
+        <location filename="ArchWall.py" line="306"/>
         <source>Con&amp;tinue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="528"/>
+        <location filename="ArchStructure.py" line="544"/>
         <source>An optional extrusion path for this element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="533"/>
+        <location filename="ArchStructure.py" line="548"/>
         <source>Armatures contained in this element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="536"/>
+        <location filename="ArchStructure.py" line="550"/>
         <source>The role of this structural element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="537"/>
+        <location filename="ArchStructure.py" line="551"/>
         <source>The structural nodes of this element</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="578"/>
+        <location filename="ArchStructure.py" line="577"/>
         <source>Error: The base shape couldn&apos;t be extruded along this tool object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="662"/>
+        <location filename="ArchStructure.py" line="791"/>
         <source>Couldn&apos;t compute a shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="361"/>
+        <location filename="ArchWall.py" line="364"/>
         <source>Merge Wall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="367"/>
+        <location filename="ArchWall.py" line="370"/>
         <source>The selected wall contain no subwall to merge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="374"/>
+        <location filename="ArchWall.py" line="377"/>
         <source>Please select only wall objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="376"/>
+        <location filename="ArchWall.py" line="379"/>
         <source>Merge Walls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="386"/>
+        <location filename="ArchWall.py" line="389"/>
         <source>The length of this wall. Not used if this wall is based on an underlying object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="392"/>
+        <location filename="ArchWall.py" line="394"/>
         <source>The face number of the base object used to build this wall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="393"/>
+        <location filename="ArchWall.py" line="395"/>
         <source>The offset between this wall and its baseline (only for left and right alignments)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="414"/>
-        <source>Error: Unable to compute a base shape</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchWindow.py" line="425"/>
+        <location filename="ArchWindow.py" line="437"/>
         <source>Pick a face on an existing object or select a preset
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="492"/>
+        <location filename="ArchWindow.py" line="504"/>
         <source>Window options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="578"/>
+        <location filename="ArchWindow.py" line="587"/>
         <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="579"/>
+        <location filename="ArchWindow.py" line="588"/>
         <source>an optional volume to be subtracted from hosts of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="580"/>
+        <location filename="ArchWindow.py" line="589"/>
         <source>The width of this window (for preset windows only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="581"/>
+        <location filename="ArchWindow.py" line="590"/>
         <source>The height of this window (for preset windows only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="582"/>
+        <location filename="ArchWindow.py" line="591"/>
         <source>The normal direction of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="584"/>
+        <location filename="ArchWindow.py" line="593"/>
         <source>The role of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1059"/>
+        <location filename="ArchWindow.py" line="1074"/>
         <source>Unable to create component
 </source>
         <translation type="unfinished"></translation>
@@ -841,8 +811,51 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="importIFC.py" line="352"/>
+        <location filename="importIFC.py" line="387"/>
         <source>IfcOpenShell not found or disabled, falling back on internal parser.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchAxis.py" line="423"/>
+        <source>Distances (mm) and angles (deg) between axes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchComponent.py" line="591"/>
+        <source>Error computing the shape of this object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchStructure.py" line="322"/>
+        <source>StructuralSystem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchStructure.py" line="382"/>
+        <source>Create Structural System</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchWall.py" line="396"/>
+        <source>The role of this wall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="importIFC.py" line="928"/>
+        <source>Error: IfcOpenShell is not installed
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="importIFC.py" line="935"/>
+        <source>Error: your IfcOpenShell version is too old
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="importOBJ.py" line="50"/>
+        <source>Found a shape containing curves, triangulating
 </source>
         <translation type="unfinished"></translation>
     </message>
@@ -850,12 +863,12 @@
 <context>
     <name>Arch_Add</name>
     <message>
-        <location filename="ArchCommands.py" line="826"/>
+        <location filename="ArchCommands.py" line="851"/>
         <source>Add component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="827"/>
+        <location filename="ArchCommands.py" line="852"/>
         <source>Adds the selected components to the active object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -889,17 +902,17 @@
 <context>
     <name>Arch_Check</name>
     <message>
-        <location filename="ArchCommands.py" line="1026"/>
+        <location filename="ArchCommands.py" line="1051"/>
         <source>Check</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1027"/>
+        <location filename="ArchCommands.py" line="1052"/>
         <source>Checks the selected objects for problems</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1051"/>
+        <location filename="ArchCommands.py" line="1076"/>
         <source>Explore the contents of an Ifc file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -907,28 +920,18 @@
 <context>
     <name>Arch_CloseHoles</name>
     <message>
-        <location filename="ArchCommands.py" line="1007"/>
+        <location filename="ArchCommands.py" line="1032"/>
         <source>Close holes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1008"/>
+        <location filename="ArchCommands.py" line="1033"/>
         <source>Closes holes in open shapes, turning them solids</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Arch_Fixture</name>
-    <message>
-        <location filename="ArchCommands.py" line="1077"/>
-        <source>Add fixture</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchCommands.py" line="1078"/>
-        <source>Adds the selected components as fixtures to the active object</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Arch_Floor</name>
@@ -946,12 +949,12 @@
 <context>
     <name>Arch_Frame</name>
     <message>
-        <location filename="ArchFrame.py" line="55"/>
+        <location filename="ArchFrame.py" line="57"/>
         <source>Frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchFrame.py" line="57"/>
+        <location filename="ArchFrame.py" line="59"/>
         <source>Creates a frame object from a planar 2D object and a profile</source>
         <translation type="unfinished"></translation>
     </message>
@@ -959,7 +962,7 @@
 <context>
     <name>Arch_IfcExplorer</name>
     <message>
-        <location filename="ArchCommands.py" line="1050"/>
+        <location filename="ArchCommands.py" line="1075"/>
         <source>Ifc Explorer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -967,12 +970,12 @@
 <context>
     <name>Arch_MergeWalls</name>
     <message>
-        <location filename="ArchWall.py" line="341"/>
+        <location filename="ArchWall.py" line="344"/>
         <source>Merge Walls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="342"/>
+        <location filename="ArchWall.py" line="345"/>
         <source>Merges the selected walls, if possible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -980,12 +983,12 @@
 <context>
     <name>Arch_MeshToShape</name>
     <message>
-        <location filename="ArchCommands.py" line="927"/>
+        <location filename="ArchCommands.py" line="952"/>
         <source>Mesh to Shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="928"/>
+        <location filename="ArchCommands.py" line="953"/>
         <source>Turns selected meshes into Part Shape objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1006,12 +1009,12 @@
 <context>
     <name>Arch_Remove</name>
     <message>
-        <location filename="ArchCommands.py" line="861"/>
+        <location filename="ArchCommands.py" line="886"/>
         <source>Remove component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="862"/>
+        <location filename="ArchCommands.py" line="887"/>
         <source>Remove the selected components from their parents, or create a hole in a component</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1019,12 +1022,12 @@
 <context>
     <name>Arch_RemoveShape</name>
     <message>
-        <location filename="ArchCommands.py" line="990"/>
+        <location filename="ArchCommands.py" line="1015"/>
         <source>Remove Shape from Arch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="991"/>
+        <location filename="ArchCommands.py" line="1016"/>
         <source>Removes cubic shapes from Arch components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1058,12 +1061,12 @@
 <context>
     <name>Arch_SelectNonSolidMeshes</name>
     <message>
-        <location filename="ArchCommands.py" line="965"/>
+        <location filename="ArchCommands.py" line="990"/>
         <source>Select non-manifold meshes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="966"/>
+        <location filename="ArchCommands.py" line="991"/>
         <source>Selects all non-manifold meshes from the document or from the selected groups</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1095,19 +1098,19 @@
     </message>
     <message>
         <location filename="ArchStairs.py" line="60"/>
-        <source>Creates a stairs objects</source>
+        <source>Creates a stairs object</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Arch_SplitMesh</name>
     <message>
-        <location filename="ArchCommands.py" line="899"/>
+        <location filename="ArchCommands.py" line="924"/>
         <source>Split Mesh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="900"/>
+        <location filename="ArchCommands.py" line="925"/>
         <source>Splits selected meshes into independent components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1123,12 +1126,12 @@
 <context>
     <name>Arch_Structure</name>
     <message>
-        <location filename="ArchStructure.py" line="344"/>
+        <location filename="ArchStructure.py" line="363"/>
         <source>Structure</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchStructure.py" line="346"/>
+        <location filename="ArchStructure.py" line="365"/>
         <source>Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1136,12 +1139,12 @@
 <context>
     <name>Arch_Survey</name>
     <message>
-        <location filename="ArchCommands.py" line="1064"/>
+        <location filename="ArchCommands.py" line="1089"/>
         <source>Survey</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCommands.py" line="1065"/>
+        <location filename="ArchCommands.py" line="1090"/>
         <source>Starts survey</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1149,12 +1152,12 @@
 <context>
     <name>Arch_Wall</name>
     <message>
-        <location filename="ArchWall.py" line="146"/>
+        <location filename="ArchWall.py" line="149"/>
         <source>Wall</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWall.py" line="148"/>
+        <location filename="ArchWall.py" line="151"/>
         <source>Creates a wall object from scratch or from a selected object (wire, face or solid)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1162,12 +1165,12 @@
 <context>
     <name>Arch_Window</name>
     <message>
-        <location filename="ArchWindow.py" line="363"/>
+        <location filename="ArchWindow.py" line="372"/>
         <source>Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="365"/>
+        <location filename="ArchWindow.py" line="374"/>
         <source>Creates a window object from a selected object (wire, rectangle or sketch)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1180,12 +1183,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="107"/>
+        <location filename="archprefs-defaults.ui" line="123"/>
         <source>This is the default color for new Wall objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="227"/>
+        <location filename="archprefs-defaults.ui" line="284"/>
         <source>This is the default color for new Structure objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1205,187 +1208,157 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="687"/>
+        <location filename="archprefs-base.ui" line="208"/>
         <source>2D rendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="695"/>
+        <location filename="archprefs-base.ui" line="216"/>
         <source>Show debug information during 2D rendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="698"/>
+        <location filename="archprefs-base.ui" line="219"/>
         <source>Show renderer debug messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="715"/>
+        <location filename="archprefs-base.ui" line="252"/>
         <source>Cut areas line thickness ratio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="735"/>
+        <location filename="archprefs-base.ui" line="272"/>
         <source>Specifies how many times the viewed line thickness must be applied to cut lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="26"/>
-        <source>Default settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-base.ui" line="34"/>
-        <source>Wall</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-base.ui" line="365"/>
+        <location filename="archprefs-defaults.ui" line="436"/>
         <source>Width:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="391"/>
+        <location filename="archprefs-defaults.ui" line="478"/>
         <source>Height:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="317"/>
+        <location filename="archprefs-defaults.ui" line="399"/>
         <source>Color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="131"/>
-        <source>Structure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-base.ui" line="151"/>
+        <location filename="archprefs-defaults.ui" line="156"/>
         <source>Length:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="251"/>
-        <source>Rebar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-base.ui" line="271"/>
+        <location filename="archprefs-defaults.ui" line="317"/>
         <source>Diameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="294"/>
+        <location filename="archprefs-defaults.ui" line="356"/>
         <source>Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="345"/>
-        <source>Window</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-base.ui" line="372"/>
+        <location filename="archprefs-defaults.ui" line="443"/>
         <source>The default width for new windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="398"/>
+        <location filename="archprefs-defaults.ui" line="485"/>
         <source>The default height for new windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="417"/>
+        <location filename="archprefs-defaults.ui" line="520"/>
         <source>Thickness:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="424"/>
+        <location filename="archprefs-defaults.ui" line="527"/>
         <source>The default thickness for new windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="460"/>
+        <location filename="archprefs-defaults.ui" line="586"/>
         <source>Frame color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="484"/>
+        <location filename="archprefs-defaults.ui" line="610"/>
         <source>Glass color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="513"/>
+        <location filename="archprefs-base.ui" line="26"/>
         <source>Snapping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="521"/>
-        <source>Snap to baselines of Arch objects instead of whole objects (override with CTRL)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-base.ui" line="542"/>
+        <location filename="archprefs-base.ui" line="55"/>
         <source>Walls drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="550"/>
+        <location filename="archprefs-base.ui" line="63"/>
         <source>Auto-join walls</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="570"/>
+        <location filename="archprefs-base.ui" line="83"/>
         <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="573"/>
+        <location filename="archprefs-base.ui" line="86"/>
         <source>Join walls base sketches when possible</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="591"/>
+        <location filename="archprefs-base.ui" line="104"/>
         <source>Mesh to Shape Conversion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="599"/>
+        <location filename="archprefs-base.ui" line="112"/>
         <source>If this is checked, conversion is faster but the result might still contain triangulated faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="602"/>
+        <location filename="archprefs-base.ui" line="115"/>
         <source>Fast conversion</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="618"/>
+        <location filename="archprefs-base.ui" line="131"/>
         <source>Tolerance:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="628"/>
+        <location filename="archprefs-base.ui" line="141"/>
         <source>Tolerance value to use when checking if 2 adjacent faces as planar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="647"/>
+        <location filename="archprefs-base.ui" line="164"/>
         <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="650"/>
+        <location filename="archprefs-base.ui" line="167"/>
         <source>Force flat faces</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="663"/>
+        <location filename="archprefs-base.ui" line="184"/>
         <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-base.ui" line="666"/>
+        <location filename="archprefs-base.ui" line="187"/>
         <source>Cut method</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1425,73 +1398,148 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="114"/>
+        <location filename="archprefs-import.ui" line="134"/>
         <source>If this is checked, object names will be prefixed with the IFC ID number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="117"/>
+        <location filename="archprefs-import.ui" line="137"/>
         <source>Prefix names with ID number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="134"/>
+        <location filename="archprefs-import.ui" line="154"/>
         <source>Exclude list: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="141"/>
+        <location filename="archprefs-import.ui" line="161"/>
         <source>A comma-separated list of Ifc entities to exclude from import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="147"/>
-        <source>IfcSpace,IfcBuildingElementProxy,IfcFlowTerminal,IfcFurnishingElement</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-import.ui" line="164"/>
-        <source>Import as meshes:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-import.ui" line="171"/>
-        <source>A comma-separated list of IFC types that must be imported as meshes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-import.ui" line="174"/>
-        <source>IfcFurnishingElement</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-import.ui" line="191"/>
+        <location filename="archprefs-import.ui" line="184"/>
         <source>Custom IFC schema (internal parser only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="213"/>
+        <location filename="archprefs-import.ui" line="206"/>
         <source>IFC export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="221"/>
+        <location filename="archprefs-import.ui" line="316"/>
         <source>Scaling factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="228"/>
+        <location filename="archprefs-import.ui" line="221"/>
         <source>IFC files are typically written in millimeters. If you are working in a different unit, this allow you to scale all your units to be expressed in millimeters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="254"/>
+        <location filename="archprefs-import.ui" line="247"/>
         <source>If this is checked, a text file will be exported together with the ifc file, containing the list of exported objects, for verification purposes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="257"/>
+        <location filename="archprefs-import.ui" line="250"/>
         <source>Save a list of exported objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-base.ui" line="34"/>
+        <source>Snap to baselines of Arch objects (override with CTRL)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-defaults.ui" line="14"/>
+        <source>Defaults</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-defaults.ui" line="26"/>
+        <source>Walls</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-defaults.ui" line="530"/>
+        <source> mm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-defaults.ui" line="148"/>
+        <source>Structures</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-defaults.ui" line="309"/>
+        <source>Rebars</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-defaults.ui" line="428"/>
+        <source>Windows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-defaults.ui" line="566"/>
+        <source>Transparency:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="114"/>
+        <source>If this is checked, placements will be recomputed and applied to the objects as they were in the IFC file (slower)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="117"/>
+        <source>Separate placements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="167"/>
+        <source>IfcBuildingElementProxy,IfcFlowTerminal,IfcFurnishingElement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="267"/>
+        <source>Some IFC viewers don&apos;t like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="270"/>
+        <source>Force export as Breps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="287"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Objects containing multiple solids are normally exported as multiple representations. Some applications don&apos;t like that,though. You can use this option to unite these solids into one.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="290"/>
+        <source>Join multi-solid objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="308"/>
+        <source>Collada export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="347"/>
+        <source>WebGL export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="355"/>
+        <source>If this is checked, wires will be discretized, which results in more accurate curves, but heavier files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="archprefs-import.ui" line="358"/>
+        <source>Discretize wires</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

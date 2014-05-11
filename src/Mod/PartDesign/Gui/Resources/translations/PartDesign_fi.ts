@@ -12,7 +12,7 @@
         <translation type="obsolete">Viistä...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+597"/>
+        <location filename="../../Command.cpp" line="+640"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -30,7 +30,7 @@
 <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+145"/>
+        <location line="+150"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -48,7 +48,7 @@
 <context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-295"/>
+        <location line="-305"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -66,7 +66,7 @@
 <context>
     <name>CmdPartDesignGroove</name>
     <message>
-        <location line="-75"/>
+        <location line="-82"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -84,7 +84,7 @@
 <context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+551"/>
+        <location line="+573"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -120,7 +120,7 @@
 <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-        <location line="+298"/>
+        <location line="+312"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -138,7 +138,7 @@
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-988"/>
+        <location line="-1045"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -156,7 +156,7 @@
 <context>
     <name>CmdPartDesignPocket</name>
     <message>
-        <location line="+69"/>
+        <location line="+76"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -174,7 +174,7 @@
 <context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+765"/>
+        <location line="+808"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -192,7 +192,7 @@
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-704"/>
+        <location line="-740"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -210,7 +210,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+776"/>
+        <location line="+819"/>
         <source>PartDesign</source>
         <translation>OsanSuunnittelu</translation>
     </message>
@@ -417,7 +417,7 @@ Please check one or more edge entities first.</source>
 <context>
     <name>PartDesignGui::TaskDlgLinearPatternParameters</name>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="+444"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="+450"/>
         <source>Input error</source>
         <translation>Syötteen virhe</translation>
     </message>
@@ -425,7 +425,7 @@ Please check one or more edge entities first.</source>
 <context>
     <name>PartDesignGui::TaskDlgMirroredParameters</name>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="+353"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="+358"/>
         <source>Input error</source>
         <translation>Syötteen virhe</translation>
     </message>
@@ -457,7 +457,7 @@ Please check one or more edge entities first.</source>
 <context>
     <name>PartDesignGui::TaskDlgPolarPatternParameters</name>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="+392"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="+397"/>
         <source>Input error</source>
         <translation>Syötteen virhe</translation>
     </message>
@@ -659,7 +659,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="-255"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
         <location line="+57"/>
         <source>Select reference...</source>
         <translation type="unfinished"></translation>
@@ -741,7 +741,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskMirroredParameters.cpp" line="-185"/>
+        <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
         <location line="+40"/>
         <source>Select reference...</source>
         <translation type="unfinished"></translation>
@@ -1123,7 +1123,7 @@ Please check one or more edge entities first.</source>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="-222"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
         <location line="+52"/>
         <source>Select reference...</source>
         <translation type="unfinished"></translation>
@@ -1264,13 +1264,13 @@ Please check one or more edge entities first.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-621"/>
+        <location filename="../../Command.cpp" line="-650"/>
         <location line="+15"/>
         <location line="+71"/>
-        <location line="+60"/>
+        <location line="+65"/>
         <location line="+16"/>
         <location line="+71"/>
-        <location line="+60"/>
+        <location line="+65"/>
         <location line="+15"/>
         <location line="+27"/>
         <source>Wrong selection</source>
@@ -1289,56 +1289,56 @@ Please check one or more edge entities first.</source>
         <translation type="obsolete">Valitun objektin muoto ei ole langoitettu.</translation>
     </message>
     <message>
-        <location line="-611"/>
-        <location line="+71"/>
-        <location line="+65"/>
-        <location line="+73"/>
+        <location line="-649"/>
+        <location line="+78"/>
+        <location line="+72"/>
+        <location line="+80"/>
         <source>No valid sketches in this document</source>
         <translation>No valid sketches in this document</translation>
     </message>
     <message>
-        <location line="-208"/>
-        <location line="+136"/>
+        <location line="-229"/>
+        <location line="+150"/>
         <source>Please create a sketch or 2D object first</source>
         <translation>Please create a sketch or 2D object first</translation>
     </message>
     <message>
-        <location line="-65"/>
-        <location line="+138"/>
+        <location line="-72"/>
+        <location line="+152"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
         <translation>Please create a sketch or 2D object first. It must have a support face on a solid</translation>
     </message>
     <message>
-        <location line="+67"/>
-        <location line="+146"/>
+        <location line="+74"/>
+        <location line="+151"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
         <translation>Valitse reuna, pinta tai runko. Vain yksi runko on sallittu.</translation>
     </message>
     <message>
-        <location line="-141"/>
-        <location line="+146"/>
-        <location line="+147"/>
+        <location line="-146"/>
+        <location line="+151"/>
+        <location line="+152"/>
         <source>Wrong object type</source>
         <translation>Väärä objektityyppi</translation>
     </message>
     <message>
-        <location line="-292"/>
+        <location line="-302"/>
         <source>Fillet works only on parts</source>
         <translation>Pyöristys toimii vain osille</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+293"/>
+        <location line="+303"/>
         <source>Shape of selected Part is empty</source>
         <translation>Shape of selected Part is empty</translation>
     </message>
     <message>
-        <location line="-222"/>
+        <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
         <translation>Pyöristys ei ole mahdollinen valituille pinnoille/reunoille</translation>
     </message>
     <message>
-        <location line="+66"/>
+        <location line="+71"/>
         <source>Chamfer works only on parts</source>
         <translation>Viisteen tekeminen onnistuu vain osille</translation>
     </message>
@@ -1353,7 +1353,7 @@ Please check one or more edge entities first.</source>
         <translation>Viiste mahdoton valituilla pinnoilla/reunoilla</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+65"/>
         <source>Select one or more faces.</source>
         <translation>Select one or more faces.</translation>
     </message>
@@ -1368,19 +1368,19 @@ Please check one or more edge entities first.</source>
         <translation>No draft possible on selected faces</translation>
     </message>
     <message>
-        <location line="+81"/>
+        <location line="+86"/>
         <location line="+76"/>
-        <location line="+76"/>
-        <location line="+76"/>
+        <location line="+83"/>
+        <location line="+83"/>
         <location line="+72"/>
         <source>No valid features in this document</source>
         <translation>No valid features in this document</translation>
     </message>
     <message>
-        <location line="-299"/>
+        <location line="-313"/>
         <location line="+76"/>
-        <location line="+76"/>
-        <location line="+76"/>
+        <location line="+83"/>
+        <location line="+83"/>
         <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
         <translation>Please create a subtractive or additive feature first, please</translation>
