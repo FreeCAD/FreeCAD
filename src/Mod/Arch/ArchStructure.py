@@ -41,7 +41,7 @@ if FreeCAD.GuiUp:
     QtCore.QT_TRANSLATE_NOOP("Arch","Steel")
 
 # Possible roles for structural elements
-Roles = ["Beam","Column","Slab","Wall","Containment wall","Roof","Foundation"]
+Roles = ["Beam","Column","Slab","Wall","Curtain Wall","Roof","Foundation","Pile","Tendon"]
 
 # Presets in the form: Class, Name, Width, Height, [Web thickness, Flange thickness]
 Presets = [None,
@@ -287,11 +287,12 @@ Presets = [None,
 
             ]
 
-def makeStructure(baseobj=None,length=0,width=0,height=0,name=translate("Arch","Structure")):
+def makeStructure(baseobj=None,length=None,width=None,height=None,name=translate("Arch","Structure")):
     '''makeStructure([obj],[length],[width],[heigth],[swap]): creates a
     structure element based on the given profile object and the given
     extrusion height. If no base object is given, you can also specify
     length and width for a cubic object.'''
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Structure(obj)
     _ViewProviderStructure(obj.ViewObject)
@@ -300,10 +301,19 @@ def makeStructure(baseobj=None,length=0,width=0,height=0,name=translate("Arch","
         obj.Base.ViewObject.hide()
     if width:
         obj.Width = width
+    else:
+        obj.Width = p.GetFloat("StructureWidth",100)
     if height:
         obj.Height = height
+    else:
+        obj.Height = p.GetFloat("StructureHeight",1000)
     if length:
         obj.Length = length
+    else:
+        if not baseobj:
+            # don't set the length if we have a base object, otherwise the lenght X height calc
+            # gets wrong
+            obj.Length = p.GetFloat("StructureLength",100)
     if height > length:
         obj.Role = "Column"
     obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
@@ -362,7 +372,8 @@ class _CommandStructure:
         self.Profile = 0
         self.continueCmd = False
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        self.FORMAT = "%." + str(self.DECIMALS) + "f mm"
+        import DraftGui
+        self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             st = Draft.getObjectsOfType(sel,"Structure")
@@ -412,6 +423,7 @@ class _CommandStructure:
                 # horizontal
                 FreeCADGui.doCommand('s = Arch.makeStructure(p,height='+str(self.Length)+')')
                 FreeCADGui.doCommand('s.Placement.Rotation = FreeCAD.Rotation(-0.5,0.5,-0.5,0.5)')
+            FreeCADGui.doCommand('s.Profile = "'+pr[1]+'"')
         else:
             FreeCADGui.doCommand('s = Arch.makeStructure(length='+str(self.Length)+',width='+str(self.Width)+',height='+str(self.Height)+')')
         FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
@@ -537,10 +549,8 @@ class _Structure(ArchComponent.Component):
         obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this structural element"))
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",translate("Arch","The structural nodes of this element"))
+        obj.addProperty("App::PropertyString","Profile","Arch","A description of the standard profile this element is based upon")
         self.Type = "Structure"
-        obj.Length = 1
-        obj.Width = 1
-        obj.Height = 1
         obj.Role = Roles
         
     def execute(self,obj):
@@ -548,24 +558,7 @@ class _Structure(ArchComponent.Component):
         
         import Part, DraftGeomUtils
         
-        # getting default values
-        length = 1
-        width = 1
-        height = 1
-        if hasattr(obj,"Length"):
-            if obj.Length.Value:
-                length = obj.Length.Value
-        if hasattr(obj,"Width"):
-            if obj.Width.Value:
-                width = obj.Width.Value
-        if hasattr(obj,"Height"):
-            if obj.Height.Value:
-                height = obj.Height.Value
-            else:
-                for p in obj.InList:
-                    if Draft.getType(p) == "Floor":
-                        if p.Height.Value:
-                            height = p.Height.Value
+        normal,length,width,height = self.getDefaultValues(obj)
 
         # creating base shape
         pl = obj.Placement
@@ -573,6 +566,8 @@ class _Structure(ArchComponent.Component):
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.isNull():
+                    return
+                if not obj.Base.Shape.isValid():
                     return
                 if hasattr(obj,"Tool"):
                     if obj.Tool:
@@ -582,9 +577,11 @@ class _Structure(ArchComponent.Component):
                             FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object"))
                             return
                 if not base:
+                    if not height:
+                        return
                     if obj.Normal == Vector(0,0,0):
                         p = FreeCAD.Placement(obj.Base.Placement)
-                        normal = p.Rotation.multVec(Vector(0,0,1))
+                        normal = p.Rotation.multVec(normal)
                     else:
                         normal = Vector(obj.Normal)
                     normal = normal.multiply(height)
@@ -592,64 +589,33 @@ class _Structure(ArchComponent.Component):
                     if base.Solids:
                         pass
                     elif base.Faces:
-                        self.BaseProfile = base
-                        self.ExtrusionVector = normal
                         base = base.extrude(normal)
                     elif (len(base.Wires) == 1):
                         if base.Wires[0].isClosed():
                             base = Part.Face(base.Wires[0])
-                            self.BaseProfile = base
-                            self.ExtrusionVector = normal
                             base = base.extrude(normal)
                             
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
                     if obj.Base.Mesh.countComponents() == 1:
                         sh = ArchCommands.getShapeFromMesh(obj.Base.Mesh)
-                        if sh.isClosed() and sh.isValid() and sh.Solids:
+                        if sh.isClosed() and sh.isValid() and sh.Solids and (not sh.isNull()):
                             base = sh
+                        else:
+                            FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
+                            obj.Base.ViewObject.show()
         else:
-            if obj.Normal == Vector(0,0,0):
+            base = self.getProfiles(obj)
+            if base:
                 if length > height:
-                    normal = Vector(1,0,0).multiply(length)
+                    normal = normal.multiply(length)
                 else:
-                    normal = Vector(0,0,1).multiply(height)
-            else:
-                normal = Vector(obj.Normal).multiply(height)
-            self.ExtrusionVector = normal
-            if length > height:
-                h2 = height/2 or 0.5
-                w2 = width/2 or 0.5
-                v1 = Vector(0,-w2,-h2)
-                v2 = Vector(0,-w2,h2)
-                v3 = Vector(0,w2,h2)
-                v4 = Vector(0,w2,-h2)
-            else:
-                l2 = length/2 or 0.5
-                w2 = width/2 or 0.5
-                v1 = Vector(-l2,-w2,0)
-                v2 = Vector(l2,-w2,0)
-                v3 = Vector(l2,w2,0)
-                v4 = Vector(-l2,w2,0)
-            base = Part.makePolygon([v1,v2,v3,v4,v1])
-            base = Part.Face(base)
-            self.BaseProfile = base
-            base = base.extrude(self.ExtrusionVector)
+                    normal = normal.multiply(height)
+                base = Part.Face(base[0])
+                base = base.extrude(normal)
             
         base = self.processSubShapes(obj,base,pl)
-            
-        if base:
-            if not base.isNull():
-                if base.isValid() and base.Solids:
-                    if base.Volume < 0:
-                        base.reverse()
-                    if base.Volume < 0:
-                        FreeCAD.Console.PrintError(translate("Arch","Couldn't compute a shape"))
-                        return
-                    base = base.removeSplitter()
-                    obj.Shape = base
-                    if not pl.isNull():
-                        obj.Placement = pl
+        self.applyShape(obj,base,pl)
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
@@ -665,16 +631,14 @@ class _Structure(ArchComponent.Component):
                     else:
                         # nodes haven't been calculated yet, but are set (file load)
                         # we calculate the nodes now but don't change the property
-                        if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
-                            p1 = self.BaseProfile.CenterOfMass
-                            p2 = p1.add(self.ExtrusionVector)
-                            self.nodes = [p1,p2]
+                        axis = self.getAxis(obj)
+                        if axis:
+                            self.nodes = [v.Point for v in axis.Vertexes]
                             return
-                if hasattr(self,"BaseProfile")  and hasattr(self,"ExtrusionVector"):
-                    p1 = self.BaseProfile.CenterOfMass
-                    p2 = p1.add(self.ExtrusionVector)
-                    self.nodes = [p1,p2]
-                    #print "calculating nodes: ",self.nodes
+                # we calculate and set the nodes
+                axis = self.getAxis(obj)
+                if axis:
+                    self.nodes = [v.Point for v in axis.Vertexes]
                     obj.Nodes = self.nodes
 
 

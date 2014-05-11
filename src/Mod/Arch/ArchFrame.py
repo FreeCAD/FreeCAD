@@ -35,6 +35,8 @@ __title__="FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+# Possible roles for frames
+Roles = ['Covering','Member','Railing','Shading Device','Tendon']
     
 def makeFrame(base,profile,name=translate("Arch","Frame")):
     """makeFrame(base,profile,[name]): creates a frame object from a base sketch (or any other object
@@ -75,7 +77,9 @@ class _Frame(ArchComponent.Component):
         obj.addProperty("App::PropertyBool","Align","Arch","Specifies if the profile must be aligned with the extrusion wires")
         obj.addProperty("App::PropertyVector","Offset","Arch","An offset vector between the base sketch and the frame")
         obj.addProperty("App::PropertyAngle","Rotation","Arch","The rotation of the profile around its extrusion axis")
+        obj.addProperty("App::PropertyEnumeration","Role","Arch","The role of this wall")
         self.Type = "Frame"
+        obj.Role = Roles
 
     def execute(self,obj):
         if not obj.Base:

@@ -299,23 +299,6 @@
         </item>
        </layout>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_14">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_4">
-          <property name="text">
-           <string>Aggregate windows to their host objects</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcAggregateWindows</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
      </layout>
     </widget>
    </item>

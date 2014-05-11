@@ -30,12 +30,22 @@ __url__ = "http://www.freecadweb.org"
 
 # config
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
-SCHEMA = "http://www.steptools.com/support/stdev_docs/express/ifc2x3/ifc2x3_tc1.exp" # only for internal prser
+SCHEMA = "http://www.steptools.com/support/stdev_docs/ifcbim/ifc4.exp" # only for internal prser
 MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad through temp files
 DEBUG = True # this is only for the python console, this value is overridden when importing through the GUI
 SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"] # default. overwritten by the GUI options
-TOUCH = True # arch objects based on profiles need to be reexecuted after loading the file (this is temporary)
 # end config
+
+# supported ifc products (export only):
+supportedIfcTypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "IfcBeamStandardCase",
+                     "IfcChimney", "IfcColumn", "IfcColumnStandardCase", "IfcCovering", "IfcCurtainWall",
+                     "IfcDoor", "IfcDoorStandardCase", "IfcMember", "IfcMemberStandardCase", "IfcPlate",
+                     "IfcPlateStandardCase", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcRoof",
+                     "IfcSlab", "IfcStair", "IfcStairFlight", "IfcWall",
+                     "IfcWallStandardCase", "IfcWindow", "IfcWindowStandardCase", "IfcBuildingElementProxy",
+                     "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon"]
+                     
+# TODO : shading device not supported?
 
 if open.__module__ == '__builtin__':
     pyopen = open # because we'll redefine open below
@@ -915,12 +925,14 @@ def export(exportList,filename):
     try:
         import IfcImport
     except:
+        FreeCAD.Console.PrintError(translate("Arch","Error: IfcOpenShell is not installed\n"))
         print """importIFC: ifcOpenShell is not installed. IFC export is unavailable.
                  Note: IFC export currently requires an experimental version of IfcOpenShell
                  available from https://github.com/aothms/IfcOpenShell"""
         return
     else:
         if not hasattr(IfcImport,"IfcFile"):
+            FreeCAD.Console.PrintError(translate("Arch","Error: your IfcOpenShell version is too old\n"))
             print """importIFC: The version of ifcOpenShell installed on this system doesn't
                      have IFC export capabilities. IFC export currently requires an experimental 
                      version of IfcOpenShell available from https://github.com/aothms/IfcOpenShell"""
@@ -948,12 +960,6 @@ def export(exportList,filename):
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
 
-    # workaround: loaded objects loose their profile info - needs to recompute...
-    if TOUCH:
-        for o in objectslist:
-            if Draft.getType(o) in ["Wall", "Structure"]:
-                o.Proxy.execute(o)
-
     buildings = []
     floors = []
     others = []
@@ -970,164 +976,112 @@ def export(exportList,filename):
 
     # process objects
     for obj in objectslist:
+
         otype = Draft.getType(obj)
         name = str(obj.Label)
         parent = Arch.getHost(obj)
         gdata = None
-
-        if otype in ["Group"]:
-            # unsupported objects. TODO: support
-            continue
-
-        if DEBUG: print "adding ",obj.Label
-
-        # getting geometry
-        if not forcebrep:
-            gdata = Arch.getExtrusionData(obj,scaling)
-            #if DEBUG: print "extrusion data for ",obj.Label," : ",gdata
-        if not gdata:
-            fdata = Arch.getBrepFacesData(obj,scaling)
-            #if DEBUG: print "brep data for ",obj.Label," : ",fdata
-            if not fdata:
-                if obj.isDerivedFrom("Part::Feature"):
-                    print "IFC export: error retrieving the shape of object ", obj.Name
-                    continue
-                else:
-                    if DEBUG: print "   No geometry"
-            else:
-                if DEBUG: print "   Brep"
+        fdata = None
+        placement = None
+        color = None
+        representation = None
+        descr = None
+        extra = None
+            
+        # setting the IFC type
+        if hasattr(obj,"Role"):
+            ifctype = obj.Role.replace(" ","")
         else:
-            if DEBUG: print "   Extrusion"
+            ifctype = otype
+        if ifctype == "Foundation":
+            ifctype = "Footing"
+        elif ifctype == "Rebar":
+            ifctype = "ReinforcingBar"
 
-        # compute final placement
-        basepoint = None
-        if obj.isDerivedFrom("Part::Feature"):
-            b1 = None
-            b2 = None
-            if hasattr(obj,"Base"):
-                if obj.Base:
-                    b1 = FreeCAD.Vector(obj.Base.Placement.Base).multiply(scaling)
-            if hasattr(obj,"Placement"):
-                b2 = FreeCAD.Vector(obj.Placement.Base).multiply(scaling)
-            if b2:
-                if b1:
-                    basepoint = b2.add(b1)
-                else:
-                    basepoint = b2
-            elif b1:
-                basepoint = b1
-        if basepoint:
-            basepoint = Arch.getTuples(basepoint)
+        if DEBUG: print "adding " + obj.Label + " as Ifc" + ifctype
 
         # writing text log
         spacer = ""
         for i in range(36-len(obj.Label)):
             spacer += " "
-        if otype in ["Structure","Window"]:
-            if hasattr(obj,"Role"):
-                tp = obj.Role
-            else:
-                tp = otype
-        else:
-            tp = otype
-        txt.append(obj.Label + spacer + tp)
+        txt.append(obj.Label + spacer + ifctype)
                  
-        # writing IFC data   
-        if otype == "Building":
-            ifc.addBuilding( name=name )
+        # writing IFC data 
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             
-        elif otype == "Floor":
+            # getting parent building
             if parent:
                 parent = ifc.findByName("IfcBuilding",str(parent.Label))
-            ifc.addStorey( building=parent, name=name )
 
-        elif otype == "Wall":
-            if parent:
-                parent = ifc.findByName("IfcBuildingStorey",str(parent.Label))
-            if gdata:
-                if gdata[0] == "polyline":
-                    ifc.addWall( ifc.addExtrudedPolyline(gdata[1], gdata[2]), storey=parent, name=name, standard=True )
-                elif gdata[0] == "circle":
-                    ifc.addWall( ifc.addExtrudedCircle(gdata[1], gdata[2], gdata[3]), storey=parent, name=name )
-            elif fdata:
-                if JOINSOLIDS:
-                    ifc.addWall( ifc.join([ifc.addFacetedBrep(f) for f in fdata]), storey=parent, name=name )
-                else:
-                    ifc.addWall( [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
-                
-        elif otype == "Structure":
-            placement = None
-            if parent:
-                parent = ifc.findByName("IfcBuildingStorey",str(parent.Label))
-            role = "IfcBeam"
-            if hasattr(obj,"Role"):
-                if obj.Role == "Column":
-                    role = "IfcColumn"
-                elif obj.Role == "Slab":
-                    role = "IfcSlab"
-                elif obj.Role == "Foundation":
-                    role = "IfcFooting"
-            if gdata:
-                if gdata[0] == "polyline":
-                    #ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[0],gdata[1]), storey=parent, name=name )
-                    if FreeCAD.Vector(gdata[2]).getAngle(FreeCAD.Vector(0,0,1)) < .01:
-                        # the placement of polylines is weird... The Z values from the polyline info is not used,
-                        # so we need to give it now as a placement.
-                        if basepoint:
-                            if round(basepoint[2],Draft.precision()) != 0:
-                                placement = ifc.addPlacement(origin=(0.0,0.0,basepoint[2]))
-                        ifc.addStructure( role, ifc.addExtrudedPolyline(gdata[1],gdata[2]), storey=parent, placement=placement, name=name, extrusion=True )
-                    else:
-                        # Workaround for non-Z extrusions, apparently not supported by ifc++ TODO: fix this
-                        print "    switching to Brep"
-                        fdata = Arch.getBrepFacesData(obj,scaling)
-                        ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
-                elif gdata[0] == "circle":
-                    if basepoint:
-                        placement = ifc.addPlacement(origin=basepoint)
-                    ifc.addStructure( role, ifc.addExtrudedCircle(gdata[1], gdata[2], gdata[3]), storey=parent, placement=placement, name=name, extrusion=True )
-            elif fdata:
-                if JOINSOLIDS:
-                    ifc.addStructure( role, ifc.join([ifc.addFacetedBrep(f) for f in fdata]), storey=parent, name=name )
-                else:
-                    ifc.addStructure( role, [ifc.addFacetedBrep(f) for f in fdata], storey=parent, name=name )
-                
-        elif otype == "Window":
-            if AGGREGATE_WINDOWS:
-                if parent:
-                    p = ifc.findByName("IfcWallStandardCase",str(parent.Label))
-                    if not p:
-                        p = ifc.findByName("IfcWall",str(parent.Label))
-                        if not p:
-                            p = ifc.findByName("IfcColumn",str(parent.Label))
-                            if not p:
-                                p = ifc.findByName("IfcBeam",str(parent.Label))
-                                if not p:
-                                    p = ifc.findByName("IfcSlab",str(parent.Label))
-                    parent = p
+            if otype == "Building":
+                ifc.addBuilding( name=name )
+            elif otype == "Floor":
+                ifc.addStorey( building=parent, name=name )
             else:
-                if parent:
-                    p = Arch.getHost(parent)
-                    if p:
-                        parent = ifc.findByName("IfcBuildingStorey",str(p.Label))
-                    else:
-                        parent = None
+                print "   Skipping (not implemented yet)"
 
-            role = "IfcWindow"
-            if hasattr(obj,"Role"):
-                if obj.Role == "Door":
-                    role = "IfcDoor"
+        elif obj.isDerivedFrom("Part::Feature"):
+
+            # get color
+            if FreeCAD.GuiUp:
+                color = obj.ViewObject.ShapeColor[:3]
+
+            # get parent floor
+            if parent:
+                parent = ifc.findByName("IfcBuildingStorey",str(parent.Label))
+
+            # get representation
+            if not forcebrep:
+                gdata = Arch.getExtrusionData(obj,scaling)
+                #if DEBUG: print "   extrusion data for ",obj.Label," : ",gdata
+            if not gdata:
+                fdata = Arch.getBrepFacesData(obj,scaling)
+                #if DEBUG: print "   brep data for ",obj.Label," : ",fdata
+                if not fdata:
+                    if obj.isDerivedFrom("Part::Feature"):
+                        print "IFC export: error retrieving the shape of object ", obj.Name
+                        continue
+                    else:
+                        if DEBUG: print "   No geometry"
+                else:
+                    if DEBUG: print "   Brep"
+            else:
+                if DEBUG: print "   Extrusion"
             if gdata:
+                placement = ifc.addPlacement(origin=gdata[3][0],xaxis=gdata[3][1],zaxis=gdata[3][2])
                 if gdata[0] == "polyline":
-                    ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, ifc.addExtrudedPolyline(gdata[1], gdata[2]), host=parent, name=name )
+                    representation = ifc.addExtrudedPolyline(gdata[1], gdata[2], color=color)
+                elif gdata[0] == "circle":
+                    representation = ifc.addExtrudedCircle(gdata[1][0], gdata[1][1], gdata[2], color=color)
+                else:
+                    print "debug: unknow extrusion type"
             elif fdata:
                 if JOINSOLIDS:
-                    ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, ifc.union([ifc.addFacetedBrep(f) for f in fdata]), host=parent, name=name )
+                    representation = ifc.join([ifc.addFacetedBrep(f, color=color) for f in fdata])
                 else:
-                    ifc.addWindow( role, obj.Width*scaling, obj.Height*scaling, [ifc.addFacetedBrep(f) for f in fdata], host=parent, name=name )
+                    representation = [ifc.addFacetedBrep(f, color=color) for f in fdata]
 
+            # create ifc object
+            ifctype = "Ifc" + ifctype
+            if hasattr(obj,"Description"):
+                descr = obj.Description
+            if otype == "Wall":
+                if gdata:
+                    if gdata[0] == "polyline":
+                        ifctype = "IfcWallStandardCase"
+            elif otype == "Structure":
+                if ifctype in ["IfcSlab","IfcFooting"]:
+                    extra = ["NOTDEFINED"]
+            elif otype == "Window":
+                extra = [obj.Width.Value*scaling, obj.Height.Value*scaling]
+            if not ifctype in supportedIfcTypes:
+                if DEBUG: print "   Type ",ifctype," is not supported by the current version of IfcOpenShell. Exporting as IfcBuildingElementProxy instead"
+                ifctype = "IfcBuildingElementProxy"
+                extra = ["ELEMENT"]
+            ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
         else:
-            print "IFC export: object type ", otype, " is not supported yet."
+            if DEBUG: print "IFC export: object type ", otype, " is not supported yet."
+
             
     ifc.write()
 

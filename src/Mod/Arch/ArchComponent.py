@@ -285,6 +285,8 @@ class Component:
         obj.addProperty("App::PropertyLink","Base","Arch","The base object this component is built upon")
         obj.addProperty("App::PropertyLinkList","Additions","Arch","Other shapes that are appended to this object")
         obj.addProperty("App::PropertyLinkList","Subtractions","Arch","Other shapes that are subtracted from this object")
+        obj.addProperty("App::PropertyString","Description","Arch","An optional description for this component")
+        obj.addProperty("App::PropertyString","Tag","Arch","An optional tag for this component")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -317,6 +319,163 @@ class Component:
                             siblings.append(o)
         return siblings
 
+    def getAxis(self,obj):
+        "Returns an open wire which is the axis of this component, if applicable"
+        if obj.Base:
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                if obj.Base.Shape:
+                    if (len(obj.Base.Shape.Wires) == 1) and not(obj.Base.Shape.Faces):
+                        if not obj.Base.Shape.Wires.isClosed():
+                            return obj.Base.Shape.copy()
+                    elif not(obj.Base.Shape.Solids):
+                        p1 = obj.Base.Shape.CenterOfMass
+                        v = self.getExtrusionVector(obj)
+                        if v:
+                            p2 = p1.add(v)
+                            import Part
+                            return Part.Line(p1,p2).toShape()
+        else:
+            p1 = FreeCAD.Vector()
+            v = self.getExtrusionVector(obj)
+            if v:
+                p2 = p1.add(v)
+                import Part
+                return Part.Line(p1,p2).toShape()
+        return None
+
+    def getProfiles(self,obj,noplacement=False):
+        "Returns the base profile(s) of this component, if applicable"
+        wires = []
+        n,l,w,h = self.getDefaultValues(obj)
+        if obj.Base:
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                if obj.Base.Shape:
+                    base = obj.Base.Shape.copy()
+                    if noplacement:
+                        base.Placement = FreeCAD.Placement()
+                    if not base.Solids:
+                        if base.Faces: 
+                            return [base]
+                        elif base.Wires:
+                            import DraftGeomUtils,DraftVecUtils,Part
+                            for wire in base.Wires:
+                                dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(n)
+                                if not DraftVecUtils.isNull(dvec):
+                                    dvec.normalize()
+                                sh = None
+                                if hasattr(obj,"Align"):
+                                    if obj.Align == "Left":
+                                        dvec.multiply(w)
+                                        if hasattr(obj,"Offset"):
+                                            if obj.Offset.Value:
+                                                dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
+                                                wire = DraftGeomUtils.offsetWire(wire,dvec2)
+                                        w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                                        w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+                                        sh = DraftGeomUtils.bind(w1,w2)
+                                    elif obj.Align == "Right":
+                                        dvec.multiply(w)
+                                        dvec = dvec.negative()
+                                        if hasattr(obj,"Offset"):
+                                            if obj.Offset.Value:
+                                                dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
+                                                wire = DraftGeomUtils.offsetWire(wire,dvec2)
+                                        w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                                        w1 = Part.Wire(DraftGeomUtils.sortEdges(wire.Edges))
+                                        sh = DraftGeomUtils.bind(w1,w2)
+                                    elif obj.Align == "Center":
+                                        dvec.multiply(w/2)
+                                        w1 = DraftGeomUtils.offsetWire(wire,dvec)
+                                        dvec = dvec.negative()
+                                        w2 = DraftGeomUtils.offsetWire(wire,dvec)
+                                        sh = DraftGeomUtils.bind(w1,w2)
+                                    if sh:
+                                        wires.append(sh)
+        else:
+            if (Draft.getType(obj) == "Structure") and (l > h):
+                if noplacement:
+                    h2 = h/2 or 0.5
+                    w2 = w/2 or 0.5
+                    v1 = Vector(-h2,-w2,0)
+                    v2 = Vector(h2,-w2,0)
+                    v3 = Vector(h2,w2,0)
+                    v4 = Vector(-h2,w2,0)
+                else:
+                    h2 = h/2 or 0.5
+                    w2 = w/2 or 0.5
+                    v1 = Vector(0,-w2,-h2)
+                    v2 = Vector(0,-w2,h2)
+                    v3 = Vector(0,w2,h2)
+                    v4 = Vector(0,w2,-h2)
+            else:
+                l2 = l/2 or 0.5
+                w2 = w/2 or 0.5
+                v1 = Vector(-l2,-w2,0)
+                v2 = Vector(l2,-w2,0)
+                v3 = Vector(l2,w2,0)
+                v4 = Vector(-l2,w2,0)
+            import Part
+            base = Part.makePolygon([v1,v2,v3,v4,v1])
+            return [base]
+        return wires
+
+    def getExtrusionVector(self,obj,noplacement=False):
+        "Returns an extrusion vector of this component, if applicable"
+        n,l,w,h = self.getDefaultValues(obj)
+        if Draft.getType(obj) == "Structure":
+            if l > h:
+                v = n.multiply(l)
+                if noplacement:
+                    import DraftVecUtils
+                    v = DraftVecUtils.rounded(FreeCAD.Rotation(FreeCAD.Vector(0,1,0),-90).multVec(v))
+                return v
+        return n.multiply(h)
+
+    def getDefaultValues(self,obj):
+        "returns normal,length,width,height values from this component"
+        length = 0
+        if hasattr(obj,"Length"):
+            if obj.Length.Value:
+                length = obj.Length.Value
+        width = 0
+        if hasattr(obj,"Width"):
+            if obj.Width.Value:
+                width = obj.Width.Value
+        height = 0
+        if hasattr(obj,"Height"):
+            if obj.Height.Value:
+                height = obj.Height.Value
+            else:
+                for p in obj.InList:
+                    if Draft.getType(p) == "Floor":
+                        if p.Height.Value:
+                            height = p.Height.Value
+        default = Vector(0,0,1)
+        if Draft.getType(obj) == "Structure":
+            if length > height:
+                default = Vector(1,0,0)
+        if hasattr(obj,"Normal"):
+            if obj.Normal == Vector(0,0,0):
+                normal = default
+            else:
+                normal = Vector(obj.Normal)
+        else:
+            normal = default
+        return normal,length,width,height
+        
+    def getPlacement(self,obj):
+        "returns a total placement for the profile of this component"
+        p = FreeCAD.Placement()
+        if obj.Base:
+            p = obj.Base.Placement.multiply(p)
+        else:
+            if Draft.getType(obj) == "Structure":
+                n,l,w,h = self.getDefaultValues(obj)
+                if l > h:
+                    p.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0,1,0),90)
+        p = obj.Placement.multiply(p)
+        return p
+
     def hideSubobjects(self,obj,prop):
         "Hides subobjects when a subobject lists change"
         if prop in ["Additions","Subtractions"]:
@@ -328,17 +487,17 @@ class Component:
                                 continue
                         o.ViewObject.hide()
 
-    def processSubShapes(self,obj,base,pl=None):
+    def processSubShapes(self,obj,base,placement=None):
         "Adds additions and subtractions to a base shape"
         import Draft,Part
         #print "Processing subshapes of ",obj.Label, " : ",obj.Additions
         
-        if pl:
-            if pl.isNull():
-                pl = None
+        if placement:
+            if placement.isNull():
+                placement = None
             else:
-                pl = FreeCAD.Placement(pl)
-                pl = pl.inverse()
+                placement = FreeCAD.Placement(placement)
+                placement = placement.inverse()
 
         # treat additions
         for o in obj.Additions:
@@ -356,16 +515,16 @@ class Component:
                     js = ArchWall.mergeShapes(o,obj)
                     if js:
                         add = js.cut(base)
-                        if pl:
-                            add.Placement = add.Placement.multiply(pl)
+                        if placement:
+                            add.Placement = add.Placement.multiply(placement)
                         base = base.fuse(add)
 
                     elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
                         f = o.Proxy.getSubVolume(o)
                         if f:
                             if base.Solids and f.Solids:
-                                if pl:
-                                    f.Placement = f.Placement.multiply(pl)
+                                if placemen:
+                                    f.Placement = f.Placement.multiply(placement)
                                 base = base.cut(f)
                                 
                     elif o.isDerivedFrom("Part::Feature"):
@@ -373,8 +532,8 @@ class Component:
                             if not o.Shape.isNull():
                                 if o.Shape.Solids:
                                     s = o.Shape.copy()
-                                    if pl:
-                                        s.Placement = s.Placement.multiply(pl)
+                                    if placement:
+                                        s.Placement = s.Placement.multiply(placement)
                                     if base:
                                         if base.Solids:
                                             try:
@@ -397,8 +556,8 @@ class Component:
                         f = o.Proxy.getSubVolume(o)
                         if f:
                             if base.Solids and f.Solids:
-                                if pl:
-                                    f.Placement = f.Placement.multiply(pl)
+                                if placement:
+                                    f.Placement = f.Placement.multiply(placement)
                                 base = base.cut(f)
 
                 elif (Draft.getType(o) == "Roof") or (Draft.isClone(o,"Roof")):
@@ -413,13 +572,29 @@ class Component:
                         if not o.Shape.isNull():
                             if o.Shape.Solids and base.Solids:
                                     s = o.Shape.copy()
-                                    if pl:
-                                        s.Placement = s.Placement.multiply(pl)
+                                    if placement:
+                                        s.Placement = s.Placement.multiply(placement)
                                     try:
                                         base = base.cut(s)
                                     except:
                                         print "Arch: unable to cut object ",o.Name, " from ", obj.Name
         return base
+        
+    def applyShape(self,obj,shape,placement):
+        "checks and cleans the given shape, and apply it to the object"
+        if shape:
+            if not shape.isNull():
+                if shape.isValid() and shape.Solids:
+                    if shape.Volume < 0:
+                        shape.reverse()
+                    if shape.Volume < 0:
+                        FreeCAD.Console.PrintError(translate("Arch","Error computing the shape of this object"))
+                        return
+                    shape = shape.removeSplitter()
+                    obj.Shape = shape
+                    if not placement.isNull():
+                        obj.Placement = placement        
+
 
 class ViewProviderComponent:
     "A default View Provider for Component objects"

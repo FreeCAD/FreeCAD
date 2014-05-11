@@ -593,26 +593,14 @@ def check(objectslist,includehidden=False):
                     bad.append([o,translate("Arch","contains faces that are not part of any solid")])
     return bad
 
-
-def addFixture(fixture,baseobject):
-    '''addFixture(fixture,baseobject): adds the given object as a 
-    fixture to the given base object'''
-    if hasattr(baseobject,"Fixtures"):
-        f = baseobject.Fixtures
-        f.append(fixture)
-        baseobject.Fixtures = f
-        if baseobject.ViewObject.DisplayMode != "Detailed":
-            fixture.ViewObject.hide()
-    else:
-        FreeCAD.Console.PrintMessage(translate("Arch","This object has no support for fixtures"))
-
-def getTuples(data,scale=1,placement=None,normal=None,close=True,flatten=False):
-    """getTuples(data,[scale,placement,normal,flatten]): returns a tuple or a list of tuples from a vector
+def getTuples(data,scale=1,placement=None,normal=None,close=True):
+    """getTuples(data,[scale,placement,normal,close]): returns a tuple or a list of tuples from a vector
     or from the vertices of a shape. Scale can indicate a scale factor"""
     import Part
     if isinstance(data,FreeCAD.Vector):
         if placement:
             data = placement.multVec(data)
+            data = DraftVecUtils.rounded(data)
         return (data.x*scale,data.y*scale,data.z*scale)
     elif isinstance(data,Part.Shape):
         t = []
@@ -632,21 +620,21 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True,flatten=False):
             for v in verts:
                 pt = v.Point
                 if placement:
-                    pt = placement.multVec(pt)
-                if flatten:
-                    t.append((pt.x*scale,pt.y*scale,0))
-                else:
-                    t.append((pt.x*scale,pt.y*scale,pt.z*scale))
-            if close:
-                t.append(t[0]) # for IFC verts lists must be closed
+                    if not placement.isNull():
+                        pt = placement.multVec(pt)
+                        pt = DraftVecUtils.rounded(pt)
+                t.append((pt.x*scale,pt.y*scale,pt.z*scale))
+
+            if close: # faceloops must not be closed, but ifc profiles must.
+                t.append(t[0])
         else:
             print "Arch.getTuples(): Wrong profile data"
         return t
 
-def getExtrusionData(obj,scale=1,flatten=True):
-    """getExtrusionData(obj,[scale,flatten]): returns a closed path (a list of tuples) and a tuple expressing an extrusion
-    vector, or None, if a base loop and an extrusion direction cannot be extracted. Scale can indicate a scale factor.
-    if flatten is True (default), the profile stays in the XY plane (IFC default)"""
+def getExtrusionData(obj,scale=1):
+    """getExtrusionData(obj,[scale]): returns a closed path (a list of tuples), a tuple expressing an extrusion
+    vector, and a list of 3 tuples for base position, x axis and z axis. Or returns None, if a base loop and 
+    an extrusion direction cannot be extracted. Scale can indicate a scale factor."""
     if hasattr(obj,"Additions"):
         if obj.Additions:
             # provisorily treat objs with additions as breps
@@ -656,16 +644,24 @@ def getExtrusionData(obj,scale=1,flatten=True):
             # provisorily treat objs with subtractions as breps
             return None
     if hasattr(obj,"Proxy"):
-        if hasattr(obj.Proxy,"BaseProfile") and hasattr(obj.Proxy,"ExtrusionVector"):
-            import Part
-            pl = FreeCAD.Placement(obj.Placement)
-            r = FreeCAD.Rotation(obj.Placement.Rotation)
-            if pl.isNull():
-                pl = r = None
-            if len(obj.Proxy.BaseProfile.Edges) == 1:
-                if isinstance(obj.Proxy.BaseProfile.Edges[0].Curve,Part.Circle):
-                    return "circle", getTuples(obj.Proxy.BaseProfile.Edges[0].Curve.Center,scale,flatten=flatten), obj.Proxy.BaseProfile.Edges[0].Curve.Radius*scale, getTuples(obj.Proxy.ExtrusionVector,scale,r)
-            return "polyline", getTuples(obj.Proxy.BaseProfile,scale,pl,flatten=flatten), getTuples(obj.Proxy.ExtrusionVector,scale,r)
+        if hasattr(obj.Proxy,"getProfiles"):
+            p = obj.Proxy.getProfiles(obj,noplacement=True)
+            v = obj.Proxy.getExtrusionVector(obj,noplacement=True)
+            if (len(p) == 1) and v:
+                p = p[0]
+                r = FreeCAD.Placement()
+                #b = p.CenterOfMass
+                r = obj.Proxy.getPlacement(obj)
+                #b = obj.Placement.multVec(FreeCAD.Vector())
+                #r.Rotation = DraftVecUtils.getRotation(v,FreeCAD.Vector(0,0,1))
+                d = [r.Base,DraftVecUtils.rounded(r.Rotation.multVec(FreeCAD.Vector(1,0,0))),DraftVecUtils.rounded(r.Rotation.multVec(FreeCAD.Vector(0,0,1)))]
+                r = r.inverse()
+                #print "getExtrusionData: computed placement:",r
+                import Part
+                if len(p.Edges) == 1:
+                    if isinstance(p.Edges[0].Curve,Part.Circle):
+                        return "circle", [getTuples(p.Edges[0].Curve.Center,scale), p.Edges[0].Curve.Radius*scale], getTuples(v,scale), d
+                return "polyline", getTuples(p,scale), getTuples(v,scale), d
     return None   
     
 def getBrepFacesData(obj,scale=1):
@@ -719,7 +715,9 @@ def pruneIncluded(objectslist):
             if not (Draft.getType(obj) in ["Window","Clone"]):
                 for parent in obj.InList:
                     if parent.isDerivedFrom("Part::Feature"):
-                        toplevel = False
+                        if not parent.isDerivedFrom("Part::Part2DObject"):
+                            # don't consider 2D objects based on arch elements
+                            toplevel = False
         if toplevel:
             newlist.append(obj)
     return newlist
@@ -784,8 +782,6 @@ def survey(callback=False):
                     if not found:
                         newsels.append(o)
                 if newsels:
-                    from pivy import coin
-                    pr = Draft.getParam("dimPrecision",2)
                     for o in newsels:
                         if o.Object.isDerivedFrom("Part::Feature"):
                             n = o.Object.Label
@@ -796,15 +792,18 @@ def survey(callback=False):
                                 FreeCAD.SurveyObserver.labels.append(anno.Name)
                                 t = ""
                                 if o.Object.Shape.Solids:
-                                    t = str(round(o.Object.Shape.Volume,pr))
+                                    t = FreeCAD.Units.Quantity(o.Object.Shape.Volume,FreeCAD.Units.Volume)
+                                    t = t.getUserPreferred()[0]
                                     anno.LabelText = "v " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + t + "\n")
                                 elif o.Object.Shape.Faces:
-                                    t = str(round(o.Object.Shape.Area,pr))
+                                    t = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
+                                    t = t.getUserPreferred()[0]
                                     anno.LabelText = "a " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + t + "\n")
                                 else:
-                                    t = str(round(o.Object.Shape.Length,pr))
+                                    t = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
+                                    t = t.getUserPreferred()[0]
                                     anno.LabelText = "l " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t + "\n")
                                 if FreeCAD.GuiUp and t:
@@ -821,15 +820,18 @@ def survey(callback=False):
                                     FreeCAD.SurveyObserver.labels.append(anno.Name)
                                     t = ""
                                     if "Face" in el:
-                                        t = str(round(e.Area,pr))
+                                        t = FreeCAD.Units.Quantity(e.Area,FreeCAD.Units.Area)
+                                        t = t.getUserPreferred()[0]
                                         anno.LabelText = "a " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ t  + "\n")
                                     elif "Edge" in el:
-                                        t = str(round(e.Length,pr))
+                                        t = FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
+                                        t = t.getUserPreferred()[0]
                                         anno.LabelText = "l " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + t + "\n")
                                     elif "Vertex" in el:
-                                        t = str(round(e.Z,pr))
+                                        t = FreeCAD.Units.Quantity(e.Z,FreeCAD.Units.Length)
+                                        t = t.getUserPreferred()[0]
                                         anno.LabelText = "z " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + t + "\n")
                                     if FreeCAD.GuiUp and t:
@@ -1092,31 +1094,6 @@ class _CommandSurvey:
         FreeCADGui.doCommand("Arch.survey()")
 
 
-class _CommandFixture:
-    # OBSOLETE - To be removed
-    "the Arch Fixture command definition"
-    def GetResources(self):
-        return {'Pixmap'  : 'Arch_Fixture',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Fixture","Add fixture"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Fixture","Adds the selected components as fixtures to the active object")}
-
-    def IsActive(self):
-        if len(FreeCADGui.Selection.getSelection()) > 1:
-            return True
-        else:
-            return False
-        
-    def Activated(self):
-        sel = FreeCADGui.Selection.getSelection()
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
-        host = sel.pop()
-        for o in sel:
-            FreeCADGui.doCommand("import Arch")
-            FreeCADGui.doCommand("Arch.addFixture(FreeCAD.ActiveDocument."+o.Name+",FreeCAD.ActiveDocument."+host.Name+")")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
-
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Add',_CommandAdd())
     FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
@@ -1128,4 +1105,3 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Check',_CommandCheck())
     FreeCADGui.addCommand('Arch_IfcExplorer',_CommandIfcExplorer())
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
-    #FreeCADGui.addCommand('Arch_Fixture',_CommandFixture())
