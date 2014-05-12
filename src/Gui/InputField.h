@@ -32,7 +32,9 @@
 #include "SpinBox.h"
 #include "FileDialog.h"
 
+#ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Quantity)
+#endif
 
 namespace Gui {
 

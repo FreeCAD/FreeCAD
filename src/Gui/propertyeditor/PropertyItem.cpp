@@ -50,6 +50,7 @@
 #include <Gui/Placement.h>
 #include <Gui/FileDialog.h>
 #include <Gui/DlgPropertyLink.h>
+#include <Gui/InputField.h>
 
 #include "PropertyItem.h"
 
