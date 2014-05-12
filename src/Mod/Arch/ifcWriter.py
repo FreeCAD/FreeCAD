@@ -488,7 +488,7 @@ class IfcDocument(object):
             if shapes.is_a("IfcExtrudedAreaSolid"):
                 solidType = "SweptSolid"
             shapes = [shapes]
-        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body',solidType,[shape]]) for shape in shapes]
+        reps = [create(self._fileobject,"IfcShapeRepresentation",[self._repcontext,'Body',solidType,[shape for shape in shapes]])]
         return reps
 
     def addColor(self,rgb,rep):
@@ -509,7 +509,7 @@ class IfcDocument(object):
 
     def addCircle(self,radius):
         """addCircle(radius): creates a polyline from the given points"""
-        lpl = self.addPlacement(flat=True)
+        lpl = self.addPlacement(local=False,flat=True)
         cir = create(self._fileobject,"IfcCircleProfileDef",["AREA",None,lpl,float(radius)])
         return cir
     
@@ -527,6 +527,8 @@ class IfcDocument(object):
         """addExtrudedPolyline(points,extrusion,[placement,color]): makes an extruded polyline
         from the given points and the given extrusion vector"""
         pol = self.addPolyline(points)
+        if not placement:
+            placement = self.addPlacement(local=False)
         exp = self.addExtrusion(pol,extrusion,placement)
         if color:
             self.addColor(color,exp)
@@ -537,7 +539,7 @@ class IfcDocument(object):
         from the given radius and the given extrusion vector"""
         cir = self.addCircle(radius)
         if not placement:
-            placement = self.addPlacement(origin=center)
+            placement = self.addPlacement(origin=center,local=False)
         exp = self.addExtrusion(cir,extrusion,placement)
         if color:
             self.addColor(color,exp)

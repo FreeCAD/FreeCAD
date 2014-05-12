@@ -44,7 +44,6 @@ supportedIfcTypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "
                      "IfcSlab", "IfcStair", "IfcStairFlight", "IfcWall",
                      "IfcWallStandardCase", "IfcWindow", "IfcWindowStandardCase", "IfcBuildingElementProxy",
                      "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon"]
-                     
 # TODO : shading device not supported?
 
 if open.__module__ == '__builtin__':
@@ -73,7 +72,7 @@ def insert(filename,docname,skip=None):
     
 def getConfig():
     "Gets Arch IFC import preferences"
-    global CREATE_IFC_GROUPS, ASMESH, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS, JOINSOLIDS, AGGREGATE_WINDOWS
+    global SKIP, CREATE_IFC_GROUPS, ASMESH, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS, JOINSOLIDS, AGGREGATE_WINDOWS
     CREATE_IFC_GROUPS = False
     IMPORT_IFC_FURNITURE = False
     ASMESH = ["IfcFurnishingElement"]
@@ -95,9 +94,6 @@ def getConfig():
     asmeshlist = p.GetString("ifcAsMesh","")
     if asmeshlist:
         ASMESH = asmeshlist.split(",")
-
-    # TODO provisorily skipped objects
-    SKIP.extend(["IfcAnnotation"])
 
 def getIfcOpenShell():
     "locates and imports ifcopenshell"

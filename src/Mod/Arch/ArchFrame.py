@@ -157,6 +157,13 @@ class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Frame_Tree.svg"
+        
+    def claimChildren(self):
+        p = []
+        if hasattr(self,"Object"):
+            if self.Object.Profile:
+                p = [self.Object.Profile]
+        return ArchComponent.ViewProviderComponent.claimChildren(self)+p
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Frame',_CommandFrame())

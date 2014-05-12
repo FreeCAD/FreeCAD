@@ -676,7 +676,7 @@ def getBrepFacesData(obj,scale=1):
                     sols = []
                     for sol in obj.Shape.Solids:
                         s = []
-                        for face in obj.Shape.Faces:
+                        for face in sol.Faces:
                             f = []
                             f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0),close=False))
                             for wire in face.Wires:
