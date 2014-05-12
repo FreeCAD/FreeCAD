@@ -654,16 +654,16 @@ TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyUnitConstraintItem, Gui::Property
 
 PropertyUnitConstraintItem::PropertyUnitConstraintItem()
 {
-  
+
 }
 
 void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
     const Base::Quantity& value = data.value<Base::Quantity>();
-    
+
     Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
     infield->setValue(value);
-    
+
     const std::vector<App::Property*>& items = getPropertyData();
     App::PropertyQuantityConstraint* prop = (App::PropertyQuantityConstraint*)items[0];
 
@@ -966,9 +966,9 @@ QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
     QString data = QString::fromAscii("[") + 
-		   Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromAscii("  ") +
-		   Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromAscii("  ") +
-		   Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromAscii("]");
+           Base::Quantity(value.x, Base::Unit::Length).getUserString() + QString::fromAscii("  ") +
+           Base::Quantity(value.y, Base::Unit::Length).getUserString() + QString::fromAscii("  ") +
+           Base::Quantity(value.z, Base::Unit::Length).getUserString() + QString::fromAscii("]");
     return QVariant(data);
 }
 
@@ -986,14 +986,14 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     if (!variant.canConvert<Base::Vector3d>())
         return;
     const Base::Vector3d& value = variant.value<Base::Vector3d>();
-   
+
     Base::Quantity q = Base::Quantity(value.x, Base::Unit::Length);
     QString unit = QString::fromLatin1("('%1 %2'").arg(q.getValue()).arg(q.getUnit().getString());
     q = Base::Quantity(value.y, Base::Unit::Length);
     unit + QString::fromLatin1("'%1 %2'").arg(q.getValue()).arg(q.getUnit().getString());
     q = Base::Quantity(value.z, Base::Unit::Length);
     QString::fromLatin1("'%1 %2')").arg(q.getValue()).arg(q.getUnit().getString());
-   
+
     setPropertyValue(unit);
 }
 

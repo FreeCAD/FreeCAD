@@ -82,7 +82,7 @@ Placement::Placement(QWidget* parent, Qt::WFlags fl)
     propertyName = "Placement"; // default name
     ui = new Ui_PlacementComp(this);
     ui->applyPlacementChange->hide();
-    
+
     ui->xPos->setUnit(Base::Unit::Length);
     ui->yPos->setUnit(Base::Unit::Length);
     ui->zPos->setUnit(Base::Unit::Length);
@@ -137,7 +137,7 @@ bool Placement::hasValidInputs()
     QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
     for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         if(!(*it)->hasValidInput())
-	    return false;
+        return false;
     }
     return true;
 }
@@ -298,14 +298,14 @@ void Placement::accept()
 void Placement::on_applyButton_clicked()
 {
     //only process things when we have valid inputs!
-    if(!hasValidInputs()) {
-	QMessageBox msg;
-	msg.setIcon(QMessageBox::Critical);
-	msg.setText(QString::fromAscii("There are input fields with incorrect input, please ensure valid placement values!"));
-	msg.exec();
-	return;
+    if (!hasValidInputs()) {
+        QMessageBox msg;
+        msg.setIcon(QMessageBox::Critical);
+        msg.setText(tr("There are input fields with incorrect input, please ensure valid placement values!"));
+        msg.exec();
+        return;
     }
-    
+
     // If there are listeners to the 'placementChanged' signal we rely
     // on that the listener updates any placement. If no listeners
     // are connected the placement is applied to all selected objects

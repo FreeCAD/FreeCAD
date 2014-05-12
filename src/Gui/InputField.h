@@ -69,15 +69,15 @@ public:
     void setValue(const Base::Quantity&);
     //set a numerical value which gets converted to a quantity with the currently set unit type
     void setValue(const double&);
-    
+
     /// get the current value
     Base::Quantity getQuantity(void)const{return this->actQuantity;}
-    
+
     /// gives the current state of the user input, gives true if it is a valid input with correct quantity
     /// (shown by the green pixmap), returns false if the input is a unparsable string or has a wrong unit
     /// (shown by the red pixmap in the gui)
     bool hasValidInput() { return validInput;};
-    
+
     /** sets the Unit this field is working with. 
      *  After setting the Unit the field will only accept
      *  user input with this unit type. Or if the user input 
@@ -85,7 +85,7 @@ public:
      *  Quantity. 
      */
     void setUnit(const Base::Unit&);
-    Base::Unit getUnit();
+    const Base::Unit& getUnit() const;
 
     /// set the input field to the last used value (works only if the setParamGrpPath() was called)
     void setToLastUsedValue(void);
