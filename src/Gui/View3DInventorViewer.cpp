@@ -2326,12 +2326,12 @@ void View3DInventorViewer::turnDeltaDimensionsOff()
 
 void View3DInventorViewer::setAntiAliasingMode(View3DInventorViewer::AntiAliasing mode)
 {
-    getGLRenderAction()->setSmoothing(false);
-    int buffers = 0;
+    int buffers = 1;
+    SbBool smoothing = false;
 
     switch( mode ) {
       case Smoothing:
-          getGLRenderAction()->setSmoothing(true);
+          smoothing = true;
           break;
       case MSAA2x:
           buffers = 2;
@@ -2347,10 +2347,13 @@ void View3DInventorViewer::setAntiAliasingMode(View3DInventorViewer::AntiAliasin
           break;
     };
 
+    if (getGLRenderAction()->isSmoothing() != smoothing)
+        getGLRenderAction()->setSmoothing(smoothing);
 #if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 5)
-    setSampleBuffers(buffers);
+    if (getSampleBuffers() != buffers)
+        setSampleBuffers(buffers);
 #else
-    if(buffers != 0)
+    if (buffers > 1)
         Base::Console().Warning("Multisampling is not supported by SoQT < 1.5, this anti-aliasing mode is disabled");
 #endif
 }
@@ -2363,7 +2366,7 @@ View3DInventorViewer::AntiAliasing View3DInventorViewer::getAntiAliasingMode() c
 #if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 5)
     int buffers = getSampleBuffers();
     switch(buffers) {
-      case 0:
+      case 1:
           return None;
       case 2:
           return MSAA2x;
@@ -2372,10 +2375,10 @@ View3DInventorViewer::AntiAliasing View3DInventorViewer::getAntiAliasingMode() c
       case 8:
           return MSAA8x;
       default:
-          const_cast<View3DInventorViewer*>(this)->setSampleBuffers(0);
+          const_cast<View3DInventorViewer*>(this)->setSampleBuffers(1);
           return None;
     };
 #else
-      return None;
+    return None;
 #endif
 }
