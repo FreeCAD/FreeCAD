@@ -160,17 +160,17 @@ void InputField::newInput(const QString & text)
         QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
         parseError(QString::fromAscii(ErrorText.c_str()));
-	validInput = false;
+        validInput = false;
         return;
     }
 
-	// check if unit fits!
-	if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
-	    this->setToolTip(QString::fromAscii("Wrong unit"));
+    // check if unit fits!
+    if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
+        this->setToolTip(QString::fromAscii("Wrong unit"));
         QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
         parseError(QString::fromAscii("Wrong unit"));
-	validInput = false;
+        validInput = false;
         return;
     }
 
@@ -342,7 +342,7 @@ void InputField::setUnit(const Base::Unit& unit)
     actUnit = unit;
 }
 
-Base::Unit InputField::getUnit()
+const Base::Unit& InputField::getUnit() const
 {
     return actUnit;
 }

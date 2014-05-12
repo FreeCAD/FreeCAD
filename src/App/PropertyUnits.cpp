@@ -46,8 +46,8 @@ using namespace Base;
 using namespace std;
 
 
-const PropertyQuantityConstraint::Constraints LengthStandart = {0.0,(double)INT_MAX,1.0};
-const PropertyQuantityConstraint::Constraints AngleStandart = {-360,360,1.0};
+const PropertyQuantityConstraint::Constraints LengthStandard = {0.0,(double)INT_MAX,1.0};
+const PropertyQuantityConstraint::Constraints AngleStandard = {-360,360,1.0};
 
 //**************************************************************************
 //**************************************************************************
@@ -63,7 +63,7 @@ Base::Quantity PropertyQuantity::getQuantityValue(void) const
 
 const char* PropertyQuantity::getEditorName(void) const
 {
-    return "Gui::PropertyEditor::PropertyUnitItem";  
+    return "Gui::PropertyEditor::PropertyUnitItem";
 }
 
 PyObject *PropertyQuantity::getPyObject(void)
@@ -210,7 +210,7 @@ TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint);
 PropertyLength::PropertyLength()
 {
     setUnit(Base::Unit::Length);
-    setConstraints( &LengthStandart );
+    setConstraints(&LengthStandard);
 }
 
 //**************************************************************************
@@ -223,7 +223,7 @@ TYPESYSTEM_SOURCE(App::PropertyAngle, App::PropertyQuantityConstraint);
 PropertyAngle::PropertyAngle()
 {
     setUnit(Base::Unit::Angle);
-    setConstraints( &AngleStandart );
+    setConstraints(&AngleStandard);
 }
 
 //**************************************************************************

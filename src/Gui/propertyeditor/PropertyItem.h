@@ -373,12 +373,11 @@ class GuiExport PropertyVectorDistanceItem: public PropertyItem
     void setY(Base::Quantity y);
     Base::Quantity z() const;
     void setZ(Base::Quantity z);
-    
+
 protected:
     virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
-
 
     PropertyVectorDistanceItem();
 
