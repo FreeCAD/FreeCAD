@@ -33,15 +33,16 @@
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
+#include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Widgets.h>
-#include <Gui/InputField.h>
 
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
 Q_DECLARE_METATYPE(Base::Matrix4D)
 Q_DECLARE_METATYPE(Base::Placement)
+Q_DECLARE_METATYPE(Base::Quantity)
 
 namespace Gui {
 namespace Dialog { class TaskPlacement; }
