@@ -100,8 +100,8 @@ Placement::Placement(QWidget* parent, Qt::WFlags fl)
     signalMapper->setMapping(this, 0);
 
     int id = 1;
-    QList<QDoubleSpinBox*> sb = this->findChildren<QDoubleSpinBox*>();
-    for (QList<QDoubleSpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
+    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         connect(*it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
         signalMapper->setMapping(*it, id++);
     }
