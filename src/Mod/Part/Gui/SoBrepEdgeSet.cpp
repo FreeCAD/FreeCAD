@@ -188,10 +188,13 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action)
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
 
-    cindices = &(this->sl[0]);
-    numcindices = (int)this->sl.size();
+    int num = (int)this->sl.size();
+    if (num > 0) {
+        cindices = &(this->sl[0]);
+        numcindices = (int)this->sl.size();
 
-    renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+        renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+    }
     state->pop();
 }
 
