@@ -417,6 +417,7 @@ void SoDatumLabel::notify(SoNotList * l)
 void SoDatumLabel::GLRender(SoGLRenderAction * action)
 {
     SoState *state = action->getState();
+
     if (!shouldGLRender(action))
         return;
     if (action->handleTransparency(true))
@@ -424,7 +425,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
     // Get the Scale
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.4f);
+    float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.f);
+    SbVec2s vp_size = action->getViewportRegion().getWindowSize();
 
     const SbString* s = string.getValues(0);
     bool hasText = (s->getLength() > 0) ? true : false;
@@ -445,8 +447,15 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         srcw = size[0];
         srch = size[1];
 
+	/**Remark from Stefan Tröger: 
+	 * The height calculation is based on internal knowledge of SbViewVolume::getWorldToScreenScale
+	 * implementation. The factor returned from this function is calculated from the view frustums
+	 * nearplane width, height is not taken into account, and hence we divide it with the viewport width
+	 * to get the exact pixel scale faktor.
+	 * This is not documented and therefore may change on later coin versions!
+	 */
         float aspectRatio =  (float) srcw / (float) srch;
-        this->imgHeight = scale / (float) srch;
+        this->imgHeight = (scale * (float) (srch)) / float(vp_size[0]);
         this->imgWidth  = aspectRatio * (float) this->imgHeight;
     }
 
