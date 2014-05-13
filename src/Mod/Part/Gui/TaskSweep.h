@@ -29,6 +29,9 @@
 
 class QTreeWidgetItem;
 
+namespace Gui {
+class SelectionObject;
+}
 namespace PartGui { 
 
 class SweepWidget : public QWidget
@@ -44,10 +47,12 @@ public:
 
 private Q_SLOTS:
     void onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*);
+    void on_buttonPath_clicked();
 
 private:
     void changeEvent(QEvent *e);
     void findShapes();
+    bool isPathValid(const Gui::SelectionObject& sel) const;
 
 private:
     class Private;
