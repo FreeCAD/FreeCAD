@@ -123,7 +123,7 @@ def create(ifcdoc=None,ifcname=None,arguments=[]):
     for i in range(len(arguments)):
         arg = arguments[i]
         if isinstance(arg,tuple):
-            if len(arg) == 3:
+            if len(arg) in [2,3]:
                 arg = IfcImport.Doubles(arg)
         entity.set_argument(i,arg)
     return entity
@@ -401,12 +401,14 @@ class IfcDocument(object):
         """addPlacement([reference,origin,xaxis,zaxis,local]): adds a placement. origin,
         xaxis and zaxis can be either tuples or 3d vectors. If local is False, a global
         placement is returned, otherwise a local one."""
-        xvc = create(self._fileobject,"IfcDirection",getTuple(xaxis))
-        zvc = create(self._fileobject,"IfcDirection",getTuple(zaxis))
-        ovc = create(self._fileobject,"IfcCartesianPoint",getTuple(origin))
         if flat:
+            xvc = create(self._fileobject,"IfcDirection",getTuple(xaxis)[:2])
+            ovc = create(self._fileobject,"IfcCartesianPoint",getTuple(origin)[:2])
             gpl = create(self._fileobject,"IfcAxis2Placement2D",[ovc,xvc])
         else:
+            xvc = create(self._fileobject,"IfcDirection",getTuple(xaxis))
+            zvc = create(self._fileobject,"IfcDirection",getTuple(zaxis))
+            ovc = create(self._fileobject,"IfcCartesianPoint",getTuple(origin))
             gpl = create(self._fileobject,"IfcAxis2Placement3D",[ovc,zvc,xvc])
         if local:
             lpl = create(self._fileobject,"IfcLocalPlacement",[reference,gpl])
