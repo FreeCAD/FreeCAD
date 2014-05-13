@@ -287,7 +287,7 @@ void TaskPadParameters::onModeChanged(int index)
         case 0:
             pcPad->Type.setValue("Length");
             // Avoid error message
-            if (ui->lengthEdit->getQuantity() < Precision::Confusion())
+            if (ui->lengthEdit->getQuantity().getValue() < Precision::Confusion())
                 ui->lengthEdit->setValue(5.0);
             break;
         case 1: pcPad->Type.setValue("UpToLast"); break;

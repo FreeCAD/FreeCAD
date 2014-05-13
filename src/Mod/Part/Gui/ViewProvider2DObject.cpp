@@ -198,8 +198,8 @@ void ViewProvider2DObject::updateData(const App::Property* prop)
 
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
         Base::BoundBox3d bbox = static_cast<const Part::PropertyPartShape*>(prop)->getBoundingBox();
-        GridRoot->removeAllChildren();
         if (!bbox.IsValid()) return;
+        GridRoot->removeAllChildren();
         Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
         place.invert();
         Base::ViewProjMatrix proj(place.toMatrix());

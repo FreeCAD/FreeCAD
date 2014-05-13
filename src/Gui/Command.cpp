@@ -676,6 +676,7 @@ MacroCommand::MacroCommand(const char* name)
 #endif
 {
     sGroup = QT_TR_NOOP("Macros");
+    eType  = 0;
 }
 
 void MacroCommand::activated(int iMsg)
