@@ -2928,11 +2928,11 @@ class _ViewProviderDraft:
     def execute(self,vobj):
         return
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self,vobj,mode=0):
         FreeCADGui.runCommand("Draft_Edit")
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self,vobj,mode=0):
         if FreeCAD.activeDraftCommand:
             FreeCAD.activeDraftCommand.finish()
         FreeCADGui.Control.closeDialog()
@@ -3311,6 +3311,9 @@ class _ViewProviderDimension(_ViewProviderDraft):
         else:
             self.updateData(vobj.Object,"Start")
 
+    def doubleClicked(self,vobj):
+        self.setEdit(vobj)
+
     def getDisplayModes(self,vobj):
         return ["2D","3D"]
 
@@ -3637,6 +3640,9 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                 self.node3d.insertChild(self.marks,2)
         else:
             self.updateData(vobj.Object, None)
+
+    def doubleClicked(self,vobj):
+        self.setEdit(vobj)
 
     def getDisplayModes(self,obj):
         modes=[]
