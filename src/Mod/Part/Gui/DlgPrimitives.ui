@@ -903,7 +903,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label_5">
               <property name="text">
-               <string>U parametric:</string>
+               <string>U Parameter:</string>
               </property>
              </widget>
             </item>
@@ -939,7 +939,7 @@
             <item row="1" column="0">
              <widget class="QLabel" name="label_6">
               <property name="text">
-               <string>V parametric:</string>
+               <string>V parameter:</string>
               </property>
              </widget>
             </item>
@@ -2028,9 +2028,17 @@
   <tabstop>ellipsoidAngle2</tabstop>
   <tabstop>torusRadius1</tabstop>
   <tabstop>torusRadius2</tabstop>
+  <tabstop>torusAngle3</tabstop>
   <tabstop>torusAngle1</tabstop>
   <tabstop>torusAngle2</tabstop>
-  <tabstop>torusAngle3</tabstop>
+  <tabstop>helixPitch</tabstop>
+  <tabstop>helixHeight</tabstop>
+  <tabstop>helixRadius</tabstop>
+  <tabstop>helixAngle</tabstop>
+  <tabstop>helixLocalCS</tabstop>
+  <tabstop>spiralGrowth</tabstop>
+  <tabstop>spiralRotation</tabstop>
+  <tabstop>spiralRadius</tabstop>
  </tabstops>
  <resources>
   <include location="Resources/Part.qrc"/>
