@@ -1007,6 +1007,7 @@ class DraftToolBar:
                 if callback:
                     callback()
                 return True
+        FreeCADGui.Control.closeDialog()
         panel = TaskPanel(extra,callback)
         FreeCADGui.Control.showDialog(panel)
 
