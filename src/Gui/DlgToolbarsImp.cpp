@@ -68,6 +68,10 @@ DlgCustomToolbars::DlgCustomToolbars(DlgCustomToolbars::Type t, QWidget* parent)
     : CustomizeActionPage(parent), type(t)
 {
     this->setupUi(this);
+    moveActionRightButton->setIcon(BitmapFactory().pixmap(":/icons/button_right.svg"));
+    moveActionLeftButton->setIcon(BitmapFactory().pixmap(":/icons/button_left.svg"));
+    moveActionDownButton->setIcon(BitmapFactory().pixmap(":/icons/button_down.svg"));
+    moveActionUpButton->setIcon(BitmapFactory().pixmap(":/icons/button_up.svg"));
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     std::map<std::string,Command*> sCommands = cCmdMgr.getCommands();
