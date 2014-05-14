@@ -158,6 +158,19 @@ This is a more detailed check as done in isValid().</UserDocu>
         <UserDocu>Sew the shape if there is a gap.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="childShapes" Const="true">
+      <Documentation>
+        <UserDocu>
+childShapes([cumOri=True, cumLoc=True]) -> list
+Return a list of sub-shapes that are direct children of this shape.
+ * If cumOri is true, the function composes all
+   sub-shapes with the orientation of this shape.
+ * If cumLoc is true, the function multiplies all
+   sub-shapes by the location of this shape, i.e. it applies to
+   each sub-shape the transformation that is associated with this shape.
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="removeInternalWires">
       <Documentation>
         <UserDocu>Removes internal wires (also holes) from the shape.</UserDocu>
