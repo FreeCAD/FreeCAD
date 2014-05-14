@@ -757,6 +757,70 @@ PyObject*  TopoShapePy::sewShape(PyObject *args)
     }
 }
 
+PyObject* TopoShapePy::childShapes(PyObject *args)
+{
+    PyObject* cumOri = Py_True;
+    PyObject* cumLoc = Py_True;
+    if (!PyArg_ParseTuple(args, "|O!O!", &(PyBool_Type), &cumOri,
+                                         &(PyBool_Type), &cumLoc))
+        return NULL;
+
+    try {
+        TopoDS_Iterator it(getTopoShapePtr()->_Shape,
+            PyObject_IsTrue(cumOri) ? Standard_True : Standard_False,
+            PyObject_IsTrue(cumLoc) ? Standard_True : Standard_False);
+        Py::List list;
+        for (; it.More(); it.Next()) {
+            const TopoDS_Shape& aChild = it.Value();
+            if (!aChild.IsNull()) {
+                TopAbs_ShapeEnum type = aChild.ShapeType();
+                PyObject* pyChild = 0;
+                switch (type)
+                {
+                case TopAbs_COMPOUND:
+                    pyChild = new TopoShapeCompoundPy(new TopoShape(aChild));
+                    break;
+                case TopAbs_COMPSOLID:
+                    pyChild = new TopoShapeCompSolidPy(new TopoShape(aChild));
+                    break;
+                case TopAbs_SOLID:
+                    pyChild = new TopoShapeSolidPy(new TopoShape(aChild));
+                    break;
+                case TopAbs_SHELL:
+                    pyChild = new TopoShapeShellPy(new TopoShape(aChild));
+                    break;
+                case TopAbs_FACE:
+                    pyChild = new TopoShapeFacePy(new TopoShape(aChild));
+                    break;
+                case TopAbs_WIRE:
+                    pyChild = new TopoShapeWirePy(new TopoShape(aChild));
+                    break;
+                case TopAbs_EDGE:
+                    pyChild = new TopoShapeEdgePy(new TopoShape(aChild));
+                    break;
+                case TopAbs_VERTEX:
+                    pyChild = new TopoShapeVertexPy(new TopoShape(aChild));
+                    break;
+                case TopAbs_SHAPE:
+                    break;
+                default:
+                    break;
+                }
+
+                if (pyChild) {
+                    list.append(Py::Object(pyChild,true));
+                }
+            }
+        }
+        return Py::new_reference_to(list);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        return NULL;
+    }
+}
+
 PyObject*  TopoShapePy::removeInternalWires(PyObject *args)
 {
     double minArea;
