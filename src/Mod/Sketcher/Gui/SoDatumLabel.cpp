@@ -335,17 +335,18 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         this->endShape();
     } else if (this->datumtype.getValue() == SYMMETRIC) {
 
-          // Get the Scale
+        // Get the Scale. See GLRender function for details on the viewport width calculation
         SoState *state = action->getState();
         const SbViewVolume & vv = SoViewVolumeElement::get(state);
-        float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 0.4f);
+        float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
+	SbVec2s vp_size = static_cast<SoGLRenderAction*>(action)->getViewportRegion().getWindowSize();
+	scale /= float(vp_size[0]);
 
         SbVec3f dir = (p2-p1);
         dir.normalize();
         SbVec3f norm (-dir[1],dir[0],0);
 
-        float margin = 0.01f;
-        margin *= scale;
+        float margin = this->imgHeight / 4.0;
 
         // Calculate coordinates for the first arrow
         SbVec3f ar0, ar1, ar2;
@@ -423,10 +424,17 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     if (action->handleTransparency(true))
       return;
 
-    // Get the Scale
+    /**Remark from Stefan Tröger: 
+    * The scale calculation is based on knowledge of SbViewVolume::getWorldToScreenScale
+    * implementation internals. The factor returned from this function is calculated from the view frustums
+    * nearplane width, height is not taken into account, and hence we divide it with the viewport width
+    * to get the exact pixel scale faktor.
+    * This is not documented and therefore may change on later coin versions!
+    */
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
     float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.f);
     SbVec2s vp_size = action->getViewportRegion().getWindowSize();
+    scale /= float(vp_size[0]);
 
     const SbString* s = string.getValues(0);
     bool hasText = (s->getLength() > 0) ? true : false;
@@ -447,18 +455,11 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         srcw = size[0];
         srch = size[1];
 
-	/**Remark from Stefan Tröger: 
-	 * The height calculation is based on internal knowledge of SbViewVolume::getWorldToScreenScale
-	 * implementation. The factor returned from this function is calculated from the view frustums
-	 * nearplane width, height is not taken into account, and hence we divide it with the viewport width
-	 * to get the exact pixel scale faktor.
-	 * This is not documented and therefore may change on later coin versions!
-	 */
         float aspectRatio =  (float) srcw / (float) srch;
-        this->imgHeight = (scale * (float) (srch)) / float(vp_size[0]);
+        this->imgHeight = scale * (float) (srch);
         this->imgWidth  = aspectRatio * (float) this->imgHeight;
     }
-
+   
     // Get the points stored in the pnt field
     const SbVec3f *pnts = this->pnts.getValues(0);
 
@@ -517,8 +518,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         SbVec3f midpos = (p1_ + p2)/2;
 
-        float offset1 = (length + normproj12 < 0) ? -0.02  : 0.02;
-        float offset2 = (length < 0) ? -0.02  : 0.02;
+        float offset1 = ((length + normproj12 < 0) ? -1.  : 1.) * srch;
+        float offset2 = ((length < 0) ? -1  : 1)*srch;
 
         // Get magnitude of angle between horizontal
         angle = atan2f(dir[1],dir[0]);
@@ -539,8 +540,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Set GL Properties
         glLineWidth(this->lineWidth.getValue());
         glColor3f(t[0], t[1], t[2]);
-        float margin = 0.01f;
-        margin *= scale;
+        float margin = this->imgHeight / 4.0;
+
 
         SbVec3f perp1 = p1_ + norm * (length + offset1 * scale);
         SbVec3f perp2 = p2  + norm * (length + offset2 * scale);
@@ -555,7 +556,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         if ((par3-par1).dot(dir) > (par4 - par1).length()) {
             // Increase Margin to improve visability
-            float tmpMargin = 0.08f * scale;
+            float tmpMargin = this->imgHeight /0.75;
             par3 = par4;
             if((par2-par1).dot(dir) > (par4 - par1).length()) {
                 par3 = par2;
@@ -563,7 +564,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
                 flipTriang = true;
             }
         } else if ((par2-par1).dot(dir) < 0.f) {
-            float tmpMargin = 0.08f * scale;
+            float tmpMargin = this->imgHeight /0.75;
             par2 = par1;
             if((par3-par1).dot(dir) < 0.f) {
                 par2 = par3;
@@ -614,8 +615,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         corners.push_back(perp2);
 
         // Make sure that the label is inside the bounding box
-        corners.push_back(textOffset + dir * (this->imgWidth / 2 + margin) + norm * (this->imgHeight + margin));
-        corners.push_back(textOffset - dir * (this->imgWidth / 2 + margin) + norm * (this->imgHeight + margin));
+        corners.push_back(textOffset + dir * (this->imgWidth / 2 + margin) + norm * (srch + margin));
+        corners.push_back(textOffset - dir * (this->imgWidth / 2 + margin) + norm * (srch + margin));
         corners.push_back(textOffset + dir * (this->imgWidth / 2 + margin) - norm * margin);
         corners.push_back(textOffset - dir * (this->imgWidth / 2 + margin) - norm * margin);
 
@@ -654,8 +655,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         textOffset = pos;
 
-        float margin = 0.01f;
-        margin *= scale;
+        float margin = this->imgHeight / 4.0;
 
         // Create the arrowhead
         SbVec3f ar0  = p2;
@@ -734,8 +734,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         textOffset = p0 + v0 * r;
 
-        float margin = 0.01f;
-        margin *= scale;
+        float margin = this->imgHeight / 4.0;
 
         // Draw
         glBegin(GL_LINE_STRIP);
@@ -817,8 +816,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         dir.normalize();
         SbVec3f norm (-dir[1],dir[0],0);
 
-        float margin = 0.01f;
-        margin *= scale;
+        float margin = this->imgHeight / 4.0;
 
         // Calculate coordinates for the first arrow
         SbVec3f ar0, ar1, ar2;
