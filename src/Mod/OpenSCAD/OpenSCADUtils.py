@@ -555,3 +555,21 @@ def removesubtree(objs):
             checkinlistcomplete = True
     for obj in toremove:
         obj.Document.removeObject(obj.Name)
+
+def applyPlacement(shape):
+    if shape.Placement.isNull():
+        return shape
+    else:
+        import Part
+        if shape.ShapeType == 'Solid':
+            return Part.Solid(shape.childShapes()[0])
+        elif shape.ShapeType == 'Face':
+            return Part.Face(shape.childShapes())
+        elif shape.ShapeType == 'Compound':
+            return Part.Compound(shape.childShapes())
+        elif shape.ShapeType == 'Wire':
+            return Part.Wire(shape.childShapes())
+        elif shape.ShapeType == 'Shell':
+            return Part.Shell(shape.childShapes())
+        else:
+            raise ValueError('Unsupported shape type')
