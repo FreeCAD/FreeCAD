@@ -289,8 +289,9 @@ class RefineShape:
 
     def execute(self, fp):
         if fp.Base and fp.Base.Shape.isValid():
+            import OpenSCADUtils
             sh=fp.Base.Shape.removeSplitter()
-            fp.Shape=sh
+            fp.Shape=OpenSCADUtils.applyPlacement(sh)
 
 class IncreaseTolerance:
     '''increase the tolerance of every vertex
