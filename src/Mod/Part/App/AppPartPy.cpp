@@ -437,29 +437,51 @@ static PyObject * makeFilledFace(PyObject *self, PyObject *args)
 {
     // http://opencascade.blogspot.com/2010/03/surface-modeling-part6.html
     // TODO: GeomPlate_BuildPlateSurface
+    // TODO: GeomPlate_MakeApprox
+    // TODO: BRepFeat_SplitShape
     PyObject *obj;
-    if (!PyArg_ParseTuple(args, "O", &obj))
+    PyObject *surf=0;
+    if (!PyArg_ParseTuple(args, "O|O!", &obj, &TopoShapeFacePy::Type, &surf))
         return NULL;
 
     PY_TRY {
+        // See also BRepOffsetAPI_MakeFilling
         BRepFill_Filling builder;
-        
         try {
+            if (surf) {
+                const TopoDS_Shape& face = static_cast<TopoShapeFacePy*>(surf)->
+                    getTopoShapePtr()->_Shape;
+                if (!face.IsNull() && face.ShapeType() == TopAbs_FACE) {
+                    builder.LoadInitSurface(TopoDS::Face(face));
+                }
+            }
             Py::Sequence list(obj);
-            int countEdges = 0;
+            int numConstraints = 0;
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeEdgePy::Type))) {
-                    const TopoDS_Shape& sh = static_cast<TopoShapeEdgePy*>((*it).ptr())->
+                if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
                         getTopoShapePtr()->_Shape;
                     if (!sh.IsNull()) {
-                        builder.Add(TopoDS::Edge(sh), GeomAbs_C0);
-                        countEdges++;
+                        if (sh.ShapeType() == TopAbs_EDGE) {
+                            builder.Add(TopoDS::Edge(sh), GeomAbs_C0);
+                            numConstraints++;
+                        }
+                        else if (sh.ShapeType() == TopAbs_FACE) {
+                            builder.Add(TopoDS::Face(sh), GeomAbs_C0);
+                            numConstraints++;
+                        }
+                        else if (sh.ShapeType() == TopAbs_VERTEX) {
+                            const TopoDS_Vertex& v = TopoDS::Vertex(sh);
+                            gp_Pnt pnt = BRep_Tool::Pnt(v);
+                            builder.Add(pnt);
+                            numConstraints++;
+                        }
                     }
                 }
             }
 
-            if (countEdges == 0) {
-                PyErr_SetString(PyExc_Exception, "Failed to created face with no edges");
+            if (numConstraints == 0) {
+                PyErr_SetString(PyExc_Exception, "Failed to created face with no constraints");
                 return 0;
             }
 
