@@ -39,6 +39,12 @@
 #include <QGridLayout>
 #include <QTreeWidget>
 
+namespace Base {
+    class Quantity{};
+}
+
+Q_DECLARE_METATYPE(Base::Quantity)
+
 namespace Gui
 {
 
@@ -199,6 +205,54 @@ private:
     QTreeWidget *selectedWidget;
     QSpacerItem *spacerItem;
     QSpacerItem *spacerItem1;
+};
+
+// ------------------------------------------------------------------------------
+
+class InputField : public QLineEdit
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath )
+    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep )
+    Q_PROPERTY(double maximum READ maximum WRITE setMaximum )
+    Q_PROPERTY(double minimum READ minimum WRITE setMinimum )
+    Q_PROPERTY(int historySize READ historySize WRITE setHistorySize )
+    Q_PROPERTY(QString unit READ getUnitText WRITE setUnitText )
+    Q_PROPERTY(double quantity READ getQuantity WRITE setValue )
+
+public:
+    InputField (QWidget * parent = 0);
+    virtual ~InputField();
+
+    void setValue(double);
+    double getQuantity(void) const;
+    double singleStep(void) const;
+    void setSingleStep(double);
+    double maximum(void) const;
+    void setMaximum(double);
+    double minimum(void) const;
+    void setMinimum(double);
+    int historySize(void) const;
+    void setHistorySize(int);
+    void setUnitText(QString);
+    QString getUnitText(void); 
+    QByteArray paramGrpPath () const;
+    void  setParamGrpPath(const QByteArray& name);
+
+Q_SIGNALS:
+    void valueChanged(const Base::Quantity&);
+    void valueChanged(double);
+    void parseError(const QString& errorText);
+
+private:
+    QByteArray m_sPrefGrp;
+    QString UnitStr;
+    double Value;
+    double Maximum;
+    double Minimum;
+    double StepSize;
+    int HistorySize;
 };
 
 // ------------------------------------------------------------------------------

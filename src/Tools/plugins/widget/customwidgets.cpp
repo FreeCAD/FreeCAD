@@ -418,6 +418,106 @@ ActionSelector::~ActionSelector()
 
 // --------------------------------------------------------------------
 
+InputField::InputField (QWidget * parent)
+  : QLineEdit(parent),
+    Value(0),
+    Maximum(INT_MAX),
+    Minimum(-INT_MAX),
+    StepSize(1.0),
+    HistorySize(5)
+{
+}
+
+InputField::~InputField()
+{
+}
+
+/** Sets the preference path to \a path. */
+void InputField::setParamGrpPath( const QByteArray& path )
+{
+    m_sPrefGrp = path;
+}
+
+/** Returns the widget's preferences path. */
+QByteArray InputField::paramGrpPath() const
+{
+    return m_sPrefGrp;
+}
+
+/// sets the field with a quantity
+void InputField::setValue(double quant)
+{
+    Value = quant;
+    setText(QString("%1 %2").arg(Value).arg(UnitStr));
+}
+
+/// sets the field with a quantity
+double InputField::getQuantity() const
+{
+    return Value;
+}
+
+/// get the value of the singleStep property
+double InputField::singleStep(void)const
+{
+    return StepSize;
+}
+
+/// set the value of the singleStep property 
+void InputField::setSingleStep(double s)
+{
+    StepSize = s;
+}
+
+/// get the value of the maximum property
+double InputField::maximum(void)const
+{
+    return Maximum;
+}
+
+/// set the value of the maximum property 
+void InputField::setMaximum(double m)
+{
+    Maximum = m;
+}
+
+/// get the value of the minimum property
+double InputField::minimum(void)const
+{
+    return Minimum;
+}
+
+/// set the value of the minimum property 
+void InputField::setMinimum(double m)
+{
+    Minimum = m;
+}
+
+void InputField::setUnitText(QString str)
+{
+    UnitStr = str;
+    setText(QString("%1 %2").arg(Value).arg(UnitStr));
+}
+
+QString InputField::getUnitText(void)
+{
+    return UnitStr;
+}
+
+// get the value of the minimum property
+int InputField::historySize(void)const
+{
+    return HistorySize;
+}
+
+// set the value of the minimum property 
+void InputField::setHistorySize(int i)
+{
+    HistorySize = i;
+}
+
+// --------------------------------------------------------------------
+
 CommandIconView::CommandIconView ( QWidget * parent )
   : QListWidget(parent)
 {
