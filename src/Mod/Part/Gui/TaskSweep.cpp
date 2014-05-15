@@ -29,6 +29,7 @@
 # include <QTextStream>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <TopoDS.hxx>
+# include <TopoDS_Iterator.hxx>
 #endif
 
 #include "ui_TaskSweep.h"
@@ -118,8 +119,22 @@ void SweepWidget::findShapes()
     std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();
 
     for (std::vector<Part::Feature*>::iterator it = objs.begin(); it!=objs.end(); ++it) {
-        const TopoDS_Shape& shape = (*it)->Shape.getValue();
+        TopoDS_Shape shape = (*it)->Shape.getValue();
         if (shape.IsNull()) continue;
+
+        // also allow compounds with a single face, wire, edge or vertex
+        if (shape.ShapeType() == TopAbs_COMPOUND) {
+            TopoDS_Iterator it(shape);
+            int numChilds=0;
+            TopoDS_Shape child;
+            for (; it.More(); it.Next(), numChilds++) {
+                if (!it.Value().IsNull())
+                    child = it.Value();
+            }
+
+            if (numChilds == 1)
+                shape = child;
+        }
 
         if (shape.ShapeType() == TopAbs_FACE ||
             shape.ShapeType() == TopAbs_WIRE ||
