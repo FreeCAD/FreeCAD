@@ -383,7 +383,7 @@ CmdRobotTrajectoryDressUp::CmdRobotTrajectoryDressUp()
     sAppModule      = "Robot";
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Dress up trajectory...");
-    sToolTipText    = QT_TR_NOOP("Create a dress up object which overide som aspects of a trajectory");
+    sToolTipText    = QT_TR_NOOP("Create a dress up object which overide some aspects of a trajectory");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_TrajectoryDressUp";
