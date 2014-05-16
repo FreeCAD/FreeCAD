@@ -114,7 +114,7 @@
         <item row="0" column="1">
          <widget class="Gui::PrefFileChooser" name="prefFileChooser2">
           <property name="toolTip">
-           <string>The path to the povray executable, if you want to render from FreeCAD</string>
+           <string>The path to the POV-Ray executable, if you want to render from FreeCAD</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>PovrayExecutable</cstring>
@@ -127,14 +127,14 @@
         <item row="0" column="0">
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Povray executable:</string>
+           <string>POV-Ray executable:</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Povray output parameters:</string>
+           <string>POV-Ray output parameters:</string>
           </property>
          </widget>
         </item>
@@ -143,7 +143,7 @@
           <item>
            <widget class="Gui::PrefLineEdit" name="prefLineEdit1">
             <property name="toolTip">
-             <string>The povray parameters to be passed to the render.</string>
+             <string>The POV-Ray parameters to be passed to the render.</string>
             </property>
             <property name="text">
              <string>+P +A</string>

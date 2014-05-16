@@ -79,8 +79,8 @@ CmdRaytracingWriteCamera::CmdRaytracingWriteCamera()
 {
     sAppModule    = "Raytracing";
     sGroup        = QT_TR_NOOP("Raytracing");
-    sMenuText     = QT_TR_NOOP("Export camera to povray...");
-    sToolTipText  = QT_TR_NOOP("Export the camera positon of the active 3D view in PovRay format to a file");
+    sMenuText     = QT_TR_NOOP("Export camera to POV-Ray...");
+    sToolTipText  = QT_TR_NOOP("Export the camera positon of the active 3D view in POV-Ray format to a file");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Camera";
@@ -96,7 +96,7 @@ void CmdRaytracingWriteCamera::activated(int iMsg)
             int ret = QMessageBox::warning(Gui::getMainWindow(), 
                 qApp->translate("CmdRaytracingWriteView","No perspective camera"),
                 qApp->translate("CmdRaytracingWriteView","The current view camera is not perspective"
-                                " and thus the result of the povray image later might look different to"
+                                " and thus the result of the POV-Ray image later might look different to"
                                 " what you expect.\nDo you want to continue?"),
                 QMessageBox::Yes|QMessageBox::No);
             if (ret != QMessageBox::Yes)
@@ -131,7 +131,7 @@ void CmdRaytracingWriteCamera::activated(int iMsg)
         float Dist = Cam->focalDistance.getValue();
 
         QStringList filter;
-        filter << QObject::tr("Povray (*.pov)");
+        filter << QObject::tr("POV-Ray (*.pov)");
         filter << QObject::tr("All Files (*.*)");
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
         if (fn.isEmpty()) 
@@ -172,8 +172,8 @@ CmdRaytracingWritePart::CmdRaytracingWritePart()
 {
     sAppModule    = "Raytracing";
     sGroup        = QT_TR_NOOP("Raytracing");
-    sMenuText     = QT_TR_NOOP("Export part to povray...");
-    sToolTipText  = QT_TR_NOOP("Write the selected Part (object) as a povray file");
+    sMenuText     = QT_TR_NOOP("Export part to POV-Ray...");
+    sToolTipText  = QT_TR_NOOP("Write the selected Part (object) as a POV-Ray file");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Part";
@@ -182,7 +182,7 @@ CmdRaytracingWritePart::CmdRaytracingWritePart()
 void CmdRaytracingWritePart::activated(int iMsg)
 {
     QStringList filter;
-    filter << QObject::tr("Povray(*.pov)");
+    filter << QObject::tr("POV-Ray (*.pov)");
     filter << QObject::tr("All Files (*.*)");
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) 
@@ -218,8 +218,8 @@ CmdRaytracingWriteView::CmdRaytracingWriteView()
 {
     sAppModule    = "Raytracing";
     sGroup        = QT_TR_NOOP("Raytracing");
-    sMenuText     = QT_TR_NOOP("Export view to povray...");
-    sToolTipText  = QT_TR_NOOP("Write the active 3D view with camera and all its content to a povray file");
+    sMenuText     = QT_TR_NOOP("Export view to POV-Ray...");
+    sToolTipText  = QT_TR_NOOP("Write the active 3D view with camera and all its content to a POV-Ray file");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Export";
@@ -235,7 +235,7 @@ void CmdRaytracingWriteView::activated(int iMsg)
             int ret = QMessageBox::warning(Gui::getMainWindow(), 
                 qApp->translate("CmdRaytracingWriteView","No perspective camera"),
                 qApp->translate("CmdRaytracingWriteView","The current view camera is not perspective"
-                                " and thus the result of the povray image later might look different to"
+                                " and thus the result of the POV-Ray image later might look different to"
                                 " what you expect.\nDo you want to continue?"),
                 QMessageBox::Yes|QMessageBox::No);
             if (ret != QMessageBox::Yes)
@@ -244,7 +244,7 @@ void CmdRaytracingWriteView::activated(int iMsg)
     }
 
     QStringList filter;
-    filter << QObject::tr("Povray(*.pov)");
+    filter << QObject::tr("POV-Ray(*.pov)");
     filter << QObject::tr("All Files (*.*)");
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
         QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
@@ -305,8 +305,8 @@ CmdRaytracingNewPovrayProject::CmdRaytracingNewPovrayProject()
 {
     sAppModule      = "Raytracing";
     sGroup          = QT_TR_NOOP("Raytracing");
-    sMenuText       = QT_TR_NOOP("New Povray project");
-    sToolTipText    = QT_TR_NOOP("Insert new Povray project into the document");
+    sMenuText       = QT_TR_NOOP("New POV-Ray project");
+    sToolTipText    = QT_TR_NOOP("Insert new POV-Ray project into the document");
     sWhatsThis      = "Raytracing_NewPovrayProject";
     sStatusTip      = sToolTipText;
     sPixmap         = "Raytrace_New";
@@ -322,7 +322,7 @@ void CmdRaytracingNewPovrayProject::activated(int iMsg)
             int ret = QMessageBox::warning(Gui::getMainWindow(), 
                 qApp->translate("CmdRaytracingWriteView","No perspective camera"),
                 qApp->translate("CmdRaytracingWriteView","The current view camera is not perspective"
-                                " and thus the result of the povray image later might look different to"
+                                " and thus the result of the POV-Ray image later might look different to"
                                 " what you expect.\nDo you want to continue?"),
                 QMessageBox::Yes|QMessageBox::No);
             if (ret != QMessageBox::Yes)
@@ -336,7 +336,7 @@ void CmdRaytracingNewPovrayProject::activated(int iMsg)
     QAction* a = pcAction->actions()[iMsg];
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
-        openCommand("Create Povray project");
+        openCommand("Create POV-Ray project");
         doCommand(Doc,"import Raytracing,RaytracingGui");
         doCommand(Doc,"App.activeDocument().addObject('Raytracing::RayProject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
@@ -508,7 +508,7 @@ void CmdRaytracingExportProject::activated(int iMsg)
             filterLabel = "Luxrender Scene (*.lxs)";
         }
     } else {
-        filterLabel = "Povray Scene (*.pov)";
+        filterLabel = "POV-Ray Scene (*.pov)";
     }
 
     QStringList filter;
@@ -578,14 +578,14 @@ void CmdRaytracingRender::activated(int iMsg)
     if (renderType == "povray") {
         renderer = hGrp->GetASCII("PovrayExecutable", "");
         if (renderer == "") {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Povray not found"),
-                QObject::tr("Please set the path to the povray executable in the preferences."));
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("POV-Ray not found"),
+                QObject::tr("Please set the path to the POV-Ray executable in the preferences."));
             return;
         } else {
             QFileInfo fi(QString::fromUtf8(renderer.c_str()));
             if (!fi.exists() || !fi.isFile()) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Povray not found"),
-                    QObject::tr("Please correct the path to the povray executable in the preferences."));
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("POV-Ray not found"),
+                    QObject::tr("Please correct the path to the POV-Ray executable in the preferences."));
                 return;
             }
         }
