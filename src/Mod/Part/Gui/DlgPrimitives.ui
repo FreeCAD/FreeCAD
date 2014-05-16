@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>260</width>
+    <width>317</width>
     <height>370</height>
    </rect>
   </property>
@@ -207,16 +207,10 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="planeLength">
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
+            <item row="0" column="2">
+             <widget class="Gui::InputField" name="planeLength">
+              <property name="text">
+               <string>10.00 mm</string>
               </property>
              </widget>
             </item>
@@ -234,13 +228,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="planeWidth">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
+            <item row="1" column="2">
+             <widget class="Gui::InputField" name="planeWidth">
+              <property name="text">
+               <string>10.00 mm</string>
               </property>
              </widget>
             </item>
@@ -293,33 +284,24 @@
             <property name="spacing">
              <number>6</number>
             </property>
+            <item row="1" column="2">
+             <widget class="Gui::InputField" name="boxWidth">
+              <property name="text">
+               <string>10.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="Gui::InputField" name="boxHeight">
+              <property name="text">
+               <string>10.00 mm</string>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="0">
              <widget class="QLabel" name="textLabel4">
               <property name="text">
                <string>Height:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="boxHeight">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="boxLength">
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -330,20 +312,17 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="boxWidth">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="textLabel3">
               <property name="text">
                <string>Width:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="Gui::InputField" name="boxLength">
+              <property name="text">
+               <string>10.00 mm</string>
               </property>
              </widget>
             </item>
@@ -375,12 +354,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="cylinderAngle">
-              <property name="maximum">
-               <double>360.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>360.000000000000000</double>
+             <widget class="Gui::InputField" name="cylinderAngle">
+              <property name="text">
+               <string>360.00°</string>
               </property>
              </widget>
             </item>
@@ -427,30 +403,24 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="cylinderRadius">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="cylinderHeight">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="textLabel6">
               <property name="text">
                <string>Height:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="cylinderHeight">
+              <property name="text">
+               <string>10.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="cylinderRadius">
+              <property name="text">
+               <string>2.00 mm</string>
               </property>
              </widget>
             </item>
@@ -482,12 +452,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="coneAngle">
-              <property name="maximum">
-               <double>360.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>360.000000000000000</double>
+             <widget class="Gui::InputField" name="coneAngle">
+              <property name="text">
+               <string>360.00°</string>
               </property>
              </widget>
             </item>
@@ -527,40 +494,24 @@
             <property name="spacing">
              <number>6</number>
             </property>
+            <item row="3" column="2">
+             <widget class="Gui::InputField" name="coneHeight">
+              <property name="text">
+               <string>10.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="Gui::InputField" name="coneRadius1">
+              <property name="text">
+               <string>2.00 mm</string>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="0" rowspan="2">
              <widget class="QLabel" name="textLabel11">
               <property name="text">
                <string>Height:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1" rowspan="2">
-             <widget class="QDoubleSpinBox" name="coneRadius2">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>4.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QDoubleSpinBox" name="coneHeight">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="coneRadius1">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -575,6 +526,13 @@
              <widget class="QLabel" name="textLabel10">
               <property name="text">
                <string>Radius 2:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="Gui::InputField" name="coneRadius2">
+              <property name="text">
+               <string>4.00 mm</string>
               </property>
              </widget>
             </item>
@@ -608,13 +566,6 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_3">
-              <property name="text">
-               <string>U parametric:</string>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0">
              <spacer>
               <property name="orientation">
@@ -631,46 +582,38 @@
               </property>
              </spacer>
             </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="sphereAngle1">
-              <property name="minimum">
-               <double>-90.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>90.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>-90.000000000000000</double>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>U parameter:</string>
               </property>
              </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>V parametric:</string>
+               <string>V parameters:</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="sphereAngle2">
-              <property name="minimum">
-               <double>-90.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>90.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>90.000000000000000</double>
+            <item row="1" column="2">
+             <widget class="Gui::InputField" name="sphereAngle1">
+              <property name="text">
+               <string>-90.00°</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="sphereAngle3">
-              <property name="maximum">
-               <double>360.000000000000000</double>
+            <item row="2" column="2">
+             <widget class="Gui::InputField" name="sphereAngle2">
+              <property name="text">
+               <string>90.00°</string>
               </property>
-              <property name="value">
-               <double>360.000000000000000</double>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="Gui::InputField" name="sphereAngle3">
+              <property name="text">
+               <string>360.00°</string>
               </property>
              </widget>
             </item>
@@ -708,12 +651,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="sphereRadius">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>5.000000000000000</double>
+             <widget class="Gui::InputField" name="sphereRadius">
+              <property name="text">
+               <string>5.00 mm</string>
               </property>
              </widget>
             </item>
@@ -760,26 +700,6 @@
             <property name="spacing">
              <number>6</number>
             </property>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="ellipsoidRadius2">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>4.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="ellipsoidRadius1">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="textLabel21">
               <property name="text">
@@ -791,6 +711,20 @@
              <widget class="QLabel" name="textLabel22">
               <property name="text">
                <string>Radius 2:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="ellipsoidRadius1">
+              <property name="text">
+               <string>2.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="ellipsoidRadius2">
+              <property name="text">
+               <string>4.00 mm</string>
               </property>
              </widget>
             </item>
@@ -807,7 +741,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="label23">
               <property name="text">
-               <string>U parametric:</string>
+               <string>U parameter:</string>
               </property>
              </widget>
             </item>
@@ -827,46 +761,31 @@
               </property>
              </spacer>
             </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="ellipsoidAngle1">
-              <property name="minimum">
-               <double>-90.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>90.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>-90.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label24">
               <property name="text">
-               <string>V parametric:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="ellipsoidAngle2">
-              <property name="minimum">
-               <double>-90.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>90.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>90.000000000000000</double>
+               <string>V parameter:</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="ellipsoidAngle3">
-              <property name="maximum">
-               <double>360.000000000000000</double>
+             <widget class="Gui::InputField" name="ellipsoidAngle3">
+              <property name="text">
+               <string>360.00°</string>
               </property>
-              <property name="value">
-               <double>360.000000000000000</double>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="ellipsoidAngle1">
+              <property name="text">
+               <string>-90.00°</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::InputField" name="ellipsoidAngle2">
+              <property name="text">
+               <string>90.00°</string>
               </property>
              </widget>
             </item>
@@ -923,19 +842,6 @@
               </property>
              </spacer>
             </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="torusAngle1">
-              <property name="minimum">
-               <double>-180.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>180.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>-180.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_6">
               <property name="text">
@@ -943,26 +849,24 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="torusAngle2">
-              <property name="minimum">
-               <double>-180.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>180.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>180.000000000000000</double>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="torusAngle3">
+              <property name="text">
+               <string>360.00°</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="torusAngle3">
-              <property name="maximum">
-               <double>360.000000000000000</double>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="torusAngle1">
+              <property name="text">
+               <string>-180.00°</string>
               </property>
-              <property name="value">
-               <double>360.000000000000000</double>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::InputField" name="torusAngle2">
+              <property name="text">
+               <string>180.00°</string>
               </property>
              </widget>
             </item>
@@ -992,6 +896,13 @@
             <property name="spacing">
              <number>6</number>
             </property>
+            <item row="0" column="2">
+             <widget class="Gui::InputField" name="torusRadius1">
+              <property name="text">
+               <string>10.00 mm</string>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="textLabel20">
               <property name="text">
@@ -1006,23 +917,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="torusRadius2">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="torusRadius1">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
+            <item row="1" column="2">
+             <widget class="Gui::InputField" name="torusRadius2">
+              <property name="text">
+               <string>2.00 mm</string>
               </property>
              </widget>
             </item>
@@ -1046,6 +944,13 @@
             <property name="spacing">
              <number>6</number>
             </property>
+            <item row="1" column="2">
+             <widget class="Gui::InputField" name="prismCircumradius">
+              <property name="text">
+               <string>2.00 mm</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="labelPrismPolygon">
               <property name="text">
@@ -1053,7 +958,7 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
+            <item row="0" column="2">
              <widget class="QSpinBox" name="prismPolygon">
               <property name="minimum">
                <number>3</number>
@@ -1073,19 +978,6 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="prismCircumradius">
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0">
              <widget class="QLabel" name="labelPrismHeight">
               <property name="text">
@@ -1093,13 +985,10 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="prismHeight">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
+            <item row="2" column="2">
+             <widget class="Gui::InputField" name="prismHeight">
+              <property name="text">
+               <string>10.0 mm</string>
               </property>
              </widget>
             </item>
@@ -1124,33 +1013,16 @@
          <layout class="QGridLayout" name="gridLayout_8">
           <item row="0" column="0">
            <layout class="QGridLayout" name="gridLayout_2">
+            <property name="sizeConstraint">
+             <enum>QLayout::SetDefaultConstraint</enum>
+            </property>
+            <property name="horizontalSpacing">
+             <number>4</number>
+            </property>
             <item row="0" column="0">
              <widget class="QLabel" name="label_10">
               <property name="text">
                <string>X min/max:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="wedgeXmin">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QDoubleSpinBox" name="wedgeXmax">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1161,56 +1033,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="wedgeYmin">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QDoubleSpinBox" name="wedgeYmax">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="2" column="0">
              <widget class="QLabel" name="label_12">
               <property name="text">
                <string>Z min/max:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="wedgeZmin">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="2">
-             <widget class="QDoubleSpinBox" name="wedgeZmax">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="value">
-               <double>10.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1221,32 +1047,6 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="1">
-             <widget class="QDoubleSpinBox" name="wedgeX2min">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="2">
-             <widget class="QDoubleSpinBox" name="wedgeX2max">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="value">
-               <double>8.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="4" column="0">
              <widget class="QLabel" name="label_14">
               <property name="text">
@@ -1254,29 +1054,73 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="1">
-             <widget class="QDoubleSpinBox" name="wedgeZ2min">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="wedgeXmin">
+              <property name="text">
+               <string>0.00</string>
               </property>
-              <property name="value">
-               <double>2.000000000000000</double>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="Gui::InputField" name="wedgeXmax">
+              <property name="text">
+               <string>10.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="wedgeYmin">
+              <property name="text">
+               <string>0.00</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="Gui::InputField" name="wedgeYmax">
+              <property name="text">
+               <string>10.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::InputField" name="wedgeZmin">
+              <property name="text">
+               <string>0.00</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="Gui::InputField" name="wedgeZmax">
+              <property name="text">
+               <string>10.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="Gui::InputField" name="wedgeX2min">
+              <property name="text">
+               <string>2.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="Gui::InputField" name="wedgeX2max">
+              <property name="text">
+               <string>8.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="Gui::InputField" name="wedgeZ2min">
+              <property name="text">
+               <string>2.00 mm</string>
               </property>
              </widget>
             </item>
             <item row="4" column="2">
-             <widget class="QDoubleSpinBox" name="wedgeZ2max">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="value">
-               <double>8.000000000000000</double>
+             <widget class="Gui::InputField" name="wedgeZ2max">
+              <property name="text">
+               <string>8.00 mm</string>
               </property>
              </widget>
             </item>
@@ -1340,36 +1184,6 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="helixRadius">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>1.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="helixPitch">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>1.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="helixHeight">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="label_8">
               <property name="text">
@@ -1381,22 +1195,6 @@
              <widget class="QLabel" name="label_20">
               <property name="text">
                <string>Angle:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="3" column="1">
-             <widget class="QDoubleSpinBox" name="helixAngle">
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>89.989999999999995</double>
-              </property>
-              <property name="singleStep">
-               <double>1.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1419,6 +1217,34 @@
                 <string>Left-handed</string>
                </property>
               </item>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="Gui::InputField" name="helixAngle">
+              <property name="text">
+               <string>0.00°</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="helixPitch">
+              <property name="text">
+               <string>1.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="helixHeight">
+              <property name="text">
+               <string>2.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::InputField" name="helixRadius">
+              <property name="text">
+               <string>1.00 mm</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -1468,23 +1294,17 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="spiralRadius">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>1.000000000000000</double>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_spiral_rotation">
+              <property name="text">
+               <string>Number of rotations:</string>
               </property>
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="spiralGrowth">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>1.000000000000000</double>
+             <widget class="Gui::InputField" name="spiralGrowth">
+              <property name="text">
+               <string>1.00 mm</string>
               </property>
              </widget>
             </item>
@@ -1498,10 +1318,10 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="label_spiral_rotation">
+            <item row="2" column="1">
+             <widget class="Gui::InputField" name="spiralRadius">
               <property name="text">
-               <string>Number of rotations:</string>
+               <string>1.00 mm</string>
               </property>
              </widget>
             </item>
@@ -1526,30 +1346,10 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="circleRadius">
-              <property name="maximum">
-               <double>1000000000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="Angle0">
               <property name="text">
                <string>Angle 1:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="circleAngle0">
-              <property name="maximum">
-               <double>360.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1560,19 +1360,24 @@
               </property>
              </widget>
             </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="circleAngle0">
+              <property name="text">
+               <string>0.00°</string>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="circleAngle1">
-              <property name="minimum">
-               <double>0.000000000000000</double>
+             <widget class="Gui::InputField" name="circleAngle1">
+              <property name="text">
+               <string>360.00°</string>
               </property>
-              <property name="maximum">
-               <double>360.000000000000000</double>
-              </property>
-              <property name="singleStep">
-               <double>1.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>360.000000000000000</double>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="circleRadius">
+              <property name="text">
+               <string>2.00 mm</string>
               </property>
              </widget>
             </item>
@@ -1628,30 +1433,10 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="ellipseMajorRadius">
-              <property name="maximum">
-               <double>1000000000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>4.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="labelEllMinorRadius">
               <property name="text">
                <string>Minor radius:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="ellipseMinorRadius">
-              <property name="maximum">
-               <double>1000000000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
               </property>
              </widget>
             </item>
@@ -1662,16 +1447,6 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="ellipseAngle0">
-              <property name="maximum">
-               <double>360.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="3" column="0">
              <widget class="QLabel" name="labelEllAngle2">
               <property name="text">
@@ -1679,19 +1454,31 @@
               </property>
              </widget>
             </item>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="ellipseMajorRadius">
+              <property name="text">
+               <string>4.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="ellipseMinorRadius">
+              <property name="text">
+               <string>2.00 mm</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::InputField" name="ellipseAngle0">
+              <property name="text">
+               <string>0.00°</string>
+              </property>
+             </widget>
+            </item>
             <item row="3" column="1">
-             <widget class="QDoubleSpinBox" name="ellipseAngle1">
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>360.000000000000000</double>
-              </property>
-              <property name="singleStep">
-               <double>1.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>360.000000000000000</double>
+             <widget class="Gui::InputField" name="ellipseAngle1">
+              <property name="text">
+               <string>360.00°</string>
               </property>
              </widget>
             </item>
@@ -1716,15 +1503,6 @@
          <layout class="QGridLayout" name="gridLayout_9">
           <item row="0" column="0">
            <layout class="QGridLayout" name="gridLayout_4">
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="vertexX"/>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="vertexY"/>
-            </item>
-            <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="vertexZ"/>
-            </item>
             <item row="0" column="0">
              <widget class="QLabel" name="label_X_Axis">
               <property name="text">
@@ -1752,6 +1530,27 @@
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="Gui::InputField" name="vertexX">
+              <property name="text">
+               <string>0.00 </string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="Gui::InputField" name="vertexY">
+              <property name="text">
+               <string>0.00</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::InputField" name="vertexZ">
+              <property name="text">
+               <string>0.00</string>
               </property>
              </widget>
             </item>
@@ -1861,47 +1660,44 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="edgeX1">
-              <property name="value">
-               <double>0.000000000000000</double>
+             <widget class="Gui::InputField" name="edgeX1">
+              <property name="text">
+               <string>0.00</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
-             <widget class="QDoubleSpinBox" name="edgeY1">
-              <property name="value">
-               <double>0.000000000000000</double>
+             <widget class="Gui::InputField" name="edgeY1">
+              <property name="text">
+               <string>0.00</string>
               </property>
              </widget>
             </item>
             <item row="3" column="1">
-             <widget class="QDoubleSpinBox" name="edgeZ1">
-              <property name="suffix">
-               <string/>
-              </property>
-              <property name="value">
-               <double>0.000000000000000</double>
+             <widget class="Gui::InputField" name="edgeZ1">
+              <property name="text">
+               <string>0.00</string>
               </property>
              </widget>
             </item>
             <item row="6" column="1">
-             <widget class="QDoubleSpinBox" name="edgeX2">
-              <property name="value">
-               <double>1.000000000000000</double>
+             <widget class="Gui::InputField" name="edgeX2">
+              <property name="text">
+               <string>1.00 mm</string>
               </property>
              </widget>
             </item>
             <item row="7" column="1">
-             <widget class="QDoubleSpinBox" name="edgeY2">
-              <property name="value">
-               <double>1.000000000000000</double>
+             <widget class="Gui::InputField" name="edgeY2">
+              <property name="text">
+               <string>1.00 mm</string>
               </property>
              </widget>
             </item>
             <item row="8" column="1">
-             <widget class="QDoubleSpinBox" name="edgeZ2">
-              <property name="value">
-               <double>1.000000000000000</double>
+             <widget class="Gui::InputField" name="edgeZ2">
+              <property name="text">
+               <string>1.00 mm</string>
               </property>
              </widget>
             </item>
@@ -1966,15 +1762,9 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="regularPolygonCircumradius">
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-              <property name="value">
-               <double>2.000000000000000</double>
+             <widget class="Gui::InputField" name="regularPolygonCircumradius">
+              <property name="text">
+               <string>2.00 mm</string>
               </property>
              </widget>
             </item>
@@ -2003,6 +1793,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>comboBox1</tabstop>
   <tabstop>planeLength</tabstop>
@@ -2031,6 +1828,19 @@
   <tabstop>torusAngle3</tabstop>
   <tabstop>torusAngle1</tabstop>
   <tabstop>torusAngle2</tabstop>
+  <tabstop>prismPolygon</tabstop>
+  <tabstop>prismCircumradius</tabstop>
+  <tabstop>prismHeight</tabstop>
+  <tabstop>wedgeXmin</tabstop>
+  <tabstop>wedgeXmax</tabstop>
+  <tabstop>wedgeYmin</tabstop>
+  <tabstop>wedgeYmax</tabstop>
+  <tabstop>wedgeZmin</tabstop>
+  <tabstop>wedgeZmax</tabstop>
+  <tabstop>wedgeX2min</tabstop>
+  <tabstop>wedgeX2max</tabstop>
+  <tabstop>wedgeZ2min</tabstop>
+  <tabstop>wedgeZ2max</tabstop>
   <tabstop>helixPitch</tabstop>
   <tabstop>helixHeight</tabstop>
   <tabstop>helixRadius</tabstop>
@@ -2039,6 +1849,25 @@
   <tabstop>spiralGrowth</tabstop>
   <tabstop>spiralRotation</tabstop>
   <tabstop>spiralRadius</tabstop>
+  <tabstop>circleRadius</tabstop>
+  <tabstop>circleAngle0</tabstop>
+  <tabstop>circleAngle1</tabstop>
+  <tabstop>buttonCircleFromThreePoints</tabstop>
+  <tabstop>ellipseMajorRadius</tabstop>
+  <tabstop>ellipseMinorRadius</tabstop>
+  <tabstop>ellipseAngle0</tabstop>
+  <tabstop>ellipseAngle1</tabstop>
+  <tabstop>vertexX</tabstop>
+  <tabstop>vertexY</tabstop>
+  <tabstop>vertexZ</tabstop>
+  <tabstop>edgeX1</tabstop>
+  <tabstop>edgeY1</tabstop>
+  <tabstop>edgeZ1</tabstop>
+  <tabstop>edgeX2</tabstop>
+  <tabstop>edgeY2</tabstop>
+  <tabstop>edgeZ2</tabstop>
+  <tabstop>regularPolygonPolygon</tabstop>
+  <tabstop>regularPolygonCircumradius</tabstop>
  </tabstops>
  <resources>
   <include location="Resources/Part.qrc"/>
