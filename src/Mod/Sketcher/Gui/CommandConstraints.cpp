@@ -903,8 +903,8 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
         if (GeoId1 < 0) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                GeoId1 < -2 ? QObject::tr("Cannot add a fixed x-cootdinate constraint on an external geometry!")
-                            : QObject::tr("Cannot add a fixed x-cootdinate constraint on the root point!"));
+                GeoId1 < -2 ? QObject::tr("Cannot add a fixed x-coordinate constraint on an external geometry!")
+                            : QObject::tr("Cannot add a fixed x-coordinate constraint on the root point!"));
             return;
         }
 
@@ -1035,8 +1035,8 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
         if (GeoId1 < 0) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                GeoId1 < -2 ? QObject::tr("Cannot add a fixed y-cootdinate constraint on an external geometry!")
-                            : QObject::tr("Cannot add a fixed y-cootdinate constraint on the root point!"));
+                GeoId1 < -2 ? QObject::tr("Cannot add a fixed y-coordinate constraint on an external geometry!")
+                            : QObject::tr("Cannot add a fixed y-coordinate constraint on the root point!"));
             return;
         }
 
@@ -1668,7 +1668,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     if (SubNames.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select atleast two lines from the sketch."));
+            QObject::tr("Select at least two lines from the sketch."));
         return;
     }
 
