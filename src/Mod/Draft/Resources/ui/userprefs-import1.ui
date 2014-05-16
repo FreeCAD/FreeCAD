@@ -116,7 +116,7 @@
         <item>
          <widget class="Gui::PrefRadioButton" name="radioButton">
           <property name="toolTip">
-           <string>If thi sis checked, only standard Part objects will be created (fastest)</string>
+           <string>If this is checked, only standard Part objects will be created (fastest)</string>
           </property>
           <property name="text">
            <string>simple Part shapes</string>

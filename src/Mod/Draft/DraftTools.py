@@ -4152,7 +4152,7 @@ class ToggleGrid():
         return {'Pixmap'  : 'Snap_Grid',
                 'Accel' : "G,R",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggle Grid"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft gid on/off")}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_ToggleGrid", "Toggles the Draft grid on/off")}
 
     def Activated(self):
         if hasattr(FreeCADGui,"Snapper"):
@@ -4172,7 +4172,7 @@ class Heal():
     def GetResources(self):
         return {'Pixmap'  : 'Draft_Heal',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal"),
-                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal faultly Draft objects saved from an earlier FreeCAD version")}
+                'ToolTip' : QtCore.QT_TRANSLATE_NOOP("Draft_Heal", "Heal faulty Draft objects saved from an earlier FreeCAD version")}
 
     def Activated(self):
         s = FreeCADGui.Selection.getSelection()
