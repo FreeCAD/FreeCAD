@@ -192,6 +192,8 @@ bool SelectionFilter::match(void)
             int subCount=0;
             for (std::vector<Gui::SelectionObject>::const_iterator it2=temp.begin();it2!=temp.end();++it2) {
                 const std::vector<std::string>& subNames = it2->getSubNames();
+                if (subNames.empty())
+                    return false;
                 for (std::vector<std::string>::const_iterator it3=subNames.begin();it3!=subNames.end();++it3) {
                     if (it3->find((*it)->SubName) != 0)
                         return false;
