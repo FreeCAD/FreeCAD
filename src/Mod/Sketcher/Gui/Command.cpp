@@ -83,7 +83,14 @@ void CmdSketcherNewSketch::activated(int iMsg)
         Part::Feature *part = static_cast<Part::Feature*>(FaceFilter.Result[0][0].getObject());
         Base::Placement ObjectPos = part->Placement.getValue();
         const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
-        if (sub.size() > 1){
+        if (sub.empty()) {
+            // No assert for wrong user input!
+            QMessageBox::warning(Gui::getMainWindow(),
+                qApp->translate(className(),"No sub-elements selected"),
+                qApp->translate(className(),"You have to select a single face as support for a sketch!"));
+            return;
+        }
+        else if (sub.size() > 1) {
             // No assert for wrong user input!
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Several sub-elements selected"),
                 QObject::tr("You have to select a single face as support for a sketch!"));
