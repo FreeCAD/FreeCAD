@@ -239,7 +239,7 @@ void DlgExtrusion::apply()
         ui->statusLabel->clear();
         activeDoc->recompute();
         ui->statusLabel->setText(QString::fromAscii
-            ("<span style=\" color:#55aa00;\">%1</span>").arg(tr("Suceeded")));
+            ("<span style=\" color:#55aa00;\">%1</span>").arg(tr("Succeeded")));
     }
     catch (const std::exception& e) {
         ui->statusLabel->setText(QString::fromAscii
