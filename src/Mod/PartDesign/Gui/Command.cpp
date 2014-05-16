@@ -515,7 +515,7 @@ void CmdPartDesignFillet::activated(int iMsg)
     const Part::TopoShape& TopShape = base->Shape.getShape();
     if (TopShape._Shape.IsNull()){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Shape of selected Part is empty"));
+            QObject::tr("Shape of selected part is empty"));
         return;
     }
 
@@ -932,7 +932,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
                 return; // Cancelled or nothing selected
         } else {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid features in this document"),
-                QObject::tr("Please create a subtractive or additive feature first, please"));
+                QObject::tr("Please create a subtractive or additive feature first"));
             return;
         }
     }
