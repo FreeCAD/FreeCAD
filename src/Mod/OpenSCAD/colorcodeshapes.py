@@ -25,8 +25,8 @@ __author__ = "Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 
 '''
-This Script includes python functions to ifind out the most basic shape type
-in a compound and to change the color of shapes according to thier shape type
+This Script includes python functions to find out the most basic shape type
+in a compound and to change the color of shapes according to their shape type
 '''
 
 import FreeCAD

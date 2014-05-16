@@ -70,7 +70,7 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckboxviewtreeprovider">
           <property name="toolTip">
-           <string>If this is checked, Features will claim thier children in the tree view</string>
+           <string>If this is checked, Features will claim their children in the tree view</string>
           </property>
           <property name="text">
            <string>Use ViewProvider in Tree View</string>
@@ -341,7 +341,7 @@
         <item row="0" column="2">
          <widget class="QLabel" name="label_3m">
           <property name="toolTip">
-           <string>Maxium Length</string>
+           <string>Maximum Length</string>
           </property>
           <property name="text">
            <string>MaxLength</string>
