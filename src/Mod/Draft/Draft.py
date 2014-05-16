@@ -2548,12 +2548,12 @@ def upgrade(objects,delete=False,force=None):
             # we have many separate faces: we try to make a shell        
             elif (len(objects) > 2) and (len(faces) > 1) and (not loneedges):
                 result = makeShell(objects)
-                if result: msg(translate("draft", "Found several objects: making a shell\n"))
+                if result: msg(translate("draft", "Found several objects: creating a shell\n"))
                 
             # we have faces: we try to join them if they are coplanar
             elif len(faces) > 1:
                 result = joinFaces(objects)
-                if result: msg(translate("draft", "Found several coplanar objects or faces: making one face\n"))
+                if result: msg(translate("draft", "Found several coplanar objects or faces: creating one face\n"))
             
             # only one object: if not parametric, we "draftify" it
             elif len(objects) == 1 and (not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
@@ -2566,12 +2566,12 @@ def upgrade(objects,delete=False,force=None):
             # we have a sketch: Extract a face
             if (len(objects) == 1) and objects[0].isDerivedFrom("Sketcher::SketchObject"):
                 result = makeSketchFace(objects[0])
-                if result: msg(translate("draft", "Found 1 closed sketch object: making a face from it\n"))
+                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it\n"))
 
             # only closed wires
             else:
                 result = makeFaces(objects)
-                if result: msg(translate("draft", "Found closed wires: making faces\n"))
+                if result: msg(translate("draft", "Found closed wires: creating faces\n"))
 
         # special case, we have only one open wire. We close it, unless it has only 1 edge!"
         elif (len(openwires) == 1) and (not faces) and (not loneedges):
@@ -2591,7 +2591,7 @@ def upgrade(objects,delete=False,force=None):
         # all other cases, if more than 1 object, make a compound
         elif (len(objects) > 1):
             result = makeCompound(objects)
-            if result: msg(translate("draft", "Found several non-treatable objects: making compound\n"))
+            if result: msg(translate("draft", "Found several non-treatable objects: creating compound\n"))
             
         # no result has been obtained
         if not result:
