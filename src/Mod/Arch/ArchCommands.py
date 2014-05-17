@@ -631,8 +631,8 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
             print "Arch.getTuples(): Wrong profile data"
         return t
 
-def getExtrusionData(obj,scale=1):
-    """getExtrusionData(obj,[scale]): returns a closed path (a list of tuples), a tuple expressing an extrusion
+def getIfcExtrusionData(obj,scale=1):
+    """getIfcExtrusionData(obj,[scale]): returns a closed path (a list of tuples), a tuple expressing an extrusion
     vector, and a list of 3 tuples for base position, x axis and z axis. Or returns None, if a base loop and 
     an extrusion direction cannot be extracted. Scale can indicate a scale factor."""
     if hasattr(obj,"Additions"):
@@ -664,8 +664,8 @@ def getExtrusionData(obj,scale=1):
                 return "polyline", getTuples(p,scale), getTuples(v,scale), d
     return None   
     
-def getBrepFacesData(obj,scale=1):
-    """getBrepFacesData(obj,[scale]): returns a list(0) of lists(1) of lists(2) of lists(3), 
+def getIfcBrepFacesData(obj,scale=1):
+    """getIfcBrepFacesData(obj,[scale]): returns a list(0) of lists(1) of lists(2) of lists(3), 
     list(3) being a list of vertices defining a loop, list(2) describing a face from one or 
     more loops, list(1) being the whole solid made of several faces, list(0) being the list
     of solids inside the object. Scale can indicate a scaling factor"""
