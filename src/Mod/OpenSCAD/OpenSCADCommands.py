@@ -53,7 +53,9 @@ class ExplodeGroup:
             return (random.random(),random.random(),random.random(),transp)
 
         def explode(obj,color=True):
-            if obj.isDerivedFrom('Part::Fuse') or obj.isDerivedFrom('Part::MultiFuse'):
+            if obj.isDerivedFrom('Part::Fuse') or \
+                    obj.isDerivedFrom('Part::MultiFuse') or \
+                    obj.isDerivedFrom('Part::Compound'):
                 plm = obj.Placement
                 outlist = obj.OutList[:]
                 if plm.isNull() or all(len(oo.InList)==1 for oo in obj.OutList):

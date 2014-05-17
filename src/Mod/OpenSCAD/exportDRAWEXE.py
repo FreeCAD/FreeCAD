@@ -146,6 +146,18 @@ def process_object(csg,ob,filename):
         d1['y']=f2s(ob.Normal.y)
         d1['z']=f2s(ob.Normal.z)
         csg.write('smirror %(name)s %(x)s %(y)s %(z)s %(dx)s %(dy)s %(dz)s\n' % d1)
+    elif ob.TypeId == 'Part::Compound':
+        if len(ob.Links) == 0:
+            pass
+        elif len(ob.Links) == 1:
+            process_object(csg,ob.Links[0],filename)
+            csg.write('tcopy %s %s\n'%(ob.Links[0].Name,d1['name']))
+        else:
+            basenames=[]
+            for i,subobj in enumerate(ob.Links):
+                process_object(csg,subobj,filename)
+                basenames.append(subobj.Name)
+            csg.write('compound %s %s\n' % (' '.join(basenames),ob.Name))
     elif ob.TypeId in ["Part::MultiCommon", "Part::MultiFuse"]:
         if len(ob.Shapes) == 0:
             pass
