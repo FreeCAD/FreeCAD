@@ -969,6 +969,9 @@ def export(exportList,filename):
             others.append(obj)
     objectslist = buildings + floors + others
     if DEBUG: print "adding ", len(objectslist), " objects"
+    
+    global unprocessed
+    unprocessed = []
 
     # process objects
     for obj in objectslist:
@@ -995,12 +998,6 @@ def export(exportList,filename):
             ifctype = "ReinforcingBar"
 
         if DEBUG: print "adding " + obj.Label + " as Ifc" + ifctype
-
-        # writing text log
-        spacer = ""
-        for i in range(36-len(obj.Label)):
-            spacer += " "
-        txt.append(obj.Label + spacer + ifctype)
                  
         # writing IFC data 
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
@@ -1074,7 +1071,15 @@ def export(exportList,filename):
                 if DEBUG: print "   Type ",ifctype," is not supported by the current version of IfcOpenShell. Exporting as IfcBuildingElementProxy instead"
                 ifctype = "IfcBuildingElementProxy"
                 extra = ["ELEMENT"]
-            ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
+            p = ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
+            if p:
+                # writing text log
+                spacer = ""
+                for i in range(36-len(obj.Label)):
+                    spacer += " "
+                txt.append(obj.Label + spacer + ifctype)
+            else:
+                unprocessed.append(obj)
         else:
             if DEBUG: print "IFC export: object type ", otype, " is not supported yet."
 
@@ -1103,6 +1108,9 @@ def export(exportList,filename):
         f.close()
 
     FreeCAD.ActiveDocument.recompute()
+    
+    if unprocessed:
+        print "Some objects were not exported. See importIFC.unprocessed"
 
 
 def explore(filename=None):
