@@ -2661,13 +2661,32 @@ Restart:
                         // line-line intersection
                         {
                             double det = dir1.x*dir2.y - dir1.y*dir2.x;
-                            if ((det > 0 ? det : -det) < 1e-10)
-                                break;
-                            double c1 = dir1.y*pnt1.x - dir1.x*pnt1.y;
-                            double c2 = dir2.y*pnt2.x - dir2.x*pnt2.y;
-                            double x = (dir1.x*c2 - dir2.x*c1)/det;
-                            double y = (dir1.y*c2 - dir2.y*c1)/det;
-                            p0 = SbVec3f(x,y,0);
+                            if ((det > 0 ? det : -det) < 1e-10) {
+                                // lines are coincident (or parallel) and in this case the center
+                                // of the point pairs with the shortest distance is used
+                                Base::Vector3d p1[2], p2[2];
+                                p1[0] = lineSeg1->getStartPoint();
+                                p1[1] = lineSeg1->getEndPoint();
+                                p2[0] = lineSeg2->getStartPoint();
+                                p2[1] = lineSeg2->getEndPoint();
+                                double length = DBL_MAX;
+                                for (int i=0; i <= 1; i++) {
+                                    for (int j=0; j <= 1; j++) {
+                                        double tmp = (p2[j]-p1[i]).Length();
+                                        if (tmp < length) {
+                                            length = tmp;
+                                            p0.setValue((p2[j].x+p1[i].x)/2,(p2[j].y+p1[i].y)/2,0);
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                double c1 = dir1.y*pnt1.x - dir1.x*pnt1.y;
+                                double c2 = dir2.y*pnt2.x - dir2.x*pnt2.y;
+                                double x = (dir1.x*c2 - dir2.x*c1)/det;
+                                double y = (dir1.y*c2 - dir2.y*c1)/det;
+                                p0 = SbVec3f(x,y,0);
+                            }
                         }
 
                         startangle = atan2(dir1.y,dir1.x);
