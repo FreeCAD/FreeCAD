@@ -1025,10 +1025,10 @@ def export(exportList,filename):
 
             # get representation
             if not forcebrep:
-                gdata = Arch.getExtrusionData(obj,scaling)
+                gdata = Arch.getIfcExtrusionData(obj,scaling)
                 #if DEBUG: print "   extrusion data for ",obj.Label," : ",gdata
             if not gdata:
-                fdata = Arch.getBrepFacesData(obj,scaling)
+                fdata = Arch.getIfcBrepFacesData(obj,scaling)
                 #if DEBUG: print "   brep data for ",obj.Label," : ",fdata
                 if not fdata:
                     if obj.isDerivedFrom("Part::Feature"):

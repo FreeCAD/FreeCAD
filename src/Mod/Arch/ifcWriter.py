@@ -508,7 +508,7 @@ class IfcDocument(object):
             
     def addPolyline(self,points):
         """addPolyline(points): creates a polyline from the given points"""
-        pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)) for p in points]
+        pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)[:2]) for p in points]
         pol = create(self._fileobject,"IfcPolyline",[pts])
         area = create(self._fileobject,"IfcArbitraryClosedProfileDef",["AREA",None,pol])
         return area
