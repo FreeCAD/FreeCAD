@@ -470,10 +470,14 @@ class IfcDocument(object):
             elt = create(self._fileobject,elttype,[uid(),self._owner,name,description,None,placement,prd,None]+extra)
         except:
             print "unable to create an ",elttype, " with attributes: ",[uid(),self._owner,name,description,None,placement,prd,None]+extra
-            print "supported attributes are: "
-            o = IfcImport.Entity(elttype)
-            print getPropertyNames(o)
-            raise
+            try:
+                o = IfcImport.Entity(elttype)
+                print "supported attributes are: "
+                print getPropertyNames(o)
+            except:
+                print "unable to create an element of type '"+elttype+"'"
+            print "WARNING: skipping object '"+name+"' of type "+elttype
+            return None
         self.BuildingProducts.append(elt)
         if not storey:
             if self.Storeys:
