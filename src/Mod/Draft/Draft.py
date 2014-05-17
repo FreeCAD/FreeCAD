@@ -3217,9 +3217,9 @@ class _ViewProviderDimension(_ViewProviderDraft):
                         if coin.COIN_MAJOR_VERSION >= 4:
                             self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
                         else:
-                            self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1")
+                            self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1","replace")
                     except:
-                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1")
+                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1","replace")
             self.text.string = self.text3d.string = self.string
 
             # set the distance property
@@ -3497,7 +3497,14 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             else:
                 self.string = DraftGui.displayExternal(a,getParam("dimPrecision",2),'Angle',su)
             if obj.ViewObject.Override:
-                self.string = obj.ViewObject.Override.decode("utf8").encode("latin1").replace("$dim",self.string)
+                try:
+                    from pivy import coin
+                    if coin.COIN_MAJOR_VERSION >= 4:
+                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
+                    else:
+                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1","replace")
+                except:
+                    self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1","replace")
             self.text.string = self.text3d.string = self.string
             
             # check display mode
