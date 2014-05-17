@@ -441,7 +441,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
     SbVec2s size;
     int nc;
-    int srcw, srch;
+    int srcw=1, srch=1;
 
     if (hasText) {
         if (!this->glimagevalid) {
