@@ -655,12 +655,17 @@ def getIfcExtrusionData(obj,scale=1):
                 #b = obj.Placement.multVec(FreeCAD.Vector())
                 #r.Rotation = DraftVecUtils.getRotation(v,FreeCAD.Vector(0,0,1))
                 d = [r.Base,DraftVecUtils.rounded(r.Rotation.multVec(FreeCAD.Vector(1,0,0))),DraftVecUtils.rounded(r.Rotation.multVec(FreeCAD.Vector(0,0,1)))]
-                r = r.inverse()
+                #r = r.inverse()
                 #print "getExtrusionData: computed placement:",r
                 import Part
                 if len(p.Edges) == 1:
                     if isinstance(p.Edges[0].Curve,Part.Circle):
-                        return "circle", [getTuples(p.Edges[0].Curve.Center,scale), p.Edges[0].Curve.Radius*scale], getTuples(v,scale), d
+                        r1 = p.Edges[0].Curve.Radius*scale
+                        return "circle", [getTuples(p.Edges[0].Curve.Center,scale), r1], getTuples(v,scale), d
+                    elif isinstance(p.Edges[0].Curve,Part.Ellipse):
+                        r1 = p.Edges[0].Curve.MajorRadius*scale
+                        r2 = p.Edges[0].Curve.MinorRadius*scale
+                        return "ellipse", [getTuples(p.Edges[0].Curve.Center,scale), r1, r2], getTuples(v,scale), d
                 return "polyline", getTuples(p,scale), getTuples(v,scale), d
     return None   
     

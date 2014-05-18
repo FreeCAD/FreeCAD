@@ -505,20 +505,21 @@ class IfcDocument(object):
         psa = create(self._fileobject,"IfcPresentationStyleAssignment",[[iss]])
         isi = create(self._fileobject,"IfcStyledItem",[rep,[psa],None])
         return isi
-            
-    def addPolyline(self,points):
-        """addPolyline(points): creates a polyline from the given points"""
-        pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)[:2]) for p in points]
-        pol = create(self._fileobject,"IfcPolyline",[pts])
-        area = create(self._fileobject,"IfcArbitraryClosedProfileDef",["AREA",None,pol])
-        return area
+        
+    def addProfile(self,ifctype,data):
+        """addProfile(ifctype,data): creates a 2D profile of the given type, with the given
+        data as arguments, which must be formatted correctly according to the type."""
+        if ifctype == "IfcPolyline":
+            pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)[:2]) for p in data]
+            pol = create(self._fileobject,"IfcPolyline",[pts])
+            profile = create(self._fileobject,"IfcArbitraryClosedProfileDef",["AREA",None,pol])
+        else:
+            if not isinstance(data,list):
+                data = [data]
+            p = self.addPlacement(local=False,flat=True)
+            profile = create(self._fileobject,ifctype,["AREA",None,p]+data)
+        return profile
 
-    def addCircle(self,radius):
-        """addCircle(radius): creates a polyline from the given points"""
-        lpl = self.addPlacement(local=False,flat=True)
-        cir = create(self._fileobject,"IfcCircleProfileDef",["AREA",None,lpl,float(radius)])
-        return cir
-    
     def addExtrusion(self,profile,extrusion,placement=None):
         """addExtrusion(profile,extrusion,[placement]): makes an
         extrusion of the given polyline with the given extrusion vector"""
@@ -532,7 +533,7 @@ class IfcDocument(object):
     def addExtrudedPolyline(self,points,extrusion,placement=None,color=None):
         """addExtrudedPolyline(points,extrusion,[placement,color]): makes an extruded polyline
         from the given points and the given extrusion vector"""
-        pol = self.addPolyline(points)
+        pol = self.addProfile("IfcPolyline",points)
         if not placement:
             placement = self.addPlacement(local=False)
         exp = self.addExtrusion(pol,extrusion,placement)
@@ -543,7 +544,18 @@ class IfcDocument(object):
     def addExtrudedCircle(self,center,radius,extrusion,placement=None,color=None):
         """addExtrudedCircle(radius,extrusion,[placement,color]): makes an extruded circle
         from the given radius and the given extrusion vector"""
-        cir = self.addCircle(radius)
+        cir = self.addProfile("IfcCircleProfileDef",radius)
+        if not placement:
+            placement = self.addPlacement(origin=center,local=False)
+        exp = self.addExtrusion(cir,extrusion,placement)
+        if color:
+            self.addColor(color,exp)
+        return exp
+        
+    def addExtrudedEllipse(self,center,radiusx,radiusy,extrusion,placement=None,color=None):
+        """addExtrudedEllipse(radiusx,radiusy,extrusion,[placement,color]): makes an extruded ellipse
+        from the given radii and the given extrusion vector"""
+        cir = self.addProfile("IfcEllipseProfileDef",[radiusx,radiusy])
         if not placement:
             placement = self.addPlacement(origin=center,local=False)
         exp = self.addExtrusion(cir,extrusion,placement)
