@@ -1054,7 +1054,8 @@ class _ArchWindowTaskPanel:
             else:
                 if i > 2:
                     try:
-                        n=float(t)
+                        q = FreeCAD.Units.Quantity(t)
+                        t = str(q.Value)
                     except:
                         ok = False
             ar.append(t)
