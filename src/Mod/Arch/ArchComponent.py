@@ -584,16 +584,23 @@ class Component:
         "checks and cleans the given shape, and apply it to the object"
         if shape:
             if not shape.isNull():
-                if shape.isValid() and shape.Solids:
-                    if shape.Volume < 0:
-                        shape.reverse()
-                    if shape.Volume < 0:
-                        FreeCAD.Console.PrintError(translate("Arch","Error computing the shape of this object"))
-                        return
-                    shape = shape.removeSplitter()
-                    obj.Shape = shape
-                    if not placement.isNull():
-                        obj.Placement = placement        
+                if shape.isValid():
+                    if shape.Solids:
+                        if shape.Volume < 0:
+                            shape.reverse()
+                        if shape.Volume < 0:
+                            FreeCAD.Console.PrintError(translate("Arch","Error computing the shape of this object")+"\n")
+                            return
+                        shape = shape.removeSplitter()
+                        obj.Shape = shape
+                        if not placement.isNull():
+                            obj.Placement = placement
+                    else:
+                        FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has no solid")+"\n")
+                else:
+                    FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has an invalid shape")+"\n")
+            else:
+                FreeCAD.Console.PrintWarning(obj.Label + " " + translate("Arch","has a null shape")+"\n")
 
 
 class ViewProviderComponent:
