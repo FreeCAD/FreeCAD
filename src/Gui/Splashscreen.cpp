@@ -280,6 +280,16 @@ static QString getOperatingSystem()
 
 void AboutDialog::setupLabels()
 {
+    //fonts are rendered smaller on Mac so point size can't be the same for all platforms
+    int fontSize = 8;
+#ifdef Q_OS_MAC
+    fontSize = 11;
+#endif
+    //avoid overriding user set style sheet
+    if (qApp->styleSheet().isEmpty()) {
+        setStyleSheet(QString::fromAscii("Gui--Dialog--AboutDialog QLabel {font-size: %1pt;}").arg(fontSize));
+    }
+    
     QString exeName = qApp->applicationName();
     std::map<std::string, std::string>& config = App::Application::Config();
     std::map<std::string,std::string>::iterator it;
@@ -317,7 +327,7 @@ void AboutDialog::setupLabels()
     platform.replace(QString::fromAscii("Unknown"),
         QString::fromAscii("%1-bit").arg(QSysInfo::WordSize));
     ui->labelBuildPlatform->setText(platform);
-
+    
     // branch name
     it = config.find("BuildRevisionBranch");
     if (it != config.end()) {
