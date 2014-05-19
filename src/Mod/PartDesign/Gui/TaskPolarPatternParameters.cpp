@@ -161,22 +161,40 @@ void TaskPolarPatternParameters::updateUI()
     double angle = pcPolarPattern->Angle.getValue();
     unsigned occurrences = pcPolarPattern->Occurrences.getValue();
 
+    // Add user-defined sketch axes to the reference selection combo box
+    App::DocumentObject* sketch = getSketchObject();
+    int maxcount=1;
+    if (sketch)
+        maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+
     for (int i=ui->comboAxis->count()-1; i >= 1; i--)
         ui->comboAxis->removeItem(i);
+    for (int i=ui->comboAxis->count(); i < maxcount; i++)
+        ui->comboAxis->addItem(QString::fromAscii("Sketch axis %1").arg(i-1));
 
+    bool undefined = false;
     if (axisFeature != NULL && !axes.empty()) {
-        if (axes.front() == "N_Axis")
+        if (axes.front() == "N_Axis") {
             ui->comboAxis->setCurrentIndex(0);
-        else {
+        } else if (axes.front().size() > 4 && axes.front().substr(0,4) == "Axis") {
+            int pos = 1 + std::atoi(axes.front().substr(4,4000).c_str());
+            if (pos <= maxcount)
+                ui->comboAxis->setCurrentIndex(pos);
+            else
+                undefined = true;
+        } else {
             ui->comboAxis->addItem(getRefStr(axisFeature, axes));
-            ui->comboAxis->setCurrentIndex(1);
+            ui->comboAxis->setCurrentIndex(maxcount);
         }
     } else {
-        // Error message?
+        undefined = true;
     }
 
     if (selectionMode == reference) {
         ui->comboAxis->addItem(tr("Select an edge or datum line"));
+        ui->comboAxis->setCurrentIndex(ui->comboAxis->count() - 1);
+    } else if (undefined) {
+        ui->comboAxis->addItem(tr("Undefined"));
         ui->comboAxis->setCurrentIndex(ui->comboAxis->count() - 1);
     } else
         ui->comboAxis->addItem(tr("Select reference..."));
@@ -224,7 +242,11 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
                 updateUI();
             }
             else {
-                for (int i=ui->comboAxis->count()-1; i >= 1; i--)
+                App::DocumentObject* sketch = getSketchObject();
+                int maxcount=1;
+                if (sketch)
+                    maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+                for (int i=ui->comboAxis->count()-1; i >= maxcount; i--)
                     ui->comboAxis->removeItem(i);
 
                 std::vector<std::string> axes;
@@ -280,8 +302,19 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
+    App::DocumentObject* pcSketch = getSketchObject();
+    int maxcount=1;
+    if (pcSketch)
+        maxcount += static_cast<Part::Part2DObject*>(pcSketch)->getAxisCount();
+
     if (num == 0) {
         pcPolarPattern->Axis.setValue(getSketchObject(), std::vector<std::string>(1,"N_Axis"));
+        exitSelectionMode();
+    }
+    else if (num >= 1 && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-1);
+        std::string str = buf.toStdString();
+        pcPolarPattern->Axis.setValue(pcSketch, std::vector<std::string>(1,str));
         exitSelectionMode();
     }
     else if (num == ui->comboAxis->count() - 1) {
@@ -331,10 +364,17 @@ void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<
 {    
     obj = getSketchObject();
     sub = std::vector<std::string>(1,"");
+    int maxcount=1;
+    if (obj)
+        maxcount += static_cast<Part::Part2DObject*>(obj)->getAxisCount();
 
+    int num = ui->comboAxis->currentIndex();
     if (ui->comboAxis->currentIndex() == 0) {
         sub[0] = "N_Axis";
-    } else if (ui->comboAxis->count() > 2 && ui->comboAxis->currentIndex() == 1) {
+    } else if (num >= 1 && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-1);
+        sub[0] = buf.toStdString();
+    } else if (num == maxcount && ui->comboAxis->count() == maxcount + 2) {
         QStringList parts = ui->comboAxis->currentText().split(QChar::fromAscii(':'));
         obj = getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
         if (parts.size() > 1)
@@ -343,14 +383,7 @@ void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<
         obj = NULL;
     }
 }
-const std::string TaskPolarPatternParameters::getAxis(void) const
-{
-    if (ui->comboAxis->currentIndex() == 0)
-        return "N_Axis";
-    else if (ui->comboAxis->count() > 2 && ui->comboAxis->currentIndex() == 1)
-        return ui->comboAxis->currentText().toStdString();
-    return std::string("");
-}
+
 const bool TaskPolarPatternParameters::getReverse(void) const
 {
     return ui->checkReverse->isChecked();
