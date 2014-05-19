@@ -413,7 +413,9 @@ class _Wall(ArchComponent.Component):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.isValid():
-                    return
+                    if not obj.Base.Shape.Solids:
+                        # let pass invalid objects if they have solids...
+                        return
                     
                 if hasattr(obj,"Face"):
                     if obj.Face > 0:

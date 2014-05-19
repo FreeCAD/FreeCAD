@@ -568,7 +568,9 @@ class _Structure(ArchComponent.Component):
                 if obj.Base.Shape.isNull():
                     return
                 if not obj.Base.Shape.isValid():
-                    return
+                    if not obj.Base.Shape.Solids:
+                        # let pass invalid objects if they have solids...
+                        return
                 if hasattr(obj,"Tool"):
                     if obj.Tool:
                         try:
