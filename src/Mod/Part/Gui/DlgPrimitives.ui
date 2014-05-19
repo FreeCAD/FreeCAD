@@ -356,7 +356,7 @@
             <item>
              <widget class="Gui::InputField" name="cylinderAngle">
               <property name="text">
-               <string>360.00°</string>
+               <string>360.00 deg</string>
               </property>
              </widget>
             </item>
@@ -454,7 +454,7 @@
             <item>
              <widget class="Gui::InputField" name="coneAngle">
               <property name="text">
-               <string>360.00°</string>
+               <string>360.00 deg</string>
               </property>
              </widget>
             </item>
@@ -599,21 +599,21 @@
             <item row="1" column="2">
              <widget class="Gui::InputField" name="sphereAngle1">
               <property name="text">
-               <string>-90.00°</string>
+               <string>-90.00 deg</string>
               </property>
              </widget>
             </item>
             <item row="2" column="2">
              <widget class="Gui::InputField" name="sphereAngle2">
               <property name="text">
-               <string>90.00°</string>
+               <string>90.00 deg</string>
               </property>
              </widget>
             </item>
             <item row="0" column="2">
              <widget class="Gui::InputField" name="sphereAngle3">
               <property name="text">
-               <string>360.00°</string>
+               <string>360.00 deg</string>
               </property>
              </widget>
             </item>
@@ -771,21 +771,21 @@
             <item row="0" column="1">
              <widget class="Gui::InputField" name="ellipsoidAngle3">
               <property name="text">
-               <string>360.00°</string>
+               <string>360.00 deg</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::InputField" name="ellipsoidAngle1">
               <property name="text">
-               <string>-90.00°</string>
+               <string>-90.00 deg</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::InputField" name="ellipsoidAngle2">
               <property name="text">
-               <string>90.00°</string>
+               <string>90.00 deg</string>
               </property>
              </widget>
             </item>
@@ -852,21 +852,21 @@
             <item row="0" column="1">
              <widget class="Gui::InputField" name="torusAngle3">
               <property name="text">
-               <string>360.00°</string>
+               <string>360.00 deg</string>
               </property>
              </widget>
             </item>
             <item row="1" column="1">
              <widget class="Gui::InputField" name="torusAngle1">
               <property name="text">
-               <string>-180.00°</string>
+               <string>-180.00 deg</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::InputField" name="torusAngle2">
               <property name="text">
-               <string>180.00°</string>
+               <string>180.00 deg</string>
               </property>
              </widget>
             </item>
@@ -1222,7 +1222,7 @@
             <item row="3" column="1">
              <widget class="Gui::InputField" name="helixAngle">
               <property name="text">
-               <string>0.00°</string>
+               <string>0.00 deg</string>
               </property>
              </widget>
             </item>
@@ -1363,14 +1363,14 @@
             <item row="1" column="1">
              <widget class="Gui::InputField" name="circleAngle0">
               <property name="text">
-               <string>0.00°</string>
+               <string>0.00 deg</string>
               </property>
              </widget>
             </item>
             <item row="2" column="1">
              <widget class="Gui::InputField" name="circleAngle1">
               <property name="text">
-               <string>360.00°</string>
+               <string>360.00 deg</string>
               </property>
              </widget>
             </item>
@@ -1471,14 +1471,14 @@
             <item row="2" column="1">
              <widget class="Gui::InputField" name="ellipseAngle0">
               <property name="text">
-               <string>0.00°</string>
+               <string>0.00 deg</string>
               </property>
              </widget>
             </item>
             <item row="3" column="1">
              <widget class="Gui::InputField" name="ellipseAngle1">
               <property name="text">
-               <string>360.00°</string>
+               <string>360.00 deg</string>
               </property>
              </widget>
             </item>
