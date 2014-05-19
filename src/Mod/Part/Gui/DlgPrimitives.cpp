@@ -261,9 +261,10 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     ui.edgeZ2->setMinimum(INT_MIN);
     // RegularPolygon
 
-    QList<QDoubleSpinBox*> list = this->findChildren<QDoubleSpinBox*>();
-    for (QList<QDoubleSpinBox*>::iterator it = list.begin(); it != list.end(); ++it)
-        (*it)->setDecimals(Base::UnitsApi::getDecimals());
+    QList<Gui::InputField*> list = this->findChildren<Gui::InputField*>();
+    for (QList<Gui::InputField*>::iterator it = list.begin(); it != list.end(); ++it) {
+        (*it)->setValue((*it)->getQuantity());
+    }
 }
 
 /*  
