@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QDebug>
 # include <QDockWidget>
 # include <QPointer>
@@ -160,6 +161,37 @@ QTabWidget* ControlSingleton::tabPanel() const
 Gui::TaskView::TaskDialog* ControlSingleton::activeDialog() const
 {
     return ActiveDialog;
+}
+
+Gui::TaskView::TaskView* ControlSingleton::getTaskPanel()
+{
+    // should return the pointer to combo view
+    Gui::DockWnd::CombiView* pcCombiView = qobject_cast<Gui::DockWnd::CombiView*>
+        (Gui::DockWindowManager::instance()->getDockWindow("Combo View"));
+    if (pcCombiView)
+        return pcCombiView->getTaskPanel();
+    else
+        return _taskPanel;
+}
+
+void ControlSingleton::accept()
+{
+    Gui::TaskView::TaskView* taskPanel = getTaskPanel();
+    if (taskPanel) {
+        taskPanel->accept();
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents |
+                            QEventLoop::ExcludeSocketNotifiers);
+    }
+}
+
+void ControlSingleton::reject()
+{
+    Gui::TaskView::TaskView* taskPanel = getTaskPanel();
+    if (taskPanel) {
+        taskPanel->reject();
+        qApp->processEvents(QEventLoop::ExcludeUserInputEvents |
+                            QEventLoop::ExcludeSocketNotifiers);
+    }
 }
 
 void ControlSingleton::closeDialog()

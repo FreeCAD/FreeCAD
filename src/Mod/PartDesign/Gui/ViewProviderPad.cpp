@@ -87,7 +87,7 @@ bool ViewProviderPad::setEdit(int ModNum)
             msgBox.setDefaultButton(QMessageBox::Yes);
             int ret = msgBox.exec();
             if (ret == QMessageBox::Yes)
-                Gui::Control().closeDialog();
+                Gui::Control().reject();
             else
                 return false;
         }

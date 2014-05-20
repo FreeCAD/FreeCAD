@@ -82,6 +82,8 @@ public:
     bool isAllowedAlterSelection(void) const;
 
 public Q_SLOTS:
+    void accept();
+    void reject();
     void closeDialog();
     /// raises the task view panel 
     void showTaskView();
@@ -89,6 +91,9 @@ public Q_SLOTS:
 private Q_SLOTS:
     /// This get called by the TaskView when the Dialog is finished
     void closedDialog();
+
+private:
+    Gui::TaskView::TaskView *getTaskPanel();
 
 private:
     struct status {
