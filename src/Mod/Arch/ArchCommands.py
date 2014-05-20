@@ -669,25 +669,40 @@ def getIfcExtrusionData(obj,scale=1):
                 return "polyline", getTuples(p,scale), getTuples(v,scale), d
     return None   
     
-def getIfcBrepFacesData(obj,scale=1):
-    """getIfcBrepFacesData(obj,[scale]): returns a list(0) of lists(1) of lists(2) of lists(3), 
+def getIfcBrepFacesData(obj,scale=1,tessellation=1):
+    """getIfcBrepFacesData(obj,[scale,tesselation]): returns a list(0) of lists(1) of lists(2) of lists(3), 
     list(3) being a list of vertices defining a loop, list(2) describing a face from one or 
     more loops, list(1) being the whole solid made of several faces, list(0) being the list
-    of solids inside the object. Scale can indicate a scaling factor"""
+    of solids inside the object. Scale can indicate a scaling factor. Tesselation is the tesselation
+    factor to apply on curved faces."""
     if hasattr(obj,"Shape"):
+        import Part
         if obj.Shape:
             if not obj.Shape.isNull():
                 if obj.Shape.isValid():
                     sols = []
                     for sol in obj.Shape.Solids:
                         s = []
+                        curves = False
                         for face in sol.Faces:
-                            f = []
-                            f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0),close=False))
-                            for wire in face.Wires:
-                                if wire.hashCode() != face.OuterWire.hashCode():
-                                    f.append(getTuples(wire,scale,normal=DraftVecUtils.neg(face.normalAt(0,0)),close=False))
-                            s.append(f)
+                            for e in face.Edges:
+                                if not isinstance(e.Curve,Part.Line):
+                                    curves = True
+                        if curves:
+                            tris = sol.tessellate(tessellation)
+                            for tri in tris[1]:
+                                f = []
+                                for i in tri:
+                                    f.append(getTuples(tris[0][i],scale))
+                                s.append([f])
+                        else:
+                            for face in sol.Faces:
+                                f = []
+                                f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0),close=False))
+                                for wire in face.Wires:
+                                    if wire.hashCode() != face.OuterWire.hashCode():
+                                        f.append(getTuples(wire,scale,normal=DraftVecUtils.neg(face.normalAt(0,0)),close=False))
+                                s.append(f)
                         sols.append(s)
                     return sols
     return None

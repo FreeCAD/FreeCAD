@@ -320,12 +320,11 @@ class IfcDocument(object):
     def __setattr__(self,key,value):
         if value:
             if key == "Owner":
-                print value
-                self._person.set_argument(2,value)
+                self._person.set_argument(2,str(value))
             elif key == "Organization":
-                self._org.set_argument(1,value)
+                self._org.set_argument(1,str(value))
             elif key == "Name":
-                self.Project.set_argument(2,value)
+                self.Project.set_argument(2,str(value))
         self.__dict__.__setitem__(key,value)
         
     def findByName(self,ifctype,name):
