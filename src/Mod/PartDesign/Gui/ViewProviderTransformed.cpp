@@ -178,7 +178,7 @@ const bool ViewProviderTransformed::checkDlgOpen(TaskDlgTransformedParameters* t
         msgBox.setDefaultButton(QMessageBox::Yes);
         int ret = msgBox.exec();
         if (ret == QMessageBox::Yes)
-            Gui::Control().closeDialog();
+            Gui::Control().reject();
         else
             return false;
     }
