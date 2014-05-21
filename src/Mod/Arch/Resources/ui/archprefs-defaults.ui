@@ -634,6 +634,163 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_5">
+     <property name="title">
+      <string>Stairs</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Length:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
+          <property name="suffix">
+           <string> mm</string>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>4500.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StairsLength</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Width:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_2">
+          <property name="suffix">
+           <string> mm</string>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>1000.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StairsWidth</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_12">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Height:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox_3">
+          <property name="suffix">
+           <string> mm</string>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>3000.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StairsHeight</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <spacer name="horizontalSpacer_13">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Number of steps:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="spinBox_2">
+          <property name="maximum">
+           <number>99</number>
+          </property>
+          <property name="value">
+           <number>17</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>StairsSteps</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

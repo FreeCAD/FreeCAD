@@ -46,6 +46,7 @@ if not hasattr(IfcImport,"IfcFile"):
     sys.exit()
     
 PRECISION = 4 # rounding value, in number of digits
+APPLYFIX = True # if true, the ifcopenshell bug-fixing function is applied when saving files
 
 # Basic functions #################################################################
 
@@ -346,7 +347,9 @@ class IfcDocument(object):
         if path:
             try:
                 self._fileobject.write(path)
-                self._fix(path)
+                if APPLYFIX:
+                    print ("IfcWriter: Applying fix...")
+                    self._fix(path)
             except:
                 print ("IfcWriter: Error writing to "+path)
             else:
@@ -364,16 +367,16 @@ class IfcDocument(object):
                 if "IFCPLANEANGLEMEASURE" in l:
                     # bug 1: adding ifcPlaneAngleMeasure in a ifcMeasureWithUnit adds an unwanted = sign
                     l = l.replace("=IFCPLANEANGLEMEASURE","IFCPLANEANGLEMEASURE")
-                elif ("FACEBOUND" in l) or ("FACEOUTERBOUND" in l):
+                #elif ("FACEBOUND" in l) or ("FACEOUTERBOUND" in l): # FIXED
                     # bug 2: booleans are exported as ints
-                    l = l.replace(",1);",",.T.);")
-                    l = l.replace(",0);",",.F.);")
-                elif "FILE_DESCRIPTION" in l:
+                    #l = l.replace(",1);",",.T.);")
+                    #l = l.replace(",0);",",.F.);")
+                #elif "FILE_DESCRIPTION" in l: # FIXED
                     # bug 3: incomplete file description header
-                    l = l.replace("ViewDefinition []","ViewDefinition [CoordinationView_V2.0]")
-                elif "FILE_NAME" in l:
+                    #l = l.replace("ViewDefinition []","ViewDefinition [CoordinationView_V2.0]")
+                #elif "FILE_NAME" in l: # FIXED
                     # bug 4: incomplete file name entry
-                    l = l.replace("FILE_NAME('','',(''),('',''),'IfcOpenShell','IfcOpenShell','');","FILE_NAME('"+path+"','"+now(string=True)+"',('"+self.Owner+"'),('',''),'IfcOpenShell','IfcOpenShell','');")
+                    #l = l.replace("FILE_NAME('','',(''),('',''),'IfcOpenShell','IfcOpenShell','');","FILE_NAME('"+path+"','"+now(string=True)+"',('"+self.Owner+"'),('',''),'IfcOpenShell','IfcOpenShell','');")
                 elif "IFCSIUNIT" in l:
                     # bug 5: no way to insert * character
                     l = l.replace("IFCSIUNIT(#13,","IFCSIUNIT(*,")
