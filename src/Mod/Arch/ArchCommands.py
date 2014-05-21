@@ -997,6 +997,9 @@ class _CommandSelectNonSolidMeshes:
         return {'Pixmap': 'Arch_SelectNonManifold.svg',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Select non-manifold meshes"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SelectNonSolidMeshes","Selects all non-manifold meshes from the document or from the selected groups")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
         msel = []
@@ -1087,6 +1090,9 @@ class _CommandSurvey:
         return {'Pixmap'  : 'Arch_Survey',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Survey","Survey"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Survey","Starts survey")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
         FreeCADGui.doCommand("import Arch")

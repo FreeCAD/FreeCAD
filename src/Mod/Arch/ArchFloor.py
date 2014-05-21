@@ -53,6 +53,9 @@ class _CommandFloor:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
                 'Accel': "F, L",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
