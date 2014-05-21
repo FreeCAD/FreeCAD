@@ -357,41 +357,47 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         else
             name = QString::fromUtf8((*it)->Name.c_str());
 
+	/* Filter
+	  0 => All
+	  1 => Normal?  => <1 => ALL
+	  2 => Datums?  => <2 => All or normal
+	  3 => Named	=> <3 => All, Normal or Datums
+	  */
         switch((*it)->Type){
             case Sketcher::Horizontal:
-                if (Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || (Filter==3 && !(*it)->Name.empty()))
                     ui->listWidgetConstraints->addItem(new ConstraintItem(horiz,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Vertical:
-                if (Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || (Filter==3 && !(*it)->Name.empty()))
                     ui->listWidgetConstraints->addItem(new ConstraintItem(vert,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Coincident:
-                if (Filter<1 || !(*it)->Name.empty())
+                if (Filter<1 || (Filter==3 && !(*it)->Name.empty()))
                     ui->listWidgetConstraints->addItem(new ConstraintItem(coinc,name,i-1,(*it)->Type));
                 break;
             case Sketcher::PointOnObject:
-                if (Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || (Filter==3 && !(*it)->Name.empty()))
                     ui->listWidgetConstraints->addItem(new ConstraintItem(pntoo,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Parallel:
-                if (Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || (Filter==3 && !(*it)->Name.empty()))
                     ui->listWidgetConstraints->addItem(new ConstraintItem(para,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Perpendicular:
-                if (Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || (Filter==3 && !(*it)->Name.empty()))
                     ui->listWidgetConstraints->addItem(new ConstraintItem(perp,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Tangent:
-                if (Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || (Filter==3 && !(*it)->Name.empty()))
                     ui->listWidgetConstraints->addItem(new ConstraintItem(tang,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Equal:
-                if (Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || (Filter==3 && !(*it)->Name.empty()))
                     ui->listWidgetConstraints->addItem(new ConstraintItem(equal,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Symmetric:
-                if (Filter<2 || !(*it)->Name.empty())
+                if (Filter<2 || (Filter==3 && !(*it)->Name.empty()))
                     ui->listWidgetConstraints->addItem(new ConstraintItem(symm,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Distance:
