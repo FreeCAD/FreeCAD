@@ -872,10 +872,7 @@ class _CommandAdd:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Add","Adds the selected components to the active object")}
 
     def IsActive(self):
-        if len(FreeCADGui.Selection.getSelection()) > 1:
-            return True
-        else:
-            return False
+        return len(FreeCADGui.Selection.getSelection()) > 1
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -907,10 +904,7 @@ class _CommandRemove:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Remove","Remove the selected components from their parents, or create a hole in a component")}
 
     def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
+        return bool(FreeCADGui.Selection.getSelection())
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -945,10 +939,7 @@ class _CommandSplitMesh:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SplitMesh","Splits selected meshes into independent components")}
 
     def IsActive(self):
-        if len(FreeCADGui.Selection.getSelection()):
-            return True
-        else:
-            return False
+        return bool(FreeCADGui.Selection.getSelection())
         
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
@@ -973,10 +964,7 @@ class _CommandMeshToShape:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MeshToShape","Turns selected meshes into Part Shape objects")}
 
     def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
+        return bool(FreeCADGui.Selection.getSelection())
         
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
@@ -1036,10 +1024,7 @@ class _CommandRemoveShape:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_RemoveShape","Removes cubic shapes from Arch components")}
 
     def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
+        return bool(FreeCADGui.Selection.getSelection())
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
@@ -1053,10 +1038,7 @@ class _CommandCloseHoles:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CloseHoles","Closes holes in open shapes, turning them solids")}
 
     def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
+        return bool(FreeCADGui.Selection.getSelection())
         
     def Activated(self):
         for o in FreeCADGui.Selection.getSelection():
@@ -1072,10 +1054,7 @@ class _CommandCheck:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Check","Checks the selected objects for problems")}
 
     def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
+        return bool(FreeCADGui.Selection.getSelection())
         
     def Activated(self):
         result = check(FreeCADGui.Selection.getSelection())

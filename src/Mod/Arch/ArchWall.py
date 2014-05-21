@@ -345,11 +345,8 @@ class _CommandMergeWalls:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
 
     def IsActive(self):
-        if FreeCADGui.Selection.getSelection():
-            return True
-        else:
-            return False
-        
+        return bool(FreeCADGui.Selection.getSelection())
+
     def Activated(self):
         walls = FreeCADGui.Selection.getSelection()
         if len(walls) == 1: 
