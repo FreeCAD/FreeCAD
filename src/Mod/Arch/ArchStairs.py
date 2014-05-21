@@ -72,6 +72,9 @@ class _CommandStairs:
                 'Accel': "S, R",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a stairs object")}
 
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Stairs"))
         FreeCADGui.doCommand("import Arch")

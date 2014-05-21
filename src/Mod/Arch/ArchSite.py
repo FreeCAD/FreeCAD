@@ -51,6 +51,9 @@ class _CommandSite:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Site","Site"),
                 'Accel': "S, I",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Site","Creates a site object including selected objects.")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()

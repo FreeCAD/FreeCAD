@@ -363,6 +363,9 @@ class _CommandStructure:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Structure","Structure"),
                 'Accel': "S, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
         
     def Activated(self):    
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")

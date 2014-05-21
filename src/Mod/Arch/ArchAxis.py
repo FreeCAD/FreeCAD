@@ -72,6 +72,9 @@ class _CommandAxis:
         else:
             FreeCADGui.doCommand("Arch.makeAxis()")
         FreeCAD.ActiveDocument.commitTransaction()
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
        
 class _Axis:
     "The Axis object"

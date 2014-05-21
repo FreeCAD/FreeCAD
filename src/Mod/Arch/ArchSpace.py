@@ -77,6 +77,9 @@ class _CommandSpace:
                 'Accel': "S, P",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
 
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Space"))
         FreeCADGui.doCommand("import Arch")

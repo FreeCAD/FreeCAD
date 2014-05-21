@@ -57,6 +57,9 @@ class _CommandRoof:
                 'Accel': "R, F",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Roof","Creates a roof object from the selected face of an object")}
 
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
