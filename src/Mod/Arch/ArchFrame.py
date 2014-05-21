@@ -58,6 +58,9 @@ class _CommandFrame:
                 'Accel': "F, R",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Frame","Creates a frame object from a planar 2D object and a profile")}
 
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
     def Activated(self):
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 2:

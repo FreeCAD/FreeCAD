@@ -79,6 +79,9 @@ class _CommandRebar:
                 'Accel': "R, B",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
 
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelectionEx()
         if sel:
