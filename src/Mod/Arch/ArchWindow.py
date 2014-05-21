@@ -373,6 +373,9 @@ class _CommandWindow:
                 'Accel': "W, N",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
 
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")

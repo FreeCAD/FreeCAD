@@ -149,6 +149,9 @@ class _CommandWall:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Wall","Wall"),
                 'Accel': "W, A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
         self.Align = "Center"

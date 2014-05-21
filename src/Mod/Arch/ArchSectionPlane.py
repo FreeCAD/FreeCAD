@@ -75,6 +75,9 @@ class _CommandSectionPlane:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
 
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         ss = "["

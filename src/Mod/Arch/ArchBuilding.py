@@ -51,6 +51,9 @@ class _CommandBuilding:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Building","Building"),
                 'Accel': "B, U",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Building","Creates a building object including selected objects.")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
