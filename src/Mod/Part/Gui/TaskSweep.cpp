@@ -75,10 +75,25 @@ public:
         }
         bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
         {
-            if (!sSubName || sSubName[0] == '\0')
-                return false;
-            std::string element(sSubName);
-            return element.substr(0,4) == "Edge";
+            if (pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                if (!sSubName) {
+                    // If selecting again the same edge the passed sub-element is empty. If the whole
+                    // shape is an edge or wire we can use it completely.
+                    const TopoDS_Shape& shape = static_cast<Part::Feature*>(pObj)->Shape.getValue();
+                    if (!shape.IsNull()) {
+                        if (shape.ShapeType() == TopAbs_EDGE)
+                            return true;
+                        if (shape.ShapeType() == TopAbs_WIRE)
+                            return true;
+                    }
+                }
+                else {
+                    std::string element(sSubName);
+                    return element.substr(0,4) == "Edge";
+                }
+            }
+
+            return false;
         }
     };
 };
