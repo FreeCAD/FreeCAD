@@ -39,7 +39,7 @@ INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
 PDFCONVERTOR = 'wkhtmltopdf' # can be 'pisa', 'htmldoc', 'wkhtmltopdf' or 'firefox'
 VERBOSE = True # set true to get output messages
 INCLUDECOMMANDS = True # if true, the command pages of each workbench are included after each WB page
-OVERWRITE = True # if true, pdf files are recreated even if already existing
+OVERWRITE = False # if true, pdf files are recreated even if already existing
 FIREFOXPDFFOLDER = os.path.expanduser("~")+os.sep+"PDF" # if firefox is used, set this to where it places its pdf files by default
 
 #    END CONFIGURATION      ##############################################
@@ -148,10 +148,10 @@ def createpdf_htmldoc(pagename):
 
 def createpdf_wkhtmltopdf(pagename):
     "creates a pdf file from a saved page using htmldoc (external app, but supports images)"
-    if (not exists(pagename+".pdf",image=True)) or OVERWRTIE:
+    if (not exists(pagename+".pdf",image=True)) or OVERWRITE:
         infile = FOLDER + os.sep + pagename+'.html'
         outfile = FOLDER + os.sep + pagename+'.pdf'
-        return os.system('wkhtmltopdf --user-style-sheet '+FOLDER+os.sep+'wkhtmltppdf.css '+infile+' '+outfile)
+        return os.system('wkhtmltopdf --margin-top 5mm --user-style-sheet '+FOLDER+os.sep+'wkhtmltppdf.css '+infile+' '+outfile)
     else:
         print "skipping"
 
@@ -222,7 +222,7 @@ def makeStyleSheet():
     outputfile = file(FOLDER+os.sep+"wkhtmltopdf.css",'wb')
     outputfile.write("""
 html {
-    margin: 20px 0;
+    margin: 50px 0;
 }
 """)
     outputfile.close()
