@@ -35,7 +35,8 @@ nobase_data_DATA = \
 	shipHydrostatics/Tools.py \
 	shipUtils/__init__.py \
 	shipUtils/Math.py \
-	shipUtils/Paths.py
+	shipUtils/Paths.py \
+	shipUtils/Units.py
 
 CLEANFILES = $(BUILT_SOURCES)
 
