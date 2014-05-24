@@ -325,7 +325,7 @@ class Component:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape:
                     if (len(obj.Base.Shape.Wires) == 1) and not(obj.Base.Shape.Faces):
-                        if not obj.Base.Shape.Wires.isClosed():
+                        if not obj.Base.Shape.Wires[0].isClosed():
                             return obj.Base.Shape.copy()
                     elif not(obj.Base.Shape.Solids):
                         p1 = obj.Base.Shape.CenterOfMass
@@ -391,6 +391,8 @@ class Component:
                                         sh = DraftGeomUtils.bind(w1,w2)
                                     if sh:
                                         wires.append(sh)
+                                else:
+                                    wires.append(wire)
         else:
             if (Draft.getType(obj) == "Structure") and (l > h):
                 if noplacement:

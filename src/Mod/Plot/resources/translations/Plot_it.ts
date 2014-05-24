@@ -1,216 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
+<TS version="2.0" language="it" sourcelanguage="en">
   <context>
     <name>Plot</name>
     <message>
-      <location filename="InitGui.py" line="36"/>
+      <location filename="InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation>Strumenti di modifica Plot</translation>
+      <translation type="unfinished">Strumenti di modifica Plot</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="37"/>
+      <location filename="InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation>Plot</translation>
+      <translation type="unfinished">Plot</translation>
     </message>
   </context>
   <context>
     <name>Plot_Axes</name>
     <message>
-      <location filename="PlotGui.py" line="67"/>
+      <location filename="PlotGui.py" line="62"/>
       <source>Configure axes</source>
-      <translation>Configura assi</translation>
+      <translation type="unfinished">Configura assi</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="68"/>
-      <source>Configure axes parameters</source>
-      <translation>Configura parametri assi</translation>
+      <location filename="PlotGui.py" line="65"/>
+      <source>Configure the axes parameters</source>
+      <translation type="unfinished">Configura i parametri degli assi</translation>
     </message>
   </context>
   <context>
     <name>Plot_Grid</name>
     <message>
-      <location filename="PlotGui.py" line="98"/>
+      <location filename="PlotGui.py" line="110"/>
       <source>Show/Hide grid</source>
-      <translation>Mostra/Nascondi griglia</translation>
+      <translation type="unfinished">Mostra/Nascondi griglia</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="99"/>
+      <location filename="PlotGui.py" line="113"/>
       <source>Show/Hide grid on selected plot</source>
-      <translation>Mostra/Nasconde griglia sul grafico selezionato</translation>
+      <translation type="unfinished">Mostra/Nasconde griglia sul grafico selezionato</translation>
     </message>
   </context>
   <context>
     <name>Plot_Labels</name>
     <message>
-      <location filename="PlotGui.py" line="129"/>
+      <location filename="PlotGui.py" line="154"/>
       <source>Set labels</source>
-      <translation>Imposta etichette</translation>
+      <translation type="unfinished">Imposta etichette</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="130"/>
+      <location filename="PlotGui.py" line="157"/>
       <source>Set title and axes labels</source>
-      <translation>Imposta il titolo e le etichette degli assi</translation>
+      <translation type="unfinished">Imposta il titolo e le etichette degli assi</translation>
     </message>
   </context>
   <context>
     <name>Plot_Legend</name>
     <message>
-      <location filename="PlotGui.py" line="117"/>
+      <location filename="PlotGui.py" line="137"/>
       <source>Show/Hide legend</source>
-      <translation>Mostra/Nascondi legenda</translation>
+      <translation type="unfinished">Mostra/Nascondi legenda</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="118"/>
+      <location filename="PlotGui.py" line="140"/>
       <source>Show/Hide legend on selected plot</source>
-      <translation>Mostra/Nasconde la legenda sul grafico selezionato</translation>
+      <translation type="unfinished">Mostra/Nasconde la legenda sul grafico selezionato</translation>
     </message>
   </context>
   <context>
     <name>Plot_Positions</name>
     <message>
-      <location filename="PlotGui.py" line="141"/>
+      <location filename="PlotGui.py" line="171"/>
       <source>Set positions and sizes</source>
-      <translation>Imposta posizioni e dimensioni</translation>
+      <translation type="unfinished">Imposta posizioni e dimensioni</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="142"/>
+      <location filename="PlotGui.py" line="174"/>
       <source>Set labels and legend positions and sizes</source>
-      <translation>Imposta la posizione e la dimensione delle etichette e della legenda</translation>
+      <translation type="unfinished">Imposta la posizione e la dimensione delle etichette e della legenda</translation>
     </message>
   </context>
   <context>
     <name>Plot_SaveFig</name>
     <message>
-      <location filename="PlotGui.py" line="55"/>
+      <location filename="PlotGui.py" line="45"/>
       <source>Save plot</source>
-      <translation>Salva grafico</translation>
+      <translation type="unfinished">Salva grafico</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="56"/>
-      <source>Save plot as image file</source>
-      <translation>Salva il grafico come file immagine</translation>
+      <location filename="PlotGui.py" line="48"/>
+      <source>Save the plot as an image file</source>
+      <translation type="unfinished">Salva il grafico come file immagine</translation>
     </message>
   </context>
   <context>
     <name>Plot_Series</name>
     <message>
-      <location filename="PlotGui.py" line="79"/>
+      <location filename="PlotGui.py" line="81"/>
       <source>Configure series</source>
-      <translation>Configura serie</translation>
+      <translation type="unfinished">Configura serie</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="80"/>
+      <location filename="PlotGui.py" line="84"/>
       <source>Configure series drawing style and label</source>
-      <translation>Configura lo stile e le etichette della serie</translation>
+      <translation type="unfinished">Configura lo stile e le etichette della serie</translation>
     </message>
   </context>
   <context>
     <name>plot_axes</name>
     <message>
-      <location filename="TaskPanel.py" line="130"/>
+      <location filename="TaskPanel.py" line="175"/>
       <source>Configure axes</source>
-      <translation>Configura assi</translation>
+      <translation type="unfinished">Configura assi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="132"/>
+      <location filename="TaskPanel.py" line="180"/>
       <source>Active axes</source>
-      <translation>Assi attivi</translation>
+      <translation type="unfinished">Assi attivi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="148"/>
+      <location filename="TaskPanel.py" line="220"/>
       <source>Apply to all axes</source>
-      <translation>Applica a tutti gli assi</translation>
+      <translation type="unfinished">Applica a tutti gli assi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="150"/>
+      <location filename="TaskPanel.py" line="225"/>
       <source>Dimensions</source>
-      <translation>Dimensioni</translation>
+      <translation type="unfinished">Dimensioni</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="152"/>
+      <location filename="TaskPanel.py" line="230"/>
       <source>X axis position</source>
-      <translation>Posizione asse x</translation>
+      <translation type="unfinished">Posizione asse x</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="154"/>
+      <location filename="TaskPanel.py" line="235"/>
       <source>Y axis position</source>
-      <translation>Posizione asse y</translation>
+      <translation type="unfinished">Posizione asse y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="142"/>
+      <location filename="TaskPanel.py" line="205"/>
       <source>Scales</source>
-      <translation>Scale</translation>
+      <translation type="unfinished">Scale</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="144"/>
+      <location filename="TaskPanel.py" line="210"/>
       <source>X auto</source>
-      <translation>X auto</translation>
+      <translation type="unfinished">X auto</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="146"/>
+      <location filename="TaskPanel.py" line="215"/>
       <source>Y auto</source>
-      <translation>Y auto</translation>
+      <translation type="unfinished">Y auto</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="156"/>
+      <location filename="TaskPanel.py" line="240"/>
       <source>Index of the active axes</source>
-      <translation>Indice degli assi attivi</translation>
+      <translation type="unfinished">Indice degli assi attivi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="158"/>
+      <location filename="TaskPanel.py" line="245"/>
       <source>Add new axes to the plot</source>
-      <translation>Aggiungi nuovi assi sul grafico</translation>
+      <translation type="unfinished">Aggiungi nuovi assi sul grafico</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="160"/>
+      <location filename="TaskPanel.py" line="251"/>
       <source>Remove selected axes</source>
-      <translation>Rimuovi assi selezionati</translation>
+      <translation type="unfinished">Rimuovi assi selezionati</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="162"/>
+      <location filename="TaskPanel.py" line="257"/>
       <source>Check it to apply transformations to all axes</source>
-      <translation>Spunta per applicare le trasformazioni a tutti gli assi</translation>
+      <translation type="unfinished">Spunta per applicare le trasformazioni a tutti gli assi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="164"/>
+      <location filename="TaskPanel.py" line="263"/>
       <source>Left bound of axes</source>
-      <translation>Limite sinistro degli assi</translation>
+      <translation type="unfinished">Limite sinistro degli assi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="166"/>
+      <location filename="TaskPanel.py" line="269"/>
       <source>Right bound of axes</source>
-      <translation>Limite destro degli assi</translation>
+      <translation type="unfinished">Limite destro degli assi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="168"/>
+      <location filename="TaskPanel.py" line="275"/>
       <source>Bottom bound of axes</source>
-      <translation>Limite inferiore degli assi</translation>
+      <translation type="unfinished">Limite inferiore degli assi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="170"/>
+      <location filename="TaskPanel.py" line="281"/>
       <source>Top bound of axes</source>
-      <translation>Limite superiore degli assi</translation>
+      <translation type="unfinished">Limite superiore degli assi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="172"/>
+      <location filename="TaskPanel.py" line="287"/>
       <source>Outward offset of X axis</source>
-      <translation>Offset verso l'esterno dell'asse X</translation>
+      <translation type="unfinished">Offset verso l'esterno dell'asse X</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="174"/>
+      <location filename="TaskPanel.py" line="293"/>
       <source>Outward offset of Y axis</source>
-      <translation>Offset verso l'esterno dell'asse Y</translation>
+      <translation type="unfinished">Offset verso l'esterno dell'asse Y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="176"/>
+      <location filename="TaskPanel.py" line="299"/>
       <source>X axis scale autoselection</source>
-      <translation>Selezione automatica della scala dell'asse X</translation>
+      <translation type="unfinished">Selezione automatica della scala dell'asse X</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="178"/>
+      <location filename="TaskPanel.py" line="305"/>
       <source>Y axis scale autoselection</source>
-      <translation>Selezione automatica della scala dell'asse Y</translation>
+      <translation type="unfinished">Selezione automatica della scala dell'asse Y</translation>
     </message>
   </context>
   <context>
@@ -218,244 +218,244 @@
     <message>
       <location filename="Plot.py" line="38"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
-      <translation>matplotlib non trovato, il modulo Plot non può essere caricato</translation>
+      <translation type="unfinished">matplotlib non trovato, il modulo Plot non può essere caricato</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="44"/>
+      <location filename="InitGui.py" line="54"/>
       <source>matplotlib not found, Plot module will be disabled</source>
-      <translation>matplotlib non trovato, il modulo Plot sarà disabilitato</translation>
+      <translation type="unfinished">matplotlib non trovato, il modulo Plot sarà disabilitato</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="41"/>
+      <location filename="TaskPanel.py" line="42"/>
       <source>Plot document must be selected in order to save it</source>
-      <translation>Un documento Plot deve essere selezionato per poterlo salvare</translation>
+      <translation type="unfinished">Un documento Plot deve essere selezionato per poterlo salvare</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="218"/>
+      <location filename="TaskPanel.py" line="365"/>
       <source>Axes 0 can not be deleted</source>
-      <translation>Gli assi 0 non possono essere eliminati</translation>
+      <translation type="unfinished">Gli assi 0 non possono essere eliminati</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="88"/>
-      <source>Grid must be activated on top of a plot document</source>
-      <translation>La griglia deve essere attivata su un documento plot</translation>
+      <location filename="PlotGui.py" line="97"/>
+      <source>The grid must be activated on top of a plot document</source>
+      <translation type="unfinished">La griglia deve essere attivata su un documento grafico</translation>
     </message>
     <message>
-      <location filename="PlotGui.py" line="107"/>
-      <source>Legend must be activated on top of a plot document</source>
-      <translation>La legenda deve essere attivata su un documento plot</translation>
+      <location filename="PlotGui.py" line="126"/>
+      <source>The legend must be activated on top of a plot document</source>
+      <translation type="unfinished">La legenda deve essere attivata su un documento grafico</translation>
     </message>
   </context>
   <context>
     <name>plot_labels</name>
     <message>
-      <location filename="TaskPanel.py" line="109"/>
+      <location filename="TaskPanel.py" line="133"/>
       <source>Set labels</source>
-      <translation>Imposta etichette</translation>
+      <translation type="unfinished">Imposta etichette</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="111"/>
+      <location filename="TaskPanel.py" line="138"/>
       <source>Active axes</source>
-      <translation>Assi attivi</translation>
+      <translation type="unfinished">Assi attivi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="113"/>
+      <location filename="TaskPanel.py" line="143"/>
       <source>Title</source>
-      <translation>Titolo</translation>
+      <translation type="unfinished">Titolo</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="115"/>
+      <location filename="TaskPanel.py" line="148"/>
       <source>X label</source>
-      <translation>Etichetta X</translation>
+      <translation type="unfinished">Etichetta X</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="117"/>
+      <location filename="TaskPanel.py" line="153"/>
       <source>Y label</source>
-      <translation>Etichetta Y</translation>
+      <translation type="unfinished">Etichetta Y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="119"/>
+      <location filename="TaskPanel.py" line="158"/>
       <source>Index of the active axes</source>
-      <translation>Indice degli assi attivi</translation>
+      <translation type="unfinished">Indice degli assi attivi</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="121"/>
+      <location filename="TaskPanel.py" line="163"/>
       <source>Title (associated to active axes)</source>
-      <translation>Titolo (associato ad assi attivi)</translation>
+      <translation type="unfinished">Titolo (associato ad assi attivi)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="123"/>
+      <location filename="TaskPanel.py" line="169"/>
       <source>Title font size</source>
-      <translation>Dimensione del carattere del titolo</translation>
+      <translation type="unfinished">Dimensione del carattere del titolo</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="125"/>
+      <location filename="TaskPanel.py" line="175"/>
       <source>X axis title</source>
-      <translation>Titolo asse X</translation>
+      <translation type="unfinished">Titolo asse X</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="127"/>
+      <location filename="TaskPanel.py" line="181"/>
       <source>X axis title font size</source>
-      <translation>Dimensione del carattere del titolo dell'asse X</translation>
+      <translation type="unfinished">Dimensione del carattere del titolo dell'asse X</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="129"/>
+      <location filename="TaskPanel.py" line="187"/>
       <source>Y axis title</source>
-      <translation>Titolo asse Y</translation>
+      <translation type="unfinished">Titolo asse Y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="131"/>
+      <location filename="TaskPanel.py" line="193"/>
       <source>Y axis title font size</source>
-      <translation>Dimensione del carattere del titolo dell'asse Y</translation>
+      <translation type="unfinished">Dimensione del carattere del titolo dell'asse Y</translation>
     </message>
   </context>
   <context>
     <name>plot_positions</name>
     <message>
-      <location filename="TaskPanel.py" line="100"/>
+      <location filename="TaskPanel.py" line="121"/>
       <source>Set positions and sizes</source>
-      <translation>Imposta posizioni e dimensioni</translation>
+      <translation type="unfinished">Imposta posizioni e dimensioni</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="102"/>
+      <location filename="TaskPanel.py" line="126"/>
       <source>Position</source>
-      <translation>Posizione</translation>
+      <translation type="unfinished">Posizione</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="104"/>
+      <location filename="TaskPanel.py" line="132"/>
       <source>Size</source>
-      <translation>Dimensione</translation>
+      <translation type="unfinished">Dimensione</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="106"/>
+      <location filename="TaskPanel.py" line="138"/>
       <source>List of modificable items</source>
-      <translation>Lista degli elementi modificabili</translation>
+      <translation type="unfinished">Lista degli elementi modificabili</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="108"/>
+      <location filename="TaskPanel.py" line="144"/>
       <source>X item position</source>
-      <translation>Posizione elemento X</translation>
+      <translation type="unfinished">Posizione elemento X</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="110"/>
+      <location filename="TaskPanel.py" line="150"/>
       <source>Y item position</source>
-      <translation>Posizione elemento Y</translation>
+      <translation type="unfinished">Posizione elemento Y</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="112"/>
+      <location filename="TaskPanel.py" line="156"/>
       <source>Item size</source>
-      <translation>Dimensione elemento</translation>
+      <translation type="unfinished">Dimensione elemento</translation>
     </message>
   </context>
   <context>
     <name>plot_save</name>
     <message>
-      <location filename="TaskPanel.py" line="106"/>
+      <location filename="TaskPanel.py" line="128"/>
       <source>Save figure</source>
-      <translation>Salva figura</translation>
+      <translation type="unfinished">Salva figura</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="108"/>
+      <location filename="TaskPanel.py" line="133"/>
       <source>Inches</source>
-      <translation>Pollici</translation>
+      <translation type="unfinished">Pollici</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="110"/>
+      <location filename="TaskPanel.py" line="139"/>
       <source>Dots per Inch</source>
-      <translation>Punti per pollice</translation>
+      <translation type="unfinished">Punti per pollice</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="112"/>
+      <location filename="TaskPanel.py" line="145"/>
       <source>Output image file path</source>
-      <translation>Percorso del file immagine</translation>
+      <translation type="unfinished">Percorso del file immagine</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="114"/>
+      <location filename="TaskPanel.py" line="151"/>
       <source>Show a file selection dialog</source>
-      <translation>Visualizza una finestra di dialogo di selezione file</translation>
+      <translation type="unfinished">Visualizza una finestra di dialogo di selezione file</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="116"/>
+      <location filename="TaskPanel.py" line="157"/>
       <source>X image size</source>
-      <translation>Dimensione X dell'immagine</translation>
+      <translation type="unfinished">Dimensione X dell'immagine</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="118"/>
+      <location filename="TaskPanel.py" line="163"/>
       <source>Y image size</source>
-      <translation>Dimensione Y dell'immagine</translation>
+      <translation type="unfinished">Dimensione Y dell'immagine</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="120"/>
+      <location filename="TaskPanel.py" line="169"/>
       <source>Dots per point, with size will define output image resolution</source>
-      <translation>Punti per ogni punto, con dimensione definirà la risoluzione dell'immagine</translation>
+      <translation type="unfinished">Punti per ogni punto, con dimensione definirà la risoluzione dell'immagine</translation>
     </message>
   </context>
   <context>
     <name>plot_series</name>
     <message>
-      <location filename="TaskPanel.py" line="115"/>
+      <location filename="TaskPanel.py" line="154"/>
       <source>No label</source>
-      <translation>Senza etichetta</translation>
+      <translation type="unfinished">Senza etichetta</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="117"/>
+      <location filename="TaskPanel.py" line="160"/>
       <source>Remove serie</source>
-      <translation>Rimuovi serie</translation>
+      <translation type="unfinished">Rimuovi serie</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="129"/>
+      <location filename="TaskPanel.py" line="196"/>
       <source>Line style</source>
-      <translation>Stile linea</translation>
+      <translation type="unfinished">Stile linea</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="121"/>
+      <location filename="TaskPanel.py" line="172"/>
       <source>Marker</source>
-      <translation>Marcatore</translation>
+      <translation type="unfinished">Marcatore</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="113"/>
+      <location filename="TaskPanel.py" line="149"/>
       <source>Configure series</source>
-      <translation>Configura serie</translation>
+      <translation type="unfinished">Configura serie</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="123"/>
+      <location filename="TaskPanel.py" line="178"/>
       <source>List of available series</source>
-      <translation>Lista delle serie disponibili</translation>
+      <translation type="unfinished">Lista delle serie disponibili</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="125"/>
+      <location filename="TaskPanel.py" line="184"/>
       <source>Line title</source>
-      <translation>Titolo linea</translation>
+      <translation type="unfinished">Titolo linea</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="131"/>
+      <location filename="TaskPanel.py" line="202"/>
       <source>Marker style</source>
-      <translation>Stile del marcatore</translation>
+      <translation type="unfinished">Stile del marcatore</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="133"/>
+      <location filename="TaskPanel.py" line="208"/>
       <source>Line width</source>
-      <translation>Spessore linea</translation>
+      <translation type="unfinished">Spessore linea</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="135"/>
+      <location filename="TaskPanel.py" line="214"/>
       <source>Marker size</source>
-      <translation>Dimensioni del marcatore</translation>
+      <translation type="unfinished">Dimensioni del marcatore</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="137"/>
+      <location filename="TaskPanel.py" line="220"/>
       <source>Line and marker color</source>
-      <translation>Colore linea del marcatore</translation>
+      <translation type="unfinished">Colore linea del marcatore</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="139"/>
+      <location filename="TaskPanel.py" line="226"/>
       <source>Removes this serie</source>
-      <translation>Rimuove questa serie</translation>
+      <translation type="unfinished">Rimuove questa serie</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="127"/>
+      <location filename="TaskPanel.py" line="190"/>
       <source>If checked serie will not be considered for legend</source>
-      <translation>Se selezionato la serie non sarà considerata nella leggenda</translation>
+      <translation type="unfinished">Se selezionato la serie non sarà considerata nella leggenda</translation>
     </message>
   </context>
 </TS>
