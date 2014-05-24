@@ -31,9 +31,11 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shell.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <ShapeAnalysis.hxx>
+# include <ShapeAnalysis_FreeBounds.hxx>
 # include <TopTools_ListIteratorOfListOfShape.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <TopExp_Explorer.hxx>
@@ -339,14 +341,14 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
     const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
     if (!shape._Shape.IsNull()) {
         try {
-            BRepBuilderAPI_MakeWire mkWire;
-            for (std::vector<std::string>::const_iterator it = subedge.begin(); it != subedge.end(); ++it) {
-                TopoDS_Shape subshape = shape.getSubShape(it->c_str());
-                mkWire.Add(TopoDS::Edge(subshape));
+            if (!subedge.empty()) {
+                BRepBuilderAPI_MakeWire mkWire;
+                for (std::vector<std::string>::const_iterator it = subedge.begin(); it != subedge.end(); ++it) {
+                    TopoDS_Shape subshape = shape.getSubShape(it->c_str());
+                    mkWire.Add(TopoDS::Edge(subshape));
+                }
+                path = mkWire.Wire();
             }
-            path = mkWire.Wire();
-        }
-        catch (Standard_Failure) {
             if (shape._Shape.ShapeType() == TopAbs_EDGE) {
                 path = shape._Shape;
             }
@@ -354,9 +356,34 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                 BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape._Shape));
                 path = mkWire.Wire();
             }
+            else if (shape._Shape.ShapeType() == TopAbs_COMPOUND) {
+                TopoDS_Iterator it(shape._Shape);
+                for (; it.More(); it.Next()) {
+                    if (it.Value().IsNull())
+                        return new App::DocumentObjectExecReturn("In valid element in spine.");
+                    if ((it.Value().ShapeType() != TopAbs_EDGE) &&
+                        (it.Value().ShapeType() != TopAbs_WIRE)) {
+                        return new App::DocumentObjectExecReturn("Element in spine is neither an edge nor a wire.");
+                    }
+                }
+
+                Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
+                Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
+                for (TopExp_Explorer xp(shape._Shape, TopAbs_EDGE); xp.More(); xp.Next())
+                    hEdges->Append(xp.Current());
+
+                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_True, hWires);
+                int len = hWires->Length();
+                if (len != 1)
+                    return new App::DocumentObjectExecReturn("Spine is not connected.");
+                path = hWires->Value(1);
+            }
             else {
                 return new App::DocumentObjectExecReturn("Spine is neither an edge nor a wire.");
             }
+        }
+        catch (Standard_Failure) {
+            return new App::DocumentObjectExecReturn("Invalid spine.");
         }
     }
 
