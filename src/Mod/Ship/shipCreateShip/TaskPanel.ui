@@ -102,25 +102,12 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="Length">
-              <property name="decimals">
-               <number>3</number>
-              </property>
-              <property name="singleStep">
-               <double>0.010000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="LengthUnits">
+             <widget class="Gui::InputField" name="Length">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="text">
-               <string>m</string>
               </property>
              </widget>
             </item>
@@ -148,25 +135,12 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="Breadth">
-              <property name="decimals">
-               <number>3</number>
-              </property>
-              <property name="singleStep">
-               <double>0.010000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="BreadthUnits">
+             <widget class="Gui::InputField" name="Breadth">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="text">
-               <string>m</string>
               </property>
              </widget>
             </item>
@@ -194,25 +168,12 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="Draft">
-              <property name="decimals">
-               <number>3</number>
-              </property>
-              <property name="singleStep">
-               <double>0.010000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="DraftUnits">
+             <widget class="Gui::InputField" name="Draft">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
-              </property>
-              <property name="text">
-               <string>m</string>
               </property>
              </widget>
             </item>
@@ -227,6 +188,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header location="global">Gui/Inputfield.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
