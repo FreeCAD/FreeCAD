@@ -55,8 +55,6 @@ reserved = (
     'hull',
     'minkowski',
     'projection',
-    'import_stl',
-    'import_dxf',
     'import',
     'color',
     'cut',
