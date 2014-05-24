@@ -1,306 +1,381 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
+<TS version="2.0" language="it" sourcelanguage="en">
   <context>
     <name>Gui::Dialog::DlgSettingsOpenSCAD</name>
     <message>
       <location filename="openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
-      <translation>Impostazioni generali</translation>
+      <translation type="unfinished">Impostazioni generali</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="26"/>
       <source>General OpenSCAD Settings</source>
-      <translation>Impostazioni generali OpenSCAD</translation>
+      <translation type="unfinished">Impostazioni generali OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="34"/>
       <source>OpenSCAD executable</source>
-      <translation>Eseguibile OpenSCAD</translation>
+      <translation type="unfinished">Eseguibile OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="47"/>
       <source>The path to the OpenSCAD executeable</source>
-      <translation>Il percorso del file eseguibile OpenSCAD</translation>
+      <translation type="unfinished">Il percorso del file eseguibile OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="65"/>
       <source>OpenSCAD import</source>
-      <translation>Importa OpenSCAD</translation>
+      <translation type="unfinished">Importa OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="73"/>
       <source>If this is checked, Features will claim thier children in the tree view</source>
-      <translation>Se questa opzione è selezionata, le Feature sosterranno i loro figli nella visualizzazione struttura</translation>
+      <translation type="unfinished">Se questa opzione è selezionata, le Feature sosterranno i loro figli nella visualizzazione struttura</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="76"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation>Utilizzare ViewProvider in visualizzazione struttura</translation>
+      <translation type="unfinished">Utilizzare ViewProvider in visualizzazione struttura</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="93"/>
       <source>If this is checked, Multmatrix Object will be Parametric</source>
-      <translation>Se questa opzione è selezionata, l'Oggetto Multimatrice sarà parametrico</translation>
+      <translation type="unfinished">Se questa opzione è selezionata, l'Oggetto Multimatrice sarà parametrico</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="96"/>
       <source>Use Multmatrix Feature</source>
-      <translation>Usa feature Multimatrice</translation>
+      <translation type="unfinished">Usa feature Multimatrice</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="136"/>
       <source>The maximum number of faces of a polygon, prism or frustum. If fn is greater than this value the object is considered to be a circular. Set to 0 for no limit</source>
-      <translation>Il numero massimo di facce di un poligono, prisma o di tronco di cono. Se fn è superiore a questo valore l'oggetto è considerato circolare. Impostare a 0 per nessun limite</translation>
+      <translation type="unfinished">Il numero massimo di facce di un poligono, prisma o di tronco di cono. Se fn è superiore a questo valore l'oggetto è considerato circolare. Impostare a 0 per nessun limite</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="116"/>
       <source>Maximum number of faces for polygons (fn)</source>
-      <translation>Numero massimo di facce per i poligoni (fn)</translation>
+      <translation type="unfinished">Numero massimo di facce per i poligoni (fn)</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="160"/>
       <source>OpenSCAD export</source>
-      <translation>Esporta OpenSCAD</translation>
+      <translation type="unfinished">Esporta OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="168"/>
       <source>maximum fragment size</source>
-      <translation>dimensione del frammento massimo</translation>
+      <translation type="unfinished">dimensione del frammento massimo</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="198"/>
       <source>minimum angle for a fragment</source>
-      <translation>angolo minimo per un frammento</translation>
+      <translation type="unfinished">angolo minimo per un frammento</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="191"/>
       <source>angular (fa)</source>
-      <translation>angolare (fa)</translation>
+      <translation type="unfinished">angolare (fa)</translation>
     </message>
-    <message>
+    <message encoding="UTF-8">
       <location filename="openscadprefs-base.ui" line="201"/>
       <source>°</source>
-      <translation>°</translation>
+      <translation type="unfinished">°</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="255"/>
       <source>minimum size of a fragment</source>
-      <translation>dimensione minima di un frammento</translation>
+      <translation type="unfinished">dimensione minima di un frammento</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="233"/>
       <source>size (fs)</source>
-      <translation>dimensione (fs)</translation>
+      <translation type="unfinished">dimensione (fs)</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="261"/>
       <source>mm</source>
-      <translation>mm</translation>
+      <translation type="unfinished">mm</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="287"/>
       <source>convexity</source>
-      <translation>convessità</translation>
+      <translation type="unfinished">convessità</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="324"/>
       <source>Mesh fallback</source>
-      <translation>Mesh fallback</translation>
+      <translation type="unfinished">Rete di riserva</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="344"/>
       <source>Maxium Length</source>
-      <translation>Lunghezza massima</translation>
+      <translation type="unfinished">Lunghezza massima</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="347"/>
       <source>MaxLength</source>
-      <translation>MaxLength</translation>
+      <translation type="unfinished">MaxLength</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="354"/>
       <source>Maximum Length</source>
-      <translation>Lunghezza massima</translation>
+      <translation type="unfinished">Lunghezza massima</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="386"/>
       <source>Maximum Area</source>
-      <translation>Area massima</translation>
+      <translation type="unfinished">Area massima</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="379"/>
       <source>maxArea</source>
-      <translation>maxArea</translation>
+      <translation type="unfinished">maxArea</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="430"/>
       <source>Local Length</source>
-      <translation>Lunghezza locale</translation>
+      <translation type="unfinished">Lunghezza locale</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="433"/>
       <source>localLen</source>
-      <translation>localLen</translation>
+      <translation type="unfinished">localLen</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="462"/>
       <source>Deflection</source>
-      <translation>Deflessione</translation>
+      <translation type="unfinished">Deflessione</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="465"/>
       <source>deflection</source>
-      <translation>deflessione</translation>
+      <translation type="unfinished">deflessione</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="472"/>
       <source>Triangulation settings</source>
-      <translation>Impostazioni di triangolazione</translation>
+      <translation type="unfinished">Impostazioni di triangolazione</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="47"/>
+      <location filename="OpenSCADCommands.py" line="120"/>
       <source>Convert Edges to Faces</source>
-      <translation>Convert Edges to Faces</translation>
-    </message>
-    <message>
-      <location filename="OpenSCADCommands.py" line="101"/>
-      <source>Please select 3 objects first</source>
-      <translation>Seleziona prima 3 oggetti</translation>
-    </message>
-    <message>
-      <location filename="importCSG.py" line="334"/>
-      <source>Unsupported Function</source>
-      <translation>Funzione non supportata</translation>
-    </message>
-    <message>
-      <location filename="importCSG.py" line="334"/>
-      <source>Press OK</source>
-      <translation>Premere OK</translation>
-    </message>
-    <message>
-      <location filename="importCSG.py" line="946"/>
-      <source>Projection Not yet Coded waiting for Peter Li</source>
-      <translation>Proiezione non ancora codificata in attesa di Peter Li</translation>
-    </message>
-    <message>
-      <location filename="importCSG.py" line="946"/>
-      <source> Press OK</source>
-      <translation>Premere OK</translation>
+      <translation type="unfinished">Converti i bordi di facce</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="199"/>
-      <source>Running OpenSCAD failed</source>
-      <translation>Esecuzione di OpenSCAD non riuscita</translation>
+      <source>Please select 3 objects first</source>
+      <translation type="unfinished">Seleziona prima 3 oggetti</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="162"/>
+      <location filename="importCSG.py" line="408"/>
+      <source>Unsupported Function</source>
+      <translation type="unfinished">Funzione non supportata</translation>
+    </message>
+    <message>
+      <location filename="importCSG.py" line="408"/>
+      <source>Press OK</source>
+      <translation type="unfinished">Premere OK</translation>
+    </message>
+    <message>
+      <location filename="importCSG.py" line="1091"/>
+      <source>Projection Not yet Coded waiting for Peter Li</source>
+      <translation type="unfinished">Proiezione non ancora codificata in attesa di Peter Li</translation>
+    </message>
+    <message>
+      <location filename="importCSG.py" line="1091"/>
+      <source> Press OK</source>
+      <translation type="unfinished">Premere OK</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="243"/>
       <source>Add</source>
-      <translation>Aggiungi</translation>
+      <translation type="unfinished">Aggiungi</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="163"/>
+      <location filename="OpenSCADCommands.py" line="244"/>
       <source>Clear</source>
-      <translation>Pulisci</translation>
+      <translation type="unfinished">Pulisci</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="164"/>
+      <location filename="OpenSCADCommands.py" line="245"/>
       <source>as Mesh</source>
-      <translation>come Mesh</translation>
+      <translation type="unfinished">come Mesh</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="165"/>
+      <location filename="OpenSCADCommands.py" line="246"/>
       <source>Add OpenSCAD Element</source>
-      <translation>Aggiungi un elemento OpenSCAD</translation>
+      <translation type="unfinished">Aggiungi un elemento OpenSCAD</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="319"/>
+      <source>Perform</source>
+      <translation type="unfinished">Esegui</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="320"/>
+      <source>Mesh Boolean</source>
+      <translation type="unfinished">Mesh Booleana</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADUtils.py" line="535"/>
+      <source>Error all shapes must be either 2D or both must be 3D</source>
+      <translation type="unfinished">Errore. Tutte le forme devono essere 2D o 3D</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_AddOpenSCADElement</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="207"/>
+      <location filename="OpenSCADCommands.py" line="361"/>
       <source>Add OpenSCAD Element...</source>
-      <translation>Aggiungi un elemento OpenSCAD...</translation>
+      <translation type="unfinished">Aggiungi un elemento OpenSCAD...</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="209"/>
+      <location filename="OpenSCADCommands.py" line="363"/>
       <source>Add an OpenSCAD element by entering OpenSCAD code and executing the OpenSCAD binary</source>
-      <translation>Aggiunge un elemento OpenSCAD inserendo il codice OpenSCAD ed eseguendo il binario di OpenSCAD</translation>
+      <translation type="unfinished">Aggiunge un elemento OpenSCAD inserendo il codice OpenSCAD ed eseguendo il binario di OpenSCAD</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ColorCodeShape</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="24"/>
+      <location filename="OpenSCADCommands.py" line="97"/>
       <source>Color Shapes</source>
-      <translation>Color Shapes</translation>
+      <translation type="unfinished">Forme di colore</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="26"/>
+      <location filename="OpenSCADCommands.py" line="99"/>
       <source>Color Shapes by validity and type</source>
-      <translation>Color Shapes by validity and type</translation>
+      <translation type="unfinished">Forme di colore per validità e tipo</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_Edgestofaces</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="45"/>
+      <location filename="OpenSCADCommands.py" line="118"/>
       <source>Convert Edges To Faces</source>
-      <translation>Convert Edges To Faces</translation>
+      <translation type="unfinished">Converti i bordi di facce</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ExpandPlacements</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="86"/>
+      <location filename="OpenSCADCommands.py" line="179"/>
       <source>Expand Placements</source>
-      <translation>Espandi posizionamenti</translation>
+      <translation type="unfinished">Espandi posizionamenti</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="88"/>
+      <location filename="OpenSCADCommands.py" line="181"/>
       <source>Expand all placements downwards the FeatureTree</source>
-      <translation>Espande tutti i posizionamenti sotto la struttura Feature</translation>
+      <translation type="unfinished">Espande tutti i posizionamenti sotto la struttura Feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_ExplodeGroup</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="79"/>
+      <source>Explode Group</source>
+      <translation type="unfinished">Esplodi gruppo</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="81"/>
+      <source>remove fusion, apply placement to children and color randomly</source>
+      <translation type="unfinished">rimuove la fusione, applica il posizionamento per figli e il colore in modo casuale</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Hull</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="396"/>
+      <source>Hull</source>
+      <translation type="unfinished">Guscio</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="398"/>
+      <source>Perform Hull</source>
+      <translation type="unfinished">Esegui guscio</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_IncreaseToleranceFeature</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="160"/>
+      <source>Increase Tolerance Feature</source>
+      <translation type="unfinished">Aumenta funzione di tolleranza</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="162"/>
+      <source>Create Feature that allows to increase the tolerance</source>
+      <translation type="unfinished">Crea la funzione che permette di aumentare la tolleranza</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_MeshBoolean</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="375"/>
+      <source>Mesh Boolean...</source>
+      <translation type="unfinished">Mesh Booleana...</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="377"/>
+      <source>Export objects as meshes and use OpenSCAD to perform a boolean operation.</source>
+      <translation type="unfinished">Esporta gli oggetti come mesh e utilizza OpenSCAD per eseguire un'operazione booleana.</translation>
+    </message>
+  </context>
+  <context>
+    <name>OpenSCAD_Minkowski</name>
+    <message>
+      <location filename="OpenSCADCommands.py" line="417"/>
+      <source>Minkowski</source>
+      <translation type="unfinished">Minkowski</translation>
+    </message>
+    <message>
+      <location filename="OpenSCADCommands.py" line="419"/>
+      <source>Perform Minkowski</source>
+      <translation type="unfinished">Esegui Minkowski</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RefineShapeFeature</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="67"/>
+      <location filename="OpenSCADCommands.py" line="139"/>
       <source>Refine Shape Feature</source>
-      <translation>Refine Shape Feature</translation>
+      <translation type="unfinished">Feature di rifinitura forma</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="69"/>
+      <location filename="OpenSCADCommands.py" line="141"/>
       <source>Create Refine Shape Feature</source>
-      <translation>Create Refine Shape Feature</translation>
+      <translation type="unfinished">Crea una feauter di rifinitura forma</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_RemoveSubtree</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="137"/>
+      <location filename="OpenSCADCommands.py" line="218"/>
       <source>Remove Objects and their Children</source>
-      <translation>Rimuovere gli oggetti e i loro figli</translation>
+      <translation type="unfinished">Rimuovere gli oggetti e i loro figli</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="139"/>
+      <location filename="OpenSCADCommands.py" line="220"/>
       <source>Removes the selected objects and all children that are not referenced from other objects</source>
-      <translation>Rimuove gli oggetti selezionati e tutti i figli che non sono riferiti ad altri oggetti</translation>
+      <translation type="unfinished">Rimuove gli oggetti selezionati e tutti i figli che non sono riferiti ad altri oggetti</translation>
     </message>
   </context>
   <context>
     <name>OpenSCAD_ReplaceObject</name>
     <message>
-      <location filename="OpenSCADCommands.py" line="105"/>
+      <location filename="OpenSCADCommands.py" line="203"/>
       <source>Replace Object</source>
-      <translation>Sostituisci oggetti</translation>
+      <translation type="unfinished">Sostituisci oggetti</translation>
     </message>
     <message>
-      <location filename="OpenSCADCommands.py" line="107"/>
+      <location filename="OpenSCADCommands.py" line="205"/>
       <source>Replace an object in the Feature Tree. Please select old, new and parent object</source>
-      <translation>Sostituisce un oggetto nella struttura Feature. Si prega di selezionare il vecchio, il nuovo e l'oggetto padre</translation>
+      <translation type="unfinished">Sostituisce un oggetto nella struttura Feature. Si prega di selezionare il vecchio, il nuovo e l'oggetto padre</translation>
     </message>
   </context>
 </TS>

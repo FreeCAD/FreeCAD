@@ -1,864 +1,464 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
+<TS version="2.0" language="fr" sourcelanguage="en">
   <context>
     <name>Ship</name>
     <message>
-      <location filename="TankInstance.py" line="50"/>
-      <source>True if is a valid ship tank instance</source>
-      <translation>True if is a valid ship tank instance</translation>
-    </message>
-    <message>
-      <location filename="TankInstance.py" line="54"/>
-      <source>Fluid filling level percentage</source>
-      <translation>Fluid filling level percentage</translation>
-    </message>
-    <message>
-      <location filename="TankInstance.py" line="57"/>
-      <source>Inside fluid density</source>
-      <translation>Inside fluid density</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="73"/>
-      <source>True if is a valid ship simulation instance</source>
-      <translation>True if is a valid ship simulation instance</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="80"/>
-      <source>Waves (Amplitude,period,phase)</source>
-      <translation>Vagues (période, amplitude et phase)</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="83"/>
-      <source>Waves direction (0 deg to stern waves)</source>
-      <translation>Waves direction (0 deg to stern waves)</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="147"/>
-      <source>Free surface number of elements at x direction</source>
-      <translation>Free surface number of elements at x direction</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="153"/>
-      <source>Free surface number of elements at y direction</source>
-      <translation>Free surface number of elements at y direction</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="159"/>
-      <source>Free surface elements position</source>
-      <translation>Free surface elements position</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="165"/>
-      <source>Free surface elements area</source>
-      <translation>Free surface elements area</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="171"/>
-      <source>Free surface elements normal</source>
-      <translation>Free surface elements normal</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="31"/>
-      <source>Ship</source>
-      <translation>Ship</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="32"/>
-      <source>Ship module provides some of the commonly used tool to design ship forms</source>
-      <translation>Ship module provides some of the commonly used tool to design ship forms</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="49"/>
+      <location filename="InitGui.py" line="65"/>
       <source>Ship design</source>
-      <translation>Ship design</translation>
+      <translation type="unfinished">Conception de navires</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="50"/>
+      <location filename="InitGui.py" line="68"/>
       <source>Weights</source>
-      <translation>Poids</translation>
+      <translation type="unfinished">Poids</translation>
     </message>
     <message>
-      <location filename="InitGui.py" line="71"/>
-      <source>Simulation</source>
-      <translation>Simulation</translation>
-    </message>
-    <message>
-      <location filename="Instance.py" line="60"/>
-      <source>True if is a valid ship instance</source>
-      <translation>True if is a valid ship instance</translation>
-    </message>
-    <message>
-      <location filename="Instance.py" line="576"/>
+      <location filename="Instance.py" line="212"/>
       <source>Ship Weights names</source>
-      <translation>Ship Weights names</translation>
+      <translation type="unfinished">Noms des poids de navire</translation>
     </message>
     <message>
-      <location filename="Instance.py" line="577"/>
+      <location filename="Instance.py" line="217"/>
       <source>Lightweight</source>
-      <translation>Lightweight</translation>
+      <translation type="unfinished">Léger</translation>
     </message>
     <message>
-      <location filename="Instance.py" line="585"/>
-      <source>Ship Weights masses</source>
-      <translation>Ship Weights masses</translation>
-    </message>
-    <message>
-      <location filename="Instance.py" line="593"/>
+      <location filename="Instance.py" line="247"/>
       <source>Ship Weights centers of gravity</source>
-      <translation>Ship Weights centers of gravity</translation>
+      <translation type="unfinished">Centres de gravité des poids de navire</translation>
+    </message>
+    <message>
+      <location filename="Instance.py" line="46"/>
+      <source>True if it is a valid ship instance, False otherwise</source>
+      <translation type="unfinished">True si c'est une instance de navire valide, False sinon</translation>
+    </message>
+    <message>
+      <location filename="Instance.py" line="56"/>
+      <source>Ship length [m]</source>
+      <translation type="unfinished">Longueur du navire [m]</translation>
+    </message>
+    <message>
+      <location filename="Instance.py" line="65"/>
+      <source>Ship breadth [m]</source>
+      <translation type="unfinished">Largeur de navire [m]</translation>
+    </message>
+    <message>
+      <location filename="Instance.py" line="74"/>
+      <source>Ship draft [m]</source>
+      <translation type="unfinished">Projet de navire [m]</translation>
+    </message>
+    <message>
+      <location filename="Instance.py" line="85"/>
+      <source>Set of external faces of the ship hull</source>
+      <translation type="unfinished">Ensemble des faces externes de la coque du bateau</translation>
+    </message>
+    <message>
+      <location filename="Instance.py" line="232"/>
+      <source>Ship Weights masses [tons]</source>
+      <translation type="unfinished">Masse du navire [tonnes]</translation>
     </message>
   </context>
   <context>
     <name>Ship_AreasCurve</name>
     <message>
-      <location filename="ShipGui.py" line="68"/>
+      <location filename="ShipGui.py" line="94"/>
       <source>Areas curve</source>
-      <translation>Areas curve</translation>
+      <translation type="unfinished">Courbe de zone</translation>
     </message>
     <message>
-      <location filename="ShipGui.py" line="69"/>
-      <source>Plot transversal areas curve</source>
-      <translation>Plot transversal areas curve</translation>
+      <location filename="ShipGui.py" line="97"/>
+      <source>Plot the transversal areas curve</source>
+      <translation type="unfinished">tracer la courbe de surface transversal</translation>
     </message>
   </context>
   <context>
     <name>Ship_CreateShip</name>
     <message>
-      <location filename="ShipGui.py" line="48"/>
+      <location filename="ShipGui.py" line="60"/>
       <source>Create a new ship</source>
-      <translation>Créer un nouveau navire</translation>
+      <translation type="unfinished">Créer un nouveau navire</translation>
     </message>
     <message>
-      <location filename="ShipGui.py" line="49"/>
-      <source>Create a new ship in order to work with them</source>
-      <translation>Create a new ship in order to work with them</translation>
+      <location filename="ShipGui.py" line="63"/>
+      <source>Create a new ship instance on top of the hull geometry</source>
+      <translation type="unfinished">Créer une nouvelle instance de navire sur le dessus de la géométrie de la coque</translation>
     </message>
   </context>
   <context>
     <name>Ship_CreateSim</name>
-    <message>
-      <location filename="ShipGui.py" line="118"/>
-      <source>Create a new simulation</source>
-      <translation>Créer une nouvelle simulation</translation>
-    </message>
-    <message>
-      <location filename="ShipGui.py" line="119"/>
-      <source>Create a new simulation in order to process later</source>
-      <translation>Create a new simulation in order to process later</translation>
-    </message>
   </context>
   <context>
     <name>Ship_CreateTank</name>
-    <message>
-      <location filename="ShipGui.py" line="98"/>
-      <source>Create a new tank</source>
-      <translation>Create a new tank</translation>
-    </message>
-    <message>
-      <location filename="ShipGui.py" line="99"/>
-      <source>Create a new ship tank</source>
-      <translation>Create a new ship tank</translation>
-    </message>
   </context>
   <context>
     <name>Ship_GZ</name>
-    <message>
-      <location filename="ShipGui.py" line="108"/>
-      <source>GZ curve</source>
-      <translation>GZ curve</translation>
-    </message>
-    <message>
-      <location filename="ShipGui.py" line="109"/>
-      <source>Transversal stability GZ curve computation</source>
-      <translation>Transversal stability GZ curve computation</translation>
-    </message>
   </context>
   <context>
     <name>Ship_Hydrostatics</name>
     <message>
-      <location filename="ShipGui.py" line="78"/>
+      <location filename="ShipGui.py" line="111"/>
       <source>Hydrostatics</source>
-      <translation>Hydrostatique</translation>
+      <translation type="unfinished">Hydrostatique</translation>
     </message>
     <message>
-      <location filename="ShipGui.py" line="79"/>
-      <source>Plot ship hydrostatics</source>
-      <translation>Plot ship hydrostatics</translation>
+      <location filename="ShipGui.py" line="114"/>
+      <source>Plot the ship hydrostatics</source>
+      <translation type="unfinished">tracer les caractéristiques hydrostatique du navire</translation>
     </message>
   </context>
   <context>
     <name>Ship_LoadExample</name>
     <message>
-      <location filename="ShipGui.py" line="38"/>
+      <location filename="ShipGui.py" line="43"/>
       <source>Load an example ship geometry</source>
-      <translation>Charger un exemple de géométrie de navire</translation>
+      <translation type="unfinished">Charger un exemple de géométrie de navire</translation>
     </message>
     <message>
-      <location filename="ShipGui.py" line="39"/>
-      <source>Load an example ship geometry able to be converted into a ship.</source>
-      <translation>Charger un exemple de géométrie de navire convertissable.</translation>
+      <location filename="ShipGui.py" line="46"/>
+      <source>Load an example ship hull geometry.</source>
+      <translation type="unfinished">Charger un exemple de géométrie de coque de navire.</translation>
     </message>
   </context>
   <context>
     <name>Ship_OutlineDraw</name>
     <message>
-      <location filename="ShipGui.py" line="58"/>
+      <location filename="ShipGui.py" line="77"/>
       <source>Outline draw</source>
-      <translation>Outline draw</translation>
+      <translation type="unfinished">Dessiner le contour</translation>
     </message>
     <message>
-      <location filename="ShipGui.py" line="59"/>
-      <source>Plot ship outline draw</source>
-      <translation>Plot ship outline draw</translation>
+      <location filename="ShipGui.py" line="80"/>
+      <source>Plots the ship hull outline draw</source>
+      <translation type="unfinished">tracer le profil de coque du navire</translation>
     </message>
   </context>
   <context>
     <name>Ship_RunSim</name>
-    <message>
-      <location filename="ShipGui.py" line="129"/>
-      <source>Run a simulation</source>
-      <translation>Lancer une simulation</translation>
-    </message>
   </context>
   <context>
     <name>Ship_StopSim</name>
-    <message>
-      <location filename="ShipGui.py" line="139"/>
-      <source>Stop active simulation</source>
-      <translation>Arrêter la simulation active</translation>
-    </message>
   </context>
   <context>
     <name>Ship_TrackSim</name>
-    <message>
-      <location filename="ShipGui.py" line="149"/>
-      <source>Track simulation</source>
-      <translation>Track simulation</translation>
-    </message>
   </context>
   <context>
     <name>Ship_Weights</name>
-    <message>
-      <location filename="ShipGui.py" line="88"/>
-      <source>Set ship weights</source>
-      <translation>Définir le poids du navire</translation>
-    </message>
-    <message>
-      <location filename="ShipGui.py" line="89"/>
-      <source>Set ship weights, tanks must be added later</source>
-      <translation>Set ship weights, tanks must be added later</translation>
-    </message>
   </context>
   <context>
     <name>ship_areas</name>
     <message>
-      <location filename="TaskPanel.py" line="174"/>
-      <source>Plot transversal areas curve</source>
-      <translation>Plot transversal areas curve</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="176"/>
+      <location filename="TaskPanel.py" line="206"/>
       <source>Draft</source>
-      <translation>Tirant d'eau</translation>
+      <translation type="unfinished">Tirant d'eau</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="178"/>
+      <location filename="TaskPanel.py" line="212"/>
       <source>Trim</source>
-      <translation>Ajuster</translation>
+      <translation type="unfinished">Ajuster</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="213"/>
+      <location filename="TaskPanel.py" line="263"/>
       <source>Displacement</source>
-      <translation>Déplacement</translation>
+      <translation type="unfinished">Déplacement</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="227"/>
+      <location filename="TaskPanel.py" line="283"/>
       <source>Areas curve tool draft selected [m]</source>
-      <translation>Areas curve tool draft selected [m]</translation>
+      <translation type="unfinished">Outil projet de courbe de zone sélectionné [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="234"/>
-      <source>Areas curve tool trim selected</source>
-      <translation>Areas curve tool trim selected</translation>
+      <location filename="TaskPanel.py" line="201"/>
+      <source>Plot the transversal areas curve</source>
+      <translation type="unfinished">tracer la courbe de surface transversal</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="299"/>
+      <source>Areas curve tool trim selected [deg]</source>
+      <translation type="unfinished">outil de découpe de courbes sélectionné [deg]</translation>
     </message>
   </context>
   <context>
     <name>ship_console</name>
     <message>
-      <location filename="PlotAux.py" line="78"/>
-      <source>Plot module is disabled, can't perform plot</source>
-      <translation>Plot module is disabled, can't perform plot</translation>
-    </message>
-    <message>
-      <location filename="PlotAux.py" line="113"/>
-      <source>Can't create folder</source>
-      <translation>Impossible de créer le dossier</translation>
-    </message>
-    <message>
-      <location filename="PlotAux.py" line="130"/>
-      <source>Can't write to file</source>
-      <translation>Impossible d'écrire dans le fichier</translation>
-    </message>
-    <message>
-      <location filename="PlotAux.py" line="150"/>
+      <location filename="PlotAux.py" line="388"/>
       <source>Data saved</source>
-      <translation>Données enregistrées</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="139"/>
-      <source>Ship instance must be selected (no object selected)</source>
-      <translation>Ship instance must be selected (no object selected)</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="154"/>
-      <source>More than one ship selected (extra ships will be neglected)</source>
-      <translation>More than one ship selected (extra ships will be neglected)</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="162"/>
-      <source>Ship instance must be selected (no valid ship found at selected objects)</source>
-      <translation>Ship instance must be selected (no valid ship found at selected objects)</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="104"/>
-      <source>Ussually you don't want to modify manually this option</source>
-      <translation>Ussually you don't want to modify manually this option</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="123"/>
-      <source>Object is not a valid ship simulation</source>
-      <translation>Object is not a valid ship simulation</translation>
-    </message>
-    <message>
-      <location filename="SimInstance.py" line="128"/>
-      <source>Object is not a ship simulation</source>
-      <translation>Object is not a ship simulation</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="147"/>
-      <source>Can't find any active simulation</source>
-      <translation>Can't find any active simulation</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="116"/>
-      <source>Ship objects can only be created on top of hull geometry (any object selected)</source>
-      <translation>Ship objects can only be created on top of hull geometry (any object selected)</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="135"/>
-      <source>Please create or load a ship hull geometry before using this tool</source>
-      <translation>Please create or load a ship hull geometry before using this tool</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="131"/>
-      <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
-      <translation>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="41"/>
-      <source>Plot module is disabled, tools can't graph output curves</source>
-      <translation>Plot module is disabled, tools can't graph output curves</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="58"/>
-      <source>pyOpenCL not installed, simulations stuff will disabled therefore</source>
-      <translation>pyOpenCL n'est pas installé, les trucs de simulation seront donc désactivés</translation>
-    </message>
-    <message>
-      <location filename="InitGui.py" line="65"/>
-      <source>numpy not installed, simulations stuff will disabled therefore</source>
-      <translation>numpy n'est pas installé, les trucs de simulation seront donc désactivés</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="67"/>
-      <source>Can't detect external faces from ship object</source>
-      <translation>Impossible de détecter les faces externes de l'objet navire</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="73"/>
-      <source>Computing hydrostatics</source>
-      <translation>Calculs hydrostatiques</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="306"/>
-      <source>Computing external faces</source>
-      <translation>Calcul des faces externes</translation>
-    </message>
-    <message>
-      <location filename="Simulation.py" line="90"/>
-      <source>Initializating</source>
-      <translation>Initialisation</translation>
-    </message>
-    <message>
-      <location filename="Simulation.py" line="105"/>
-      <source>Iterating</source>
-      <translation>Itération</translation>
-    </message>
-    <message>
-      <location filename="Simulation.py" line="109"/>
-      <source>Generating linear system matrix</source>
-      <translation>Génération de la matrice du système linéaire</translation>
-    </message>
-    <message>
-      <location filename="Simulation.py" line="113"/>
-      <source>Solving linear systems</source>
-      <translation>Résolution des systèmes linéaires</translation>
-    </message>
-    <message>
-      <location filename="Simulation.py" line="117"/>
-      <source>Time integrating</source>
-      <translation>Intégration en temps</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="44"/>
-      <source>Building data</source>
-      <translation>Construction des données</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="70"/>
-      <source>Launching simulation</source>
-      <translation>Lancement de la simulation</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="76"/>
-      <source>Done</source>
-      <translation>Fait</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="137"/>
-      <source>Ship simulation instance must be selected (no object selected)</source>
-      <translation>Une instance de simulation de navire doit être sélectionnée (aucun objet sélectionné)</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="152"/>
-      <source>More than one ship simulation selected (extra simulations will be neglected)</source>
-      <translation>Plus d'une simulation de navire sélectionnée (les simulations supplémentaires seront négligées)</translation>
+      <translation type="unfinished">Données enregistrées</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="160"/>
-      <source>Ship simulation instance must be selected (no valid simulation found at selected objects)</source>
-      <translation>Une instance de simulation de navire doit être sélectionnée (aucune simulation trouvée pour l'objet sélectionné)</translation>
+      <source>Please create or load a ship hull geometry before using this tool</source>
+      <translation type="unfinished">Veuillez créer ou charger une géométrie de coque de navire avant d'utiliser cet outil</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="177"/>
-      <source>Can't find OpenCL devices</source>
-      <translation>Impossible de trouver les dispositifs OpenCL</translation>
+      <location filename="TaskPanel.py" line="153"/>
+      <source>Ship objects can only be created on top of hull geometry (no solid found at selected objects)</source>
+      <translation type="unfinished">Les navires ne peuvent être créés qu'au sommet de la géométrie de la coque (aucun solide n'a été trouvé parmi les objets sélectionnés)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="206"/>
-      <source>Simulation already stopped</source>
-      <translation>Simulation déjà arrêtée</translation>
+      <location filename="TaskPanel.py" line="92"/>
+      <source>Computing hydrostatics</source>
+      <translation type="unfinished">Calculs hydrostatiques</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="413"/>
+      <source>Computing external faces</source>
+      <translation type="unfinished">Calcul des faces externes</translation>
+    </message>
+    <message>
+      <location filename="Preview.py" line="54"/>
+      <source>Computing sections</source>
+      <translation type="unfinished">Calcul des sections</translation>
+    </message>
+    <message>
+      <location filename="Preview.py" line="128"/>
+      <source>Any valid ship section found</source>
+      <translation type="unfinished">Aucune section valide de navire n'a été trouvée</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="132"/>
+      <source>Ship objects can only be created on top of hull geometry (no objects selected)</source>
+      <translation type="unfinished">Les navires ne peuvent être créés qu'au sommet de la géométrie de la coque (pas d'objet sélectionné)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="196"/>
+      <source>A ship instance must be selected before using this tool (no objects selected)</source>
+      <translation type="unfinished">Une instance de navire doit être sélectionnée avant d'utiliser cet outil (aucun objet sélectionné)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="213"/>
+      <source>More than one ship have been selected (the extra ships will be ignored)</source>
+      <translation type="unfinished">Plus d'un navire ont été sélectionnés (les navires supplémentaires seront ignorées)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="224"/>
+      <source>A ship instance must be selected before using this tool (no valid ship found at the selected objects)</source>
+      <translation type="unfinished">Une instance de navire doit être sélectionnée avant d'utiliser cet outil (aucun navire valide dans les objets sélectionnés)</translation>
+    </message>
+    <message>
+      <location filename="PlotAux.py" line="72"/>
+      <source>Plot module is disabled, so I cannot perform the plot</source>
+      <translation type="unfinished">Module de traçage est désactivé, donc je ne peux realiser le traçage</translation>
+    </message>
+    <message>
+      <location filename="PlotAux.py" line="137"/>
+      <source>Failure creating the folder</source>
+      <translation type="unfinished">Échec de création du dossier</translation>
+    </message>
+    <message>
+      <location filename="PlotAux.py" line="157"/>
+      <source>Failure writing to file</source>
+      <translation type="unfinished">Échec d'écriture dans le fichier</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="181"/>
+      <source>A ship instance must be selected before use this tool (no objects selected)</source>
+      <translation type="unfinished">Une instance de navire doit être sélectionnée avant d'utiliser cet outil (aucun objet sélectionné)</translation>
+    </message>
+    <message>
+      <location filename="TaskPanel.py" line="200"/>
+      <source>More than one ship has been selected (just the first one will be used)</source>
+      <translation type="unfinished">Plus d'un navire a été sélectionné ( seul le premier sera utilisé)</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="211"/>
-      <source>Any active simulation to stop</source>
-      <translation>Any active simulation to stop</translation>
+      <source>A ship instance must be selected before use this tool (novalid ships found in the selected objects)</source>
+      <translation type="unfinished">Une instance de navire doit être sélectionnée avant d'utiliser cet outil (aucun navire valide dans les objets sélectionnés)</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="216"/>
-      <source>Simulation will stop at the end of actual iteration</source>
-      <translation>La simulation s'arrêtera à la fin de l'itération actuelle</translation>
+      <location filename="InitGui.py" line="41"/>
+      <source>Plot module is disabled, tools cannot graph output curves</source>
+      <translation type="unfinished">Le module de tracé est désactivé, traçage impossible</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="60"/>
-      <source>Computing GZ</source>
-      <translation>Computing GZ</translation>
+      <location filename="TaskPanel.py" line="83"/>
+      <source>Failure detecting external faces from the ship object</source>
+      <translation type="unfinished">Échec de détection des faces externes de l'objet navire</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="185"/>
-      <source>Ship weights has not been set. You need to set weights before use this tool</source>
-      <translation>Le poids du navire n'a pas été défini. Vous devez définir le poids avant d'utiliser cet outil</translation>
-    </message>
-    <message>
-      <location filename="Plot.py" line="40"/>
-      <source>Performing plot</source>
-      <translation>Performing plot</translation>
-    </message>
-    <message>
-      <location filename="Preview.py" line="56"/>
-      <source>Computing sections</source>
-      <translation>Calcul des sections</translation>
-    </message>
-    <message>
-      <location filename="Preview.py" line="131"/>
-      <source>Any valid ship section found</source>
-      <translation>Any valid ship section found</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="43"/>
-      <source>Tank has not been created</source>
-      <translation>Tank has not been created</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="107"/>
-      <source>Tank objects can only be created on top of structure geometry (no object selected)</source>
-      <translation>Tank objects can only be created on top of structure geometry (no object selected)</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="138"/>
-      <source>Please create a tank geometry before using this tool</source>
-      <translation>Please create a tank geometry before using this tool</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="134"/>
-      <source>Tank objects can only be created on top of structure geometry (no solids can't be computed)</source>
-      <translation>Tank objects can only be created on top of structure geometry (no solids can't be computed)</translation>
+      <location filename="PlotAux.py" line="342"/>
+      <source>Failure writing the file</source>
+      <translation type="unfinished">Échec d'écriture du fichier</translation>
     </message>
   </context>
   <context>
     <name>ship_create</name>
     <message>
-      <location filename="Preview.py" line="62"/>
+      <location filename="Preview.py" line="66"/>
       <source>Base line</source>
-      <translation>Base line</translation>
+      <translation type="unfinished">Ligne de base</translation>
     </message>
     <message>
-      <location filename="Preview.py" line="71"/>
+      <location filename="Preview.py" line="83"/>
       <source>Free surface</source>
-      <translation>Surface libre</translation>
-    </message>
-    <message>
-      <location filename="Preview.py" line="82"/>
-      <source>Forward perpendicular</source>
-      <translation>Forward perpendicular</translation>
-    </message>
-    <message>
-      <location filename="Preview.py" line="91"/>
-      <source>After perpendicular</source>
-      <translation>After perpendicular</translation>
+      <translation type="unfinished">Surface libre</translation>
     </message>
     <message>
       <location filename="Preview.py" line="100"/>
+      <source>Forward perpendicular</source>
+      <translation type="unfinished">Prolonger la perpendiculaire</translation>
+    </message>
+    <message>
+      <location filename="Preview.py" line="117"/>
+      <source>After perpendicular</source>
+      <translation type="unfinished">Après la perpendiculaire</translation>
+    </message>
+    <message>
+      <location filename="Preview.py" line="134"/>
       <source>Main frame</source>
-      <translation>Main frame</translation>
+      <translation type="unfinished">Cadre principal</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="184"/>
+      <location filename="TaskPanel.py" line="218"/>
       <source>Create a new ship</source>
-      <translation>Créer un nouveau navire</translation>
+      <translation type="unfinished">Créer un nouveau navire</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="186"/>
+      <location filename="TaskPanel.py" line="223"/>
       <source>Length</source>
-      <translation>Longueur</translation>
+      <translation type="unfinished">Longueur</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="188"/>
+      <location filename="TaskPanel.py" line="229"/>
       <source>Breadth</source>
-      <translation>Etendu/Largeur</translation>
+      <translation type="unfinished">Etendu/Largeur</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="190"/>
+      <location filename="TaskPanel.py" line="235"/>
       <source>Draft</source>
-      <translation>Tirant d'eau</translation>
+      <translation type="unfinished">Tirant d'eau</translation>
     </message>
   </context>
   <context>
     <name>ship_hydrostatic</name>
     <message>
-      <location filename="TaskPanel.py" line="225"/>
+      <location filename="TaskPanel.py" line="276"/>
       <source>Plot hydrostatics</source>
-      <translation>Plot hydrostatics</translation>
+      <translation type="unfinished">Tracer les lignes hydrostatiques</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="227"/>
+      <location filename="TaskPanel.py" line="281"/>
       <source>Trim</source>
-      <translation>Ajuster</translation>
+      <translation type="unfinished">Ajuster</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="229"/>
+      <location filename="TaskPanel.py" line="287"/>
       <source>Minimum draft</source>
-      <translation>Tirant d'eau minimum</translation>
+      <translation type="unfinished">Tirant d'eau minimum</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="231"/>
+      <location filename="TaskPanel.py" line="293"/>
       <source>Maximum draft</source>
-      <translation>Tirant d'eau maximum</translation>
+      <translation type="unfinished">Tirant d'eau maximum</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="233"/>
+      <location filename="TaskPanel.py" line="299"/>
       <source>Number of points</source>
-      <translation>Nombre de points</translation>
+      <translation type="unfinished">Nombre de points</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="252"/>
+      <location filename="TaskPanel.py" line="333"/>
       <source>Hydrostatics tool trim selected</source>
-      <translation>Hydrostatics tool trim selected</translation>
+      <translation type="unfinished">L'outil d'ajustement des lignes hydrostatiques est sélectionné</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="259"/>
+      <location filename="TaskPanel.py" line="347"/>
       <source>Hydrostatics tool minimum draft selected [m]</source>
-      <translation>Tirant d'eau minimum sélectionné par l'outil hydrostatic [m]</translation>
+      <translation type="unfinished">Tirant d'eau minimum sélectionné par l'outil hydrostatic [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="266"/>
+      <location filename="TaskPanel.py" line="361"/>
       <source>Hydrostatics tool maximum draft selected [m]</source>
-      <translation>Tirant d'eau maximum sélectionné par l'outil hydrostatic [m]</translation>
+      <translation type="unfinished">Tirant d'eau maximum sélectionné par l'outil hydrostatic [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="273"/>
+      <location filename="TaskPanel.py" line="375"/>
       <source>Hydrostatics tool number of points selected</source>
-      <translation>Hydrostatics tool number of points selected</translation>
+      <translation type="unfinished">L'outil nombre de point pour les lignes hydrostatiques est sélectionné</translation>
     </message>
   </context>
   <context>
     <name>ship_load</name>
     <message>
-      <location filename="TaskPanel.py" line="96"/>
+      <location filename="TaskPanel.py" line="106"/>
       <source>Load example ship</source>
-      <translation>Charger un exemple de navire</translation>
+      <translation type="unfinished">Charger un exemple de navire</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="98"/>
+      <location filename="TaskPanel.py" line="111"/>
       <source>Select ship example geometry</source>
-      <translation>Sélectionnez un exemple de géométrie de navire</translation>
+      <translation type="unfinished">Sélectionnez un exemple de géométrie de navire</translation>
     </message>
   </context>
   <context>
     <name>ship_outline</name>
     <message>
-      <location filename="TaskPanel.py" line="156"/>
+      <location filename="TaskPanel.py" line="225"/>
       <source>Outline draw</source>
-      <translation>Outline draw</translation>
+      <translation type="unfinished">Dessiner le contour</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="158"/>
+      <location filename="TaskPanel.py" line="230"/>
       <source>Auto create</source>
-      <translation>Créer automatiquement</translation>
+      <translation type="unfinished">Créer automatiquement</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="160"/>
-      <source>Scale</source>
-      <translation>Échelle</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="162"/>
+      <location filename="TaskPanel.py" line="236"/>
       <source>Delete all sections</source>
-      <translation>Supprimer toutes les sections</translation>
+      <translation type="unfinished">Supprimer toutes les sections</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="165"/>
+      <location filename="TaskPanel.py" line="242"/>
       <source>Create sections</source>
-      <translation>Créer des sections</translation>
+      <translation type="unfinished">Créer des sections</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="168"/>
+      <location filename="TaskPanel.py" line="248"/>
       <source>Transversal</source>
-      <translation>Transversal</translation>
+      <translation type="unfinished">Transversal</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="171"/>
+      <location filename="TaskPanel.py" line="255"/>
       <source>Longitudinal</source>
-      <translation>Longitudinal</translation>
+      <translation type="unfinished">Longitudinal</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="174"/>
+      <location filename="TaskPanel.py" line="262"/>
       <source>Water lines</source>
-      <translation>Lignes de flottaison</translation>
+      <translation type="unfinished">Lignes de flottaison</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="345"/>
-      <source>Transversal sections position [m]</source>
-      <translation>Position des sections transversales [m]</translation>
+      <location filename="TaskPanel.py" line="477"/>
+      <source>Transversal section positions [m]</source>
+      <translation type="unfinished">Position des sections transversales [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="348"/>
-      <source>Longitudinal sections position [m]</source>
-      <translation>Position des sections longitudinales [m]</translation>
+      <location filename="TaskPanel.py" line="486"/>
+      <source>Longitudinal section positions [m]</source>
+      <translation type="unfinished">Position des sections longitudinales [m]</translation>
     </message>
     <message>
-      <location filename="TaskPanel.py" line="351"/>
-      <source>Water lines position [m]</source>
-      <translation>Position des lignes de flottaison [m]</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="362"/>
-      <source>Plot scale (1:scale format)</source>
-      <translation>Plot scale (1:scale format)</translation>
+      <location filename="TaskPanel.py" line="495"/>
+      <source>Water line positions [m]</source>
+      <translation type="unfinished">Position des lignes de flottaison [m]</translation>
     </message>
   </context>
   <context>
     <name>shipsim_create</name>
-    <message>
-      <location filename="TaskPanel.py" line="119"/>
-      <source>Create a new ship simulation</source>
-      <translation>Créer une nouvelle simulation de navire</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="121"/>
-      <source>Free surface</source>
-      <translation>Surface libre</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="123"/>
-      <source>Length</source>
-      <translation>Longueur</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="125"/>
-      <source>Breadth</source>
-      <translation>Etendu/Largeur</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="127"/>
-      <source>Number of points</source>
-      <translation>Nombre de points</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="129"/>
-      <source>Waves</source>
-      <translation>Vagues</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="132"/>
-      <source>Amplitude</source>
-      <translation>Amplitude</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="134"/>
-      <source>Period</source>
-      <translation>Période</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="136"/>
-      <source>Phase</source>
-      <translation>Phase</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="138"/>
-      <source>Heading</source>
-      <translation>Route</translation>
-    </message>
   </context>
   <context>
     <name>shipsim_stop</name>
-    <message>
-      <location filename="TaskPanel.py" line="185"/>
-      <source>Run the simulation</source>
-      <translation>Lancer la simulation</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="187"/>
-      <source>Simulation time</source>
-      <translation>Durée de la simulation</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="189"/>
-      <source>Output</source>
-      <translation>Sortie</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="191"/>
-      <source>OpenCL device</source>
-      <translation>OpenCL device</translation>
-    </message>
   </context>
   <context>
     <name>shipsim_track</name>
-    <message>
-      <location filename="TaskPanel.py" line="108"/>
-      <source>Track simulation</source>
-      <translation>Track simulation</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="110"/>
-      <source>Now</source>
-      <translation>Maintenant</translation>
-    </message>
   </context>
   <context>
     <name>shiptank_create</name>
-    <message>
-      <location filename="TaskPanel.py" line="149"/>
-      <source>Create a new tank</source>
-      <translation>Create a new tank</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="151"/>
-      <source>Filling level</source>
-      <translation>Niveau de remplissage</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="154"/>
-      <source>Fluid density</source>
-      <translation>Densité du fluide</translation>
-    </message>
   </context>
   <context>
     <name>shiptank_gz</name>
-    <message>
-      <location filename="TaskPanel.py" line="261"/>
-      <source>Draft</source>
-      <translation>Tirant d'eau</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="221"/>
-      <source>GZ curve computation</source>
-      <translation>Calcul de la courbe GZ</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="223"/>
-      <source>Loading condition</source>
-      <translation>Chargement de la condition</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="226"/>
-      <source>Roll angles</source>
-      <translation>Angle de roulis</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="228"/>
-      <source>Trim</source>
-      <translation>Ajuster</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="230"/>
-      <source>Start</source>
-      <translation>Début</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="232"/>
-      <source>End</source>
-      <translation>Fin</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="234"/>
-      <source>Number of points</source>
-      <translation>Nombre de points</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="257"/>
-      <source>Displacement</source>
-      <translation>Déplacement</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="240"/>
-      <source>Press update to compute</source>
-      <translation>Appuyez sur mise à jour pour calculer</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="244"/>
-      <source>Update displacement and draft</source>
-      <translation>Réactualiser le déplacement et le tirant d'eau</translation>
-    </message>
   </context>
   <context>
     <name>shiptank_weights</name>
-    <message>
-      <location filename="TaskPanel.py" line="191"/>
-      <source>Set weights</source>
-      <translation>Définir les poids</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="194"/>
-      <source>Name</source>
-      <translation>Nom</translation>
-    </message>
-    <message>
-      <location filename="TaskPanel.py" line="196"/>
-      <source>Mass</source>
-      <translation>Masse</translation>
-    </message>
   </context>
 </TS>

@@ -508,18 +508,34 @@ class IfcDocument(object):
         isi = create(self._fileobject,"IfcStyledItem",[rep,[psa],None])
         return isi
         
-    def addProfile(self,ifctype,data):
+    def addProfile(self,ifctype,data,curvetype="AREA"):
         """addProfile(ifctype,data): creates a 2D profile of the given type, with the given
         data as arguments, which must be formatted correctly according to the type."""
         if ifctype == "IfcPolyline":
             pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)[:2]) for p in data]
             pol = create(self._fileobject,"IfcPolyline",[pts])
-            profile = create(self._fileobject,"IfcArbitraryClosedProfileDef",["AREA",None,pol])
+            profile = create(self._fileobject,"IfcArbitraryClosedProfileDef",[curvetype,None,pol])
+        elif ifctype == "IfcCompositeCurve":
+            curves = []
+            for curve in data:
+                cur = None
+                if curve[0] == "line":
+                    cur = self.addProfile("IfcPolyline",curve[1])
+                elif curve[0] == "arc":
+                    pla = self.addPlacement(origin=curve[1],local=False,flat=True)
+                    cir = create(self._fileobject,"IfcCircle",[pla,curve[2]])
+                    trim1 = create(None,"IfcParameterValue",[curve[3][0]])
+                    trim2 = create(None,"IfcParameterValue",[curve[3][1]])
+                    cur = create(self._fileobject,"IfcTrimmedCurve",[cir,[trim1],[trim2]])
+                if cur:
+                    seg = create(self._fileobject,"IfcCompositeCurveSegment",["CONTINUOUS",True,cur])
+                    curves.append(seg)
+            profile = create(self._fileobject,"IfcCompositeCurve",[curves,False])
         else:
             if not isinstance(data,list):
                 data = [data]
             p = self.addPlacement(local=False,flat=True)
-            profile = create(self._fileobject,ifctype,["AREA",None,p]+data)
+            profile = create(self._fileobject,ifctype,[curvetype,None,p]+data)
         return profile
 
     def addExtrusion(self,profile,extrusion,placement=None):
@@ -561,6 +577,17 @@ class IfcDocument(object):
         if not placement:
             placement = self.addPlacement(origin=center,local=False)
         exp = self.addExtrusion(cir,extrusion,placement)
+        if color:
+            self.addColor(color,exp)
+        return exp
+        
+    def addExtrudedCompositeCurve(self,curves,extrusion,placement=None,color=None):
+        """addExtrudedCompositeCurve(curves,extrusion,[placement,color]): makes an extruded polyline
+        from the given curves and the given extrusion vector"""
+        ccu = self.addProfile("IfcCompositeCurve",curves)
+        if not placement:
+            placement = self.addPlacement(origin=center,local=False)
+        exp = self.addExtrusion(ccu,extrusion,placement)
         if color:
             self.addColor(color,exp)
         return exp

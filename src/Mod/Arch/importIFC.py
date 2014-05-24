@@ -1048,6 +1048,8 @@ def export(exportList,filename):
                     representation = ifc.addExtrudedCircle(gdata[1][0], gdata[1][1], gdata[2], color=color)
                 elif gdata[0] == "ellipse":
                     representation = ifc.addExtrudedEllipse(gdata[1][0], gdata[1][1], gdata[1][2], gdata[2], color=color)
+                elif gdata[0] == "composite":
+                    representation = ifc.addExtrudedCompositeCurve(gdata[1], gdata[2], color=color)
                 else:
                     print "debug: unknow extrusion type"
             elif fdata:

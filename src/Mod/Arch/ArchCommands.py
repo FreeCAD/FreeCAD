@@ -660,13 +660,34 @@ def getIfcExtrusionData(obj,scale=1):
                 import Part
                 if len(p.Edges) == 1:
                     if isinstance(p.Edges[0].Curve,Part.Circle):
+                        # Circle profile
                         r1 = p.Edges[0].Curve.Radius*scale
                         return "circle", [getTuples(p.Edges[0].Curve.Center,scale), r1], getTuples(v,scale), d
                     elif isinstance(p.Edges[0].Curve,Part.Ellipse):
+                        # Ellipse profile
                         r1 = p.Edges[0].Curve.MajorRadius*scale
                         r2 = p.Edges[0].Curve.MinorRadius*scale
                         return "ellipse", [getTuples(p.Edges[0].Curve.Center,scale), r1, r2], getTuples(v,scale), d
-                return "polyline", getTuples(p,scale), getTuples(v,scale), d
+                curves = False
+                for e in p.Edges:
+                    if isinstance(e.Curve,Part.Circle):
+                        curves = True
+                    elif not isinstance(e.Curve,Part.Line):
+                        print "Arch.getIfcExtrusionData: Warning: unsupported edge type in profile"
+                if curves:
+                    # Composite profile
+                    ecurves = []
+                    for e in p.Edges:
+                        if isinstance(e.Curve,Part.Circle):
+                            p1 = e.FirstParameter
+                            p2 = e.LastParameter
+                            ecurves.append(["arc",getTuples(e.Curve.Center,scale),e.Curve.Radius*scale,[p1,p2]])
+                        else:
+                            ecurves.append(["line",[getTuples(vt.Point,scale) for vt in e.Vertexes]])
+                    return "composite", ecurves, getTuples(v,scale), d
+                else:
+                    # Polyline profile
+                    return "polyline", getTuples(p,scale), getTuples(v,scale), d
     return None   
     
 def getIfcBrepFacesData(obj,scale=1,tessellation=1):

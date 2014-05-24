@@ -1,282 +1,292 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS>
+<TS version="2.0" language="cs" sourcelanguage="en">
   <context>
     <name>StartPage</name>
     <message>
-      <location filename="StartPage.py" line="25"/>
-      <source>FreeCAD Start Center</source>
-      <translation>FreeCAD Start centrum</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="26"/>
-      <source>Start a new project</source>
-      <translation>Zahájení nového projektu</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="27"/>
-      <source>Recent Files</source>
-      <translation>Nedávné soubory</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="63"/>
-      <source>Tutorials</source>
-      <translation>Výukové programy</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="32"/>
-      <source>FreeCAD Homepage</source>
-      <translation>Domovská stránka FreeCADu</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="33"/>
-      <source>Example projects</source>
-      <translation>Vzorové projekty</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="34"/>
-      <source>Schenkel STEP file</source>
-      <translation>Schenkelův STEP soubor</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="35"/>
-      <source>Load a PartDesign example</source>
-      <translation>Načíst příklad PartDesign</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="36"/>
-      <source>Load a Drawing extraction</source>
-      <translation>Načíst výkres</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="37"/>
-      <source>Load a Robot simulation example</source>
-      <translation>Načíst příklad simulace robota</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="38"/>
-      <source>Projects from the Web</source>
-      <translation>Projekty z webu</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="39"/>
-      <source>Schenkel STEP</source>
-      <translation>Schenkelův STEP</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="40"/>
-      <source>Complex Part</source>
-      <translation>Komplexní Part</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="41"/>
-      <source>Close this window after opening or creating a file</source>
-      <translation>Zavřít toto okno po otevření nebo vytvoření souboru</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="42"/>
-      <source>Don't show me this window again next time</source>
-      <translation>Příště toto okno nezobrazovat</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="43"/>
-      <source>Designing parts</source>
-      <translation>Navrhování prvků</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="44"/>
-      <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation>&lt;b&gt;Part Design&lt;/b&gt; půracovní plocha určená k vytváření složitých prvků na základě jednoduché 2D skici. Používá 2D tvary, omezí některé jejich části a vytvoří z nich 3D modely.</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="45"/>
-      <source>Example workflow</source>
-      <translation>Příklad pracovního postupu</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="46"/>
-      <source>Part Design</source>
-      <translation>Návrh dílu</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="47"/>
-      <source>Designing architectural elements</source>
-      <translation>Navrhování architektonických prvků</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="48"/>
-      <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.</source>
-      <translation>&lt;b&gt;Architektonický Design&lt;/b&gt; pracovní plocha speciálně pro práci s architektonickými prvky, jako jsou například stěny nebo okna. Začíná kreslením 2D tvarů a používá je jako skicu k vybudování architektonických objektů.</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="49"/>
-      <source>Architectual Design</source>
-      <translation>Architektonický Design</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="50"/>
-      <source>Working with Meshes</source>
-      <translation>Práce s drátovými modely</translation>
+      <source>FreeCAD Start Center</source>
+      <translation type="unfinished">FreeCAD Start centrum</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="51"/>
-      <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
-      <translation>&lt;b&gt;Mesh Workbench&lt;/b&gt; se používá pro práci s drátovými objekty. Drátové objekty jsou jednodušší 3D objekty než plné objekty, ale jsou často snadnější pro import a export z / do jiných aplikací.</translation>
+      <source>Start a new project</source>
+      <translation type="unfinished">Zahájení nového projektu</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="52"/>
-      <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
-      <translation>FreeCAD nabízí několik nástrojů pro konverzi mezi Mesh (drátový) a Part (plný) objekty.</translation>
+      <source>Recent Files</source>
+      <translation type="unfinished">Nedávné soubory</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="53"/>
-      <source>Work with Meshes</source>
-      <translation>Práce s drátovými modely</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="54"/>
-      <source>The complete workbench</source>
-      <translation>Kompletní pracovní plocha</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="55"/>
-      <source>FreeCAD Complete workbench</source>
-      <translation>FreeCAD úplný workbench</translation>
+      <location filename="StartPage.py" line="88"/>
+      <source>Tutorials</source>
+      <translation type="unfinished">Výukové programy</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="57"/>
-      <source>file size:</source>
-      <translation>velikost souboru:</translation>
+      <source>FreeCAD Homepage</source>
+      <translation type="unfinished">Domovská stránka FreeCADu</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="58"/>
-      <source>creation time:</source>
-      <translation>čas úprav:</translation>
+      <source>Example projects</source>
+      <translation type="unfinished">Vzorové projekty</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="59"/>
-      <source>last modified:</source>
-      <translation>naposled změněno:</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="56"/>
-      <source>populated with some of the most commonly used tools.</source>
-      <translation>některé nejčastěji používané nástroje</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="28"/>
-      <source>Latest videos</source>
-      <translation>Nejnovější videa</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="29"/>
-      <source>Latest news</source>
-      <translation>Nejnovější zprávy</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="30"/>
-      <source>On the web</source>
-      <translation>Na webu</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="31"/>
-      <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
-      <translation>Toto je domácí stránka FreeCADu. Zde máte možnost najít mnoho informací o FreeCADu, včetně návodů, příkladů a uživatelské dokumentace.</translation>
+      <source>Schenkel STEP file</source>
+      <translation type="unfinished">Schenkelův STEP soubor</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="60"/>
-      <source>location:</source>
-      <translation>umístění:</translation>
+      <source>Load a PartDesign example</source>
+      <translation type="unfinished">Načíst příklad PartDesign</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="61"/>
-      <source>User manual</source>
-      <translation>Uživatelský manuál</translation>
+      <source>Load a Drawing extraction</source>
+      <translation type="unfinished">Načíst výkres</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="62"/>
-      <source>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Online_Help_Toc</source>
-      <translation>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Online_Help_Toc</translation>
+      <source>Load a Robot simulation example</source>
+      <translation type="unfinished">Načíst příklad simulace robota</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="63"/>
+      <source>Projects from the Web</source>
+      <translation type="unfinished">Projekty z webu</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="64"/>
-      <source>Python resources</source>
-      <translation>Python resources</translation>
+      <source>Schenkel STEP</source>
+      <translation type="unfinished">Schenkelův STEP</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="65"/>
-      <source>File not found</source>
-      <translation>Soubor nebyl nalezen</translation>
+      <source>Complex Part</source>
+      <translation type="unfinished">Komplexní Part</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="66"/>
-      <source>from &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</source>
-      <translation>z &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</translation>
+      <source>Close this window after opening or creating a file</source>
+      <translation type="unfinished">Zavřít toto okno po otevření nebo vytvoření souboru</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="67"/>
-      <source>The FreeCAD-tutorial blog</source>
-      <translation>Výukový blog FreeCADu</translation>
+      <source>Don't show me this window again next time</source>
+      <translation type="unfinished">Příště toto okno nezobrazovat</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="68"/>
-      <source>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</source>
-      <translation>z &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</translation>
+      <source>Designing parts</source>
+      <translation type="unfinished">Navrhování prvků</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="69"/>
-      <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
-      <translation>Toto je oficiální uživatelský manuál FreeCADu, vývoje a překladu komunitou FreeCAD.</translation>
+      <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
+      <translation type="unfinished">&lt;b&gt;Part Design&lt;/b&gt; pracovní plocha určená k vytváření složitých prvků na základě jednoduché 2D skici. Používá 2D tvary, omezí některé jejich části a vytvoří z nich 3D modely.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="70"/>
-      <source>The tutorials section on the FreeCAD website</source>
-      <translation>Kapitola cvičení na stránkách FreeCAD</translation>
+      <source>Example workflow</source>
+      <translation type="unfinished">Příklad pracovního postupu</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="71"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation>Kapitola věnovaná skriptování v Pythonu na stánkách FreeCAD, s příklady, vysvětlivkami, a příkazy API.</translation>
+      <source>Part Design</source>
+      <translation type="unfinished">Tvorba dílu</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="72"/>
-      <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
-      <translation>Blog věnovaný výuce FreeCADu, spravovaný členy FreeCAD comunity</translation>
+      <source>Designing architectural elements</source>
+      <translation type="unfinished">Navrhování stavebních prvků</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="73"/>
-      <source>Getting started</source>
-      <translation>Getting started</translation>
+      <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.</source>
+      <translation type="unfinished">&lt;b&gt;Návrh staveb&lt;/b&gt; pracovní plocha speciálně pro práci s architektonickými prvky, jako jsou například stěny nebo okna. Začíná kreslením 2D tvarů a používá je jako skicu k vybudování architektonických objektů.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="74"/>
-      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</translation>
+      <source>Architectual Design</source>
+      <translation type="unfinished">Návrh Stavby</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="75"/>
-      <source>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</source>
-      <translation>http://sourceforge.net/apps/mediawiki/free-cad/index.php?title=Workbench_Concept</translation>
+      <source>Working with Meshes</source>
+      <translation type="unfinished">Práce s drátovými modely</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="76"/>
-      <source>Ship Design</source>
-      <translation>Ship Design</translation>
+      <source>The &lt;b&gt;Mesh Workbench&lt;/b&gt; is used to work with Mesh objects. Meshes are simpler 3D objects than Part objects, but they are often easier to import and export to/from other applications.</source>
+      <translation type="unfinished">&lt;b&gt;Mesh Workbench&lt;/b&gt; se používá pro práci s drátovými objekty. Drátové objekty jsou jednodušší 3D objekty než plné objekty, ale jsou často snadnější pro import a export z / do jiných aplikací.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="77"/>
-      <source>Designing and calculating ships</source>
-      <translation>Designing and calculating ships</translation>
+      <source>FreeCAD offers you several tools to convert between Mesh and Part objects.</source>
+      <translation type="unfinished">FreeCAD nabízí několik nástrojů pro konverzi mezi Mesh (drátový) a Part (plný) objekty.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="78"/>
-      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</translation>
+      <source>Work with Meshes</source>
+      <translation type="unfinished">Práce s drátovými modely</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="79"/>
+      <source>The complete workbench</source>
+      <translation type="unfinished">Kompletní pracovní plocha</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="80"/>
+      <source>FreeCAD Complete workbench</source>
+      <translation type="unfinished">FreeCAD úplný workbench</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="82"/>
+      <source>file size:</source>
+      <translation type="unfinished">velikost souboru:</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="83"/>
+      <source>creation time:</source>
+      <translation type="unfinished">čas úprav:</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="84"/>
+      <source>last modified:</source>
+      <translation type="unfinished">naposled změněno:</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="81"/>
+      <source>populated with some of the most commonly used tools.</source>
+      <translation type="unfinished">některé nejčastěji používané nástroje</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="53"/>
+      <source>Latest videos</source>
+      <translation type="unfinished">Nejnovější videa</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="54"/>
+      <source>Latest news</source>
+      <translation type="unfinished">Nejnovější zprávy</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="55"/>
+      <source>On the web</source>
+      <translation type="unfinished">Na webu</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="56"/>
+      <source>This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.</source>
+      <translation type="unfinished">Toto je domácí stránka FreeCADu. Zde máte možnost najít mnoho informací o FreeCADu, včetně návodů, příkladů a uživatelské dokumentace.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="85"/>
+      <source>location:</source>
+      <translation type="unfinished">umístění:</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="86"/>
+      <source>User manual</source>
+      <translation type="unfinished">Uživatelský manuál</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="89"/>
+      <source>Python resources</source>
+      <translation type="unfinished">Python resources</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="90"/>
+      <source>File not found</source>
+      <translation type="unfinished">Soubor nebyl nalezen</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="91"/>
+      <source>from &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</source>
+      <translation type="unfinished">z &lt;a href=http://twitter.com/FreeCADNews&gt;@FreeCADNews&lt;/a&gt;</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="92"/>
+      <source>The FreeCAD-tutorial blog</source>
+      <translation type="unfinished">Výukový blog FreeCADu</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="93"/>
+      <source>from &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</source>
+      <translation type="unfinished">z &lt;a href=http://www.youtube.com/user/FreeCADNews?feature=mhee&gt;FreeCADNews channel&lt;/a&gt;</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="94"/>
+      <source>This is the official user manual of FreeCAD, built, maintained and translated by the FreeCAD community.</source>
+      <translation type="unfinished">Toto je oficiální uživatelský manuál FreeCADu, vytvořený, udržovaný a přeložený komunitou FreeCADu.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="95"/>
+      <source>The tutorials section on the FreeCAD website</source>
+      <translation type="unfinished">Kapitola cvičení na stránkách FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">Kapitola věnovaná skriptování v Pythonu na stánkách FreeCAD, s příklady, vysvětlivkami, a příkazy API.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="97"/>
+      <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
+      <translation type="unfinished">Blog věnovaný výuce FreeCADu, spravovaný členy FreeCAD comunity</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="98"/>
+      <source>Getting started</source>
+      <translation type="unfinished">Začínáme</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="99"/>
+      <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
+      <translation type="unfinished">Rozhraní FreeCADu je rozděleno na pracovní plochy, což jsou sady nástrojů, které jsou vhodné pro konkrétní úkol. Můžete začít s jednou z pracovních ploch v tomto seznamu, nebo kompletní pracovní plochou, která vám nabídne některé z nejčastěji používaných nástrojů shromážděných z jiných pracovních ploch. Kliknutím se dozvíte více o pracovních plochách na stránkách FreeCADu.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="101"/>
+      <source>Ship Design</source>
+      <translation type="unfinished">Návrh lodi</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="102"/>
+      <source>Designing and calculating ships</source>
+      <translation type="unfinished">Navrhování a výpočet lodí</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="103"/>
+      <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
+      <translation type="unfinished">Modul &lt;b&gt;Návrh lodi&lt;/b&gt; nabízí několik nástrojů, které pomáhají návrhářům lodí zobrazit, modelovat a počítat profily a další specifické vlastnosti lodních trupů.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="104"/>
       <source>Load an Architectural example model</source>
-      <translation>Load an Architectural example model</translation>
+      <translation type="unfinished">Načtení příkladu architektonického modelu</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="87"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="105"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="106"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
     </message>
   </context>
 </TS>
