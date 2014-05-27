@@ -1,11 +1,6 @@
 project(FreeCAD_trunk)
 set(FREECAD_VERSION "0.13")
 
-# Needed for salomesmesh
-if(CMAKE_COMPILER_IS_GNUCXX)
-ENABLE_LANGUAGE(Fortran)
-endif(CMAKE_COMPILER_IS_GNUCXX)
-
 set(PACKAGE_NAME "FreeCAD")
 set(PACKAGE_VERSION_MAJOR "0")
 set(PACKAGE_VERSION_MINOR "12")
@@ -50,6 +45,9 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 endif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
+    # Needed for salomesmesh
+    ENABLE_LANGUAGE(Fortran)
+
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
     add_definitions(-DHAVE_CONFIG_H)
