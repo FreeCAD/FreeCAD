@@ -34,4 +34,5 @@ if openscadbin:
     FreeCAD.addImportType("OpenSCAD Format (*.scad)","importCSG")
 FreeCAD.addExportType("OpenSCAD CSG Format (*.csg)","exportCSG")
 FreeCAD.addExportType("OpenSCAD Format (*.scad)","exportCSG")
+FreeCAD.addExportType("DRAWEXE source (*.draw)","exportDRAWEXE")
 

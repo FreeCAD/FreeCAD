@@ -6,6 +6,7 @@ SET(OpenSCAD_SRCS
         OpenSCADFeatures.py
         OpenSCADUtils.py
         OpenSCADCommands.py
+        exportDRAWEXE.py
         exportCSG.py
         importCSG.py
         tokrules.py
