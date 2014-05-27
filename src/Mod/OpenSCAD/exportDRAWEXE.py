@@ -67,8 +67,66 @@ def saveShape(csg,filename,shape,name,hasplacement = True):
         sh.exportBrep(breppath)
     return hasplacement
 
+def saveSweep(csg,ob,filename):
+    import Part
+    spine,subshapelst=ob.Spine
+    #process_object(csg,spine,filename)
+    try:
+        path=Part.Wire([spine.Shape.getElement(subshapename) for \
+                subshapename in spine,subshapelst])
+    except: # BRep_API: command not done
+        if spine.Shape.ShapeType == 'Edge':
+            path = spine.Shape
+        elif spine.Shape.ShapeType == 'Wire':
+            path = Part.Wire(spine.Shape)
+        else:
+            raise ValueError('Unsuitabel Shape Type')
+    spinename = '%s-0-spine' % ob.Name
+    hasplacement = saveShape(csg,filename, path,spinename,None) # placement with shape
+    #safePlacement(ob.Placement,ob.Name)
+    csg.write('mksweep %s\n' % spinename)
+    #setsweep
+    setoptions=[]
+    buildoptions=[]
+    if ob.Frenet:
+        setoptions.append('-FR')
+    else:
+        setoptions.append('-CF')
+    if ob.Transition == 'Transformed':
+        buildoptions.append('-M')
+    elif ob.Transition == 'Right corner':
+        buildoptions.append('-C')
+    elif ob.Transition == 'Round corner':
+        buildoptions.append('-R')
+    if ob.Solid:
+        buildoptions.append('-S')
+    csg.write('setsweep %s\n' % (" ".join(setoptions)))
+    #addsweep
+    sections=ob.Sections
+    sectionnames = []
+    for i,subobj in enumerate(ob.Sections):
+        #process_object(csg,subobj,filename)
+        #sectionsnames.append(subobj.Name)
+        #d1['basename']=subobj.Name
+        sectionname = '%s-0-section-%02d-%s' % (ob.Name,i,subobj.Name)
+        addoptions=[]
+        sh = subobj.Shape
+        if sh.ShapeType == 'Vertex':
+            pass
+        elif sh.ShapeType == 'Wire' or sh.ShapeType == 'Edge':
+            sh = Part.Wire(sh)
+        elif sh.ShapeType == 'Face':
+            sh = sh.OuterWire
+        else:
+            raise ValueError
+        hasplacement = saveShape(csg,filename,sh,sectionname,None) # placement with shape
+        csg.write('addsweep %s %s\n' % (sectionname," ".join(addoptions)))
+    csg.write('buildsweep %s %s\n' % (ob.Name," ".join(buildoptions)))
+
+
 def isDraftFeature(ob):
-    if ob.isDerivedFrom('Part::FeaturePython') and \
+    if (ob.isDerivedFrom('Part::FeaturePython') or \
+            ob.isDerivedFrom('Part::Part2DObjectPython')) and \
             hasattr(ob.Proxy,'__module__') and \
             ob.Proxy.__module__ == 'Draft':
         return True
@@ -78,8 +136,28 @@ def isDraftClone(ob):
             hasattr(ob.Proxy,'__module__') and \
             ob.Proxy.__module__ == 'Draft':
         import Draft
-        return isinstance(ob.Proxy,Draft._Clone) 
-    
+        return isinstance(ob.Proxy,Draft._Clone)
+
+def isDraftCircle(ob):
+    if isDraftFeature(ob):
+        import Draft
+        return isinstance(ob.Proxy,Draft._Circle)
+
+def isDraftWire(ob):
+    if isDraftFeature(ob):
+        import Draft
+        if isinstance(ob.Proxy,Draft._Wire):
+            #only return true if we support all options
+            #"Closed" append last point at the end
+            #"MakeFace" 
+            #"Points" data we need
+            # the usage of 'start' and 'end' is not clear
+            if ob.Base is None and ob.Tool is None and \
+                    ob.FilletRadius.Value == 0.0 and \
+                    ob.ChamferSize.Value == 0.0:
+                return True
+
+
 def isOpenSCADFeature(ob):
     if ob.isDerivedFrom('Part::FeaturePython') and \
             hasattr(ob.Proxy,'__module__') and \
@@ -139,13 +217,14 @@ def process_object(csg,ob,filename):
         process_object(csg,ob.Source,filename)
         csg.write('tcopy %s %s\n'%(ob.Source.Name,d1['name']))
         b=ob.Base
-        d1['dx']=f2s(ob.Base.x)
-        d1['dy']=f2s(ob.Base.y)
-        d1['dz']=f2s(ob.Base.z)
-        d1['x']=f2s(ob.Normal.x)
-        d1['y']=f2s(ob.Normal.y)
-        d1['z']=f2s(ob.Normal.z)
-        csg.write('smirror %(name)s %(x)s %(y)s %(z)s %(dx)s %(dy)s %(dz)s\n' % d1)
+        d1['x']=f2s(ob.Base.x)
+        d1['y']=f2s(ob.Base.y)
+        d1['z']=f2s(ob.Base.z)
+        d1['dx']=f2s(ob.Normal.x)
+        d1['dy']=f2s(ob.Normal.y)
+        d1['dz']=f2s(ob.Normal.z)
+        csg.write('tmirror %(name)s %(x)s %(y)s %(z)s %(dx)s %(dy)s %(dz)s\n' \
+                % d1)
     elif ob.TypeId == 'Part::Compound':
         if len(ob.Links) == 0:
             pass
@@ -204,60 +283,7 @@ def process_object(csg,ob,filename):
         csg.write('prism %s %s 0 0 %s\n' % (d1['name'],facename,\
             f2s(ob.Height.Value)))
     elif ob.TypeId == "Part::Sweep" and True:
-        import Part
-        spine,subshapelst=ob.Spine
-        #process_object(csg,spine,filename)
-        try:
-            path=Part.Wire([spine.Shape.getElement(subshapename) for \
-                    subshapename in spine,subshapelst])
-        except: # BRep_API: command not done
-            if spine.Shape.ShapeType == 'Edge':
-                path = spine.Shape
-            elif spine.Shape.ShapeType == 'Wire':
-                path = Part.Wire(spine.Shape)
-            else:
-                raise ValueError('Unsuitabel Shape Type')
-        spinename = '%s-0-spine' % ob.Name
-        hasplacement = saveShape(csg,filename, path,spinename,None) # placement with shape
-        #safePlacement(ob.Placement,ob.Name)
-        csg.write('mksweep %s\n' % spinename)
-        #setsweep
-        setoptions=[]
-        buildoptions=[]
-        if ob.Frenet:
-            setoptions.append('-FR')
-        else:
-            setoptions.append('-CF')
-        if ob.Transition == 'Transformed':
-            buildoptions.append('-M')
-        elif ob.Transition == 'Right Corner':
-            buildoptions.append('-C')
-        elif ob.Solid:
-            buildoptions.append('-S')
-        csg.write('setsweep %s\n' % (" ".join(setoptions)))
-        #addsweep
-
-
-        sections=ob.Sections
-        sectionnames = []
-        for i,subobj in enumerate(ob.Sections):
-            #process_object(csg,subobj,filename)
-            #sectionsnames.append(subobj.Name)
-            #d1['basename']=subobj.Name
-            sectionname = '%s-0-section-%02d-%s' % (ob.Name,i,subobj.Name)
-            addoptions=[]
-            sh = subobj.Shape
-            if sh.ShapeType == 'Vertex':
-                pass
-            elif sh.ShapeType == 'Wire' or sh.ShapeType == 'Edge':
-                sh = Part.Wire(sh)
-            elif sh.ShapeType == 'Face':
-                sh = sh.OuterWire
-            else:
-                raise ValueError
-            hasplacement = saveShape(csg,filename,sh,sectionname,None) # placement with shape
-            csg.write('addsweep %s %s\n' % (sectionname," ".join(addoptions)))
-        csg.write('buildsweep %s %s\n' % (ob.Name," ".join(buildoptions)))
+        saveSweep(csg,ob,filename)
 
     elif isDeform(ob): #non-uniform scaling
         m=ob.Matrix
@@ -271,6 +297,39 @@ def process_object(csg,ob,filename):
         if m.A14 > 1e-8 or m.A24 > 1e-8 or m.A34 > 1e-8:
             csg.write("ttranslate %s %s %s %s\n" % \
                 (ob.Name,f2s(m.A14),f2s(m.A24),f2s(m.A34)))
+    elif isDraftCircle(ob):
+        "circle name x y [z [dx dy dz]] [ux uy [uz]] radius"
+        d1['radius']=ob.Radius.Value
+        pfirst=f2s(ob.FirstAngle.getValueAs('rad').Value)
+        plast=f2s(ob.LastAngle.getValueAs('rad').Value)
+
+        #todo ofirst and p last as arguements to mkedge getValueAs('rad').Value
+        curvename = '%s-curve' % d1['name']
+        edgename = '%s-edge' % d1['name']
+        wirename = '%s-dwirewire' % d1['name']
+        csg.write('circle %s 0 0 0 %s\n' % (curvename,ob.Radius.Value))
+        csg.write('mkedge %s %s %s %s\n' % (edgename,curvename,pfirst,plast))
+        csg.write('wire %s %s\n' %(wirename,edgename))
+        if ob.MakeFace:
+            csg.write('mkplane %s %s\n' % (d1['name'],wirename))
+        else:
+            csg.write("renamevar %s %s\n"%(wirename,d1['name'])) #the wire is the final object
+    elif isDraftWire(ob):
+        points=ob.Points
+        if ob.Closed:
+            points.append(points[0])
+        polyname = '%s-dwireline' % d1['name']
+        pointstr=' '.join('%s %s %s'%(f2s(v.x),f2s(v.y),f2s(v.z)) \
+                for v in points)
+        csg.write('polyline %s %s\n' % (polyname,pointstr))
+        if ob.MakeFace:
+            wirename = '%s-dwirewire' % d1['name']
+            csg.write('wire %s %s\n' %(wirename,polyname))
+            facename =  d1['name']
+            csg.write('mkplane %s %s\n' % (facename,polyname))
+        else:
+            wirename =  d1['name']
+            csg.write('wire %s %s\n' %(wirename,polyname))
     elif isDraftClone(ob):
         x,y,z=ob.Scale.x
         if x == y == z: #uniform scaling
