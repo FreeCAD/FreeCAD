@@ -572,4 +572,4 @@ def applyPlacement(shape):
         elif shape.ShapeType == 'Shell':
             return Part.Shell(shape.childShapes())
         else:
-            raise ValueError('Unsupported shape type')
+            return Part.Compound([shape])
