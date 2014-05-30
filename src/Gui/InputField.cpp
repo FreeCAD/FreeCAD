@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QContextMenuEvent>
 # include <QMenu>
+# include <QPixmapCache>
 #endif
 
 #include <Base/Console.h>
@@ -68,7 +69,7 @@ InputField::InputField ( QWidget * parent )
     setValidator(new InputValidator(this));
     iconLabel = new QLabel(this);
     iconLabel->setCursor(Qt::ArrowCursor);
-    QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
+    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
     iconLabel->setStyleSheet(QString::fromAscii("QLabel { border: none; padding: 0px; }"));
     iconLabel->hide();
@@ -87,6 +88,22 @@ InputField::InputField ( QWidget * parent )
 
 InputField::~InputField()
 {
+}
+
+QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
+{
+    QString key = QString::fromAscii("%1_%2x%3")
+        .arg(QString::fromAscii(name))
+        .arg(size.width())
+        .arg(size.height());
+    QPixmap icon;
+    if (QPixmapCache::find(key, icon))
+        return icon;
+
+    icon = BitmapFactory().pixmapFromSvg(name, size);
+    if (!icon.isNull())
+        QPixmapCache::insert(key, icon);
+    return icon;
 }
 
 void InputField::resizeEvent(QResizeEvent *)
@@ -157,7 +174,7 @@ void InputField::newInput(const QString & text)
     }catch(Base::Exception &e){
         ErrorText = e.what();
         this->setToolTip(QString::fromAscii(ErrorText.c_str()));
-        QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
+        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
         parseError(QString::fromAscii(ErrorText.c_str()));
         validInput = false;
@@ -167,7 +184,7 @@ void InputField::newInput(const QString & text)
     // check if unit fits!
     if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
         this->setToolTip(QString::fromAscii("Wrong unit"));
-        QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
+        QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
         iconLabel->setPixmap(pixmap);
         parseError(QString::fromAscii("Wrong unit"));
         validInput = false;
@@ -175,7 +192,7 @@ void InputField::newInput(const QString & text)
     }
 
 
-    QPixmap pixmap = BitmapFactory().pixmapFromSvg(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
+    QPixmap pixmap = getValidationIcon(":/icons/button_valid.svg", QSize(sizeHint().height(),sizeHint().height()));
     iconLabel->setPixmap(pixmap);
     ErrorText = "";
     validInput = true;
