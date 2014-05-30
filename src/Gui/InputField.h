@@ -162,6 +162,9 @@ protected:
     virtual void resizeEvent(QResizeEvent*);
 
 private:
+    QPixmap getValidationIcon(const char* name, const QSize& size) const;
+
+private:
     QLabel* iconLabel;
     QByteArray m_sPrefGrp;
     std::string ErrorText;
