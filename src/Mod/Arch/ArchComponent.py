@@ -356,10 +356,21 @@ class Component:
                     if not base.Solids:
                         if base.Faces: 
                             return [base]
-                        elif base.Wires:
+                        basewires = []
+                        if not base.Wires:
+                            if len(base.Edges) == 1:
+                                import Part
+                                basewires = [Part.Wire(base.Edges)]
+                        else:
+                            basewires = base.Wires
+                        if basewires:
                             import DraftGeomUtils,DraftVecUtils,Part
-                            for wire in base.Wires:
-                                dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(n)
+                            for wire in basewires:
+                                e = wire.Edges[0]
+                                if isinstance(e.Curve,Part.Circle):
+                                    dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
+                                else:
+                                    dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(n)
                                 if not DraftVecUtils.isNull(dvec):
                                     dvec.normalize()
                                 sh = None

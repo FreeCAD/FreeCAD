@@ -719,7 +719,10 @@ def getShape(obj,objid):
     # if DEBUG: print "getting Shape from ",obj 
     #print "getting shape: ",sh,sh.Solids,sh.Volume,sh.isValid(),sh.isNull()
     #for v in sh.Vertexes: print v.Point
-    return sh
+    if sh:
+        if not sh.isNull():
+            return sh
+    return None
     
 def getPlacement(entity):
     "returns a placement from the given entity"
@@ -1041,13 +1044,14 @@ def export(exportList,filename):
             else:
                 if DEBUG: print "   Extrusion"
             if gdata:
+                # gdata = [ type, profile data, extrusion data, placement data ]
                 placement = ifc.addPlacement(origin=gdata[3][0],xaxis=gdata[3][1],zaxis=gdata[3][2])
                 if gdata[0] == "polyline":
                     representation = ifc.addExtrudedPolyline(gdata[1], gdata[2], color=color)
                 elif gdata[0] == "circle":
-                    representation = ifc.addExtrudedCircle(gdata[1][0], gdata[1][1], gdata[2], color=color)
+                    representation = ifc.addExtrudedCircle(gdata[1], gdata[2], color=color)
                 elif gdata[0] == "ellipse":
-                    representation = ifc.addExtrudedEllipse(gdata[1][0], gdata[1][1], gdata[1][2], gdata[2], color=color)
+                    representation = ifc.addExtrudedEllipse(gdata[1], gdata[2], color=color)
                 elif gdata[0] == "composite":
                     representation = ifc.addExtrudedCompositeCurve(gdata[1], gdata[2], color=color)
                 else:

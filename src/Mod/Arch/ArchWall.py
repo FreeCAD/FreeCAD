@@ -440,14 +440,17 @@ class _Wall(ArchComponent.Component):
                 elif obj.Base.Shape.Edges:
                     # case 3: the base is flat, we need to extrude it
                     profiles = self.getProfiles(obj)
-                    normal.multiply(height)
-                    base = profiles.pop()
-                    base.fix(0.1,0,1)
-                    base = base.extrude(normal)
-                    for p in profiles:
-                        p.fix(0.1,0,1)
-                        p = p.extrude(normal)
-                        base = base.fuse(p)
+                    if profiles:
+                        normal.multiply(height)
+                        base = profiles.pop()
+                        base.fix(0.1,0,1)
+                        base = base.extrude(normal)
+                        for p in profiles:
+                            p.fix(0.1,0,1)
+                            p = p.extrude(normal)
+                            base = base.fuse(p)
+                    else:
+                        base = None
                 else:
                     base = None
                     FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
