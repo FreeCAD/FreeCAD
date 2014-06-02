@@ -58,6 +58,7 @@ Feature::~Feature()
 
 App::DocumentObjectExecReturn *Feature::execute(void)
 {
+    this->Mesh.touch();
     return App::DocumentObject::StdReturn;
 }
 
