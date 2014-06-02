@@ -157,7 +157,7 @@ def getdimheight(style):
                     if a.type == "dimstyle":
                         if rawValue(a,2) == style:
                             return rawValue(a,140)
-    return None
+    return 1
     
 def calcBulge(v1,bulge,v2):
     '''
