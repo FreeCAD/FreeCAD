@@ -2174,8 +2174,12 @@ def clone(obj,delta=None):
     original position.'''
     if not isinstance(obj,list):
         obj = [obj]
-    cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
-    cl.Label = "Clone of " + obj[0].Label
+    if (len(obj) == 1) and obj[0].isDerivedFrom("Part::Part2DObject"):
+        cl = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Clone2D")
+        cl.Label = "Clone of " + obj[0].Label + " (2D)"
+    else:
+        cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
+        cl.Label = "Clone of " + obj[0].Label
     _Clone(cl)
     if gui:
         _ViewProviderClone(cl.ViewObject)
@@ -4672,6 +4676,12 @@ class _Clone(_DraftObject):
         import Part, DraftGeomUtils
         pl = obj.Placement
         shapes = []
+        if obj.isDerivedFrom("Part::Part2DObject"):
+            # if our clone is 2D, make sure all its linked geometry is 2D too
+            for o in obj.Objects:
+                if not o.isDerivedFrom("Part::Part2DObject"):
+                    FreeCAD.Console.PrintWarning("Warning 2D Clone "+obj.Name+" contains 3D geometry")
+                    return
         for o in obj.Objects:
             if o.isDerivedFrom("Part::Feature"):
                 if o.Shape.isNull():
