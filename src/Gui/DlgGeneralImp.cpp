@@ -243,15 +243,17 @@ void DlgGeneralImp::loadSettings()
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     this->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
 
-    // List all .css files
+    // List all .qss/.css files
     QMap<QString, QString> cssFiles;
     QDir dir;
-    QString filter = QString::fromAscii("*.css");
+    QStringList filter;
+    filter << QString::fromAscii("*.qss");
+    filter << QString::fromAscii("*.css");
     QFileInfoList fileNames;
 
     // read from user directory
     dir.setPath(QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str()));
-    fileNames = dir.entryInfoList(QStringList(filter), QDir::Files, QDir::Name);
+    fileNames = dir.entryInfoList(filter, QDir::Files, QDir::Name);
     for (QFileInfoList::iterator it = fileNames.begin(); it != fileNames.end(); ++it) {
         if (cssFiles.find(it->baseName()) == cssFiles.end()) {
             cssFiles[it->baseName()] = it->absoluteFilePath();
