@@ -89,14 +89,18 @@ def getPropertyNames(entity):
 def getTuple(vec):
     """getTuple(vec): returns a tuple from other coordinate
     structures: tuple, list, 3d vector, or occ vertex"""
+    def fmt(t):
+        t = float(t)
+        t = round(t,PRECISION)
+        return t
     if isinstance(vec,tuple):
-        return tuple([float(v) for v in vec])
+        return tuple([fmt(v) for v in vec])
     elif isinstance(vec,list):
-        return tuple([float(v) for v in vec])
+        return tuple([fmt(v) for v in vec])
     elif hasattr(vec,"x") and hasattr(vec,"y") and hasattr(vec,"z"):
-        return (float(vec.x),float(vec.y),float(vec.z))
+        return (fmt(vec.x),fmt(vec.y),fmt(vec.z))
     elif hasattr(vec,"X") and hasattr(vec,"Y") and hasattr(vec,"Z"):
-        return (float(vec.X),float(vec.Y),float(vec.Z))
+        return (fmt(vec.X),fmt(vec.Y),fmt(vec.Z))
         
 def getValueAndDirection(vec):
     """getValueAndDirection(vec): returns a length and a tuple
@@ -364,9 +368,9 @@ class IfcDocument(object):
             f = open(path,"rb")
             lines = []
             for l in f.readlines():
-                if "IFCPLANEANGLEMEASURE" in l:
-                    # bug 1: adding ifcPlaneAngleMeasure in a ifcMeasureWithUnit adds an unwanted = sign
-                    l = l.replace("=IFCPLANEANGLEMEASURE","IFCPLANEANGLEMEASURE")
+                if "(=IFC" in l:
+                    # bug 1: adding an ifc entity without ID adds an unwanted = sign
+                    l = l.replace("(=IFC","(IFC")
                 #elif ("FACEBOUND" in l) or ("FACEOUTERBOUND" in l): # FIXED
                     # bug 2: booleans are exported as ints
                     #l = l.replace(",1);",",.T.);")
@@ -511,6 +515,15 @@ class IfcDocument(object):
     def addProfile(self,ifctype,data,curvetype="AREA"):
         """addProfile(ifctype,data): creates a 2D profile of the given type, with the given
         data as arguments, which must be formatted correctly according to the type."""
+        
+        # Expected ifctype and corresponding data formatting:
+        # IfcPolyLine: [ (0,0,0), (2,1,0), (3,3,0) ] # list of points
+        # IfcCompositeCurve: [ ["line",[ (0,0,0), (2,1,0) ] ], # list of points
+        #                      ["arc", (0,0,0), 15, [0.76, 3.1416], True, "PARAMETER"] # center, radius, [trim1, trim2], SameSense, trimtype
+        #                      ... ]
+        # IfcCircleProfileDef: [ (0,0,0), 15 ] # center, radius
+        # IfcEllipseProfileDef: [ (0,0,0), 15, 7 ] # center, radiusX, radiusY
+        
         if ifctype == "IfcPolyline":
             pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)[:2]) for p in data]
             pol = create(self._fileobject,"IfcPolyline",[pts])
@@ -520,17 +533,24 @@ class IfcDocument(object):
             for curve in data:
                 cur = None
                 if curve[0] == "line":
-                    cur = self.addProfile("IfcPolyline",curve[1])
+                    pts = [create(self._fileobject,"IfcCartesianPoint",getTuple(p)[:2]) for p in curve[1]]
+                    cur = create(self._fileobject,"IfcPolyline",[pts])
                 elif curve[0] == "arc":
                     pla = self.addPlacement(origin=curve[1],local=False,flat=True)
                     cir = create(self._fileobject,"IfcCircle",[pla,curve[2]])
-                    trim1 = create(None,"IfcParameterValue",[curve[3][0]])
-                    trim2 = create(None,"IfcParameterValue",[curve[3][1]])
-                    cur = create(self._fileobject,"IfcTrimmedCurve",[cir,[trim1],[trim2]])
+                    if curve[5] == "CARTESIAN":
+                        # BUGGY! Impossible to add cartesian points as "embedded" entity
+                        trim1 = create(None,"IfcCartesianPoint",getTuple(curve[3][0])[:2])
+                        trim2 = create(None,"IfcCartesianPoint",getTuple(curve[3][1])[:2])
+                    else:
+                        trim1 = create(None,"IfcParameterValue",[curve[3][0]])
+                        trim2 = create(None,"IfcParameterValue",[curve[3][1]])
+                    cur = create(self._fileobject,"IfcTrimmedCurve",[cir,[trim1],[trim2],curve[4],curve[5]])
                 if cur:
                     seg = create(self._fileobject,"IfcCompositeCurveSegment",["CONTINUOUS",True,cur])
                     curves.append(seg)
-            profile = create(self._fileobject,"IfcCompositeCurve",[curves,False])
+            ccu = create(self._fileobject,"IfcCompositeCurve",[curves,False])
+            profile = create(self._fileobject,"IfcArbitraryClosedProfileDef",[curvetype,None,ccu])
         else:
             if not isinstance(data,list):
                 data = [data]
@@ -559,23 +579,23 @@ class IfcDocument(object):
             self.addColor(color,exp)
         return exp
 
-    def addExtrudedCircle(self,center,radius,extrusion,placement=None,color=None):
-        """addExtrudedCircle(radius,extrusion,[placement,color]): makes an extruded circle
-        from the given radius and the given extrusion vector"""
-        cir = self.addProfile("IfcCircleProfileDef",radius)
+    def addExtrudedCircle(self,data,extrusion,placement=None,color=None):
+        """addExtrudedCircle(data,extrusion,[placement,color]): makes an extruded circle
+        from the given data (center,radius) and the given extrusion vector"""
+        cir = self.addProfile("IfcCircleProfileDef",data[1])
         if not placement:
-            placement = self.addPlacement(origin=center,local=False)
+            placement = self.addPlacement(origin=data[0],local=False)
         exp = self.addExtrusion(cir,extrusion,placement)
         if color:
             self.addColor(color,exp)
         return exp
         
-    def addExtrudedEllipse(self,center,radiusx,radiusy,extrusion,placement=None,color=None):
-        """addExtrudedEllipse(radiusx,radiusy,extrusion,[placement,color]): makes an extruded ellipse
-        from the given radii and the given extrusion vector"""
-        cir = self.addProfile("IfcEllipseProfileDef",[radiusx,radiusy])
+    def addExtrudedEllipse(self,data,extrusion,placement=None,color=None):
+        """addExtrudedEllipse(data,extrusion,[placement,color]): makes an extruded ellipse
+        from the given data (center,radiusx,radiusy) and the given extrusion vector"""
+        cir = self.addProfile("IfcEllipseProfileDef",[data[1],data[2]])
         if not placement:
-            placement = self.addPlacement(origin=center,local=False)
+            placement = self.addPlacement(origin=data[0],local=False)
         exp = self.addExtrusion(cir,extrusion,placement)
         if color:
             self.addColor(color,exp)
@@ -584,9 +604,9 @@ class IfcDocument(object):
     def addExtrudedCompositeCurve(self,curves,extrusion,placement=None,color=None):
         """addExtrudedCompositeCurve(curves,extrusion,[placement,color]): makes an extruded polyline
         from the given curves and the given extrusion vector"""
-        ccu = self.addProfile("IfcCompositeCurve",curves)
         if not placement:
-            placement = self.addPlacement(origin=center,local=False)
+            placement = self.addPlacement(local=False)
+        ccu = self.addProfile("IfcCompositeCurve",curves)
         exp = self.addExtrusion(ccu,extrusion,placement)
         if color:
             self.addColor(color,exp)

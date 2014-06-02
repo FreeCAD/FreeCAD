@@ -35,6 +35,8 @@ __title__="FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+CURVEMODE = "PARAMETER" # For trimmed curves. CARTESIAN or PARAMETER
+
 # module functions ###############################################
 
 def getStringList(objects):
@@ -600,7 +602,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
     if isinstance(data,FreeCAD.Vector):
         if placement:
             data = placement.multVec(data)
-            data = DraftVecUtils.rounded(data)
+        data = DraftVecUtils.rounded(data)
         return (data.x*scale,data.y*scale,data.z*scale)
     elif isinstance(data,Part.Shape):
         t = []
@@ -622,7 +624,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
                 if placement:
                     if not placement.isNull():
                         pt = placement.multVec(pt)
-                        pt = DraftVecUtils.rounded(pt)
+                pt = DraftVecUtils.rounded(pt)
                 t.append((pt.x*scale,pt.y*scale,pt.z*scale))
 
             if close: # faceloops must not be closed, but ifc profiles must.
@@ -677,13 +679,46 @@ def getIfcExtrusionData(obj,scale=1):
                 if curves:
                     # Composite profile
                     ecurves = []
-                    for e in p.Edges:
+                    last = None
+                    import DraftGeomUtils
+                    edges = DraftGeomUtils.sortEdges(p.Edges)
+                    for e in edges:
                         if isinstance(e.Curve,Part.Circle):
-                            p1 = e.FirstParameter
-                            p2 = e.LastParameter
-                            ecurves.append(["arc",getTuples(e.Curve.Center,scale),e.Curve.Radius*scale,[p1,p2]])
+                            import math
+                            follow = True
+                            if last:
+                                if not DraftVecUtils.equals(last,e.Vertexes[0].Point):
+                                    follow = False
+                                    last = e.Vertexes[0].Point
+                                else:
+                                    last = e.Vertexes[-1].Point
+                            else:
+                                last = e.Vertexes[-1].Point
+                            p1 = math.degrees(-DraftVecUtils.angle(e.Vertexes[0].Point.sub(e.Curve.Center)))
+                            p2 = math.degrees(-DraftVecUtils.angle(e.Vertexes[-1].Point.sub(e.Curve.Center)))
+                            da = DraftVecUtils.angle(e.valueAt(e.FirstParameter+0.1).sub(e.Curve.Center),e.Vertexes[0].Point.sub(e.Curve.Center))
+                            if p1 < 0: 
+                                p1 = 360 + p1
+                            if p2 < 0:
+                                p2 = 360 + p2
+                            if da > 0:
+                                follow = not(follow)
+                            if CURVEMODE == "CARTESIAN":
+                                # BUGGY
+                                p1 = getTuples(e.Vertexes[0].Point,scale)
+                                p2 = getTuples(e.Vertexes[-1].Point,scale)
+                            ecurves.append(["arc",getTuples(e.Curve.Center,scale),e.Curve.Radius*scale,[p1,p2],follow,CURVEMODE])
                         else:
-                            ecurves.append(["line",[getTuples(vt.Point,scale) for vt in e.Vertexes]])
+                            verts = [vertex.Point for vertex in e.Vertexes]
+                            if last:
+                                if not DraftVecUtils.equals(last,verts[0]):
+                                    verts.reverse()
+                                    last = e.Vertexes[0].Point
+                                else:
+                                    last = e.Vertexes[-1].Point
+                            else:
+                                last = e.Vertexes[-1].Point
+                            ecurves.append(["line",[getTuples(vert,scale) for vert in verts]])
                     return "composite", ecurves, getTuples(v,scale), d
                 else:
                     # Polyline profile
