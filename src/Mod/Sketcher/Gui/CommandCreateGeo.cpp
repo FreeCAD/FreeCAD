@@ -3076,7 +3076,7 @@ CmdSketcherCreateSlot::CmdSketcherCreateSlot()
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateSlot";
-    sAccel          = "R";
+    sAccel          = "";
     eType           = ForEdit;
 }
 
@@ -3104,10 +3104,10 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
+    rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExternal());
-    rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
 }

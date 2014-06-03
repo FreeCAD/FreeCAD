@@ -60,7 +60,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, profile);
     profile->setCommand("P&rofiles");
 
-	*profile << "Sketcher_ProfilesHexagon1";
+    *profile << "Sketcher_ProfilesHexagon1";
 
 // == Sketcher menu ==========================================
 
@@ -78,7 +78,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Separator"
           << "Sketcher_CreatePolyline"
           << "Sketcher_CreateRectangle"
-		  << "Sketcher_CreateSlot"
+          << "Sketcher_CreateSlot"
           << "Separator"
           << "Sketcher_CreateFillet"
           << "Sketcher_Trimming"
