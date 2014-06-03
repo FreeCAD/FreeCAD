@@ -61,7 +61,7 @@ SET(SketcherGui_SRCS
     Command.cpp
     CommandCreateGeo.cpp
     CommandConstraints.cpp
-	CommandAlterGeometry.cpp
+    CommandAlterGeometry.cpp
     Resources/Sketcher.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -103,7 +103,7 @@ SET(SketcherGui_SRCS
 
 SET(SketcherGui_Scripts
     InitGui.py
-	TestSketcherGui.py
+    TestSketcherGui.py
 )
 
 add_library(SketcherGui SHARED ${SketcherGui_SRCS})

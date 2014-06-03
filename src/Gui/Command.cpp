@@ -778,6 +778,21 @@ PythonCommand::PythonCommand(const char* name,PyObject * pcPyCommand, const char
     // check if the "GetResources()" method returns a Dict object
     if (!PyDict_Check(_pcPyResourceDict))
         throw Base::Exception("PythonCommand::PythonCommand(): Method GetResources() of the Python command object returns the wrong type (has to be Py Dictonary)");
+
+    // check for command type
+    std::string cmdType = getResource("CmdType");
+    if (!cmdType.empty()) {
+        int type = 0;
+        if (cmdType.find("AlterDoc") != std::string::npos)
+            type += int(AlterDoc);
+        if (cmdType.find("Alter3DView") != std::string::npos)
+            type += int(Alter3DView);
+        if (cmdType.find("AlterSelection") != std::string::npos)
+            type += int(AlterSelection);
+        if (cmdType.find("ForEdit") != std::string::npos)
+            type += int(ForEdit);
+        eType = type;
+    }
 }
 
 const char* PythonCommand::getResource(const char* sName) const
@@ -796,7 +811,7 @@ const char* PythonCommand::getResource(const char* sName) const
 
 void PythonCommand::activated(int iMsg)
 {
-    if (Activation == "") {
+    if (Activation.empty()) {
         try {
             Interpreter().runMethodVoid(_pcPyCommand, "Activated");
         }
