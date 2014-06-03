@@ -27,7 +27,7 @@ __title__="Hexagon profile lib"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-          
+
 def makeHexagonSimple():
     return
 

@@ -33,15 +33,15 @@ __title__="Sketcher profile lib handling"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-          
+
 def isProfileActive():
-    return True
+    return not FreeCAD.ActiveDocument is None
 
 class _CommandProfileHexagon1:
     "The basis hexagon profile command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Sketcher_Hexagon',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagon profile in the sketch"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagon profile"),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagon profile in the sketch")}
         
@@ -50,10 +50,9 @@ class _CommandProfileHexagon1:
         FreeCAD.ActiveDocument.openTransaction("Create hexagon profile")
         FreeCADGui.addModule("ProfileLib.Hexagon")
         FreeCADGui.doCommand("ProfileLib.Hexagon.makeHexagonSimple()")
-        
+
     def IsActive(self):
         return isProfileActive()
 
 
-        
 FreeCADGui.addCommand('Sketcher_ProfilesHexagon1',_CommandProfileHexagon1())
