@@ -119,6 +119,19 @@ PyObject* DocumentPy::setEdit(PyObject *args)
     Py_Return;
 }
 
+PyObject* DocumentPy::getInEdit(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    ViewProvider* vp = getDocumentPtr()->getInEdit();
+    if (vp) {
+        return vp->getPyObject();
+    }
+
+    Py_Return;
+}
+
 PyObject* DocumentPy::resetEdit(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ";No arguments allowed"))     // convert args: Python->C 

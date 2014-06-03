@@ -20,14 +20,44 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, FreeCADGui, Sketcher
+import FreeCAD, FreeCADGui, Sketcher, Part
 
 
 __title__="Hexagon profile lib"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+App = FreeCAD
+Gui = FreeCADGui
 
-def makeHexagonSimple():
+def makeHexagonSimple(sketchName=None):
+    if not sketchName:
+        sketch = App.ActiveDocument.addObject("Sketcher::SketchObject","Hexagon")
+    else:
+        sketch = App.ActiveDocument.getObject(sketchName)
+
+    l1=sketch.addGeometry(Part.Line(App.Vector(-20.00,34.64,0),App.Vector(20.00,34.64,0)))
+    l2=sketch.addGeometry(Part.Line(App.Vector(20.00,34.64,0),App.Vector(47.082363,0.00,0)))
+    sketch.addConstraint(Sketcher.Constraint('Coincident',l1,2,l2,1))
+    l3=sketch.addGeometry(Part.Line(App.Vector(40.00,0.00,0),App.Vector(20.00,-34.64,0)))
+    sketch.addConstraint(Sketcher.Constraint('Coincident',l2,2,l3,1))
+    l4=sketch.addGeometry(Part.Line(App.Vector(20.00,-34.64,0),App.Vector(-20.00,-34.64,0)))
+    sketch.addConstraint(Sketcher.Constraint('Coincident',l3,2,l4,1))
+    l5=sketch.addGeometry(Part.Line(App.Vector(-20.00,-34.64,0),App.Vector(-40.00,0.00,0)))
+    sketch.addConstraint(Sketcher.Constraint('Coincident',l4,2,l5,1))
+    l6=sketch.addGeometry(Part.Line(App.Vector(-40.00,0.00,0),App.Vector(-20.00,34.64,0)))
+    sketch.addConstraint(Sketcher.Constraint('Coincident',l5,2,l6,1))
+    sketch.addConstraint(Sketcher.Constraint('Coincident',l6,2,l1,1))
+    sketch.addConstraint(Sketcher.Constraint('Equal',l1,l2))
+    sketch.addConstraint(Sketcher.Constraint('Equal',l2,l3))
+    sketch.addConstraint(Sketcher.Constraint('Equal',l3,l4))
+    sketch.addConstraint(Sketcher.Constraint('Equal',l4,l5))
+    sketch.addConstraint(Sketcher.Constraint('Equal',l5,l6))
+    a1=sketch.addConstraint(Sketcher.Constraint('Angle',l1,2,l2,1,2.0943951023931953))
+    sketch.setDatum(a1,App.Units.Quantity('120.000000 deg'))
+    a2=sketch.addConstraint(Sketcher.Constraint('Angle',l3,2,l4,1,2.0943951023931953))
+    sketch.setDatum(a2,App.Units.Quantity('120.000000 deg'))
+    a3=sketch.addConstraint(Sketcher.Constraint('Angle',l5,2,l6,1,2.0943951023931953))
+    sketch.setDatum(a3,App.Units.Quantity('120.000000 deg'))
     return
 

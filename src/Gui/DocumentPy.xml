@@ -36,6 +36,14 @@
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getInEdit">
+      <Documentation>
+        <UserDocu>
+          getInEdit()
+          Returns the current object in edit mode or None if there is no such object
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="resetEdit">
       <Documentation>
         <UserDocu>
