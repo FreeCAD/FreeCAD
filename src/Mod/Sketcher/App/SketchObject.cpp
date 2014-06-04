@@ -307,7 +307,16 @@ Base::Axis SketchObject::getAxis(int axId) const
 
 int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList)
 {
-    return -1;
+    const std::vector< Part::Geometry * > &vals = getInternalGeometry();
+
+    std::vector< Part::Geometry * > newVals(vals);
+    for (std::vector<Part::Geometry *>::const_iterator it = geoList.begin(); it != geoList.end(); ++it) {
+        newVals.push_back(*it);
+    }
+    Geometry.setValues(newVals);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+    return Geometry.getSize()-1;
 }
 
 int SketchObject::addGeometry(const Part::Geometry *geo)

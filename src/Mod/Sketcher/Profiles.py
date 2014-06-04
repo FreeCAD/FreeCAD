@@ -53,11 +53,11 @@ def getSketch():
 class _CommandProfileHexagon1:
     "The basis hexagon profile command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Sketcher_Hexagon',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagon profile"),
+        return {'Pixmap'  : 'Sketcher_ProfilesHexagon1',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagonal profile"),
                 'Accel': "",
                 'CmdType': "ForEdit",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagon profile in the sketch")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Sketcher_ProfilesHexagon1","Creates a hexagonal profile in the sketch")}
         
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create hexagon profile")

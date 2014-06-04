@@ -28,6 +28,7 @@
 #include <Mod/Part/App/GeometryCurvePy.h>
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/TopoShapePy.h>
+#include <CXX/Objects.hxx>
 
 #include "Sketch.h"
 #include "Constraint.h"
@@ -71,50 +72,71 @@ PyObject* SketchPy::addGeometry(PyObject *args)
     if (!PyArg_ParseTuple(args, "O", &pcObj))
         return 0;
 
-    if (PyObject_TypeCheck(pcObj, &(LinePy::Type))) {
-        GeomLineSegment *line = static_cast<LinePy*>(pcObj)->getGeomLineSegmentPtr();
-        return Py::new_reference_to(Py::Int(this->getSketchPtr()->addGeometry(line->clone())));
+    if (PyObject_TypeCheck(pcObj, &(Part::GeometryPy::Type))) {
+        Part::Geometry *geo = static_cast<Part::GeometryPy*>(pcObj)->getGeometryPtr();
+        return Py::new_reference_to(Py::Int(this->getSketchPtr()->addGeometry(geo)));
     }
-    Py_Return; 
+    else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<Part::Geometry *> geoList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryPy::Type))) {
+                Part::Geometry *geo = static_cast<Part::GeometryPy*>((*it).ptr())->getGeometryPtr();
+                geoList.push_back(geo);
+            }
+        }
+
+        int ret = this->getSketchPtr()->addGeometry(geoList) + 1;
+        std::size_t numGeo = geoList.size();
+        Py::Tuple tuple(numGeo);
+        for (std::size_t i=0; i<numGeo; ++i) {
+            int geoId = ret - int(numGeo - i);
+            tuple.setItem(i, Py::Int(geoId));
+        }
+        return Py::new_reference_to(tuple);
+    }
+
+    std::string error = std::string("type must be 'Geometry' or list of 'Geometry', not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
 }
 
 PyObject* SketchPy::addConstraint(PyObject *args)
 {
-    int ret = -1;
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O", &pcObj))
         return 0;
 
-    if (PyList_Check(pcObj)) {
-        Py_ssize_t nSize = PyList_Size(pcObj);
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         std::vector<Constraint*> values;
-        values.resize(nSize);
-
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PyList_GetItem(pcObj, i);
-            if (!PyObject_TypeCheck(item, &(ConstraintPy::Type))) {
-                std::string error = std::string("types in list must be 'Constraint', not ");
-                error += item->ob_type->tp_name;
-                throw Py::TypeError(error);
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyObject_TypeCheck((*it).ptr(), &(ConstraintPy::Type))) {
+                Constraint *con = static_cast<ConstraintPy*>((*it).ptr())->getConstraintPtr();
+                values.push_back(con);
             }
-
-            values[i] = static_cast<ConstraintPy*>(item)->getConstraintPtr();
         }
 
-        ret = getSketchPtr()->addConstraints(values);
+        int ret = getSketchPtr()->addConstraints(values) + 1;
+        std::size_t numCon = values.size();
+        Py::Tuple tuple(numCon);
+        for (std::size_t i=0; i<numCon; ++i) {
+            int conId = ret - int(numCon - i);
+            tuple.setItem(i, Py::Int(conId));
+        }
+        return Py::new_reference_to(tuple);
     }
     else if(PyObject_TypeCheck(pcObj, &(ConstraintPy::Type))) {
         ConstraintPy  *pcObject = static_cast<ConstraintPy*>(pcObj);
-        ret = getSketchPtr()->addConstraint(pcObject->getConstraintPtr());
+        int ret = getSketchPtr()->addConstraint(pcObject->getConstraintPtr());
+        return Py::new_reference_to(Py::Int(ret));
     }
     else {
         std::string error = std::string("type must be 'Constraint' or list of 'Constraint', not ");
         error += pcObj->ob_type->tp_name;
         throw Py::TypeError(error);
     }
-
-    return Py::new_reference_to(Py::Int(ret));
-
 }
 
 PyObject* SketchPy::clear(PyObject *args)
