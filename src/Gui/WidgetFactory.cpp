@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <algorithm>
 # include <QTextStream>
 #endif
 
@@ -402,6 +403,8 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
     PyObject* dict = PyModule_GetDict(main);
     Py::Dict d(PyDict_Copy(dict), true);
     Py::String uiFile(args.getItem(0));
+    std::string file = uiFile.as_string();
+    std::replace(file.begin(), file.end(), '\\', '/');
 
     QString cmd;
     QTextStream str(&cmd);
@@ -411,7 +414,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "import xml.etree.ElementTree as xml\n"
         << "from cStringIO import StringIO\n"
         << "\n"
-        << "uiFile = \"" << uiFile.as_string().c_str() << "\"\n"
+        << "uiFile = \"" << file.c_str() << "\"\n"
         << "parsed = xml.parse(uiFile)\n"
         << "widget_class = parsed.find('widget').get('class')\n"
         << "form_class = parsed.find('class').text\n"
