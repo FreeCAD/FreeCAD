@@ -25,7 +25,7 @@
 # include <sstream>
 #endif
 
-#include "Mod/Sketcher/App/SketchObject.h"
+#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Base/GeometryPyCXX.h>
@@ -34,6 +34,7 @@
 #include <Base/Tools.h>
 #include <Base/QuantityPy.h>
 #include <App/Document.h>
+#include <CXX/Objects.hxx>
 
 // inclusion of the generated files (generated out of SketchObjectSFPy.xml)
 #include "SketchObjectPy.h"
@@ -66,7 +67,30 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
         Part::Geometry *geo = static_cast<Part::GeometryPy*>(pcObj)->getGeometryPtr();
         return Py::new_reference_to(Py::Int(this->getSketchObjectPtr()->addGeometry(geo)));
     }
-    Py_Return;
+    else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<Part::Geometry *> geoList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryPy::Type))) {
+                Part::Geometry *geo = static_cast<Part::GeometryPy*>((*it).ptr())->getGeometryPtr();
+                geoList.push_back(geo);
+            }
+        }
+
+        int ret = this->getSketchObjectPtr()->addGeometry(geoList) + 1;
+        std::size_t numGeo = geoList.size();
+        Py::Tuple tuple(numGeo);
+        for (std::size_t i=0; i<numGeo; ++i) {
+            int geoId = ret - int(numGeo - i);
+            tuple.setItem(i, Py::Int(geoId));
+        }
+        return Py::new_reference_to(tuple);
+    }
+
+    std::string error = std::string("type must be 'Geometry' or list of 'Geometry', not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
 }
 
 PyObject* SketchObjectPy::delGeometry(PyObject *args)
@@ -130,7 +154,30 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
         this->getSketchObjectPtr()->solve();
         return Py::new_reference_to(Py::Int(ret));
     }
-    Py_Return;
+    else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<Constraint*> values;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyObject_TypeCheck((*it).ptr(), &(ConstraintPy::Type))) {
+                Constraint *con = static_cast<ConstraintPy*>((*it).ptr())->getConstraintPtr();
+                values.push_back(con);
+            }
+        }
+
+        int ret = getSketchObjectPtr()->addConstraints(values) + 1;
+        std::size_t numCon = values.size();
+        Py::Tuple tuple(numCon);
+        for (std::size_t i=0; i<numCon; ++i) {
+            int conId = ret - int(numCon - i);
+            tuple.setItem(i, Py::Int(conId));
+        }
+        return Py::new_reference_to(tuple);
+    }
+
+    std::string error = std::string("type must be 'Constraint' or list of 'Constraint', not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
 }
 
 PyObject* SketchObjectPy::delConstraint(PyObject *args)

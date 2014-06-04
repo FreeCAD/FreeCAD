@@ -174,10 +174,12 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
     }
 }
 
-void Sketch::addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed)
+int Sketch::addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed)
 {
+    int ret = -1;
     for (std::vector<Part::Geometry *>::const_iterator it=geo.begin(); it != geo.end(); ++it)
-        addGeometry(*it, fixed);
+        ret = addGeometry(*it, fixed);
+    return ret;
 }
 
 int Sketch::addPoint(const Part::GeomPoint &point, bool fixed)

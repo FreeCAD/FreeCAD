@@ -22,11 +22,10 @@
 
 #include "PreCompiled.h"
 #include <sstream>
-#include "Mod/Sketcher/App/Constraint.h"
-
-// inclusion of the generated files (generated out of ConstraintPy.xml)
+#include "Constraint.h"
 #include "ConstraintPy.h"
 #include "ConstraintPy.cpp"
+#include <Base/QuantityPy.h>
 
 using namespace Sketcher;
 
@@ -109,6 +108,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 valid = true;
             }
             else if (strcmp("Angle",ConstraintType) == 0 ) {
+                if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
+                    Base::Quantity q = *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
+                    if (q.getUnit() == Base::Unit::Angle)
+                        Value = q.getValueAs(Base::Quantity::Radian);
+                }
                 this->getConstraintPtr()->Type = Angle;
                 valid = true;
             }
@@ -172,6 +176,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             //}
             //else
             if (strcmp("Angle",ConstraintType) == 0) {
+                if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
+                    Base::Quantity q = *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
+                    if (q.getUnit() == Base::Unit::Angle)
+                        Value = q.getValueAs(Base::Quantity::Radian);
+                }
                 this->getConstraintPtr()->Type   = Angle;
                 this->getConstraintPtr()->First  = FirstIndex;
                 this->getConstraintPtr()->Second = SecondIndex;
@@ -279,6 +288,11 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 valid = true;
             }
             else if (strcmp("Angle",ConstraintType) == 0 ) {
+                if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
+                    Base::Quantity q = *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
+                    if (q.getUnit() == Base::Unit::Angle)
+                        Value = q.getValueAs(Base::Quantity::Radian);
+                }
                 this->getConstraintPtr()->Type = Angle;
                 valid = true;
             }

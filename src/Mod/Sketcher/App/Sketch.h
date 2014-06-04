@@ -73,7 +73,7 @@ public:
     /// add unspecified geometry
     int addGeometry(const Part::Geometry *geo, bool fixed=false);
     /// add unspecified geometry
-    void addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
+    int addGeometry(const std::vector<Part::Geometry *> &geo, bool fixed=false);
     /// returns the actual geometry
     std::vector<Part::Geometry *> extractGeometry(bool withConstrucionElements=true,
                                                   bool withExternalElements=false) const;
