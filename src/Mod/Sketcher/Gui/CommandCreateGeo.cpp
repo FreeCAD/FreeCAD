@@ -2975,80 +2975,87 @@ public:
                 start = end;
                 end = temp;
             }
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
-                      sketchgui->getObject()->getNameInDocument(),
-                      StartPos.fX,StartPos.fY,  // center of the  arc
-                      fabs(r),                  // radius
-                      start,end                 // start and end angle
-                      );
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
-                      sketchgui->getObject()->getNameInDocument(),
-                      StartPos.fX+lx,StartPos.fY+ly,    // center of the  arc
-                      fabs(r),                          // radius
-                      end,start                         // start and end angle
+
+            try {
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
+                          sketchgui->getObject()->getNameInDocument(),
+                          StartPos.fX,StartPos.fY,  // center of the  arc
+                          fabs(r),                  // radius
+                          start,end                 // start and end angle
+                          );
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
+                          sketchgui->getObject()->getNameInDocument(),
+                          StartPos.fX+lx,StartPos.fY+ly,    // center of the  arc
+                          fabs(r),                          // radius
+                          end,start                         // start and end angle
                           );
 
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                      sketchgui->getObject()->getNameInDocument(),
-                      EditCurve[16].fX,EditCurve[16].fY,EditCurve[17].fX,EditCurve[17].fY);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                      sketchgui->getObject()->getNameInDocument(),
-                      EditCurve[0].fX,EditCurve[0].fY,EditCurve[34].fX,EditCurve[34].fY);
-            // add the four coincidents to ty them together
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,1,%i,1)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve,firstCurve+3);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve,firstCurve+2);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+2,firstCurve+1);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,2)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+3,firstCurve+1);
-            //// add the either horizontal or vertical constraints
-            if(fabs(lx)>fabs(ly))
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                          sketchgui->getObject()->getNameInDocument(),
+                          EditCurve[16].fX,EditCurve[16].fY,EditCurve[17].fX,EditCurve[17].fY);
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                          sketchgui->getObject()->getNameInDocument(),
+                          EditCurve[0].fX,EditCurve[0].fY,EditCurve[34].fX,EditCurve[34].fY);
+                // add the four coincidents to ty them together
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,1,%i,1)) "
                          ,sketchgui->getObject()->getNameInDocument()
-                         ,firstCurve+2);
-            else
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
+                         ,firstCurve,firstCurve+3);
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
                          ,sketchgui->getObject()->getNameInDocument()
-                         ,firstCurve+2);
-            //// add the tnagent constraints
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve,firstCurve+2);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve,firstCurve+3);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+1,firstCurve+2);
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve+1,firstCurve+3);
-            // make the two arcs equal
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%i,%i)) "
-                     ,sketchgui->getObject()->getNameInDocument()
-                     ,firstCurve,firstCurve+1);
+                         ,firstCurve,firstCurve+2);
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
+                         ,sketchgui->getObject()->getNameInDocument()
+                         ,firstCurve+2,firstCurve+1);
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,2)) "
+                         ,sketchgui->getObject()->getNameInDocument()
+                         ,firstCurve+3,firstCurve+1);
+                //// add the either horizontal or vertical constraints
+                if(fabs(lx)>fabs(ly))
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
+                             ,sketchgui->getObject()->getNameInDocument()
+                             ,firstCurve+2);
+                else
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
+                             ,sketchgui->getObject()->getNameInDocument()
+                             ,firstCurve+2);
+                //// add the tnagent constraints
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
+                         ,sketchgui->getObject()->getNameInDocument()
+                         ,firstCurve,firstCurve+2);
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
+                         ,sketchgui->getObject()->getNameInDocument()
+                         ,firstCurve,firstCurve+3);
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
+                         ,sketchgui->getObject()->getNameInDocument()
+                         ,firstCurve+1,firstCurve+2);
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
+                         ,sketchgui->getObject()->getNameInDocument()
+                         ,firstCurve+1,firstCurve+3);
+                // make the two arcs equal
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%i,%i)) "
+                         ,sketchgui->getObject()->getNameInDocument()
+                         ,firstCurve,firstCurve+1);
 
-            Gui::Command::commitCommand();
-            Gui::Command::updateActive();
+                Gui::Command::commitCommand();
+                Gui::Command::updateActive();
 
-            // add auto constraints at the start of the first side
-            if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::mid);
-                sugConstr1.clear();
+                // add auto constraints at the start of the first side
+                if (sugConstr1.size() > 0) {
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::mid);
+                    sugConstr1.clear();
+                }
+
+                // add auto constraints at the end of the second side
+                if (sugConstr2.size() > 0) {
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
+                    sugConstr2.clear();
+                }
             }
-
-            // add auto constraints at the end of the second side
-            if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
-                sugConstr2.clear();
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+                Gui::Command::updateActive();
             }
-
 
             EditCurve.clear();
             sketchgui->drawEdit(EditCurve);
