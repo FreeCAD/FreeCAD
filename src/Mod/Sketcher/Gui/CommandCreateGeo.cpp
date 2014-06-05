@@ -2902,17 +2902,17 @@ public:
             float dx = onSketchPos.fX - StartPos.fX;
             float dy = onSketchPos.fY - StartPos.fY;
 
-			lx=0;ly=0;a=0;
-			if(fabs(dx) > fabs(dy)){
-				lx = dx;
-				r = dy;
-				rev = dx/fabs(dx);
-			}else{
-				ly = dy;
-				r = dx;
-				a = 8;
-				rev = dy/fabs(dy);
-			}
+            lx=0;ly=0;a=0;
+            if(fabs(dx) > fabs(dy)){
+                lx = dx;
+                r = dy;
+                rev = dx/fabs(dx);
+            }else{
+                ly = dy;
+                r = dx;
+                a = 8;
+                rev = dy/fabs(dy);
+            }
 
             for (int i=0; i < 17; i++) {
                 double angle = (i+a)*M_PI/16.0;
@@ -2921,8 +2921,8 @@ public:
                 EditCurve[i] = Base::Vector2D(StartPos.fX + rx, StartPos.fY + ry);
                 EditCurve[18+i] = Base::Vector2D(StartPos.fX - rx+lx, StartPos.fY - ry+ly);
             }
-			EditCurve[17] = EditCurve[16] + Base::Vector2D(lx,ly);
-			EditCurve[35] = EditCurve[0] ;
+            EditCurve[17] = EditCurve[16] + Base::Vector2D(lx,ly);
+            EditCurve[35] = EditCurve[0] ;
             //EditCurve[34] = EditCurve[0];
 
             // Display radius for user
@@ -2962,31 +2962,31 @@ public:
             Gui::Command::openCommand("Add slot");
             int firstCurve = getHighestCurveIndex() + 1;
             // add the geometry to the sketch
-			double start, end;
-			if(fabs(lx)>fabs(ly)){
-				start = M_PI/2;
-				end = -M_PI/2;
-			}else{
-				start = 0;
-				end = M_PI;
-			}
-			if(ly>0 || lx <0){
-				double temp = start;
-				start = end;
-				end = temp;
-			}
+            double start, end;
+            if(fabs(lx)>fabs(ly)){
+                start = M_PI/2;
+                end = -M_PI/2;
+            }else{
+                start = 0;
+                end = M_PI;
+            }
+            if(ly>0 || lx <0){
+                double temp = start;
+                start = end;
+                end = temp;
+            }
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
                       sketchgui->getObject()->getNameInDocument(),
-                      StartPos.fX,StartPos.fY,	// center of the  arc
-					  fabs(r),					// radius
-					  start,end	// start and end angle
-					  );
+                      StartPos.fX,StartPos.fY,  // center of the  arc
+                      fabs(r),                  // radius
+                      start,end                 // start and end angle
+                      );
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
                       sketchgui->getObject()->getNameInDocument(),
-                      StartPos.fX+lx,StartPos.fY+ly,	// center of the  arc
-					  fabs(r),							// radius
-					  end,start			// start and end angle
-					  );
+                      StartPos.fX+lx,StartPos.fY+ly,    // center of the  arc
+                      fabs(r),                          // radius
+                      end,start                         // start and end angle
+                          );
 
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
                       sketchgui->getObject()->getNameInDocument(),
@@ -3008,14 +3008,14 @@ public:
                      ,sketchgui->getObject()->getNameInDocument()
                      ,firstCurve+3,firstCurve+1);
             //// add the either horizontal or vertical constraints
-			if(fabs(lx)>fabs(ly))
-				Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
-						 ,sketchgui->getObject()->getNameInDocument()
-						 ,firstCurve+2);
-			else
-				Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
-						 ,sketchgui->getObject()->getNameInDocument()
-						 ,firstCurve+2);
+            if(fabs(lx)>fabs(ly))
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
+                         ,sketchgui->getObject()->getNameInDocument()
+                         ,firstCurve+2);
+            else
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
+                         ,sketchgui->getObject()->getNameInDocument()
+                         ,firstCurve+2);
             //// add the tnagent constraints
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
                      ,sketchgui->getObject()->getNameInDocument()
@@ -3029,7 +3029,7 @@ public:
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
                      ,sketchgui->getObject()->getNameInDocument()
                      ,firstCurve+1,firstCurve+3);
-			// make the two arcs equal
+            // make the two arcs equal
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%i,%i)) "
                      ,sketchgui->getObject()->getNameInDocument()
                      ,firstCurve,firstCurve+1);
@@ -3039,7 +3039,7 @@ public:
 
             // add auto constraints at the start of the first side
             if (sugConstr1.size() > 0) {
-				createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::mid);
+                createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::mid);
                 sugConstr1.clear();
             }
 
@@ -3058,8 +3058,8 @@ public:
     }
 protected:
     BoxMode Mode;
-	Base::Vector2D StartPos;
-	double lx,ly,r,a,rev;
+    Base::Vector2D StartPos;
+    double lx,ly,r,a,rev;
     std::vector<Base::Vector2D> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
