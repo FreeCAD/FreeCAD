@@ -132,16 +132,15 @@ void Placement::slotActiveDocument(const Gui::Document& doc)
     documents.insert(doc.getDocument()->getName());
 }
 
-bool Placement::hasValidInputs()
+bool Placement::hasValidInputs() const
 {
     QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
     for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
-        if(!(*it)->hasValidInput())
-        return false;
+        if (!(*it)->hasValidInput())
+            return false;
     }
     return true;
 }
-
 
 void Placement::revertTransformation()
 {

@@ -106,7 +106,7 @@ public:
     /// set the value of the minimum property 
     void setHistorySize(int);
     /// set the unit by a string (can be used in the *.ui file)  
-    void setUnitText(QString);
+    void setUnitText(const QString&);
     /// get the unit as a string (can be used in the *.ui file)  
     QString getUnitText(void); 
     /// set the number portion selected (use after setValue()) 
@@ -156,6 +156,7 @@ protected Q_SLOTS:
     void updateIconLabel(const QString& text);
 
 protected:
+    virtual void showEvent(QShowEvent * event);
     virtual void keyPressEvent(QKeyEvent * event);
     virtual void wheelEvent(QWheelEvent * event);
     virtual void contextMenuEvent(QContextMenuEvent * event);
@@ -163,6 +164,7 @@ protected:
 
 private:
     QPixmap getValidationIcon(const char* name, const QSize& size) const;
+    void updateText(const Base::Quantity&);
 
 private:
     QLabel* iconLabel;
