@@ -58,13 +58,15 @@ private:
 
 // --------------------------------------------------------------------
 
-InputField::InputField ( QWidget * parent )
-  : QLineEdit(parent), 
-  StepSize(1.0), 
-  Maximum(DOUBLE_MAX),
-  Minimum(-DOUBLE_MAX),
-  HistorySize(5),
-  SaveSize(5)
+InputField::InputField(QWidget * parent)
+  : QLineEdit(parent),
+    actUnitValue(0),
+    validInput(true),
+    Maximum(DOUBLE_MAX),
+    Minimum(-DOUBLE_MAX),
+    StepSize(1.0),
+    HistorySize(5),
+    SaveSize(5)
 {
     setValidator(new InputValidator(this));
     iconLabel = new QLabel(this);
@@ -82,7 +84,7 @@ InputField::InputField ( QWidget * parent )
 
     this->setContextMenuPolicy(Qt::DefaultContextMenu);
 
-    QObject::connect(this, SIGNAL(textChanged  (QString)),
+    QObject::connect(this, SIGNAL(textChanged(QString)),
                      this, SLOT(newInput(QString)));
 }
 
@@ -104,6 +106,13 @@ QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
     if (!icon.isNull())
         QPixmapCache::insert(key, icon);
     return icon;
+}
+
+void InputField::updateText(const Base::Quantity& quant)
+{
+    double dFactor;
+    QString unit;
+    setText(quant.getUserString(dFactor,unit));
 }
 
 void InputField::resizeEvent(QResizeEvent *)
@@ -169,9 +178,10 @@ void InputField::contextMenuEvent(QContextMenuEvent *event)
 void InputField::newInput(const QString & text)
 {
     Quantity res;
-    try{
+    try {
         res = Quantity::parse(text);
-    }catch(Base::Exception &e){
+    }
+    catch(Base::Exception &e){
         ErrorText = e.what();
         this->setToolTip(QString::fromAscii(ErrorText.c_str()));
         QPixmap pixmap = getValidationIcon(":/icons/button_invalid.svg", QSize(sizeHint().height(),sizeHint().height()));
@@ -180,6 +190,9 @@ void InputField::newInput(const QString & text)
         validInput = false;
         return;
     }
+
+    if (res.getUnit().isEmpty())
+        res.setUnit(this->actUnit);
 
     // check if unit fits!
     if(!actUnit.isEmpty() && !res.getUnit().isEmpty() && actUnit != res.getUnit()){
@@ -207,11 +220,12 @@ void InputField::newInput(const QString & text)
     }
 
     this->setToolTip(QString::fromAscii(ErrorText.c_str()));
-    actQuantity = res;
+
     double dFactor;
     res.getUserString(dFactor,actUnitStr);
-    // calculate the number shown 
-    actUnitValue = res.getValue()/dFactor; 
+    actUnitValue = res.getValue()/dFactor;
+    actQuantity = res;
+
     // signaling
     valueChanged(res);
     valueChanged(res.getValue());
@@ -339,13 +353,9 @@ void InputField::setValue(const Base::Quantity& quant)
     if (actQuantity.getValue() < Minimum)
         actQuantity.setValue(Minimum);
 
-    if (!quant.getUnit().isEmpty())
-        actUnit = quant.getUnit();
+    actUnit = quant.getUnit();
 
-    double dFactor;
-    setText(quant.getUserString(dFactor,actUnitStr));
-    actUnitValue = quant.getValue()/dFactor;
-    validInput = true;
+    updateText(quant);
 }
 
 void InputField::setValue(const double& value)
@@ -353,10 +363,11 @@ void InputField::setValue(const double& value)
     setValue(Base::Quantity(value, actUnit));
 }
 
-
 void InputField::setUnit(const Base::Unit& unit)
 {
     actUnit = unit;
+    actQuantity.setUnit(unit);
+    updateText(actQuantity);
 }
 
 const Base::Unit& InputField::getUnit() const
@@ -386,8 +397,10 @@ double InputField::maximum(void)const
 void InputField::setMaximum(double m)
 {
     Maximum = m;
-    if (actQuantity.getValue() > Maximum)
+    if (actQuantity.getValue() > Maximum) {
         actQuantity.setValue(Maximum);
+        updateText(actQuantity);
+    }
 }
 
 /// get the value of the minimum property
@@ -400,11 +413,13 @@ double InputField::minimum(void)const
 void InputField::setMinimum(double m)
 {
     Minimum = m;
-    if (actQuantity.getValue() < Minimum)
+    if (actQuantity.getValue() < Minimum) {
         actQuantity.setValue(Minimum);
+        updateText(actQuantity);
+    }
 }
 
-void InputField::setUnitText(QString str)
+void InputField::setUnitText(const QString& str)
 {
     Base::Quantity quant = Base::Quantity::parse(str);
     setUnit(quant.getUnit());
@@ -439,6 +454,13 @@ void InputField::selectNumber(void)
         i++;
 
     setSelection(0,i);
+}
+
+void InputField::showEvent(QShowEvent * event)
+{
+    QLineEdit::showEvent(event);
+
+    updateText(actQuantity);
 }
 
 void InputField::keyPressEvent(QKeyEvent *event)
