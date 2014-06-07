@@ -459,7 +459,10 @@ class IfcDocument(object):
                 rel = create(self._fileobject,"IfcRelContainedInSpatialStructure",[uid(),self._owner,'StoreyLink','',entities,container])
                 self._storeyRelations[sid] = rel
         else:
-            create(self._fileobject,"IfcRelAggregates",[uid(),self._owner,'Relationship','',container,entities])
+            if entities[0].is_a("IfcOpeningElement"):
+                create(self._fileobject,"IfcRelVoidsElement",[uid(),self._owner,'Opening','',container,entities[0]])
+            else:
+                create(self._fileobject,"IfcRelAggregates",[uid(),self._owner,'Relationship','',container,entities])
 
     def addProduct(self,elttype,shapes,storey=None,placement=None,name="Unnamed element",description=None,extra=None):
         """addProduct(elttype,representations,[storey,placement,name,description,extra]): creates an element of the given type
