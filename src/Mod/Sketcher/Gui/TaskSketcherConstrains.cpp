@@ -357,12 +357,12 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
         else
             name = QString::fromUtf8((*it)->Name.c_str());
 
-	/* Filter
-	  0 => All
-	  1 => Normal?  => <1 => ALL
-	  2 => Datums?  => <2 => All or normal
-	  3 => Named	=> <3 => All, Normal or Datums
-	  */
+    /* Filter
+      0 <=> All
+      1 <=> Normal
+      2 <=> Datums
+      3 <=> Named
+      */
         switch((*it)->Type){
             case Sketcher::Horizontal:
                 if (Filter<2 || (Filter==3 && !(*it)->Name.empty()))
