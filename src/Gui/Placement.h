@@ -65,6 +65,7 @@ private Q_SLOTS:
     void on_resetButton_clicked();
 
 private:
+    bool onApply();
     void setPlacementData(const Base::Placement&);
     Base::Placement getPlacementData() const;
     QString getPlacementString() const;

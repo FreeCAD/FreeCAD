@@ -288,13 +288,18 @@ void Placement::reject()
 
 void Placement::accept()
 {
-    on_applyButton_clicked();
-
-    revertTransformation();
-    QDialog::accept();
+    if (onApply()) {
+        revertTransformation();
+        QDialog::accept();
+    }
 }
 
 void Placement::on_applyButton_clicked()
+{
+    onApply();
+}
+
+bool Placement::onApply()
 {
     //only process things when we have valid inputs!
     if (!hasValidInputs()) {
@@ -302,7 +307,7 @@ void Placement::on_applyButton_clicked()
         msg.setIcon(QMessageBox::Critical);
         msg.setText(tr("There are input fields with incorrect input, please ensure valid placement values!"));
         msg.exec();
-        return;
+        return false;
     }
 
     // If there are listeners to the 'placementChanged' signal we rely
@@ -324,6 +329,8 @@ void Placement::on_applyButton_clicked()
             (*it)->blockSignals(false);
         }
     }
+
+    return true;
 }
 
 void Placement::on_resetButton_clicked()
