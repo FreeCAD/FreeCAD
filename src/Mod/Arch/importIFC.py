@@ -73,12 +73,8 @@ def insert(filename,docname,skip=None):
 def getConfig():
     "Gets Arch IFC import preferences"
     global SKIP, CREATE_IFC_GROUPS, ASMESH, PREFIX_NUMBERS, FORCE_PYTHON_PARSER, SEPARATE_OPENINGS, SEPARATE_PLACEMENTS, JOINSOLIDS, AGGREGATE_WINDOWS
-    CREATE_IFC_GROUPS = False
     IMPORT_IFC_FURNITURE = False
     ASMESH = ["IfcFurnishingElement"]
-    PREFIX_NUMBERS = False
-    FORCE_PYTHON_PARSER = False
-    SEPARATE_OPENINGS = False
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     CREATE_IFC_GROUPS = p.GetBool("createIfcGroups",False)
     FORCE_PYTHON_PARSER = p.GetBool("forceIfcPythonParser",False) 
@@ -1009,7 +1005,9 @@ def export(exportList,filename):
             if parent:
                 parent = ifc.findByName("IfcBuilding",str(parent.Label))
 
-            if otype == "Building":
+            if otype == "Site":
+                pass # TODO manage sites
+            elif otype == "Building":
                 ifc.addBuilding( name=name )
             elif otype == "Floor":
                 ifc.addStorey( building=parent, name=name )
@@ -1028,7 +1026,7 @@ def export(exportList,filename):
 
             # get representation
             if not forcebrep:
-                gdata = Arch.getIfcExtrusionData(obj,scaling)
+                gdata = Arch.getIfcExtrusionData(obj,scaling,SEPARATE_OPENINGS)
                 #if DEBUG: print "   extrusion data for ",obj.Label," : ",gdata
             if not gdata:
                 fdata = Arch.getIfcBrepFacesData(obj,scaling)
@@ -1057,10 +1055,7 @@ def export(exportList,filename):
                 else:
                     print "debug: unknow extrusion type"
             elif fdata:
-                if JOINSOLIDS:
-                    representation = ifc.join([ifc.addFacetedBrep(f, color=color) for f in fdata])
-                else:
-                    representation = [ifc.addFacetedBrep(f, color=color) for f in fdata]
+                representation = [ifc.addFacetedBrep(f, color=color) for f in fdata]
 
             # create ifc object
             ifctype = "Ifc" + ifctype
@@ -1080,7 +1075,17 @@ def export(exportList,filename):
                 ifctype = "IfcBuildingElementProxy"
                 extra = ["ELEMENT"]
             p = ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
+
             if p:
+
+                # removing openings
+                if SEPARATE_OPENINGS and gdata:
+                    for o in obj.Subtractions:
+                        print "Subtracting ",o.Label
+                        fdata = Arch.getIfcBrepFacesData(o,scaling,sub=True)
+                        representation = [ifc.addFacetedBrep(f, color=color) for f in fdata]
+                        p2 = ifc.addProduct( "IfcOpeningElement", representation, storey=p, placement=None, name=str(o.Label), description=None)
+
                 # writing text log
                 spacer = ""
                 for i in range(36-len(obj.Label)):

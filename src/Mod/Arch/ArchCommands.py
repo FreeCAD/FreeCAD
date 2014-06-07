@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2011                                                    *  
@@ -633,17 +635,16 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
             print "Arch.getTuples(): Wrong profile data"
         return t
 
-def getIfcExtrusionData(obj,scale=1):
-    """getIfcExtrusionData(obj,[scale]): returns a closed path (a list of tuples), a tuple expressing an extrusion
+def getIfcExtrusionData(obj,scale=1,nosubs=False):
+    """getIfcExtrusionData(obj,[scale,nosubs]): returns a closed path (a list of tuples), a tuple expressing an extrusion
     vector, and a list of 3 tuples for base position, x axis and z axis. Or returns None, if a base loop and 
     an extrusion direction cannot be extracted. Scale can indicate a scale factor."""
     if hasattr(obj,"Additions"):
         if obj.Additions:
-            # provisorily treat objs with additions as breps
+            # TODO provisorily treat objs with additions as breps
             return None
-    if hasattr(obj,"Subtractions"):
+    if hasattr(obj,"Subtractions") and not nosubs:
         if obj.Subtractions:
-            # provisorily treat objs with subtractions as breps
             return None
     if hasattr(obj,"Proxy"):
         if hasattr(obj.Proxy,"getProfiles"):
@@ -725,42 +726,50 @@ def getIfcExtrusionData(obj,scale=1):
                     return "polyline", getTuples(p,scale), getTuples(v,scale), d
     return None   
     
-def getIfcBrepFacesData(obj,scale=1,tessellation=1):
+def getIfcBrepFacesData(obj,scale=1,sub=False,tessellation=1):
     """getIfcBrepFacesData(obj,[scale,tesselation]): returns a list(0) of lists(1) of lists(2) of lists(3), 
     list(3) being a list of vertices defining a loop, list(2) describing a face from one or 
     more loops, list(1) being the whole solid made of several faces, list(0) being the list
     of solids inside the object. Scale can indicate a scaling factor. Tesselation is the tesselation
     factor to apply on curved faces."""
-    if hasattr(obj,"Shape"):
+    shape = None
+    if sub:
+        if hasattr(obj,"Proxy"):
+            if hasattr(obj.Proxy,"getSubVolume"):
+                shape = obj.Proxy.getSubVolume(obj)
+    if not shape:
+        if hasattr(obj,"Shape"):
+            if obj.Shape:
+                if not obj.Shape.isNull():
+                    if obj.Shape.isValid():
+                        shape = obj.Shape
+    if shape:
         import Part
-        if obj.Shape:
-            if not obj.Shape.isNull():
-                if obj.Shape.isValid():
-                    sols = []
-                    for sol in obj.Shape.Solids:
-                        s = []
-                        curves = False
-                        for face in sol.Faces:
-                            for e in face.Edges:
-                                if not isinstance(e.Curve,Part.Line):
-                                    curves = True
-                        if curves:
-                            tris = sol.tessellate(tessellation)
-                            for tri in tris[1]:
-                                f = []
-                                for i in tri:
-                                    f.append(getTuples(tris[0][i],scale))
-                                s.append([f])
-                        else:
-                            for face in sol.Faces:
-                                f = []
-                                f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0),close=False))
-                                for wire in face.Wires:
-                                    if wire.hashCode() != face.OuterWire.hashCode():
-                                        f.append(getTuples(wire,scale,normal=DraftVecUtils.neg(face.normalAt(0,0)),close=False))
-                                s.append(f)
-                        sols.append(s)
-                    return sols
+        sols = []
+        for sol in shape.Solids:
+            s = []
+            curves = False
+            for face in sol.Faces:
+                for e in face.Edges:
+                    if not isinstance(e.Curve,Part.Line):
+                        curves = True
+            if curves:
+                tris = sol.tessellate(tessellation)
+                for tri in tris[1]:
+                    f = []
+                    for i in tri:
+                        f.append(getTuples(tris[0][i],scale))
+                    s.append([f])
+            else:
+                for face in sol.Faces:
+                    f = []
+                    f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0),close=False))
+                    for wire in face.Wires:
+                        if wire.hashCode() != face.OuterWire.hashCode():
+                            f.append(getTuples(wire,scale,normal=DraftVecUtils.neg(face.normalAt(0,0)),close=False))
+                    s.append(f)
+            sols.append(s)
+        return sols
     return None
     
 def getHost(obj,strict=True):
@@ -864,19 +873,24 @@ def survey(callback=False):
                             if not o.HasSubObjects:
                                 # entire object
                                 anno = FreeCAD.ActiveDocument.addObject("App::AnnotationLabel","surveyLabel")
-                                anno.BasePosition = o.Object.Shape.CenterOfMass
+                                if hasattr(o.Object.Shape,"CenterOfMass"):
+                                    anno.BasePosition = o.Object.Shape.CenterOfMass
+                                else:
+                                    anno.BasePosition = o.Object.Shape.BoundBox.Center
                                 FreeCAD.SurveyObserver.labels.append(anno.Name)
                                 t = ""
                                 if o.Object.Shape.Solids:
                                     t = FreeCAD.Units.Quantity(o.Object.Shape.Volume,FreeCAD.Units.Volume)
                                     t = t.getUserPreferred()[0]
+                                    t = t.replace("^3","³")
                                     anno.LabelText = "v " + t
-                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + t + "\n")
+                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + t.decode("utf8") + "\n")
                                 elif o.Object.Shape.Faces:
                                     t = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
                                     t = t.getUserPreferred()[0]
+                                    t = t.replace("^2","²")
                                     anno.LabelText = "a " + t
-                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + t + "\n")
+                                    FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + t.decode("utf8") + "\n")
                                 else:
                                     t = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
                                     t = t.getUserPreferred()[0]
@@ -892,14 +906,18 @@ def survey(callback=False):
                                     if "Vertex" in el:
                                         anno.BasePosition = e.Point
                                     else:
-                                        anno.BasePosition = e.CenterOfMass
+                                        if hasattr(e,"CenterOfMass"):
+                                            anno.BasePosition = e.CenterOfMass
+                                        else:
+                                            anno.BasePosition = e.BoundBox.Center
                                     FreeCAD.SurveyObserver.labels.append(anno.Name)
                                     t = ""
                                     if "Face" in el:
                                         t = FreeCAD.Units.Quantity(e.Area,FreeCAD.Units.Area)
                                         t = t.getUserPreferred()[0]
+                                        t = t.replace("^2","²")
                                         anno.LabelText = "a " + t
-                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ t  + "\n")
+                                        FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ t.decode("utf8")  + "\n")
                                     elif "Edge" in el:
                                         t = FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
                                         t = t.getUserPreferred()[0]
