@@ -467,6 +467,7 @@ class IfcDocument(object):
     def addProduct(self,elttype,shapes,storey=None,placement=None,name="Unnamed element",description=None,extra=None):
         """addProduct(elttype,representations,[storey,placement,name,description,extra]): creates an element of the given type
         (IfcWall, IfcBeam, etc...) with the given attributes, plus the given extra attributes."""
+        elttype = str(elttype)
         if not extra:
             extra = []
         if not description:
