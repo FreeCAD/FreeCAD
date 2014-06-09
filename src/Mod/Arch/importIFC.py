@@ -41,7 +41,7 @@ supportedIfcTypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "
                      "IfcChimney", "IfcColumn", "IfcColumnStandardCase", "IfcCovering", "IfcCurtainWall",
                      "IfcDoor", "IfcDoorStandardCase", "IfcMember", "IfcMemberStandardCase", "IfcPlate",
                      "IfcPlateStandardCase", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcRoof",
-                     "IfcSlab", "IfcStair", "IfcStairFlight", "IfcWall",
+                     "IfcSlab", "IfcStair", "IfcStairFlight", "IfcWall","IfcSpace",
                      "IfcWallStandardCase", "IfcWindow", "IfcWindowStandardCase", "IfcBuildingElementProxy",
                      "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon"]
 # TODO : shading device not supported?
@@ -996,7 +996,7 @@ def export(exportList,filename):
         elif ifctype == "Rebar":
             ifctype = "ReinforcingBar"
 
-        if DEBUG: print "adding " + obj.Label + " as Ifc" + ifctype
+        if DEBUG: print "Adding " + obj.Label + " as Ifc" + ifctype
                  
         # writing IFC data 
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
@@ -1006,13 +1006,13 @@ def export(exportList,filename):
                 parent = ifc.findByName("IfcBuilding",str(parent.Label))
 
             if otype == "Site":
-                pass # TODO manage sites
+                print "   Skipping (not implemented yet)" # TODO manage sites
             elif otype == "Building":
                 ifc.addBuilding( name=name )
             elif otype == "Floor":
                 ifc.addStorey( building=parent, name=name )
             else:
-                print "   Skipping (not implemented yet)"
+                print "   Skipping (not implemented yet)" # TODO manage groups
 
         elif obj.isDerivedFrom("Part::Feature"):
 
@@ -1033,7 +1033,7 @@ def export(exportList,filename):
                 #if DEBUG: print "   brep data for ",obj.Label," : ",fdata
                 if not fdata:
                     if obj.isDerivedFrom("Part::Feature"):
-                        print "IFC export: error retrieving the shape of object ", obj.Name
+                        print "   Error retrieving the shape of object ", obj.Label
                         continue
                     else:
                         if DEBUG: print "   No geometry"
@@ -1070,11 +1070,15 @@ def export(exportList,filename):
                     extra = ["NOTDEFINED"]
             elif otype == "Window":
                 extra = [obj.Width.Value*scaling, obj.Height.Value*scaling]
+            elif otype == "Space":
+                extra = ["ELEMENT","INTERNAL",Arch.getIfcElevation(obj)]
             if not ifctype in supportedIfcTypes:
-                if DEBUG: print "   Type ",ifctype," is not supported by the current version of IfcOpenShell. Exporting as IfcBuildingElementProxy instead"
+                if DEBUG: print "   Type ",ifctype," is not supported yet. Exporting as IfcBuildingElementProxy instead"
                 ifctype = "IfcBuildingElementProxy"
                 extra = ["ELEMENT"]
-            p = ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
+                
+            if representation:
+                p = ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
 
             if p:
 
@@ -1123,7 +1127,7 @@ def export(exportList,filename):
     FreeCAD.ActiveDocument.recompute()
     
     if unprocessed:
-        print "Some objects were not exported. See importIFC.unprocessed"
+        print "WARNING: Some objects were not exported. See importIFC.unprocessed"
 
 
 def explore(filename=None):

@@ -772,6 +772,13 @@ def getIfcBrepFacesData(obj,scale=1,sub=False,tessellation=1):
         return sols
     return None
     
+def getIfcElevation(obj):
+    """getIfcElevation(obj): Returns the lowest height (Z coordinate) of this object"""
+    if obj.isDerivedFrom("Part::Feature"):
+        b = obj.Shape.BoundBox
+        return b.ZMin
+    return 0
+    
 def getHost(obj,strict=True):
     """getHost(obj,[strict]): returns the host of the current object. If strict is true (default),
     the host can only be an object of a higher level than the given one, or in other words, if a wall
