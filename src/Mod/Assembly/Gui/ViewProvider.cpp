@@ -28,7 +28,7 @@
 #endif
 
 #include "ViewProvider.h"
-#include <ItemAssembly.h>
+#include <Item.h>
 #include <Gui/Command.h>
 //#include <Gui/Document.h>
 
