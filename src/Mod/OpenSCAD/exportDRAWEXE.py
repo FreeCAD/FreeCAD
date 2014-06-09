@@ -118,7 +118,7 @@ def saveSweep(csg,ob,filename):
         elif sh.ShapeType == 'Face':
             sh = sh.OuterWire
         else:
-            raise ValueError
+            raise ValueError('Unrecognized Shape Type')
         hasplacement = saveShape(csg,filename,sh,sectionname,None) # placement with shape
         csg.write('addsweep %s %s\n' % (sectionname," ".join(addoptions)))
     csg.write('buildsweep %s %s\n' % (ob.Name," ".join(buildoptions)))
@@ -284,7 +284,33 @@ def process_object(csg,ob,filename):
             f2s(ob.Height.Value)))
     elif ob.TypeId == "Part::Sweep" and True:
         saveSweep(csg,ob,filename)
-
+    elif ob.TypeId == "Part::Loft":
+        sectionnames=[]
+        for i,subobj in enumerate(ob.Sections):
+            sh = subobj.Shape
+            if not sh.isNull():
+                if sh.ShapeType == 'Compound':
+                    sh = sh.Shape.childShapes()[0]
+                if sh.ShapeType == 'Face':
+                    sh = sh.OuterWire
+                elif sh.ShapeType == 'Edge':
+                    import Part
+                    sh = Part.Wire([sh])
+                elif sh.ShapeType == 'Wire':
+                    import Part
+                    sh = Part.Wire(sh)
+                elif sh.ShapeType == 'Vertex':
+                    pass
+                else:
+                    raise ValueError('Unsuitabel Shape Type')
+                sectionname = '%s-%02d-section' % (ob.Name,i)
+                hasplacement = saveShape(csg,filename, sh,sectionname,None)
+                # placement with shape
+                sectionnames.append(sectionname)
+        if ob.Closed:
+            sectionnames.append(sectionnames[0])
+        csg.write('thrusections %s %d %d %s\n' % (ob.Name,int(ob.Solid),\
+                int(ob.Ruled), ' '.join(sectionnames)))
     elif isDeform(ob): #non-uniform scaling
         m=ob.Matrix
         process_object(csg,ob.Base,filename)
