@@ -450,8 +450,16 @@ void InputField::selectNumber(void)
     QByteArray str = text().toLatin1();
     unsigned int i = 0;
 
-    while ( (str.at(i) >= '0' && str.at(i) <= '9') || str.at(i)== ',' ||  str.at(i)== '.'||  str.at(i)== '-' ) 
-        i++;
+    for (QByteArray::iterator it = str.begin(); it != str.end(); ++it) {
+        if (*it >= '0' && *it <= '9')
+            i++;
+        else if (*it == ',' || *it == '.')
+            i++;
+        else if (*it == '-')
+            i++;
+        else // any non-number character
+            break;
+    }
 
     setSelection(0,i);
 }
