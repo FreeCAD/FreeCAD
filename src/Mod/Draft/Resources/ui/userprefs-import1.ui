@@ -291,13 +291,13 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox">
           <property name="toolTip">
-           <string>If this is checked, DXF layers will be imported as Draft layers</string>
+           <string>If this is checked, DXF layers will be imported as Draft VisGroups</string>
           </property>
           <property name="text">
-           <string>Use Draft Layers</string>
+           <string>Use VisGroups</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>dxfUseDraftLayers</cstring>
+           <cstring>dxfUseDraftVisGroups</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
