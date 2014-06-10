@@ -140,8 +140,8 @@ def locateLayer(wantedLayer,color=None):
     for l in layers:
         if wantedLayerName==l.Label:
             return l
-    if dxfUseDraftLayers:
-        newLayer = Draft.makeLayer(name=wantedLayer)   
+    if dxfUseDraftVisGroups:
+        newLayer = Draft.makeVisGroup(name=wantedLayer)   
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup",wantedLayer)
     newLayer.Label = wantedLayerName
@@ -1833,6 +1833,6 @@ dxfImportPoints = p.GetBool("dxfImportPoints",False)
 dxfImportHatches = p.GetBool("importDxfHatches",False)
 dxfUseStandardSize = p.GetBool("dxfStdSize",False)
 dxfGetColors = p.GetBool("dxfGetOriginalColors",False)
-dxfUseDraftLayers = p.GetBool("dxfUseDraftLayers",False)
+dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",False)
 dxfBrightBackground = isBrightBackground()
 dxfDefaultColor = getColor()

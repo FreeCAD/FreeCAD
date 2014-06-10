@@ -1083,13 +1083,13 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeLayer(group=None,name="Layer"):
-    '''makeLayer([group]): creates a Layer object in the given group, or in the
+def makeVisGroup(group=None,name="VisGroup"):
+    '''makeVisGroup([group]): creates a VisGroup object in the given group, or in the
     active document if no group is given'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
-    _Layer(obj)
+    _VisGroup(obj)
     if FreeCAD.GuiUp:
-        _ViewProviderLayer(obj.ViewObject)
+        _ViewProviderVisGroup(obj.ViewObject)
         formatObject(obj)
     if group:
         group.addObject(obj)
@@ -4890,10 +4890,10 @@ class _Facebinder(_DraftObject):
         obj.Faces = objs
         self.execute(obj)
 
-class _Layer:
-    "The Layer object"
+class _VisGroup:
+    "The VisGroup object"
     def __init__(self,obj):
-        self.Type = "Layer"
+        self.Type = "VisGroup"
         obj.Proxy = self
         self.Object = obj
 
@@ -4907,8 +4907,8 @@ class _Layer:
     def execute(self,obj):
         pass
     
-class _ViewProviderLayer:
-    "A View Provider for the Floor object"
+class _ViewProviderVisGroup:
+    "A View Provider for the VisGroup object"
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
         vobj.addProperty("App::PropertyColor","ShapeColor","Base","")
@@ -4923,7 +4923,7 @@ class _ViewProviderLayer:
 
     def getIcon(self):
         import Arch_rc
-        return ":/icons/Draft_Layer.svg"
+        return ":/icons/Draft_VisGroup.svg"
 
     def attach(self,vobj):
         self.Object = vobj.Object
