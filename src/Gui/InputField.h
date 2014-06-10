@@ -157,6 +157,7 @@ protected Q_SLOTS:
 
 protected:
     virtual void showEvent(QShowEvent * event);
+    virtual void focusInEvent(QFocusEvent * event);
     virtual void keyPressEvent(QKeyEvent * event);
     virtual void wheelEvent(QWheelEvent * event);
     virtual void contextMenuEvent(QContextMenuEvent * event);

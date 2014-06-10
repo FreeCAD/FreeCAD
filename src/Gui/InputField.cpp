@@ -460,7 +460,20 @@ void InputField::showEvent(QShowEvent * event)
 {
     QLineEdit::showEvent(event);
 
+    bool selected = this->hasSelectedText();
     updateText(actQuantity);
+    if (selected)
+        selectNumber();
+}
+
+void InputField::focusInEvent(QFocusEvent * event)
+{
+    if (event->reason() == Qt::TabFocusReason ||
+        event->reason() == Qt::BacktabFocusReason  ||
+        event->reason() == Qt::ShortcutFocusReason) {
+        if (!this->hasSelectedText())
+            selectNumber();
+    }
 }
 
 void InputField::keyPressEvent(QKeyEvent *event)
