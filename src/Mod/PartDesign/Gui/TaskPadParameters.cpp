@@ -147,10 +147,10 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     // if it is a newly created object use the last value of the history
     if(newObj){
         ui->lengthEdit->setToLastUsedValue();
+        ui->lengthEdit->selectNumber();
         ui->lengthEdit2->setToLastUsedValue();
+        ui->lengthEdit2->selectNumber();
     }
-
-
 }
 
 void TaskPadParameters::updateUI(int index)
@@ -190,7 +190,7 @@ void TaskPadParameters::updateUI(int index)
             onButtonFace(true);
     } else { // two dimensions
         ui->lengthEdit->setEnabled(true);
-        ui->lengthEdit->selectAll();
+        ui->lengthEdit->selectNumber();
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
         ui->checkBoxMidplane->setEnabled(false);
         ui->checkBoxReversed->setEnabled(false);
