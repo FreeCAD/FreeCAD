@@ -57,7 +57,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidge
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
+    connect(ui->filletRadius, SIGNAL(valueChanged(double)),
             this, SLOT(onLengthChanged(double)));
 
     this->groupLayout()->addWidget(proxy);
@@ -65,11 +65,10 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidge
     PartDesign::Fillet* pcFillet = static_cast<PartDesign::Fillet*>(FilletView->getObject());
     double r = pcFillet->Radius.getValue();
 
-    ui->doubleSpinBox->setDecimals(Base::UnitsApi::getDecimals());
-    ui->doubleSpinBox->setMaximum(INT_MAX);
-    ui->doubleSpinBox->setValue(r);
-    ui->doubleSpinBox->selectAll();
-    QMetaObject::invokeMethod(ui->doubleSpinBox, "setFocus", Qt::QueuedConnection);
+    ui->filletRadius->setUnit(Base::Unit::Length);
+    ui->filletRadius->setValue(r);
+    ui->filletRadius->selectNumber();
+    QMetaObject::invokeMethod(ui->filletRadius, "setFocus", Qt::QueuedConnection);
 }
 
 void TaskFilletParameters::onLengthChanged(double len)
@@ -81,9 +80,8 @@ void TaskFilletParameters::onLengthChanged(double len)
 
 double TaskFilletParameters::getLength(void) const
 {
-    return ui->doubleSpinBox->value();
+    return ui->filletRadius->getQuantity().getValue();
 }
-
 
 TaskFilletParameters::~TaskFilletParameters()
 {
