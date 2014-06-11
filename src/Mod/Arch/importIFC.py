@@ -995,6 +995,8 @@ def export(exportList,filename):
             ifctype = "Footing"
         elif ifctype == "Rebar":
             ifctype = "ReinforcingBar"
+        elif ifctype == "Part":
+            ifctype = "BuildingElementProxy"
 
         if DEBUG: print "Adding " + obj.Label + " as Ifc" + ifctype
                  
@@ -1072,6 +1074,8 @@ def export(exportList,filename):
                 extra = [obj.Width.Value*scaling, obj.Height.Value*scaling]
             elif otype == "Space":
                 extra = ["ELEMENT","INTERNAL",Arch.getIfcElevation(obj)]
+            elif otype == "Part":
+                extra = ["ELEMENT"]
             if not ifctype in supportedIfcTypes:
                 if DEBUG: print "   Type ",ifctype," is not supported yet. Exporting as IfcBuildingElementProxy instead"
                 ifctype = "IfcBuildingElementProxy"
