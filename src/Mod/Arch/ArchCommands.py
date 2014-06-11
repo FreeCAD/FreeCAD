@@ -600,11 +600,13 @@ def check(objectslist,includehidden=False):
 def getTuples(data,scale=1,placement=None,normal=None,close=True):
     """getTuples(data,[scale,placement,normal,close]): returns a tuple or a list of tuples from a vector
     or from the vertices of a shape. Scale can indicate a scale factor"""
+    rnd = True
     import Part
     if isinstance(data,FreeCAD.Vector):
         if placement:
             data = placement.multVec(data)
-        data = DraftVecUtils.rounded(data)
+        if rnd:
+            data = DraftVecUtils.rounded(data)
         return (data.x*scale,data.y*scale,data.z*scale)
     elif isinstance(data,Part.Shape):
         t = []
@@ -626,7 +628,8 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
                 if placement:
                     if not placement.isNull():
                         pt = placement.multVec(pt)
-                pt = DraftVecUtils.rounded(pt)
+                if rnd:
+                    pt = DraftVecUtils.rounded(pt)
                 t.append((pt.x*scale,pt.y*scale,pt.z*scale))
 
             if close: # faceloops must not be closed, but ifc profiles must.

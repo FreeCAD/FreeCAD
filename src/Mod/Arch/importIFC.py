@@ -1036,6 +1036,7 @@ def export(exportList,filename):
                 if not fdata:
                     if obj.isDerivedFrom("Part::Feature"):
                         print "   Error retrieving the shape of object ", obj.Label
+                        unprocessed.append(obj)
                         continue
                     else:
                         if DEBUG: print "   No geometry"
@@ -1081,11 +1082,9 @@ def export(exportList,filename):
                 ifctype = "IfcBuildingElementProxy"
                 extra = ["ELEMENT"]
                 
-            if representation:
-                p = ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
+            p = ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
 
             if p:
-
                 # removing openings
                 if SEPARATE_OPENINGS and gdata:
                     for o in obj.Subtractions:
@@ -1102,7 +1101,7 @@ def export(exportList,filename):
             else:
                 unprocessed.append(obj)
         else:
-            if DEBUG: print "IFC export: object type ", otype, " is not supported yet."
+            if DEBUG: print "Object type ", otype, " is not supported yet."
 
             
     ifc.write()
@@ -1131,6 +1130,7 @@ def export(exportList,filename):
     FreeCAD.ActiveDocument.recompute()
     
     if unprocessed:
+        print ""
         print "WARNING: Some objects were not exported. See importIFC.unprocessed"
 
 
