@@ -85,39 +85,11 @@ def isNull(something):
 
 def isPtOnEdge(pt,edge) :
     '''isPtOnEdge(Vector,edge): Tests if a point is on an edge'''
-    if isinstance(edge.Curve,Part.Line) :
-        orig = edge.Vertexes[0].Point
-        #if DraftVecUtils.isNull(pt.sub(orig).cross(vec(edge))) : <== can give unprecise results
-        if round(pt.sub(orig).getAngle(vec(edge)),precision()) == 0:
-            return pt.sub(orig).Length <= vec(edge).Length and pt.sub(orig).dot(vec(edge)) >= 0
-        else : 
-            return False
-        
-    elif isinstance(edge.Curve,Part.Circle) :
-        center = edge.Curve.Center
-        axis   = edge.Curve.Axis ; axis.normalize()
-        radius = edge.Curve.Radius
-        if  round(pt.sub(center).dot(axis),precision()) == 0 \
-        and round(pt.sub(center).Length - radius,precision()) == 0 :
-            if len(edge.Vertexes) == 1 :
-                return True # edge is a complete circle
-            else :
-                begin = edge.Vertexes[0].Point
-                end   = edge.Vertexes[-1].Point
-                if DraftVecUtils.isNull(pt.sub(begin)) or DraftVecUtils.isNull(pt.sub(end)) :
-                    return True
-                else :
-                    # newArc = Part.Arc(begin,pt,end)
-                    # return DraftVecUtils.isNull(newArc.Center.sub(center)) \
-                    #    and DraftVecUtils.isNull(newArc.Axis-axis) \
-                    #    and round(newArc.Radius-radius,precision()) == 0
-                    angle1 = -DraftVecUtils.angle(begin.sub(center))
-                    angle2 = -DraftVecUtils.angle(end.sub(center))
-                    anglept = -DraftVecUtils.angle(pt.sub(center))
-                    if angle2 < angle1:
-                        angle2 = angle2 + math.pi*2
-                    if (angle1 < anglept) and (anglept < angle2):
-                        return True
+    v = Part.Vertex(pt)
+    d = v.distToShape(edge)
+    if d:
+        if round(d[0],precision()) == 0:
+            return True
     return False
 
 def hasCurves(shape):
@@ -154,7 +126,7 @@ def isAligned(edge,axis="x"):
             if edge.StartPoint.z == edge.EndPoint.z:
                     return True
     return False
-    
+
 def areColinear(e1,e2):
     """areColinear(e1,e2): returns True if both edges are colinear"""
     if not isinstance(e1.Curve,Part.Line):
@@ -173,7 +145,6 @@ def areColinear(e1,e2):
             if (a2 == 0) or (a2 == round(math.pi,precision())):
                 return True
     return False
-    
 
 def hasOnlyWires(shape):
     "hasOnlyWires(shape): returns True if all the edges are inside a wire"
@@ -183,7 +154,7 @@ def hasOnlyWires(shape):
     if ne == len(shape.Edges):
         return True
     return False
-    
+
 def geomType(edge):
     "returns the type of geom this edge is based on"
     try:
@@ -201,7 +172,7 @@ def geomType(edge):
             return "Unknown"
     except:
         return "Unknown"
-        
+
 def isValidPath(shape):
     "isValidPath(shape): returns True if the shape can be used as an extrusion path"
     if shape.isNull():
