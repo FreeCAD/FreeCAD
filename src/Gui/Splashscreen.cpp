@@ -414,7 +414,7 @@ void AboutDialog::on_copyButton_clicked()
     QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromAscii(config["BuildRevision"].c_str());
     str << "OS: " << getOperatingSystem() << endl;
-    str << "Platform: " << QSysInfo::WordSize << "-bit" << endl;
+    str << "Word size: " << QSysInfo::WordSize << "-bit" << endl;
     str << "Version: " << major << "." << minor << "." << build << endl;
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
