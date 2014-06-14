@@ -462,6 +462,7 @@ void CmdRaytracingNewPartSegment::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().addObject('Raytracing::%s','%s')",FeatType,FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),(*it)->getNameInDocument());
         doCommand(Doc,"App.activeDocument().%s.Color = Gui.activeDocument().%s.ShapeColor",FeatName.c_str(),(*it)->getNameInDocument());
+        doCommand(Doc,"App.activeDocument().%s.Transparency = Gui.activeDocument().%s.Transparency",FeatName.c_str(),(*it)->getNameInDocument());
         doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",ProjName.c_str(), FeatName.c_str());
     }
     updateActive();
