@@ -89,6 +89,13 @@ bool PropertyModel::setData(const QModelIndex& index, const QVariant & value, in
             if (fabs(d-v) > FLT_EPSILON)
                 return item->setData(value);
         }
+        // Special case handling for quantities
+        else if (data.canConvert<Base::Quantity>() && value.canConvert<Base::Quantity>()) {
+            const Base::Quantity& val1 = data.value<Base::Quantity>();
+            const Base::Quantity& val2 = value.value<Base::Quantity>();
+            if (!(val1 == val2))
+                return item->setData(value);
+        }
         else if (data != value)
             return item->setData(value);
     }

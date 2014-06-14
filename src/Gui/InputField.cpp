@@ -111,8 +111,9 @@ QPixmap InputField::getValidationIcon(const char* name, const QSize& size) const
 void InputField::updateText(const Base::Quantity& quant)
 {
     double dFactor;
-    QString unit;
-    setText(quant.getUserString(dFactor,unit));
+    QString txt = quant.getUserString(dFactor,actUnitStr);
+    actUnitValue = quant.getValue()/dFactor;
+    setText(txt);
 }
 
 void InputField::resizeEvent(QResizeEvent *)
@@ -517,6 +518,7 @@ void InputField::wheelEvent (QWheelEvent * event)
         val = Minimum;
 
     this->setText(QString::fromUtf8("%L1 %2").arg(val).arg(actUnitStr));
+    selectNumber();
     event->accept();
 }
 
