@@ -34,6 +34,7 @@
 # include <vector>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <QApplication>
+# include <QDir>
 # include <QFile>
 # include <QFileInfo>
 # include <QMessageBox>
@@ -609,10 +610,18 @@ void CmdRaytracingRender::activated(int iMsg)
     
     if (renderType == "povray") {
         QStringList filter;
+#ifdef FC_OS_WIN32
+        filter << QObject::tr("Rendered image (*.bmp)");
+#else
         filter << QObject::tr("Rendered image (*.png)");
+#endif
         filter << QObject::tr("All Files (*.*)");
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Rendered image"), QString(), filter.join(QLatin1String(";;")));
         if (!fn.isEmpty()) {
+            fn = QDir::toNativeSeparators(fn);
+#ifdef FC_OS_WIN32
+            fn.replace(QLatin1String("\\"), QLatin1String("\\\\"));
+#endif
             std::string fname = (const char*)fn.toUtf8();
             openCommand("Render project");
             int width = hGrp->GetInt("OutputWidth", 800);
@@ -628,7 +637,12 @@ void CmdRaytracingRender::activated(int iMsg)
             doCommand(Doc,"f = open(TempFile,'wb')");
             doCommand(Doc,"f.write(PageFile.read())");
             doCommand(Doc,"f.close()");
+#ifdef FC_OS_WIN32
+            // http://povray.org/documentation/view/3.6.1/603/
+            doCommand(Doc,"subprocess.call(\"%s %s +W%s +H%s +O%s /EXIT /RENDER \"+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
+#else
             doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" '+TempFile,shell=True)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
+#endif
             doCommand(Gui,"import ImageGui");
             doCommand(Gui,"ImageGui.open('%s')",fname.c_str());
             doCommand(Doc,"del TempFile,PageFile");
