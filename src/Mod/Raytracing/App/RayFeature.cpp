@@ -47,6 +47,7 @@ RayFeature::RayFeature(void)
 {
     ADD_PROPERTY(Source,(0));
     ADD_PROPERTY(Color,(App::Color(0.5f,0.5f,0.5f)));
+    ADD_PROPERTY(Transparency,(0));
 }
 
 App::DocumentObjectExecReturn *RayFeature::execute(void)
@@ -67,12 +68,19 @@ App::DocumentObjectExecReturn *RayFeature::execute(void)
     PovTools::writeShape(result,Name.c_str(),shape);
 
     // This must not be done in PovTools::writeShape!
+    long t = Transparency.getValue();
     const App::Color& c = Color.getValue();
     result << "// instance to render" << endl
            << "object {" << Name << endl
-           << "  texture {" << endl
-           << "      pigment {color rgb <"<<c.r<<","<<c.g<<","<<c.b<<">}" << endl
-           << "      finish {StdFinish } //definition on top of the project" << endl
+           << " texture {" << endl;
+    if (t == 0) {
+        result << "      pigment {color rgb <"<<c.r<<","<<c.g<<","<<c.b<<">}" << endl;
+    }
+    else {
+        float trans = t/100.0f;
+        result << "      pigment {color rgb <"<<c.r<<","<<c.g<<","<<c.b<<"> transmit "<<trans<<"}" << endl;
+    }
+    result << "      finish {StdFinish } //definition on top of the project" << endl
            << "  }" << endl
            << "}" << endl   ;
 
