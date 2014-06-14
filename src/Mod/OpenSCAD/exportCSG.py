@@ -48,6 +48,8 @@ conv = params.GetInt('exportConvexity',10)
 fafs = '$fa = %f, $fs = %f' % (fa,fs)
 convexity = 'convexity = %d' % conv
 #***************************************************************************
+# Radius values not fixed for value apart from cylinder & Cone
+# no doubt there will be a problem when they do implement Value
 if open.__module__ == '__builtin__':
         pythonopen = open
 
@@ -112,21 +114,21 @@ def process_object(csg,ob):
     elif ob.TypeId == "Part::Box" :
         print "cube : ("+ str(ob.Length)+","+str(ob.Width)+","+str(ob.Height)+")"
         mm = check_multmatrix(csg,ob,-ob.Length/2,-ob.Width/2,-ob.Height/2)        
-        csg.write("cube (size = ["+str(ob.Length)+", "+str(ob.Width)+", "+str(ob.Height)+"], center = "+center(mm)+");\n")
+        csg.write("cube (size = ["+str(ob.Length.Value)+", "+str(ob.Width.Value)+", "+str(ob.Height.Value)+"], center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")       
 
     elif ob.TypeId == "Part::Cylinder" :
         print "cylinder : Height "+str(ob.Height)+ " Radius "+str(ob.Radius)        
         mm = check_multmatrix(csg,ob,0,0,-ob.Height/2)
-        csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height)+ ", r1 = "+str(ob.Radius)+\
-                  ", r2 = " + str(ob.Radius) + ", center = "+center(mm)+");\n")
+        csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height.Value)+ ", r1 = "+str(ob.Radius.Value)+\
+                  ", r2 = " + str(ob.Radius.Value) + ", center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")           
             
     elif ob.TypeId == "Part::Cone" :
         print "cone : Height "+str(ob.Height)+ " Radius1 "+str(ob.Radius1)+" Radius2 "+str(ob.Radius2)
         mm = check_multmatrix(csg,ob,0,0,-ob.Height/2)
-        csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height)+ ", r1 = "+str(ob.Radius1)+\
-                  ", r2 = "+str(ob.Radius2)+", center = "+center(mm)+");\n")
+        csg.write("cylinder($fn = 0, "+fafs+", h = "+str(ob.Height.Value)+ ", r1 = "+str(ob.Radius1.Value)+\
+                  ", r2 = "+str(ob.Radius2.Value)+", center = "+center(mm)+");\n")
         if mm == 1 : csg.write("}\n")
 
     elif ob.TypeId == "Part::Torus" :
@@ -140,17 +142,19 @@ def process_object(csg,ob):
             csg.write("circle($fn = 0, "+fafs+", r = "+str(ob.Radius2)+");\n")          
             if mm == 1 : csg.write("}\n")
         else : # Cannot convert to rotate extrude so best effort is polyhedron
-            csg.write('%s\n' % shape2polyhedron(ob.Shape)) 
+            csg.write('%s\n' % shape2polyhedron(ob.Shape))
+
     elif ob.TypeId == "Part::Prism":
         import math
         f = str(ob.Polygon)
 #        r = str(ob.Length/2.0/math.sin(math.pi/ob.Polygon))
         r = str(ob.Circumradius) #length seems to be the outer radius
-        h = str(ob.Height)
+        h = str(ob.Height.Value)
         mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
         csg.write("cylinder($fn = "+f+", "+fafs+", h = "+h+", r1 = "+r+\
                   ", r2 = "+r+", center = "+center(mm)+");\n")
         if mm == 1: csg.write("}\n")
+
     elif ob.TypeId == "Part::RegularPolygon":
         mm = check_multmatrix(csg,ob,0,0,-float(h)/2)
         csg.write("circle($fn = "+str(ob.NumberOfSides)+", "+fafs+", r = "+str(ob.Radius)+");\n")
@@ -196,7 +200,7 @@ def process_object(csg,ob):
         elif ob.Base.isDerivedFrom('Part::Plane'):
             mm = check_multmatrix(csg,ob,0,0,0)
             csg.write("linear_extrude(height = "+str(ob.Dir[2])+", center = true, "+convexity+", twist = 0, slices = 2, $fn = 0, "+fafs+")\n{\n")
-            csg.write("square (size = ["+str(ob.Base.Length)+", "+str(ob.Base.Width)+"],center = "+center(mm)+";\n}\n")
+            csg.write("square (size = ["+str(ob.Base.Length.Value)+", "+str(ob.Base.Width.Value)+"], center = "+center(mm)+");\n}\n")
             if mm == 1: csg.write("}\n")     
         elif ob.Base.Name.startswith('this_is_a_bad_idea'):
             pass
@@ -250,12 +254,12 @@ def export(exportList,filename):
     "called when freecad exports a file"
     
     # process Objects
-    print "\nStart Export 0.1c\n"
+    print "\nStart Export 0.1d\n"
     print "Open Output File"
     csg = pythonopen(filename,'w')
     print "Write Inital Output"
     # Not sure if comments as per scad are allowed in csg file              
-    csg.write("// CSG file generated from FreeCAD Export 0.1c\n")
+    csg.write("// CSG file generated from FreeCAD Export 0.1d\n")
     #write initial group statements - not sure if required              
     csg.write("group() {\n group(){\n")
     for ob in exportList:
