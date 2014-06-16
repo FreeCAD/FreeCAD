@@ -32,15 +32,15 @@ set(Assembly_LIBS
 
 generate_from_xml(ItemPy)
 generate_from_xml(ProductRefPy)
-generate_from_xml(PartRefPy)
+#generate_from_xml(PartRefPy)
 generate_from_xml(ConstraintPy)
 generate_from_xml(ConstraintGroupPy)
 
 SET(Features_SRCS
     Item.cpp
     Item.h
-    PartRef.cpp
-    PartRef.h
+    #PartRef.cpp
+    #PartRef.h
     Product.cpp
     Product.h
     ProductRef.cpp
@@ -84,8 +84,8 @@ SET(Python_SRCS
     ItemPyImp.cpp
     ProductRefPy.xml
     ProductRefPyImp.cpp
-    PartRefPy.xml
-    PartRefPyImp.cpp
+    #PartRefPy.xml
+    #PartRefPyImp.cpp
     ConstraintPy.xml
     ConstraintPyImp.cpp
     ConstraintGroupPy.xml

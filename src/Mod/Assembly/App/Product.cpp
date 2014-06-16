@@ -33,7 +33,6 @@
 #include <Base/Exception.h>
 
 #include "Product.h"
-#include "PartRef.h"
 #include "ConstraintGroup.h"
 
 
@@ -46,23 +45,26 @@ PROPERTY_SOURCE(Assembly::Product, Assembly::Item)
 
 Product::Product() {
     ADD_PROPERTY(Items,(0));
-    ADD_PROPERTY(Annotations,(0));
-    ADD_PROPERTY(Rigid,(true));
-#ifdef ASSEMBLY_DEBUG_FACILITIES
-    ADD_PROPERTY(ApplyAtFailure,(false));
-    ADD_PROPERTY(Precision,(1e-6));
-    ADD_PROPERTY(SaveState,(false));
-    ADD_PROPERTY(Iterations,(5e3));
-    ADD_PROPERTY(LogLevel, (long(1)));
+    ADD_PROPERTY_TYPE(CreatedBy,(""),0,App::Prop_None,"The creator of the Item");
+    ADD_PROPERTY_TYPE(CreationDate,(Base::TimeInfo::currentDateTimeString()),0,App::Prop_ReadOnly,"Date of creation");
+    ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,App::Prop_None,0);
+    ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,App::Prop_ReadOnly,"Date of last modification");
+    ADD_PROPERTY_TYPE(Company,(""),0,App::Prop_None,"Additional tag to save the the name of the company");
+    ADD_PROPERTY_TYPE(Comment,(""),0,App::Prop_None,"Additional tag to save a comment");
+    ADD_PROPERTY_TYPE(Meta,(),0,App::Prop_None,"Map with additional meta information");
+    ADD_PROPERTY_TYPE(Material,(),0,App::Prop_None,"Map with material properties");
+    // create the uuid for the document
+    Base::Uuid id;
+    ADD_PROPERTY_TYPE(Id,(""),0,App::Prop_None,"ID (Part-Number) of the Item");
+    ADD_PROPERTY_TYPE(Uid,(id),0,App::Prop_None,"UUID of the Item");
 
-    std::vector<std::string> vec;
-    vec.push_back("iteration");
-    vec.push_back("solving");
-    vec.push_back("manipulation");
-    vec.push_back("information");
-    vec.push_back("error");
-    LogLevel.setEnumVector(vec);
-#endif
+    // license stuff
+    ADD_PROPERTY_TYPE(License,("CC BY 3.0"),0,App::Prop_None,"License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,App::Prop_None,"URL to the license text/contract");
+    // color and apperance
+    ADD_PROPERTY(Color,(1.0,1.0,1.0,1.0)); // set transparent -> not used
+    ADD_PROPERTY(Visibility,(true));
+
 }
 
 short Product::mustExecute() const {
@@ -73,108 +75,9 @@ App::DocumentObjectExecReturn* Product::execute(void) {
 
     Base::Console().Message("Execute\n");
 
-    try {
-
-        //create a solver and init all child assemblys with subsolvers
-        m_solver = boost::shared_ptr<Solver>(new Solver);
-        m_downstream_placement = Base::Placement(Base::Vector3<double>(0,0,0), Base::Rotation());
-        Base::Placement dummy;
-        initSolver(boost::shared_ptr<Solver>(), dummy, false);
-        initConstraints(boost::shared_ptr<Solver>());
-
-#ifdef ASSEMBLY_DEBUG_FACILITIES
-
-        if(ApplyAtFailure.getValue())
-            m_solver->setOption<dcm::solverfailure>(dcm::ApplyResults);
-        else
-            m_solver->setOption<dcm::solverfailure>(dcm::IgnoreResults);
-
-        m_solver->setOption<dcm::precision>(Precision.getValue());
-        m_solver->setOption<dcm::iterations>(Iterations.getValue());
-
-        if(SaveState.getValue()) {
-
-            ofstream myfile;
-            myfile.open("solverstate.txt");
-            m_solver->saveState(myfile);
-            myfile.close();
-        };
-
-        m_solver->setLoggingFilter(dcm::severity >= (dcm::severity_level)LogLevel.getValue());
-
-#endif
-
-        //solve the system
-        m_solver->solve();
-    }
-    catch
-        (boost::exception& e) {
-        message.clear();
-        message << "Solver exception " << *boost::get_error_info<boost::errinfo_errno>(e)
-                << "raised: " << boost::get_error_info<dcm::error_message>(e)->c_str() << std::endl;
-        //throw Base::Exception(message.str().c_str());
-        Base::Console().Error(message.str().c_str());
-    }
-    catch
-        (std::exception& e) {
-        message.clear();
-        message << "Exception raised in assembly solver: " << e.what() << std::endl;
-        //throw Base::Exception(message.str().c_str());
-        Base::Console().Error(message.str().c_str());
-    }
-    catch(Standard_ConstructionError& e) {
-        message.clear();
-        message << "Construction Error raised in assembly solver during execution: ";
-	message << e.GetMessageString()<< std::endl;
-	Base::Console().Error(message.str().c_str());
-    }
-    catch
-        (...) {
-        message.clear();
-        message << "Unknown Exception raised in assembly solver during execution" << std::endl;
-        //throw Base::Exception(message.str().c_str());
-        Base::Console().Error(message.str().c_str());
-    };
-
-    this->touch();
-
     return App::DocumentObject::StdReturn;
 }
 
-TopoDS_Shape Product::getShape(void) const {
-    std::vector<TopoDS_Shape> s;
-    std::vector<App::DocumentObject*> obj = Items.getValues();
-
-    std::vector<App::DocumentObject*>::iterator it;
-
-    for(it = obj.begin(); it != obj.end(); ++it) {
-        if((*it)->getTypeId().isDerivedFrom(Assembly::Item::getClassTypeId())) {
-            TopoDS_Shape aShape = static_cast<Assembly::Item*>(*it)->getShape();
-
-            if(!aShape.IsNull())
-                s.push_back(aShape);
-        }
-    }
-
-    if(s.size() > 0) {
-        TopoDS_Compound aRes = TopoDS_Compound();
-        BRep_Builder aBuilder = BRep_Builder();
-        aBuilder.MakeCompound(aRes);
-
-        for(std::vector<TopoDS_Shape>::iterator it = s.begin(); it != s.end(); ++it) {
-
-            aBuilder.Add(aRes, *it);
-        }
-
-        //if (aRes.IsNull())
-        //    throw Base::Exception("Resulting shape is invalid");
-        return aRes;
-    }
-
-    // set empty shape
-    return TopoDS_Compound();
-
-}
 
 //PyObject* Product::getPyObject(void) {
 //    if(PythonObject.is(Py::_None())) {
@@ -185,159 +88,7 @@ TopoDS_Shape Product::getShape(void) const {
 //    return Py::new_reference_to(PythonObject);
 //}
 
-bool Product::isParentAssembly(PartRef* part) {
 
-    typedef std::vector<App::DocumentObject*>::const_iterator iter;
-
-    const std::vector<App::DocumentObject*>& vector = Items.getValues();
-
-    for(iter it=vector.begin(); it != vector.end(); it++) {
-
-        if((*it)->getTypeId() == Assembly::PartRef::getClassTypeId())
-            if(*it == part)
-                return true;
-    };
-
-    return false;
-}
-
-Product* Product::getToplevelAssembly() {
-
-    typedef std::vector<App::DocumentObject*>::const_iterator iter;
-
-    const std::vector<App::DocumentObject*>& vector = getInList();
-
-    for(iter it=vector.begin(); it != vector.end(); it++) {
-
-        if((*it)->getTypeId() == Assembly::Product::getClassTypeId())
-            return static_cast<Assembly::Product*>(*it)->getToplevelAssembly();
-    };
-
-    return this;
-};
-
-Product* Product::getParentAssembly(PartRef* part) {
-
-    typedef std::vector<App::DocumentObject*>::const_iterator iter;
-
-    const std::vector<App::DocumentObject*>& vector = Items.getValues();
-
-    for(iter it=vector.begin(); it != vector.end(); it++) {
-
-        if((*it)->getTypeId() == Assembly::PartRef::getClassTypeId()) {
-            if(*it == part)
-                return this;
-        }
-        else if((*it)->getTypeId() == Assembly::Product::getClassTypeId()) {
-
-            Assembly::Product* assembly = static_cast<Assembly::Product*>(*it)->getParentAssembly(part);
-
-            if(assembly)
-                return assembly;
-        }
-    };
-
-    return (Product*)NULL;
-}
-
-
-
-std::pair<PartRef*, Product*> Product::getContainingPart(App::DocumentObject* obj, bool isTop) {
-
-    typedef std::vector<App::DocumentObject*>::const_iterator iter;
-
-    const std::vector<App::DocumentObject*>& vector = Items.getValues();
-
-    for(iter it=vector.begin(); it != vector.end(); it++) {
-
-        if((*it)->getTypeId() == Assembly::PartRef::getClassTypeId()) {
-            if(static_cast<Assembly::PartRef*>(*it)->holdsObject(obj))
-                return std::make_pair(static_cast<Assembly::PartRef*>(*it), this);
-        }
-        else if((*it)->getTypeId() == Assembly::Product::getClassTypeId()) {
-
-            std::pair<PartRef*, Product*> part = static_cast<Assembly::Product*>(*it)->getContainingPart(obj, false);
-
-            if(part.first && part.second) {
-
-                if(isTop)
-                    return part;
-                else
-                    return std::make_pair(part.first, this);
-            }
-        }
-    };
-
-    return std::pair<PartRef*, Product*>(NULL, NULL);
-}
-
-void Product::initSolver(boost::shared_ptr<Solver> parent, Base::Placement& PL_downstream, bool stopped) {
-
-    if(parent) {
-        if(Rigid.getValue() || stopped) {
-            m_solver = parent->createSubsystem();
-            m_solver->setTransformation(PL_downstream*this->Placement.getValue());
-            stopped = true; //all below belongs to this rigid group
-
-            //connect the recalculated signal in case we need to update the placement
-            m_solver->connectSignal<dcm::recalculated>(boost::bind(&Product::finish, this, _1));
-        }
-        else {
-            m_solver = parent;
-            PL_downstream *= this->Placement.getValue();
-        }
-    }
-
-    //we always need to store the downstream placement as we may be a subassembly in a
-    //non-rigid subassembly
-    m_downstream_placement = PL_downstream;
-
-    typedef std::vector<App::DocumentObject*>::const_iterator iter;
-    const std::vector<App::DocumentObject*>& vector = Items.getValues();
-
-    for(iter it=vector.begin(); it != vector.end(); it++) {
-
-        if((*it)->getTypeId() == Assembly::Product::getClassTypeId()) {
-
-            static_cast<Assembly::Product*>(*it)->initSolver(m_solver, PL_downstream, stopped);
-        }
-    };
-}
-
-void Product::initConstraints(boost::shared_ptr<Solver> parent) {
-
-
-
-    //get the constraint group and init the constraints
-    typedef std::vector<App::DocumentObject*>::const_iterator iter;
-
-    const std::vector<App::DocumentObject*>& vector = Annotations.getValues();
-
-    for(iter it=vector.begin(); it != vector.end(); it++) {
-
-        if((*it)->getTypeId() == Assembly::ConstraintGroup::getClassTypeId())
-            static_cast<ConstraintGroup*>(*it)->init(this);
-    };
-
-    // iterate down as long as a non-rigid subsystem exists
-    const std::vector<App::DocumentObject*>& vector2 = Items.getValues();
-
-    for(iter it=vector2.begin(); it != vector2.end(); it++) {
-
-        if((*it)->getTypeId() == Assembly::Product::getClassTypeId())
-            static_cast<Assembly::Product*>(*it)->initConstraints(m_solver);
-
-    };
-
-};
-
-//the callback for the recalculated signal
-void Product::finish(boost::shared_ptr<Solver> subsystem) {
-
-    //assert(subsystem == m_solver);
-    Base::Placement p = m_solver->getTransformation<Base::Placement>();
-    this->Placement.setValue(m_downstream_placement.inverse()*p);
-};
 
 } //assembly
 

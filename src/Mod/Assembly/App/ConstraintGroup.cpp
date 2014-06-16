@@ -31,7 +31,6 @@
 
 #include "ConstraintGroupPy.h"
 #include "ConstraintGroup.h"
-#include "PartRef.h"
 #include "Product.h"
 
 
@@ -72,16 +71,6 @@ App::DocumentObjectExecReturn *ConstraintGroup::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-void ConstraintGroup::init(Product* ass) {
 
-    std::vector<App::DocumentObject*> obj = Constraints.getValues();
-
-    std::vector<App::DocumentObject*>::iterator it;
-    for (it = obj.begin(); it != obj.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Assembly::Constraint::getClassTypeId())) {
-            static_cast<Assembly::Constraint*>(*it)->init(ass);
-        }
-    }
-}
 
 }

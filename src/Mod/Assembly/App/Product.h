@@ -32,7 +32,6 @@
 namespace Assembly
 {
 
-class PartRef;
 
 class AssemblyExport Product : public Assembly::Item
 {
@@ -41,9 +40,54 @@ class AssemblyExport Product : public Assembly::Item
 public:
     Product();
 
+	/// Items of the Product
     App::PropertyLinkList   Items;
-    App::PropertyLinkList   Annotations;
-    App::PropertyBool	    Rigid;
+
+   /** @name base properties of all Assembly Items 
+     * This properties corospond mostly to the meta information
+     * in the App::Document class
+     */
+    //@{
+    /// Id e.g. Part number
+    App::PropertyString  Id;
+    /// unique identifier of the Item 
+    App::PropertyUUID    Uid;
+    /// long description of the Item 
+    App::PropertyString  Description  ;
+    /// creators name (utf-8)
+    App::PropertyString  CreatedBy;
+    App::PropertyString  CreationDate;
+    /// user last modified the document
+    App::PropertyString  LastModifiedBy;
+    App::PropertyString  LastModifiedDate;
+    /// company name UTF8(optional)
+    App::PropertyString  Company;
+    /// long comment or description (UTF8 with line breaks)
+    App::PropertyString  Comment;
+    /** License string
+      * Holds the short license string for the Item, e.g. CC-BY
+      * for the Creative Commons license suit. 
+      */
+    App::PropertyString  License;
+    /// License descripton/contract URL
+    App::PropertyString  LicenseURL;
+    /// Meta descriptons
+    App::PropertyMap     Meta;
+    /// Meta descriptons
+    App::PropertyMap     Material;
+    //@}
+
+    /** @name Visual properties */
+    //@{
+    /** Base color of the Item
+        If the transparency value is 1.0
+        the color or the next hirachy is used
+        */
+    App::PropertyColor Color;
+    /// Visibility
+    App::PropertyBool  Visibility;
+    //@}
+    
  
     /** @name methods override feature */
     //@{
@@ -57,43 +101,6 @@ public:
     //PyObject *getPyObject(void);
     //@}
 
-    virtual TopoDS_Shape getShape(void) const;
-    
-    bool isParentAssembly(PartRef* part);
-    Product* getToplevelAssembly();
-    Product* getParentAssembly(PartRef* part);
-    
-    //returns the PartRef which holds the given document object and the Product, which holds
-    //the this part and is a direct children of this Product. The returned Product is therefore
-    //the "TopLevel" Assembly holding the part of all children of this assembly. If this assembly holds 
-    //the children directly, without any subassembly, the returned Product is this.
-    std::pair< PartRef*, Product* > getContainingPart(App::DocumentObject* obj, bool isTop=true);
-    
-    //create a new solver for this assembly and initalise all downstream itemassemblys either with a 
-    //subsystem (if they are rigid) or with this solver plus the downstream placement
-    void initSolver(boost::shared_ptr<Solver> parent, Base::Placement& pl_downstream, bool stopped);
-    
-    //initialise the oen constraint group and go downstream as long as non-rigid itemassemblys exist, 
-    //which need to be initialised too
-    void initConstraints(boost::shared_ptr<Solver> parent);
-    
-    //read the downstream itemassemblys and set their placement to the propertyplacement
-    void finish(boost::shared_ptr<Solver> subsystem);
-    
-    boost::shared_ptr<Solver> m_solver;
-    Base::Placement m_downstream_placement;
-    
-    
-#ifdef ASSEMBLY_DEBUG_FACILITIES
-    App::PropertyBool  ApplyAtFailure;
-    App::PropertyFloat Precision;
-    App::PropertyBool  SaveState;
-    App::PropertyInteger  Iterations;
-    App::PropertyEnumeration  LogLevel;
-#endif
-    
-private:
-    std::stringstream message;
 };
 
 } //namespace Assembly

@@ -33,7 +33,6 @@
 #include "Workbench.h"
 
 #include "ViewProvider.h"
-#include "ViewProviderPartRef.h"
 #include "ViewProviderProduct.h"
 #include "ViewProviderProductRef.h"
 #include "ViewProviderConstraintGroup.h"
@@ -83,7 +82,6 @@ void AssemblyGuiExport initAssemblyGui()
     AssemblyGui::Workbench::init();
 
     AssemblyGui::ViewProviderItem        ::init();
-    AssemblyGui::ViewProviderPartRef     ::init();
     AssemblyGui::ViewProviderProduct     ::init();
     AssemblyGui::ViewProviderProductRef  ::init();
 

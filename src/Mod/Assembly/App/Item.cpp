@@ -43,25 +43,6 @@ PROPERTY_SOURCE_ABSTRACT(Assembly::Item, App::GeoFeature)
 
 Item::Item()
 {
-    ADD_PROPERTY_TYPE(CreatedBy,(""),0,App::Prop_None,"The creator of the Item");
-    ADD_PROPERTY_TYPE(CreationDate,(Base::TimeInfo::currentDateTimeString()),0,App::Prop_ReadOnly,"Date of creation");
-    ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,App::Prop_None,0);
-    ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,App::Prop_ReadOnly,"Date of last modification");
-    ADD_PROPERTY_TYPE(Company,(""),0,App::Prop_None,"Additional tag to save the the name of the company");
-    ADD_PROPERTY_TYPE(Comment,(""),0,App::Prop_None,"Additional tag to save a comment");
-    ADD_PROPERTY_TYPE(Meta,(),0,App::Prop_None,"Map with additional meta information");
-    ADD_PROPERTY_TYPE(Material,(),0,App::Prop_None,"Map with material properties");
-    // create the uuid for the document
-    Base::Uuid id;
-    ADD_PROPERTY_TYPE(Id,(""),0,App::Prop_None,"ID (Part-Number) of the Item");
-    ADD_PROPERTY_TYPE(Uid,(id),0,App::Prop_None,"UUID of the Item");
-
-    // license stuff
-    ADD_PROPERTY_TYPE(License,("CC BY 3.0"),0,App::Prop_None,"License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,App::Prop_None,"URL to the license text/contract");
-    // color and apperance
-    ADD_PROPERTY(Color,(1.0,1.0,1.0,1.0)); // set transparent -> not used
-    ADD_PROPERTY(Visibility,(true));
 }
 
 short Item::mustExecute() const

@@ -54,13 +54,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand(QT_TR_NOOP("Assembly"));
-    *part << "Assembly_Constraint";
-    *part << "Assembly_ConstraintFix";
-    *part << "Assembly_ConstraintDistance";
-    *part << "Assembly_ConstraintOrientation";
-    *part << "Assembly_ConstraintAngle";
-    *part << "Assembly_ConstraintCoincidence";
-    *part << "Assembly_ConstraintAlignment";
+    //*part << "Assembly_Constraint";
+    //*part << "Assembly_ConstraintFix";
+    //*part << "Assembly_ConstraintDistance";
+    //*part << "Assembly_ConstraintOrientation";
+    //*part << "Assembly_ConstraintAngle";
+    //*part << "Assembly_ConstraintCoincidence";
+    //*part << "Assembly_ConstraintAlignment";
     *part << "Separator";
     *part << "Assembly_AddNewPart";
     *part << "Assembly_AddNewComponent";
@@ -77,12 +77,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* asmCmd = new Gui::MenuItem();
     root->insertItem(item, asmCmd);
     asmCmd->setCommand("&Assembly");
-    *asmCmd << "Assembly_ConstraintFix"
-	    << "Assembly_ConstraintDistance"
-	    << "Assembly_ConstraintOrientation"
-	    << "Assembly_ConstraintAngle"
-	    << "Assembly_ConstraintCoincidence"
-	    << "Assembly_ConstraintAlignment"
+    *asmCmd 
+		
+		//<< "Assembly_ConstraintFix"
+	 //   << "Assembly_ConstraintDistance"
+	 //   << "Assembly_ConstraintOrientation"
+	 //   << "Assembly_ConstraintAngle"
+	 //   << "Assembly_ConstraintCoincidence"
+	 //   << "Assembly_ConstraintAlignment"
             << "Separator"
             << "Assembly_AddNewPart"
             << "Assembly_AddNewComponent"
