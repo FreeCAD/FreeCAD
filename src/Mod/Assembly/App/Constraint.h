@@ -40,13 +40,7 @@ namespace Assembly
 class AssemblyExport Constraint : public App::DocumentObject
 {
     PROPERTY_HEADER(Assembly::Constraint);
-    
-protected:
-    boost::shared_ptr<Constraint3D> 	m_constraint;
-    boost::shared_ptr<Geometry3D>	m_first_geom, m_second_geom;
-
-    boost::shared_ptr< Geometry3D > initLink(App::PropertyLinkSub& link);
-    
+        
 public:
     Constraint();
 
@@ -67,10 +61,11 @@ public:
         return "AssemblyGui::ViewProviderConstraint";
     }
     PyObject *getPyObject(void);
-    
-    /** @brief initialize the constraint in the assembly solver 
-     */
-    void init(Assembly::Product* ass);    
+
+private:
+    static const char* OrientationEnums[];
+    static const char* TypeEnums[];
+    static const char* SolutionSpaceEnums[];
 };
 
 } //namespace Assembly

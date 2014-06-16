@@ -29,8 +29,8 @@ set(AssemblyGui_LIBS
 )
 
 set(AssemblyGui_MOC_HDRS
-    TaskAssemblyConstraints.h
-    TaskDlgAssemblyConstraints.h
+    #TaskAssemblyConstraints.h
+    #TaskDlgAssemblyConstraints.h
 )
 fc_wrap_cpp(AssemblyGui_MOC_SRCS ${AssemblyGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${AssemblyGui_MOC_SRCS})
@@ -38,15 +38,15 @@ SOURCE_GROUP("Moc" FILES ${AssemblyGui_MOC_SRCS})
 qt4_add_resources(AssemblyGui_SRCS Resources/Assembly.qrc)
 
 set(AssemblyGui_UIC_SRCS
-    TaskAssemblyConstraints.ui
+    #TaskAssemblyConstraints.ui
 )
 qt4_wrap_ui(AssemblyGui_UIC_HDRS ${AssemblyGui_UIC_SRCS})
 
 SET(AssemblyGuiViewProvider_SRCS
     ViewProvider.cpp
     ViewProvider.h
-    ViewProviderPartRef.cpp
-    ViewProviderPartRef.h
+    #ViewProviderPartRef.cpp
+    #ViewProviderPartRef.h
     ViewProviderProduct.cpp
     ViewProviderProduct.h
     ViewProviderProductRef.cpp
@@ -55,10 +55,10 @@ SET(AssemblyGuiViewProvider_SRCS
     ViewProviderConstraint.h
     ViewProviderConstraintGroup.cpp
     ViewProviderConstraintGroup.h
-    TaskDlgAssemblyConstraints.cpp
-    TaskDlgAssemblyConstraints.h
-    TaskAssemblyConstraints.h
-    TaskAssemblyConstraints.cpp
+    #TaskDlgAssemblyConstraints.cpp
+    #TaskDlgAssemblyConstraints.h
+    #TaskAssemblyConstraints.h
+    #TaskAssemblyConstraints.cpp
 )
 SOURCE_GROUP("ViewProvider" FILES ${AssemblyGuiViewProvider_SRCS})
 

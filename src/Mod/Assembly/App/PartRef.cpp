@@ -52,7 +52,7 @@ struct AssemblyItemException : std::exception {
 };
 
 
-PROPERTY_SOURCE(Assembly::PartRef, Assembly::Item)
+PROPERTY_SOURCE(Assembly::PartRef,  App::GeoFeature)
 
 PartRef::PartRef() {
     ADD_PROPERTY(Model, (0));

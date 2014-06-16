@@ -50,7 +50,6 @@
 #include "Constraint.h"
 #include "ConstraintPy.h"
 #include "Item.h"
-#include "PartRef.h"
 #include "Product.h"
 
 
@@ -76,37 +75,21 @@ struct ConstraintLinkException : std::exception {
 
 PROPERTY_SOURCE(Assembly::Constraint, App::DocumentObject)
 
+const char* Constraint::OrientationEnums[]    = {"Parallel","Equal","Opposite","Perpendicular",NULL};
+const char* Constraint::TypeEnums[]    = {"Fix","Distance","Orientation","Angle","Align","Coincident","None",NULL};
+const char* Constraint::SolutionSpaceEnums[]    = {"Bidirectional","PositivDirectional","NegativeDirectional",NULL};
+
 Constraint::Constraint()
 {
     ADD_PROPERTY(First, (0));
     ADD_PROPERTY(Second,(0));
     ADD_PROPERTY(Value,(0));
     ADD_PROPERTY(Orientation, (long(0)));
+    Orientation.setEnums(OrientationEnums);
     ADD_PROPERTY(Type, (long(6)));
+    Type.setEnums(TypeEnums);
     ADD_PROPERTY(SolutionSpace, (long(0)));
-
-    std::vector<std::string> vec;
-    vec.push_back("Parallel");
-    vec.push_back("Equal");
-    vec.push_back("Opposite");
-    vec.push_back("Perpendicular");
-    Orientation.setEnumVector(vec);
-
-    std::vector<std::string> vec2;
-    vec2.push_back("Fix");
-    vec2.push_back("Distance");
-    vec2.push_back("Orientation");
-    vec2.push_back("Angle");
-    vec2.push_back("Align");
-    vec2.push_back("Coincident");
-    vec2.push_back("None");
-    Type.setEnumVector(vec2);
-
-    std::vector<std::string> vec3;
-    vec3.push_back("Bidirectional");
-    vec3.push_back("Positiv directional");
-    vec3.push_back("Negative directional");
-    SolutionSpace.setEnumVector(vec3);
+    SolutionSpace.setEnums(SolutionSpaceEnums);
 }
 
 short Constraint::mustExecute() const
@@ -119,126 +102,9 @@ short Constraint::mustExecute() const
 
 App::DocumentObjectExecReturn* Constraint::execute(void)
 {
-    touch();
     return App::DocumentObject::StdReturn;
 }
 
-boost::shared_ptr<Geometry3D> Constraint::initLink(App::PropertyLinkSub& link) {
-
-    //empty links are allowed
-    if(!link.getValue())
-        return boost::shared_ptr<Geometry3D>();
-
-    //check if we have Assembly::PartRef
-    if(link.getValue()->getTypeId() != PartRef::getClassTypeId()) {
-        throw ConstraintLinkException();
-        return boost::shared_ptr<Geometry3D>();
-    };
-
-    Assembly::PartRef* part = static_cast<Assembly::PartRef*>(link.getValue());
-
-    if(!part)
-        throw ConstraintPartException();
-
-    //get the relevant solver in which the part needs to be added
-    part->ensureInitialisation();
-
-    return part->getGeometry3D(link.getSubValues()[0].c_str());
-}
-
-
-void Constraint::init(Assembly::Product* ass)
-{
-    Assembly::PartRef* part1, *part2;
-
-    if(First.getValue()) {
-        m_first_geom = initLink(First);
-        part1 = static_cast<Assembly::PartRef*>(First.getValue());
-    }
-
-    if(Second.getValue()) {
-        m_second_geom = initLink(Second);
-        part2= static_cast<Assembly::PartRef*>(Second.getValue());
-    }
-
-    //fix constraint
-    if(Type.getValue() == 0) {
-        if(part1)
-            part1->m_part->fix(true);
-        else if(part2)
-            part2->m_part->fix(true);
-        else
-            throw ConstraintPartException();
-
-        return;
-    };
-
-    //all other constraints need poth parts
-    if(!part1 || !part2) {
-        throw ConstraintPartException();
-    };
-
-    //and both geometries
-    if(!m_first_geom || !m_second_geom) {
-        throw ConstraintInitException();
-    };
-
-    //we may need the orientation
-    dcm::Direction dir;
-
-    switch(Orientation.getValue()) {
-    case 0:
-        dir = dcm::parallel;
-        break;
-
-    case 1:
-        dir = dcm::equal;
-        break;
-
-    case 2:
-        dir = dcm::opposite;
-        break;
-
-    default:
-        dir = dcm::perpendicular;
-    };
-
-    //we may need the SolutionSpace
-    dcm::SolutionSpace sspace;
-
-    switch(SolutionSpace.getValue()) {
-    case 0:
-        sspace = dcm::bidirectional;
-        break;
-
-    case 1:
-        sspace = dcm::positiv_directional;
-        break;
-
-    default:
-        sspace = dcm::negative_directional;
-    };
-
-    //distance constraint
-    if(Type.getValue() == 1)
-        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, (dcm::distance = Value.getValue()) = sspace);
-
-    //orientation constraint
-    if(Type.getValue() == 2)
-        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::orientation = dir);
-
-    //angle constraint
-    if(Type.getValue() == 3)
-        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::angle = Value.getValue()*M_PI/180.);
-
-    //alignemnt constraint
-    if(Type.getValue() == 4)
-        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, ((dcm::alignment = dir) = Value.getValue()) = sspace);
-
-    //coincident constraint
-    if(Type.getValue() == 5)
-        m_constraint = ass->m_solver->createConstraint3D(getNameInDocument(), m_first_geom, m_second_geom, dcm::coincidence = dir);
-}
 
 PyObject* Constraint::getPyObject(void)
 {

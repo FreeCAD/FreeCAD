@@ -33,7 +33,6 @@
 #include "Item.h"
 #include "Product.h"
 #include "ProductRef.h"
-#include "PartRef.h"
 
 #include "Constraint.h"
 #include "ConstraintGroup.h"
@@ -73,7 +72,6 @@ void AssemblyExport initAssembly()
     Assembly::Item          ::init();
     Assembly::Product       ::init();
     Assembly::ProductRef    ::init();
-    Assembly::PartRef       ::init();
 
     // constraint hirachy
     Assembly::Constraint        ::init();

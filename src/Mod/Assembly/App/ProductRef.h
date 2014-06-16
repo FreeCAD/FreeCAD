@@ -27,13 +27,12 @@
 #include <App/PropertyStandard.h>
 
 #include "Item.h"
-#include "PartRef.h"
 #include "Solver/Solver.h"
 
 namespace Assembly
 {
 
-class ItemPart;
+
 
 class AssemblyExport ProductRef : public Assembly::Item
 {
@@ -42,9 +41,8 @@ class AssemblyExport ProductRef : public Assembly::Item
 public:
     ProductRef();
 
-    App::PropertyLinkList   Items;
-    App::PropertyLinkList   Annotations;
-    App::PropertyBool	    Rigid;
+	/// The one and only GeomtricObject referenced
+    App::PropertyLink   Item;
  
     /** @name methods override feature */
     //@{
@@ -57,11 +55,6 @@ public:
     }
     PyObject *getPyObject(void);
     //@}
-
-    virtual TopoDS_Shape getShape(void) const {return TopoDS_Shape();}
-
-    std::pair< PartRef*, Product* > getContainingPart(App::DocumentObject* obj, bool isTop=true){ return std::pair<PartRef*, Product*>(NULL, NULL);}
-
 
 };
 

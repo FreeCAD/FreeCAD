@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QMessageBox>
 # include <QRegExp>
 # include <QString>
 #endif
@@ -32,7 +33,6 @@
 #include "TaskAssemblyConstraints.h"
 
 #include <Constraint.h>
-#include <PartRef.h>
 
 #include <Base/Tools.h>
 #include <Base/Console.h>
@@ -82,10 +82,10 @@ TaskAssemblyConstraints::TaskAssemblyConstraints(ViewProviderConstraint* vp)
             ass = dynamic_cast<Assembly::PartRef*>(obj->Second.getValue())->getParentAssembly();
     };
 
-    if(ass)
-        ass->getToplevelAssembly()->execute();
-    else
-      return;
+    //if(ass)
+    //    ass->getToplevelAssembly()->execute();
+    //else
+    //  return;
 
     //get the individual constraint settings
     ui->value->setValue(obj->Value.getValue());
@@ -242,55 +242,55 @@ TaskAssemblyConstraints::~TaskAssemblyConstraints()
 
 void TaskAssemblyConstraints::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if(msg.Type == Gui::SelectionChanges::AddSelection) {
+    //if(msg.Type == Gui::SelectionChanges::AddSelection) {
 
-        //add it as the first geometry?
-        if(ui->first_geom->text().isEmpty()) {
-            std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
-            Assembly::Constraint* con =  dynamic_cast<Assembly::Constraint*>(view->getObject());
+    //    //add it as the first geometry?
+    //    if(ui->first_geom->text().isEmpty()) {
+    //        std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    //        Assembly::Constraint* con =  dynamic_cast<Assembly::Constraint*>(view->getObject());
 
-            if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
-                                     QObject::tr("You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click)."));
-                return;
-            }
+    //        if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
+    //            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
+    //                                 QObject::tr("You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click)."));
+    //            return;
+    //        }
 
-            std::pair<Assembly::PartRef*, Assembly::Product*> part1 = static_cast<Assembly::Product*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
-            con->First.setValue(part1.first, objs.back().getSubNames());
-            QString str;
-            str = QString::fromAscii(part1.first->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(con->First.getSubValues().front());
-            ui->first_geom->setText(str);
+    //        std::pair<Assembly::PartRef*, Assembly::Product*> part1 = static_cast<Assembly::Product*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
+    //        con->First.setValue(part1.first, objs.back().getSubNames());
+    //        QString str;
+    //        str = QString::fromAscii(part1.first->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(con->First.getSubValues().front());
+    //        ui->first_geom->setText(str);
 
-            App::GetApplication().getActiveDocument()->recompute();
-            setPossibleConstraints();
-            setPossibleOptions();
-            view->draw();
-            return;
-        }
+    //        App::GetApplication().getActiveDocument()->recompute();
+    //        setPossibleConstraints();
+    //        setPossibleOptions();
+    //        view->draw();
+    //        return;
+    //    }
 
-        if(ui->second_geom->text().isEmpty()) {
-            std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
-            Assembly::Constraint* con =  dynamic_cast<Assembly::Constraint*>(view->getObject());
+    //    if(ui->second_geom->text().isEmpty()) {
+    //        std::vector<Gui::SelectionObject> objs = Gui::Selection().getSelectionEx();
+    //        Assembly::Constraint* con =  dynamic_cast<Assembly::Constraint*>(view->getObject());
 
-            if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
-                                     QObject::tr("You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click)."));
-                return;
-            }
+    //        if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
+    //            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
+    //                                 QObject::tr("You need a active (blue) Assembly to insert a Constraint. Please create a new one or make one active (double click)."));
+    //            return;
+    //        }
 
-            std::pair<Assembly::PartRef*, Assembly::Product*> part2 = static_cast<Assembly::Product*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
-            con->Second.setValue(part2.first, objs.back().getSubNames());
-            QString str;
-            str = QString::fromAscii(part2.first->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(con->Second.getSubValues().front());
-            ui->second_geom->setText(str);
+    //        std::pair<Assembly::PartRef*, Assembly::Product*> part2 = static_cast<Assembly::Product*>(ActiveAsmObject)->getContainingPart(objs.back().getObject());
+    //        con->Second.setValue(part2.first, objs.back().getSubNames());
+    //        QString str;
+    //        str = QString::fromAscii(part2.first->getNameInDocument()) + QString::fromAscii(".") + QString::fromStdString(con->Second.getSubValues().front());
+    //        ui->second_geom->setText(str);
 
-            App::GetApplication().getActiveDocument()->recompute();
-            setPossibleConstraints();
-            setPossibleOptions();
-            view->draw();
-            return;
-        }
-    }
+    //        App::GetApplication().getActiveDocument()->recompute();
+    //        setPossibleConstraints();
+    //        setPossibleOptions();
+    //        view->draw();
+    //        return;
+    //    }
+    //}
 }
 
 void TaskAssemblyConstraints::on_constraint_selection(bool clicked)
@@ -379,242 +379,242 @@ void TaskAssemblyConstraints::on_clear_second()
 
 void TaskAssemblyConstraints::setPossibleOptions() {
 
-    //disable all orientations for later easy disabling
-    ui->parallel->setEnabled(false);
-    ui->equal->setEnabled(false);
-    ui->opposite->setEnabled(false);
-    ui->perpendicular->setEnabled(false);
+    ////disable all orientations for later easy disabling
+    //ui->parallel->setEnabled(false);
+    //ui->equal->setEnabled(false);
+    //ui->opposite->setEnabled(false);
+    //ui->perpendicular->setEnabled(false);
 
-    //disable solution spaces for later easy enabling
-    ui->bidirectional->setEnabled(false);
-    ui->pos_direction->setEnabled(false);
-    ui->neg_direction->setEnabled(false);
+    ////disable solution spaces for later easy enabling
+    //ui->bidirectional->setEnabled(false);
+    //ui->pos_direction->setEnabled(false);
+    //ui->neg_direction->setEnabled(false);
 
-    //this only works if both objects are set
-    Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(view->getObject());
+    ////this only works if both objects are set
+    //Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(view->getObject());
 
-    if(obj->First.getValue()) {
+    //if(obj->First.getValue()) {
 
-        Assembly::PartRef* p1 = dynamic_cast<Assembly::PartRef*>(obj->First.getValue());
+    //    Assembly::PartRef* p1 = dynamic_cast<Assembly::PartRef*>(obj->First.getValue());
 
-        if(!p1)
-            return;
+    //    if(!p1)
+    //        return;
 
-        Assembly::Product* ass = p1->getParentAssembly();
+    //    Assembly::Product* ass = p1->getParentAssembly();
 
-        //extract the geometries to use for comparison
-        boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
+    //    //extract the geometries to use for comparison
+    //    boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
 
-        if(!g1)
-            return;
+    //    if(!g1)
+    //        return;
 
-        if(obj->Second.getValue()) {
+    //    if(obj->Second.getValue()) {
 
-            Assembly::PartRef* p2 = dynamic_cast<Assembly::PartRef*>(obj->Second.getValue());
+    //        Assembly::PartRef* p2 = dynamic_cast<Assembly::PartRef*>(obj->Second.getValue());
 
-            if(!p2)
-                return;
+    //        if(!p2)
+    //            return;
 
-            boost::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
+    //        boost::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
 
-            if(!g2)
-                return;
+    //        if(!g2)
+    //            return;
 
-            //distance
-            if(obj->Type.getValue() == 1) {
+    //        //distance
+    //        if(obj->Type.getValue() == 1) {
 
-                if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::plane) ||
-                        isCombination(g1,g2, dcm::geometry::point, dcm::geometry::cylinder)) {
-                    ui->bidirectional->setEnabled(true);
-                    ui->pos_direction->setEnabled(true);
-                    ui->neg_direction->setEnabled(true);
-                };
-            };
+    //            if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::plane) ||
+    //                    isCombination(g1,g2, dcm::geometry::point, dcm::geometry::cylinder)) {
+    //                ui->bidirectional->setEnabled(true);
+    //                ui->pos_direction->setEnabled(true);
+    //                ui->neg_direction->setEnabled(true);
+    //            };
+    //        };
 
-            //align & coincident
-            if(obj->Type.getValue() == 4 || obj->Type.getValue() == 5) {
+    //        //align & coincident
+    //        if(obj->Type.getValue() == 4 || obj->Type.getValue() == 5) {
 
-                if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::plane) ||
-                        isCombination(g1,g2, dcm::geometry::point, dcm::geometry::cylinder) ||
-                        isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane) ||
-                        isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)  ||
-                        isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane) ||
-                        isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
-                    ui->bidirectional->setEnabled(true);
-                    ui->pos_direction->setEnabled(true);
-                    ui->neg_direction->setEnabled(true);
-                };
+    //            if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::plane) ||
+    //                    isCombination(g1,g2, dcm::geometry::point, dcm::geometry::cylinder) ||
+    //                    isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane) ||
+    //                    isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)  ||
+    //                    isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane) ||
+    //                    isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
+    //                ui->bidirectional->setEnabled(true);
+    //                ui->pos_direction->setEnabled(true);
+    //                ui->neg_direction->setEnabled(true);
+    //            };
 
-                if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)  ||
-                        isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane) ||
-                        isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder) ||
-                        isCombination(g1,g2, dcm::geometry::cylinder, dcm::geometry::cylinder)) {
-                    ui->parallel->setEnabled(true);
-                    ui->equal->setEnabled(true);
-                    ui->opposite->setEnabled(true);
+    //            if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)  ||
+    //                    isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane) ||
+    //                    isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder) ||
+    //                    isCombination(g1,g2, dcm::geometry::cylinder, dcm::geometry::cylinder)) {
+    //                ui->parallel->setEnabled(true);
+    //                ui->equal->setEnabled(true);
+    //                ui->opposite->setEnabled(true);
 
-                    //ensure that perpendicular is not checked
-                    if(ui->perpendicular->isChecked()) {
-                        ui->parallel->setChecked(true);
-                        obj->Orientation.setValue((long)0);
-                    }
-                };
+    //                //ensure that perpendicular is not checked
+    //                if(ui->perpendicular->isChecked()) {
+    //                    ui->parallel->setChecked(true);
+    //                    obj->Orientation.setValue((long)0);
+    //                }
+    //            };
 
-                if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane)  ||
-                        isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
-                    ui->perpendicular->setEnabled(true);
+    //            if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane)  ||
+    //                    isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
+    //                ui->perpendicular->setEnabled(true);
 
-                    //ensure that perpendicular is checked
-                    if(!ui->perpendicular->isChecked()) {
-                        ui->perpendicular->setChecked(true);
-                        obj->Orientation.setValue((long)3);
-                    }
-                };
-            };
+    //                //ensure that perpendicular is checked
+    //                if(!ui->perpendicular->isChecked()) {
+    //                    ui->perpendicular->setChecked(true);
+    //                    obj->Orientation.setValue((long)3);
+    //                }
+    //            };
+    //        };
 
-            //orientation
-            if(obj->Type.getValue() == 2) {
-                ui->parallel->setEnabled(true);
-                ui->equal->setEnabled(true);
-                ui->opposite->setEnabled(true);
-                ui->perpendicular->setEnabled(true);
-            }
+    //        //orientation
+    //        if(obj->Type.getValue() == 2) {
+    //            ui->parallel->setEnabled(true);
+    //            ui->equal->setEnabled(true);
+    //            ui->opposite->setEnabled(true);
+    //            ui->perpendicular->setEnabled(true);
+    //        }
 
-        }
-    }
+    //    }
+    //}
 };
 
 void TaskAssemblyConstraints::setPossibleConstraints()
 {
-    //diasble all constraints for easyer enabling
-    ui->fix->setEnabled(false);
-    ui->distance->setEnabled(false);
-    ui->orientation->setEnabled(false);
-    ui->angle->setEnabled(false);
-    ui->align->setEnabled(false);
-    ui->coincident->setEnabled(false);
+    ////diasble all constraints for easyer enabling
+    //ui->fix->setEnabled(false);
+    //ui->distance->setEnabled(false);
+    //ui->orientation->setEnabled(false);
+    //ui->angle->setEnabled(false);
+    //ui->align->setEnabled(false);
+    //ui->coincident->setEnabled(false);
 
-    Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(view->getObject());
+    //Assembly::Constraint* obj =  dynamic_cast<Assembly::Constraint*>(view->getObject());
 
-    if(obj->First.getValue()) {
+    //if(obj->First.getValue()) {
 
-        Assembly::PartRef* p1 = dynamic_cast<Assembly::PartRef*>(obj->First.getValue());
+    //    Assembly::PartRef* p1 = dynamic_cast<Assembly::PartRef*>(obj->First.getValue());
 
-        if(!p1)
-            return;
+    //    if(!p1)
+    //        return;
 
-        Assembly::Product* ass = p1->getParentAssembly();
+    //    Assembly::Product* ass = p1->getParentAssembly();
 
-        //extract the geometries to use for comparison
-        boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
+    //    //extract the geometries to use for comparison
+    //    boost::shared_ptr<Geometry3D> g1 = ass->m_solver->getGeometry3D(obj->First.getSubValues()[0].c_str());
 
-        //let's see if we have a part, if not give feedback to the user by color
-        if(!g1) {
-            QPalette palette = ui->widget->palette();
-            palette.setColor(ui->first_geom->backgroundRole(), QColor(255, 0, 0, 127));
-            ui->first_geom->setPalette(palette);
-        }
-        else {
-            //set normal color as we ma need to revert the red background
-            ui->first_geom->setPalette(ui->widget->palette());
-        }
+    //    //let's see if we have a part, if not give feedback to the user by color
+    //    if(!g1) {
+    //        QPalette palette = ui->widget->palette();
+    //        palette.setColor(ui->first_geom->backgroundRole(), QColor(255, 0, 0, 127));
+    //        ui->first_geom->setPalette(palette);
+    //    }
+    //    else {
+    //        //set normal color as we ma need to revert the red background
+    //        ui->first_geom->setPalette(ui->widget->palette());
+    //    }
 
-        if(obj->Second.getValue()) {
+    //    if(obj->Second.getValue()) {
 
-            Assembly::PartRef* p2 = dynamic_cast<Assembly::PartRef*>(obj->Second.getValue());
+    //        Assembly::PartRef* p2 = dynamic_cast<Assembly::PartRef*>(obj->Second.getValue());
 
-            if(!p2)
-                return;
+    //        if(!p2)
+    //            return;
 
-            boost::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
+    //        boost::shared_ptr<Geometry3D> g2 = ass->m_solver->getGeometry3D(obj->Second.getSubValues()[0].c_str());
 
-            //let's see if we have a part, if not give feedback to the user by color
-            if(!g2) {
-                QPalette palette = ui->widget->palette();
-                palette.setColor(ui->second_geom->backgroundRole(), QColor(255, 0, 0, 127));
-                ui->second_geom->setPalette(palette);
-            }
-            else {
-                //set normal color as we ma need to revert the red background
-                ui->second_geom->setPalette(ui->widget->palette());
-            }
+    //        //let's see if we have a part, if not give feedback to the user by color
+    //        if(!g2) {
+    //            QPalette palette = ui->widget->palette();
+    //            palette.setColor(ui->second_geom->backgroundRole(), QColor(255, 0, 0, 127));
+    //            ui->second_geom->setPalette(palette);
+    //        }
+    //        else {
+    //            //set normal color as we ma need to revert the red background
+    //            ui->second_geom->setPalette(ui->widget->palette());
+    //        }
 
-            //return only here to allow coloring both line edits red if needed
-            if(!g1 || !g2)
-                return;
+    //        //return only here to allow coloring both line edits red if needed
+    //        if(!g1 || !g2)
+    //            return;
 
-            //check all valid combinaions
-            if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::point)) {
-                ui->distance->setEnabled(true);
-                ui->coincident->setEnabled(true);
-            };
+    //        //check all valid combinaions
+    //        if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::point)) {
+    //            ui->distance->setEnabled(true);
+    //            ui->coincident->setEnabled(true);
+    //        };
 
-            if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::line)) {
-                ui->distance->setEnabled(true);
-                ui->coincident->setEnabled(true);
-            };
+    //        if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::line)) {
+    //            ui->distance->setEnabled(true);
+    //            ui->coincident->setEnabled(true);
+    //        };
 
-            if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::plane)) {
-                ui->distance->setEnabled(true);
-                ui->coincident->setEnabled(true);
-            };
+    //        if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::plane)) {
+    //            ui->distance->setEnabled(true);
+    //            ui->coincident->setEnabled(true);
+    //        };
 
-            if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::cylinder)) {
-                ui->distance->setEnabled(true);
-                ui->coincident->setEnabled(true);
-            };
+    //        if(isCombination(g1,g2, dcm::geometry::point, dcm::geometry::cylinder)) {
+    //            ui->distance->setEnabled(true);
+    //            ui->coincident->setEnabled(true);
+    //        };
 
-            if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::line)) {
-                ui->distance->setEnabled(true);
-                ui->orientation->setEnabled(true);
-                ui->angle->setEnabled(true);
-                ui->coincident->setEnabled(true);
-                ui->align->setEnabled(true);
-            };
+    //        if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::line)) {
+    //            ui->distance->setEnabled(true);
+    //            ui->orientation->setEnabled(true);
+    //            ui->angle->setEnabled(true);
+    //            ui->coincident->setEnabled(true);
+    //            ui->align->setEnabled(true);
+    //        };
 
-            if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane)) {
-                ui->orientation->setEnabled(true);
-                ui->angle->setEnabled(true);
-                ui->coincident->setEnabled(true);
-                ui->align->setEnabled(true);
-            };
+    //        if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::plane)) {
+    //            ui->orientation->setEnabled(true);
+    //            ui->angle->setEnabled(true);
+    //            ui->coincident->setEnabled(true);
+    //            ui->align->setEnabled(true);
+    //        };
 
-            if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)) {
-                ui->distance->setEnabled(true);
-                ui->orientation->setEnabled(true);
-                ui->angle->setEnabled(true);
-                ui->coincident->setEnabled(true);
-                ui->align->setEnabled(true);
-            };
+    //        if(isCombination(g1,g2, dcm::geometry::line, dcm::geometry::cylinder)) {
+    //            ui->distance->setEnabled(true);
+    //            ui->orientation->setEnabled(true);
+    //            ui->angle->setEnabled(true);
+    //            ui->coincident->setEnabled(true);
+    //            ui->align->setEnabled(true);
+    //        };
 
-            if(isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane)) {
-                ui->orientation->setEnabled(true);
-                ui->angle->setEnabled(true);
-                ui->coincident->setEnabled(true);
-                ui->align->setEnabled(true);
-            };
+    //        if(isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::plane)) {
+    //            ui->orientation->setEnabled(true);
+    //            ui->angle->setEnabled(true);
+    //            ui->coincident->setEnabled(true);
+    //            ui->align->setEnabled(true);
+    //        };
 
-            if(isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
-                ui->orientation->setEnabled(true);
-                ui->angle->setEnabled(true);
-                ui->align->setEnabled(true);
-            };
+    //        if(isCombination(g1,g2, dcm::geometry::plane, dcm::geometry::cylinder)) {
+    //            ui->orientation->setEnabled(true);
+    //            ui->angle->setEnabled(true);
+    //            ui->align->setEnabled(true);
+    //        };
 
-            if(isCombination(g1,g2, dcm::geometry::cylinder, dcm::geometry::cylinder)) {
-                ui->coincident->setEnabled(true);
-                ui->orientation->setEnabled(true);
-                ui->angle->setEnabled(true);
-            };
-        }
-        else {
-            //return here to allow check for second geometry and color both red if needed
-            if(!g1)
-                return;
+    //        if(isCombination(g1,g2, dcm::geometry::cylinder, dcm::geometry::cylinder)) {
+    //            ui->coincident->setEnabled(true);
+    //            ui->orientation->setEnabled(true);
+    //            ui->angle->setEnabled(true);
+    //        };
+    //    }
+    //    else {
+    //        //return here to allow check for second geometry and color both red if needed
+    //        if(!g1)
+    //            return;
 
-            //only fix works
-            ui->fix->setEnabled(true);
-        };
-    }
+    //        //only fix works
+    //        ui->fix->setEnabled(true);
+    //    };
+    //}
 }
 
 bool TaskAssemblyConstraints::isCombination(boost::shared_ptr<Geometry3D> g1, boost::shared_ptr<Geometry3D> g2, dcm::geometry::types t1, dcm::geometry::types t2)

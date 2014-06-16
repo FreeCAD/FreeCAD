@@ -3,10 +3,9 @@
 
 #include "Mod/Assembly/App/ProductRef.h"
 
-// inclusion of the generated files (generated out of ProductPy.xml)
+// inclusion of the generated files (generated out of ProductRefPy.xml)
 #include "ProductRefPy.h"
 #include "ProductRefPy.cpp"
-#include <PartRefPy.h>
 
 using namespace Assembly;
 

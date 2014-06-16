@@ -95,9 +95,6 @@ std::vector<std::string> ViewProviderProduct::getDisplayModes(void) const
 std::vector<App::DocumentObject*> ViewProviderProduct::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp(static_cast<Assembly::Product*>(getObject())->Items.getValues());
-    temp.insert(temp.end(),
-                static_cast<Assembly::Product*>(getObject())->Annotations.getValues().begin(),
-                static_cast<Assembly::Product*>(getObject())->Annotations.getValues().end());
 
     return temp;
 }
@@ -113,28 +110,29 @@ void ViewProviderProduct::setupContextMenu(QMenu* menu, QObject* receiver, const
 {
     ViewProviderItem::setupContextMenu(menu, receiver, member); // call the base class
 
-    QAction* toggle = menu->addAction(QObject::tr("Rigid subassembly"), receiver, member);
-    toggle->setData(QVariant(1000)); // identifier
-    toggle->setCheckable(true);
-    toggle->setToolTip(QObject::tr("Set if the subassembly shall be solved as on part (rigid) or if all parts of this assembly are solved for themselfe."));
-    toggle->setStatusTip(QObject::tr("Set if the subassembly shall be solved as on part (rigid) or if all parts of this assembly are solved for themself."));
-    bool prop = static_cast<Assembly::Product*>(getObject())->Rigid.getValue();
-    toggle->setChecked(prop);
+    //QAction* toggle = menu->addAction(QObject::tr("Rigid subassembly"), receiver, member);
+    //toggle->setData(QVariant(1000)); // identifier
+    //toggle->setCheckable(true);
+    //toggle->setToolTip(QObject::tr("Set if the subassembly shall be solved as on part (rigid) or if all parts of this assembly are solved for themselfe."));
+    //toggle->setStatusTip(QObject::tr("Set if the subassembly shall be solved as on part (rigid) or if all parts of this assembly are solved for themself."));
+    //bool prop = static_cast<Assembly::Product*>(getObject())->Rigid.getValue();
+    //toggle->setChecked(prop);
 }
 
 bool ViewProviderProduct::setEdit(int ModNum)
 {
-    if(ModNum == 1000) {  // identifier
-        Gui::Command::openCommand("Change subassembly solving behaviour");
-        if(!static_cast<Assembly::Product*>(getObject())->Rigid.getValue())
-            Gui::Command::doCommand(Gui::Command::Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").Rigid = True",getObject()->getDocument()->getName(), getObject()->getNameInDocument());
-        else
-            Gui::Command::doCommand(Gui::Command::Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").Rigid = False",getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+    //if(ModNum == 1000) {  // identifier
+    //    Gui::Command::openCommand("Change subassembly solving behaviour");
+    //    if(!static_cast<Assembly::Product*>(getObject())->Rigid.getValue())
+    //        Gui::Command::doCommand(Gui::Command::Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").Rigid = True",getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+    //    else
+    //        Gui::Command::doCommand(Gui::Command::Doc,"FreeCAD.getDocument(\"%s\").getObject(\"%s\").Rigid = False",getObject()->getDocument()->getName(), getObject()->getNameInDocument());
 
-        Gui::Command::commitCommand();
-        return false;
-    }
-    return ViewProviderItem::setEdit(ModNum); // call the base class
+    //    Gui::Command::commitCommand();
+    //    return false;
+    //}
+    //return ViewProviderItem::setEdit(ModNum); // call the base class
+	 return false;
 }
 
 bool ViewProviderProduct::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)

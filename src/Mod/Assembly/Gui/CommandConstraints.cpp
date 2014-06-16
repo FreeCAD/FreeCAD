@@ -38,9 +38,8 @@
 
 #include <Mod/Assembly/App/Product.h>
 #include <Mod/Assembly/App/ProductRef.h>
-#include <Mod/Assembly/App/PartRef.h>
 #include <Mod/Assembly/App/ConstraintGroup.h>
-#include <Mod/Assembly/Gui/TaskDlgAssemblyConstraints.h>
+//#include <Mod/Assembly/Gui/TaskDlgAssemblyConstraints.h>
 
 
 using namespace std;
@@ -49,11 +48,11 @@ extern Assembly::Item* ActiveAsmObject;
 
 // Helper methods ===========================================================
 
-Assembly::ConstraintGroup* getConstraintGroup(Assembly::ProductRef* Asm)
+Assembly::ConstraintGroup* getConstraintGroup(Assembly::Product* Asm)
 {
     Assembly::ConstraintGroup* ConstGrp = 0;
 
-    std::vector<App::DocumentObject*> Ano = Asm->Annotations.getValues();
+    std::vector<App::DocumentObject*> Ano = Asm->Items.getValues();
 
     for(std::vector<App::DocumentObject*>::const_iterator it = Ano.begin(); it != Ano.end(); ++it) {
         if((*it)->getTypeId().isDerivedFrom(Assembly::ConstraintGroup::getClassTypeId())) {
@@ -65,7 +64,7 @@ Assembly::ConstraintGroup* getConstraintGroup(Assembly::ProductRef* Asm)
     return ConstGrp;
 }
 
-bool getConstraintPrerequisits(Assembly::ProductRef** Asm, Assembly::ConstraintGroup** ConstGrp)
+bool getConstraintPrerequisits(Assembly::Product** Asm, Assembly::ConstraintGroup** ConstGrp)
 {
     if(!ActiveAsmObject || !ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::ProductRef::getClassTypeId())) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Assembly"),
@@ -73,7 +72,7 @@ bool getConstraintPrerequisits(Assembly::ProductRef** Asm, Assembly::ConstraintG
         return true;
     }
 
-    *Asm = static_cast<Assembly::ProductRef*>(ActiveAsmObject);
+    *Asm = static_cast<Assembly::Product*>(ActiveAsmObject);
 
     // find the Constraint group of the active Assembly
     *ConstGrp = getConstraintGroup(*Asm);
@@ -97,7 +96,7 @@ bool getConstraintPrerequisits(Assembly::ProductRef** Asm, Assembly::ConstraintG
 
 }
 
-std::string asSubLinkString(Assembly::PartRef* part, std::string element)
+std::string asSubLinkString(Assembly::ProductRef* part, std::string element)
 {
     std::string buf;
     buf += "(App.ActiveDocument.";

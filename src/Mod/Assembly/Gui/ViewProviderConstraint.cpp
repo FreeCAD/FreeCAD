@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #include "ViewProviderConstraint.h"
-#include "TaskAssemblyConstraints.h"
-#include "TaskDlgAssemblyConstraints.h"
+//#include "TaskAssemblyConstraints.h"
+//#include "TaskDlgAssemblyConstraints.h"
 #include "Mod/Assembly/App/Constraint.h"
 #include "Mod/Assembly/App/PartRef.h"
 #include <Mod/Part/App/PartFeature.h>
@@ -273,7 +273,7 @@ void ViewProviderConstraint::draw()
     TopLoc_Location l1 = s1.Location();
     gp_XYZ tr1 = l1.Transformation().TranslationPart();
     Base::Placement p1(Base::Vector3d(tr1.X(), tr1.Y(), tr1.Z()), Base::Rotation());
-    upstream_placement(p1, part1);
+   // upstream_placement(p1, part1);
     //p1 = part1->m_part->getGlobal<Base::Placement>() * p1;
 
     float q0 = (float)p1.getRotation().getValue()[0];
@@ -307,7 +307,7 @@ void ViewProviderConstraint::draw()
     TopLoc_Location l2 = s2.Location();
     gp_XYZ tr2 = l2.Transformation().TranslationPart();
     Base::Placement p2(Base::Vector3d(tr2.X(), tr2.Y(), tr2.Z()), Base::Rotation());
-    upstream_placement(p2, part2);
+    //upstream_placement(p2, part2);
 
     p2 = p1.inverse()*p2;
     //p2 = p1.inverse() * (part2->m_part->getGlobal<Base::Placement>() * p2);
@@ -353,58 +353,59 @@ void ViewProviderConstraint::onSelectionChanged(const Gui::SelectionChanges& msg
 TopoDS_Shape ViewProviderConstraint::getConstraintShape(int link)
 {
 
-    if(link == 1) {
-        //subshape of first link
-        //**********************
-        App::DocumentObject* obj1 = dynamic_cast<Assembly::Constraint*>(pcObject)->First.getValue();
+    //if(link == 1) {
+    //    //subshape of first link
+    //    //**********************
+    //    App::DocumentObject* obj1 = dynamic_cast<Assembly::Constraint*>(pcObject)->First.getValue();
 
-        if(!obj1)
-            return TopoDS_Shape();
+    //    if(!obj1)
+    //        return TopoDS_Shape();
 
-        Assembly::PartRef* part1 = static_cast<Assembly::PartRef*>(obj1);
+    //    Assembly::PartRef* part1 = static_cast<Assembly::PartRef*>(obj1);
 
-        if(!part1)
-            return TopoDS_Shape();
+    //    if(!part1)
+    //        return TopoDS_Shape();
 
-        Part::TopoShape ts;
-        App::DocumentObject* feature1 = part1->Model.getValue();
+    //    Part::TopoShape ts;
+    //    App::DocumentObject* feature1 = part1->Model.getValue();
 
-        if(feature1->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            ts = static_cast<Part::Feature*>(feature1)->Shape.getShape();
-        }
-        else
-            return TopoDS_Shape();
+    //    if(feature1->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    //        ts = static_cast<Part::Feature*>(feature1)->Shape.getShape();
+    //    }
+    //    else
+    //        return TopoDS_Shape();
 
-        TopoDS_Shape s1 = ts.getSubShape(dynamic_cast<Assembly::Constraint*>(pcObject)->First.getSubValues()[0].c_str());
+    //    TopoDS_Shape s1 = ts.getSubShape(dynamic_cast<Assembly::Constraint*>(pcObject)->First.getSubValues()[0].c_str());
 
-        return s1;
-    }
-    else {
-        //subshape of second link
-        //**********************
-        App::DocumentObject* obj2 = dynamic_cast<Assembly::Constraint*>(pcObject)->Second.getValue();
+    //    return s1;
+    //}
+    //else {
+    //    //subshape of second link
+    //    //**********************
+    //    App::DocumentObject* obj2 = dynamic_cast<Assembly::Constraint*>(pcObject)->Second.getValue();
 
-        if(!obj2)
-            return TopoDS_Shape();
+    //    if(!obj2)
+    //        return TopoDS_Shape();
 
-        Assembly::PartRef* part2 = static_cast<Assembly::PartRef*>(obj2);
+    //    Assembly::PartRef* part2 = static_cast<Assembly::PartRef*>(obj2);
 
-        if(!part2)
-            return TopoDS_Shape();
+    //    if(!part2)
+    //        return TopoDS_Shape();
 
-        Part::TopoShape ts2;
-        App::DocumentObject* feature2 = part2->Model.getValue();
+    //    Part::TopoShape ts2;
+    //    App::DocumentObject* feature2 = part2->Model.getValue();
 
-        if(feature2->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            ts2 = static_cast<Part::Feature*>(feature2)->Shape.getShape();
-        }
-        else
-            return TopoDS_Shape();
+    //    if(feature2->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    //        ts2 = static_cast<Part::Feature*>(feature2)->Shape.getShape();
+    //    }
+    //    else
+    //        return TopoDS_Shape();
 
-        TopoDS_Shape s2 = ts2.getSubShape(dynamic_cast<Assembly::Constraint*>(pcObject)->Second.getSubValues()[0].c_str());
+    //    TopoDS_Shape s2 = ts2.getSubShape(dynamic_cast<Assembly::Constraint*>(pcObject)->Second.getSubValues()[0].c_str());
 
-        return s2;
-    };
+    //    return s2;
+    //};
+	return TopoDS_Shape();
 }
 
 void ViewProviderConstraint::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -415,24 +416,25 @@ void ViewProviderConstraint::setupContextMenu(QMenu* menu, QObject* receiver, co
 bool ViewProviderConstraint::setEdit(int ModNum)
 {
 
-    // When double-clicking on the item for this sketch the
-    // object unsets and sets its edit mode without closing
-    // the task panel
-    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    TaskDlgAssemblyConstraints* ConstraintsDlg = qobject_cast<TaskDlgAssemblyConstraints*>(dlg);
+    //// When double-clicking on the item for this sketch the
+    //// object unsets and sets its edit mode without closing
+    //// the task panel
+    //Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    //TaskDlgAssemblyConstraints* ConstraintsDlg = qobject_cast<TaskDlgAssemblyConstraints*>(dlg);
 
-    // start the edit dialog
-    if(ConstraintsDlg)
-        Gui::Control().showDialog(ConstraintsDlg);
-    else
-        Gui::Control().showDialog(new TaskDlgAssemblyConstraints(this));
+    //// start the edit dialog
+    //if(ConstraintsDlg)
+    //    Gui::Control().showDialog(ConstraintsDlg);
+    //else
+    //    Gui::Control().showDialog(new TaskDlgAssemblyConstraints(this));
 
-    //show the constraint geometries
-    internal_vp.switch_node(true);
-    pcModeSwitch->whichChild = 0;
-    draw();
+    ////show the constraint geometries
+    //internal_vp.switch_node(true);
+    //pcModeSwitch->whichChild = 0;
+    //draw();
 
-    return true;
+    //return true;
+	return false;
 }
 
 void ViewProviderConstraint::unsetEdit(int ModNum)

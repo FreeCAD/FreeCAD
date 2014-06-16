@@ -25,7 +25,8 @@
 #define Assembly_ItemPart_H
 
 #include <App/PropertyLinks.h>
-#include "Item.h"
+#include <App/GeoFeature.h>
+
 #include "Solver/Solver.h"
 
 
@@ -34,15 +35,15 @@ namespace Assembly
 
 class Product;
 
-class AssemblyExport PartRef : public Assembly::Item
+class AssemblyExport PartRef : public  App::GeoFeature
 {
     PROPERTY_HEADER(Assembly::PartRef);
     
 public:
     PartRef();
 
-    App::PropertyLink       Model;
-    App::PropertyLinkList   Annotation;
+    App::PropertyLink       Item;
+    //App::PropertyLinkList   Annotation;
 
     /** @name methods override feature */
     //@{
@@ -56,7 +57,7 @@ public:
     PyObject *getPyObject(void);
     //@}
 
-    virtual TopoDS_Shape getShape(void) const;
+    //virtual TopoDS_Shape getShape(void) const;
     
     bool holdsObject(App::DocumentObject* obj) const;
     Product* getParentAssembly();

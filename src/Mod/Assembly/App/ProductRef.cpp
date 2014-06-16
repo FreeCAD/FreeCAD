@@ -33,7 +33,6 @@
 #include <App/Part.h>
 
 #include "ProductRef.h"
-#include "PartRef.h"
 #include "ConstraintGroup.h"
 #include "ProductRefPy.h"
 
@@ -42,13 +41,10 @@ using namespace Assembly;
 namespace Assembly {
 
 
-PROPERTY_SOURCE(Assembly::ProductRef, Assembly::Item)
+PROPERTY_SOURCE(Assembly::ProductRef,  Assembly::Item)
 
 ProductRef::ProductRef() {
-    ADD_PROPERTY(Items,(0));
-    ADD_PROPERTY(Annotations,(0));
-    ADD_PROPERTY(Rigid,(true));
-
+    ADD_PROPERTY(Item,(0));
 }
 
 short ProductRef::mustExecute() const {
