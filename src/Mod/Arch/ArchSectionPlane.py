@@ -100,6 +100,8 @@ class _SectionPlane:
         obj.addProperty("App::PropertyPlacement","Placement","Base",translate("Arch","The placement of this object"))
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
         obj.addProperty("App::PropertyLinkList","Objects","Arch",translate("Arch","The objects that must be considered by this section plane. Empty means all document"))
+        obj.addProperty("App::PropertyBool","OnlySolids","Arch",translate("Arch","If false, non-solids will be cut too, with possible wrong results."))
+        obj.OnlySolids = True
         self.Type = "SectionPlane"
         
     def execute(self,obj):
@@ -327,7 +329,13 @@ class _ArchDrawingView:
                                     pass
                                     #FreeCAD.Console.PrintWarning(translate("Arch","Skipping empty object: ")+o.Name)
                                 elif o.Shape.isValid():
-                                    shapes.extend(o.Shape.Solids)
+                                    if hasattr(obj.Source,"OnlySolids"):
+                                        if obj.Source.OnlySolids:
+                                            shapes.extend(o.Shape.Solids)
+                                        else:
+                                            shapes.append(o.Shape)
+                                    else:
+                                        shapes.extend(o.Shape.Solids)
                                 else:
                                     FreeCAD.Console.PrintWarning(translate("Arch","Skipping invalid object: ")+o.Name)
                         cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(obj.Source.Shape.copy(),shapes)
