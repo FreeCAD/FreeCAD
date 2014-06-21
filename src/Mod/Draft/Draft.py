@@ -4306,17 +4306,23 @@ class _Shape2DView(_DraftObject):
                     cuts = []
                     if obj.ProjectionMode == "Solid":
                         for sh in shapes:
-                            if sh.Volume < 0:
-                                sh.reverse()
-                            #if cutv.BoundBox.isIntersection(sh.BoundBox):
-                            #    c = sh.cut(cutv)
-                            #else:
-                            #    c = sh.copy()
-                            c = sh.cut(cutv)
-                            if onlysolids:
-                                cuts.extend(c.Solids)
+                            if cutv:
+                                if sh.Volume < 0:
+                                    sh.reverse()
+                                #if cutv.BoundBox.isIntersection(sh.BoundBox):
+                                #    c = sh.cut(cutv)
+                                #else:
+                                #    c = sh.copy()
+                                c = sh.cut(cutv)
+                                if onlysolids:
+                                    cuts.extend(c.Solids)
+                                else:
+                                    cuts.append(c)
                             else:
-                                cuts.append(c)
+                                if onlysolids:
+                                    cuts.extend(sh.Solids)
+                                else:
+                                    cuts.append(sh.copy())
                         comp = Part.makeCompound(cuts)
                         opl = FreeCAD.Placement(obj.Base.Placement)
                         proj = opl.Rotation.multVec(FreeCAD.Vector(0,0,1))
