@@ -385,7 +385,7 @@ void PropertyFileIncluded::Restore(Base::XMLReader &reader)
 
 void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 {
-    Base::ifstream from(Base::FileInfo(_cValue.c_str()));
+    Base::ifstream from(Base::FileInfo(_cValue.c_str()), std::ios::in | std::ios::binary);
     if (!from) {
         std::stringstream str;
         str << "PropertyFileIncluded::SaveDocFile(): "
@@ -404,7 +404,7 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 {
     Base::FileInfo fi(_cValue.c_str());
-    Base::ofstream to(fi);
+    Base::ofstream to(fi, std::ios::out | std::ios::binary);
     if (!to) {
         std::stringstream str;
         str << "PropertyFileIncluded::RestoreDocFile(): "
