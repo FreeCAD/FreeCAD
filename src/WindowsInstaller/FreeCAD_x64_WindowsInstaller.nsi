@@ -90,6 +90,8 @@ section "FreeCAD (Required)"
 	setOutPath $INSTDIR\bin
 	# Files added here should be removed by the uninstaller (see section "uninstall")
 	file /r /X *.idb /X *.pyc /X *.pyo "..\..\bin\"
+	setOutPath $INSTDIR\lib
+	file /r /X *.lib /X *.pyc /X *.pyo "..\..\lib\"
 	setOutPath $INSTDIR\Mod
 	file /r /X *.idb  "..\..\Mod\"
 	setOutPath $INSTDIR\doc
@@ -173,6 +175,7 @@ section "Uninstall"
 
 	# Remove files
 	RMDir /r "$INSTDIR\bin"
+	RMDir /r "$INSTDIR\lib"
 	RMDir /r "$INSTDIR\doc"
 	RMDir /r "$INSTDIR\data"
 	RMDir /r "$INSTDIR\Mod"
