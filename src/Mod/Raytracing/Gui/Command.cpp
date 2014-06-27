@@ -559,7 +559,7 @@ CmdRaytracingRender::CmdRaytracingRender()
 void CmdRaytracingRender::activated(int iMsg)
 {
     // determining render type
-    std::string renderType;
+    Base::Type renderType;
     unsigned int n1 = getSelection().countObjectsOfType(Raytracing::RayProject::getClassTypeId());
     if (n1 != 1) {
         unsigned int n2 = getSelection().countObjectsOfType(Raytracing::LuxProject::getClassTypeId());
@@ -568,16 +568,16 @@ void CmdRaytracingRender::activated(int iMsg)
                 QObject::tr("Select one Raytracing project object."));
             return;
         } else {
-            renderType = "luxrender";
+            renderType = Raytracing::LuxProject::getClassTypeId();
         }
     } else {
-        renderType = "povray";
+        renderType = Raytracing::RayProject::getClassTypeId();
     }
     
     // checking if renderer is present
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Raytracing");
     std::string renderer;
-    if (renderType == "povray") {
+    if (renderType == Raytracing::RayProject::getClassTypeId()) {
         renderer = hGrp->GetASCII("PovrayExecutable", "");
         if (renderer == "") {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("POV-Ray not found"),
@@ -607,9 +607,17 @@ void CmdRaytracingRender::activated(int iMsg)
         }
     }
     
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0, renderType);
     
-    if (renderType == "povray") {
+    if (renderType == Raytracing::RayProject::getClassTypeId()) {
+        Raytracing::RayProject* proj = static_cast<Raytracing::RayProject*>(Sel[0].getObject());
+        QFileInfo fi(QString::fromUtf8(proj->PageResult.getValue()));
+        if (!fi.exists() || !fi.isFile()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("POV-Ray file missing"),
+                QObject::tr("The POV-Ray project file doesn't exist."));
+            return;
+        }
+
         QStringList filter;
 #ifdef FC_OS_WIN32
         filter << QObject::tr("Rendered image (*.bmp)");
@@ -632,7 +640,7 @@ void CmdRaytracingRender::activated(int iMsg)
             std::stringstream h;
             h << height;
             std::string par = hGrp->GetASCII("OutputParameters", "+P +A");
-            doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].FeatName);
+            doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].getFeatName());
             doCommand(Doc,"import subprocess,tempfile");
             doCommand(Doc,"TempFile = tempfile.mkstemp(suffix='.pov')[1]");
             doCommand(Doc,"f = open(TempFile,'wb')");
@@ -650,8 +658,16 @@ void CmdRaytracingRender::activated(int iMsg)
             commitCommand();
         }
     } else {
+        Raytracing::LuxProject* proj = static_cast<Raytracing::LuxProject*>(Sel[0].getObject());
+        QFileInfo fi(QString::fromUtf8(proj->PageResult.getValue()));
+        if (!fi.exists() || !fi.isFile()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Lux project file missing"),
+                QObject::tr("The Lux project file doesn't exist."));
+            return;
+        }
+
         openCommand("Render project");
-        doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].FeatName);
+        doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].getFeatName());
         doCommand(Doc,"import subprocess,tempfile");
         doCommand(Doc,"TempFile = tempfile.mkstemp(suffix='.lxs')[1]");
         doCommand(Doc,"f = open(TempFile,'wb')");
