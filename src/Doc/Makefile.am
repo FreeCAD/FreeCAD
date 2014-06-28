@@ -5,6 +5,7 @@ doc_DATA = \
 
 EXTRA_DIST = \
 		$(doc_DATA) \
+		BuildDocDoxy.cfg \
 		CMakeLists.txt \
 		doctips.dox \
 		mainpage.dox \

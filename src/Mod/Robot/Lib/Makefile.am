@@ -5,14 +5,14 @@ datadir = @datadir@/Mod/Robot/Lib/Kuka
 if MAKE_NO_DFSG_PACKAGE
 
 data_DATA = \
-		Kuka/kr16.wrl \
+		Kuka/kr_125.csv \
+		Kuka/kr_16.csv \
+		Kuka/kr_210_2.csv \
 		Kuka/kr125_3.wrl \
+		Kuka/kr16.wrl \
 		Kuka/kr210.WRL \
 		Kuka/kr500_1.csv \
 		Kuka/kr500_1.wrl \
-		Kuka/kr_16.csv \
-		Kuka/kr_125.csv \
-		Kuka/kr_210_2.csv \
 		Kuka/testprog.dat \
 		Kuka/testprog.src
 

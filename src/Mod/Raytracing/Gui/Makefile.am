@@ -16,6 +16,8 @@ libRaytracingGui_la_SOURCES=\
 		PovrayHighlighter.h \
 		PreCompiled.cpp \
 		PreCompiled.h \
+		ViewProvider.cpp \
+		ViewProvider.h \
 		Workbench.cpp \
 		Workbench.h
 
@@ -92,16 +94,21 @@ CLEANFILES = $(BUILT_SOURCES)
 EXTRA_DIST = \
 		Resources/icons/preferences-raytracing.svg \
 		Resources/icons/Raytrace_Camera.svg \
-		Resources/icons/Raytrace_Export.svg \
 		Resources/icons/Raytrace_ExportProject.svg \
+		Resources/icons/Raytrace_Export.svg \
+		Resources/icons/Raytrace_Lux.svg \
+		Resources/icons/Raytrace_NewPartSegment.svg \
 		Resources/icons/Raytrace_New.svg \
 		Resources/icons/Raytrace_Part.svg \
-		Resources/icons/Raytrace_NewPartSegment.svg \
+		Resources/icons/Raytrace_Render.svg \
+		Resources/icons/Raytrace_ResetCamera.svg \
 		DlgSettingsRay.ui \
 		FreeCADpov \
 		Resources/Raytracing.qrc \
 		Resources/translations/Raytracing_af.qm \
 		Resources/translations/Raytracing_af.ts \
+		Resources/translations/Raytracing_cs.qm \
+		Resources/translations/Raytracing_cs.ts \
 		Resources/translations/Raytracing_de.qm \
 		Resources/translations/Raytracing_de.ts \
 		Resources/translations/Raytracing_es-ES.qm \
@@ -112,8 +119,12 @@ EXTRA_DIST = \
 		Resources/translations/Raytracing_fr.ts \
 		Resources/translations/Raytracing_hr.qm \
 		Resources/translations/Raytracing_hr.ts \
+		Resources/translations/Raytracing_hu.qm \
+		Resources/translations/Raytracing_hu.ts \
 		Resources/translations/Raytracing_it.qm \
 		Resources/translations/Raytracing_it.ts \
+		Resources/translations/Raytracing_ja.qm \
+		Resources/translations/Raytracing_ja.ts \
 		Resources/translations/Raytracing_nl.qm \
 		Resources/translations/Raytracing_nl.ts \
 		Resources/translations/Raytracing_no.qm \
@@ -122,26 +133,22 @@ EXTRA_DIST = \
 		Resources/translations/Raytracing_pl.ts \
 		Resources/translations/Raytracing_pt-BR.qm \
 		Resources/translations/Raytracing_pt-BR.ts \
-		Resources/translations/Raytracing_ru.qm \
-		Resources/translations/Raytracing_ru.ts \
-		Resources/translations/Raytracing_sv-SE.qm \
-		Resources/translations/Raytracing_sv-SE.ts \
-		Resources/translations/Raytracing_uk.qm \
-		Resources/translations/Raytracing_uk.ts \
-		Resources/translations/Raytracing_hu.qm \
-		Resources/translations/Raytracing_hu.ts \
-		Resources/translations/Raytracing_sk.qm \
-		Resources/translations/Raytracing_sk.ts \
-		Resources/translations/Raytracing_cs.qm \
-		Resources/translations/Raytracing_cs.ts \
+		Resources/translations/Raytracing_pt-PT.qm \
+		Resources/translations/Raytracing_pt-PT.ts \
 		Resources/translations/Raytracing_ro.qm \
 		Resources/translations/Raytracing_ro.ts \
+		Resources/translations/Raytracing_ru.qm \
+		Resources/translations/Raytracing_ru.ts \
+		Resources/translations/Raytracing_sk.qm \
+		Resources/translations/Raytracing_sk.ts \
+		Resources/translations/Raytracing_sv-SE.qm \
+		Resources/translations/Raytracing_sv-SE.ts \
 		Resources/translations/Raytracing_tr.qm \
 		Resources/translations/Raytracing_tr.ts \
-		Resources/translations/Raytracing_ja.qm \
-		Resources/translations/Raytracing_ja.ts \
-		Resources/translations/Raytracing_zh-TW.qm \
-		Resources/translations/Raytracing_zh-TW.ts \
+		Resources/translations/Raytracing_uk.qm \
+		Resources/translations/Raytracing_uk.ts \
 		Resources/translations/Raytracing_zh-CN.qm \
 		Resources/translations/Raytracing_zh-CN.ts \
+		Resources/translations/Raytracing_zh-TW.qm \
+		Resources/translations/Raytracing_zh-TW.ts \
 		CMakeLists.txt

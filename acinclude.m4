@@ -425,7 +425,7 @@ fc_boost_ac_save_ldflags=$LDFLAGS
 fc_boost_ac_save_libs=$LIBS
 CPPFLAGS="$CPPFLAGS -I$fc_boost_incs"
 LDFLAGS="$LDFLAGS -L$fc_boost_libs"
-LIBS="-lboost_program_options-mt"
+LIBS="-lboost_program_options"
 
 AC_TRY_LINK([#include <boost/program_options.hpp>],
 	[namespace po = boost::program_options;
@@ -466,17 +466,17 @@ AS_IF([AM_RUN_LOG([./boost])],
 AC_MSG_RESULT($ac_cv_boost_system)
 rm -f boost.cpp boost
 
-BOOST_FILESYSTEM_LIB="-lboost_filesystem-mt"
-BOOST_PROGOPTIONS_LIB="-lboost_program_options-mt"
-BOOST_SIGNALS_LIB="-lboost_signals-mt"
+BOOST_FILESYSTEM_LIB="-lboost_filesystem"
+BOOST_PROGOPTIONS_LIB="-lboost_program_options"
+BOOST_SIGNALS_LIB="-lboost_signals"
 BOOST_SYSTEM_LIB=""
-BOOST_REGEX_LIB="-lboost_regex-mt"
+BOOST_REGEX_LIB="-lboost_regex"
 if test x"$ac_cv_boost_system" = xyes; then
-    LIBS="-lboost_system-mt"
+    LIBS="-lboost_system"
     AC_MSG_CHECKING(for boost system library)
     AC_TRY_LINK([#include <boost/system/error_code.hpp>],
         [ boost::system::error_code error_code; std::string message(error_code.message()); return 0; ],
-        [BOOST_SYSTEM_LIB="-lboost_system-mt"],
+        [BOOST_SYSTEM_LIB="-lboost_system"],
         [BOOST_SYSTEM_LIB=""])
     
     if test "x$BOOST_SYSTEM_LIB" = "x"; then

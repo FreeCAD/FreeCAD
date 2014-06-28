@@ -1,9 +1,15 @@
 
+# set the include path found by configure 
+# $(opencv_CFLAGS)
+AM_CXXFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes) $(QT4_CORE_CXXFLAGS)
+
 lib_LTLIBRARIES=libImage.la Image.la
 
 libImage_la_SOURCES=\
 		ImageBase.cpp \
+		ImageBase.h \
 		ImagePlane.cpp \
+		ImagePlane.h \
 		PreCompiled.cpp \
 		PreCompiled.h
 
@@ -44,11 +50,10 @@ Image_la_DEPENDENCIES = libImage.la
 
 #--------------------------------------------------------------------------------------
 
-# set the include path found by configure 
-# $(opencv_CFLAGS)
-AM_CXXFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes)
 
 libdir = $(prefix)/Mod/Image
 
 EXTRA_DIST = \
+		CaptureClass.cpp \
+		CaptureClass.h \
 		CMakeLists.txt

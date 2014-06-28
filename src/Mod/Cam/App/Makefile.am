@@ -3,6 +3,7 @@ lib_LTLIBRARIES=libCam.la Cam.la
 
 
 libCam_la_SOURCES=\
+		AppCam.cpp \
 		AppCamPy.cpp \
 		Approx.cpp \
 		Approx.h \
@@ -10,6 +11,10 @@ libCam_la_SOURCES=\
 		best_fit.h \
 		BRepAdaptor_CompCurve2.cxx \
 		BRepAdaptor_CompCurve2.h \
+		BRepUtils.cpp \
+		BRepUtils.h \
+		ChangeDyna.cpp \
+		ChangeDyna.h \
 		ConvertDyna.cpp \
 		ConvertDyna.h \
 		cutting_tools.cpp \
@@ -20,15 +25,16 @@ libCam_la_SOURCES=\
 		edgesort.h \
 		mergedata.cpp \
 		mergedata.h \
+		MeshInterface.h \
 		path_simulate.cpp \
 		path_simulate.h \
 		PreCompiled.cpp \
 		PreCompiled.h \
 		routine.cpp \
 		routine.h \
-		stuff.h \
 		SpringbackCorrection.cpp \
 		SpringbackCorrection.h \
+		stuff.h \
 		UniGridApprox.cpp \
 		UniGridApprox.h \
 		WireExplorer.cxx \

@@ -10,6 +10,8 @@ EXTRA_DIST = \
 		icons/actions/MeshFace.svg \
 		translations/MeshPart_af.qm \
 		translations/MeshPart_af.ts \
+		translations/MeshPart_cs.qm \
+		translations/MeshPart_cs.ts \
 		translations/MeshPart_de.qm \
 		translations/MeshPart_de.ts \
 		translations/MeshPart_es-ES.qm \
@@ -20,8 +22,12 @@ EXTRA_DIST = \
 		translations/MeshPart_fr.ts \
 		translations/MeshPart_hr.qm \
 		translations/MeshPart_hr.ts \
+		translations/MeshPart_hu.qm \
+		translations/MeshPart_hu.ts \
 		translations/MeshPart_it.qm \
 		translations/MeshPart_it.ts \
+		translations/MeshPart_ja.qm \
+		translations/MeshPart_ja.ts \
 		translations/MeshPart_nl.qm \
 		translations/MeshPart_nl.ts \
 		translations/MeshPart_no.qm \
@@ -30,28 +36,24 @@ EXTRA_DIST = \
 		translations/MeshPart_pl.ts \
 		translations/MeshPart_pt-BR.qm \
 		translations/MeshPart_pt-BR.ts \
+		translations/MeshPart_pt-PT.qm \
+		translations/MeshPart_pt-PT.ts \
+		translations/MeshPart_ro.qm \
+		translations/MeshPart_ro.ts \
 		translations/MeshPart_ru.qm \
 		translations/MeshPart_ru.ts \
+		translations/MeshPart_sk.qm \
+		translations/MeshPart_sk.ts \
 		translations/MeshPart_sv-SE.qm \
 		translations/MeshPart_sv-SE.ts \
+		translations/MeshPart_tr.qm \
+		translations/MeshPart_tr.ts \
 		translations/MeshPart_uk.qm \
 		translations/MeshPart_uk.ts \
 		translations/MeshPart_zh-CN.qm \
 		translations/MeshPart_zh-CN.ts \
 		translations/MeshPart_zh-TW.qm \
 		translations/MeshPart_zh-TW.ts \
-		translations/MeshPart_hu.qm \
-		translations/MeshPart_hu.ts \
-		translations/MeshPart_ja.qm \
-		translations/MeshPart_ja.ts \
-		translations/MeshPart_cs.qm \
-		translations/MeshPart_cs.ts \
-		translations/MeshPart_sk.qm \
-		translations/MeshPart_sk.ts \
-		translations/MeshPart_ro.qm \
-		translations/MeshPart_ro.ts \
-		translations/MeshPart_tr.qm \
-		translations/MeshPart_tr.ts \
 		MeshPart.qrc
 
 

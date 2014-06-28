@@ -1,5 +1,4 @@
-#SUBDIRS=App Gui
-SUBDIRS=Gui
+SUBDIRS=App Gui
 
 # Change data dir from default ($(prefix)/share) to $(prefix)
 datadir = $(prefix)/Mod/Import

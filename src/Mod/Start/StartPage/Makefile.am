@@ -11,31 +11,36 @@ python_DATA = \
 data_DATA = \
 		ArchDesign.py \
 		DefaultWorkbench.py \
+		LoadArchExample.py \
 		LoadDrawingExample.py \
-		LoadPartDesignExample.py \
-		LoadRobotExample.py \
-		LoadSchenkel.py \
 		LoadMRU0.py \
 		LoadMRU1.py \
 		LoadMRU2.py \
-		LoadArchExample.py \
+		LoadPartDesignExample.py \
+		LoadRobotExample.py \
+		LoadSchenkel.py \
 		Mesh.py \
 		PartDesign.py \
-		Background.jpg \
-		FreeCAD.png \
-		PartDesign.png \
+		Ship.py \
 		ArchDesign.png \
-		Mesh.png \
-		Complete.png \
-		PartDesignExample.png \
 		ArchExample.png \
-		web.png \
+		Background.jpg \
+		Banner.jpeg \
 		blank.png \
-        complete.jpg \
-        Ship.py \
-        Ship.png \
-        ShipExample.png
+		complete.jpg \
+		Complete.png \
+		freecad-doc.png \
+		FreeCAD.png \
+		Mesh.png \
+		PartDesignExample.png \
+		PartDesign.png \
+		ShipExample.png \
+		Ship.png \
+		web.png 
 
 EXTRA_DIST = \
-		$(data_DATA) $(python_DATA)
+		$(data_DATA) \
+		$(python_DATA) \
+		CMakeLists.txt \
+		StartPage.html
 

@@ -8,4 +8,5 @@ data_DATA = Init.py InitGui.py
 EXTRA_DIST = \
 		$(data_DATA) \
 		cam.dox \
-		CMakeLists.txt
+		CMakeLists.txt \
+		doxygen_config
