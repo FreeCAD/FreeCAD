@@ -10,6 +10,8 @@ EXTRA_DIST = \
 		icons/actions/FitSurface.svg \
 		translations/ReverseEngineering_af.qm \
 		translations/ReverseEngineering_af.ts \
+		translations/ReverseEngineering_cs.qm \
+		translations/ReverseEngineering_cs.ts \
 		translations/ReverseEngineering_de.qm \
 		translations/ReverseEngineering_de.ts \
 		translations/ReverseEngineering_es-ES.qm \
@@ -20,8 +22,12 @@ EXTRA_DIST = \
 		translations/ReverseEngineering_fr.ts \
 		translations/ReverseEngineering_hr.qm \
 		translations/ReverseEngineering_hr.ts \
+		translations/ReverseEngineering_hu.qm \
+		translations/ReverseEngineering_hu.ts \
 		translations/ReverseEngineering_it.qm \
 		translations/ReverseEngineering_it.ts \
+		translations/ReverseEngineering_ja.qm \
+		translations/ReverseEngineering_ja.ts \
 		translations/ReverseEngineering_nl.qm \
 		translations/ReverseEngineering_nl.ts \
 		translations/ReverseEngineering_no.qm \
@@ -30,28 +36,24 @@ EXTRA_DIST = \
 		translations/ReverseEngineering_pl.ts \
 		translations/ReverseEngineering_pt-BR.qm \
 		translations/ReverseEngineering_pt-BR.ts \
-		translations/ReverseEngineering_ru.qm \
-		translations/ReverseEngineering_ru.ts \
-		translations/ReverseEngineering_sv-SE.qm \
-		translations/ReverseEngineering_sv-SE.ts \
-		translations/ReverseEngineering_uk.qm \
-		translations/ReverseEngineering_uk.ts \
-		translations/ReverseEngineering_hu.qm \
-		translations/ReverseEngineering_hu.ts \
-		translations/ReverseEngineering_cs.qm \
-		translations/ReverseEngineering_cs.ts \
-		translations/ReverseEngineering_sk.qm \
-		translations/ReverseEngineering_sk.ts \
-		translations/ReverseEngineering_tr.qm \
-		translations/ReverseEngineering_tr.ts \
+		translations/ReverseEngineering_pt-PT.qm \
+		translations/ReverseEngineering_pt-PT.ts \
 		translations/ReverseEngineering_ro.qm \
 		translations/ReverseEngineering_ro.ts \
-		translations/ReverseEngineering_ja.qm \
-		translations/ReverseEngineering_ja.ts \
-		translations/ReverseEngineering_zh-TW.qm \
-		translations/ReverseEngineering_zh-TW.ts \
+		translations/ReverseEngineering_ru.qm \
+		translations/ReverseEngineering_ru.ts \
+		translations/ReverseEngineering_sk.qm \
+		translations/ReverseEngineering_sk.ts \
+		translations/ReverseEngineering_sv-SE.qm \
+		translations/ReverseEngineering_sv-SE.ts \
+		translations/ReverseEngineering_tr.qm \
+		translations/ReverseEngineering_tr.ts \
+		translations/ReverseEngineering_uk.qm \
+		translations/ReverseEngineering_uk.ts \
 		translations/ReverseEngineering_zh-CN.qm \
 		translations/ReverseEngineering_zh-CN.ts \
+		translations/ReverseEngineering_zh-TW.qm \
+		translations/ReverseEngineering_zh-TW.ts \
 		ReverseEngineering.qrc \
 		UpdateResources.bat
 

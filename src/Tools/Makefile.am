@@ -3,50 +3,114 @@ SUBDIRS=_TEMPLATE_
 endif
 
 EXTRA_DIST = \
-		fcbt/__init__.py \
+		fcbt/BuildDocDoxy.cfg \
+		fcbt/BuildDoc.py \
 		fcbt/CreateModule.py \
 		fcbt/DistBin.py \
 		fcbt/DistSetup.py \
 		fcbt/DistSrc.py \
 		fcbt/DistTools.py \
 		fcbt/FileTools.py \
+		fcbt/__init__.py \
 		fcbt/NextBuildNumber.py \
 		generate.py \
-		generateBase/generateModel_ModuleTest.xml \
-		generateBase/generateMetaModel_Module.xsd \
-		generateBase/__init__.py \
-		generateBase/generateModel_Module.py \
+		generateBase/ \
 		generateBase/generateDS.py \
+		generateBase/generateMetaModel_Module.xsd \
+		generateBase/generateModel_Module.py \
+		generateBase/generateModel_ModuleTest.xml \
 		generateBase/generateTools.py \
+		generateBase/__init__.py \
 		generateTemplates/__init__.py \
-		generateTemplates/template.py \
 		generateTemplates/templateClassPyExport.py \
 		generateTemplates/templateCMakeFile.py \
 		generateTemplates/templateCPPFile.py \
 		generateTemplates/templateHeaderFile.py \
-		generateTemplates/templateInitPy.py \
 		generateTemplates/templateInitGuiPy.py \
-		generateTemplates/templateModule.py \
-		generateTemplates/templateModuleApp.py \
-		generateTemplates/templateModuleGui.py \
+		generateTemplates/templateInitPy.py \
 		generateTemplates/templateModuleAppFeature.py \
 		generateTemplates/templateModuleAppMain.py \
+		generateTemplates/templateModuleApp.py \
+		generateTemplates/templateModuleGui.py \
+		generateTemplates/templateModule.py \
+		generateTemplates/template.py \
+		ImageTools/ImageConv/CmdLine.cpp \
+		ImageTools/ImageConv/CmdLine.h \
+		ImageTools/ImageConv/cmdline.htm \
+		ImageTools/ImageConv/imageconv.cpp \
+		ImageTools/ImageConv/imageconv.h \
+		ImageTools/ImageConv/ImageConv.pro \
+		ImageTools/ImageConv/main.cpp \
+		offlinedoc/buildpdf.py \
+		offlinedoc/buildqhelp.py \
+		offlinedoc/buildwikiindex.py \
+		offlinedoc/downloadwiki.py \
+		offlinedoc/README \
+		plugins/imageformats/svg/main.cpp \
+		plugins/imageformats/svg/qsvgiohandler.cpp \
+		plugins/imageformats/svg/qsvgiohandler.h \
+		plugins/imageformats/svg/svg.pro \
 		plugins/widget/customwidgets.cpp \
 		plugins/widget/customwidgets.h \
 		plugins/widget/plugin.cpp \
 		plugins/widget/plugin.h \
 		plugins/widget/plugin.pro \
+		plugins/widget/wizard.cpp \
+		plugins/widget/wizard.h \
+		RegExp/main.cpp \
+		RegExp/regexpdialogbase.ui \
+		RegExp/regexpdialog.cpp \
+		RegExp/regexpdialog.h \
+		RegExp/RegExp.pro \
+		thumbs/FCStdExtractor.cpp \
+		thumbs/FCStdExtractor.h \
+		thumbs/FCThumbs.def \
+		thumbs/FCThumbs.dsp \
+		thumbs/FCThumbs.dsw \
+		thumbs/FCThumbs.rc \
+		thumbs/FCThumbs.rgs \
+		thumbs/FCThumbs.sln \
+		thumbs/FCThumbs.vcproj \
+		thumbs/IExtractImage.h \
+		thumbs/Resource.h \
+		thumbs/StdAfx.cpp \
+		thumbs/StdAfx.h \
+		thumbs/ThumbFCStd.idl \
+		thumbs/ThumbnailProvider/ClassFactory.cpp \
+		thumbs/ThumbnailProvider/ClassFactory.h \
+		thumbs/ThumbnailProvider/Common.h \
+		thumbs/ThumbnailProvider/FCConfig.h \
+		thumbs/ThumbnailProvider/Main.cpp \
+		thumbs/ThumbnailProvider/ThumbnailProvider.cpp \
+		thumbs/ThumbnailProvider/ThumbnailProvider.def \
+		thumbs/ThumbnailProvider/ThumbnailProvider.h \
+		thumbs/ThumbnailProvider/ThumbnailProvider.sln \
+		thumbs/ThumbnailProvider/ThumbnailProvider.vcproj \
+		astylerc \
+		chm.css \
 		dir2qrc.py \
 		DistTools.py \
 		doctools.py \
+		examplePy2wiki.py \
 		fcbt.py \
 		FCFileTools.py \
+		generate.py \
 		InstallMsg.txt \
+		LicenseChecker.py \
 		MakeApp.py \
 		MakeAppTools.py \
+		makedist.py \
+		Makefile.am \
+		Makefile.in \
 		MakeNewBuildNbr.py \
 		MemoryLeaks.py \
-		PythonToCPP.py \
 		pythondoc.py \
+		PythonToCPP.py \
 		SubWCRev.py \
-		wiki2qhelp.py
+		updateppa.py \
+		updateTranslations.py \
+		updatets.py \
+		wiki2chm.py \
+		wiki2qhelp.py \
+		WinVersion.py \
+		WixFileTool.py

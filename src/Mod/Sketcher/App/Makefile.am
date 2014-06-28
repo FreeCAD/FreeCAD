@@ -90,7 +90,7 @@ Sketcher_la_DEPENDENCIES = libSketcher.la
 
 # set the include path found by configure
 AM_CXXFLAGS = -I$(OCC_INC) -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes) \
-        -I$(EIGEN3_INC)
+        -I$(EIGEN3_INC) $(QT4_CORE_CXXFLAGS)
 
 
 libdir = $(prefix)/Mod/Sketcher

@@ -2,44 +2,43 @@
 lib_LTLIBRARIES=libPart.la Part.la
 
 BUILT_SOURCES=\
-		ArcPy.cpp \
 		ArcOfCirclePy.cpp \
-		BRepOffsetAPI_MakePipeShellPy.cpp \
-		CirclePy.cpp \
-		EllipsePy.cpp \
-		HyperbolaPy.cpp \
-		ParabolaPy.cpp \
-		OffsetCurvePy.cpp \
-		GeometryPy.cpp \
-		GeometryCurvePy.cpp \
-		GeometrySurfacePy.cpp \
-		LinePy.cpp \
-		PointPy.cpp \
+		ArcPy.cpp \
 		BezierCurvePy.cpp \
+		BezierSurfacePy.cpp \
+		BRepOffsetAPI_MakePipeShellPy.cpp \
 		BSplineCurvePy.cpp \
-		PlanePy.cpp \
+		BSplineSurfacePy.cpp \
+		CirclePy.cpp \
 		ConePy.cpp \
 		CylinderPy.cpp \
-		SpherePy.cpp \
-		ToroidPy.cpp \
-		BezierSurfacePy.cpp \
-		BSplineSurfacePy.cpp \
+		EllipsePy.cpp \
+		GeometryCurvePy.cpp \
+		GeometryPy.cpp \
+		GeometrySurfacePy.cpp \
+		HyperbolaPy.cpp \
+		LinePy.cpp \
+		OffsetCurvePy.cpp \
 		OffsetSurfacePy.cpp \
+		ParabolaPy.cpp \
+		Part2DObjectPy.cpp \
+		PartFeaturePy.cpp \
+		PlanePy.cpp \
+		PointPy.cpp \
 		RectangularTrimmedSurfacePy.cpp \
+		SpherePy.cpp \
 		SurfaceOfExtrusionPy.cpp \
 		SurfaceOfRevolutionPy.cpp \
-		PartFeaturePy.cpp \
-		FeaturePythonPy.cpp \
-		Part2DObjectPy.cpp \
 		TopoShapeCompoundPy.cpp \
 		TopoShapeCompSolidPy.cpp \
 		TopoShapeEdgePy.cpp \
 		TopoShapeFacePy.cpp \
+		TopoShapePy.cpp \
 		TopoShapeShellPy.cpp \
 		TopoShapeSolidPy.cpp \
 		TopoShapeVertexPy.cpp \
 		TopoShapeWirePy.cpp \
-		TopoShapePy.cpp
+		ToroidPy.cpp
 
 libPart_la_BUILT=\
 		ArcPy.h \
@@ -69,7 +68,6 @@ libPart_la_BUILT=\
 		SurfaceOfExtrusionPy.h \
 		SurfaceOfRevolutionPy.h \
 		PartFeaturePy.h \
-		FeaturePythonPy.h \
 		Part2DObjectPy.h \
 		TopoShapeCompoundPy.h \
 		TopoShapeCompSolidPy.h \
@@ -83,39 +81,31 @@ libPart_la_BUILT=\
 
 libPart_la_SOURCES=\
 		AppPartPy.cpp \
-		ArcPyImp.cpp \
 		ArcOfCirclePyImp.cpp \
-		BRepOffsetAPI_MakePipeShellPyImp.cpp \
-		CirclePyImp.cpp \
-		CrossSection.cpp \
-		EllipsePyImp.cpp \
-		HyperbolaPyImp.cpp \
-		ParabolaPyImp.cpp \
-		OffsetCurvePyImp.cpp \
-		GeometryPyImp.cpp \
-		GeometryCurvePyImp.cpp \
-		GeometrySurfacePyImp.cpp \
-		LinePyImp.cpp \
-		PointPyImp.cpp \
+		ArcPyImp.cpp \
 		BezierCurvePyImp.cpp \
-		BSplineCurvePyImp.cpp \
-		PlanePyImp.cpp \
-		ConePyImp.cpp \
-		CylinderPyImp.cpp \
-		SpherePyImp.cpp \
-		ToroidPyImp.cpp \
 		BezierSurfacePyImp.cpp \
+		BRepOffsetAPI_MakePipeShellPyImp.cpp \
+		BSplineCurvePyImp.cpp \
 		BSplineSurfacePyImp.cpp \
-		OffsetSurfacePyImp.cpp \
-		RectangularTrimmedSurfacePyImp.cpp \
-		SurfaceOfExtrusionPyImp.cpp \
-		SurfaceOfRevolutionPyImp.cpp \
+		CirclePyImp.cpp \
+		ConePyImp.cpp \
+		CrossSection.cpp \
+		CustomFeature.cpp \
+		CylinderPyImp.cpp \
 		edgecluster.cpp \
+		EllipsePyImp.cpp \
+		FeatureChamfer.cpp \
+		FeatureCompound.cpp \
+		FeatureExtrusion.cpp \
+		FeatureFillet.cpp \
+		FeatureGeometrySet.cpp \
+		FeatureMirroring.cpp \
 		FeaturePartBoolean.cpp \
 		FeaturePartBox.cpp \
 		FeaturePartCircle.cpp \
-		FeaturePartCurveNet.cpp \
 		FeaturePartCommon.cpp \
+		FeaturePartCurveNet.cpp \
 		FeaturePartCut.cpp \
 		FeaturePartFuse.cpp \
 		FeaturePartImportBrep.cpp \
@@ -123,52 +113,69 @@ libPart_la_SOURCES=\
 		FeaturePartImportStep.cpp \
 		FeaturePartPolygon.cpp \
 		FeaturePartSection.cpp \
-		FeatureChamfer.cpp \
-		FeatureExtrusion.cpp \
-		FeatureFillet.cpp \
-		FeatureGeometrySet.cpp \
+		FeaturePartSpline.cpp \
 		FeatureRevolution.cpp \
-		FeatureMirroring.cpp \
-		PartFeatures.cpp \
+		FT2FC.cpp \
 		Geometry.cpp \
+		GeometryCurvePyImp.cpp \
+		GeometryPyImp.cpp \
+		GeometrySurfacePyImp.cpp \
+		HyperbolaPyImp.cpp \
 		ImportIges.cpp \
 		ImportStep.cpp \
+		LinePyImp.cpp \
 		modelRefine.cpp \
-		CustomFeature.cpp \
-		PartFeature.cpp \
-		PartFeatureReference.cpp \
-		PartFeaturePyImp.cpp \
-		FeaturePythonPyImp.cpp \
+		OffsetCurvePyImp.cpp \
+		OffsetSurfacePyImp.cpp \
+		ParabolaPyImp.cpp \
 		Part2DObject.cpp \
 		Part2DObjectPyImp.cpp \
+		PartFeature.cpp \
+		PartFeaturePyImp.cpp \
+		PartFeatureReference.cpp \
+		PartFeatures.cpp \
+		PlanePyImp.cpp \
+		PointPyImp.cpp \
 		PreCompiled.cpp \
-		PreCompiled.h \
 		PrimitiveFeature.cpp \
 		ProgressIndicator.cpp \
 		PropertyGeometryList.cpp \
 		PropertyTopoShape.cpp \
-		TopoShape.cpp \
+		RectangularTrimmedSurfacePyImp.cpp \
+		SpherePyImp.cpp \
+		SurfaceOfExtrusionPyImp.cpp \
+		SurfaceOfRevolutionPyImp.cpp \
+		TopologyPy.cpp \
 		TopoShapeCompoundPyImp.cpp \
 		TopoShapeCompSolidPyImp.cpp \
+		TopoShape.cpp \
 		TopoShapeEdgePyImp.cpp \
 		TopoShapeFacePyImp.cpp \
+		TopoShapePyImp.cpp \
 		TopoShapeShellPyImp.cpp \
 		TopoShapeSolidPyImp.cpp \
 		TopoShapeVertexPyImp.cpp \
 		TopoShapeWirePyImp.cpp \
-		TopoShapePyImp.cpp
+		ToroidPyImp.cpp
 
 nodist_include_HEADERS=\
 		$(libPart_la_BUILT)
 
 include_HEADERS=\
 		CrossSection.h \
+		CustomFeature.h \
 		edgecluster.h \
+		FeatureChamfer.h \
+		FeatureCompound.h \
+		FeatureExtrusion.h \
+		FeatureFillet.h \
+		FeatureGeometrySet.h \
+		FeatureMirroring.h \
 		FeaturePartBoolean.h \
 		FeaturePartBox.h \
 		FeaturePartCircle.h \
-		FeaturePartCurveNet.h \
 		FeaturePartCommon.h \
+		FeaturePartCurveNet.h \
 		FeaturePartCut.h \
 		FeaturePartFuse.h \
 		FeaturePartImportBrep.h \
@@ -176,26 +183,25 @@ include_HEADERS=\
 		FeaturePartImportStep.h \
 		FeaturePartPolygon.h \
 		FeaturePartSection.h \
-		FeatureChamfer.h \
-		FeatureExtrusion.h \
-		FeatureFillet.h \
-		FeatureGeometrySet.h \
+		FeaturePartSpline.h \
 		FeatureRevolution.h \
-		FeatureMirroring.h \
-		PartFeatures.h \
+		FT2FC.h \
 		Geometry.h \
 		ImportIges.h \
 		ImportStep.h \
 		modelRefine.h \
+		OpenCascadeAll.h \
+		Part2DObject.h \
 		PartFeature.h \
 		PartFeatureReference.h \
-		CustomFeature.h \
-		Part2DObject.h \
+		PartFeatures.h \
+		PreCompiled.h \
 		PrimitiveFeature.h \
 		ProgressIndicator.h \
 		PropertyGeometryList.h \
 		PropertyTopoShape.h \
 		Tools.h \
+		TopologyPy.h \
 		TopoShape.h
 
 
@@ -254,7 +260,8 @@ Part_la_DEPENDENCIES = libPart.la
 #--------------------------------------------------------------------------------------
 
 # set the include path found by configure
-AM_CXXFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes) -I$(OCC_INC)
+AM_CXXFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src \
+$(all_includes) -I$(OCC_INC) $(QT4_CORE_CXXFLAGS)
 
 
 includedir = @includedir@/Mod/Part/App
@@ -264,42 +271,43 @@ CLEANFILES = $(BUILT_SOURCES) $(libPart_la_BUILT)
 
 EXTRA_DIST = \
 		OpenCascadeAll.h \
-		ArcPy.xml \
+		CMakeLists.txt \
 		ArcOfCirclePy.xml \
-		BRepOffsetAPI_MakePipeShellPy.xml \
-		CirclePy.xml \
-		EllipsePy.xml \
-		HyperbolaPy.xml \
-		ParabolaPy.xml \
-		OffsetCurvePy.xml \
-		GeometryPy.xml \
-		GeometryCurvePy.xml \
-		GeometrySurfacePy.xml \
-		LinePy.xml \
-		PointPy.xml \
+		ArcPy.xml \
 		BezierCurvePy.xml \
+		BezierSurfacePy.xml \
+		BRepOffsetAPI_MakePipeShellPy.xml \
 		BSplineCurvePy.xml \
-		PlanePy.xml \
+		BSplineSurfacePy.xml \
+		CirclePy.xml \
 		ConePy.xml \
 		CylinderPy.xml \
-		SpherePy.xml \
-		ToroidPy.xml \
-		BezierSurfacePy.xml \
-		BSplineSurfacePy.xml \
+		EllipsePy.xml \
+		GeometryCurvePy.xml \
+		GeometryPy.xml \
+		GeometrySurfacePy.xml \
+		HyperbolaPy.xml \
+		LinePy.xml \
+		OffsetCurvePy.xml \
 		OffsetSurfacePy.xml \
+		ParabolaPy.xml \
+		Part2DObjectPy.xml \
+		PartFeaturePy.xml \
+		PlanePy.xml \
+		PointPy.xml \
 		RectangularTrimmedSurfacePy.xml \
+		SpherePy.xml \
 		SurfaceOfExtrusionPy.xml \
 		SurfaceOfRevolutionPy.xml \
-		PartFeaturePy.xml \
-		FeaturePythonPy.xml \
-		Part2DObjectPy.xml \
-		TopoShapePy.xml \
-		TopoShapeCompSolidPy.xml \
 		TopoShapeCompoundPy.xml \
+		TopoShapeCompSolidPy.xml \
 		TopoShapeEdgePy.xml \
 		TopoShapeFacePy.xml \
+		TopoShapePy.xml \
 		TopoShapeShellPy.xml \
 		TopoShapeSolidPy.xml \
 		TopoShapeVertexPy.xml \
 		TopoShapeWirePy.xml \
-		CMakeLists.txt
+		ToroidPy.xml
+		
+		

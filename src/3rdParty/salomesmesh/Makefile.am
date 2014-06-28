@@ -6,6 +6,8 @@ targetdir = $(prefix)
 #dist_target_DATA = LICENCE.lgpl
 EXTRA_DIST = CMakeLists.txt LICENCE.lgpl.txt
 
+check_PROGRAMS= DAT_Test STL_Test UNV_Test
+
 # set compiler flags and include directories, -fpermissive and -ffriend-injection not needed for occ6.3
 AM_CPPFLAGS = -I$(OCC_INC) -I$(srcdir)/$(smeshdir)inc/ $(all_includes)
 AM_CXXFLAGS = -Wno-sign-compare -Wno-switch -Wno-reorder -Wno-unused -Wno-parentheses -Wno-comment
@@ -65,24 +67,33 @@ $(srcdir)/$(smeshdir)src/SMDS/SMDS_VertexPosition.cpp \
 $(srcdir)/$(smeshdir)src/SMDS/SMDS_VolumeOfFaces.cpp \
 $(srcdir)/$(smeshdir)src/SMDS/SMDS_VolumeOfNodes.cpp \
 $(srcdir)/$(smeshdir)src/SMDS/SMDS_MemoryLimit.cpp \
-$(srcdir)/$(smeshdir)src/SMDS/SMDS_VolumeTool.cpp \
-$(srcdir)/$(smeshdir)src/SMDS/SMDS_Mesh0DElement.cpp
+$(srcdir)/$(smeshdir)src/SMDS/SMDS_VolumeTool.cpp
+# $(srcdir)/$(smeshdir)src/SMDS/SMDS_Mesh0DElement.cpp
 
 # set Driver sources
-libDriver_la_SOURCES = $(srcdir)/$(smeshdir)src/Driver/Driver_Document.cpp \
+libDriver_la_SOURCES = \
+$(srcdir)/$(smeshdir)src/Driver/Driver_Document.cpp \
 $(srcdir)/$(smeshdir)src/Driver/Driver_Mesh.cpp \
 $(srcdir)/$(smeshdir)src/Driver/Driver_SMDS_Mesh.cpp \
 $(srcdir)/$(smeshdir)src/Driver/Driver_SMESHDS_Mesh.cpp
 
 # set DriverSTL sources
-libDriverSTL_la_SOURCES = $(srcdir)/$(smeshdir)src/DriverSTL/DriverSTL_R_SMDS_Mesh.cpp \
+libDriverSTL_la_SOURCES = \
+$(srcdir)/$(smeshdir)src/DriverSTL/DriverSTL_R_SMDS_Mesh.cpp \
 $(srcdir)/$(smeshdir)src/DriverSTL/DriverSTL_W_SMDS_Mesh.cpp
 
 libDriverSTL_la_LIBADD = -lSMDS -lDriver
 libDriverSTL_la_DEPENDENCIES = libSMDS.la libDriver.la
 
+STL_Test_SOURCES = \
+$(srcdir)/$(smeshdir)src/DriverSTL/STL_Test.cpp
+
+STL_Test_LDADD = $(libDriverSTL_la_LIBADD) -lDriverSTL
+STL_Test_DEPENDENCIES = libDriverSTL.la
+
 # set DriverDAT sources
-libDriverDAT_la_SOURCES = $(srcdir)/$(smeshdir)src/DriverDAT/DriverDAT_R_SMDS_Mesh.cpp \
+libDriverDAT_la_SOURCES = \
+$(srcdir)/$(smeshdir)src/DriverDAT/DriverDAT_R_SMDS_Mesh.cpp \
 $(srcdir)/$(smeshdir)src/DriverDAT/DriverDAT_R_SMESHDS_Document.cpp \
 $(srcdir)/$(smeshdir)src/DriverDAT/DriverDAT_R_SMESHDS_Mesh.cpp \
 $(srcdir)/$(smeshdir)src/DriverDAT/DriverDAT_W_SMDS_Mesh.cpp \
@@ -92,8 +103,16 @@ $(srcdir)/$(smeshdir)src/DriverDAT/DriverDAT_W_SMESHDS_Mesh.cpp
 libDriverDAT_la_LIBADD = -lSMDS -lDriver
 libDriverDAT_la_DEPENDENCIES = libSMDS.la libDriver.la
 
+DAT_Test_SOURCES = \
+$(srcdir)/$(smeshdir)src/DriverDAT/DAT_Test.cpp
+
+DAT_Test_LDADD = $(libDriverDAT_la_LIBADD) -lDriverDAT
+DAT_Test_DEPENDENCIES = libDriverDAT.la
+
+
 # set DriverUNV sources
-libDriverUNV_la_SOURCES = $(srcdir)/$(smeshdir)src/DriverUNV/DriverUNV_R_SMDS_Mesh.cpp \
+libDriverUNV_la_SOURCES = \
+$(srcdir)/$(smeshdir)src/DriverUNV/DriverUNV_R_SMDS_Mesh.cpp \
 $(srcdir)/$(smeshdir)src/DriverUNV/DriverUNV_R_SMESHDS_Document.cpp \
 $(srcdir)/$(smeshdir)src/DriverUNV/DriverUNV_R_SMESHDS_Mesh.cpp \
 $(srcdir)/$(smeshdir)src/DriverUNV/DriverUNV_W_SMDS_Mesh.cpp \
@@ -107,8 +126,16 @@ $(srcdir)/$(smeshdir)src/DriverUNV/UNV_Utilities.cpp
 libDriverUNV_la_LIBADD = -lSMDS -lDriver
 libDriverUNV_la_DEPENDENCIES = libSMDS.la libDriver.la
 
+UNV_Test_SOURCES = \
+$(srcdir)/$(smeshdir)src/DriverUNV/UNV_Test.cpp
+
+UNV_Test_LDADD = $(libDriverUNV_la_LIBADD) -lDriverUNV
+UNV_Test_DEPENDENCIES = libDriverUNV.la
+
+ 
 # set SMESHDS sources
-libSMESHDS_la_SOURCES = $(srcdir)/$(smeshdir)src/SMESHDS/SMESHDS_Command.cpp \
+libSMESHDS_la_SOURCES = \
+$(srcdir)/$(smeshdir)src/SMESHDS/SMESHDS_Command.cpp \
 $(srcdir)/$(smeshdir)src/SMESHDS/SMESHDS_Document.cpp \
 $(srcdir)/$(smeshdir)src/SMESHDS/SMESHDS_Group.cpp \
 $(srcdir)/$(smeshdir)src/SMESHDS/SMESHDS_GroupBase.cpp \
@@ -122,7 +149,8 @@ libSMESHDS_la_LIBADD = -lSMDS
 libSMESHDS_la_DEPENDENCIES = libSMDS.la
 
 # set SMESH sources
-libSMESH_la_SOURCES = $(srcdir)/$(smeshdir)src/SMESH/SMESH_0D_Algo.cpp \
+libSMESH_la_SOURCES = \
+$(srcdir)/$(smeshdir)src/SMESH/SMESH_0D_Algo.cpp \
 $(srcdir)/$(smeshdir)src/SMESH/SMESH_1D_Algo.cpp \
 $(srcdir)/$(smeshdir)src/SMESH/SMESH_2D_Algo.cpp \
 $(srcdir)/$(smeshdir)src/SMESH/SMESH_3D_Algo.cpp \
@@ -149,7 +177,8 @@ libSMESH_la_DEPENDENCIES = libSMDS.la libSMESHDS.la libDriver.la \
 		libDriverSTL.la libDriverUNV.la libDriverDAT.la
 
 # set StdMeshers sources
-libStdMeshers_la_SOURCES = $(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_Arithmetic1D.cpp \
+libStdMeshers_la_SOURCES = \
+$(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_Arithmetic1D.cpp \
 $(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_AutomaticLength.cpp \
 $(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_CompositeSegment_1D.cpp \
 $(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_Deflection1D.cpp \
@@ -188,11 +217,6 @@ $(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_UseExisting_1D2D.cpp \
 $(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_CompositeHexa_3D.cpp \
 $(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_MaxLength.cpp \
 $(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_StartEndLength.cpp \
-$(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_FixedPoints1D.cpp \
-$(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_LayerDistribution2D.cpp \
-$(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_NumberOfLayers2D.cpp \
-$(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_QuadrangleParams.cpp \
-$(srcdir)/$(smeshdir)src/StdMeshers/StdMeshers_RadialQuadrangle_1D2D.cpp \
 $(srcdir)/$(smeshdir)src/MEFISTO2/aptrte.cpp \
 $(srcdir)/$(smeshdir)src/MEFISTO2/trte.f
 
@@ -273,7 +297,6 @@ $(srcdir)/$(smeshdir)inc/SMDS_VertexPosition.hxx \
 $(srcdir)/$(smeshdir)inc/SMDS_VolumeOfFaces.hxx \
 $(srcdir)/$(smeshdir)inc/SMDS_VolumeOfNodes.hxx \
 $(srcdir)/$(smeshdir)inc/SMDS_VolumeTool.hxx \
-$(srcdir)/$(smeshdir)inc/SMDS_Mesh0DElement.hxx \
 $(srcdir)/$(smeshdir)inc/SMESHDS_Command.hxx \
 $(srcdir)/$(smeshdir)inc/SMESHDS_CommandType.hxx \
 $(srcdir)/$(smeshdir)inc/SMESHDS_Document.hxx \
@@ -355,11 +378,6 @@ $(srcdir)/$(smeshdir)inc/StdMeshers_Regular_1D.hxx \
 $(srcdir)/$(smeshdir)inc/StdMeshers_SegmentAroundVertex_0D.hxx \
 $(srcdir)/$(smeshdir)inc/StdMeshers_SegmentLengthAroundVertex.hxx \
 $(srcdir)/$(smeshdir)inc/StdMeshers_StartEndLength.hxx \
-$(srcdir)/$(smeshdir)inc/StdMeshers_FixedPoints1D.hxx \
-$(srcdir)/$(smeshdir)inc/StdMeshers_LayerDistribution2D.hxx \
-$(srcdir)/$(smeshdir)inc/StdMeshers_NumberOfLayers2D.hxx \
-$(srcdir)/$(smeshdir)inc/StdMeshers_QuadrangleParams.hxx \
-$(srcdir)/$(smeshdir)inc/StdMeshers_RadialQuadrangle_1D2D.hxx \
 $(srcdir)/$(smeshdir)inc/UNV2411_Structure.hxx \
 $(srcdir)/$(smeshdir)inc/UNV2412_Structure.hxx \
 $(srcdir)/$(smeshdir)inc/UNV2417_Structure.hxx \
@@ -382,8 +400,5 @@ $(srcdir)/$(smeshdir)inc/StdMeshers_TrianglePreference.hxx \
 $(srcdir)/$(smeshdir)inc/StdMeshers_UseExisting_1D2D.hxx \
 $(srcdir)/$(smeshdir)inc/StdMeshers_CompositeHexa_3D.hxx \
 $(srcdir)/$(smeshdir)inc/StdMeshers_MaxLength.hxx \
-$(srcdir)/$(smeshdir)inc/OpUtil.hxx \
-$(srcdir)/$(smeshdir)inc/Utils_ExceptHandlers.hxx \
-$(srcdir)/$(smeshdir)inc/Utils_SALOME_Exception.hxx \
 $(srcdir)/$(smeshdir)inc/utilities.h
 

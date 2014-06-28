@@ -8,27 +8,33 @@
 # Change data dir from default ($(prefix)/share) to $(prefix)
 datadir = $(prefix)/Mod/Arch
 data_DATA = \
-		Arch_rc.py \
-		Arch.py \
-		ArchComponent.py \
-		ArchBuilding.py \
-		ArchCell.py \
-		ArchFloor.py \
-		ifcReader.py \
-		importDAE.py \
-		importIFC.py \
-		importOBJ.py \
-		Init.py \
-		InitGui.py \
-		ArchSite.py \
-		ArchStructure.py \
-		ArchWall.py \
-		ArchSectionPlane.py \
-		ArchWindow.py \
-		ArchCommands.py \
-		ArchAxis.py \
-		ArchVRM.py \
-		ArchRoof.py
+    Init.py \
+    InitGui.py \
+    ArchComponent.py \
+    ArchWall.py \
+    importIFC.py \
+    ifcReader.py \
+    Arch_rc.py \
+    Arch.py \
+    ArchBuilding.py \
+    ArchFloor.py \
+    ArchSite.py \
+    ArchStructure.py \
+    ArchCommands.py \
+    ArchSectionPlane.py \
+    importDAE.py \
+    importOBJ.py \
+    ArchWindow.py \
+    ArchAxis.py \
+    ArchVRM.py \
+    ArchRoof.py \
+    ArchStairs.py \
+    importWebGL.py \
+    ArchSpace.py \
+    ArchRebar.py \
+    TestArch.py \
+    ifcWriter.py \
+    ArchFrame.py
 
 CLEANFILES = $(BUILT_SOURCES)
 
@@ -66,5 +72,52 @@ EXTRA_DIST = \
 		Resources/icons/Arch_CloseHoles.svg \
 		Resources/icons/Arch_Check.svg \
 		Resources/icons/Arch_SelectNonManifold.svg \
+		Resources/translations/Arch_af.qm \
+		Resources/translations/Arch_af.ts \
+		Resources/translations/Arch_cs.qm \
+		Resources/translations/Arch_cs.ts \
+		Resources/translations/Arch_de.qm \
+		Resources/translations/Arch_de.ts \
+		Resources/translations/Arch_es-ES.qm \
+		Resources/translations/Arch_es-ES.ts \
+		Resources/translations/Arch_fi.qm \
+		Resources/translations/Arch_fi.ts \
+		Resources/translations/Arch_fr.qm \
+		Resources/translations/Arch_fr.ts \
+		Resources/translations/Arch_hr.qm \
+		Resources/translations/Arch_hr.ts \
+		Resources/translations/Arch_hu.qm \
+		Resources/translations/Arch_hu.ts \
+		Resources/translations/Arch_it.qm \
+		Resources/translations/Arch_it.ts \
+		Resources/translations/Arch_ja.qm \
+		Resources/translations/Arch_ja.ts \
+		Resources/translations/Arch_nl.qm \
+		Resources/translations/Arch_nl.ts \
+		Resources/translations/Arch_no.qm \
+		Resources/translations/Arch_no.ts \
+		Resources/translations/Arch_pl.qm \
+		Resources/translations/Arch_pl.ts \
+		Resources/translations/Arch_pt-BR.qm \
+		Resources/translations/Arch_pt-BR.ts \
+		Resources/translations/Arch_pt-PT.qm \
+		Resources/translations/Arch_pt-PT.ts \
+		Resources/translations/Arch_ro.qm \
+		Resources/translations/Arch_ro.ts \
+		Resources/translations/Arch_ru.qm \
+		Resources/translations/Arch_ru.ts \
+		Resources/translations/Arch_sk.qm \
+		Resources/translations/Arch_sk.ts \
+		Resources/translations/Arch_sv-SE.qm \
+		Resources/translations/Arch_sv-SE.ts \
+		Resources/translations/Arch_tr.qm \
+		Resources/translations/Arch_tr.ts \
+		Resources/translations/Arch.ts \
+		Resources/translations/Arch_uk.qm \
+		Resources/translations/Arch_uk.ts \
+		Resources/translations/Arch_zh-CN.qm \
+		Resources/translations/Arch_zh-CN.ts \
+		Resources/translations/Arch_zh-TW.qm \
+		Resources/translations/Arch_zh-TW.ts \
 		Resources/ui/archprefs-base.ui
 

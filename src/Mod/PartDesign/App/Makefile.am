@@ -97,7 +97,8 @@ PartDesign_la_DEPENDENCIES = libPartDesign.la
 #--------------------------------------------------------------------------------------
 
 # set the include path found by configure
-AM_CXXFLAGS = -I$(OCC_INC) -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes)
+AM_CXXFLAGS = -I$(OCC_INC) -I$(top_srcdir)/src -I$(top_builddir)/src \
+	$(all_includes) $(QT4_CORE_CXXFLAGS)
 
 
 libdir = $(prefix)/Mod/PartDesign

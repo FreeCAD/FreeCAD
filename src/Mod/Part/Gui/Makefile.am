@@ -3,50 +3,54 @@ lib_LTLIBRARIES=libPartGui.la PartGui.la
 
 BUILT_SOURCES=\
 		ui_CrossSections.h \
+		ui_DlgBlock.h \
 		ui_DlgBooleanOperation.h \
 		ui_DlgExtrusion.h \
 		ui_DlgFilletEdges.h \
-		ui_DlgRevolution.h \
 		ui_DlgPartBox.h \
 		ui_DlgPartCylinder.h \
 		ui_DlgPartImportIges.h \
 		ui_DlgPartImportStep.h \
 		ui_DlgPrimitives.h \
-		ui_Location.h \
+		ui_DlgRevolution.h \
 		ui_DlgSettings3DViewPart.h \
 		ui_DlgSettingsGeneral.h \
+		ui_DlgSettingsObjectColor.h \
+		ui_Location.h \
 		ui_Mirroring.h \
 		ui_TaskFaceColors.h \
-		ui_TaskShapeBuilder.h \
 		ui_TaskLoft.h \
 		ui_TaskOffset.h \
+		ui_TaskShapeBuilder.h \
 		ui_TaskSweep.h \
 		moc_CrossSections.cpp \
 		moc_DlgBooleanOperation.cpp \
 		moc_DlgExtrusion.cpp \
 		moc_DlgFilletEdges.cpp \
-		moc_DlgRevolution.cpp \
 		moc_DlgPartBoxImp.cpp \
 		moc_DlgPartCylinderImp.cpp \
 		moc_DlgPartImportIgesImp.cpp \
 		moc_DlgPartImportStepImp.cpp \
 		moc_DlgPrimitives.cpp \
+		moc_DlgRevolution.cpp \
 		moc_DlgSettings3DViewPartImp.cpp \
 		moc_DlgSettingsGeneral.cpp \
+		moc_DlgSettingsObjectColor.cpp \
 		moc_Mirroring.cpp \
 		moc_TaskCheckGeometry.cpp \
+		moc_TaskDimension.cpp \
 		moc_TaskFaceColors.cpp \
-		moc_TaskShapeBuilder.cpp \
 		moc_TaskLoft.cpp \
 		moc_TaskOffset.cpp \
+		moc_TaskShapeBuilder.cpp \
 		moc_TaskSweep.cpp \
 		moc_TaskThickness.cpp \
 		qrc_Part.cpp 
 
 libPartGui_la_SOURCES=\
 		Command.cpp \
-		CommandSimple.cpp \
 		CommandParametric.cpp \
+		CommandSimple.cpp \
 		CrossSections.cpp \
 		CrossSections.h \
 		DlgBooleanOperation.cpp \
@@ -55,8 +59,6 @@ libPartGui_la_SOURCES=\
 		DlgExtrusion.h \
 		DlgFilletEdges.cpp \
 		DlgFilletEdges.h \
-		DlgRevolution.cpp \
-		DlgRevolution.h \
 		DlgPartBoxImp.cpp \
 		DlgPartBoxImp.h \
 		DlgPartCylinderImp.cpp \
@@ -67,45 +69,122 @@ libPartGui_la_SOURCES=\
 		DlgPartImportStepImp.h \
 		DlgPrimitives.cpp \
 		DlgPrimitives.h \
+		DlgRevolution.cpp \
+		DlgRevolution.h \
 		DlgSettings3DViewPartImp.cpp \
 		DlgSettings3DViewPartImp.h \
 		DlgSettingsGeneral.cpp \
 		DlgSettingsGeneral.h \
+		DlgSettingsObjectColor.cpp \
+		DlgSettingsObjectColor.h \
 		Mirroring.cpp \
 		Mirroring.h \
+		PreCompiled.cpp \
+		PreCompiled.h \
+		SoBrepEdgeSet.cpp \
+		SoBrepEdgeSet.h \
+		SoBrepFaceSet.cpp \
+		SoBrepFaceSet.h \
+		SoBrepPointSet.cpp \
+		SoBrepPointSet.h \
+		SoFCShapeObject.cpp \
+		SoFCShapeObject.h \
 		TaskCheckGeometry.cpp \
 		TaskCheckGeometry.h \
+		TaskDimension.cpp \
+		TaskDimension.h \
 		TaskFaceColors.cpp \
 		TaskFaceColors.h \
-		TaskShapeBuilder.cpp \
-		TaskShapeBuilder.h \
 		TaskLoft.cpp \
 		TaskLoft.h \
 		TaskOffset.cpp \
 		TaskOffset.h \
+		TaskShapeBuilder.cpp \
+		TaskShapeBuilder.h \
 		TaskSweep.cpp \
 		TaskSweep.h \
 		TaskThickness.cpp \
 		TaskThickness.h \
-		PreCompiled.cpp \
-		PreCompiled.h \
-		SoBrepShape.cpp \
-		SoFCShapeObject.cpp \
-		ViewProvider.cpp \
-		ViewProviderExt.cpp \
-		ViewProviderReference.cpp \
-		ViewProviderBox.cpp \
-		ViewProviderCurveNet.cpp \
-		ViewProviderImport.cpp \
-		ViewProviderExtrusion.cpp \
-		ViewProviderMirror.cpp \
 		ViewProvider2DObject.cpp \
-		ViewProviderPython.cpp \
+		ViewProvider2DObject.h \
 		ViewProviderBoolean.cpp \
-		Workbench.cpp
+		ViewProviderBoolean.h \
+		ViewProviderBox.cpp \
+		ViewProviderBox.h \
+		ViewProviderCircleParametric.cpp \
+		ViewProviderCircleParametric.h \
+		ViewProviderCompound.cpp \
+		ViewProviderCompound.h \
+		ViewProviderConeParametric.cpp \
+		ViewProviderConeParametric.h \
+		ViewProvider.cpp \
+		ViewProviderCurveNet.cpp \
+		ViewProviderCurveNet.h \
+		ViewProviderCylinderParametric.cpp \
+		ViewProviderCylinderParametric.h \
+		ViewProviderEllipseParametric.cpp \
+		ViewProviderEllipseParametric.h \
+		ViewProviderExt.cpp \
+		ViewProviderExt.h \
+		ViewProviderExtrusion.cpp \
+		ViewProviderExtrusion.h \
+		ViewProvider.h \
+		ViewProviderHelixParametric.cpp \
+		ViewProviderHelixParametric.h \
+		ViewProviderImport.cpp \
+		ViewProviderImport.h \
+		ViewProviderLineParametric.cpp \
+		ViewProviderLineParametric.h \
+		ViewProviderMirror.cpp \
+		ViewProviderMirror.h \
+		ViewProviderPlaneParametric.cpp \
+		ViewProviderPlaneParametric.h \
+		ViewProviderPointParametric.cpp \
+		ViewProviderPointParametric.h \
+		ViewProviderPrism.cpp \
+		ViewProviderPrism.h \
+		ViewProviderPython.cpp \
+		ViewProviderPython.h \
+		ViewProviderReference.cpp \
+		ViewProviderReference.h \
+		ViewProviderRegularPolygon.cpp \
+		ViewProviderRegularPolygon.h \
+		ViewProviderRuledSurface.cpp \
+		ViewProviderRuledSurface.h \
+		ViewProviderSphereParametric.cpp \
+		ViewProviderSphereParametric.h \
+		ViewProviderSpline.cpp \
+		ViewProviderSpline.h \
+		ViewProviderTorusParametric.cpp \
+		ViewProviderTorusParametric.h \
+		Workbench.cpp \
+		Workbench.h
+
+libPartGui_la_UI=\
+		CrossSections.ui \
+		DlgBlock.ui \
+		DlgBooleanOperation.ui \
+		DlgExtrusion.ui \
+		DlgFilletEdges.ui \
+		DlgPartBox.ui \
+		DlgPartCylinder.ui \
+		DlgPartImportIges.ui \
+		DlgPartImportStep.ui \
+		DlgPrimitives.ui \
+		DlgRevolution.ui \
+		DlgSettings3DViewPart.ui \
+		DlgSettingsGeneral.ui \
+		DlgSettingsObjectColor.ui \
+		Location.ui \
+		Mirroring.ui \
+		TaskFaceColors.ui \
+		TaskLoft.ui \
+		TaskOffset.ui \
+		TaskShapeBuilder.ui \
+		TaskSweep.ui
+
 
 include_HEADERS=\
-		SoBrepShape.h \
 		SoFCShapeObject.h \
 		ViewProvider.h \
 		ViewProviderExt.h \
@@ -197,62 +276,73 @@ libdir = $(prefix)/Mod/Part
 CLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
-		Resources/icons/Part_Cylinder.svg \
-		Resources/icons/Part_Box.svg \
-		Resources/icons/Part_Torus.svg \
-		Resources/icons/Part_Cone.svg \
-		Resources/icons/Part_Sphere.svg \
+		$(libPartGui_la_UI) \
+		CMakeLists.txt \
 		Resources/icons/Part_Booleans.svg \
+		Resources/icons/Part_Box.svg \
 		Resources/icons/Part_Chamfer.svg \
 		Resources/icons/Part_CheckGeometry.svg \
-		Resources/icons/Part_Cut.svg \
+		Resources/icons/Part_Circle_Parametric.svg \
 		Resources/icons/Part_Common.svg \
+		Resources/icons/Part_Cone.svg \
 		Resources/icons/Part_CreatePrimitives.png \
 		Resources/icons/Part_CreatePrimitives.svg \
-		Resources/icons/Part_Fuse.svg \
 		Resources/icons/Part_CrossSections.svg \
-		Resources/icons/Part_Section.svg \
+		Resources/icons/Part_Cut.svg \
+		Resources/icons/Part_Cylinder.svg \
+		Resources/icons/Part_Ellipse_Parametric.svg \
+		Resources/icons/Part_Export.svg \
 		Resources/icons/Part_Extrude.svg \
-		Resources/icons/Part_Fillet.svg \
-		Resources/icons/Part_Revolve.svg \
-		Resources/icons/Part_Import.svg \
-		Resources/icons/Part_Loft.svg \
-		Resources/icons/Part_Mirror.svg \
-		Resources/icons/Part_MirrorPNG.png \
-		Resources/icons/Part_Offset.svg \
-		Resources/icons/Part_RuledSurface.svg \
-		Resources/icons/Part_Shapebuilder.png \
-		Resources/icons/Part_Shapebuilder.svg \
-		Resources/icons/Part_ShapeInfo.svg \
-		Resources/icons/Part_Sweep.svg \
-		Resources/icons/Part_Thickness.svg \
-		Resources/icons/Tree_Part.svg \
-		Resources/icons/preferences-part_design.svg \
+		Resources/icons/PartFeatureImport.xpm \
 		Resources/icons/PartFeature.svg \
 		Resources/icons/PartFeature.xpm \
-		Resources/icons/PartFeatureImport.xpm \
-		CrossSections.ui \
-		DlgBooleanOperation.ui \
-		DlgExtrusion.ui \
-		DlgFilletEdges.ui \
-		DlgRevolution.ui \
-		DlgPartBox.ui \
-		DlgPartCylinder.ui \
-		DlgPartImportIges.ui \
-		DlgPartImportStep.ui \
-		DlgPrimitives.ui \
-		Location.ui \
-		DlgSettings3DViewPart.ui \
-		DlgSettingsGeneral.ui \
-		Mirroring.ui \
-		TaskFaceColors.ui \
-		TaskShapeBuilder.ui \
-		TaskLoft.ui \
-		TaskOffset.ui \
-		TaskSweep.ui \
+		Resources/icons/Part_Fillet.svg \
+		Resources/icons/Part_Fuse.svg \
+		Resources/icons/Part_Helix_Parametric.svg \
+		Resources/icons/Part_Import.svg \
+		Resources/icons/Part_Line_Parametric.svg \
+		Resources/icons/Part_Loft.svg \
+		Resources/icons/Part_Measure_Angular.svg \
+		Resources/icons/Part_Measure_Linear.svg \
+		Resources/icons/Part_Measure_Step_Active.svg \
+		Resources/icons/Part_Measure_Step_Done.svg \
+		Resources/icons/Part_Measure_Toggle_3d.svg \
+		Resources/icons/Part_Measure_Toggle_Delta.svg \
+		Resources/icons/Part_MirrorPNG.png \
+		Resources/icons/Part_Mirror.svg \
+		Resources/icons/Part_Offset.svg \
+		Resources/icons/Part_Point_Parametric.svg \
+		Resources/icons/Part_Polygon_Parametric.svg \
+		Resources/icons/Part_Refine_Shape.svg \
+		Resources/icons/Part_Revolve.svg \
+		Resources/icons/Part_RuledSurface.svg \
+		Resources/icons/Part_Section.svg \
+		Resources/icons/Part_Shapebuilder.png \
+		Resources/icons/Part_Shapebuilder.svg \
+		Resources/icons/Part_Shape_from_Mesh.svg \
+		Resources/icons/Part_ShapeInfo.svg \
+		Resources/icons/Part_Sphere.svg \
+		Resources/icons/Part_Spiral_Parametric.svg \
+		Resources/icons/Part_Spline_Parametric.svg \
+		Resources/icons/Part_Sweep.svg \
+		Resources/icons/Part_Thickness.svg \
+		Resources/icons/Part_Torus.svg \
+		Resources/icons/preferences-part_design.svg \
+		Resources/icons/Tree_Part_Box_Parametric.svg \
+		Resources/icons/Tree_Part_Cone_Parametric.svg \
+		Resources/icons/Tree_Part_Cylinder_Parametric.svg \
+		Resources/icons/Tree_Part_Ellipsoid_Parametric.svg \
+		Resources/icons/Tree_Part_Plane_Parametric.svg \
+		Resources/icons/Tree_Part_Prism.svg \
+		Resources/icons/Tree_Part_Sphere_Parametric.svg \
+		Resources/icons/Tree_Part.svg \
+		Resources/icons/Tree_Part_Torus_Parametric.svg \
+		Resources/icons/Tree_Part_Wedge.svg \
 		Resources/Part.qrc \
 		Resources/translations/Part_af.qm \
 		Resources/translations/Part_af.ts \
+		Resources/translations/Part_cs.qm \
+		Resources/translations/Part_cs.ts \
 		Resources/translations/Part_de.qm \
 		Resources/translations/Part_de.ts \
 		Resources/translations/Part_es-ES.qm \
@@ -263,8 +353,12 @@ EXTRA_DIST = \
 		Resources/translations/Part_fr.ts \
 		Resources/translations/Part_hr.qm \
 		Resources/translations/Part_hr.ts \
+		Resources/translations/Part_hu.qm \
+		Resources/translations/Part_hu.ts \
 		Resources/translations/Part_it.qm \
 		Resources/translations/Part_it.ts \
+		Resources/translations/Part_ja.qm \
+		Resources/translations/Part_ja.ts \
 		Resources/translations/Part_nl.qm \
 		Resources/translations/Part_nl.ts \
 		Resources/translations/Part_no.qm \
@@ -273,26 +367,21 @@ EXTRA_DIST = \
 		Resources/translations/Part_pl.ts \
 		Resources/translations/Part_pt-BR.qm \
 		Resources/translations/Part_pt-BR.ts \
+		Resources/translations/Part_pt-PT.qm \
+		Resources/translations/Part_pt-PT.ts \
+		Resources/translations/Part_ro.qm \
+		Resources/translations/Part_ro.ts \
 		Resources/translations/Part_ru.qm \
 		Resources/translations/Part_ru.ts \
+		Resources/translations/Part_sk.qm \
+		Resources/translations/Part_sk.ts \
 		Resources/translations/Part_sv-SE.qm \
 		Resources/translations/Part_sv-SE.ts \
+		Resources/translations/Part_tr.qm \
+		Resources/translations/Part_tr.ts \
 		Resources/translations/Part_uk.qm \
 		Resources/translations/Part_uk.ts \
 		Resources/translations/Part_zh-CN.qm \
 		Resources/translations/Part_zh-CN.ts \
 		Resources/translations/Part_zh-TW.qm \
-		Resources/translations/Part_zh-TW.ts \
-		Resources/translations/Part_ro.qm \
-		Resources/translations/Part_ro.ts \
-		Resources/translations/Part_ja.qm \
-		Resources/translations/Part_ja.ts \
-		Resources/translations/Part_hu.qm \
-		Resources/translations/Part_hu.ts \
-		Resources/translations/Part_cs.qm \
-		Resources/translations/Part_cs.ts \
-		Resources/translations/Part_sk.qm \
-		Resources/translations/Part_sk.ts \
-		Resources/translations/Part_tr.qm \
-		Resources/translations/Part_tr.ts \
-		CMakeLists.txt
+		Resources/translations/Part_zh-TW.ts 

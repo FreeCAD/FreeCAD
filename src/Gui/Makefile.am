@@ -5,6 +5,7 @@ lib_LTLIBRARIES=libFreeCADGui.la
 BUILT_SOURCES=\
 		moc_Action.cpp \
 		moc_CallTips.cpp \
+		moc_Clipping.cpp \
 		moc_CombiView.cpp \
 		moc_Control.cpp \
 		moc_DemoMode.cpp \
@@ -15,6 +16,7 @@ BUILT_SOURCES=\
 		moc_DlgCustomizeSpaceball.cpp \
 		moc_DlgCustomizeSpNavSettings.cpp \
 		moc_DlgDisplayPropertiesImp.cpp \
+		moc_DlgEditFileIncludeProptertyExternal.cpp \
 		moc_DlgEditorImp.cpp \
 		moc_DlgGeneralImp.cpp \
 		moc_DlgInputDialogImp.cpp \
@@ -22,51 +24,59 @@ BUILT_SOURCES=\
 		moc_DlgMacroExecuteImp.cpp \
 		moc_DlgMacroRecordImp.cpp \
 		moc_DlgMaterialPropertiesImp.cpp \
-		moc_DlgEditFileIncludeProptertyExternal.cpp \
 		moc_DlgOnlineHelpImp.cpp \
 		moc_DlgParameterImp.cpp \
 		moc_DlgPreferencesImp.cpp \
+		moc_DlgProjectInformationImp.cpp \
 		moc_DlgProjectUtility.cpp \
+		moc_DlgPropertyLink.cpp \
 		moc_DlgReportViewImp.cpp \
 		moc_DlgRunExternal.cpp \
 		moc_DlgSettings3DViewImp.cpp \
-		moc_DlgSettingsViewColor.cpp \
 		moc_DlgSettingsColorGradientImp.cpp \
 		moc_DlgSettingsDocumentImp.cpp \
 		moc_DlgSettingsImageImp.cpp \
 		moc_DlgSettingsMacroImp.cpp \
 		moc_DlgSettingsUnitsImp.cpp \
+		moc_DlgSettingsViewColor.cpp \
 		moc_DlgTipOfTheDayImp.cpp \
 		moc_DlgToolbarsImp.cpp \
-		moc_TaskDlgRelocation.cpp \
 		moc_DlgUndoRedo.cpp \
+		moc_DlgUnitsCalculatorImp.cpp \
 		moc_DockWindow.cpp \
 		moc_DockWindowManager.cpp \
 		moc_DownloadDialog.cpp \
+		moc_DownloadItem.cpp \
+		moc_DownloadManager.cpp \
+		moc_EditorView.cpp \
 		moc_FileDialog.cpp \
 		moc_Flag.cpp \
+		moc_GraphvizView.cpp \
 		moc_GuiApplicationNativeEventAware.cpp \
 		moc_HelpView.cpp \
+		moc_InputField.cpp \
 		moc_InputVector.cpp \
 		moc_MainWindow.cpp \
 		moc_ManualAlignment.cpp \
+		moc_MDIView.cpp \
 		moc_NetworkRetriever.cpp \
 		moc_OnlineDocumentation.cpp \
 		moc_Placement.cpp \
 		moc_PrefWidgets.cpp \
 		moc_ProgressBar.cpp \
 		moc_ProgressDialog.cpp \
+		moc_ProjectView.cpp \
 		moc_PropertyPage.cpp \
 		moc_PropertyView.cpp \
 		moc_PythonConsole.cpp \
 		moc_PythonDebugger.cpp \
 		moc_PythonEditor.cpp \
-		moc_EditorView.cpp \
 		moc_ReportView.cpp \
 		moc_SceneInspector.cpp \
 		moc_SelectionView.cpp \
 		moc_SpinBox.cpp \
 		moc_Splashscreen.cpp \
+		moc_TaskDlgRelocation.cpp \
 		moc_TaskPanelView.cpp \
 		moc_TextEdit.cpp \
 		moc_TextureMapping.cpp \
@@ -74,11 +84,11 @@ BUILT_SOURCES=\
 		moc_Transform.cpp \
 		moc_Tree.cpp \
 		moc_TreeView.cpp \
-		moc_MDIView.cpp\
-		moc_View3DInventor.cpp \
 		moc_WidgetFactory.cpp \
 		moc_Widgets.cpp \
+		moc_View3DInventor.cpp \
 		ui_AboutApplication.h \
+		ui_Clipping.h \
 		ui_DemoMode.h \
 		ui_DlgActions.h \
 		ui_DlgActivateWindow.h \
@@ -88,9 +98,11 @@ BUILT_SOURCES=\
 		ui_DlgCustomizeSpNavSettings.h \
 		ui_DlgDisplayProperties.h \
 		ui_DlgEditor.h \
+		ui_DlgGeneral.h \
 		ui_DlgInputDialog.h \
 		ui_DlgKeyboard.h \
-		ui_DlgGeneral.h \
+		ui_DlgLocationAngle.h \
+		ui_DlgLocationPos.h \
 		ui_DlgMacroExecute.h \
 		ui_DlgMacroRecord.h \
 		ui_DlgMaterialProperties.h \
@@ -99,24 +111,26 @@ BUILT_SOURCES=\
 		ui_DlgPreferences.h \
 		ui_DlgProjectInformation.h \
 		ui_DlgProjectUtility.h \
+		ui_DlgPropertyLink.h \
 		ui_DlgReportView.h \
 		ui_DlgRunExternal.h \
 		ui_DlgSettings3DView.h \
-		ui_DlgSettingsViewColor.h \
 		ui_DlgSettingsColorGradient.h \
 		ui_DlgSettingsDocument.h \
 		ui_DlgSettingsImage.h \
 		ui_DlgSettingsMacro.h \
 		ui_DlgSettingsUnits.h \
+		ui_DlgSettingsViewColor.h \
 		ui_DlgTipOfTheDay.h \
 		ui_DlgToolbars.h \
 		ui_DlgTreeWidget.h \
-		ui_DlgLocationAngle.h \
-		ui_DlgLocationPos.h \
-		ui_SceneInspector.h \
-		ui_MouseButtons.h \
+		ui_DlgUnitsCalculator.h \
+		ui_DownloadItem.h \
+		ui_DownloadManager.h \
 		ui_InputVector.h \
+		ui_MouseButtons.h \
 		ui_Placement.h \
+		ui_SceneInspector.h \
 		ui_TextureMapping.h \
 		DocumentPy.cpp \
 		PythonWorkbenchPy.cpp \
@@ -129,6 +143,7 @@ BUILT_SOURCES=\
 
 libFreeCADGui_la_UI=\
 		AboutApplication.ui \
+		Clipping.ui \
 		DemoMode.ui \
 		DlgActions.ui \
 		DlgActivateWindow.ui \
@@ -141,6 +156,8 @@ libFreeCADGui_la_UI=\
 		DlgGeneral.ui \
 		DlgInputDialog.ui \
 		DlgKeyboard.ui \
+		DlgLocationAngle.ui \
+		DlgLocationPos.ui \
 		DlgMacroExecute.ui \
 		DlgMacroRecord.ui \
 		DlgMaterialProperties.ui \
@@ -149,24 +166,26 @@ libFreeCADGui_la_UI=\
 		DlgPreferences.ui \
 		DlgProjectInformation.ui \
 		DlgProjectUtility.ui \
+		DlgPropertyLink.ui \
 		DlgReportView.ui \
 		DlgRunExternal.ui \
 		DlgSettings3DView.ui \
-		DlgSettingsViewColor.ui \
+		DlgSettingsColorGradient.ui \
 		DlgSettingsDocument.ui \
 		DlgSettingsImage.ui \
 		DlgSettingsMacro.ui \
 		DlgSettingsUnits.ui \
-		DlgSettingsColorGradient.ui \
+		DlgSettingsViewColor.ui \
 		DlgTipOfTheDay.ui \
 		DlgToolbars.ui \
-		DlgLocationAngle.ui \
-		DlgLocationPos.ui \
 		DlgTreeWidget.ui \
-		MouseButtons.ui \
-		SceneInspector.ui \
+		DlgUnitsCalculator.ui \
+		DownloadItem.ui \
+		DownloadManager.ui \
 		InputVector.ui \
+		MouseButtons.ui \
 		Placement.ui \
+		SceneInspector.ui \
 		TextureMapping.ui
 
 libFreeCADGui_la_BUILT=\
@@ -179,26 +198,38 @@ libFreeCADGui_la_BUILT=\
 		WorkbenchPy.h 
 
 libFreeCADGui_la_SOURCES=\
+		Inventor/SoAutoZoomTranslation.cpp \
+		Inventor/SoAutoZoomTranslation.h \
 		Inventor/SoDrawingGrid.cpp \
+		Inventor/SoDrawingGrid.h \
 		Action.cpp \
+		Action.h \
 		Application.cpp \
+		Application.h \
 		ApplicationPy.cpp \
 		Assistant.cpp \
 		Assistant.h \
 		BitmapFactory.cpp \
+		BitmapFactory.h \
 		BlenderNavigationStyle.cpp \
 		CADNavigationStyle.cpp \
 		CallTips.cpp \
+		CallTips.h \
+		Clipping.cpp \
+		Clipping.h \
 		CombiView.cpp \
-		Control.cpp \
+		CombiView.h \
 		Command.cpp \
 		CommandDoc.cpp \
 		CommandFeat.cpp \
+		Command.h \
 		CommandMacro.cpp \
 		CommandStd.cpp \
-		CommandWindow.cpp \
 		CommandTest.cpp \
 		CommandView.cpp \
+		CommandWindow.cpp \
+		Control.cpp \
+		Control.h \
 		DemoMode.cpp \
 		DemoMode.h \
 		DlgActionsImp.cpp \
@@ -215,6 +246,8 @@ libFreeCADGui_la_SOURCES=\
 		DlgCustomizeSpNavSettings.h \
 		DlgDisplayPropertiesImp.cpp \
 		DlgDisplayPropertiesImp.h \
+		DlgEditFileIncludeProptertyExternal.cpp \
+		DlgEditFileIncludeProptertyExternal.h \
 		DlgEditorImp.cpp \
 		DlgEditorImp.h \
 		DlgGeneralImp.cpp \
@@ -239,16 +272,14 @@ libFreeCADGui_la_SOURCES=\
 		DlgProjectInformationImp.h \
 		DlgProjectUtility.cpp \
 		DlgProjectUtility.h \
+		DlgPropertyLink.cpp \
+		DlgPropertyLink.h \
 		DlgReportViewImp.cpp \
 		DlgReportViewImp.h \
 		DlgRunExternal.cpp \
 		DlgRunExternal.h \
-		DlgEditFileIncludeProptertyExternal.cpp \
-		DlgEditFileIncludeProptertyExternal.h \
 		DlgSettings3DViewImp.cpp \
 		DlgSettings3DViewImp.h \
-		DlgSettingsViewColor.cpp \
-		DlgSettingsViewColor.h \
 		DlgSettingsColorGradientImp.cpp \
 		DlgSettingsColorGradientImp.h \
 		DlgSettingsDocumentImp.cpp \
@@ -259,143 +290,248 @@ libFreeCADGui_la_SOURCES=\
 		DlgSettingsMacroImp.h \
 		DlgSettingsUnitsImp.cpp \
 		DlgSettingsUnitsImp.h \
+		DlgSettingsViewColor.cpp \
+		DlgSettingsViewColor.h \
 		DlgTipOfTheDayImp.cpp \
 		DlgTipOfTheDayImp.h \
 		DlgToolbarsImp.cpp \
 		DlgToolbarsImp.h \
-		DownloadDialog.cpp \
-		DownloadDialog.h \
-		TaskDlgRelocation.cpp \
-		TaskDlgRelocation.h \
 		DlgUndoRedo.cpp \
 		DlgUndoRedo.h \
+		DlgUnitsCalculatorImp.cpp \
+		DlgUnitsCalculatorImp.h \
 		DockWindow.cpp \
+		DockWindow.h \
 		DockWindowManager.cpp \
+		DockWindowManager.h \
 		Document.cpp \
-		DocumentPyImp.cpp \
+		Document.h \
 		DocumentModel.cpp \
+		DocumentModel.h \
+		DocumentPyImp.cpp \
+		DownloadDialog.cpp \
+		DownloadDialog.h \
+		DownloadItem.cpp \
+		DownloadItem.h \
+		DownloadManager.cpp \
+		DownloadManager.h \
+		EditorView.cpp \
+		EditorView.h \
 		FileDialog.cpp \
+		FileDialog.h \
 		Flag.cpp \
+		Flag.h \
+		GLPainter.cpp \
+		GLPainter.h \
+		GraphvizView.cpp \
+		GraphvizView.h \
 		GuiApplicationNativeEventAware.cpp \
 		GuiApplicationNativeEventAware.h \
 		GuiConsole.cpp \
 		GuiConsole.h \
 		HelpView.cpp \
+		HelpView.h \
+		InputField.cpp \
+		InputField.h \
 		InputVector.cpp \
 		InputVector.h \
+		InventorAll.h \
 		InventorNavigationStyle.cpp \
-		Placement.cpp \
-		Placement.h \
 		Macro.cpp \
+		Macro.h \
 		MainWindow.cpp \
+		MainWindow.h \
 		ManualAlignment.cpp \
 		ManualAlignment.h \
 		MDIView.cpp \
+		MDIView.h \
 		MenuManager.cpp \
+		MenuManager.h \
 		MergeDocuments.cpp \
+		MergeDocuments.h \
 		MouseSelection.cpp \
+		MouseSelection.h \
 		NavigationStyle.cpp \
+		NavigationStyle.h \
 		NetworkRetriever.cpp \
+		NetworkRetriever.h \
 		OnlineDocumentation.cpp \
 		OnlineDocumentation.h \
+		Placement.cpp \
+		Placement.h \
 		PreCompiled.cpp \
 		PreCompiled.h \
 		PrefWidgets.cpp \
+		PrefWidgets.h \
 		ProgressBar.cpp \
+		ProgressBar.h \
 		ProgressDialog.cpp \
+		ProgressDialog.h \
+		ProjectView.cpp \
+		ProjectView.h \
 		PropertyPage.cpp \
+		PropertyPage.h \
 		PropertyView.cpp \
+		PropertyView.h \
 		PythonConsole.cpp \
+		PythonConsole.h \
 		PythonConsolePy.cpp \
 		PythonConsolePy.h \
 		PythonDebugger.cpp \
 		PythonDebugger.h \
 		PythonEditor.cpp \
-		EditorView.cpp \
+		PythonEditor.h \
 		PythonWorkbenchPyImp.cpp \
+		Qt4All.h \
 		ReportView.cpp \
+		ReportView.h \
 		resource.cpp \
 		SceneInspector.cpp \
 		SceneInspector.h \
 		Selection.cpp \
-		SelectionObject.cpp \
 		SelectionFilter.cpp \
+		SelectionFilter.h \
+		Selection.h \
+		SelectionObject.cpp \
+		SelectionObject.h \
 		SelectionObjectPyImp.cpp \
 		SelectionView.cpp \
+		SelectionView.h \
 		SoAxisCrossKit.cpp \
+		SoAxisCrossKit.h \
 		SoFCBackgroundGradient.cpp \
+		SoFCBackgroundGradient.h \
 		SoFCBoundingBox.cpp \
+		SoFCBoundingBox.h \
 		SoFCColorBar.cpp \
+		SoFCColorBar.h \
 		SoFCColorGradient.cpp \
+		SoFCColorGradient.h \
 		SoFCColorLegend.cpp \
+		SoFCColorLegend.h \
 		SoFCDB.cpp \
 		SoFCDB.h \
 		SoFCInteractiveElement.cpp \
-		SoNavigationDragger.cpp \
+		SoFCInteractiveElement.h \
 		SoFCOffscreenRenderer.cpp \
-		SoFCSelection.cpp \
-		SoFCUnifiedSelection.cpp \
+		SoFCOffscreenRenderer.h \
 		SoFCSelectionAction.cpp \
+		SoFCSelectionAction.h \
+		SoFCSelection.cpp \
+		SoFCSelection.h \
+		SoFCUnifiedSelection.cpp \
+		SoFCUnifiedSelection.h \
 		SoFCVectorizeSVGAction.cpp \
+		SoFCVectorizeSVGAction.h \
 		SoFCVectorizeU3DAction.cpp \
+		SoFCVectorizeU3DAction.h \
+		SoNavigationDragger.cpp \
+		SoNavigationDragger.h \
 		SoNavigationDraggerLayout.h \
 		SoTextLabel.cpp \
+		SoTextLabel.h \
 		SpaceballEvent.cpp \
 		SpaceballEvent.h \
 		SpinBox.cpp \
+		SpinBox.h \
 		Splashscreen.cpp \
+		Splashscreen.h \
 		SplitView3DInventor.cpp \
+		SplitView3DInventor.h \
 		SyntaxHighlighter.cpp \
+		SyntaxHighlighter.h \
+		TaskDlgRelocation.cpp \
+		TaskDlgRelocation.h \
 		TaskPanelView.cpp \
+		TaskPanelView.h \
 		TextEdit.cpp \
+		TextEdit.h \
 		TextureMapping.cpp \
 		TextureMapping.h \
 		Thumbnail.cpp \
+		Thumbnail.h \
 		ToolBarManager.cpp \
+		ToolBarManager.h \
 		ToolBox.cpp \
+		ToolBox.h \
 		ToolBoxManager.cpp \
+		ToolBoxManager.h \
 		TouchpadNavigationStyle.cpp \
 		Transform.cpp \
 		Transform.h \
 		Tree.cpp \
+		Tree.h \
 		TreeView.cpp \
+		TreeView.h \
 		Utilities.cpp \
-		View.cpp \
+		Utilities.h \
+		WaitCursor.cpp \
+		WaitCursor.h \
+		WhatsThis.cpp \
+		WhatsThis.h \
+		WidgetFactory.cpp \
+		WidgetFactory.h \
+		Widgets.cpp \
+		Widgets.h \
 		View3DInventor.cpp \
 		View3DInventorExamples.cpp \
 		View3DInventorExamples.h \
+		View3DInventor.h \
 		View3DInventorViewer.cpp \
+		View3DInventorViewer.h \
 		View3DPy.cpp \
-		ViewProvider.cpp \
-		ViewProviderBuilder.cpp \
+		View3DPy.h \
+		View.cpp \
+		View.h \
 		ViewProviderAnnotation.cpp \
+		ViewProviderAnnotation.h \
+		ViewProviderBuilder.cpp \
+		ViewProviderBuilder.h \
+		ViewProvider.cpp \
 		ViewProviderDocumentObject.cpp \
 		ViewProviderDocumentObjectGroup.cpp \
-		ViewProviderExtern.cpp \
-		ViewProviderFeature.cpp \
-		ViewProviderGeometryObject.cpp \
-		ViewProviderInventorObject.cpp \
-		ViewProviderVRMLObject.cpp \
-		ViewProviderPyImp.cpp \
+		ViewProviderDocumentObjectGroup.h \
+		ViewProviderDocumentObject.h \
 		ViewProviderDocumentObjectPyImp.cpp \
+		ViewProviderExtern.cpp \
+		ViewProviderExtern.h \
+		ViewProviderFeature.cpp \
+		ViewProviderFeature.h \
+		ViewProviderGeometryObject.cpp \
+		ViewProviderGeometryObject.h \
+		ViewProvider.h \
+		ViewProviderInventorObject.cpp \
+		ViewProviderInventorObject.h \
+		ViewProviderMaterialObject.cpp \
+		ViewProviderMaterialObject.h \
 		ViewProviderMeasureDistance.cpp \
+		ViewProviderMeasureDistance.h \
+		ViewProviderPlacement.cpp \
+		ViewProviderPlacement.h \
+		ViewProviderPlane.cpp \
+		ViewProviderPlane.h \
+		ViewProviderPyImp.cpp \
 		ViewProviderPythonFeature.cpp \
+		ViewProviderPythonFeature.h \
 		ViewProviderPythonFeaturePyImp.cpp \
-		WaitCursor.cpp \
-		WhatsThis.cpp \
-		WidgetFactory.cpp \
-		Widgets.cpp \
+		ViewProviderVRMLObject.cpp \
+		ViewProviderVRMLObject.h \
 		Window.cpp \
+		Window.h \
 		Workbench.cpp \
 		WorkbenchFactory.cpp \
+		WorkbenchFactory.h \
+		Workbench.h \
 		WorkbenchManager.cpp \
-		WorkbenchPyImp.cpp 
+		WorkbenchManager.h \
+		WorkbenchPyImp.cpp
 
 includedir = @includedir@/Gui
 nodist_include_HEADERS=\
 		$(libFreeCADGui_la_BUILT)
 
 include_HEADERS=\
+		Inventor/SoAutoZoomTranslation.h \
 		Inventor/SoDrawingGrid.h \
 		Qt4All.h \
 		InventorAll.h \
@@ -489,6 +625,10 @@ include_HEADERS=\
 
 EXTRA_DIST = \
 		$(libFreeCADGui_la_UI) \
+		3Dconnexion/GuiApplicationNativeEventAwareWin32.cpp \
+		3Dconnexion/I3dMouseParams.h \
+		3Dconnexion/MouseParameters.cpp \
+		3Dconnexion/MouseParameters.h \
 		SoNavigationDraggerLayout.iv \
 		lex.SelectionFilter.c \
 		SelectionFilter.l \

@@ -23,7 +23,9 @@ nobase_data_DATA = \
 		lib/footprints_models.csv \
 		lib/I22_2_5_16.stp \
 		lib/I22_2_5_16withEPL22_6_16.stp \
+		lib/License.txt \
 		lib/MSOP_10.stp \
+		lib/RLF_12545.igs \
 		lib/RLF_12545.stp \
 		lib/RLF_7030.stp \
 		lib/SMB_DO_214AA.stp \
@@ -31,16 +33,19 @@ nobase_data_DATA = \
 		lib/SOD_323.igs \
 		lib/SOD_323.stp \
 		lib/SOD_523.stp \
+		lib/SOT23.igs \
 		lib/SOT23.stp \
+		lib/SOT_323_3.stp \
+		lib/SOT404.igs \
 		lib/SOT404.stp \
 		lib/SOT428_DPAK.stp \
-		lib/SOT_323_3.stp \
 		lib/SOT_96.stp \
 		lib/TCMT1107_4.stp \
 		lib/TSM_103_01_L_DV_A.stp \
 		lib/TSM_104_01_L_DV_A.stp \
 		lib/TSS0P_8.stp \
 		lib/VC0603_SMD.stp
+
 endif
 
 EXTRA_DIST = \

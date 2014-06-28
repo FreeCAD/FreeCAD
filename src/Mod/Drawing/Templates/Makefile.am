@@ -1,9 +1,12 @@
 # Change data dir from default $(datadir) to $(datadir)/Mod/Drawing/Templates
 datadir = @datadir@/Mod/Drawing/Templates
 data_DATA = \
+		A3_Landscape_ISO7200.svg \
 		A3_Landscape.svg \
+		A4_Landscape_ISO7200.svg \
 		A4_Landscape.svg \
-		A4_Simple.svg
-
+		A4_Portrait_ISO7200.svg \
+		A4_Simple.svg 
+		
 EXTRA_DIST = \
 		$(data_DATA) 

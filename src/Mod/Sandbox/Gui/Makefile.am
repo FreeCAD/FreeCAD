@@ -68,4 +68,5 @@ libdir = $(prefix)/Mod/Sandbox
 CLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
-		CMakeLists.txt
+		CMakeLists.txt \
+		Resources/Sandbox.qrc

@@ -1,7 +1,11 @@
+# set the include path found by configure
+AM_CXXFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes) $(QT4_CORE_CXXFLAGS)
+AM_CFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes)
 
 lib_LTLIBRARIES=libFreeCADBase.la
 
 BUILT_SOURCES=\
+		moc_Debugger.cpp \
 		moc_FutureWatcherProgress.cpp \
 		AxisPy.cpp \
 		BaseClassPy.cpp \
@@ -9,13 +13,16 @@ BUILT_SOURCES=\
 		MatrixPy.cpp \
 		PersistencePy.cpp \
 		PlacementPy.cpp \
+		QuantityPy.cpp \
 		RotationPy.cpp \
-		VectorPy.cpp
+		UnitPy.cpp \
+		VectorPy.cpp \
+		QuantityParser.c \
+		QuantityLexer.c
 
 if HAVE_SWIG_FOUND
 BUILT_SOURCES+=swigpyrun.h
 endif
-
 
 libFreeCADBase_la_BUILT=\
 		AxisPy.h \
@@ -24,7 +31,9 @@ libFreeCADBase_la_BUILT=\
 		MatrixPy.h \
 		PersistencePy.h \
 		PlacementPy.h \
+		QuantityPy.h \
 		RotationPy.h \
+		UnitPy.h \
 		VectorPy.h
 
 libFreeCADBase_la_SOURCES=\
@@ -36,6 +45,8 @@ libFreeCADBase_la_SOURCES=\
 		BoundBoxPyImp.cpp \
 		Builder3D.cpp \
 		Console.cpp \
+		Debugger.cpp \
+		Debugger.h \
 		Exception.cpp \
 		Factory.cpp \
 		FileInfo.cpp \
@@ -63,6 +74,9 @@ libFreeCADBase_la_SOURCES=\
 		PyObjectBase.cpp \
 		PyTools.c \
 		PyTools.h \
+		Quantity.h \
+    	Quantity.cpp \
+    	QuantityPyImp.cpp \
 		Reader.cpp \
 		Rotation.cpp \
 		RotationPyImp.cpp \
@@ -97,6 +111,9 @@ libFreeCADBase_la_SOURCES=\
 		UnitsSchemaImperial1.h \
 		UnitsSchemaMKS.cpp \
 		UnitsSchemaMKS.h \
+		Unit.h \
+    	Unit.cpp \
+    	UnitPyImp.cpp \
 		VectorPyImp.cpp \
 		Vector3D.cpp \
 		Writer.cpp \
@@ -161,6 +178,7 @@ moc_%.cpp: %.h
 %.cpp: %.xml $(top_srcdir)/src/Tools/generateTemplates/templateClassPyExport.py
 	$(PYTHON) $(top_srcdir)/src/Tools/generate.py --outputPath $(@D) $<
 
+
 libFreeCADBase_la_LIBADD   = \
 		@BOOST_REGEX_LIB@ @BOOST_FILESYSTEM_LIB@ \
 		@BOOST_SYSTEM_LIB@ @ZIPIOS_LIB@ \
@@ -168,9 +186,6 @@ libFreeCADBase_la_LIBADD   = \
 		-lxerces-c \
 		-lz
 
-# set the include path found by configure
-AM_CXXFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes) $(QT4_CORE_CXXFLAGS)
-AM_CFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(all_includes)
 
 CLEANFILES = $(BUILT_SOURCES) $(libFreeCADBase_la_BUILT)
 
@@ -188,12 +203,14 @@ EXTRA_DIST = \
 		MatrixPy.xml \
 		PersistencePy.xml \
 		PlacementPy.xml \
+		QuantityPy.xml\
+		QuantityLexer.c\
+		QuantityLexer.l\
+		QuantityParser.c\
+		QuantityParser.y\
 		RotationPy.xml \
+		UnitPy.xml \
 		VectorPy.xml \
-		lex.UnitsApi.c \
-		UnitsApi.tab.c \
-		UnitsApi.l \
-		UnitsApi.y \
 		core-base.dox
 
 distclean-compile:

@@ -6,7 +6,6 @@ BUILT_SOURCES=\
 		DocumentObjectGroupPy.cpp \
 		DocumentObjectPy.cpp \
 		DocumentPy.cpp \
-		FeaturePythonPy.cpp \
 		MaterialPy.cpp \
 		PropertyContainerPy.cpp \
 		InitScript.h \
@@ -17,7 +16,6 @@ libFreeCADApp_la_BUILT=\
 		DocumentObjectGroupPy.h \
 		DocumentObjectPy.h \
 		DocumentPy.h \
-		FeaturePythonPy.h \
 		MaterialPy.h \
 		PropertyContainerPy.h
 
@@ -40,15 +38,21 @@ libFreeCADApp_la_SOURCES=\
 		DocumentPyImp.cpp \
 		DynamicProperty.cpp \
 		FeaturePython.cpp \
-		FeaturePythonPyImp.cpp \
+		FeaturePython.h \
+		FeaturePythonPyImp.h \
+		FeaturePythonPyImp.inl \
 		FeatureTest.cpp \
 		GeoFeature.cpp \
 		InventorObject.cpp \
 		VRMLObject.cpp \
 		Material.cpp \
+		MaterialObject.cpp \
+		MaterialObject.h \
 		MaterialPyImp.cpp \
 		MeasureDistance.cpp \
 		Placement.cpp \
+		Plane.cpp \
+		Plane.h \
 		PreCompiled.cpp \
 		PreCompiled.h \
 		Property.cpp \
@@ -129,7 +133,6 @@ EXTRA_DIST = \
 		DocumentObjectGroupPy.xml \
 		DocumentObjectPy.xml \
 		DocumentPy.xml \
-		FeaturePythonPy.xml \
 		MaterialPy.xml \
 		PropertyContainerPy.xml \
 		core-app.dox \

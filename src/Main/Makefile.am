@@ -63,6 +63,7 @@ AM_CXXFLAGS = -I$(top_builddir)/src -I$(top_srcdir)/src \
 		-I$(sim_ac_coin_includedir) -I$(sim_ac_soqt_includedir)
 
 EXTRA_DIST = \
+		res/branding.xml \
 		res/FreeCAD.exe.manifest \
 		res/FreeCADD.exe.manifest \
 		freecad.rc \

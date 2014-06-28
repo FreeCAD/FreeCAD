@@ -73,7 +73,7 @@ Fem_la_DEPENDENCIES = libFem.la
 
 # set the include path found by configure
 AM_CXXFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src -I$(top_srcdir)/src/3rdParty/salomesmesh/inc \
-		$(all_includes) -I$(OCC_INC)
+		$(all_includes) -I$(OCC_INC) $(QT4_CORE_CXXFLAGS)
 
 
 libdir = $(prefix)/Mod/Fem

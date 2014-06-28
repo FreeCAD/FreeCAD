@@ -4,7 +4,8 @@ lib_LTLIBRARIES=libFemGui.la FemGui.la
 
 BUILT_SOURCES=\
 		ui_Hypothesis.h \
-		moc_Hypothesis.cpp
+		moc_Hypothesis.cpp \
+		ViewProviderFemMeshPy.cpp
 
 libFemGui_la_SOURCES=\
 		AppFemGuiPy.cpp \
@@ -15,8 +16,10 @@ libFemGui_la_SOURCES=\
 		PreCompiled.h \
 		ViewProviderFemMesh.cpp \
 		ViewProviderFemMesh.h \
+		ViewProviderFemMeshPy.h \
 		Workbench.cpp \
 		Workbench.h
+
 
 # the library search path.
 libFemGui_la_LDFLAGS = -L../../../Base -L../../../App -L../../../Gui -L../App \
@@ -72,6 +75,9 @@ ui_%.h: %.ui
 # rules for Qt Resource Compiler:
 qrc_%.cpp: %.qrc
 	$(QT_RCC) -name $(*F) $< -o $(@F)
+
+%.cpp: %.xml $(top_srcdir)/src/Tools/generateTemplates/templateClassPyExport.py
+	$(PYTHON) $(top_srcdir)/src/Tools/generate.py --outputPath $(@D) $<
 
 # set the include path found by configure
 AM_CXXFLAGS = -I$(top_srcdir)/src -I$(top_builddir)/src $(QT_CXXFLAGS) $(all_includes) \

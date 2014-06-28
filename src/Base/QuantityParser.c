@@ -63,7 +63,7 @@
 
 /* Copy the first part of user declarations.  */
 /* Line 371 of yacc.c  */
-#line 6 "QuantityParser.y"
+#line 6 "../../../src/Base/QuantityParser.y"
 
         #define YYSTYPE Quantity
         #define yyparse Quantity_yyparse
@@ -77,7 +77,7 @@
 
 
 /* Line 371 of yacc.c  */
-#line 81 "QuantityParser.c"
+#line 81 "../../../src/Base/QuantityParser.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -131,6 +131,27 @@ extern int yydebug;
      NEG = 276
    };
 #endif
+/* Tokens.  */
+#define UNIT 258
+#define NUM 259
+#define ACOS 260
+#define ASIN 261
+#define ATAN 262
+#define ATAN2 263
+#define COS 264
+#define EXP 265
+#define ABS 266
+#define MOD 267
+#define LOG 268
+#define LOG10 269
+#define POW 270
+#define SIN 271
+#define SINH 272
+#define TAN 273
+#define TANH 274
+#define SQRT 275
+#define NEG 276
+
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -161,7 +182,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 165 "QuantityParser.c"
+#line 186 "../../../src/Base/QuantityParser.c"
 
 #ifdef short
 # undef short
@@ -1450,217 +1471,217 @@ yyreduce:
     {
         case 2:
 /* Line 1787 of yacc.c  */
-#line 33 "QuantityParser.y"
+#line 33 "../../../src/Base/QuantityParser.y"
     { QuantResult = Quantity(DOUBLE_MIN); /* empty input */ }
     break;
 
   case 3:
 /* Line 1787 of yacc.c  */
-#line 34 "QuantityParser.y"
+#line 34 "../../../src/Base/QuantityParser.y"
     { QuantResult = (yyvsp[(1) - (1)])     ;            }
     break;
 
   case 4:
 /* Line 1787 of yacc.c  */
-#line 35 "QuantityParser.y"
+#line 35 "../../../src/Base/QuantityParser.y"
     { QuantResult = (yyvsp[(1) - (1)])     ;            }
     break;
 
   case 5:
 /* Line 1787 of yacc.c  */
-#line 36 "QuantityParser.y"
+#line 36 "../../../src/Base/QuantityParser.y"
     { QuantResult = (yyvsp[(1) - (1)])     ;            }
     break;
 
   case 6:
 /* Line 1787 of yacc.c  */
-#line 37 "QuantityParser.y"
+#line 37 "../../../src/Base/QuantityParser.y"
     { QuantResult = (yyvsp[(1) - (2)]) + (yyvsp[(2) - (2)]);            }
     break;
 
   case 7:
 /* Line 1787 of yacc.c  */
-#line 39 "QuantityParser.y"
+#line 39 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (1)]);         	}
     break;
 
   case 8:
 /* Line 1787 of yacc.c  */
-#line 40 "QuantityParser.y"
+#line 40 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (3)]).getValue() + (yyvsp[(3) - (3)]).getValue();    	}
     break;
 
   case 9:
 /* Line 1787 of yacc.c  */
-#line 41 "QuantityParser.y"
+#line 41 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (3)]).getValue() - (yyvsp[(3) - (3)]).getValue();    	}
     break;
 
   case 10:
 /* Line 1787 of yacc.c  */
-#line 42 "QuantityParser.y"
+#line 42 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (3)]).getValue() * (yyvsp[(3) - (3)]).getValue();    	}
     break;
 
   case 11:
 /* Line 1787 of yacc.c  */
-#line 43 "QuantityParser.y"
+#line 43 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (3)]).getValue() / (yyvsp[(3) - (3)]).getValue();    	}
     break;
 
   case 12:
 /* Line 1787 of yacc.c  */
-#line 44 "QuantityParser.y"
+#line 44 "../../../src/Base/QuantityParser.y"
     { (yyval) = -(yyvsp[(2) - (2)]).getValue();        	}
     break;
 
   case 13:
 /* Line 1787 of yacc.c  */
-#line 45 "QuantityParser.y"
+#line 45 "../../../src/Base/QuantityParser.y"
     { (yyval) = pow ((yyvsp[(1) - (3)]).getValue(), (yyvsp[(3) - (3)]).getValue());}
     break;
 
   case 14:
 /* Line 1787 of yacc.c  */
-#line 46 "QuantityParser.y"
+#line 46 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(2) - (3)]);         	}
     break;
 
   case 15:
 /* Line 1787 of yacc.c  */
-#line 47 "QuantityParser.y"
+#line 47 "../../../src/Base/QuantityParser.y"
     { (yyval) = acos((yyvsp[(3) - (4)]).getValue());   	}
     break;
 
   case 16:
 /* Line 1787 of yacc.c  */
-#line 48 "QuantityParser.y"
+#line 48 "../../../src/Base/QuantityParser.y"
     { (yyval) = asin((yyvsp[(3) - (4)]).getValue());   	}
     break;
 
   case 17:
 /* Line 1787 of yacc.c  */
-#line 49 "QuantityParser.y"
+#line 49 "../../../src/Base/QuantityParser.y"
     { (yyval) = atan((yyvsp[(3) - (4)]).getValue());   	}
     break;
 
   case 18:
 /* Line 1787 of yacc.c  */
-#line 50 "QuantityParser.y"
+#line 50 "../../../src/Base/QuantityParser.y"
     { (yyval) = atan2((yyvsp[(3) - (6)]).getValue(),(yyvsp[(5) - (6)]).getValue());}
     break;
 
   case 19:
 /* Line 1787 of yacc.c  */
-#line 51 "QuantityParser.y"
+#line 51 "../../../src/Base/QuantityParser.y"
     { (yyval) = fabs((yyvsp[(3) - (4)]).getValue());   	}
     break;
 
   case 20:
 /* Line 1787 of yacc.c  */
-#line 52 "QuantityParser.y"
+#line 52 "../../../src/Base/QuantityParser.y"
     { (yyval) = exp((yyvsp[(3) - (4)]).getValue());    	}
     break;
 
   case 21:
 /* Line 1787 of yacc.c  */
-#line 53 "QuantityParser.y"
+#line 53 "../../../src/Base/QuantityParser.y"
     { (yyval) = fmod((yyvsp[(3) - (6)]).getValue(),(yyvsp[(5) - (6)]).getValue()); }
     break;
 
   case 22:
 /* Line 1787 of yacc.c  */
-#line 54 "QuantityParser.y"
+#line 54 "../../../src/Base/QuantityParser.y"
     { (yyval) = log((yyvsp[(3) - (4)]).getValue());     }
     break;
 
   case 23:
 /* Line 1787 of yacc.c  */
-#line 55 "QuantityParser.y"
+#line 55 "../../../src/Base/QuantityParser.y"
     { (yyval) = log10((yyvsp[(3) - (4)]).getValue());   }
     break;
 
   case 24:
 /* Line 1787 of yacc.c  */
-#line 56 "QuantityParser.y"
+#line 56 "../../../src/Base/QuantityParser.y"
     { (yyval) = pow((yyvsp[(3) - (6)]).getValue(),(yyvsp[(5) - (6)]).getValue());  }
     break;
 
   case 25:
 /* Line 1787 of yacc.c  */
-#line 57 "QuantityParser.y"
+#line 57 "../../../src/Base/QuantityParser.y"
     { (yyval) = sin((yyvsp[(3) - (4)]).getValue());     }
     break;
 
   case 26:
 /* Line 1787 of yacc.c  */
-#line 58 "QuantityParser.y"
+#line 58 "../../../src/Base/QuantityParser.y"
     { (yyval) = sinh((yyvsp[(3) - (4)]).getValue());    }
     break;
 
   case 27:
 /* Line 1787 of yacc.c  */
-#line 59 "QuantityParser.y"
+#line 59 "../../../src/Base/QuantityParser.y"
     { (yyval) = tan((yyvsp[(3) - (4)]).getValue());     }
     break;
 
   case 28:
 /* Line 1787 of yacc.c  */
-#line 60 "QuantityParser.y"
+#line 60 "../../../src/Base/QuantityParser.y"
     { (yyval) = tanh((yyvsp[(3) - (4)]).getValue());    }
     break;
 
   case 29:
 /* Line 1787 of yacc.c  */
-#line 61 "QuantityParser.y"
+#line 61 "../../../src/Base/QuantityParser.y"
     { (yyval) = tanh((yyvsp[(3) - (4)]).getValue());    }
     break;
 
   case 30:
 /* Line 1787 of yacc.c  */
-#line 62 "QuantityParser.y"
+#line 62 "../../../src/Base/QuantityParser.y"
     { (yyval) = cos((yyvsp[(3) - (4)]).getValue());    }
     break;
 
   case 31:
 /* Line 1787 of yacc.c  */
-#line 65 "QuantityParser.y"
+#line 65 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (1)]);         	                }
     break;
 
   case 32:
 /* Line 1787 of yacc.c  */
-#line 66 "QuantityParser.y"
+#line 66 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (3)]) * (yyvsp[(3) - (3)]);    	                }
     break;
 
   case 33:
 /* Line 1787 of yacc.c  */
-#line 67 "QuantityParser.y"
+#line 67 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (3)]) / (yyvsp[(3) - (3)]);    	                }
     break;
 
   case 34:
 /* Line 1787 of yacc.c  */
-#line 68 "QuantityParser.y"
+#line 68 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (3)]).pow ((yyvsp[(3) - (3)]));                 }
     break;
 
   case 35:
 /* Line 1787 of yacc.c  */
-#line 69 "QuantityParser.y"
+#line 69 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(2) - (3)]);                          }
     break;
 
   case 36:
 /* Line 1787 of yacc.c  */
-#line 71 "QuantityParser.y"
+#line 71 "../../../src/Base/QuantityParser.y"
     { (yyval) = (yyvsp[(1) - (2)])*(yyvsp[(2) - (2)]);    	                }
     break;
 
 
 /* Line 1787 of yacc.c  */
-#line 1664 "QuantityParser.c"
+#line 1685 "../../../src/Base/QuantityParser.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1892,5 +1913,5 @@ yyreturn:
 
 
 /* Line 2050 of yacc.c  */
-#line 75 "QuantityParser.y"
+#line 75 "../../../src/Base/QuantityParser.y"
 

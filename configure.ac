@@ -14,6 +14,7 @@ AM_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_LANG_CPLUSPLUS
 
+
 dnl Default install directory is your home directory
 dnl **************************************************************************
 AC_PREFIX_DEFAULT($HOME/FreeCAD)
@@ -73,8 +74,8 @@ dnl **************************************************************************
 AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
 AC_PROG_LN_S
-#AC_PROG_YACC
-#AM_PROG_LEX
+AC_PROG_YACC
+AC_PROG_LEX
 
 
 AC_PATH_PROG(SWIG, swig, false)
@@ -1000,6 +1001,7 @@ src/Mod/Part/Makefile
 src/Mod/Part/App/Makefile
 src/Mod/Part/Gui/Makefile
 src/Mod/Import/Makefile
+src/Mod/Import/App/Makefile
 src/Mod/Import/Gui/Makefile
 src/Mod/Raytracing/Makefile
 src/Mod/Raytracing/App/Makefile
