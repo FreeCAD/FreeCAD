@@ -136,6 +136,8 @@ def callopenscad(inputfilename,outputfilename=None,outputext='csg',keepname=Fals
                     (tempfilenamegen.next(),outputext))
         check_output2([osfilename,'-o',outputfilename, inputfilename])
         return outputfilename
+    else:
+        raise OpenSCADError('OpenSCAD executeable unavailable')
 
 def callopenscadstring(scadstr,outputext='csg'):
     '''create a tempfile and call the open scad binary
