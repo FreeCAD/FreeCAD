@@ -54,6 +54,11 @@ def searchforopenscadexe():
         for testpath in testpaths:
             if os.path.isfile(testpath):
                 return testpath
+    elif sys.platform == 'darwin':
+        #test the default path
+        testpath="/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD"
+        if os.path.isfile(testpath):
+            return testpath
     else: #unix
         p1=subprocess.Popen(['which','openscad'],stdout=subprocess.PIPE)
         if p1.wait() == 0:
