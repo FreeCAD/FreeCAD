@@ -10,7 +10,8 @@ and programming tools (like compiler), the following libraries:
 
 o Python (http://www.python.org), >= 2.5.x
 o boost (http://www.boost.org), >= 1.33.1
-o Qt (http://www.qtsoftware.com), >= 4.1.x
+o Qt (http://qt-project.org/), >= 4.1.x
+o PySide (http://qt-project.org/wiki/category:LanguageBindings::PySide::Downloads)
 o Coin3D (http://www.coin3d.org), >= 2.4.x
 o SoQt (http://www.coin3d.org), >= 1.2.x
 o Xerces-C++ (http://xml.apache.org/dist/xerces-c/), >= 2.6
@@ -18,8 +19,8 @@ o zlib (http://www.zlib.net/)
 
 And for the some FreeCAD modules the additional libraries
 o OpenCascade (http://www.opencascade.org), >= 5.2
-o Eigen2 (http://eigen.tuxfamily.org/index.php?title=Main_Page), >= 2.0.5
-o ODE (http://www.ode.org), >= 0.10.x
+o Eigen3 (http://eigen.tuxfamily.org/index.php?title=Main_Page), >= 3.0.1
+o FreeType
 are required.
 
 Note: zlib might be already on your system, as this is a library that is used 
@@ -44,23 +45,7 @@ Note: The package for SoQt (at least for older Debian based systems) is usually 
       than the installed SoQt to avoid to corrupt your package database and/or to keep other 
       applications working. When configuring FreeCAD you have to use the '--with-soqt=DIR' 
       switch specifying the path of the newly installed SoQt.
-	  For newer Debian releases this already solved by a new package that links against Qt4.
-
-Note: For OpenCascade there does not exist an official .deb package for older Debian based systems
-      and many other distributions, so you have to download the latest version from www.opencascade.org.
-      Install the package normally, be aware that the installer is a java program that requires
-      the official java runtime edition from Sun, not the open-source java (gij) that is bundled
-      with Debian or Ubuntu. Install it if needed:
-
-      sudo apt-get remove gij
-      sudo apt-get install sun-java5-bin
-
-      Be careful, if you use gij java with other things like a browser plugin, they won't work
-      anymore. Now start the installer with
-      java -jar setup.jar
-	  
-	  With Debian Lenny this issue is solved. There is an OpenCascade package currently in the
-	  non-free section.
+      For newer Debian releases this already solved by a new package that links against Qt4.
 
 
 During the compilation some Python scripts get executed. So the Python interpreter has
@@ -111,4 +96,4 @@ So, just have fun!
 
 
 Werner Mayer <wmayer@users.sourceforge.net>
-May 2010
+June 2014
