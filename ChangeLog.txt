@@ -1,8 +1,201 @@
 Changelog you find now here:
-https://sourceforge.net/apps/mantisbt/free-cad/changelog_page.php
+http://www.freecadweb.org/tracker/changelog_page.php
 
-Version: 0.12
-*
+Version: 0.14
+  * Python path messed up after installation
+  * Installing 0.14 breaks previous python installation
+  * Python function to retrive direct children of a shape using TopoDS_Iterator
+  * Update translations for 0.14
+  * FreeCAD crashes when changing placement of sketch.
+  * Sketcher 180-deg-constraints should not be allowed for lines without intersection point.
+  * Crash when opening Pad
+  * V0.14 - Add icons to its respectives operations in treeview
+  * FreeCAD crash on sweep/loft
+  * Option for new check in part check geometry
+  * Move from PyQt to PySide
+  * use transformShape for uniform scaling in Draft._Clone Feature
+  * Make FreeCAD buildable using QT Creator using windows the VC++ 9 compiler
+  * Part Revolve - add parameter "solid"
+  * emn import failure
+  * Allow Part Loft to create a closed solid i.e. have the Loft start and finish with the same profile
+  * crash when using "move" tool in part workbench
+  * STEP export fails under Windows
+  * OpenSCAD importer can't import more than one layer with the same name
+  * Standard view /Align view to selected face
+  * scale() operation makes face invalid
+  * Installation should set Python path
+  * No scroll bar on preferences dialog window.
+  * Ability to specify more decimal places of precision for fillets, etc.
+  * Starting FreeCAD Produces Blank Window with Granite Texture
+  * model refine corrupts solid with spherical edges.
+  * dump Shapes to python string
+  * Crash on fuse() of two simple extrusions
+  * Boolean operation fails for a mesh
+  * parse keyword args in Part::TopoShapePy::makeOffsetShape
+  * add shape contents in part check geometry task view
+  * entering Transform mode degrades the Placemens rotation to single precision
+  * DLL load failed
+  * Expose BRepExtrema_DistShapeShape to python
+  * Allow user to input simple mathematical expressions when setting values to constraints.
+  * closing Part::TaskCheckGeometry after closing document causes SIGSEGV
+  * exceptions thrown with python object.
+  * PartGui::TaskCheckGeometryResults fails to open
+  * SIGSEGV in Part::GeometryCurvePy::toBSpline
+  * Increase decimal precision
+  * Spin box locked to 1 mm
+  * Add a qt browser to the Parts library
+  * upload models for library
+  * Commit [bba876] causing new errors.
+  * Hide all objects in a group
+  * Part::TopoShape::getMemSize fails for Bezier Curves
+  * icons not showing in Part Loft and sweep dialogues
+  * Drawing SVG output makes ever knot symetrical.
+  * Part Common fails with two surface objects
+  * Teigha File Converter not found, DWG support will be disabled.
+  * recognize remote branches for Version.h in detached head state
+  * Sweeping along a helix causes exception
+  * Helix height cannot exceed 55.87mm
+  * RefineModel() does not mark edges/faces as modified
+  * PartDesign/modelrefine.cpp in FaceUniter::process() : United faces should all be marked as modified
+  * Zero width rectangle (i.e. 2 vertical points) odd behaviour + crash
+  * Planer image changes to number graphic when a part design constraint is made after the planar image
+  * Draft Dimensions due not observe Dimension Precision on FreeCAD Windows
+  * invalid DXF export
+  * Port wiki, phpbb and mantis to self-hosted
+  * Crash propably in MeshPart
+  * Part.BSplineCurve: allow to set degree and mutliplicites when calling constructor.
+  * FeaturePython objects should be able to define how POVray output is generated
+  * Loosing Snap when Object is getting more complex.
+  * PropertyLinkSubList causes crash
+  * BRepPrimAPI_MakeRevolution vs BRepPrimAPI_MakeRevol
+  * plane offset precision is limited to 0.1
+  * Add spiral tool in Part Module
+  * Missing / blank snap tool icons; perpendicular, ortho
+  * Add a Feature to delete a whole subtree of the FeatureTree
+  * OCC precision corruption from App::PropertyFloat
+  * Rotation constructor from vector/to vector not exposed in python
+  * FreeCAD crashed while creating a loft of two ellipses
+  * Robot file RobotExample, double-click PartToWork, crash
+  * No build possible with current CMake version 2.8.12
+  * Constraint datum dimension label shown as gray box vice number in transparent background.
+  * Wrong operator in DraftGeomUtils.getRotation
+  * Tracing over a background image in Sketcher: image is overwritten by first dimensional constraint text
+  * Raytracing export produces bad light definition
+  * Spreadsheet module
+  * Parametr "tolerance" in "Create Mesh from geometry" work strange.
+  * Order of operations for Matrix is nonintuitive, needs documentation
+  * \Raytracing\Templates\ install folder missing - file ProjectStd.pov missing - Povray error StdFinish undefined
+  * Tiny Tweak: v0.14 Shows Some Items as 0.13
+  * Cross section of Torus in Part Workbench fails or give wrong results
+  * Line tool (preview as you move) disappears after new file created
+  * Add a "render" button to the raytracing module
+  * Annoying messages at startup
+  * Touchpad navigation issue
+  * Part --> Geometric Primitives --> Regular Prism
+  * Online help line needs modifying
+  * FreeCAD crash with segfault Linux
+  * 'filemname' is not defined, typo? Can't import DWG
+  * crash at padding a sketch with 42 holes
+  * BuildInstaller.bat issue
+  * Problem exporting (Meshes) to STL & STEP.
+  * Wrong outline in pocket
+  * Vertex in Part Loft and Sweep profile list - error handling
+  * StdMeshers.so: cannot open shared object file: No such file or directory
+  * Meshing algorithm creates wrong shape
+  * Create Mesh from geometry / Export mesh.
+  * Shape.removeSplitter() loses Shape.Placements on some Shapes
+  * Incomplete slices when using Part.slice on a torus
+  * Add a function that can apply a Placement to a Shape like sh.transformGeometry(sh.Placement.toMatrix())
+  * Unable to Loft Sketches with Radiused Corners
+  * Create a test suite for Arch and Draft
+  * Change the Word "Radius" for Chamfering
+  * FreeCAD Compilation fails on Linux 32 bit
+  * Expose Standard_Boolean TopoDS_Shape::IsPartner(const TopoDS_Shape& other) const; to python
+  * Re-assign hot keys 0 thru 6 to line up with the icon placement.
+  * Draft Snap Toolbar Icons Crossed up
+  * Preserve names and colors on console mode export to STEP
+  * Placement Position Entry can be improved
+  * Patch to allow use of external PyCXX
+  * [Sketcher] Dragging + ESC
+  * Part WB extrude from ruled surface makes either two faces or a solid
+  * Split shape color setting from current preference page into a separate page
+  * Touchpad Navigation issue
+  * Can't change STEP/IGES export units through Python interface
+  * Part names are incorrect on import from STEP file
+  * Make Clipping-Plane-placement editable + support multiple planes
+  * Clipping plane should have more controls
+  * Edge chain selection
+  * Toolbar Customizer Move Buttons enabled but inactive
+  * Crash when quitting after using Windows > Tile
+  * Merged Project object being imported changes size when moved
+  * Cut mesh with plane
+  * Feature request - box selection for faces in set color mode
+  * Original color STEP model lost in import
+  * add directory to findCoin cmake
+  * wireframe mode should include vertices in display
+  * Can not export. No way to select file type.
+  * selftest errors
+  * Unable to export file to any file format
+  * File extensions missing from supported file descriptions in open/save dialgos
+  * [Sketcher] Small inconsistency with update
+  * Hide turntable dialog when in fullscreen mode
+  * Keep drop down menus open when changing to another part
+  * Skin remains when cutting rectangle
+  * Suppress CMake warning if OCE wasn't found but OCC was found
+  * add preferences option for bounding box colour
+  * Export to BREP does not work in Ubuntu
+  * Freecad sometimes 'forgets' the ability to handle stp files
+  * Snap Center Point at Center of Cylinder, Circle
+  * Boolean Cut Fails with Extruded Shapestring
+  * DeprecationWarning: Use 'TypeId' instead
+  * Abort on startup
+  * The output of __repr__() of Vector and Rotatio would create Objects with different Values do to inapropriate rounding
+  * Improvements for Brep Inventor nodes
+  * Crash on filleting
+  * Download manager
+  * Copy and Paste of a boolean operation moves children to new object
+  * Windows installer long standing issues [easy fix]
+  * IndentationError in Python Console
+  * Tooltips should include shortcuts keys in parentheses
+  * reading from the python console for using pdb
+  * Segfault when selecting a duplicate pad
+  * CMake stops with error "Circular ... <- ... dependency dropped." if source == build directory
+  * Inventor Navigation continues with released Mouse Button
+  * ver 0.13 rev 1828, drafting, measurement, angles
+  * Feature Request:: DXF Export in XY plane
+  * Add webGL exporter
+  * an improved Helix icon as suggested by raulshc
+  * DXF export of "large" Polyline Curves
+  * DWire Command Number Entry Improvement
+  * Bug in Draft Edit -> Add points
+  * Crash when executing script 3 times
+  * TimeInfo: diffTimeF(): added default arg
+  * TimeInfo: diffTimeF(): non-zero result for ident. time stamps
+  * Task Deadlock: Part Workbench disabled when closing Combo View with open Task
+  * Placement Panel not removed after Entity Deletion
+  * Wrong header define PART_GEOMETRY_H in ProgressIndicator.h
+  * Allow Draft tool to create Part Primitives
+  * Enclose isinstance(Edge.Curve,something) in try-except
+  * Crash occurs in version 0.13 when trying to use alignment tool
+  * addObject with four arguments does not return the DocumentObject
+  * Tree icons for Part Ruled surface, Part Export and some other fixes
+  * Draft tools referenced before assignment
+  * arc orientation sometimes becomes wrong when exporting to DXF
+  * Cannot add object to DocumentObjectGroupPython
+  * display tree icons for PartDesign workbench
+  * remove duplicate include files in PartFeature.h
+  * Sketcher Polyline tool "tool tip" "M key"
+  * use a face as a profile for Part Loft and sweep
+  * Tree icons for Part Vertex, Line, Edge, Circle, Ellipse and Helix
+  * New Start Page tab every time the Start WB is selected
+  * Duplicate code inside importDAE.py ?
+  * EngineBlock: unable to select bspline
+  * Crash on document recompute
+  * Objects imported by Drag-n-Drop end up in the wrong document
+  * Draft Working Plane Button ToolTip
+  * Draft Line - Start and End properties don't respect placement
+  * Stable PPA
+  * latest git version doesn't build on mint linux 2013-02-10
 
 Version: 
   * Sketcher module added with constraint solver using SketchFlat
