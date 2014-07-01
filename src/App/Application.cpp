@@ -922,7 +922,7 @@ void segmentation_fault_handler(int sig)
     switch (sig) {
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
-            throw Base::Exception("Illegal storage access! Please save you work under a new file name and restart the application!");
+            throw Base::Exception("Illegal storage access! Please save your work under a new file name and restart the application!");
             break;
         case SIGABRT:
             std::cerr << "Abnormal program termination..." << std::endl;
@@ -945,7 +945,7 @@ void unexpection_error_handler()
 {
     std::cerr << "Unexpected error occurred..." << std::endl;
     // try to throw to give the user evantually a change to save 
-    throw Base::Exception("Unexpected error occurred! Please save you work under a new file name and restart the application!");
+    throw Base::Exception("Unexpected error occurred! Please save your work under a new file name and restart the application!");
 
     terminate();
 }
@@ -1207,6 +1207,7 @@ void Application::initApplication(void)
     UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
 
     // starting the init script
+    Console().Log("Run App init script\n");
     Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
 }
 
