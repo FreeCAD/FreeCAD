@@ -1701,6 +1701,7 @@ void Application::runApplication(void)
 
     // running the GUI init script
     try {
+        Base::Console().Log("Run Gui init script\n");
         Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiInit"));
     }
     catch (const Base::Exception& e) {
