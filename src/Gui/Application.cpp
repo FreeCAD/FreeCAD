@@ -350,6 +350,12 @@ Application::Application(bool GUIenabled)
             throw Base::Exception("Invalid system settings");
         }
 #endif
+        // http://forum.freecadweb.org/viewtopic.php?f=10&t=6910
+        // A workaround is to disable the group separator for double-to-string conversion, i.e.
+        // setting the flag 'OmitGroupSeparator'.
+        QLocale loc = QLocale::system();
+        loc.setNumberOptions(QLocale::OmitGroupSeparator);
+        QLocale::setDefault(loc);
 
         // setting up Python binding
         Base::PyGILStateLocker lock;
