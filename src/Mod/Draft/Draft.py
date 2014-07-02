@@ -3472,6 +3472,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         if hasattr(self,"arc"):
             from pivy import coin
             import Part, DraftGeomUtils
+            import DraftGui
             text = None
             ivob = None
             arcsegs = 24
