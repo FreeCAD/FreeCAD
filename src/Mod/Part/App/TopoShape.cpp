@@ -75,7 +75,7 @@
 # include <BRepTools.hxx>
 # include <BRepTools_ReShape.hxx>
 # include <BRepTools_ShapeSet.hxx>
-#include <BRepFill_CompatibleWires.hxx>
+# include <BRepFill_CompatibleWires.hxx>
 # include <GCE2d_MakeSegment.hxx>
 # include <Geom2d_Line.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
@@ -91,6 +91,7 @@
 # include <Handle_Law_BSpline.hxx>
 # include <Handle_TopTools_HSequenceOfShape.hxx>
 # include <Law_BSpFunc.hxx>
+# include <Law_Constant.hxx>
 # include <Law_Linear.hxx>
 # include <Law_S.hxx>
 # include <TopTools_HSequenceOfShape.hxx>
@@ -1463,8 +1464,8 @@ static Handle(Law_Function) CreateBsFunction (const Standard_Real theFirst, cons
 {
     //Handle_Law_BSpline aBs;
     //Handle_Law_BSpFunc aFunc = new Law_BSpFunc (aBs, theFirst, theLast);
-    Handle_Law_Linear aFunc = new Law_Linear();
-    aFunc->Set(theFirst, theRadius, theLast, theRadius);
+    Handle_Law_Constant aFunc = new Law_Constant();
+    aFunc->Set(1, theFirst, theLast);
     return aFunc;
 }
 
@@ -1472,6 +1473,7 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
 {
     // http://opencascade.blogspot.com/2009/11/surface-modeling-part3.html
     Standard_Real theTol = tol;
+    Standard_Real theRadius = radius;
     //Standard_Boolean theIsPolynomial = Standard_True;
     Standard_Boolean myIsElem = Standard_True;
     GeomAbs_Shape theContinuity = GeomAbs_Shape(cont);
@@ -1500,11 +1502,11 @@ TopoDS_Shape TopoShape::makeTube(double radius, double tol, int cont, int maxdeg
     }
 
     //circular profile
-    Handle(Geom_Circle) aCirc = new Geom_Circle (gp::XOY(), radius);
+    Handle(Geom_Circle) aCirc = new Geom_Circle (gp::XOY(), theRadius);
     aCirc->Rotate (gp::OZ(), M_PI/2.);
 
     //perpendicular section
-    Handle(Law_Function) myEvol = ::CreateBsFunction (myPath->FirstParameter(), myPath->LastParameter(), radius);
+    Handle(Law_Function) myEvol = ::CreateBsFunction (myPath->FirstParameter(), myPath->LastParameter(), theRadius);
     Handle(GeomFill_SectionLaw) aSec = new GeomFill_EvolvedSection(aCirc, myEvol);
     Handle(GeomFill_LocationLaw) aLoc = new GeomFill_CurveAndTrihedron(new GeomFill_CorrectedFrenet);
     aLoc->SetCurve (myPath);
