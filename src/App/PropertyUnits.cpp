@@ -83,7 +83,8 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
         Str = PyString_AsString(unicode);
         quant = Quantity::parse(QString::fromUtf8(Str.c_str()));
         Py_DECREF(unicode);
-    }else if (PyFloat_Check(value))
+    }
+    else if (PyFloat_Check(value))
         quant = Quantity(PyFloat_AsDouble(value),_Unit);
     else if (PyInt_Check(value))
         quant = Quantity((double)PyInt_AsLong(value),_Unit);
@@ -91,8 +92,11 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject *value)
         Base::QuantityPy  *pcObject = static_cast<Base::QuantityPy*>(value);
         quant = *(pcObject->getQuantityPtr());
     }
-    else
-        throw Base::Exception("Wrong type!");
+    else {
+        std::string error = std::string("wrong type as quantity: ");
+        error += value->ob_type->tp_name;
+        throw Base::TypeError(error);
+    }
 
     return quant;
 }
