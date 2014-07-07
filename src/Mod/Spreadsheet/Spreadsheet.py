@@ -617,6 +617,11 @@ class SpreadsheetController:
                             if hasattr(value,arg):
                                 value = getattr(value,arg)
                         try:
+                            if isinstance(value,float) or isinstance(value,int):
+                                pass
+                            else:
+                                value = str(value)
+                                value = ''.join([ c for c in value if c not in ('<','>',':')])
                             setattr(spreadsheet.Proxy,cell,value)
                             if DEBUG: print "setting cell ",cell," to value ",value
                         except:
