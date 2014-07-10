@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 Jï¿½rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -2221,6 +2221,45 @@ StdCmdMeasureDistance::StdCmdMeasureDistance()
     eType         = Alter3DView;
 }
 
+// Yay for cheezy drawings!
+/* XPM */
+static const char * cursor_ruler[] = {
+"32 32 3 1",
+" 	c None",
+".	c #FFFFFF",
+"+	c #FF0000",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+".....   .....                   ",
+"                                ",
+"      .                         ",
+"      .                         ",
+"      .        ++               ",
+"      .       +  +              ",
+"      .      +   ++             ",
+"            +   +  +            ",
+"           +   +    +           ",
+"          +   +     ++          ",
+"          +        +  +         ",
+"           +           +        ",
+"            +         + +       ",
+"             +       +   +      ",
+"              +           +     ",
+"               +         + +    ",
+"                +       +   +   ",
+"                 +           +  ",
+"                  +         + + ",
+"                   +       +  ++",
+"                    +     +   + ",
+"                     +       +  ",
+"                      +     +   ",
+"                       +   +    ",
+"                        + +     ",
+"                         +      "};
 void StdCmdMeasureDistance::activated(int iMsg)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -2228,6 +2267,10 @@ void StdCmdMeasureDistance::activated(int iMsg)
     if (view) {
         Gui::View3DInventorViewer* viewer = view->getViewer();
         viewer->setEditing(true);
+        viewer->setEditingCursor(QCursor(QPixmap(cursor_ruler), 7, 7));
+	
+	// Derives from QObject and we have a parent object, so we don't
+	// require a delete.
         PointMarker* marker = new PointMarker(viewer);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
             ViewProviderMeasureDistance::measureDistanceCallback, marker);
