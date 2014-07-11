@@ -107,196 +107,10 @@ int numDigits(int number)
     return digits;
 }
 
-/* Define a vector.  */
-typedef struct _Vector
-	{
-		double  x;
-		double  y;
-		double  z;
-	} Vector, *VectorPtr;
-
 /* Usage by CMeshNastran, CMeshCadmouldFE. Added by Sergey Sukhov (26.04.2002)*/
 struct NODE {float x, y, z;};
 struct TRIA {int iV[3];};
 struct QUAD {int iV[4];};
-
-/* Takes the modulus of v */
-#define VMod(v)		(sqrt((v).x*(v).x + (v).y*(v).y + (v).z*(v).z))
-
-/* Returns the dot product of v1 & v2 */
-#define VDot(v1, v2)	((v1).x*(v2).x + (v1).y*(v2).y + (v1).z*(v2).z)
-
-/* Fills the fields of a vector.	*/
-#define VNew(a, b, c, r)	((r).x = (a), (r).y = (b), (r).z = (c))
-
-#define VAdd(v1, v2, r)		((r).x = (v1).x + (v2).x , \
-							 (r).y = (v1).y + (v2).y , \
-							 (r).z = (v1).z + (v2).z )
-
-#define VSub(v1, v2, r)		((r).x = (v1).x - (v2).x , \
-							 (r).y = (v1).y - (v2).y , \
-							 (r).z = (v1).z - (v2).z )
-
-#define VCross(v1, v2, r)	((r).x = (v1).y * (v2).z - (v1).z * (v2).y , \
-				 			 (r).y = (v1).z * (v2).x - (v1).x * (v2).z , \
-				 			 (r).z = (v1).x * (v2).y - (v1).y * (v2).x )
-
-#define VScalarMul(v, d, r)	((r).x = (v).x * (d) , \
-				 			 (r).y = (v).y * (d) , \
-				 			 (r).z = (v).z * (d) )
-
-#define VUnit(v, t, r)		((t) = 1 / VMod(v) , \
-				 			 VScalarMul(v, t, r) )
-
-typedef struct _Quaternion {
-	Vector	vect_part;
-	double	real_part;
-	} Quaternion;
-
-Quaternion
-Build_Rotate_Quaternion(Vector axis, double cos_angle)
-{
-	Quaternion	quat;
-	double	sin_half_angle;
-	double	cos_half_angle;
-	double	angle;
-
-	/* The quaternion requires half angles. */
-	if ( cos_angle > 1.0 ) cos_angle = 1.0;
-	if ( cos_angle < -1.0 ) cos_angle = -1.0;
-	angle = acos(cos_angle);
-	sin_half_angle = sin(angle / 2);
-	cos_half_angle = cos(angle / 2);
-
-	VScalarMul(axis, sin_half_angle, quat.vect_part);
-	quat.real_part = cos_half_angle;
-
-	return quat;
-}
-
-static Quaternion
-QQMul(Quaternion *q1, Quaternion *q2)
-{
-	Quaternion	res;
-	Vector		temp_v;
-
-	res.real_part = q1->real_part * q2->real_part -
-					VDot(q1->vect_part, q2->vect_part);
-	VCross(q1->vect_part, q2->vect_part, res.vect_part);
-	VScalarMul(q1->vect_part, q2->real_part, temp_v);
-	VAdd(temp_v, res.vect_part, res.vect_part);
-	VScalarMul(q2->vect_part, q1->real_part, temp_v);
-	VAdd(temp_v, res.vect_part, res.vect_part);
-
-	return res;
-}
-
-static void
-Quaternion_To_Axis_Angle(Quaternion *q, Vector *axis, double *angle)
-{
-	double	half_angle;
-	double	sin_half_angle;
-
-	half_angle = acos(q->real_part);
-	sin_half_angle = sin(half_angle);
-	*angle = half_angle * 2;
-	if ( sin_half_angle < 1e-8 && sin_half_angle > -1e-8 )
-		VNew(1, 0, 0, *axis);
-	else
-	{
-		sin_half_angle = 1 / sin_half_angle;
-		VScalarMul(q->vect_part, sin_half_angle, *axis);
-	}
-}
-
-static void
-Convert_Camera_Model(Vector *pos, Vector *at, Vector *up, Vector *res_axis,
-                     double *res_angle)
-{
-	Vector		n, v;
-
-	Quaternion	rot_quat;
-	Vector		norm_axis;
-	Quaternion	norm_quat;
-	Quaternion	inv_norm_quat;
-	Quaternion	y_quat, new_y_quat, rot_y_quat;
-	Vector		new_y;
-
-	double		temp_d;
-	Vector		temp_v;
-
-	/* n = (norm)(pos - at) */
-	VSub(*at, *pos, n);
-	VUnit(n, temp_d, n);
-
-	/* v = (norm)(view_up - (view_up.n)n) */
-	VUnit(*up, temp_d, *up);
-	temp_d = VDot(*up, n);
-	VScalarMul(n, temp_d, temp_v);
-	VSub(*up, temp_v, v);
-	VUnit(v, temp_d, v);
-
-	VNew(n.y, -n.x, 0, norm_axis);
-	if ( VDot(norm_axis, norm_axis) < 1e-8 )
-	{
-		/* Already aligned, or maybe inverted. */
-		if ( n.z > 0.0 )
-		{
-			norm_quat.real_part = 0.0;
-			VNew(0, 1, 0, norm_quat.vect_part);
-		}
-		else
-		{
-			norm_quat.real_part = 1.0;
-			VNew(0, 0, 0, norm_quat.vect_part);
-		}
-	}
-	else
-	{
-		VUnit(norm_axis, temp_d, norm_axis);
-		norm_quat = Build_Rotate_Quaternion(norm_axis, -n.z);
-	}
-
-	/* norm_quat now holds the rotation needed to line up the view directions.
-	** We need to find the rotation to align the up vectors also.
-	*/
-
-	/* Need to rotate the world y vector to see where it ends up. */
-	/* Find the inverse rotation. */
-	inv_norm_quat.real_part = norm_quat.real_part;
-	VScalarMul(norm_quat.vect_part, -1, inv_norm_quat.vect_part);
-
-	/* Rotate the y. */
-	y_quat.real_part = 0.0;
-	VNew(0, 1, 0, y_quat.vect_part);
-	new_y_quat = QQMul(&norm_quat, &y_quat);
-	new_y_quat = QQMul(&new_y_quat, &inv_norm_quat);
-	new_y = new_y_quat.vect_part;
-
-	/* Now need to find out how much to rotate about n to line up y. */
-	VCross(new_y, v, temp_v);
-	if ( VDot(temp_v, temp_v) < 1.e-8 )
-	{
-		/* The old and new may be pointing in the same or opposite. Need
-		** to generate a vector perpendicular to the old or new y.
-		*/
-		VNew(0, -v.z, v.y, temp_v);
-		if ( VDot(temp_v, temp_v) < 1.e-8 )
-			VNew(v.z, 0, -v.x, temp_v);
-	}
-	VUnit(temp_v, temp_d, temp_v);
-	rot_y_quat = Build_Rotate_Quaternion(temp_v, VDot(new_y, v));
-
-	/* rot_y_quat holds the rotation about the initial camera direction needed
-	** to align the up vectors in the final position.
-	*/
-
-	/* Put the 2 rotations together. */
-	rot_quat = QQMul(&rot_y_quat, &norm_quat);
-
-	/* Extract the axis and angle from the quaternion. */
-	Quaternion_To_Axis_Angle(&rot_quat, res_axis, res_angle);
-}
 
 // --------------------------------------------------------------
 
@@ -1551,8 +1365,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
     }
     else if (fileformat == MeshIO::VRML) {
         // write file
-        App::Material clMat;
-        if (!SaveVRML(str, clMat))
+        if (!SaveVRML(str))
             throw Base::FileException("Export of VRML mesh failed",FileName);
     }
     else if (fileformat == MeshIO::WRZ) {
@@ -1564,8 +1377,7 @@ bool MeshOutput::SaveAny(const char* FileName, MeshIO::Format format) const
         //application simply crashes.
         zipios::GZIPOutputStream gzip(str);
         // write file
-        App::Material clMat;
-        if (!SaveVRML(gzip, clMat))
+        if (!SaveVRML(gzip))
             throw Base::FileException("Export of compressed VRML mesh failed",FileName);
     }
     else if (fileformat == MeshIO::NAS) {
@@ -2245,47 +2057,8 @@ bool MeshOutput::SavePython (std::ostream &str) const
     return true;
 }
 
-// --------------------------------------------------------------
-
-class MeshVRML
-{
-public:
-    MeshVRML (const MeshKernel &rclM, const Base::Matrix4D&);
-    MeshVRML (const MeshKernel &rclM, const Base::Matrix4D&,VRMLInfo* pclVRMLInfo);
-    ~MeshVRML (void){}
-
-    bool Save (std::ostream &rstrOut, const App::Material &rclMat) const;
-    bool Save (std::ostream &rstrOut, const std::vector<App::Color> &raclColor, 
-               const App::Material &rclMat, bool bColorPerVertex = true) const;
-
-protected:
-    void WriteVRMLHeaderInfo(std::ostream &rstrOut) const;
-    void WriteVRMLAnnotations(std::ostream &rstrOut) const;
-    void WriteVRMLViewpoints(std::ostream &rstrOut) const;
-
-    const MeshKernel &_rclMesh;   // reference to mesh data structure
-    Base::Matrix4D _transform;
-    VRMLInfo* _pclVRMLInfo;
-};
-
 /** Writes a VRML file. */
-bool MeshOutput::SaveVRML (std::ostream &rstrOut, const App::Material &rclMat) const
-{
-    return MeshVRML(_rclMesh, this->_transform).Save(rstrOut, rclMat);
-}
-
-MeshVRML::MeshVRML (const MeshKernel &rclM, const Base::Matrix4D& trf)
-  : _rclMesh(rclM), _transform(trf), _pclVRMLInfo(0)
-{
-}
-
-MeshVRML::MeshVRML (const MeshKernel &rclM, const Base::Matrix4D& trf, VRMLInfo* pclVRMLInfo)
-  : _rclMesh(rclM), _transform(trf), _pclVRMLInfo(pclVRMLInfo)
-{
-}
-
-bool MeshVRML::Save (std::ostream &rstrOut, const std::vector<App::Color> &raclColor, 
-                     const App::Material &rclMat, bool bColorPerVertex) const
+bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
 {
     if ((!rstrOut) || (rstrOut.bad() == true) || (_rclMesh.CountFacets() == 0))
         return false;
@@ -2294,110 +2067,73 @@ bool MeshVRML::Save (std::ostream &rstrOut, const std::vector<App::Color> &raclC
     Base::Vector3f   clCenter = clBB.CalcCenter();
 
     Base::SequencerLauncher seq("Saving VRML file...", 
-        _rclMesh.CountPoints() + raclColor.size() + _rclMesh.CountFacets());
+        _rclMesh.CountPoints() + _rclMesh.CountFacets());
 
-    rstrOut << "#VRML V2.0 utf8" << std::endl;
+    rstrOut << "#VRML V2.0 utf8\n";
+    rstrOut << "WorldInfo {\n"
+            << "  title \"Exported triangle mesh to VRML97\"\n"
+            << "  info [\"Created by FreeCAD\"\n"
+            << "        \"<http://www.freecadweb.org>\"]\n"
+            << "}\n\n";
 
-    if (_pclVRMLInfo)
-        WriteVRMLHeaderInfo(rstrOut);
-    else
-        rstrOut << "WorldInfo {\n"
-                << "  title \"Exported tringle mesh to VRML97\"\n"
-                << "  info [\"Created by FreeCAD\"\n"
-                << "        \"<http://www.freecadweb.org>\"]\n"
-                << "}\n";
-
-    // Write background
-    // Note: We must write the background info straight after the header and before any geometry.
-    // To see the background color in the Inventor viewer we must either skip the skyAngle property
-    // or set it to 1.57, otherwise we'll see a strange beam in the scene.
-    // FIXME: Test this also with external VRML viewer plugins.
-    if (_pclVRMLInfo) {
-        float r = float(_pclVRMLInfo->_clColor.r) / 255.0f;
-        float g = float(_pclVRMLInfo->_clColor.g) / 255.0f;
-        float b = float(_pclVRMLInfo->_clColor.b) / 255.0f;
-        rstrOut.precision(1);
-        rstrOut.setf(std::ios::fixed | std::ios::showpoint);
-        rstrOut << "Background\n{\n  skyAngle    1.57\n  skyColor    "
-                << r << " " << g << " " << b << "\n}" << std::endl;
-    }
-    else {
-        rstrOut << "Background\n{\n  skyAngle    1.57\n  skyColor    "
-                << "0.1 0.2 0.2\n}" << std::endl;
-    }
-  
     // Transform
     rstrOut.precision(3);
     rstrOut.setf(std::ios::fixed | std::ios::showpoint);
-    rstrOut << "Transform\n{\n"
-            << "scale             1 1 1\n"
-            << "rotation          0 0 1 0\n"
-            << "scaleOrientation  0 0 1 0\n"
-            << "bboxCenter        0 0 0\n"
-            << "bboxSize      "
-            << clBB.LengthX() << " "
-            << clBB.LengthY() << " "
-            << clBB.LengthZ() << std::endl;
-    rstrOut << "center        "
-            << 0.0f << "  "
-            << 0.0f << "  "
-            << 0.0f << std::endl;
-    rstrOut << "translation  "
-            << 0.0f << "  "
-            << 0.0f << "  "
-            << 0.0f << std::endl;
+    rstrOut << "Transform {\n"
+            << "  scale 1 1 1\n"
+            << "  rotation 0 0 1 0\n"
+            << "  scaleOrientation 0 0 1 0\n"
+            << "  center "
+            << 0.0f << " "
+            << 0.0f << " "
+            << 0.0f << "\n"
+            << "  translation "
+            << 0.0f << " "
+            << 0.0f << " "
+            << 0.0f << "\n";
 
-    rstrOut << "children\n[\n";
-    rstrOut << "Shape\n{" << std::endl;
+    rstrOut << "  children\n";
+    rstrOut << "    Shape { \n";
 
     // write appearance
-    rstrOut << "  appearance Appearance\n  {\n    material Material\n    {\n";
-    rstrOut << "      ambientIntensity 0.2" << std::endl;
-
-    rstrOut.precision(2);
-    rstrOut.setf(std::ios::fixed | std::ios::showpoint);
-    if (raclColor.size() > 0) { // black
-        rstrOut << "      diffuseColor     0.2 0.2 0.2\n";
-        rstrOut << "      emissiveColor    0.2 0.2 0.2\n";
-        rstrOut << "      specularColor    0.2 0.2 0.2\n";
+    rstrOut << "      appearance\n"
+            << "      Appearance {\n"
+            << "        material\n"
+            << "        Material {\n";
+    if (_material && _material->binding == MeshIO::OVERALL) {
+        if (!_material->diffuseColor.empty()) {
+            App::Color c = _material->diffuseColor.front();
+            rstrOut << "          diffuseColor "
+                    << c.r << " "
+                    << c.g << " "
+                    << c.b << "\n";
+        }
+        else {
+            rstrOut << "          diffuseColor 0.8 0.8 0.8\n";
+        }
     }
     else {
-        App::Color clCol;
-        clCol = rclMat.diffuseColor;
-        rstrOut << "      diffuseColor      "
-                << clCol.r << " "
-                << clCol.g << " "
-                << clCol.b << std::endl;
-        clCol = rclMat.emissiveColor;
-        rstrOut << "      emissiveColor     "
-                << clCol.r << " "
-                << clCol.g << " "
-                << clCol.b << std::endl;
-        clCol = rclMat.specularColor;
-        rstrOut << "      specularColor     "
-                << clCol.r << " "
-                << clCol.g << " "
-                << clCol.b << std::endl;
+        rstrOut << "          diffuseColor 0.8 0.8 0.8\n";
     }
-
-    rstrOut << "      shininess        " << rclMat.shininess << std::endl;
-    rstrOut << "      transparency     " << rclMat.transparency << std::endl;
-    rstrOut << "    }\n  }" << std::endl; // end write appearance
+    rstrOut << "        }\n      }\n"; // end write appearance
 
 
     // write IndexedFaceSet
-    rstrOut << "  geometry IndexedFaceSet\n  {\n";
-    rstrOut << "    solid   FALSE\n";
+    rstrOut << "      geometry\n"
+            << "      IndexedFaceSet {\n";
+
+    rstrOut.precision(2);
+    rstrOut.setf(std::ios::fixed | std::ios::showpoint);
 
     // write coords
-    rstrOut << "    coord Coordinate\n    {\n      point\n      [\n";
+    rstrOut << "        coord\n        Coordinate {\n          point [\n";
     MeshPointIterator pPIter(_rclMesh);
     pPIter.Transform(this->_transform);
     unsigned long i = 0, k = _rclMesh.CountPoints();
     rstrOut.precision(3);
     rstrOut.setf(std::ios::fixed | std::ios::showpoint);
     for (pPIter.Init(); pPIter.More(); pPIter.Next()) {
-        rstrOut << "        "
+        rstrOut << "            "
                 << pPIter->x << " "
                 << pPIter->y << " "
                 << pPIter->z;
@@ -2409,41 +2145,41 @@ bool MeshVRML::Save (std::ostream &rstrOut, const std::vector<App::Color> &raclC
         seq.next();
     }
 
-    rstrOut << "      ]\n    }" << std::endl;  // end write coord
+    rstrOut << "          ]\n        }\n";  // end write coord
 
-    rstrOut << "    colorPerVertex  " 
-            << (bColorPerVertex ? "TRUE" : "FALSE") << std::endl;
-
-    if (raclColor.size() > 0) {
+    if (_material && _material->binding != MeshIO::OVERALL) {
         // write colors for each vertex
-        rstrOut << "    color Color\n    {\n       color\n       [\n";
+        rstrOut << "        color\n        Color {\n          color [\n";
         rstrOut.precision(3);
         rstrOut.setf(std::ios::fixed | std::ios::showpoint);
-        for (std::vector<App::Color>::const_iterator pCIter = raclColor.begin();
-            pCIter != raclColor.end(); pCIter++) {
-            rstrOut << "         "
-                    << float(pCIter->r) / 255.0f << " "
-                    << float(pCIter->g) / 255.0f << " "
-                    << float(pCIter->b) / 255.0f;
-            if (pCIter < (raclColor.end() - 1))
+        for (std::vector<App::Color>::const_iterator pCIter = _material->diffuseColor.begin();
+            pCIter != _material->diffuseColor.end(); ++pCIter) {
+            rstrOut << "          "
+                    << float(pCIter->r) << " "
+                    << float(pCIter->g) << " "
+                    << float(pCIter->b);
+            if (pCIter < (_material->diffuseColor.end() - 1))
                 rstrOut << ",\n";
             else
                 rstrOut << "\n";
-            seq.next();
         }
 
-        rstrOut << "      ]\n    }" << std::endl;
+        rstrOut << "      ]\n    }\n";
+        if (_material->binding == MeshIO::PER_VERTEX)
+            rstrOut << "    colorPerVertex TRUE\n";
+        else
+            rstrOut << "    colorPerVertex FALSE\n";
     }
 
     // write face index
-    rstrOut << "    coordIndex\n    [\n";
+    rstrOut << "        coordIndex [\n";
     MeshFacetIterator pFIter(_rclMesh);
     pFIter.Transform(this->_transform);
     i = 0, k = _rclMesh.CountFacets();
 
     for (pFIter.Init(); pFIter.More(); pFIter.Next()) {
         MeshFacet clFacet = pFIter.GetIndices();
-        rstrOut << "      "
+        rstrOut << "          "
                 << clFacet._aulPoints[0] << ", "
                 << clFacet._aulPoints[1] << ", "
                 << clFacet._aulPoints[2] << ", -1";
@@ -2455,331 +2191,9 @@ bool MeshVRML::Save (std::ostream &rstrOut, const std::vector<App::Color> &raclC
         seq.next();
     }
 
-    rstrOut << "    ]\n  }" << std::endl;  // End IndexedFaceSet
-    rstrOut << "}" << std::endl;  // End Shape
-
-    // close children and Transform
-    rstrOut << "]\n}" << std::endl;
-
-    // write viewpoints
-    rstrOut.precision(3);
-    rstrOut.setf(std::ios::fixed | std::ios::showpoint);
-    for (i = 0; i < 6; i++) {
-        rstrOut << "Viewpoint\n{\n"
-                << "  jump         TRUE\n";
-
-        Base::Vector3f clPos = clCenter;
-        float fLen  = clBB.CalcDiagonalLength();
-        switch (i)
-        {
-        case 0:
-            {
-                Vector at, pos, up, rot_axis;
-                double rot_angle;
-                at.x  = clPos.x;        at.y  = clPos.y;        at.z  = clPos.z;
-                pos.x = clPos.x;        pos.y = clPos.y;        pos.z = clPos.z + fLen;
-                up.x  = 0.0;            up.y  = 1.0;            up.z  = 0.0;
-                Convert_Camera_Model(&pos, &at, &up, &rot_axis, &rot_angle);
-                rstrOut << "  orientation   "
-                        << rot_axis.x << " "
-                        << rot_axis.y << " "
-                        << rot_axis.z << " "
-                        << rot_angle << "\n";
-                rstrOut << "  description  \"top\"\n";
-                clPos.z += fLen;
-                break;
-            }
-        case 1:
-            {
-                Vector at, pos, up, rot_axis;
-                double rot_angle;
-                at.x  = clPos.x;        at.y  = clPos.y;        at.z  = clPos.z;
-                pos.x = clPos.x;        pos.y = clPos.y;        pos.z = clPos.z - fLen;
-                up.x  = 0.0;            up.y  = -1.0;           up.z  = 0.0;
-                Convert_Camera_Model(&pos, &at, &up, &rot_axis, &rot_angle);
-                rstrOut << "  orientation   "
-                        << rot_axis.x << " "
-                        << rot_axis.y << " "
-                        << rot_axis.z << " "
-                        << rot_angle << "\n";
-                rstrOut << "  description  \"bottom\"\n";
-                clPos.z -= fLen;
-                break;
-            }
-        case 2:
-            {
-                Vector at, pos, up, rot_axis;
-                double rot_angle;
-                at.x  = clPos.x;        at.y  = clPos.y;        at.z  = clPos.z;
-                pos.x = clPos.x;        pos.y = clPos.y - fLen; pos.z = clPos.z;
-                up.x  = 0.0;            up.y  = 0.0;            up.z  = 1.0;
-                Convert_Camera_Model(&pos, &at, &up, &rot_axis, &rot_angle);
-                rstrOut << "  orientation   "
-                        << rot_axis.x << " "
-                        << rot_axis.y << " "
-                        << rot_axis.z << " "
-                        << rot_angle << "\n";
-                rstrOut << "  description  \"front\"\n";
-                clPos.y -= fLen;
-                break;
-            }
-        case 3:
-            {
-                Vector at, pos, up, rot_axis;
-                double rot_angle;
-                at.x  = clPos.x;        at.y  = clPos.y;        at.z  = clPos.z;
-                pos.x = clPos.x;        pos.y = clPos.y + fLen; pos.z = clPos.z;
-                up.x  = 0.0;            up.y  = 0.0;            up.z  = 1.0;
-                Convert_Camera_Model(&pos, &at, &up, &rot_axis, &rot_angle);
-                rstrOut << "  orientation   "
-                        << rot_axis.x << " "
-                        << rot_axis.y << " "
-                        << rot_axis.z << " "
-                        << rot_angle << "\n";
-                rstrOut << "  description  \"back\"\n";
-                clPos.y += fLen;
-                break;
-            }
-        case 4:
-            {
-                Vector at, pos, up, rot_axis;
-                double rot_angle;
-                at.x  = clPos.x;        at.y  = clPos.y;        at.z  = clPos.z;
-                pos.x = clPos.x - fLen; pos.y = clPos.y;        pos.z = clPos.z;
-                up.x  = 0.0;            up.y  = 0.0;            up.z  = 1.0;
-                Convert_Camera_Model(&pos, &at, &up, &rot_axis, &rot_angle);
-                rstrOut << "  orientation   "
-                        << rot_axis.x << " "
-                        << rot_axis.y << " "
-                        << rot_axis.z << " "
-                        << rot_angle << "\n";
-                rstrOut << "  description  \"right\"\n";
-                clPos.x -= fLen;
-                break;
-            }
-        case 5:
-            {
-                Vector at, pos, up, rot_axis;
-                double rot_angle;
-                at.x  = clPos.x;        at.y  = clPos.y;        at.z  = clPos.z;
-                pos.x = clPos.x + fLen; pos.y = clPos.y;        pos.z = clPos.z;
-                up.x  = 0.0;            up.y  = 0.0;            up.z  = 1.0;
-                Convert_Camera_Model(&pos, &at, &up, &rot_axis, &rot_angle);
-                rstrOut << "  orientation   "
-                        << rot_axis.x << " "
-                        << rot_axis.y << " "
-                        << rot_axis.z << " "
-                        << rot_angle << "\n";
-                rstrOut << "  description  \"left\"\n";
-                clPos.x += fLen;
-                break;
-            }
-        }
-
-        rstrOut << "  position     "
-                << clPos.x << " "
-                << clPos.y << " "
-                << clPos.z << "\n}" << std::endl;
-    }
-
-    // write navigation info
-    rstrOut << "NavigationInfo\n{\n"
-            << "  avatarSize       [0.25, 1.6, 0.75]\n"
-            << "  headlight        TRUE\n"
-            << "  speed            1.0\n"
-            << "  type             \"EXAMINE\"\n"
-            << "  visibilityLimit  0.0\n"
-            << "}" << std::endl;
-
-    // write custom viewpoints
-    if (_pclVRMLInfo)
-        WriteVRMLViewpoints(rstrOut);
-
-    if (_pclVRMLInfo)
-        WriteVRMLAnnotations(rstrOut);
+    rstrOut << "        ]\n      }\n";  // End IndexedFaceSet
+    rstrOut << "    }\n";  // End Shape
+    rstrOut << "}\n"; // close children and Transform
 
     return true;
 }
-
-void MeshVRML::WriteVRMLHeaderInfo(std::ostream &rstrOut) const
-{
-    // save information about file
-    //
-    rstrOut << "#=================================================#\n#\n"
-            << "# F I L E   I N F O R M A T I O N\n#\n"
-            << "# This file was created by " << _pclVRMLInfo->_clAuthor << "\n"
-            << "# Creation Date:    " << _pclVRMLInfo->_clDate << "\n"
-            << "# Company:          " << _pclVRMLInfo->_clCompany << "\n";
-    std::vector<std::string>::const_iterator sIt = _pclVRMLInfo->_clComments.begin();
-    rstrOut << "# Further comments: " << *sIt << "\n";
-    for (sIt++ ;sIt != _pclVRMLInfo->_clComments.end(); ++sIt) {
-        rstrOut << "#                   " << *sIt << "\n";
-    }
-    rstrOut << "#=================================================#\n" << std::endl;
-}
-
-void MeshVRML::WriteVRMLAnnotations(std::ostream &rstrOut) const
-{
-    float r = float(_pclVRMLInfo->_clColor.r) / 255.0f;
-    float g = float(_pclVRMLInfo->_clColor.g) / 255.0f;
-    float b = float(_pclVRMLInfo->_clColor.b) / 255.0f;
-    float textr = 1.0f - r;
-    float textg = 1.0f - g;
-    float textb = 1.0f - b;
-
-    if (fabs(textr-r) < 0.05)
-        textr = 1.0f;
-    if (fabs(textg-g) < 0.05)
-        textg = 1.0f;
-    if (fabs(textb-b) < 0.05)
-        textb = 1.0f;
-
-    // annotationen
-    rstrOut << "DEF User ProximitySensor {\n"
-            << " size        1000000 1000000 1000000\n"
-            << "}\n"
-            << "\n"
-            << "    Group { \n"
-            << "      children [\n"
-            << " DEF UserPos Transform {\n"
-            << "   children [\n"
-            << "     # Text position\n"
-            << "     Transform {\n"
-            << "       translation  -1.0 -0.75 -2\n"
-            << "       children [\n"
-            << "          Transform {\n"
-            << "            translation 1.95 0.75 0\n"
-            << "            children [\n"
-            << "              Shape {\n";
-    if (_pclVRMLInfo->_bSavePicture) {
-        rstrOut << "                appearance Appearance {\n" 
-                << "              texture ImageTexture { \n"
-                << "                url \""
-                << _pclVRMLInfo->_clPicFileName
-                << "\"\n"
-                << "                repeatS FALSE\n"
-                << "                repeatT FALSE\n"
-                << "              }\n"
-                << "                }\n"
-                << "                geometry IndexedFaceSet {\n"
-                << "              coord Coordinate { point [ -0.08 -0.8 0,\n"
-                << "                             0.08 -0.8 0,\n"
-                << "                             0.08  0.8 0,\n"
-                << "                             -0.08  0.8 0\n"
-                << "                           ]\n"
-                << "                       }\n"
-                << "              coordIndex [0,1,2,3, -1]\n"
-                << "              texCoord TextureCoordinate {\n"
-                << "               point   [ 0 0,\n"
-                << "                    1 0,\n"
-                << "                    1 1,\n"
-                << "                   0 1 ]\n"
-                << "              }\n"
-                << "              texCoordIndex	[ 0, 1, 2, 3, -1 ]\n\n"
-                << "             solid FALSE\n"
-                << "                }" << std::endl;
-    }
-
-    rstrOut << "              }\n"
-            << "            ]\n"
-            << "          }\n"
-            << "  Shape {\n"
-            << "    appearance DEF COAP Appearance {\n"
-            << "      material Material {diffuseColor "
-            << textr << " "
-            << textg << " "
-            << textb << "}} # text color\n"
-            << "    geometry   DEF MyText Text {\n"
-            << "      string \""
-            << _pclVRMLInfo->_clAnnotation
-            << "\"\n"
-            << "      fontStyle DEF COFS FontStyle {\n"
-            << "        family [ \"Verdana\", \"Arial\", \"Helvetica\" ]\n"
-            << "        size         0.08                     # text size\n"
-            << "      }\n"
-            << "    }\n"
-            << "  }\n"
-            << "       ]\n"
-            << "     }\n"
-            << "   ]\n"
-            << " }\n"
-            << "      ]\n"
-            << "    }\n"
-            << ""
-            << "ROUTE User.position_changed TO UserPos.set_translation\n"
-            << "ROUTE User.orientation_changed TO UserPos.set_rotation" << std::endl;
-}
-
-void MeshVRML::WriteVRMLViewpoints(std::ostream &rstrOut) const
-{
-    // write viewpoints
-    //
-    rstrOut.precision(3);
-    rstrOut.setf(std::ios::fixed | std::ios::showpoint);
-    Base::BoundBox3f clBB = _rclMesh.GetBoundBox();
-    Base::Vector3f   clCenter = clBB.CalcCenter();
-    for (std::vector<VRMLViewpointData>::iterator it = _pclVRMLInfo->_clViewpoints.begin(); it != _pclVRMLInfo->_clViewpoints.end(); ++it)
-    {
-        // build up the observer's coordinate system
-        Base::Vector3f u,v,w;
-        v = it->clVRefUp;
-        w = it->clVRefPln;
-        u = v % w;
-        u.Normalize();
-        v.Normalize();
-        w.Normalize();
-
-        // calc the view axis in world coordinates
-        //
-        Base::Vector3f p_uvw, p_xyz;
-        p_uvw   = it->clPRefPt;
-        p_xyz.x = u.x*p_uvw.x+v.x*p_uvw.y+w.x*p_uvw.z;
-        p_xyz.y = u.y*p_uvw.x+v.y*p_uvw.y+w.y*p_uvw.z;
-        p_xyz.z = u.z*p_uvw.x+v.z*p_uvw.y+w.z*p_uvw.z;
-        p_xyz   = p_xyz + it->clVRefPt;
-
-        float t = (clCenter - p_xyz)*w;
-        Base::Vector3f a = p_xyz + t*w;
-
-        Vector at, pos, up, rot_axis;
-        double rot_angle;
-
-        float fDistance = (float)(it->dVmax - it->dVmin);
-        Base::Vector3f p = a + fDistance * w;
-        pos.x = p.x;   pos.y = p.y;   pos.z = p.z;
-        at.x  = a.x;   at.y  = a.y;   at.z  = a.z;
-        up.x  = v.x;   up.y  = v.y;   up.z  = v.z;
-
-        Convert_Camera_Model(&pos, &at, &up, &rot_axis, &rot_angle);
-
-        rstrOut << "Viewpoint\n{\n"
-                << "  jump         TRUE\n"
-                << "  orientation   "
-                << rot_axis.x << " "
-                << rot_axis.y << " "
-                << rot_axis.z << " "
-                << rot_angle << "\n";
-        rstrOut << "  description  \"" << it->clName << "\"\n";
-        rstrOut << "  position     "
-                << pos.x << " "
-                << pos.y << " "
-                << pos.z << "\n}" << std::endl;
-    }
-}
-
-bool MeshVRML::Save (std::ostream &rstrOut, const App::Material &rclMat) const
-{
-    std::vector<App::Color> aclDummy;
-/*
-for (int i = 0; i < _rclMesh.CountPoints(); i++)
-{
-unsigned short r =  (rand() * 255) / float(RAND_MAX);
-unsigned short g =  (rand() * 255) / float(RAND_MAX);
-unsigned short b =  (rand() * 255) / float(RAND_MAX);
-
-  aclDummy.push_back(App::Color(r, g, b));
-}
-*/
-    return Save(rstrOut, aclDummy, rclMat, false);
-}
-
