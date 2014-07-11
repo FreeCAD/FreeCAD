@@ -26,21 +26,8 @@ import math
 from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
+import Spreadsheet
 from shipUtils import Paths
-
-
-header = """ #################################################################
-
- #####                 ####  ###   ####      ##### #   # ### ####
- #                    #      # #   #   #    #      #   #  #  #   #
- #     ##  #### ####  #     #   #  #   #     #     #   #  #  #   #
- ####  # # #  # #  #  #     #####  #   # ##   ##   #####  #  ####
- #     #   #### ####  #    #     # #   #        #  #   #  #  #
- #     #   #    #     #    #     # #   #         # #   #  #  #
- #     #   #### ####   ### #     # ####     #####  #   # ### #
-
- #################################################################
-"""
 
 
 class Plot(object):
@@ -56,9 +43,7 @@ class Plot(object):
         self.plotStability()
         self.plotCoeffs()
         # Save data
-        if self.createDirectory():
-            return
-        if self.saveData(ship, trim):
+        if self.spreadSheet(ship, trim):
             return
 
     def plotVolume(self):
@@ -312,83 +297,47 @@ class Plot(object):
         plt.update()
         return False
 
-    def createDirectory(self):
-        """ Create needed folder to write data and scripts.
-        @return True if error happens.
-        """
-        self.path = FreeCAD.ConfigGet("UserAppData") + "ShipOutput/"
-        if not os.path.exists(self.path):
-            os.makedirs(self.path)
-        if not os.path.exists(self.path):
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Failure creating the folder".format(self.path),
-                None,
-                QtGui.QApplication.UnicodeUTF8)
-            FreeCAD.Console.PrintError(msg + ":\n\t'" + self.path + "'\n")
-        return False
-
-    def saveData(self, ship, trim):
+    def spreadSheet(self, ship, trim):
         """ Write data file.
         @param ship Selected ship instance
         @param trim Trim in degrees.
         @return True if error happens.
         """
-        # Open the file
-        filename = self.path + 'hydrostatics.dat'
-        try:
-            Output = open(filename, "w")
-        except IOError:
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Failure writing the file",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
-            FreeCAD.Console.PrintError(msg + ":\n\t'" + filename + "'\n")
-            return True
+        # Create the spreadsheet
+        obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Spreadsheet")
+        s = Spreadsheet.Spreadsheet(obj)
+        if FreeCAD.GuiUp:
+            Spreadsheet.ViewProviderSpreadsheet(obj.ViewObject)
+        FreeCAD.ActiveDocument.recompute()
+        obj.Label = 'Hydrostatics'
 
-        Output.write(header)
-        Output.write(" #\n")
-        Output.write(" # File automatically exported by FreeCAD-Ship\n")
-        Output.write(" # This file contains transversal areas data, filled"
-                     " with following columns:\n")
-        Output.write(" #  1: Ship displacement [ton]\n")
-        Output.write(" #  2: Draft [m]\n")
-        Output.write(" #  3: Wetted surface [m2]\n")
-        Output.write(" #  4: 1cm triming ship moment [ton m]\n")
-        Output.write(" #  5: Bouyance center x coordinate\n")
-        Output.write(" #  6: Floating area\n")
-        Output.write(" #  7: KBt\n")
-        Output.write(" #  8: BMt\n")
-        Output.write(" #  9: Cb (block coefficient)\n")
-        Output.write(" # 10: Cf (Floating coefficient)\n")
-        Output.write(" # 11: Cm (Main frame coefficient)\n")
-        Output.write(" #\n")
-        Output.write(" ######################################################"
-                     "###########\n")
+
+        # Print the header
+        s.a1 = "displacement [ton]"
+        s.b1 = "draft [m]"
+        s.c1 = "wetted surface [m^2]"
+        s.d1 = "1cm triming ship moment [ton*m]"
+        s.e1 = "Floating area [m^2]"
+        s.f1 = "KBl [m]"
+        s.g1 = "KBt [m]"
+        s.h1 = "BMt [m]"
+        s.i1 = "Cb"
+        s.j1 = "Cf"
+        s.k1 = "Cm"
 
         for i in range(len(self.points)):
             point = self.points[i]
-            string = "{} {} {} {} {} {} {} {} {} {} {}\n".format(
-                point.disp,
-                point.draft,
-                point.wet,
-                point.mom,
-                point.xcb,
-                point.farea,
-                point.KBt,
-                point.BMt,
-                point.Cb,
-                point.Cf,
-                point.Cm)
-            Output.write(string)
+            s.__setattr__("a{}".format(i + 2), point.disp)
+            s.__setattr__("b{}".format(i + 2), point.draft)
+            s.__setattr__("c{}".format(i + 2), point.wet)
+            s.__setattr__("d{}".format(i + 2), point.mom)
+            s.__setattr__("e{}".format(i + 2), point.farea)
+            s.__setattr__("f{}".format(i + 2), point.xcb)
+            s.__setattr__("g{}".format(i + 2), point.KBt)
+            s.__setattr__("h{}".format(i + 2), point.BMt)
+            s.__setattr__("i{}".format(i + 2), point.Cb)
+            s.__setattr__("j{}".format(i + 2), point.Cf)
+            s.__setattr__("k{}".format(i + 2), point.Cm)
 
-        Output.close()
-        self.dataFile = filename
-        msg = QtGui.QApplication.translate(
-            "ship_console",
-            "Data saved",
-            None,
-            QtGui.QApplication.UnicodeUTF8)
-        FreeCAD.Console.PrintMessage(msg + ":\n\t'" + self.dataFile + "'\n")
-        return False
+        # Open the spreadsheet
+        FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
