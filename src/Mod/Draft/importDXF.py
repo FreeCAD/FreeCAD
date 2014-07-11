@@ -40,7 +40,7 @@ texts, colors,layers (from groups)
 '''
 
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
-CURRENTDXFLIB = 1.36 # the minimal version of the dxfLibrary needed to run 
+CURRENTDXFLIB = 1.38 # the minimal version of the dxfLibrary needed to run 
 
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
@@ -1468,7 +1468,7 @@ def projectShape(shape,direction):
     try:
         groups = Drawing.projectEx(shape,direction)
     except:
-        print "unable to project shape"
+        print "unable to project shape on direction ",direction
         return shape
     else:
         for g in groups[0:5]:
@@ -1528,7 +1528,7 @@ def getArcData(edge):
         return DraftVecUtils.tup(ce), radius, ang1, ang2
 
 def getSplineSegs(edge):
-    "returns an array of vectors from a bSpline edge"
+    "returns an array of vectors from a Spline or Bezier edge"
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     seglength = params.GetInt("maxsplinesegment")
     points = []
@@ -1536,26 +1536,37 @@ def getSplineSegs(edge):
         points.append(edge.Vertexes[0].Point)
         points.append(edge.Vertexes[-1].Point)
     else:
-        l = edge.Length
+        if DraftGeomUtils.geomType(edge) == "BezierCurve":
+            l = 1.0
+        else:
+            l = edge.Length
         points.append(edge.valueAt(0))
-        if l > seglength:
-            nbsegs = int(math.ceil(l/seglength))
+        if (edge.Length > seglength):
+            nbsegs = int(math.ceil(edge.Length/seglength))
             step = l/nbsegs
             for nv in range(1,nbsegs):
+                #print "value at",nv*step,"=",edge.valueAt(nv*step)
                 v = edge.valueAt(nv*step)
                 points.append(v)
-        points.append(edge.valueAt(edge.Length))
+        points.append(edge.valueAt(l))
     return points
 
-def getWire(wire,nospline=False):
+def getWire(wire,nospline=False,lw=True):
     "returns an array of dxf-ready points and bulges from a wire"
+    def fmt(v,b=0.0):
+        if lw:
+            # LWpolyline format
+            return (v.x,v.y,v.z,None,None,b)
+        else:
+            # Polyline format
+            return ((v.x,v.y,v.z),None,[None,None],b)
     edges = DraftGeomUtils.sortEdges(wire.Edges)
     points = []
     # print "processing wire ",wire.Edges
     for edge in edges:
         v1 = edge.Vertexes[0].Point
         if len(edge.Vertexes) < 2:
-            points.append((v1.x,v1.y,v1.z,None,None,0.0))
+            points.append(fmt(v1))
         elif DraftGeomUtils.geomType(edge) == "Circle":
             mp = DraftGeomUtils.findMidpoint(edge)
             v2 = edge.Vertexes[-1].Point
@@ -1586,17 +1597,17 @@ def getWire(wire,nospline=False):
                 
             if not DraftGeomUtils.isClockwise(edge):
                 bul = -bul
-            points.append((v1.x,v1.y,v1.z,None,None,bul))
-        elif (DraftGeomUtils.geomType(edge) == "BSplineCurve") and (not nospline):
+            points.append(fmt(v1,bul))
+        elif (DraftGeomUtils.geomType(edge) in ["BSplineCurve","BezierCurve"]) and (not nospline):
             spline = getSplineSegs(edge)
             spline.pop()
             for p in spline:
-                points.append((p.x,p.y,p.z,None,None,0.0))
+                points.append(fmt(p))
         else:
-            points.append((v1.x,v1.y,v1.z,None,None,0.0))
+            points.append(fmt(v1))
     if not DraftGeomUtils.isReallyClosed(wire):
         v = edges[-1].Vertexes[-1].Point
-        points.append(DraftVecUtils.tup(v))
+        points.append(fmt(v))
     # print "wire verts: ",points
     return points
 
@@ -1632,7 +1643,7 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
                 else:
                     FreeCAD.Console.PrintWarning("LwPolyLine support not found. Please delete dxfLibrary.py from your FreeCAD user directory to force auto-update\n")
             else :
-                dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline), [0.0,0.0,0.0],
+                dxfobject.append(dxfLibrary.PolyLine(getWire(wire,nospline,lw=False), [0.0,0.0,0.0],
                                                      int(DraftGeomUtils.isReallyClosed(wire)), color=getACI(ob),
                                                      layer=getGroup(ob)))
     if len(processededges) < len(sh.Edges): # lone edges
@@ -1641,7 +1652,7 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
             if not(e.hashCode() in processededges): loneedges.append(e)
         # print "lone edges ",loneedges
         for edge in loneedges:
-            if (DraftGeomUtils.geomType(edge) == "BSplineCurve") and ((not nospline) or (len(edge.Vertexes) == 1)): # splines
+            if (DraftGeomUtils.geomType(edge) in ["BSplineCurve","BezierCurve"]) and ((not nospline) or (len(edge.Vertexes) == 1)): # splines
                 if (len(edge.Vertexes) == 1) and (edge.Curve.isClosed()):
                     # special case: 1-vert closed spline, approximate as a circle
                     c = DraftGeomUtils.getCircleFromSpline(edge)
@@ -1653,7 +1664,7 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
                     points = []
                     spline = getSplineSegs(edge)
                     for p in spline:
-                        points.append((p.x,p.y,p.z,None,None,0.0))
+                        points.append(((p.x,p.y,p.z),None,[None,None],0.0))
                     dxfobject.append(dxfLibrary.PolyLine(points, [0.0,0.0,0.0],
                                                          0, color=getACI(ob),
                                                          layer=getGroup(ob)))
@@ -1675,7 +1686,7 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
                     points = []
                     spline = getSplineSegs(edge)
                     for p in spline:
-                        points.append((p.x,p.y,p.z,None,None,0.0))
+                        points.append(((p.x,p.y,p.z),None,[None,None],0.0))
                     dxfobject.append(dxfLibrary.PolyLine(points, [0.0,0.0,0.0],
                                                          0, color=getACI(ob),
                                                          layer=getGroup(ob)))
