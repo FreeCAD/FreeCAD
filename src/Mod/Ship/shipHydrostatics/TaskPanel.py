@@ -264,7 +264,7 @@ class TaskPanel:
 
         try:
             props.index("HydrostaticsNDraft")
-            form.nDraft.setValue(self.ship.HydrostaticsNDraft.Value)
+            form.nDraft.setValue(self.ship.HydrostaticsNDraft)
         except ValueError:
             pass
 
