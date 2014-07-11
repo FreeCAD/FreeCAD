@@ -159,7 +159,7 @@ public:
     /** Writes an X3D file. */
     bool SaveX3D (std::ostream &rstrOut) const;
     /** Writes a VRML file. */
-    bool SaveVRML (std::ostream &rstrOut, const App::Material &rclMat) const;
+    bool SaveVRML (std::ostream &rstrOut) const;
     /** Writes a Nastran file. */
     bool SaveNastran (std::ostream &rstrOut) const;
     /** Writes a Cadmould FE file. */
@@ -174,35 +174,6 @@ protected:
     bool apply_transform;
     std::string objectName;
     static std::string stl_header;
-};
-
-struct MeshExport VRMLViewpointData
-{
-    Base::Vector3f clVRefPln;
-    Base::Vector3f clVRefUp;
-    Base::Vector3f clVRefPt;
-    Base::Vector3f clPRefPt;
-    double    dVPlnDist;
-    double    dUmin;
-    double    dUmax;
-    double    dVmin;
-    double    dVmax;
-    std::string  clName;
-};
-
-struct MeshExport VRMLInfo
-{
-    std::string _clFileName;
-    std::string _clAuthor;
-    std::string _clDate;
-    std::string _clCompany;
-    std::string _clAnnotation;
-    std::string _clPicFileName;
-    App::Color  _clColor;
-    bool     _bSaveViewPoints;
-    bool     _bSavePicture;
-    std::vector<std::string> _clComments;
-    std::vector<VRMLViewpointData> _clViewpoints;
 };
 
 
