@@ -283,8 +283,8 @@ class TaskPanel:
         draft_max = bbox.ZMax / Units.Metre.Value
         draft = self.clampLength(form.draft, draft_min, draft_max, draft)
 
-        trim_min = -90.0
-        trim_max = 90.0
+        trim_min = -180.0
+        trim_max = 180.0
         trim = self.clampAngle(form.trim, trim_min, trim_max, trim)
 
         self.onUpdate()
