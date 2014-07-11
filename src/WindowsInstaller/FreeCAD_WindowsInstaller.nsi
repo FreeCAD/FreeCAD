@@ -77,6 +77,8 @@ section "install"
 	setOutPath $INSTDIR\bin
 	# Files added here should be removed by the uninstaller (see section "uninstall")
 	file /r /X *.idb /X *.pyc /X *.pyo "..\..\bin\"
+	setOutPath $INSTDIR\lib
+	file /r /X *.lib /X *.pyc /X *.pyo "..\..\lib\"
 	setOutPath $INSTDIR\Mod
 	file /r /X *.idb  "..\..\Mod\"
 	setOutPath $INSTDIR\doc
@@ -139,12 +141,14 @@ section "uninstall"
  
 	# Remove files
 	rmDir /r "$INSTDIR\bin"
+	rmDir /r "$INSTDIR\lib"
 	rmDir /r "$INSTDIR\doc"
 	rmDir /r "$INSTDIR\data"
 	rmDir /r "$INSTDIR\Mod"
  
 	# Always delete uninstaller as the last action
 	delete $INSTDIR\uninstall.exe
+	delete $INSTDIR\vcredist_x86.exe
  	# Try to remove the install directory - this will only happen if it is empty
 	rmDir $INSTDIR
  
