@@ -26,21 +26,7 @@ from PySide import QtGui, QtCore
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Base
-
-
-header = """ #################################################################
-
- #####                 ####  ###   ####      ##### #   # ### ####
- #                    #      # #   #   #    #      #   #  #  #   #
- #     ##  #### ####  #     #   #  #   #     #     #   #  #  #   #
- ####  # # #  # #  #  #     #####  #   # ##   ##   #####  #  ####
- #     #   #### ####  #    #     # #   #        #  #   #  #  #
- #     #   #    #     #    #     # #   #         # #   #  #  #
- #     #   #### ####   ### #     # ####     #####  #   # ### #
-
- #################################################################
-"""
-
+import Spreadsheet
 
 class Plot(object):
     def __init__(self, x, y, disp, xcb, ship):
@@ -52,10 +38,7 @@ class Plot(object):
         @param ship Active ship instance.
         """
         self.plot(x, y, disp, xcb, ship)
-        if self.createDirectory():
-            return
-        if self.saveData(x, y, ship):
-            return
+        self.spreadSheet(x, y, ship)
 
     def plot(self, x, y, disp, xcb, ship):
         """ Perform the areas curve plot.
@@ -126,82 +109,45 @@ class Plot(object):
         plt.update()
         return False
 
-    def createDirectory(self):
-        """ Create the needed folder to write the output data.
-        @return True if error happens.
-        """
-        self.path = FreeCAD.ConfigGet("UserAppData") + "ShipOutput/"
-        if not os.path.exists(self.path):
-            os.makedirs(self.path)
-        if not os.path.exists(self.path):
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Failure creating the folder",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
-            FreeCAD.Console.PrintError(msg + ":\n\t'" + self.path + "'\n")
-            return True
-        return False
-
-    def saveData(self, x, y, ship):
+    def spreadSheet(self, x, y, ship):
         """ Write the output data file.
         @param x X coordinates.
         @param y Transversal areas.
         @param ship Active ship instance.
-        @return True if error happens.
         """
-        filename = self.path + 'areas.dat'
-        try:
-            Output = open(filename, "w")
-        except IOError:
-            msg = QtGui.QApplication.translate(
-                "ship_console",
-                "Failure writing to file",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
-            FreeCAD.Console.PrintError(msg + ":\n\t'" + filename + "'\n")
-            return True
+        # Create the spreadsheet
+        obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Spreadsheet")
+        s = Spreadsheet.Spreadsheet(obj)
+        if FreeCAD.GuiUp:
+            Spreadsheet.ViewProviderSpreadsheet(obj.ViewObject)
+        FreeCAD.ActiveDocument.recompute()
+
         # Print the header
-        Output.write(header)
-        Output.write(" #\n")
-        Output.write(" # File automatically exported by FreeCAD-Ship\n")
-        Output.write(" # This file contains transversal areas data, filled"
-                     " with following columns:\n")
-        Output.write(" # 1: X coordiante [m]\n")
-        Output.write(" # 2: Transversal area [m2]\n")
-        Output.write(" # 3: X FP coordinate [m]\n")
-        Output.write(" # 4: Y FP coordinate (bounds in order to draw it)\n")
-        Output.write(" # 3: X AP coordinate [m]\n")
-        Output.write(" # 4: Y AP coordinate (bounds in order to draw it)\n")
-        Output.write(" #\n")
-        Output.write(" ######################################################"
-                     "###########\n")
-        # Get perpendiculars data
+        s.a1 = "x [m]"
+        s.b1 = "area [m^2]"
+        s.c1 = "FP x"
+        s.d1 = "FP y"
+        s.e1 = "AP x"
+        s.f1 = "AP y"
+
+        # Print the perpendiculars data
         Lpp = ship.Length.getValueAs('m').Value
         FPx = 0.5 * Lpp
         APx = -0.5 * Lpp
         maxArea = max(y)
+        s.c2 = FPx
+        s.d2 = 0.0
+        s.c3 = FPx
+        s.d3 = maxArea
+        s.e2 = APx
+        s.f2 = 0.0
+        s.e3 = APx
+        s.f3 = maxArea
+
         # Print the data
-        string = "{0} {1} {2} {3} {4} {5}\n".format(x[0],
-                                                    y[0],
-                                                    FPx,
-                                                    0.0,
-                                                    APx,
-                                                    0.0)
-        Output.write(string)
-        for i in range(1, len(x)):
-            string = "{0} {1} {2} {3} {4} {5}\n".format(x[i],
-                                                        y[i],
-                                                        FPx,
-                                                        maxArea,
-                                                        APx,
-                                                        maxArea)
-            Output.write(string)
-        Output.close()
-        self.dataFile = filename
-        msg = QtGui.QApplication.translate("ship_console",
-                                           "Data saved",
-                                           None,
-                                           QtGui.QApplication.UnicodeUTF8)
-        FreeCAD.Console.PrintMessage(msg + ":\n\t'" + self.dataFile + "'\n")
-        return False
+        for i in range(len(x)):
+            s.__setattr__("a{}".format(i + 2), x[i])
+            s.__setattr__("b{}".format(i + 2), y[i])
+
+        # Open the spreadsheet
+        FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
