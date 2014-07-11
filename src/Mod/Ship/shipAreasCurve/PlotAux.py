@@ -121,6 +121,7 @@ class Plot(object):
         if FreeCAD.GuiUp:
             Spreadsheet.ViewProviderSpreadsheet(obj.ViewObject)
         FreeCAD.ActiveDocument.recompute()
+        obj.Label = 'Areas curve'
 
         # Print the header
         s.a1 = "x [m]"
