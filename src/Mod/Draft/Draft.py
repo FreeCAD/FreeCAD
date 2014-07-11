@@ -410,7 +410,8 @@ def formatObject(target,origin=None):
             if not grp:
                 grp = doc.addObject("App::DocumentObjectGroup",gname) 
             grp.addObject(target)
-            obrep.Transparency = 80
+            if hasattr(obrep,"Transparency"):
+                obrep.Transparency = 80
         else:
             col = ui.getDefaultColor("ui")
             fcol = ui.getDefaultColor("face")
@@ -3059,6 +3060,8 @@ class _ViewProviderDimension(_ViewProviderDraft):
         self.font3d = coin.SoFont()
         self.text = coin.SoAsciiText()
         self.text3d = coin.SoText2()
+        self.text.string = "d" # some versions of coin crash if string is not set
+        self.text3d.string = "d"
         self.textpos = coin.SoTransform()
         self.text.justification = self.text3d.justification = coin.SoAsciiText.CENTER
         label = coin.SoSeparator()
@@ -3211,9 +3214,9 @@ class _ViewProviderDimension(_ViewProviderDraft):
             # set text value
             l = self.p3.sub(self.p2).Length
             if hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su)
+                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su).encode("utf8")
             else:
-                self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length',su)
+                self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length',su).encode("utf8")
             if hasattr(obj.ViewObject,"Override"):
                 if obj.ViewObject.Override:
                     try:
@@ -3426,6 +3429,8 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
         self.font3d = coin.SoFont()
         self.text = coin.SoAsciiText()
         self.text3d = coin.SoText2()
+        self.text.string = "d" # some versions of coin crash if string is not set
+        self.text3d.string = "d"
         self.text.justification = self.text3d.justification = coin.SoAsciiText.CENTER
         self.textpos = coin.SoTransform()
         label = coin.SoSeparator()
@@ -3498,9 +3503,9 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             if hasattr(obj.ViewObject,"ShowUnit"):
                 su = obj.ViewObject.ShowUnit
             if hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(a,obj.ViewObject.Decimals,'Angle',su)
+                self.string = DraftGui.displayExternal(a,obj.ViewObject.Decimals,'Angle',su).encode("utf8")
             else:
-                self.string = DraftGui.displayExternal(a,getParam("dimPrecision",2),'Angle',su)
+                self.string = DraftGui.displayExternal(a,getParam("dimPrecision",2),'Angle',su).encode("utf8")
             if obj.ViewObject.Override:
                 try:
                     from pivy import coin
