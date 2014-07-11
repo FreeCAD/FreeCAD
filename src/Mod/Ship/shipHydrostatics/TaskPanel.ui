@@ -36,39 +36,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="Trim">
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="decimals">
-        <number>1</number>
-       </property>
-       <property name="minimum">
-        <double>-45.000000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>45.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="TrimUnits">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Deg</string>
-       </property>
-      </widget>
+      <widget class="Gui::InputField" name="Trim"/>
      </item>
     </layout>
    </item>
@@ -89,19 +57,6 @@
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
-        <item row="0" column="2">
-         <widget class="QLabel" name="MinDraftDim">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>m</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="0">
          <widget class="QLabel" name="NDraftLabel">
           <property name="sizePolicy">
@@ -128,19 +83,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QLabel" name="MaxDraftDim">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>m</string>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="1">
          <widget class="QSpinBox" name="NDraft">
           <property name="sizePolicy">
@@ -160,32 +102,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="MaxDraft">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="decimals">
-           <number>3</number>
-          </property>
-          <property name="singleStep">
-           <double>0.010000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QDoubleSpinBox" name="MinDraft">
-          <property name="decimals">
-           <number>3</number>
-          </property>
-          <property name="singleStep">
-           <double>0.010000000000000</double>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="MaxDraftLabel">
           <property name="sizePolicy">
@@ -199,6 +115,12 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="1">
+         <widget class="Gui::InputField" name="MinDraft"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::InputField" name="MaxDraft"/>
+        </item>
        </layout>
       </item>
      </layout>
@@ -206,6 +128,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header location="global">Gui/Inputfield.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

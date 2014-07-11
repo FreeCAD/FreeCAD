@@ -32,6 +32,7 @@ from PySide import QtGui, QtCore
 import PlotAux
 import Instance
 from shipUtils import Paths
+import shipUtils.Units as USys
 import Tools
 
 
@@ -50,13 +51,14 @@ class TaskPanel:
 
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
-        form.minDraft = self.widget(QtGui.QDoubleSpinBox, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QDoubleSpinBox, "MaxDraft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
+        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
         form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
 
-        min_draft = form.minDraft.value()
-        max_draft = form.maxDraft.value()
+        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+        min_draft = Units.Quantity(form.minDraft.text()).getValueAs('m').Value
+        max_draft = Units.Quantity(form.maxDraft.text()).getValueAs('m').Value
         n_draft = form.nDraft.value()
 
         draft = min_draft
@@ -102,13 +104,13 @@ class TaskPanel:
             point = Tools.Point(self.ship,
                                 faces,
                                 draft,
-                                form.trim.value())
+                                trim)
             points.append(point)
             self.timer.start(0.0)
             self.loop.exec_()
             if(not self.running):
                 break
-        PlotAux.Plot(self.ship, form.trim.value(), points)
+        PlotAux.Plot(self.ship, trim, points)
         return True
 
     def reject(self):
@@ -143,9 +145,9 @@ class TaskPanel:
     def setupUi(self):
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
-        form.minDraft = self.widget(QtGui.QDoubleSpinBox, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QDoubleSpinBox, "MaxDraft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
+        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
         form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
         self.form = form
         # Initial values
@@ -186,9 +188,9 @@ class TaskPanel:
         """
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
-        form.minDraft = self.widget(QtGui.QDoubleSpinBox, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QDoubleSpinBox, "MaxDraft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
+        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
         form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
 
         selObjs = Gui.Selection.getSelection()
@@ -230,35 +232,35 @@ class TaskPanel:
             App.Console.PrintError(msg + '\n')
             return True
 
-        bbox = self.ship.Shape.BoundBox
         props = self.ship.PropertiesList
+
+        length_format = USys.getLengthFormat()
+        angle_format = USys.getAngleFormat()
 
         try:
             props.index("HydrostaticsTrim")
-            form.trim.setValue(
-                self.ship.HydrostaticsTrim.getValueAs('deg').Value)
+            form.trim.setText(angle_format.format(
+                self.ship.HydrostaticsTrim.getValueAs(
+                    USys.getLengthUnits()).Value))
         except ValueError:
-            pass
+            form.trim.setText(angle_format.format(0.0))
 
         try:
             props.index("HydrostaticsMinDraft")
-            form.minDraft.setValue(
-                self.ship.HydrostaticsMinDraft.getValueAs('m').Value)
+            form.minDraft.setText(length_format.format(
+                self.ship.HydrostaticsMinDraft.getValueAs(
+                    USys.getLengthUnits()).Value))
         except ValueError:
-            form.minDraft.setValue(
-                0.9 * self.ship.Draft.getValueAs('m').Value)
+            form.minDraft.setText(length_format.format(
+                0.9 * self.ship.Draft.getValueAs('m').Value))
         try:
             props.index("HydrostaticsMaxDraft")
-            form.maxDraft.setValue(
-                self.ship.HydrostaticsMaxDraft.getValueAs('m').Value)
+            form.maxDraft.setText(length_format.format(
+                self.ship.HydrostaticsMaxDraft.getValueAs(
+                    USys.getLengthUnits()).Value))
         except ValueError:
-            form.maxDraft.setValue(
-                1.1 * self.ship.Draft.getValueAs('m').Value)
-
-        form.maxDraft.setMaximum(bbox.ZMax / Units.Metre.Value)
-        form.minDraft.setMinimum(bbox.ZMin / Units.Metre.Value)
-        form.maxDraft.setMinimum(form.minDraft.value())
-        form.minDraft.setMaximum(form.maxDraft.value())
+            form.maxDraft.setText(length_format.format(
+                1.1 * self.ship.Draft.getValueAs('m').Value))
 
         try:
             props.index("HydrostaticsNDraft")
@@ -303,6 +305,26 @@ class TaskPanel:
                 None,
                 QtGui.QApplication.UnicodeUTF8))
 
+    def clampLength(self, widget, val_min, val_max, val):
+        if val >= val_min and val <= val_max:
+            return val
+        input_format = USys.getLengthFormat()
+        val = min(val_max, max(val_min, val))
+        qty = Units.Quantity('{} m'.format(val))
+        widget.setText(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value))
+        return val
+
+    def clampAngle(self, widget, val_min, val_max, val):
+        if val >= val_min and val <= val_max:
+            return val
+        input_format = USys.getAngleFormat()
+        val = min(val_max, max(val_min, val))
+        qty = Units.Quantity('{} deg'.format(val))
+        widget.setText(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value))
+        return val
+
     def onData(self, value):
         """ Method called when input data is changed.
          @param value Changed value.
@@ -311,22 +333,82 @@ class TaskPanel:
             return
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.minDraft = self.widget(QtGui.QDoubleSpinBox, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QDoubleSpinBox, "MaxDraft")
-        form.maxDraft.setMinimum(form.minDraft.value())
-        form.minDraft.setMaximum(form.maxDraft.value())
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
+        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
+
+        # Get the values (or fix them in bad setting case)
+        try:
+            trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+        except:
+            trim = 0.0
+            input_format = USys.getAngleFormat()
+            qty = Units.Quantity('{} deg'.format(trim))
+            form.trim.setText(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value))
+        try:
+            min_draft = Units.Quantity(
+                form.minDraft.text()).getValueAs('m').Value
+        except:
+            min_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
+            input_format = USys.getLengthFormat()
+            qty = Units.Quantity('{} m'.format(draft))
+            form.minDraft.setText(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value))
+        try:
+            max_draft = Units.Quantity(
+                form.minDraft.text()).getValueAs('m').Value
+        except:
+            max_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
+            input_format = USys.getLengthFormat()
+            qty = Units.Quantity('{} m'.format(draft))
+            form.maxDraft.setText(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value))
+
+        # Clamp the values to the bounds
+        bbox = self.ship.Shape.BoundBox
+        draft_min = bbox.ZMin / Units.Metre.Value
+        draft_max = bbox.ZMax / Units.Metre.Value
+        min_draft = self.clampLength(form.minDraft,
+                                     draft_min,
+                                     draft_max,
+                                     min_draft)
+        max_draft = self.clampLength(form.maxDraft,
+                                     draft_min,
+                                     draft_max,
+                                     max_draft)
+        trim_min = -180.0
+        trim_max = 180.0
+        trim = self.clampAngle(form.trim, trim_min, trim_max, trim)
+
+        # Clamp draft values to assert that the minimum value is lower than
+        # the maximum one
+        min_draft = self.clampLength(form.minDraft,
+                                     draft_min,
+                                     max_draft,
+                                     min_draft)
+        max_draft = self.clampLength(form.maxDraft,
+                                     min_draft,
+                                     draft_max,
+                                     max_draft)
+
 
     def save(self):
         """ Saves data into ship instance.
         """
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
-        form.minDraft = self.widget(QtGui.QDoubleSpinBox, "MinDraft")
-        form.maxDraft = self.widget(QtGui.QDoubleSpinBox, "MaxDraft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.minDraft = self.widget(QtGui.QLineEdit, "MinDraft")
+        form.maxDraft = self.widget(QtGui.QLineEdit, "MaxDraft")
         form.nDraft = self.widget(QtGui.QSpinBox, "NDraft")
-        props = self.ship.PropertiesList
 
+        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+        min_draft = Units.Quantity(form.minDraft.text()).getValueAs('m').Value
+        max_draft = Units.Quantity(form.maxDraft.text()).getValueAs('m').Value
+        n_draft = form.nDraft.value()
+
+        props = self.ship.PropertiesList
         try:
             props.index("HydrostaticsTrim")
         except ValueError:
@@ -339,7 +421,7 @@ class TaskPanel:
                                   "HydrostaticsTrim",
                                   "Ship",
                                   tooltip)
-        self.ship.HydrostaticsTrim = '{} deg'.format(form.trim.value())
+        self.ship.HydrostaticsTrim = '{} deg'.format(trim)
 
         try:
             props.index("HydrostaticsMinDraft")
@@ -353,7 +435,7 @@ class TaskPanel:
                                   "HydrostaticsMinDraft",
                                   "Ship",
                                   tooltip)
-        self.ship.HydrostaticsMinDraft = '{} m'.format(form.minDraft.value())
+        self.ship.HydrostaticsMinDraft = '{} m'.format(min_draft)
 
         try:
             props.index("HydrostaticsMaxDraft")
@@ -367,7 +449,7 @@ class TaskPanel:
                                   "HydrostaticsMaxDraft",
                                   "Ship",
                                   tooltip)
-        self.ship.HydrostaticsMaxDraft = '{} m'.format(form.maxDraft.value())
+        self.ship.HydrostaticsMaxDraft = '{} m'.format(max_draft)
 
         try:
             props.index("HydrostaticsNDraft")
