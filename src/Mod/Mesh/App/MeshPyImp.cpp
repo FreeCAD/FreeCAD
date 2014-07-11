@@ -151,7 +151,7 @@ PyObject*  MeshPy::write(PyObject *args)
     char* Ext=0;
     char* ObjName=0;
     PyObject* List=0;
-    if (!PyArg_ParseTuple(args, "s|ss",&Name,&Ext,&ObjName,&PyList_Type,&List))
+    if (!PyArg_ParseTuple(args, "s|ssO!",&Name,&Ext,&ObjName,&PyList_Type,&List))
         return NULL;
 
     MeshCore::MeshIO::Format format = MeshCore::MeshIO::Undefined;
