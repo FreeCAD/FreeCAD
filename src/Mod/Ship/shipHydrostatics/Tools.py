@@ -216,8 +216,11 @@ def wettedArea(shape, draft, trim):
     # Create the "sea" box
     L = xmax - xmin
     B = bbox.YMax - bbox.YMin
-    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
-    box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
+    p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin - 1.0)
+    try:
+        box = Part.makeBox(3.0 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
+    except:
+        return 0.0
 
     for f in shape.Faces:
         try:
@@ -274,8 +277,11 @@ def FloatingArea(ship, draft, trim):
     # Create the "sea" box
     L = xmax - xmin
     B = bbox.YMax - bbox.YMin
-    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
-    box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
+    p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin - 1.0)
+    try:
+        box = Part.makeBox(3.0 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
+    except:
+        return [area, cf]
 
     maxX = bbox.XMin / Units.Metre.Value
     minX = bbox.XMax / Units.Metre.Value
@@ -368,8 +374,11 @@ def mainFrameCoeff(ship, draft):
     # Create the "sea" box
     L = xmax - xmin
     B = bbox.YMax - bbox.YMin
-    p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
-    box = Part.makeBox(1.5*L + x, 3.0*B, - bbox.ZMin + 1.0, p)
+    p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin - 1.0)
+    try:
+        box = Part.makeBox(1.5 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
+    except:
+        return cm
 
     maxY = bbox.YMin / Units.Metre.Value
     minY = bbox.YMax / Units.Metre.Value
