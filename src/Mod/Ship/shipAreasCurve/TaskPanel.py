@@ -30,6 +30,7 @@ import Preview
 import PlotAux
 import Instance
 from shipUtils import Paths
+import shipUtils.Units as USys
 from shipHydrostatics import Tools as Hydrostatics
 
 
@@ -46,18 +47,20 @@ class TaskPanel:
         # Plot data
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        draft = Units.Quantity(form.draft.text()).getValueAs('m').Value
+        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
         data = Hydrostatics.displacement(self.ship,
-                                         form.draft.value(),
+                                         draft,
                                          0.0,
-                                         form.trim.value())
+                                         trim)
         disp = data[0]
         xcb = data[1].x
         data = Hydrostatics.areas(self.ship,
-                                  form.draft.value(),
+                                  draft,
                                   0.0,
-                                  form.trim.value())
+                                  trim)
         x = []
         y = []
         for i in range(0, len(data)):
@@ -95,8 +98,9 @@ class TaskPanel:
     def setupUi(self):
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
+
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
         form.output = self.widget(QtGui.QTextEdit, "OutputData")
         form.doc = QtGui.QTextDocument(form.output)
         self.form = form
@@ -168,29 +172,37 @@ class TaskPanel:
                 QtGui.QApplication.UnicodeUTF8)
             App.Console.PrintError(msg + '\n')
             return True
-        # Get the bounds for the tools
+
+        length_format = USys.getLengthFormat()
+        angle_format = USys.getAngleFormat()
+
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
-        bbox = self.ship.Shape.BoundBox
-        form.draft.setMaximum(bbox.ZMax / Units.Metre.Value)
-        form.draft.setMinimum(bbox.ZMin / Units.Metre.Value)
-        form.draft.setValue(self.ship.Draft.getValueAs('m').Value)
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
+        form.draft.setText(length_format.format(
+            self.ship.Draft.getValueAs(USys.getLengthUnits()).Value))
+        form.trim.setText(angle_format.format(0.0))
         # Try to use saved values
         props = self.ship.PropertiesList
         try:
             props.index("AreaCurveDraft")
-            form.draft.setValue(self.ship.AreaCurveDraft.getValueAs('m').Value)
-        except ValueError:
-            form.draft.setValue(self.ship.Draft.getValueAs('m').Value)
+            form.draft.setText(length_format.format(
+                self.ship.AreaCurveDraft.getValueAs(
+                    USys.getLengthUnits()).Value))
+        except:
+            pass
         try:
             props.index("AreaCurveTrim")
-            form.trim.setValue(self.ship.AreaCurveTrim.getValueAs('deg').Value)
+            form.trim.setText(angle_format.format(
+                self.ship.AreaCurveTrim.getValueAs(
+                    USys.getAngleUnits()).Value))
         except ValueError:
-            form.trim.setValue(0.0)
+            pass
         # Update GUI
-        self.preview.update(form.draft.value(), form.trim.value(), self.ship)
+        draft = Units.Quantity(form.draft.text()).getValueAs('m').Value
+        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+        self.preview.update(draft, trim, self.ship)
         self.onUpdate()
         return False
 
@@ -216,18 +228,67 @@ class TaskPanel:
                 None,
                 QtGui.QApplication.UnicodeUTF8))
 
+    def clampLength(self, widget, val_min, val_max, val):
+        if val >= val_min and val <= val_max:
+            return val
+        input_format = USys.getLengthFormat()
+        val = min(val_max, max(val_min, val))
+        qty = Units.Quantity('{} m'.format(val))
+        widget.setText(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value))
+        return val
+
+    def clampAngle(self, widget, val_min, val_max, val):
+        if val >= val_min and val <= val_max:
+            return val
+        input_format = USys.getAngleFormat()
+        val = min(val_max, max(val_min, val))
+        qty = Units.Quantity('{} deg'.format(val))
+        widget.setText(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value))
+        return val
+
     def onData(self, value):
         """ Method called when the tool input data is touched.
         @param value Changed value.
         """
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
         if not self.ship:
             return
+
+        mw = self.getMainWindow()
+        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
+
+        # Get the values (or fix them in bad setting case)
+        try:
+            draft = Units.Quantity(form.draft.text()).getValueAs('m').Value
+        except:
+            draft = self.ship.Draft.getValueAs(USys.getLengthUnits()).Value
+            input_format = USys.getLengthFormat()
+            qty = Units.Quantity('{} m'.format(draft))
+            widget.setText(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value))
+        try:
+            trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+        except:
+            trim = 0.0
+            input_format = USys.getAngleFormat()
+            qty = Units.Quantity('{} deg'.format(trim))
+            widget.setText(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value))
+
+        bbox = self.ship.Shape.BoundBox
+        draft_min = bbox.ZMin / Units.Metre.Value
+        draft_max = bbox.ZMax / Units.Metre.Value
+        draft = self.clampLength(form.draft, draft_min, draft_max, draft)
+
+        trim_min = -90.0
+        trim_max = 90.0
+        trim = self.clampAngle(form.trim, trim_min, trim_max, trim)
+
         self.onUpdate()
-        self.preview.update(form.draft.value(), form.trim.value(), self.ship)
+        self.preview.update(draft, trim, self.ship)
 
     def onUpdate(self):
         """ Method called when the data update is requested. """
@@ -235,29 +296,33 @@ class TaskPanel:
             return
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
         form.output = self.widget(QtGui.QTextEdit, "OutputData")
+
+        draft = Units.Quantity(form.draft.text()).getValueAs('m').Value
+        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+
         # Calculate the drafts at each perpendicular
-        angle = math.radians(form.trim.value())
+        angle = math.radians(trim)
         L = self.ship.Length.getValueAs('m').Value
         B = self.ship.Breadth.getValueAs('m').Value
-        draftAP = form.draft.value() + 0.5 * L * math.tan(angle)
+        draftAP = draft + 0.5 * L * math.tan(angle)
         if draftAP < 0.0:
             draftAP = 0.0
-        draftFP = form.draft.value() - 0.5 * L * math.tan(angle)
+        draftFP = draft - 0.5 * L * math.tan(angle)
         if draftFP < 0.0:
             draftFP = 0.0
         # Calculate the involved hydrostatics
         data = Hydrostatics.displacement(self.ship,
-                                         form.draft.value(),
+                                         draft,
                                          0.0,
-                                         form.trim.value())
+                                         trim)
         # Setup the html string
         string = 'L = {0} [m]<BR>'.format(L)
         string = string + 'B = {0} [m]<BR>'.format(B)
-        string = string + 'T = {0} [m]<HR>'.format(form.draft.value())
-        string = string + 'Trim = {0} [degrees]<BR>'.format(form.trim.value())
+        string = string + 'T = {0} [m]<HR>'.format(draft)
+        string = string + 'Trim = {0} [degrees]<BR>'.format(trim)
         string = string + 'T<sub>AP</sub> = {0} [m]<BR>'.format(draftAP)
         string = string + 'T<sub>FP</sub> = {0} [m]<HR>'.format(draftFP)
         dispText = QtGui.QApplication.translate(
@@ -273,8 +338,12 @@ class TaskPanel:
         """ Saves the data into ship instance. """
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
-        form.trim = self.widget(QtGui.QDoubleSpinBox, "Trim")
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
+        form.trim = self.widget(QtGui.QLineEdit, "Trim")
+
+        draft = Units.Quantity(form.draft.text()).getValueAs('m').Value
+        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+
         props = self.ship.PropertiesList
         try:
             props.index("AreaCurveDraft")
@@ -291,7 +360,7 @@ class TaskPanel:
                                   "AreaCurveDraft",
                                   "Ship",
                                   tooltip)
-        self.ship.AreaCurveDraft = '{} m'.format(form.draft.value())
+        self.ship.AreaCurveDraft = '{} m'.format(draft)
         try:
             props.index("AreaCurveTrim")
         except ValueError:
@@ -307,7 +376,7 @@ class TaskPanel:
                                   "AreaCurveTrim",
                                   "Ship",
                                   tooltip)
-        self.ship.AreaCurveTrim = '{} deg'.format(form.trim.value())
+        self.ship.AreaCurveTrim = '{} deg'.format(trim)
 
 
 def createTask():
