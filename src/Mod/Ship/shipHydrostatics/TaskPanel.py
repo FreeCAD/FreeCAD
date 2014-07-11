@@ -352,7 +352,7 @@ class TaskPanel:
         except:
             min_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
             input_format = USys.getLengthFormat()
-            qty = Units.Quantity('{} m'.format(draft))
+            qty = Units.Quantity('{} m'.format(min_draft))
             form.minDraft.setText(input_format.format(
                 qty.getValueAs(USys.getLengthUnits()).Value))
         try:
@@ -361,7 +361,7 @@ class TaskPanel:
         except:
             max_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
             input_format = USys.getLengthFormat()
-            qty = Units.Quantity('{} m'.format(draft))
+            qty = Units.Quantity('{} m'.format(max_draft))
             form.maxDraft.setText(input_format.format(
                 qty.getValueAs(USys.getLengthUnits()).Value))
 
