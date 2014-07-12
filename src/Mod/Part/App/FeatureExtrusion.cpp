@@ -46,6 +46,7 @@
 # include <ShapeFix_Shape.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <TopoDS.hxx>
+# include <TopoDS_Iterator.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>
@@ -105,64 +106,23 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
                 Standard_Failure::Raise("Cannot extrude empty shape");
             // #0000910: Circles Extrude Only Surfaces, thus use BRepBuilderAPI_Copy
             myShape = BRepBuilderAPI_Copy(myShape).Shape();
-            bool isWire = (myShape.ShapeType() == TopAbs_WIRE);
-            bool isFace = (myShape.ShapeType() == TopAbs_FACE);
-            if (!isWire && !isFace)
-                return new App::DocumentObjectExecReturn("Only a wire or a face is supported");
 
-            std::list<TopoDS_Wire> wire_list;
-            BRepOffsetAPI_MakeOffset mkOffset;
-            if (isWire) {
-#if 1 //OCC_HEX_VERSION < 0x060502
-                // The input wire may have erorrs in its topology
-                // and thus may cause a crash in the Perfrom() method
-                // See also:
-                // http://www.opencascade.org/org/forum/thread_17640/
-                // http://www.opencascade.org/org/forum/thread_12012/
-                ShapeFix_Wire aFix;
-                aFix.Load(TopoDS::Wire(myShape));
-                aFix.FixReorder();
-                aFix.FixConnected();
-                aFix.FixClosed();
-                mkOffset.AddWire(aFix.Wire());
-                wire_list.push_back(aFix.Wire());
-#else
-                mkOffset.AddWire(TopoDS::Wire(shape));
-#endif
+            std::list<TopoDS_Shape> drafts;
+            makeDraft(distance, vec, makeSolid, myShape, drafts);
+            if (drafts.empty()) {
+                Standard_Failure::Raise("Drafting shape failed");
             }
-            else if (isFace) {
-                TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(myShape));
-                wire_list.push_back(outerWire);
-                mkOffset.AddWire(outerWire);
-            }
-
-            mkOffset.Perform(distance);
-
-            gp_Trsf mat;
-            mat.SetTranslation(vec);
-            BRepBuilderAPI_Transform mkTransform(mkOffset.Shape(),mat);
-            if (mkTransform.Shape().IsNull())
-                Standard_Failure::Raise("Tapered shape is empty");
-            TopAbs_ShapeEnum type = mkTransform.Shape().ShapeType();
-            if (type == TopAbs_WIRE) {
-                wire_list.push_back(TopoDS::Wire(mkTransform.Shape()));
-            }
-            else if (type == TopAbs_EDGE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mkTransform.Shape()));
-                wire_list.push_back(mkWire.Wire());
+            else if (drafts.size() == 1) {
+                this->Shape.setValue(drafts.front());
             }
             else {
-                Standard_Failure::Raise("Tapered shape type is not supported");
+                TopoDS_Compound comp;
+                BRep_Builder builder;
+                builder.MakeCompound(comp);
+                for (std::list<TopoDS_Shape>::iterator it = drafts.begin(); it != drafts.end(); ++it)
+                    builder.Add(comp, *it);
+                this->Shape.setValue(comp);
             }
-
-            BRepOffsetAPI_ThruSections mkGenerator(makeSolid ? Standard_True : Standard_False, Standard_False);
-            for (std::list<TopoDS_Wire>::const_iterator it = wire_list.begin(); it != wire_list.end(); ++it) {
-                const TopoDS_Wire &wire = *it;
-                mkGenerator.AddWire(wire);
-            }
-
-            mkGenerator.Build();
-            this->Shape.setValue(mkGenerator.Shape());
         }
         else {
             // Now, let's get the TopoDS_Shape
@@ -213,6 +173,73 @@ App::DocumentObjectExecReturn *Extrusion::execute(void)
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+}
+
+void Extrusion::makeDraft(double distance, const gp_Vec& vec, bool makeSolid, const TopoDS_Shape& shape, std::list<TopoDS_Shape>& drafts) const
+{
+    std::list<TopoDS_Wire> wire_list;
+    if (shape.IsNull())
+        Standard_Failure::Raise("Not a valid shape");
+    if (shape.ShapeType() == TopAbs_WIRE) {
+        ShapeFix_Wire aFix;
+        aFix.Load(TopoDS::Wire(shape));
+        aFix.FixReorder();
+        aFix.FixConnected();
+        aFix.FixClosed();
+        wire_list.push_back(aFix.Wire());
+    }
+    else if (shape.ShapeType() == TopAbs_FACE) {
+        TopoDS_Wire outerWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+        wire_list.push_back(outerWire);
+    }
+    else if (shape.ShapeType() == TopAbs_COMPOUND) {
+        TopoDS_Iterator it(shape);
+        for (; it.More(); it.Next()) {
+            makeDraft(distance, vec, makeSolid, it.Value(), drafts);
+        }
+    }
+    else {
+        Standard_Failure::Raise("Only a wire or a face is supported");
+    }
+
+    if (!wire_list.empty()) {
+        BRepOffsetAPI_MakeOffset mkOffset;
+        mkOffset.AddWire(wire_list.front());
+        mkOffset.Perform(distance);
+
+        gp_Trsf mat;
+        mat.SetTranslation(vec);
+        BRepBuilderAPI_Transform mkTransform(mkOffset.Shape(),mat);
+        if (mkTransform.Shape().IsNull())
+            Standard_Failure::Raise("Tapered shape is empty");
+        TopAbs_ShapeEnum type = mkTransform.Shape().ShapeType();
+        if (type == TopAbs_WIRE) {
+            wire_list.push_back(TopoDS::Wire(mkTransform.Shape()));
+        }
+        else if (type == TopAbs_EDGE) {
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(mkTransform.Shape()));
+            wire_list.push_back(mkWire.Wire());
+        }
+        else {
+            Standard_Failure::Raise("Tapered shape type is not supported");
+        }
+
+        BRepOffsetAPI_ThruSections mkGenerator(makeSolid ? Standard_True : Standard_False, Standard_False);
+        for (std::list<TopoDS_Wire>::const_iterator it = wire_list.begin(); it != wire_list.end(); ++it) {
+            const TopoDS_Wire &wire = *it;
+            mkGenerator.AddWire(wire);
+        }
+
+        try {
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
+            Base::SignalException se;
+#endif
+            mkGenerator.Build();
+            drafts.push_back(mkGenerator.Shape());
+        }
+        catch (...) {
+        }
     }
 }
 
