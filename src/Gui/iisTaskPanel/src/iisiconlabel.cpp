@@ -19,6 +19,7 @@ iisIconLabel::iisIconLabel(const QIcon &icon, const QString &title, QWidget *par
 	m_underlineOver(true)
 {
 	setFocusPolicy(Qt::StrongFocus);
+	setCursor(Qt::PointingHandCursor);
 
 	myFont.setWeight(0);
 	myPen.setStyle(Qt::NoPen);
@@ -28,8 +29,8 @@ iisIconLabel::iisIconLabel(const QIcon &icon, const QString &title, QWidget *par
 
 iisIconLabel::~iisIconLabel()
 {
-	if (m_changeCursorOver)
-		QApplication::restoreOverrideCursor();
+	//if (m_changeCursorOver)
+	//	QApplication::restoreOverrideCursor();
 }
 
 void iisIconLabel::setSchemePointer(iisIconLabelScheme **pointer)
@@ -141,8 +142,8 @@ void iisIconLabel::enterEvent ( QEvent * /*event*/ )
 {
 	m_over = true;
 
-	if (m_changeCursorOver)
-		QApplication::setOverrideCursor(Qt::PointingHandCursor);
+	//if (m_changeCursorOver)
+	//	QApplication::setOverrideCursor(Qt::PointingHandCursor);
 
 	update();
 }
@@ -152,8 +153,8 @@ void iisIconLabel::leaveEvent ( QEvent * /*event*/ )
 	m_over = false;
 	update();
 
-	if (m_changeCursorOver)
-		QApplication::restoreOverrideCursor();
+	//if (m_changeCursorOver)
+	//	QApplication::restoreOverrideCursor();
 }
 
 void iisIconLabel::mousePressEvent ( QMouseEvent * event )
