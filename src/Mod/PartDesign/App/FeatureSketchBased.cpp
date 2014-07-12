@@ -234,6 +234,8 @@ const TopoDS_Shape& SketchBased::getSupportShape() const {
 int SketchBased::getSketchAxisCount(void) const
 {
     Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());
+    if (!sketch)
+        return -1; // the link to the sketch is lost
     return sketch->getAxisCount();
 }
 
