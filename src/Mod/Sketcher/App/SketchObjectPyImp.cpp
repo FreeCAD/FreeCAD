@@ -53,8 +53,10 @@ std::string SketchObjectPy::representation(void) const
 
 PyObject* SketchObjectPy::solve(PyObject *args)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    int ret = this->getSketchObjectPtr()->solve();
+    return Py_BuildValue("i", ret);
 }
 
 PyObject* SketchObjectPy::addGeometry(PyObject *args)
