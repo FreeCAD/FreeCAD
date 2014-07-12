@@ -67,6 +67,16 @@ void ViewProviderRevolution::setupContextMenu(QMenu* menu, QObject* receiver, co
 bool ViewProviderRevolution::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default ) {
+        PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(getObject());
+        if (pcRevolution->getSketchAxisCount() < 0) {
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setWindowTitle(QObject::tr("Lost link to base sketch"));
+            msgBox.setText(QObject::tr("The object can't be edited because the link to the the base sketch is lost."));
+            msgBox.setStandardButtons(QMessageBox::Ok);
+            msgBox.exec();
+            return false;
+        }
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
