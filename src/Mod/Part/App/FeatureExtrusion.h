@@ -60,6 +60,7 @@ private:
     TopoDS_Face validateFace(const TopoDS_Face&) const;
     TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;
     TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only
+    void makeDraft(double, const gp_Vec&, bool, const TopoDS_Shape&, std::list<TopoDS_Shape>&) const;
 
 private:
     class Wire_Compare;
