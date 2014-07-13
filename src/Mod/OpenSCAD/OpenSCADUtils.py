@@ -55,6 +55,17 @@ def searchforopenscadexe():
             if os.path.isfile(testpath):
                 return testpath
     elif sys.platform == 'darwin':
+        ascript = ('tell application "Finder"\n'
+        'POSIX path of (application file id "org.openscad.OpenSCAD"'
+        'as alias)\n'
+        'end tell')
+        p1=subprocess.Popen(['osascript','-'],stdin=subprocess.PIPE,\
+                stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        stdout,stderr = p1.communicate(ascript)
+        if p1.returncode == 0:
+            opathl=stdout.split('\n')
+            if len(opathl) >=1:
+                return opathl[0]+'Contents/MacOS/OpenSCAD'
         #test the default path
         testpath="/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD"
         if os.path.isfile(testpath):

@@ -110,6 +110,7 @@ void Workbench::activated()
 
     const char* Sketch[] = {
         "Sketcher_NewSketch",
+        "Sketcher_EditSketch",
         "PartDesign_Pad",
         "PartDesign_Pocket",
         "PartDesign_Revolution",

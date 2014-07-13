@@ -28,7 +28,7 @@ from PySide import QtGui, QtCore
 import Preview
 import Instance
 from shipUtils import Paths
-
+import shipUtils.Units as USys
 
 class TaskPanel:
     def __init__(self):
@@ -44,12 +44,13 @@ class TaskPanel:
         Instance.ViewProviderShip(obj.ViewObject)
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.length = self.widget(QtGui.QDoubleSpinBox, "Length")
-        form.breadth = self.widget(QtGui.QDoubleSpinBox, "Breadth")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
-        obj.Length = '{} m'.format(form.length.value())
-        obj.Breadth = '{} m'.format(form.breadth.value())
-        obj.Draft = '{} m'.format(form.draft.value())
+        form.length = self.widget(QtGui.QLineEdit, "Length")
+        form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
+
+        obj.Length = form.length.text()
+        obj.Breadth = form.breadth.text()
+        obj.Draft = form.draft.text()
         App.ActiveDocument.recompute()
         return True
 
@@ -83,9 +84,9 @@ class TaskPanel:
         """Create and configurate the user interface"""
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.length = self.widget(QtGui.QDoubleSpinBox, "Length")
-        form.breadth = self.widget(QtGui.QDoubleSpinBox, "Breadth")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
+        form.length = self.widget(QtGui.QLineEdit, "Length")
+        form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
         form.mainLogo = self.widget(QtGui.QLabel, "MainLogo")
         form.mainLogo.setPixmap(QtGui.QPixmap(":/icons/Ship_Logo.svg"))
         self.form = form
@@ -167,7 +168,7 @@ class TaskPanel:
             return True
         # Get the ship bounds. The ship instance can not have dimensions
         # out of these values.
-        bounds = [0.0, 0.0, 0.0]
+        self.bounds = [0.0, 0.0, 0.0]
         bbox = self.solids[0].BoundBox
         minX = bbox.XMin
         maxX = bbox.XMax
@@ -189,28 +190,30 @@ class TaskPanel:
                 minZ = bbox.ZMin
             if maxZ < bbox.ZMax:
                 maxZ = bbox.ZMax
-        bounds[0] = maxX - minX
-        bounds[1] = max(maxY - minY, abs(maxY), abs(minY))
-        bounds[2] = maxZ - minZ
+        self.bounds[0] = maxX - minX
+        self.bounds[1] = max(maxY - minY, abs(maxY), abs(minY))
+        self.bounds[2] = maxZ - minZ
+
+        input_format = USys.getLengthFormat()
 
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.length = self.widget(QtGui.QDoubleSpinBox, "Length")
-        form.breadth = self.widget(QtGui.QDoubleSpinBox, "Breadth")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
+        form.length = self.widget(QtGui.QLineEdit, "Length")
+        form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
-        form.length.setMaximum(bounds[0] / Units.Metre.Value)
-        form.length.setMinimum(0.001)
-        form.length.setValue(bounds[0] / Units.Metre.Value)
-        self.L = bounds[0] / Units.Metre.Value
-        form.breadth.setMaximum(bounds[1] / Units.Metre.Value)
-        form.breadth.setMinimum(0.001)
-        form.breadth.setValue(bounds[1] / Units.Metre.Value)
-        self.B = bounds[1] / Units.Metre.Value
-        form.draft.setMaximum(bounds[2] / Units.Metre.Value)
-        form.draft.setMinimum(0.001)
-        form.draft.setValue(0.5 * bounds[2] / Units.Metre.Value)
-        self.T = 0.5 * bounds[2] / Units.Metre.Value
+        qty = Units.Quantity(self.bounds[0], Units.Length)
+        form.length.setText(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value))
+        self.L = self.bounds[0] / Units.Metre.Value
+        qty = Units.Quantity(self.bounds[1], Units.Length)
+        form.breadth.setText(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value))
+        self.B = self.bounds[1] / Units.Metre.Value
+        qty = Units.Quantity(self.bounds[2], Units.Length)
+        form.draft.setText(input_format.format(
+            0.5 * qty.getValueAs(USys.getLengthUnits()).Value))
+        self.T = 0.5 * self.bounds[2] / Units.Metre.Value
         return False
 
     def retranslateUi(self):
@@ -239,6 +242,16 @@ class TaskPanel:
                 None,
                 QtGui.QApplication.UnicodeUTF8))
 
+    def clampVal(self, widget, val_min, val_max, val):
+        if val >= val_min and val <= val_max:
+            return val
+        input_format = USys.getLengthFormat()
+        val = min(val_max, max(val_min, val))
+        qty = Units.Quantity('{} m'.format(val))
+        widget.setText(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value))
+        return val
+
     def onData(self, value):
         """Updates the 3D preview on data changes.
 
@@ -248,13 +261,25 @@ class TaskPanel:
         """
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.length = self.widget(QtGui.QDoubleSpinBox, "Length")
-        form.breadth = self.widget(QtGui.QDoubleSpinBox, "Breadth")
-        form.draft = self.widget(QtGui.QDoubleSpinBox, "Draft")
+        form.length = self.widget(QtGui.QLineEdit, "Length")
+        form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
+        form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
-        self.L = form.length.value()
-        self.B = form.breadth.value()
-        self.T = form.draft.value()
+        qty = Units.Quantity(form.length.text())
+        val_min = 0.001
+        val_max = self.bounds[0] / Units.Metre.Value
+        val = qty.getValueAs('m').Value
+        self.L = self.clampVal(form.length, val_min, val_max, val)
+        qty = Units.Quantity(form.breadth.text())
+        val_min = 0.001
+        val_max = self.bounds[1] / Units.Metre.Value
+        val = qty.getValueAs('m').Value
+        self.B = self.clampVal(form.breadth, val_min, val_max, val)
+        qty = Units.Quantity(form.draft.text())
+        val_min = 0.001
+        val_max = self.bounds[2] / Units.Metre.Value
+        val = qty.getValueAs('m').Value
+        self.T = self.clampVal(form.draft, val_min, val_max, val)
         self.preview.update(self.L, self.B, self.T)
 
     def getSolids(self, obj):
