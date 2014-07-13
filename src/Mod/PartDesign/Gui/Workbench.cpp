@@ -109,6 +109,7 @@ void Workbench::activated()
 
     const char* Sketch[] = {
         "Sketcher_NewSketch",
+        "Sketcher_EditSketch",
         "PartDesign_Pad",
         "PartDesign_Pocket",
         "PartDesign_Revolution",
@@ -205,6 +206,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, part);
     part->setCommand("&Part Design");
     *part << "Sketcher_NewSketch"
+          << "Sketcher_EditSketch"
           << "Sketcher_LeaveSketch"
           << "Sketcher_ViewSketch"
           << "Sketcher_MapSketch"
