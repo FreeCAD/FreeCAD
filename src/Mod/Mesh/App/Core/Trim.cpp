@@ -240,9 +240,22 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex,
  
                 // is intersection point convex combination?
                 if ((fabs(l+m-1.0f) < 0.001) && (fabs(r+s-1.0f) < 0.001)) {
-#ifdef _DEBUG
                     Base::Vector3f clIntersection(m*clFac._aclPoints[j]+l*clFac._aclPoints[(j+1)%3]);
+
+                    // in case the triangle is intersected at a corner point then don't allow this point twice
+                    bool duplicate = false;
+                    for (std::vector<Base::Vector3f>::iterator it = raclPoints.begin(); it != raclPoints.end(); ++it) {
+                        if (Base::DistanceP2(*it, clIntersection) < MESH_MIN_PT_DIST) {
+                            duplicate = true;
+                            break;
+                        }
+                    }
+
+#if 1
+                    if (duplicate)
+                        continue; // ignore this point
 #endif
+
                     iIntersections++;
               
                     // only two intersections points per edge allowed
@@ -266,7 +279,7 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex,
                     }
 
                     if (bPushBack == true)
-                        raclPoints.push_back(m*clFac._aclPoints[j]+l*clFac._aclPoints[(j+1)%3]);
+                        raclPoints.push_back(clIntersection);
                 }
             }
         }
@@ -335,8 +348,15 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
     if (iSide == -1)
         return false;
 
+    // one point found => triangle is only touch at a corner point
+    // in this case we can use the original triangle
+    if (raclPoints.size() == 1) {
+#if 1
+        aclNewFacets.push_back(myMesh.GetFacet(ulFacetPos));
+#endif
+    }
     // two points found
-    if (raclPoints.size() == 2) {
+    else if (raclPoints.size() == 2) {
         MeshFacet& facet = myMesh._aclFacetArray[ulFacetPos];
         AdjustFacet(facet, iSide);
         Base::Vector3f clP1(raclPoints[0]), clP2(raclPoints[1]);
