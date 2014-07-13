@@ -68,7 +68,7 @@ public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
     virtual int PyInit(PyObject* args, PyObject*k);
-    ~@self.export.Name@();
+    virtual ~@self.export.Name@();
 
     typedef @self.export.TwinPointer@* PointerType ;
 

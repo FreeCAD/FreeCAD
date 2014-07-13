@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) Jï¿½rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,6 +48,7 @@ class AppExport Segment: public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
+    virtual ~Segment(){}
     virtual std::string getName() const=0;
 };
 

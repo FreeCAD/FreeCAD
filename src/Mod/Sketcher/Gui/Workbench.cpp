@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 Jï¿½rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -69,105 +69,37 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     sketch->setCommand("S&ketch");
     Gui::MenuItem* geom = new Gui::MenuItem();
     geom->setCommand("Sketcher geometries");
-    *geom << "Sketcher_CreatePoint"
-          << "Sketcher_CreateLine"
-          << "Sketcher_CreateArc"
-          << "Sketcher_Create3PointArc"
-          << "Sketcher_CreateCircle"
-          << "Sketcher_Create3PointCircle"
-          << "Separator"
-          << "Sketcher_CreatePolyline"
-          << "Sketcher_CreateRectangle"
-          << "Sketcher_CreateSlot"
-          << "Separator"
-          << "Sketcher_CreateFillet"
-          << "Sketcher_Trimming"
-          << "Sketcher_External"
-          << "Sketcher_ToggleConstruction"
-          /*<< "Sketcher_CreateText"*/
-          /*<< "Sketcher_CreateDraftLine"*/;
+    SketcherAddWorkspaceGeometries( *geom );
 
     Gui::MenuItem* cons = new Gui::MenuItem();
     cons->setCommand("Sketcher constraints");
-    *cons << "Sketcher_ConstrainCoincident"
-          << "Sketcher_ConstrainPointOnObject"
-          << "Sketcher_ConstrainVertical"
-          << "Sketcher_ConstrainHorizontal"
-          << "Sketcher_ConstrainParallel"
-          << "Sketcher_ConstrainPerpendicular"
-          << "Sketcher_ConstrainTangent"
-          << "Sketcher_ConstrainEqual"
-          << "Sketcher_ConstrainSymmetric"
-          << "Separator"
-          << "Sketcher_ConstrainLock"
-          << "Sketcher_ConstrainDistanceX"
-          << "Sketcher_ConstrainDistanceY"
-          << "Sketcher_ConstrainDistance"
-          << "Sketcher_ConstrainRadius"
-          << "Sketcher_ConstrainAngle";
+    SketcherAddWorkspaceConstraints(*cons);
 
-    *sketch
-        << "Sketcher_NewSketch"
-        << "Sketcher_LeaveSketch"
-        << "Sketcher_ViewSketch"
-        << "Sketcher_MapSketch"
-        << "Sketcher_ReorientSketch"
-        << "Sketcher_ValidateSketch"
-        << geom
-        << cons
-    ;
+
+    SketcherAddWorkspaceSketchitems( *sketch );
+    *sketch << geom
+    		<< cons;
 
     return root;
 }
 
 Gui::ToolBarItem* Workbench::setupToolBars() const
 {
-    Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
+	Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
 
-    Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
-    part->setCommand("Sketcher");
-    *part << "Sketcher_NewSketch"
-          << "Sketcher_ViewSketch"
-          << "Sketcher_MapSketch"
-          << "Sketcher_LeaveSketch";
+	Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
+	part->setCommand("Sketcher");
+	SketcherAddWorkspaceSketchitems( *part );
 
-    Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
-    geom->setCommand("Sketcher geometries");
-    *geom << "Sketcher_CreatePoint"
-          << "Sketcher_CreateLine"
-          << "Sketcher_CompCreateArc"
-          << "Sketcher_CompCreateCircle"
-          << "Separator"
-          << "Sketcher_CreatePolyline"
-          << "Sketcher_CreateRectangle"
-          << "Sketcher_CreateSlot"
-          << "Separator"
-          << "Sketcher_CreateFillet"
-          << "Sketcher_Trimming"
-          << "Sketcher_External"
-          << "Sketcher_ToggleConstruction"
-          /*<< "Sketcher_CreateText"*/
-          /*<< "Sketcher_CreateDraftLine"*/;
+	Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
+	geom->setCommand("Sketcher geometries");
+	SketcherAddWorkspaceGeometries(*geom);
 
-    Gui::ToolBarItem* cons = new Gui::ToolBarItem(root);
-    cons->setCommand("Sketcher constraints");
-    *cons << "Sketcher_ConstrainCoincident"
-          << "Sketcher_ConstrainPointOnObject"
-          << "Sketcher_ConstrainVertical"
-          << "Sketcher_ConstrainHorizontal"
-          << "Sketcher_ConstrainParallel"
-          << "Sketcher_ConstrainPerpendicular"
-          << "Sketcher_ConstrainTangent"
-          << "Sketcher_ConstrainEqual"
-          << "Sketcher_ConstrainSymmetric"
-          << "Separator"
-          << "Sketcher_ConstrainLock"
-          << "Sketcher_ConstrainDistanceX"
-          << "Sketcher_ConstrainDistanceY"
-          << "Sketcher_ConstrainDistance"
-          << "Sketcher_ConstrainRadius"
-          << "Sketcher_ConstrainAngle";
-     return root;
+	Gui::ToolBarItem* cons = new Gui::ToolBarItem(root);
+	cons->setCommand("Sketcher constraints");
+	SketcherAddWorkspaceConstraints( *cons );
+
+	return root;
 }
 
 Gui::ToolBarItem* Workbench::setupCommandBars() const

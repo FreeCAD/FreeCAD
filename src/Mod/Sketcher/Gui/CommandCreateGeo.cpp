@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2010 Jï¿½rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -3097,6 +3097,225 @@ bool CmdSketcherCreateSlot::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+/* Create Hexagon =======================================================*/
+
+/* XPM */
+static const char *cursor_creathexagon[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+................###......",
+"......+.......##########.##.....",
+".............#.........###......",
+"............#.............#.....",
+"...........#...............#....",
+"...........#...............#....",
+"..........#.................#...",
+".........#...................#..",
+".........#...................#..",
+"........#.........###.........#.",
+".......#..........#.#..........#",
+"........#.........###.........#.",
+".........#...................#..",
+".........#...................#..",
+"..........#.................#...",
+"...........#...............#....",
+"...........#...............#....",
+"............#.............#.....",
+".............#...........#......",
+"..............###########.......",
+"................................"};
+
+class DrawSketchHandlerHexagon: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerHexagon():Mode(STATUS_SEEK_First),EditCurve(7){}
+    virtual ~DrawSketchHandlerHexagon(){}
+    /// mode table
+    enum SelectMode {
+        STATUS_SEEK_First,      /**< enum value ----. */
+        STATUS_SEEK_Second,     /**< enum value ----. */
+        STATUS_End
+    };
+
+    virtual void activated(ViewProviderSketch *sketchgui)
+    {
+        setCursor(QPixmap(cursor_creathexagon),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2D onSketchPos)
+    {
+
+        if (Mode==STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr1);
+                return;
+            }
+        }
+        else if (Mode==STATUS_SEEK_Second) {
+            static const double cos_v = cos( M_PI/3.0 );
+            static const double sin_v = sin( M_PI/3.0 );
+
+            EditCurve[0]= Base::Vector2D(onSketchPos.fX, onSketchPos.fY);
+            EditCurve[6]= Base::Vector2D(onSketchPos.fX, onSketchPos.fY);
+
+            Base::Vector2D dV = onSketchPos - StartPos;
+            double rx = dV.fX;
+            double ry = dV.fY;
+            for (int i=1; i < 6; i++) {
+            	const double old_rx = rx;
+                rx = cos_v * rx - sin_v * ry;
+                ry = cos_v * ry + sin_v * old_rx;
+                EditCurve[i] = Base::Vector2D(StartPos.fX + rx, StartPos.fY + ry);
+            }
+
+            // Display radius for user
+            const float radius = dV.Length();
+            const float angle = ( 180.0 / M_PI ) * atan2( dV.fY, dV.fX );
+
+            SbString text;
+            text.sprintf(" (%.1fR %.1fdeg)", radius, angle );
+            setPositionText(onSketchPos, text);
+
+            sketchgui->drawEdit(EditCurve);
+            if (seekAutoConstraint(sugConstr2, onSketchPos, dV)) {
+                renderSuggestConstraintsCursor(sugConstr2);
+                return;
+            }
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2D onSketchPos)
+    {
+        if (Mode==STATUS_SEEK_First){
+            StartPos = onSketchPos;
+            Mode = STATUS_SEEK_Second;
+        }
+        else {
+            Mode = STATUS_End;
+        }
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    {
+        static const double cos_v = cos( M_PI/6.0 );
+        static const double sin_v = sin( M_PI/6.0 );
+        static const char* AddLineCommand =
+        		"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))";
+        static const char* AddConstraintCoincideCommand =
+        		"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1))";
+        static const char* AddConstraintEqualCommand =
+        		"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%i,%i)) ";
+        static const char* AddConstraintAngleCommand =
+        		"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%i,1,%i,2,%f))";
+
+        if (Mode==STATUS_End){
+            unsetCursor();
+            resetPositionText();
+            Gui::Command::openCommand("Add hexagon");
+            int firstCurve = getHighestCurveIndex() + 1;
+            // add the geometry to the sketch
+
+            try {
+            	for( int i = 0; i < 6; i++ ){
+            		Gui::Command::doCommand(Gui::Command::Doc, AddLineCommand,
+            				sketchgui->getObject()->getNameInDocument(),
+            				EditCurve[i].fX,EditCurve[i].fY,EditCurve[i+1].fX,EditCurve[i+1].fY);
+            	}
+                // make line ends coincide and all lines equal length
+            	Gui::Command::doCommand(Gui::Command::Doc, AddConstraintCoincideCommand,
+            			sketchgui->getObject()->getNameInDocument(),
+            			firstCurve+5,firstCurve);
+            	for( int i = 1; i < 6; i++ ){
+                    Gui::Command::doCommand(Gui::Command::Doc, AddConstraintCoincideCommand,
+                             sketchgui->getObject()->getNameInDocument(),
+                             firstCurve+(i-1),firstCurve+i);
+                    Gui::Command::doCommand(Gui::Command::Doc,AddConstraintEqualCommand,
+            				sketchgui->getObject()->getNameInDocument(),
+            				firstCurve,firstCurve+i);
+            	}
+            	for( int i = 0; i < 3; i++ ){
+                    Gui::Command::doCommand(Gui::Command::Doc,AddConstraintAngleCommand,
+            				sketchgui->getObject()->getNameInDocument(),
+            				firstCurve + ( 2*i + 1 ),firstCurve + ( 2*i ),
+            				( 2.0 * M_PI / 3.0 ) );
+            	}
+
+                Gui::Command::commitCommand();
+                Gui::Command::updateActive();
+
+                // add auto constraints at the start of the first side
+                if (sugConstr1.size() > 0) {
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::mid);
+                    sugConstr1.clear();
+                }
+
+                // add auto constraints at the end of the second side
+                if (sugConstr2.size() > 0) {
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
+                    sugConstr2.clear();
+                }
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+                Gui::Command::updateActive();
+            }
+
+            EditCurve.clear();
+            sketchgui->drawEdit(EditCurve);
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        }
+        return true;
+    }
+protected:
+    SelectMode Mode;
+    Base::Vector2D StartPos;
+    std::vector<Base::Vector2D> EditCurve;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+};
+
+DEF_STD_CMD_A(CmdSketcherCreateHexagon);
+
+CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
+  : Command("Sketcher_CreateHexagon")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create hexagon");
+    sToolTipText    = QT_TR_NOOP("Create a hexagon in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateHexagon";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateHexagon::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerHexagon() );
+}
+
+bool CmdSketcherCreateHexagon::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
 void CreateSketcherCommandsCreateGeo(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -3111,6 +3330,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
+    rcCmdMgr.addCommand(new CmdSketcherCreateHexagon());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());
