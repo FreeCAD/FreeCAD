@@ -63,17 +63,27 @@ inline void SketcherAddWorkspaceArcs<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
 	geom 	<< "Sketcher_CompCreateArc"
 			<< "Sketcher_CompCreateCircle";
 }
-
+template <typename T>
+void SketcherAddWorkspaceRegularPolygon(T& geom);
+template <>
+inline void SketcherAddWorkspaceRegularPolygon<Gui::MenuItem>(Gui::MenuItem& geom){
+	geom 	<< "Sketcher_CreatePentagon"
+			<< "Sketcher_CreateHexagon";
+}
+template <>
+inline void SketcherAddWorkspaceRegularPolygon<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
+	geom 	<< "Sketcher_CompCreateRegularPolygon";
+}
 template <typename T>
 inline void SketcherAddWorkspaceGeometries(T& geom){
 	geom 	<< "Sketcher_CreatePoint"
 			<< "Sketcher_CreateLine";
-	SketcherAddWorkspaceArcs<T>( geom );
+	SketcherAddWorkspaceArcs( geom );
 	geom	<< "Separator"
 			<< "Sketcher_CreatePolyline"
-			<< "Sketcher_CreateRectangle"
-			<< "Sketcher_CreateHexagon"
-			<< "Sketcher_CreateSlot"
+			<< "Sketcher_CreateRectangle";
+	SketcherAddWorkspaceRegularPolygon( geom );
+	geom	<< "Sketcher_CreateSlot"
 			<< "Separator"
 			<< "Sketcher_CreateFillet"
 			<< "Sketcher_Trimming"
