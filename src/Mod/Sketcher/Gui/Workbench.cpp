@@ -108,6 +108,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     *sketch
         << "Sketcher_NewSketch"
+        << "Sketcher_EditSketch"
         << "Sketcher_LeaveSketch"
         << "Sketcher_ViewSketch"
         << "Sketcher_MapSketch"
