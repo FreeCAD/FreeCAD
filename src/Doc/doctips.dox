@@ -1,6 +1,9 @@
 /** \page doctips Documenting FreeCAD's code
 
-Below are a few remarks and notes about Doxygen usage for FreeCAD, gathered after examining and removing most of the warnings emited by Doxygen:
+Below are a few remarks and notes about Doxygen usage for FreeCAD,
+gathered after examining and removing most of the warnings emitted
+by Doxygen.  For information on (re)building the source docs, see
+\ref makingdocs
 
 - Pay attention to warnings emited by doxygen when building the doc.
   The item giving rise to the warning will be skipped and will not be

@@ -38,7 +38,7 @@
   <a href="http://www.freecadweb.org/wiki/index.php?title=Main_Page">Wiki</a>
 
   FreeCAD being a fast moving target, don't hesitate to rebuild an up to
-  date doc from svn source as often as needed. CPU cycles are cheap
+  date doc from source as often as needed (\ref makingdocs "more info"). CPU cycles are cheap
   nowadays! 
 
   The homepage of FreeCAD is <a href="http://www.freecadweb.org">here</a>.
