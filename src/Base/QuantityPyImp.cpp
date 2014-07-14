@@ -466,13 +466,47 @@ PyObject* QuantityPy::richCompare(PyObject *v, PyObject *w, int op)
             Py_INCREF(res);
             return res;
         }
-        
     }
-    
+    else if (PyNumber_Check(v) && PyNumber_Check(w)) {
+        // Try to get floating numbers
+        double u1 = PyFloat_AsDouble(v);
+        double u2 = PyFloat_AsDouble(w);
+        PyObject *res=0;
+        if (op == Py_NE) {
+            res = (u1 != u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_LT) {
+            res = (u1 < u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_LE) {
+            res = (u1 <= u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_GT) {
+            res = (u1 > u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_GE) {
+            res = (u1 >= u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+        else if (op == Py_EQ) {
+            res = (u1 == u2) ? Py_True : Py_False;
+            Py_INCREF(res);
+            return res;
+        }
+    }
+
     // This always returns False
     Py_INCREF(Py_NotImplemented);
     return Py_NotImplemented;
-   
 }
 
 Py::Float QuantityPy::getValue(void) const
