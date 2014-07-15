@@ -237,6 +237,8 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
     PyObject* pUnitsModule = Py_InitModule3("Units", Base::UnitsApi::Methods,
           "The Unit API");
     Base::Interpreter().addType(&Base::QuantityPy  ::Type,pUnitsModule,"Quantity");
+    // make sure to set the 'nb_true_divide' slot
+    Base::QuantityPy::Type.tp_as_number->nb_true_divide = Base::QuantityPy::Type.tp_as_number->nb_divide;
     Base::Interpreter().addType(&Base::UnitPy      ::Type,pUnitsModule,"Unit");
 
     Py_INCREF(pUnitsModule);

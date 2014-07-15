@@ -3984,10 +3984,10 @@ class Array(Modifier):
             self.view.removeEventCallback("SoEvent",self.call)
         if FreeCADGui.Selection.getSelection():
             obj = FreeCADGui.Selection.getSelection()[0]
-            FreeCAD.ActiveDocument.openTransaction("Array")
-            Draft.makeArray(obj,Vector(1,0,0),Vector(0,1,0),2,2)
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            self.commit(translate("draft","Array"),
+                        ['import Draft',
+                         'Draft.makeArray(FreeCAD.ActiveDocument.'+obj.Name+',FreeCAD.Vector(1,0,0),FreeCAD.Vector(0,1,0),2,2)',
+                         'FreeCAD.ActiveDocument.recompute()'])
         self.finish()
 
 class PathArray(Modifier):

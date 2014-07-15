@@ -266,6 +266,12 @@ class Spreadsheet:
         else:
             return self.__dict__.__getitem__(key)
             
+    def __setitem__(self, key, value):
+        __setattr__(self, key, value)
+
+    def __getitem__(self, key):
+        return __getattr__(self, key)
+            
     def __getstate__(self):
         self._cells["Type"] = self.Type
         if hasattr(self,"Object"):
