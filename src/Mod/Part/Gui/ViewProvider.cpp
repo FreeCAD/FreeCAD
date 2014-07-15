@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <Bnd_Box.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepMesh.hxx>

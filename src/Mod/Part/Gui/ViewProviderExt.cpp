@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <Bnd_Box.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
