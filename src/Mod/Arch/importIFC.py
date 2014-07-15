@@ -93,13 +93,23 @@ def getConfig():
 
 def getIfcOpenShell():
     "locates and imports ifcopenshell"
+    global IFCOPENSHELL5
+    global IfcImport
+    IFCOPENSHELL5 = False
     try:
-        global IfcImport
         import IfcImport
     except:
-        FreeCAD.Console.PrintMessage(translate("Arch","Couldn't locate IfcOpenShell\n"))
-        return False
+        try:
+            import ifc_wrapper as IfcImport
+        except:
+            FreeCAD.Console.PrintMessage(translate("Arch","Couldn't locate IfcOpenShell\n"))
+            return False
+        else:
+            IFCOPENSHELL5 = True
+            return True
     else:
+        if hasattr(IfcImport,"IfcFile"):
+            IFCOPENSHELL5 = True
         return True
 
 def read(filename,skip=None):
@@ -117,13 +127,6 @@ def read(filename,skip=None):
     
     if getIfcOpenShell() and not FORCE_PYTHON_PARSER:
         # use the IfcOpenShell parser
-        
-        # check for IFcOpenShellVersion
-        global IFCOPENSHELL5
-        if hasattr(IfcImport,"IfcFile"):
-            IFCOPENSHELL5 = True
-        else:
-            IFCOPENSHELL5 = False
         
         # preparing IfcOpenShell
         if DEBUG: global ifcObjects,ifcParents
@@ -657,16 +660,20 @@ def getShape(obj,objid):
     brep_data = None
     if IFCOPENSHELL5:
         try:
+            if hasattr(IfcImport,"SEW_SHELLS"):
+                ss = IfcImport.SEW_SHELLS
+            else:
+                ss = 0
             if SEPARATE_OPENINGS and hasattr(IfcImport,"DISABLE_OPENING_SUBTRACTIONS"):
                 if SEPARATE_PLACEMENTS and hasattr(IfcImport,"DISABLE_OBJECT_PLACEMENT"):
-                    brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OPENING_SUBTRACTIONS | IfcImport.DISABLE_OBJECT_PLACEMENT)
+                    brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OPENING_SUBTRACTIONS | IfcImport.DISABLE_OBJECT_PLACEMENT | ss)
                 else:
-                    brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OPENING_SUBTRACTIONS)
+                    brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OPENING_SUBTRACTIONS | ss)
             else:
                 if SEPARATE_PLACEMENTS and hasattr(IfcImport,"DISABLE_OBJECT_PLACEMENT"):
-                    brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OBJECT_PLACEMENT)
+                    brep_data = IfcImport.create_shape(obj,IfcImport.DISABLE_OBJECT_PLACEMENT | ss)
                 else:
-                    brep_data = IfcImport.create_shape(obj)
+                    brep_data = IfcImport.create_shape(obj, ss)
         except:
             print "Unable to retrieve shape data"
     else:
@@ -918,22 +925,24 @@ def getWire(entity,placement=None):
 def export(exportList,filename):
     "called when freecad exports a file"
     try:
-        import IfcImport
+        import IfcImport as ifcw
     except:
-        FreeCAD.Console.PrintError(translate("Arch","Error: IfcOpenShell is not installed\n"))
-        print """importIFC: ifcOpenShell is not installed. IFC export is unavailable.
-                 Note: IFC export currently requires an experimental version of IfcOpenShell
-                 available from https://github.com/aothms/IfcOpenShell"""
-        return
-    else:
-        if not hasattr(IfcImport,"IfcFile"):
-            FreeCAD.Console.PrintError(translate("Arch","Error: your IfcOpenShell version is too old\n"))
-            print """importIFC: The version of ifcOpenShell installed on this system doesn't
-                     have IFC export capabilities. IFC export currently requires an experimental 
-                     version of IfcOpenShell available from https://github.com/aothms/IfcOpenShell"""
+        try:
+            import ifc_wrapper as ifcw
+        except:
+            FreeCAD.Console.PrintError(translate("Arch","Error: IfcOpenShell is not installed\n"))
+            print """importIFC: ifcOpenShell is not installed. IFC export is unavailable.
+                    Note: IFC export currently requires an experimental version of IfcOpenShell
+                    available from https://github.com/aothms/IfcOpenShell"""
             return
-        import ifcWriter
-    import Arch,Draft
+
+    if (not hasattr(ifcw,"IfcFile")) and (not hasattr(ifcw,"file")):
+        FreeCAD.Console.PrintError(translate("Arch","Error: your IfcOpenShell version is too old\n"))
+        print """importIFC: The version of ifcOpenShell installed on this system doesn't
+                 have IFC export capabilities. IFC export currently requires an experimental 
+                 version of IfcOpenShell available from https://github.com/aothms/IfcOpenShell"""
+        return
+    import ifcWriter,Arch,Draft
 
     # creating base IFC project
     getConfig()
@@ -955,20 +964,26 @@ def export(exportList,filename):
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
 
+    sites = []
     buildings = []
     floors = []
+    groups = {}
     others = []
     for obj in objectslist:
         otype = Draft.getType(obj)
-        if otype == "Building":
+        if otype == "Site":
+            sites.append(obj)
+        elif otype == "Building":
             buildings.append(obj)
         elif otype == "Floor":
             floors.append(obj)
+        elif otype == "Group":
+            groups[obj.Name] = []
         else:
             others.append(obj)
     objectslist = buildings + floors + others
     if DEBUG: print "adding ", len(objectslist), " objects"
-    
+        
     global unprocessed
     unprocessed = []
 
@@ -995,8 +1010,15 @@ def export(exportList,filename):
             ifctype = "Footing"
         elif ifctype == "Rebar":
             ifctype = "ReinforcingBar"
-        elif ifctype == "Part":
+        elif ifctype in ["Part","Undefined"]:
             ifctype = "BuildingElementProxy"
+            
+        # getting the "Force BREP" flag
+        brepflag = False
+        if hasattr(obj,"IfcAttributes"):
+            if "ForceBrep" in obj.IfcAttributes.keys():
+                if obj.IfcAttributes["ForceBrep"] == "True":
+                    brepflag = True
 
         if DEBUG: print "Adding " + obj.Label + " as Ifc" + ifctype
                  
@@ -1013,8 +1035,6 @@ def export(exportList,filename):
                 ifc.addBuilding( name=name )
             elif otype == "Floor":
                 ifc.addStorey( building=parent, name=name )
-            else:
-                print "   Skipping (not implemented yet)" # TODO manage groups
 
         elif obj.isDerivedFrom("Part::Feature"):
 
@@ -1027,7 +1047,7 @@ def export(exportList,filename):
                 parent = ifc.findByName("IfcBuildingStorey",str(parent.Label))
 
             # get representation
-            if not forcebrep:
+            if (not forcebrep) and (not brepflag):
                 gdata = Arch.getIfcExtrusionData(obj,scaling,SEPARATE_OPENINGS)
                 #if DEBUG: print "   extrusion data for ",obj.Label," : ",gdata
             if not gdata:
@@ -1082,27 +1102,43 @@ def export(exportList,filename):
                 ifctype = "IfcBuildingElementProxy"
                 extra = ["ELEMENT"]
                 
-            p = ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
+            product = ifc.addProduct( ifctype, representation, storey=parent, placement=placement, name=name, description=descr, extra=extra )
 
-            if p:
+            if product:
                 # removing openings
                 if SEPARATE_OPENINGS and gdata:
                     for o in obj.Subtractions:
                         print "Subtracting ",o.Label
                         fdata = Arch.getIfcBrepFacesData(o,scaling,sub=True)
                         representation = [ifc.addFacetedBrep(f, color=color) for f in fdata]
-                        p2 = ifc.addProduct( "IfcOpeningElement", representation, storey=p, placement=None, name=str(o.Label), description=None)
+                        p2 = ifc.addProduct( "IfcOpeningElement", representation, storey=product, placement=None, name=str(o.Label), description=None)
 
                 # writing text log
                 spacer = ""
                 for i in range(36-len(obj.Label)):
                     spacer += " "
                 txt.append(obj.Label + spacer + ifctype)
+                
+                # adding object to group, if any
+                for g in groups.keys():
+                    group = FreeCAD.ActiveDocument.getObject(g)
+                    if group:
+                        for o in group.Group:
+                            if o.Name == obj.Name:
+                                groups[g].append(product)
+                
             else:
                 unprocessed.append(obj)
         else:
             if DEBUG: print "Object type ", otype, " is not supported yet."
 
+    # processing groups
+    for name,entities in groups.iteritems():
+        if entities:
+            o = FreeCAD.ActiveDocument.getObject(name)
+            if o:
+                if DEBUG: print "Adding group ", o.Label, " with ",len(entities)," elements"
+                grp = ifc.addGroup( entities, o.Label )
             
     ifc.write()
 
@@ -1131,7 +1167,9 @@ def export(exportList,filename):
     
     if unprocessed:
         print ""
-        print "WARNING: Some objects were not exported. See importIFC.unprocessed"
+        print "WARNING: " + str(len(unprocessed)) + " objects were not exported (stored in importIFC.unprocessed):"
+        for o in unprocessed:
+            print "    " + o.Label
 
 
 def explore(filename=None):

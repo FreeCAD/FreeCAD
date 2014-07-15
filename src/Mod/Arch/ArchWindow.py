@@ -35,11 +35,12 @@ __title__="FreeCAD Window"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+# presets
 WindowPartTypes = ["Frame","Solid panel","Glass panel"]
-AllowedHosts = ["Wall","Structure","Roof"]
-WindowPresets = ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane", 
-                        "Sliding 2-pane", "Simple door", "Glass door"]
-Roles = ["Window","Door"]
+AllowedHosts =    ["Wall","Structure","Roof"]
+WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane", 
+                   "Sliding 2-pane", "Simple door", "Glass door"]
+Roles =           ["Window","Door"]
 
 
 def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Arch","Window")):
