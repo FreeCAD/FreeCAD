@@ -25,6 +25,11 @@ __title__="FreeCAD Arch Component"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+# Possible roles for IFC objects
+Roles = ['Undefined','Beam','Chimney','Column','Covering','Curtain Wall','Door','Foundation',
+         'Member','Plate','Railing','Ramp','Ramp Flight','Rebar','Pile','Roof','Shading Device','Slab',
+         'Stair','Stair Flight','Tendon','Wall','Wall Layer','Window']
+
 import FreeCAD,Draft
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
@@ -287,6 +292,8 @@ class Component:
         obj.addProperty("App::PropertyLinkList","Subtractions","Arch","Other shapes that are subtracted from this object")
         obj.addProperty("App::PropertyString","Description","Arch","An optional description for this component")
         obj.addProperty("App::PropertyString","Tag","Arch","An optional tag for this component")
+        obj.addProperty("App::PropertyMap","IfcAttributes","Arch","Custom IFC properties and attributes")
+        obj.addProperty("App::PropertyMap","Material","Arch","A material for this object")
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -633,8 +640,7 @@ class ViewProviderComponent:
         return
 
     def getDisplayModes(self,vobj):
-        modes=["Detailed"]
-        return modes
+        return []
 
     def setDisplayMode(self,mode):
         return mode
@@ -659,8 +665,6 @@ class ViewProviderComponent:
                     if Draft.getType(s) == "Roof":
                         continue
                 c.append(s)
-            if hasattr(self.Object,"Fixtures"):
-                c.extend(self.Object.Fixtures)
             if hasattr(self.Object,"Armatures"):
                 c.extend(self.Object.Armatures)
             if hasattr(self.Object,"Tool"):
@@ -679,7 +683,8 @@ class ViewProviderComponent:
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         return False
-
+        
+        
 class ArchSelectionObserver:
     """ArchSelectionObserver([origin,watched,hide,nextCommand]): The ArchSelectionObserver 
     object can be added as a selection observer to the FreeCAD Gui. If watched is given (a

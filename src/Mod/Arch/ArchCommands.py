@@ -600,7 +600,7 @@ def check(objectslist,includehidden=False):
 def getTuples(data,scale=1,placement=None,normal=None,close=True):
     """getTuples(data,[scale,placement,normal,close]): returns a tuple or a list of tuples from a vector
     or from the vertices of a shape. Scale can indicate a scale factor"""
-    rnd = True
+    rnd = False
     import Part
     if isinstance(data,FreeCAD.Vector):
         if placement:
@@ -944,8 +944,26 @@ def survey(callback=False):
                     FreeCAD.SurveyObserver.selection.extend(newsels)
 
 
+def toggleIfcBrepFlag(obj):
+    """toggleIfcBrepFlag(obj): toggles the IFC brep flag of the given object, forcing it
+    to be exported as brep geometry or not."""
+    if not hasattr(obj,"IfcAttributes"):
+        FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC Attributes"))
+    else:
+        d = obj.IfcAttributes
+        if "ForceBrep" in d.keys():
+            if d["ForceBrep"] == "True":
+                d["ForceBrep"] = "False"
+                FreeCAD.Console.PrintMessage(translate("Arch","Disabling Brep force flag of object")+" "+obj.Label+"\n")
+            else:
+                d["ForceBrep"] = "True"
+                FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
+        else:
+            d["ForceBrep"] = "True"
+            FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
+        obj.IfcAttributes = d
 
-    
+
 # command definitions ###############################################
                        
 class _CommandAdd:
@@ -1183,6 +1201,21 @@ class _CommandSurvey:
         FreeCADGui.doCommand("Arch.survey()")
 
 
+class _ToggleIfcBrepFlag:
+    "the Toggle IFC Brep flag command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_ToggleIfcBrepFlag',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Toggle IFC Brep flag"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleIfcBrepFlag","Force an object to be exported as Brep or not")}
+
+    def IsActive(self):
+        return bool(FreeCADGui.Selection.getSelection())
+        
+    def Activated(self):
+        for o in FreeCADGui.Selection.getSelection():
+            toggleIfcBrepFlag(o)
+
+
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Add',_CommandAdd())
     FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
@@ -1194,3 +1227,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Check',_CommandCheck())
     FreeCADGui.addCommand('Arch_IfcExplorer',_CommandIfcExplorer())
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
+    FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())

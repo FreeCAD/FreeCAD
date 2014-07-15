@@ -38,14 +38,21 @@ import sys, uuid, time, math
 # third one.
 #sys.path.append("/home/yorik/Sources/build/ifcopenshell-dev")
 #from ifcwrap import IfcImport
-import IfcImport
 
+try:
+    import IfcImport as ifcw
+except:
+    import ifc_wrapper as ifcw
+else:
+    print "error: IfcOpenShell not found!"
+    sys.exit()
+    
 # checking that we got the right importer, with export capabilities
-if not hasattr(IfcImport,"IfcFile"):
+if (not hasattr(ifcw,"IfcFile")) and (not hasattr(ifcw,"file")):
     print "Wrong version of IfcOpenShell"
     sys.exit()
     
-PRECISION = 4 # rounding value, in number of digits
+PRECISION = 8 # rounding value, in number of digits
 APPLYFIX = True # if true, the ifcopenshell bug-fixing function is applied when saving files
 
 # Basic functions #################################################################
@@ -58,11 +65,6 @@ class _tempEntityHolder:
         self.refs = []
         
 holder = _tempEntityHolder()
-
-def new():
-    """new(): returns a new empty ifc file holder"""
-    fil = IfcImport.IfcFile()
-    return fil
 
 def uid():
     """returns a suitable GlobalID"""
@@ -82,7 +84,11 @@ def getPropertyNames(entity):
     the numbers and names of the pythonproperties available for
     this entity"""
     ents = {}
-    for i in range(entity.get_argument_count()):
+    if hasattr(entity,"get_argument_count"):
+        l = entity.get_argument_count()
+    else:
+        l = len(entity)
+    for i in range(l):
         ents[i] = entity.get_argument_name(i)
     return ents
     
@@ -118,7 +124,10 @@ def create(ifcdoc=None,ifcname=None,arguments=[]):
     """create(ifcdoc,ifcname,[arguments]):creates an entity 
     of the given name in the given document and optionally 
     gives it an ordered list of arguments"""
-    entity = IfcImport.Entity(ifcname)
+    if hasattr(ifcw,"Entity"):
+        entity = ifcw.Entity(ifcname)
+    else:
+        entity = ifcw.entity_instance(ifcname)
     if ifcdoc:
         ifcdoc.add(entity)
     # this is a temporary hack while ifcopenshell has no ref counting
@@ -129,156 +138,13 @@ def create(ifcdoc=None,ifcname=None,arguments=[]):
         arg = arguments[i]
         if isinstance(arg,tuple):
             if len(arg) in [2,3]:
-                arg = IfcImport.Doubles(arg)
+                if hasattr(ifcw,"Doubles"):
+                    arg = ifcw.Doubles(arg)
+                else:
+                    arg = ifcw.doubles(arg)
         entity.set_argument(i,arg)
     return entity
     
-
-# Convenience tools #################################################################
-
-
-def makeOwner(ifcdoc,person,organization="Undefined",application="Undefined",version=0.0):
-    """makeOwner(ifcdoc,person,[organization,application,version]): 
-    creates an owner in the given ifc document"""
-    per = create(ifcdoc,"IfcPerson",[None,None,person,None,None,None,None,None])
-    org = create(ifcdoc,"IfcOrganization",[None,organization,None,None,None])
-    pno = create(ifcdoc,"IfcPersonAndOrganization",[per,org,None])
-    app = create(ifcdoc,"IfcApplication",[org,str(version),application,uid()])
-    own = create(ifcdoc,"IfcOwnerHistory",[pno,app,None,"ADDED",None,pno,app,now()])
-    return own
-
-def makePlacement(ifcdoc,reference=None,origin=(0,0,0),xaxis=(1,0,0),zaxis=(0,0,1),local=True):
-    """makePlacement(ifcdoc,[reference,origin,xaxis,zaxis]):
-    creates a local placement in the given ifc document. origin,
-    xaxis and zaxis can be either a tuple or a 3d vector"""
-    xvc = create(ifcdoc,"IfcDirection",getTuple(xaxis))
-    zvc = create(ifcdoc,"IfcDirection",getTuple(zaxis))
-    ovc = create(ifcdoc,"IfcCartesianPoint",getTuple(origin))
-    gpl = create(ifcdoc,"IfcAxis2Placement3D",[ovc,zvc,xvc])
-    if local:
-        lpl = create(ifcdoc,"IfcLocalPlacement",[reference,gpl])
-        return lpl
-    else:
-        return gpl
-
-def makeContext(ifcdoc,placement=None):
-    """makeContext(ifcdoc,[placement]): creates a geometric representation context
-    in the given ifc document"""
-    if not placement:
-        placement = makePlacement(ifcdoc)
-    rep = create(ifcdoc,"IfcGeometricRepresentationContext",
-                        [None,'Model',3,1.E-05,placement,None])
-    return rep
-
-def makeProject(ifcdoc,context,owner,name="Default project",description=None):
-    """makeProject(ifcdoc,context,owner,[name,description]): creates a project
-    in the given ifc document"""
-    
-    # 0: 'GlobalId', 1: 'OwnerHistory', 2: 'Name', 3: 'Description', 
-    # 4: 'ObjectType', 5: 'LongName', 6: 'Phase', 7: 'RepresentationContexts', 
-    # 8: 'UnitsInContext'
-    
-    dim1 = create(ifcdoc,"IfcDimensionalExponents",[0,0,0,0,0,0,0])
-    dim2 = create(ifcdoc,"IfcSIUnit",[dim1,"LENGTHUNIT","MILLI","METRE"])
-    dim3 = create(ifcdoc,"IfcSIUnit",[dim1,"AREAUNIT",None,"SQUARE_METRE"])
-    dim4 = create(ifcdoc,"IfcSIUnit",[dim1,"VOLUMEUNIT",None,"CUBIC_METRE"])
-    dim6 = create(ifcdoc,"IfcSIUnit",[dim1,"PLANEANGLEUNIT",None,"RADIAN"])
-    dim7 = create(ifcdoc,"IfcPlaneAngleMeasure",[1.745E-2])
-    dim8 = create(ifcdoc,"IfcMeasureWithUnit",[dim7,dim6])
-    dim9 = create(ifcdoc,"IfcConversionBasedUnit",[dim1,"PLANEANGLEUNIT","DEGREE",dim8])
-    units = create(ifcdoc,"IfcUnitAssignment",[[dim2,dim3,dim4,dim9]])
-    pro = create(ifcdoc,"IfcProject",[uid(),owner,name,description,
-                                     None,None,None,[context],units])
-    return pro
-
-def makeSite(ifcdoc,project,owner,placement=None,name="Default site",description=None):
-    """makeSite(ifcdoc,project,owner,[placement,name,description]): creates a site
-    in the given ifc document"""
-    
-    # 0: 'GlobalId', 1: 'OwnerHistory', 2: 'Name', 3: 'Description', 
-    # 4: 'ObjectType', 5: 'ObjectPlacement', 6: 'Representation', 7: 'LongName', 
-    # 8: 'CompositionType', 9: 'RefLatitude', 10: 'RefLongitude', 11: 'RefElevation', 
-    # 12: 'LandTitleNumber', 13: 'SiteAddress'
-    
-    if not placement:
-        placement = makePlacement(ifcdoc)
-    sit = create(ifcdoc,"IfcSite",[uid(),owner,name,description,None,placement,
-                                   None,None,"ELEMENT",None,None,None,None,None])
-    rel = create(ifcdoc,"IfcRelAggregates",[uid(),owner,'ProjectContainer',
-                                            'Project-site relationship',project,[sit]])
-    return sit
-
-def makeBuilding(ifcdoc,site,owner,placement=None,name="Default building",description=None):
-    """makeBuilding(ifcdoc,site,owner,[placement,name,description]): creates a building
-    in the given ifc document"""
-    
-    # 0: 'GlobalId', 1: 'OwnerHistory', 2: 'Name', 3: 'Description', 
-    # 4: 'ObjectType', 5: 'ObjectPlacement', 6: 'Representation', 7: 'LongName', 
-    # 8: 'CompositionType', 9: 'ElevationOfRefHeight', 10: 'ElevationOfTerrain', 11: 'BuildingAddress'
-    
-    if not placement:
-        placement = makePlacement(ifcdoc)
-    bdg = create(ifcdoc,"IfcBuilding",[uid(),owner,name,description,
-                                   None,placement,None,None,"ELEMENT",None,None,None])
-    rel = create(ifcdoc,"IfcRelAggregates",[uid(),owner,'SiteContainer',
-                                            'Site-Building relationship',site,[bdg]])
-    return bdg
-
-def makeStorey(ifcdoc,building,owner,placement=None,name="Default storey",description=None):
-    """makeStorey(ifcdoc,building,owner,[placement,name,description]): creates a storey
-    in the given ifc document"""
-    
-    # 0: 'GlobalId', 1: 'OwnerHistory', 2: 'Name', 3: 'Description', 
-    # 4: 'ObjectType', 5: 'ObjectPlacement', 6: 'Representation', 7: 'LongName', 
-    # 8: 'CompositionType', 9: 'Elevation
-    
-    if not placement:
-        placement = makePlacement(ifcdoc)
-    sto = create(ifcdoc,"IfcBuildingStorey",[uid(),owner,name,description,None,placement,
-                                             None,None,"ELEMENT",None])
-    rel = create(ifcdoc,"IfcRelAggregates",[uid(),owner,'BuildingContainer',
-                                            'Building-Stories relationship',building,[sto]])
-    return sto
-
-def makeWall(ifcdoc,storey,owner,context,shape,placement=None,name="Default wall",description=None):
-    """makeWall(ifcdoc,storey,owner,shape,[placement,name,description]): creates a wall
-    in the given ifc document"""
-    if not placement:
-        placement = makePlacement(ifcdoc)
-    rep = create(ifcdoc,"IfcShapeRepresentation",[context,'Body','SolidModel',[shape]])
-    prd = create(ifcdoc,"IfcProductDefinitionShape",[None,None,[rep]])
-    wal = create(ifcdoc,"IfcWallStandardCase",[uid(),owner,name,description,
-                                               None,placement,prd,None])
-    return wal
-
-def makePolyline(ifcdoc,points):
-    """makePolyline(ifcdoc,points): creates a polyline with the given
-    points in the given ifc document"""
-    pts = [create(ifcdoc,"IfcCartesianPoint",getTuple(p)) for p in points]
-    pol = create(ifcdoc,"IfcPolyline",[pts])
-    return pol
-
-def makeExtrusion(ifcdoc,polyline,extrusion,placement=None):
-    """makeExtrusion(ifcdoc,polyline,extrusion,[placement]): makes an
-    extrusion of the given polyline with the given extrusion vector in
-    the given ifc document"""
-    if not placement:
-        placement = makePlacement(ifcdoc,local=False)
-    value,norm = getValueAndDirection(extrusion)
-    edir = create(ifcdoc,"IfcDirection",norm)
-    area = create(ifcdoc,"IfcArbitraryClosedProfileDef",["AREA",None,polyline])
-    solid = create(ifcdoc,"IfcExtrudedAreaSolid",[area,placement,edir,value])
-    return solid
-    
-def relate(ifcdoc,container,owner,entities):
-    """relate(ifcdoc,container,owner,entities): relates the given entities to the given
-    container"""
-    if container.is_a("IfcBuildingStorey"):
-        rel = create(ifcdoc,"IfcRelContainedInSpatialStructure",[uid(),owner,'StoreyLink',
-                     'Storey-content relationship',entities, container])
-    else:
-        print "not implemented!"
-
 
 # IfcDocument Object #################################################################
 
@@ -288,7 +154,10 @@ class IfcDocument(object):
     Creates an empty IFC document."""
     
     def __init__(self,filepath="",name="",owner="",organization="",application="Python IFC exporter",version="0.0"):
-        self._fileobject = IfcImport.IfcFile()
+        if hasattr(ifcw,"IfcFile"):
+            self._fileobject = ifcw.IfcFile()
+        else:
+            self._fileobject = ifcw.file()
         self._person = create(self._fileobject,"IfcPerson",[None,None,"",None,None,None,None,None])
         self._org = create(self._fileobject,"IfcOrganization",[None,"",None,None,None])
         pno = create(self._fileobject,"IfcPersonAndOrganization",[self._person,self._org,None])
@@ -297,7 +166,6 @@ class IfcDocument(object):
         axp = self.addPlacement(local=False)
         dim0 = create(self._fileobject,"IfcDirection",getTuple((0,1,0)))
         self._repcontext = create(self._fileobject,"IfcGeometricRepresentationContext",['Plan','Model',3,1.E-05,axp,dim0])
-        placement = create(self._fileobject,"IfcLocalPlacement",[None,axp])
         dim1 = create(self._fileobject,"IfcDimensionalExponents",[0,0,0,0,0,0,0])
         dim2 = create(self._fileobject,"IfcSIUnit",[dim1,"LENGTHUNIT","MILLI","METRE"])
         dim3 = create(self._fileobject,"IfcSIUnit",[dim1,"AREAUNIT",None,"SQUARE_METRE"])
@@ -308,8 +176,7 @@ class IfcDocument(object):
         dim9 = create(self._fileobject,"IfcConversionBasedUnit",[dim1,"PLANEANGLEUNIT","DEGREE",dim8])
         units = create(self._fileobject,"IfcUnitAssignment",[[dim2,dim3,dim4,dim9]])
         self.Project = create(self._fileobject,"IfcProject",[uid(),self._owner,None,None,None,None,None,[self._repcontext],units])
-        self._site = create(self._fileobject,"IfcSite",[uid(),self._owner,"Site",None,None,placement,None,None,"ELEMENT",None,None,None,None,None])
-        self._relate(self.Project,self._site)
+        self.Site = None
         self._storeyRelations = {}
         self.BuildingProducts = []
         self.Storeys = []
@@ -336,7 +203,11 @@ class IfcDocument(object):
         "finds an entity of a given ifctype by name"
         objs = self._fileobject.by_type(ifctype)
         for obj in objs:
-            for i in range(obj.get_argument_count()):
+            if hasattr(obj,"get_argument_count"):
+                l = obj.get_argument_count()
+            else:
+                l = len(obj)
+            for i in range(l):
                 if obj.get_argument_name(i) == "Name":
                     if obj.get_argument(i) == name:
                         return obj
@@ -422,12 +293,24 @@ class IfcDocument(object):
         else:
             return gpl
             
+    def addSite(self,placement=None,name="Site",description=None,latitude=None,longitude=None,elevation=None,landtitlenumber=None,address=None):
+        """makeSite(ifcdoc,project,owner,[placement,name,description]): creates a site
+        in the given ifc document"""
+        if self.Site:
+            return
+        if not placement:
+            placement = self.addPlacement()
+        self.Site = create(self._fileobject,"IfcSite",[uid(),self._owner,str(name),description,None,placement,None,None,"ELEMENT",latitude,longitude,elevation,landtitlenumber,address])
+        self._relate(self.Project,self.Site)
+                    
     def addBuilding(self,placement=None,name="Default building",description=None):
         """addBuilding([placement,name,description]): adds a building"""
         if not placement:
             placement = self.addPlacement()
-        bdg = create(self._fileobject,"IfcBuilding",[uid(),self._owner,name,description,None,placement,None,None,"ELEMENT",None,None,None])
-        self._relate(self._site,bdg)
+        if not self.Site:
+            self.addSite()
+        bdg = create(self._fileobject,"IfcBuilding",[uid(),self._owner,str(name),description,None,placement,None,None,"ELEMENT",None,None,None])
+        self._relate(self.Site,bdg)
         self.Buildings.append(bdg)
         return bdg
         
@@ -435,7 +318,7 @@ class IfcDocument(object):
         """addStorey([building,placement,name,description]): adds a storey"""
         if not placement:
             placement = self.addPlacement()
-        sto = create(self._fileobject,"IfcBuildingStorey",[uid(),self._owner,name,description,None,placement,None,None,"ELEMENT",None])
+        sto = create(self._fileobject,"IfcBuildingStorey",[uid(),self._owner,str(name),description,None,placement,None,None,"ELEMENT",None])
         if not building:
             if self.Buildings:
                 building = self.Buildings[0]
@@ -444,7 +327,15 @@ class IfcDocument(object):
         self._relate(building,sto)
         self.Storeys.append(sto)
         return sto
-            
+        
+    def addGroup(self,entities,name="Default group",description=None):
+        """addGroup(entities,[name,description]): adds a group with the given entities"""
+        if not isinstance(entities,list):
+            entities = [entities]
+        gro = create(self._fileobject,"IfcGroup",[uid(),self._owner,str(name),description,None])
+        rel = create(self._fileobject,"IfcRelAssignsToGroup",[uid(),self._owner,str(name)+"-relation",None,entities,"PRODUCT",gro])
+        return gro
+        
     def _relate(self,container,entities):
         """relate(container,entities): relates the given entities to the given
         container"""
@@ -479,9 +370,12 @@ class IfcDocument(object):
         try:
             elt = create(self._fileobject,elttype,[uid(),self._owner,name,description,None,placement,prd,None]+extra)
         except:
-            print "unable to create an ",elttype, " with attributes: ",[uid(),self._owner,name,description,None,placement,prd,None]+extra
+            print "unable to create an ",elttype, " with attributes: ",[uid(),self._owner,str(name),description,None,placement,prd,None]+extra
             try:
-                o = IfcImport.Entity(elttype)
+                if hasattr(ifcw,"Entity"):
+                    o = ifcw.Entity(elttype)
+                else:
+                    o = ifcw.entity_instance(elttype)
                 print "supported attributes are: "
                 print getPropertyNames(o)
             except:
@@ -660,46 +554,10 @@ class IfcDocument(object):
         return brp
         
 
-# EXAMPLES #################################################################
-
-def example1():
-
-    "creation of a new file using manual, step-by-step procedure"
+# EXAMPLE #################################################################
     
-    f = new()
-    own = makeOwner(f,"Yorik van Havre")
-    plac = makePlacement(f)
-    grep = makeContext(f,plac)
-    proj = makeProject(f,grep,own)
-    site = makeSite(f,proj,own)
-    bldg = makeBuilding(f,site,own)
-    stor = makeStorey(f,bldg,own)
-    poly = makePolyline(f,[(0,0,0),(0,200,0),(5000,200,0),(5000,0,0),(0,0,0)])
-    solid = makeExtrusion(f,poly,(0,0,3500))
-    wall = makeWall(f,stor,own,grep,solid)
-    poly2 = makePolyline(f,[(0,200,0),(0,2000,0),(200,2000,0),(200,200,0),(0,200,0)])
-    solid2 = makeExtrusion(f,poly2,(0,0,3500))
-    wall2 = makeWall(f,stor,own,grep,solid2)
-    poly3 = makePolyline(f,[(0,2000,0),(0,2200,0),(5000,2200,0),(5000,2000,0),(0,2000,0)])
-    solid3 = makeExtrusion(f,poly3,(0,0,3500))
-    wall3 = makeWall(f,stor,own,grep,solid3)
-    poly4 = makePolyline(f,[(5000,200,0),(5000,2000,0),(4800,2000,0),(4800,200,0),(5000,200,0)])
-    solid4 = makeExtrusion(f,poly4,(0,0,3500))
-    wall4 = makeWall(f,stor,own,grep,solid4)
-    relate(f,stor,own,[wall,wall2,wall3,wall4])
-    f.write("/home/yorik/test1.ifc")
-    
-    print dir(f)
-    print f.by_type("IfcWallStandardCase")
-    w = f.by_type("IfcWallStandardCase")[0]
-    print w
-    print dir(w)
-    print w.is_a("IfcWallStandardCase")
-    
-def example2():
-    
-    "creation of a new file using advanced IfcDocument object"
-    
+def example():
+        
     ifc = IfcDocument("/home/yorik/test2.ifc")
     ifc.Name = "Test Project"
     ifc.Owner = "Yorik van Havre"
