@@ -53,31 +53,28 @@ convexity = 'convexity = %d' % conv
 if open.__module__ == '__builtin__':
         pythonopen = open
 
-def check_center(ob):
-    # Only say center = false if no rotation and no displacement
-    if ob.Placement.isNull():
-        return 'false'
-    return 'true'
-
 def center(b):
-    if b == 0 :
+    if b == 2:
+        return 'true'
+    else:
         return 'false'
-    return 'true'
 
 def check_multmatrix(csg,ob,x,y,z):
-    v = FreeCAD.Vector(0,0,1)
     b = FreeCAD.Vector(x,y,z)
-    if ( ob.Placement.Base == FreeCAD.Vector(0,0,0)):
+    if ob.Placement.isNull():
         return 0 # center = false no mm
-    elif not ob.Placement.isNull():
-        print "Output Multmatrix"
+    elif ob.Placement.Rotation.isNull() and \
+        (ob.Placement.Base - b).Length < 1e-6:
+        return 2 # center = true and no mm
+    else:
         m = ob.Placement.toMatrix()
         # adjust position for center displacments
-        csg.write("multmatrix([["+str(m.A11)+", "+str(m.A12)+", "+str(m.A13)+", "+str(m.A14)+"], ["\
-                                 +str(m.A21)+", "+str(m.A22)+", "+str(m.A23)+", "+str(m.A24)+"], ["\
-                                 +str(m.A31)+", "+str(m.A32)+", "+str(m.A33)+", "+str(m.A34)+"], [ 0, 0, 0, 1]]){\n")          
-        return 1 # center = true and mm
-    return 2 # center = true and no mm            
+        csg.write("multmatrix([["+str(m.A11)+", "+str(m.A12)+", "+str(m.A13)+",\
+            "+str(m.A14)+"], ["\
+             +str(m.A21)+", "+str(m.A22)+", "+str(m.A23)+", "+str(m.A24)+"], ["\
+             +str(m.A31)+", "+str(m.A32)+", "+str(m.A33)+", "+str(m.A34)+"], [\
+             0, 0, 0, 1]]){\n")
+        return 1 # center = false and mm
 
 def mesh2polyhedron(mesh):
     pointstr=','.join(['[%f,%f,%f]' % tuple(vec) for vec in mesh.Topology[0]])
@@ -243,9 +240,7 @@ def process_object(csg,ob):
         print "Part::Feature"
         mm = check_multmatrix(csg,ob,0,0,0)
         csg.write('%s\n' % shape2polyhedron(ob.Shape))
-        if mm == 1 : csg.write("}\n")    
-                    
-
+        if mm == 1 : csg.write("}\n")
 
 def export(exportList,filename):
     "called when freecad exports a file"
