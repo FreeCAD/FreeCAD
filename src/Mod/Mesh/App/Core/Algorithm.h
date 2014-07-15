@@ -318,6 +318,7 @@ class MeshExport MeshCollector
 {
 public:
     MeshCollector(){}
+    virtual ~MeshCollector(){}
     virtual void Append(const MeshCore::MeshKernel&, unsigned long index) = 0;
 };
 
@@ -325,6 +326,7 @@ class MeshExport PointCollector : public MeshCollector
 {
 public:
     PointCollector(std::vector<unsigned long>& ind) : indices(ind){}
+    virtual ~PointCollector(){}
     virtual void Append(const MeshCore::MeshKernel& kernel, unsigned long index)
     {
         unsigned long ulP1, ulP2, ulP3;
@@ -342,6 +344,7 @@ class MeshExport FacetCollector : public MeshCollector
 {
 public:
     FacetCollector(std::vector<unsigned long>& ind) : indices(ind){}
+    virtual ~FacetCollector(){}
     void Append(const MeshCore::MeshKernel&, unsigned long index)
     {
         indices.push_back(index);

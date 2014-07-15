@@ -3098,7 +3098,7 @@ bool CmdSketcherCreateSlot::isActive(void)
 }
 
 
-/* Create Hexagon =======================================================*/
+/* Create Regular Polygon ==============================================*/
 
 /* XPM */
 static const char *cursor_createregularpolygon[]={
@@ -3139,11 +3139,18 @@ static const char *cursor_createregularpolygon[]={
 "..............###########.......",
 "................................"};
 
-template < size_t Corners >
 class DrawSketchHandlerRegularPolygon: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerRegularPolygon():Mode(STATUS_SEEK_First),EditCurve(Corners+1){}
+    DrawSketchHandlerRegularPolygon( size_t nof_corners ):
+    	Corners( nof_corners ),
+    	AngleOfSeparation( 2.0*M_PI/static_cast<double>(Corners) ),
+    	cos_v( cos( AngleOfSeparation ) ),
+    	sin_v( sin( AngleOfSeparation ) ),
+    	Mode(STATUS_SEEK_First),
+    	EditCurve(Corners+1)
+	{
+    }
     virtual ~DrawSketchHandlerRegularPolygon(){}
     /// mode table
     enum SelectMode {
@@ -3168,9 +3175,6 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            static const double cos_v = cos( AngleOfSeparation );
-            static const double sin_v = sin( AngleOfSeparation );
-
             EditCurve[0]= Base::Vector2D(onSketchPos.fX, onSketchPos.fY);
             EditCurve[Corners]= Base::Vector2D(onSketchPos.fX, onSketchPos.fY);
 
@@ -3250,7 +3254,7 @@ public:
             				firstCurve,firstCurve+i);
             	}
             	double angle_constraint_diff = (1. * Corners)/( 1. * Corners - 3.0 );
-            	for( int i = 0; i < static_cast<int>(Corners-3); i++ ){
+            	for( int i = 0; i < (Corners-3); i++ ){
             		int angle_constraint_index = angle_constraint_diff * i;
                     Gui::Command::doCommand(Gui::Command::Doc,AddConstraintAngleCommand,
             				sketchgui->getObject()->getNameInDocument(),
@@ -3287,15 +3291,14 @@ public:
         return true;
     }
 protected:
-	static const double AngleOfSeparation;
+	const size_t Corners;
+	const double AngleOfSeparation;
+    const double cos_v, sin_v;
     SelectMode Mode;
     Base::Vector2D StartPos;
     std::vector<Base::Vector2D> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
-
-template < size_t Corners >
-const double DrawSketchHandlerRegularPolygon<Corners>::AngleOfSeparation = 2*M_PI/static_cast<double>(Corners);
 
 
 DEF_STD_CMD_A(CmdSketcherCreateTriangle);
@@ -3315,7 +3318,7 @@ CmdSketcherCreateTriangle::CmdSketcherCreateTriangle()
 
 void CmdSketcherCreateTriangle::activated(int iMsg)
 {
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<3>() );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(3) );
 }
 
 bool CmdSketcherCreateTriangle::isActive(void)
@@ -3340,7 +3343,7 @@ CmdSketcherCreateSquare::CmdSketcherCreateSquare()
 
 void CmdSketcherCreateSquare::activated(int iMsg)
 {
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<4>() );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(4) );
 }
 
 bool CmdSketcherCreateSquare::isActive(void)
@@ -3365,7 +3368,7 @@ CmdSketcherCreatePentagon::CmdSketcherCreatePentagon()
 
 void CmdSketcherCreatePentagon::activated(int iMsg)
 {
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<5>() );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(5) );
 }
 
 bool CmdSketcherCreatePentagon::isActive(void)
@@ -3391,7 +3394,7 @@ CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
 
 void CmdSketcherCreateHexagon::activated(int iMsg)
 {
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<6>() );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(6) );
 }
 
 bool CmdSketcherCreateHexagon::isActive(void)
@@ -3416,7 +3419,7 @@ CmdSketcherCreateHeptagon::CmdSketcherCreateHeptagon()
 
 void CmdSketcherCreateHeptagon::activated(int iMsg)
 {
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<7>() );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(7) );
 }
 
 bool CmdSketcherCreateHeptagon::isActive(void)
@@ -3441,7 +3444,7 @@ CmdSketcherCreateOctagon::CmdSketcherCreateOctagon()
 
 void CmdSketcherCreateOctagon::activated(int iMsg)
 {
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<8>() );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8) );
 }
 
 bool CmdSketcherCreateOctagon::isActive(void)
@@ -3468,17 +3471,17 @@ void CmdSketcherCompCreateRegularPolygon::activated(int iMsg)
 {
     switch( iMsg ){
     case 0:
-        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<3>()); break;
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(3)); break;
     case 1:
-        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<4>()); break;
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(4)); break;
     case 2:
-        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<5>()); break;
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(5)); break;
     case 3:
-        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<6>()); break;
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(6)); break;
     case 4:
-        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<7>()); break;
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(7)); break;
     case 5:
-        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon<8>()); break;
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8)); break;
     default:
         return;
     }

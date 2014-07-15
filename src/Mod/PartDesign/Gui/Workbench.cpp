@@ -167,16 +167,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* geom = new Gui::MenuItem();
     geom->setCommand("Sketcher geometries");
-    SketcherGui::SketcherAddWorkspaceGeometries( *geom );
+    SketcherGui::addSketcherWorkbenchGeometries( *geom );
 
     Gui::MenuItem* cons = new Gui::MenuItem();
     cons->setCommand("Sketcher constraints");
-    SketcherGui::SketcherAddWorkspaceConstraints( *cons );
+    SketcherGui::addSketcherWorkbenchConstraints( *cons );
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
-    SketcherGui::SketcherAddWorkspaceSketchitems( *part );
+    SketcherGui::addSketcherWorkbenchSketchActions( *part );
     *part << geom
           << cons
           << "Separator"
@@ -208,7 +208,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design");
-    SketcherGui::SketcherAddWorkspaceSketchitems( *part );
+    SketcherGui::addSketcherWorkbenchSketchActions( *part );
     *part << "Separator"
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
@@ -225,11 +225,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
     geom->setCommand("Sketcher geometries");
-    SketcherGui::SketcherAddWorkspaceGeometries( *geom );
+    SketcherGui::addSketcherWorkbenchGeometries( *geom );
 
     Gui::ToolBarItem* cons = new Gui::ToolBarItem(root);
     cons->setCommand("Sketcher constraints");
-    SketcherGui::SketcherAddWorkspaceConstraints( *cons );
+    SketcherGui::addSketcherWorkbenchConstraints( *cons );
 
     return root;
 }

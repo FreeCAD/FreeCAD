@@ -49,91 +49,14 @@ protected:
 
 
 
-template <typename T>
-void SketcherAddWorkspaceArcs(T& geom);
-template <>
-inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom){
-	geom 	<< "Sketcher_CreateArc"
-			<< "Sketcher_Create3PointArc"
-			<< "Sketcher_CreateCircle"
-			<< "Sketcher_Create3PointCircle";
-}
-template <>
-inline void SketcherAddWorkspaceArcs<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
-	geom 	<< "Sketcher_CompCreateArc"
-			<< "Sketcher_CompCreateCircle";
-}
-template <typename T>
-void SketcherAddWorkspaceRegularPolygon(T& geom);
-template <>
-inline void SketcherAddWorkspaceRegularPolygon<Gui::MenuItem>(Gui::MenuItem& geom){
-	geom 	<< "Sketcher_CreatePentagon"
-			<< "Sketcher_CreateHexagon";
-}
-template <>
-inline void SketcherAddWorkspaceRegularPolygon<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
-	geom 	<< "Sketcher_CompCreateRegularPolygon";
-}
-template <typename T>
-inline void SketcherAddWorkspaceGeometries(T& geom){
-	geom 	<< "Sketcher_CreatePoint"
-			<< "Sketcher_CreateLine";
-	SketcherAddWorkspaceArcs( geom );
-	geom	<< "Separator"
-			<< "Sketcher_CreatePolyline"
-			<< "Sketcher_CreateRectangle";
-	SketcherAddWorkspaceRegularPolygon( geom );
-	geom	<< "Sketcher_CreateSlot"
-			<< "Separator"
-			<< "Sketcher_CreateFillet"
-			<< "Sketcher_Trimming"
-			<< "Sketcher_External"
-			<< "Sketcher_ToggleConstruction"
-			/*<< "Sketcher_CreateText"*/
-			/*<< "Sketcher_CreateDraftLine"*/;
-}
 
-template <typename T>
-inline void SketcherAddWorkspaceConstraints(T& cons){
-	cons 	<< "Sketcher_ConstrainCoincident"
-			<< "Sketcher_ConstrainPointOnObject"
-			<< "Sketcher_ConstrainVertical"
-			<< "Sketcher_ConstrainHorizontal"
-			<< "Sketcher_ConstrainParallel"
-			<< "Sketcher_ConstrainPerpendicular"
-			<< "Sketcher_ConstrainTangent"
-			<< "Sketcher_ConstrainEqual"
-			<< "Sketcher_ConstrainSymmetric"
-			<< "Separator"
-			<< "Sketcher_ConstrainLock"
-			<< "Sketcher_ConstrainDistanceX"
-			<< "Sketcher_ConstrainDistanceY"
-			<< "Sketcher_ConstrainDistance"
-			<< "Sketcher_ConstrainRadius"
-			<< "Sketcher_ConstrainAngle";
+void addSketcherWorkbenchConstraints( Gui::MenuItem& cons );
+void addSketcherWorkbenchSketchActions( Gui::MenuItem& sketch );
+void addSketcherWorkbenchGeometries( Gui::MenuItem& geom );
 
-}
-
-template <typename T>
-inline void SketcherAddWorkspaceSketchExtra(T& sketch){
-}
-
-template <>
-inline void SketcherAddWorkspaceSketchExtra<Gui::MenuItem>(Gui::MenuItem& sketch){
-	sketch  << "Sketcher_ReorientSketch"
-			<< "Sketcher_ValidateSketch";
-}
-
-template <typename T>
-inline void SketcherAddWorkspaceSketchitems(T& sketch){
-	sketch	<< "Sketcher_NewSketch"
-		    << "Sketcher_EditSketch"
-			<< "Sketcher_LeaveSketch"
-			<< "Sketcher_ViewSketch"
-			<< "Sketcher_MapSketch";
-	SketcherAddWorkspaceSketchExtra( sketch );
-}
-
+void addSketcherWorkbenchConstraints( Gui::ToolBarItem& cons );
+void addSketcherWorkbenchSketchActions( Gui::ToolBarItem& sketch );
+void addSketcherWorkbenchGeometries( Gui::ToolBarItem& geom );
 
 } // namespace SketcherGui
 
