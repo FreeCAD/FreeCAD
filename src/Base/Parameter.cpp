@@ -1053,9 +1053,9 @@ void ParameterManager::Init(void)
 #endif
             char *pMsg = XMLString::transcode(toCatch.getMessage());
             err << "Error during Xerces-c Initialization.\n"
-            << "  Exception message:"
-            << pMsg;
-            delete [] pMsg;
+                << "  Exception message:"
+                << pMsg;
+            XMLString::release(&pMsg);
             throw Exception(err.str().c_str());
         }
         Init = true;
@@ -1441,7 +1441,7 @@ bool DOMPrintErrorHandler::handleError(const DOMError &domError)
     // Display whatever error message passed from the serializer
     char *msg = XMLString::transcode(domError.getMessage());
     std::cout<<msg<<std::endl;
-    delete[] msg;
+    XMLString::release(&msg);
 
     // Instructs the serializer to continue serialization if possible.
     return true;
