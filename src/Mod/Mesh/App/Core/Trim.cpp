@@ -357,7 +357,7 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
         }
 
         // in this case we can use the original triangle
-        if (iCtPts < 2)
+        if (iCtPts < 3)
             aclNewFacets.push_back(myMesh.GetFacet(ulFacetPos));
     }
     // one intersection point found => triangle is also touched at a corner point
