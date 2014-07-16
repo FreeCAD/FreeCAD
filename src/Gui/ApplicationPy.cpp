@@ -29,6 +29,8 @@
 # include <QPrinter>
 #endif
 
+#include <xercesc/util/XMLString.hpp>
+#include <xercesc/util/TranscodingException.hpp>
 
 #include "Application.h"
 #include "BitmapFactory.h"
@@ -527,6 +529,17 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_Exception, e.what());
+        return 0;
+    }
+    catch (const XERCES_CPP_NAMESPACE_QUALIFIER TranscodingException& e) {
+        std::stringstream err;
+        char *pMsg = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(e.getMessage());
+        err << "Transcoding exception raised in activateWorkbench.\n"
+            << "Check if your user configuration file is valid.\n"
+            << "  Exception message:"
+            << pMsg;
+        XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&pMsg);
+        PyErr_SetString(PyExc_RuntimeError, "Transcoding exception in Xerces-c: ");
         return 0;
     }
     catch (...) {
