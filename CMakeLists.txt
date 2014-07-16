@@ -628,6 +628,8 @@ else(FREECAD_LIBPACK_USE)
 
 endif(FREECAD_LIBPACK_USE)
 
+find_package(Rift)
+
 # copy build convenient files for M$
 if(WIN32)
     if (EXISTS BuildAll.bat)
