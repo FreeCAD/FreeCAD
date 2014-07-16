@@ -346,18 +346,21 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
     // no intersection point found => triangle is only touched at a corner point
     if (raclPoints.size() == 0) {
         MeshFacet& facet = myMesh._aclFacetArray[ulFacetPos];
-        int iCtPts=0;
+        int iCtPtsIn=0;
+        int iCtPtsOn=0;
         Base::Vector3f clFacPnt;
         Base::Vector2D clProjPnt;
         for (int i=0; i<3; i++) {
             clFacPnt = (*myProj)(myMesh._aclPointArray[facet._aulPoints[i]]);
             clProjPnt = Base::Vector2D(clFacPnt.x, clFacPnt.y);
-            if (myPoly.Contains(clProjPnt) == myInner)
-                ++iCtPts;
+            if (myPoly.Intersect(clProjPnt, MESH_MIN_PT_DIST))
+                ++iCtPtsOn;
+            else if (myPoly.Contains(clProjPnt) == myInner)
+                ++iCtPtsIn;
         }
 
         // in this case we can use the original triangle
-        if (iCtPts < 3)
+        if (iCtPtsIn != (3 - iCtPtsOn))
             aclNewFacets.push_back(myMesh.GetFacet(ulFacetPos));
     }
     // one intersection point found => triangle is also touched at a corner point

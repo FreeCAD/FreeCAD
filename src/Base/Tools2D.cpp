@@ -431,3 +431,19 @@ void Polygon2D::Intersect (const Polygon2D &rclPolygon, std::list<Polygon2D> &rc
     rclResultPolygonList.push_back(clResultPolygon);
 }
 
+bool Polygon2D::Intersect (const Vector2D &rclV, double eps) const
+{
+    if (_aclVct.size() < 2)
+        return false;
+
+    size_t numPts = GetCtVectors();
+    for (size_t i = 0; i < numPts; i++) {
+        Vector2D clPt0 = (*this)[i];
+        Vector2D clPt1 = (*this)[(i+1)%numPts];
+        Line2D clLine(clPt0, clPt1);
+        if (clLine.Intersect(rclV, eps))
+            return true;
+    }
+
+    return false;
+}
