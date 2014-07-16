@@ -986,7 +986,7 @@ def p_circle_action(p) :
     else :
         #mycircle = Draft.makePolygon(n,r) # would call doc.recompute
         mycircle = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",'polygon')
-        Draft._Polygon(mycricle)
+        Draft._Polygon(mycircle)
         mycircle.FacesNumber = n
         mycircle.Radius = r
         mycircle.DrawMode = "inscribed"
