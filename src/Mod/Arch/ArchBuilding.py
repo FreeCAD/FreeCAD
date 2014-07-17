@@ -34,12 +34,13 @@ __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeBuilding(objectslist=None,join=False,name=translate("Arch","Building")):
-    '''makeBuilding(objectslist,[joinmode]): creates a building including the
-    objects from the given list. If joinmode is True, components will be joined.'''
+def makeBuilding(objectslist=None,baseobj=None,name=translate("Arch","Building")):
+    '''makeBuilding(objectslist): creates a building including the
+    objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Building(obj)
-    _ViewProviderBuilding(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderBuilding(obj.ViewObject)
     if objectslist:
         obj.Group = objectslist
     return obj

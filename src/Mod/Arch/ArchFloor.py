@@ -34,10 +34,9 @@ __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeFloor(objectslist=None,join=True,name=translate("Arch","Floor")):
-    '''makeFloor(objectslist,[joinmode]): creates a floor including the
-    objects from the given list. If joinmode is False, components will
-    not be joined.'''
+def makeFloor(objectslist=None,baseobj=None,name=translate("Arch","Floor")):
+    '''makeFloor(objectslist): creates a floor including the
+    objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Floor(obj)
     if FreeCAD.GuiUp:

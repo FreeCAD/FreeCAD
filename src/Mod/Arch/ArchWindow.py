@@ -51,11 +51,12 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Ar
         if Draft.getType(baseobj) == "Window":
             obj = Draft.clone(baseobj)
             return obj
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Window(obj)
-    _ViewProviderWindow(obj.ViewObject)
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
+    if FreeCAD.GuiUp:
+        _ViewProviderWindow(obj.ViewObject)
+        obj.ViewObject.Transparency=p.GetInt("WindowTransparency",85)
     if width:
         obj.Width = width
     if height:
@@ -67,7 +68,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Ar
         obj.WindowParts = parts
     else:
         if baseobj:
-            if baseobj.isDerivedFrom("Part::Feature"):
+            if baseobj.isDerivedFrom("Part::Part2DObject"):
                 if baseobj.Shape.Wires:
                     i = 0
                     ws = ''
@@ -77,7 +78,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Ar
                             ws += "Wire" + str(i)
                             i += 1
                     obj.WindowParts = ["Default","Frame",ws,"1","0"]
-    if obj.Base:
+    if obj.Base and FreeCAD.GuiUp:
         obj.Base.ViewObject.DisplayMode = "Wireframe"
         obj.Base.ViewObject.hide()
     return obj
@@ -673,7 +674,10 @@ class _Window(ArchComponent.Component):
                             if not DraftGeomUtils.isNull(pl):
                                 base.Placement = pl
                     elif not obj.WindowParts:
-                        pass
+                        if not obj.Base.Shape.isNull():
+                            base = obj.Base.Shape.copy()
+                            if not DraftGeomUtils.isNull(pl):
+                                base.Placement = base.Placement.multiply(pl)
                     else:
                         print "Arch: Bad formatting of window parts definitions"
                             

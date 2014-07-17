@@ -49,7 +49,6 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     if FreeCAD.GuiUp:
         _ViewProviderWall(obj.ViewObject)
         obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Wall")
-
     if baseobj:
         obj.Base = baseobj
     if face:

@@ -40,7 +40,8 @@ def makeSpace(objects=None,name=translate("Arch","Space")):
     selection objects as got from getSelectionEx(), or a list of tuples (object, subobjectname)"""
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Space(obj)
-    _ViewProviderSpace(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderSpace(obj.ViewObject)
     if objects:
         if not isinstance(objects,list):
             objects = [objects]

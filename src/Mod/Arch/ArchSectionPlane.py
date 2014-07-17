@@ -37,7 +37,8 @@ def makeSectionPlane(objectslist=None,name=translate("Arch","Section")):
     given objects. If no object is given, the whole document will be considered."""
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
     _SectionPlane(obj)
-    _ViewProviderSectionPlane(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderSectionPlane(obj.ViewObject)
     if objectslist:
         g = []
         for o in objectslist:

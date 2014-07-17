@@ -34,14 +34,17 @@ __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeSite(objectslist=None,name=translate("Arch","Site")):
+def makeSite(objectslist=None,baseobj=None,name=translate("Arch","Site")):
     '''makeBuilding(objectslist): creates a site including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Site(obj)
-    _ViewProviderSite(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderSite(obj.ViewObject)
     if objectslist:
         obj.Group = objectslist
+    if baseobj:
+        obj.Terrain = baseobj
     return obj
 
 class _CommandSite:
