@@ -36,15 +36,16 @@ else:
         return txt
 
 
-def makeStairs(base=None,length=None,width=None,height=None,steps=None,name=translate("Arch","Stairs")):
-    """makeStairs([base,length,width,height,steps]): creates a Stairs
+def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=translate("Arch","Stairs")):
+    """makeStairs([baseobj,length,width,height,steps]): creates a Stairs
     objects with given attributes."""
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Stairs(obj)
-    _ViewProviderStairs(obj.ViewObject)
-    if base:
-        obj.Base = base
+    if FreeCAD.GuiUp:
+        _ViewProviderStairs(obj.ViewObject)
+    if baseobj:
+        obj.Base = baseobj
     if length:
         obj.Length = length
     else:
@@ -80,7 +81,7 @@ class _CommandStairs:
         FreeCADGui.doCommand("import Arch")
         if len(FreeCADGui.Selection.getSelection()) == 1:
             n = FreeCADGui.Selection.getSelection()[0].Name
-            FreeCADGui.doCommand("Arch.makeStairs(base=FreeCAD.ActiveDocument."+n+")")
+            FreeCADGui.doCommand("Arch.makeStairs(baseobj=FreeCAD.ActiveDocument."+n+")")
         else:
             FreeCADGui.doCommand("Arch.makeStairs()")
         FreeCAD.ActiveDocument.commitTransaction()

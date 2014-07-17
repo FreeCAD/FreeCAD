@@ -42,7 +42,9 @@ def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name=translate("
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Rebar(obj)
-    _ViewProviderRebar(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderRebar(obj.ViewObject)
+        obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Rebar")
     if hasattr(sketch,"Support"):
         if sketch.Support:
             if isinstance(sketch.Support,tuple):
@@ -51,7 +53,8 @@ def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name=translate("
             elif sketch.Support == baseobj:
                 sketch.Support = None
     obj.Base = sketch
-    sketch.ViewObject.hide()
+    if FreeCAD.GuiUp:
+        sketch.ViewObject.hide()
     a = baseobj.Armatures
     a.append(obj)
     baseobj.Armatures = a
@@ -66,7 +69,6 @@ def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name=translate("
     else:
         obj.OffsetStart = p.GetFloat("RebarOffset",30)
         obj.OffsetEnd = p.GetFloat("RebarOffset",30)
-    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Rebar")
     return obj
 
 

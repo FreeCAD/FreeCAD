@@ -295,7 +295,9 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=translate
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Structure(obj)
-    _ViewProviderStructure(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderStructure(obj.ViewObject)
+        obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     if baseobj:
         obj.Base = baseobj
         obj.Base.ViewObject.hide()
@@ -316,7 +318,6 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=translate
             obj.Length = p.GetFloat("StructureLength",100)
     if height > length:
         obj.Role = "Column"
-    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     return obj
 
 def makeStructuralSystem(objects,axes,name=translate("Arch","StructuralSystem")):
@@ -329,12 +330,14 @@ def makeStructuralSystem(objects,axes,name=translate("Arch","StructuralSystem"))
         for o in objects:
             obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
             _StructuralSystem(obj)
-            _ViewProviderStructuralSystem(obj.ViewObject)
+            if FreeCAD.GuiUp:
+                _ViewProviderStructuralSystem(obj.ViewObject)
             obj.Base = o
             obj.Axes = axes
             result.append(obj)
-            o.ViewObject.hide()
-            Draft.formatObject(obj,o)
+            if FreeCAD.GuiUp:
+                o.ViewObject.hide()
+                Draft.formatObject(obj,o)
         FreeCAD.ActiveDocument.recompute()
     if len(result) == 1:
         return result[0]
@@ -353,7 +356,8 @@ def makeProfile(W=46,H=80,tw=3.8,tf=5.2,name="Profile"):
     obj.Height = H
     obj.WebThickness = tw
     obj.FlangeThickness = tf
-    Draft._ViewProviderDraft(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        Draft._ViewProviderDraft(obj.ViewObject)
     return obj
 
 class _CommandStructure:

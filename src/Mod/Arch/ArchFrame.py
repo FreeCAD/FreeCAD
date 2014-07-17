@@ -38,15 +38,19 @@ __url__ = "http://www.freecadweb.org"
 # Possible roles for frames
 Roles = ['Covering','Member','Railing','Shading Device','Tendon']
     
-def makeFrame(base,profile,name=translate("Arch","Frame")):
-    """makeFrame(base,profile,[name]): creates a frame object from a base sketch (or any other object
+def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
+    """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object
     containing wires) and a profile object (an extrudable 2D object containing faces or closed wires)"""
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Frame(obj)
-    _ViewProviderFrame(obj.ViewObject)
-    obj.Base = base
-    obj.Profile = profile
-    #profile.ViewObject.hide()
+    if FreeCAD.GuiUp:
+        _ViewProviderFrame(obj.ViewObject)
+    if baseobj:
+        obj.Base = baseobj
+    if profile:
+        obj.Profile = profile
+        if FreeCAD.GuiUp:
+            profile.ViewObject.hide()
     return obj
 
 class _CommandFrame:

@@ -42,7 +42,8 @@ def makeRoof(baseobj=None,facenr=1,angle=45,name=translate("Arch","Roof")):
     = roof).'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Roof(obj)
-    _ViewProviderRoof(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderRoof(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
     obj.Face = facenr
