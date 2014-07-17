@@ -59,7 +59,7 @@
 #include <TopTools_ListOfShape.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepMesh.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepLib.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
 #include <Handle_BRepAdaptor_HCompCurve.hxx>
@@ -172,7 +172,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
 
     if (!H.IsNull() && (type & WithHidden)) {
         double width = hiddenscale;
-        BRepMesh::Mesh(H,tolerance);
+        BRepMesh_IncrementalMesh(H,tolerance);
         result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 << "   stroke=\"rgb(0, 0, 0)\"" << endl
@@ -188,7 +188,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     }
     if (!HO.IsNull() && (type & WithHidden)) {
         double width = hiddenscale;
-        BRepMesh::Mesh(HO,tolerance);
+        BRepMesh_IncrementalMesh(HO,tolerance);
         result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 << "   stroke=\"rgb(0, 0, 0)\"" << endl
@@ -204,7 +204,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     }
     if (!VO.IsNull()) {
         double width = scale;
-        BRepMesh::Mesh(VO,tolerance);
+        BRepMesh_IncrementalMesh(VO,tolerance);
         result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 << "   stroke=\"rgb(0, 0, 0)\"" << endl
@@ -219,7 +219,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     }
     if (!V.IsNull()) {
         double width = scale;
-        BRepMesh::Mesh(V,tolerance);
+        BRepMesh_IncrementalMesh(V,tolerance);
         result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 << "   stroke=\"rgb(0, 0, 0)\"" << endl
@@ -234,7 +234,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     }
     if (!V1.IsNull() && (type & WithSmooth)) {
         double width = scale;
-        BRepMesh::Mesh(V1,tolerance);
+        BRepMesh_IncrementalMesh(V1,tolerance);
         result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 << "   stroke=\"rgb(0, 0, 0)\"" << endl
@@ -249,7 +249,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
     }
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
         double width = hiddenscale;
-        BRepMesh::Mesh(H1,tolerance);
+        BRepMesh_IncrementalMesh(H1,tolerance);
         result  << "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 << "   stroke=\"rgb(0, 0, 0)\"" << endl
@@ -281,7 +281,7 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
 
     if (!H.IsNull() && (type & WithHidden)) {
         //float width = 0.15f/scale;
-        BRepMesh::Mesh(H,tolerance);
+        BRepMesh_IncrementalMesh(H,tolerance);
         result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
@@ -296,7 +296,7 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     }
     if (!HO.IsNull() && (type & WithHidden)) {
         //float width = 0.15f/scale;
-        BRepMesh::Mesh(HO,tolerance);
+        BRepMesh_IncrementalMesh(HO,tolerance);
         result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
@@ -311,7 +311,7 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     }
     if (!VO.IsNull()) {
         //float width = 0.35f/scale;
-        BRepMesh::Mesh(VO,tolerance);
+        BRepMesh_IncrementalMesh(VO,tolerance);
         result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
 
@@ -327,7 +327,7 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     }
     if (!V.IsNull()) {
         //float width = 0.35f/scale;
-        BRepMesh::Mesh(V,tolerance);
+        BRepMesh_IncrementalMesh(V,tolerance);
         result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
@@ -343,7 +343,7 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     }
     if (!V1.IsNull() && (type & WithSmooth)) {
         //float width = 0.35f/scale;
-        BRepMesh::Mesh(V1,tolerance);
+        BRepMesh_IncrementalMesh(V1,tolerance);
         result  //<< "<g"
 
                 //<< " id=\"" << ViewName << "\"" << endl
@@ -359,7 +359,7 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     }
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
         //float width = 0.15f/scale;
-        BRepMesh::Mesh(H1,tolerance);
+        BRepMesh_IncrementalMesh(H1,tolerance);
         result  //<< "<g"
                 //<< " id=\"" << ViewName << "\"" << endl
                 /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
