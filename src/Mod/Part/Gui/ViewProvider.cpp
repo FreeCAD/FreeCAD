@@ -27,7 +27,6 @@
 # include <Bnd_Box.hxx>
 # include <Poly_Polygon3D.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepMesh.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepTools.hxx>
@@ -468,7 +467,7 @@ void ViewProviderPartBase::updateData(const App::Property* prop)
             Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 *
                 this->meshDeviation;
 
-            BRepMesh::Mesh(cShape,deflection);
+            BRepMesh_IncrementalMesh(cShape,deflection);
             //BRepMesh_IncrementalMesh MESH(cShape,meshDeviation);
             // We must reset the location here because the transformation data
             // are set in the placement property
@@ -720,7 +719,6 @@ Standard_Boolean ViewProviderPartBase::computeFaces(SoGroup* FaceRoot, const Top
 
     FaceRoot->addChild(pcShapeMaterial);
 
-//  BRepMesh::Mesh(myShape,1.0);
     BRepMesh_IncrementalMesh MESH(myShape,defl);
 
     int i = 1;

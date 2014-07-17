@@ -26,7 +26,6 @@
 #ifndef _PreComp_
 # include <Poly_Polygon3D.hxx>
 # include <BRepBndLib.hxx>
-# include <BRepMesh.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepTools.hxx>

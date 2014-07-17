@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
-# include <BRepMesh.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
@@ -250,7 +250,7 @@ PyObject* TopoShapePy::writeInventor(PyObject * args)
         return NULL;
 
     std::stringstream result;
-    BRepMesh::Mesh(getTopoShapePtr()->_Shape,dev);
+    BRepMesh_IncrementalMesh(getTopoShapePtr()->_Shape,dev);
     if (mode == 0)
         getTopoShapePtr()->exportFaceSet(dev, angle, result);
     else if (mode == 1)

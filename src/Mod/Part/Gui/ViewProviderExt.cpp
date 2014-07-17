@@ -30,7 +30,6 @@
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
-# include <BRepMesh.hxx>
 # include <BRepMesh_IncrementalMesh.hxx>
 # include <BRep_Tool.hxx>
 # include <BRepTools.hxx>
