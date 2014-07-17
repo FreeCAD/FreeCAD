@@ -11,7 +11,15 @@ INSTALL(
         SketcherExample.py
         TestSketcherApp.py
         TestSketcherGui.py
+        Profiles.py
     DESTINATION
         Mod/Sketcher
 )
 
+INSTALL(
+    FILES
+        ProfileLib/Hexagon.py
+        ProfileLib/__init__.py
+    DESTINATION
+        Mod/Sketcher/ProfileLib
+)
