@@ -84,11 +84,5 @@
 #include <Standard_Version.hxx>
 #endif
 
-#if defined(OCC_VERSION_MAJOR) && defined(OCC_VERSION_MINOR) && defined(OCC_VERSION_MAINTENANCE)
-#   define OCC_HEX_VERSION ((OCC_VERSION_MAJOR<<16)+(OCC_VERSION_MINOR<<8)+(OCC_VERSION_MAINTENANCE))
-#else
-#   define OCC_HEX_VERSION 0x050000 // use an old version
-#endif
-
 
 #endif
