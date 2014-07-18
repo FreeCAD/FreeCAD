@@ -67,6 +67,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidge
 
     ui->filletRadius->setUnit(Base::Unit::Length);
     ui->filletRadius->setValue(r);
+    ui->filletRadius->setMinimum(0);
     ui->filletRadius->selectNumber();
     QMetaObject::invokeMethod(ui->filletRadius, "setFocus", Qt::QueuedConnection);
 }
