@@ -282,7 +282,7 @@ App::DocumentObjectExecReturn *Plane::execute(void)
     case BRepBuilderAPI_ParametersOutOfRange:
         error = "parameters out of range";
         break;
-#if OCC_HEX_VERSION < 0x060500
+#if OCC_VERSION_HEX < 0x060500
     case BRepBuilderAPI_SurfaceNotC2:
         error = "surface not C2";
         break;

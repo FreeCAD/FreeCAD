@@ -183,7 +183,7 @@ const char* BRepBuilderAPI_FaceErrorText(BRepBuilderAPI_FaceError et)
         return "Curve projection failed";
     case BRepBuilderAPI_ParametersOutOfRange:
         return "Parameters out of range";
-#if OCC_HEX_VERSION < 0x060500
+#if OCC_VERSION_HEX < 0x060500
     case BRepBuilderAPI_SurfaceNotC2:
         return "Surface not C2-continous";
 #endif
@@ -620,16 +620,16 @@ void TopoShape::importBrep(const char *FileName)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-    #if OCC_HEX_VERSION >= 0x060300
+#if OCC_VERSION_HEX >= 0x060300
         Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading BREP file...");
         pi->Show();
         QString fn = QString::fromUtf8(FileName);
         BRepTools::Read(aShape,(const char*)fn.toLocal8Bit(),aBuilder,pi);
         pi->EndScope();
-    #else
+#else
         BRepTools::Read(aShape,(const Standard_CString)FileName,aBuilder);
-    #endif
+#endif
         this->_Shape = aShape;
     }
     catch (Standard_Failure) {
@@ -644,7 +644,7 @@ void TopoShape::importBrep(std::istream& str)
         // read brep-file
         BRep_Builder aBuilder;
         TopoDS_Shape aShape;
-#if OCC_HEX_VERSION >= 0x060300
+#if OCC_VERSION_HEX >= 0x060300
         Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
         pi->NewScope(100, "Reading BREP file...");
         pi->Show();
