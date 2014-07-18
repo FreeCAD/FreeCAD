@@ -30,13 +30,13 @@
 #include <vector>
 
 #include <Base/Type.h>
-#include <Inventor/Qt/viewers/SoQtViewer.h>
 #include <Inventor/nodes/SoEventCallback.h>
-#include <Inventor/Qt/SoQtCursor.h>
+#include <Quarter/QuarterWidget.h>
 #include <QCursor>
 
 #include <Gui/Selection.h>
 
+namespace Quarter = SIM::Coin3D::Quarter;
 
 class SoSeparator;
 class SoShapeHints;
@@ -64,7 +64,7 @@ class SoShapeScale;
 /** GUI view into a 3D scene provided by View3DInventor
  *
  */
-class GuiExport View3DInventorViewer : public SoQtViewer, public Gui::SelectionSingleton::ObserverType
+class GuiExport View3DInventorViewer : public Quarter::QuarterWidget, public Gui::SelectionSingleton::ObserverType
 {
     SOQT_OBJECT_ABSTRACT_HEADER(View3DInventorViewer, SoQtViewer);
 
