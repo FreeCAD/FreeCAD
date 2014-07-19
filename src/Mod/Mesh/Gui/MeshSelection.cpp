@@ -175,12 +175,11 @@ void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
         brush->setColor(1.0f,0.0f,0.0f);
         brush->setLineWidth(3.0f);
         viewer->navigationStyle()->startSelection(brush);
-        SoQtCursor::CustomCursor custom;
-        custom.dim.setValue(CROSS_WIDTH, CROSS_HEIGHT);
-        custom.hotspot.setValue(CROSS_HOT_X, CROSS_HOT_Y);
-        custom.bitmap = cross_bitmap;
-        custom.mask = cross_mask_bitmap;
-        viewer->setComponentCursor(SoQtCursor(&custom));
+        
+        QBitmap cursor = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_bitmap);
+        QBitmap mask = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_mask_bitmap);
+        QCursor custom(cursor, mask, CROSS_HOT_X, CROSS_HOT_Y);
+        viewer->setComponentCursor(custom);
         this->addToSelection = add;
     }
 }
@@ -396,12 +395,12 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
 
         // simply get all triangles under the polygon
-        SoCamera* cam = view->getCamera();
+        SoCamera* cam = view->getSoRenderManager()->getCamera();
         SbViewVolume vv = cam->getViewVolume();
         Gui::ViewVolumeProjection proj(vv);
         vp->getFacetsFromPolygon(polygon, proj, true, faces);
         if (self->onlyVisibleTriangles) {
-            const SbVec2s& sz = view->getViewportRegion().getWindowSize();
+            const SbVec2s& sz = view->getSoRenderManager()->getViewportRegion().getWindowSize();
             short width,height; sz.getValue(width,height);
             std::vector<SbVec2s> pixelPoly = view->getPolygon();
             SbBox2s rect;
@@ -411,7 +410,7 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
             }
             std::vector<unsigned long> rf; rf.swap(faces);
             std::vector<unsigned long> vf = vp->getVisibleFacetsAfterZoom
-                (rect, view->getViewportRegion(), view->getCamera());
+                (rect, view->getSoRenderManager()->getViewportRegion(), view->getSoRenderManager()->getCamera());
 
             // get common facets of the viewport and the visible one
             std::sort(vf.begin(), vf.end());
@@ -441,7 +440,7 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
             vp->removeSelection(faces);
     }
 
-    view->render();
+    view->redraw();
 }
 
 void MeshSelection::pickFaceCallback(void * ud, SoEventCallback * n)

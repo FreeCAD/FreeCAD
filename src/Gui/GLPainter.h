@@ -89,6 +89,22 @@ public:
     virtual void paintGL() = 0;
 };
 
+class GuiExport Rubberband : public Gui::GLGraphicsItem
+{
+    Gui::View3DInventorViewer* viewer;
+    int x_old, y_old, x_new, y_new;
+    bool working;
+public:
+    Rubberband(Gui::View3DInventorViewer* v);
+    Rubberband();
+    ~Rubberband();
+    void setWorking(bool on);
+    void setViewer(Gui::View3DInventorViewer* v);
+    void setCoords(int x1, int y1, int x2, int y2);
+    void paintGL();
+};
+
+
 } // namespace Gui
 
 #endif  // GUI_GLPAINTER_H

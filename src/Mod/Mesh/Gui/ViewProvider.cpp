@@ -677,7 +677,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
             ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
             if (self->getEditingMode() > -1) {
                 self->finishEditing();
-                SoCamera* cam = view->getCamera();
+                SoCamera* cam = view->getSoRenderManager()->getCamera();
                 SbViewVolume vv = cam->getViewVolume();
                 Gui::ViewVolumeProjection proj(vv);
                 self->cutMesh(clPoly, proj, clip_inner);
@@ -686,7 +686,7 @@ void ViewProviderMesh::clipMeshCallback(void * ud, SoEventCallback * n)
 
         Gui::Application::Instance->activeDocument()->commitCommand();
 
-        view->render();
+        view->redraw();
     }
 }
 
@@ -715,7 +715,7 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
             ViewProviderMesh* self = static_cast<ViewProviderMesh*>(*it);
             if (self->getEditingMode() > -1) {
                 self->finishEditing();
-                SoCamera* cam = view->getCamera();
+                SoCamera* cam = view->getSoRenderManager()->getCamera();
                 SbViewVolume vv = cam->getViewVolume();
                 Gui::ViewVolumeProjection proj(vv);
                 self->trimMesh(clPoly, proj, clip_inner);
@@ -724,7 +724,7 @@ void ViewProviderMesh::trimMeshCallback(void * ud, SoEventCallback * n)
 
         Gui::Application::Instance->activeDocument()->commitCommand();
 
-        view->render();
+        view->redraw();
     }
 }
 
@@ -750,7 +750,7 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
     SbVec3f b,n;
     view->getNearPlane(b, n);
     Base::Vector3f cPoint(b[0],b[1],b[2]), cNormal(n[0],n[1],n[2]);
-    SoCamera* pCam = view->getCamera();  
+    SoCamera* pCam = view->getSoRenderManager()->getCamera();  
     SbViewVolume  vol = pCam->getViewVolume(); 
 
     // create a tool shape from these points
@@ -782,7 +782,7 @@ void ViewProviderMesh::partMeshCallback(void * ud, SoEventCallback * cb)
 
     // Close the transaction
     Gui::Application::Instance->activeDocument()->commitCommand();
-    view->render();
+    view->redraw();
 }
 
 void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
@@ -807,7 +807,7 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
     SbVec3f b,n;
     view->getNearPlane(b, n);
     Base::Vector3f cPoint(b[0],b[1],b[2]), cNormal(n[0],n[1],n[2]);
-    SoCamera* pCam = view->getCamera();  
+    SoCamera* pCam = view->getSoRenderManager()->getCamera();  
     SbViewVolume  vol = pCam->getViewVolume(); 
 
     // create a tool shape from these points
@@ -839,7 +839,7 @@ void ViewProviderMesh::segmMeshCallback(void * ud, SoEventCallback * cb)
 
     // Close the transaction
     Gui::Application::Instance->activeDocument()->commitCommand();
-    view->render();
+    view->redraw();
 }
 
 void ViewProviderMesh::selectGLCallback(void * ud, SoEventCallback * n)
@@ -857,8 +857,8 @@ void ViewProviderMesh::selectGLCallback(void * ud, SoEventCallback * n)
 
     SbVec2f pos = clPoly[0];
     float pX,pY; pos.getValue(pX,pY);
-    const SbVec2s& sz = view->getViewportRegion().getViewportSizePixels();
-    float fRatio = view->getViewportRegion().getViewportAspectRatio();
+    const SbVec2s& sz = view->getSoRenderManager()->getViewportRegion().getViewportSizePixels();
+    float fRatio = view->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
     if (fRatio > 1.0f) {
         pX = (pX - 0.5f) / fRatio + 0.5f;
         pos.setValue(pX,pY);
@@ -887,11 +887,11 @@ void ViewProviderMesh::selectGLCallback(void * ud, SoEventCallback * n)
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(*it);
         if (that->getEditingMode() > -1) {
             that->finishEditing();
-            that->selectArea(x, y, w, h, view->getViewportRegion(), view->getCamera());
+            that->selectArea(x, y, w, h, view->getSoRenderManager()->getViewportRegion(), view->getSoRenderManager()->getCamera());
         }
     }
 
-    view->render();
+    view->redraw();
 }
 
 void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
@@ -1004,8 +1004,8 @@ void ViewProviderMesh::boxZoom(const SbBox2s& box, const SbViewportRegion & vp, 
     // Get the new center in normalized pixel coordinates
     short xmin,xmax,ymin,ymax;
     box.getBounds(xmin,ymin,xmax,ymax);
-    const SbVec2f center((float) ((xmin+xmax)/2) / (float) SoQtMax((int)(size[0] - 1), 1),
-                         (float) (size[1]-(ymin+ymax)/2) / (float) SoQtMax((int)(size[1] - 1), 1));
+    const SbVec2f center((float) ((xmin+xmax)/2) / (float) std::max((int)(size[0] - 1), 1),
+                         (float) (size[1]-(ymin+ymax)/2) / (float) std::max((int)(size[1] - 1), 1));
 
     SbPlane plane = vv.getPlane(cam->focalDistance.getValue());
     panCamera(cam,vp.getViewportAspectRatio(),plane, SbVec2f(0.5,0.5), center);
@@ -1346,7 +1346,7 @@ void ViewProviderMesh::markPartCallback(void * ud, SoEventCallback * n)
                 for (std::vector<ViewProvider*>::iterator it = views.begin(); it != views.end(); ++it) {
                     static_cast<ViewProviderMesh*>(*it)->deleteSelection();
                 }
-                view->render();
+                view->redraw();
                 Gui::Application::Instance->activeDocument()->commitCommand();
             }
         }

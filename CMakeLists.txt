@@ -339,7 +339,6 @@ if(FREECAD_LIBPACK_USE)
         set(FREECAD_USE_EXTERNAL_PIVY ON CACHE BOOL "Switch off local pivy" FORCE)
         set(FREECAD_LIBPACK_PYSIDEUIC_REL   "${FREECAD_LIBPACK_DIR}/pyside-tools/Lib/site-packages")
         file(GLOB FREECAD_LIBPACK_PIVY_COIN "${FREECAD_LIBPACK_DIR}/pivy/*.*")
-        file(GLOB FREECAD_LIBPACK_PIVY_SOQT "${FREECAD_LIBPACK_DIR}/pivy/gui/*.*")
         file(GLOB FREECAD_LIBPACK_SHIBOKEN  "${FREECAD_LIBPACK_DIR}/shiboken-1.2.1/lib/site-packages/*.pyd")
         file(GLOB FREECAD_LIBPACK_PYSIDE    "${FREECAD_LIBPACK_DIR}/pyside/lib/site-packages/PySide/*.py*")
         file(GLOB_RECURSE FREECAD_LIBPACK_PYSIDEUIC RELATIVE "${FREECAD_LIBPACK_PYSIDEUIC_REL}" "${FREECAD_LIBPACK_PYSIDEUIC_REL}/pysideuic/*.py")
@@ -613,7 +612,6 @@ else(FREECAD_LIBPACK_USE)
 # -------------------------------- Coin3D --------------------------------
 
         find_package(Coin3D REQUIRED)
-        find_package(SoQt REQUIRED)
 
 # ------------------------------ Spaceball -------------------------------
 
@@ -757,7 +755,7 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 		set(PKG_ARCH amd64)
 	ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 	set(CPACK_DEBIAN_PACKAGE_SECTION "science")
-	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libsoqt4-20, libxerces-c3.1, zlib1g, libboost-dev, libeigen2-dev")
+	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libxerces-c3.1, zlib1g, libboost-dev, libeigen2-dev")
 	set(CPACK_PACKAGE_CONTACT "<root@localhost>")
 	set(CPACK_PACKAGE_FILE_NAME "${PACKAGE_NAME}-${PACKAGE_VERSION}_${PKG_ARCH}")
 	

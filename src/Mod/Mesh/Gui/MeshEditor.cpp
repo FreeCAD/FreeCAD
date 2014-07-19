@@ -59,6 +59,7 @@
 #include <Gui/View3DInventorViewer.h>
 
 using namespace MeshGui;
+using namespace Quarter;
 
 PROPERTY_SOURCE(MeshGui::ViewProviderFace, Gui::ViewProviderDocumentObject)
 
@@ -155,15 +156,15 @@ std::vector<std::string> ViewProviderFace::getDisplayModes(void) const
     return modes;
 }
 
-SoPickedPoint* ViewProviderFace::getPickedPoint(const SbVec2s& pos, const SoQtViewer* viewer) const
+SoPickedPoint* ViewProviderFace::getPickedPoint(const SbVec2s& pos, const Gui::View3DInventorViewer* viewer) const
 {
     SoSeparator* root = new SoSeparator;
     root->ref();
     root->addChild(viewer->getHeadlight());
-    root->addChild(viewer->getCamera());
+    root->addChild(viewer->getSoRenderManager()->getCamera());
     root->addChild(this->pcMeshPick);
 
-    SoRayPickAction rp(viewer->getViewportRegion());
+    SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
     rp.setPoint(pos);
     rp.apply(root);
     root->unref();
@@ -455,11 +456,11 @@ void MeshFillHole::startEditing(MeshGui::ViewProviderMesh* vp)
 
     myBoundariesRoot->removeAllChildren();
     myBoundariesRoot->addChild(viewer->getHeadlight());
-    myBoundariesRoot->addChild(viewer->getCamera());
+    myBoundariesRoot->addChild(viewer->getSoRenderManager()->getCamera());
     myBoundariesRoot->addChild(myBoundariesGroup);
     myBoundaryRoot->removeAllChildren();
     myBoundaryRoot->addChild(viewer->getHeadlight());
-    myBoundaryRoot->addChild(viewer->getCamera());
+    myBoundaryRoot->addChild(viewer->getSoRenderManager()->getCamera());
     createPolygons();
     static_cast<SoGroup*>(viewer->getSceneGraph())->addChild(myBridgeRoot);
 }
@@ -577,7 +578,7 @@ void MeshFillHole::createPolygons()
     }
 }
 
-SoNode* MeshFillHole::getPickedPolygon(const SoRayPickAction& action/*SoNode* root, const SbVec2s& pos, const SoQtViewer* viewer*/) const
+SoNode* MeshFillHole::getPickedPolygon(const SoRayPickAction& action/*SoNode* root, const SbVec2s& pos*/) const
 {
     SoPolygon* poly = 0;
     const SoPickedPointList & points = action.getPickedPointList();
@@ -632,7 +633,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
     const SoEvent* ev = n->getEvent();
     if (ev->getTypeId() == SoLocation2Event::getClassTypeId()) {
         n->setHandled();
-        SoRayPickAction rp(view->getViewportRegion());
+        SoRayPickAction rp(view->getSoRenderManager()->getViewportRegion());
         rp.setPoint(ev->getPosition());
         rp.setPickAll(true);
         if (self->myNumPoints == 0)
@@ -664,7 +665,7 @@ void MeshFillHole::fileHoleCallback(void * ud, SoEventCallback * n)
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
             if (self->myNumPoints > 1)
                 return;
-            SoRayPickAction rp(view->getViewportRegion());
+            SoRayPickAction rp(view->getSoRenderManager()->getViewportRegion());
             rp.setPoint(ev->getPosition());
             rp.setPickAll(true);
             if (self->myNumPoints == 0)

@@ -128,7 +128,7 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     d->node->insertChild(d->clipZ, 0);
     d->node->insertChild(d->clipView, 0);
 
-    SoGetBoundingBoxAction action(viewer->getViewportRegion());
+    SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.apply(viewer->getSceneGraph());
     SbBox3f box = action.getBoundingBox();
 

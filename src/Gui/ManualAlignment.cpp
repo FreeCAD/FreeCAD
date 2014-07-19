@@ -367,9 +367,9 @@ public:
         // apply the user settings
         setupSettings();
 
-        static_cast<SoGroup*>(getViewer(0)->getSceneManager()->getSceneGraph())->
+        static_cast<SoGroup*>(getViewer(0)->getSceneGraph())->
             addChild(setupHeadUpDisplay(tr("Movable object")));
-        static_cast<SoGroup*>(getViewer(1)->getSceneManager()->getSceneGraph())->
+        static_cast<SoGroup*>(getViewer(1)->getSceneGraph())->
             addChild(setupHeadUpDisplay(tr("Fixed object")));
     }
     ~AlignmentView()
@@ -518,8 +518,8 @@ public:
         ManualAlignment* self = reinterpret_cast<ManualAlignment*>(data);
         if (!self->myViewer)
             return; // already destroyed
-        SoCamera* cam1 = self->myViewer->getViewer(0)->getCamera();
-        SoCamera* cam2 = self->myViewer->getViewer(1)->getCamera();
+        SoCamera* cam1 = self->myViewer->getViewer(0)->getSoRenderManager()->getCamera();
+        SoCamera* cam2 = self->myViewer->getViewer(1)->getSoRenderManager()->getCamera();
         if (!cam1 || !cam2)
             return; // missing camera
         SoNodeSensor* sensor = static_cast<SoNodeSensor*>(s);
@@ -528,12 +528,12 @@ public:
             if (node == cam1) {
                 Private::copyCameraSettings(cam1, self->d->rot_cam1, self->d->pos_cam1,
                                    cam2, self->d->rot_cam2, self->d->pos_cam2);
-                self->myViewer->getViewer(1)->render();
+                self->myViewer->getViewer(1)->redraw();
             }
             else if (node == cam2) {
                 Private::copyCameraSettings(cam2, self->d->rot_cam2, self->d->pos_cam2,
                                    cam1, self->d->rot_cam1, self->d->pos_cam1);
-                self->myViewer->getViewer(0)->render();
+                self->myViewer->getViewer(0)->redraw();
             }
         }
     }
@@ -687,7 +687,7 @@ void ManualAlignment::setViewingDirections(const Base::Vector3d& view1, const Ba
         SbVec3f up(0.0f, 1.0f, 0.0f);
         rot.multVec(up, up);
         rot2.setValue(up, SbVec3f(up1.x, up1.y, up1.z));
-        myViewer->getViewer(0)->getCamera()->orientation.setValue(rot * rot2);
+        myViewer->getViewer(0)->getSoRenderManager()->getCamera()->orientation.setValue(rot * rot2);
         myViewer->getViewer(0)->viewAll();
     }
 
@@ -699,7 +699,7 @@ void ManualAlignment::setViewingDirections(const Base::Vector3d& view1, const Ba
         SbVec3f up(0.0f, 1.0f, 0.0f);
         rot.multVec(up, up);
         rot2.setValue(up, SbVec3f(up2.x, up2.y, up2.z));
-        myViewer->getViewer(1)->getCamera()->orientation.setValue(rot * rot2);
+        myViewer->getViewer(1)->getSoRenderManager()->getCamera()->orientation.setValue(rot * rot2);
         myViewer->getViewer(1)->viewAll();
     }
 }
@@ -1209,8 +1209,8 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
             else if (id == sync) {
                 // setup sensor connection
                 if (sync->isChecked()) {
-                    SoCamera* cam1 = self->myViewer->getViewer(0)->getCamera();
-                    SoCamera* cam2 = self->myViewer->getViewer(1)->getCamera();
+                    SoCamera* cam1 = self->myViewer->getViewer(0)->getSoRenderManager()->getCamera();
+                    SoCamera* cam2 = self->myViewer->getViewer(1)->getSoRenderManager()->getCamera();
                     if (cam1 && cam2) {
                         self->d->sensorCam1->attach(cam1);
                         self->d->rot_cam1 = cam1->orientation.getValue();

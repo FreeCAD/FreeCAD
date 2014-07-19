@@ -366,10 +366,10 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInven
     // for convenience make a pick ray action to get the (potentially) picked entity in the provider
     SoSeparator* root = new SoSeparator;
     root->ref();
-    root->addChild(viewer->getCamera());
+    root->addChild(viewer->getSoRenderManager()->getCamera());
     root->addChild(pcRoot);
 
-    SoRayPickAction rp(viewer->getViewportRegion());
+    SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
     rp.setPoint(pos);
     rp.apply(root);
     root->unref();
@@ -382,7 +382,7 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir
 {
     // Note: There seems to be a  bug with setRay() which causes SoRayPickAction
     // to fail to get intersections between the ray and a line
-    SoRayPickAction rp(viewer->getViewportRegion());
+    SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
     rp.setRay(pos,dir);
     rp.apply(pcRoot);
 

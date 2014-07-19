@@ -25,6 +25,7 @@
 #define GUI_SOFCDB_H
 
 #include <string>
+#include <Inventor/SbBasic.h>
 
 class SoNode;
 namespace Gui {

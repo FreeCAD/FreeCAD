@@ -24,6 +24,10 @@ class QuarterP {
 
 }}};
 
+#define QUARTER_MAJOR_VERSION 1
+#define QUARTER_MINOR_VERSION 0
+#define QUARTER_MICRO_VERSION 0
+
 #define COIN_CT_ASSERT(expr)                                            \
   do { switch ( 0 ) { case 0: case (expr): break; } } while ( 0 )
 

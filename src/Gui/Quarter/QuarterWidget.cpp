@@ -254,7 +254,7 @@ QuarterWidget::headlightEnabled(void) const
   Returns the light used for the headlight.
 */
 SoDirectionalLight *
-QuarterWidget::getHeadlight(void)
+QuarterWidget::getHeadlight(void) const
 {
   return PRIVATE(this)->headlight;
 }

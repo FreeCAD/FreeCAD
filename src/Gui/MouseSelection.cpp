@@ -811,7 +811,7 @@ public:
     {
         if (!working)
             return;
-        const SbViewportRegion vp = viewer->getViewportRegion();
+        const SbViewportRegion vp = viewer->getSoRenderManager()->getViewportRegion();
         SbVec2s size = vp.getViewportSizePixels();
 
         glMatrixMode(GL_PROJECTION);
@@ -853,20 +853,22 @@ void RubberbandSelection::initialize()
 {
     d = new Private(_pcView3D);
     _pcView3D->addGraphicsItem(d);
+
     if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderFramebuffer(true);
     }
-    _pcView3D->scheduleRedraw();
+    _pcView3D->redraw();
 }
 
 void RubberbandSelection::terminate()
 {
     _pcView3D->removeGraphicsItem(d);
     delete d; d = 0;
+
     if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderFramebuffer(false);
     }
-    _pcView3D->scheduleRedraw();
+    _pcView3D->redraw();
 }
 
 void RubberbandSelection::draw ()
@@ -917,7 +919,7 @@ int RubberbandSelection::locationEvent(const SoLocation2Event * const e, const Q
     m_iXnew = pos.x(); 
     m_iYnew = pos.y();
     d->setCoords(m_iXold, m_iYold, m_iXnew, m_iYnew);
-    _pcView3D->render();
+    _pcView3D->redraw();
     return Continue;
 }
 

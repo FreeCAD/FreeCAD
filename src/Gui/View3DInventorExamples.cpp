@@ -47,8 +47,6 @@
 #include "View3DInventorExamples.h"
 
 #include <Inventor/SbPlane.h>
-#include <Inventor/Qt/SoQt.h>
-#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/manips/SoPointLightManip.h>
@@ -266,24 +264,6 @@ void Texture3D(SoSeparator * root)
   root->addChild(planeTCoords);
   SoFaceSet * planeFS = new SoFaceSet;
   root->addChild(planeFS);
-
-  /*
-  SoQtExaminerViewer * renderarea = new SoQtExaminerViewer( window );
-  renderarea->setSceneGraph( root );
-  renderarea->setBackgroundColor( SbColor( 0.0f, 0.2f, 0.3f )  );
-  renderarea->setTitle(argv[0]);
-  renderarea->setIconTitle(argv[0]);
-  renderarea->viewAll();
-  renderarea->show();
-
-  SoQt::show(window);
-  SoQt::mainLoop();
-
-  delete renderarea;
-  root->unref();
-
-  return 0;
-  */
 }
 
 // *************************************************************************

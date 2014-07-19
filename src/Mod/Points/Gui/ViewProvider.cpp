@@ -379,7 +379,7 @@ void ViewProviderPoints::clipPointsCallback(void * ud, SoEventCallback * n)
         }
     }
 
-    view->render();
+    view->getSoRenderManager()->render();
 }
 
 void ViewProviderPoints::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer)
@@ -394,7 +394,7 @@ void ViewProviderPoints::cut(const std::vector<SbVec2f>& picked, Gui::View3DInve
     Points::Feature* fea = (Points::Feature*)pcObject;
     const Points::PointKernel& points = fea->Points.getValue();
 
-    SoCamera* pCam = Viewer.getCamera();  
+    SoCamera* pCam = Viewer.getSoRenderManager()->getCamera();  
     SbViewVolume  vol = pCam->getViewVolume(); 
 
     // search for all points inside/outside the polygon

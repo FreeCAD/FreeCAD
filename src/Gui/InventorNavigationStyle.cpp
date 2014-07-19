@@ -89,12 +89,12 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
 
     const SoType type(ev->getTypeId());
 
-    const SbViewportRegion & vp = viewer->getViewportRegion();
+    const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     const SbVec2s size(vp.getViewportSizePixels());
     const SbVec2f prevnormalized = this->lastmouseposition;
     const SbVec2s pos(ev->getPosition());
-    const SbVec2f posn((float) pos[0] / (float) SoQtMax((int)(size[0] - 1), 1),
-                       (float) pos[1] / (float) SoQtMax((int)(size[1] - 1), 1));
+    const SbVec2f posn((float) pos[0] / (float) std::max((int)(size[0] - 1), 1),
+                       (float) pos[1] / (float) std::max((int)(size[1] - 1), 1));
 
     this->lastmouseposition = posn;
 
@@ -175,8 +175,8 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
                 (this->currentmode != NavigationStyle::SELECTION)) {
                 this->centerTime = ev->getTime();
                 float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getCamera()->focalDistance.getValue());
+                SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(ratio);
+                this->panningplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
                 this->lockrecenter = FALSE;
             }
             else if (!press && ev->wasShiftDown() &&
@@ -235,8 +235,8 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
             if (press) {
                 this->centerTime = ev->getTime();
                 float ratio = vp.getViewportAspectRatio();
-                SbViewVolume vv = viewer->getCamera()->getViewVolume(ratio);
-                this->panningplane = vv.getPlane(viewer->getCamera()->focalDistance.getValue());
+                SbViewVolume vv = viewer->getSoRenderManager()->getCamera()->getViewVolume(ratio);
+                this->panningplane = vv.getPlane(viewer->getSoRenderManager()->getCamera()->focalDistance.getValue());
                 this->lockrecenter = FALSE;
             }
             else {
@@ -254,11 +254,11 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
             this->button3down = press;
             break;
         case SoMouseButtonEvent::BUTTON4:
-            doZoom(viewer->getCamera(), TRUE, posn);
+            doZoom(viewer->getSoRenderManager()->getCamera(), TRUE, posn);
             processed = TRUE;
             break;
         case SoMouseButtonEvent::BUTTON5:
-            doZoom(viewer->getCamera(), FALSE, posn);
+            doZoom(viewer->getSoRenderManager()->getCamera(), FALSE, posn);
             processed = TRUE;
             break;
         default:
@@ -276,7 +276,7 @@ SbBool InventorNavigationStyle::processSoEvent(const SoEvent * const ev)
         }
         else if (this->currentmode == NavigationStyle::PANNING) {
             float ratio = vp.getViewportAspectRatio();
-            panCamera(viewer->getCamera(), ratio, this->panningplane, posn, prevnormalized);
+            panCamera(viewer->getSoRenderManager()->getCamera(), ratio, this->panningplane, posn, prevnormalized);
             processed = TRUE;
         }
         else if (this->currentmode == NavigationStyle::DRAGGING) {
