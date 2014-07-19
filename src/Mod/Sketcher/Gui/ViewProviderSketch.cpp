@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 Jï¿½rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -763,6 +763,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                   << "Sketcher_CreateLine"
                                   << "Sketcher_CreatePolyline"
                                   << "Sketcher_CreateRectangle"
+                                  << "Sketcher_CreateHexagon"
                                   << "Sketcher_CreateFillet"
                                   << "Sketcher_Trimming"
                                   << "Sketcher_External"

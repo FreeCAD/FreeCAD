@@ -22,6 +22,7 @@ link_directories(${OCC_LIBRARY_DIR})
 set(PartDesignGui_LIBS
     PartDesign
     PartGui
+    SketcherGui
     FreeCADGui
 )
 

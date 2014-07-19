@@ -25,9 +25,9 @@ namespace KDL {
     using namespace std;
 
     Chain::Chain():
-        segments(0),
         nrOfJoints(0),
-        nrOfSegments(0)
+        nrOfSegments(0),
+        segments(0)
     {
     }
 

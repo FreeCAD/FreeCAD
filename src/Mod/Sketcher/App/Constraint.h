@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) Jï¿½rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -56,7 +56,7 @@ class SketcherExport Constraint : public Base::Persistence
     TYPESYSTEM_HEADER();
 
 public:
-    ~Constraint();
+    virtual ~Constraint();
     Constraint();
     Constraint(const Constraint&);
     virtual Constraint *clone(void) const;

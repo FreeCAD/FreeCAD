@@ -44,6 +44,7 @@ class BaseExport Persistence : public BaseClass
   TYPESYSTEM_HEADER();
 
 public: 
+    virtual ~Persistence(){}
     /** This method is used to get the size of objects
      * It is not meant to have the exact size, it is more or less an estimation
      * which runs fast! Is it two bytes or a GB?

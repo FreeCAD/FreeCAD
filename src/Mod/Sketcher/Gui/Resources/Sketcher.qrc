@@ -60,6 +60,12 @@
         <file>icons/Sketcher_CreateRectangle.svg</file>
         <file>icons/Sketcher_CreateSlot.svg</file>
         <file>icons/Sketcher_CreateFillet.svg</file>
+        <file>icons/Sketcher_CreateTriangle.svg</file>
+        <file>icons/Sketcher_CreateSquare.svg</file>
+        <file>icons/Sketcher_CreatePentagon.svg</file>
+        <file>icons/Sketcher_CreateHexagon.svg</file>
+        <file>icons/Sketcher_CreateHeptagon.svg</file>
+        <file>icons/Sketcher_CreateOctagon.svg</file>
         <file>icons/Sketcher_CreateText.svg</file>
         <file>icons/Sketcher_DraftLine.svg</file>
         <file>icons/Sketcher_Trimming.svg</file>
