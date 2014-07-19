@@ -17,7 +17,6 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
-    ${SOQT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc

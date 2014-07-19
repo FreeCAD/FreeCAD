@@ -69,7 +69,7 @@ float SoAutoZoomTranslation::getScaleFactor()
     Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
     if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-        float fScale = viewer->getCamera()->getViewVolume(viewer->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 5;
+        float fScale = viewer->getSoRenderManager()->getCamera()->getViewVolume(viewer->getSoRenderManager()->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 5;
         if (fScale != this->scale) this->touch();
         this->scale = fScale;
         return this->scale;

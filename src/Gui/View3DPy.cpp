@@ -441,7 +441,7 @@ Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-      SoCamera* cam = _view->getViewer()->getCamera();
+      SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
@@ -467,7 +467,7 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-      SoCamera* cam = _view->getViewer()->getCamera();
+      SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
@@ -600,7 +600,7 @@ Py::Object View3DInventorPy::viewPosition(const Py::Tuple& args)
             SbVec3f((float)pos.x, (float)pos.y, (float)pos.z), steps, ms);
     }
 
-    SoCamera* cam = _view->getViewer()->getCamera();
+    SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
     if (!cam) return Py::None();
 
     SbRotation rot = cam->orientation.getValue();
@@ -651,22 +651,22 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
 void View3DInventorPy::createImageFromFramebuffer(int backgroundType, int width, int height, QImage& img)
 {
     QGLFramebufferObject fbo(width, height, QGLFramebufferObject::Depth);
-    const SbColor col = _view->getViewer()->getBackgroundColor();
+    const QColor col = _view->getViewer()->backgroundColor();
     bool on = _view->getViewer()->hasGradientBackground();
 
     switch(backgroundType){
         case 0: // Current
             break;
         case 1: // Black
-            _view->getViewer()->setBackgroundColor(SbColor(0.0f,0.0f,0.0f));
+            _view->getViewer()->setBackgroundColor(QColor(0,0,0));
             _view->getViewer()->setGradientBackground(false);
             break;
         case 2: // White
-            _view->getViewer()->setBackgroundColor(SbColor(1.0f,1.0f,1.0f));
+            _view->getViewer()->setBackgroundColor(QColor(255,255,255));
             _view->getViewer()->setGradientBackground(false);
             break;
         case 3: // Transparent
-            _view->getViewer()->setBackgroundColor(SbColor(1.0f,1.0f,1.0f));
+            _view->getViewer()->setBackgroundColor(QColor(255,255,255));
             _view->getViewer()->setGradientBackground(false);
             break;
         default:
@@ -725,7 +725,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
     }
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
-    SoCamera* cam = _view->getViewer()->getCamera();
+    SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
     renderer.writeToImageFile(cFileName, cComment, cam->getViewVolume().getMatrix(), img);
 
     return Py::None();
@@ -773,7 +773,7 @@ Py::Object View3DInventorPy::getCameraNode(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        SoNode* camera = _view->getViewer()->getCamera();
+        SoNode* camera = _view->getViewer()->getSoRenderManager()->getCamera();
         PyObject* proxy = 0;
         std::string type;
         type = "So"; // seems that So prefix is missing in camera node
@@ -799,7 +799,7 @@ Py::Object View3DInventorPy::getCamera(const Py::Tuple& args)
 
     try {
         SoWriteAction wa(&out);
-        SoCamera * cam = _view->getViewer()->getCamera();
+        SoCamera * cam = _view->getViewer()->getSoRenderManager()->getCamera();
         if (cam) wa.apply(cam);
         else buffer[0] = '\0';
         return Py::String(buffer);
@@ -864,7 +864,7 @@ Py::Object View3DInventorPy::getCameraType(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
 
-    SoCamera* cam = _view->getViewer()->getCamera();
+    SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
     if (!cam) {
         throw Py::Exception("No camera set!");
     }
@@ -999,14 +999,10 @@ Py::Object View3DInventorPy::setStereoType(const Py::Tuple& args)
     }
 
     try {
-#if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 2)
         if (stereomode < 0 || stereomode > 4)
             throw Py::Exception("Out of range");
-        SoQtViewer::StereoType mode = SoQtViewer::StereoType(stereomode);
-        _view->getViewer()->setStereoType(mode);
-#else
-        throw Py::Exception("Stereo types not supported. Use SoQt 1.2.x or later!");
-#endif
+        Quarter::SoQTQuarterAdaptor::StereoMode mode = Quarter::SoQTQuarterAdaptor::StereoMode(stereomode);
+        _view->getViewer()->setProperty("StereoMode",mode);
         return Py::None();
     }
     catch (const Base::Exception& e) {
@@ -1026,13 +1022,8 @@ Py::Object View3DInventorPy::getStereoType(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-#if SOQT_MAJOR_VERSION > 1 || (SOQT_MAJOR_VERSION == 1 && SOQT_MINOR_VERSION >= 2)
-        int mode = (int)(_view->getViewer()->getStereoType()); 
+        int mode = (int)(_view->getViewer()->stereoMode()); 
         return Py::String(StereoTypeEnums[mode]);
-#else
-        throw Py::Exception("Stereo types not supported. Use SoQt 1.2.x or later!");
-#endif
-        return Py::None();
     }
     catch (const Base::Exception& e) {
         throw Py::Exception(e.what());
@@ -1105,9 +1096,9 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
         // graph traversal we must not use a second SoHandleEventAction as
         // we will get Coin warnings because of multiple scene graph traversals
         // which is regarded as error-prone.
-        SoRayPickAction action(_view->getViewer()->getViewportRegion());
+        SoRayPickAction action(_view->getViewer()->getSoRenderManager()->getViewportRegion());
         action.setPoint(SbVec2s((long)x,(long)y));
-        action.apply(_view->getViewer()->getSceneManager()->getSceneGraph());
+        action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
         SoPickedPoint *Point = action.getPickedPoint();
 
         Py::Object ret = Py::None();
@@ -1174,10 +1165,10 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
         // graph traversal we must not use a second SoHandleEventAction as
         // we will get Coin warnings because of multiple scene graph traversals
         // which is regarded as error-prone.
-        SoRayPickAction action(_view->getViewer()->getViewportRegion());
+        SoRayPickAction action(_view->getViewer()->getSoRenderManager()->getViewportRegion());
         action.setPickAll(true);
         action.setPoint(SbVec2s((long)x,(long)y));
-        action.apply(_view->getViewer()->getSceneManager()->getSceneGraph());
+        action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
         const SoPickedPointList& pp = action.getPickedPointList();
 
         Py::Object ret = Py::None();
@@ -1235,7 +1226,7 @@ Py::Object View3DInventorPy::getSize(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
     try {
-        SbVec2s size = _view->getViewer()->getSize();
+        SbVec2s size = _view->getViewer()->getSoRenderManager()->getSize();
         Py::Tuple tuple(2);
         tuple.setItem(0, Py::Int(size[0]));
         tuple.setItem(1, Py::Int(size[1]));
@@ -1285,11 +1276,11 @@ Py::Object View3DInventorPy::getPointOnScreen(const Py::Tuple& args)
     }
 
     try {
-        const SbViewportRegion& vp = _view->getViewer()->getViewportRegion();
+        const SbViewportRegion& vp = _view->getViewer()->getSoRenderManager()->getViewportRegion();
         float fRatio = vp.getViewportAspectRatio();
         const SbVec2s& sp = vp.getViewportSizePixels();
         //float dX, dY; vp.getViewportSize().getValue(dX, dY);
-        SbViewVolume vv = _view->getViewer()->getCamera()->getViewVolume(fRatio);
+        SbViewVolume vv = _view->getViewer()->getSoRenderManager()->getCamera()->getViewVolume(fRatio);
 
         SbVec3f pt(vx,vy,vz);
         vv.projectToScreen(pt, pt);
@@ -1814,7 +1805,7 @@ Py::Object View3DInventorPy::getSceneGraph(const Py::Tuple& args)
 
 static PyObject *
 wrap_SoQtViewer_setViewDirection(PyObject *proxy, PyObject *args)
-{
+{/*
     PyObject* object;
     if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C 
         return NULL;  // NULL triggers exception 
@@ -1845,12 +1836,12 @@ wrap_SoQtViewer_setViewDirection(PyObject *proxy, PyObject *args)
     }
     catch (Py::Exception&) {
         return NULL;
-    }
+    }*/
 }
 
 static PyObject *
 wrap_SoQtViewer_getViewDirection(PyObject *proxy, PyObject *args)
-{
+{/*
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
         return NULL;  // NULL triggers exception 
 
@@ -1882,12 +1873,12 @@ wrap_SoQtViewer_getViewDirection(PyObject *proxy, PyObject *args)
     }
     catch (Py::Exception&) {
         return NULL;
-    }
+    }*/
 }
 
 static PyObject *
 wrap_SoQtViewer_setFocalDistance(PyObject *proxy, PyObject *args)
-{
+{/*
     float distance;
     if (!PyArg_ParseTuple(args, "f", &distance))     // convert args: Python->C 
         return NULL;  // NULL triggers exception 
@@ -1908,12 +1899,12 @@ wrap_SoQtViewer_setFocalDistance(PyObject *proxy, PyObject *args)
             cam->focalDistance.setValue(distance);
     } PY_CATCH;
 
-    Py_Return;
+    Py_Return;*/
 }
 
 static PyObject *
 wrap_SoQtViewer_getFocalDistance(PyObject *proxy, PyObject *args)
-{
+{/*
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
         return NULL;  // NULL triggers exception 
 
@@ -1930,12 +1921,12 @@ wrap_SoQtViewer_getFocalDistance(PyObject *proxy, PyObject *args)
     double dist = 0;
     SoCamera* cam = viewer->getCamera();
     if (cam) dist = cam->focalDistance.getValue();
-    return PyFloat_FromDouble(dist);
+    return PyFloat_FromDouble(dist);*/
 }
 
 static PyObject *
 wrap_SoQtViewer_seekToPoint(PyObject *proxy, PyObject *args)
-{
+{/*
     PyObject* object;
     if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C 
         return NULL;                       // NULL triggers exception 
@@ -1974,7 +1965,7 @@ wrap_SoQtViewer_seekToPoint(PyObject *proxy, PyObject *args)
     }
     catch (const Py::Exception&) {
         return NULL;
-    }
+    }*/
 }
 
 struct PyMethodDef wrap_SoQtViewer_methods[] = { 
@@ -2006,7 +1997,7 @@ Py::Object View3DInventorPy::getViewer(const Py::Tuple& args)
         // the viewer. 
         // Note: Once we have closed the viewer the Python object must not be used
         // anymore as it has a dangling pointer.
-        SoQtViewer* view = _view->getViewer();
+        Quarter::SoQTQuarterAdaptor* view = _view->getViewer();
         proxy = Base::Interpreter().createSWIGPointerObj("pivy.gui.soqt", "SoQtViewer *", (void*)view, 0);
     }
     catch (const Base::Exception& e) {

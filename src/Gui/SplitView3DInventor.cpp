@@ -200,7 +200,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if (strcmp(Reason,"EyeDistance") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
+            (*it)->getSoRenderManager()->setStereoOffset(rGrp.GetFloat("EyeDistance",5.0));
     }
     else if (strcmp(Reason,"CornerCoordSystem") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
@@ -216,7 +216,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     }
     else if (strcmp(Reason,"UseAntialiasing") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->getGLRenderAction()->setSmoothing(rGrp.GetBool("UseAntialiasing",false));
+            (*it)->getSoRenderManager()->getGLRenderAction()->setSmoothing(rGrp.GetBool("UseAntialiasing",false));
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
@@ -244,7 +244,7 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
         r3 = ((col3 >> 24) & 0xff) / 255.0; g3 = ((col3 >> 16) & 0xff) / 255.0; b3 = ((col3 >> 8) & 0xff) / 255.0;
         r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-            (*it)->setBackgroundColor(SbColor(r1, g1, b1));
+	    (*it)->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
             if (rGrp.GetBool("UseBackgroundColorMid",false) == false)
                 (*it)->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
             else
@@ -272,7 +272,7 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char** ppReturn)
     }
     else if (strcmp("ViewBottom",pMsg) == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-            SoCamera* cam = (*it)->getCamera();
+            SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
             cam->orientation.setValue(-1, 0, 0, 0);
             (*it)->viewAll();
         }
@@ -281,7 +281,7 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char** ppReturn)
     else if (strcmp("ViewFront",pMsg) == 0) {
         float root = (float)(sqrt(2.0)/2.0);
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-            SoCamera* cam = (*it)->getCamera();
+            SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
             cam->orientation.setValue(-root, 0, 0, -root);
             (*it)->viewAll();
         }
@@ -289,7 +289,7 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char** ppReturn)
     }
     else if (strcmp("ViewLeft",pMsg) == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-            SoCamera* cam = (*it)->getCamera();
+            SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
             cam->orientation.setValue(-0.5, 0.5, 0.5, -0.5);
             (*it)->viewAll();
         }
@@ -298,7 +298,7 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char** ppReturn)
     else if (strcmp("ViewRear",pMsg) == 0) {
         float root = (float)(sqrt(2.0)/2.0);
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-            SoCamera* cam = (*it)->getCamera();
+            SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
             cam->orientation.setValue(0, root, root, 0);
             (*it)->viewAll();
         }
@@ -306,7 +306,7 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char** ppReturn)
     }
     else if (strcmp("ViewRight",pMsg) == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-            SoCamera* cam = (*it)->getCamera();
+            SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
             cam->orientation.setValue(0.5, 0.5, 0.5, 0.5);
             (*it)->viewAll();
         }
@@ -314,7 +314,7 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char** ppReturn)
     }
     else if (strcmp("ViewTop",pMsg) == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-            SoCamera* cam = (*it)->getCamera();
+            SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
             cam->orientation.setValue(0, 0, 0, 1);
             (*it)->viewAll();
         }
@@ -323,7 +323,7 @@ bool AbstractSplitView::onMsg(const char* pMsg, const char** ppReturn)
     else if (strcmp("ViewAxo",pMsg) == 0) {
         float root = (float)(sqrt(3.0)/4.0);
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
-            SoCamera* cam = (*it)->getCamera();
+            SoCamera* cam = (*it)->getSoRenderManager()->getCamera();
             cam->orientation.setValue(-0.333333f, -0.166666f, -0.333333f, -root);
             (*it)->viewAll();
         }

@@ -147,7 +147,7 @@ void TaskCreateNodeSet::DefineNodesCallback(void * ud, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    SoCamera* cam = view->getCamera();
+    SoCamera* cam = view->getSoRenderManager()->getCamera();
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
     Base::Polygon2D polygon;

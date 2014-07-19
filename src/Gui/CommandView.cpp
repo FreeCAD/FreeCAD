@@ -103,7 +103,7 @@ void StdOrthographicCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
         View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-        if (view->getViewer()->getCameraType() != SoOrthographicCamera::getClassTypeId())
+        if (view->getViewer()->getSoRenderManager()->getCamera()->getTypeId() != SoOrthographicCamera::getClassTypeId())
             doCommand(Command::Gui,"Gui.activeDocument().activeView().setCameraType(\"Orthographic\")");
     }
 }
@@ -114,7 +114,7 @@ bool StdOrthographicCamera::isActive(void)
     if (view) {
         // update the action group if needed
         bool check = _pcAction->isChecked();
-        bool mode = view->getViewer()->getCameraType() == SoOrthographicCamera::getClassTypeId();
+        bool mode = view->getViewer()->getSoRenderManager()->getCamera()->getTypeId() == SoOrthographicCamera::getClassTypeId();
         if (mode != check)
             _pcAction->setChecked(mode);
         return true;
@@ -149,7 +149,7 @@ void StdPerspectiveCamera::activated(int iMsg)
 {
     if (iMsg == 1) {
         View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-        if (view->getViewer()->getCameraType() != SoPerspectiveCamera::getClassTypeId())
+        if (view->getViewer()->getSoRenderManager()->getCamera()->getTypeId() != SoPerspectiveCamera::getClassTypeId())
             doCommand(Command::Gui,"Gui.activeDocument().activeView().setCameraType(\"Perspective\")");
     }
 }
@@ -160,7 +160,7 @@ bool StdPerspectiveCamera::isActive(void)
     if (view) {
         // update the action group if needed
         bool check = _pcAction->isChecked();
-        bool mode = view->getViewer()->getCameraType() == SoPerspectiveCamera::getClassTypeId();
+        bool mode = view->getViewer()->getSoRenderManager()->getCamera()->getTypeId() == SoPerspectiveCamera::getClassTypeId();
         if (mode != check)
             _pcAction->setChecked(mode);
 
@@ -1461,7 +1461,7 @@ void StdViewScreenShot::activated(int iMsg)
     View3DInventor* view = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
     if (view) {
         QStringList formats;
-        SbViewportRegion vp(view->getViewer()->getViewportRegion());
+        SbViewportRegion vp(view->getViewer()->getSoRenderManager()->getViewportRegion());
         {
             SoFCOffscreenRenderer& rd = SoFCOffscreenRenderer::instance();
             formats = rd.getWriteImageFiletypeInfo();
@@ -2151,7 +2151,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
 
     std::vector<SbVec2f> picked = view->getGLPolygon();
-    SoCamera* cam = view->getCamera();
+    SoCamera* cam = view->getSoRenderManager()->getCamera();
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
     Base::Polygon2D polygon;

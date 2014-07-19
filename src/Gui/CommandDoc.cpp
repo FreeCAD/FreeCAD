@@ -1232,7 +1232,7 @@ void StdCmdAlignment::activated(int iMsg)
         View3DInventor* mdi = qobject_cast<View3DInventor*>(doc->getActiveView());
         if (mdi) {
             View3DInventorViewer* viewer = mdi->getViewer();
-            SoCamera* camera = viewer->getCamera();
+            SoCamera* camera = viewer->getSoRenderManager()->getCamera();
             if (camera) {
                 SbVec3f up(0,1,0), dir(0,0,-1);
                 camera->orientation.getValue().multVec(dir, dir);

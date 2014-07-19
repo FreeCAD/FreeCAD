@@ -31,14 +31,13 @@ class SoCoordinate3;
 class SoFaceSet;
 class SoEventCallback;
 class SoPickedPoint;
-class SoQtViewer;
 class SoGroup;
 class SoSeparator;
 class SoRayPickAction;
 class SbLine;
 class SbVec3f;
 
-namespace Gui { class View3DInventor; }
+namespace Gui { class View3DInventor; class View3DInventorViewer;}
 namespace Mesh { class MeshObject; }
 namespace Mesh { class Feature; }
 namespace MeshGui {
@@ -60,7 +59,7 @@ public:
     void setDisplayMode(const char* ModeName);
     const char* getDefaultDisplayMode() const;
     std::vector<std::string> getDisplayModes(void) const;
-    SoPickedPoint* getPickedPoint(const SbVec2s& pos, const SoQtViewer* viewer) const;
+    SoPickedPoint* getPickedPoint(const SbVec2s& pos, const Gui::View3DInventorViewer* viewer) const;
 
     ViewProviderMesh* mesh;
     std::vector<int> index;

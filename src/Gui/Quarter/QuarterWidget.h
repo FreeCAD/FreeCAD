@@ -40,7 +40,7 @@
 #include <QtGui/QColor>
 #include <QtCore/QUrl>
 #include <QtOpenGL/QGLWidget>
-#include <Quarter/Basic.h>
+#include "Gui/Quarter/Basic.h"
 
 class QMenu;
 class SoNode;
@@ -123,7 +123,7 @@ public:
   QColor backgroundColor(void) const;
 
   void resetNavigationModeFile(void);
-  void setNavigationModeFile(const QUrl & url = QUrl(DEFAULT_NAVIGATIONFILE));
+  void setNavigationModeFile(const QUrl & url = QUrl(QString::fromAscii(DEFAULT_NAVIGATIONFILE)));
   const QUrl & navigationModeFile(void) const;
 
   void setContextMenuEnabled(bool yes);
@@ -132,7 +132,7 @@ public:
 
   bool headlightEnabled(void) const;
   void setHeadlightEnabled(bool onoff);
-  SoDirectionalLight * getHeadlight(void);
+  SoDirectionalLight * getHeadlight(void) const;
 
   bool clearZBuffer(void) const;
   void setClearZBuffer(bool onoff);
@@ -172,7 +172,7 @@ public:
   QList<QAction *> stereoModeActions(void) const;
   QList<QAction *> renderModeActions(void) const;
 
-public slots:
+public Q_SLOTS:
   virtual void viewAll(void);
   virtual void seek(void);
 

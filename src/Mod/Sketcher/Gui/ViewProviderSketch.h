@@ -29,6 +29,7 @@
 #include <Inventor/SbColor.h>
 #include <Base/Tools2D.h>
 #include <Gui/Selection.h>
+#include <Gui/GLPainter.h>
 #include <boost/signals.hpp>
 #include <QCoreApplication>
 
@@ -203,8 +204,7 @@ public:
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
     virtual bool keyPressed(bool pressed, int key);
     /// is called when the Provider is in edit and the mouse is clicked
-    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s &pos,
-                                    const Gui::View3DInventorViewer *viewer);
+    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
     //@}
 
     friend class DrawSketchHandler;
@@ -371,7 +371,8 @@ protected:
     // reference coordinates for relative operations
     double xInit,yInit;
     bool relative;
-    int antiAliasing;
+
+    Gui::Rubberband* rubberband;
 };
 
 } // namespace PartGui

@@ -62,6 +62,7 @@ SbBool Gui::SoFCDB::isInitialized(void)
 
 void Gui::SoFCDB::init()
 {
+    SoInteraction                   ::init();
     RotTransDragger                 ::initClass();
     SoGLRenderActionElement         ::initClass();
     SoFCInteractiveElement          ::initClass();
@@ -72,7 +73,6 @@ void Gui::SoFCDB::init()
     SoFCColorGradient               ::initClass();
     SoFCBackgroundGradient          ::initClass();
     SoFCBoundingBox                 ::initClass();
-    SoInteraction                   ::init();
     SoFCSelection                   ::initClass();
     SoFCUnifiedSelection            ::initClass();
     SoFCSelectionAction             ::initClass();

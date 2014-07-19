@@ -614,12 +614,12 @@ void Command::adjustCameraPosition()
     if (doc) {
         Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
         Gui::View3DInventorViewer* viewer = view->getViewer();
-        SoCamera* camera = viewer->getCamera();
+        SoCamera* camera = viewer->getSoRenderManager()->getCamera();
         if (!camera || !camera->isOfType(SoOrthographicCamera::getClassTypeId()))
             return;
 
         // get scene bounding box
-        SoGetBoundingBoxAction action(viewer->getViewportRegion());
+        SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
         action.apply(viewer->getSceneGraph());
         SbBox3f box = action.getBoundingBox();
         if (box.isEmpty()) return;

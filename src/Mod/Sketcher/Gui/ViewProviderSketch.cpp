@@ -284,10 +284,14 @@ ViewProviderSketch::ViewProviderSketch()
     color = hGrp->GetUnsigned("SketchVertexColor", color);
     vertexColor.setPackedValue((uint32_t)color);
     PointColor.setValue(vertexColor);
+    
+    //rubberband selection
+    rubberband = new Gui::Rubberband();
 }
 
 ViewProviderSketch::~ViewProviderSketch()
 {
+    delete rubberband;
 }
 
 // handler management ***************************************************************
@@ -429,7 +433,7 @@ void ViewProviderSketch::snapToGrid(double &x, double &y)
 
 void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3DInventorViewer *viewer, SbLine& line) const
 {
-    const SbViewportRegion& vp = viewer->getViewportRegion();
+    const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
 
     short x,y; pnt.getValue(x,y);
     SbVec2f siz = vp.getViewportSize();
@@ -448,7 +452,7 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
         pY = (pY - 0.5f*dY) / fRatio + 0.5f*dY;
     }
 
-    SoCamera* pCam = viewer->getCamera();
+    SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
     if (!pCam) return;
     SbViewVolume  vol = pCam->getViewVolume();
 
@@ -741,6 +745,13 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return true;
                 case STATUS_SKETCH_UseRubberBand:
                     doBoxSelection(prvCursorPos, cursorPos, viewer);
+                    rubberband->setWorking(false);
+                    
+                    //disable framebuffer drawing in viewer
+                    if(Gui::Application::Instance->activeDocument()->getActiveView()) {
+                        static_cast<Gui::View3DInventor *>(Gui::Application::Instance->activeDocument()->getActiveView())->getViewer()->setRenderFramebuffer(false);
+                    }
+                    
                     // a redraw is required in order to clear the rubberband
                     draw(true);
                     Mode = STATUS_NONE;
@@ -1064,27 +1075,17 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             return true;
         case STATUS_SKETCH_StartRubberBand: {
             Mode = STATUS_SKETCH_UseRubberBand;
+            rubberband->setWorking(true);
+            viewer->setRenderFramebuffer(true);
             return true;
         }
         case STATUS_SKETCH_UseRubberBand: {
-            Gui::GLPainter p;
-            p.begin(viewer);
-            p.setColor(1.0, 1.0, 0.0, 0.0);
-            p.setLogicOp(GL_XOR);
-            p.setLineWidth(3.0f);
-            p.setLineStipple(2, 0x3F3F);
-            // first redraw the old rectangle with XOR to restore the correct colors
-            p.drawRect(prvCursorPos.getValue()[0],
-                       viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
-                       newCursorPos.getValue()[0],
-                       viewer->getGLWidget()->height() - newCursorPos.getValue()[1]);
             newCursorPos = cursorPos;
-            // now draw the new rectangle
-            p.drawRect(prvCursorPos.getValue()[0],
+            rubberband->setCoords(prvCursorPos.getValue()[0],
                        viewer->getGLWidget()->height() - prvCursorPos.getValue()[1],
                        newCursorPos.getValue()[0],
                        viewer->getGLWidget()->height() - newCursorPos.getValue()[1]);
-            p.end();
+            viewer->redraw();
             return true;
         }
         default:
@@ -1241,7 +1242,7 @@ Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &
     assert(edit);
     Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
     Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-    SoRayPickAction rp(viewer->getViewportRegion());
+    SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
 
     float scaled_step = step * getScaleFactor();
 
@@ -1739,7 +1740,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     polygon.Add(Base::Vector2D(corners[1].getValue()[0], corners[1].getValue()[1]));
     polygon.Add(Base::Vector2D(corners[1].getValue()[0], corners[0].getValue()[1]));
 
-    Gui::ViewVolumeProjection proj(viewer->getCamera()->getViewVolume());
+    Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
 
     Sketcher::SketchObject *sketchObject = getSketchObject();
     App::Document *doc = sketchObject->getDocument();
@@ -2644,7 +2645,7 @@ float ViewProviderSketch::getScaleFactor()
     Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
     if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
         Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-        return viewer->getCamera()->getViewVolume(viewer->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
+        return viewer->getSoRenderManager()->getCamera()->getViewVolume(viewer->getSoRenderManager()->getCamera()->aspectRatio.getValue()).getWorldToScreenScale(SbVec3f(0.f, 0.f, 0.f), 0.1f) / 3;
     } else {
         return 1.f;
     }
@@ -3414,8 +3415,8 @@ Restart:
         for (std::vector<Part::Geometry *>::iterator it=tempGeo.begin(); it != tempGeo.end(); ++it)
             if (*it) delete *it;
 
-    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        static_cast<Gui::View3DInventor *>(mdi)->getViewer()->render();
+    if (mdi && mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) { 
+        static_cast<Gui::View3DInventor *>(mdi)->getViewer()->redraw();
     }
 }
 
@@ -4032,16 +4033,14 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     viewer->setEditing(TRUE);
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
-    antiAliasing = (int)viewer->getAntiAliasingMode();
-    if (antiAliasing != Gui::View3DInventorViewer::None)
-        viewer->setAntiAliasingMode(Gui::View3DInventorViewer::None);
- 
+    
+    viewer->addGraphicsItem(rubberband);
+    rubberband->setViewer(viewer);
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
-    if (antiAliasing != Gui::View3DInventorViewer::None)
-        viewer->setAntiAliasingMode(Gui::View3DInventorViewer::AntiAliasing(antiAliasing));
+    viewer->removeGraphicsItem(rubberband);
     viewer->setEditing(FALSE);
     SoNode* root = viewer->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);

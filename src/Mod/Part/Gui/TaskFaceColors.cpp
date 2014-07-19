@@ -130,7 +130,7 @@ public:
     {
         SoSeparator* root = new SoSeparator;
         root->ref();
-        root->addChild(viewer->getCamera());
+        root->addChild(viewer->getSoRenderManager()->getCamera());
         root->addChild(vp->getRoot());
 
         SoSearchAction searchAction;
@@ -139,7 +139,7 @@ public:
         searchAction.apply(root);
         SoPath* selectionPath = searchAction.getPath();
 
-        SoRayPickAction rp(viewer->getViewportRegion());
+        SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
         rp.setNormalizedPoint(pos);
         rp.apply(selectionPath);
         root->unref();
@@ -224,7 +224,7 @@ public:
         static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
 
         std::vector<SbVec2f> picked = view->getGLPolygon();
-        SoCamera* cam = view->getCamera();
+        SoCamera* cam = view->getSoRenderManager()->getCamera();
         SbViewVolume vv = cam->getViewVolume();
         Gui::ViewVolumeProjection proj(vv);
         Base::Polygon2D polygon;
@@ -247,7 +247,7 @@ public:
             cb->setHandled();
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(self->d->obj)->Shape.getValue();
             self->d->addFacesToSelection(view, proj, polygon, shape);
-            view->render();
+            view->redraw();
         }
     }
 };

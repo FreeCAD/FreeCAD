@@ -515,10 +515,10 @@ SoPickedPointList ViewProviderGeometryObject::getPickedPoints(const SbVec2s& pos
     SoSeparator* root = new SoSeparator;
     root->ref();
     root->addChild(viewer.getHeadlight());
-    root->addChild(viewer.getCamera());
+    root->addChild(viewer.getSoRenderManager()->getCamera());
     root->addChild(this->pcHighlight);
 
-    SoRayPickAction rp(viewer.getViewportRegion());
+    SoRayPickAction rp(viewer.getSoRenderManager()->getViewportRegion());
     rp.setPickAll(pickAll);
     rp.setPoint(pos);
     rp.apply(root);
@@ -533,10 +533,10 @@ SoPickedPoint* ViewProviderGeometryObject::getPickedPoint(const SbVec2s& pos, co
     SoSeparator* root = new SoSeparator;
     root->ref();
     root->addChild(viewer.getHeadlight());
-    root->addChild(viewer.getCamera());
+    root->addChild(viewer.getSoRenderManager()->getCamera());
     root->addChild(this->pcHighlight);
 
-    SoRayPickAction rp(viewer.getViewportRegion());
+    SoRayPickAction rp(viewer.getSoRenderManager()->getViewportRegion());
     rp.setPoint(pos);
     rp.apply(root);
     root->unref();

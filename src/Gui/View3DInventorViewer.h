@@ -31,7 +31,9 @@
 
 #include <Base/Type.h>
 #include <Inventor/nodes/SoEventCallback.h>
-#include <Quarter/QuarterWidget.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/SbRotation.h>
+#include "Gui/Quarter/SoQTQuarterAdaptor.h"
 #include <QCursor>
 
 #include <Gui/Selection.h>
@@ -60,14 +62,15 @@ class Document;
 class SoFCUnifiedSelection;
 class GLGraphicsItem;
 class SoShapeScale;
+class ViewerEventFilter;
 
 /** GUI view into a 3D scene provided by View3DInventor
  *
  */
-class GuiExport View3DInventorViewer : public Quarter::QuarterWidget, public Gui::SelectionSingleton::ObserverType
+class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, public Gui::SelectionSingleton::ObserverType
 {
-    SOQT_OBJECT_ABSTRACT_HEADER(View3DInventorViewer, SoQtViewer);
-
+    typedef Quarter::SoQTQuarterAdaptor inherited;
+    
 public:
     /// Background modes for the savePicture() method
     enum eBackgroundType { 
@@ -114,9 +117,11 @@ public:
     };
     //@}
 
-    View3DInventorViewer (QWidget *parent, const char *name=NULL, SbBool embed=true, 
-                          Type type= SoQtViewer::BROWSER, SbBool build=true);
+    View3DInventorViewer (QWidget *parent);
+    View3DInventorViewer (const QGLFormat& format, QWidget *parent);
     virtual ~View3DInventorViewer();
+    
+    void init();
 
     /// Observer message from the Selection
     virtual void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
@@ -212,13 +217,14 @@ public:
     //@{
     void setEditing(SbBool edit);
     SbBool isEditing() const { return this->editing; }
-    void setEditingCursor (const SoQtCursor& cursor);
     void setEditingCursor (const QCursor& cursor);
     void setRedirectToSceneGraph(SbBool redirect) { this->redirected = redirect; }
     SbBool isRedirectedToSceneGraph() const { return this->redirected; }
     void setRedirectToSceneGraphEnabled(SbBool enable) { this->allowredir = enable; }
     SbBool isRedirectToSceneGraphEnabled(void) const { return this->allowredir; }
     //@}
+    
+    void setComponentCursor(QCursor cursor);
 
     /** @name Pick actions */
     //@{
@@ -345,8 +351,7 @@ protected:
     virtual void actualRedraw(void);
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
-    virtual void processEvent(QEvent * event);
-    virtual SbBool processSoEvent(const SoEvent * const ev);
+    virtual bool processSoEvent(const SoEvent * const ev);
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
@@ -354,8 +359,8 @@ protected:
     static void clearBuffer(void * userdata, SoAction * action);
     static void setGLWidget(void * userdata, SoAction * action);
     static void handleEventCB(void * userdata, SoEventCallback * n);
-    static void interactionStartCB(void * data, SoQtViewer * viewer);
-    static void interactionFinishCB(void * data, SoQtViewer * viewer);
+    static void interactionStartCB(void * data, Quarter::SoQTQuarterAdaptor * viewer);
+    static void interactionFinishCB(void * data, Quarter::SoQTQuarterAdaptor * viewer);
     static void interactionLoggerCB(void * ud, SoAction* action);
 
 private:
@@ -399,10 +404,13 @@ private:
     SbBool allowredir;
 
     std::string overrideMode;
+    
+    ViewerEventFilter* viewerEventFilter;
 
     // friends
     friend class NavigationStyle;
     friend class GLPainter;
+    friend class ViewerEventFilter;
 };
 
 } // namespace Gui
