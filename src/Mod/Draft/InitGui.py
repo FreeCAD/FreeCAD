@@ -136,8 +136,8 @@ class DraftWorkbench (Workbench):
                 FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/userprefs-snap.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/userprefs-visual.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-import1.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-import2.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-import1.ui","Import-Export")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-import2.ui","Import-Export")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Draft module...done\n')
 
