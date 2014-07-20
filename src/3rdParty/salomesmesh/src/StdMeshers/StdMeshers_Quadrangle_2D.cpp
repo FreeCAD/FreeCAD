@@ -66,12 +66,17 @@
 #ifndef StdMeshers_Array2OfNode_HeaderFile
 #define StdMeshers_Array2OfNode_HeaderFile
 typedef const SMDS_MeshNode* SMDS_MeshNodePtr;
-DEFINE_BASECOLLECTION (StdMeshers_BaseCollectionNodePtr, SMDS_MeshNodePtr)
 
 #ifndef __BORLANDC__
-DEFINE_ARRAY2(StdMeshers_Array2OfNode,
-			  StdMeshers_BaseCollectionNodePtr, SMDS_MeshNodePtr)
+#if OCC_VERSION_HEX >= 0x060703
+typedef NCollection_Array2<SMDS_MeshNodePtr> StdMeshers_Array2OfNode;
 #else
+DEFINE_BASECOLLECTION (StdMeshers_BaseCollectionNodePtr, SMDS_MeshNodePtr)
+DEFINE_ARRAY2(StdMeshers_Array2OfNode,
+                         StdMeshers_BaseCollectionNodePtr, SMDS_MeshNodePtr)
+#endif
+#else
+DEFINE_BASECOLLECTION (StdMeshers_BaseCollectionNodePtr, SMDS_MeshNodePtr)
 SMESH_DEFINE_ARRAY2(StdMeshers_Array2OfNode,
 			  StdMeshers_BaseCollectionNodePtr, SMDS_MeshNodePtr)
 #endif

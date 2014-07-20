@@ -455,7 +455,6 @@ else(FREECAD_LIBPACK_USE)
             TKXDESTEP
             TKXDEIGES
             TKMeshVS
-            TKAdvTools
         )
         set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
         set(OCC_FOUND ${OCE_FOUND})

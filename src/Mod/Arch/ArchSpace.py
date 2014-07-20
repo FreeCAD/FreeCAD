@@ -34,7 +34,7 @@ else:
     def translate(ctxt,txt):
         return txt
 
-def makeSpace(objects=None,name=translate("Arch","Space")):
+def makeSpace(objects=None,baseobj=None,name=translate("Arch","Space")):
     """makeSpace([objects]): Creates a space object from the given objects. Objects can be one
     document object, in which case it becomes the base shape of the space object, or a list of
     selection objects as got from getSelectionEx(), or a list of tuples (object, subobjectname)"""
@@ -42,6 +42,8 @@ def makeSpace(objects=None,name=translate("Arch","Space")):
     _Space(obj)
     if FreeCAD.GuiUp:
         _ViewProviderSpace(obj.ViewObject)
+    if baseobj:
+        objects = baseobj
     if objects:
         if not isinstance(objects,list):
             objects = [objects]

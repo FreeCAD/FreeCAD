@@ -28,13 +28,21 @@
 
 #include "SMESH_SMESH.hxx"
 
+#if OCC_VERSION_HEX >= 0x060703
+#include <NCollection_Sequence.hxx>
+#else
 #include <NCollection_DefineSequence.hxx>
+#endif
 
 #include <SMDS_MeshElement.hxx>
 
 typedef const SMDS_MeshElement* SMDS_MeshElementPtr;
 
+#if OCC_VERSION_HEX >= 0x060703
+typedef NCollection_Sequence<SMDS_MeshElementPtr> SMESH_SequenceOfElemPtr;
+#else
 DEFINE_BASECOLLECTION (SMESH_BaseCollectionElemPtr, SMDS_MeshElementPtr)
 DEFINE_SEQUENCE (SMESH_SequenceOfElemPtr, SMESH_BaseCollectionElemPtr, SMDS_MeshElementPtr)
+#endif
 
 #endif 
