@@ -23,6 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QLineEdit>
+# include <QFocusEvent>
 #endif
 
 #include "QuantitySpinBox.h"
