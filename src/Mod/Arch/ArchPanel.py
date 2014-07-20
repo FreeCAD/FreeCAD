@@ -254,7 +254,6 @@ class _Panel(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Thickness","Arch",translate("Arch","The thickness or extrusion depth of this element"))
-        obj.addProperty("App::PropertyString","Tag","Arch",translate("Arch","An identification tag to be printed on the panel"))
         obj.addProperty("App::PropertyInteger","Sheets","Arch",translate("Arch","The number of sheets to use"))
         obj.Sheets = 1
         self.Type = "Panel"
