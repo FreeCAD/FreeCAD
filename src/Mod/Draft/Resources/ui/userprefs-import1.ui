@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DXF / DWG options</string>
+   <string>DXF / DWG</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
