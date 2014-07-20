@@ -1984,6 +1984,9 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None):
         ArchSectionPlane._ArchDrawingView(viewobj)
         viewobj.Source = obj
         viewobj.Label = "View of "+obj.Name
+    elif getType(obj) == "Panel":
+        import ArchPanel
+        viewobj = ArchPanel.makePanelView(obj,page)
     else:
         viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View"+obj.Name)
         _DrawingView(viewobj)
