@@ -180,7 +180,9 @@ void InputField::newInput(const QString & text)
 {
     Quantity res;
     try {
-        res = Quantity::parse(text);
+        QString input = text;
+        input.remove(locale().groupSeparator());
+        res = Quantity::parse(input);
     }
     catch(Base::Exception &e){
         ErrorText = e.what();
@@ -524,13 +526,16 @@ void InputField::wheelEvent (QWheelEvent * event)
 
 void InputField::fixup(QString& input) const
 {
+    input.remove(locale().groupSeparator());
 }
 
 QValidator::State InputField::validate(QString& input, int& pos) const
 {
     try {
         Quantity res;
-        res = Quantity::parse(input);
+        QString text = input;
+        text.remove(locale().groupSeparator());
+        res = Quantity::parse(text);
 
         double factor;
         QString unitStr;
