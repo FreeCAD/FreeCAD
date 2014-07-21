@@ -308,10 +308,13 @@ void QuantitySpinBox::showEvent(QShowEvent * event)
 
 void QuantitySpinBox::focusInEvent(QFocusEvent * event)
 {
+    bool hasSel = lineEdit()->hasSelectedText();
+    QAbstractSpinBox::focusInEvent(event);
+
     if (event->reason() == Qt::TabFocusReason ||
         event->reason() == Qt::BacktabFocusReason  ||
         event->reason() == Qt::ShortcutFocusReason) {
-        if (!lineEdit()->hasSelectedText())
+        if (!hasSel)
             selectNumber();
     }
 }

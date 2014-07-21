@@ -485,6 +485,8 @@ void InputField::focusInEvent(QFocusEvent * event)
         if (!this->hasSelectedText())
             selectNumber();
     }
+
+    QLineEdit::focusInEvent(event);
 }
 
 void InputField::keyPressEvent(QKeyEvent *event)
