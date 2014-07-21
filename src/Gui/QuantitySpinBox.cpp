@@ -145,7 +145,9 @@ void QuantitySpinBox::userInput(const QString & text)
     Q_D(QuantitySpinBox);
     Base::Quantity res;
     try {
-        res = Base::Quantity::parse(text);
+        QString input = text;
+        input.remove(locale().groupSeparator());
+        res = Base::Quantity::parse(input);
     }
     catch (Base::Exception &e) {
         d->errorText = QString::fromAscii(e.what());
@@ -287,7 +289,7 @@ void QuantitySpinBox::stepBy(int steps)
     else if (val < d->minimum)
         val = d->minimum;
 
-    setValue(val);
+    lineEdit()->setText(QString::fromUtf8("%L1 %2").arg(val).arg(d->unitStr));
     update();
     selectNumber();
 }
@@ -354,6 +356,7 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString &text) const
     Q_D(const QuantitySpinBox);
 
     QString copy = text;
+    copy.remove(locale().groupSeparator());
     int pos = lineEdit()->cursorPosition();
     QValidator::State state = QValidator::Acceptable;
     return d->validateAndInterpret(copy, pos, state);
@@ -364,7 +367,9 @@ QValidator::State QuantitySpinBox::validate(QString &text, int &pos) const
     Q_D(const QuantitySpinBox);
 
     QValidator::State state;
-    d->validateAndInterpret(text, pos, state);
+    QString copy = text;
+    copy.remove(locale().groupSeparator());
+    d->validateAndInterpret(copy, pos, state);
     return state;
 }
 
