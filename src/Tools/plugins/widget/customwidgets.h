@@ -257,6 +257,50 @@ private:
 
 // ------------------------------------------------------------------------------
 
+class QuantitySpinBox : public QAbstractSpinBox
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QString unit READ unitText WRITE setUnitText)
+    Q_PROPERTY(double minimum READ minimum WRITE setMinimum)
+    Q_PROPERTY(double maximum READ maximum WRITE setMaximum)
+    Q_PROPERTY(double singleStep READ singleStep WRITE setSingleStep)
+    Q_PROPERTY(double value READ value WRITE setValue NOTIFY valueChanged USER true)
+
+public:
+    QuantitySpinBox (QWidget * parent = 0);
+    virtual ~QuantitySpinBox();
+
+    void setValue(double);
+    double value(void) const;
+    double singleStep(void) const;
+    void setSingleStep(double);
+    double maximum(void) const;
+    void setMaximum(double);
+    double minimum(void) const;
+    void setMinimum(double);
+    void setUnitText(QString);
+    QString unitText(void);
+    void stepBy(int steps);
+
+protected:
+    StepEnabled stepEnabled() const;
+
+Q_SIGNALS:
+    void valueChanged(const Base::Quantity&);
+    void valueChanged(double);
+    void parseError(const QString& errorText);
+
+private:
+    QString UnitStr;
+    double Value;
+    double Maximum;
+    double Minimum;
+    double StepSize;
+};
+
+// ------------------------------------------------------------------------------
+
 class CommandIconView : public QListWidget
 {
     Q_OBJECT
