@@ -121,7 +121,11 @@ TaskDlgChamferParameters::~TaskDlgChamferParameters()
 
 void TaskDlgChamferParameters::open()
 {
-
+    // a transaction is already open at creation time of the chamfer
+    if (!Gui::Command::hasPendingCommand()) {
+        QString msg = tr("Edit chamfer");
+        Gui::Command::openCommand((const char*)msg.toUtf8());
+    }
 }
 
 void TaskDlgChamferParameters::clicked(int)
