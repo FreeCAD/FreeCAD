@@ -274,7 +274,7 @@ TaskDlgRevolutionParameters::~TaskDlgRevolutionParameters()
 
 void TaskDlgRevolutionParameters::open()
 {
-    // a transaction is already open at creation time of the pad
+    // a transaction is already open at creation time of the revolve
     if (!Gui::Command::hasPendingCommand()) {
         QString msg = QObject::tr("Edit revolve");
         Gui::Command::openCommand((const char*)msg.toUtf8());
