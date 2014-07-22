@@ -57,7 +57,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
+    connect(ui->revolveAngle, SIGNAL(valueChanged(double)),
             this, SLOT(onAngleChanged(double)));
     connect(ui->axis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
@@ -71,7 +71,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     this->groupLayout()->addWidget(proxy);
 
     // Temporarily prevent unnecessary feature recomputes
-    ui->doubleSpinBox->blockSignals(true);
+    ui->revolveAngle->blockSignals(true);
     ui->axis->blockSignals(true);
     ui->checkBoxMidplane->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
@@ -81,8 +81,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     bool mirrored = pcRevolution->Midplane.getValue();
     bool reversed = pcRevolution->Reversed.getValue();
 
-    ui->doubleSpinBox->setDecimals(Base::UnitsApi::getDecimals());
-    ui->doubleSpinBox->setValue(l);
+    ui->revolveAngle->setValue(l);
 
     int count=pcRevolution->getSketchAxisCount();
 
@@ -115,7 +114,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
     ui->checkBoxMidplane->setChecked(mirrored);
     ui->checkBoxReversed->setChecked(reversed);
 
-    ui->doubleSpinBox->blockSignals(false);
+    ui->revolveAngle->blockSignals(false);
     ui->axis->blockSignals(false);
     ui->checkBoxMidplane->blockSignals(false);
     ui->checkBoxReversed->blockSignals(false);
@@ -188,14 +187,14 @@ void TaskRevolutionParameters::onReversed(bool on)
 void TaskRevolutionParameters::onUpdateView(bool on)
 {
     if (on) {
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
+        PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(RevolutionView->getObject());
         pcRevolution->getDocument()->recomputeFeature(pcRevolution);
     }
 }
 
 double TaskRevolutionParameters::getAngle(void) const
 {
-    return ui->doubleSpinBox->value();
+    return ui->revolveAngle->value().getValue();
 }
 
 QString TaskRevolutionParameters::getReferenceAxis(void) const
@@ -275,7 +274,11 @@ TaskDlgRevolutionParameters::~TaskDlgRevolutionParameters()
 
 void TaskDlgRevolutionParameters::open()
 {
-
+    // a transaction is already open at creation time of the pad
+    if (!Gui::Command::hasPendingCommand()) {
+        QString msg = QObject::tr("Edit revolve");
+        Gui::Command::openCommand((const char*)msg.toUtf8());
+    }
 }
 
 void TaskDlgRevolutionParameters::clicked(int)
