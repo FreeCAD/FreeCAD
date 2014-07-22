@@ -51,12 +51,15 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="doubleSpinBox">
+      <widget class="Gui::QuantitySpinBox" name="draftAngle">
+       <property name="unit" stdset="0">
+        <string>deg</string>
+       </property>
        <property name="minimum">
         <double>0.000000000000000</double>
        </property>
        <property name="maximum">
-        <double>89.000000000000000</double>
+        <double>89.999999999999986</double>
        </property>
        <property name="singleStep">
         <double>0.100000000000000</double>
@@ -112,9 +115,14 @@
   </layout>
   <zorder>checkReverse</zorder>
   <zorder>listWidgetFaces</zorder>
-  <zorder>buttonFaceAdd</zorder>
-  <zorder>buttonFaceRemove</zorder>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
