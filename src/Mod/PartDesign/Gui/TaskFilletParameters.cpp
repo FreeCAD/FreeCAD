@@ -121,12 +121,16 @@ TaskDlgFilletParameters::~TaskDlgFilletParameters()
 
 void TaskDlgFilletParameters::open()
 {
-    
+    // a transaction is already open at creation time of the fillet
+    if (!Gui::Command::hasPendingCommand()) {
+        QString msg = tr("Edit fillet");
+        Gui::Command::openCommand((const char*)msg.toUtf8());
+    }
 }
 
 void TaskDlgFilletParameters::clicked(int)
 {
-    
+
 }
 
 bool TaskDlgFilletParameters::accept()
