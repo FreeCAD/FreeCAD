@@ -47,6 +47,9 @@ TaskTransformedMessages::TaskTransformedMessages(ViewProviderTransformed *transf
     proxy = new QWidget(this);
     ui = new Ui_TaskTransformedMessages();
     ui->setupUi(proxy);
+    // set a minimum height to avoid a sudden resize and to
+    // lose focus of the currently used spin boxes
+    ui->labelTransformationStatus->setMinimumHeight(50);
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
