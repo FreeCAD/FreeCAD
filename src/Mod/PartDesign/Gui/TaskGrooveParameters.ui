@@ -49,9 +49,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="doubleSpinBox">
-       <property name="decimals">
-        <number>1</number>
+      <widget class="Gui::QuantitySpinBox" name="grooveAngle">
+       <property name="unit" stdset="0">
+        <string>deg</string>
        </property>
        <property name="minimum">
         <double>0.000000000000000</double>
@@ -64,6 +64,9 @@
        </property>
        <property name="value">
         <double>360.000000000000000</double>
+       </property>
+       <property name="decimals" stdset="0">
+        <number>1</number>
        </property>
       </widget>
      </item>
@@ -105,6 +108,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
