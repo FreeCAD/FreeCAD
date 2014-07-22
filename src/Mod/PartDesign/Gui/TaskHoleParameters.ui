@@ -58,6 +58,9 @@
        <property name="unit" stdset="0">
         <string>mm</string>
        </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
       </widget>
      </item>
     </layout>
