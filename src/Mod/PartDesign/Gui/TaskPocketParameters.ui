@@ -56,9 +56,12 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="doubleSpinBox">
-       <property name="maximum">
-        <double>999999999.000000000000000</double>
+      <widget class="Gui::QuantitySpinBox" name="pocketLength">
+       <property name="unit" stdset="0">
+        <string>mm</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
        </property>
       </widget>
      </item>
@@ -117,6 +120,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
