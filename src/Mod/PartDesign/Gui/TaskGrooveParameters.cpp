@@ -274,7 +274,7 @@ TaskDlgGrooveParameters::~TaskDlgGrooveParameters()
 
 void TaskDlgGrooveParameters::open()
 {
-    // a transaction is already open at creation time of the pad
+    // a transaction is already open at creation time of the groove
     if (!Gui::Command::hasPendingCommand()) {
         QString msg = QObject::tr("Edit groove");
         Gui::Command::openCommand((const char*)msg.toUtf8());

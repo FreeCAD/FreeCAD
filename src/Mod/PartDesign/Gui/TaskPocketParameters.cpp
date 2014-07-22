@@ -436,7 +436,7 @@ TaskDlgPocketParameters::~TaskDlgPocketParameters()
 
 void TaskDlgPocketParameters::open()
 {
-    // a transaction is already open at creation time of the pad
+    // a transaction is already open at creation time of the pocket
     if (!Gui::Command::hasPendingCommand()) {
         QString msg = tr("Edit pocket");
         Gui::Command::openCommand((const char*)msg.toUtf8());
