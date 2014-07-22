@@ -65,9 +65,6 @@
        <property name="value">
         <double>360.000000000000000</double>
        </property>
-       <property name="decimals" stdset="0">
-        <number>1</number>
-       </property>
       </widget>
      </item>
     </layout>
