@@ -690,12 +690,10 @@ void TopoShape::write(const char *FileName) const
 
 void TopoShape::exportIges(const char *filename) const
 {
-    Interface_Static::SetCVal("write.iges.unit","IN");
     try {
         // write iges file
         IGESControl_Controller::Init();
         IGESControl_Writer aWriter;
-        //IGESControl_Writer aWriter(Interface_Static::CVal("write.iges.unit"), 1);
         aWriter.AddShape(this->_Shape);
         aWriter.ComputeModel();
         QString fn = QString::fromUtf8(filename);
