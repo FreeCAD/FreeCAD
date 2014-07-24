@@ -40,6 +40,7 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ViewProviderSketch.h"
+#include "ui_InsertDatum.h"
 #include "EditDatumDialog.h"
 
 using namespace std;
@@ -1440,7 +1441,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one arc or circle from the sketch."));
+            QObject::tr("Select one or more arcs or circles from the sketch."));
         return;
     }
 
@@ -1448,47 +1449,102 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() != 1) {
+    if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one arc or circle from the sketch."));
+            QObject::tr("Select one or more arcs or circles from the sketch."));
         return;
     }
 
-    if (SubNames[0].size() > 4 && SubNames[0].substr(0,4) == "Edge") {
-        int GeoId = std::atoi(SubNames[0].substr(4,4000).c_str()) - 1;
-
-        const Part::Geometry *geom = Obj->getGeometry(GeoId);
-        if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
-            double ActRadius = arc->getRadius();
-
-            openCommand("add radius constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                selection[0].getFeatName(),GeoId,ActRadius);
-            commitCommand();
-
-            finishDistanceConstraint(this, Obj);
-            return;
-        }
-        else if (geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geom);
-            double ActRadius = circle->getRadius();
-
-            openCommand("add radius constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                selection[0].getFeatName(),GeoId,ActRadius);
-            commitCommand();
-
-            finishDistanceConstraint(this, Obj);
-            return;
+    // check for which selected geometry the constraint can be applied
+    std::vector< std::pair<int, double> > geoIdRadiusMap;
+    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+        if (it->size() > 4 && it->substr(0,4) == "Edge") {
+            int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
+            const Part::Geometry *geom = Obj->getGeometry(GeoId);
+            if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
+                double radius = arc->getRadius();
+                geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+            }
+            else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geom);
+                double radius = circle->getRadius();
+                geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+            }
         }
     }
 
-    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("Select exactly one arc or circle from the sketch."));
-    return;
+    if (geoIdRadiusMap.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select one or more arcs or circles from the sketch."));
+    }
+    else {
+        // Create the radius constraints now
+        openCommand("Add radius constraint");
+        for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin(); it != geoIdRadiusMap.end(); ++it) {
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                selection[0].getFeatName(),it->first,it->second);
+        }
+        commitCommand();
+
+        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+        std::size_t indexConstr = ConStr.size() - geoIdRadiusMap.size();
+
+        // Guess some reasonable distance for placing the datum text
+        Gui::Document *doc = getActiveGuiDocument();
+        float sf = 1.f;
+        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            SketcherGui::ViewProviderSketch *vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+            sf = vp->getScaleFactor();
+
+            for (std::size_t i=0; i<geoIdRadiusMap.size();i++) {
+                Sketcher::Constraint *constr = ConStr[indexConstr + i];
+                constr->LabelDistance = 2. * sf;
+            }
+            vp->draw(); // Redraw
+        }
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
+        // Ask for the value of the radius immediately
+        if (show) {
+            QDialog dlg(Gui::getMainWindow());
+            Ui::InsertDatum ui_Datum;
+            ui_Datum.setupUi(&dlg);
+            dlg.setWindowTitle(EditDatumDialog::tr("Change radius"));
+            ui_Datum.label->setText(EditDatumDialog::tr("Radius:"));
+            Base::Quantity init_val;
+            init_val.setUnit(Base::Unit::Length);
+            init_val.setValue(geoIdRadiusMap.front().second);
+
+            ui_Datum.labelEdit->setValue(init_val);
+            ui_Datum.labelEdit->selectNumber();
+
+            if (dlg.exec() == QDialog::Accepted) {
+                Base::Quantity newQuant = ui_Datum.labelEdit->getQuantity();
+                double newRadius = newQuant.getValue();
+
+                try {
+                    openCommand("Modify radius constraint");
+                    for (std::size_t i=0; i<geoIdRadiusMap.size();i++) {
+                        doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
+                                    Obj->getNameInDocument(),
+                                    indexConstr+i, newRadius, (const char*)newQuant.getUnit().getString().toUtf8());
+                    }
+                    commitCommand();
+                    updateActive();
+                }
+                catch (const Base::Exception& e) {
+                    QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
+                    abortCommand();
+                }
+            }
+        }
+
+        //updateActive();
+        getSelection().clearSelection();
+    }
 }
 
 bool CmdSketcherConstrainRadius::isActive(void)
