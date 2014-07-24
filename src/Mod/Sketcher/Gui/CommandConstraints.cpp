@@ -1479,14 +1479,46 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             QObject::tr("Select one or more arcs or circles from the sketch."));
     }
     else {
-        // Create the radius constraints now
-        openCommand("Add radius constraint");
-        for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin(); it != geoIdRadiusMap.end(); ++it) {
+        bool constrainEqual = false;
+        if (geoIdRadiusMap.size() > 1) {
+            int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Constrain equal"),
+                QObject::tr("Do you want to share the same radius for all selected elements?"),
+                QMessageBox::Yes, QMessageBox::No);
+            // use an equality constraint
+            if (ret == QMessageBox::Yes) {
+                constrainEqual = true;
+            }
+        }
+
+        if (constrainEqual) {
+            // Create the one radius constraint now
+            int refGeoId = geoIdRadiusMap.front().first;
+            double radius = geoIdRadiusMap.front().second;
+            openCommand("Add radius constraint");
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                selection[0].getFeatName(),it->first,it->second);
+                selection[0].getFeatName(),refGeoId,radius);
+            commitCommand();
+
+            // Add the equality constraints
+            openCommand("Add equality constraint");
+            for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin()+1; it != geoIdRadiusMap.end(); ++it) {
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+                    selection[0].getFeatName(),refGeoId,it->first);
+            }
+            commitCommand();
         }
-        commitCommand();
+        else {
+            // Create the radius constraints now
+            openCommand("Add radius constraint");
+            for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin(); it != geoIdRadiusMap.end(); ++it) {
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                    selection[0].getFeatName(),it->first,it->second);
+            }
+            commitCommand();
+        }
 
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
         std::size_t indexConstr = ConStr.size() - geoIdRadiusMap.size();
@@ -1527,10 +1559,17 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
                 try {
                     openCommand("Modify radius constraint");
-                    for (std::size_t i=0; i<geoIdRadiusMap.size();i++) {
+                    if (constrainEqual) {
                         doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
                                     Obj->getNameInDocument(),
-                                    indexConstr+i, newRadius, (const char*)newQuant.getUnit().getString().toUtf8());
+                                    indexConstr, newRadius, (const char*)newQuant.getUnit().getString().toUtf8());
+                    }
+                    else {
+                        for (std::size_t i=0; i<geoIdRadiusMap.size();i++) {
+                            doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
+                                        Obj->getNameInDocument(),
+                                        indexConstr+i, newRadius, (const char*)newQuant.getUnit().getString().toUtf8());
+                        }
                     }
                     commitCommand();
                     updateActive();
