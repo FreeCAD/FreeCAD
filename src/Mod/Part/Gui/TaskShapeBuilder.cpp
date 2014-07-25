@@ -110,10 +110,11 @@ ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
 
     d->ui.setupUi(this);
     d->ui.label->setText(QString());
-    d->bg.addButton(d->ui.radioButtonEdge, 0);
-    d->bg.addButton(d->ui.radioButtonFace, 1);
-    d->bg.addButton(d->ui.radioButtonShell, 2);
-    d->bg.addButton(d->ui.radioButtonSolid, 3);
+    d->bg.addButton(d->ui.radioButtonEdgeFromVertex, 0);
+    d->bg.addButton(d->ui.radioButtonFaceFromVertex, 1);
+    d->bg.addButton(d->ui.radioButtonFaceFromEdge, 2);
+    d->bg.addButton(d->ui.radioButtonShellFromFace, 3);
+    d->bg.addButton(d->ui.radioButtonSolidFromShell, 4);
     d->bg.setExclusive(true);
 
     connect(&d->bg, SIGNAL(buttonClicked(int)),
@@ -140,25 +141,29 @@ void ShapeBuilderWidget::on_createButton_clicked()
 
     try {
         if (mode == 0) {
-            createEdge();
+            createEdgeFromVertex();
         }
         else if (mode == 1) {
-            createFace();
+            createFaceFromVertex();
         }
         else if (mode == 2) {
-            createShell();
+            createFaceFromEdge();
         }
         else if (mode == 3) {
-            createSolid();
+            createShellFromFace();
+        }
+        else if (mode == 4) {
+            createSolidFromShell();
         }
         doc->getDocument()->recompute();
+        Gui::Selection().clearSelection();
     }
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
     }
 }
 
-void ShapeBuilderWidget::createEdge()
+void ShapeBuilderWidget::createEdgeFromVertex()
 {
     Gui::SelectionFilter vertexFilter  ("SELECT Part::Feature SUBELEMENT Vertex COUNT 2");
     bool matchVertex = vertexFilter.match();
@@ -194,12 +199,70 @@ void ShapeBuilderWidget::createEdge()
         "del _\n"
     ).arg(elements[0]).arg(elements[1]);
 
-    Gui::Application::Instance->activeDocument()->openCommand("Edge");
-    Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
-    Gui::Application::Instance->activeDocument()->commitCommand();
+    try {
+        Gui::Application::Instance->activeDocument()->openCommand("Edge");
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->activeDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        Gui::Application::Instance->activeDocument()->abortCommand();
+        throw;
+    }
 }
 
-void ShapeBuilderWidget::createFace()
+void ShapeBuilderWidget::createFaceFromVertex()
+{
+    Gui::SelectionFilter vertexFilter  ("SELECT Part::Feature SUBELEMENT Vertex COUNT 3..");
+    bool matchVertex = vertexFilter.match();
+    if (!matchVertex) {
+        QMessageBox::critical(this, tr("Wrong selection"), tr("Select three or more vertices"));
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> sel = vertexFilter.Result[0];
+    std::vector<Gui::SelectionObject>::iterator it;
+    std::vector<std::string>::const_iterator jt;
+
+    QString list;
+    QTextStream str(&list);
+    str << "[";
+    for (it=sel.begin();it!=sel.end();++it) {
+        for (jt=it->getSubNames().begin();jt!=it->getSubNames().end();++jt) {
+            str << "App.ActiveDocument." << it->getFeatName() << ".Shape." << jt->c_str() << ".Point, ";
+        }
+    }
+    str << "]";
+
+    QString cmd;
+    if (d->ui.checkPlanar->isChecked()) {
+        cmd = QString::fromAscii(
+            "_=Part.Face(Part.makePolygon(%1, True))\n"
+            "if _.isNull(): raise Exception('Failed to create face')\n"
+            "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+            "del _\n"
+        ).arg(list);
+    }
+    else {
+        cmd = QString::fromAscii(
+            "_=Part.makeFilledFace([Part.makePolygon(%1, True)])\n"
+            "if _.isNull(): raise Exception('Failed to create face')\n"
+            "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
+            "del _\n"
+        ).arg(list);
+    }
+
+    try {
+        Gui::Application::Instance->activeDocument()->openCommand("Face");
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->activeDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        Gui::Application::Instance->activeDocument()->abortCommand();
+        throw;
+    }
+}
+
+void ShapeBuilderWidget::createFaceFromEdge()
 {
     Gui::SelectionFilter edgeFilter  ("SELECT Part::Feature SUBELEMENT Edge COUNT 1..");
     bool matchEdge = edgeFilter.match();
@@ -240,12 +303,18 @@ void ShapeBuilderWidget::createFace()
         ).arg(list);
     }
 
-    Gui::Application::Instance->activeDocument()->openCommand("Face");
-    Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
-    Gui::Application::Instance->activeDocument()->commitCommand();
+    try {
+        Gui::Application::Instance->activeDocument()->openCommand("Face");
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->activeDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        Gui::Application::Instance->activeDocument()->abortCommand();
+        throw;
+    }
 }
 
-void ShapeBuilderWidget::createShell()
+void ShapeBuilderWidget::createShellFromFace()
 {
     Gui::SelectionFilter faceFilter  ("SELECT Part::Feature SUBELEMENT Face COUNT 2..");
     bool matchFace = faceFilter.match();
@@ -287,12 +356,18 @@ void ShapeBuilderWidget::createShell()
         "del _\n"
     ).arg(list);
 
-    Gui::Application::Instance->activeDocument()->openCommand("Shell");
-    Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
-    Gui::Application::Instance->activeDocument()->commitCommand();
+    try {
+        Gui::Application::Instance->activeDocument()->openCommand("Shell");
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->activeDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        Gui::Application::Instance->activeDocument()->abortCommand();
+        throw;
+    }
 }
 
-void ShapeBuilderWidget::createSolid()
+void ShapeBuilderWidget::createSolidFromShell()
 {
     Gui::SelectionFilter partFilter  ("SELECT Part::Feature COUNT 1");
     bool matchPart = partFilter.match();
@@ -321,9 +396,15 @@ void ShapeBuilderWidget::createSolid()
         "del _\n"
     ).arg(line);
 
-    Gui::Application::Instance->activeDocument()->openCommand("Solid");
-    Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
-    Gui::Application::Instance->activeDocument()->commitCommand();
+    try {
+        Gui::Application::Instance->activeDocument()->openCommand("Solid");
+        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Application::Instance->activeDocument()->commitCommand();
+    }
+    catch (const Base::Exception&) {
+        Gui::Application::Instance->activeDocument()->abortCommand();
+        throw;
+    }
 }
 
 void ShapeBuilderWidget::switchMode(int mode)
@@ -336,12 +417,18 @@ void ShapeBuilderWidget::switchMode(int mode)
         d->ui.checkFaces->setEnabled(false);
     }
     else if (mode == 1) {
+        d->gate->setMode(ShapeSelection::VERTEX);
+        d->ui.label->setText(tr("Select a list of vertices"));
+        d->ui.checkPlanar->setEnabled(true);
+        d->ui.checkFaces->setEnabled(false);
+    }
+    else if (mode == 2) {
         d->gate->setMode(ShapeSelection::EDGE);
         d->ui.label->setText(tr("Select a closed set of edges"));
         d->ui.checkPlanar->setEnabled(true);
         d->ui.checkFaces->setEnabled(false);
     }
-    else if (mode == 2) {
+    else if (mode == 3) {
         d->gate->setMode(ShapeSelection::FACE);
         d->ui.label->setText(tr("Select adjacent faces"));
         d->ui.checkPlanar->setEnabled(false);
