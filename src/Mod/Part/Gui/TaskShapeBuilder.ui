@@ -6,56 +6,77 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>220</width>
-    <height>259</height>
+    <width>182</width>
+    <height>263</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Create shape</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
+   <item row="0" column="0" colspan="2">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Create shape</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0" colspan="2">
-       <widget class="QRadioButton" name="radioButtonEdge">
+       <widget class="QRadioButton" name="radioButtonEdgeFromVertex">
         <property name="text">
          <string>Edge from vertices</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QRadioButton" name="radioButtonFace">
+      <item row="1" column="0" colspan="2">
+       <widget class="QRadioButton" name="radioButtonFaceFromVertex">
+        <property name="text">
+         <string>Face from vertices</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QRadioButton" name="radioButtonFaceFromEdge">
         <property name="text">
          <string>Face from edges</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="3" column="0" colspan="2">
+       <widget class="QRadioButton" name="radioButtonShellFromFace">
+        <property name="text">
+         <string>Shell from faces</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <widget class="QRadioButton" name="radioButtonSolidFromShell">
+        <property name="text">
+         <string>Solid from shell</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
        <widget class="QCheckBox" name="checkPlanar">
         <property name="text">
          <string>Planar</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QRadioButton" name="radioButtonShell">
+      <item row="6" column="1">
+       <widget class="QCheckBox" name="checkFaces">
         <property name="text">
-         <string>Shell from faces</string>
+         <string>All faces</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QRadioButton" name="radioButtonSolid">
-        <property name="text">
-         <string>Solid from shell</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0" colspan="2">
+      <item row="7" column="0" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <spacer name="horizontalSpacer_2">
@@ -79,17 +100,10 @@
         </item>
        </layout>
       </item>
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="checkFaces">
-        <property name="text">
-         <string>All faces</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -111,6 +125,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>radioButtonEdgeFromVertex</tabstop>
+  <tabstop>radioButtonFaceFromVertex</tabstop>
+  <tabstop>checkPlanar</tabstop>
+  <tabstop>radioButtonFaceFromEdge</tabstop>
+  <tabstop>radioButtonShellFromFace</tabstop>
+  <tabstop>checkFaces</tabstop>
+  <tabstop>radioButtonSolidFromShell</tabstop>
+  <tabstop>createButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

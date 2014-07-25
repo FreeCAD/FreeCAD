@@ -1022,7 +1022,8 @@ static PyObject * makeLine(PyObject *self, PyObject *args)
 static PyObject * makePolygon(PyObject *self, PyObject *args)
 {
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O", &pcObj))     // convert args: Python->C
+    PyObject *pclosed=Py_False;
+    if (!PyArg_ParseTuple(args, "O|O!", &pcObj, &(PyBool_Type), &pclosed))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     PY_TRY {
@@ -1047,6 +1048,13 @@ static PyObject * makePolygon(PyObject *self, PyObject *args)
 
             if (!mkPoly.IsDone())
                 Standard_Failure::Raise("Cannot create polygon because less than two vertices are given");
+
+            // if the polygon should be closed
+            if (PyObject_IsTrue(pclosed)) {
+                if (!mkPoly.FirstVertex().IsSame(mkPoly.LastVertex())) {
+                    mkPoly.Add(mkPoly.FirstVertex());
+                }
+            }
 
             return new TopoShapeWirePy(new TopoShape(mkPoly.Wire()));
         }
