@@ -766,15 +766,15 @@ def toggleIfcBrepFlag(obj):
         FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC Attributes"))
     else:
         d = obj.IfcAttributes
-        if "ForceBrep" in d.keys():
-            if d["ForceBrep"] == "True":
-                d["ForceBrep"] = "False"
+        if "FlagForceBrep" in d.keys():
+            if d["FlagForceBrep"] == "True":
+                d["FlagForceBrep"] = "False"
                 FreeCAD.Console.PrintMessage(translate("Arch","Disabling Brep force flag of object")+" "+obj.Label+"\n")
             else:
-                d["ForceBrep"] = "True"
+                d["FlagForceBrep"] = "True"
                 FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
         else:
-            d["ForceBrep"] = "True"
+            d["FlagForceBrep"] = "True"
             FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
         obj.IfcAttributes = d
 
