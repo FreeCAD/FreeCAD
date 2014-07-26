@@ -68,7 +68,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyVector();
+    virtual ~PropertyVector();
 
     /** Sets the property
      */
@@ -115,7 +115,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyVectorList();
+    virtual ~PropertyVectorList();
 
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
@@ -178,7 +178,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyMatrix();
+    virtual ~PropertyMatrix();
 
     /** Sets the property
      */
@@ -226,7 +226,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyPlacement();
+    virtual ~PropertyPlacement();
 
     /** Sets the property
      */
@@ -276,7 +276,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyPlacementLink();
+    virtual ~PropertyPlacementLink();
 
     /** This method returns the linked DocumentObject
      */
@@ -295,7 +295,7 @@ class AppExport PropertyGeometry : public App::Property
 
 public:
     PropertyGeometry();
-    ~PropertyGeometry();
+    virtual ~PropertyGeometry();
 
     /** @name Modification */
     //@{
@@ -315,7 +315,7 @@ class AppExport PropertyComplexGeoData : public App::PropertyGeometry
 
 public:
     PropertyComplexGeoData();
-    ~PropertyComplexGeoData();
+    virtual ~PropertyComplexGeoData();
 
     /** @name Modification */
     //@{
