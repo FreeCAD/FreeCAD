@@ -60,8 +60,8 @@ private:
 
 InputField::InputField(QWidget * parent)
   : QLineEdit(parent),
-    actUnitValue(0),
     validInput(true),
+    actUnitValue(0),
     Maximum(DOUBLE_MAX),
     Minimum(-DOUBLE_MAX),
     StepSize(1.0),

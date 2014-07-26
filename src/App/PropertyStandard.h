@@ -54,7 +54,7 @@ class AppExport PropertyInteger: public Property
 
 public:
     PropertyInteger();
-    ~PropertyInteger();
+    virtual ~PropertyInteger();
 
     /** Sets the property 
      */
@@ -90,7 +90,7 @@ class AppExport PropertyPath: public Property
 public:
   
     PropertyPath();
-    ~PropertyPath();
+    virtual ~PropertyPath();
 
     /** Sets the property 
      */
@@ -142,7 +142,7 @@ public:
     PropertyEnumeration();
     
     /// destructor
-    ~PropertyEnumeration();
+    virtual ~PropertyEnumeration();
 
     /// Enumeration methods 
     //@{
@@ -207,7 +207,7 @@ public:
     PropertyIntegerConstraint();
     
     /// destructor
-    ~PropertyIntegerConstraint();
+    virtual ~PropertyIntegerConstraint();
 
     /// Constraint methods 
     //@{
@@ -249,7 +249,7 @@ public:
     PropertyPercent();
     
     /// destructor
-    ~PropertyPercent();
+    virtual ~PropertyPercent();
 };
 
 /** Integer list properties
@@ -271,7 +271,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyIntegerList();
+    virtual ~PropertyIntegerList();
 
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
@@ -321,7 +321,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyIntegerSet();
+    virtual ~PropertyIntegerSet();
 
     /** Sets the property 
      */
@@ -367,7 +367,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyMap();
+    virtual ~PropertyMap();
 
     virtual int getSize(void) const;
     
@@ -670,7 +670,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyStringList();
+    virtual ~PropertyStringList();
 
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
@@ -756,7 +756,7 @@ class AppExport PropertyBoolList : public PropertyLists
 
 public:
     PropertyBoolList();
-    ~PropertyBoolList();
+    virtual ~PropertyBoolList();
 
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
@@ -804,7 +804,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyColor();
+    virtual ~PropertyColor();
 
     /** Sets the property 
      */
@@ -850,7 +850,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyColorList();
+    virtual ~PropertyColorList();
 
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
@@ -903,7 +903,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyMaterial();
+    virtual ~PropertyMaterial();
     
     /** Sets the property 
      */

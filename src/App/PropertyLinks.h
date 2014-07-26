@@ -58,7 +58,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyLink();
+    virtual ~PropertyLink();
 
     /** Sets the property
      */
@@ -120,7 +120,7 @@ public:
      * A destructor.
      * A more elaborate description of the destructor.
      */
-    ~PropertyLinkSub();
+    virtual ~PropertyLinkSub();
 
     /** Sets the property
      */
