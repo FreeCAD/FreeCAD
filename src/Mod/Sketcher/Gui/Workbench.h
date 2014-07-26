@@ -25,6 +25,8 @@
 #define IMAGE_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Gui/MenuManager.h>
+#include <Gui/ToolBarManager.h>
 
 namespace SketcherGui {
 
@@ -44,6 +46,17 @@ protected:
     Gui::ToolBarItem* setupToolBars() const;
     Gui::ToolBarItem* setupCommandBars() const;
 };
+
+
+
+
+SketcherGuiExport void addSketcherWorkbenchConstraints( Gui::MenuItem& cons );
+SketcherGuiExport void addSketcherWorkbenchSketchActions( Gui::MenuItem& sketch );
+SketcherGuiExport void addSketcherWorkbenchGeometries( Gui::MenuItem& geom );
+
+SketcherGuiExport void addSketcherWorkbenchConstraints( Gui::ToolBarItem& cons );
+SketcherGuiExport void addSketcherWorkbenchSketchActions( Gui::ToolBarItem& sketch );
+SketcherGuiExport void addSketcherWorkbenchGeometries( Gui::ToolBarItem& geom );
 
 } // namespace SketcherGui
 
