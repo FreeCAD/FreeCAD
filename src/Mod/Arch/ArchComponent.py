@@ -69,7 +69,7 @@ def addToComponent(compobject,addobject,mod=None):
                     if Draft.getType(addobject) == "Axis":
                         l = getattr(compobject,mod)
                         l.append(addobject)
-                        setattr(compobject,mod,l)                        
+                        setattr(compobject,mod,l)
                 else:
                     l = getattr(compobject,mod)
                     l.append(addobject)
@@ -352,6 +352,8 @@ class Component:
 
     def getProfiles(self,obj,noplacement=False):
         "Returns the base profile(s) of this component, if applicable"
+        if not obj.Shape: return []
+        if obj.Shape.isNull(): return []
         wires = []
         n,l,w,h = self.getDefaultValues(obj)
         if obj.Base:
@@ -411,7 +413,7 @@ class Component:
                                         wires.append(sh)
                                 else:
                                     wires.append(wire)
-        else:
+        elif Draft.getType(obj) in ["Wall","Structure"]:
             if (Draft.getType(obj) == "Structure") and (l > h):
                 if noplacement:
                     h2 = h/2 or 0.5

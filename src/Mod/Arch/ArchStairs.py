@@ -60,8 +60,6 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=t
         obj.Height = p.GetFloat("StairsHeight",3000.0)
     if steps:
         obj.NumberOfSteps = steps
-    else:
-        obj.NumberOfSteps = p.GetInt("StairsSteps",17)
     return obj
 
 
@@ -77,13 +75,14 @@ class _CommandStairs:
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Stairs"))
         FreeCADGui.doCommand("import Arch")
         if len(FreeCADGui.Selection.getSelection()) == 1:
             n = FreeCADGui.Selection.getSelection()[0].Name
             FreeCADGui.doCommand("Arch.makeStairs(baseobj=FreeCAD.ActiveDocument."+n+")")
         else:
-            FreeCADGui.doCommand("Arch.makeStairs()")
+            FreeCADGui.doCommand("Arch.makeStairs(steps="+str(p.GetInt("StairsSteps",17))+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -137,64 +136,67 @@ class _Stairs(ArchComponent.Component):
         self.structures = []
         pl = obj.Placement
         landings = 0
-
-        # base tests
-        if not obj.Width.Value:
-            return
-        if not obj.Height.Value:
-            if not obj.Base:
-                return
-        if obj.NumberOfSteps < 2:
-            return
+        
+        base = None
+        
         if obj.Base:
-            if not obj.Base.isDerivedFrom("Part::Feature"):
-                return
-            if obj.Base.Shape.Solids:
-                obj.Shape = obj.Base.Shape.copy()
-                obj.Placement = FreeCAD.Placement(obj.Base.Placement).multiply(pl)
-                obj.TreadDepth = 0.0
-                obj.RiserHeight = 0.0
-                return
-            if not obj.Base.Shape.Edges:
-                return
-            if obj.Base.Shape.Faces:
-                return
-            if (len(obj.Base.Shape.Edges) == 1): 
-                edge = obj.Base.Shape.Edges[0]
-                if isinstance(edge.Curve,Part.Line):
-                    if obj.Landings == "At center":
-                        landings = 1
-                        self.makeStraightStairsWithLanding(obj,edge)                
+            if hasattr(obj.Base,"Shape"):
+                if obj.Base.Shape:
+                    if obj.Base.Shape.Solids:
+                        base = obj.Base.Shape.copy()
+
+        if (not base) and obj.Width.Value and obj.Height.Value and (obj.NumberOfSteps > 1):
+            if obj.Base:
+                if not obj.Base.isDerivedFrom("Part::Feature"):
+                    return
+                if obj.Base.Shape.Solids:
+                    obj.Shape = obj.Base.Shape.copy()
+                    obj.Placement = FreeCAD.Placement(obj.Base.Placement).multiply(pl)
+                    obj.TreadDepth = 0.0
+                    obj.RiserHeight = 0.0
+                    return
+                if not obj.Base.Shape.Edges:
+                    return
+                if obj.Base.Shape.Faces:
+                    return
+                if (len(obj.Base.Shape.Edges) == 1): 
+                    edge = obj.Base.Shape.Edges[0]
+                    if isinstance(edge.Curve,Part.Line):
+                        if obj.Landings == "At center":
+                            landings = 1
+                            self.makeStraightStairsWithLanding(obj,edge)                
+                        else:
+                            self.makeStraightStairs(obj,edge)
                     else:
-                        self.makeStraightStairs(obj,edge)
-                else:
-                    if obj.Landings == "At center":
-                        landings = 1
-                        self.makeCurvedStairsWithLandings(obj,edge)
-                    else:
-                        self.makeCurvedStairs(obj,edge)
-        else:
-            if not obj.Length.Value:
-                return
-            edge = Part.Line(Vector(0,0,0),Vector(obj.Length.Value,0,0)).toShape()
-            if obj.Landings == "At center":
-                landings = 1
-                self.makeStraightStairsWithLanding(obj,edge)
+                        if obj.Landings == "At center":
+                            landings = 1
+                            self.makeCurvedStairsWithLandings(obj,edge)
+                        else:
+                            self.makeCurvedStairs(obj,edge)
             else:
-                self.makeStraightStairs(obj,edge)
+                if not obj.Length.Value:
+                    return
+                edge = Part.Line(Vector(0,0,0),Vector(obj.Length.Value,0,0)).toShape()
+                if obj.Landings == "At center":
+                    landings = 1
+                    self.makeStraightStairsWithLanding(obj,edge)
+                else:
+                    self.makeStraightStairs(obj,edge)
 
         if self.structures or self.steps:
-            shape = Part.makeCompound(self.structures + self.steps)
-            shape = self.processSubShapes(obj,shape,pl)
-            obj.Shape = shape
-            obj.Placement = pl
+            base = Part.makeCompound(self.structures + self.steps)
         elif self.pseudosteps:
             shape = Part.makeCompound(self.pseudosteps)
             obj.Shape = shape
             obj.Placement = pl
-        else:
-            print "unable to calculate a stairs shape"
-
+            return
+            
+        base = self.processSubShapes(obj,base,pl)
+        if base:
+            if not base.isNull():
+                obj.Shape = base
+                obj.Placement = pl
+            
         # compute step data
         if obj.NumberOfSteps > 1:
             l = obj.Length.Value
