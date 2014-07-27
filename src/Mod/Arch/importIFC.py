@@ -1016,8 +1016,8 @@ def export(exportList,filename):
         # getting the "Force BREP" flag
         brepflag = False
         if hasattr(obj,"IfcAttributes"):
-            if "ForceBrep" in obj.IfcAttributes.keys():
-                if obj.IfcAttributes["ForceBrep"] == "True":
+            if "FlagForceBrep" in obj.IfcAttributes.keys():
+                if obj.IfcAttributes["FlagForceBrep"] == "True":
                     brepflag = True
 
         if DEBUG: print "Adding " + obj.Label + " as Ifc" + ifctype
@@ -1324,9 +1324,21 @@ def getIfcBrepFacesData(obj,scale=1,sub=False,tessellation=1):
                 if not obj.Shape.isNull():
                     if obj.Shape.isValid():
                         shape = obj.Shape
+        elif hasattr(obj,"Terrain"):
+            if obj.Terrain:
+                if hasattr(obj.Terrain,"Shape"):
+                    if obj.Terrain.Shape:
+                        if not obj.Terrain.Shape.isNull():
+                            if obj.Terrain.Shape.isValid():
+                                fcshape = obj.Terrain.Shape
     if shape:
         import Part
         sols = []
+        if fcshape.Solids:
+            dataset = fcshape.Solids
+        else:
+            dataset = fcshape.Shells
+            print "Warning! object contains no solids"
         for sol in shape.Solids:
             s = []
             curves = False
