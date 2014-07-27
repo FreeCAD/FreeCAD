@@ -102,13 +102,13 @@ Quantity Quantity::pow(const Quantity &p) const
 Quantity Quantity::operator +(const Quantity &p) const
 {
     if(this->_Unit != p._Unit) 
-        throw Base::Exception("Quantity::operator +(): Unit missmatch in plus operation");
+        throw Base::Exception("Quantity::operator +(): Unit mismatch in plus operation");
     return Quantity(this->_Value + p._Value,this->_Unit);
 }
 Quantity Quantity::operator -(const Quantity &p) const
 {
     if(this->_Unit != p._Unit) 
-        throw Base::Exception("Quantity::operator +(): Unit missmatch in plus operation");
+        throw Base::Exception("Quantity::operator +(): Unit mismatch in minus operation");
     return Quantity(this->_Value - p._Value,this->_Unit);
 }
 

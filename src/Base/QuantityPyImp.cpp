@@ -258,61 +258,84 @@ PyObject * QuantityPy::number_absolute_handler (PyObject *self)
 
 PyObject* QuantityPy::number_add_handler(PyObject *self, PyObject *other)
 {
-    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type)) ||
+        !PyObject_TypeCheck(other, &(QuantityPy::Type))) {
+        std::stringstream ret;
+        ret << self->ob_type->tp_name << " and " << other->ob_type->tp_name
+            << " cannot be mixed in Quantity.__add__.\n"
+            << "Make sure to use matching types.";
+        PyErr_SetString(PyExc_TypeError, ret.str().c_str());
         return 0;
     }
-    if (!PyObject_TypeCheck(other, &(QuantityPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "Second arg must be Quantity");
+
+    try {
+        Base::Quantity *a = static_cast<QuantityPy*>(self)->getQuantityPtr();
+        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
+        return new QuantityPy(new Quantity(*a+*b) );
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
         return 0;
     }
-    Base::Quantity *a = static_cast<QuantityPy*>(self)->getQuantityPtr();
-    Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
-    return new QuantityPy(new Quantity(*a+*b) );
 }
 
 PyObject* QuantityPy::number_subtract_handler(PyObject *self, PyObject *other)
 {
-    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
+    if (!PyObject_TypeCheck(self, &(QuantityPy::Type)) ||
+        !PyObject_TypeCheck(other, &(QuantityPy::Type))) {
+        std::stringstream ret;
+        ret << self->ob_type->tp_name << " and " << other->ob_type->tp_name
+            << " cannot be mixed in Quantity.__sub__.\n"
+            << "Make sure to use matching types.";
+        PyErr_SetString(PyExc_TypeError, ret.str().c_str());
         return 0;
     }
-    if (!PyObject_TypeCheck(other, &(QuantityPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "Second arg must be Quantity");
+
+    try {
+        Base::Quantity *a = static_cast<QuantityPy*>(self)->getQuantityPtr();
+        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
+        return new QuantityPy(new Quantity(*a-*b) );
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
         return 0;
     }
-    Base::Quantity *a = static_cast<QuantityPy*>(self)->getQuantityPtr();
-    Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
-    return new QuantityPy(new Quantity(*a-*b) );
 }
 
 PyObject* QuantityPy::number_multiply_handler(PyObject *self, PyObject *other)
 {
-    if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
-        return 0;
+    if (PyObject_TypeCheck(self, &(QuantityPy::Type))) {
+        if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
+            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+            Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
+            return new QuantityPy(new Quantity(*a * *b) );
+        }
+        else if (PyFloat_Check(other)) {
+            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+            double b = PyFloat_AsDouble(other);
+            return new QuantityPy(new Quantity(*a*b) );
+        }
+        else if (PyInt_Check(other)) {
+            Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
+            double b = (double)PyInt_AsLong(other);
+            return new QuantityPy(new Quantity(*a*b) );
+        }
+    }
+    else if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
+        if (PyFloat_Check(self)) {
+            Base::Quantity *a = static_cast<QuantityPy*>(other) ->getQuantityPtr();
+            double b = PyFloat_AsDouble(self);
+            return new QuantityPy(new Quantity(*a*b) );
+        }
+        else if (PyInt_Check(self)) {
+            Base::Quantity *a = static_cast<QuantityPy*>(other) ->getQuantityPtr();
+            double b = (double)PyInt_AsLong(self);
+            return new QuantityPy(new Quantity(*a*b) );
+        }
     }
 
-    if (PyObject_TypeCheck(other, &(QuantityPy::Type))) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        Base::Quantity *b = static_cast<QuantityPy*>(other)->getQuantityPtr();
-        
-        return new QuantityPy(new Quantity(*a * *b) );
-    }
-    else if (PyFloat_Check(other)) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        double b = PyFloat_AsDouble(other);
-        return new QuantityPy(new Quantity(*a*b) );
-    }
-    else if (PyInt_Check(other)) {
-        Base::Quantity *a = static_cast<QuantityPy*>(self) ->getQuantityPtr();
-        double b = (double)PyInt_AsLong(other);
-        return new QuantityPy(new Quantity(*a*b) );
-    }
-    else {
-        PyErr_SetString(PyExc_TypeError, "A Quantity can only be multiplied by Quantity or number");
-        return 0;
-    }
+    PyErr_SetString(PyExc_TypeError, "A Quantity can only be multiplied by Quantity or number");
+    return 0;
 }
 
 PyObject * QuantityPy::number_divide_handler (PyObject *self, PyObject *other)
