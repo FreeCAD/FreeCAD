@@ -225,6 +225,10 @@ public:
      * Projects the points onto the fitted plane.
      */
     void ProjectToPlane();
+    /**
+     * Get the dimension of the fitted plane.
+     */
+    void Dimension(float& length, float& width) const;
 
 protected:
     Base::Vector3f _vBase; /**< Base vector of the plane. */
