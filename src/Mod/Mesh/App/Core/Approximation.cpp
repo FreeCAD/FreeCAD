@@ -29,6 +29,7 @@
 
 #include "Approximation.h"
 
+#include <Base/BoundBox.h>
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprQuadraticFit3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4ApprPlaneFit3.h>
@@ -358,6 +359,24 @@ void PlaneFit::ProjectToPlane ()
         float fD = (cPnt - cGravity) * cNormal;
         cPnt = cPnt - fD * cNormal;
     }
+}
+
+void PlaneFit::Dimension(float& length, float& width) const
+{
+    const Base::Vector3f& bs = _vBase;
+    const Base::Vector3f& ex = _vDirU;
+    const Base::Vector3f& ey = _vDirV;
+
+    Base::BoundBox3f bbox;
+    std::list<Base::Vector3f>::const_iterator cIt;
+    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt) {
+        Base::Vector3f pnt = *cIt;
+        pnt.TransformToCoordinateSystem(bs, ex, ey);
+        bbox.Add(pnt);
+    }
+
+    length = bbox.MaxX - bbox.MinX;
+    width = bbox.MaxY - bbox.MinY;
 }
 
 // -------------------------------------------------------------------------------
