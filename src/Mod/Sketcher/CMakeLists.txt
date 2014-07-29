@@ -19,6 +19,7 @@ INSTALL(
 INSTALL(
     FILES
         ProfileLib/Hexagon.py
+        ProfileLib/RegularPolygon.py
         ProfileLib/__init__.py
     DESTINATION
         Mod/Sketcher/ProfileLib
