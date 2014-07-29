@@ -1330,14 +1330,14 @@ def getIfcBrepFacesData(obj,scale=1,sub=False,tessellation=1):
                     if obj.Terrain.Shape:
                         if not obj.Terrain.Shape.isNull():
                             if obj.Terrain.Shape.isValid():
-                                fcshape = obj.Terrain.Shape
+                                shape = obj.Terrain.Shape
     if shape:
         import Part
         sols = []
-        if fcshape.Solids:
-            dataset = fcshape.Solids
+        if shape.Solids:
+            dataset = shape.Solids
         else:
-            dataset = fcshape.Shells
+            dataset = shape.Shells
             print "Warning! object contains no solids"
         for sol in shape.Solids:
             s = []
