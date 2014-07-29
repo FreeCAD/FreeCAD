@@ -3219,49 +3219,19 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
-        static const char* AddLineCommand =
-                "App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))";
-        static const char* AddConstraintCoincideCommand =
-                "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1))";
-        static const char* AddConstraintEqualCommand =
-                "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%i,%i)) ";
-        static const char* AddConstraintAngleCommand =
-                "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%i,1,%i,2,%f))";
 
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
             Gui::Command::openCommand("Add hexagon");
-            int firstCurve = getHighestCurveIndex() + 1;
-            // add the geometry to the sketch
 
             try {
-                for( int i = 0; i < static_cast<int>(Corners); i++ ){
-                    Gui::Command::doCommand(Gui::Command::Doc, AddLineCommand,
-                            sketchgui->getObject()->getNameInDocument(),
-                            EditCurve[i].fX,EditCurve[i].fY,EditCurve[i+1].fX,EditCurve[i+1].fY);
-                }
-                // make line ends coincide and all lines equal length
-                Gui::Command::doCommand(Gui::Command::Doc, AddConstraintCoincideCommand,
-                        sketchgui->getObject()->getNameInDocument(),
-                        firstCurve+(Corners-1),firstCurve);
-                for( int i = 1; i < static_cast<int>(Corners); i++ ){
-                    Gui::Command::doCommand(Gui::Command::Doc, AddConstraintCoincideCommand,
-                             sketchgui->getObject()->getNameInDocument(),
-                             firstCurve+(i-1),firstCurve+i);
-                    Gui::Command::doCommand(Gui::Command::Doc,AddConstraintEqualCommand,
-                            sketchgui->getObject()->getNameInDocument(),
-                            firstCurve,firstCurve+i);
-                }
-                double angle_constraint_diff = (1. * Corners)/( 1. * Corners - 3.0 );
-                for( int i = 0; i < (Corners-3); i++ ){
-                    int angle_constraint_index = angle_constraint_diff * i;
-                    Gui::Command::doCommand(Gui::Command::Doc,AddConstraintAngleCommand,
-                            sketchgui->getObject()->getNameInDocument(),
-                            firstCurve + ( angle_constraint_index + 1 ),
-                            firstCurve + ( angle_constraint_index ),
-                            ( M_PI - AngleOfSeparation ) );
-                }
+            	Gui::Command::doCommand(Gui::Command::Doc,
+            			"import ProfileLib.RegularPolygon\n"
+            			"ProfileLib.RegularPolygon.makeRegularPolygon('%s',%i,App.Vector(%f,%f,0),App.Vector(%f,%f,0))",
+            	                            sketchgui->getObject()->getNameInDocument(),
+            	                            Corners,
+            	                            StartPos.fX,StartPos.fY,EditCurve[0].fX,EditCurve[0].fY);
 
                 Gui::Command::commitCommand();
                 Gui::Command::updateActive();
