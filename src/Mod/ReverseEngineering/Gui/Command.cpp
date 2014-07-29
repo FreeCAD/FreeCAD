@@ -37,6 +37,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
+#include <Base/CoordinateSystem.h>
 
 #include "../App/ApproxSurface.h"
 
@@ -148,7 +149,7 @@ void CmdApproxPlane::activated(int iMsg)
                 Base::Vector3f dirV = fit.GetDirV();
                 Base::Vector3f norm = fit.GetNormal();
 
-                // if the dot product of the refernce with the plane normal is negative
+                // if the dot product of the reference with the plane normal is negative
                 // a flip must be done
                 if (refNormal * norm < 0) {
                     norm = -norm;
@@ -157,25 +158,30 @@ void CmdApproxPlane::activated(int iMsg)
 
                 float width, length;
                 fit.Dimension(width, length);
+
                 // move to the corner point
                 base = base - (0.5f * length * dirU + 0.5f * width * dirV);
+
+                Base::CoordinateSystem cs;
+                cs.setPosition(Base::convertTo<Base::Vector3d>(base));
+                cs.setAxes(Base::convertTo<Base::Vector3d>(norm),
+                           Base::convertTo<Base::Vector3d>(dirU));
+                Base::Placement pm = Base::CoordinateSystem().displacement(cs);
+                double q0, q1, q2, q3;
+                pm.getRotation().getValue(q0, q1, q2, q3);
 
                 Base::Console().Log("RMS value for plane fit with %ld points: %.4f\n", aData.size(), sigma);
                 Base::Console().Log("  Plane base(%.4f, %.4f, %.4f)\n", base.x, base.y, base.z);
                 Base::Console().Log("  Plane normal(%.4f, %.4f, %.4f)\n", norm.x, norm.y, norm.z);
 
                 std::stringstream str;
-                str << "import Part" << std::endl;
                 str << "from FreeCAD import Base" << std::endl;
-                str << "App.ActiveDocument.addObject('Part::Feature','Plane_fit').Shape="
-                    << "Part.makePlane("
-                    << width << ", " << length << ", "
-                    << "Base.Vector("
-                    << base.x << ", " << base.y << ", " << base.z << "), "
-                    << "Base.Vector("
-                    << norm.x << ", " << norm.y << ", " << norm.z << "), "
-                    << "Base.Vector("
-                    << dirU.x << ", " << dirU.y << ", " << dirU.z << "))" << std::endl;
+                str << "App.ActiveDocument.addObject('Part::Plane','Plane_fit')" << std::endl;
+                str << "App.ActiveDocument.ActiveObject.Length = " << length << std::endl;
+                str << "App.ActiveDocument.ActiveObject.Width = " << width << std::endl;
+                str << "App.ActiveDocument.ActiveObject.Placement = Base.Placement("
+                    << "Base.Vector(" << base.x << "," << base.y << "," << base.z << "),"
+                    << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))" << std::endl;
                 
                 openCommand("Fit plane");
                 doCommand(Gui::Command::Doc, str.str().c_str());

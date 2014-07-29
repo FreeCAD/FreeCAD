@@ -182,6 +182,7 @@ SET(FreeCADBase_CPP_SRCS
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
+    CoordinateSystem.cpp
     Debugger.cpp
     Exception.cpp
     Factory.cpp
@@ -235,6 +236,7 @@ SET(FreeCADBase_HPP_SRCS
     BoundBox.h
     Builder3D.h
     Console.h
+    CoordinateSystem.h
     Debugger.h
     Exception.h
     Factory.h
