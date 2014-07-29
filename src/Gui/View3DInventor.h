@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Jï¿½rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ protected:
 
 /** The 3D view window
  *  It consists out of the 3D view 
- *  \author Jürgen Riegel
+ *  \author Jï¿½rgen Riegel
  */
 class GuiExport View3DInventor : public MDIView, public ParameterGrp::ObserverType
 {

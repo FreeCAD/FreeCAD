@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 Jï¿½rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,6 +39,7 @@
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoDrawStyle.h>
 # include <Inventor/nodes/SoImage.h>
+# include <Inventor/nodes/SoInfo.h>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoPointSet.h>
 # include <Inventor/nodes/SoMarkerSet.h>
@@ -102,6 +103,16 @@
 #include "DrawSketchHandler.h"
 #include "TaskDlgEditSketch.h"
 
+// The first is used to point at a SoDatumLabel for some
+// constraints, and at a SoMaterial for others...
+#define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+#define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+#define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+#define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+#define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
+#define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+#define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
+
 using namespace SketcherGui;
 using namespace Sketcher;
 
@@ -134,11 +145,9 @@ struct EditData {
     buttonPress(false),
     DragPoint(-1),
     DragCurve(-1),
-    DragConstraint(-1),
     PreselectPoint(-1),
     PreselectCurve(-1),
     PreselectCross(-1),
-    PreselectConstraint(-1),
     blockedPreselection(false),
     FullyConstrained(false),
     //ActSketch(0),
@@ -160,14 +169,14 @@ struct EditData {
     int DragPoint;
     // dragged curve
     int DragCurve;
-    // dragged constraint
-    int DragConstraint;
+    // dragged constraints
+    std::set<int> DragConstraintSet;
 
     SbColor PreselectOldColor;
     int PreselectPoint;
     int PreselectCurve;
     int PreselectCross;
-    int PreselectConstraint;
+    std::set<int> PreselectConstraintSet;
     bool blockedPreselection;
     bool FullyConstrained;
     bool visibleBeforeEdit;
@@ -180,8 +189,18 @@ struct EditData {
     std::set<int> SelConstraintSet;
     std::vector<int> CurvIdToGeoId; // conversion of SoLineSet index to GeoId
 
-    // helper data structure for the constraint rendering
+    // helper data structures for the constraint rendering
     std::vector<ConstraintType> vConstrType;
+
+    // For each of the combined constraint icons drawn, also create a vector
+    // of bounding boxes and associated constraint IDs, to go from the icon's
+    // pixel coordinates to the relevant constraint IDs.
+    //
+    // The outside map goes from a string representation of a set of constraint
+    // icons (like the one used by the constraint IDs we insert into the Coin
+    // rendering tree) to a vector of those bounding boxes paired with relevant
+    // constraint IDs.
+    std::map<QString, ViewProviderSketch::ConstrIconBBVec> combinedConstrBoxes;
 
     // nodes for the visuals
     SoSeparator   *EditRoot;
@@ -332,9 +351,9 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
                 edit->editDatumDialog = false;
                 return true;
             }
-            if (edit && edit->DragConstraint >= 0) {
+            if (edit && (edit->DragConstraintSet.empty() == false)) {
                 if (!pressed) {
-                    edit->DragConstraint = -1;
+                    edit->DragConstraintSet.clear();
                 }
                 return true;
             }
@@ -512,7 +531,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Cross;
                         done = true;
-                    } else if (edit->PreselectConstraint != -1) {
+                    } else if (edit->PreselectConstraintSet.empty() != true) {
                         //Base::Console().Log("start dragging, point:%d\n",this->DragPoint);
                         Mode = STATUS_SELECT_Constraint;
                         done = true;
@@ -548,7 +567,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 default:
                     return false;
             }
-        } else { // released
+        } else { // Button 1 released
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_SELECT_Point:
@@ -571,7 +590,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                          ,pp->getPoint()[2]);
                             this->edit->DragPoint = -1;
                             this->edit->DragCurve = -1;
-                            this->edit->DragConstraint = -1;
+                            this->edit->DragConstraintSet.clear();
                         }
                     }
                     Mode = STATUS_NONE;
@@ -600,7 +619,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                          ,pp->getPoint()[2]);
                             this->edit->DragPoint = -1;
                             this->edit->DragCurve = -1;
-                            this->edit->DragConstraint = -1;
+                            this->edit->DragConstraintSet.clear();
                         }
                     }
                     Mode = STATUS_NONE;
@@ -630,33 +649,34 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                          ,pp->getPoint()[2]);
                             this->edit->DragPoint = -1;
                             this->edit->DragCurve = -1;
-                            this->edit->DragConstraint = -1;
+                            this->edit->DragConstraintSet.clear();
                         }
                     }
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SELECT_Constraint:
                     if (pp) {
+                        for(std::set<int>::iterator it = edit->PreselectConstraintSet.begin(); it != edit->PreselectConstraintSet.end(); ++it) {
+                            std::stringstream ss;
+                            ss << "Constraint" << *it + 1;
 
-                        std::stringstream ss;
-                        ss << "Constraint" << edit->PreselectConstraint + 1;
-
-                        // If the constraint already selected remove
-                        if (Gui::Selection().isSelected(getSketchObject()->getDocument()->getName()
-                                                       ,getSketchObject()->getNameInDocument(),ss.str().c_str()) ) {
-                            Gui::Selection().rmvSelection(getSketchObject()->getDocument()->getName()
-                                                         ,getSketchObject()->getNameInDocument(), ss.str().c_str());
-                        } else {
-                            // Add constraint to current selection
-                            Gui::Selection().addSelection(getSketchObject()->getDocument()->getName()
-                                                         ,getSketchObject()->getNameInDocument()
-                                                         ,ss.str().c_str()
-                                                         ,pp->getPoint()[0]
-                                                         ,pp->getPoint()[1]
-                                                         ,pp->getPoint()[2]);
-                            this->edit->DragPoint = -1;
-                            this->edit->DragCurve = -1;
-                            this->edit->DragConstraint = -1;
+                            // If the constraint already selected remove
+                            if (Gui::Selection().isSelected(getSketchObject()->getDocument()->getName()
+                                                           ,getSketchObject()->getNameInDocument(),ss.str().c_str()) ) {
+                                Gui::Selection().rmvSelection(getSketchObject()->getDocument()->getName()
+                                                             ,getSketchObject()->getNameInDocument(), ss.str().c_str());
+                            } else {
+                                // Add constraint to current selection
+                                Gui::Selection().addSelection(getSketchObject()->getDocument()->getName()
+                                                             ,getSketchObject()->getNameInDocument()
+                                                             ,ss.str().c_str()
+                                                             ,pp->getPoint()[0]
+                                                             ,pp->getPoint()[1]
+                                                             ,pp->getPoint()[2]);
+                                this->edit->DragPoint = -1;
+                                this->edit->DragCurve = -1;
+                                this->edit->DragConstraintSet.clear();
+                            }
                         }
                     }
                     Mode = STATUS_NONE;
@@ -703,12 +723,15 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_DragConstraint:
-                    if (edit->DragConstraint != -1 && pp) {
-                        Gui::Command::openCommand("Drag Constraint");
-                        moveConstraint(edit->DragConstraint, Base::Vector2D(x, y));
-                        edit->PreselectConstraint = edit->DragConstraint;
-                        edit->DragConstraint = -1;
-                        //updateColor();
+                    if ((edit->DragConstraintSet.empty() == false) && pp) {
+                        for(std::set<int>::iterator it = edit->DragConstraintSet.begin();
+                            it != edit->DragConstraintSet.end(); ++it) {
+                            Gui::Command::openCommand("Drag Constraint");
+                            moveConstraint(*it, Base::Vector2D(x, y));
+                            //updateColor();
+                        }
+                        edit->PreselectConstraintSet = edit->DragConstraintSet;
+                        edit->DragConstraintSet.clear();
                     }
                     Mode = STATUS_NONE;
                     return true;
@@ -745,7 +768,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             return true;
                         } else if (edit->PreselectCurve != -1) {
                             return true;
-                        } else if (edit->PreselectConstraint != -1) {
+                        } else if (edit->PreselectConstraintSet.empty() != true) {
                             return true;
                         } else {
                             //Get Viewer
@@ -864,22 +887,25 @@ void ViewProviderSketch::editDoubleClicked(void)
     else if (edit->PreselectCross != -1) {
         Base::Console().Log("double click cross:%d\n",edit->PreselectCross);
     }
-    else if (edit->PreselectConstraint != -1) {
+    else if (edit->PreselectConstraintSet.empty() != true) {
         // Find the constraint
-        Base::Console().Log("double click constraint:%d\n",edit->PreselectConstraint);
-
         const std::vector<Sketcher::Constraint *> &constrlist = getSketchObject()->Constraints.getValues();
-        Constraint *Constr = constrlist[edit->PreselectConstraint];
 
-        // if its the right constraint
-        if (Constr->Type == Sketcher::Distance ||
-            Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY ||
-            Constr->Type == Sketcher::Radius || Constr->Type == Sketcher::Angle) {
+        for(std::set<int>::iterator it = edit->PreselectConstraintSet.begin();
+            it != edit->PreselectConstraintSet.end(); ++it) {
 
-            // Coin's SoIdleSensor causes problems on some platform while Qt seems to work properly (#0001517)
-            EditDatumDialog * editDatumDialog = new EditDatumDialog(this, edit->PreselectConstraint);
-            QCoreApplication::postEvent(editDatumDialog, new QEvent(QEvent::User));
-            edit->editDatumDialog = true; // avoid to double handle "ESC"
+            Constraint *Constr = constrlist[*it];
+
+            // if its the right constraint
+            if (Constr->Type == Sketcher::Distance ||
+                Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY ||
+                Constr->Type == Sketcher::Radius || Constr->Type == Sketcher::Angle) {
+
+                // Coin's SoIdleSensor causes problems on some platform while Qt seems to work properly (#0001517)
+                EditDatumDialog *editDatumDialog = new EditDatumDialog(this, *it);
+                QCoreApplication::postEvent(editDatumDialog, new QEvent(QEvent::User));
+                edit->editDatumDialog = true; // avoid to double handle "ESC"
+            }
         }
     }
 }
@@ -903,8 +929,9 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         Mode!=STATUS_SKETCH_DragConstraint) {
 
         SoPickedPoint *pp = this->getPointOnRay(cursorPos, viewer);
-        int PtIndex,GeoIndex,ConstrIndex,CrossIndex;
-        preselectChanged = detectPreselection(pp,PtIndex,GeoIndex,ConstrIndex,CrossIndex);
+
+        preselectChanged = detectPreselection(pp, viewer, cursorPos);
+
         delete pp;
     }
 
@@ -934,7 +961,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             resetPreselectPoint();
             edit->PreselectCurve = -1;
             edit->PreselectCross = -1;
-            edit->PreselectConstraint = -1;
+            edit->PreselectConstraintSet.clear();
             return true;
         case STATUS_SELECT_Edge:
             if (!edit->ActSketch.hasConflicts() &&
@@ -958,15 +985,15 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             resetPreselectPoint();
             edit->PreselectCurve = -1;
             edit->PreselectCross = -1;
-            edit->PreselectConstraint = -1;
+            edit->PreselectConstraintSet.clear();
             return true;
         case STATUS_SELECT_Constraint:
             Mode = STATUS_SKETCH_DragConstraint;
-            edit->DragConstraint = edit->PreselectConstraint;
+            edit->DragConstraintSet = edit->PreselectConstraintSet;
             resetPreselectPoint();
             edit->PreselectCurve = -1;
             edit->PreselectCross = -1;
-            edit->PreselectConstraint = -1;
+            edit->PreselectConstraintSet.clear();
             return true;
         case STATUS_SKETCH_DragPoint:
             if (edit->DragPoint != -1) {
@@ -998,8 +1025,10 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             }
             return true;
         case STATUS_SKETCH_DragConstraint:
-            if (edit->DragConstraint != -1) {
-                moveConstraint(edit->DragConstraint, Base::Vector2D(x,y));
+            if (edit->DragConstraintSet.empty() == false) {
+                for(std::set<int>::iterator it = edit->DragConstraintSet.begin();
+                    it != edit->DragConstraintSet.end(); ++it)
+                    moveConstraint(*it, Base::Vector2D(x,y));
             }
             return true;
         case STATUS_SKETCH_UseHandler:
@@ -1371,14 +1400,78 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtIndex, int &GeoIndex, int &ConstrIndex, int &CrossIndex)
+std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *Point,
+                                                           const Gui::View3DInventorViewer *viewer,
+                                                           const SbVec2s &cursorPos)
+{
+    std::set<int> constrIndices;
+    SoPath *path = Point->getPath();
+    SoNode *tail = path->getTail();
+    SoNode *tailFather = path->getNode(path->getLength()-2);
+
+    for (int i=0; i < edit->constrGroup->getNumChildren(); ++i)
+        if (edit->constrGroup->getChild(i) == tailFather) {
+            SoSeparator *sep = static_cast<SoSeparator *>(tailFather);
+            if(sep->getNumChildren() > CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID) {
+                SoInfo *constrIds = NULL;
+                if(tail == sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON)) {
+                    // First icon was hit
+                    constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID));
+
+                } else {
+                    // Assume second icon was hit
+                    constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
+                }
+                if(constrIds) {
+                    QString constrIdsStr = QString::fromAscii(constrIds->string.getValue().getString());
+                    if(edit->combinedConstrBoxes.count(constrIdsStr) && dynamic_cast<SoImage *>(tail)) {
+                        // If it's a combined constraint icon
+
+                        // Screen dimensions of the icon
+                        SbVec3s iconSize = getDisplayedSize(static_cast<SoImage *>(tail));
+                        // Center of the icon
+                        SbVec2f iconCoords = viewer->screenCoordsOfPath(path);
+                        // Coordinates of the mouse cursor on the icon, origin at top-left
+                        int iconX = cursorPos[0] - iconCoords[0] + iconSize[0]/2,
+                            iconY = iconCoords[1] - cursorPos[1] + iconSize[1]/2;
+
+                        for(ConstrIconBBVec::iterator b = edit->combinedConstrBoxes[constrIdsStr].begin();
+                            b != edit->combinedConstrBoxes[constrIdsStr].end(); ++b) {
+                            if(b->first.contains(iconX, iconY))
+                                // We've found a bounding box that contains the mouse pointer!
+                                for(std::set<int>::iterator k = b->second.begin();
+                                    k != b->second.end(); ++k)
+                                    constrIndices.insert(*k);
+                        }
+                    } else {
+                        // It's a constraint icon, not a combined one
+                        QStringList constrIdStrings = constrIdsStr.split(QString::fromAscii(","));
+                        while(!constrIdStrings.empty())
+                            constrIndices.insert(constrIdStrings.takeAt(0).toInt());
+                    }
+                }
+            }
+                else {
+                // other constraint icons - eg radius...
+                constrIndices.clear();
+                constrIndices.insert(i);
+            }
+            break;
+
+        }
+    return constrIndices;
+}
+
+bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
+                                            const Gui::View3DInventorViewer *viewer,
+                                            const SbVec2s &cursorPos)
 {
     assert(edit);
 
-    PtIndex = -1;
-    GeoIndex = -1; // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
-    CrossIndex = -1;
-    ConstrIndex = -1;
+    int PtIndex = -1;
+    int GeoIndex = -1; // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
+    int CrossIndex = -1;
+    std::set<int> constrIndices;
 
     if (Point) {
         //Base::Console().Log("Point pick\n");
@@ -1386,6 +1479,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
         SoNode *tail = path->getTail();
         SoNode *tailFather = path->getNode(path->getLength()-2);
         SoNode *tailFather2 = path->getNode(path->getLength()-3);
+
 
         // checking for a hit in the points
         if (tail == edit->PointSet) {
@@ -1416,12 +1510,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
             } else {
                 // checking if a constraint is hit
                 if (tailFather2 == edit->constrGroup)
-                    for (int i=0; i < edit->constrGroup->getNumChildren(); i++)
-                        if (edit->constrGroup->getChild(i) == tailFather) {
-                            ConstrIndex = i;
-                            //Base::Console().Log("Constr %d pick\n",i);
-                            break;
-                        }
+                    constrIndices = detectPreselectionConstr(Point, viewer, cursorPos);
             }
         }
 
@@ -1440,7 +1529,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                 setPreselectPoint(PtIndex);
                 edit->PreselectCurve = -1;
                 edit->PreselectCross = -1;
-                edit->PreselectConstraint = -1;
+                edit->PreselectConstraintSet.clear();
                 if (edit->sketchHandler)
                     edit->sketchHandler->applyCursor();
                 return true;
@@ -1463,7 +1552,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                 resetPreselectPoint();
                 edit->PreselectCurve = GeoIndex;
                 edit->PreselectCross = -1;
-                edit->PreselectConstraint = -1;
+                edit->PreselectConstraintSet.clear();
                 if (edit->sketchHandler)
                     edit->sketchHandler->applyCursor();
                 return true;
@@ -1490,39 +1579,44 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
                     resetPreselectPoint();
                 edit->PreselectCurve = -1;
                 edit->PreselectCross = CrossIndex;
-                edit->PreselectConstraint = -1;
+                edit->PreselectConstraintSet.clear();
                 if (edit->sketchHandler)
                     edit->sketchHandler->applyCursor();
                 return true;
             }
-        } else if (ConstrIndex != -1 && ConstrIndex != edit->PreselectConstraint) { // if a constraint is hit
-            std::stringstream ss;
-            ss << "Constraint" << ConstrIndex + 1;
-            bool accepted =
-            Gui::Selection().setPreselect(getSketchObject()->getDocument()->getName()
-                                         ,getSketchObject()->getNameInDocument()
-                                         ,ss.str().c_str()
-                                         ,Point->getPoint()[0]
-                                         ,Point->getPoint()[1]
-                                         ,Point->getPoint()[2]);
-            edit->blockedPreselection = !accepted;
+        } else if (constrIndices.empty() == false && constrIndices != edit->PreselectConstraintSet) { // if a constraint is hit
+            bool accepted = true;
+            for(std::set<int>::iterator it = constrIndices.begin(); it != constrIndices.end(); ++it) {
+                std::stringstream ss;
+                ss << "Constraint" << *it + 1;
+                accepted &=
+                Gui::Selection().setPreselect(getSketchObject()->getDocument()->getName()
+                                             ,getSketchObject()->getNameInDocument()
+                                             ,ss.str().c_str()
+                                             ,Point->getPoint()[0]
+                                             ,Point->getPoint()[1]
+                                             ,Point->getPoint()[2]);
+
+                edit->blockedPreselection = !accepted;
+                //TODO: Should we clear preselections that went through, if one fails?
+            }
             if (accepted) {
                 resetPreselectPoint();
                 edit->PreselectCurve = -1;
                 edit->PreselectCross = -1;
-                edit->PreselectConstraint = ConstrIndex;
+                edit->PreselectConstraintSet = constrIndices;
                 if (edit->sketchHandler)
                     edit->sketchHandler->applyCursor();
-                return true;
+                return true;//Preselection changed
             }
-        } else if ((PtIndex == -1 && GeoIndex == -1 && CrossIndex == -1 && ConstrIndex == -1) &&
+        } else if ((PtIndex == -1 && GeoIndex == -1 && CrossIndex == -1 && constrIndices.empty()) &&
                    (edit->PreselectPoint != -1 || edit->PreselectCurve != -1 || edit->PreselectCross != -1
-                    || edit->PreselectConstraint != -1 || edit->blockedPreselection)) {
+                    || edit->PreselectConstraintSet.empty() != true || edit->blockedPreselection)) {
             // we have just left a preselection
             resetPreselectPoint();
             edit->PreselectCurve = -1;
             edit->PreselectCross = -1;
-            edit->PreselectConstraint = -1;
+            edit->PreselectConstraintSet.clear();
             edit->blockedPreselection = false;
             if (edit->sketchHandler)
                 edit->sketchHandler->applyCursor();
@@ -1531,12 +1625,13 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
         Gui::Selection().setPreselectCoord(Point->getPoint()[0]
                                           ,Point->getPoint()[1]
                                           ,Point->getPoint()[2]);
+// if(Point)
     } else if (edit->PreselectCurve != -1 || edit->PreselectPoint != -1 ||
-               edit->PreselectConstraint != -1 || edit->PreselectCross != -1 || edit->blockedPreselection) {
+               edit->PreselectConstraintSet.empty() != true || edit->PreselectCross != -1 || edit->blockedPreselection) {
         resetPreselectPoint();
         edit->PreselectCurve = -1;
         edit->PreselectCross = -1;
-        edit->PreselectConstraint = -1;
+        edit->PreselectConstraintSet.clear();
         edit->blockedPreselection = false;
         if (edit->sketchHandler)
             edit->sketchHandler->applyCursor();
@@ -1546,6 +1641,15 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point, int &PtI
     return false;
 }
 
+SbVec3s ViewProviderSketch::getDisplayedSize(const SoImage *iconPtr) const
+{
+    SbVec3s iconSize = iconPtr->image.getValue().getSize();
+    if(iconPtr->width.getValue() != -1)
+        iconSize[0] = iconPtr->width.getValue();
+    if(iconPtr->height.getValue() != -1)
+        iconSize[1] = iconPtr->height.getValue();
+    return iconSize;
+}
 void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &endPos,
                                         const Gui::View3DInventorViewer *viewer)
 {
@@ -1835,12 +1939,12 @@ void ViewProviderSketch::updateColor(void)
         SoMaterial *m;
         if (!hasDatumLabel && type != Sketcher::Coincident) {
             hasMaterial = true;
-            m = dynamic_cast<SoMaterial *>(s->getChild(0));
+            m = dynamic_cast<SoMaterial *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
         }
 
         if (edit->SelConstraintSet.find(i) != edit->SelConstraintSet.end()) {
             if (hasDatumLabel) {
-                SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
+                SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                 l->textColor = SelectColor;
             } else if (hasMaterial) {
                 m->diffuseColor = SelectColor;
@@ -1851,9 +1955,9 @@ void ViewProviderSketch::updateColor(void)
                 index = edit->ActSketch.getPointId(constraint->Second, constraint->SecondPos) + 1;
                 if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
             }
-        } else if (edit->PreselectConstraint == i) {
+        } else if (edit->PreselectConstraintSet.count(i)) {
             if (hasDatumLabel) {
-                SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
+                SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                 l->textColor = PreselectColor;
             } else if (hasMaterial) {
                 m->diffuseColor = PreselectColor;
@@ -1861,7 +1965,7 @@ void ViewProviderSketch::updateColor(void)
         }
         else {
             if (hasDatumLabel) {
-                SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(0));
+                SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                 l->textColor = ConstrDimColor;
             } else if (hasMaterial) {
                 m->diffuseColor = ConstrDimColor;
@@ -1888,129 +1992,483 @@ bool ViewProviderSketch::doubleClicked(void)
     return true;
 }
 
+QString ViewProviderSketch::iconTypeFromConstraint(Constraint *constraint)
+{
+    /*! TODO: Consider pushing this functionality up into Constraint */
+    switch(constraint->Type) {
+    case Horizontal:
+        return QString::fromAscii("small/Constraint_Horizontal_sm");
+    case Vertical:
+        return QString::fromAscii("small/Constraint_Vertical_sm");
+    case PointOnObject:
+        return QString::fromAscii("small/Constraint_PointOnObject_sm");
+    case Tangent:
+        return QString::fromAscii("small/Constraint_Tangent_sm");
+    case Parallel:
+        return QString::fromAscii("small/Constraint_Parallel_sm");
+    case Perpendicular:
+        return QString::fromAscii("small/Constraint_Perpendicular_sm");
+    case Equal:
+        return QString::fromAscii("small/Constraint_EqualLength_sm");
+    case Symmetric:
+        return QString::fromAscii("small/Constraint_Symmetric_sm");
+    default:
+        return QString();
+    }
+}
+
+void ViewProviderSketch::sendConstraintIconToCoin(const QImage &icon, SoImage *soImagePtr)
+{
+    SoSFImage icondata = SoSFImage();
+
+    Gui::BitmapFactory().convert(icon, icondata);
+
+    SbVec2s iconSize(icon.width(), icon.height());
+
+    int four = 4;
+    soImagePtr->image.setValue(iconSize, 4, icondata.getValue(iconSize, four));
+
+    //Set Image Alignment to Center
+    soImagePtr->vertAlignment = SoImage::HALF;
+    soImagePtr->horAlignment = SoImage::CENTER;
+}
+
+void ViewProviderSketch::clearCoinImage(SoImage *soImagePtr)
+{
+    soImagePtr->setToDefaults();
+}
+
+
+QColor ViewProviderSketch::constrColor(int constraintId)
+{
+    static QColor constrIcoColor((int)(ConstrIcoColor [0] * 255.0f),
+                                 (int)(ConstrIcoColor[1] * 255.0f),
+                                 (int)(ConstrIcoColor[2] * 255.0f));
+    static QColor constrIconSelColor ((int)(SelectColor[0] * 255.0f),
+                                      (int)(SelectColor[1] * 255.0f),
+                                      (int)(SelectColor[2] * 255.0f));
+    static QColor constrIconPreselColor ((int)(PreselectColor[0] * 255.0f),
+                                         (int)(PreselectColor[1] * 255.0f),
+                                         (int)(PreselectColor[2] * 255.0f));
+
+    if (edit->PreselectConstraintSet.count(constraintId))
+        return constrIconPreselColor;
+    else if (edit->SelConstraintSet.find(constraintId) != edit->SelConstraintSet.end())
+        return constrIconSelColor;
+    else
+        return constrIcoColor;
+}
+    
+int ViewProviderSketch::constrColorPriority(int constraintId)
+{
+    if (edit->PreselectConstraintSet.count(constraintId))
+        return 3;
+    else if (edit->SelConstraintSet.find(constraintId) != edit->SelConstraintSet.end())
+        return 2;
+    else
+        return 1;
+}
+
+// public function that triggers drawing of most constraint icons
 void ViewProviderSketch::drawConstraintIcons()
 {
     const std::vector<Sketcher::Constraint *> &constraints = getSketchObject()->Constraints.getValues();
     int constrId = 0;
+
+    std::vector<constrIconQueueItem> iconQueue;
+
     for (std::vector<Sketcher::Constraint *>::const_iterator it=constraints.begin();
-         it != constraints.end(); ++it, constrId++) {
+         it != constraints.end(); ++it, ++constrId) {
+
         // Check if Icon Should be created
-        int index1 = 2, index2 = -1; // Index for SoImage Nodes in SoContainer
-        QString icoType;
+        bool multipleIcons = false;
+
+        QString icoType = iconTypeFromConstraint(*it);
+        if(icoType.isEmpty())
+            continue;
+
         switch((*it)->Type) {
-        case Horizontal:
-            icoType = QString::fromAscii("small/Constraint_Horizontal_sm");
-            break;
-        case Vertical:
-            icoType = QString::fromAscii("small/Constraint_Vertical_sm");
-            break;
-        case PointOnObject:
-            icoType = QString::fromAscii("small/Constraint_PointOnObject_sm");
-            break;
+
         case Tangent:
-            icoType = QString::fromAscii("small/Constraint_Tangent_sm");
             {   // second icon is available only for colinear line segments
                 const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
                 const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
                 if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                     geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                    index2 = 4;
+                    multipleIcons = true;
                 }
             }
             break;
         case Parallel:
-            icoType = QString::fromAscii("small/Constraint_Parallel_sm");
-            index2 = 4;
+            multipleIcons = true;
             break;
         case Perpendicular:
-            icoType = QString::fromAscii("small/Constraint_Perpendicular_sm");
             // second icon is available only when there is no common point
             if ((*it)->FirstPos == Sketcher::none)
-                index2 = 4;
+                multipleIcons = true;
             break;
         case Equal:
-            icoType = QString::fromAscii("small/Constraint_EqualLength_sm");
-            index2 = 4;
-            break;
-        case Symmetric:
-            icoType = QString::fromAscii("small/Constraint_Symmetric_sm");
-            index1 = 2;
+            multipleIcons = true;
             break;
         default:
-            continue; // Icon shouldn't be generated
+            break;
         }
-
-        // Constants to help create constraint icons
-        const int constrImgSize = 16;
-
-        QColor constrIcoColor((int)(ConstrIcoColor [0] * 255.0f), (int)(ConstrIcoColor[1] * 255.0f),(int)(ConstrIcoColor[2] * 255.0f));
-        QColor constrIconSelColor ((int)(SelectColor[0] * 255.0f), (int)(SelectColor[1] * 255.0f),(int)(SelectColor[2] * 255.0f));
-        QColor constrIconPreselColor ((int)(PreselectColor[0] * 255.0f), (int)(PreselectColor[1] * 255.0f),(int)(PreselectColor[2] * 255.0f));
-
-        // Set Color for Icons
-        QColor iconColor;
-        if (edit->PreselectConstraint == constrId)
-            iconColor = constrIconPreselColor;
-        else if (edit->SelConstraintSet.find(constrId) != edit->SelConstraintSet.end())
-            iconColor = constrIconSelColor;
-        else
-            iconColor = constrIcoColor;
-
-        // Create Icons
-
-        // Create a QPainter for the constraint icon rendering
-        QPainter qp;
-        QImage icon;
-
-        icon = Gui::BitmapFactory().pixmap(icoType.toAscii()).toImage();
-
-        // Assumes that digits are 9 pixel wide
-        int imgwidth = icon.width() + ((index2 == -1) ? 0 : 9 * (1 + (constrId + 1)/10));
-        QImage image = icon.copy(0, 0, imgwidth, icon.height());
-
-        // Paint the Icons
-        qp.begin(&image);
-        qp.setCompositionMode(QPainter::CompositionMode_SourceIn);
-        qp.fillRect(0,0, constrImgSize, constrImgSize, iconColor);
-
-        // Render constraint index if necessary
-        if (index2 != -1) {
-            qp.setCompositionMode(QPainter::CompositionMode_SourceOver);
-            qp.setPen(iconColor);
-            QFont font = QApplication::font();
-            font.setPixelSize(11);
-            font.setBold(true);
-            qp.setFont(font);
-            qp.drawText(constrImgSize, image.height(), QString::number(constrId + 1));
-        }
-        qp.end();
-
-        SoSFImage icondata = SoSFImage();
-
-        Gui::BitmapFactory().convert(image, icondata);
-
-        int nc = 4;
-        SbVec2s iconSize(image.width(), image.height());
 
         // Find the Constraint Icon SoImage Node
-        SoSeparator *sep = dynamic_cast<SoSeparator *>(edit->constrGroup->getChild(constrId));
-        SoImage *constraintIcon1 = dynamic_cast<SoImage *>(sep->getChild(index1));
+        SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(constrId));
+       
+        SbVec3f absPos;
+        // Somewhat hacky - we use SoZoomTranslations for most types of icon,
+        // but symmetry icons use SoTranslations...
+        SoTranslation *translationPtr = static_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION));
+        if(dynamic_cast<SoZoomTranslation *>(translationPtr))
+            absPos = static_cast<SoZoomTranslation *>(translationPtr)->abPos.getValue();
+        else
+            absPos = translationPtr->translation.getValue();
+        
+        SoImage *coinIconPtr = dynamic_cast<SoImage *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON));
+        SoInfo *infoPtr = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID));
 
-        constraintIcon1->image.setValue(iconSize, 4, icondata.getValue(iconSize, nc));
+        constrIconQueueItem thisIcon;
+        thisIcon.type = icoType;
+        thisIcon.constraintId = constrId;
+        thisIcon.position = absPos;
+        thisIcon.destination = coinIconPtr;
+        thisIcon.infoPtr = infoPtr;
 
-        //Set Image Alignment to Center
-        constraintIcon1->vertAlignment = SoImage::HALF;
-        constraintIcon1->horAlignment = SoImage::CENTER;
+        if(multipleIcons) {
+            if((*it)->Name.empty())
+                thisIcon.label = QString::number(constrId + 1);
+            else
+                thisIcon.label = QString::fromAscii((*it)->Name.c_str());
+            iconQueue.push_back(thisIcon);
 
-        // If more than one icon per constraint
-        if (index2 != -1) {
-            SoImage *constraintIcon2 = dynamic_cast<SoImage *>(sep->getChild(index2));
-            constraintIcon2->image.setValue(iconSize, 4, icondata.getValue(iconSize, nc));
-            //Set Image Alignment to Center
-            constraintIcon2->vertAlignment = SoImage::HALF;
-            constraintIcon2->horAlignment = SoImage::CENTER;
+            // Note that the second translation is meant to be applied after the first.
+            // So, to get the position of the second icon, we add the two translations together
+            //
+            // See note ~30 lines up.
+            translationPtr = static_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION));
+            if(dynamic_cast<SoZoomTranslation *>(translationPtr))
+                thisIcon.position += static_cast<SoZoomTranslation *>(translationPtr)->abPos.getValue();
+            else
+                thisIcon.position += translationPtr->translation.getValue();
+
+            thisIcon.destination = dynamic_cast<SoImage *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON));
+            thisIcon.infoPtr = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
+        }
+        else
+            if((*it)->Name.empty())
+                thisIcon.label = QString();
+            else
+                thisIcon.label = QString::fromAscii((*it)->Name.c_str());
+
+
+        iconQueue.push_back(thisIcon);
+    }
+    
+    combineConstraintIcons(iconQueue);
+}
+
+void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
+{
+    // getScaleFactor gives us a ratio of pixels per some kind of real units
+    // (Translation: this number is somewhat made-up.)
+    float maxDistSquared = pow(0.05 * getScaleFactor(), 2);
+
+    // There's room for optimisation here; we could reuse the combined icons...
+    edit->combinedConstrBoxes.clear();
+
+    while(!iconQueue.empty()) {
+        // A group starts with an item popped off the back of our initial queue
+        IconQueue thisGroup;
+        thisGroup.push_back(iconQueue.back());
+        iconQueue.pop_back();
+
+        IconQueue::iterator i = iconQueue.begin();
+        while(i != iconQueue.end()) {
+            bool addedToGroup = false;
+
+            for(IconQueue::iterator j = thisGroup.begin();
+                j != thisGroup.end(); ++j)
+                if(i->position.equals(j->position, maxDistSquared)) {
+                    // Found an icon in iconQueue that's close enough to
+                    // a member of thisGroup, so move it into thisGroup
+                    thisGroup.push_back(*i);
+                    i = iconQueue.erase(i);
+                    addedToGroup = true;
+                    break;
+                }
+
+            if(addedToGroup) {
+                if(i == iconQueue.end())
+                    // We just got the last icon out of iconQueue
+                    break;
+                else
+                    // Start looking through the iconQueue again, in case
+                    // we have an icon that's now close enough to thisGroup
+                    i = iconQueue.begin();
+            } else
+                ++i;
+        }
+
+        if(thisGroup.size() == 1)
+            drawTypicalConstraintIcon(thisGroup[0]);
+        else
+            drawMergedConstraintIcons(thisGroup);
+    }
+}
+
+void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
+{
+    SbVec3f avPos(0, 0, 0);
+    for(IconQueue::iterator i = iconQueue.begin(); i != iconQueue.end(); ++i) {
+        clearCoinImage(i->destination);
+        avPos = avPos + i->position;
+    }
+    avPos = avPos/iconQueue.size();
+
+    QImage compositeIcon;
+    float closest = FLT_MAX;  // Closest distance between avPos and any icon
+    SoImage *thisDest;
+    SoInfo *thisInfo;
+
+    // Tracks all constraint IDs that are combined into this icon
+    QString idString;
+    int lastVPad;
+
+    QStringList labels;
+    std::vector<int> ids;
+    QString thisType;
+    QColor iconColor;
+    QList<QColor> labelColors;
+    int maxColorPriority;
+
+    ConstrIconBBVec boundingBoxes;
+    while(!iconQueue.empty()) {
+        IconQueue::iterator i = iconQueue.begin();
+
+        labels.clear();
+        labels.append(i->label);
+
+        ids.clear();
+        ids.push_back(i->constraintId);
+
+        thisType = i->type;
+        iconColor = constrColor(i->constraintId);
+        labelColors.clear();
+        labelColors.append(iconColor);
+
+        maxColorPriority = constrColorPriority(i->constraintId);
+
+        if(idString.length())
+            idString.append(QString::fromAscii(","));
+        idString.append(QString::number(i->constraintId));
+
+        if((avPos - i->position).length() < closest) {
+            thisDest = i->destination;
+            thisInfo = i->infoPtr;
+            closest = (avPos - i->position).length();
+        }
+
+        i = iconQueue.erase(i);
+        while(i != iconQueue.end()) {
+            if(i->type != thisType) {
+                ++i;
+                continue;
+            }
+
+            if((avPos - i->position).length() < closest) {
+                thisDest = i->destination;
+                thisInfo = i->infoPtr;
+                closest = (avPos - i->position).length();
+            }
+
+            labels.append(i->label);
+            ids.push_back(i->constraintId);
+            labelColors.append(constrColor(i->constraintId));
+
+            if(constrColorPriority(i->constraintId) > maxColorPriority) {
+                maxColorPriority = constrColorPriority(i->constraintId);
+                iconColor= constrColor(i->constraintId);
+            }
+
+            idString.append(QString::fromAscii(",") +
+                            QString::number(i->constraintId));
+
+            i = iconQueue.erase(i);
+        }
+            
+        // To be inserted into edit->combinedConstBoxes
+        std::vector<QRect> boundingBoxesVec;
+        int oldHeight = 0;
+
+        // Render the icon here.
+        if(compositeIcon.isNull()) {
+            compositeIcon = renderConstrIcon(thisType,
+                                             iconColor,
+                                             labels,
+                                             labelColors,
+                                             &boundingBoxesVec,
+                                             &lastVPad);
+        } else {
+            int thisVPad;
+            QImage partialIcon = renderConstrIcon(thisType,
+                                                  iconColor,
+                                                  labels,
+                                                  labelColors,
+                                                  &boundingBoxesVec,
+                                                  &thisVPad);
+
+            // Stack vertically for now.  Down the road, it might make sense
+            // to figure out the best orientation automatically.
+            oldHeight = compositeIcon.height();
+
+            // This is overkill for the currently used (20 July 2014) font,
+            // since it always seems to have the same vertical pad, but this
+            // might not always be the case.  The 3 pixel buffer might need
+            // to vary depending on font size too...
+            oldHeight -= std::max(lastVPad - 3, 0);
+
+            compositeIcon = compositeIcon.copy(0, 0,
+                                               std::max(partialIcon.width(),
+                                                        compositeIcon.width()),
+                                               partialIcon.height() + 
+                                               compositeIcon.height());
+
+            QPainter qp(&compositeIcon);
+            qp.drawImage(0, oldHeight, partialIcon);
+
+            lastVPad = thisVPad;
+        }
+
+        // Add bounding boxes for the icon we just rendered to boundingBoxes
+        std::vector<int>::iterator id = ids.begin();
+        std::set<int> nextIds;
+        for(std::vector<QRect>::iterator bb = boundingBoxesVec.begin();
+            bb != boundingBoxesVec.end(); ++bb) {
+            nextIds.clear();
+
+            if(bb == boundingBoxesVec.begin()) {
+                // The first bounding box is for the icon at left, so assign
+                // all IDs for that type of constraint to the icon.
+                for(std::vector<int>::iterator j = ids.begin();
+                    j != ids.end(); ++j)
+                    nextIds.insert(*j);
+            } else
+                nextIds.insert(*(id++));
+
+            ConstrIconBB newBB(bb->adjusted(0, oldHeight, 0, oldHeight),
+                               nextIds);
+
+            boundingBoxes.push_back(newBB);
         }
     }
+
+    qDebug()<<"Coords for "<<idString;
+    for(ConstrIconBBVec::iterator i = boundingBoxes.begin(); i!=boundingBoxes.end(); ++i) {
+        qDebug()<<i->first;
+        for(std::set<int>::iterator j = i->second.begin(); j!= i->second.end(); ++j)
+            qDebug()<<'\t'<<*j;
+    }
+
+    edit->combinedConstrBoxes[idString] = boundingBoxes;
+    thisInfo->string.setValue(idString.toAscii().data());
+    sendConstraintIconToCoin(compositeIcon, thisDest);
+}
+
+
+/// Note: labels, labelColors, and boundignBoxes are all
+/// assumed to be the same length.
+QImage ViewProviderSketch::renderConstrIcon(const QString &type,
+                                            const QColor &iconColor,
+                                            const QStringList &labels,
+                                            const QList<QColor> &labelColors,
+                                            std::vector<QRect> *boundingBoxes,
+                                            int *vPad)
+{
+    // Constants to help create constraint icons
+    QString joinStr = QString::fromAscii(", ");
+
+    QImage icon = Gui::BitmapFactory().pixmap(type.toAscii()).toImage();
+        
+    QFont font = QApplication::font();
+    font.setPixelSize(11);
+    font.setBold(true);
+    QFontMetrics qfm = QFontMetrics(font);
+
+    int labelWidth = qfm.boundingRect(labels.join(joinStr)).width();
+    // See Qt docs on qRect::bottom() for explanation of the +1
+    int pxBelowBase = qfm.boundingRect(labels.join(joinStr)).bottom() + 1;
+
+    if(vPad)
+        *vPad = pxBelowBase;
+
+    QImage image = icon.copy(0, 0, icon.width() + labelWidth,
+                                   icon.height() + pxBelowBase);
+
+    // Make a bounding box for the icon
+    if(boundingBoxes)
+        boundingBoxes->push_back(QRect(0, 0, icon.width(), icon.height()));
+
+    // Render the Icons
+    QPainter qp(&image);
+    qp.setCompositionMode(QPainter::CompositionMode_SourceIn);
+    qp.fillRect(icon.rect(), iconColor);
+
+    // Render constraint label if necessary
+    if (!labels.join(QString()).isEmpty()) {
+        qp.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        qp.setFont(font);
+
+        int cursorOffset = 0;
+
+        //In Python: "for label, color in zip(labels, labelColors):"
+        QStringList::const_iterator labelItr;
+        QString labelStr;
+        QList<QColor>::const_iterator colorItr;
+        QRect labelBB;
+        for(labelItr = labels.begin(), colorItr = labelColors.begin();
+            labelItr != labels.end() && colorItr != labelColors.end();
+            ++labelItr, ++colorItr) {
+
+            qp.setPen(*colorItr);
+            
+            if(labelItr + 1 == labels.end()) // if this is the last label
+                labelStr = *labelItr;
+            else
+                labelStr = *labelItr + joinStr;
+
+            // Note: text can sometimes draw to the left of the starting
+            //       position, eg italic fonts.  Check QFontMetrics
+            //       documentation for more info, but be mindful if the
+            //       icon.width() is ever very small (or removed).
+            qp.drawText(icon.width() + cursorOffset, icon.height(), labelStr);
+
+            if(boundingBoxes) {
+                labelBB = qfm.boundingRect(labelStr);
+                labelBB.moveTo(icon.width() + cursorOffset,
+                               icon.height() - qfm.height() + pxBelowBase);
+                boundingBoxes->push_back(labelBB);
+            }
+                
+            cursorOffset += qfm.width(labelStr);
+        }
+    }
+
+    return image;
+}
+
+void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
+{
+    QColor color = constrColor(i.constraintId);
+
+    QImage image = renderConstrIcon(i.type,
+                                    color,
+                                    QStringList(i.label),
+                                    QList<QColor>() << color);
+
+    i.infoPtr->string.setValue(QString::number(i.constraintId).toAscii().data());
+    sendConstraintIconToCoin(image, i.destination);
 }
 
 float ViewProviderSketch::getScaleFactor()
@@ -2222,7 +2680,8 @@ Restart:
     assert(int(edit->vConstrType.size()) == edit->constrGroup->getNumChildren());
     // go through the constraints and update the position
     i = 0;
-    for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin(); it != constrlist.end(); ++it,i++) {
+    for (std::vector<Sketcher::Constraint *>::const_iterator it=constrlist.begin();
+         it != constrlist.end(); ++it, i++) {
         // check if the type has changed
         if ((*it)->Type != edit->vConstrType[i]) {
             // clearing the type vector will force a rebuild of the visual nodes
@@ -2254,10 +2713,10 @@ Restart:
 
                     Base::Vector3d relpos = seekConstraintPosition(midpos, norm, dir, 2.5, edit->constrGroup->getChild(i));
 
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos.x, midpos.y, zConstr); //Absolute Reference
 
                     //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos.x, relpos.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos.x, relpos.y, 0);
 
                 }
                 break;
@@ -2325,15 +2784,15 @@ Restart:
                     }
 
                     Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                     if (Constr->FirstPos == Sketcher::none) {
                         Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
                         Base::Vector3d secondPos = midpos2 - midpos1;
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr);
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
                     }
 
                 }
@@ -2409,16 +2868,16 @@ Restart:
                     Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
                     Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
                     //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                     Base::Vector3d secondPos = midpos2 - midpos1;
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
 
                     //Reference Position that is scaled according to zoom
-                    dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relpos2.x - relpos1.x, relpos2.y -relpos1.y, 0);
+                    dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x - relpos1.x, relpos2.y -relpos1.y, 0);
 
                 }
                 break;
@@ -2470,7 +2929,7 @@ Restart:
                     } else
                         break;
 
-                    SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(0));
+                    SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                     if ((Constr->Type == DistanceX || Constr->Type == DistanceY) &&
                         Constr->FirstPos != Sketcher::none && Constr->Second == Constraint::GeoUndef)
                         // display negative sign for absolute coordinates
@@ -2509,8 +2968,8 @@ Restart:
                     if (Constr->Type == PointOnObject) {
                         pos = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
                         relPos = Base::Vector3d(0.f, 1.f, 0.f);
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos.x, relPos.y, 0);
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relPos.x, relPos.y, 0);
                     }
                     else if (Constr->Type == Tangent) {
                         // get the geometry
@@ -2532,16 +2991,16 @@ Restart:
                             Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
                             Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr); //Absolute Reference
 
                             //Reference Position that is scaled according to zoom
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                             Base::Vector3d secondPos = midpos2 - midpos1;
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->abPos = SbVec3f(secondPos.x, secondPos.y, zConstr); //Absolute Reference
 
                             //Reference Position that is scaled according to zoom
-                            dynamic_cast<SoZoomTranslation *>(sep->getChild(3))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
+                            dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION))->translation = SbVec3f(relpos2.x -relpos1.x, relpos2.y -relpos1.y, 0);
 
                             break;
                         }
@@ -2559,7 +3018,7 @@ Restart:
                                 float length = (circle->getCenter() - lineSeg->getStartPoint())*dir;
 
                                 pos = lineSeg->getStartPoint() + dir * length;
-                                relPos = norm * 1;
+                                relPos = norm * 1;  //TODO Huh?
                             }
                             else if (geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) {
                                 const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
@@ -2567,7 +3026,7 @@ Restart:
                                 float length = (arc->getCenter() - lineSeg->getStartPoint())*dir;
 
                                 pos = lineSeg->getStartPoint() + dir * length;
-                                relPos = norm * 1;
+                                relPos = norm * 1;  //TODO Huh?
                             }
                         }
 
@@ -2602,8 +3061,8 @@ Restart:
                             pos =  arc1->getCenter() + dir *  arc1->getRadius();
                             relPos = dir * 1;
                         }
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
-                        dynamic_cast<SoZoomTranslation *>(sep->getChild(1))->translation = SbVec3f(relPos.x, relPos.y, 0);
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
+                        dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relPos.x, relPos.y, 0);
                     }
                 }
                 break;
@@ -2621,7 +3080,7 @@ Restart:
                     dir.normalize();
                     SbVec3f norm (-dir[1],dir[0],0);
 
-                    SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(0));
+                    SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                     asciiText->datumtype    = SoDatumLabel::SYMMETRIC;
 
                     asciiText->pnts.setNum(2);
@@ -2632,7 +3091,7 @@ Restart:
 
                     asciiText->pnts.finishEditing();
 
-                    dynamic_cast<SoTranslation *>(sep->getChild(1))->translation = (p1 + p2)/2;
+                    dynamic_cast<SoTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = (p1 + p2)/2;
                 }
                 break;
             case Angle:
@@ -2710,7 +3169,7 @@ Restart:
                     } else
                         break;
 
-                    SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(0));
+                    SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                     asciiText->string    = SbString(Base::Quantity(Base::toDegrees<double>(std::abs(Constr->Value)),Base::Unit::Angle).getUserString().toUtf8().constData());
                     asciiText->datumtype = SoDatumLabel::ANGLE;
                     asciiText->param1    = Constr->LabelDistance;
@@ -2757,7 +3216,7 @@ Restart:
                     SbVec3f p1(pnt1.x,pnt1.y,zConstr);
                     SbVec3f p2(pnt2.x,pnt2.y,zConstr);
 
-                    SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(0));
+                    SoDatumLabel *asciiText = dynamic_cast<SoDatumLabel *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
                     asciiText->string = SbString(Base::Quantity(Constr->Value,Base::Unit::Length).getUserString().toUtf8().constData());
 
                     asciiText->datumtype    = SoDatumLabel::RADIUS;
@@ -2841,6 +3300,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 SoAnnotation *anno = new SoAnnotation();
                 anno->renderCaching = SoSeparator::OFF;
                 anno->addChild(text);
+                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(text);
                 edit->constrGroup->addChild(anno);
                 edit->vConstrType.push_back((*it)->Type);
@@ -2853,9 +3313,14 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case Horizontal:
             case Vertical:
             {
+                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
-                sep->addChild(new SoZoomTranslation()); // 1.
-                sep->addChild(new SoImage());       // 2. constraint icon
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+                sep->addChild(new SoZoomTranslation());
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+                sep->addChild(new SoImage());
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+                sep->addChild(new SoInfo());
 
                 // remember the type of this constraint node
                 edit->vConstrType.push_back((*it)->Type);
@@ -2868,12 +3333,20 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case Perpendicular:
             case Equal:
             {
-                // Add new nodes to Constraint Seperator
+                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
-                sep->addChild(new SoZoomTranslation()); // 1.
-                sep->addChild(new SoImage());           // 2. first constraint icon
-                sep->addChild(new SoZoomTranslation()); // 3.
-                sep->addChild(new SoImage());           // 4. second constraint icon
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+                sep->addChild(new SoZoomTranslation()); 
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+                sep->addChild(new SoImage());           
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+                sep->addChild(new SoInfo());
+                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
+                sep->addChild(new SoZoomTranslation()); 
+                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+                sep->addChild(new SoImage());           
+                // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
+                sep->addChild(new SoInfo());
 
                 // remember the type of this constraint node
                 edit->vConstrType.push_back((*it)->Type);
@@ -2882,18 +3355,26 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
             case PointOnObject:
             case Tangent:
             {
-                // Add new nodes to Constraint Seperator
+                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
-                sep->addChild(new SoZoomTranslation()); // 1.
-                sep->addChild(new SoImage());           // 2. constraint icon
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+                sep->addChild(new SoZoomTranslation());
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+                sep->addChild(new SoImage());
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+                sep->addChild(new SoInfo());
 
                 if ((*it)->Type == Tangent) {
                     const Part::Geometry *geo1 = getSketchObject()->getGeometry((*it)->First);
                     const Part::Geometry *geo2 = getSketchObject()->getGeometry((*it)->Second);
                     if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
                         sep->addChild(new SoZoomTranslation());
-                    sep->addChild(new SoImage());   // 3. second constraint icon
+                        // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
+                        sep->addChild(new SoImage());
+                        // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
+                        sep->addChild(new SoInfo());
                         }
                 }
 
@@ -2907,9 +3388,14 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 arrows->string = "";
                 arrows->textColor = ConstrDimColor;
 
-                sep->addChild(arrows);              // 0.
-                sep->addChild(new SoTranslation()); // 1.
-                sep->addChild(new SoImage());       // 2. constraint icon
+                // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
+                sep->addChild(arrows);
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
+                sep->addChild(new SoTranslation());
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
+                sep->addChild(new SoImage());
+                // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
+                sep->addChild(new SoInfo());
 
                 edit->vConstrType.push_back((*it)->Type);
             }
@@ -3502,12 +3988,13 @@ int ViewProviderSketch::getPreselectCross(void) const
     return -1;
 }
 
-int ViewProviderSketch::getPreselectConstraint(void) const
+/*This never gets used?
+  int ViewProviderSketch::getPreselectConstraint(void) const
 {
     if (edit)
         return edit->PreselectConstraint;
     return -1;
-}
+}*/
 
 Sketcher::SketchObject *ViewProviderSketch::getSketchObject(void) const
 {
@@ -3526,7 +4013,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
         resetPreselectPoint();
         edit->PreselectCurve = -1;
         edit->PreselectCross = -1;
-        edit->PreselectConstraint = -1;
+        edit->PreselectConstraintSet.clear();
 
         std::set<int> delGeometries, delCoincidents, delConstraints;
         // go through the selected subelements

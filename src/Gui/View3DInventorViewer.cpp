@@ -35,6 +35,7 @@
 # endif
 # include <Inventor/SbBox.h>
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
+# include <Inventor/actions/SoGetMatrixAction.h>
 # include <Inventor/actions/SoHandleEventAction.h> 
 # include <Inventor/actions/SoToVRML2Action.h>
 # include <Inventor/actions/SoWriteAction.h>
@@ -736,6 +737,51 @@ bool View3DInventorViewer::isSelecting() const
 const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SbBool* clip_inner) const
 {
     return navigation->getPolygon(clip_inner);
+}
+
+SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath *path) const
+{
+    // Generate a matrix (well, a SoGetMatrixAction) that
+    // moves us us to the picked object's coordinate space.
+    SoGetMatrixAction *gma;
+    gma = new SoGetMatrixAction(getViewportRegion());
+    gma->apply(path);
+
+    // Use that matrix to translate the origin in the picked
+    // object's coordinate space into object space
+    SbVec3f imageCoords(0, 0, 0);
+    SbMatrix m = gma->getMatrix().transpose();
+    m.multMatrixVec(imageCoords, imageCoords);
+
+    // Now, project the object space coordinates of the object
+    // into "normalized" screen coordinates.
+    SbViewVolume  vol = getCamera()->getViewVolume();
+    vol.projectToScreen(imageCoords, imageCoords);
+
+    // Translate "normalized" screen coordinates to pixel coords.
+    //
+    // Note: for some reason, projectToScreen() doesn't seem to
+    // handle non-square viewports properly.  The X and Y are
+    // scaled such that [0,1] fits within the smaller of the window
+    // width or height.  For instance, in a window that's 400px
+    // tall and 800px wide, the Y will be within [0,1], but X can
+    // vary within [-0.5,1.5]...
+    int width = getGLWidget()->width(),
+        height = getGLWidget()->height();
+
+    if(width >= height) {
+        // "Landscape" orientation, to square
+        imageCoords[0] *= height;
+        imageCoords[0] += (width-height) / 2.0;
+        imageCoords[1] *= height;
+
+    } else {
+        // "Portrait" orientation
+        imageCoords[0] *= width;
+        imageCoords[1] *= width;
+        imageCoords[1] += (height-width) / 2.0;
+    }
+    return SbVec2f(imageCoords[0], imageCoords[1]);
 }
 
 std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(const std::vector<SbVec2s>& pnts) const
