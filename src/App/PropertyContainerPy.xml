@@ -37,6 +37,15 @@
                 </UserDocu>
             </Documentation>
         </Methode>
+      <Methode Name="getEditorMode">
+            <Documentation>
+                <UserDocu>Get the behaviour of the property in the property editor.
+It returns a list of strings with the current mode. If the list is empty there are no special restrictions.
+If the list contains 'ReadOnly' then the item appears in the property editor but is disabled.
+If the list contains 'Hidden' then the item even doesn't appear in the property editor.
+                </UserDocu>
+            </Documentation>
+        </Methode>
       <Methode Name="getGroupOfProperty">
 		  <Documentation>
 			  <UserDocu>Return the name of the group which the property belongs to in this class. The properties sorted in differnt named groups for convenience.</UserDocu>
