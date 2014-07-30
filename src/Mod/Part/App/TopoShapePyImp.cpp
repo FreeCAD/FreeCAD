@@ -172,6 +172,31 @@ PyObject* TopoShapePy::copy(PyObject *args)
     return cpy;
 }
 
+PyObject* TopoShapePy::cleaned(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    const TopoDS_Shape& shape = this->getTopoShapePtr()->_Shape;
+    PyTypeObject* type = this->GetType();
+    PyObject* cpy = 0;
+    // let the type object decide
+    if (type->tp_new)
+        cpy = type->tp_new(type, this, 0);
+    if (!cpy) {
+        PyErr_SetString(PyExc_TypeError, "failed to create copy of shape");
+        return 0;
+    }
+
+    if (!shape.IsNull()) {
+        BRepBuilderAPI_Copy c(shape);
+        const TopoDS_Shape& copiedShape = c.Shape();
+        BRepTools::Clean(copiedShape); // remove triangulation
+        static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->_Shape = c.Shape();
+    }
+    return cpy;
+}
+
 PyObject* TopoShapePy::replaceShape(PyObject *args)
 {
     PyObject *l;
