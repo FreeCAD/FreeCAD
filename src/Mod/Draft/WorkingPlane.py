@@ -22,7 +22,7 @@
 #***************************************************************************
 
 
-import FreeCAD, FreeCADGui, math, DraftVecUtils
+import FreeCAD, math, DraftVecUtils
 from FreeCAD import Vector
 
 __title__="FreeCAD Working Plane utility"
@@ -232,6 +232,7 @@ class plane:
 
     def alignToSelection(self, offset):
         '''If selection uniquely defines a plane, align working plane to it.  Return success (bool)'''
+        import FreeCADGui
         sex = FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name)
         if len(sex) == 0:
             return False
@@ -252,13 +253,14 @@ class plane:
                 self.alignToPointAndAxis(point, direction, 0, upvec)
             else:
                 try:
+                    import FreeCADGui
                     from pivy import coin
                     rot = FreeCADGui.ActiveDocument.ActiveView.getCameraNode().getField("orientation").getValue()
                     upvec = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
                     vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
                     self.alignToPointAndAxis(Vector(0,0,0), vdir.negative(), 0, upvec)
                 except:
-                    print "Draft: Unable to align the working plane to the current view"
+                    pass
             self.weak = True
 
     def reset(self):

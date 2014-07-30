@@ -682,7 +682,7 @@ def makeDimension(p1,p2,p3=None,p4=None):
     if hasattr(FreeCAD,"DraftWorkingPlane"):
         normal = FreeCAD.DraftWorkingPlane.axis
     else:
-        normal = App.Vector(0,0,1)
+        normal = FreeCAD.Vector(0,0,1)
     if gui:
         # invert the normal if we are viewing it from the back
         vnorm = get3DView().getViewDirection()
@@ -890,14 +890,17 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
     obj.LabelText=textbuffer
     obj.Position=point
-    if not screen: obj.ViewObject.DisplayMode="World"
-    h = getParam("textheight",0.20)
-    if screen: h = h*10
-    obj.ViewObject.FontSize = h
-    obj.ViewObject.FontName = getParam("textfont","")
-    obj.ViewObject.LineSpacing = 0.6
-    formatObject(obj)
-    select(obj)
+    if FreeCAD.GuiUp:
+        if not screen: 
+            obj.ViewObject.DisplayMode="World"
+        h = getParam("textheight",0.20)
+        if screen: 
+            h = h*10
+        obj.ViewObject.FontSize = h
+        obj.ViewObject.FontName = getParam("textfont","")
+        obj.ViewObject.LineSpacing = 0.6
+        formatObject(obj)
+        select(obj)
     return obj
 
 def makeCopy(obj,force=None,reparent=False):
