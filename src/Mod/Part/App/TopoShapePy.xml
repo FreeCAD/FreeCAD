@@ -361,6 +361,15 @@ into BSpline surfaces.</UserDocu>
         <UserDocu>Create a copy of this shape</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="cleaned" Const="true">
+      <Documentation>
+        <UserDocu>This creates a cleaned copy of the shape with the triangulation removed.
+This can be useful to reduce file size when exporting as a BRep file.
+Warning: Use the cleaned shape with care because certain algorithms may work incorrectly
+if the shape has no internal triangulation any more.
+</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="replaceShape" Const="true">
       <Documentation>
         <UserDocu>Replace a sub-shape with a new shape and return a new shape.
