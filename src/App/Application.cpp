@@ -2005,6 +2005,10 @@ std::string Application::FindHomePath(const char* sCall)
             *i = '/';
     }
 
+    // fixes #0001638 to avoid to load DLLs from Windows' system directories before FreeCAD's bin folder
+    std::string binPath = TempHomePath;
+    binPath += "bin";
+    SetDllDirectory(binPath.c_str());
     return TempHomePath;
 }
 
