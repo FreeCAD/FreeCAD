@@ -352,8 +352,6 @@ class Component:
 
     def getProfiles(self,obj,noplacement=False):
         "Returns the base profile(s) of this component, if applicable"
-        if not obj.Shape: return []
-        if obj.Shape.isNull(): return []
         wires = []
         n,l,w,h = self.getDefaultValues(obj)
         if obj.Base:

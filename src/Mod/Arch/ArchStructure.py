@@ -300,7 +300,8 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=translate
         obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     if baseobj:
         obj.Base = baseobj
-        obj.Base.ViewObject.hide()
+        if FreeCAD.GuiUp:
+            obj.Base.ViewObject.hide()
     if width:
         obj.Width = width
     else:
