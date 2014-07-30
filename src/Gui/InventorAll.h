@@ -45,6 +45,7 @@
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/actions/SoBoxHighlightRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h> 

@@ -742,15 +742,14 @@ const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SbBool* clip_inner)
 SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath *path) const
 {
     // Generate a matrix (well, a SoGetMatrixAction) that
-    // moves us us to the picked object's coordinate space.
-    SoGetMatrixAction *gma;
-    gma = new SoGetMatrixAction(getViewportRegion());
-    gma->apply(path);
+    // moves us to the picked object's coordinate space.
+    SoGetMatrixAction gma(getViewportRegion());
+    gma.apply(path);
 
     // Use that matrix to translate the origin in the picked
     // object's coordinate space into object space
     SbVec3f imageCoords(0, 0, 0);
-    SbMatrix m = gma->getMatrix().transpose();
+    SbMatrix m = gma.getMatrix().transpose();
     m.multMatrixVec(imageCoords, imageCoords);
 
     // Now, project the object space coordinates of the object

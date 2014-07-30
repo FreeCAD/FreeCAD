@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 J�rgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -2038,7 +2038,6 @@ void ViewProviderSketch::clearCoinImage(SoImage *soImagePtr)
     soImagePtr->setToDefaults();
 }
 
-
 QColor ViewProviderSketch::constrColor(int constraintId)
 {
     static QColor constrIcoColor((int)(ConstrIcoColor [0] * 255.0f),
@@ -2058,7 +2057,7 @@ QColor ViewProviderSketch::constrColor(int constraintId)
     else
         return constrIcoColor;
 }
-    
+
 int ViewProviderSketch::constrColorPriority(int constraintId)
 {
     if (edit->PreselectConstraintSet.count(constraintId))
@@ -2116,7 +2115,7 @@ void ViewProviderSketch::drawConstraintIcons()
 
         // Find the Constraint Icon SoImage Node
         SoSeparator *sep = static_cast<SoSeparator *>(edit->constrGroup->getChild(constrId));
-       
+
         SbVec3f absPos;
         // Somewhat hacky - we use SoZoomTranslations for most types of icon,
         // but symmetry icons use SoTranslations...
@@ -2125,7 +2124,7 @@ void ViewProviderSketch::drawConstraintIcons()
             absPos = static_cast<SoZoomTranslation *>(translationPtr)->abPos.getValue();
         else
             absPos = translationPtr->translation.getValue();
-        
+
         SoImage *coinIconPtr = dynamic_cast<SoImage *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON));
         SoInfo *infoPtr = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID));
 
@@ -2165,7 +2164,7 @@ void ViewProviderSketch::drawConstraintIcons()
 
         iconQueue.push_back(thisIcon);
     }
-    
+
     combineConstraintIcons(iconQueue);
 }
 
@@ -2297,7 +2296,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
 
             i = iconQueue.erase(i);
         }
-            
+
         // To be inserted into edit->combinedConstBoxes
         std::vector<QRect> boundingBoxesVec;
         int oldHeight = 0;
@@ -2390,7 +2389,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     QString joinStr = QString::fromAscii(", ");
 
     QImage icon = Gui::BitmapFactory().pixmap(type.toAscii()).toImage();
-        
+
     QFont font = QApplication::font();
     font.setPixelSize(11);
     font.setBold(true);
@@ -2432,7 +2431,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
             ++labelItr, ++colorItr) {
 
             qp.setPen(*colorItr);
-            
+
             if(labelItr + 1 == labels.end()) // if this is the last label
                 labelStr = *labelItr;
             else
@@ -2450,7 +2449,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
                                icon.height() - qfm.height() + pxBelowBase);
                 boundingBoxes->push_back(labelBB);
             }
-                
+
             cursorOffset += qfm.width(labelStr);
         }
     }
@@ -3336,15 +3335,15 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 // #define CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL 0
                 sep->addChild(mat);
                 // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION 1
-                sep->addChild(new SoZoomTranslation()); 
+                sep->addChild(new SoZoomTranslation());
                 // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_ICON 2
-                sep->addChild(new SoImage());           
+                sep->addChild(new SoImage());
                 // #define CONSTRAINT_SEPARATOR_INDEX_FIRST_CONSTRAINTID 3
                 sep->addChild(new SoInfo());
                 // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
-                sep->addChild(new SoZoomTranslation()); 
+                sep->addChild(new SoZoomTranslation());
                 // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
-                sep->addChild(new SoImage());           
+                sep->addChild(new SoImage());
                 // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
                 sep->addChild(new SoInfo());
 
