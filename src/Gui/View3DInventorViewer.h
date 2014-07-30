@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 J�rgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -61,7 +61,7 @@ class SoFCUnifiedSelection;
 class GLGraphicsItem;
 class SoShapeScale;
 
-/** GUI view into a 3-D Scene provided by View3DInventor
+/** GUI view into a 3D scene provided by View3DInventor
  *
  */
 class GuiExport View3DInventorViewer : public SoQtViewer, public Gui::SelectionSingleton::ObserverType
@@ -127,10 +127,6 @@ public:
     SbBool isBacklight(void) const;
     void setSceneGraph (SoNode *root);
 
-    // TODO: I think it might be cleaner to move this functionality into a
-    //       different class, with this class supporting something like a
-    //       rotate() slot that gets triggered by the new Animator class?
-    //       IR 20140630
     void setAnimationEnabled(const SbBool enable);
     SbBool isAnimationEnabled(void) const;
 
