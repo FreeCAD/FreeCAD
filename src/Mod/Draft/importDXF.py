@@ -70,7 +70,7 @@ else:
         libsok = False
 if not libsok:
     files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
-    baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/master/1.38/'
+    baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+str(CURRENTDXFLIB)+"/"
     import ArchCommands
     for f in files:
         p = None
