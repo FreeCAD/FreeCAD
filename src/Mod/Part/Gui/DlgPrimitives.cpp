@@ -260,11 +260,6 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     ui.edgeZ2->setMaximum(INT_MAX);
     ui.edgeZ2->setMinimum(INT_MIN);
     // RegularPolygon
-
-    QList<Gui::InputField*> list = this->findChildren<Gui::InputField*>();
-    for (QList<Gui::InputField*>::iterator it = list.begin(); it != list.end(); ++it) {
-        (*it)->setValue((*it)->getQuantity());
-    }
 }
 
 /*  
@@ -361,8 +356,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%4\n"
                 "App.ActiveDocument.%1.Label='%5'\n")
                 .arg(name)
-                .arg(ui.planeLength->getQuantity().getValue(),0,'f',2)
-                .arg(ui.planeWidth->getQuantity().getValue(),0,'f',2)
+                .arg(ui.planeLength->value().getValue(),0,'f',2)
+                .arg(ui.planeWidth->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Plane"));
         }
@@ -376,9 +371,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.boxLength->getQuantity().getValue(),0,'f',2)
-                .arg(ui.boxWidth->getQuantity().getValue(),0,'f',2)
-                .arg(ui.boxHeight->getQuantity().getValue(),0,'f',2)
+                .arg(ui.boxLength->value().getValue(),0,'f',2)
+                .arg(ui.boxWidth->value().getValue(),0,'f',2)
+                .arg(ui.boxHeight->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Box"));
         }
@@ -392,9 +387,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.cylinderRadius->getQuantity().getValue(),0,'f',2)
-                .arg(ui.cylinderHeight->getQuantity().getValue(),0,'f',2)
-                .arg(ui.cylinderAngle->getQuantity().getValue(),0,'f',2)
+                .arg(ui.cylinderRadius->value().getValue(),0,'f',2)
+                .arg(ui.cylinderHeight->value().getValue(),0,'f',2)
+                .arg(ui.cylinderAngle->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Cylinder"));
         }
@@ -409,10 +404,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%6\n"
                 "App.ActiveDocument.%1.Label='%7'\n")
                 .arg(name)
-                .arg(ui.coneRadius1->getQuantity().getValue(),0,'f',2)
-                .arg(ui.coneRadius2->getQuantity().getValue(),0,'f',2)
-                .arg(ui.coneHeight->getQuantity().getValue(),0,'f',2)
-                .arg(ui.coneAngle->getQuantity().getValue(),0,'f',2)
+                .arg(ui.coneRadius1->value().getValue(),0,'f',2)
+                .arg(ui.coneRadius2->value().getValue(),0,'f',2)
+                .arg(ui.coneHeight->value().getValue(),0,'f',2)
+                .arg(ui.coneAngle->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Cone"));
         }
@@ -427,10 +422,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%6\n"
                 "App.ActiveDocument.%1.Label='%7'\n")
                 .arg(name)
-                .arg(ui.sphereRadius->getQuantity().getValue(),0,'f',2)
-                .arg(ui.sphereAngle1->getQuantity().getValue(),0,'f',2)
-                .arg(ui.sphereAngle2->getQuantity().getValue(),0,'f',2)
-                .arg(ui.sphereAngle3->getQuantity().getValue(),0,'f',2)
+                .arg(ui.sphereRadius->value().getValue(),0,'f',2)
+                .arg(ui.sphereAngle1->value().getValue(),0,'f',2)
+                .arg(ui.sphereAngle2->value().getValue(),0,'f',2)
+                .arg(ui.sphereAngle3->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Sphere"));
         }
@@ -446,11 +441,11 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%7\n"
                 "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
-                .arg(ui.ellipsoidRadius1->getQuantity().getValue(),0,'f',2)
-                .arg(ui.ellipsoidRadius2->getQuantity().getValue(),0,'f',2)
-                .arg(ui.ellipsoidAngle1->getQuantity().getValue(),0,'f',2)
-                .arg(ui.ellipsoidAngle2->getQuantity().getValue(),0,'f',2)
-                .arg(ui.ellipsoidAngle3->getQuantity().getValue(),0,'f',2)
+                .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',2)
+                .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',2)
+                .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',2)
+                .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',2)
+                .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Ellipsoid"));
         }
@@ -466,11 +461,11 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%7\n"
                 "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
-                .arg(ui.torusRadius1->getQuantity().getValue(),0,'f',2)
-                .arg(ui.torusRadius2->getQuantity().getValue(),0,'f',2)
-                .arg(ui.torusAngle1->getQuantity().getValue(),0,'f',2)
-                .arg(ui.torusAngle2->getQuantity().getValue(),0,'f',2)
-                .arg(ui.torusAngle3->getQuantity().getValue(),0,'f',2)
+                .arg(ui.torusRadius1->value().getValue(),0,'f',2)
+                .arg(ui.torusRadius2->value().getValue(),0,'f',2)
+                .arg(ui.torusAngle1->value().getValue(),0,'f',2)
+                .arg(ui.torusAngle2->value().getValue(),0,'f',2)
+                .arg(ui.torusAngle3->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Torus"));
         }
@@ -485,8 +480,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
                 .arg(ui.prismPolygon->value())
-                .arg(ui.prismCircumradius->getQuantity().getValue(),0,'f',2)
-                .arg(ui.prismHeight->getQuantity().getValue(),0,'f',2)
+                .arg(ui.prismCircumradius->value().getValue(),0,'f',2)
+                .arg(ui.prismHeight->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Prism"));
         }
@@ -507,16 +502,16 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%12\n"
                 "App.ActiveDocument.%1.Label='%13'\n")
                 .arg(name)
-                .arg(ui.wedgeXmin->getQuantity().getValue(),0,'f',2)
-                .arg(ui.wedgeYmin->getQuantity().getValue(),0,'f',2)
-                .arg(ui.wedgeZmin->getQuantity().getValue(),0,'f',2)
-                .arg(ui.wedgeX2min->getQuantity().getValue(),0,'f',2)
-                .arg(ui.wedgeZ2min->getQuantity().getValue(),0,'f',2)
-                .arg(ui.wedgeXmax->getQuantity().getValue(),0,'f',2)
-                .arg(ui.wedgeYmax->getQuantity().getValue(),0,'f',2)
-                .arg(ui.wedgeZmax->getQuantity().getValue(),0,'f',2)
-                .arg(ui.wedgeX2max->getQuantity().getValue(),0,'f',2)
-                .arg(ui.wedgeZ2max->getQuantity().getValue(),0,'f',2)
+                .arg(ui.wedgeXmin->value().getValue(),0,'f',2)
+                .arg(ui.wedgeYmin->value().getValue(),0,'f',2)
+                .arg(ui.wedgeZmin->value().getValue(),0,'f',2)
+                .arg(ui.wedgeX2min->value().getValue(),0,'f',2)
+                .arg(ui.wedgeZ2min->value().getValue(),0,'f',2)
+                .arg(ui.wedgeXmax->value().getValue(),0,'f',2)
+                .arg(ui.wedgeYmax->value().getValue(),0,'f',2)
+                .arg(ui.wedgeZmax->value().getValue(),0,'f',2)
+                .arg(ui.wedgeX2max->value().getValue(),0,'f',2)
+                .arg(ui.wedgeZ2max->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Wedge"));
         }
@@ -533,10 +528,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%7\n"
                 "App.ActiveDocument.%1.Label='%8'\n")
                 .arg(name)
-                .arg(ui.helixPitch->getQuantity().getValue(),0,'f',2)
-                .arg(ui.helixHeight->getQuantity().getValue(),0,'f',2)
-                .arg(ui.helixRadius->getQuantity().getValue(),0,'f',2)
-                .arg(ui.helixAngle->getQuantity().getValue(),0,'f',2)
+                .arg(ui.helixPitch->value().getValue(),0,'f',2)
+                .arg(ui.helixHeight->value().getValue(),0,'f',2)
+                .arg(ui.helixRadius->value().getValue(),0,'f',2)
+                .arg(ui.helixAngle->value().getValue(),0,'f',2)
                 .arg(ui.helixLocalCS->currentIndex())
                 .arg(placement)
                 .arg(tr("Helix"));
@@ -551,9 +546,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.spiralGrowth->getQuantity().getValue(),0,'f',2)
+                .arg(ui.spiralGrowth->value().getValue(),0,'f',2)
                 .arg(ui.spiralRotation->value(),0,'f',2)
-                .arg(ui.spiralRadius->getQuantity().getValue(),0,'f',2)
+                .arg(ui.spiralRadius->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Spiral"));
         }
@@ -567,9 +562,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.circleRadius->getQuantity().getValue(),0,'f',2)
-                .arg(ui.circleAngle0->getQuantity().getValue(),0,'f',2)
-                .arg(ui.circleAngle1->getQuantity().getValue(),0,'f',2)
+                .arg(ui.circleRadius->value().getValue(),0,'f',2)
+                .arg(ui.circleAngle0->value().getValue(),0,'f',2)
+                .arg(ui.circleAngle1->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Circle"));
         }
@@ -584,10 +579,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%6\n"
                 "App.ActiveDocument.%1.Label='%7'\n")
                 .arg(name)
-                .arg(ui.ellipseMajorRadius->getQuantity().getValue(),0,'f',2)
-                .arg(ui.ellipseMinorRadius->getQuantity().getValue(),0,'f',2)
-                .arg(ui.ellipseAngle0->getQuantity().getValue(),0,'f',2)
-                .arg(ui.ellipseAngle1->getQuantity().getValue(),0,'f',2)
+                .arg(ui.ellipseMajorRadius->value().getValue(),0,'f',2)
+                .arg(ui.ellipseMinorRadius->value().getValue(),0,'f',2)
+                .arg(ui.ellipseAngle0->value().getValue(),0,'f',2)
+                .arg(ui.ellipseAngle1->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Ellipse"));
         }
@@ -601,9 +596,9 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%5\n"
                 "App.ActiveDocument.%1.Label='%6'\n")
                 .arg(name)
-                .arg(ui.vertexX->getQuantity().getValue(),0,'f',2)
-                .arg(ui.vertexY->getQuantity().getValue(),0,'f',2)
-                .arg(ui.vertexZ->getQuantity().getValue(),0,'f',2)
+                .arg(ui.vertexX->value().getValue(),0,'f',2)
+                .arg(ui.vertexY->value().getValue(),0,'f',2)
+                .arg(ui.vertexZ->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Vertex"));
         }
@@ -620,12 +615,12 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Placement=%8\n"
                 "App.ActiveDocument.%1.Label='%9'\n")
                 .arg(name)
-                .arg(ui.edgeX1->getQuantity().getValue(),0,'f',2)
-                .arg(ui.edgeY1->getQuantity().getValue(),0,'f',2)
-                .arg(ui.edgeZ1->getQuantity().getValue(),0,'f',2)
-                .arg(ui.edgeX2->getQuantity().getValue(),0,'f',2)
-                .arg(ui.edgeY2->getQuantity().getValue(),0,'f',2)
-                .arg(ui.edgeZ2->getQuantity().getValue(),0,'f',2)
+                .arg(ui.edgeX1->value().getValue(),0,'f',2)
+                .arg(ui.edgeY1->value().getValue(),0,'f',2)
+                .arg(ui.edgeZ1->value().getValue(),0,'f',2)
+                .arg(ui.edgeX2->value().getValue(),0,'f',2)
+                .arg(ui.edgeY2->value().getValue(),0,'f',2)
+                .arg(ui.edgeZ2->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Line"));
         }
@@ -639,7 +634,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.%1.Label='%5'\n")
                 .arg(name)
                 .arg(ui.regularPolygonPolygon->value())
-                .arg(ui.regularPolygonCircumradius->getQuantity().getValue(),0,'f',2)
+                .arg(ui.regularPolygonCircumradius->value().getValue(),0,'f',2)
                 .arg(placement)
                 .arg(tr("Regular polygon"));
         }

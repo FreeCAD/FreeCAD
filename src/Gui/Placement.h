@@ -74,7 +74,7 @@ private:
     void applyPlacement(const QString& p, bool incremental);
     void revertTransformation();
     void slotActiveDocument(const Gui::Document&);
-    bool hasValidInputs() const;
+    QWidget* getInvalidInput() const;
 
 Q_SIGNALS:
     void placementChanged(const QVariant &, bool, bool);

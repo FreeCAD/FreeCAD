@@ -50,7 +50,7 @@
 #include <Gui/Placement.h>
 #include <Gui/FileDialog.h>
 #include <Gui/DlgPropertyLink.h>
-#include <Gui/InputField.h>
+#include <Gui/QuantitySpinBox.h>
 
 #include "PropertyItem.h"
 
@@ -625,7 +625,7 @@ void PropertyUnitItem::setValue(const QVariant& value)
 
 QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    Gui::InputField *infield = new Gui::InputField(parent);
+    Gui::QuantitySpinBox *infield = new Gui::QuantitySpinBox(parent);
     infield->setFrame(false);
     infield->setMinimumHeight(0);
     QObject::connect(infield, SIGNAL(valueChanged(double)), receiver, method);
@@ -636,14 +636,14 @@ void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) cons
 {
     const Base::Quantity& value = data.value<Base::Quantity>();
 
-    Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
+    Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     infield->setValue(value);
 }
 
 QVariant PropertyUnitItem::editorData(QWidget *editor) const
 {
-    Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
-    Base::Quantity value = infield->getQuantity();
+    Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
+    Base::Quantity value = infield->value();
     return QVariant::fromValue<Base::Quantity>(value);
 }
 
@@ -661,7 +661,7 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
 {
     const Base::Quantity& value = data.value<Base::Quantity>();
 
-    Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
+    Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     infield->setValue(value);
 
     const std::vector<App::Property*>& items = getPropertyData();

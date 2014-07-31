@@ -85,13 +85,13 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::InputField" name="xPos"/>
+       <widget class="Gui::QuantitySpinBox" name="xPos"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::InputField" name="yPos"/>
+       <widget class="Gui::QuantitySpinBox" name="yPos"/>
       </item>
       <item row="3" column="1">
-       <widget class="Gui::InputField" name="zPos"/>
+       <widget class="Gui::QuantitySpinBox" name="zPos"/>
       </item>
      </layout>
     </widget>
@@ -161,13 +161,13 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="Gui::InputField" name="xCnt"/>
+       <widget class="Gui::QuantitySpinBox" name="xCnt"/>
       </item>
       <item row="1" column="1">
-       <widget class="Gui::InputField" name="yCnt"/>
+       <widget class="Gui::QuantitySpinBox" name="yCnt"/>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::InputField" name="zCnt"/>
+       <widget class="Gui::QuantitySpinBox" name="zCnt"/>
       </item>
      </layout>
     </widget>
@@ -239,7 +239,7 @@
              </widget>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::InputField" name="angle"/>
+             <widget class="Gui::QuantitySpinBox" name="angle"/>
             </item>
            </layout>
           </item>
@@ -301,13 +301,13 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <widget class="Gui::InputField" name="yawAngle"/>
+             <widget class="Gui::QuantitySpinBox" name="yawAngle"/>
             </item>
             <item row="1" column="1">
-             <widget class="Gui::InputField" name="pitchAngle"/>
+             <widget class="Gui::QuantitySpinBox" name="pitchAngle"/>
             </item>
             <item row="2" column="1">
-             <widget class="Gui::InputField" name="rollAngle"/>
+             <widget class="Gui::QuantitySpinBox" name="rollAngle"/>
             </item>
            </layout>
           </item>
@@ -439,9 +439,9 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header location="global">Gui/InputField.h</header>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header location="global">Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <tabstops>
