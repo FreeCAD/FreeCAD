@@ -318,8 +318,8 @@ Transform::Transform(QWidget* parent, Qt::WFlags fl)
     signalMapper->setMapping(this, 0);
 
     int id = 1;
-    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
-    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+    QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
+    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         connect(*it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
         signalMapper->setMapping(*it, id++);
     }
@@ -383,8 +383,8 @@ void Transform::on_applyButton_clicked()
     strategy->commitTransform(mat);
 
     // nullify the values
-    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
-    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+    QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
+    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         (*it)->blockSignals(true);
         (*it)->setValue(0.0);
         (*it)->blockSignals(false);
@@ -415,18 +415,18 @@ Base::Placement Transform::getPlacementData() const
     Base::Vector3d pos;
     Base::Vector3d cnt;
 
-    pos = Base::Vector3d(ui->xPos->getQuantity().getValue(),ui->yPos->getQuantity().getValue(),ui->zPos->getQuantity().getValue());
-    cnt = Base::Vector3d(ui->xCnt->getQuantity().getValue(),ui->yCnt->getQuantity().getValue(),ui->zCnt->getQuantity().getValue());
+    pos = Base::Vector3d(ui->xPos->value().getValue(),ui->yPos->value().getValue(),ui->zPos->value().getValue());
+    cnt = Base::Vector3d(ui->xCnt->value().getValue(),ui->yCnt->value().getValue(),ui->zCnt->value().getValue());
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->getQuantity().getValue()*D_PI/180.0);
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),ui->angle->value().getValue()*D_PI/180.0);
     }
     else if (index == 1) {
         rot.setYawPitchRoll(
-            ui->yawAngle->getQuantity().getValue(),
-            ui->pitchAngle->getQuantity().getValue(),
-            ui->rollAngle->getQuantity().getValue());
+            ui->yawAngle->value().getValue(),
+            ui->pitchAngle->value().getValue(),
+            ui->rollAngle->value().getValue());
     }
 
     Base::Placement p(pos, rot, cnt);

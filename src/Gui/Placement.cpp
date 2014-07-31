@@ -100,8 +100,8 @@ Placement::Placement(QWidget* parent, Qt::WFlags fl)
     signalMapper->setMapping(this, 0);
 
     int id = 1;
-    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
-    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+    QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
+    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         connect(*it, SIGNAL(valueChanged(double)), signalMapper, SLOT(map()));
         signalMapper->setMapping(*it, id++);
     }
@@ -132,14 +132,14 @@ void Placement::slotActiveDocument(const Gui::Document& doc)
     documents.insert(doc.getDocument()->getName());
 }
 
-bool Placement::hasValidInputs() const
+QWidget* Placement::getInvalidInput() const
 {
-    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
-    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+    QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
+    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         if (!(*it)->hasValidInput())
-            return false;
+            return (*it);
     }
-    return true;
+    return 0;
 }
 
 void Placement::revertTransformation()
@@ -302,8 +302,11 @@ void Placement::on_applyButton_clicked()
 bool Placement::onApply()
 {
     //only process things when we have valid inputs!
-    if (!hasValidInputs()) {
-        QMessageBox msg;
+    QWidget* input = getInvalidInput();
+    if (input) {
+        input->setFocus();
+        QMessageBox msg(this);
+        msg.setWindowTitle(tr("Incorrect quantity"));
         msg.setIcon(QMessageBox::Critical);
         msg.setText(tr("There are input fields with incorrect input, please ensure valid placement values!"));
         msg.exec();
@@ -322,8 +325,8 @@ bool Placement::onApply()
     /*emit*/ placementChanged(data, incr, true);
 
     if (ui->applyIncrementalPlacement->isChecked()) {
-        QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
-        for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+        QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
+        for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
             (*it)->blockSignals(true);
             (*it)->setValue(0);
             (*it)->blockSignals(false);
@@ -335,8 +338,8 @@ bool Placement::onApply()
 
 void Placement::on_resetButton_clicked()
 {
-    QList<Gui::InputField*> sb = this->findChildren<Gui::InputField*>();
-    for (QList<Gui::InputField*>::iterator it = sb.begin(); it != sb.end(); ++it) {
+    QList<Gui::QuantitySpinBox*> sb = this->findChildren<Gui::QuantitySpinBox*>();
+    for (QList<Gui::QuantitySpinBox*>::iterator it = sb.begin(); it != sb.end(); ++it) {
         (*it)->blockSignals(true);
         (*it)->setValue(0);
         (*it)->blockSignals(false);
@@ -420,18 +423,18 @@ Base::Placement Placement::getPlacementData() const
     Base::Vector3d pos;
     Base::Vector3d cnt;
 
-    pos = Base::Vector3d(ui->xPos->getQuantity().getValue(),ui->yPos->getQuantity().getValue(),ui->zPos->getQuantity().getValue());
-    cnt = Base::Vector3d(ui->xCnt->getQuantity().getValue(),ui->yCnt->getQuantity().getValue(),ui->zCnt->getQuantity().getValue());
+    pos = Base::Vector3d(ui->xPos->value().getValue(),ui->yPos->value().getValue(),ui->zPos->value().getValue());
+    cnt = Base::Vector3d(ui->xCnt->value().getValue(),ui->yCnt->value().getValue(),ui->zCnt->value().getValue());
 
     if (index == 0) {
         Base::Vector3d dir = getDirection();
-        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),Base::toRadians(ui->angle->getQuantity().getValue()));
+        rot.setValue(Base::Vector3d(dir.x,dir.y,dir.z),Base::toRadians(ui->angle->value().getValue()));
     }
     else if (index == 1) {
         rot.setYawPitchRoll(
-            ui->yawAngle->getQuantity().getValue(),
-            ui->pitchAngle->getQuantity().getValue(),
-            ui->rollAngle->getQuantity().getValue());
+            ui->yawAngle->value().getValue(),
+            ui->pitchAngle->value().getValue(),
+            ui->rollAngle->value().getValue());
     }
 
     Base::Placement p(pos, rot, cnt);
@@ -447,29 +450,29 @@ QString Placement::getPlacementString() const
         Base::Vector3d dir = getDirection();
         cmd = QString::fromAscii(
             "App.Placement(App.Vector(%1,%2,%3), App.Rotation(App.Vector(%4,%5,%6),%7), App.Vector(%8,%9,%10))")
-            .arg(ui->xPos->getQuantity().getValue())
-            .arg(ui->yPos->getQuantity().getValue())
-            .arg(ui->zPos->getQuantity().getValue())
+            .arg(ui->xPos->value().getValue())
+            .arg(ui->yPos->value().getValue())
+            .arg(ui->zPos->value().getValue())
             .arg(dir.x)
             .arg(dir.y)
             .arg(dir.z)
-            .arg(ui->angle->getQuantity().getValue())
-            .arg(ui->xCnt->getQuantity().getValue())
-            .arg(ui->yCnt->getQuantity().getValue())
-            .arg(ui->zCnt->getQuantity().getValue());
+            .arg(ui->angle->value().getValue())
+            .arg(ui->xCnt->value().getValue())
+            .arg(ui->yCnt->value().getValue())
+            .arg(ui->zCnt->value().getValue());
     }
     else if (index == 1) {
         cmd = QString::fromAscii(
             "App.Placement(App.Vector(%1,%2,%3), App.Rotation(%4,%5,%6), App.Vector(%7,%8,%9))")
-            .arg(ui->xPos->getQuantity().getValue())
-            .arg(ui->yPos->getQuantity().getValue())
-            .arg(ui->zPos->getQuantity().getValue())
-            .arg(ui->yawAngle->getQuantity().getValue())
-            .arg(ui->pitchAngle->getQuantity().getValue())
-            .arg(ui->rollAngle->getQuantity().getValue())
-            .arg(ui->xCnt->getQuantity().getValue())
-            .arg(ui->yCnt->getQuantity().getValue())
-            .arg(ui->zCnt->getQuantity().getValue());
+            .arg(ui->xPos->value().getValue())
+            .arg(ui->yPos->value().getValue())
+            .arg(ui->zPos->value().getValue())
+            .arg(ui->yawAngle->value().getValue())
+            .arg(ui->pitchAngle->value().getValue())
+            .arg(ui->rollAngle->value().getValue())
+            .arg(ui->xCnt->value().getValue())
+            .arg(ui->yCnt->value().getValue())
+            .arg(ui->zCnt->value().getValue());
     }
 
     return cmd;
