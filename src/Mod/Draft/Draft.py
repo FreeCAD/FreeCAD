@@ -4408,6 +4408,7 @@ class _Array(_DraftObject):
         obj.addProperty("App::PropertyVector","IntervalX","Draft","Distance and orientation of intervals in X direction")
         obj.addProperty("App::PropertyVector","IntervalY","Draft","Distance and orientation of intervals in Y direction")
         obj.addProperty("App::PropertyVector","IntervalZ","Draft","Distance and orientation of intervals in Z direction")
+        obj.addProperty("App::PropertyVector","IntervalAxis","Draft","Distance and orientation of intervals in Axis direction")
         obj.addProperty("App::PropertyVector","Center","Draft","Center point")
         obj.addProperty("App::PropertyAngle","Angle","Draft","Angle to cover with copies")
         obj.ArrayType = ['ortho','polar']
@@ -4418,6 +4419,7 @@ class _Array(_DraftObject):
         obj.IntervalX = Vector(1,0,0)
         obj.IntervalY = Vector(0,1,0)
         obj.IntervalZ = Vector(0,0,1)
+        obj.IntervalZ = Vector(0,0,0)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
 
@@ -4455,7 +4457,8 @@ class _Array(_DraftObject):
                 sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,
                                     obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
             else:
-                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis)
+                av = obj.IntervalAxis if hasattr(obj,"IntervalAxis") else None
+                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av)
             obj.Shape = sh
             if not DraftGeomUtils.isNull(pl):
                 obj.Placement = pl
@@ -4485,7 +4488,7 @@ class _Array(_DraftObject):
                         base.append(nshape)
         return Part.makeCompound(base)
 
-    def polarArray(self,shape,center,angle,num,axis):
+    def polarArray(self,shape,center,angle,num,axis,axisvector):
         #print "angle ",angle," num ",num
         import Part
         if angle == 360:
@@ -4499,6 +4502,10 @@ class _Array(_DraftObject):
             currangle = fraction + (i*fraction)
             nshape = shape.copy()
             nshape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), currangle)
+            if axisvector:
+                if not DraftVecUtils.isNull(axisvector):
+                    if i > 0:
+                        nshape.translate(FreeCAD.Vector(axisvector).multiply(i))
             base.append(nshape)
         return Part.makeCompound(base)
 
