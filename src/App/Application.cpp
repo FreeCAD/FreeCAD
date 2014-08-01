@@ -1208,6 +1208,10 @@ void Application::initApplication(void)
        ("User parameter:BaseApp/Preferences/Units");
     UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
 
+#if defined (_DEBUG)
+    Console().Log("Application is built with debug information\n");
+#endif
+
     // starting the init script
     Console().Log("Run App init script\n");
     Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
