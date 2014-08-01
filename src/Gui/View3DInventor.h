@@ -70,7 +70,7 @@ public:
     View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags=0);
     ~View3DInventor();
 
-    /// Mesage handler
+    /// Message handler
     virtual bool onMsg(const char* pMsg, const char** ppReturn);
     virtual bool onHasMsg(const char* pMsg) const;
     virtual void deleteSelf();

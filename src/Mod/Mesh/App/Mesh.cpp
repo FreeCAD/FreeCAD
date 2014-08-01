@@ -1129,8 +1129,7 @@ void MeshObject::removeSelfIntersections()
 
     if (!selfIntersections.empty()) {
         MeshCore::MeshFixSelfIntersection cMeshFix(_kernel, selfIntersections);
-        cMeshFix.Fixup();
-        this->_segments.clear();
+        deleteFacets(cMeshFix.GetFacets());
     }
 }
 

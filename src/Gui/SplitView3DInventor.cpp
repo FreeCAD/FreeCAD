@@ -58,6 +58,14 @@ AbstractSplitView::~AbstractSplitView()
     }
 }
 
+void AbstractSplitView::deleteSelf()
+{
+    for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it) {
+        (*it)->setSceneGraph(0);
+    }
+    MDIView::deleteSelf();
+}
+
 void AbstractSplitView::setupSettings()
 {
     // attach Parameter Observer

@@ -754,7 +754,7 @@ void MeshEvalSelfIntersection::GetIntersections(std::vector<std::pair<unsigned l
     }
 }
 
-bool MeshFixSelfIntersection::Fixup()
+std::vector<unsigned long> MeshFixSelfIntersection::GetFacets() const
 {
     std::vector<unsigned long> indices;
     const MeshFacetArray& rFaces = _rclMesh.GetFacets();
@@ -781,8 +781,12 @@ bool MeshFixSelfIntersection::Fixup()
     std::sort(indices.begin(), indices.end());
     indices.erase(std::unique(indices.begin(), indices.end()), indices.end());
 
-    _rclMesh.DeleteFacets(indices);
+    return indices;
+}
 
+bool MeshFixSelfIntersection::Fixup()
+{
+    _rclMesh.DeleteFacets(GetFacets());
     return true;
 }
 
