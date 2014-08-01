@@ -89,6 +89,7 @@ IF(OCC_LIBRARY)
     TKXDESTEP
     TKXDEIGES
     TKMeshVS
+    TKAdvTools
   )
 ENDIF(OCC_LIBRARY)
 

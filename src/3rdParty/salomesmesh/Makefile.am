@@ -21,7 +21,7 @@ endif
 #AM_LDFLAGS = -version-info 1:0:0 -Wl,--no-undefined -L$(OCC_LIB)
 AM_LDFLAGS = -version-info 1:0:0 -L$(OCC_LIB) \
 		-lTKernel -lTKService -lTKMath -lTKBRep -lTKTopAlgo -lTKGeomAlgo \
-		-lTKGeomBase -lTKG3d -lTKG2d -lTKMeshVS -lTKShHealing -lTKPrim
+		-lTKGeomBase -lTKG3d -lTKG2d -lTKMeshVS -lTKShHealing -lTKPrim -lTKAdvTools
 
 #uninstall-local:
 #	-rm -rf $(DESTDIR)$(libdir)
