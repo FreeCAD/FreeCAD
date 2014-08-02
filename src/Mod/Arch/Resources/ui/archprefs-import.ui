@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>553</width>
-    <height>612</height>
+    <width>503</width>
+    <height>526</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -47,46 +47,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
-          <property name="toolTip">
-           <string>If this is checked, IFC files will always be imported with the internal python parser, even if IfcOpenShell is installed</string>
-          </property>
-          <property name="text">
-           <string>Force python parser</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>forceIfcPythonParser</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
-          <property name="toolTip">
-           <string>Creates groups for each Arch object type</string>
-          </property>
-          <property name="text">
-           <string>Group components by types</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>createIfcGroups</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
@@ -98,26 +58,6 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcSeparateOpenings</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_2">
-          <property name="toolTip">
-           <string>If this is checked, placements will be recomputed and applied to the objects as they were in the IFC file (slower)</string>
-          </property>
-          <property name="text">
-           <string>Separate placements</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcSeparatePlacements</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -164,31 +104,10 @@
            <string/>
           </property>
           <property name="placeholderText">
-           <string>IfcBuildingElementProxy,IfcFlowTerminal,IfcFurnishingElement</string>
+           <string/>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcSkip</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Custom IFC schema (internal parser only)</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
-          <property name="prefEntry" stdset="0">
-           <cstring>CustomIfcSchema</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -211,7 +130,7 @@
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Scaling factor</string>
+           <string>Scaling factor (also used for import)</string>
           </property>
          </widget>
         </item>
@@ -368,16 +287,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
-  <customwidget>
-   <class>Gui::FileChooser</class>
-   <extends>QWidget</extends>
-   <header>Gui/FileDialog.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefFileChooser</class>
-   <extends>Gui::FileChooser</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
