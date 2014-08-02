@@ -146,19 +146,19 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     mycolor->rgb.setValue(0.7f, 0.7f ,0.7f);
     parent->addChild(mycolor);
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
-    int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
-    SoDrawStyle* DefaultStyle = new SoDrawStyle;
-    DefaultStyle->lineWidth = 1;
-    DefaultStyle->linePattern = pattern;
-
-    SoMaterial* LightStyle = new SoMaterial;
-    LightStyle->transparency = 0.7f;
-
-    if (GridStyle.getValue() == 0)
-      parent->addChild(DefaultStyle);
-    else
-      parent->addChild(LightStyle);
+    if (GridStyle.getValue() == 0) {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+        int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
+        SoDrawStyle* DefaultStyle = new SoDrawStyle;
+        DefaultStyle->lineWidth = 1;
+        DefaultStyle->linePattern = pattern;
+        parent->addChild(DefaultStyle);
+    }
+    else {
+        SoMaterial* LightStyle = new SoMaterial;
+        LightStyle->transparency = 0.7f;
+        parent->addChild(LightStyle);
+    }
 
     SoPickStyle* PickStyle = new SoPickStyle;
     PickStyle->style = SoPickStyle::UNPICKABLE;
