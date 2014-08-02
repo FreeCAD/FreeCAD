@@ -682,7 +682,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_DragPoint:
-                    if (edit->DragPoint != -1 && pp) {
+                    if (edit->DragPoint != -1) {
                         int GeoId;
                         Sketcher::PointPos PosId;
                         getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
@@ -702,7 +702,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_DragCurve:
-                    if (edit->DragCurve != -1 && pp) {
+                    if (edit->DragCurve != -1) {
                         const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
                         if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
@@ -723,10 +723,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_DragConstraint:
-                    if ((edit->DragConstraintSet.empty() == false) && pp) {
+                    if (edit->DragConstraintSet.empty() == false) {
+                        Gui::Command::openCommand("Drag Constraint");
                         for(std::set<int>::iterator it = edit->DragConstraintSet.begin();
                             it != edit->DragConstraintSet.end(); ++it) {
-                            Gui::Command::openCommand("Drag Constraint");
                             moveConstraint(*it, Base::Vector2D(x, y));
                             //updateColor();
                         }
