@@ -361,8 +361,12 @@ class Component:
                     if noplacement:
                         base.Placement = FreeCAD.Placement()
                     if not base.Solids:
-                        if base.Faces: 
+                        if base.Faces:
+                            import DraftGeomUtils
+                            if not DraftGeomUtils.isCoplanar(base.Faces):
+                                return []
                             return [base]
+                                
                         basewires = []
                         if not base.Wires:
                             if len(base.Edges) == 1:
