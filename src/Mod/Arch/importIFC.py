@@ -126,6 +126,7 @@ def insert(filename,docname,skip=[]):
     PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
     SKIP = p.GetString("ifcSkip","")
     SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
+    SCALE = p.GetFloat("IfcScalingFactor",1.0)
 
     if DEBUG: print "opening ",filename,"..."
     try:
@@ -174,6 +175,8 @@ def insert(filename,docname,skip=[]):
         if brep:
             shape = Part.Shape()
             shape.importBrepFromString(brep)
+            if SCALE != 1:
+                shape.scale(SCALE)
             if not shape.isNull():
                 baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
                 baseobj.Shape = shape

@@ -116,21 +116,15 @@
         </item>
        </layout>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>IFC export</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="label_2">
+          <property name="toolTip">
+           <string>A scaling factor to apply to imported IFC objects</string>
+          </property>
           <property name="text">
-           <string>Scaling factor (also used for import)</string>
+           <string>Scaling factor</string>
           </property>
          </widget>
         </item>
@@ -158,6 +152,15 @@
         </item>
        </layout>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>IFC export</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
@@ -186,7 +189,7 @@
            <string>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</string>
           </property>
           <property name="text">
-           <string>Force export as Breps</string>
+           <string>Force export as Brep</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcExportAsBrep</cstring>
