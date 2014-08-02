@@ -2363,13 +2363,6 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
         }
     }
 
-    qDebug()<<"Coords for "<<idString;
-    for(ConstrIconBBVec::iterator i = boundingBoxes.begin(); i!=boundingBoxes.end(); ++i) {
-        qDebug()<<i->first;
-        for(std::set<int>::iterator j = i->second.begin(); j!= i->second.end(); ++j)
-            qDebug()<<'\t'<<*j;
-    }
-
     edit->combinedConstrBoxes[idString] = boundingBoxes;
     thisInfo->string.setValue(idString.toAscii().data());
     sendConstraintIconToCoin(compositeIcon, thisDest);
