@@ -17,9 +17,9 @@
 %}
 
      /* Bison declarations.  */
-     %token UNIT NUM
+     %token UNIT NUM MINUSSIGN
      %token ACOS ASIN ATAN ATAN2 COS EXP ABS MOD LOG LOG10 POW SIN SINH TAN TANH SQRT;
-     %left '-' '+'
+     %left MINUSSIGN '+'
      %left '*' '/'
      %left NEG     /* negation--unary minus */
      %right '^'    /* exponentiation */
@@ -38,10 +38,10 @@
  ;   
      num:      NUM                			{ $$ = $1;         	}
              | num '+' num        			{ $$ = $1.getValue() + $3.getValue();    	}
-             | num '-' num        			{ $$ = $1.getValue() - $3.getValue();    	}
+             | num MINUSSIGN num      		{ $$ = $1.getValue() - $3.getValue();    	}
              | num '*' num        			{ $$ = $1.getValue() * $3.getValue();    	}
              | num '/' num        			{ $$ = $1.getValue() / $3.getValue();    	}
-             | '-' num  %prec NEG 			{ $$ = -$2.getValue();        	}
+             | MINUSSIGN num  %prec NEG     { $$ = -$2.getValue();        	}
              | num '^' num        			{ $$ = pow ($1.getValue(), $3.getValue());}
              | '(' num ')'        			{ $$ = $2;         	}
              | ACOS  '(' num ')'  			{ $$ = acos($3.getValue());   	}

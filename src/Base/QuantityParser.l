@@ -31,12 +31,15 @@ ID       [a-z][a-z0-9]*
 <C_COMMENT>"\]" { BEGIN(INITIAL); }
 <C_COMMENT>.    { ;}
 
- 
+
 [ \t]       ;
 [\n]+       ;
 
-[-+()=/*^]  { return *yytext; }
+[+()=/*^]  { return *yytext; }
 
+ "-"                                                return MINUSSIGN;
+ "\xe2\x88\x92"                                     return MINUSSIGN;
+ 
  "nm"       yylval = Quantity::NanoMetre;           return UNIT; // nano meter
  "um"       yylval = Quantity::MicroMetre;          return UNIT; // micro meter
  "\xC2\xB5m"    yylval = Quantity::MicroMetre;          return UNIT; // micro meter    (greek micro in UTF8)
@@ -45,7 +48,7 @@ ID       [a-z][a-z0-9]*
  "dm"       yylval = Quantity::DeciMetre;           return UNIT; // deci meter
  "m"        yylval = Quantity::Metre;               return UNIT; // metre
  "km"       yylval = Quantity::KiloMetre;           return UNIT; // kilo meter
-
+ 
  "l"        yylval = Quantity::Liter;               return UNIT; // Liter      dm^3
  
  "ug"       yylval = Quantity::MicroGram;           return UNIT; // micro gram
@@ -124,9 +127,11 @@ ID       [a-z][a-z0-9]*
  "rad"      yylval = Quantity::Radian;              return UNIT; // radian         
  "gon"      yylval = Quantity::Gon;                 return UNIT; // gon         
 
-{DIGIT}*["."","]{DIGIT}*[eE][-+]?[0-9]+     {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
-{DIGIT}*["."","]{DIGIT}*                    {for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;}
-{DIGIT}+                                    {yylval = atof( yytext ); return NUM;}
+
+{DIGIT}*["."","]{DIGIT}*[eE][-+]?[0-9]+             {   for(char* c=yytext;*c!='\0';c++) if(*c==',') *c='.'; yylval = atof( yytext ); return NUM; }
+{DIGIT}*["."","]{DIGIT}*                            {   for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;  }
+{DIGIT}+                                            {   yylval = atof( yytext ); return NUM;}
+
 
 "pi"                   {yylval = M_PI          ; return NUM;} // constant pi         
 "e"                    {yylval = M_E           ; return NUM;} // constant e         
