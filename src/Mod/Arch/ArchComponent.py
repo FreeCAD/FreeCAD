@@ -335,12 +335,13 @@ class Component:
                         if not obj.Base.Shape.Wires[0].isClosed():
                             return obj.Base.Shape.copy()
                     elif not(obj.Base.Shape.Solids):
-                        p1 = obj.Base.Shape.CenterOfMass
-                        v = self.getExtrusionVector(obj)
-                        if v:
-                            p2 = p1.add(v)
-                            import Part
-                            return Part.Line(p1,p2).toShape()
+                        if hasattr(obj.Base.Shape,"CenterOfMass"):
+                            p1 = obj.Base.Shape.CenterOfMass
+                            v = self.getExtrusionVector(obj)
+                            if v:
+                                p2 = p1.add(v)
+                                import Part
+                                return Part.Line(p1,p2).toShape()
         else:
             p1 = FreeCAD.Vector()
             v = self.getExtrusionVector(obj)
