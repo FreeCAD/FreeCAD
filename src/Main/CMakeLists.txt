@@ -1,7 +1,7 @@
 #add_defintions(-D_FC_GUI_ENABLED_)
 #add_defintions(-DFREECADMAINPY)
 
-if(FREECAD_BUILD_GUI)
+if(BUILD_GUI)
     include_directories(
         ${Boost_INCLUDE_DIRS}
         ${COIN3D_INCLUDE_DIR}
@@ -11,7 +11,7 @@ if(FREECAD_BUILD_GUI)
         ${PYTHON_INCLUDE_PATH}
         ${XERCESC_INCLUDE_DIR}
     )
-else(FREECAD_BUILD_GUI)
+else(BUILD_GUI)
     include_directories(
         ${Boost_INCLUDE_DIRS}
         ${ZLIB_INCLUDE_DIR}
@@ -19,10 +19,10 @@ else(FREECAD_BUILD_GUI)
         ${PYTHON_INCLUDE_PATH}
         ${XERCESC_INCLUDE_DIR}
     )
-endif(FREECAD_BUILD_GUI)
+endif(BUILD_GUI)
 
 ######################## FreeCADMain ########################
-if(FREECAD_BUILD_GUI)
+if(BUILD_GUI)
 
     SET(FreeCAD_SRCS
         freecad.rc
@@ -57,7 +57,7 @@ if(FREECAD_BUILD_GUI)
             RUNTIME DESTINATION bin
         )
     endif(WIN32)
-endif(FREECAD_BUILD_GUI)
+endif(BUILD_GUI)
 ######################## FreeCADMainCmd ########################
 
 SET(FreeCADMainCmd_SRCS
@@ -109,7 +109,7 @@ else(WIN32)
 endif(WIN32)
 
 ######################## FreeCADGuiPy ########################
-if(FREECAD_BUILD_GUI)
+if(BUILD_GUI)
 
     SET(FreeCADGuiPy_SRCS
         FreeCADGuiPy.cpp
@@ -138,4 +138,4 @@ if(FREECAD_BUILD_GUI)
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
     endif(WIN32)
-endif(FREECAD_BUILD_GUI)
+endif(BUILD_GUI)
