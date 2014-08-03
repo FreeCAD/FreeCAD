@@ -361,8 +361,8 @@ static void yy_fatal_error (yyconst char msg[]  );
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
 
-#define YY_NUM_RULES 98
-#define YY_END_OF_BUFFER 99
+#define YY_NUM_RULES 97
+#define YY_END_OF_BUFFER 98
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -370,27 +370,27 @@ struct yy_trans_info
 	flex_int32_t yy_verify;
 	flex_int32_t yy_nxt;
 	};
-static yyconst flex_int16_t yy_accept[172] =
+static yyconst flex_int16_t yy_accept[179] =
     {   0,
-        0,    0,    0,    0,   99,   97,    4,    5,   38,   40,
-        6,   77,    7,   78,   27,   97,   97,   67,   31,   97,
-       51,   97,   97,   97,   65,    1,   97,   97,   97,   80,
-       97,   21,   26,   97,   97,   17,   15,   97,   97,   97,
-       97,   24,   23,   97,   97,   97,   97,    3,   98,    2,
-        5,   77,    0,   77,   78,   70,    0,   30,   53,    0,
-       68,   55,    0,   66,   71,    0,    0,    0,    0,   36,
-       13,    0,    0,    0,   14,    0,   39,    0,   37,   29,
-       52,    0,   22,   16,    0,   45,    0,   28,   32,   54,
-        0,   20,   44,   12,    0,    9,   47,   79,    0,    0,
+        0,    0,    0,    0,   98,   96,    4,    5,   38,   40,
+        6,    7,   76,   27,   96,   96,   67,   31,   96,   51,
+       96,   96,   96,   65,    1,   96,   96,   96,   79,   96,
+       21,   26,   96,   96,   17,   15,   96,   96,   96,   96,
+       24,   23,   96,   96,   96,   96,    3,   97,    2,    5,
+       77,   76,   76,    0,   70,    0,   30,   53,    0,   68,
+       55,    0,   66,   71,    0,    0,    0,    0,   36,   13,
+        0,    0,    0,   14,    0,   39,    0,   37,   29,   52,
+        0,   22,   16,    0,   45,    0,   28,   32,   54,    0,
+       20,   44,   12,    0,    9,   47,   78,    0,    0,    0,
 
-        0,    0,    0,   48,    0,    0,   34,    0,   18,   10,
-       43,   72,    0,    0,    0,   76,   58,   57,    0,   69,
-       87,    0,    0,    0,   85,   49,   73,   86,   75,   56,
-       64,   50,   46,   89,    0,   42,   25,   88,   35,   91,
-       63,   74,   92,    0,   94,    0,    0,   33,    0,   19,
-       11,    8,   59,   81,   82,   83,    0,    0,   93,   96,
-       95,   41,    0,    0,   84,   90,   60,   61,    0,   62,
-        0
+        0,    0,   48,    0,    0,   34,    0,   18,   10,   43,
+       72,    0,    0,   77,    0,   76,    0,    0,   76,   58,
+       57,    0,   69,   86,    0,    0,    0,   84,   49,   73,
+       85,   75,   56,   64,   50,   46,   88,    0,   42,   25,
+       87,   35,   90,   63,   74,   91,    0,   93,    0,    0,
+       33,    0,   19,   11,    8,    0,   77,    0,   76,   59,
+       80,   81,   82,    0,    0,   92,   95,   94,   41,    0,
+        0,   83,   89,   60,   61,    0,   62,    0
     } ;
 
 static yyconst flex_int32_t yy_ec[256] =
@@ -399,156 +399,164 @@ static yyconst flex_int32_t yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    4,    1,    1,    1,    1,    5,    6,
-        6,    6,    7,    8,    9,    8,    6,   10,   11,   12,
-       13,   13,   13,   13,   13,   13,   13,    1,    1,    1,
-        6,    1,    1,    1,   14,    1,   15,    1,   16,    1,
-       17,    1,    1,   18,   19,    1,   20,   21,    1,   22,
-        1,    1,    1,   23,    1,   24,   25,    1,    1,    1,
-       26,    1,   27,    6,    1,    1,   28,   29,   30,   31,
+        6,    6,    7,    8,    9,   10,    6,   11,   12,   13,
+       14,   14,   14,   14,   14,   14,   14,    1,    1,    1,
+        6,    1,    1,    1,   15,    1,   16,    1,   17,    1,
+       18,    1,    1,   19,   20,    1,   21,   22,    1,   23,
+        1,    1,    1,   24,    1,   25,   26,    1,    1,    1,
+       27,    1,   28,    6,    1,    1,   29,   30,   31,   32,
 
-       32,   33,   34,   35,   36,    1,   37,   38,   39,   40,
-       41,   42,   43,   44,   45,   46,   47,    1,   48,   49,
-       50,   51,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,   52,    1,    1,    1,    1,
+       33,   34,   35,   36,   37,    1,   38,   39,   40,   41,
+       42,   43,   44,   45,   46,   47,   48,    1,   49,   50,
+       51,   52,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,   53,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,   54,    1,    1,    1,    1,
-       55,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,   56,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,   55,    1,    1,    1,    1,
+       56,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,   57,    1,    1,    1,    1,    1,    1,
 
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,   57,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,   58,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int32_t yy_meta[58] =
+static yyconst flex_int32_t yy_meta[59] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1
+        1,    1,    1,    1,    1,    1,    1,    1
     } ;
 
-static yyconst flex_int16_t yy_base[173] =
+static yyconst flex_int16_t yy_base[180] =
     {   0,
-        0,    0,   55,   56,  228,  229,  229,  224,   52,  229,
-      229,   59,  229,   77,  229,  202,  203,  229,  229,   52,
-      185,  195,  181,  207,  175,  229,   31,   55,   60,  170,
-      172,  176,  229,  176,   79,   38,   91,  176,  163,   61,
-      185,   73,   76,  103,  181,   53,  159,  229,  229,  229,
-      207,  123,  134,  138,  148,  229,  181,  229,  229,  180,
-      229,  229,  163,  161,  229,  160,  163,  167,  174,  229,
-      229,  156,  154,  165,  229,  156,  229,  157,  229,  229,
-      229,  168,  229,  229,  159,   82,  160,  229,  229,  229,
-      152,  229,   40,  229,  100,  229,  229,  229,  144,  155,
+        0,    0,   56,   57,  261,  262,  262,  257,  262,  262,
+      262,  262,   53,  262,  234,  235,  262,  262,   53,  217,
+      227,  213,  239,  207,  262,   41,   41,   29,  202,  204,
+      208,  262,  208,   74,   49,   84,  208,  195,   56,  217,
+       63,   65,   92,  213,   22,  191,  262,  262,  262,  240,
+      117,  124,  132,  147,  262,  213,  262,  262,  212,  262,
+      262,  195,  193,  262,  192,  195,  199,  206,  262,  262,
+      188,  186,  197,  262,  188,  262,  189,  262,  262,  262,
+      200,  262,  262,  191,   40,  192,  262,  262,  262,  184,
+      262,   64,  262,   79,  262,  262,  262,  176,  187,  170,
 
-      159,  149,  144,  229,  147,  145,  229,  144,  229,  229,
-      229,  229,  134,  131,  152,  164,  229,  229,  139,  229,
-      229,  137,  141,  140,  229,  229,  229,  229,  229,  229,
-      229,  229,  229,  168,  134,  229,  229,  229,  229,  229,
-      229,  229,  137,  125,  134,  120,  122,  229,   99,  229,
-      229,  229,  229,  229,  229,  117,  118,   79,  229,  229,
-      229,  229,   76,   73,  229,  229,  229,  229,   54,  229,
-      229,   94
+      160,  147,  262,  147,  144,  262,  143,  262,  262,  262,
+      262,  127,  122,  157,  166,  170,  182,  186,  193,  262,
+      262,  127,  262,  262,  120,  123,  122,  262,  262,  262,
+      262,  262,  262,  262,  262,  262,  143,  108,  262,  262,
+      262,  262,  262,  262,  262,  116,  101,  103,   85,   80,
+      262,   81,  262,  262,  262,  197,  201,  205,  209,  262,
+      262,  262,  109,  106,   70,  262,  262,  262,  262,   68,
+       50,  262,  262,  262,  262,   47,  262,  262,   81
     } ;
 
-static yyconst flex_int16_t yy_def[173] =
+static yyconst flex_int16_t yy_def[180] =
     {   0,
-      171,    1,  172,  172,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
+      178,    1,  179,  179,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
 
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-        0,  171
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,    0,  178
     } ;
 
-static yyconst flex_int16_t yy_nxt[287] =
+static yyconst flex_int16_t yy_nxt[321] =
     {   0,
-        6,    7,    8,    9,   10,   11,   11,   12,   13,   14,
-       14,   14,   14,   15,   16,    6,   17,   18,   19,   20,
-       21,   22,   23,   24,   25,   26,    6,   27,    6,   28,
-       29,   30,   31,   32,   33,   34,   35,   36,   37,   38,
-       39,   40,    6,   41,   42,   43,   44,    6,    6,   45,
-        6,    6,    6,    6,    6,   46,   47,   49,   49,   66,
-       67,   52,   52,   52,   52,   58,   86,   53,   52,   52,
-       52,   52,   59,   60,   53,   68,   69,  136,   87,  137,
-       54,   50,   50,   53,   54,   70,   55,   55,   55,   55,
-       53,   74,   80,   71,   48,   72,   98,  170,   75,   81,
+        6,    7,    8,    9,   10,   11,   11,    6,   12,    6,
+       13,   13,   13,   13,   14,   15,    6,   16,   17,   18,
+       19,   20,   21,   22,   23,   24,   25,    6,   26,    6,
+       27,   28,   29,   30,   31,   32,   33,   34,   35,   36,
+       37,   38,   39,    6,   40,   41,   42,   43,    6,    6,
+       44,    6,    6,    6,    6,    6,   45,   46,   48,   48,
+       51,   73,   52,   53,   53,   53,   53,   57,   74,   54,
+       65,   66,   69,  135,   58,   59,  111,  112,   85,  136,
+       70,   47,   71,   49,   49,   54,   67,   68,   79,   72,
+       86,  177,   97,  104,  176,   80,   81,   98,   87,  101,
 
-       82,   99,   73,  105,   88,  100,  112,  113,  102,   89,
-      106,   90,   83,   91,  132,  103,  169,   84,  104,  168,
-      133,  107,  167,   85,   92,  108,   93,  166,  165,   94,
-      138,   95,   52,   52,   52,   52,  109,  139,   53,  164,
-      115,  110,  115,  116,  116,  116,  116,   52,   52,   52,
-       52,   54,  148,   53,   53,   54,  149,   55,   55,   55,
-       55,  116,  116,  116,  116,  163,  162,  150,  161,   53,
-      160,  159,  151,  116,  116,  116,  116,  158,  157,  156,
-      155,  154,  153,  152,  147,  146,  145,  144,  143,  142,
-      141,  140,  135,  134,  131,  130,  129,  128,  127,  126,
+      105,   99,  139,   88,  140,   89,  102,   90,   82,  103,
+      141,  106,  175,   83,  174,  107,  173,  142,   91,   84,
+       92,  172,  171,   93,  170,   94,  108,  114,  114,  114,
+      114,  109,  169,  115,  116,  116,  116,  116,  168,   51,
+      117,   52,   53,   53,   53,   53,  151,  167,   54,  115,
+      152,  166,  165,  118,  164,  118,  117,  119,  119,  119,
+      119,  153,  163,  162,   54,  161,  154,  114,  114,  114,
+      114,  160,  156,  115,  156,  155,  157,  157,  157,  157,
+      116,  116,  116,  116,  150,  149,  117,  148,  158,  115,
+      158,  147,  159,  159,  159,  159,  119,  119,  119,  119,
 
-      125,  124,  123,  122,  121,  120,  119,  118,  117,   51,
-      114,  111,  101,   97,   96,   79,   78,   77,   76,   65,
-       64,   63,   62,   61,   57,   56,   51,  171,    5,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171
+      146,  145,  117,  119,  119,  119,  119,  157,  157,  157,
+      157,  157,  157,  157,  157,  159,  159,  159,  159,  159,
+      159,  159,  159,  144,  143,  138,  137,  134,  133,  132,
+      131,  130,  129,  128,  127,  126,  125,  124,  123,  122,
+      121,  120,   50,  113,  110,  100,   96,   95,   78,   77,
+       76,   75,   64,   63,   62,   61,   60,   56,   55,   50,
+      178,    5,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178
     } ;
 
-static yyconst flex_int16_t yy_chk[287] =
+static yyconst flex_int16_t yy_chk[321] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    3,    4,   27,
-       27,    9,    9,    9,    9,   20,   36,    9,   12,   12,
-       12,   12,   20,   20,   12,   27,   27,   93,   36,   93,
-       14,    3,    4,    9,   14,   28,   14,   14,   14,   14,
-       12,   29,   35,   28,  172,   28,   40,  169,   29,   35,
+        1,    1,    1,    1,    1,    1,    1,    1,    3,    4,
+       13,   28,   13,   13,   13,   13,   13,   19,   28,   13,
+       26,   26,   27,   85,   19,   19,   45,   45,   35,   85,
+       27,  179,   27,    3,    4,   13,   26,   26,   34,   27,
+       35,  176,   39,   42,  171,   34,   34,   39,   36,   41,
 
-       35,   40,   28,   43,   37,   40,   46,   46,   42,   37,
-       43,   37,   35,   37,   86,   42,  164,   35,   42,  163,
-       86,   44,  158,   35,   37,   44,   37,  157,  156,   37,
-       95,   37,   52,   52,   52,   52,   44,   95,   52,  149,
-       53,   44,   53,   53,   53,   53,   53,   54,   54,   54,
-       54,   55,  113,   54,   52,   55,  113,   55,   55,   55,
-       55,  115,  115,  115,  115,  147,  146,  113,  145,   54,
-      144,  143,  113,  116,  116,  116,  116,  135,  134,  124,
-      123,  122,  119,  114,  108,  106,  105,  103,  102,  101,
-      100,   99,   91,   87,   85,   82,   78,   76,   74,   73,
+       42,   39,   92,   36,   92,   36,   41,   36,   34,   41,
+       94,   43,  170,   34,  165,   43,  164,   94,   36,   34,
+       36,  163,  152,   36,  150,   36,   43,   51,   51,   51,
+       51,   43,  149,   51,   52,   52,   52,   52,  148,   53,
+       52,   53,   53,   53,   53,   53,  112,  147,   53,   51,
+      112,  146,  138,   54,  137,   54,   52,   54,   54,   54,
+       54,  112,  127,  126,   53,  125,  112,  114,  114,  114,
+      114,  122,  115,  114,  115,  113,  115,  115,  115,  115,
+      116,  116,  116,  116,  107,  105,  116,  104,  117,  114,
+      117,  102,  117,  117,  117,  117,  118,  118,  118,  118,
 
-       72,   69,   68,   67,   66,   64,   63,   60,   57,   51,
-       47,   45,   41,   39,   38,   34,   32,   31,   30,   25,
-       24,   23,   22,   21,   17,   16,    8,    5,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171,  171,  171,  171,  171,
-      171,  171,  171,  171,  171,  171
+      101,  100,  116,  119,  119,  119,  119,  156,  156,  156,
+      156,  157,  157,  157,  157,  158,  158,  158,  158,  159,
+      159,  159,  159,   99,   98,   90,   86,   84,   81,   77,
+       75,   73,   72,   71,   68,   67,   66,   65,   63,   62,
+       59,   56,   50,   46,   44,   40,   38,   37,   33,   31,
+       30,   29,   24,   23,   22,   21,   20,   16,   15,    8,
+        5,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178,
+      178,  178,  178,  178,  178,  178,  178,  178,  178,  178
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -579,7 +587,7 @@ char *yytext;
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
 
-#line 583 "QuantityLexer.c"
+#line 591 "QuantityLexer.c"
 
 #define INITIAL 0
 #define C_COMMENT 1
@@ -760,10 +768,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 28 "<stdin>"
+#line 31 "<stdin>"
 
 
-#line 767 "QuantityLexer.c"
+#line 775 "QuantityLexer.c"
 
 	if ( !(yy_init) )
 		{
@@ -816,13 +824,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 172 )
+				if ( yy_current_state >= 179 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_current_state != 171 );
+		while ( yy_current_state != 178 );
 		yy_cp = (yy_last_accepting_cpos);
 		yy_current_state = (yy_last_accepting_state);
 
@@ -844,496 +852,491 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 30 "<stdin>"
+#line 33 "<stdin>"
 { BEGIN(C_COMMENT); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 31 "<stdin>"
+#line 34 "<stdin>"
 { BEGIN(INITIAL); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 32 "<stdin>"
+#line 35 "<stdin>"
 { ;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 35 "<stdin>"
+#line 38 "<stdin>"
 ;
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 36 "<stdin>"
+#line 39 "<stdin>"
 ;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 38 "<stdin>"
+#line 41 "<stdin>"
 { return *yytext; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 40 "<stdin>"
+#line 43 "<stdin>"
 return MINUSSIGN;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 41 "<stdin>"
+#line 44 "<stdin>"
 return MINUSSIGN;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 43 "<stdin>"
+#line 46 "<stdin>"
 yylval = Quantity::NanoMetre;           return UNIT; // nano meter
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 44 "<stdin>"
+#line 47 "<stdin>"
 yylval = Quantity::MicroMetre;          return UNIT; // micro meter
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 45 "<stdin>"
+#line 48 "<stdin>"
 yylval = Quantity::MicroMetre;          return UNIT; // micro meter    (greek micro in UTF8)
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 46 "<stdin>"
+#line 49 "<stdin>"
 yylval = Quantity::MilliMetre;          return UNIT; // milli meter    (internal standard length)
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 47 "<stdin>"
+#line 50 "<stdin>"
 yylval = Quantity::CentiMetre;          return UNIT; // centi meter
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 48 "<stdin>"
+#line 51 "<stdin>"
 yylval = Quantity::DeciMetre;           return UNIT; // deci meter
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 49 "<stdin>"
+#line 52 "<stdin>"
 yylval = Quantity::Metre;               return UNIT; // metre
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 50 "<stdin>"
+#line 53 "<stdin>"
 yylval = Quantity::KiloMetre;           return UNIT; // kilo meter
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 52 "<stdin>"
+#line 55 "<stdin>"
 yylval = Quantity::Liter;               return UNIT; // Liter      dm^3
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 54 "<stdin>"
+#line 57 "<stdin>"
 yylval = Quantity::MicroGram;           return UNIT; // micro gram
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 55 "<stdin>"
+#line 58 "<stdin>"
 yylval = Quantity::MicroGram;           return UNIT; // micro gram
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 56 "<stdin>"
+#line 59 "<stdin>"
 yylval = Quantity::MilliGram;           return UNIT; // milli gram
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 57 "<stdin>"
+#line 60 "<stdin>"
 yylval = Quantity::Gram;                return UNIT; // gram
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 58 "<stdin>"
+#line 61 "<stdin>"
 yylval = Quantity::KiloGram;            return UNIT; // kilo gram      (internal standard for mass) 
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 59 "<stdin>"
+#line 62 "<stdin>"
 yylval = Quantity::Ton;                 return UNIT; // Metric Tonne
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 61 "<stdin>"
+#line 64 "<stdin>"
 yylval = Quantity::Second;              return UNIT; // second         (internal standard time)
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 62 "<stdin>"
+#line 65 "<stdin>"
 yylval = Quantity::Minute;              return UNIT; // minute
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 63 "<stdin>"
+#line 66 "<stdin>"
 yylval = Quantity::Hour;                return UNIT; // hour  
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 65 "<stdin>"
+#line 68 "<stdin>"
 yylval = Quantity::Ampere;              return UNIT; // Ampere         (internal standard electric current)
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 66 "<stdin>"
+#line 69 "<stdin>"
 yylval = Quantity::MilliAmpere;         return UNIT; // milli Ampere         
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 67 "<stdin>"
+#line 70 "<stdin>"
 yylval = Quantity::KiloAmpere;          return UNIT; // kilo Ampere         
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 68 "<stdin>"
+#line 71 "<stdin>"
 yylval = Quantity::MegaAmpere;          return UNIT; // Mega Ampere         
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 70 "<stdin>"
+#line 73 "<stdin>"
 yylval = Quantity::Kelvin;              return UNIT; // Kelvin         (internal standard thermodynamic temperature)
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 71 "<stdin>"
+#line 74 "<stdin>"
 yylval = Quantity::MilliKelvin;         return UNIT; // Kelvin         
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 72 "<stdin>"
+#line 75 "<stdin>"
 yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin         
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 73 "<stdin>"
+#line 76 "<stdin>"
 yylval = Quantity::MicroKelvin;         return UNIT; // Kelvin         
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 75 "<stdin>"
+#line 78 "<stdin>"
 yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)        
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 77 "<stdin>"
+#line 80 "<stdin>"
 yylval = Quantity::Candela;             return UNIT; // Candela        (internal standard luminous intensity)        
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 79 "<stdin>"
+#line 82 "<stdin>"
 yylval = Quantity::Inch;                return UNIT; // inch
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 80 "<stdin>"
+#line 83 "<stdin>"
 yylval = Quantity::Inch;                return UNIT; // inch
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 81 "<stdin>"
+#line 84 "<stdin>"
 yylval = Quantity::Foot;                return UNIT; // foot
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 82 "<stdin>"
+#line 85 "<stdin>"
 yylval = Quantity::Foot;                return UNIT; // foot
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 83 "<stdin>"
+#line 86 "<stdin>"
 yylval = Quantity::Thou;                return UNIT; // thou (in/1000)
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 84 "<stdin>"
+#line 87 "<stdin>"
 yylval = Quantity::Thou;                return UNIT; // mil  (the thou in US)
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 85 "<stdin>"
+#line 88 "<stdin>"
 yylval = Quantity::Yard;                return UNIT; // yard
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 86 "<stdin>"
+#line 89 "<stdin>"
 yylval = Quantity::Mile;                return UNIT; // mile
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 90 "<stdin>"
+#line 93 "<stdin>"
 yylval = Quantity::Pound;               return UNIT; // pound
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 91 "<stdin>"
+#line 94 "<stdin>"
 yylval = Quantity::Pound;               return UNIT; // pound 
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 92 "<stdin>"
+#line 95 "<stdin>"
 yylval = Quantity::Ounce;               return UNIT; // ounce
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 93 "<stdin>"
+#line 96 "<stdin>"
 yylval = Quantity::Stone;               return UNIT; // Stone
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 94 "<stdin>"
+#line 97 "<stdin>"
 yylval = Quantity::Hundredweights;      return UNIT; // hundredweights
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 96 "<stdin>"
+#line 99 "<stdin>"
 yylval = Quantity::PoundForce;          return UNIT; // pound
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 98 "<stdin>"
+#line 101 "<stdin>"
 yylval = Quantity::Newton;              return UNIT; // Newton (kg*m/s^2)
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 99 "<stdin>"
+#line 102 "<stdin>"
 yylval = Quantity::KiloNewton;          return UNIT; // Newton 
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 100 "<stdin>"
+#line 103 "<stdin>"
 yylval = Quantity::MegaNewton;          return UNIT; // Newton 
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 101 "<stdin>"
+#line 104 "<stdin>"
 yylval = Quantity::MilliNewton;         return UNIT; // Newton 
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 103 "<stdin>"
+#line 106 "<stdin>"
 yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m*s^2 or N/m^2) 
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 104 "<stdin>"
+#line 107 "<stdin>"
 yylval = Quantity::KiloPascal;          return UNIT; // Pascal 
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 105 "<stdin>"
+#line 108 "<stdin>"
 yylval = Quantity::MegaPascal;          return UNIT; // Pascal  
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 106 "<stdin>"
+#line 109 "<stdin>"
 yylval = Quantity::GigaPascal;          return UNIT; // Pascal  
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 108 "<stdin>"
+#line 111 "<stdin>"
 yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 ) 
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 109 "<stdin>"
+#line 112 "<stdin>"
 yylval = Quantity::mTorr;               return UNIT; //  
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 110 "<stdin>"
+#line 113 "<stdin>"
 yylval = Quantity::yTorr;               return UNIT; //  
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 111 "<stdin>"
+#line 114 "<stdin>"
 yylval = Quantity::yTorr;               return UNIT; //  
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 113 "<stdin>"
+#line 116 "<stdin>"
 yylval = Quantity::PSI;                 return UNIT; // pounds/in^2 
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 114 "<stdin>"
+#line 117 "<stdin>"
 yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2 
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 116 "<stdin>"
+#line 119 "<stdin>"
 yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3) 
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 117 "<stdin>"
+#line 120 "<stdin>"
 yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3) 
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 119 "<stdin>"
+#line 122 "<stdin>"
 yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2) 
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 120 "<stdin>"
+#line 123 "<stdin>"
 yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule 
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 121 "<stdin>"
+#line 124 "<stdin>"
 yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule 
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 122 "<stdin>"
+#line 125 "<stdin>"
 yylval = Quantity::WattSecond;          return UNIT; //  
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 123 "<stdin>"
+#line 126 "<stdin>"
 yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule 
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 125 "<stdin>"
+#line 128 "<stdin>"
 yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 126 "<stdin>"
+#line 129 "<stdin>"
 yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 127 "<stdin>"
+#line 130 "<stdin>"
 yylval = Quantity::Radian;              return UNIT; // radian         
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 128 "<stdin>"
+#line 131 "<stdin>"
 yylval = Quantity::Gon;                 return UNIT; // gon         
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 131 "<stdin>"
-{   for(char* c=yytext;*c!='\0';c++) if(*c==',') *c='.'; yylval = atof( yytext ); return NUM; }
+#line 133 "<stdin>"
+{  yylval = num_change(yytext,'.',',');return NUM;  }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 132 "<stdin>"
-{   for(char* c=yytext;*c!='\0';c++)if(*c==',')*c='.'; yylval = atof( yytext ); return NUM;  }
+#line 134 "<stdin>"
+{  yylval = num_change(yytext,',','.');return NUM;  }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 133 "<stdin>"
-{   yylval = atof( yytext ); return NUM;}
+#line 137 "<stdin>"
+{yylval = M_PI          ; return NUM;} // constant pi         
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 136 "<stdin>"
-{yylval = M_PI          ; return NUM;} // constant pi         
+#line 138 "<stdin>"
+{yylval = M_E           ; return NUM;} // constant e         
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 137 "<stdin>"
-{yylval = M_E           ; return NUM;} // constant e         
+#line 140 "<stdin>"
+return ACOS;
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 139 "<stdin>"
-return ACOS;
+#line 141 "<stdin>"
+return ASIN;
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 140 "<stdin>"
-return ASIN;
+#line 142 "<stdin>"
+return ATAN;
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 141 "<stdin>"
-return ATAN;
+#line 143 "<stdin>"
+return ATAN2;
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 142 "<stdin>"
-return ATAN2;
+#line 144 "<stdin>"
+return COS;
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 143 "<stdin>"
-return COS;
+#line 145 "<stdin>"
+return EXP;
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 144 "<stdin>"
-return EXP;
+#line 146 "<stdin>"
+return ABS;
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 145 "<stdin>"
-return ABS;
+#line 147 "<stdin>"
+return MOD;
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 146 "<stdin>"
-return MOD;
+#line 148 "<stdin>"
+return LOG;
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 147 "<stdin>"
-return LOG;
+#line 149 "<stdin>"
+return LOG10;
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 148 "<stdin>"
-return LOG10;
+#line 150 "<stdin>"
+return POW;
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 149 "<stdin>"
-return POW;
+#line 151 "<stdin>"
+return SIN;
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 150 "<stdin>"
-return SIN;
+#line 152 "<stdin>"
+return SINH;
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 151 "<stdin>"
-return SINH;
+#line 153 "<stdin>"
+return TAN;
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 152 "<stdin>"
-return TAN;
+#line 154 "<stdin>"
+return TANH;
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 153 "<stdin>"
-return TANH;
+#line 155 "<stdin>"
+return SQRT;
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 154 "<stdin>"
-return SQRT;
+#line 157 "<stdin>"
+return *yytext;
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 156 "<stdin>"
-return *yytext;
-	YY_BREAK
-case 98:
-YY_RULE_SETUP
-#line 157 "<stdin>"
+#line 158 "<stdin>"
 ECHO;
 	YY_BREAK
-#line 1337 "QuantityLexer.c"
+#line 1340 "QuantityLexer.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(C_COMMENT):
 	yyterminate();
@@ -1627,7 +1630,7 @@ static int yy_get_next_buffer (void)
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 172 )
+			if ( yy_current_state >= 179 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1655,11 +1658,11 @@ static int yy_get_next_buffer (void)
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 172 )
+		if ( yy_current_state >= 179 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 171);
+	yy_is_jam = (yy_current_state == 178);
 
 	return yy_is_jam ? 0 : yy_current_state;
 }
@@ -2292,4 +2295,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 157 "<stdin>"
+#line 158 "<stdin>"
