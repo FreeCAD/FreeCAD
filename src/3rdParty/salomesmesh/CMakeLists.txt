@@ -27,7 +27,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 if(MSVC)
-	if(FREECAD_BUILD_FEM_NETGEN)
+	if(BUILD_FEM_NETGEN)
 		set(SMESH_LIBS
 			debug     MSVCRTD.LIB
 			debug     MSVCPRTD.LIB
@@ -41,7 +41,7 @@ if(MSVC)
 			${OCC_OCAF_DEBUG_LIBRARIES}
 			${OCC_OCAF_LIBRARIES}
 		)
-	else(FREECAD_BUILD_FEM_NETGEN)
+	else(BUILD_FEM_NETGEN)
 		set(SMESH_LIBS
 			debug     MSVCRTD.LIB
 			debug     MSVCPRTD.LIB
@@ -53,21 +53,21 @@ if(MSVC)
 			${OCC_OCAF_DEBUG_LIBRARIES}
 			${OCC_OCAF_LIBRARIES}
 		)
-	endif(FREECAD_BUILD_FEM_NETGEN)
+	endif(BUILD_FEM_NETGEN)
 	
 else(MSVC)
-    if(FREECAD_BUILD_FEM_NETGEN)
+    if(BUILD_FEM_NETGEN)
         set(SMESH_LIBS
             ${NGLIB_LIBRARIES}
             ${OCC_LIBRARIES}
             ${OCC_OCAF_LIBRARIES}
         )
-    else(FREECAD_BUILD_FEM_NETGEN)
+    else(BUILD_FEM_NETGEN)
         set(SMESH_LIBS
             ${OCC_LIBRARIES}
             ${OCC_OCAF_LIBRARIES}
         )
-    endif(FREECAD_BUILD_FEM_NETGEN)
+    endif(BUILD_FEM_NETGEN)
 endif(MSVC)
 
 
@@ -337,7 +337,7 @@ endif(WIN32)
 #ENDIF(MINGW)
 
 # Disable for all other compilers but MSVC
-if (FREECAD_BUILD_FEM_NETGEN)
+if (BUILD_FEM_NETGEN)
 
 ################
 # NETGENPlugin #
@@ -351,7 +351,7 @@ if(WIN32)
     set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "-DNETGENPLUGIN_EXPORTS -DNO_PARALLEL_THREADS -DOCCGEOMETRY -DNETGEN_V5")
 endif(WIN32)
 
-endif (FREECAD_BUILD_FEM_NETGEN)
+endif (BUILD_FEM_NETGEN)
 
 #IF(WIN32)
 #  SET_TARGET_PROPERTIES(SMESH PROPERTIES COMPILE_FLAGS "-DNETGENPluginimpl_EXPORTS ")
@@ -372,7 +372,7 @@ else(WIN32)
     )
 endif(WIN32)
 
-if (FREECAD_BUILD_FEM_NETGEN)
+if (BUILD_FEM_NETGEN)
     if(WIN32)
         INSTALL(TARGETS NETGENPlugin
             RUNTIME DESTINATION bin
@@ -383,5 +383,5 @@ if (FREECAD_BUILD_FEM_NETGEN)
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
     endif(WIN32)
-endif (FREECAD_BUILD_FEM_NETGEN)
+endif (BUILD_FEM_NETGEN)
 
