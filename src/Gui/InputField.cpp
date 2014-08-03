@@ -450,16 +450,17 @@ void InputField::setHistorySize(int i)
 
 void InputField::selectNumber(void)
 {
-    QByteArray str = text().toLatin1();
+    QString input = text();
+    fixup(input);
+    QByteArray str = input.toLatin1();
     unsigned int i = 0;
-    Base::Console().Message("%i", locale().negativeSign().toAscii());
 
     for (QByteArray::iterator it = str.begin(); it != str.end(); ++it) {
         if (*it >= '0' && *it <= '9')
             i++;
         else if (*it == ',' || *it == '.')
             i++;
-        else if (*it == '-' || *it == locale().negativeSign().toAscii())
+        else if (*it == '-' )
             i++;
         else // any non-number character
             break;
