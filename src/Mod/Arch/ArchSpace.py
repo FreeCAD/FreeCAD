@@ -144,6 +144,7 @@ class _Space(ArchComponent.Component):
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.Solids:
                     shape = obj.Base.Shape.Solids[0].copy()
+                    shape = shape.removeSplitter()
 
         # 2: if not, add all bounding boxes of considered objects and build a first shape
         if shape:
