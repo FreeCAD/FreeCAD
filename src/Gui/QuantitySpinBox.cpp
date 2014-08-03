@@ -146,7 +146,7 @@ void QuantitySpinBox::userInput(const QString & text)
     Base::Quantity res;
     try {
         QString input = text;
-        input.remove(locale().groupSeparator());
+        fixup(input);
         res = Base::Quantity::parse(input);
     }
     catch (Base::Exception &e) {
@@ -334,7 +334,7 @@ void QuantitySpinBox::selectNumber()
             i++;
         else if (*it == ',' || *it == '.')
             i++;
-        else if (*it == '-')
+        else if (*it == '-' || *it == locale().negativeSign().toAscii())
             i++;
         else // any non-number character
             break;
@@ -359,7 +359,7 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString &text) const
     Q_D(const QuantitySpinBox);
 
     QString copy = text;
-    copy.remove(locale().groupSeparator());
+    fixup( copy );
     int pos = lineEdit()->cursorPosition();
     QValidator::State state = QValidator::Acceptable;
     return d->validateAndInterpret(copy, pos, state);
@@ -371,7 +371,7 @@ QValidator::State QuantitySpinBox::validate(QString &text, int &pos) const
 
     QValidator::State state;
     QString copy = text;
-    copy.remove(locale().groupSeparator());
+    fixup(copy);
     d->validateAndInterpret(copy, pos, state);
     return state;
 }
@@ -379,6 +379,10 @@ QValidator::State QuantitySpinBox::validate(QString &text, int &pos) const
 void QuantitySpinBox::fixup(QString &input) const
 {
     input.remove(locale().groupSeparator());
+    if(locale().negativeSign() != QChar::fromAscii('-'))
+    	input.replace(locale().negativeSign(), QChar::fromAscii('-'));
+    if(locale().positiveSign() != QChar::fromAscii('+'))
+    	input.replace(locale().positiveSign(), QChar::fromAscii('+'));
 }
 
 
