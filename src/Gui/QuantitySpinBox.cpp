@@ -326,7 +326,9 @@ void QuantitySpinBox::clear()
 
 void QuantitySpinBox::selectNumber()
 {
-    QByteArray str = lineEdit()->text().toLatin1();
+    QString input = lineEdit()->text();
+    fixup(input);
+	QByteArray str = input.toLatin1();
     unsigned int i = 0;
 
     for (QByteArray::iterator it = str.begin(); it != str.end(); ++it) {
@@ -334,7 +336,7 @@ void QuantitySpinBox::selectNumber()
             i++;
         else if (*it == ',' || *it == '.')
             i++;
-        else if (*it == '-' || *it == locale().negativeSign().toAscii())
+        else if (*it == '-' )
             i++;
         else // any non-number character
             break;
