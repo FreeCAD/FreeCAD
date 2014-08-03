@@ -32,7 +32,7 @@ set(Boost_LIBRARIES
     optimized boost_program_options-vc110-mt-1_55.lib
     optimized boost_regex-vc110-mt-1_55.lib
     optimized boost_signals-vc110-mt-1_55.lib
-    optimized boost_thread-vc110-mt-1_55.lib
+    #optimized boost_thread-vc110-mt-1_55.lib
 )
 set(Boost_DEBUG_LIBRARIES 
     debug boost_filesystem-vc110-mt-gd-1_55.lib
@@ -41,12 +41,12 @@ set(Boost_DEBUG_LIBRARIES
     debug boost_program_options-vc110-mt-gd-1_55.lib
     debug boost_regex-vc110-mt-gd-1_55.lib
     debug boost_signals-vc110-mt-gd-1_55.lib
-    debug boost_thread-vc110-mt-gd-1_55.lib
+    #debug boost_thread-vc110-mt-gd-1_55.lib
 )
 set(Boost_FOUND TRUE) 
 
 # Zlib
-set(ZLIB_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/zlib-1.2.3)
+set(ZLIB_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/zlib-1.2.7)
 set(ZLIB_LIBRARIES  zlib.lib)
 set(ZLIB_FOUND TRUE) 
 
