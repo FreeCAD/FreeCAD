@@ -249,7 +249,7 @@ class DraftTool:
         if Draft.getParam("showPlaneTracker",False):
             self.planetrack = PlaneTracker()
 
-    def finish(self):
+    def finish(self,close=False):
         self.node = []
         FreeCAD.activeDraftCommand = None
         if self.ui:
@@ -367,7 +367,7 @@ class SelectPlane(DraftTool):
 
     def selectHandler(self, arg):
         try:
-            self.offset = float(self.ui.offsetValue.text())
+            self.offset = float(self.ui.offset)
         except:
             self.offset = 0
         if arg == "XY":
