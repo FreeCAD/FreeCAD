@@ -65,15 +65,32 @@ QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant,double &factor,QStr
             factor = 1.0;
         }
     }else if (unit == Unit::Area){
-        // TODO Cascade for the Areas
-        // default action for all cases without special treatment:
-        unitString = quant.getUnit().getString();
-        factor = 1.0;
+        if(UnitValue < 100.0){// smaller than 1 square cm
+            unitString = QString::fromLatin1("mm^2");
+            factor = 1.0;
+        }else if(UnitValue < 10000000000000.0 ){
+            unitString = QString::fromLatin1("m^2");
+            factor = 1000000.0;
+        }else{ // bigger then 1 square kilometer
+            unitString = QString::fromLatin1("km^2");
+            factor = 1000000000000.0;
+        }
     }else if (unit == Unit::Mass){
         // TODO Cascade for the wights
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
+    }else if (unit == Unit::Volume){
+        if(UnitValue < 1000000.0){// smaller than 10 cubic cm
+            unitString = QString::fromLatin1("mm^3");
+            factor = 1.0;
+        }else if(UnitValue < 1000000000000000000.0 ){
+            unitString = QString::fromLatin1("m^3");
+            factor = 1000000000.0;
+        }else{ // bigger then 1 cubic kilometer
+            unitString = QString::fromLatin1("km^3");
+            factor = 1000000000000000000.0;
+        }
     }else if (unit == Unit::Pressure){
         if(UnitValue < 10.0){// Pa is the smallest
             unitString = QString::fromLatin1("Pa");
