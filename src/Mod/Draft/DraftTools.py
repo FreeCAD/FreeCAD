@@ -2989,11 +2989,13 @@ class Scale(Modifier):
         if copy:
             self.commit(translate("draft","Copy"),
                         ['import Draft',
-                         'Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')'])
+                         'Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')',
+                         'FreeCAD.ActiveDocument.recompute()'])
         else:
             self.commit(translate("draft","Scale"),
                         ['import Draft',
-                         'Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')'])                     
+                         'Draft.scale('+sel+',delta='+DraftVecUtils.toString(delta)+',center='+DraftVecUtils.toString(self.node[0])+',copy='+str(copy)+')',
+                         'FreeCAD.ActiveDocument.recompute()'])
 
     def action(self,arg):
         "scene event handler"
@@ -3007,6 +3009,7 @@ class Scale(Modifier):
             if (len(self.node) > 0):
                 last = self.node[len(self.node)-1]
                 delta = self.point.sub(last)
+                delta = FreeCAD.Vector(delta.x,delta.y,1)
                 if self.ghost:
                     self.ghost.scale(delta)
                     # calculate a correction factor depending on the scaling center
@@ -3015,6 +3018,7 @@ class Scale(Modifier):
                     corr = (corr.sub(self.node[0])).negative()
                     self.ghost.move(corr)
                     self.ghost.on()
+                    self.ui.zValue.setText("1")
             if self.extendedCopy:
                 if not hasMod(arg,MODALT): self.finish()
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -3023,17 +3027,19 @@ class Scale(Modifier):
                     self.ui.redraw()
                     if (self.node == []):
                         self.node.append(self.point)
-                        self.ui.isRelative.show()
+                        self.ui.isRelative.setChecked(True)
                         self.ui.isCopy.show()
                         if self.ghost:
                             self.ghost.on()
                         msg(translate("draft", "Pick scale factor:\n"))
                     else:
                         last = self.node[0]
+                        delta = self.point.sub(last)
+                        delta = FreeCAD.Vector(delta.x,delta.y,1)
                         if self.ui.isCopy.isChecked() or hasMod(arg,MODALT):
-                            self.scale(self.point.sub(last),True)
+                            self.scale(delta,True)
                         else:
-                            self.scale(self.point.sub(last))
+                            self.scale(delta)
                         if hasMod(arg,MODALT):
                             self.extendedCopy = True
                         else:
