@@ -3945,25 +3945,25 @@ class Draft2Sketch(Modifier):
         if not sel:
             return
         elif allDraft:
-            FreeCAD.ActiveDocument.openTransaction("Convert to Sketch")
-            Draft.makeSketch(sel,autoconstraints=True)
-            FreeCAD.ActiveDocument.commitTransaction()
+            lines = ["Draft.makeSketch(FreeCAD.ActiveDocument."+o.Name+",autoconstraints=True)" for o in sel]            
+            self.commit(translate("draft","Convert to Sketch"),
+                        ['import Draft'] + lines + ['FreeCAD.ActiveDocument.recompute()'])
         elif allSketches:
-            FreeCAD.ActiveDocument.openTransaction("Convert to Draft")
-            Draft.draftify(sel,makeblock=True)
-            FreeCAD.ActiveDocument.commitTransaction()
+            lines = ["Draft.draftify(FreeCAD.ActiveDocument."+o.Name+",delete=False)" for o in sel]            
+            self.commit(translate("draft","Convert to Draft"),
+                        ['import Draft'] + lines + ['FreeCAD.ActiveDocument.recompute()'])
         else:
-            FreeCAD.ActiveDocument.openTransaction("Convert")
+            lines = []
             for obj in sel:
                 if obj.isDerivedFrom("Sketcher::SketchObject"):
-                    Draft.draftify(obj)
+                    lines.append("Draft.draftify(FreeCAD.ActiveDocument."+obj.Name+",delete=False)")
                 elif obj.isDerivedFrom("Part::Part2DObjectPython"):
-                    Draft.makeSketch(obj,autoconstraints=True)
+                    lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=True)")
                 elif obj.isDerivedFrom("Part::Feature"):
                     if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
-                        Draft.makeSketch(obj,autoconstraints=False)
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+                        lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=False)")           
+            self.commit(translate("draft","Convert"),
+                        ['import Draft'] + lines + ['FreeCAD.ActiveDocument.recompute()'])
         self.finish()
 
 
