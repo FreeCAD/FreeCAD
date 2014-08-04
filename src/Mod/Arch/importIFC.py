@@ -193,7 +193,8 @@ def insert(filename,docname,skip=[]):
         if not obj:
             obj = baseobj
         if obj:
-            if DEBUG: print "creating object ",pid," : ",ptype, " with shape: ",baseobj
+            sh = baseobj.Shape.ShapeType if hasattr(baseobj,"Shape") else "None"
+            if DEBUG: print "creating object ",pid," : ",ptype, " with shape: ",sh
             objects[pid] = obj
 
     # subtractions
@@ -210,6 +211,14 @@ def insert(filename,docname,skip=[]):
                 Arch.addComponents(cobs,objects[host])
 
     FreeCAD.ActiveDocument.recompute()
+    
+    # cleaning bad shapes
+    for obj in objects.values():
+        if obj.isDerivedFrom("Part::Feature"):
+            if obj.Shape.isNull():
+                Arch.rebuildArchShape(obj)
+    FreeCAD.ActiveDocument.recompute()
+    
     if FreeCAD.GuiUp:
         import FreeCADGui
         FreeCADGui.SendMsgToActiveView("ViewFit")
