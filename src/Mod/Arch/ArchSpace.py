@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2013                                                    *  
@@ -105,9 +107,9 @@ class _CommandSpace:
 class _Space(ArchComponent.Component):
     "A space object"
     def __init__(self,obj):
-        obj.Proxy = self
-        obj.addProperty("App::PropertyLink","Base","Arch",translate("Arch","A base shape defining this space"))
+        ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLinkSubList","Boundaries","Arch",translate("Arch","The objects that make the boundaries of this space object"))
+        obj.addProperty("App::PropertyFloat","Area","Arch",translate("Arch","The computed floor area of this space"))
         self.Type = "Space"
 
     def execute(self,obj):
@@ -116,6 +118,8 @@ class _Space(ArchComponent.Component):
     def onChanged(self,obj,prop):
         if prop in ["Boundaries","Base"]:
             self.getShape(obj)
+            obj.Area = self.getArea(obj)
+        obj.setEditorMode('Area',1)
             
     def addSubobjects(self,obj,subobjects):
         "adds subobjects to this space"
@@ -203,13 +207,14 @@ class _Space(ArchComponent.Component):
         import Part,DraftGeomUtils
         try:
             pl = Part.makePlane(1,1)
+            pl.translate(obj.Shape.CenterOfMass)
             sh = obj.Shape.copy()
             cutplane,v1,v2 = ArchCommands.getCutVolume(pl,sh)
             e = sh.section(cutplane)
             e = DraftGeomUtils.sortEdges(e.Edges)
             w = Part.Wire(e)
             f = Part.Face(w)
-            return round(f.Area,Draft.getParam("dimPrecision",6))
+            return f.Area
         except:
             return 0
 
@@ -217,85 +222,106 @@ class _Space(ArchComponent.Component):
 class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
     "A View Provider for Section Planes"
     def __init__(self,vobj):
+        ArchComponent.ViewProviderComponent.__init__(self,vobj)
         vobj.Transparency = 85
         vobj.LineWidth = 1
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
-        vobj.addProperty("App::PropertyString","Override","Base","Text override. Use $area to insert the area")
-        vobj.addProperty("App::PropertyColor","TextColor","Base","The color of the area text")
-        vobj.TextColor = (1.0,0.0,0.0,1.0)
-        vobj.Override = "$area m2"
-        ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.addProperty("App::PropertyStringList","Text",        "Arch","Text to show. Use $area, $label or $tag to insert the area, label or tag")
+        vobj.addProperty("App::PropertyString",    "FontName",    "Arch","Font name")
+        vobj.addProperty("App::PropertyColor",     "TextColor",   "Arch","The color of the area text")
+        vobj.addProperty("App::PropertyLength",    "FontSize",    "Arch","Font size")
+        vobj.addProperty("App::PropertyFloat",     "LineSpacing", "Arch","The space between the lines of text")
+        vobj.addProperty("App::PropertyVector",    "TextPosition","Arch","The position of the text. Leave (0,0,0) for automatic position")
+        vobj.TextColor = (0.0,0.0,0.0,1.0)
+        vobj.Text = ["$label","$area"]
+        vobj.FontSize = Draft.getParam("textheight",10)
+        vobj.FontName = Draft.getParam("textfont","")
+        vobj.LineSpacing = 1.0
         
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Space_Tree.svg"
 
-    def claimChildren(self):
-        if self.Object.Base:
-            return [self.Object.Base]
-        else:
-            return []
-
-    def setDisplayMode(self,mode):
-        if mode == "Detailed":
-            self.setAnnotation(True)
-            return "Flat Lines"
-        else:
-            self.setAnnotation(False)
-            return mode
-            
-    def getArea(self,obj):
-        "returns a formatted area text"
-        area = str(obj.Proxy.getArea(obj))
-        if obj.ViewObject.Override:
-            text = obj.ViewObject.Override
-            area = text.replace("$area",str(area))
-        return str(area)
-
-    def setAnnotation(self,recreate=True):
-        if hasattr(self,"Object"):
-            if hasattr(self,"area"):
-                if self.area:
-                    self.Object.ViewObject.Annotation.removeChild(self.area)
-                    self.area = None
-                    self.coords = None
-                    self.anno = None
-            if recreate:
-                area = self.getArea(self.Object)
-                if area:
-                    from pivy import coin
-                    import SketcherGui
-                    self.area = coin.SoSeparator()
-                    self.coords = coin.SoTransform()
-                    if self.Object.Shape:
-                        if not self.Object.Shape.isNull():
-                            c = self.Object.Shape.CenterOfMass
-                            self.coords.translation.setValue([c.x,c.y,c.z])
-                    self.anno = coin.SoType.fromName("SoDatumLabel").createInstance()
-                    self.anno.string.setValue(area)
-                    self.anno.datumtype.setValue(6)
-                    color = coin.SbVec3f(self.Object.ViewObject.TextColor[:3])
-                    self.anno.textColor.setValue(color)
-                    self.area.addChild(self.coords)
-                    self.area.addChild(self.anno)
-                    self.Object.ViewObject.Annotation.addChild(self.area)
-                    
+    def attach(self,vobj):
+        ArchComponent.ViewProviderComponent.attach(self,vobj)
+        from pivy import coin
+        self.color = coin.SoBaseColor()
+        self.font = coin.SoFont()
+        self.text = coin.SoAsciiText()
+        self.text.string = "d"
+        self.coords = coin.SoTransform()
+        self.text.justification = coin.SoAsciiText.LEFT
+        label = coin.SoSeparator()
+        label.addChild(self.coords)
+        label.addChild(self.color)
+        label.addChild(self.font)
+        label.addChild(self.text)
+        vobj.Annotation.addChild(label)
+        self.onChanged(vobj,"TextColor")
+        self.onChanged(vobj,"FontSize")
+        self.onChanged(vobj,"LineSpacing")
+        self.onChanged(vobj,"FontName")
+    
     def updateData(self,obj,prop):
-        if prop == "Shape":
-            if hasattr(self,"area"):
-                if self.area:
-                    area = self.getArea(obj)
-                    self.anno.string.setValue(area)
-                    if not obj.Shape.isNull():
-                        c = obj.Shape.CenterOfMass
-                        self.coords.translation.setValue([c.x,c.y,c.z])
+        if prop in ["Shape","Label","Tag"]:
+            self.onChanged(obj.ViewObject,"Text")
+            self.onChanged(obj.ViewObject,"TextPosition")
                         
     def onChanged(self,vobj,prop):
-        if prop in ["Override","TextColor"]:
-            if vobj.DisplayMode == "Detailed":
-                self.setAnnotation(True)
-        return
+        if prop == "Text":
+            if hasattr(self,"text") and hasattr(vobj,"Text"):
+                self.text.string.deleteValues(0)
+                texts = []
+                for t in vobj.Text:
+                    if t:
+                        if hasattr(vobj.Object,"Area"):
+                            from FreeCAD import Units
+                            q = Units.Quantity(vobj.Object.Area,Units.Area)
+                            q = q.getUserPreferred()[0].replace("^2","²")
+                            t = t.replace("$area",q.decode("utf8"))
+                        t = t.replace("$label",vobj.Object.Label.decode("utf8"))
+                        if hasattr(vobj.Object,"Tag"):
+                            t = t.replace("$tag",vobj.Object.Tag.decode("utf8"))
+                        texts.append(t.encode("utf8"))
+                if texts:
+                    self.text.string.setValues(texts)
+            
+        elif prop == "FontName":
+            if hasattr(self,"font") and hasattr(vobj,"FontName"):
+                self.font.name = str(vobj.FontName)
+                
+        elif (prop == "FontSize"):
+            if hasattr(self,"font") and hasattr(vobj,"FontSize"):
+                self.font.size = vobj.FontSize.Value
+            
+        elif prop == "TextColor":
+            if hasattr(self,"color") and hasattr(vobj,"TextColor"):
+                c = vobj.TextColor
+                self.color.rgb.setValue(c[0],c[1],c[2])
+                
+        elif prop == "TextPosition":
+            if hasattr(self,"coords") and hasattr(vobj,"TextPosition"):
+                import DraftVecUtils
+                if DraftVecUtils.isNull(vobj.TextPosition):
+                    try:
+                        pos = vobj.Object.Shape.CenterOfMass
+                        z = vobj.Object.Shape.BoundBox.ZMin
+                        pos = FreeCAD.Vector(pos.x,pos.y,z)
+                    except:
+                        pos = FreeCAD.Vector()
+                else:
+                    pos = vobj.TextPosition
+                self.coords.translation.setValue([pos.x,pos.y,pos.z])
+                    
+        elif prop == "LineSpacing":
+            if hasattr(self,"text") and hasattr(vobj,"LineSpacing"):
+                self.text.spacing = vobj.LineSpacing
+                    
+
+
+
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Space',_CommandSpace())
