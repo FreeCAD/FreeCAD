@@ -487,8 +487,9 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
     return None
 
 def removeShape(objs,mark=True):
-    '''takes an arch object (wall or structure) built on a cubic shape, and removes
-    the inner shape, keeping its length, width and height as parameters.'''
+    '''removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
+    the inner shape, keeping its length, width and height as parameters. If mark is True, objects that cannot
+    be processed by this function will become red.'''
     import DraftGeomUtils
     if not isinstance(objs,list):
         objs = [objs]
@@ -547,8 +548,9 @@ def mergeCells(objectslist):
     return base
 
 def download(url,force=False):
-    '''downloads a file from the given URL and saves it in the
-    macro path. Returns the path to the saved file'''
+    '''download(url,force=False): downloads a file from the given URL and saves it in the
+    macro path. Returns the path to the saved file. If force is True, the file will be
+    downloaded again evn if it already exists.'''
     import urllib2, os
     name = url.split('/')[-1]
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
@@ -778,6 +780,83 @@ def toggleIfcBrepFlag(obj):
             FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
         obj.IfcAttributes = d
 
+
+def makeCompoundFromSelected(objects=None):
+    """makeCompoundFromSelected([objects]): Creates a new compound object from the given 
+    subobjects (faces, edges) or from the the selection if objects is None"""
+    import FreeCADGui,Part
+    so = []
+    if not objects: 
+        objects = FreeCADGui.Selection.getSelectionEx()
+    if not isinstance(objects,list):
+        objects = [objects]
+    for o in objects:
+        so.extend(o.SubObjects)
+    if so:
+        c = Part.makeCompound(so)
+        Part.show(c)
+        
+
+def cleanArchSplitter(objets=None):
+    """cleanArchSplitter([objects]): removes the splitters from the base shapes 
+    of the given Arch objects or selected Arch objects if objects is None"""
+    import FreeCAD,FreeCADGui
+    if not objects:
+        objects = FreeCADGui.Selection.getSelection()
+    if not isinstance(objects,list):
+        objects = [objects]
+    for obj in objects:
+        if obj.isDerivedFrom("Part::Feature"):
+            if hasattr(obj,"Base"):
+                if obj.Base:
+                    print "Attempting to clean splitters from ",obj.Label
+                    if obj.Base.isDerivedFrom("Part::Feature"):
+                        if not obj.Base.Shape.isNull():
+                            obj.Base.Shape = obj.Base.Shape.removeSplitter()
+    FreeCAD.ActiveDocument.recompute()
+
+
+def rebuildArchShape(objects=None):
+    """rebuildArchShape([objects]): takes the faces from the base shape of the given (
+    or selected if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
+    import FreeCAD,FreeCADGui,Part
+    if not objects:
+        objects = FreeCADGui.Selection.getSelection()
+    if not isinstance(objects,list):
+        objects = [objects]
+    for obj in objects:
+        success = False
+        if obj.isDerivedFrom("Part::Feature"):
+            if hasattr(obj,"Base"):
+                if obj.Base:
+                    try:
+                        print "Attempting to rebuild ",obj.Label
+                        if obj.Base.isDerivedFrom("Part::Feature"):
+                            if not obj.Base.Shape.isNull():
+                                faces = []
+                                for f in obj.Base.Shape.Faces:
+                                    f2 = Part.Face(f.Wires)
+                                    #print "rebuilt face: isValid is ",f2.isValid()
+                                    faces.append(f2)
+                                if faces:
+                                    shell = Part.Shell(faces)
+                                    if shell:
+                                        #print "rebuilt shell: isValid is ",shell.isValid()
+                                        solid = Part.Solid(shell)
+                                        if solid:
+                                            if not solid.isValid():
+                                                solid.sewShape()
+                                                solid = Part.Solid(solid)
+                                            #print "rebuilt solid: isValid is ",solid.isValid()
+                                            if solid.isValid(): 
+                                                print "Success"
+                                                obj.Base.Shape = solid
+                                                success = True
+                    except:
+                        pass
+        if not success:
+            print "Failed"
+    FreeCAD.ActiveDocument.recompute()
 
 # command definitions ###############################################
                        
