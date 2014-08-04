@@ -127,7 +127,7 @@ SbColor ViewProviderSketch::ConstrDimColor        (1.0f,0.149f,0.0f);   // #FF26
 SbColor ViewProviderSketch::ConstrIcoColor        (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::PreselectColor        (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
 SbColor ViewProviderSketch::SelectColor           (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
-
+SbColor ViewProviderSketch::PreselectSelectedColor(0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec3f ViewProviderSketch::prvClickPoint;
@@ -212,7 +212,7 @@ struct EditData {
     SoCoordinate3 *CurvesCoordinate;
     SoCoordinate3 *RootCrossCoordinate;
     SoCoordinate3 *EditCurvesCoordinate;
-    SoLineSet     *CurveSet;
+    SoLineSet     *CurveSet;  
     SoLineSet     *RootCrossSet;
     SoLineSet     *EditCurveSet;
     SoMarkerSet   *PointSet;
@@ -255,11 +255,12 @@ ViewProviderSketch::ViewProviderSketch()
     PointSize.setValue(4);
 
     zCross=0.001f;
-    zConstr=0.002f;
-    zLines=0.003f;
-    zPoints=0.004f;
-    zHighlight=0.005f;
-    zText=0.006f;
+    zConstr=0.003f; // constraint not construction
+    zLines=0.005f;
+    zHighLine=0.006f;
+    zPoints=0.007f;
+    zHighlight=0.009f;
+    zText=0.011f;
     zEdit=0.001f;
 
     xInit=0;
@@ -1396,6 +1397,45 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
             //    new QListWidgetItem(QString::fromAscii(temp.c_str()), selectionView);
             //}
         }
+        else if (msg.Type == Gui::SelectionChanges::SetPreselect) {
+	    if (strcmp(msg.pDocName,getSketchObject()->getDocument()->getName())==0
+               && strcmp(msg.pObjectName,getSketchObject()->getNameInDocument())== 0) {
+                    if (msg.pSubName) {
+                        std::string shapetype(msg.pSubName);
+                        if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
+			      int GeoId = std::atoi(&shapetype[4]) - 1;
+			      resetPreselectPoint();
+			      edit->PreselectCurve = GeoId;
+			      edit->PreselectCross = -1;
+			      edit->PreselectConstraintSet.clear();
+			      if (edit->sketchHandler)
+				  edit->sketchHandler->applyCursor();
+			      this->updateColor();
+			      
+                        }
+                        else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex"){
+			      int PtIndex = std::atoi(&shapetype[6]) - 1;
+			      setPreselectPoint(PtIndex);
+			      edit->PreselectCurve = -1;
+			      edit->PreselectCross = -1;
+			      edit->PreselectConstraintSet.clear();
+			      if (edit->sketchHandler)
+				  edit->sketchHandler->applyCursor();
+			      this->updateColor();
+			}
+		    }
+	    }
+	}
+	else if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
+	    resetPreselectPoint();
+	    edit->PreselectCurve = -1;
+	    edit->PreselectCross = -1;
+	    edit->PreselectConstraintSet.clear();
+	    if (edit->sketchHandler)
+		edit->sketchHandler->applyCursor();
+	    this->updateColor();
+
+	}
 
     }
 }
@@ -1867,7 +1907,10 @@ void ViewProviderSketch::updateColor(void)
     int CurvNum = edit->CurvesMaterials->diffuseColor.getNum();
     SbColor *color = edit->CurvesMaterials->diffuseColor.startEditing();
     SbColor *crosscolor = edit->RootCrossMaterials->diffuseColor.startEditing();
-
+    
+    SbVec3f *verts = edit->CurvesCoordinate->point.startEditing();
+    int32_t *index = edit->CurveSet->numVertices.startEditing();
+    
     // colors of the point set
     if (edit->FullyConstrained)
         for (int  i=0; i < PtNum; i++)
@@ -1883,25 +1926,78 @@ void ViewProviderSketch::updateColor(void)
 
     for (std::set<int>::iterator it=edit->SelPointSet.begin();
          it != edit->SelPointSet.end(); it++)
-        pcolor[*it] = SelectColor;
+        pcolor[*it] = (*it==(edit->PreselectPoint + 1) && (edit->PreselectPoint != -1))?
+	     PreselectSelectedColor:SelectColor;
 
     // colors of the curves
     int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
     int extGeoCount = getSketchObject()->getExternalGeometryCount();
+    
+    float x,y,z;
+    
+    int j=0; // vertexindex
+    
     for (int  i=0; i < CurvNum; i++) {
         int GeoId = edit->CurvIdToGeoId[i];
-        if (edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end())
+	// CurvId has several vertex a ssociated to 1 material
+	//edit->CurveSet->numVertices => [i] indicates number of vertex for line i.
+	int indexes=(edit->CurveSet->numVertices[i]);
+	
+	bool selected=(edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end());
+	bool preselected=(edit->PreselectCurve == GeoId);
+	
+	if (selected && preselected){
+            color[i] = PreselectSelectedColor;
+	    for(int k=j; j<k+indexes; j++){
+	      verts[j].getValue(x,y,z);
+	      verts[j]=SbVec3f(x,y,zHighLine);
+	    }
+	}
+        else if (selected){
             color[i] = SelectColor;
-        else if (edit->PreselectCurve == GeoId)
+	    for(int k=j; j<k+indexes; j++){
+	      verts[j].getValue(x,y,z);
+	      verts[j]=SbVec3f(x,y,zHighLine);
+	    }
+	}
+        else if (preselected){
             color[i] = PreselectColor;
-        else if (GeoId < -2)  // external Geometry
+	    for(int k=j; j<k+indexes; j++){
+	      verts[j].getValue(x,y,z);
+	      verts[j]=SbVec3f(x,y,zHighLine);
+	    }
+	}
+        else if (GeoId < -2) {  // external Geometry
             color[i] = CurveExternalColor;
+	    for(int k=j; j<k+indexes; j++){
+	      verts[j].getValue(x,y,z);
+	      verts[j]=SbVec3f(x,y,zConstr);
+	    }
+	}
         else if (getSketchObject()->getGeometry(GeoId)->Construction)
+	{
             color[i] = CurveDraftColor;
+	    for(int k=j; j<k+indexes; j++){
+	      verts[j].getValue(x,y,z);
+	      verts[j]=SbVec3f(x,y,zLines);
+	    }
+	}
         else if (edit->FullyConstrained)
+	{
             color[i] = FullyConstrainedColor;
+	    for(int k=j; j<k+indexes; j++){
+	      verts[j].getValue(x,y,z);
+	      verts[j]=SbVec3f(x,y,zLines);
+	    }
+	}
         else
+	{
             color[i] = CurveColor;
+	    for(int k=j; j<k+indexes; j++){
+	      verts[j].getValue(x,y,z);
+	      verts[j]=SbVec3f(x,y,zLines);
+	    }
+	}
     }
 
     // colors of the cross
@@ -1977,6 +2073,8 @@ void ViewProviderSketch::updateColor(void)
     edit->CurvesMaterials->diffuseColor.finishEditing();
     edit->PointsMaterials->diffuseColor.finishEditing();
     edit->RootCrossMaterials->diffuseColor.finishEditing();
+    edit->CurvesCoordinate->point.finishEditing();
+    edit->CurveSet->numVertices.finishEditing();
 }
 
 bool ViewProviderSketch::isPointOnSketch(const SoPickedPoint *pp) const
@@ -2616,15 +2714,15 @@ void ViewProviderSketch::draw(bool temp)
     edit->CurvesMaterials->diffuseColor.setNum(Index.size());
     edit->PointsCoordinate->point.setNum(Points.size());
     edit->PointsMaterials->diffuseColor.setNum(Points.size());
-
+    
     SbVec3f *verts = edit->CurvesCoordinate->point.startEditing();
     int32_t *index = edit->CurveSet->numVertices.startEditing();
     SbVec3f *pverts = edit->PointsCoordinate->point.startEditing();
 
     int i=0; // setting up the line set
     for (std::vector<Base::Vector3d>::const_iterator it = Coords.begin(); it != Coords.end(); ++it,i++)
-        verts[i].setValue(it->x,it->y,zLines);
-
+      verts[i].setValue(it->x,it->y,zLines);
+    
     i=0; // setting up the indexes of the line set
     for (std::vector<unsigned int>::const_iterator it = Index.begin(); it != Index.end(); ++it,i++)
         index[i] = *it;
@@ -3435,6 +3533,10 @@ void ViewProviderSketch::updateData(const App::Property *prop)
         // send the signal for the TaskDlg.
         signalConstraintsChanged();
     }
+    if (edit && &(getSketchObject()->Geometry)) {
+        // send the signal for the TaskDlg.
+        signalElementsChanged();
+    }
 }
 
 void ViewProviderSketch::onChanged(const App::Property *prop)
@@ -3691,7 +3793,7 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->CurveSet = new SoLineSet;
     edit->CurveSet->setName("CurvesLineSet");
     curvesRoot->addChild(edit->CurveSet);
-
+    
     // stuff for the RootCross lines +++++++++++++++++++++++++++++++++++++++
     SoGroup* crossRoot = new Gui::SoSkipBoundingGroup;
     edit->pickStyleAxes = new SoPickStyle();
@@ -3839,6 +3941,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     antiAliasing = (int)viewer->getAntiAliasingMode();
     if (antiAliasing != Gui::View3DInventorViewer::None)
         viewer->setAntiAliasingMode(Gui::View3DInventorViewer::None);
+ 
 }
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)

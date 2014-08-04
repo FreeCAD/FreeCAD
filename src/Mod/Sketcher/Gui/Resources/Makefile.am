@@ -78,6 +78,14 @@ icons/Constraint_PointOnObject.svg \
 		icons/Sketcher_NewSketch.svg \
 		icons/Sketcher_ViewSketch.svg \
 		icons/Sketcher_Sketch.svg \
+		icons/Sketcher_Element_EndPoint.svg \
+		icons/Sketcher_Element_Line.svg \
+		icons/Sketcher_Element_MidPoint.svg \
+		icons/Sketcher_Element_StartingPoint.svg \
+		icons/small/Sketcher_Element_EndPoint_sm.xpm \
+		icons/small/Sketcher_Element_Line_sm.xpm \
+		icons/small/Sketcher_Element_MidPoint_sm.xpm \
+		icons/small/Sketcher_Element_StartingPoint_sm.xpm \
 		translations/Sketcher_af.qm \
 		translations/Sketcher_af.ts \
 		translations/Sketcher_de.qm \

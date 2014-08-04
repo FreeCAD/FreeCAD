@@ -133,6 +133,9 @@ public:
     int getHighestVertexIndex(void) const { return VertexId2GeoId.size() - 1; } // Most recently created
     int getHighestCurveIndex(void) const { return Geometry.getSize() - 1; }
     void rebuildVertexIndex(void);
+    
+    /// retrieves for a GeoId and PosId the Vertex number 
+    int getVertexIndexGeoPos(int GeoId, PointPos PosId) const;
 
     /// retrieves for a Vertex number a list with all coincident points
     void getCoincidentPoints(int GeoId, PointPos PosId, std::vector<int> &GeoIdList,
