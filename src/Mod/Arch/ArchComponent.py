@@ -658,18 +658,22 @@ class ViewProviderComponent:
 
     def claimChildren(self):
         if hasattr(self,"Object"):
-            if Draft.getType(self.Object) != "Wall":
-                c = [self.Object.Base]
-            elif Draft.getType(self.Object.Base) == "Space":
-                c = []
-            else:
-                c = [self.Object.Base]
-            c = c + self.Object.Additions
-            for s in self.Object.Subtractions:
-                if Draft.getType(self.Object) == "Wall":
-                    if Draft.getType(s) == "Roof":
-                        continue
-                c.append(s)
+            c = []
+            if hasattr(self.Object,"Base"):
+                if Draft.getType(self.Object) != "Wall":
+                    c = [self.Object.Base]
+                elif Draft.getType(self.Object.Base) == "Space":
+                    c = []
+                else:
+                    c = [self.Object.Base]
+            if hasattr(self.Object,"Additions"):
+                c.extend(self.Object.Additions)
+            if hasattr(self.Object,"Subtractions"):
+                for s in self.Object.Subtractions:
+                    if Draft.getType(self.Object) == "Wall":
+                        if Draft.getType(s) == "Roof":
+                            continue
+                    c.append(s)
             if hasattr(self.Object,"Armatures"):
                 c.extend(self.Object.Armatures)
             if hasattr(self.Object,"Tool"):
