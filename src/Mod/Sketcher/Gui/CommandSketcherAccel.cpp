@@ -47,18 +47,19 @@ using namespace Sketcher;
 
 bool isSketcherAcceleratorActive(Gui::Document *doc, bool actsOnSelection )
 {
-    if (doc)
+    if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId()))
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
-                ->getSketchMode() == ViewProviderSketch::STATUS_NONE)
+                ->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
                 if (!actsOnSelection)
-		  return true;
-		else{
-		  if(Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
-		      return true;
-		}
-		  
+                    return true;
+                else if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
+                    return true;
+            }
+        }
+    }
+
     return false;
 }
 
@@ -87,62 +88,61 @@ void CmdSketcherCloseShape::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge from the sketch."));
+            QObject::tr("Select at least two edges from the sketch."));
         return;
     }
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.size() < 2) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select at least two edges from the sketch."));
+        return;
+    }
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     int GeoIdFirst=-1;
     int GeoIdLast=-1;
     
+    // undo command open
+    openCommand("add coincident constraint");
     // go through the selected subelements
     for (unsigned int i=0; i<(SubNames.size()-1); i++ ) {
         // only handle edges
         if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge" &&
-	    SubNames[i+1].size() > 4 && SubNames[i+1].substr(0,4) == "Edge"	) {
+            SubNames[i+1].size() > 4 && SubNames[i+1].substr(0,4) == "Edge"	) {
 
-	    int GeoId1 = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
-	    int GeoId2 = std::atoi(SubNames[i+1].substr(4,4000).c_str()) - 1;
-	
-	    if(GeoIdFirst==-1)
-	      GeoIdFirst=GeoId1;
-	    
-	    GeoIdLast=GeoId2;
+            int GeoId1 = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
+            int GeoId2 = std::atoi(SubNames[i+1].substr(4,4000).c_str()) - 1;
 
-	    const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
-	    const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
-	    if (	(geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
-		geo1->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()	) ||
-		(geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
-		geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())	) {
-		QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-				      QObject::tr("One selected edge is not connectable"));
-		return;
-	    }
-            
-	    // undo command open
-	    openCommand("add coincident constraint");
-	    Gui::Command::doCommand(
-		Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-		selection[0].getFeatName(),GeoId1,Sketcher::end,GeoId2,Sketcher::start);
+            if(GeoIdFirst==-1)
+              GeoIdFirst=GeoId1;
 
-	    // finish the transaction and update
-	    commitCommand();
-	    
+            GeoIdLast=GeoId2;
 
+            const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
+            const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+            if ((geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+                geo1->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()	) ||
+                (geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+                geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())	) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                      QObject::tr("One selected edge is not connectable"));
+                abortCommand();
+                return;
+            }
+
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                selection[0].getFeatName(),GeoId1,Sketcher::end,GeoId2,Sketcher::start);
         }
     }
-    
+
     // Close Last Edge with First Edge
-    // undo command open
-    openCommand("add coincident constraint");
     Gui::Command::doCommand(
-	Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-	selection[0].getFeatName(),GeoIdLast,Sketcher::end,GeoIdFirst,Sketcher::start);    
-    
+        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+        selection[0].getFeatName(),GeoIdLast,Sketcher::end,GeoIdFirst,Sketcher::start);    
+
     // finish the transaction and update
     commitCommand();
 
@@ -183,47 +183,51 @@ void CmdSketcherConnect::activated(int iMsg)
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select an edge from the sketch."));
+            QObject::tr("Select at least two edges from the sketch."));
         return;
     }
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.size() < 2) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select at least two edges from the sketch."));
+        return;
+    }
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    
+
+    // undo command open
+    openCommand("add coincident constraint");
+
     // go through the selected subelements
     for (unsigned int i=0; i<(SubNames.size()-1); i++ ) {
         // only handle edges
         if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge" &&
-	    SubNames[i+1].size() > 4 && SubNames[i+1].substr(0,4) == "Edge"	) {
+            SubNames[i+1].size() > 4 && SubNames[i+1].substr(0,4) == "Edge"	) {
 
-	    int GeoId1 = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
-	    int GeoId2 = std::atoi(SubNames[i+1].substr(4,4000).c_str()) - 1;
+            int GeoId1 = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
+            int GeoId2 = std::atoi(SubNames[i+1].substr(4,4000).c_str()) - 1;
 
-	    const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
-	    const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
-	    if (	(geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
-		geo1->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()	) ||
-		(geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
-		geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())	) {
-		QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-				      QObject::tr("One selected edge is not connectable"));
-		return;
-	    }
-            
-	    // undo command open
-	    openCommand("add coincident constraint");
-	    Gui::Command::doCommand(
-		Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-		selection[0].getFeatName(),GeoId1,Sketcher::end,GeoId2,Sketcher::start);
+            const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
+            const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+            if ((geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+                geo1->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()) ||
+                (geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+                geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                      QObject::tr("One selected edge is not connectable"));
+                abortCommand();
+                return;
+            }
 
-	    // finish the transaction and update
-	    commitCommand();
-	    
-
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                selection[0].getFeatName(),GeoId1,Sketcher::end,GeoId2,Sketcher::start);
         }
     }
 
+    // finish the transaction and update
+    commitCommand();
     updateActive();
 
     // clear the selection (convenience)
@@ -282,18 +286,17 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
             int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
             
             // push all the constraints
-	    int i=1;
+            int i=1;
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it,++i) {
                 if ( (*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId){
-		  ss.str(std::string());
-		  ss << "Constraint" << i;
-		  Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-		}
+                  ss.str(std::string());
+                  ss << "Constraint" << i;
+                  Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+                }
             }
         }
     }
-
 }
 
 bool CmdSketcherSelectConstraints::isActive(void)
