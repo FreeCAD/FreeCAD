@@ -528,7 +528,8 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
-
+    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+    
     if (SubNames.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select two or more vertexes from the sketch."));
@@ -554,9 +555,26 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     openCommand("add coincident constraint");
     for (std::size_t i=1; i<SubNames.size(); i++) {
         getIdsFromName(SubNames[i], Obj, GeoId2, PosId2);
-        Gui::Command::doCommand(
-            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-            selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+        
+	// check if any of the coincident constraints exist
+	bool constraintExists=false;
+	
+	for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+	      it != vals.end(); ++it) {
+	    if (	(*it)->Type == Sketcher::Coincident && 
+		( (*it)->First == GeoId1 && (*it)->FirstPos == PosId1 && 
+		  (*it)->Second == GeoId2 && (*it)->SecondPos == PosId2  	) ||
+		( (*it)->First == GeoId2 && (*it)->FirstPos == PosId2 && 
+		  (*it)->Second == GeoId1 && (*it)->SecondPos == PosId1  	) ) {
+		constraintExists=true;
+		break;
+	    }
+	}
+	
+	if (!constraintExists)
+	  Gui::Command::doCommand(
+	      Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+	      selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
     }
 
     // finish the transaction and update
@@ -585,7 +603,7 @@ CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Length";
-    sAccel          = "D";
+    sAccel          = "SHIFT+D";
     eType           = ForEdit;
 }
 
@@ -732,7 +750,7 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_PointOnObject";
-    sAccel          = "O";
+    sAccel          = "SHIFT+O";
     eType           = ForEdit;
 }
 
@@ -1080,7 +1098,7 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Parallel";
-    sAccel          = "P";
+    sAccel          = "SHIFT+P";
     eType           = ForEdit;
 }
 

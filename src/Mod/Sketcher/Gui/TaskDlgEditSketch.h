@@ -28,6 +28,7 @@
 
 #include "ViewProviderSketch.h"
 #include "TaskSketcherConstrains.h"
+#include "TaskSketcherElements.h"
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
 
@@ -66,6 +67,7 @@ public:
 protected:
     ViewProviderSketch   *sketchView;
     TaskSketcherConstrains  *Constraints;
+    TaskSketcherElements *Elements;
     TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;
 };

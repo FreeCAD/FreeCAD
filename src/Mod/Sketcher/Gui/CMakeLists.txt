@@ -29,6 +29,7 @@ set(SketcherGui_LIBS
 
 set(SketcherGui_MOC_HDRS
     TaskSketcherConstrains.h
+    TaskSketcherElements.h
     TaskSketcherCreateCommands.h
     TaskSketcherGeneral.h
     TaskSketcherMessages.h
@@ -44,6 +45,7 @@ qt4_add_resources(SketcherGui_SRCS Resources/Sketcher.qrc)
 
 set(SketcherGui_UIC_SRCS
     TaskSketcherConstrains.ui
+    TaskSketcherElements.ui
     TaskSketcherGeneral.ui
     TaskSketcherMessages.ui
     TaskSketcherValidation.ui
@@ -61,6 +63,7 @@ SET(SketcherGui_SRCS
     Command.cpp
     CommandCreateGeo.cpp
     CommandConstraints.cpp
+    CommandSketcherAccel.cpp
     CommandAlterGeometry.cpp
     Resources/Sketcher.qrc
     PreCompiled.cpp
@@ -72,6 +75,9 @@ SET(SketcherGui_SRCS
     TaskSketcherConstrains.ui
     TaskSketcherConstrains.cpp
     TaskSketcherConstrains.h
+    TaskSketcherElements.ui
+    TaskSketcherElements.cpp
+    TaskSketcherElements.h
     TaskSketcherCreateCommands.cpp
     TaskSketcherCreateCommands.h
     TaskSketcherGeneral.ui

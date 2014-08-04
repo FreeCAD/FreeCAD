@@ -42,6 +42,7 @@
 void CreateSketcherCommands(void);
 void CreateSketcherCommandsCreateGeo(void);
 void CreateSketcherCommandsConstraints(void);
+void CreateSketcherCommandsConstraintAccel(void);
 void CreateSketcherCommandsAlterGeo(void);
 
 void loadSketcherResource()
@@ -80,6 +81,7 @@ void SketcherGuiExport initSketcherGui()
     CreateSketcherCommandsCreateGeo();
     CreateSketcherCommandsConstraints();
     CreateSketcherCommandsAlterGeo();
+    CreateSketcherCommandsConstraintAccel();
 
     SketcherGui::Workbench::init();
 

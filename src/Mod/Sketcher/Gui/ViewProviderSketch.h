@@ -217,6 +217,9 @@ public:
     boost::signal<void (QString msg)> signalSetUp;
     /// signals if the sketch has been solved
     boost::signal<void (QString msg)> signalSolved;
+    /// signals if the elements list has changed
+    boost::signal<void ()> signalElementsChanged;
+    
 
 protected:
     virtual bool setEdit(int ModNum);
@@ -341,6 +344,7 @@ protected:
     static SbColor ConstrIcoColor;
     static SbColor PreselectColor;
     static SbColor SelectColor;
+    static SbColor PreselectSelectedColor;
 
     static SbTime prvClickTime;
     static SbVec3f prvClickPoint;
@@ -354,6 +358,7 @@ protected:
     float zHighlight;
     float zText;
     float zEdit;
+    float zHighLine;
 
     // reference coordinates for relative operations
     double xInit,yInit;
