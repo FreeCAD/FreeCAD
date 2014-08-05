@@ -99,6 +99,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
             QObject::tr("Select at least two edges from the sketch."));
         return;
     }
+    
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     int GeoIdFirst=-1;
@@ -128,6 +129,16 @@ void CmdSketcherCloseShape::activated(int iMsg)
                 geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())	) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                       QObject::tr("One selected edge is not connectable"));
+                abortCommand();
+                return;
+            }
+            
+            // Check for the special case of closing a shape with two lines to avoid overlap
+            if (SubNames.size() == 2 && 
+                geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
+                geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                    QObject::tr("Closing a shape formed by exactly two lines makes no sense."));
                 abortCommand();
                 return;
             }
