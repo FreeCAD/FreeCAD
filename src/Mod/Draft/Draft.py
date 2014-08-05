@@ -2998,9 +2998,12 @@ class _Dimension(_DraftObject):
         obj.Dimline = FreeCAD.Vector(0,1,0)
         
     def onChanged(self,obj,prop):
-        obj.setEditorMode('Distance',1)
-        obj.setEditorMode('Normal',2)
-        obj.setEditorMode('Support',2)
+        if hasattr(obj,"Distance"):
+            obj.setEditorMode('Distance',1)
+        if hasattr(obj,"Normal"):
+            obj.setEditorMode('Normal',2)
+        if hasattr(obj,"Support"):
+            obj.setEditorMode('Support',2)
                             
     def execute(self, obj):
         if obj.LinkedGeometry:
@@ -3392,9 +3395,12 @@ class _AngularDimension(_DraftObject):
         obj.Center = FreeCAD.Vector(0,0,0)
         
     def onChanged(self,obj,prop):
-        obj.setEditorMode('Angle',1)
-        obj.setEditorMode('Normal',2)
-        obj.setEditorMode('Support',2)
+        if hasattr(obj,"Angle"):
+            obj.setEditorMode('Angle',1)
+        if hasattr(obj,"Normal"):
+            obj.setEditorMode('Normal',2)
+        if hasattr(obj,"Support"):
+            obj.setEditorMode('Support',2)
         
     def execute(self, fp):
         if fp.ViewObject:

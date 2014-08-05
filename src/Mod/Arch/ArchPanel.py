@@ -90,7 +90,10 @@ class _CommandPanel:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Panel","Panel"),
                 'Accel': "P, A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Panel","Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)")}
-        
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
     def Activated(self):    
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         self.Length = p.GetFloat("PanelLength",1000)
