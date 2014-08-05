@@ -88,7 +88,7 @@ class _CommandSectionPlane:
             ss += "FreeCAD.ActiveDocument."+o.Name
         ss += "]"
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Section Plane"))
-        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("section = Arch.makeSectionPlane("+ss+")")
         #FreeCADGui.doCommand("Arch.makeSectionView(section)")
         FreeCAD.ActiveDocument.commitTransaction()

@@ -62,7 +62,7 @@ class _CommandBuilding:
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Site","Floor"]:
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("obj = Arch.makeBuilding()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
                 FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
@@ -77,7 +77,7 @@ class _CommandBuilding:
                 ss += "FreeCAD.ActiveDocument."+o.Name
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Floor"))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeBuilding("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()

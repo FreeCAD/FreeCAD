@@ -77,7 +77,7 @@ class _CommandStairs:
     def Activated(self):
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Stairs"))
-        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.addModule("Arch")
         if len(FreeCADGui.Selection.getSelection()) == 1:
             n = FreeCADGui.Selection.getSelection()[0].Name
             FreeCADGui.doCommand("Arch.makeStairs(baseobj=FreeCAD.ActiveDocument."+n+")")

@@ -874,7 +874,7 @@ class _CommandAdd:
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Add space boundary")))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.addSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelectionEx() )")
         else:
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
@@ -886,7 +886,7 @@ class _CommandAdd:
                         ss += ","
                     ss += "FreeCAD.ActiveDocument."+o.Name
                 ss += "]"
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -906,7 +906,7 @@ class _CommandRemove:
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Remove space boundary")))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.removeSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelection() )")
         else:
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
@@ -918,10 +918,10 @@ class _CommandRemove:
                         ss += ","
                     ss += "FreeCAD.ActiveDocument."+o.Name
                 ss += "]"
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
             else:
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+sel[-1].Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -1091,8 +1091,8 @@ class _CommandSurvey:
         return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
-        FreeCADGui.doCommand("import Arch")
-        FreeCADGui.doCommand("Arch.survey()")
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.doCommandGui("Arch.survey()")
 
 
 class _ToggleIfcBrepFlag:
