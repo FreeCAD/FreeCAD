@@ -51,12 +51,12 @@ protected:
 
 
 SketcherGuiExport void addSketcherWorkbenchConstraints( Gui::MenuItem& cons );
-SketcherGuiExport void addSketcherWorkbenchAccelerators( Gui::MenuItem& consaccel );
+SketcherGuiExport void addSketcherWorkbenchTools( Gui::MenuItem& consaccel );
 SketcherGuiExport void addSketcherWorkbenchSketchActions( Gui::MenuItem& sketch );
 SketcherGuiExport void addSketcherWorkbenchGeometries( Gui::MenuItem& geom );
 
 SketcherGuiExport void addSketcherWorkbenchConstraints( Gui::ToolBarItem& cons );
-SketcherGuiExport void addSketcherWorkbenchAccelerators( Gui::ToolBarItem& consaccel );
+SketcherGuiExport void addSketcherWorkbenchTools( Gui::ToolBarItem& consaccel );
 SketcherGuiExport void addSketcherWorkbenchSketchActions( Gui::ToolBarItem& sketch );
 SketcherGuiExport void addSketcherWorkbenchGeometries( Gui::ToolBarItem& geom );
 

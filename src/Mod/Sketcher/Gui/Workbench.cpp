@@ -37,7 +37,7 @@ using namespace SketcherGui;
     qApp->translate("Workbench", "Sketcher");
     qApp->translate("Workbench", "Sketcher geometries");
     qApp->translate("Workbench", "Sketcher constraints");
-    qApp->translate("Workbench", "Sketcher accelerators");
+    qApp->translate("Workbench", "Sketcher tools");
 #endif
 
 /// @namespace SketcherGui @class Workbench
@@ -77,8 +77,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     addSketcherWorkbenchConstraints(*cons);
 
     Gui::MenuItem* consaccel = new Gui::MenuItem();
-    consaccel->setCommand("Sketcher accelerators");
-    addSketcherWorkbenchAccelerators(*consaccel);
+    consaccel->setCommand("Sketcher tools");
+    addSketcherWorkbenchTools(*consaccel);
 
     addSketcherWorkbenchSketchActions( *sketch );
     *sketch << geom
@@ -105,8 +105,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     addSketcherWorkbenchConstraints( *cons );
 
     Gui::ToolBarItem* consaccel = new Gui::ToolBarItem(root);
-    consaccel->setCommand("Sketcher accelerators");
-    addSketcherWorkbenchAccelerators( *consaccel );
+    consaccel->setCommand("Sketcher tools");
+    addSketcherWorkbenchTools( *consaccel );
      return root;
 }
 
@@ -200,10 +200,10 @@ inline void SketcherAddWorkbenchConstraints(T& cons){
 }
 
 template <typename T>
-inline void SketcherAddWorkbenchAccelerators(T& consaccel);
+inline void SketcherAddWorkbenchTools(T& consaccel);
 
 template <>
-inline void SketcherAddWorkbenchAccelerators<Gui::MenuItem>(Gui::MenuItem& consaccel){
+inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
     consaccel 	<< "Sketcher_CloseShape"
 		<< "Sketcher_ConnectLines"
 		<< "Sketcher_SelectConstraints"
@@ -212,8 +212,10 @@ inline void SketcherAddWorkbenchAccelerators<Gui::MenuItem>(Gui::MenuItem& consa
 		<< "Sketcher_SelectHorizontalAxis";
 }
 template <>
-inline void SketcherAddWorkbenchAccelerators<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel){
-    consaccel << "Sketcher_CloseShape";
+inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel){
+    consaccel << "Sketcher_CloseShape"
+        << "Sketcher_ConnectLines"
+        << "Sketcher_SelectConstraints";
 }
 
 template <typename T>
@@ -241,8 +243,8 @@ inline void Sketcher_addWorkbenchSketchActions(T& sketch){
 void addSketcherWorkbenchConstraints( Gui::MenuItem& cons ){
     SketcherAddWorkbenchConstraints( cons );
 }
-void addSketcherWorkbenchAccelerators( Gui::MenuItem& consaccel ){
-    SketcherAddWorkbenchAccelerators( consaccel );
+void addSketcherWorkbenchTools( Gui::MenuItem& consaccel ){
+    SketcherAddWorkbenchTools( consaccel );
 }
 void addSketcherWorkbenchSketchActions( Gui::MenuItem& sketch ){
     Sketcher_addWorkbenchSketchActions( sketch );
@@ -254,9 +256,9 @@ void addSketcherWorkbenchGeometries( Gui::MenuItem& geom ){
 void addSketcherWorkbenchConstraints( Gui::ToolBarItem& cons ){
     SketcherAddWorkbenchConstraints( cons );
 }
-void addSketcherWorkbenchAccelerators( Gui::ToolBarItem& consaccel )
+void addSketcherWorkbenchTools( Gui::ToolBarItem& consaccel )
 {
-    SketcherAddWorkbenchAccelerators( consaccel );
+    SketcherAddWorkbenchTools( consaccel );
 }
 void addSketcherWorkbenchSketchActions( Gui::ToolBarItem& sketch ){
     Sketcher_addWorkbenchSketchActions( sketch );
