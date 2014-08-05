@@ -136,6 +136,9 @@ PyMethodDef Application::Methods[] = {
   {"doCommand",               (PyCFunction) Application::sDoCommand,        1,
    "doCommand(string) -> None\n\n"
    "Prints the given string in the python console and runs it"},
+  {"doCommandGui",               (PyCFunction) Application::sDoCommandGui,  1,
+   "doCommandGui(string) -> None\n\n"
+   "Prints the given string in the python console and runs it but doesn't record it in macros"},
   {"addModule",               (PyCFunction) Application::sAddModule,        1,
    "addModule(string) -> None\n\n"
    "Prints the given module import only once in the macro recording"},
@@ -842,6 +845,15 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args,PyObject *
     if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
         return NULL;                             // NULL triggers exception
     Command::doCommand(Command::Doc,pstr);
+    return Py_None;
+}
+
+PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr=0;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
+        return NULL;                             // NULL triggers exception
+    Command::doCommand(Command::Gui,pstr);
     return Py_None;
 }
 
