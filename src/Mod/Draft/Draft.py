@@ -1168,6 +1168,11 @@ def move(objectslist,vector,copy=False):
     if not isinstance(objectslist,list): objectslist = [objectslist]
     newobjlist = []
     for obj in objectslist:
+        if hasattr(obj,"Placement"):
+           if obj.getEditorMode("Placement") == ["ReadOnly"]:
+               if not copy:
+                   FreeCAD.Console.PrintError(obj.Name+" cannot be moved because its placement is readonly.")
+                   continue
         if getType(obj) == "Point":
             v = Vector(obj.X,obj.Y,obj.Z)
             v = v.add(vector)
@@ -1266,6 +1271,11 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
     if not isinstance(objectslist,list): objectslist = [objectslist]
     newobjlist = []
     for obj in objectslist:
+        if hasattr(obj,"Placement"):
+           if obj.getEditorMode("Placement") == ["ReadOnly"]:
+               if not copy:
+                   FreeCAD.Console.PrintError(obj.Name+" cannot be rotated because its placement is readonly.")
+                   continue
         if copy:
             newobj = makeCopy(obj)
         else:
