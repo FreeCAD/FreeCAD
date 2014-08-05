@@ -3271,6 +3271,11 @@ class Edit(Modifier):
                     self.editpoints.append(self.obj.End)
                     self.editpoints.append(self.obj.Dimline)
                     self.editpoints.append(Vector(p[0],p[1],p[2]))
+                elif Draft.getType(self.obj) == "Space":
+                    try:
+                        self.editpoints.append(self.obj.ViewObject.Proxy.getTextPosition(self.obj.ViewObject))
+                    except:
+                        pass
                 if Draft.getType(self.obj) != "BezCurve":
                     self.trackers = []
                     if self.editpoints:
@@ -3480,7 +3485,10 @@ class Edit(Modifier):
             elif self.editing == 2:
                 self.obj.Dimline = v
             elif self.editing == 3:
-                self.obj.ViewObject.TextPosition = v        
+                self.obj.ViewObject.TextPosition = v  
+        elif Draft.getType(self.obj) == "Space":
+            if self.editing == 0:
+                self.obj.ViewObject.TextPosition = v
 
     def numericInput(self,v,numy=None,numz=None):
         '''this function gets called by the toolbar
