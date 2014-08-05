@@ -69,7 +69,7 @@ class _CommandFrame:
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 2:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Frame"))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeFrame(FreeCAD.ActiveDocument."+s[0].Name+",FreeCAD.ActiveDocument."+s[1].Name+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()

@@ -110,7 +110,7 @@ class _CommandPanel:
                 if Draft.getType(sel[0]) == "Panel":
                     return
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Panel")))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             for obj in sel:
                 FreeCADGui.doCommand("Arch.makePanel(FreeCAD.ActiveDocument." + obj.Name + ",thickness=" + str(self.Thickness) + ")")
             FreeCAD.ActiveDocument.commitTransaction()
@@ -135,7 +135,7 @@ class _CommandPanel:
         if point == None:
             return
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Panel")))
-        FreeCADGui.doCommand('import Arch')
+        FreeCADGui.addModule("Arch")
         if self.Profile:
             pr = Presets[self.Profile]
             FreeCADGui.doCommand('p = Arch.makeProfile('+str(pr[2])+','+str(pr[3])+','+str(pr[4])+','+str(pr[5])+')')

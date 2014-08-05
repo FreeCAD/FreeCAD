@@ -64,7 +64,7 @@ class _CommandSite:
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Building","Floor"]:
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("obj = Arch.makeSite()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
                 FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
@@ -82,7 +82,7 @@ class _CommandSite:
                 ss += "FreeCAD.ActiveDocument."+o.Name
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Site"))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeSite("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()

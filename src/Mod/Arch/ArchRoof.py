@@ -71,7 +71,7 @@ class _CommandRoof:
                 if "Face" in sel.SubElementNames[0]:
                     idx = int(sel.SubElementNames[0][4:])
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Roof"))
-                    FreeCADGui.doCommand("import Arch")
+                    FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+","+str(idx)+")")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
@@ -79,7 +79,7 @@ class _CommandRoof:
             if obj.isDerivedFrom("Part::Feature"):
                 if obj.Shape.Wires:
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Roof"))
-                    FreeCADGui.doCommand("import Arch")
+                    FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+")")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()

@@ -87,7 +87,7 @@ class _CommandSpace:
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Space"))
-        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.addModule("Arch")
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             FreeCADGui.Control.closeDialog()

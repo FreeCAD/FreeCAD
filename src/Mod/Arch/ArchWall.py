@@ -176,7 +176,7 @@ class _CommandWall:
             import Draft
             if Draft.getType(sel[0].Object) != "Wall":
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
-                FreeCADGui.doCommand('import Arch')
+                FreeCADGui.addModule("Arch")
                 for selobj in sel:
                     if Draft.getType(selobj.Object) == "Space":
                         spacedone = False
@@ -222,7 +222,7 @@ class _CommandWall:
             l = Part.Line(self.points[0],self.points[1])
             self.tracker.finalize()
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Wall"))
-            FreeCADGui.doCommand('import Arch')
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand('import Part')
             FreeCADGui.doCommand('trace=Part.Line(FreeCAD.'+str(l.StartPoint)+',FreeCAD.'+str(l.EndPoint)+')')
             if not self.existing:
@@ -364,7 +364,7 @@ class _CommandMergeWalls:
                         ok = True
                 if ok:
                     FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Merge Wall")))
-                    FreeCADGui.doCommand("import Arch")
+                    FreeCADGui.addModule("Arch")
                     FreeCADGui.doCommand("Arch.joinWalls(["+ostr+"],delete=True)")
                     FreeCAD.ActiveDocument.commitTransaction()
                     return
@@ -379,7 +379,7 @@ class _CommandMergeWalls:
                 FreeCAD.Console.PrintMessage(str(translate("Arch","Please select only wall objects")))
                 return
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Merge Walls")))
-        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
         FreeCAD.ActiveDocument.commitTransaction()
  

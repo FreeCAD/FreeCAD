@@ -420,7 +420,7 @@ class _CommandWindow:
                         host = obj.Objects[0].Inlist[0]
 
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("win = Arch.makeWindow(FreeCAD.ActiveDocument."+obj.Name+")")
                 if host:
                     FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+host.Name+")")

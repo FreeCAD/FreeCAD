@@ -388,14 +388,14 @@ class _CommandStructure:
             ax = Draft.getObjectsOfType(sel,"Axis")
             if st and ax:
                 FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structural System")))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 return
             elif not(ax) and not(st):
                 FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 for obj in sel:
                     FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
                 FreeCAD.ActiveDocument.commitTransaction()
@@ -420,7 +420,7 @@ class _CommandStructure:
         if point == None:
             return
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
-        FreeCADGui.doCommand('import Arch')
+        FreeCADGui.addModule("Arch")
         if self.Profile:
             pr = Presets[self.Profile]
             FreeCADGui.doCommand('p = Arch.makeProfile('+str(pr[2])+','+str(pr[3])+','+str(pr[4])+','+str(pr[5])+')')

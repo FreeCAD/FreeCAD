@@ -94,7 +94,7 @@ class _CommandRebar:
                     if Draft.getType(sk) == "Sketch":
                         # we have a base object and a sketch: create the rebar now
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                        FreeCADGui.doCommand("import Arch")
+                        FreeCADGui.addModule("Arch")
                         FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+obj.Name+",FreeCAD.ActiveDocument."+sk.Name+")")
                         FreeCAD.ActiveDocument.commitTransaction()
                         FreeCAD.ActiveDocument.recompute()
@@ -115,7 +115,7 @@ class _CommandRebar:
                         else:
                             sup = obj.Support
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                        FreeCADGui.doCommand("import Arch")
+                        FreeCADGui.addModule("Arch")
                         FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")
                         FreeCAD.ActiveDocument.commitTransaction()
                         FreeCAD.ActiveDocument.recompute()
