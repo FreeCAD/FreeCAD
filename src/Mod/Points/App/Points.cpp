@@ -149,8 +149,8 @@ void PointKernel::RestoreDocFile(Base::Reader &reader)
 
 void PointKernel::save(const char* file) const
 {
-    //MeshCore::MeshOutput aWriter(_kernel);
-    //aWriter.SaveAny(file);
+    Base::ofstream out(file, std::ios::out);
+    save(out);
 }
 
 void PointKernel::load(const char* file) 
@@ -160,7 +160,10 @@ void PointKernel::load(const char* file)
 
 void PointKernel::save(std::ostream& out) const
 {
-    //kernel.Write(out);
+    out << "# ASCII" << std::endl;
+    for (std::vector<value_type>::const_iterator it = _Points.begin(); it != _Points.end(); ++it) {
+        out << it->x << " " << it->y << " " << it->z << std::endl;
+    }
 }
 
 void PointKernel::getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
