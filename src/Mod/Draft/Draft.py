@@ -4439,32 +4439,6 @@ class _Array(_DraftObject):
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
 
-    def onChanged(self,obj,prop):
-        if prop == "ArrayType":
-            if obj.ViewObject:
-                if obj.ArrayType == "ortho":
-                    obj.ViewObject.setEditorMode('Axis',2)
-                    obj.ViewObject.setEditorMode('NumberPolar',2)
-                    obj.ViewObject.setEditorMode('Center',2)
-                    obj.ViewObject.setEditorMode('Angle',2)
-                    obj.ViewObject.setEditorMode('NumberX',0)
-                    obj.ViewObject.setEditorMode('NumberY',0)
-                    obj.ViewObject.setEditorMode('NumberZ',0)
-                    obj.ViewObject.setEditorMode('IntervalX',0)
-                    obj.ViewObject.setEditorMode('IntervalY',0)
-                    obj.ViewObject.setEditorMode('IntervalZ',0)
-                else:
-                    obj.ViewObject.setEditorMode('Axis',0)
-                    obj.ViewObject.setEditorMode('NumberPolar',0)
-                    obj.ViewObject.setEditorMode('Center',0)
-                    obj.ViewObject.setEditorMode('Angle',0)
-                    obj.ViewObject.setEditorMode('NumberX',2)
-                    obj.ViewObject.setEditorMode('NumberY',2)
-                    obj.ViewObject.setEditorMode('NumberY',2)
-                    obj.ViewObject.setEditorMode('IntervalX',2)
-                    obj.ViewObject.setEditorMode('IntervalY',2)
-                    obj.ViewObject.setEditorMode('IntervalZ',2)              
-            
     def execute(self,obj):
         import DraftGeomUtils
         if obj.Base:
@@ -4520,8 +4494,7 @@ class _Array(_DraftObject):
             nshape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), currangle)
             if axisvector:
                 if not DraftVecUtils.isNull(axisvector):
-                    if i > 0:
-                        nshape.translate(FreeCAD.Vector(axisvector).multiply(i))
+                    nshape.translate(FreeCAD.Vector(axisvector).multiply(i+1))
             base.append(nshape)
         return Part.makeCompound(base)
 
