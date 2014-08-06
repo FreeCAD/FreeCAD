@@ -851,16 +851,16 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args,PyObject *
 PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     char *pstr=0;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
-    Command::doCommand(Command::Gui,pstr);
+    Command::runCommand(Command::Gui,pstr);
     return Py_None;
 }
 
 PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     char *pstr=0;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
     Command::addModule(Command::Doc,pstr);
     return Py_None;
