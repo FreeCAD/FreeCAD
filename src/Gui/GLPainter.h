@@ -34,6 +34,7 @@
 #endif
 
 #include <Base/BaseClass.h>
+#include <QPoint>
 
 namespace Gui {
 class View3DInventorViewer;
@@ -93,17 +94,45 @@ class GuiExport Rubberband : public Gui::GLGraphicsItem
 {
     Gui::View3DInventorViewer* viewer;
     int x_old, y_old, x_new, y_new;
-    bool working;
+    float rgb_r, rgb_g, rgb_b, rgb_a;
+    bool working, stipple;
 public:
     Rubberband(Gui::View3DInventorViewer* v);
     Rubberband();
     ~Rubberband();
     void setWorking(bool on);
+    void setLineStipple(bool on);
+    bool isWorking();
     void setViewer(Gui::View3DInventorViewer* v);
     void setCoords(int x1, int y1, int x2, int y2);
+    void setColor(float r, float g, float b, float a);
     void paintGL();
 };
 
+class Polyline : public Gui::GLGraphicsItem
+{
+    Gui::View3DInventorViewer* viewer;
+    std::vector<QPoint> _cNodeVector;
+    int x_new, y_new;
+    float rgb_r, rgb_g, rgb_b, rgb_a, line;
+    bool working, closed;
+    GLPainter p;
+
+public:
+    Polyline(Gui::View3DInventorViewer* v);
+    Polyline();
+    ~Polyline();
+    void setWorking(bool on);
+    bool isWorking();
+    void setViewer(Gui::View3DInventorViewer* v);
+    void setCoords(int x, int y);
+    void setColor(int r, int g, int b, int a=0);
+    void setLineWidth(float l);
+    void setClosed(bool c);
+    void addNode(QPoint p);
+    void clear();
+    void paintGL();
+};
 
 } // namespace Gui
 

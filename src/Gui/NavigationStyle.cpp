@@ -1226,13 +1226,15 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
         else if (hd==AbstractMouseSelection::Finish) {
             pcPolygon = mouseSelection->getPositions();
             clipInner = mouseSelection->isInner();
-            delete mouseSelection; mouseSelection = 0;
+            delete mouseSelection; 
+            mouseSelection = 0;
             syncWithEvent(ev);
             return NavigationStyle::processSoEvent(ev);
         }
         else if (hd==AbstractMouseSelection::Cancel) {
             pcPolygon.clear();
-            delete mouseSelection; mouseSelection = 0;
+            delete mouseSelection; 
+            mouseSelection = 0;
             syncWithEvent(ev);
             return NavigationStyle::processSoEvent(ev);
         }
