@@ -204,12 +204,14 @@ Rubberband::Rubberband(Gui::View3DInventorViewer* v) : viewer(v)
 {
     x_old = y_old = x_new = y_new = 0;
     working = false;
+    stipple = true;
 }
 
 Rubberband::Rubberband()
 {
     x_old = y_old = x_new = y_new = 0;
     working = false;
+    stipple = true;
 }
 
 Rubberband::~Rubberband()
@@ -234,6 +236,20 @@ void Rubberband::setCoords(int x1, int y1, int x2, int y2)
     y_new = y2;
 }
 
+void Rubberband::setLineStipple(bool on)
+{
+    stipple = on;
+}
+
+
+void Rubberband::setColor(float r, float g, float b, float a)
+{
+    rgb_a = a;
+    rgb_b = b;
+    rgb_g = g;
+    rgb_r = r;
+}
+
 void Rubberband::paintGL()
 {
     if(!working)
@@ -242,7 +258,7 @@ void Rubberband::paintGL()
     const SbViewportRegion vp = viewer->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
-    
+
     glMatrixMode(GL_PROJECTION);
 
     glOrtho(0, size[0], size[1], 0, 0, 100);
@@ -253,14 +269,13 @@ void Rubberband::paintGL()
     glLineWidth(4.0);
     glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
     glRecti(x_old, y_old, x_new, y_new);
-    glColor4f(0.0, 0.0, 1.0, 1.0);
-    glLineStipple(3, 0xAAAA);
-    glEnable(GL_LINE_STIPPLE);
 
     glLineWidth(4.0);
-    glColor4f(0.0, 0.0, 1.0, 1.0);
-    glLineStipple(3, 0xAAAA);
-    glEnable(GL_LINE_STIPPLE);
+    glColor4f(rgb_r, rgb_g, rgb_b, rgb_a);
+    if(stipple) {
+        glLineStipple(3, 0xAAAA);
+        glEnable(GL_LINE_STIPPLE);
+    }
     glBegin(GL_LINE_LOOP);
     glVertex2i(x_old, y_old);
     glVertex2i(x_old, y_new);
@@ -269,7 +284,115 @@ void Rubberband::paintGL()
     glEnd();
 
     glLineWidth(1.0);
-    glDisable(GL_LINE_STIPPLE);
+    
+    if(stipple)
+        glDisable(GL_LINE_STIPPLE);
+    
+    glDisable(GL_BLEND);
+}
+
+Polyline::Polyline(Gui::View3DInventorViewer* v) : viewer(v)
+{
+    x_new = y_new = 0;
+    working = false;
+    closed = true;
+    line = 2.0;
+}
+
+Polyline::Polyline()
+{
+    x_new = y_new = 0;
+    working = false;
+    closed = true;
+    line = 2.0;
+}
+
+Polyline::~Polyline()
+{
+}
+
+void Polyline::setWorking(bool on)
+{
+    working = on;
+}
+
+bool Polyline::isWorking()
+{
+    return working;
+};
+
+void Polyline::setViewer(View3DInventorViewer* v)
+{
+    viewer = v;
+}
+
+
+void Polyline::setCoords(int x, int y)
+{
+    x_new = x;
+    y_new = y;
+}
+
+void Polyline::setColor(int r, int g, int b, int a)
+{
+    rgb_a = a;
+    rgb_b = b;
+    rgb_g = g;
+    rgb_r = r;
+}
+
+void Polyline::setClosed(bool c)
+{
+    closed = c;
+}
+
+void Polyline::setLineWidth(float l)
+{
+    line = l; 
+}
+
+
+void Polyline::addNode(QPoint p)
+{
+    _cNodeVector.push_back(p);
+}
+void Polyline::clear()
+{
+    _cNodeVector.clear();
+}
+void Polyline::paintGL()
+{
+    if(!working)
+        return;
+
+    if(_cNodeVector.empty())
+        return;
+
+    const SbViewportRegion vp = viewer->getSoRenderManager()->getViewportRegion();
+    SbVec2s size = vp.getViewportSizePixels();
+
+
+    glMatrixMode(GL_PROJECTION);
+
+    glOrtho(0, size[0], size[1], 0, 0, 100);
+    glMatrixMode(GL_MODELVIEW);
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glLineWidth(line);
+    glColor4f(rgb_r, rgb_g, rgb_b, rgb_a);
+    glBegin(GL_LINE_LOOP);
+
+    QPoint start = _cNodeVector.front();
+
+    for(std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
+        glVertex2i(it->x(), it->y());
+    }
+
+    if(_cNodeVector.size() > 0)
+        glVertex2i(x_new, y_new);
+
+    glEnd();
     glDisable(GL_BLEND);
 }
 
