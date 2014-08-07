@@ -3868,10 +3868,10 @@ class SelectGroup():
         for ob in sel:
             for child in ob.OutList:
                 FreeCADGui.Selection.addSelection(child)
-                for parent in ob.InList:
-                    FreeCADGui.Selection.addSelection(parent)
-                    for child in parent.OutList:
-                        FreeCADGui.Selection.addSelection(child)
+            for parent in ob.InList:
+                FreeCADGui.Selection.addSelection(parent)
+                for child in parent.OutList:
+                    FreeCADGui.Selection.addSelection(child)
 
 
 class Shape2DView(Modifier):

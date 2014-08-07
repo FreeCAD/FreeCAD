@@ -76,8 +76,12 @@ void FeaturePage::onChanged(const App::Property* prop)
             if (!fi.exists())
                 return;
         }
-    }
-    if (prop == &Template) {
+    } else if (prop == &EditableTexts) {
+        if (!this->isRestoring()) {
+            this->execute();
+            return;
+        }
+    } else if (prop == &Template) {
         if (!this->isRestoring()) {
             EditableTexts.setValues(getEditableTextsFromTemplate());
         }

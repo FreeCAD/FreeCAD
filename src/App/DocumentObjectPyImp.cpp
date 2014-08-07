@@ -98,6 +98,10 @@ Py::Object DocumentObjectPy::getViewObject(void) const
 {
     try {
         Py::Module module(PyImport_ImportModule("FreeCADGui"),true);
+        if (!module.hasAttr("getDocument")) {
+            // in v0.14+, the GUI module can be loaded in console mode (but doesn't have all its document methods)
+            return Py::None();
+        }
         Py::Callable method(module.getAttr("getDocument"));
         Py::Tuple arg(1);
         arg.setItem(0, Py::String(getDocumentObjectPtr()->getDocument()->getName()));
