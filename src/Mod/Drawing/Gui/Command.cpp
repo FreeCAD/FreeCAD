@@ -104,6 +104,7 @@ void CmdDrawingNewPage::activated(int iMsg)
         openCommand("Drawing create page");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
+        doCommand(Doc,"App.activeDocument().recompute()");
         commitCommand();
     }
     else {
@@ -231,6 +232,7 @@ void CmdDrawingNewA3Landscape::activated(int iMsg)
     openCommand("Drawing create page");
     doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Template = 'A3_Landscape.svg'",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().recompute()");
     commitCommand();
 }
 
