@@ -15,7 +15,6 @@ SET(Draft_SRCS
     importSVG.py
     importDWG.py
     importAirfoilDAT.py
-    macros.py
     Draft_rc.py
     TestDraft.py
 )
