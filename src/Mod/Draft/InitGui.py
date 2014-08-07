@@ -95,7 +95,7 @@ class DraftWorkbench (Workbench):
 
         # import Draft tools, icons and macros menu
         try:
-            import os,macros,Draft_rc,DraftTools, DraftGui
+            import os,Draft_rc,DraftTools, DraftGui
             from DraftTools import translate
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
