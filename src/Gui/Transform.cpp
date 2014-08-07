@@ -61,7 +61,7 @@ public:
             (Base::Type::fromName("App::PropertyGeometry"));
     }
 };
-class find_placement
+class find_transform
 {
 public:
     bool operator () (const std::pair<std::string, App::Property*>& elem) const
@@ -138,7 +138,7 @@ void TransformStrategy::acceptDataTransform(const Base::Matrix4D& mat, App::Docu
     obj->getPropertyMap(props);
     // search for the placement property
     std::map<std::string,App::Property*>::iterator jt;
-    jt = std::find_if(props.begin(), props.end(), find_placement());
+    jt = std::find_if(props.begin(), props.end(), find_transform());
     if (jt != props.end()) {
         Base::Placement local = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
         Gui::ViewProvider* vp = doc->getViewProvider(obj);
@@ -180,7 +180,7 @@ void TransformStrategy::applyViewTransform(const Base::Placement& plm, App::Docu
     obj->getPropertyMap(props);
     // search for the placement property
     std::map<std::string,App::Property*>::iterator jt;
-    jt = std::find_if(props.begin(), props.end(), find_placement());
+    jt = std::find_if(props.begin(), props.end(), find_transform());
     if (jt != props.end()) {
         Base::Placement local = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
         local *= plm; // in case a placement is already set
@@ -201,7 +201,7 @@ void TransformStrategy::resetViewTransform(App::DocumentObject* obj)
     obj->getPropertyMap(props);
     // search for the placement property
     std::map<std::string,App::Property*>::iterator jt;
-    jt = std::find_if(props.begin(), props.end(), find_placement());
+    jt = std::find_if(props.begin(), props.end(), find_transform());
     if (jt != props.end()) {
         Base::Placement local = static_cast<App::PropertyPlacement*>(jt->second)->getValue();
         Gui::ViewProvider* vp = doc->getViewProvider(obj);
