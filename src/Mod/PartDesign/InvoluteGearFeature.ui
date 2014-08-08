@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>195</width>
-    <height>116</height>
+    <height>136</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -122,26 +122,53 @@
    <item row="3" column="0">
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>Number of Curves:</string>
+      <string>High Precision:</string>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
-    <widget class="QComboBox" name="comboBox_NumberOfCurves">
+    <widget class="QComboBox" name="comboBox_HighPrecision">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="editable">
       <bool>false</bool>
      </property>
      <item>
       <property name="text">
-       <string>2x3</string>
+       <string>True</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string>1x4</string>
+       <string>False</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_10">
+     <property name="text">
+      <string>external Gear:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="comboBox_ExternalGear">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="editable">
+      <bool>false</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>True</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>False</string>
       </property>
      </item>
     </widget>
