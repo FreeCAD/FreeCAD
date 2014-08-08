@@ -126,6 +126,26 @@ def isAligned(edge,axis="x"):
             if edge.StartPoint.z == edge.EndPoint.z:
                     return True
     return False
+    
+def getQuad(face):
+    """getQuad(face): returns a list of 3 vectors (basepoint, Xdir, Ydir) if the face
+    is a quad, or None if not."""
+    if len(face.Edges) != 4:
+        return None
+    v1 = vec(face.Edges[0])
+    v2 = vec(face.Edges[1])
+    v3 = vec(face.Edges[2])
+    v4 = vec(face.Edges[3])
+    angles90 = [round(math.pi*0.5,precision()),round(math.pi*1.5,precision())]
+    angles180 = [0,round(math.pi,precision()),round(math.pi*2,precision())]
+    for ov in [v2,v3,v4]:
+        if not (round(v1.getAngle(ov),precision()) in angles90+angles180):
+            return None
+    for ov in [v2,v3,v4]:
+        if round(v1.getAngle(ov),precision()) in angles90:
+            v1.normalize()
+            ov.normalize()
+            return [face.Edges[0].Vertexes[0].Point,v1,ov]
 
 def areColinear(e1,e2):
     """areColinear(e1,e2): returns True if both edges are colinear"""

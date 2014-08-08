@@ -194,7 +194,8 @@ def insert(filename,docname,skip=[]):
             obj = baseobj
         if obj:
             sh = baseobj.Shape.ShapeType if hasattr(baseobj,"Shape") else "None"
-            if DEBUG: print "creating object ",pid," : ",ptype, " with shape: ",sh
+            sols = str(baseobj.Shape.Solids) if hasattr(baseobj,"Shape") else ""
+            if DEBUG: print "creating object ",pid," : ",ptype, " with shape: ",sh," ",sols
             objects[pid] = obj
 
     # subtractions

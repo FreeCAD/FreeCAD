@@ -224,8 +224,15 @@ class plane:
     def alignToFace(self, shape, offset=0):
         # Set face to the unique selected face, if found
         if shape.ShapeType == 'Face':
-            #we should really use face.tangentAt to get u and v here, and implement alignToUVPoint
             self.alignToPointAndAxis(shape.Faces[0].CenterOfMass, shape.Faces[0].normalAt(0,0), offset)
+            import DraftGeomUtils
+            q = DraftGeomUtils.getQuad(shape)
+            if q:
+                self.u = q[1]
+                self.v = q[2]
+                if not DraftVecUtils.equals(self.u.cross(self.v),self.axis):
+                    self.u = q[2]
+                    self.v = q[1]
             return True
         else:
             return False

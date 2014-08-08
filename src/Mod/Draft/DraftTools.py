@@ -385,7 +385,7 @@ class SelectPlane(DraftTool):
         elif arg == "currentView":
             d = self.view.getViewDirection().negative()
             FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector("+str(d.x)+","+str(d.y)+","+str(d.z)+"), "+str(self.offset)+")")
-            self.display(viewDirection)
+            self.display(d)
             self.finish()
         elif arg == "reset":
             FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.reset()")
