@@ -271,12 +271,15 @@ void CmdDrawingNewView::activated(int iMsg)
             QObject::tr("Select a Part object."));
         return;
     }
-
-    std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
-    if (pages.empty()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page to insert"),
-            QObject::tr("Create a page to insert."));
-        return;
+    
+    std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()) {
+        pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+        if (pages.empty()){
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                QObject::tr("Create a page first."));
+            return;
+        }
     }
 
     std::string PageName = pages.front()->getNameInDocument();
@@ -323,11 +326,14 @@ void CmdDrawingOrthoViews::activated(int iMsg)
         return;
     }
 
-    std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
-    if (pages.empty()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page to insert"),
-            QObject::tr("Create a page to insert views into."));
-        return;
+    std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()) {
+        pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+        if (pages.empty()){
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                QObject::tr("Create a page first."));
+            return;
+        }
     }
  
     Gui::Control().showDialog(new TaskDlgOrthoViews());
@@ -399,11 +405,14 @@ CmdDrawingAnnotation::CmdDrawingAnnotation()
 void CmdDrawingAnnotation::activated(int iMsg)
 {
 
-    std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
-    if (pages.empty()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page to insert"),
-            QObject::tr("Create a page to insert."));
-        return;
+    std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()) {
+        pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+        if (pages.empty()){
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                QObject::tr("Create a page first."));
+            return;
+        }
     }
     std::string PageName = pages.front()->getNameInDocument();
     std::string FeatName = getUniqueObjectName("Annotation");
@@ -444,11 +453,14 @@ CmdDrawingClip::CmdDrawingClip()
 void CmdDrawingClip::activated(int iMsg)
 {
 
-    std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
-    if (pages.empty()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page to insert"),
-            QObject::tr("Create a page to insert."));
-        return;
+    std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()) {
+        pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+        if (pages.empty()){
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                QObject::tr("Create a page first."));
+            return;
+        }
     }
     std::string PageName = pages.front()->getNameInDocument();
     std::string FeatName = getUniqueObjectName("Clip");
@@ -486,11 +498,14 @@ CmdDrawingSymbol::CmdDrawingSymbol()
 void CmdDrawingSymbol::activated(int iMsg)
 {
 
-    std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
-    if (pages.empty()){
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page to insert"),
-            QObject::tr("Create a page to insert."));
-        return;
+    std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    if (pages.empty()) {
+        pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+        if (pages.empty()){
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+                QObject::tr("Create a page first."));
+            return;
+        }
     }
     // Reading an image
     QString filename = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an SVG file to open"), QString::null, 
