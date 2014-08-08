@@ -60,6 +60,10 @@ public:
 
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
+    
+    const char* getEditorName(void) const {
+        return "SketcherGui::PropertyConstraintListItem";
+    }
 
     /** Sets the property
      */

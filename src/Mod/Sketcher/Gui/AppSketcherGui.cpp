@@ -37,6 +37,8 @@
 #include "SoDatumLabel.h"
 #include "SoZoomTranslation.h"
 #include "SketcherSettings.h"
+#include "PropertyConstraintListItem.h"
+
 
 // create the commands
 void CreateSketcherCommands(void);
@@ -92,6 +94,7 @@ void SketcherGuiExport initSketcherGui()
     SketcherGui::ViewProviderCustomPython   ::init();
     SketcherGui::SoDatumLabel               ::initClass();
     SketcherGui::SoZoomTranslation          ::initClass();
+    SketcherGui::PropertyConstraintListItem ::init();
 
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>  ( QT_TRANSLATE_NOOP("QObject","Display") );
 
