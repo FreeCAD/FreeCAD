@@ -122,7 +122,7 @@
    <item row="3" column="0">
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>High Precision:</string>
+      <string>High precision:</string>
      </property>
     </widget>
    </item>
@@ -149,7 +149,7 @@
    <item row="4" column="0">
     <widget class="QLabel" name="label_10">
      <property name="text">
-      <string>external Gear:</string>
+      <string>External gear:</string>
      </property>
     </widget>
    </item>
