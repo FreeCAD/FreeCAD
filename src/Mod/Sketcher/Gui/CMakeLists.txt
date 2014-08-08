@@ -37,6 +37,7 @@ set(SketcherGui_MOC_HDRS
     TaskDlgEditSketch.h
     SketchOrientationDialog.h
     SketcherSettings.h
+    PropertyConstraintListItem.h
 )
 fc_wrap_cpp(SketcherGui_MOC_SRCS ${SketcherGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${SketcherGui_MOC_SRCS})
@@ -72,6 +73,8 @@ SET(SketcherGui_SRCS
     SoZoomTranslation.h
     SoDatumLabel.cpp
     SoDatumLabel.h
+    PropertyConstraintListItem.h
+    PropertyConstraintListItem.cpp
     TaskSketcherConstrains.ui
     TaskSketcherConstrains.cpp
     TaskSketcherConstrains.h
