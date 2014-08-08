@@ -282,7 +282,7 @@ def export(exportList,filename):
         uid = None
         if hasattr(obj,"IfcAttributes"):
             if "IfcUID" in obj.IfcAttributes.keys():
-                uid = obj.IfcAttributes["IfcUID"]
+                uid = str(obj.IfcAttributes["IfcUID"])
         if not uid:
             uid = ifcopenshell.guid.compress(uuid.uuid1().hex)
             
@@ -317,7 +317,7 @@ def export(exportList,filename):
 
         # setting the arguments
         args = [uid,history,name,description,None,placement,representation,None]
-        if ifctype in ["IfcSlab","IfcFooting"]:
+        if ifctype in ["IfcSlab","IfcFooting","IfcRoof"]:
             args = args + ["NOTDEFINED"]
         elif ifctype in ["IfcWindow","IfcDoor"]:
             args = args + [obj.Width.Value, obj.Height.Value]
@@ -576,7 +576,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
     if shapes:
         
-        if FreeCAD.GuiUp and not subtraction:
+        if FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
             rgb = obj.ViewObject.ShapeColor
             col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
             ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")

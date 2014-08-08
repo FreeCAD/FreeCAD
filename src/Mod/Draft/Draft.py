@@ -963,9 +963,9 @@ def makeCopy(obj,force=None,reparent=False):
             ArchWindow._ViewProviderWindow(newobj.ViewObject)
     elif (getType(obj) == "Sketch") or (force == "Sketch"):
         newobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",getRealName(obj.Name))
-        for geo in obj.Geometries:
+        for geo in obj.Geometry:
             newobj.addGeometry(geo)
-        for con in obj.constraints:
+        for con in obj.Constraints:
             newobj.addConstraint(con)
     elif obj.isDerivedFrom("Part::Feature"):
         newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",getRealName(obj.Name))

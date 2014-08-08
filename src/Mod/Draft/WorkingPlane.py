@@ -233,6 +233,7 @@ class plane:
                 if not DraftVecUtils.equals(self.u.cross(self.v),self.axis):
                     self.u = q[2]
                     self.v = q[1]
+            self.weak = False
             return True
         else:
             return False
