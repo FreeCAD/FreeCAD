@@ -263,14 +263,22 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     
     ui->comboBoxElementFilter->setCurrentIndex(0);
     
-    ui->namingBox->setCheckState(Qt::Unchecked);
-    ui->autoSwitchBox->setCheckState(Qt::Checked);
-
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
+    
+    ui->autoSwitchBox->setChecked(hGrp->GetBool("Auto-switch to edge", true));
+    ui->namingBox->setChecked(hGrp->GetBool("Extended Naming", false));
+    
+    ui->comboBoxElementFilter->setEnabled(!isautoSwitchBoxChecked);
+    
     slotElementsChanged();
 }
 
 TaskSketcherElements::~TaskSketcherElements()
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/Elements");
+    hGrp->SetBool("Auto-switch to edge", ui->autoSwitchBox->isChecked());
+    hGrp->SetBool("Extended Naming", ui->namingBox->isChecked());
+    
     connectionElementsChanged.disconnect();
     delete ui;
 }
