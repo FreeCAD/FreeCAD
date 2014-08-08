@@ -926,8 +926,10 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
     snapToGrid(x, y);
 
     bool preselectChanged;
-    if (Mode!=STATUS_SKETCH_DragPoint && Mode!=STATUS_SKETCH_DragCurve &&
-        Mode!=STATUS_SKETCH_DragConstraint) {
+    if (Mode != STATUS_SKETCH_DragPoint &&
+        Mode != STATUS_SKETCH_DragCurve &&
+        Mode != STATUS_SKETCH_DragConstraint &&
+        Mode != STATUS_SKETCH_UseRubberBand) {
 
         SoPickedPoint *pp = this->getPointOnRay(cursorPos, viewer);
 
