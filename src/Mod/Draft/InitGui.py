@@ -93,13 +93,12 @@ class DraftWorkbench (Workbench):
         if not depsOK:
             return
 
-        # import Draft tools, icons and macros menu
+        # import Draft tools, icons
         try:
             import os,Draft_rc,DraftTools, DraftGui
             from DraftTools import translate
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
-            self.appendMenu(["&Macro",translate("draft","Installed Macros")],macros.macrosList)
         except Exception as inst:
             print inst
             FreeCAD.Console.PrintError("Error: Initializing one or more of the Draft modules failed, Draft will not work as expected.\n")
