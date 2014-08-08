@@ -155,8 +155,9 @@ def getSupport(args=None):
             if sel.HasSubObjects:
                 if len(sel.SubElementNames) == 1:
                     if "Face" in sel.SubElementNames[0]:
+                        if plane.weak:
                             plane.alignToFace(sel.SubObjects[0])
-                            return sel.Object
+                        return sel.Object
         return None
 
     snapped = Draft.get3DView().getObjectInfo((args["Position"][0],args["Position"][1]))
