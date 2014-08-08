@@ -103,7 +103,7 @@ class _ViewProviderInvoluteGear:
         vobj.Proxy = self
        
     def getIcon(self):
-        return ":/icons/PartDesign_InvoluteGear.svg"
+        return ":/icons/PartDesign_InternalExternalGear.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -134,6 +134,7 @@ class _InvoluteGearTaskPanel:
         self.obj = obj
         
         self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/PartDesign/InvoluteGearFeature.ui")
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/PartDesign_InternalExternalGear.svg"))
         
         QtCore.QObject.connect(self.form.Quantity_Modules, QtCore.SIGNAL("valueChanged(double)"), self.modulesChanged)
         QtCore.QObject.connect(self.form.Quantity_PressureAngle, QtCore.SIGNAL("valueChanged(double)"), self.angleChanged)
