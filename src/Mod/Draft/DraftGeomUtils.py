@@ -58,6 +58,8 @@ def edg(p1,p2):
 
 def getVerts(shape):
     "getVerts(shape): returns a list containing vectors of each vertex of the shape"
+    if not hasattr(shape,"Vertexes"):
+        return []
     p = []
     for v in shape.Vertexes:
             p.append(v.Point)
@@ -901,10 +903,12 @@ def offset(edge,vector):
         v1 = Vector.add(edge.Vertexes[0].Point, vector)
         v2 = Vector.add(edge.Vertexes[-1].Point, vector)
         return Part.Line(v1,v2).toShape()
-    else:
+    elif geomType(edge) == "Circle":
         rad = edge.Vertexes[0].Point.sub(edge.Curve.Center)
         newrad = Vector.add(rad,vector).Length
-        return Part.Circle(edge.Curve.Center,NORM,newrad).toShape()
+        return Part.Circle(edge.Curve.Center,edge.Curve.Axis,newrad).toShape()
+    else:
+        return None
 
 def isReallyClosed(wire):
     "checks if a wire is really closed"
@@ -1001,6 +1005,8 @@ def offsetWire(wire,dvec,bind=False,occ=False):
             angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
             delta = DraftVecUtils.rotate(delta,angle,norm)
         nedge = offset(curredge,delta)
+        if not nedge:
+            return None
         if isinstance(curredge.Curve,Part.Circle):
             nedge = Part.ArcOfCircle(nedge.Curve,curredge.FirstParameter,curredge.LastParameter).toShape()
         nedges.append(nedge)
@@ -1098,6 +1104,8 @@ def findDistance(point,edge,strict=False):
                 ve2 = None
             center = edge.Curve.Center
             segment = center.sub(point)
+            if segment.Length == 0:
+                return None
             ratio = (segment.Length - edge.Curve.Radius) / segment.Length
             dist = segment.multiply(ratio)
             newpoint = Vector.add(point, dist)

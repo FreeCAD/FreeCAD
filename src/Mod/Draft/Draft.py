@@ -1410,6 +1410,11 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
     if sym is True, bind must be true too, and the offset is made on both
     sides, the total width being the given delta length.'''
     import Part, DraftGeomUtils
+    newwire = None
+    
+    if getType(obj) in ["Sketch","Part"]:
+        copy = True
+        print "the offset tool is currently unable to offset a non-Draft object directly - Creating a copy"
 
     def getRect(p,obj):
         "returns length,heigh,placement"
@@ -1450,8 +1455,20 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
             n1 = DraftGeomUtils.offsetWire(obj.Shape,d1)
             n2 = DraftGeomUtils.offsetWire(obj.Shape,d2)
         else:
-            newwire = DraftGeomUtils.offsetWire(obj.Shape,delta)
-            p = DraftGeomUtils.getVerts(newwire)
+            if isinstance(delta,float) and (len(obj.Shape.Edges) == 1):
+                # circle
+                c = obj.Shape.Edges[0].Curve
+                nc = Part.Circle(c.Center,c.Axis,delta)
+                if len(obj.Shape.Vertexes) > 1:
+                    nc = Part.ArcOfCircle(nc,obj.Shape.Edges[0].FirstParameter,obj.Shape.Edges[0].LastParameter)
+                newwire = Part.Wire(nc.toShape())
+                p = []
+            else:
+                newwire = DraftGeomUtils.offsetWire(obj.Shape,delta)
+                if DraftGeomUtils.hasCurves(newwire) and copy:
+                    p = []
+                else:
+                    p = DraftGeomUtils.getVerts(newwire)
     if occ:
         newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
         newobj.Shape = DraftGeomUtils.offsetWire(obj.Shape,delta,occ=True)
@@ -1498,13 +1515,20 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         else:
             # try to offset anyway
             try:
-                newobj = makeWire(p)
-                newobj.Closed = obj.Shape.isClosed()
+                if p:
+                    newobj = makeWire(p)
+                    newobj.Closed = obj.Shape.isClosed()
             except:
                 pass
+            if not(newobj) and newwire:
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
+                newobj.Shape = newwire
+            else:
+                print "Unable to create an offset"
         if newobj:
             formatObject(newobj,obj)
     else:
+        newobj = None
         if sym: return None
         if getType(obj) == "Wire":
             if obj.Base or obj.Tool:

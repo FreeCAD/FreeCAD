@@ -2437,9 +2437,24 @@ class Offset(Modifier):
             elif Draft.getType(self.sel) == "BSpline":
                 self.ghost = bsplineTracker(points=self.sel.Points)
                 self.mode = "BSpline"
+            elif Draft.getType(self.sel) == "BezCurve":
+                msg(translate("draft", "Sorry, offset of Bezier curves is currently still not supported\n"),"warning")
+                self.finish()
+                return
             else:
-                self.ghost = wireTracker(self.shape)
-                self.mode = "Wire"
+                if len(self.sel.Shape.Edges) == 1:
+                    import Part
+                    if isinstance(self.sel.Shape.Edges[0].Curve,Part.Circle):
+                        self.ghost = arcTracker()
+                        self.mode = "Circle"
+                        self.center = self.shape.Edges[0].Curve.Center
+                        self.ghost.setCenter(self.center)
+                        if len(self.sel.Shape.Vertexes) > 1:
+                            self.ghost.setStartAngle(self.sel.Shape.Edges[0].FirstParameter)
+                            self.ghost.setEndAngle(self.sel.Shape.Edges[0].LastParameter)
+                if not self.ghost:
+                    self.ghost = wireTracker(self.shape)
+                    self.mode = "Wire"
             self.call = self.view.addEventCallback("SoEvent",self.action)
             msg(translate("draft", "Pick distance:\n"))
             if self.planetrack:
@@ -2506,7 +2521,8 @@ class Offset(Modifier):
                 if self.npts:
                     print "offset:npts=",self.npts
                     self.commit(translate("draft","Offset"),
-                                ['Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+DraftVecUtils.toString(self.npts)+',copy='+str(copymode)+')'])
+                                ['Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+DraftVecUtils.toString(self.npts)+',copy='+str(copymode)+')',
+                                 'FreeCAD.ActiveDocument.recompute()'])
                 elif self.dvec:
                     if isinstance(self.dvec,float):
                         d = str(self.dvec)
