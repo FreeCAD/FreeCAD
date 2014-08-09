@@ -1628,7 +1628,7 @@
          id="tspan3280"
          sodipodi:role="line">Weight</tspan></text>
     <text
-       freecad:editable="Tilte"
+       freecad:editable="Title"
        sodipodi:linespacing="125%"
        id="text3282"
        y="158.72597"
@@ -1638,7 +1638,7 @@
          y="158.72597"
          x="191.10426"
          id="tspan3284"
-         sodipodi:role="line">Tilte</tspan></text>
+         sodipodi:role="line">Title</tspan></text>
     <text
        freecad:editable="Subtitle"
        sodipodi:linespacing="125%"
