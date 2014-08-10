@@ -362,6 +362,7 @@ if(FREECAD_LIBPACK_USE)
 
 else(FREECAD_LIBPACK_USE)
 
+include(cMake/FreeCadMacros.cmake)
 
 # ================================================================================
 # == for other OSes search the packages ==========================================
@@ -455,8 +456,14 @@ else(FREECAD_LIBPACK_USE)
             TKXDESTEP
             TKXDEIGES
             TKMeshVS
-            TKAdvTools
         )
+        CHECK_MINIMUM_OCC_VERSION_HEX(0x060703)
+        if (NOT OCC_MIN_VERSION)
+            set(OCC_OCAF_LIBRARIES
+                ${OCC_OCAF_LIBRARIES}
+                TKAdvTools
+            )
+        endif()
         set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
         set(OCC_FOUND ${OCE_FOUND})
     else() #look for OpenCASCADE
@@ -637,7 +644,6 @@ if(WIN32)
 endif(WIN32)
 
 
-include(cMake/FreeCadMacros.cmake)
 
 
 # ================================================================================
