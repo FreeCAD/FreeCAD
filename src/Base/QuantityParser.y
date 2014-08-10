@@ -47,13 +47,10 @@
              | ACOS  '(' num ')'  			{ $$ = acos($3.getValue());   	}
              | ASIN  '(' num ')'  			{ $$ = asin($3.getValue());   	}
              | ATAN  '(' num ')'  			{ $$ = atan($3.getValue());   	}
-             | ATAN2 '(' num ',' num ')'    { $$ = atan2($3.getValue(),$5.getValue());}
              | ABS  '(' num ')'   			{ $$ = fabs($3.getValue());   	}
              | EXP  '(' num ')'   			{ $$ = exp($3.getValue());    	}
-             | MOD  '(' num ',' num ')'		{ $$ = fmod($3.getValue(),$5.getValue()); }
              | LOG  '(' num ')'				{ $$ = log($3.getValue());     }
              | LOG10  '(' num ')'			{ $$ = log10($3.getValue());   }
-             | POW  '(' num ',' num ')'		{ $$ = pow($3.getValue(),$5.getValue());  }
              | SIN  '(' num ')'   			{ $$ = sin($3.getValue());     }
              | SINH '(' num ')'   			{ $$ = sinh($3.getValue());    }
              | TAN  '(' num ')'   			{ $$ = tan($3.getValue());     }
