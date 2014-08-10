@@ -181,7 +181,7 @@ void InputField::newInput(const QString & text)
     Quantity res;
     try {
         QString input = text;
-        input.remove(locale().groupSeparator());
+        fixup(input);
         res = Quantity::parse(input);
     }
     catch(Base::Exception &e){
@@ -450,7 +450,9 @@ void InputField::setHistorySize(int i)
 
 void InputField::selectNumber(void)
 {
-    QByteArray str = text().toLatin1();
+    QString input = text();
+    fixup(input);
+    QByteArray str = input.toLatin1();
     unsigned int i = 0;
 
     for (QByteArray::iterator it = str.begin(); it != str.end(); ++it) {
@@ -458,7 +460,7 @@ void InputField::selectNumber(void)
             i++;
         else if (*it == ',' || *it == '.')
             i++;
-        else if (*it == '-')
+        else if (*it == '-' )
             i++;
         else // any non-number character
             break;
@@ -529,6 +531,10 @@ void InputField::wheelEvent (QWheelEvent * event)
 void InputField::fixup(QString& input) const
 {
     input.remove(locale().groupSeparator());
+    if(locale().negativeSign() != QChar::fromAscii('-'))
+    	input.replace(locale().negativeSign(), QChar::fromAscii('-'));
+    if(locale().positiveSign() != QChar::fromAscii('+'))
+    	input.replace(locale().positiveSign(), QChar::fromAscii('+'));
 }
 
 QValidator::State InputField::validate(QString& input, int& pos) const
@@ -536,7 +542,7 @@ QValidator::State InputField::validate(QString& input, int& pos) const
     try {
         Quantity res;
         QString text = input;
-        text.remove(locale().groupSeparator());
+        fixup(text);
         res = Quantity::parse(text);
 
         double factor;

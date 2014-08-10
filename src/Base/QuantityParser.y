@@ -55,7 +55,7 @@
              | SINH '(' num ')'   			{ $$ = sinh($3.getValue());    }
              | TAN  '(' num ')'   			{ $$ = tan($3.getValue());     }
              | TANH  '(' num ')'   			{ $$ = tanh($3.getValue());    }
-             | SQRT  '(' num ')'   			{ $$ = tanh($3.getValue());    }
+             | SQRT  '(' num ')'   			{ $$ = sqrt($3.getValue());    }
              | COS  '(' num ')'   			{ $$ = cos($3.getValue());    }
 ;            
 
