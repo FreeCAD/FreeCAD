@@ -89,7 +89,14 @@ IF(OCC_LIBRARY)
     TKXDESTEP
     TKXDEIGES
     TKMeshVS
-    TKAdvTools
   )
+  CHECK_MINIMUM_OCC_VERSION_HEX(0x060703)
+  if (NOT OCC_MIN_VERSION)
+    set(OCC_OCAF_LIBRARIES
+        ${OCC_OCAF_LIBRARIES}
+        TKAdvTools
+    )
+  endif()
+
 ENDIF(OCC_LIBRARY)
 
