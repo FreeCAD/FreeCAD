@@ -52,6 +52,7 @@
 #include "Document.h"
 #include "Window.h"
 
+#include <Base/Console.h>
 #include <Base/Placement.h>
 #include <App/PropertyGeo.h>
 #include <App/GeoFeature.h>
@@ -62,6 +63,7 @@
 #endif
 #include "SoNavigationDragger.h"
 #include "SoFCUnifiedSelection.h"
+#include <boost/math/special_functions/fpclassify.hpp>
 
 using namespace Gui;
 
@@ -190,6 +192,7 @@ void ViewProviderGeometryObject::updateData(const App::Property* prop)
         pcTransform->rotation.setValue(q0,q1,q2,q3);
         pcTransform->translation.setValue(px,py,pz);
         pcTransform->center.setValue(0.0f,0.0f,0.0f);
+        pcTransform->scaleFactor.setValue(1.0f,1.0f,1.0f);
     }
 }
 
@@ -444,6 +447,12 @@ void ViewProviderGeometryObject::dragMotionCallback(void * data, SoDragger * d)
         SbVec3f move = manip->translation.getValue();
         SbVec3f center = manip->center.getValue();
         manip->rotation.getValue().getValue(q0, q1, q2, q3);
+
+        // it can happen that the values of the motion matrix is garbage
+        if (boost::math::isnan(q0)) {
+            Base::Console().Warning("NaN values received in ViewProviderGeometryObject::dragMotionCallback\n");
+            return;
+        }
 
         // get the placement
         ViewProviderGeometryObject* view = reinterpret_cast<ViewProviderGeometryObject*>(data);
