@@ -326,15 +326,21 @@ void QuantitySpinBox::clear()
 
 void QuantitySpinBox::selectNumber()
 {
-    QByteArray str = lineEdit()->text().toLatin1();
+    QString str = lineEdit()->text();
     unsigned int i = 0;
 
-    for (QByteArray::iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it >= '0' && *it <= '9')
+    QChar d = locale().decimalPoint();
+    QChar g = locale().groupSeparator();
+    QChar n = locale().negativeSign();
+
+    for (QString::iterator it = str.begin(); it != str.end(); ++it) {
+        if (it->isDigit())
             i++;
-        else if (*it == ',' || *it == '.')
+        else if (*it == d)
             i++;
-        else if (*it == '-')
+        else if (*it == g)
+            i++;
+        else if (*it == n)
             i++;
         else // any non-number character
             break;
