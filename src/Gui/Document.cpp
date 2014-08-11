@@ -697,8 +697,12 @@ void Document::RestoreDocFile(Base::Reader &reader)
         sMsg += ppReturn;
         if (strcmp(ppReturn, "") != 0) { // non-empty attribute
             try {
-                if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
-                    d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+                const char** pReturnIgnore=0;
+                std::list<MDIView*> mdi = getMDIViews();
+                for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
+                    if ((*it)->onHasMsg("SetCamera"))
+                        (*it)->onMsg(sMsg.c_str(), pReturnIgnore);
+                }
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
