@@ -12,6 +12,7 @@ cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
 
 # include local  modules
 include(AddFileDependencies)
+include(cMake/FreeCadMacros.cmake)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
 
@@ -361,8 +362,6 @@ if(FREECAD_LIBPACK_USE)
     ENDIF(NOT SWIG_FOUND)
 
 else(FREECAD_LIBPACK_USE)
-
-include(cMake/FreeCadMacros.cmake)
 
 # ================================================================================
 # == for other OSes search the packages ==========================================
