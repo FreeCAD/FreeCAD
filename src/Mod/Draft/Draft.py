@@ -1774,7 +1774,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += 'font-family:'+ fontname +'" '
         svg += 'transform="rotate('+str(math.degrees(angle))
         svg += ','+ str(base.x) + ',' + str(base.y) + ') '
-        svg += 'translate(' + str(base.x) + ',' + str(base.y) + ') '
+        if flip:
+            svg += 'translate(' + str(base.x) + ',' + str(base.y) + ') '
+        else:
+            svg += 'translate(' + str(base.x) + ',' + str(-base.y) + ') '
         #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
         if flip:
             svg += 'scale(1,-1) '
@@ -1818,7 +1821,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 p3 = getProj(prx.p3)
                 p4 = getProj(prx.p4)
                 tbase = getProj(prx.tbase)
-                angle = -DraftVecUtils.angle(p3.sub(p2))
+                r = prx.textpos.rotation.getValue().getValue()
+                rv = FreeCAD.Rotation(r[0],r[1],r[2],r[3]).multVec(FreeCAD.Vector(1,0,0))
+                angle = -DraftVecUtils.angle(getProj(rv))
+                #angle = -DraftVecUtils.angle(p3.sub(p2))
                     
                 # drawing lines
                 svg = '<path '
@@ -1826,8 +1832,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     tangle = angle
                     if tangle > math.pi/2:
                         tangle = tangle-math.pi
-                    elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
-                        tangle = tangle+math.pi
+                    #elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
+                    #    tangle = tangle+math.pi
                     #tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
                     svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
                     svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
@@ -1958,11 +1964,15 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         a = 0
         t1 = obj.ViewObject.Proxy.text1.string.getValues()
         t2 = obj.ViewObject.Proxy.text2.string.getValues()
-        t = t1 + t2
-        p = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
+        scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
+        f1 = fontsize*scale
+        p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
+        p1 = p2.add(FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue()))
         l = obj.ViewObject.LineSpacing/2
         j = obj.ViewObject.TextAlign
-        svg += getText(c,fontsize,n,a,getProj(p),t,l,j,flip=False)
+        svg += getText(c,f1,n,a,getProj(p1),t1,l,j,flip=False)
+        if t2:
+            svg += getText(c,fontsize,n,a,getProj(p2),t2,l,j,flip=False)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull(): 
