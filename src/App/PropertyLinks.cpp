@@ -131,7 +131,8 @@ void PropertyLink::Restore(Base::XMLReader &reader)
 
     if (name != "") {
         DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        DocumentObject* object = parent->getDocument()->getObject(name.c_str());
+        App::Document* document = parent->getDocument();
+        DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
         if (!object) {
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
                                     "an object was not loaded correctly\n",name.c_str());
@@ -316,8 +317,8 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
 
     DocumentObject *pcObject;
     if (name != ""){
-        pcObject = static_cast<DocumentObject*>(getContainer())->
-            getDocument()->getObject(name.c_str());
+        App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
+        pcObject = document ? document->getObject(name.c_str()) : 0;
         if (!pcObject)
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
                                     "an object was not loaded correctly\n",name.c_str());
@@ -466,7 +467,8 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
         // document. Thus, we should silently ingore this.
         // Property not in an object!
         DocumentObject* father = static_cast<DocumentObject*>(getContainer());
-        DocumentObject* child = father->getDocument()->getObject(name.c_str());
+        App::Document* document = father->getDocument();
+        DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child)
             values.push_back(child);
         else
@@ -657,7 +659,8 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         // document. Thus, we should silently ingore this.
         // Property not in an object!
         DocumentObject* father = static_cast<DocumentObject*>(getContainer());
-        DocumentObject* child = father->getDocument()->getObject(name.c_str());
+        App::Document* document = father->getDocument();
+        DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child)
             values.push_back(child);
         else
