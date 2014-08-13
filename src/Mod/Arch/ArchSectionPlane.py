@@ -107,7 +107,8 @@ class _SectionPlane:
         
     def execute(self,obj):
         import Part
-        l = obj.ViewObject.DisplaySize.Value
+        l = obj.ViewObject.DisplayLength.Value
+        h = obj.ViewObject.DisplayHeight.Value
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
         if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
@@ -131,11 +132,15 @@ class _SectionPlane:
 class _ViewProviderSectionPlane:
     "A View Provider for Section Planes"
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","DisplaySize","Arch",translate("Arch","The display size of this section plane"))
+        vobj.addProperty("App::PropertyLength","DisplayLength","Arch",translate("Arch","The display length of this section plane"))
+        vobj.addProperty("App::PropertyLength","DisplayHeight","Arch",translate("Arch","The display height of this section plane"))
+        vobj.addProperty("App::PropertyLength","ArrowSize","Arch",translate("Arch","The size of the arrows of this section plane"))        
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
-        vobj.DisplaySize = 1
+        vobj.DisplayLength = 1
+        vobj.DisplayHeight = 1
+        vobj.ArrowSize = 1
         vobj.Transparency = 85
         vobj.LineWidth = 1
         vobj.LineColor = (0.0,0.0,0.4,1.0)
@@ -174,7 +179,7 @@ class _ViewProviderSectionPlane:
         sep.addChild(fsep)
         sep.addChild(psep)
         vobj.addDisplayMode(sep,"Default")
-        self.onChanged(vobj,"DisplaySize")
+        self.onChanged(vobj,"DisplayLength")
         self.onChanged(vobj,"LineColor")
         self.onChanged(vobj,"Transparency")
         
@@ -189,7 +194,7 @@ class _ViewProviderSectionPlane:
 
     def updateData(self,obj,prop):
         if prop in ["Placement"]:
-            self.onChanged(obj.ViewObject,"DisplaySize")
+            self.onChanged(obj.ViewObject,"DisplayLength")
         return
 
     def onChanged(self,vobj,prop):
@@ -200,12 +205,13 @@ class _ViewProviderSectionPlane:
         elif prop == "Transparency":
             if hasattr(vobj,"Transparency"):
                 self.mat2.transparency.setValue(vobj.Transparency/100.0)
-        elif prop == "DisplaySize":
-            hd = vobj.DisplaySize.Value/2
+        elif prop in ["DisplayLength","DisplayHeight","ArrowSize"]:
+            ld = vobj.DisplayLength.Value/2
+            hd = vobj.DisplayHeight.Value/2
             verts = []
             fverts = []
-            for v in [[-hd,-hd],[hd,-hd],[hd,hd],[-hd,hd]]:
-                l1 = hd/3
+            for v in [[-ld,-hd],[ld,-hd],[ld,hd],[-ld,hd]]:
+                l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
                 l2 = l1/3
                 pl = FreeCAD.Placement(vobj.Object.Placement)
                 p1 = pl.multVec(Vector(v[0],v[1],0))
@@ -234,15 +240,17 @@ class _ViewProviderSectionPlane:
 class _ArchDrawingView:
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing View","The rendering mode to use")
-        obj.addProperty("App::PropertyBool","ShowCut","Drawing View","If cut geometry is shown or not")
-        obj.addProperty("App::PropertyFloat","LineWidth","Drawing View","The line width of the rendered objects")
+        obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing view","The rendering mode to use")
+        obj.addProperty("App::PropertyBool","ShowCut","Drawing view","If cut geometry is shown or not")
+        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view","The line width of the rendered objects")
+        obj.addProperty("App::PropertyLength","FontSize","Drawing view","The size of the texts inside this object")
         obj.RenderingMode = ["Solid","Wireframe"]
         obj.RenderingMode = "Wireframe"
         obj.LineWidth = 0.35
         obj.ShowCut = False
         obj.Proxy = self
         self.Type = "ArchSectionView"
+        obj.FontSize = 12
 
     def execute(self, obj):
         if obj.Source:
@@ -296,6 +304,15 @@ class _ArchDrawingView:
                 if obj.Source.Objects:
                     objs = Draft.getGroupContents(obj.Source.Objects,walls=True)
                     objs = Draft.removeHidden(objs)
+                    # separate spaces
+                    spaces = []
+                    os = []
+                    for o in objs:
+                        if Draft.getType(o) == "Space":
+                            spaces.append(o)
+                        else:
+                            os.append(o)
+                    objs = os
                     self.svg = ''
 
                     # generating SVG
@@ -348,6 +365,11 @@ class _ArchDrawingView:
                                         sol.reverse()
                                     c = sol.cut(cutvolume)
                                     s = sol.section(cutface)
+                                    try:
+                                        s = Part.Wire(s.Edges)
+                                        s = Part.Face(s)
+                                    except:
+                                        pass
                                     nsh.extend(c.Solids)
                                     sshapes.append(s)
                                     if hasattr(obj,"ShowCut"):
@@ -374,21 +396,16 @@ class _ArchDrawingView:
                                 svgh = svgh.replace('fill="none"','fill="none"\nstroke-dasharray="0.09,0.05"')                              
                                 self.svg += svgh
                         if sshapes:
-                            edges = []
-                            for s in sshapes:
-                                edges.extend(s.Edges)
-                            wires = DraftGeomUtils.findWires(edges)
-                            faces = []
-                            for w in wires:
-                                if (w.ShapeType == "Wire") and w.isClosed():
-                                    faces.append(Part.Face(w))
-                            sshapes = Part.makeCompound(faces)
+                            sshapes = Part.makeCompound(sshapes)
                             svgs = Drawing.projectToSVG(sshapes,self.direction)
                             if svgs:
                                 svgs = svgs.replace('stroke-width="0.35"','stroke-width="SWPlaceholder"')
                                 svgs = svgs.replace('stroke-width="1"','stroke-width="SWPlaceholder"')
                                 svgs = svgs.replace('stroke-width:0.01','stroke-width:SWPlaceholder')
                                 self.svg += svgs
+                                
+                    for s in spaces:
+                        self.svg += Draft.getSVG(s,scale=1/obj.Scale,fontsize=obj.FontSize,direction=self.direction)
 
     def updateSVG(self, obj):
         "Formats and places the calculated svg stuff on the page"
@@ -400,9 +417,7 @@ class _ArchDrawingView:
         if not hasattr(self,"svg"):
             return ''
         linewidth = obj.LineWidth/obj.Scale
-        st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness")
-        if not st:
-            st = 2
+        st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness",2)
         svg = self.svg.replace('LWPlaceholder', str(linewidth) + 'px')
         svg = svg.replace('SWPlaceholder', str(linewidth*st) + 'px')                
             
