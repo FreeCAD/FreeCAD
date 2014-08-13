@@ -69,9 +69,20 @@
 				<UserDocu>Set the tolerance for the edge.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="discretize" Const="true">
+		<Methode Name="discretize" Const="true" Keyword="true">
 			<Documentation>
-				<UserDocu>Discretizes the edge using a given deflection or number of points and returns a list of points</UserDocu>
+        <UserDocu>Discretizes the edge and returns a list of points.
+The function accepts keywords as argument:
+discretize(Number=n) => gives a list of 'n' equidistant points
+discretize(Distance=d) => gives a list of equidistant points with distance 'd'
+discretize(Deflection=d) => gives a list of points with a maximum deflection 'd' to the edge
+discretize(Angular=a,Curvatre=c) => gives a list of points with an angular deflection of 'a'
+                                    and a curvature deflection of 'c'
+
+If no keyword is given then it depends on whether the argument is an int or float.
+If it's an int then the behaviour is as if using the keyword 'Number', if it's float
+then the behaviour is as if using the keyword 'Distance'.
+</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="split">
