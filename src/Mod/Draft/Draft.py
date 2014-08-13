@@ -1758,7 +1758,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             print "getSVG: arrow type not implemented"
         return svg
         
-    def getText(color,fontsize,fontname,angle,base,text,linespacing=0.5,align="center"):
+    def getText(color,fontsize,fontname,angle,base,text,linespacing=0.5,align="center",flip=True):
         if not isinstance(text,list):
             text = text.split("\n")
         if align.lower() == "center":
@@ -1776,7 +1776,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += ','+ str(base.x) + ',' + str(base.y) + ') '
         svg += 'translate(' + str(base.x) + ',' + str(base.y) + ') '
         #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
-        svg += 'scale(1,-1) '
+        if flip:
+            svg += 'scale(1,-1) '
+        else:
+            svg += 'scale(1,1) '
         svg += '" freecad:skip="1"'
         svg += '>\n'
         if len(text) == 1:
@@ -1814,7 +1817,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 p2 = getProj(prx.p2)
                 p3 = getProj(prx.p3)
                 p4 = getProj(prx.p4)
-                tbase = p2.add(p3.sub(p2).multiply(0.5))
+                tbase = getProj(prx.tbase)
                 angle = -DraftVecUtils.angle(p3.sub(p2))
                     
                 # drawing lines
@@ -1825,7 +1828,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         tangle = tangle-math.pi
                     elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
                         tangle = tangle+math.pi
-                    tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
+                    #tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
                     svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
                     svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
                     svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
@@ -1947,6 +1950,19 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += '<tspan>' + obj.ViewObject.Proxy.getNumber(n) + '</tspan>\n'
             svg += '</text>\n'
             n += 1
+            
+    elif getType(obj) == "Space":
+        "returns an SVG fragment for the text of a space"
+        c = getrgb(obj.ViewObject.TextColor)
+        n = obj.ViewObject.FontName
+        a = 0
+        t1 = obj.ViewObject.Proxy.text1.string.getValues()
+        t2 = obj.ViewObject.Proxy.text2.string.getValues()
+        t = t1 + t2
+        p = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
+        l = obj.ViewObject.LineSpacing/2
+        j = obj.ViewObject.TextAlign
+        svg += getText(c,fontsize,n,a,getProj(p),t,l,j,flip=False)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull(): 
@@ -3244,11 +3260,11 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 m = ["2D","3D"][getParam("dimstyle",0)]
             if m== "3D":
                 offset = offset.negative()
-            tbase = (self.p2.add((self.p3.sub(self.p2).multiply(0.5)))).add(offset)
+            self.tbase = (self.p2.add((self.p3.sub(self.p2).multiply(0.5)))).add(offset)
             if hasattr(obj.ViewObject,"TextPosition"):
                 if not DraftVecUtils.isNull(obj.ViewObject.TextPosition):
-                    tbase = obj.ViewObject.TextPosition
-            self.textpos.translation.setValue([tbase.x,tbase.y,tbase.z])
+                    self.tbase = obj.ViewObject.TextPosition
+            self.textpos.translation.setValue([self.tbase.x,self.tbase.y,self.tbase.z])
             self.textpos.rotation = coin.SbRotation(rot1[0],rot1[1],rot1[2],rot1[3])
             su = True
             if hasattr(obj.ViewObject,"ShowUnit"):
