@@ -346,7 +346,7 @@ set(NGLIB_DEBUG_LIBRARIES
 #    ${OCC_LIBRARY_DIR}/TKXDESTEP.lib
 #    ${OCC_LIBRARY_DIR}/TKXDEIGES.lib
 #)
-set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/oce-0.13)
+set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/oce-0.15)
 set(OCC_LIBRARY_DIR ${FREECAD_LIBPACK_DIR}/lib)
 set(OCC_LIBRARIES
     optimized TKFillet
@@ -418,8 +418,6 @@ set(OCC_OCAF_DEBUG_LIBRARIES
 )
 set(OCC_FOUND TRUE) 
 
-set(EIGEN2_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/eigen2)
-set(EIGEN2_FOUND TRUE)
 
 set(EIGEN3_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/eigen3)
 set(EIGEN3_FOUND TRUE)
@@ -450,7 +448,7 @@ endif(FREECAD_USE_FREETYPE)
 #  SHIBOKEN_LIBRARY            - Files to link against to use SHIBOKEN
 #  SHIBOKEN_BINARY             - Executable name
 
-SET(SHIBOKEN_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/shiboken-1.2.1)
+SET(SHIBOKEN_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/shiboken-1.2.2)
 SET(SHIBOKEN_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/shiboken-python2.7_d.lib)
 set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
 
@@ -459,7 +457,7 @@ set(SHIBOKEN_BINARY      ${FREECAD_LIBPACK_DIR}/bin/shiboken)
 #  PYSIDE_PYTHONPATH    - Path to where the PySide Python module files could be found
 #  PYSIDE_TYPESYSTEMS   - Type system files that should be used by other bindings extending PySide
 
-SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide-1.2.1)
+SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide-1.2.2)
 SET(PYSIDE_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7_d.lib)
 SET(PYSIDE_PYTHONPATH  ${FREECAD_LIBPACK_DIR}/pyside/Lib/site-packages)
 SET(PYSIDE_TYPESYSTEMS ${FREECAD_LIBPACK_DIR}/pyside/share/PySide/typesystems)
