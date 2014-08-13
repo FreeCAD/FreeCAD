@@ -115,8 +115,8 @@
 
 #if defined(Q_OS_WIN32)
 #define slots
-#include <private/qmainwindowlayout_p.h>
-#include <private/qwidgetresizehandler_p.h>
+//#include <private/qmainwindowlayout_p.h>
+//#include <private/qwidgetresizehandler_p.h>
 #endif
 
 using namespace Gui;
@@ -412,7 +412,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WFlags f)
         (QString::fromAscii(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
     pDockMgr->registerDockWindow("Std_PythonView", pcPython);
 
-#if defined(Q_OS_WIN32)
+#if 0 //defined(Q_OS_WIN32) this porsion of code is not able to run with a vanilla Qtlib build on Windows. Since it is not build on Linux I pressume its not needed.... (JR 8.2014)
     // add our own QTabBar-derived class to the main window layout
     // NOTE: This uses some private stuff from QMainWindow which doesn't
     // seem to be accessible on all platforms.
