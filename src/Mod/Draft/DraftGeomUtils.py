@@ -906,7 +906,7 @@ def offset(edge,vector):
     elif geomType(edge) == "Circle":
         rad = edge.Vertexes[0].Point.sub(edge.Curve.Center)
         newrad = Vector.add(rad,vector).Length
-        return Part.Circle(edge.Curve.Center,edge.Curve.Axis,newrad).toShape()
+        return Part.Circle(edge.Curve.Center,NORM,newrad).toShape()
     else:
         return None
 
