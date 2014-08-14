@@ -52,7 +52,7 @@
 
 namespace Py
 {
-    typedef int sequence_index_type;    // type of an index into a sequence
+    typedef size_t sequence_index_type;    // type of an index into a sequence
 
     // Forward declarations
     class Object;
@@ -1115,7 +1115,7 @@ namespace Py
     {
     protected:
         SeqBase<T>& s; // the sequence
-        int offset; // item number
+        size_t  offset; // item number
         T the_item; // lvalue
     public:
 
@@ -1449,7 +1449,7 @@ namespace Py
         protected:
             friend class SeqBase<T>;
             SeqBase<T>* seq;
-            int count;
+            size_type count;
 
         public:
             ~iterator ()
@@ -1460,7 +1460,7 @@ namespace Py
                 , count( 0 )
             {}
 
-            iterator (SeqBase<T>* s, int where)
+            iterator (SeqBase<T>* s, size_type where)
                 : seq( s )
                 , count( where )
             {}
@@ -1587,7 +1587,7 @@ namespace Py
             sequence_index_type count;
 
         private:
-            const_iterator (const SeqBase<T>* s, int where)
+            const_iterator (const SeqBase<T>* s, size_type where)
                 : seq( s )
                 , count( where )
             {}
@@ -2858,7 +2858,7 @@ namespace Py
             return mapref<T>(*this, key);
         }
 
-        int length () const
+        size_type length () const
         {
             return PyMapping_Length (ptr());
         }
@@ -2956,7 +2956,7 @@ namespace Py
             //
             MapBase<T>* map;
             List        keys;       // for iterating over the map
-            int         pos;        // index into the keys
+            size_type   pos;        // index into the keys
 
         private:
             iterator( MapBase<T>* m, List k, int p )
@@ -3059,7 +3059,7 @@ namespace Py
             friend class MapBase<T>;
             const MapBase<T>* map;
             List            keys;   // for iterating over the map
-            int             pos;    // index into the keys
+            size_type       pos;    // index into the keys
 
         private:
             const_iterator( const MapBase<T>* m, List k, int p )
