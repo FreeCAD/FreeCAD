@@ -90,14 +90,13 @@ then the behaviour is as if using the keyword 'Distance'.
 Example:
 
 import Part
-c=Part.Circle()
-c.Radius=5
-p=c.discretize(Number=50,First=3.14)
+e=Part.makeCircle(5)
+p=e.discretize(Number=50,First=3.14)
 s=Part.Compound([Part.Vertex(i) for i in p])
 Part.show(s)
 
 
-p=c.discretize(Angular=0.09,Curvature=0.01,Last=3.14,Minimum=100)
+p=e.discretize(Angular=0.09,Curvature=0.01,Last=3.14,Minimum=100)
 s=Part.Compound([Part.Vertex(i) for i in p])
 Part.show(s)
 </UserDocu>
