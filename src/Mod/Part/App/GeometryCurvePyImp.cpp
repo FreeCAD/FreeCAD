@@ -129,6 +129,8 @@ PyObject* GeometryCurvePy::discretize(PyObject *args, PyObject *kwds)
         bool uniformAbscissaDistance = false;
         int numPoints = -1;
         double distance = -1;
+        double first = adapt.FirstParameter();
+        double last = adapt.LastParameter();
 
         // use no kwds
         PyObject* dist_or_num;
@@ -148,16 +150,16 @@ PyObject* GeometryCurvePy::discretize(PyObject *args, PyObject *kwds)
         }
         else {
             // use Number kwds
-            static char* kwds_numPoints[] = {"Number",NULL};
+            static char* kwds_numPoints[] = {"Number","First","Last",NULL};
             PyErr_Clear();
-            if (PyArg_ParseTupleAndKeywords(args, kwds, "i", kwds_numPoints, &numPoints)) {
+            if (PyArg_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_numPoints, &numPoints, &first, &last)) {
                 uniformAbscissaPoints = true;
             }
             else {
                 // use Abscissa kwds
-                static char* kwds_Distance[] = {"Distance",NULL};
+                static char* kwds_Distance[] = {"Distance","First","Last",NULL};
                 PyErr_Clear();
-                if (PyArg_ParseTupleAndKeywords(args, kwds, "d", kwds_Distance, &distance)) {
+                if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)) {
                     uniformAbscissaDistance = true;
                 }
             }
@@ -166,9 +168,9 @@ PyObject* GeometryCurvePy::discretize(PyObject *args, PyObject *kwds)
         if (uniformAbscissaPoints || uniformAbscissaDistance) {
             GCPnts_UniformAbscissa discretizer;
             if (uniformAbscissaPoints)
-                discretizer.Initialize (adapt, numPoints);
+                discretizer.Initialize (adapt, numPoints, first, last);
             else
-                discretizer.Initialize (adapt, distance);
+                discretizer.Initialize (adapt, distance, first, last);
 
             if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
                 Py::List points;
@@ -181,17 +183,17 @@ PyObject* GeometryCurvePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Descretization of wire failed");
+                PyErr_SetString(PyExc_Exception, "Discretization of curve failed");
                 return 0;
             }
         }
 
         // use Deflection kwds
-        static char* kwds_Deflection[] = {"Deflection",NULL};
+        static char* kwds_Deflection[] = {"Deflection","First","Last",NULL};
         PyErr_Clear();
         double deflection;
-        if (PyArg_ParseTupleAndKeywords(args, kwds, "d", kwds_Deflection, &deflection)) {
-            GCPnts_UniformDeflection discretizer(adapt, deflection);
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)) {
+            GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
             if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
@@ -203,18 +205,19 @@ PyObject* GeometryCurvePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Descretization of wire failed");
+                PyErr_SetString(PyExc_Exception, "Discretization of curve failed");
                 return 0;
             }
         }
 
         // use TangentialDeflection kwds
-        static char* kwds_TangentialDeflection[] = {"Angular","Curvature",NULL};
+        static char* kwds_TangentialDeflection[] = {"Angular","Curvature","First","Last","Minimum",NULL};
         PyErr_Clear();
         double angular;
         double curvature;
-        if (PyArg_ParseTupleAndKeywords(args, kwds, "dd", kwds_TangentialDeflection, &angular, &curvature)) {
-            GCPnts_TangentialDeflection discretizer(adapt, angular, curvature);
+        int minimumPoints = 2;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "dd|ddi", kwds_TangentialDeflection, &angular, &curvature, &first, &last, &minimumPoints)) {
+            GCPnts_TangentialDeflection discretizer(adapt, first, last, angular, curvature, minimumPoints);
             if (discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
@@ -226,7 +229,7 @@ PyObject* GeometryCurvePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Descretization of wire failed");
+                PyErr_SetString(PyExc_Exception, "Discretization of curve failed");
                 return 0;
             }
         }
