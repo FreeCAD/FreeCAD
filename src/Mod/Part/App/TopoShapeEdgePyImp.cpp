@@ -60,6 +60,8 @@
 #include <GCPnts_UniformAbscissa.hxx>
 #include <GCPnts_UniformDeflection.hxx>
 #include <GCPnts_TangentialDeflection.hxx>
+#include <GCPnts_QuasiUniformAbscissa.hxx>
+#include <GCPnts_QuasiUniformDeflection.hxx>
 
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
@@ -486,6 +488,50 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
         int minimumPoints = 2;
         if (PyArg_ParseTupleAndKeywords(args, kwds, "dd|ddi", kwds_TangentialDeflection, &angular, &curvature, &first, &last, &minimumPoints)) {
             GCPnts_TangentialDeflection discretizer(adapt, first, last, angular, curvature, minimumPoints);
+            if (discretizer.NbPoints () > 0) {
+                Py::List points;
+                int nbPoints = discretizer.NbPoints ();
+                for (int i=1; i<=nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value (i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                }
+
+                return Py::new_reference_to(points);
+            }
+            else {
+                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                return 0;
+            }
+        }
+
+        // use QuasiNumber kwds
+        static char* kwds_QuasiNumPoints[] = {"QuasiNumber","First","Last",NULL};
+        PyErr_Clear();
+        int quasiNumPoints;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_QuasiNumPoints, &quasiNumPoints, &first, &last)) {
+            GCPnts_QuasiUniformAbscissa discretizer(adapt, quasiNumPoints, first, last);
+            if (discretizer.NbPoints () > 0) {
+                Py::List points;
+                int nbPoints = discretizer.NbPoints ();
+                for (int i=1; i<=nbPoints; i++) {
+                    gp_Pnt p = adapt.Value (discretizer.Parameter (i));
+                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                }
+
+                return Py::new_reference_to(points);
+            }
+            else {
+                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                return 0;
+            }
+        }
+
+        // use QuasiDeflection kwds
+        static char* kwds_QuasiDeflection[] = {"QuasiDeflection","First","Last",NULL};
+        PyErr_Clear();
+        double quasiDeflection;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_QuasiDeflection, &quasiDeflection, &first, &last)) {
+            GCPnts_QuasiUniformDeflection discretizer(adapt, quasiDeflection, first, last);
             if (discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
