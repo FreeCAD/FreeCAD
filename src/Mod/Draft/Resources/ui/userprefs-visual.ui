@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>537</width>
-    <height>552</height>
+    <height>556</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -568,7 +568,7 @@ such as &quot;Arial:Bold&quot;</string>
          <widget class="Gui::PrefComboBox" name="gui::prefcombobox_4">
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>120</width>
             <height>0</height>
            </size>
           </property>
@@ -580,12 +580,12 @@ such as &quot;Arial:Bold&quot;</string>
           </property>
           <item>
            <property name="text">
-            <string>text above</string>
+            <string>text above (3D)</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>text inside</string>
+            <string> text inside (2D)</string>
            </property>
           </item>
          </widget>
