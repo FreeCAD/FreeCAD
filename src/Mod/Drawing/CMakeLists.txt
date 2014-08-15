@@ -20,5 +20,7 @@ INSTALL(
         Templates
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/Drawing
-    FILES_MATCHING PATTERN "*.svg*"
+    FILES_MATCHING 
+        PATTERN "*.svg*"
+        PATTERN "*.dxf*"
 )

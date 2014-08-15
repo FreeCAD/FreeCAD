@@ -112,7 +112,7 @@ class plane:
         t.multiply(self.offsetToPoint(p, direction))
         return p.add(t)
 
-    def alignToPointAndAxis(self, point, axis, offset, upvec=None):
+    def alignToPointAndAxis(self, point, axis, offset=0, upvec=None):
         self.doc = FreeCAD.ActiveDocument
         self.axis = axis;
         self.axis.normalize()

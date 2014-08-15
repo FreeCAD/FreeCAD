@@ -273,113 +273,36 @@ std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double to
     std::stringstream result;
     DXFOutput output;
 
-    result << "0"          << endl
-        << "SECTION"  << endl
-
-        << "2"          << endl
-        << "ENTITIES" << endl;
-
     if (!H.IsNull() && (type & WithHidden)) {
         //float width = 0.15f/scale;
         BRepMesh_IncrementalMesh(H,tolerance);
-        result  //<< "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   stroke-dasharray=\"5 3\"" << endl
-                << "   fill=\"none\"" << endl
-                << "  >" << endl*/
-                << output.exportEdges(H);
-                //<< "</g>" << endl;
+        result  << output.exportEdges(H);
     }
     if (!HO.IsNull() && (type & WithHidden)) {
         //float width = 0.15f/scale;
         BRepMesh_IncrementalMesh(HO,tolerance);
-        result  //<< "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   stroke-dasharray=\"5 3\"" << endl
-                << "   fill=\"none\"" << endl
-                << "  >" << endl*/
-                << output.exportEdges(HO);
-                //<< "</g>" << endl;
+        result  << output.exportEdges(HO);
     }
     if (!VO.IsNull()) {
         //float width = 0.35f/scale;
         BRepMesh_IncrementalMesh(VO,tolerance);
-        result  //<< "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   fill=\"none\"" << endl
-                << "  >" << endl*/
-
-                << output.exportEdges(VO);
-                //<< "</g>" << endl;
+        result  << output.exportEdges(VO);
     }
     if (!V.IsNull()) {
         //float width = 0.35f/scale;
         BRepMesh_IncrementalMesh(V,tolerance);
-        result  //<< "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   fill=\"none\"" << endl
-                << "  >" << endl*/
-                << output.exportEdges(V);
-                //<< "</g>" << endl;
-
+        result  << output.exportEdges(V);
     }
     if (!V1.IsNull() && (type & WithSmooth)) {
         //float width = 0.35f/scale;
         BRepMesh_IncrementalMesh(V1,tolerance);
-        result  //<< "<g"
-
-                //<< " id=\"" << ViewName << "\"" << endl
-               /* << "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   fill=\"none\"" << endl
-
-                << "  >" << endl*/
-                << output.exportEdges(V1);
-                //<< "</g>" << endl;
+        result  << output.exportEdges(V1);
     }
     if (!H1.IsNull() && (type & WithSmooth) && (type & WithHidden)) {
         //float width = 0.15f/scale;
         BRepMesh_IncrementalMesh(H1,tolerance);
-        result  //<< "<g"
-                //<< " id=\"" << ViewName << "\"" << endl
-                /*<< "   stroke=\"rgb(0, 0, 0)\"" << endl
-                << "   stroke-width=\"" << width << "\"" << endl
-
-                << "   stroke-linecap=\"butt\"" << endl
-                << "   stroke-linejoin=\"miter\"" << endl
-                << "   stroke-dasharray=\"5 3\"" << endl
-                << "   fill=\"none\"" << endl
-                << "  >" << endl*/
-
-                << output.exportEdges(H1);
-                //<< "</g>" << endl;
+        result  << output.exportEdges(H1);
     }
-
-
-    result      << 0          << endl
-                << "ENDSEC"   << endl
-                << 0          << endl
-                << "EOF";
 
     return result.str();
 }
