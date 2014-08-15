@@ -457,6 +457,86 @@ such as &quot;Arial:Bold&quot;</string>
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Dimensions</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_13">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>display mode</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_4">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dimstyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>text above (2D)</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string> text inside (3D)</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_18">
+          <property name="text">
+           <string>extension lines  size</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_4">
+          <property name="toolTip">
+           <string>The default size of dimensions extension lines</string>
+          </property>
+          <property name="value">
+           <double>0.300000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>extlines</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
          <widget class="QLabel" name="label">
@@ -527,86 +607,6 @@ such as &quot;Arial:Bold&quot;</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>arrowsize</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="QLabel" name="label_10">
-          <property name="text">
-           <string>Dimensions lines</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_13">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_21">
-          <property name="text">
-           <string>style</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_4">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dimstyle</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>text above (3D)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string> text inside (2D)</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_18">
-          <property name="text">
-           <string>size</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox_4">
-          <property name="toolTip">
-           <string>The default size of dimensions extension lines</string>
-          </property>
-          <property name="value">
-           <double>0.300000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>extlines</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
