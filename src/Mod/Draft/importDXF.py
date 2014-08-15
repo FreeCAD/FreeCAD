@@ -1666,8 +1666,112 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
             dxf.saveas(filename)
         FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")
 
+
 def exportPage(page,filename):
     "special export for pages"
+    template = os.path.splitext(page.Template)[0]+".dxf"
+    global dxfhandle
+    dxfhandle = 1
+    if os.path.exists(template):
+        f = pythonopen(template,"rb")
+        template = f.read()
+        f.close()
+        # find & replace editable texts
+        import re
+        f = pythonopen(page.Template,"rb")
+        svgtemplate = f.read()
+        f.close()
+        editables = re.findall("freecad:editable=\"(.*?)\"",svgtemplate)
+        values = page.EditableTexts
+        for i in range(len(editables)):
+            if len(values) > i:
+                template = template.replace(editables[i],values[i])
+    else:
+        # dummy default template
+        print "DXF version of the template not found. Creating a default empty template."
+        template = "999\nFreeCAD DXF exporter v"+FreeCAD.Version()[0]+"."+FreeCAD.Version()[1]+"-"+FreeCAD.Version()[2]+"\n"
+        template += "0\nSECTION\n2\nHEADER\n9\n$ACADVER\n1\nAC1009\n0\nENDSEC\n"
+        template += "0\nSECTION\n2\nBLOCKS\n$blocks\n0\nENDSEC\n"
+        template += "0\nSECTION\n2\nENTITIES\n$entities\n0\nENDSEC\n"
+        template += "0\nEOF"
+    blocks = ""
+    entities = ""
+    for view in page.Group:
+        b,e = getViewDXF(view)
+        blocks += b
+        entities += e
+    result = template.replace("$blocks",blocks[:-1])
+    result = result.replace("$entities",entities[:-1])
+    f = pythonopen(filename,"wb")
+    f.write(result)
+    f.close()
+
+
+def getViewDXF(view):
+    "returns a DXF fragment from a Drawing View"
+    global dxfhandle
+    block = ""
+    insert = ""
+    
+    if view.isDerivedFrom("App::DocumentObjectGroup"):
+        for child in view.Group:
+            b,e = getViewDXF(child)
+            block += b
+            insert += e
+            
+    elif view.isDerivedFrom("Drawing::FeatureViewPython"):
+        if hasattr(view.Proxy,"getDXF"):
+            r = view.Rotation
+            if r != 0: r = -r # fix rotation direction
+            count = 0
+            block = ""
+            insert = ""
+            geom = view.Proxy.getDXF(view)
+            if not isinstance(geom,list): geom = [geom]
+            for g in geom: # getDXF returns a list of entities
+                g = g.replace("sheet_layer\n","0\n6\nBYBLOCK\n62\n0\n") # change layer and set color and ltype to BYBLOCK (0)
+                block += "0\nBLOCK\n8\n0\n2\n"+view.Name+str(count)+"\n70\n0\n10\n0\n20\n0\n3\n"+view.Name+str(count)+"\n1\n\n"
+                block += g
+                block += "0\nENDBLK\n8\n0\n"
+                insert += "0\nINSERT\n5\naaaa"+hex(dxfhandle)[2:]+"\n8\n0\n6\nBYLAYER\n62\n256\n2\n"+view.Name+str(count)
+                insert += "\n10\n"+str(view.X)+"\n20\n"+str(-view.Y)
+                insert += "\n30\n0\n41\n"+str(view.Scale)+"\n42\n"+str(view.Scale)+"\n43\n"+str(view.Scale)
+                insert += "\n50\n"+str(r)+"\n"
+                dxfhandle += 1
+                count += 1
+                
+    elif view.isDerivedFrom("Drawing::FeatureViewPart"):
+        r = view.Rotation
+        if r != 0: r = -r # fix rotation direction
+        import Drawing
+        proj = Drawing.projectToDXF(view.Source.Shape,view.Direction)
+        proj = proj.replace("sheet_layer\n","0\n6\nBYBLOCK\n62\n0\n") # change layer and set color and ltype to BYBLOCK (0)
+        block = "0\nBLOCK\n8\n0\n2\n"+view.Name+"\n70\n0\n10\n0\n20\n0\n3\n"+view.Name+"\n1\n\n"
+        block += proj
+        block += "0\nENDBLK\n8\n0\n"
+        insert = "0\nINSERT\n5\naaaa"+hex(dxfhandle)[2:]+"\n8\n0\n6\nBYLAYER\n62\n256\n2\n"+view.Name
+        insert += "\n10\n"+str(view.X)+"\n20\n"+str(-view.Y)
+        insert += "\n30\n0\n41\n"+str(view.Scale)+"\n42\n"+str(view.Scale)+"\n43\n"+str(view.Scale)
+        insert += "\n50\n"+str(r)+"\n"
+        dxfhandle += 1
+        
+    elif view.isDerivedFrom("Drawing::FeatureViewAnnotation"):
+        r = view.Rotation
+        if r != 0: r = -r # fix rotation direction
+        insert ="0\nTEXT\n5\n"+hex(dxfhandle)[2:]+"\n8\n0"
+        insert += "\n10\n"+str(view.X)+"\n20\n"+str(-view.Y)
+        insert += "\n30\n0\n40\n"+str(view.Scale/2)
+        insert += "\n50\n"+str(r)
+        insert += "\n1\n"+view.Text[0]+"\n"
+        dxfhandle += 1
+        
+    else:
+        print "Unable to get DXF representation from view: ",view.Label
+    return block,insert
+    
+
+def exportPageLegacy(page,filename):
+    "exports the given page the old way, by converting its SVG code to DXF with the Draft module"
     import importSVG
     tempdoc = importSVG.open(page.PageResult)
     tempobj = tempdoc.Objects

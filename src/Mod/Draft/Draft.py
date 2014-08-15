@@ -1594,6 +1594,55 @@ def draftify(objectslist,makeblock=False,delete=True):
         if len(newobjlist) == 1:
             return newobjlist[0]
         return newobjlist
+        
+def getDXF(obj,direction=None):
+    '''getDXF(object,[direction]): returns a DXF entity from the given
+    object. If direction is given, the object is projected in 2D.'''
+    plane = None
+    result = ""
+    if direction:
+        if isinstance(direction,FreeCAD.Vector):
+            if direction != Vector(0,0,0):
+                plane = WorkingPlane.plane()
+                plane.alignToPointAndAxis(Vector(0,0,0),direction)
+                
+    def getProj(vec):
+        if not plane: return vec
+        nx = DraftVecUtils.project(vec,plane.u)
+        ny = DraftVecUtils.project(vec,plane.v)
+        return Vector(nx.Length,ny.Length,0)
+        
+    if getType(obj) == "Dimension":
+        p1 = getProj(obj.Start)
+        p2 = getProj(obj.End)
+        p3 = getProj(obj.Dimline)
+        result += "0\nDIMENSION\n8\n0\n62\n0\n3\nStandard\n70\n1\n"
+        result += "10\n"+str(p3.x)+"\n20\n"+str(p3.y)+"\n30\n"+str(p3.z)+"\n"
+        result += "13\n"+str(p1.x)+"\n23\n"+str(p1.y)+"\n33\n"+str(p1.z)+"\n"
+        result += "14\n"+str(p2.x)+"\n24\n"+str(p2.y)+"\n34\n"+str(p2.z)+"\n"
+        
+    elif getType(obj) == "Annotation":
+        p = getProj(obj.Position)
+        count = 0
+        for t in obj.LabeLtext:
+            result += "0\nTEXT\n8\n0\n62\n0\n"
+            result += "10\n"+str(p.x)+"\n20\n"+str(p.y+count)+"\n30\n"+str(p.z)+"\n"
+            result += "40\n1\n"
+            result += "1\n"+str(t)+"\n"
+            result += "7\nSTANDARD\n"
+            count += 1
+
+    elif obj.isDerivedFrom("Part::Feature"):
+        # TODO do this the Draft way, for ex. using polylines and rectangles
+        import Drawing
+        if not direction: direction = FreeCAD.Vector(0,0,-1)
+        result += Drawing.projectToDXF(obj.Shape,direction)
+        
+    else:
+        print "Draft.getDXF: Unsupported object: ",obj.Label
+        
+    return result
+
 
 def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None):
     '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color]):
@@ -4133,6 +4182,17 @@ class _DrawingView(_DraftObject):
                 result += svg
                 result += '</g>'
         obj.ViewResult = result
+        
+    def getDXF(self,obj):
+        "returns a DXF fragment"
+        result = ""
+        if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
+            for o in obj.Source.Group:
+                if o.ViewObject.isVisible():
+                    result += getDXF(o,obj.Direction)
+        else:
+            result += getDXF(o,obj.Direction)
+        return result
 
 class _BSpline(_DraftObject):
     "The BSpline object"

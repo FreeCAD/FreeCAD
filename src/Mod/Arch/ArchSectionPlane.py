@@ -377,6 +377,7 @@ class _ArchDrawingView:
                                     self.svg += svgf
                             if hshapes:
                                 hshapes = Part.makeCompound(hshapes)
+                                self.hiddenshape = hshapes
                                 svgh = Drawing.projectToSVG(hshapes,self.direction)
                                 if svgh:
                                     svgh = svgh.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
@@ -386,6 +387,7 @@ class _ArchDrawingView:
                                     self.svg += svgh
                             if sshapes:
                                 sshapes = Part.makeCompound(sshapes)
+                                self.sectionshape = sshapes
                                 svgs = Drawing.projectToSVG(sshapes,self.direction)
                                 if svgs:
                                     svgs = svgs.replace('stroke-width="0.35"','stroke-width="SWPlaceholder"')
@@ -407,26 +409,26 @@ class _ArchDrawingView:
     def setDisplayMode(self,mode):
         return mode
 
-    def getFlatShape(self):
-        "returns a flat shape representation of the view"
+    def getDXF(self,obj):
+        "returns a DXF representation of the view"
+        if obj.RenderingMode == "Solid":
+            print "Unable to get DXF from Solid mode: ",obj.Label
+            return ""
+        result = []
+        import Drawing
+        if not hasattr(self,"baseshape"):
+            self.onChanged(obj,"Source")
         if hasattr(self,"baseshape"):
-            import Drawing
-            [V0,V1,H0,H1] = Drawing.project(self.baseshape,self.direction)
-            return V0.Edges+V1.Edges
-        else:
-            FreeCAD.Console.PrintMessage(translate("Arch","No shape has been computed yet, select wireframe rendering and render again"))
-            return None
+            if self.baseshape:
+                result.append(Drawing.projectToDXF(self.baseshape,self.direction))
+        if hasattr(self,"sectionshape"):
+            if self.sectionshape:
+                result.append(Drawing.projectToDXF(self.sectionshape,self.direction))
+        if hasattr(self,"hiddenshape"):
+            if self.hiddenshape:
+                result.append(Drawing.projectToDXF(self.hiddenshape,self.direction))
+        return result
 
-    def getDXF(self):
-        "returns a flat shape representation of the view"
-        if hasattr(self,"baseshape"):
-            import Drawing
-            [V0,V1,H0,H1] = Drawing.project(self.baseshape,self.direction)
-            DxfOutput = Drawing.projectToDXF(self.baseshape,self.direction)
-            return DxfOutput
-        else:
-            FreeCAD.Console.PrintMessage(translate("Arch","No shape has been computed yet, select wireframe rendering and render again"))
-            return None
 
 if FreeCAD.GuiUp:                
     FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())
