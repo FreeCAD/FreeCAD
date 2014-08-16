@@ -3966,7 +3966,7 @@ class Draft2Sketch(Modifier):
         if not sel:
             return
         elif allDraft:
-            lines = ["Draft.makeSketch(FreeCAD.ActiveDocument."+o.Name+",autoconstraints=True)" for o in sel]            
+            lines = ["Draft.makeSketch(FreeCADGui.Selection.getSelection(),autoconstraints=True)"]            
             self.commit(translate("draft","Convert to Sketch"),
                         lines + ['FreeCAD.ActiveDocument.recompute()'])
         elif allSketches:
