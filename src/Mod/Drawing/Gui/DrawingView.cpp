@@ -347,6 +347,15 @@ bool DrawingView::onHasMsg(const char* pMsg) const
     return false;
 }
 
+void DrawingView::onRelabel(Gui::Document *pDoc)
+{
+    const char* name = pDoc->getDocument()->Label.getValue();
+    QString title = QString::fromAscii("%1 : %2[*]")
+        .arg(QString::fromUtf8(name))
+        .arg(tr("Drawing"));
+    this->setWindowTitle(title);
+}
+
 void DrawingView::printPdf()
 {
     Gui::FileOptionsDialog dlg(this, 0);

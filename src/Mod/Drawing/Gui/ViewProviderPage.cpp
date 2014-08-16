@@ -136,7 +136,7 @@ DrawingView* ViewProviderDrawingPage::showDrawingView()
             (this->pcObject->getDocument());
         view = new DrawingView(doc, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
-        view->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromAscii("[*]"));
+        view->onRelabel(doc);
         Gui::getMainWindow()->addWindow(view);
     }
 
