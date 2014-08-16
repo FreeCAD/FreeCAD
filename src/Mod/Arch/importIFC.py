@@ -167,9 +167,9 @@ def insert(filename,docname,skip=[]):
         obj = None
         baseobj = None
         
-        if (ptype == "IfcOpeningElement") and (not SEPARATE_OPENINGS): break
-        if pid in skip: break
-        if ptype in SKIP: break
+        if (ptype == "IfcOpeningElement") and (not SEPARATE_OPENINGS): continue
+        if pid in skip: continue
+        if ptype in SKIP: continue
         
         brep = ifcopenshell.create_shape(product,shape_attributes)
         if brep:
