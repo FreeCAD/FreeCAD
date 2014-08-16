@@ -357,7 +357,18 @@ PyObject* SketchObjectPy::getPoint(PyObject *args)
     if (!PyArg_ParseTuple(args, "ii", &GeoId, &PointType))
         return 0;
 
-    return new Base::VectorPy(new Base::Vector3d(this->getSketchObjectPtr()->getPoint(GeoId,(Sketcher::PointPos)PointType)));
+    if (PointType < 0 || PointType > 3) {
+        PyErr_SetString(PyExc_ValueError, "Invalid point type");
+        return 0;
+    }
+
+    SketchObject* obj = this->getSketchObjectPtr();
+    if (GeoId > obj->getHighestCurveIndex() || -GeoId > obj->getExternalGeometryCount()) {
+        PyErr_SetString(PyExc_ValueError, "Invalid geometry Id");
+        return 0;
+    }
+
+    return new Base::VectorPy(new Base::Vector3d(obj->getPoint(GeoId,(Sketcher::PointPos)PointType)));
 }
 
 PyObject* SketchObjectPy::getAxis(PyObject *args)
