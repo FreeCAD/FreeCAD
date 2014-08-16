@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jrgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -394,7 +394,6 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Obj.getNameInDocument());
         }
 #endif
-
         std::list<Gui::BaseView*>::iterator vIt;
         // cycling to all views of the document
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {

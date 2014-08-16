@@ -139,12 +139,6 @@ void ViewProvider::setUpdatesEnabled (bool enable)
     _updateData = enable;
 }
 
-void highlight(const HighlightMode& high)
-{
-    
-
-}
-
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
 {
     const SoEvent * ev = node->getEvent();
