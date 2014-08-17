@@ -253,6 +253,7 @@ public:
      * The vector is normalized to length of 1.
      */
     SbVec3f getViewDirection() const;
+    void    setViewDirection(SbVec3f);
     /** Returns the up direction */
     SbVec3f getUpDirection() const;
     /** Returns the orientation of the camera. */
@@ -343,6 +344,8 @@ public:
     NavigationStyle* navigationStyle() const;
 
     void setDocument(Gui::Document *pcDocument);
+    
+    virtual PyObject *getPyObject(void);
 
 protected:
     void renderScene();
@@ -406,6 +409,8 @@ private:
     std::string overrideMode;
     
     ViewerEventFilter* viewerEventFilter;
+    
+    PyObject *_viewerPy;
 
     // friends
     friend class NavigationStyle;

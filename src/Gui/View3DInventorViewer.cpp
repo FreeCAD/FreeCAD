@@ -115,6 +115,7 @@
 #include "GLPainter.h"
 #include <Quarter/eventhandlers/EventFilter.h>
 #include <Quarter/devices/InputDevice.h>
+#include "View3DViewerPy.h"
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 
@@ -1437,6 +1438,14 @@ SbVec3f View3DInventorViewer::getViewDirection() const
     return lookat;
 }
 
+void View3DInventorViewer::setViewDirection(SbVec3f dir)
+{
+    SoCamera* cam = this->getSoRenderManager()->getCamera();
+    if (cam)
+        cam->orientation.setValue(SbRotation(SbVec3f(0, 0, -1), dir));
+}
+
+
 SbVec3f View3DInventorViewer::getUpDirection() const
 {
     SoCamera* cam = this->getSoRenderManager()->getCamera();
@@ -2610,3 +2619,11 @@ View3DInventorViewer::AntiAliasing View3DInventorViewer::getAntiAliasingMode() c
     };
 }
 
+PyObject *View3DInventorViewer::getPyObject(void)
+{
+    if (!_viewerPy)
+        _viewerPy = new View3DInventorViewerPy(this);
+
+    Py_INCREF(_viewerPy);
+    return _viewerPy;
+}

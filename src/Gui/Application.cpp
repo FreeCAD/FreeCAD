@@ -409,13 +409,14 @@ Application::Application(bool GUIenabled)
     }
 
     // Python console binding
-    PythonDebugModule   ::init_module();
-    PythonStdout        ::init_type();
-    PythonStderr        ::init_type();
-    OutputStdout        ::init_type();
-    OutputStderr        ::init_type();
-    PythonStdin         ::init_type();
-    View3DInventorPy    ::init_type();
+    PythonDebugModule           ::init_module();
+    PythonStdout                ::init_type();
+    PythonStderr                ::init_type();
+    OutputStdout                ::init_type();
+    OutputStderr                ::init_type();
+    PythonStdin                 ::init_type();
+    View3DInventorPy            ::init_type();
+    View3DInventorViewerPy      ::init_type();
 
     d = new ApplicationP;
 
