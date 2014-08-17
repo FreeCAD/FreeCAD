@@ -97,6 +97,8 @@ void PartExport initPart()
     str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
     App::Application::Config()["OCC_VERSION"] = str.str();
 
+	Base::Console().Log("Module: Part\n");
+
     // This is highly experimental and we should keep an eye on it
     // if we have mysterious crashes
     // The argument must be 'Standard_False' to avoid FPE caused by

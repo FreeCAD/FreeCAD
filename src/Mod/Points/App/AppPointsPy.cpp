@@ -34,6 +34,13 @@
 #include <App/DocumentObject.h>
 #include <App/Property.h>
 
+// PCL test
+
+#include <iostream>
+#include <pcl/io/ply_io.h>
+#include <pcl/point_types.h>
+
+
 #include "Points.h"
 #include "PointsPy.h"
 #include "PointsAlgos.h"
@@ -63,6 +70,23 @@ open(PyObject *self, PyObject *args)
             Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
             Points::PointKernel pkTemp;
             pkTemp.load(Name);
+            pcFeature->Points.setValue( pkTemp );
+
+        }
+        else 
+        if (file.hasExtension("ply")) {
+            // create new document import
+            App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
+            Points::PointKernel pkTemp;
+
+			// pcl test
+			pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
+			pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
+
+
+
+
             pcFeature->Points.setValue( pkTemp );
 
         }
