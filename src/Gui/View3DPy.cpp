@@ -47,6 +47,7 @@
 #include "SoFCDB.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include "View3DViewerPy.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -101,7 +102,13 @@ void View3DInventorPy::init_type()
     add_varargs_method("saveVectorGraphic",&View3DInventorPy::saveVectorGraphic,"saveVectorGraphic()");
     add_varargs_method("getCamera",&View3DInventorPy::getCamera,"getCamera()");
     add_varargs_method("getCameraNode",&View3DInventorPy::getCameraNode,"getCameraNode()");
-    add_varargs_method("getViewDirection",&View3DInventorPy::getViewDirection,"getViewDirection()");
+    add_varargs_method("getViewDirection",&View3DInventorPy::getViewDirection,"getViewDirection() --> tuple of integers\n"
+        "returns the direction vector the view is currently pointing at as tuple with xyz values\n"
+    );
+    add_varargs_method("setViewDirection",&View3DInventorPy::setViewDirection,"setViewDirection(tuple) --> None\n"
+        "Sets the direction the view is pointing at. The direction must be given as tuple with\n"
+        "three coordinates xyz"
+    );
     add_varargs_method("setCamera",&View3DInventorPy::setCamera,"setCamera()");
     add_varargs_method("setCameraOrientation",&View3DInventorPy::setCameraOrientation,"setCameraOrientation()");
     add_varargs_method("getCameraOrientation",&View3DInventorPy::getCameraOrientation,"getCameraOrientation()");
@@ -832,6 +839,43 @@ Py::Object View3DInventorPy::getViewDirection(const Py::Tuple& args)
     catch(...) {
         throw Py::Exception("Unknown C++ exception");
     }
+}
+
+Py::Object View3DInventorPy::setViewDirection(const Py::Tuple& args)
+{
+    PyObject* object;
+    if (!PyArg_ParseTuple(args.ptr(), "O", &object)) 
+        throw Py::Exception(); 
+
+    try {
+        if (PyTuple_Check(object)) {
+            Py::Tuple tuple(object);
+            Py::Float x(tuple.getItem(0));
+            Py::Float y(tuple.getItem(1));
+            Py::Float z(tuple.getItem(2));
+            SbVec3f dir;
+            dir.setValue((float)x, (float)y, (float)z);
+            if (dir.length() < 0.001f)
+                throw Py::ValueError("Null vector cannot be used to set direction");
+            _view->getViewer()->setViewDirection(dir);
+            return Py::None();
+        }
+    }
+    catch (const Py::Exception&) {
+        throw; // re-throw
+    }
+    catch (const Base::Exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch (const std::exception& e) {
+        throw Py::Exception(e.what());
+    }
+    catch(...) {
+        throw Py::Exception("Unknown C++ exception");
+    }
+
+    return Py::None();
+
 }
 
 
@@ -1801,227 +1845,13 @@ Py::Object View3DInventorPy::getSceneGraph(const Py::Tuple& args)
     }
 }
 
-// -----------------------------------------------------------------
-
-static PyObject *
-wrap_SoQtViewer_setViewDirection(PyObject *proxy, PyObject *args)
-{/*
-    PyObject* object;
-    if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C 
-        return NULL;  // NULL triggers exception 
-
-    void* ptr = 0;
-    try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.gui.soqt", "SoQtViewer *", proxy, &ptr, 0);
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
-
-    SoQtViewer* viewer = reinterpret_cast<SoQtViewer*>(ptr);
-    try {
-        Py::Tuple tuple(object);
-        Py::Float x(tuple.getItem(0));
-        Py::Float y(tuple.getItem(1));
-        Py::Float z(tuple.getItem(2));
-        SbVec3f dir;
-        dir.setValue((float)x, (float)y, (float)z);
-        if (dir.length() < 0.001f)
-            throw Py::ValueError("Null vector cannot be used to set direction");
-        SoCamera* cam = viewer->getCamera();
-        if (cam)
-            cam->orientation.setValue(SbRotation(SbVec3f(0, 0, -1), dir));
-        return Py::new_reference_to(Py::None());
-    }
-    catch (Py::Exception&) {
-        return NULL;
-    }*/
-}
-
-static PyObject *
-wrap_SoQtViewer_getViewDirection(PyObject *proxy, PyObject *args)
-{/*
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;  // NULL triggers exception 
-
-    void* ptr = 0;
-    try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.gui.soqt", "SoQtViewer *", proxy, &ptr, 0);
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
-
-    SoQtViewer* viewer = reinterpret_cast<SoQtViewer*>(ptr);
-    try {
-        SoCamera* cam = viewer->getCamera();
-        if (!cam) {
-            PyErr_SetString(PyExc_RuntimeError, "No camera set");
-            return 0;
-        }
-        SbRotation camrot = cam->orientation.getValue();
-        SbVec3f lookat(0, 0, -1); // init to default view direction vector
-        camrot.multVec(lookat, lookat);
-
-        Py::Tuple tuple(3);
-        tuple.setItem(0, Py::Float(lookat[0]));
-        tuple.setItem(1, Py::Float(lookat[1]));
-        tuple.setItem(2, Py::Float(lookat[2]));
-        return Py::new_reference_to(tuple);
-    }
-    catch (Py::Exception&) {
-        return NULL;
-    }*/
-}
-
-static PyObject *
-wrap_SoQtViewer_setFocalDistance(PyObject *proxy, PyObject *args)
-{/*
-    float distance;
-    if (!PyArg_ParseTuple(args, "f", &distance))     // convert args: Python->C 
-        return NULL;  // NULL triggers exception 
-
-    void* ptr = 0;
-    try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.gui.soqt", "SoQtViewer *", proxy, &ptr, 0);
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
-
-    SoQtViewer* viewer = reinterpret_cast<SoQtViewer*>(ptr);
-    PY_TRY {
-        SoCamera* cam = viewer->getCamera();
-        if (cam)
-            cam->focalDistance.setValue(distance);
-    } PY_CATCH;
-
-    Py_Return;*/
-}
-
-static PyObject *
-wrap_SoQtViewer_getFocalDistance(PyObject *proxy, PyObject *args)
-{/*
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;  // NULL triggers exception 
-
-    void* ptr = 0;
-    try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.gui.soqt", "SoQtViewer *", proxy, &ptr, 0);
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
-
-    SoQtViewer* viewer = reinterpret_cast<SoQtViewer*>(ptr);
-    double dist = 0;
-    SoCamera* cam = viewer->getCamera();
-    if (cam) dist = cam->focalDistance.getValue();
-    return PyFloat_FromDouble(dist);*/
-}
-
-static PyObject *
-wrap_SoQtViewer_seekToPoint(PyObject *proxy, PyObject *args)
-{/*
-    PyObject* object;
-    if (!PyArg_ParseTuple(args, "O", &object))     // convert args: Python->C 
-        return NULL;                       // NULL triggers exception 
-
-    void* ptr = 0;
-    try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.gui.soqt", "SoQtViewer *", proxy, &ptr, 0);
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
-
-    View3DInventorViewer* viewer = reinterpret_cast<View3DInventorViewer*>(ptr);
-    try {
-        const Py::Tuple tuple(object);
-
-        // If the 3d point is given
-        if (tuple.size() == 3) {
-            Py::Float x = tuple[0];
-            Py::Float y = tuple[1];
-            Py::Float z = tuple[2];
-
-            SbVec3f hitpoint((float)x,(float)y,(float)z);
-            viewer->pubSeekToPoint(hitpoint);
-        }
-        else {
-            Py::Int x(tuple[0]);
-            Py::Int y(tuple[1]);
-            
-            SbVec2s hitpoint ((long)x,(long)y);
-            viewer->pubSeekToPoint(hitpoint);
-        }
-
-        return Py::new_reference_to(Py::None());  // increment ref counter
-    }
-    catch (const Py::Exception&) {
-        return NULL;
-    }*/
-}
-
-struct PyMethodDef wrap_SoQtViewer_methods[] = { 
-    {"setViewDirection",wrap_SoQtViewer_setViewDirection,METH_VARARGS,
-     "setViewDirection(tuple) -> None"},
-    {"getViewDirection",wrap_SoQtViewer_getViewDirection,METH_VARARGS,
-     "getViewDirection() -> tuple"},
-    {"setFocalDistance",wrap_SoQtViewer_setFocalDistance,METH_VARARGS,
-     "setFocalDistance(float) -> None"},
-    {"getFocalDistance",wrap_SoQtViewer_getFocalDistance,METH_VARARGS,
-     "getFocalDistance() -> float"},
-    {"seekToPoint",wrap_SoQtViewer_seekToPoint,METH_VARARGS,
-     "seekToPoint(tuple) -> None\n"
-     "Initiate a seek action towards the 3D intersection of the scene and the\n"
-     "ray from the screen coordinate's point and in the same direction as the\n"
-     "camera is pointing"},
-    {NULL, NULL}  /* sentinel */
-};
-
 Py::Object View3DInventorPy::getViewer(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
 
-    PyObject* proxy = 0;
-    try {
-        // Note: As there is no ref'counting mechanism for the viewer class we must
-        // pass '0' as the third parameter so that the Python object does not 'own'
-        // the viewer. 
-        // Note: Once we have closed the viewer the Python object must not be used
-        // anymore as it has a dangling pointer.
-        Quarter::SoQTQuarterAdaptor* view = _view->getViewer();
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.gui.soqt", "SoQtViewer *", (void*)view, 0);
-    }
-    catch (const Base::Exception& e) {
-        throw Py::Exception(e.what());
-    }
-
-    // Add some additional methods to the viewer's type object
-    static bool first=true;
-    if (first && proxy) {
-        first = false;
-        PyMethodDef *meth = wrap_SoQtViewer_methods;
-        PyTypeObject *type = proxy->ob_type;
-        PyObject *dict = type->tp_dict;
-        for (; meth->ml_name != NULL; meth++) {
-            PyObject *descr;
-            descr = PyDescr_NewMethod(type, meth);
-            if (descr == NULL)
-                break;
-            if (PyDict_SetItemString(dict, meth->ml_name, descr) < 0)
-                break;
-            Py_DECREF(descr);
-        }
-    }
-    return Py::Object(proxy, true); // no further incremention needed
+    View3DInventorViewer* viewer = _view->getViewer();
+    return Py::Object(viewer->getPyObject(), true);
 }
 
 void View3DInventorPy::eventCallbackPivy(void * ud, SoEventCallback * n)

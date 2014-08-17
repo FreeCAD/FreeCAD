@@ -661,6 +661,7 @@ SET(View3D_CPP_SRCS
     View3DInventorRiftViewer.cpp
 	CoinRiftWidget.cpp
     View3DPy.cpp
+    View3DViewerPy.cpp
 )
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
@@ -675,8 +676,8 @@ SET(View3D_SRCS
     View3DInventorViewer.h
     View3DPy.h
     View3DInventorRiftViewer.h
-	CoinRiftWidget.h
-
+    CoinRiftWidget.h
+    View3DViewerPy.h
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 
