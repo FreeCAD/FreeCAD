@@ -32,7 +32,7 @@ set(Boost_LIBRARIES
     optimized boost_program_options-vc110-mt-1_55.lib
     optimized boost_regex-vc110-mt-1_55.lib
     optimized boost_signals-vc110-mt-1_55.lib
-    #optimized boost_thread-vc110-mt-1_55.lib
+    optimized boost_thread-vc110-mt-1_55.lib
 )
 set(Boost_DEBUG_LIBRARIES 
     debug boost_filesystem-vc110-mt-gd-1_55.lib
@@ -41,7 +41,7 @@ set(Boost_DEBUG_LIBRARIES
     debug boost_program_options-vc110-mt-gd-1_55.lib
     debug boost_regex-vc110-mt-gd-1_55.lib
     debug boost_signals-vc110-mt-gd-1_55.lib
-    #debug boost_thread-vc110-mt-gd-1_55.lib
+    debug boost_thread-vc110-mt-gd-1_55.lib
 )
 set(Boost_FOUND TRUE) 
 
@@ -311,41 +311,26 @@ set(NGLIB_DEBUG_LIBRARIES
     debug nglibd
 )
 
-# OCC
-#set(OCC_INCLUDE_DIR C:/Projects/LibPack/oce-0.10.0/include/oce)
-#set(OCC_LIBRARY_DIR C:/Projects/LibPack/oce-0.10.0/Win64/lib)
-#set(OCC_LIBRARIES
-#    ${OCC_LIBRARY_DIR}/TKFillet.lib
-#    ${OCC_LIBRARY_DIR}/TKMesh.lib
-#    ${OCC_LIBRARY_DIR}/TKernel.lib
-#    ${OCC_LIBRARY_DIR}/TKG2d.lib
-#    ${OCC_LIBRARY_DIR}/TKG3d.lib
-#    ${OCC_LIBRARY_DIR}/TKMath.lib
-#    ${OCC_LIBRARY_DIR}/TKIGES.lib
-#    ${OCC_LIBRARY_DIR}/TKSTL.lib
-#    ${OCC_LIBRARY_DIR}/TKShHealing.lib
-#    ${OCC_LIBRARY_DIR}/TKXSBase.lib
-#    ${OCC_LIBRARY_DIR}/TKBool.lib
-#    ${OCC_LIBRARY_DIR}/TKBO.lib
-#    ${OCC_LIBRARY_DIR}/TKBRep.lib
-#    ${OCC_LIBRARY_DIR}/TKTopAlgo.lib
-#    ${OCC_LIBRARY_DIR}/TKGeomAlgo.lib
-#    ${OCC_LIBRARY_DIR}/TKGeomBase.lib
-#    ${OCC_LIBRARY_DIR}/TKOffset.lib
-#    ${OCC_LIBRARY_DIR}/TKPrim.lib
-#    ${OCC_LIBRARY_DIR}/TKSTEP.lib
-#    ${OCC_LIBRARY_DIR}/TKSTEPBase.lib
-#    ${OCC_LIBRARY_DIR}/TKSTEPAttr.lib
-#    ${OCC_LIBRARY_DIR}/TKHLR.lib
-#    ${OCC_LIBRARY_DIR}/TKFeat.lib
-#)
-#set(OCC_OCAF_LIBRARIES
-#    ${OCC_LIBRARY_DIR}/TKCAF.lib
-#    ${OCC_LIBRARY_DIR}/TKXCAF.lib
-#    ${OCC_LIBRARY_DIR}/TKLCAF.lib
-#    ${OCC_LIBRARY_DIR}/TKXDESTEP.lib
-#    ${OCC_LIBRARY_DIR}/TKXDEIGES.lib
-#)
+
+# Pointscloud library
+set(PCL_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/pcl-1.7)
+set(PCL_LIBRARIES 
+    optimized pcl_common_release.lib
+    optimized pcl_kdtree_release.lib
+    optimized pcl_octree_release.lib
+    optimized pcl_io_release.lib
+    optimized pcl_io_ply_release.lib
+)
+set(PCL_DEBUG_LIBRARIES 
+    debug pcl_common_debug.lib
+    debug pcl_kdtree_debug.lib
+    debug pcl_octree_debug.lib
+    debug pcl_io_debug.lib
+    debug pcl_io_ply_debug.lib
+)
+set(PCL_FOUND TRUE) 
+
+
 set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/oce-0.15)
 set(OCC_LIBRARY_DIR ${FREECAD_LIBPACK_DIR}/lib)
 set(OCC_LIBRARIES
