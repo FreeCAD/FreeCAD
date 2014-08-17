@@ -138,6 +138,7 @@ void Gui::SoFCDB::init()
     qRegisterMetaType<Base::Vector3f>("Base::Vector3f");
     qRegisterMetaType<Base::Vector3d>("Base::Vector3d");
     qRegisterMetaType<Base::Quantity>("Base::Quantity");
+    qRegisterMetaType<QList<Base::Quantity> >("Base::QuantityList");
     init_done = TRUE;
 }
 

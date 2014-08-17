@@ -68,6 +68,10 @@ PropertyItem::~PropertyItem()
     qDeleteAll(childItems);
 }
 
+void PropertyItem::initialize()
+{
+}
+
 void PropertyItem::reset()
 {
     qDeleteAll(childItems);
@@ -85,11 +89,26 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
             ro &= (parent->isReadOnly(*it) || (*it)->StatusBits.test(2));
     }
     this->setReadOnly(ro);
+    this->initialize();
 }
 
 const std::vector<App::Property*>& PropertyItem::getPropertyData() const
 {
     return propertyItems;
+}
+
+App::Property* PropertyItem::getFirstProperty()
+{
+    if (propertyItems.empty())
+        return 0;
+    return propertyItems.front();
+}
+
+const App::Property* PropertyItem::getFirstProperty() const
+{
+    if (propertyItems.empty())
+        return 0;
+    return propertyItems.front();
 }
 
 void PropertyItem::setParent(PropertyItem* parent)
@@ -512,11 +531,10 @@ QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObj
 
 void PropertyIntegerConstraintItem::setEditorData(QWidget *editor, const QVariant& /*data*/) const
 {
-    const std::vector<App::Property*>& items = getPropertyData();
-    App::PropertyIntegerConstraint* prop = (App::PropertyIntegerConstraint*)items[0];
+    const App::PropertyIntegerConstraint* prop = static_cast
+        <const App::PropertyIntegerConstraint*>(getFirstProperty());
 
-    const App::PropertyIntegerConstraint::Constraints* c = 
-        ((App::PropertyIntegerConstraint*)prop)->getConstraints();
+    const App::PropertyIntegerConstraint::Constraints* c = prop->getConstraints();
     QSpinBox *sb = qobject_cast<QSpinBox*>(editor);
     if (c) {
         sb->setMinimum(c->LowerBound);
@@ -664,11 +682,10 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
     Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     infield->setValue(value);
 
-    const std::vector<App::Property*>& items = getPropertyData();
-    App::PropertyQuantityConstraint* prop = (App::PropertyQuantityConstraint*)items[0];
+    const App::PropertyQuantityConstraint* prop = static_cast
+        <const App::PropertyQuantityConstraint*>(getFirstProperty());
 
-    const App::PropertyQuantityConstraint::Constraints* c = 
-        ((App::PropertyQuantityConstraint*)prop)->getConstraints();
+    const App::PropertyQuantityConstraint::Constraints* c = prop->getConstraints();
 
     if (c) {
         infield->setMinimum(c->LowerBound);
@@ -724,10 +741,10 @@ QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObjec
 
 void PropertyFloatConstraintItem::setEditorData(QWidget *editor, const QVariant& /*data*/) const
 {
-    const std::vector<App::Property*>& items = getPropertyData();
-    App::PropertyFloatConstraint* prop = (App::PropertyFloatConstraint*)items[0];
+    const App::PropertyFloatConstraint* prop = static_cast
+        <const App::PropertyFloatConstraint*>(getFirstProperty());
 
-    const App::PropertyFloatConstraint::Constraints* c = ((App::PropertyFloatConstraint*)prop)->getConstraints();
+    const App::PropertyFloatConstraint::Constraints* c = prop->getConstraints();
     QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
     if (c) {
         sb->setMinimum(c->LowerBound);
@@ -758,10 +775,11 @@ PropertyAngleItem::PropertyAngleItem()
 
 void PropertyAngleItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
+    const App::PropertyQuantityConstraint* prop = static_cast
+        <const App::PropertyQuantityConstraint*>(getFirstProperty());
+
     const App::PropertyQuantityConstraint::Constraints* c = 0;
-    const std::vector<App::Property*>& items = getPropertyData();
-    if (!items.empty()) {
-        App::PropertyAngle* prop = static_cast<App::PropertyAngle*>(items[0]);
+    if (prop) {
         c = prop->getConstraints();
     }
 
