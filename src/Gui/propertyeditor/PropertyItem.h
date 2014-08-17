@@ -43,6 +43,7 @@ Q_DECLARE_METATYPE(Base::Vector3d)
 Q_DECLARE_METATYPE(Base::Matrix4D)
 Q_DECLARE_METATYPE(Base::Placement)
 Q_DECLARE_METATYPE(Base::Quantity)
+Q_DECLARE_METATYPE(QList<Base::Quantity>)
 
 namespace Gui {
 namespace Dialog { class TaskPlacement; }
@@ -60,6 +61,8 @@ public:
     /** Sets the current property objects. */
     void setPropertyData( const std::vector<App::Property*>& );
     const std::vector<App::Property*>& getPropertyData() const;
+    App::Property* getFirstProperty();
+    const App::Property* getFirstProperty() const;
 
     /** Creates the appropriate editor for this item and sets the editor to the value of overrideValue(). */
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
@@ -96,6 +99,7 @@ protected:
     virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
+    virtual void initialize();
     QString pythonIdentifier(const App::Property*) const;
 
 private:

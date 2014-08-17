@@ -41,20 +41,22 @@ PropertyMeshKernelItem::PropertyMeshKernelItem()
         (Gui::PropertyEditor::PropertyIntegerItem::create());
     m_p->setParent(this);
     m_p->setPropertyName(QLatin1String("Points"));
-    m_p->setReadOnly(true);
     this->appendChild(m_p);
     m_e = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
         (Gui::PropertyEditor::PropertyIntegerItem::create());
     m_e->setParent(this);
     m_e->setPropertyName(QLatin1String("Edges"));
-    m_e->setReadOnly(true);
     this->appendChild(m_e);
     m_f = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
         (Gui::PropertyEditor::PropertyIntegerItem::create());
     m_f->setParent(this);
     m_f->setPropertyName(QLatin1String("Faces"));
-    m_f->setReadOnly(true);
     this->appendChild(m_f);
+}
+
+void PropertyMeshKernelItem::initialize()
+{
+    this->setReadOnly(true);
 }
 
 QVariant PropertyMeshKernelItem::value(const App::Property*) const
@@ -63,8 +65,8 @@ QVariant PropertyMeshKernelItem::value(const App::Property*) const
     int ctE = 0;
     int ctF = 0;
 
-    std::vector<App::Property*> props = getPropertyData();
-    for ( std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt ) {
+    const std::vector<App::Property*>& props = getPropertyData();
+    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
         Mesh::PropertyMeshKernel* pPropMesh = (Mesh::PropertyMeshKernel*)(*pt);
         const MeshKernel& rMesh = pPropMesh->getValue().getKernel();
         ctP += (int)rMesh.CountPoints();
@@ -102,8 +104,8 @@ QVariant PropertyMeshKernelItem::editorData(QWidget *editor) const
 int PropertyMeshKernelItem::countPoints() const
 {
     int ctP = 0;
-    std::vector<App::Property*> props = getPropertyData();
-    for ( std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt ) {
+    const std::vector<App::Property*>& props = getPropertyData();
+    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
         Mesh::PropertyMeshKernel* pPropMesh = (Mesh::PropertyMeshKernel*)(*pt);
         const MeshKernel& rMesh = pPropMesh->getValue().getKernel();
         ctP += (int)rMesh.CountPoints();
@@ -115,8 +117,8 @@ int PropertyMeshKernelItem::countPoints() const
 int PropertyMeshKernelItem::countEdges() const
 {
     int ctE = 0;
-    std::vector<App::Property*> props = getPropertyData();
-    for ( std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt ) {
+    const std::vector<App::Property*>& props = getPropertyData();
+    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
         Mesh::PropertyMeshKernel* pPropMesh = (Mesh::PropertyMeshKernel*)(*pt);
         const MeshKernel& rMesh = pPropMesh->getValue().getKernel();
         ctE += (int)rMesh.CountEdges();
@@ -128,8 +130,8 @@ int PropertyMeshKernelItem::countEdges() const
 int PropertyMeshKernelItem::countFaces() const
 {
     int ctF = 0;
-    std::vector<App::Property*> props = getPropertyData();
-    for ( std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt ) {
+    const std::vector<App::Property*>& props = getPropertyData();
+    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
         Mesh::PropertyMeshKernel* pPropMesh = (Mesh::PropertyMeshKernel*)(*pt);
         const MeshKernel& rMesh = pPropMesh->getValue().getKernel();
         ctF += (int)rMesh.CountFacets();
