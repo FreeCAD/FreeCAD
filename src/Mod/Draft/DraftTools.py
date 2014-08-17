@@ -173,10 +173,8 @@ def getSupport(args=None):
             self.display(plane.axis)
     except:
         pass
-    if obj.isDerivedFrom("Part::Part2DObject"):
-        # make sure we don't set another Draft object as support
-        return None
-    return obj
+    # don't set the object's support if we are in the middle of an operation
+    return None
 
 def hasMod(args,mod):
     "checks if args has a specific modifier"
@@ -259,8 +257,7 @@ class DraftTool:
         msg("")
         if self.planetrack:
             self.planetrack.finalize()
-        if self.support:
-            plane.restore()
+        plane.restore()
         if hasattr(FreeCADGui,"Snapper"):
             FreeCADGui.Snapper.off()
         if self.call:
@@ -497,7 +494,8 @@ class Line(Creator):
                     self.finish(False,cont=True)
                 else:
                     if (not self.node) and (not self.support):
-                        self.support = getSupport(arg)
+                        getSupport(arg)
+                        self.point,ctrlPoint,info = getPoint(self,arg)
                     if self.point:
                         self.ui.redraw()
                         self.pos = arg["Position"]
@@ -612,7 +610,8 @@ class BSpline(Line):
                     self.finish(False,cont=True)
                 else:
                     if (not self.node) and (not self.support):
-                        self.support = getSupport(arg)
+                        getSupport(arg)
+                        self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
                     if self.point:
                         self.ui.redraw()
                         self.pos = arg["Position"]
@@ -708,7 +707,8 @@ class BezCurve(Line):
                     self.finish(False,cont=True)
                 else:
                     if (not self.node) and (not self.support):                  #first point
-                        self.support = getSupport(arg)
+                        getSupport(arg)
+                        self.point,ctrlPoint,info = getPoint(self,arg,noTracker=True)
                     if self.point:
                         self.ui.redraw()
                         self.pos = arg["Position"]
@@ -925,7 +925,8 @@ class Rectangle(Creator):
                     self.finish()
                 else:
                     if (not self.node) and (not self.support):
-                        self.support = getSupport(arg)
+                        getSupport(arg)
+                        self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
                     if self.point:
                         self.ui.redraw()
                         self.appendPoint(self.point)
@@ -1091,7 +1092,8 @@ class Arc(Creator):
                 if self.point:
                     if (self.step == 0): # choose center
                         if not self.support:
-                            self.support = getSupport(arg)
+                            getSupport(arg)
+                            self.point,ctrlPoint,info = getPoint(self,arg)
                         if hasMod(arg,MODALT):
                             snapped=self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
                             if snapped:
@@ -1360,7 +1362,8 @@ class Polygon(Creator):
                 if self.point:
                     if (self.step == 0): # choose center
                         if (not self.node) and (not self.support):
-                            self.support = getSupport(arg)
+                            getSupport(arg)
+                            self.point,ctrlPoint,info = getPoint(self,arg)
                         if hasMod(arg,MODALT):
                             snapped=self.view.getObjectInfo((arg["Position"][0],arg["Position"][1]))
                             if snapped:
@@ -1532,7 +1535,8 @@ class Ellipse(Creator):
                     self.finish()
                 else:
                     if (not self.node) and (not self.support):
-                        self.support = getSupport(arg)
+                        getSupport(arg)
+                        self.point,ctrlPoint,info = getPoint(self,arg,mobile=True,noTracker=True)
                     if self.point:
                         self.ui.redraw()
                         self.appendPoint(self.point)
@@ -1832,7 +1836,7 @@ class Dimension(Creator):
                 if self.point:
                     self.ui.redraw()
                     if (not self.node) and (not self.support):
-                        self.support = getSupport(arg)
+                        getSupport(arg)
                     if hasMod(arg,MODALT) and (len(self.node)<3):
                         #print "snapped: ",self.info
                         if self.info:
