@@ -10,6 +10,21 @@
 		http://www.netlib.org/f2c/libf2c.zip
 */
 
+/*
+ Since Mefisto is using very little real fortran API calls only the definition 
+ portion of the f2c header is used and the fortran write() calls are commented out:
+
+ 	//io___187.ciunit = unites_2.imprim;
+	//s_wsle(&io___187);
+	//do_lio(&c__9, &c__1, "pas de triangle d'abscisse minimale", (ftnlen)
+	//	35);
+	//e_wsle();
+
+This calls print out error information and are not needed in FreeCAD....
+
+JR 2014
+*/
+
 // start F2c.h content
 typedef long int integer;
 typedef unsigned long int uinteger;

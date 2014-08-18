@@ -287,24 +287,12 @@ if (MSVC)
     #    )
     #ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 
-        set(MEFISTO2_SMESH_source_files
+        set(MEFISTO2_source_files
             src/MEFISTO2/aptrte.cpp
             src/MEFISTO2/trte.c
-            src/MEFISTO2/f2clib_part.c
             inc/Rn.h
             inc/aptrte.h
-        )
-        FILE(GLOB MEFISTO2_f2clib_source_files
-            #src/MEFISTO2/f2clib/*.c
-            #src/MEFISTO2/f2clib/*.h
-        )
-        set(MEFISTO2_source_files
-			${MEFISTO2_SMESH_source_files}
-			${MEFISTO2_f2clib_source_files}
-		)
-SOURCE_GROUP("f2cLib" FILES ${MEFISTO2_f2clib_source_files})
-
-        
+        )        
     
 else(MSVC)
     FILE(GLOB MEFISTO2_source_files
