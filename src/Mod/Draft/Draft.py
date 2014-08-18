@@ -4787,7 +4787,6 @@ class _ViewProviderPoint(_ViewProviderDraft):
         vobj.setEditorMode('LineColor',mode)
         vobj.setEditorMode('LineWidth',mode)
         vobj.setEditorMode('BoundingBox',mode)
-        vobj.setEditorMode('ControlPoints',mode)
         vobj.setEditorMode('Deviation',mode)
         vobj.setEditorMode('DiffuseColor',mode)
         vobj.setEditorMode('DisplayMode',mode)
