@@ -104,6 +104,16 @@ void ViewProviderDrawingPage::updateData(const App::Property* prop)
                 view->viewAll();
         }
     }
+    else if (pcObject && prop == &pcObject->Label) {
+        if (view){
+            const char* docname = pcObject->getDocument()->Label.getValue();
+            const char* objname = pcObject->Label.getValue();
+            QString title = QString::fromAscii("%1 : %2[*]")
+                .arg(QString::fromUtf8(docname))
+                .arg(QString::fromUtf8(objname));
+            view->setWindowTitle(title);
+        }
+    }
 }
 
 void ViewProviderDrawingPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -136,7 +146,13 @@ DrawingView* ViewProviderDrawingPage::showDrawingView()
             (this->pcObject->getDocument());
         view = new DrawingView(doc, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
-        view->onRelabel(doc);
+
+        const char* docname = pcObject->getDocument()->Label.getValue();
+        const char* objname = pcObject->Label.getValue();
+        QString title = QString::fromAscii("%1 : %2[*]")
+            .arg(QString::fromUtf8(docname))
+            .arg(QString::fromUtf8(objname));
+        view->setWindowTitle(title);
         Gui::getMainWindow()->addWindow(view);
     }
 
