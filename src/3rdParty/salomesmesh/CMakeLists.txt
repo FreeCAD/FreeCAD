@@ -22,6 +22,7 @@ include_directories(
     src/DriverDAT
     src/DriverSTL
     src/StdMeshers
+    src/MEFISTO2/f2clib
     inc
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -127,7 +128,7 @@ ELSE(UNIX)
     ######### Windows ###########
     #MESSAGE("-- Windows system detected")
     IF(MSVC)
-        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB /wd4290 /wd4251 /wd4018 /wd4800 /wd4996 /wd4244 /wd4806 /wd4275)
+        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -DNO_My_ctype -DNO_ISATTY -DNO_FPINIT /wd4290 /wd4251 /wd4018 /wd4800 /wd4996 /wd4244 /wd4806 /wd4275)
     ELSE(MSVC)
         ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB)
     ENDIF(MSVC)
@@ -269,22 +270,42 @@ endif(WIN32)
 # MEFISTO2   #
 ##############
 if (MSVC)
-    IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        # Mefisto2f.lib was built using f2c which created
-        # all function names with an '_' at the end.
-        FILE(GLOB MEFISTO2_source_files
-            src/MEFISTO2/*.cpp
+    #IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    #    # Mefisto2f.lib was built using f2c which created
+    #    # all function names with an '_' at the end.
+    #    FILE(GLOB MEFISTO2_source_files
+    #        src/MEFISTO2/*.cpp
+    #        inc/Rn.h
+    #        inc/aptrte.h
+    #    )
+    #ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    #    FILE(GLOB MEFISTO2_source_files
+    #        src/MEFISTO2/*.cpp
+    #        src/MEFISTO2/MEFISTO2F.def
+    #        inc/Rn.h
+    #        inc/aptrte.h
+    #    )
+    #ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+
+        set(MEFISTO2_SMESH_source_files
+            src/MEFISTO2/aptrte.cpp
+            src/MEFISTO2/trte.c
+            src/MEFISTO2/f2clib_part.c
             inc/Rn.h
             inc/aptrte.h
         )
-    ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        FILE(GLOB MEFISTO2_source_files
-            src/MEFISTO2/*.cpp
-            src/MEFISTO2/MEFISTO2F.def
-            inc/Rn.h
-            inc/aptrte.h
+        FILE(GLOB MEFISTO2_f2clib_source_files
+            #src/MEFISTO2/f2clib/*.c
+            #src/MEFISTO2/f2clib/*.h
         )
-    ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        set(MEFISTO2_source_files
+			${MEFISTO2_SMESH_source_files}
+			${MEFISTO2_f2clib_source_files}
+		)
+SOURCE_GROUP("f2cLib" FILES ${MEFISTO2_f2clib_source_files})
+
+        
+    
 else(MSVC)
     FILE(GLOB MEFISTO2_source_files
         src/MEFISTO2/*.cpp
