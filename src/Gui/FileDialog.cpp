@@ -38,6 +38,7 @@
 
 #include <Base/Parameter.h>
 #include <App/Application.h>
+#include <App/Document.h>
 
 #include "FileDialog.h"
 #include "MainWindow.h"
@@ -521,11 +522,24 @@ void FileChooser::setFileName( const QString& s )
  */
 void FileChooser::chooseFile()
 {
+    QString prechosenDirectory = lineEdit->text();
+    if (prechosenDirectory.isEmpty()) {
+        App::Document* const doc = App::GetApplication().getActiveDocument();
+        const QString filename = QString::fromStdString(doc->FileName.getStrValue());
+
+        // if the document has no filename yet, start browsing in the users home directory
+        if (!filename.isEmpty()) {
+            prechosenDirectory = filename;
+        } else {
+            prechosenDirectory = QDir::homePath();
+        }
+    }
+
     QString fn;
     if ( mode() == File )
-        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), lineEdit->text(), _filter );
+        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), prechosenDirectory, _filter );
     else
-        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), lineEdit->text() );
+        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory );
 
     if (!fn.isEmpty()) {
         lineEdit->setText(fn);
