@@ -32,6 +32,7 @@
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
 # include <Inventor/SoPath.h>
 # include <Inventor/SbBox3f.h>
+# include <Inventor/SbImage.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoLineDetail.h>
 # include <Inventor/details/SoPointDetail.h>
@@ -1685,13 +1686,22 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
 
 SbVec3s ViewProviderSketch::getDisplayedSize(const SoImage *iconPtr) const
 {
+#if (COIN_MAJOR_VERSION >= 3)
     SbVec3s iconSize = iconPtr->image.getValue().getSize();
-    if(iconPtr->width.getValue() != -1)
+#else
+    SbVec2s size;
+    int nc;
+    const unsigned char * bytes = iconPtr->image.getValue(size, nc);
+    SbImage img (bytes, size, nc);
+    SbVec3s iconSize = img.getSize();
+#endif
+    if (iconPtr->width.getValue() != -1)
         iconSize[0] = iconPtr->width.getValue();
-    if(iconPtr->height.getValue() != -1)
+    if (iconPtr->height.getValue() != -1)
         iconSize[1] = iconPtr->height.getValue();
     return iconSize;
 }
+
 void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &endPos,
                                         const Gui::View3DInventorViewer *viewer)
 {

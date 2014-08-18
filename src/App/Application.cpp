@@ -34,6 +34,9 @@
 # include <unistd.h>
 # include <pwd.h>
 # include <sys/types.h>
+# elif defined(__MINGW32__)
+# define WINVER 0x502 // needed for SetDllDirectory
+# include <Windows.h>
 # endif
 # include <ctime>
 # include <csignal>
