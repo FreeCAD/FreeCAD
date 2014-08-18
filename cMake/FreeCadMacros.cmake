@@ -255,9 +255,9 @@ MACRO(SET_PYTHON_PREFIX_SUFFIX ProjectName)
 ENDMACRO(SET_PYTHON_PREFIX_SUFFIX)
 
 MACRO(CHECK_MINIMUM_OCC_VERSION_HEX MinVersionHex)
+    message(STATUS "Check for OCC version >= ${MinVersionHex}")
     set(CMAKE_REQUIRED_INCLUDES ${OCC_INCLUDE_DIR})
     unset(OCC_MIN_VERSION CACHE)
-    set(OCC_CHECK_VERSION 0x060600)
     CHECK_CXX_SOURCE_RUNS("
         #include <Standard_Version.hxx>
         int main ()
