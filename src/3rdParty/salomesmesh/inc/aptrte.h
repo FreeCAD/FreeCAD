@@ -135,7 +135,22 @@ MEFISTO2D_EXPORT
 #elif defined(WIN32) && defined (__WATCOM__)
 
   #define MEFISTO2D_STDCALL
-  
+  #define insoar  insoar_
+  #define azeroi  azeroi_
+  #define fasoar  fasoar_
+  #define teajte  teajte_
+  #define tehote  tehote_
+  #define tetrte  tetrte_
+  #define aisoar  aisoar_
+  #define tedela  tedela_
+  #define terefr  terefr_
+  #define tesuex  tesuex_
+  #define teamqt  teamqt_
+  #define nusotr  nusotr_
+  #define qutr2d  qutr2d_
+  #define surtd2  surtd2_
+  #define qualitetrte qualitetrte_
+  #define areteideale areteideale_  
 #else //Lin and MacOSX use f77
 
   #define MEFISTO2D_STDCALL
