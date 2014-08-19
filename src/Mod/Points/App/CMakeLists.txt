@@ -2,6 +2,10 @@ if(WIN32)
     add_definitions(-DFCAppPoints)
 endif(WIN32)
 
+if(PCL_FOUND)
+    add_definitions(-DHAVE_PCL)
+endif(PCL_FOUND)
+
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
