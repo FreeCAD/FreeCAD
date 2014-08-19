@@ -67,6 +67,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "OCCError.h"
 #include "TopoShape.h"
 #include "TopoShapeFacePy.h"
 #include "TopoShapeVertexPy.h"
@@ -110,7 +111,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         Geometry* geom = static_cast<GeometryPy*>(pcObj)->getGeometryPtr();
         Handle_Geom_Curve curve = Handle_Geom_Curve::DownCast(geom->handle());
         if (curve.IsNull()) {
-            PyErr_SetString(PyExc_Exception, "geometry is not a curve type");
+            PyErr_SetString(PartExceptionOCCError, "geometry is not a curve type");
             return -1;
         }
 
@@ -126,7 +127,7 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
     }
@@ -159,12 +160,12 @@ int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
     }
 
-    PyErr_SetString(PyExc_Exception, "Curve or shape expected");
+    PyErr_SetString(PartExceptionOCCError, "Curve or shape expected");
     return -1;
 }
 
@@ -237,7 +238,7 @@ PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -280,7 +281,7 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -301,7 +302,7 @@ PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -323,7 +324,7 @@ PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -344,7 +345,7 @@ PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -365,7 +366,7 @@ PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -386,7 +387,7 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -453,7 +454,7 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
                 return 0;
             }
         }
@@ -475,7 +476,7 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
                 return 0;
             }
         }
@@ -499,7 +500,7 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
                 return 0;
             }
         }
@@ -521,7 +522,7 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
                 return 0;
             }
         }
@@ -543,17 +544,17 @@ PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of edge failed");
                 return 0;
             }
         }
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(PartExceptionOCCError, e.what());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception,"Wrong arguments");
+    PyErr_SetString(PartExceptionOCCError,"Wrong arguments");
     return 0;
 }
 
@@ -617,11 +618,11 @@ PyObject* TopoShapeEdgePy::split(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
     return 0;
 }
 

@@ -37,6 +37,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "LinePy.h"
 #include "CirclePy.h"
@@ -84,7 +85,7 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
                                  gp_Pnt(v2.x,v2.y,v2.z),
                                  radius1, radius2);
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -111,7 +112,7 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
                                  gp_Pnt(v3.x,v3.y,v3.z),
                                  gp_Pnt(v4.x,v4.y,v4.z));
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -132,7 +133,7 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
             (pcCone->getGeometryPtr()->handle());
         GC_MakeConicalSurface mc(pcone->Cone(), dist);
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -151,7 +152,7 @@ int ConePy::PyInit(PyObject* args, PyObject* kwds)
             (pcCone->getGeometryPtr()->handle());
         GC_MakeConicalSurface mc(pcone->Cone());
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -190,7 +191,7 @@ PyObject* ConePy::uIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -209,7 +210,7 @@ PyObject* ConePy::vIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }

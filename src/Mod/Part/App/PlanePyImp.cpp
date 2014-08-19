@@ -38,6 +38,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "LinePy.h"
 #include "PlanePy.h"
@@ -72,7 +73,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
             (pcPlane->getGeometryPtr()->handle());
         GC_MakePlane mc(plane->Pln(), dist);
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -89,7 +90,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
                                         &a,&b,&c,&d)) {
         GC_MakePlane mc(a,b,c,d);
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -112,7 +113,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
                         gp_Pnt(v2.x,v2.y,v2.z),
                         gp_Pnt(v3.x,v3.y,v3.z));
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -132,7 +133,7 @@ int PlanePy::PyInit(PyObject* args, PyObject* kwds)
         GC_MakePlane mc(gp_Pnt(v1.x,v1.y,v1.z),
                         gp_Dir(v2.x,v2.y,v2.z));
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -275,7 +276,7 @@ PyObject* PlanePy::uIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -300,7 +301,7 @@ PyObject* PlanePy::vIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }

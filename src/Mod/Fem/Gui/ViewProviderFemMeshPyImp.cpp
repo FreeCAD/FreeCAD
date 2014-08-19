@@ -138,7 +138,7 @@ PyObject* ViewProviderFemMeshPy::setNodeColorByResult(PyObject *args)
 
 
         }else{
-            PyErr_SetString(PyExc_Exception, "Argument has to be a ResultValue or ResultVector!");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Argument has to be a ResultValue or ResultVector!");
             return 0;
         }
     }
@@ -166,7 +166,7 @@ PyObject* ViewProviderFemMeshPy::setNodeDisplacementByResult(PyObject *args)
 
 
         }else{
-            PyErr_SetString(PyExc_Exception, "Argument has to be a ResultVector!");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Argument has to be a ResultVector!");
             return 0;
         }
     }

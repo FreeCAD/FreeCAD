@@ -159,7 +159,7 @@ PyObject* PointsPy::addPoints(PyObject * args)
         }
     }
     catch (const Py::Exception&) {
-        PyErr_SetString(PyExc_Exception, "either expect\n"
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "either expect\n"
             "-- [Vector,...] \n"
             "-- [(x,y,z),...]");
         return 0;

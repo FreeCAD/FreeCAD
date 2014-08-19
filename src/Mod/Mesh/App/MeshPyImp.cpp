@@ -91,11 +91,11 @@ int MeshPy::PyInit(PyObject* args, PyObject*)
         }
     }
     catch (const Base::Exception &e) {
-        PyErr_SetString(PyExc_Exception,e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
         return -1;
     }
     catch (const std::exception &e) {
-        PyErr_SetString(PyExc_Exception,e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError,e.what());
         return -1;
     }
     catch (const Py::Exception&) {
@@ -491,7 +491,7 @@ PyObject*  MeshPy::addFacet(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_Exception, "set 9 floats or three vectors");
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "set 9 floats or three vectors");
     return 0;
 }
 
@@ -538,7 +538,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
                         }
                     }
                     else {
-                        PyErr_SetString(PyExc_Exception, "expect a sequence of floats or Vector");
+                        PyErr_SetString(Base::BaseExceptionFreeCADError, "expect a sequence of floats or Vector");
                         return NULL;
                     }
 
@@ -593,7 +593,7 @@ PyObject*  MeshPy::addFacets(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_Exception, "either expect\n"
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "either expect\n"
         "-- [Vector] (3 of them define a facet)\n"
         "-- ([Vector],[(int,int,int)])");
     return NULL;
@@ -813,7 +813,7 @@ PyObject*  MeshPy::fixSelfIntersections(PyObject *args)
         getMeshObjectPtr()->removeSelfIntersections();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return NULL;
     }
     Py_Return;
@@ -827,7 +827,7 @@ PyObject*  MeshPy::removeFoldsOnSurface(PyObject *args)
         getMeshObjectPtr()->removeFoldsOnSurface();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return NULL;
     }
     Py_Return;
@@ -921,7 +921,7 @@ PyObject*  MeshPy::fillupHoles(PyObject *args)
         getMeshObjectPtr()->fillupHoles(len, level, *tria);
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return NULL;
     }
 

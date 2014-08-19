@@ -33,6 +33,8 @@
 
 using namespace Base;
 
+PyObject* Base::BaseExceptionFreeCADError = 0;
+
 // Constructor
 PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
   : _pcTwinPointer(p), parent(0), attribute(0)

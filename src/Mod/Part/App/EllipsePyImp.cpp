@@ -31,6 +31,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "EllipsePy.h"
 #include "EllipsePy.cpp"
@@ -89,7 +90,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
                           gp_Pnt(v2.x,v2.y,v2.z),
                           gp_Pnt(v3.x,v3.y,v3.z));
         if (!me.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(me.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(me.Status()));
             return -1;
         }
 
@@ -109,7 +110,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
         GC_MakeEllipse me(gp_Ax2(gp_Pnt(c.x,c.y,c.z), gp_Dir(0.0,0.0,1.0)),
                           major, minor);
         if (!me.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(me.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(me.Status()));
             return -1;
         }
 

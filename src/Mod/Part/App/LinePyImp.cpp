@@ -35,6 +35,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "LinePy.h"
 #include "LinePy.cpp"
@@ -114,7 +115,7 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             GC_MakeSegment ms(gp_Pnt(v1.x,v1.y,v1.z),
                               gp_Pnt(v2.x,v2.y,v2.z));
             if (!ms.IsDone()) {
-                PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(ms.Status()));
+                PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(ms.Status()));
                 return -1;
             }
 
@@ -133,11 +134,11 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
         catch (...) {
-            PyErr_SetString(PyExc_Exception, "creation of line failed");
+            PyErr_SetString(PartExceptionOCCError, "creation of line failed");
             return -1;
         }
     }
@@ -162,7 +163,7 @@ PyObject* LinePy::setParameterRange(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return NULL;
     }
 

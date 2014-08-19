@@ -28,6 +28,7 @@
 #endif
 
 #include "Mod/Part/App/Geometry.h"
+#include "OCCError.h"
 
 // inclusion of the generated files (generated out of RectangularTrimmedSurfacePy.xml)
 #include "RectangularTrimmedSurfacePy.h"
@@ -81,7 +82,7 @@ int RectangularTrimmedSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "A surface and the trim parameters must be given");
+    PyErr_SetString(PartExceptionOCCError, "A surface and the trim parameters must be given");
     return -1;
 }
 
@@ -106,7 +107,7 @@ PyObject* RectangularTrimmedSurfacePy::uIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -132,7 +133,7 @@ PyObject* RectangularTrimmedSurfacePy::vIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }

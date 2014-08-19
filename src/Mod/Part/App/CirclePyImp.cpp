@@ -28,6 +28,7 @@
 # include <GC_MakeCircle.hxx>
 #endif
 
+#include "OCCError.h"
 #include "CirclePy.h"
 #include "CirclePy.cpp"
 
@@ -77,7 +78,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
             (pcCircle->getGeomCirclePtr()->handle());
         GC_MakeCircle mc(circle->Circ(), dist);
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -100,7 +101,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
                          gp_Dir(v2.x,v2.y,v2.z),
                          dist);
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -134,7 +135,7 @@ int CirclePy::PyInit(PyObject* args, PyObject* kwds)
                          gp_Pnt(v2.x,v2.y,v2.z),
                          gp_Pnt(v3.x,v3.y,v3.z));
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 

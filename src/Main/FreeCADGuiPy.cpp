@@ -182,7 +182,7 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
 
     QWidget* widget = Gui::getMainWindow();
     if (!widget) {
-        PyErr_SetString(PyExc_Exception, "No main window");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "No main window");
         return 0;
     }
 

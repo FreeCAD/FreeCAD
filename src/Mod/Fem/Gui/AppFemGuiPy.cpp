@@ -47,7 +47,7 @@ static PyObject * setActiveAnalysis(PyObject *self, PyObject *args)
     if (PyArg_ParseTuple(args,"|O!",&(App::DocumentObjectPy::Type), &object)&& object) {
         App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
         if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
-            PyErr_SetString(PyExc_Exception, "Active Analysis object have to be of type Fem::FemAnalysis!");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Active Analysis object have to be of type Fem::FemAnalysis!");
             return 0;
         }
 

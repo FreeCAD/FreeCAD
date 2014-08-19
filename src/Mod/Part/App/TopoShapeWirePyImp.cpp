@@ -53,6 +53,7 @@
 #include "TopoShapeEdgePy.h"
 #include "TopoShapeWirePy.h"
 #include "TopoShapeWirePy.cpp"
+#include "OCCError.h"
 
 using namespace Part;
 
@@ -97,7 +98,7 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
     }
@@ -135,12 +136,12 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
     }
 
-    PyErr_SetString(PyExc_Exception, "edge or wire or list of edges and wires expected");
+    PyErr_SetString(PartExceptionOCCError, "edge or wire or list of edges and wires expected");
     return -1;
 }
 
@@ -172,7 +173,7 @@ PyObject* TopoShapeWirePy::add(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -206,7 +207,7 @@ PyObject* TopoShapeWirePy::fixWire(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -235,7 +236,7 @@ PyObject* TopoShapeWirePy::makePipe(PyObject *args)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return 0;
         }
     }
@@ -271,7 +272,7 @@ PyObject* TopoShapeWirePy::makePipeShell(PyObject *args)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return NULL;
         }
     }
@@ -300,7 +301,7 @@ PyObject* TopoShapeWirePy::makeHomogenousWires(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -322,12 +323,12 @@ PyObject* TopoShapeWirePy::approximate(PyObject *args)
             return new BSplineCurvePy(new GeomBSplineCurve(approx.Curve()));
         }
         else {
-            PyErr_SetString(PyExc_Exception, "failed to approximate wire");
+            PyErr_SetString(PartExceptionOCCError, "failed to approximate wire");
             return 0;
         }
     }
     catch (Standard_Failure) {
-        PyErr_SetString(PyExc_Exception, "failed to approximate wire");
+        PyErr_SetString(PartExceptionOCCError, "failed to approximate wire");
         return 0;
     }
 }
@@ -394,7 +395,7 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of wire failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of wire failed");
                 return 0;
             }
         }
@@ -416,7 +417,7 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of wire failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of wire failed");
                 return 0;
             }
         }
@@ -440,7 +441,7 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of wire failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of wire failed");
                 return 0;
             }
         }
@@ -462,7 +463,7 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of wire failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of wire failed");
                 return 0;
             }
         }
@@ -484,17 +485,17 @@ PyObject* TopoShapeWirePy::discretize(PyObject *args, PyObject *kwds)
                 return Py::new_reference_to(points);
             }
             else {
-                PyErr_SetString(PyExc_Exception, "Discretization of wire failed");
+                PyErr_SetString(PartExceptionOCCError, "Discretization of wire failed");
                 return 0;
             }
         }
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(PartExceptionOCCError, e.what());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception,"Wrong arguments");
+    PyErr_SetString(PartExceptionOCCError,"Wrong arguments");
     return 0;
 }
 

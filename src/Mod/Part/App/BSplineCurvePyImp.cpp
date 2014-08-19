@@ -39,6 +39,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "BSplineCurvePy.h"
 #include "BSplineCurvePy.cpp"
@@ -126,10 +127,12 @@ PyObject* BSplineCurvePy::increaseDegree(PyObject * args)
     int degree;
     if (!PyArg_ParseTuple(args, "i", &degree))
         return 0;
-    Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
-        (getGeometryPtr()->handle());
-    curve->IncreaseDegree(degree);
-    Py_Return;
+    PY_TRY {
+        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
+            (getGeometryPtr()->handle());
+        curve->IncreaseDegree(degree);
+        Py_Return;
+    } PY_CATCH_OCC ;
 }
 
 PyObject* BSplineCurvePy::increaseMultiplicity(PyObject * args)
@@ -165,7 +168,7 @@ PyObject* BSplineCurvePy::incrementMultiplicity(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -187,7 +190,7 @@ PyObject* BSplineCurvePy::insertKnot(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -228,7 +231,7 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -257,7 +260,7 @@ PyObject* BSplineCurvePy::removeKnot(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -275,7 +278,7 @@ PyObject* BSplineCurvePy::segment(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -333,7 +336,7 @@ PyObject* BSplineCurvePy::setKnots(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -355,7 +358,7 @@ PyObject* BSplineCurvePy::getKnots(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -380,7 +383,7 @@ PyObject* BSplineCurvePy::setPole(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -402,7 +405,7 @@ PyObject* BSplineCurvePy::getPole(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -427,7 +430,7 @@ PyObject* BSplineCurvePy::getPoles(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -446,7 +449,7 @@ PyObject* BSplineCurvePy::setWeight(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -466,7 +469,7 @@ PyObject* BSplineCurvePy::getWeight(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -488,7 +491,7 @@ PyObject* BSplineCurvePy::getWeights(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -507,7 +510,7 @@ PyObject* BSplineCurvePy::getResolution(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -529,7 +532,7 @@ PyObject* BSplineCurvePy::movePoint(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -546,7 +549,7 @@ PyObject* BSplineCurvePy::setNotPeriodic(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -563,7 +566,7 @@ PyObject* BSplineCurvePy::setPeriodic(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -581,7 +584,7 @@ PyObject* BSplineCurvePy::setOrigin(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -599,7 +602,7 @@ PyObject* BSplineCurvePy::getMultiplicity(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -621,7 +624,7 @@ PyObject* BSplineCurvePy::getMultiplicities(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -735,7 +738,7 @@ PyObject* BSplineCurvePy::approximate(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -786,7 +789,7 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
-        PyErr_SetString(PyExc_Exception, err.c_str());
+        PyErr_SetString(PartExceptionOCCError, err.c_str());
         return 0;
     }
 }
@@ -865,7 +868,7 @@ PyObject* BSplineCurvePy::buildFromPoles(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1008,7 +1011,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
     catch (const Standard_Failure & ) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         Standard_CString msg = e->GetMessageString();
-        PyErr_SetString(PyExc_Exception, msg  ? msg : "");
+        PyErr_SetString(PartExceptionOCCError, msg  ? msg : "");
         return 0;
     }
 }
@@ -1072,7 +1075,7 @@ PyObject* BSplineCurvePy::makeC1Continuous(PyObject *args)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
-        PyErr_SetString(PyExc_Exception, err.c_str());
+        PyErr_SetString(PartExceptionOCCError, err.c_str());
         return 0;
     }
 }

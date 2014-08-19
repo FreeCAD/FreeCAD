@@ -62,7 +62,7 @@ static PyObject * read(PyObject *self, PyObject *args)
             return new MeshPy(mesh.release());
         }
         else {
-            PyErr_SetString(PyExc_Exception, "Loading of mesh was aborted");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Loading of mesh was aborted");
             return NULL;
         }
     } PY_CATCH;
@@ -267,7 +267,7 @@ createSphere(PyObject *self, PyObject *args)
     PY_TRY {
         MeshObject* mesh = MeshObject::createSphere(radius, sampling);
         if (!mesh) {
-            PyErr_SetString(PyExc_Exception, "Creation of sphere failed");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Creation of sphere failed");
             return NULL;
         }
         return new MeshPy(mesh);
@@ -286,7 +286,7 @@ createEllipsoid(PyObject *self, PyObject *args)
     PY_TRY {
         MeshObject* mesh = MeshObject::createEllipsoid(radius1, radius2, sampling);
         if (!mesh) {
-            PyErr_SetString(PyExc_Exception, "Creation of ellipsoid failed");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Creation of ellipsoid failed");
             return NULL;
         }
         return new MeshPy(mesh);
@@ -307,7 +307,7 @@ createCylinder(PyObject *self, PyObject *args)
     PY_TRY {
         MeshObject* mesh = MeshObject::createCylinder(radius, length, closed, edgelen, sampling);
         if (!mesh) {
-            PyErr_SetString(PyExc_Exception, "Creation of cylinder failed");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Creation of cylinder failed");
             return NULL;
         }
         return new MeshPy(mesh);
@@ -329,7 +329,7 @@ createCone(PyObject *self, PyObject *args)
     PY_TRY {
         MeshObject* mesh = MeshObject::createCone(radius1, radius2, len, closed, edgelen, sampling);
         if (!mesh) {
-            PyErr_SetString(PyExc_Exception, "Creation of cone failed");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Creation of cone failed");
             return NULL;
         }
         return new MeshPy(mesh);
@@ -348,7 +348,7 @@ createTorus(PyObject *self, PyObject *args)
     PY_TRY {
         MeshObject* mesh = MeshObject::createTorus(radius1, radius2, sampling);
         if (!mesh) {
-            PyErr_SetString(PyExc_Exception, "Creation of torus failed");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Creation of torus failed");
             return NULL;
         }
         return new MeshPy(mesh);
@@ -373,7 +373,7 @@ createBox(PyObject *self, PyObject *args)
             mesh = MeshObject::createCube(length, width, height, edgelen);
 
         if (!mesh) {
-            PyErr_SetString(PyExc_Exception, "Creation of box failed");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Creation of box failed");
             return NULL;
         }
         return new MeshPy(mesh);
@@ -389,7 +389,7 @@ calculateEigenTransform(PyObject *self, PyObject *args)
         return NULL;
 
     if(! PySequence_Check(input) ){
-        PyErr_SetString(PyExc_Exception, "Input have to be a sequence of Base.Vector()");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Input have to be a sequence of Base.Vector()");
         return NULL;
     }
 

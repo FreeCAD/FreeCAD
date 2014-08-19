@@ -168,7 +168,7 @@ PyObject*  MeshFeaturePy::fixSelfIntersections(PyObject *args)
         obj->Mesh.finishEditing();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return NULL;
     }
     Py_Return;
@@ -185,7 +185,7 @@ PyObject*  MeshFeaturePy::removeFoldsOnSurface(PyObject *args)
         obj->Mesh.finishEditing();
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return NULL;
     }
     Py_Return;
