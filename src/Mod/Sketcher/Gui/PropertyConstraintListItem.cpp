@@ -23,38 +23,13 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
-# include <QComboBox>
-# include <QFontDatabase>
-# include <QLayout>
-# include <QLocale>
-# include <QPixmap>
-# include <QSpinBox>
 # include <QTextStream>
-# include <QTimer>
 #endif
 
 #include <Base/Tools.h>
-#include <App/Application.h>
-#include <App/Document.h>
-#include <App/DocumentObject.h>
-#include <App/PropertyGeo.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyUnits.h>
-#include <Gui/Application.h>
-#include <Gui/Control.h>
-#include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/Placement.h>
-#include <Gui/FileDialog.h>
-#include <Gui/DlgPropertyLink.h>
-#include <Gui/QuantitySpinBox.h>
 
 #include <Gui/propertyeditor/PropertyItem.h>
-
 #include "../App/PropertyConstraintList.h"
-
 #include "PropertyConstraintListItem.h"
 
 
@@ -65,7 +40,7 @@ TYPESYSTEM_SOURCE(SketcherGui::PropertyConstraintListItem, Gui::PropertyEditor::
 
 PropertyConstraintListItem::PropertyConstraintListItem()
 {
-    
+
 }
 
 QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
@@ -86,9 +61,9 @@ QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
 QVariant PropertyConstraintListItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(Sketcher::PropertyConstraintList::getClassTypeId()));
-    
+
     PropertyConstraintListItem* self = const_cast<PropertyConstraintListItem*>(this);
-    
+
     int id = 1;
 
     QList<Base::Quantity> quantities;
@@ -112,22 +87,19 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             }
 
             quantities.append(quant);
-            
+
             QString name = QString::fromStdString((*it)->Name);
             if (name.isEmpty())
                 name = QString::fromLatin1("Constraint%1").arg(id);
-            
+
             PropertyConstraintListItem* self = const_cast<PropertyConstraintListItem*>(this);
             self->blockEvent=true;
             self->setProperty(name.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
             self->blockEvent=false;    
-
         }
     }
 
-    
     return QVariant::fromValue< QList<Base::Quantity> >(quantities);
-
 }
 
 void PropertyConstraintListItem::setValue(const QVariant& value)
@@ -146,7 +118,7 @@ bool PropertyConstraintListItem::event (QEvent* ev)
 
             int id = 0;
             Sketcher::PropertyConstraintList* item = static_cast<Sketcher::PropertyConstraintList*>(getFirstProperty());
-            
+
             const std::vector< Sketcher::Constraint * > &vals = item->getValues();
             for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
                 if ((*it)->Type == Sketcher::Distance || // Datum constraint
@@ -154,7 +126,6 @@ bool PropertyConstraintListItem::event (QEvent* ev)
                     (*it)->Type == Sketcher::DistanceY ||
                     (*it)->Type == Sketcher::Radius ||
                     (*it)->Type == Sketcher::Angle) {
-
 
                     // Get the name
                     QString name = QString::fromStdString((*it)->Name);
@@ -172,6 +143,7 @@ bool PropertyConstraintListItem::event (QEvent* ev)
             }
         }
     }
+
     return PropertyItem::event(ev);
 }
 
@@ -198,9 +170,8 @@ QVariant PropertyConstraintListItem::editorData(QWidget *editor) const
 void PropertyConstraintListItem::initialize()
 {
     const Sketcher::PropertyConstraintList* item=static_cast<const Sketcher::PropertyConstraintList*>(getPropertyData()[0]);
-    
     const std::vector< Sketcher::Constraint * > &vals = item->getValues();
-       
+
     int id = 1;
 
     for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
@@ -210,19 +181,16 @@ void PropertyConstraintListItem::initialize()
             (*it)->Type == Sketcher::Radius ||
             (*it)->Type == Sketcher::Angle) {
 
-            
             // Get the name
-            
             QString name = QString::fromStdString((*it)->Name);
             if (name.isEmpty())
                 name = QString::fromLatin1("Constraint%1").arg(id);
             PropertyUnitItem* item = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
             item->setParent(this);
             item->setPropertyName(name);
-            this->appendChild(item);            
+            this->appendChild(item);
         }
     }
-    
 }
 
 #include "moc_PropertyConstraintListItem.cpp"
