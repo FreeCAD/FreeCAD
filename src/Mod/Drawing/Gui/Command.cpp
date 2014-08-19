@@ -319,23 +319,22 @@ CmdDrawingOrthoViews::CmdDrawingOrthoViews()
 
 void CmdDrawingOrthoViews::activated(int iMsg)
 {
-    std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    const std::vector<App::DocumentObject*> shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (shapes.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select a Part object."));
+            QObject::tr("Select exactly one Part object."));
         return;
     }
 
-    std::vector<App::DocumentObject*> pages = getSelection().getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
+    // Check that a page object exists. TaskDlgOrthoViews will then check for a selected page object
+    // and use that, otherwise it will use the first page in the document.
+    const std::vector<App::DocumentObject*> pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
     if (pages.empty()) {
-        pages = this->getDocument()->getObjectsOfType(Drawing::FeaturePage::getClassTypeId());
-        if (pages.empty()){
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
-                QObject::tr("Create a page first."));
-            return;
-        }
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No page found"),
+            QObject::tr("Create a page first."));
+        return;
     }
- 
+
     Gui::Control().showDialog(new TaskDlgOrthoViews());
 }
 
