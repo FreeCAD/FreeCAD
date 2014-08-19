@@ -377,6 +377,9 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  */
 #define PYMETHODEDEF(FUNC)	{"" #FUNC "",(PyCFunction) s##FUNC,Py_NEWARGS},
 
+BaseExport extern PyObject* BaseExceptionFreeCADError;
+#define PY_FCERROR (Base::BaseExceptionFreeCADError ? \
+ BaseExceptionFreeCADError : PyExc_RuntimeError)
 
 
 /** Exception handling for python callback functions
@@ -427,7 +430,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
         str += e.what();                                            \
         str += ")";                                                 \
         e.ReportException();                                        \
-        Py_Error(PyExc_Exception,str.c_str());                      \
+        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
@@ -436,7 +439,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
         str += e.what();                                            \
         str += ")";                                                 \
         Base::Console().Error(str.c_str());                         \
-        Py_Error(PyExc_Exception,str.c_str());                      \
+        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
     }                                                               \
     catch(const Py::Exception&)                                     \
     {                                                               \
@@ -444,11 +447,11 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
     }                                                               \
     catch(const char *e)                                            \
     {                                                               \
-        Py_Error(PyExc_Exception,e);                                \
+        Py_Error(Base::BaseExceptionFreeCADError,e);                \
     }                                                               \
     catch(...)                                                      \
     {                                                               \
-        Py_Error(PyExc_Exception,"Unknown C++ exception");          \
+        Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
     }
 
 #else
@@ -460,7 +463,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
         str += e.what();                                            \
         str += ")";                                                 \
         e.ReportException();                                        \
-        Py_Error(PyExc_Exception,str.c_str());                      \
+        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
@@ -469,7 +472,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
         str += e.what();                                            \
         str += ")";                                                 \
         Base::Console().Error(str.c_str());                         \
-        Py_Error(PyExc_Exception,str.c_str());                      \
+        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
     }                                                               \
     catch(const Py::Exception&)                                     \
     {                                                               \
@@ -477,7 +480,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
     }                                                               \
     catch(const char *e)                                            \
     {                                                               \
-        Py_Error(PyExc_Exception,e);                                \
+        Py_Error(Base::BaseExceptionFreeCADError,e);                \
     }
 
 #endif  // DONT_CATCH_CXX_EXCEPTIONS

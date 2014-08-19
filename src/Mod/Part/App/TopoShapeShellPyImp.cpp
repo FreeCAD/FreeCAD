@@ -37,6 +37,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "OCCError.h"
 #include "TopoShape.h"
 #include "TopoShapeCompoundPy.h"
 #include "TopoShapeCompSolidPy.h"
@@ -108,7 +109,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return -1;
     }
 
@@ -142,7 +143,7 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -192,7 +193,7 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }

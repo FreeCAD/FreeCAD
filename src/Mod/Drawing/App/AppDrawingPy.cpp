@@ -32,6 +32,7 @@
 #include <Base/VectorPy.h>
 #include <boost/regex.hpp>
 
+#include <Mod/Part/App/OCCError.h>
 
 using namespace Drawing;
 using namespace Part;
@@ -62,7 +63,7 @@ project(PyObject *self, PyObject *args)
 
         return Py::new_reference_to(list);
 
-    } PY_CATCH;
+    } PY_CATCH_OCC;
 
 }
 
@@ -97,7 +98,7 @@ projectEx(PyObject *self, PyObject *args)
 
         return Py::new_reference_to(list);
 
-    } PY_CATCH;
+    } PY_CATCH_OCC;
 }
 
 static PyObject * 
@@ -127,7 +128,7 @@ projectToSVG(PyObject *self, PyObject *args)
         Py::String result(Alg.getSVG(hidden?ProjectionAlgos::WithHidden:ProjectionAlgos::Plain, scale, tol));
         return Py::new_reference_to(result);
 
-    } PY_CATCH;
+    } PY_CATCH_OCC;
 }
 
 static PyObject * 
@@ -157,7 +158,7 @@ projectToDXF(PyObject *self, PyObject *args)
         Py::String result(Alg.getDXF(hidden?ProjectionAlgos::WithHidden:ProjectionAlgos::Plain, scale, tol));
         return Py::new_reference_to(result);
 
-    } PY_CATCH;
+    } PY_CATCH_OCC;
 }
 
 static PyObject * 
@@ -195,7 +196,7 @@ removeSvgTags(PyObject *self, PyObject *args)
         svg = boost::regex_replace(svg, e7, linebreak);
         Py::String result(svg);
         return Py::new_reference_to(result);
-    } PY_CATCH;
+    } PY_CATCH_OCC;
 }
 
 

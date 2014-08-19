@@ -127,7 +127,7 @@ PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_addProperty (PyObject *s
         str += e.what();
         str += ")";
         e.ReportException();
-        PyErr_SetString(PyExc_Exception,str.c_str());
+        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
         return NULL;
     }
     catch(const Py::Exception&) {
@@ -163,7 +163,7 @@ PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_removeProperty (PyObject
         str += e.what();
         str += ")";
         e.ReportException();
-        PyErr_SetString(PyExc_Exception,str.c_str());
+        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
         return NULL;
     }
     catch(const Py::Exception&) {
@@ -199,7 +199,7 @@ PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_supportedProperties (PyO
         str += e.what();
         str += ")";
         e.ReportException();
-        PyErr_SetString(PyExc_Exception,str.c_str());
+        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
         return NULL;
     }
     catch(const Py::Exception&) {
@@ -248,7 +248,7 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
         str += e.what();
         str += ")";
         e.ReportException();
-        PyErr_SetString(PyExc_Exception,str.c_str());
+        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
         return NULL;
     }
     catch(const Py::Exception&) {
@@ -288,7 +288,7 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
         str += e.what();
         str += ")";
         e.ReportException();
-        PyErr_SetString(PyExc_Exception,str.c_str());
+        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
         return -1;
     }
     catch(const Py::Exception&) {

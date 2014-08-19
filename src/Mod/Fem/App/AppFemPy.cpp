@@ -85,7 +85,7 @@ static PyObject * read(PyObject *self, PyObject *args)
             return new FemMeshPy(mesh.release());
         }
         catch(...) {
-            PyErr_SetString(PyExc_Exception, "Loading of mesh was aborted");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Loading of mesh was aborted");
             return NULL;
         }
     } PY_CATCH;

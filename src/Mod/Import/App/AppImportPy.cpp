@@ -91,7 +91,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
                 if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
-                    PyErr_SetString(PyExc_Exception, "cannot read STEP file");
+                    PyErr_SetString(Base::BaseExceptionFreeCADError, "cannot read STEP file");
                     return 0;
                 }
 
@@ -120,7 +120,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
                 if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
-                    PyErr_SetString(PyExc_Exception, "cannot read IGES file");
+                    PyErr_SetString(Base::BaseExceptionFreeCADError, "cannot read IGES file");
                     return 0;
                 }
 
@@ -141,7 +141,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
             }
         }
         else {
-            PyErr_SetString(PyExc_Exception, "no supported file format");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "no supported file format");
             return 0;
         }
 
@@ -157,7 +157,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
     PY_CATCH
@@ -252,7 +252,7 @@ static PyObject * exporter(PyObject *self, PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
     PY_CATCH

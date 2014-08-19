@@ -127,7 +127,7 @@ wireFromSegment(PyObject *self, PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
         return 0;
     }
 
@@ -248,11 +248,11 @@ meshFromShape(PyObject *self, PyObject *args, PyObject* kwds)
         }
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception,"Wrong arguments");
+    PyErr_SetString(Base::BaseExceptionFreeCADError,"Wrong arguments");
     return 0;
 }
 

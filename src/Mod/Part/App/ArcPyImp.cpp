@@ -36,6 +36,7 @@
 #include "ArcPy.cpp"
 #include "CirclePy.h"
 #include "EllipsePy.h"
+#include "OCCError.h"
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -68,7 +69,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 (static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle());
             GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
-                PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(arc.Status()));
+                PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
             }
 
@@ -77,11 +78,11 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
         catch (...) {
-            PyErr_SetString(PyExc_Exception, "creation of arc failed");
+            PyErr_SetString(PartExceptionOCCError, "creation of arc failed");
             return -1;
         }
     }
@@ -99,7 +100,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                                gp_Pnt(v2.x,v2.y,v2.z),
                                gp_Pnt(v3.x,v3.y,v3.z));
         if (!arc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(arc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
             return -1;
         }
 
@@ -114,7 +115,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 (static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle());
             GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
-                PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(arc.Status()));
+                PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
             }
 
@@ -123,11 +124,11 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
         catch (...) {
-            PyErr_SetString(PyExc_Exception, "creation of arc failed");
+            PyErr_SetString(PartExceptionOCCError, "creation of arc failed");
             return -1;
         }
     }

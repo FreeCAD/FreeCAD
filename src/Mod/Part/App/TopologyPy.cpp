@@ -460,7 +460,7 @@ PyObject *TopoShapePyOld::importIGES(PyObject *args)
     // checking for the file
     Base::FileInfo File(filename);
     if(!File.isReadable()) {
-      PyErr_SetString(PyExc_Exception,"File to read does not exist or is not readable");
+      PyErr_SetString(PartExceptionOCCError,"File to read does not exist or is not readable");
       return NULL;
     }
 
@@ -468,7 +468,7 @@ PyObject *TopoShapePyOld::importIGES(PyObject *args)
     IGESControl_Reader aReader;
 
     if (aReader.ReadFile((const Standard_CString)filename) != IFSelect_RetDone) {
-      PyErr_SetString(PyExc_Exception,"Reading IGES failed");
+      PyErr_SetString(PartExceptionOCCError,"Reading IGES failed");
       return NULL;
     }
 
@@ -551,7 +551,7 @@ PyObject *TopoShapePyOld::exportIGES(PyObject *args)
 #endif
 
     if (aWriter.Write((const Standard_CString)filename) != IFSelect_RetDone) {
-      PyErr_SetString(PyExc_Exception,"Writing IGES failed");
+      PyErr_SetString(PartExceptionOCCError,"Writing IGES failed");
       return NULL;
     }
 
@@ -570,14 +570,14 @@ PyObject *TopoShapePyOld::importSTEP(PyObject *args)
     // checking for the file
     Base::FileInfo File(filename);
     if(!File.isReadable()) {
-      PyErr_SetString(PyExc_Exception,"File to read does not exist or is not readable");
+      PyErr_SetString(PartExceptionOCCError,"File to read does not exist or is not readable");
       return NULL;
     }
 
     // read step file
     STEPControl_Reader aReader;
     if (aReader.ReadFile((const Standard_CString)filename) != IFSelect_RetDone) {
-      PyErr_SetString(PyExc_Exception,"Reading STEP failed");
+      PyErr_SetString(PartExceptionOCCError,"Reading STEP failed");
       return NULL;
     }
 
@@ -643,12 +643,12 @@ PyObject *TopoShapePyOld::exportSTEP(PyObject *args)
 
     //FIXME: Does not work this way!!!
     if (aWriter.Transfer(_cTopoShape, STEPControl_AsIs)) {
-      PyErr_SetString(PyExc_Exception,"Transferring STEP failed");
+      PyErr_SetString(PartExceptionOCCError,"Transferring STEP failed");
       return NULL;
     }
 
     if (aWriter.Write((const Standard_CString)filename) != IFSelect_RetDone) {
-      PyErr_SetString(PyExc_Exception,"Writing STEP failed");
+      PyErr_SetString(PartExceptionOCCError,"Writing STEP failed");
       return NULL;
     }
         
@@ -667,14 +667,14 @@ PyObject *TopoShapePyOld::importBREP(PyObject *args)
     // checking for the file
     Base::FileInfo File(filename);
     if(!File.isReadable()) {
-      PyErr_SetString(PyExc_Exception,"File to read does not exist or is not readable");
+      PyErr_SetString(PartExceptionOCCError,"File to read does not exist or is not readable");
       return NULL;
     }
     
     // read brep file
     BRep_Builder aBuilder;
     if (!BRepTools::Read(_cTopoShape,(const Standard_CString)filename,aBuilder)) {
-      PyErr_SetString(PyExc_Exception,"Reading BREP failed");
+      PyErr_SetString(PartExceptionOCCError,"Reading BREP failed");
       return NULL;
     }
   } PY_CATCH;
@@ -691,7 +691,7 @@ PyObject *TopoShapePyOld::exportBREP(PyObject *args)
   PY_TRY {
     // read brep file
     if (!BRepTools::Write(_cTopoShape,(const Standard_CString)filename)) {
-      PyErr_SetString(PyExc_Exception,"Writing BREP failed");
+      PyErr_SetString(PartExceptionOCCError,"Writing BREP failed");
       return NULL;
     }
   } PY_CATCH;

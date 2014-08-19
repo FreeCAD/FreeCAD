@@ -150,7 +150,7 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_Exception, "Either set matrix or placement to set transformation");
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "Either set matrix or placement to set transformation");
     return 0;
 }
 

@@ -1048,7 +1048,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args,
     App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
     App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
     if (!docObj || !docObj->getNameInDocument()) {
-        PyErr_SetString(PyExc_Exception, "Cannot check invalid object");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
         return NULL;
     }
 
@@ -1069,7 +1069,7 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
     App::DocumentObjectPy* docObjPy = static_cast<App::DocumentObjectPy*>(object);
     App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
     if (!docObj || !docObj->getNameInDocument()) {
-        PyErr_SetString(PyExc_Exception, "Cannot check invalid object");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot check invalid object");
         return NULL;
     }
 
@@ -1187,7 +1187,7 @@ PyObject *SelectionSingleton::sGetSelectionObject(PyObject * /*self*/, PyObject 
         return 0;
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return 0;
     }
 }

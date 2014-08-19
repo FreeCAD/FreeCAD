@@ -25,6 +25,7 @@
 
 #include <App/Application.h>
 
+#include "OCCError.h"
 #include "TopoShape.h"
 #include "FeaturePartBox.h"
 #include "FeaturePartBoolean.h"
@@ -86,6 +87,12 @@
 #include "PropertyGeometryList.h"
 
 extern struct PyMethodDef Part_methods[];
+using namespace Part;
+PyObject* Part::PartExceptionOCCError;
+PyObject* Part::PartExceptionOCCDomainError;
+PyObject* Part::PartExceptionOCCRangeError;
+PyObject* Part::PartExceptionOCCConstructionError;
+PyObject* Part::PartExceptionOCCDimensionError;
 
 PyDoc_STRVAR(module_part_doc,
 "This is a module working with shapes.");
@@ -112,6 +119,39 @@ void PartExport initPart()
 
     PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
     Base::Console().Log("Loading Part module... done\n");
+    PyObject* OCCError = 0;
+    if (PyObject_IsSubclass(Base::BaseExceptionFreeCADError, 
+                PyExc_RuntimeError)) {
+        OCCError = PyErr_NewException("Part.OCCError", 
+            Base::BaseExceptionFreeCADError, NULL);
+    }
+    else {
+        Base::Console().Error("Can not inherit Part.OCCError form BaseFreeCADError.\n");
+        PyObject* OCCError = PyErr_NewException("Part.OCCError", 
+            PyExc_RuntimeError, NULL);
+    }
+    Py_INCREF(OCCError);
+    PyModule_AddObject(partModule, "OCCError", OCCError);
+    PartExceptionOCCError = OCCError; //set global variable ;(
+    PartExceptionOCCDomainError = PyErr_NewException("Part.OCCDomainError",
+            PartExceptionOCCError, NULL);
+    Py_INCREF(PartExceptionOCCDomainError);
+    PyModule_AddObject(partModule, "OCCDomainError",
+            PartExceptionOCCDomainError);
+    PartExceptionOCCRangeError = PyErr_NewException("Part.OCCRangeError",
+            PartExceptionOCCDomainError, NULL);
+    Py_INCREF(PartExceptionOCCRangeError);
+    PyModule_AddObject(partModule, "OCCRangeError", PartExceptionOCCRangeError);
+    PartExceptionOCCConstructionError = PyErr_NewException(
+            "Part.OCCConstructionError", PartExceptionOCCDomainError, NULL);
+    Py_INCREF(PartExceptionOCCConstructionError);
+    PyModule_AddObject(partModule, "OCCConstructionError",
+            PartExceptionOCCConstructionError);
+    PartExceptionOCCDimensionError = PyErr_NewException(
+            "Part.OCCDimensionError", PartExceptionOCCDomainError, NULL);
+    Py_INCREF(PartExceptionOCCConstructionError);
+    PyModule_AddObject(partModule, "OCCDimensionError",
+            PartExceptionOCCDimensionError);
 
     // Add Types to module
     Base::Interpreter().addType(&Part::TopoShapePy          ::Type,partModule,"Shape");

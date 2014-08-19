@@ -44,6 +44,7 @@
 #include <Base/Placement.h>
 #include <Base/PlacementPy.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "GeometryPy.h"
 #include "GeometryPy.cpp"
@@ -94,7 +95,7 @@ PyObject* GeometryPy::mirror(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_Exception, "either a point (vector) or axis (vector, vector) must be given");
+    PyErr_SetString(PartExceptionOCCError, "either a point (vector) or axis (vector, vector) must be given");
     return 0;
 }
 
@@ -137,7 +138,7 @@ PyObject* GeometryPy::scale(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_Exception, "either vector or tuple and float expected");
+    PyErr_SetString(PartExceptionOCCError, "either vector or tuple and float expected");
     return 0;
 }
 
@@ -175,7 +176,7 @@ PyObject* GeometryPy::translate(PyObject *args)
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_Exception, "either vector or tuple expected");
+    PyErr_SetString(PartExceptionOCCError, "either vector or tuple expected");
     return 0;
 }
 

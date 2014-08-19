@@ -49,6 +49,7 @@
 
 #include "TopoShape.h"
 #include "Tools.h"
+#include "OCCError.h"
 
 // inclusion of the generated files (generated out of TopoShapeSolidPy.xml)
 #include "TopoShapeShellPy.h"
@@ -98,7 +99,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         getTopoShapePtr()->_Shape = solid;
     }
     catch (Standard_Failure) {
-        PyErr_SetString(PyExc_Exception, "creation of solid failed");
+        PyErr_SetString(PartExceptionOCCError, "creation of solid failed");
         return -1;
     }
 
@@ -212,7 +213,7 @@ PyObject* TopoShapeSolidPy::getMomentOfInertia(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -235,7 +236,7 @@ PyObject* TopoShapeSolidPy::getRadiusOfGyration(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -295,7 +296,7 @@ PyObject* TopoShapeSolidPy::offsetFaces(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }

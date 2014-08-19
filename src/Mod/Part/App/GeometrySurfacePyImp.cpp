@@ -39,6 +39,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "GeometrySurfacePy.h"
 #include "GeometrySurfacePy.cpp"
@@ -91,11 +92,11 @@ PyObject* GeometrySurfacePy::toShape(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a surface");
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
     return 0;
 }
 
@@ -114,11 +115,11 @@ PyObject* GeometrySurfacePy::value(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a surface");
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
     return 0;
 }
 
@@ -148,11 +149,11 @@ PyObject* GeometrySurfacePy::tangent(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a surface");
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
     return 0;
 }
 
@@ -178,11 +179,11 @@ PyObject* GeometrySurfacePy::parameter(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a surface");
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a surface");
     return 0;
 }
 
@@ -288,7 +289,7 @@ PyObject* GeometrySurfacePy::UPeriod(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -306,7 +307,7 @@ PyObject* GeometrySurfacePy::VPeriod(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -400,7 +401,7 @@ PyObject* GeometrySurfacePy::toBSpline(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
     }
 
     return 0;

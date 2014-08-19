@@ -36,6 +36,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "CirclePy.h"
 #include "EllipsePy.h"
@@ -72,7 +73,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
             (pcCylinder->getGeomCylinderPtr()->handle());
         GC_MakeCylindricalSurface mc(cylinder->Cylinder(), dist);
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -108,7 +109,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
                                      gp_Pnt(v2.x,v2.y,v2.z),
                                      gp_Pnt(v3.x,v3.y,v3.z));
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -127,7 +128,7 @@ int CylinderPy::PyInit(PyObject* args, PyObject* kwds)
             (pcCircle->getGeomCirclePtr()->handle());
         GC_MakeCylindricalSurface mc(circ->Circ());
         if (!mc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(mc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
@@ -181,7 +182,7 @@ PyObject* CylinderPy::uIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -208,7 +209,7 @@ PyObject* CylinderPy::vIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }

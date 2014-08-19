@@ -196,7 +196,7 @@ PyObject*  BoundBoxPy::getIntersectionPoint(PyObject *args)
             return new VectorPy(point);
         }
         else {
-            PyErr_SetString(PyExc_Exception, "No intersection");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "No intersection");
             return 0;
         }
     }

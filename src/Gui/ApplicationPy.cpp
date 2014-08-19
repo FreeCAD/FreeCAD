@@ -380,7 +380,7 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
                 Gui::Document* gui_doc = Application::Instance->getDocument(doc);
                 std::list<MDIView*> view3d = gui_doc->getMDIViewsOfType(View3DInventor::getClassTypeId());
                 if (view3d.empty()) {
-                    PyErr_SetString(PyExc_Exception, "Cannot export to SVG because document doesn't have a 3d view");
+                    PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot export to SVG because document doesn't have a 3d view");
                     return 0;
                 }
                 else {
@@ -535,7 +535,7 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
         Instance->activateWorkbench(psKey);
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return 0;
     }
     catch (const XERCES_CPP_NAMESPACE_QUALIFIER TranscodingException& e) {
@@ -551,7 +551,7 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
         return 0;
     }
     catch (...) {
-        PyErr_SetString(PyExc_Exception, "Unknown C++ exception raised in activateWorkbench");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Unknown C++ exception raised in activateWorkbench");
         return 0;
     }
 
@@ -763,7 +763,7 @@ PyObject* Application::sAddIcon(PyObject * /*self*/, PyObject *args,PyObject * /
     }
 
     if (icon.isNull()) {
-        PyErr_SetString(PyExc_Exception, "Invalid icon added to application");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Invalid icon added to application");
         return NULL;
     }
 
@@ -813,11 +813,11 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
 		Application::Instance->commandManager().addCommand(new PythonCommand(pName,pcCmdObj,pSource));
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return 0;
     }
     catch (...) {
-        PyErr_SetString(PyExc_Exception, "Unknown C++ exception raised in Application::sAddCommand()");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Unknown C++ exception raised in Application::sAddCommand()");
         return 0;
     }
 #endif

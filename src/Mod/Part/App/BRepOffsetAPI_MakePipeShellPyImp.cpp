@@ -37,6 +37,7 @@
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.cpp"
 #include "Tools.h"
+#include "OCCError.h"
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
@@ -53,7 +54,7 @@ PyObject *BRepOffsetAPI_MakePipeShellPy::PyMake(struct _typeobject *, PyObject *
         return new BRepOffsetAPI_MakePipeShellPy(new BRepOffsetAPI_MakePipeShell(TopoDS::Wire(wire)));
     }
 
-    PyErr_SetString(PyExc_Exception, "A valid wire is needed as argument");
+    PyErr_SetString(PartExceptionOCCError, "A valid wire is needed as argument");
     return 0;
 }
 

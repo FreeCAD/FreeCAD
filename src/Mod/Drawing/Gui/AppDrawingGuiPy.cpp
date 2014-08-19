@@ -68,7 +68,7 @@ open(PyObject *self, PyObject *args)
             Gui::getMainWindow()->addWindow(view);
         }
         else {
-            PyErr_SetString(PyExc_Exception, "unknown filetype");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "unknown filetype");
             return NULL;
         }
     } PY_CATCH;
@@ -98,7 +98,7 @@ importer(PyObject *self, PyObject *args)
             view->resize( 400, 300 );
             Gui::getMainWindow()->addWindow(view);
         } else {
-            PyErr_SetString(PyExc_Exception, "unknown filetype");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "unknown filetype");
             return NULL;
         }
     } PY_CATCH;
@@ -153,7 +153,7 @@ exporter(PyObject *self, PyObject *args)
                                 std::string viewName = view->Label.getValue();
                                 App::DocumentObject* link = view->Source.getValue();
                                 if (!link) {
-                                    PyErr_SetString(PyExc_Exception, "No object linked");
+                                    PyErr_SetString(Base::BaseExceptionFreeCADError, "No object linked");
                                     return 0;
                                 }
                                 if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {

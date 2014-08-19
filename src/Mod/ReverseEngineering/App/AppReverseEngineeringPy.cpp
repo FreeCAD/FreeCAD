@@ -74,7 +74,7 @@ static PyObject * approxSurface(PyObject *self, PyObject *args)
             return new Part::BSplineSurfacePy(new Part::GeomBSplineSurface(hSurf));
         }
 
-        PyErr_SetString(PyExc_Exception, "Computation of B-Spline surface failed");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Computation of B-Spline surface failed");
         return 0;
     } PY_CATCH;
 }

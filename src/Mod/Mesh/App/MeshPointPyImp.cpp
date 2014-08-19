@@ -77,7 +77,7 @@ PyObject*  MeshPointPy::unbound(PyObject *args)
 PyObject*  MeshPointPy::move(PyObject *args)
 {
     if (!getMeshPointPtr()->isBound())
-        PyErr_SetString(PyExc_Exception, "This object is not bounded to a mesh, so no topological operation is possible!");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "This object is not bounded to a mesh, so no topological operation is possible!");
 
     double  x=0.0,y=0.0,z=0.0;
     PyObject *object;
@@ -111,7 +111,7 @@ Py::Boolean MeshPointPy::getBound(void) const
 Py::Object MeshPointPy::getNormal(void) const
 {
     if (!getMeshPointPtr()->isBound())
-        PyErr_SetString(PyExc_Exception, "This object is not bounded to a mesh, so no topological operation is possible!");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "This object is not bounded to a mesh, so no topological operation is possible!");
 
     Base::Vector3d* v = new Base::Vector3d(getMeshPointPtr()->Mesh->getPointNormal(getMeshPointPtr()->Index));
     Base::VectorPy* normal = new Base::VectorPy(v);

@@ -150,6 +150,7 @@ Base::ConsoleObserverStd  *Application::_pConsoleObserverStd =0;
 Base::ConsoleObserverFile *Application::_pConsoleObserverFile =0;
 
 AppExport std::map<std::string,std::string> Application::mConfig;
+BaseExport extern PyObject* Base::BaseExceptionFreeCADError;
 
 
 //**************************************************************************
@@ -223,6 +224,11 @@ Application::Application(ParameterManager * /*pcSysParamMngr*/,
     PyObject* pBaseModule = Py_InitModule3("__FreeCADBase__", NULL,
         "The Base module contains the classes for the geometric basics\n"
         "like vector, matrix, bounding box, placement, rotation, axis, ...");
+    Base::BaseExceptionFreeCADError = PyErr_NewException(
+            "Base.FreeCADError", PyExc_RuntimeError, NULL);
+    Py_INCREF(Base::BaseExceptionFreeCADError);
+    PyModule_AddObject(pBaseModule, "FreeCADError",
+            Base::BaseExceptionFreeCADError);
     Base::Interpreter().addType(&Base::VectorPy     ::Type,pBaseModule,"Vector");
     Base::Interpreter().addType(&Base::MatrixPy     ::Type,pBaseModule,"Matrix");
     Base::Interpreter().addType(&Base::BoundBoxPy   ::Type,pBaseModule,"BoundBox");

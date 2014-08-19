@@ -29,6 +29,7 @@
 #include <Base/VectorPy.h>
 #include <Base/Vector3D.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "OffsetSurfacePy.h"
 #include "OffsetSurfacePy.cpp"
@@ -72,7 +73,7 @@ int OffsetSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return -1;
     }
 }

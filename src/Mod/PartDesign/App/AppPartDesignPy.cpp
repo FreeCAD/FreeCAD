@@ -70,7 +70,7 @@ static PyObject * makeFilletArc(PyObject *self, PyObject *args)
     double cc = 2.0 * r2 * (b * v - r1);
     double d = uv * uv - uu * cc;
     if (d < 0) {
-        PyErr_SetString(PyExc_Exception, "Unable to caluclate intersection points");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "Unable to caluclate intersection points");
         return NULL;
     }
 
