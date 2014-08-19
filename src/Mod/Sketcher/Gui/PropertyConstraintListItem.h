@@ -40,7 +40,7 @@
 
 namespace SketcherGui {
 
-class GuiExport PropertyConstraintListItem: public Gui::PropertyEditor::PropertyItem
+class PropertyConstraintListItem: public Gui::PropertyEditor::PropertyItem
 {
     Q_OBJECT
     TYPESYSTEM_HEADER();
@@ -48,20 +48,18 @@ class GuiExport PropertyConstraintListItem: public Gui::PropertyEditor::Property
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
     virtual QVariant editorData(QWidget *editor) const;
-    
+
 protected:
     virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
     virtual bool event (QEvent* ev);
-    
+
     virtual void initialize();
-    
-    
+
 protected:
     PropertyConstraintListItem();
     bool blockEvent;
-
 };
 
 } //namespace SketcherGui
