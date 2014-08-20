@@ -57,13 +57,9 @@ class ViewProviderTree:
 
     def __setstate__(self,state):
         if state is not None:
-            try:
-                import FreeCAD
-                doc = FreeCAD.ActiveDocument #crap
-                self.Object = doc.getObject(state['ObjectName'])
-            except:
-                raise
-#        return None
+            import FreeCAD
+            doc = FreeCAD.ActiveDocument #crap
+            self.Object = doc.getObject(state['ObjectName'])
 
     def claimChildren(self):
         objs = []
@@ -448,7 +444,7 @@ class Twist:
                         solid.reverse()
                     assert(solid.Volume >= 0)
                     solids.append(solid)
-                except:
+                except Part.OCCError:
                     solids.append(Part.Compound(faces))
                 fp.Shape=Part.Compound(solids)
 

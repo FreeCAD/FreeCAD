@@ -92,7 +92,7 @@ def insert(filename,docname):
     groupname = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc=FreeCAD.getDocument(docname)
-    except:
+    except FreeCAD.Base.FreeCADError:
         doc=FreeCAD.newDocument(docname)
     #importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
     if filename.lower().endswith('.scad'):
@@ -599,10 +599,7 @@ def process_linear_extrude(obj,h) :
     mylinear.Base = newobj #obj
     mylinear.Dir = (0,0,h)
     mylinear.Placement=FreeCAD.Placement()
-    try:
-        mylinear.Solid = True
-    except:
-        pass
+    mylinear.Solid = True
     if gui:
         newobj.ViewObject.hide()
     return(mylinear)

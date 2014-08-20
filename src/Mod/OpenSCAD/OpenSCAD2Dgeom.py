@@ -59,6 +59,7 @@ class Overlappingfaces():
         return bigface.common(smallface).Area > 0
 
     def builddepdict(self):
+        import Part
         import itertools
         #isinsidelist = []
         self.isinsidedict = {}
@@ -67,7 +68,7 @@ class Overlappingfaces():
             try:
                 overlap = Overlappingfaces.dofacesoverlapboolean(\
                         self.sortedfaces[bigfacei],self.sortedfaces[smallfacei])
-            except:
+            except Part.OCCError:
                 overlap = Overlappingfaces.dofacesoverlapallverts(\
                         self.sortedfaces[bigfacei],self.sortedfaces[smallfacei])
             if overlap:
@@ -324,7 +325,7 @@ def edgestowires(edgelist,eps=0.001):
                 #if not close or wire.isClosed or outerd > 0.0001:
                 wirelist.append(Part.Wire(path))
                 done = True
-            except:
+            except Part.OCCError:
                 pass
             if not done:
                 comp=Part.Compound(path)
@@ -373,7 +374,7 @@ def edgestofaces(edges,algo=3,eps=0.001):
                 edges2.append(Part.Line(p1,p0).toShape())
                 w = Part.Wire(edges2)
                 #w = Part.Wire(fcgeo.sortEdges(edges2))
-            except:
+            except OCCError:
                 comp=Part.Compound(edges2)
                 w = comp.connectEdgesToWires(False,eps).Wires[0]
         facel.append(Part.Face(w))

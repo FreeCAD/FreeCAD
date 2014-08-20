@@ -35,7 +35,13 @@ def translate(context,text):
     return QtGui.QApplication.translate(context, text, None, \
         QtGui.QApplication.UnicodeUTF8)
 
-class OpenSCADError(Exception):
+try:
+    import FreeCAD
+    BaseError = FreeCAD.Base.FreeCADError
+except ImportError,AttributeError:
+    BaseError = RuntimeError
+
+class OpenSCADError(BaseError):
     def __init__(self,value):
         self.value= value
     #def __repr__(self):

@@ -95,9 +95,10 @@ def saveShape(csg,filename,shape,name,hasplacement = True,cleanshape=False):
     breppath=os.path.join(spath,'%s.brep'%uname)
     csg.write("restore %s.brep %s\n" % (uname,name))
     if cleanshape:
+        import Part
         try:
             shape = shape.cleaned()
-        except:
+        except Part.OCCError:
             shape = shape.copy()
     if hasplacement is None:  # saved with placement
         hasplacement = False # saved with placement
