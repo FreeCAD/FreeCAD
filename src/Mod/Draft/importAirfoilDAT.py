@@ -57,7 +57,7 @@ def insert(filename,docname):
 	groupname = os.path.splitext(os.path.basename(filename))[0]
 	try:
 		doc=FreeCAD.getDocument(docname)
-	except:
+	except NameError:
 		doc=FreeCAD.newDocument(docname)
 	importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
 	importgroup.Label = decodeName(groupname)

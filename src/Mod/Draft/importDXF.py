@@ -51,7 +51,7 @@ if gui:
     import FreeCADGui
 try: 
     draftui = FreeCADGui.draftToolBar
-except: 
+except AttributeError: 
     draftui = None
     
 # check dxfLibrary version
@@ -59,7 +59,7 @@ try:
     import dxfLibrary
     import dxfColorMap
     import dxfReader
-except:
+except ImportError:
     libsok = False
     FreeCAD.Console.PrintWarning("DXF libraries not found. Downloading...\n")
 else:
@@ -81,7 +81,7 @@ if not libsok:
     sys.path.append(FreeCAD.ConfigGet("UserAppData"))
     try:
         import dxfColorMap, dxfLibrary, dxfReader
-    except:
+    except ImportError:
         dxfReader = None
         dxfLibrary = None
 
@@ -122,10 +122,10 @@ def deformat(text):
         else:
             try:
                 ns += ss.decode("utf8")
-            except:
+            except UnicodeError:
                 try:
                     ns += ss.decode("latin1")
-                except:
+                except UnicodeError:
                     print "unable to decode text: ",text
     t = ns
     # replace degrees, diameters chars
@@ -318,7 +318,7 @@ def drawLine(line,forceShape=False):
                     return Draft.makeWire([v1,v2])
                 else:
                     return Part.Line(v1,v2).toShape()
-            except:
+            except Part.OCCError:
                 warn(line)
     return None
 
@@ -340,13 +340,13 @@ def drawPolyline(polyline,forceShape=False,num=None):
                     cv = calcBulge(v1,polyline.points[p].bulge,v2)
                     if DraftVecUtils.isColinear([v1,cv,v2]):
                         try: edges.append(Part.Line(v1,v2).toShape())
-                        except: warn(polyline,num)
+                        except Part.OCCError: warn(polyline,num)
                     else:
                         try: edges.append(Part.Arc(v1,cv,v2).toShape())
-                        except: warn(polyline,num)
+                        except Part.OCCError: warn(polyline,num)
                 else:
                     try: edges.append(Part.Line(v1,v2).toShape())
-                    except: warn(polyline,num)
+                    except Part.OCCError: warn(polyline,num)
         verts.append(v2)
         if polyline.closed:
             p1 = polyline.points[len(polyline.points)-1]
@@ -358,12 +358,12 @@ def drawPolyline(polyline,forceShape=False,num=None):
                 if DraftVecUtils.isColinear([v1,cv,v2]):
                     try:
                         edges.append(Part.Line(v1,v2).toShape())
-                    except:
+                    except Part.OCCError:
                         warn(polyline,num)
                 else:
                     try:
                         edges.append(Part.Arc(v1,cv,v2).toShape())
-                    except:
+                    except Part.OCCError:
                         warn(polyline,num)
         if edges:
             try:
@@ -391,7 +391,7 @@ def drawPolyline(polyline,forceShape=False,num=None):
                         return(Part.Face(w))
                     else:
                         return Part.Wire(edges)                          
-            except:
+            except Part.OCCError:
                 warn(polyline,num)
     return None
 
@@ -410,7 +410,7 @@ def drawArc(arc,forceShape=False):
             return Draft.makeCircle(arc.radius,pl,False,firstangle,lastangle)
         else:
             return circle.toShape(math.radians(firstangle),math.radians(lastangle))
-    except:
+    except Part.OCCError:
         warn(arc)
     return None
 
@@ -427,7 +427,7 @@ def drawCircle(circle,forceShape=False):
             return Draft.makeCircle(circle.radius,pl)
         else:
             return curve.toShape()
-    except:
+    except Part.OCCError:
         warn(circle)
     return None
     
@@ -458,7 +458,7 @@ def drawEllipse(ellipse):
             shape = el.toShape(start,end)
             shape.Placement = pl
             return shape
-    except:
+    except Part.OCCError:
         warn(arc)
     return None
 
@@ -472,7 +472,7 @@ def drawFace(face):
     try:
         pol = Part.makePolygon(pl)
         return Part.Face(pol)
-    except:
+    except Part.OCCError:
         warn(face)
     return None
 
@@ -510,7 +510,7 @@ def drawMesh(mesh):
                 md.append([p1,p3,p4])                                
     try:
         return Mesh.Mesh(md)
-    except:
+    except FreeCAD.Base.FreeCADError:
         warn(mesh)
     return None     
 
@@ -536,12 +536,12 @@ def drawSolid(solid):
     if p4 and (p4 != p3) and (p4 != p2) and (p4 != p1):
         try:
             return Part.Face(Part.makePolygon([p1,p2,p4,p3,p1]))
-        except:
+        except Part.OCCError:
             warn(solid)
     else:
         try:
             return Part.Face(Part.makePolygon([p1,p2,p3,p1]))
-        except:
+        except Part.OCCError:
             warn(solid)
     return None
 
@@ -586,7 +586,7 @@ def drawSpline(spline,forceShape=False):
                 return Part.Face(sh)
             else:
                 return sh                          
-    except:
+    except Part.OCCError:
         warn(spline)
     return None
     
@@ -636,7 +636,7 @@ def drawBlock(blockref,num=None,createObject=False):
                 print "adding block text",text.value, " from ",blockref
                 addText(text)
     try: shape = Part.makeCompound(shapes)
-    except: warn(blockref)
+    except Part.OCCError: warn(blockref)
     if shape:
         blockshapes[blockref.name]=shape
         if createObject:
@@ -693,12 +693,12 @@ def drawLayerBlock(objlist):
     if (dxfCreateDraft or dxfCreateSketch):
         try:
             obj = Draft.makeBlock(objlist)
-        except:
+        except Part.OCCError:
             pass
     else:
         try:
             obj = Part.makeCompound(objlist)
-        except:
+        except Part.OCCError:
             pass
     return obj
 
@@ -1104,7 +1104,7 @@ def processdxf(document,filename,getShapes=False):
                     d = rawValue(dim,50)
                     if d: angle = float(d)
                     else: angle = 0
-                except:
+                except ValueError:
                     warn(dim)
                 else:
                     lay=locateLayer(layer)
@@ -1292,7 +1292,7 @@ def insert(filename,docname):
         groupname = os.path.splitext(os.path.basename(filename))[0]
         try:
             doc=FreeCAD.getDocument(docname)
-        except:
+        except NameError:
             doc=FreeCAD.newDocument(docname)
         FreeCAD.setActiveDocument(docname)
         importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
@@ -1314,7 +1314,7 @@ def projectShape(shape,direction):
     edges = []
     try:
         groups = Drawing.projectEx(shape,direction)
-    except:
+    except OCCError:
         print "unable to project shape on direction ",direction
         return shape
     else:

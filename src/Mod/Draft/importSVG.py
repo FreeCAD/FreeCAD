@@ -42,10 +42,10 @@ import xml.sax, string, FreeCAD, os, math, re, Draft, DraftVecUtils
 from FreeCAD import Vector
 
 try: import FreeCADGui
-except: gui = False
+except ImportError: gui = False
 else: gui = True
 try: draftui = FreeCADGui.draftToolBar
-except: draftui = None
+except AttributeError: draftui = None
 
 if open.__module__ == '__builtin__':
   pythonopen = open
@@ -280,14 +280,13 @@ def getsize(length,mode='discard',base=1):
 def makewire(path,checkclosed=False,donttry=False):
         '''try to make a wire out of the list of edges. If the 'Wire' functions fails or the wire is not
         closed if required the 'connectEdgesToWires' function is used'''
-        #ToDo Do not catch all exceptions
         if not donttry:
                 try:
                         import DraftGeomUtils
                         sh = Part.Wire(DraftGeomUtils.sortEdges(path))
                         #sh = Part.Wire(path)
                         isok = (not checkclosed) or sh.isClosed()
-                except:# BRep_API:command not done
+                except Part.OCCError:# BRep_API:command not done
                         isok = False
         if donttry or not isok:
                         #Code from wmayer forum p15549 to fix the tolerance problem
@@ -752,7 +751,7 @@ class svgHandler(xml.sax.ContentHandler):
                                         if not DraftVecUtils.equals(lastvec,firstvec):
                                             try:
                                                 seg = Part.Line(lastvec,firstvec).toShape()
-                                            except:
+                                            except Part.OCCError:
                                                 pass
                                             else:
                                                 path.append(seg)
@@ -1108,7 +1107,7 @@ def open(filename):
 def insert(filename,docname):
         try:
                 doc=FreeCAD.getDocument(docname)
-        except:
+        except NameError:
                 doc=FreeCAD.newDocument(docname)
         FreeCAD.ActiveDocument = doc
         parser = xml.sax.make_parser()

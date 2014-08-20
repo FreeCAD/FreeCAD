@@ -229,7 +229,7 @@ def open(filename):
 def insert(filename,docname):
     try:
         doc=FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc=FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     parse(filename,doc)

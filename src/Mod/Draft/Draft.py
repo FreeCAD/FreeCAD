@@ -996,10 +996,10 @@ def makeCopy(obj,force=None,reparent=False):
             if p in newobj.PropertiesList:
                 try:
                     setattr(newobj,p,obj.getPropertyByName(p))
-                except:
+                except AttributeError:
                     try:
                         setattr(newobj,p,obj.getPropertyByName(p).Value)
-                    except:
+                    except AttributeError:
                         pass
     if reparent:
         parents = obj.InList
@@ -1536,7 +1536,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
                 if p:
                     newobj = makeWire(p)
                     newobj.Closed = obj.Shape.isClosed()
-            except:
+            except Part.OCCError:
                 pass
             if not(newobj) and newwire:
                 newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
@@ -2049,7 +2049,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             if gui:
                 try:
                     m = obj.ViewObject.DisplayMode
-                except:
+                except AttributeError:
                     m = None
                 if (m != "Wireframe"):
                     if fillstyle == "shape color":
@@ -2461,7 +2461,7 @@ def upgrade(objects,delete=False,force=None):
         sol = None
         try:
             sol = Part.makeSolid(obj.Shape)
-        except:
+        except Part.OCCError:
             return None
         else:
             if sol:
@@ -2582,7 +2582,7 @@ def upgrade(objects,delete=False,force=None):
             for w in o.Shape.Wires:
                 try:
                     f = Part.Face(w)
-                except:
+                except Part.OCCError:
                     pass
                 else:
                     newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Face")
@@ -2603,7 +2603,7 @@ def upgrade(objects,delete=False,force=None):
             nedges = DraftGeomUtils.sortEdges(edges[:])
             # for e in nedges: print "debug: ",e.Curve,e.Vertexes[0].Point,e.Vertexes[-1].Point
             w = Part.Wire(nedges)
-        except:
+        except Part.OCCError:
             return None
         else:    
             if len(w.Edges) == len(edges):
@@ -3349,7 +3349,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
             # setting text
             try:
                 m = obj.ViewObject.DisplayMode
-            except:
+            except AttributeError:
                 m = ["2D","3D"][getParam("dimstyle",0)]
             if m== "3D":
                 offset = offset.negative()
@@ -3662,7 +3662,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             # check display mode
             try:
                 m = obj.ViewObject.DisplayMode
-            except:
+            except AttributeError:
                 m = ["2D","3D"][getParam("dimstyle",0)]
     
             # set the arc
@@ -4008,7 +4008,7 @@ class _Wire(_DraftObject):
                             shape = Part.Face(shape)
                     else:
                         shape = Part.Face(shape)
-                except:
+                except Part.OCCError:
                     pass
             else:
                 edges = []
@@ -4020,7 +4020,7 @@ class _Wire(_DraftObject):
                         lp = p
                 try:
                     shape = Part.Wire(edges)
-                except:
+                except Part.OCCError:
                     shape = None
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:
@@ -4248,7 +4248,7 @@ class _BSpline(_DraftObject):
                             shape = Part.Face(shape)
                     else:
                         shape = Part.Face(shape)
-                except:
+                except Part.OCCError:
                     pass
                 obj.Shape = shape
             else:   
@@ -4339,7 +4339,7 @@ class _BezCurve(_DraftObject):
                             w = Part.Face(w)
                     else:
                         w = Part.Face(w)
-                except:
+                except Part.OCCError:
                     pass
             fp.Shape = w
         fp.Placement = plm
@@ -4494,12 +4494,12 @@ class _Shape2DView(_DraftObject):
                             if (obj.ProjectionMode == "Cutfaces") and (sh.ShapeType == "Solid"):
                                 try:
                                     c = Part.Wire(DraftGeomUtils.sortEdges(c.Edges))
-                                except:
+                                except Part.OCCError:
                                     pass
                                 else:
                                     try:
                                         c = Part.Face(c)
-                                    except:
+                                    except Part.OCCError:
                                         pass
                             cuts.append(c)
                         comp = Part.makeCompound(cuts)
@@ -4711,7 +4711,7 @@ class _PathArray(_DraftObject):
             n.normalize()
             b = (t.cross(n)) 
             b.normalize()
-        except:                                                      # no normal defined here
+        except FreeCAD.Base.FreeCADError:                                                      # no normal defined here
             n = nullv
             b = nullv 
             FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Shape not oriented (no normal).\n")
@@ -4909,7 +4909,7 @@ class _ShapeString(_DraftObject):
             if testWire.isClosed:
                 try:
                     testFace = Part.Face(testWire)
-                except:
+                except Part.OCCError:
                     sticky = True
                 else:
                     if not testFace.isValid():
@@ -5031,7 +5031,7 @@ class _Facebinder(_DraftObject):
                 try:
                     fnum = int(f[1][4:])-1
                     faces.append(f[0].Shape.Faces[fnum])
-                except:
+                except IndexError,Part.OCCError:
                     print "Draft: wrong face index"
                     return
         if not faces:
@@ -5042,7 +5042,7 @@ class _Facebinder(_DraftObject):
             for f in faces:
                 sh = sh.fuse(f)
             sh = sh.removeSplitter()
-        except:
+        except Part.OCCError:
             print "Draft: error building facebinder"
             return
         obj.Shape = sh
