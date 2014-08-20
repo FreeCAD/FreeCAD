@@ -127,7 +127,7 @@ ELSE(UNIX)
     ######### Windows ###########
     #MESSAGE("-- Windows system detected")
     IF(MSVC)
-        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB /wd4290 /wd4251 /wd4018 /wd4800 /wd4996 /wd4244 /wd4806 /wd4275)
+        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB /wd4005 /wd4099 /wd4101 /wd4267 /wd4290 /wd4251 /wd4390 /wd4018 /wd4800 /wd4996 /wd4244 /wd4806 /wd4275)
     ELSE(MSVC)
         ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB)
     ENDIF(MSVC)
