@@ -67,6 +67,9 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
     int id = 1;
 
     QList<Base::Quantity> quantities;
+    QList<Base::Quantity> subquantities;
+    bool onlyNamed=true;
+    
     const std::vector< Sketcher::Constraint * > &vals = static_cast<const Sketcher::PropertyConstraintList*>(prop)->getValues();
     for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
         if ((*it)->Type == Sketcher::Distance || // Datum constraint
@@ -93,11 +96,31 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
                 name = QString::fromLatin1("Constraint%1").arg(id);
 
             PropertyConstraintListItem* self = const_cast<PropertyConstraintListItem*>(this);
+            
             self->blockEvent=true;
-            self->setProperty(name.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
+            
+            if((*it)->Name.empty() && !onlyUnnamed){
+                onlyNamed=false;
+                subquantities.append(quant);
+                PropertyConstraintListItem* unnamednode=static_cast<PropertyConstraintListItem*>(self->child(self->childCount()-1));
+                unnamednode->blockEvent=true;
+                unnamednode->setProperty(name.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
+                unnamednode->blockEvent=false;
+            }
+            else{
+                self->setProperty(name.toLatin1(), QVariant::fromValue<Base::Quantity>(quant));
+            }
+            
             self->blockEvent=false;    
         }
     }
+    
+    if(!onlyUnnamed && !onlyNamed){
+        self->blockEvent=true;
+        self->setProperty(tr("Unnamed").toLatin1(), QVariant::fromValue< QList<Base::Quantity> >(subquantities));
+        self->blockEvent=false;
+    }
+    
 
     return QVariant::fromValue< QList<Base::Quantity> >(quantities);
 }
@@ -116,8 +139,15 @@ bool PropertyConstraintListItem::event (QEvent* ev)
             QString propName = QString::fromLatin1(ce->propertyName());
             Base::Quantity quant = prop.value<Base::Quantity>();
 
+            Sketcher::PropertyConstraintList* item;
+            
             int id = 0;
-            Sketcher::PropertyConstraintList* item = static_cast<Sketcher::PropertyConstraintList*>(getFirstProperty());
+            if(this->parent()->getTypeId()==SketcherGui::PropertyConstraintListItem::getClassTypeId()){
+                item = static_cast<Sketcher::PropertyConstraintList*>(this->parent()->getFirstProperty());
+            }
+            else {
+                item = static_cast<Sketcher::PropertyConstraintList*>(getFirstProperty());
+            }
 
             const std::vector< Sketcher::Constraint * > &vals = item->getValues();
             for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
@@ -173,7 +203,10 @@ void PropertyConstraintListItem::initialize()
     const std::vector< Sketcher::Constraint * > &vals = item->getValues();
 
     int id = 1;
+    int iNamed = 0;
 
+    std::vector<PropertyUnitItem *> unnamed;
+    
     for (std::vector< Sketcher::Constraint* >::const_iterator it = vals.begin();it != vals.end(); ++it, ++id) {
         if ((*it)->Type == Sketcher::Distance || // Datum constraint
             (*it)->Type == Sketcher::DistanceX ||
@@ -181,16 +214,49 @@ void PropertyConstraintListItem::initialize()
             (*it)->Type == Sketcher::Radius ||
             (*it)->Type == Sketcher::Angle) {
 
+            PropertyUnitItem* item = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
+
             // Get the name
             QString name = QString::fromStdString((*it)->Name);
-            if (name.isEmpty())
+            if (name.isEmpty()){            
                 name = QString::fromLatin1("Constraint%1").arg(id);
-            PropertyUnitItem* item = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
-            item->setParent(this);
-            item->setPropertyName(name);
-            this->appendChild(item);
+                item->setPropertyName(name);
+                unnamed.push_back(item);
+            }
+            else{
+                iNamed++;
+                item->setParent(this);
+                item->setPropertyName(name);
+                this->appendChild(item);
+            }
+
         }
     }
+    
+    // now deal with the unnamed
+    if(iNamed == 0){
+        onlyUnnamed = true;
+        for (std::vector< PropertyUnitItem* >::const_iterator it = unnamed.begin();it != unnamed.end(); ++it) {
+            (*it)->setParent(this);
+            this->appendChild((*it));
+        }
+    }
+    else {
+        onlyUnnamed = false;
+        
+        if(unnamed.size()!=0) {
+            PropertyConstraintListItem* item = static_cast<PropertyConstraintListItem*>(PropertyConstraintListItem::create()); 
+            item->setParent(this);
+            item->setPropertyName(tr("Unnamed"));
+            this->appendChild(item);
+            
+            for (std::vector< PropertyUnitItem* >::const_iterator it = unnamed.begin();it != unnamed.end(); ++it) {
+                    (*it)->setParent(item);
+                    item->appendChild((*it));
+            }    
+        }
+    }
+    
 }
 
 #include "moc_PropertyConstraintListItem.cpp"

@@ -60,6 +60,7 @@ protected:
 protected:
     PropertyConstraintListItem();
     bool blockEvent;
+    bool onlyUnnamed;
 };
 
 } //namespace SketcherGui
