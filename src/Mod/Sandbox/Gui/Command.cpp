@@ -78,6 +78,7 @@
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Degeneration.h>
 #include "Workbench.h"
+#include "GLGraphicsView.h"
 
 
 DEF_STD_CMD(CmdSandboxDocumentThread);
@@ -1424,6 +1425,31 @@ void CmdMengerSponge::activated(int iMsg)
     feature->purgeTouched();
 }
 
+DEF_STD_CMD_A(CmdTestGraphicsView);
+
+CmdTestGraphicsView::CmdTestGraphicsView()
+  : Command("Std_TestGraphicsView")
+{
+    sGroup      = QT_TR_NOOP("Standard-Test");
+    sMenuText   = QT_TR_NOOP("Create new graphics view");
+    sToolTipText= QT_TR_NOOP("Creates a new  view window for the active document");
+    sStatusTip  = QT_TR_NOOP("Creates a new  view window for the active document");
+}
+
+void CmdTestGraphicsView::activated(int iMsg)
+{
+    Gui::GraphicsView3D* view3D = new Gui::GraphicsView3D(getActiveGuiDocument(), Gui::getMainWindow());
+    view3D->setWindowTitle(QString::fromAscii("Graphics scene"));
+    view3D->setWindowIcon(QApplication::windowIcon());
+    view3D->resize(400, 300);
+    Gui::getMainWindow()->addWindow(view3D);
+}
+
+bool CmdTestGraphicsView::isActive(void)
+{
+    return (getActiveGuiDocument()!=NULL);
+}
+
 
 void CreateSandboxCommands(void)
 {
@@ -1457,4 +1483,5 @@ void CreateSandboxCommands(void)
     rcCmdMgr.addCommand(new CmdSandboxExaminerViewer());
     rcCmdMgr.addCommand(new CmdSandboxFlyViewer());
     rcCmdMgr.addCommand(new CmdMengerSponge());
+    rcCmdMgr.addCommand(new CmdTestGraphicsView());
 }
