@@ -3332,9 +3332,9 @@ class _ViewProviderDimension(_ViewProviderDraft):
             # set text value
             l = self.p3.sub(self.p2).Length
             if hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su).decode("latin1").encode("utf8")
+                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su).encode("utf8")
             else:
-                self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length',su).decode("latin1").encode("utf8")
+                self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length',su).encode("utf8")
             if hasattr(obj.ViewObject,"Override"):
                 if obj.ViewObject.Override:
                     try:
@@ -3624,9 +3624,9 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             if hasattr(obj.ViewObject,"ShowUnit"):
                 su = obj.ViewObject.ShowUnit
             if hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(a,obj.ViewObject.Decimals,'Angle',su).decode("latin1").encode("utf8")
+                self.string = DraftGui.displayExternal(a,obj.ViewObject.Decimals,'Angle',su).encode("utf8")
             else:
-                self.string = DraftGui.displayExternal(a,getParam("dimPrecision",2),'Angle',su).decode("latin1").encode("utf8")
+                self.string = DraftGui.displayExternal(a,getParam("dimPrecision",2),'Angle',su).encode("utf8")
             if obj.ViewObject.Override:
                 try:
                     from pivy import coin
