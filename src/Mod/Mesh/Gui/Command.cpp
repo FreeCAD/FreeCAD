@@ -947,18 +947,12 @@ void CmdMeshTrimByPlane::activated(int iMsg)
     Base::Placement plm = static_cast<App::GeoFeature*>(plane.front())->Placement.getValue();
     Base::Vector3d normal(0,0,1);
     plm.getRotation().multVec(normal, normal);
-    Base::Vector3d view;
-    if (normal == Base::Vector3d(0,0,1)) {
-        view.Set(0,1,0);
-    }
-    else {
-        Base::Vector3d dir(0,0,1);
-        view = normal % dir;
-    }
+    Base::Vector3d up(-1,0,0);
+    plm.getRotation().multVec(up, up);
+    Base::Vector3d view(0,1,0);
+    plm.getRotation().multVec(view, view);
 
     Base::Vector3d base = plm.getPosition();
-    Base::Vector3d up = normal % view;
-
     Base::Rotation rot(Base::Vector3d(0,0,1), view);
     Base::Matrix4D mat;
     rot.getValue(mat);
