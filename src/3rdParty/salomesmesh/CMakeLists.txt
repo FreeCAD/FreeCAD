@@ -22,7 +22,6 @@ include_directories(
     src/DriverDAT
     src/DriverSTL
     src/StdMeshers
-    src/MEFISTO2/f2clib
     inc
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -269,7 +268,7 @@ endif(WIN32)
 ##############
 # MEFISTO2   #
 ##############
-if (MSVC)
+#if (MSVC)
     #IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
     #    # Mefisto2f.lib was built using f2c which created
     #    # all function names with an '_' at the end.
@@ -294,32 +293,33 @@ if (MSVC)
             inc/aptrte.h
         )        
     
-else(MSVC)
-    FILE(GLOB MEFISTO2_source_files
-        src/MEFISTO2/*.cpp
-        src/MEFISTO2/trte.f
-        inc/Rn.h
-        inc/aptrte.h
-    )
-endif(MSVC)
+#else(MSVC)
+#    FILE(GLOB MEFISTO2_source_files
+#        src/MEFISTO2/*.cpp
+#        src/MEFISTO2/trte.f
+#        inc/Rn.h
+#        inc/aptrte.h
+#    )
+#endif(MSVC)
 
 ADD_LIBRARY(MEFISTO2 SHARED ${MEFISTO2_source_files})
 
 SET_BIN_DIR(MEFISTO2 MEFISTO2)
-if(MSVC)
-    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} MEFISTO2f.lib) # in case of Windows link the prebuild Fortran lib
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
-    else(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS -D__WATCOM__")
-    endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
-elseif(MINGW)
-    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
+#if(MSVC)
+    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS}) # in case of Windows link the prebuild Fortran lib
     set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
-else(MSVC)
-    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
-    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "${MEFISTO2_CFLAGS}")
-endif(MSVC)
+#    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+#        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
+#    else(CMAKE_SIZEOF_VOID_P EQUAL 8)
+#        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS -D__WATCOM__")
+#    endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
+#elseif(MINGW)
+#    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
+#    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
+#else(MSVC)
+#    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
+#    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "${MEFISTO2_CFLAGS}")
+#endif(MSVC)
 
 
 ##############
