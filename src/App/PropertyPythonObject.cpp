@@ -89,7 +89,7 @@ std::string PropertyPythonObject::toString() const
         Py::Callable method(pickle.getAttr(std::string("dumps")));
         Py::Object dump;
         if (this->object.hasAttr("__getstate__")) {
-            Py::Tuple args(0);
+			Py::Tuple args;
             Py::Callable state(this->object.getAttr("__getstate__"));
             dump = state.apply(args);
         }

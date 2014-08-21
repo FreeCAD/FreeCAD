@@ -1871,7 +1871,7 @@ int Sketch::setDatum(int constrId, double value)
 int Sketch::getPointId(int geoId, PointPos pos) const
 {
     // do a range check first
-    if (geoId < 0 || geoId >= Geoms.size())
+    if (geoId < 0 || geoId >= (int)Geoms.size())
         return -1;
     switch (pos) {
     case start:
