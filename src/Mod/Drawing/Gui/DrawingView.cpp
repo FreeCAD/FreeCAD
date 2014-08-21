@@ -349,21 +349,11 @@ bool DrawingView::onHasMsg(const char* pMsg) const
 
 void DrawingView::onRelabel(Gui::Document *pDoc)
 {
-    if (!bIsPassive) {
-        // Try to separate document name and object name if there is one
-        QString cap = windowTitle();
-        QRegExp rx(QString::fromLatin1(" : (\\w|\\s){1,}(\\[\\*\\]){0,1}$"));
-        int pos = rx.lastIndexIn(cap);
-        if (pos != -1) {
-            cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
-            cap += rx.cap();
-            setWindowTitle(cap);
-        }
-        else {
-            cap = QString::fromUtf8(pDoc->getDocument()->Label.getValue());
-            cap = QString::fromAscii("%1[*]").arg(cap);
-            setWindowTitle(cap);
-        }
+    if (!bIsPassive && pDoc) {
+        QString cap = QString::fromLatin1("%1 : %2[*]")
+            .arg(QString::fromUtf8(pDoc->getDocument()->Label.getValue()))
+            .arg(objectName());
+        setWindowTitle(cap);
     }
 }
 

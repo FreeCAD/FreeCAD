@@ -24,24 +24,27 @@
 #ifndef REG_EXP_DIALOG_H
 #define REG_EXP_DIALOG_H
 
-#include "regexpdialogbase.h"
-
+#include <qdialog.h>
 #include <qregexp.h>
 #include <qsyntaxhighlighter.h>
 
 class RegExpSyntaxHighlighter;
-class RegExpDialog : public RegExpDialogBase
+class Ui_RegExpDialog;
+class RegExpDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 public:
-	RegExpDialog( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags f = 0 );
-  ~RegExpDialog();
+    RegExpDialog(QWidget* parent = 0);
+    ~RegExpDialog();
 
-  void about();
+    void about();
 
-protected:
-  void performRegExp();
-  RegExpSyntaxHighlighter* rxhilighter;
+protected Q_SLOTS:
+    void performRegExp();
+
+private:
+    RegExpSyntaxHighlighter* rxhilighter;
+    Ui_RegExpDialog* ui;
 };
 
 // -------------------------------------------------------------
@@ -49,15 +52,16 @@ protected:
 class RegExpSyntaxHighlighter : public QSyntaxHighlighter
 {
 public:
-  RegExpSyntaxHighlighter ( QTextEdit * textEdit );
-  ~RegExpSyntaxHighlighter();
+    RegExpSyntaxHighlighter (QTextEdit * textEdit);
+    ~RegExpSyntaxHighlighter();
 
-  int highlightParagraph ( const QString & text, int endStateOfLastPara );
-  void highlightMatchedText( const QRegExp& );
-  void resethighlight();
+    void highlightBlock (const QString & text);
+    //int highlightParagraph ( const QString & text, int endStateOfLastPara );
+    void highlightMatchedText( const QRegExp& );
+    void resethighlight();
 
 private:
-  QRegExp regexp;
+    QRegExp regexp;
 };
 
 #endif // REG_EXP_DIALOG_H
