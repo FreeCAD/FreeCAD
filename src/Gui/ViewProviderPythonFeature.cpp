@@ -245,7 +245,7 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (vp.hasAttr(std::string("getIcon"))) {
                 Py::Callable method(vp.getAttr(std::string("getIcon")));
-                Py::Tuple args(0);
+                Py::Tuple args;
                 Py::String str(method.apply(args));
                 std::string content = str.as_std_string();
                 QPixmap icon;
@@ -296,7 +296,7 @@ std::vector<App::DocumentObject*> ViewProviderPythonFeatureImp::claimChildren(co
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (vp.hasAttr(std::string("claimChildren"))) {
                 Py::Callable method(vp.getAttr(std::string("claimChildren")));
-                Py::Tuple args(0);
+                Py::Tuple args;
                 Py::Sequence list(method.apply(args));
                 for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                     PyObject* item = (*it).ptr();
@@ -528,7 +528,7 @@ void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
             if (vp.hasAttr(std::string("attach"))) {
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("attach")));
-                    Py::Tuple args(0);
+                    Py::Tuple args;
                     method.apply(args);
                 }
                 else {
@@ -647,7 +647,7 @@ const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (vp.hasAttr(std::string("getDefaultDisplayMode"))) {
                 Py::Callable method(vp.getAttr(std::string("getDefaultDisplayMode")));
-                Py::Tuple args(0);
+                Py::Tuple args;
                 Py::String str(method.apply(args));
                 if (str.isUnicode())
                     str = str.encode("ascii"); // json converts strings into unicode
@@ -676,7 +676,7 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
             if (vp.hasAttr(std::string("getDisplayModes"))) {
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("getDisplayModes")));
-                    Py::Tuple args(0);
+                    Py::Tuple args;
                     Py::Sequence list(method.apply(args));
                     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                         Py::String str(*it);

@@ -2314,7 +2314,7 @@ namespace Py
         }
 
         // New tuple of a given size
-        explicit Tuple (int size = 0)
+        explicit Tuple (sequence_index_type size = 0)
         {
             set(PyTuple_New (size), true);
             validate ();
@@ -2372,7 +2372,7 @@ namespace Py
     {
     public:
         TupleN()
-        : Tuple( 0 )
+        : Tuple( (sequence_index_type)0 )
         {
         }
 
@@ -2496,7 +2496,7 @@ namespace Py
             validate();
         }
         // Creation at a fixed size
-        List (int size = 0)
+        List (sequence_index_type size = 0)
         {
             set(PyList_New (size), true);
             validate();
@@ -2512,7 +2512,7 @@ namespace Py
         // List from a sequence
         List (const Sequence& s): Sequence()
         {
-            int n = (int)s.length();
+            sequence_index_type n = s.length();
             set(PyList_New (n), true);
             validate();
             for (sequence_index_type i=0; i < n; i++)
@@ -3292,7 +3292,7 @@ namespace Py
     inline Object Object::callMemberFunction( const std::string &function_name ) const
     {
         Callable target( getAttr( function_name ) );
-        Tuple args( 0 );
+        Tuple args( (sequence_index_type)0 );
         return target.apply( args );
     }
 
