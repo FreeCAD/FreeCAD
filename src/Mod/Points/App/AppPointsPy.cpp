@@ -35,11 +35,11 @@
 #include <App/Property.h>
 
 // PCL test
-
-#include <iostream>
-#include <pcl/io/ply_io.h>
-#include <pcl/point_types.h>
-
+#ifdef HAVE_PCL
+#  include <iostream>
+#  include <pcl/io/ply_io.h>
+#  include <pcl/point_types.h>
+#endif
 
 #include "Points.h"
 #include "PointsPy.h"
@@ -73,6 +73,7 @@ open(PyObject *self, PyObject *args)
             pcFeature->Points.setValue( pkTemp );
 
         }
+#ifdef HAVE_PCL
         else 
         if (file.hasExtension("ply")) {
             // create new document import
@@ -90,6 +91,7 @@ open(PyObject *self, PyObject *args)
             pcFeature->Points.setValue( pkTemp );
 
         }
+#endif
         else {
             Py_Error(PyExc_Exception,"unknown file ending");
         }
