@@ -27,6 +27,7 @@
 # include <Inventor/SoDB.h>
 # include <Inventor/SoInput.h>
 # include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoTransform.h>
 # include <QFile>
 #endif
 
@@ -105,7 +106,7 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
             pcBuffer->addChild(node);
         }
     }
-    if (prop == &ivObj->FileName) {
+    else if (prop == &ivObj->FileName) {
         // read also from file
         const char* filename = ivObj->FileName.getValue();
         QString fn = QString::fromUtf8(filename);
@@ -123,6 +124,29 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
                 pcFile->addChild(node);
             }
         }
+    }
+    else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
+             strcmp(prop->getName(), "Placement") == 0) {
+        // Note: If R is the rotation, c the rotation center and t the translation
+        // vector then Inventor applies the following transformation: R*(x-c)+c+t
+        // In FreeCAD a placement only has a rotation and a translation part but
+        // no rotation center. This means that the following equation must be ful-
+        // filled: R * (x-c) + c + t = R * x + t
+        //    <==> R * x + t - R * c + c = R * x + t
+        //    <==> (I-R) * c = 0 ==> c = 0
+        // This means that the center point must be the origin!
+        Base::Placement p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
+        float q0 = (float)p.getRotation().getValue()[0];
+        float q1 = (float)p.getRotation().getValue()[1];
+        float q2 = (float)p.getRotation().getValue()[2];
+        float q3 = (float)p.getRotation().getValue()[3];
+        float px = (float)p.getPosition().x;
+        float py = (float)p.getPosition().y;
+        float pz = (float)p.getPosition().z;
+        pcTransform->rotation.setValue(q0,q1,q2,q3);
+        pcTransform->translation.setValue(px,py,pz);
+        pcTransform->center.setValue(0.0f,0.0f,0.0f);
+        pcTransform->scaleFactor.setValue(1.0f,1.0f,1.0f);
     }
 }
 
