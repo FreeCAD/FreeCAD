@@ -104,7 +104,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Std_ImageNode"
           << "Sandbox_WidgetShape"
           << "Sandbox_GDIWidget"
-          << "Sandbox_RedirectPaint";
+          << "Sandbox_RedirectPaint"
+          << "Std_TestGraphicsView";
 
     Gui::MenuItem* viewer = new Gui::MenuItem;
     root->insertItem(item, viewer);

@@ -24,6 +24,13 @@ set(SandboxGui_LIBS
     FreeCADGui
 )
 
+set(SandboxGui_MOC_HDRS
+    GLGraphicsView.h
+)
+
+fc_wrap_cpp(SandboxGui_MOC_SRCS ${SandboxGui_MOC_HDRS})
+SOURCE_GROUP("Moc" FILES ${SandboxGui_MOC_SRCS})
+
 qt4_add_resources(Resource_SRCS Resources/Sandbox.qrc)
 SET(Resource_SRCS
     ${Resource_SRCS}
@@ -34,6 +41,10 @@ SOURCE_GROUP("Resource" FILES ${Resource_SRCS})
 SET(SandboxGui_SRCS
     AppSandboxGui.cpp
     Command.cpp
+    GLGraphicsView.cpp
+    GLGraphicsView.h
+    Overlay.cpp
+    Overlay.h
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp
