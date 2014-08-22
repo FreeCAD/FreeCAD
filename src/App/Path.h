@@ -21,29 +21,36 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef APP_Path_H
+#define APP_Path_H
 
-#ifndef _PreComp_
-#endif
-
-#include "Part.h"
-//#define new DEBUG_CLIENTBLOCK
-using namespace App;
+#include <Base/Persistence.h>
 
 
-PROPERTY_SOURCE(App::Part, App::GeoFeature)
 
-
-//===========================================================================
-// Feature
-//===========================================================================
-
-Part::Part(void)
+namespace App
 {
-    ADD_PROPERTY(Member,(0));
-}
 
-Part::~Part(void)
+
+/** Base class of all geometric document objects.
+ */
+class AppExport Path 
 {
-}
+protected:
+	std::vector<Base::Persistence *> _PathVector;
 
+public:
+    /// Constructor
+    Path(void);
+	Path(const std::vector<Base::Persistence *> & PathVector);
+
+    virtual ~Path();
+
+	const std::vector<Base::Persistence *> & getVector(void)const{return _PathVector;}
+
+};
+
+} //namespace App
+
+
+#endif // APP_Path_H

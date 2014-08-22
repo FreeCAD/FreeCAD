@@ -26,24 +26,21 @@
 #ifndef _PreComp_
 #endif
 
-#include "Part.h"
-//#define new DEBUG_CLIENTBLOCK
+#include "Path.h"
+#define new DEBUG_CLIENTBLOCK
 using namespace App;
 
 
-PROPERTY_SOURCE(App::Part, App::GeoFeature)
-
-
-//===========================================================================
-// Feature
-//===========================================================================
-
-Part::Part(void)
+Path::Path(void)
 {
-    ADD_PROPERTY(Member,(0));
 }
 
-Part::~Part(void)
+Path::Path(const std::vector<Base::Persistence *> &PathVector)
+:_PathVector(PathVector)
+{
+}
+
+Path::~Path(void)
 {
 }
 
