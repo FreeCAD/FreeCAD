@@ -1,0 +1,9 @@
+Yanked from FreeCAD forum post by wmayer 17 July 2014
+http://forum.freecadweb.org/viewtopic.php?f=10&t=7054
+
+The CxImage is only used for a Windows thumbnailer. The utility
+"ThumbnailProvider" is a DLL which can be registered to Windows as a so called
+shell extension.  This utility is able to create a preview image of an FCStd
+project file and CxImage is needed to convert the data into a format that
+Windows expects.
+
