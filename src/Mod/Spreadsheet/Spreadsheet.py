@@ -685,9 +685,18 @@ class SpreadsheetPropertyController:
                 else:
                     if Draft.getType(obj.TargetObject) == "Sketch":
                         if obj.TargetProperty.isdigit():
+                            # try setting by constraint id
                             try:
                                 c = int(obj.TargetProperty)
                                 obj.TargetObject.setDatum(c,float(value))
+                                FreeCAD.ActiveDocument.recompute()
+                                if DEBUG: print "setting constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                            except:
+                                if DEBUG: print "unable to set constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
+                        else:
+                            # try setting by constraint name
+                            try:
+                                obj.TargetObject.setDatum(obj.TargetProperty,float(value))
                                 FreeCAD.ActiveDocument.recompute()
                                 if DEBUG: print "setting constraint ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
                             except:
