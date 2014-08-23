@@ -292,20 +292,91 @@ PyObject* SketchObjectPy::setDatum(PyObject *args)
     int    Index;
     PyObject* object;
     Base::Quantity Quantity;
-    if (PyArg_ParseTuple(args,"iO!", &Index, &(Base::QuantityPy::Type), &object)) {
-        Quantity = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
-        if (Quantity.getUnit() == Base::Unit::Angle)
-            //Datum = Quantity.getValueAs(Base::Quantity::Radian);
-            Datum = Base::toRadians<double>(Quantity.getValue());
-        else
-            Datum = Quantity.getValue();
-    }
-    else {
+
+    do {
+        // handle (int,Quantity)
+        if (PyArg_ParseTuple(args,"iO!", &Index, &(Base::QuantityPy::Type), &object)) {
+            Quantity = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
+            if (Quantity.getUnit() == Base::Unit::Angle) {
+                Datum = Base::toRadians<double>(Quantity.getValue());
+                break;
+            }
+            else {
+                Datum = Quantity.getValue();
+                break;
+            }
+        }
+
+        // handle (int,double)
         PyErr_Clear();
-        if (!PyArg_ParseTuple(args, "id", &Index, &Datum))
-            return 0;
-        Quantity.setValue(Datum);
+        if (PyArg_ParseTuple(args, "id", &Index, &Datum)) {
+            Quantity.setValue(Datum);
+            break;
+        }
+
+        // handle (string,Quantity)
+        char* constrName;
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args,"sO!", &constrName, &(Base::QuantityPy::Type), &object)) {
+            Quantity = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
+            if (Quantity.getUnit() == Base::Unit::Angle) {
+                Datum = Base::toRadians<double>(Quantity.getValue());
+            }
+            else {
+                Datum = Quantity.getValue();
+            }
+
+            int i = 0;
+            Index = -1;
+            const std::vector<Constraint*>& vals = this->getSketchObjectPtr()->Constraints.getValues();
+            for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it, ++i) {
+                if ((*it)->Name == constrName) {
+                    Index = i;
+                    break;
+                }
+            }
+
+            if (Index >= 0) {
+                break;
+            }
+            else {
+                std::stringstream str;
+                str << "Invalid constraint name: '" << constrName << "'";
+                PyErr_SetString(PyExc_ValueError, str.str().c_str());
+                return 0;
+            }
+        }
+
+        // handle (string,double)
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args, "sd", &constrName, &Datum)) {
+            Quantity.setValue(Datum);
+            int i = 0;
+            Index = -1;
+            const std::vector<Constraint*>& vals = this->getSketchObjectPtr()->Constraints.getValues();
+            for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it, ++i) {
+                if ((*it)->Name == constrName) {
+                    Index = i;
+                    break;
+                }
+            }
+
+            if (Index >= 0) {
+                break;
+            }
+            else {
+                std::stringstream str;
+                str << "Invalid constraint name: '" << constrName << "'";
+                PyErr_SetString(PyExc_ValueError, str.str().c_str());
+                return 0;
+            }
+        }
+
+        // error handling
+        PyErr_SetString(PyExc_TypeError, "Wrong arguments");
+        return 0;
     }
+    while (false);
 
     int err=this->getSketchObjectPtr()->setDatum(Index, Datum);
     if (err) {
