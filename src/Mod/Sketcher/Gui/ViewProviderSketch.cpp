@@ -914,9 +914,22 @@ void ViewProviderSketch::editDoubleClicked(void)
 
 bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventorViewer *viewer)
 {
+    // maximum radius for mouse moves when selecting a geometry before switching to drag mode
+    const int dragIgnoredDistance = 3;
+
     if (!edit)
         return false;
-    assert(edit);
+
+    // ignore small moves after selection
+    switch (Mode) {
+        case STATUS_SELECT_Point:
+        case STATUS_SELECT_Edge:
+        case STATUS_SELECT_Constraint:
+            short dx, dy;
+            (cursorPos - prvCursorPos).getValue(dx, dy);
+            if(std::abs(dx) < dragIgnoredDistance && std::abs(dy) < dragIgnoredDistance)
+                return false;
+    }
 
     // Calculate 3d point to the mouse position
     SbLine line;
@@ -927,7 +940,10 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
     snapToGrid(x, y);
 
     bool preselectChanged;
-    if (Mode != STATUS_SKETCH_DragPoint &&
+    if (Mode != STATUS_SELECT_Point &&
+        Mode != STATUS_SELECT_Edge &&
+        Mode != STATUS_SELECT_Constraint &&
+        Mode != STATUS_SKETCH_DragPoint &&
         Mode != STATUS_SKETCH_DragCurve &&
         Mode != STATUS_SKETCH_DragConstraint &&
         Mode != STATUS_SKETCH_UseRubberBand) {
@@ -976,8 +992,14 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
                 if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     relative = true;
-                    xInit = x;
-                    yInit = y;
+                    //xInit = x;
+                    //yInit = y;
+                    // Since the cursor moved from where it was clicked, and this is a relative move,
+                    // calculate the click position and use it as initial point.
+                    SbLine line2;
+                    getProjectingLine(prvCursorPos, viewer, line2);
+                    getCoordsOnSketchPlane(xInit,yInit,line2.getPosition(),line2.getDirection());
+                    snapToGrid(xInit, yInit);
                 } else {
                     relative = false;
                     xInit = 0;
