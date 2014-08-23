@@ -452,8 +452,6 @@ void ViewProviderSketch::getProjectingLine(const SbVec2s& pnt, const Gui::View3D
     if (!pCam) return;
     SbViewVolume  vol = pCam->getViewVolume();
 
-    float focalDist = pCam->focalDistance.getValue();
-
     vol.projectPointToLine(SbVec2f(pX,pY), line);
 }
 
@@ -2266,6 +2264,32 @@ void ViewProviderSketch::drawConstraintIcons()
         thisIcon.position = absPos;
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
+        
+        if((*it)->Type==Symmetric) {
+            
+            Base::Vector3d startingpoint = getSketchObject()->getPoint((*it)->First,(*it)->FirstPos);
+            Base::Vector3d endpoint = getSketchObject()->getPoint((*it)->Second,(*it)->SecondPos);
+                       
+            double x0,y0,x1,y1;
+            SbVec3f pos0(startingpoint.x,startingpoint.y,startingpoint.z);
+            SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
+            
+            Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+            Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
+            SoCamera* pCam = viewer->getCamera();
+            if (!pCam) return;
+            
+            SbViewVolume  vol = pCam->getViewVolume();
+            
+            getCoordsOnSketchPlane(x0,y0,pos0,vol.getProjectionDirection());
+            getCoordsOnSketchPlane(x1,y1,pos1,vol.getProjectionDirection());
+            
+            thisIcon.iconRotation = -atan2f((y1-y0),(x1-x0))*180/M_PI;
+            
+        }
+        else {
+            thisIcon.iconRotation = 0;
+        }
 
         if(multipleIcons) {
             if((*it)->Name.empty())
@@ -2373,6 +2397,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
     QColor iconColor;
     QList<QColor> labelColors;
     int maxColorPriority;
+    double iconRotation;
 
     ConstrIconBBVec boundingBoxes;
     while(!iconQueue.empty()) {
@@ -2388,6 +2413,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
         iconColor = constrColor(i->constraintId);
         labelColors.clear();
         labelColors.append(iconColor);
+        iconRotation= i->iconRotation;
 
         maxColorPriority = constrColorPriority(i->constraintId);
 
@@ -2439,6 +2465,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
                                              iconColor,
                                              labels,
                                              labelColors,
+                                             iconRotation,
                                              &boundingBoxesVec,
                                              &lastVPad);
         } else {
@@ -2447,6 +2474,7 @@ void ViewProviderSketch::drawMergedConstraintIcons(IconQueue iconQueue)
                                                   iconColor,
                                                   labels,
                                                   labelColors,
+                                                  iconRotation,
                                                   &boundingBoxesVec,
                                                   &thisVPad);
 
@@ -2507,6 +2535,7 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
                                             const QColor &iconColor,
                                             const QStringList &labels,
                                             const QList<QColor> &labelColors,
+                                            double iconRotation,
                                             std::vector<QRect> *boundingBoxes,
                                             int *vPad)
 {
@@ -2527,17 +2556,21 @@ QImage ViewProviderSketch::renderConstrIcon(const QString &type,
     if(vPad)
         *vPad = pxBelowBase;
 
-    QImage image = icon.copy(0, 0, icon.width() + labelWidth,
-                                   icon.height() + pxBelowBase);
+    QTransform rotation;
+    rotation.rotate(iconRotation);
+       
+    QImage roticon = icon.transformed(rotation);
+    QImage image = roticon.copy(0, 0, roticon.width() + labelWidth,
+                                                        roticon.height() + pxBelowBase);
 
     // Make a bounding box for the icon
     if(boundingBoxes)
-        boundingBoxes->push_back(QRect(0, 0, icon.width(), icon.height()));
+        boundingBoxes->push_back(QRect(0, 0, roticon.width(), roticon.height()));
 
     // Render the Icons
     QPainter qp(&image);
     qp.setCompositionMode(QPainter::CompositionMode_SourceIn);
-    qp.fillRect(icon.rect(), iconColor);
+    qp.fillRect(roticon.rect(), iconColor);
 
     // Render constraint label if necessary
     if (!labels.join(QString()).isEmpty()) {
@@ -2589,7 +2622,8 @@ void ViewProviderSketch::drawTypicalConstraintIcon(const constrIconQueueItem &i)
     QImage image = renderConstrIcon(i.type,
                                     color,
                                     QStringList(i.label),
-                                    QList<QColor>() << color);
+                                    QList<QColor>() << color,
+                                    i.iconRotation);
 
     i.infoPtr->string.setValue(QString::number(i.constraintId).toAscii().data());
     sendConstraintIconToCoin(image, i.destination);

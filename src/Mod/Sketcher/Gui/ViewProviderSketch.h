@@ -282,6 +282,9 @@ protected:
 
         /// Pointer to SoInfo object where we store the constraint IDs that the icon refers to
         SoInfo *infoPtr;
+        
+        /// Angle to rotate an icon
+        double iconRotation;
     };
 
     /// Internal type used for drawing constraint icons
@@ -304,6 +307,7 @@ protected:
                             const QColor &iconColor,
                             const QStringList &labels,
                             const QList<QColor> &labelColors,
+                            double iconRotation,
                             //! Gets populated with bounding boxes (in icon
                             //! image coordinates) for the icon at left, then
                             //! labels for different constraints.
