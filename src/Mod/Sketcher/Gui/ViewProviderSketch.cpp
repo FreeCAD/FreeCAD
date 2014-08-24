@@ -2265,6 +2265,7 @@ void ViewProviderSketch::drawConstraintIcons()
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
         
+        
         if((*it)->Type==Symmetric) {
             
             Base::Vector3d startingpoint = getSketchObject()->getPoint((*it)->First,(*it)->FirstPos);
@@ -2337,39 +2338,46 @@ void ViewProviderSketch::combineConstraintIcons(IconQueue iconQueue)
         // A group starts with an item popped off the back of our initial queue
         IconQueue thisGroup;
         thisGroup.push_back(iconQueue.back());
+        ViewProviderSketch::constrIconQueueItem init = iconQueue.back();
         iconQueue.pop_back();
+        
+        // we group only icons not being Symmetry icons, because we want those on the line
+        if(init.type != QString::fromLatin1("small/Constraint_Symmetric_sm")){
+            
+            IconQueue::iterator i = iconQueue.begin();
+            while(i != iconQueue.end()) {
+                bool addedToGroup = false;
+                
+                for(IconQueue::iterator j = thisGroup.begin();
+                    j != thisGroup.end(); ++j)
+                    if(i->position.equals(j->position, maxDistSquared) && (*i).type != QString::fromLatin1("small/Constraint_Symmetric_sm")) {
+                        // Found an icon in iconQueue that's close enough to
+                        // a member of thisGroup, so move it into thisGroup
+                        thisGroup.push_back(*i);
+                        i = iconQueue.erase(i);
+                        addedToGroup = true;
+                        break;
+                    }
 
-        IconQueue::iterator i = iconQueue.begin();
-        while(i != iconQueue.end()) {
-            bool addedToGroup = false;
-
-            for(IconQueue::iterator j = thisGroup.begin();
-                j != thisGroup.end(); ++j)
-                if(i->position.equals(j->position, maxDistSquared)) {
-                    // Found an icon in iconQueue that's close enough to
-                    // a member of thisGroup, so move it into thisGroup
-                    thisGroup.push_back(*i);
-                    i = iconQueue.erase(i);
-                    addedToGroup = true;
-                    break;
-                }
-
-            if(addedToGroup) {
-                if(i == iconQueue.end())
-                    // We just got the last icon out of iconQueue
-                    break;
-                else
-                    // Start looking through the iconQueue again, in case
-                    // we have an icon that's now close enough to thisGroup
-                    i = iconQueue.begin();
-            } else
-                ++i;
+                if(addedToGroup) {
+                    if(i == iconQueue.end())
+                        // We just got the last icon out of iconQueue
+                        break;
+                    else
+                        // Start looking through the iconQueue again, in case
+                        // we have an icon that's now close enough to thisGroup
+                        i = iconQueue.begin();
+                } else
+                    ++i;
+            }
         }
 
-        if(thisGroup.size() == 1)
+        if(thisGroup.size() == 1) {
             drawTypicalConstraintIcon(thisGroup[0]);
-        else
+        }
+        else {
             drawMergedConstraintIcons(thisGroup);
+        }
     }
 }
 
