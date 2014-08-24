@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="GeometryCurvePy" 
+      Name="ArcOfEllipsePy" 
+      Twin="GeomArcOfEllipse" 
+      TwinPointer="GeomArcOfEllipse" 
+      Include="Mod/Part/App/Geometry.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo[at]gmail.com" />
+      <UserDocu>Describes a portion of an ellipse</UserDocu>
+    </Documentation>
+    <Attribute Name="MajorRadius" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The major radius of the ellipse.</UserDocu>
+      </Documentation>
+      <Parameter Name="MajorRadius" Type="Float"/>
+    </Attribute>      
+    <Attribute Name="MinorRadius" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The minor radius of the ellipse.</UserDocu>
+      </Documentation>
+      <Parameter Name="MinorRadius" Type="Float"/>
+    </Attribute>
+    <Attribute Name="AngleXU" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The angle between the X axis and the major axis of the ellipse.</UserDocu>
+      </Documentation>
+      <Parameter Name="AngleXU" Type="Float"/>
+    </Attribute> 
+    <Attribute Name="Center" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Center of the ellipse.</UserDocu>
+      </Documentation>
+      <Parameter Name="Center" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Axis" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The axis direction of the ellipse</UserDocu>
+      </Documentation>
+      <Parameter Name="Axis" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Ellipse" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The internal ellipse representation</UserDocu>
+      </Documentation>
+      <Parameter Name="Ellipse" Type="Object"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

@@ -90,7 +90,9 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
         }
         else if (geo->getTypeId() == Part::GeomPoint::getClassTypeId() ||
                  geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                 geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
                  geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+                 geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                  geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             ret = this->getSketchObjectPtr()->addGeometry(geo);
         }
@@ -131,7 +133,9 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
                 }
                 else if (geo->getTypeId() == Part::GeomPoint::getClassTypeId() ||
                          geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                         geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
                          geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+                         geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                          geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     geoList.push_back(geo);
                 }

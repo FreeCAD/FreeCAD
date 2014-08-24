@@ -78,6 +78,7 @@
 # include <Geom_TrimmedCurve.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeCircle.hxx>
+# include <GC_MakeArcOfEllipse.hxx>
 # include <GC_MakeEllipse.hxx>
 # include <GC_MakeLine.hxx>
 # include <GC_MakeSegment.hxx>
@@ -91,6 +92,7 @@
 #include "EllipsePy.h"
 #include "ArcPy.h"
 #include "ArcOfCirclePy.h"
+#include "ArcOfEllipsePy.h"
 #include "BezierCurvePy.h"
 #include "BSplineCurvePy.h"
 #include "HyperbolaPy.h"
@@ -888,6 +890,44 @@ void GeomEllipse::setMinorRadius(double Radius)
     }
 }
 
+double GeomEllipse::getAngleXU(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+    
+    gp_Pnt center = this->myCurve->Axis().Location();
+    gp_Dir normal = this->myCurve->Axis().Direction();
+    gp_Dir xdir = this->myCurve->XAxis().Direction();
+    
+    
+    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
+    
+    return -xdir.AngleWithRef(xdirref.XDirection(),normal);
+
+}
+
+void GeomEllipse::setAngleXU(double angle)
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
+
+    try {
+        gp_Pnt center = this->myCurve->Axis().Location();
+        gp_Dir normal = this->myCurve->Axis().Direction();
+        
+        gp_Ax1 normaxis(center, normal);
+        
+        gp_Ax2 xdirref(center, normal);
+        
+        xdirref.Rotate(normaxis,angle);
+        
+        this->myCurve->SetPosition(xdirref);
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
 // Persistence implementer 
 unsigned int GeomEllipse::getMemSize (void) const
 {
@@ -901,7 +941,13 @@ void GeomEllipse::Save(Base::Writer& writer) const
 
     gp_Pnt center = this->myCurve->Axis().Location();
     gp_Dir normal = this->myCurve->Axis().Direction();
-
+    gp_Dir xdir = this->myCurve->XAxis().Direction();
+    
+    gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
+    
+    double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
+    
+    
     writer.Stream()
          << writer.ind()
             << "<Ellipse "
@@ -913,6 +959,7 @@ void GeomEllipse::Save(Base::Writer& writer) const
             << "NormalZ=\"" <<  normal.Z() << "\" "
             << "MajorRadius=\"" <<  this->myCurve->MajorRadius() << "\" "
             << "MinorRadius=\"" <<  this->myCurve->MinorRadius() << "\" "
+            << "AngleXU=\"" << AngleXU << "\" "
             << "/>" << endl;
 }
 
@@ -921,7 +968,7 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
     // read the attributes of the father class
     GeomCurve::Restore(reader);
 
-    double CenterX,CenterY,CenterZ,NormalX,NormalY,NormalZ,MajorRadius,MinorRadius;
+    double CenterX,CenterY,CenterZ,NormalX,NormalY,NormalZ,MajorRadius,MinorRadius,AngleXU;
     // read my Element
     reader.readElement("Ellipse");
     // get the value of my Attribute
@@ -933,12 +980,25 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
     NormalZ = reader.getAttributeAsFloat("NormalZ");
     MajorRadius = reader.getAttributeAsFloat("MajorRadius");
     MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    
+    // This is for backwards compatibility
+    if(reader.hasAttribute("AngleXU"))
+        AngleXU = reader.getAttributeAsFloat("AngleXU");
+    else
+        AngleXU = 0;
 
     // set the read geometry
     gp_Pnt p1(CenterX,CenterY,CenterZ);
     gp_Dir norm(NormalX,NormalY,NormalZ);
+    
+    gp_Ax1 normaxis(p1,norm);
+    
+    gp_Ax2 xdir(p1, norm);
+    
+    xdir.Rotate(normaxis,AngleXU); 
+    
     try {
-        GC_MakeEllipse mc(gp_Ax2(p1, norm), MajorRadius, MinorRadius);
+        GC_MakeEllipse mc(xdir, MajorRadius, MinorRadius);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
 
@@ -954,6 +1014,271 @@ PyObject *GeomEllipse::getPyObject(void)
 {
     return new EllipsePy((GeomEllipse*)this->clone());
 }
+
+// -------------------------------------------------
+
+TYPESYSTEM_SOURCE(Part::GeomArcOfEllipse,Part::GeomCurve);
+
+GeomArcOfEllipse::GeomArcOfEllipse()
+{
+    Handle_Geom_Ellipse e = new Geom_Ellipse(gp_Elips());
+    this->myCurve = new Geom_TrimmedCurve(e, e->FirstParameter(),e->LastParameter());
+}
+
+GeomArcOfEllipse::GeomArcOfEllipse(const Handle_Geom_Ellipse& e)
+{
+    this->myCurve = new Geom_TrimmedCurve(e, e->FirstParameter(),e->LastParameter());
+}
+
+GeomArcOfEllipse::~GeomArcOfEllipse()
+{
+}
+
+void GeomArcOfEllipse::setHandle(const Handle_Geom_TrimmedCurve& c)
+{
+    Handle_Geom_Ellipse basis = Handle_Geom_Ellipse::DownCast(c->BasisCurve());
+    if (basis.IsNull())
+        Standard_Failure::Raise("Basis curve is not an ellipse");
+    this->myCurve = Handle_Geom_TrimmedCurve::DownCast(c->Copy());
+}
+
+const Handle_Geom_Geometry& GeomArcOfEllipse::handle() const
+{
+    return myCurve;
+}
+
+Geometry *GeomArcOfEllipse::clone(void) const
+{
+    GeomArcOfEllipse* copy = new GeomArcOfEllipse();
+    copy->setHandle(this->myCurve);
+    copy->Construction = this->Construction;
+    return copy;
+}
+
+Base::Vector3d GeomArcOfEllipse::getStartPoint() const
+{
+    gp_Pnt pnt = this->myCurve->StartPoint();
+    return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
+}
+
+Base::Vector3d GeomArcOfEllipse::getEndPoint() const
+{
+    gp_Pnt pnt = this->myCurve->EndPoint();
+    return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
+}
+
+Base::Vector3d GeomArcOfEllipse::getCenter(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+    gp_Ax1 axis = ellipse->Axis();
+    const gp_Pnt& loc = axis.Location();
+    return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
+}
+
+void GeomArcOfEllipse::setCenter(const Base::Vector3d& Center)
+{
+    gp_Pnt p1(Center.x,Center.y,Center.z);
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+
+    try {
+        ellipse->SetLocation(p1);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomArcOfEllipse::getMajorRadius(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+    return ellipse->MajorRadius();
+}
+
+void GeomArcOfEllipse::setMajorRadius(double Radius)
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+
+    try {
+        ellipse->SetMajorRadius(Radius);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomArcOfEllipse::getMinorRadius(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+    return ellipse->MinorRadius();
+}
+
+void GeomArcOfEllipse::setMinorRadius(double Radius)
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+
+    try {
+        ellipse->SetMinorRadius(Radius);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomArcOfEllipse::getAngleXU(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+    
+    gp_Pnt center = ellipse->Axis().Location();
+    gp_Dir normal = ellipse->Axis().Direction();
+    gp_Dir xdir = ellipse->XAxis().Direction();
+    
+    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
+    
+    return -xdir.AngleWithRef(xdirref.XDirection(),normal);
+
+}
+
+void GeomArcOfEllipse::setAngleXU(double angle)
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
+
+    try {
+        gp_Pnt center = ellipse->Axis().Location();
+        gp_Dir normal = ellipse->Axis().Direction();
+        
+        gp_Ax1 normaxis(center, normal);
+        
+        gp_Ax2 xdirref(center, normal);
+        
+        xdirref.Rotate(normaxis,angle);
+        
+        ellipse->SetPosition(xdirref);
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+void GeomArcOfEllipse::getRange(double& u, double& v) const
+{
+    u = myCurve->FirstParameter();
+    v = myCurve->LastParameter();
+}
+
+void GeomArcOfEllipse::setRange(double u, double v)
+{
+    try {
+        myCurve->SetTrim(u, v);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+// Persistence implementer 
+unsigned int GeomArcOfEllipse::getMemSize (void) const
+{
+    return sizeof(Geom_Ellipse) + 2 *sizeof(double);
+}
+
+void GeomArcOfEllipse::Save(Base::Writer &writer) const 
+{
+    // save the attributes of the father class
+    GeomCurve::Save(writer);
+    
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(this->myCurve->BasisCurve());
+
+    gp_Pnt center = ellipse->Axis().Location();
+    gp_Dir normal = ellipse->Axis().Direction();
+    gp_Dir xdir = ellipse->XAxis().Direction();
+    
+    gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
+    
+    double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
+    
+    
+    writer.Stream()
+         << writer.ind()
+            << "<ArcOfEllipse "
+            << "CenterX=\"" <<  center.X() << "\" "
+            << "CenterY=\"" <<  center.Y() << "\" "
+            << "CenterZ=\"" <<  center.Z() << "\" "
+            << "NormalX=\"" <<  normal.X() << "\" "
+            << "NormalY=\"" <<  normal.Y() << "\" "
+            << "NormalZ=\"" <<  normal.Z() << "\" "
+            << "MajorRadius=\"" <<  ellipse->MajorRadius() << "\" "
+            << "MinorRadius=\"" <<  ellipse->MinorRadius() << "\" "
+            << "AngleXU=\"" << AngleXU << "\" "
+            << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
+            << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "           
+            << "/>" << endl;
+}
+
+void GeomArcOfEllipse::Restore(Base::XMLReader &reader)    
+{
+    // read the attributes of the father class
+    GeomCurve::Restore(reader);
+
+    double CenterX,CenterY,CenterZ,NormalX,NormalY,NormalZ,MajorRadius,MinorRadius,AngleXU,StartAngle,EndAngle;
+    // read my Element
+    reader.readElement("ArcOfEllipse");
+    // get the value of my Attribute
+    CenterX = reader.getAttributeAsFloat("CenterX");
+    CenterY = reader.getAttributeAsFloat("CenterY");
+    CenterZ = reader.getAttributeAsFloat("CenterZ");
+    NormalX = reader.getAttributeAsFloat("NormalX");
+    NormalY = reader.getAttributeAsFloat("NormalY");
+    NormalZ = reader.getAttributeAsFloat("NormalZ");
+    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
+    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    AngleXU = reader.getAttributeAsFloat("AngleXU");
+    StartAngle = reader.getAttributeAsFloat("StartAngle");
+    EndAngle = reader.getAttributeAsFloat("EndAngle");
+    
+    
+    // set the read geometry
+    gp_Pnt p1(CenterX,CenterY,CenterZ);
+    gp_Dir norm(NormalX,NormalY,NormalZ);
+    
+    gp_Ax1 normaxis(p1,norm);
+    
+    gp_Ax2 xdir(p1, norm);
+    
+    xdir.Rotate(normaxis,AngleXU); 
+    
+    try {
+        GC_MakeEllipse mc(xdir, MajorRadius, MinorRadius);
+        if (!mc.IsDone())
+            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+        
+        GC_MakeArcOfEllipse ma(mc.Value()->Elips(), StartAngle, EndAngle, 1);
+        if (!ma.IsDone())
+            throw Base::Exception(gce_ErrorStatusText(ma.Status()));
+        
+        Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
+        Handle_Geom_Ellipse tmpellipse = Handle_Geom_Ellipse::DownCast(tmpcurve->BasisCurve());
+        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(this->myCurve->BasisCurve());
+ 
+        ellipse->SetElips(tmpellipse->Elips());
+        this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+PyObject *GeomArcOfEllipse::getPyObject(void)
+{
+    return new ArcOfEllipsePy(static_cast<GeomArcOfEllipse*>(this->clone()));
+}
+
 
 // -------------------------------------------------
 
