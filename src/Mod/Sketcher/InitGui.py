@@ -72,7 +72,7 @@ class SketcherWorkbench ( Workbench ):
 		import Sketcher
 		try:
 			import Profiles
-		except:
+		except ImportError:
 			print "Error in Profiles module"
 			
 	def GetClassName(self):
