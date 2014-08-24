@@ -84,8 +84,8 @@ class TaskPanel:
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i
-        raise Exception("No main window found")
-        
+        raise RuntimeError("No main window found")
+
     def addElement(self):
         item=QtGui.QInputDialog.getText(self.form, 'Add item', 'Enter:')
         if item[1]:

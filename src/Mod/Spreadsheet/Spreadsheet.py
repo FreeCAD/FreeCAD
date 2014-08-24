@@ -39,14 +39,14 @@ class MathParser:
             }
         for var in vars.keys():
             if self.vars.get(var) != None:
-                raise Exception("Cannot redefine the value of " + var)
+                raise RuntimeError("Cannot redefine the value of " + var)
             self.vars[var] = vars[var]
     
     def getValue(self):
         value = self.parseExpression()
         self.skipWhitespace()
         if self.hasNext():
-            raise Exception(
+            raise SyntaxError(
                 "Unexpected character found: '" +
                 self.peek() +
                 "' at index " +
@@ -97,7 +97,7 @@ class MathParser:
                 self.index += 1
                 denominator = self.parseParenthesis()
                 if denominator == 0:
-                    raise Exception(
+                    raise ZeroDivisionError(
                         "Division by 0 kills baby whales (occured at index " +
                         str(div_index) +
                         ")")
@@ -117,7 +117,7 @@ class MathParser:
             value = self.parseExpression()
             self.skipWhitespace()
             if self.peek() != ')':
-                raise Exception(
+                raise SyntaxError(
                     "No closing parenthesis found at character "
                     + str(self.index))
             self.index += 1
@@ -155,7 +155,7 @@ class MathParser:
         
         value = self.vars.get(var, None)
         if value == None:
-            raise Exception(
+            raise ValueError(
                 "Unrecognized variable: '" +
                 var +
                 "'")
@@ -171,7 +171,7 @@ class MathParser:
             char = self.peek()            
             if char == '.':
                 if decimal_found:
-                    raise Exception(
+                    raise SyntaxError(
                         "Found an extra period in a number at character " +
                         str(self.index) +
                         ". Are you European?")
@@ -185,9 +185,9 @@ class MathParser:
         
         if len(strValue) == 0:
             if char == '':
-                raise Exception("Unexpected end found")
+                raise SyntaxError("Unexpected end found")
             else:
-                raise Exception(
+                raise SyntaxError(
                     "I was expecting to find a number at character " +
                     str(self.index) +
                     " but instead I found a '" +
@@ -439,8 +439,9 @@ class Spreadsheet:
             p = MathParser(result)
             result = p.getValue()
         except Exception as (ex):
-            msg = ex.message
-            raise Exception(msg)
+            raise #
+            #msg = ex.message
+            #raise Exception(msg) #would discard the type
         return result
         
     def recompute(self,obj):

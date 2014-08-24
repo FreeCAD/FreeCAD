@@ -194,7 +194,7 @@ void ShapeBuilderWidget::createEdgeFromVertex()
     QString cmd;
     cmd = QString::fromAscii(
         "_=Part.makeLine(%1, %2)\n"
-        "if _.isNull(): raise Exception('Failed to create edge')\n"
+        "if _.isNull(): raise RuntimeError('Failed to create edge')\n"
         "App.ActiveDocument.addObject('Part::Feature','Edge').Shape=_\n"
         "del _\n"
     ).arg(elements[0]).arg(elements[1]);
@@ -237,7 +237,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
     if (d->ui.checkPlanar->isChecked()) {
         cmd = QString::fromAscii(
             "_=Part.Face(Part.makePolygon(%1, True))\n"
-            "if _.isNull(): raise Exception('Failed to create face')\n"
+            "if _.isNull(): raise RuntimeError('Failed to create face')\n"
             "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
             "del _\n"
         ).arg(list);
@@ -245,7 +245,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
     else {
         cmd = QString::fromAscii(
             "_=Part.makeFilledFace([Part.makePolygon(%1, True)])\n"
-            "if _.isNull(): raise Exception('Failed to create face')\n"
+            "if _.isNull(): raise RuntimeError('Failed to create face')\n"
             "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
             "del _\n"
         ).arg(list);
@@ -289,7 +289,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
     if (d->ui.checkPlanar->isChecked()) {
         cmd = QString::fromAscii(
             "_=Part.Face(Part.Wire(Part.__sortEdges__(%1)))\n"
-            "if _.isNull(): raise Exception('Failed to create face')\n"
+            "if _.isNull(): raise RuntimeError('Failed to create face')\n"
             "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
             "del _\n"
         ).arg(list);
@@ -297,7 +297,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
     else {
         cmd = QString::fromAscii(
             "_=Part.makeFilledFace(Part.__sortEdges__(%1))\n"
-            "if _.isNull(): raise Exception('Failed to create face')\n"
+            "if _.isNull(): raise RuntimeError('Failed to create face')\n"
             "App.ActiveDocument.addObject('Part::Feature','Face').Shape=_\n"
             "del _\n"
         ).arg(list);
@@ -351,7 +351,7 @@ void ShapeBuilderWidget::createShellFromFace()
     QString cmd;
     cmd = QString::fromAscii(
         "_=Part.Shell(%1)\n"
-        "if _.isNull(): raise Exception('Failed to create shell')\n"
+        "if _.isNull(): raise RuntimeError('Failed to create shell')\n"
         "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_.removeSplitter()\n"
         "del _\n"
     ).arg(list);
@@ -389,9 +389,9 @@ void ShapeBuilderWidget::createSolidFromShell()
     QString cmd;
     cmd = QString::fromAscii(
         "shell=%1\n"
-        "if shell.ShapeType != 'Shell': raise Exception('Part object is not a shell')\n"
+        "if shell.ShapeType != 'Shell': raise RuntimeError('Part object is not a shell')\n"
         "_=Part.Solid(shell)\n"
-        "if _.isNull(): raise Exception('Failed to create solid')\n"
+        "if _.isNull(): raise RuntimeError('Failed to create solid')\n"
         "App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_.removeSplitter()\n"
         "del _\n"
     ).arg(line);
