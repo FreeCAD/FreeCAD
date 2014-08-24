@@ -32,7 +32,6 @@
 #include <boost/signals.hpp>
 #include <QCoreApplication>
 
-
 class TopoDS_Shape;
 class TopoDS_Face;
 class SoSeparator;
