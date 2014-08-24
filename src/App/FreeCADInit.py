@@ -37,7 +37,7 @@ import FreeCAD
 def InitApplications():
 	try:
 		import sys,os
-	except:
+	except ImportError:
 		FreeCAD.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
 		raise
 	# Checking on FreeCAD module path ++++++++++++++++++++++++++++++++++++++++++
