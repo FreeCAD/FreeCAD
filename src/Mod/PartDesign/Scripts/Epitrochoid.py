@@ -32,7 +32,7 @@ class Epitrochoid:
         z=0
         
         if r2 == 0:
-            raise Exception("Exterior radius must not be zero")
+            raise ValueError("Exterior radius must not be zero")
 
         for i in range(steps):
             if i==0:

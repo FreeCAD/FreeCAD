@@ -13,7 +13,7 @@ class DocumentObject(object):
     
     def execute(self):
         "this method is executed on object creation and whenever the document is recomputed"
-        raise Exception("Not yet implemented")
+        raise NotImplementedError("Not yet implemented")
 
     def init(self):
         #will be called just after object creation, you can use this for example to create properties

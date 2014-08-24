@@ -1510,7 +1510,7 @@ def fillet(lEdges,r,chamfer=False):
             elif issubclass(type(edge.Curve),Part.Circle) :
                     existingCurveType['Arc']  += [edge]
             else :
-                    raise Exception("Edge's curve must be either Line or Arc")
+                    raise ValueError("Edge's curve must be either Line or Arc")
             return existingCurveType
             
     rndEdges = lEdges[0:2]

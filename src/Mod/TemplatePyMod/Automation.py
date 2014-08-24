@@ -18,7 +18,7 @@ def makeSnapshotWithGui():
 		for i in toplevel:
 			if i.metaObject().className() == "Gui::MainWindow":
 				return i
-		raise Exception("No main window found")
+		raise RuntimeError("No main window found")
 
 	mw=getMainWindow()
 	mw.hide()
