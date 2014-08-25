@@ -52,6 +52,7 @@ protected Q_SLOTS:
     void modifyCurrentItem();
     void renameCurrentItem();
     void deleteSelectedItems();
+    void doSelectConstraints();
 };
 
 class TaskSketcherConstrains : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
