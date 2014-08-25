@@ -295,7 +295,46 @@ set(SOQT_FOUND TRUE)
 
 # OpenCV
 set(OPENCV_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/opencv)
-set(OPENCV_LIBRARIES  cv.lib cvaux.lib cxcore.lib cxts.lib highgui.lib)
+set(OPENCV_LIBRARIES
+    optimized opencv_calib3d249.lib
+    debug     opencv_calib3d249d.lib
+    optimized opencv_contrib249.lib
+    debug     opencv_contrib249d.lib
+    optimized opencv_core249.lib
+    debug     opencv_core249d.lib
+    optimized opencv_features2d249.lib
+    debug     opencv_features2d249d.lib
+    optimized opencv_flann249.lib
+    debug     opencv_flann249d.lib
+    optimized opencv_gpu249.lib
+    debug     opencv_gpu249d.lib
+    optimized opencv_highgui249.lib
+    debug     opencv_highgui249d.lib
+    optimized opencv_imgproc249.lib
+    debug     opencv_imgproc249d.lib
+    optimized opencv_legacy249.lib
+    debug     opencv_legacy249d.lib
+    optimized opencv_ml249.lib
+    debug     opencv_ml249d.lib
+    optimized opencv_nonfree249.lib
+    debug     opencv_nonfree249d.lib
+    optimized opencv_objdetect249.lib
+    debug     opencv_objdetect249d.lib
+    optimized opencv_ocl249.lib
+    debug     opencv_ocl249d.lib
+    optimized opencv_photo249.lib
+    debug     opencv_photo249d.lib
+    optimized opencv_stitching249.lib
+    debug     opencv_stitching249d.lib
+    optimized opencv_superres249.lib
+    debug     opencv_superres249d.lib
+    optimized opencv_ts249.lib
+    debug     opencv_ts249d.lib
+    optimized opencv_video249.lib
+    debug     opencv_video249d.lib
+    optimized opencv_videostab249.lib
+    debug     opencv_videostab249d.lib
+)
 set(OPENCV_FOUND TRUE) 
 
 # NGLIB (NetGen)
