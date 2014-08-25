@@ -235,6 +235,8 @@ AboutDialog::~AboutDialog()
     delete ui;
 }
 
+class SystemInfo {
+public:
 static QString getOperatingSystem()
 {
 #if defined (Q_OS_WIN32)
@@ -278,6 +280,79 @@ static QString getOperatingSystem()
 #endif
 }
 
+#if defined(Q_OS_WIN32) || defined(Q_OS_WIN64)
+typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
+#endif
+static int getWordSizeOfOS()
+{
+#if defined(Q_OS_WIN64)
+    return 64; // 64-bit process running on 64-bit windows
+#elif defined(Q_OS_WIN32)
+
+    // determine if 32-bit process running on 64-bit windows in WOW64 emulation
+    // or 32-bit process running on 32-bit windows
+    // default bIsWow64 to FALSE for 32-bit process on 32-bit windows
+
+    BOOL bIsWow64 = FALSE; // must default to FALSE
+
+    LPFN_ISWOW64PROCESS fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
+        GetModuleHandle("kernel32"), "IsWow64Process");
+
+    if (NULL != fnIsWow64Process) {
+        if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64)) {
+            assert(false); // something went majorly wrong
+        }
+    }
+    return bIsWow64 ? 64 : 32;
+
+#elif defined (Q_OS_LINUX)
+    // http://stackoverflow.com/questions/246007/how-to-determine-whether-a-given-linux-is-32-bit-or-64-bit
+    QString exe(QLatin1String("getconf"));
+    QStringList args;
+    args << QLatin1String("LONG_BIT");
+    QProcess proc;
+    proc.setEnvironment(QProcess::systemEnvironment());
+    proc.start(exe, args);
+    if (proc.waitForStarted() && proc.waitForFinished()) {
+        QByteArray info = proc.readAll();
+        return info.toInt();
+    }
+
+    return 0; // failed
+
+#elif defined (Q_OS_UNIX) || defined (Q_OS_MAC)
+    QString exe(QLatin1String("uname"));
+    QStringList args;
+    args << QLatin1String("-m");
+    QProcess proc;
+    proc.setEnvironment(QProcess::systemEnvironment());
+    proc.start(exe, args);
+    if (proc.waitForStarted() && proc.waitForFinished()) {
+        QByteArray info = proc.readAll();
+        info.replace('\n',"");
+        if (info.indexOf("x86_64") >= 0)
+            return 64;
+        else if (info.indexOf("amd64") >= 0)
+            return 64;
+        else if (info.indexOf("ia64") >= 0)
+            return 64;
+        else if (info.indexOf("ppc64") >= 0)
+            return 64;
+        else if (info.indexOf("i386") >= 0)
+            return 32;
+        else if (info.indexOf("i686") >= 0)
+            return 32;
+        else if (info.indexOf("x86") >= 0)
+            return 32;
+    }
+
+    return 0; // failed
+#else
+    return 0; // unknown
+#endif
+}
+};
+
 void AboutDialog::setupLabels()
 {
     //fonts are rendered smaller on Mac so point size can't be the same for all platforms
@@ -320,7 +395,7 @@ void AboutDialog::setupLabels()
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QString::fromAscii("Unknown"), getOperatingSystem());
+    os.replace(QString::fromAscii("Unknown"), SystemInfo::getOperatingSystem());
     ui->labelBuildOS->setText(os);
 
     QString platform = ui->labelBuildPlatform->text();
@@ -409,12 +484,17 @@ void AboutDialog::on_copyButton_clicked()
     QTextStream str(&data);
     std::map<std::string, std::string>& config = App::Application::Config();
     std::map<std::string,std::string>::iterator it;
+    QString exe = QString::fromAscii(App::GetApplication().getExecutableName());
 
     QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
     QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
     QString build  = QString::fromAscii(config["BuildRevision"].c_str());
-    str << "OS: " << getOperatingSystem() << endl;
-    str << "Word size: " << QSysInfo::WordSize << "-bit" << endl;
+    str << "OS: " << SystemInfo::getOperatingSystem() << endl;
+    int wordSize = SystemInfo::getWordSizeOfOS();
+    if (wordSize > 0) {
+        str << "Word size of OS: " << wordSize << "-bit" << endl;
+    }
+    str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit" << endl;
     str << "Version: " << major << "." << minor << "." << build << endl;
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
