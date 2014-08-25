@@ -85,6 +85,8 @@ open(PyObject *self, PyObject *args)
 			pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
 			pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
 
+			for(pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
+				pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
 
 
 
