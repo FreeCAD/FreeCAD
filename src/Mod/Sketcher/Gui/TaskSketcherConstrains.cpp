@@ -45,9 +45,27 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/BitmapFactory.h>
 #include <boost/bind.hpp>
+#include <Gui/Command.h>
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
+
+/// Inserts a QAction into an existing menu
+/// ICONSTR is the string of the icon in the resource file
+/// NAMESTR is the text appearing in the contextual menuAction
+/// CMDSTR is the string registered in the commandManager
+/// FUNC is the name of the member function to be executed on selection of the menu item
+/// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
+#define CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION)                       \
+QIcon icon_ ## FUNC( Gui::BitmapFactory().pixmap(ICONSTR) );                    \
+    QAction* constr_ ## FUNC = menu.addAction(icon_ ## FUNC,tr(NAMESTR), this, SLOT(FUNC()),    \
+        QKeySequence(QString::fromUtf8(Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));        \
+    if(ACTSONSELECTION) constr_ ## FUNC->setEnabled(!items.isEmpty()); else constr_ ## FUNC->setEnabled(true);
+
+/// Defines the member function corresponding to the CONTEXT_ITEM macro
+#define CONTEXT_MEMBER_DEF(CMDSTR,FUNC)                             \
+void ConstraintView::FUNC(){                               \
+   Gui::Application::Instance->commandManager().runCommandByName(CMDSTR);}
 
 // helper class to store additional information about the listWidget entry.
 class ConstraintItem : public QListWidgetItem
@@ -106,6 +124,10 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     QMenu menu;
     QListWidgetItem* item = currentItem();
     QList<QListWidgetItem *> items = selectedItems();
+    
+    CONTEXT_ITEM("Constraint_SelectElements","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
+    
+    QAction* sep = menu.addSeparator();
 
     QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
     QVariant v = item ? item->data(Qt::UserRole) : QVariant();
@@ -123,6 +145,8 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     remove->setEnabled(!items.isEmpty());
     menu.exec(event->globalPos());
 }
+
+CONTEXT_MEMBER_DEF("Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints)
 
 void ConstraintView::modifyCurrentItem()
 {
