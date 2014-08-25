@@ -315,6 +315,7 @@ static int getWordSizeOfOS()
     proc.start(exe, args);
     if (proc.waitForStarted() && proc.waitForFinished()) {
         QByteArray info = proc.readAll();
+        info.replace('\n',"");
         return info.toInt();
     }
 
