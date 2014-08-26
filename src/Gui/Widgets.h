@@ -126,6 +126,9 @@ public:
 
 protected:
   void keyPressEvent ( QKeyEvent * e);
+
+private:
+  int keyPressedCount;
 };
 
 // ------------------------------------------------------------------------------
