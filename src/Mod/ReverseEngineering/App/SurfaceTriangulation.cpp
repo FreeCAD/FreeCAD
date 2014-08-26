@@ -34,7 +34,7 @@
 #include <pcl/point_types.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/mls.h>
-#include <pcl/surface/mls_omp.h>
+#include <pcl/point_traits.h>
 #include <pcl/surface/gp3.h>
 #include <pcl/surface/grid_projection.h>
 #include <pcl/surface/convex_hull.h>
@@ -121,7 +121,7 @@ void SurfaceTriangulation::perform()
         for (size_t d = 0; d < mesh.cloud.fields.size(); ++d) {
             int c = 0;
             // adding vertex
-            if ((mesh.cloud.fields[d].datatype == sensor_msgs::PointField::FLOAT32) && (
+            if ((mesh.cloud.fields[d].datatype == pcl::PCLPointField::FLOAT32) && (
                  mesh.cloud.fields[d].name == "x" ||
                  mesh.cloud.fields[d].name == "y" ||
                  mesh.cloud.fields[d].name == "z"))
