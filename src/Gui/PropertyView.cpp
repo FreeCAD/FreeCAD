@@ -134,7 +134,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         if (ob) {
             for (pt = dataList.begin(); pt != dataList.end(); ++pt) {
                 PropInfo nameType;
-                nameType.propName = ob->getName(*pt);
+                nameType.propName = ob->getPropertyName(*pt);
                 nameType.propId = (*pt)->getTypeId().getKey();
 
                 if (!ob->isHidden(*pt) && !(*pt)->StatusBits.test(3)) {

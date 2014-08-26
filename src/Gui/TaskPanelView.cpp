@@ -169,9 +169,8 @@ void TaskPanelView::onUpdate(void)
 {
 }
 
-bool TaskPanelView::onMsg(const char* pMsg)
+bool TaskPanelView::onMsg(const char* pMsg,const char** ppReturn)
 {
-    // no messages yet
     return false;
 }
 /// @endcond

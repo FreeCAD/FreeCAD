@@ -106,13 +106,13 @@ void DynamicProperty::addDynamicProperties(const PropertyContainer* cont)
     }
 }
 
-const char* DynamicProperty::getName(const Property* prop) const
+const char* DynamicProperty::getPropertyName(const Property* prop) const
 {
     for (std::map<std::string,PropData>::const_iterator it = props.begin(); it != props.end(); ++it) {
         if (it->second.property == prop)
             return it->first.c_str();
     }
-    return this->pc->PropertyContainer::getName(prop);
+    return this->pc->PropertyContainer::getPropertyName(prop);
 }
 
 unsigned int DynamicProperty::getMemSize (void) const

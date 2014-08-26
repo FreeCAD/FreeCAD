@@ -562,7 +562,7 @@ void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("updateData")));
                     Py::Tuple args(1);
-                    const char* prop_name = object->getObject()->getName(prop);
+                    const char* prop_name = object->getObject()->getPropertyName(prop);
                     if (prop_name) {
                         args.setItem(0, Py::String(prop_name));
                         method.apply(args);
@@ -572,7 +572,7 @@ void ViewProviderPythonFeatureImp::updateData(const App::Property* prop)
                     Py::Callable method(vp.getAttr(std::string("updateData")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getObject()->getPyObject(), true));
-                    const char* prop_name = object->getObject()->getName(prop);
+                    const char* prop_name = object->getObject()->getPropertyName(prop);
                     if (prop_name) {
                         args.setItem(1, Py::String(prop_name));
                         method.apply(args);
@@ -599,7 +599,7 @@ void ViewProviderPythonFeatureImp::onChanged(const App::Property* prop)
                 if (vp.hasAttr("__object__")) {
                     Py::Callable method(vp.getAttr(std::string("onChanged")));
                     Py::Tuple args(1);
-                    std::string prop_name = object->getName(prop);
+                    std::string prop_name = object->getPropertyName(prop);
                     args.setItem(0, Py::String(prop_name));
                     method.apply(args);
                 }
@@ -607,7 +607,7 @@ void ViewProviderPythonFeatureImp::onChanged(const App::Property* prop)
                     Py::Callable method(vp.getAttr(std::string("onChanged")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    std::string prop_name = object->getName(prop);
+                    std::string prop_name = object->getPropertyName(prop);
                     args.setItem(1, Py::String(prop_name));
                     method.apply(args);
                 }

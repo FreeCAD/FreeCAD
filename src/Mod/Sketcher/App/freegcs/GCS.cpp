@@ -889,6 +889,8 @@ int System::solve(SubSystem *subsys, bool isFine, Algorithm alg)
         return solve_LM(subsys);
     else if (alg == DogLeg)
         return solve_DL(subsys);
+    else
+        return Failed;
 }
 
 int System::solve_BFGS(SubSystem *subsys, bool isFine)

@@ -476,7 +476,7 @@ SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
     return detail;
 }
 
-std::vector<Base::Vector3d> ViewProviderPartExt::getPickedPoints(const SoPickedPoint* pp) const
+std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPoint* pp) const
 {
     try {
         std::vector<Base::Vector3d> pts;

@@ -863,7 +863,7 @@ void PythonCommand::languageChange()
     }
 }
 
-const char* PythonCommand::getHelpUrl(void)
+const char* PythonCommand::getHelpUrl(void) const
 {
     PyObject* pcTemp;
     pcTemp = Interpreter().runMethodObject(_pcPyCommand, "CmdHelpURL");

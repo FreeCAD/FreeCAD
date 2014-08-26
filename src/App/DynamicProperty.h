@@ -74,7 +74,7 @@ public:
     std::vector<std::string> getDynamicPropertyNames() const;
     void addDynamicProperties(const PropertyContainer*);
     /// get the name of a property
-    const char* getName(const Property* prop) const;
+    const char* getPropertyName(const Property* prop) const;
     //@}
 
     /** @name Property attributes */

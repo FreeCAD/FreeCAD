@@ -1240,7 +1240,7 @@ bool ManualAlignment::applyPickedProbe(Gui::ViewProviderDocumentObject* prov, co
 
     // add to the list for the non-aligned view in the left view
     if (myAlignModel.activeGroup().hasView(prov)) {
-        std::vector<Base::Vector3d> pts = prov->getPickedPoints(pnt);
+        std::vector<Base::Vector3d> pts = prov->getModelPoints(pnt);
         if (pts.empty())
             return false;
         myAlignModel.activeGroup().addPoint(pts.front());
@@ -1249,7 +1249,7 @@ bool ManualAlignment::applyPickedProbe(Gui::ViewProviderDocumentObject* prov, co
         return true;
     }
     else if (myFixedGroup.hasView(prov)) {
-        std::vector<Base::Vector3d> pts = prov->getPickedPoints(pnt);
+        std::vector<Base::Vector3d> pts = prov->getModelPoints(pnt);
         if (pts.empty())
             return false;
         myFixedGroup.addPoint(pts.front());
