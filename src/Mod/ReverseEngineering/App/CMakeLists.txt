@@ -17,6 +17,7 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
     ${PCL_INCLUDE_DIRS}
+    ${FLANN_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
