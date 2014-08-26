@@ -75,7 +75,7 @@ public:
                           Gui::SelectionSingleton::MessageType Reason);
 
 
-    bool onMsg(const char* pMsg);
+    bool onMsg(const char* pMsg,const char** ppReturn);
 
     virtual const char *getName(void) const {return "SelectionView";}
 

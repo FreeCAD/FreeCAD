@@ -103,7 +103,7 @@ void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj,
         std::bind2nd(std::equal_to<Gui::ViewProvider*>(),
         const_cast<Gui::ViewProvider*>(&obj)));
     if (vp != Provider.end()) {
-        std::string prop_name = obj.getName(&prop);
+        std::string prop_name = obj.getPropertyName(&prop);
         if (prop.getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
             long value = static_cast<const App::PropertyInteger&>(prop).getValue();
             if (prop_name == "Transparency") {

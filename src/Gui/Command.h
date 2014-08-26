@@ -328,7 +328,7 @@ protected:
     /// if the command is not always active
     virtual bool isActive(void);
     /// Get the help URL
-    const char* getHelpUrl(void);
+    const char* getHelpUrl(void) const;
     /// Creates the used Action
     virtual Action * createAction(void);
     //@}

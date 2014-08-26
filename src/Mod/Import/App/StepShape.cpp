@@ -99,4 +99,6 @@ int StepShape::read(const char* fileName)
       model->PrintLabel(entity,msg);
       std::cout << ";"<< entity->DynamicType()->Name() << std::endl;
     }
+
+    return 0;
 }

@@ -193,7 +193,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
     if (parent->getTypeId() == App::Document::getClassTypeId()) {
         App::Document* doc = static_cast<App::Document*>(parent);
         QString docName = QString::fromAscii(App::GetApplication().getDocumentName(doc));
-        QString propName = QString::fromAscii(parent->getName(prop));
+        QString propName = QString::fromAscii(parent->getPropertyName(prop));
         return QString::fromAscii("FreeCAD.getDocument(\"%1\").%2").arg(docName).arg(propName);
     }
     if (parent->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
@@ -201,7 +201,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromAscii(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromAscii(obj->getNameInDocument());
-        QString propName = QString::fromAscii(parent->getName(prop));
+        QString propName = QString::fromAscii(parent->getPropertyName(prop));
         return QString::fromAscii("FreeCAD.getDocument(\"%1\").getObject(\"%2\").%3")
             .arg(docName).arg(objName).arg(propName);
     }
@@ -210,7 +210,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromAscii(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromAscii(obj->getNameInDocument());
-        QString propName = QString::fromAscii(parent->getName(prop));
+        QString propName = QString::fromAscii(parent->getPropertyName(prop));
         return QString::fromAscii("FreeCADGui.getDocument(\"%1\").getObject(\"%2\").%3")
             .arg(docName).arg(objName).arg(propName);
     }

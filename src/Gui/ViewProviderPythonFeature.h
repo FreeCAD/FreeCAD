@@ -219,8 +219,8 @@ public:
         return props->getPropertyByName(name);
     }
     /// get the name of a property
-    virtual const char* getName(const App::Property* prop) const {
-        return props->getName(prop);
+    virtual const char* getPropertyName(const App::Property* prop) const {
+        return props->getPropertyName(prop);
     }
     //@}
 
