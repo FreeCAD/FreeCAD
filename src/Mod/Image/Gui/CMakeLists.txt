@@ -1,14 +1,14 @@
 
-if(OPENCV_FOUND)
-    add_definitions(-DHAVE_OPENCV)
-endif(OPENCV_FOUND)
+if(OPENCV2_FOUND)
+    add_definitions(-DHAVE_OPENCV2)
+endif(OPENCV2_FOUND)
 
 
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIR}
-    ${OPENCV_INCLUDE_DIR}
+    ${OPENCV2_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${SOQT_INCLUDE_DIR}
@@ -19,7 +19,7 @@ include_directories(
 set(ImageGui_LIBS
     Image
     FreeCADGui
-    ${OpenCV_LIBRARIES}
+    ${OpenCV2_LIBRARIES}
     ${OPENGL_glu_LIBRARY}
 )
 

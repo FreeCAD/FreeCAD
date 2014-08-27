@@ -31,7 +31,7 @@
 #include <Gui/BitmapFactory.h>
 #include "ImageOrientationDialog.h"
 
-#if HAVE_OPENCV
+#if HAVE_OPENCV2
 #  include "opencv2/opencv.hpp"
 #endif
 
@@ -147,7 +147,7 @@ bool CmdCreateImagePlane::isActive()
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#if HAVE_OPENCV
+#if HAVE_OPENCV2
 DEF_STD_CMD(CmdImageCapturerTest);
 
 CmdImageCapturerTest::CmdImageCapturerTest()
@@ -193,7 +193,7 @@ void CreateImageCommands(void)
 
     rcCmdMgr.addCommand(new CmdImageOpen());
     rcCmdMgr.addCommand(new CmdCreateImagePlane());
-#if HAVE_OPENCV
+#if HAVE_OPENCV2
 	rcCmdMgr.addCommand(new CmdImageCapturerTest());
 #endif
 }
