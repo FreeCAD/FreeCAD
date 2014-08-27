@@ -30,7 +30,7 @@
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 
 // http://svn.pointclouds.org/pcl/tags/pcl-1.5.1/test/
-#if defined(PCL_FOUND)
+#if defined(HAVE_PCL_SURFACE)
 #include <pcl/pcl_config.h>
 #include <pcl/point_types.h>
 #include <pcl/features/normal_3d.h>
@@ -165,5 +165,5 @@ void SurfaceTriangulation::perform()
     //std::vector<int> states = gp3.getPointStates();
 }
 
-#endif // PCL_FOUND
+#endif // HAVE_PCL_SURFACE
 
