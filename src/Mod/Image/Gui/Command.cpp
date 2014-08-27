@@ -31,10 +31,9 @@
 #include <Gui/BitmapFactory.h>
 #include "ImageOrientationDialog.h"
 
-//#include <Mod/Image/App/CaptureClass.h>
-
-//#include <cv.h>
-//#include <highgui.h>
+#if HAVE_OPENCV2
+#  include "opencv2/opencv.hpp"
+#endif
 
 
 #include "ImageView.h"
@@ -148,7 +147,7 @@ bool CmdCreateImagePlane::isActive()
 }
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#if 0
+#if HAVE_OPENCV2
 DEF_STD_CMD(CmdImageCapturerTest);
 
 CmdImageCapturerTest::CmdImageCapturerTest()
@@ -165,69 +164,26 @@ CmdImageCapturerTest::CmdImageCapturerTest()
 
 void CmdImageCapturerTest::activated(int iMsg)
 {
-#if 0
-    // Reading an image
-    QString s = QFileDialog::getOpenFileName(Gui::getMainWindow(), QObject::tr("Choose an image file to open"), QString::null, 
-                                             QObject::tr("Images (*.png *.xpm *.jpg *.bmp)"));
-    if (s.isEmpty()) return;
+	using namespace cv;
 
-    IplImage* image = cvLoadImage( 
-        (const char*)s.toLatin1(),
-        CV_LOAD_IMAGE_GRAYSCALE
-    );
-    IplImage* src = cvLoadImage( (const char*)s.toLatin1() ); //Changed for prettier show in color
-    CvMemStorage* storage = cvCreateMemStorage(0);
-    cvSmooth(image, image, CV_GAUSSIAN, 5, 5 );
-    CvSeq* results = cvHoughCircles( 
-        image, 
-        storage, 
-        CV_HOUGH_GRADIENT, 
-        2, 
-        image->width/10 
-    ); 
-    for( int i = 0; i < results->total; i++ ) {
-        float* p = (float*) cvGetSeqElem( results, i );
-        CvPoint pt = cvPoint( cvRound( p[0] ), cvRound( p[1] ) );
-        cvCircle( 
-            src,
-            pt, 
-            cvRound( p[2] ),
-            CV_RGB(0xff,0,0) 
-        );
-    }
-    cvNamedWindow( "cvHoughCircles", 1 );
-    cvShowImage( "cvHoughCircles", src);
-    cvWaitKey(0);
-#else
-    struct tm *newtime;
-#if defined (_MSC_VER)
-    struct _timeb tstruct;
-    __int64 ltime;
-#elif defined(__GNUC__)
-    struct timeb tstruct;
-    time_t ltime;
-#endif
+    VideoCapture cap(0); // open the default camera
+    if(!cap.isOpened())  // check if we succeeded
+        return;
 
-    char buff[100];
-    Capturerer cap(Capturerer::chooseCamNum());
-    cap.setCaptureWindows(true);
-    for(int i = 0; i< 200;i++){
-#if defined (_MSC_VER)
-        _ftime( &tstruct ); 
-        _time64( &ltime );
-        // Obtain coordinated universal time:
-        newtime = _gmtime64( &ltime ); // C4996
-#elif defined(__GNUC__)
-        ftime( &tstruct ); 
-        time( &ltime );
-        // Obtain coordinated universal time:
-        newtime = gmtime( &ltime ); // C4996
-#endif
-        sprintf(buff,"%2d:%2d:%2d:%3d - %4d",newtime->tm_hour,newtime->tm_min,newtime->tm_sec,tstruct.millitm,i );
-        if (cap.getOneCapture(buff)==27)
-            break;
+    Mat edges;
+    namedWindow("edges",1);
+    for(;;)
+    {
+        Mat frame;
+        cap >> frame; // get a new frame from camera
+        cvtColor(frame, edges, CV_BGR2GRAY);
+        GaussianBlur(edges, edges, Size(7,7), 1.5, 1.5);
+        Canny(edges, edges, 0, 30, 3);
+        imshow("edges", edges);
+        if(waitKey(30) >= 0) break;
     }
-#endif
+    // the camera will be deinitialized automatically in VideoCapture destructor
+
 }
 #endif
 
@@ -237,5 +193,7 @@ void CreateImageCommands(void)
 
     rcCmdMgr.addCommand(new CmdImageOpen());
     rcCmdMgr.addCommand(new CmdCreateImagePlane());
-  //rcCmdMgr.addCommand(new CmdImageCapturerTest());
+#if HAVE_OPENCV2
+	rcCmdMgr.addCommand(new CmdImageCapturerTest());
+#endif
 }

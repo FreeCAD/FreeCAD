@@ -98,7 +98,6 @@ void pagesize(string & page_template, int dims[4], int block[4])
     catch (Standard_Failure)
     { }
 
-    file.close();
 
     if (t3 != 0)
     {

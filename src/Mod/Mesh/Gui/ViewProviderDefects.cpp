@@ -646,8 +646,7 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<unsigned l
     for (it = indices.begin(); it != indices.end(); ) {
         unsigned long id1 = *it; ++it;
         unsigned long id2 = *it; ++it;
-        intersection.push_back(std::make_pair
-            <unsigned long, unsigned long>(id1,id2));
+        intersection.push_back(std::make_pair(id1,id2));
     }
 
     std::vector<std::pair<Base::Vector3f, Base::Vector3f> > lines;

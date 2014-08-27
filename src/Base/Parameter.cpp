@@ -451,9 +451,9 @@ std::vector<std::pair<std::string,bool> > ParameterGrp::GetBoolMap(const char * 
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
             if (strcmp(StrX(((DOMElement*)pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str(),"1"))
-                vrValues.push_back(std::make_pair<std::string, bool>(Name, false));
+                vrValues.push_back(std::make_pair(Name, false));
             else
-                vrValues.push_back(std::make_pair<std::string, bool>(Name, true));
+                vrValues.push_back(std::make_pair(Name, true));
         }
         pcTemp = FindNextElement(pcTemp,"FCBool");
     }
@@ -513,7 +513,7 @@ std::vector<std::pair<std::string,long> > ParameterGrp::GetIntMap(const char * s
         Name = StrX( ((DOMElement*)pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            vrValues.push_back(std::make_pair<std::string, long>(Name,
+            vrValues.push_back(std::make_pair(Name,
                                ( atol (StrX(((DOMElement*)pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str()))));
         }
         pcTemp = FindNextElement(pcTemp,"FCInt") ;
@@ -574,7 +574,7 @@ std::vector<std::pair<std::string,unsigned long> > ParameterGrp::GetUnsignedMap(
         Name = StrX( ((DOMElement*)pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            vrValues.push_back(std::make_pair<std::string, unsigned long>(Name,
+            vrValues.push_back(std::make_pair(Name,
                                ( strtoul (StrX(((DOMElement*)pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str(),0,10) )));
         }
         pcTemp = FindNextElement(pcTemp,"FCUInt");
@@ -635,7 +635,7 @@ std::vector<std::pair<std::string,double> > ParameterGrp::GetFloatMap(const char
         Name = StrX( ((DOMElement*)pcTemp)->getAttributes()->getNamedItem(XStr("Name").unicodeForm())->getNodeValue()).c_str();
         // check on filter condition
         if (sFilter == NULL || Name.find(sFilter)!= std::string::npos) {
-            vrValues.push_back(std::make_pair<std::string, double>(Name,
+            vrValues.push_back(std::make_pair(Name,
                                ( atof (StrX(((DOMElement*)pcTemp)->getAttribute(XStr("Value").unicodeForm())).c_str()))));
         }
         pcTemp = FindNextElement(pcTemp,"FCFloat");
@@ -735,7 +735,7 @@ std::vector<std::pair<std::string,std::string> > ParameterGrp::GetASCIIMap(const
             // retrive the text element
             DOMNode *pcElem2 = pcTemp->getFirstChild();
             if (pcElem2)
-                vrValues.push_back(std::make_pair<std::string, std::string>(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str())));
+                vrValues.push_back(std::make_pair(Name, std::string(StrXUTF8(pcElem2->getNodeValue()).c_str())));
         }
         pcTemp = FindNextElement(pcTemp,"FCText");
     }

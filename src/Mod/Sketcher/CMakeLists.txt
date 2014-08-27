@@ -1,8 +1,8 @@
 
 add_subdirectory(App)
-if(FREECAD_BUILD_GUI)
+if(BUILD_GUI)
     add_subdirectory(Gui)
-endif(FREECAD_BUILD_GUI)
+endif(BUILD_GUI)
 
 INSTALL(
     FILES
@@ -11,7 +11,15 @@ INSTALL(
         SketcherExample.py
         TestSketcherApp.py
         TestSketcherGui.py
+        Profiles.py
     DESTINATION
         Mod/Sketcher
 )
 
+INSTALL(
+    FILES
+        ProfileLib/Hexagon.py
+        ProfileLib/__init__.py
+    DESTINATION
+        Mod/Sketcher/ProfileLib
+)

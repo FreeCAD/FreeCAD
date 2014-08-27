@@ -24,9 +24,11 @@
 //  Author : Alain PERRONNET
 //  Date   : 13 novembre 2006
 
+
 #include "Rn.h"
 #include "aptrte.h"
 #include "utilities.h"
+
 
 using namespace std;
 
@@ -839,6 +841,6 @@ void MEFISTO2D_STDCALL qualitetrte( R3 *mnpxyd,
   if( nbtrianeg>0 )
     MESSAGE( "ATTENTION: "<< nbtrianeg << " TRIANGLES d'AIRE NEGATIVE" );
 
-  MESSAGE(" ");
+  MESSAGE("_");
   return;
 }

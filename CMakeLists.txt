@@ -113,181 +113,181 @@ endif(MSVC)
 # ==============================================================================
 # == All the options for the build process    ============
 
-OPTION(FREECAD_BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
+OPTION(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line and the Python import module." ON)
 OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3rd party libs. On Windows the Installer is build." OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
-OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+OPTION(BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 
-OPTION(FREECAD_BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
-OPTION(FREECAD_BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
-OPTION(FREECAD_BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
-OPTION(FREECAD_BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
-OPTION(FREECAD_BUILD_ARCH "Build the FreeCAD Architecture module" ON)
-OPTION(FREECAD_BUILD_ASSEMBLY "Build the FreeCAD Assembly module" ON)
-OPTION(FREECAD_BUILD_COMPLETE "Build the FreeCAD complete module" ON)
-OPTION(FREECAD_BUILD_DRAFT "Build the FreeCAD draft module" ON)
-OPTION(FREECAD_BUILD_DRAWING "Build the FreeCAD drawing module" ON)
-OPTION(FREECAD_BUILD_IDF "Build the FreeCAD idf module" ON)
-OPTION(FREECAD_BUILD_IMAGE "Build the FreeCAD image module" ON)
-OPTION(FREECAD_BUILD_IMPORT "Build the FreeCAD import module" ON)
-OPTION(FREECAD_BUILD_INSPECTION "Build the FreeCAD inspection module" ON)
-OPTION(FREECAD_BUILD_JTREADER "Build the FreeCAD jt reader module" OFF)
-OPTION(FREECAD_BUILD_MATERIAL "Build the FreeCAD material module" ON)
-OPTION(FREECAD_BUILD_MESH "Build the FreeCAD mesh module" ON)
-OPTION(FREECAD_BUILD_MESH_PART "Build the FreeCAD mesh part module" ON)
-OPTION(FREECAD_BUILD_OPENSCAD "Build the FreeCAD openscad module" ON)
-OPTION(FREECAD_BUILD_PART "Build the FreeCAD part module" ON)
-OPTION(FREECAD_BUILD_PART_DESIGN "Build the FreeCAD part design module" ON)
-OPTION(FREECAD_BUILD_PLOT "Build the FreeCAD plot module" ON)
-OPTION(FREECAD_BUILD_POINTS "Build the FreeCAD points module" ON)
-OPTION(FREECAD_BUILD_RAYTRACING "Build the FreeCAD ray tracing module" ON)
-OPTION(FREECAD_BUILD_REVERSEENGINEERING "Build the FreeCAD reverse engineering module" ON)
-OPTION(FREECAD_BUILD_ROBOT "Build the FreeCAD robot module" ON)
-OPTION(FREECAD_BUILD_SHIP "Build the FreeCAD ship module" ON)
-OPTION(FREECAD_BUILD_SKETCHER "Build the FreeCAD sketcher module" ON)
-OPTION(FREECAD_BUILD_SPREADSHEET "Build the FreeCAD spreadsheet module" ON)
-OPTION(FREECAD_BUILD_START "Build the FreeCAD start module" ON)
-OPTION(FREECAD_BUILD_TEST "Build the FreeCAD test module" ON)
-OPTION(FREECAD_BUILD_WEB "Build the FreeCAD web module" ON)
+OPTION(BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
+OPTION(BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
+OPTION(BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
+OPTION(BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
+OPTION(BUILD_ARCH "Build the FreeCAD Architecture module" ON)
+OPTION(BUILD_ASSEMBLY "Build the FreeCAD Assembly module" ON)
+OPTION(BUILD_COMPLETE "Build the FreeCAD complete module" ON)
+OPTION(BUILD_DRAFT "Build the FreeCAD draft module" ON)
+OPTION(BUILD_DRAWING "Build the FreeCAD drawing module" ON)
+OPTION(BUILD_IDF "Build the FreeCAD idf module" ON)
+OPTION(BUILD_IMAGE "Build the FreeCAD image module" ON)
+OPTION(BUILD_IMPORT "Build the FreeCAD import module" ON)
+OPTION(BUILD_INSPECTION "Build the FreeCAD inspection module" ON)
+OPTION(BUILD_JTREADER "Build the FreeCAD jt reader module" OFF)
+OPTION(BUILD_MATERIAL "Build the FreeCAD material module" ON)
+OPTION(BUILD_MESH "Build the FreeCAD mesh module" ON)
+OPTION(BUILD_MESH_PART "Build the FreeCAD mesh part module" ON)
+OPTION(BUILD_OPENSCAD "Build the FreeCAD openscad module" ON)
+OPTION(BUILD_PART "Build the FreeCAD part module" ON)
+OPTION(BUILD_PART_DESIGN "Build the FreeCAD part design module" ON)
+OPTION(BUILD_PLOT "Build the FreeCAD plot module" ON)
+OPTION(BUILD_POINTS "Build the FreeCAD points module" ON)
+OPTION(BUILD_RAYTRACING "Build the FreeCAD ray tracing module" ON)
+OPTION(BUILD_REVERSEENGINEERING "Build the FreeCAD reverse engineering module" ON)
+OPTION(BUILD_ROBOT "Build the FreeCAD robot module" ON)
+OPTION(BUILD_SHIP "Build the FreeCAD ship module" ON)
+OPTION(BUILD_SKETCHER "Build the FreeCAD sketcher module" ON)
+OPTION(BUILD_SPREADSHEET "Build the FreeCAD spreadsheet module" ON)
+OPTION(BUILD_START "Build the FreeCAD start module" ON)
+OPTION(BUILD_TEST "Build the FreeCAD test module" ON)
+OPTION(BUILD_WEB "Build the FreeCAD web module" ON)
 
 if(MSVC)
 OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" OFF)
-OPTION(FREECAD_BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
+OPTION(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
 else(MSVC)
 set(FREECAD_USE_3DCONNEXION OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
-OPTION(FREECAD_BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
+OPTION(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
 endif(MSVC)
 
 # if this is set override some options
-if (FREECAD_BUILD_DEBIAN)
+if (BUILD_DEBIAN)
     set(FREECAD_USE_EXTERNAL_ZIPIOS ON)
     set(FREECAD_USE_EXTERNAL_PIVY ON)
-endif (FREECAD_BUILD_DEBIAN)
+endif (BUILD_DEBIAN)
 
 # ==============================================================================
 #inter-module dependencies
 
 #took these from Mod/Complete/App/AppComplete.cpp. appears to be working.
-if(FREECAD_BUILD_COMPLETE)
-  set(FREECAD_BUILD_MESH ON)
-  set(FREECAD_BUILD_POINTS ON)
-  set(FREECAD_BUILD_DRAWING ON)
-  set(FREECAD_BUILD_RAYTRACING ON)
-  set(FREECAD_BUILD_PART_DESIGN ON)
-  set(FREECAD_BUILD_IMAGE ON)
-  set(FREECAD_BUILD_DRAFT ON)
-endif(FREECAD_BUILD_COMPLETE)
+if(BUILD_COMPLETE)
+  set(BUILD_MESH ON)
+  set(BUILD_POINTS ON)
+  set(BUILD_DRAWING ON)
+  set(BUILD_RAYTRACING ON)
+  set(BUILD_PART_DESIGN ON)
+  set(BUILD_IMAGE ON)
+  set(BUILD_DRAFT ON)
+endif(BUILD_COMPLETE)
 
 #inferred from .py files. appears to be working.
-if(FREECAD_BUILD_ARCH)
-  set(FREECAD_BUILD_PART ON)
-  set(FREECAD_BUILD_MESH ON)
-  set(FREECAD_BUILD_DRAFT ON)
-endif(FREECAD_BUILD_ARCH)
+if(BUILD_ARCH)
+  set(BUILD_PART ON)
+  set(BUILD_MESH ON)
+  set(BUILD_DRAFT ON)
+endif(BUILD_ARCH)
 
 #inferred from .py files. appears to be working.
-if(FREECAD_BUILD_OPENSCAD)
-  set(FREECAD_BUILD_MESH_PART ON)
-  set(FREECAD_BUILD_DRAFT ON)
-endif(FREECAD_BUILD_OPENSCAD)
+if(BUILD_OPENSCAD)
+  set(BUILD_MESH_PART ON)
+  set(BUILD_DRAFT ON)
+endif(BUILD_OPENSCAD)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_INSPECTION)
-  set(FREECAD_BUILD_MESH ON)
-  set(FREECAD_BUILD_POINTS ON)
-  set(FREECAD_BUILD_PART ON)
-endif(FREECAD_BUILD_INSPECTION)
+if(BUILD_INSPECTION)
+  set(BUILD_MESH ON)
+  set(BUILD_POINTS ON)
+  set(BUILD_PART ON)
+endif(BUILD_INSPECTION)
 
 #inferred from .py files. appears to be working.
-if(FREECAD_BUILD_SHIP)
-  set(FREECAD_BUILD_PART ON)
-  set(FREECAD_BUILD_PLOT ON)
-  set(FREECAD_BUILD_IMAGE ON)
-endif(FREECAD_BUILD_SHIP)
+if(BUILD_SHIP)
+  set(BUILD_PART ON)
+  set(BUILD_PLOT ON)
+  set(BUILD_IMAGE ON)
+endif(BUILD_SHIP)
 
 #inferred from .py files. appears to be working.
-if(FREECAD_BUILD_SPREADSHEET)
-  set(FREECAD_BUILD_DRAFT ON)
-endif(FREECAD_BUILD_SPREADSHEET)
+if(BUILD_SPREADSHEET)
+  set(BUILD_DRAFT ON)
+endif(BUILD_SPREADSHEET)
 
 #this has been tested. appears to be working.
-if(FREECAD_BUILD_DRAFT)
-  set(FREECAD_BUILD_SKETCHER ON)
-endif(FREECAD_BUILD_DRAFT)
+if(BUILD_DRAFT)
+  set(BUILD_SKETCHER ON)
+endif(BUILD_DRAFT)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_PART_DESIGN)
-  set(FREECAD_BUILD_SKETCHER ON)
-endif(FREECAD_BUILD_PART_DESIGN)
+if(BUILD_PART_DESIGN)
+  set(BUILD_SKETCHER ON)
+endif(BUILD_PART_DESIGN)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_REVERSEENGINEERING)
-  set(FREECAD_BUILD_PART ON)
-  set(FREECAD_BUILD_MESH ON)
-endif(FREECAD_BUILD_REVERSEENGINEERING)
+if(BUILD_REVERSEENGINEERING)
+  set(BUILD_PART ON)
+  set(BUILD_MESH ON)
+endif(BUILD_REVERSEENGINEERING)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_MESH_PART)
-  set(FREECAD_BUILD_PART ON)
-  set(FREECAD_BUILD_MESH ON)
-  set(FREECAD_BUILD_SMESH ON)
-endif(FREECAD_BUILD_MESH_PART)
+if(BUILD_MESH_PART)
+  set(BUILD_PART ON)
+  set(BUILD_MESH ON)
+  set(BUILD_SMESH ON)
+endif(BUILD_MESH_PART)
 
 #inferred from cmakelists.txt. build errors. obsolete?
-if(FREECAD_BUILD_CAM)
-  set(FREECAD_BUILD_PART ON)
-  set(FREECAD_BUILD_MESH ON)
-endif(FREECAD_BUILD_CAM)
+if(BUILD_CAM)
+  set(BUILD_PART ON)
+  set(BUILD_MESH ON)
+endif(BUILD_CAM)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_RAYTRACING)
-  set(FREECAD_BUILD_PART ON)
-endif(FREECAD_BUILD_RAYTRACING)
+if(BUILD_RAYTRACING)
+  set(BUILD_PART ON)
+endif(BUILD_RAYTRACING)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_DRAWING)
-  set(FREECAD_BUILD_PART ON)
-endif(FREECAD_BUILD_DRAWING)
+if(BUILD_DRAWING)
+  set(BUILD_PART ON)
+endif(BUILD_DRAWING)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_ROBOT)
-  set(FREECAD_BUILD_PART ON)
-endif(FREECAD_BUILD_ROBOT)
+if(BUILD_ROBOT)
+  set(BUILD_PART ON)
+endif(BUILD_ROBOT)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_SKETCHER)
-  set(FREECAD_BUILD_PART ON)
-endif(FREECAD_BUILD_SKETCHER)
+if(BUILD_SKETCHER)
+  set(BUILD_PART ON)
+endif(BUILD_SKETCHER)
 
 #inferred from .py files. built, but not sure how to test.
-if(FREECAD_BUILD_IDF)
-  set(FREECAD_BUILD_PART ON)
-endif(FREECAD_BUILD_IDF)
+if(BUILD_IDF)
+  set(BUILD_PART ON)
+endif(BUILD_IDF)
 
 #inferred from cmakelists.txt. built, but not sure how to test.
-if(FREECAD_BUILD_IMPORT)
-  set(FREECAD_BUILD_PART ON)
-endif(FREECAD_BUILD_IMPORT)
+if(BUILD_IMPORT)
+  set(BUILD_PART ON)
+endif(BUILD_IMPORT)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_FEM)
-  set(FREECAD_BUILD_PART ON)
-  set(FREECAD_BUILD_SMESH ON)
-endif(FREECAD_BUILD_FEM)
+if(BUILD_FEM)
+  set(BUILD_PART ON)
+  set(BUILD_SMESH ON)
+endif(BUILD_FEM)
 
 #inferred from cmakelists.txt. appears to be working.
-if(FREECAD_BUILD_SANDBOX)
-  set(FREECAD_BUILD_PART ON)
-  set(FREECAD_BUILD_MESH ON)
-endif(FREECAD_BUILD_SANDBOX)
+if(BUILD_SANDBOX)
+  set(BUILD_PART ON)
+  set(BUILD_MESH ON)
+endif(BUILD_SANDBOX)
 
 #inferred from header includes. not tested.
-if(FREECAD_BUILD_JTREADER)
-  set(FREECAD_BUILD_MESH ON)
-endif(FREECAD_BUILD_JTREADER)
+if(BUILD_JTREADER)
+  set(BUILD_MESH ON)
+endif(BUILD_JTREADER)
 
 #leaving test module for someone else.
 #image has none. as far as I can tell.
@@ -309,6 +309,7 @@ if(FREECAD_LIBPACK_USE)
     find_file(FREECAD_LIBPACK_CHECKFILE7X boost_program_options-vc90-mt-gd-1_39.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKFILE8X boost_program_options-vc90-mt-gd-1_48.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKFILE9X boost_program_options-vc90-mt-gd-1_54.lib ${FREECAD_LIBPACK_DIR}/lib )
+    find_file(FREECAD_LIBPACK_CHECKFILE10X boost_program_options-vc110-mt-1_55.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKCUSTOM boost_program_options-vc90-mt-gd-1_41.lib ${FREECAD_LIBPACK_DIR}/lib )
 
     # don't show them in the GUI
@@ -316,6 +317,7 @@ if(FREECAD_LIBPACK_USE)
     set(FREECAD_LIBPACK_CHECKFILE7X "${FREECAD_LIBPACK_CHECKFILE7X}" CACHE INTERNAL "Find libpack")
     set(FREECAD_LIBPACK_CHECKFILE8X "${FREECAD_LIBPACK_CHECKFILE8X}" CACHE INTERNAL "Find libpack")
     set(FREECAD_LIBPACK_CHECKFILE9X "${FREECAD_LIBPACK_CHECKFILE9X}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKFILE10X "${FREECAD_LIBPACK_CHECKFILE10X}" CACHE INTERNAL "Find libpack")
     set(FREECAD_LIBPACK_CHECKCUSTOM "${FREECAD_LIBPACK_CHECKCUSTOM}" CACHE INTERNAL "Find libpack")
 
     IF(FREECAD_LIBPACK_CHECKFILE6X)
@@ -340,6 +342,10 @@ if(FREECAD_LIBPACK_USE)
         file(GLOB FREECAD_LIBPACK_PYSIDE    "${FREECAD_LIBPACK_DIR}/pyside/lib/site-packages/PySide/*.py*")
         file(GLOB_RECURSE FREECAD_LIBPACK_PYSIDEUIC RELATIVE "${FREECAD_LIBPACK_PYSIDEUIC_REL}" "${FREECAD_LIBPACK_PYSIDEUIC_REL}/pysideuic/*.py")
         file(GLOB FREECAD_LIBPACK_PYTHON    "${FREECAD_LIBPACK_DIR}/bin/*.py*")
+    ELSEIF(FREECAD_LIBPACK_CHECKFILE10X)
+        set(FREECAD_LIBPACK_VERSION "10.x" CACHE STRING "Displays if the libpack has been found" FORCE)
+        include(cMake/UseLibPack10x.cmake)
+        set(SWIG_EXECUTABLE ${FREECAD_LIBPACK_DIR}/tools/swigwin-3.0.2/swig.exe CACHE STRING "Swig" FORCE)
     ELSEIF(FREECAD_LIBPACK_CHECKCUSTOM)
         set(FREECAD_LIBPACK_VERSION "Custom" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPackCustom.cmake)
@@ -494,9 +500,9 @@ else(FREECAD_LIBPACK_USE)
     
 # -------------------------------- Netgen --------------------------------
 
-    if (FREECAD_BUILD_FEM_NETGEN)
+    if (BUILD_FEM_NETGEN)
         find_package(NETGEN)
-    endif(FREECAD_BUILD_FEM_NETGEN)
+    endif(BUILD_FEM_NETGEN)
 
 # -------------------------------- OpenCV --------------------------------
 
@@ -515,6 +521,10 @@ else(FREECAD_LIBPACK_USE)
 
     find_package(Eigen3)
 
+# -------------------------------- pcl ----------------------------------
+
+    find_package(PCL COMPONENTS common kdtree features surface)
+
 # -------------------------------- ODE ----------------------------------
 
 #    find_package(ODE)
@@ -526,12 +536,12 @@ else(FREECAD_LIBPACK_USE)
     SET(QT_MIN_VERSION 4.5.0)
     set(QT_USE_QTNETWORK TRUE)
     set(QT_USE_QTXML TRUE)
-    if(FREECAD_BUILD_GUI)
+    if(BUILD_GUI)
         set(QT_USE_QTOPENGL TRUE)
         set(QT_USE_QTSVG TRUE)
         set(QT_USE_QTUITOOLS TRUE)
         set(QT_USE_QTWEBKIT TRUE)
-    endif(FREECAD_BUILD_GUI)
+    endif(BUILD_GUI)
     find_package(Qt4 REQUIRED)
 
     include(${QT_USE_FILE})
@@ -577,7 +587,7 @@ else(FREECAD_LIBPACK_USE)
 
 #---------------------------------------------------
 
-    if(FREECAD_BUILD_GUI)
+    if(BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------
 
         find_package(OpenGL)
@@ -623,7 +633,7 @@ else(FREECAD_LIBPACK_USE)
 # ------------------------------------------------------------------------
 
 
-    endif(FREECAD_BUILD_GUI)
+    endif(BUILD_GUI)
 
 
 endif(FREECAD_LIBPACK_USE)

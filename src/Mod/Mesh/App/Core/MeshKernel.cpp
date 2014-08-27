@@ -193,7 +193,7 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry)
             unsigned long ulT1 = pF->_aulPoints[(i+1)%3];
             unsigned long ulP0 = std::min<unsigned long>(ulT0, ulT1);
             unsigned long ulP1 = std::max<unsigned long>(ulT0, ulT1);
-            edgeMap[std::make_pair<unsigned long, unsigned long>(ulP0, ulP1)].push_front(k);
+            edgeMap[std::make_pair(ulP0, ulP1)].push_front(k);
         }
     }
 
@@ -210,7 +210,7 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry)
             unsigned long ulT1 = pF->_aulPoints[(i+1)%3];
             unsigned long ulP0 = std::min<unsigned long>(ulT0, ulT1);
             unsigned long ulP1 = std::max<unsigned long>(ulT0, ulT1);
-            std::pair<unsigned long, unsigned long> edge = std::make_pair<unsigned long, unsigned long>(ulP0, ulP1);
+            std::pair<unsigned long, unsigned long> edge = std::make_pair(ulP0, ulP1);
             std::map<std::pair<unsigned long, unsigned long>, std::list<unsigned long> >::iterator pI = edgeMap.find(edge);
             // Does the current facet share the same edge?
             if (pI != edgeMap.end()) {

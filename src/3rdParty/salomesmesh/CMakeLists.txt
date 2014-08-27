@@ -27,7 +27,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 if(MSVC)
-	if(FREECAD_BUILD_FEM_NETGEN)
+	if(BUILD_FEM_NETGEN)
 		set(SMESH_LIBS
 			debug     MSVCRTD.LIB
 			debug     MSVCPRTD.LIB
@@ -41,7 +41,7 @@ if(MSVC)
 			${OCC_OCAF_DEBUG_LIBRARIES}
 			${OCC_OCAF_LIBRARIES}
 		)
-	else(FREECAD_BUILD_FEM_NETGEN)
+	else(BUILD_FEM_NETGEN)
 		set(SMESH_LIBS
 			debug     MSVCRTD.LIB
 			debug     MSVCPRTD.LIB
@@ -53,21 +53,21 @@ if(MSVC)
 			${OCC_OCAF_DEBUG_LIBRARIES}
 			${OCC_OCAF_LIBRARIES}
 		)
-	endif(FREECAD_BUILD_FEM_NETGEN)
+	endif(BUILD_FEM_NETGEN)
 	
 else(MSVC)
-    if(FREECAD_BUILD_FEM_NETGEN)
+    if(BUILD_FEM_NETGEN)
         set(SMESH_LIBS
             ${NGLIB_LIBRARIES}
             ${OCC_LIBRARIES}
             ${OCC_OCAF_LIBRARIES}
         )
-    else(FREECAD_BUILD_FEM_NETGEN)
+    else(BUILD_FEM_NETGEN)
         set(SMESH_LIBS
             ${OCC_LIBRARIES}
             ${OCC_OCAF_LIBRARIES}
         )
-    endif(FREECAD_BUILD_FEM_NETGEN)
+    endif(BUILD_FEM_NETGEN)
 endif(MSVC)
 
 
@@ -127,7 +127,7 @@ ELSE(UNIX)
     ######### Windows ###########
     #MESSAGE("-- Windows system detected")
     IF(MSVC)
-        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB /wd4290 /wd4251 /wd4018 /wd4800 /wd4996 /wd4244 /wd4806 /wd4275)
+        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -DNO_My_ctype -DNO_ISATTY -DNO_FPINIT /wd4290 /wd4251 /wd4018 /wd4800 /wd4996 /wd4244 /wd4806 /wd4275)
     ELSE(MSVC)
         ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB)
     ENDIF(MSVC)
@@ -268,49 +268,58 @@ endif(WIN32)
 ##############
 # MEFISTO2   #
 ##############
-if (MSVC)
-    IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        # Mefisto2f.lib was built using f2c which created
-        # all function names with an '_' at the end.
-        FILE(GLOB MEFISTO2_source_files
-            src/MEFISTO2/*.cpp
+#if (MSVC)
+    #IF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    #    # Mefisto2f.lib was built using f2c which created
+    #    # all function names with an '_' at the end.
+    #    FILE(GLOB MEFISTO2_source_files
+    #        src/MEFISTO2/*.cpp
+    #        inc/Rn.h
+    #        inc/aptrte.h
+    #    )
+    #ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    #    FILE(GLOB MEFISTO2_source_files
+    #        src/MEFISTO2/*.cpp
+    #        src/MEFISTO2/MEFISTO2F.def
+    #        inc/Rn.h
+    #        inc/aptrte.h
+    #    )
+    #ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+
+        set(MEFISTO2_source_files
+            src/MEFISTO2/aptrte.cpp
+            src/MEFISTO2/trte.c
             inc/Rn.h
             inc/aptrte.h
-        )
-    ELSE(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        FILE(GLOB MEFISTO2_source_files
-            src/MEFISTO2/*.cpp
-            src/MEFISTO2/MEFISTO2F.def
-            inc/Rn.h
-            inc/aptrte.h
-        )
-    ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
-else(MSVC)
-    FILE(GLOB MEFISTO2_source_files
-        src/MEFISTO2/*.cpp
-        src/MEFISTO2/trte.f
-        inc/Rn.h
-        inc/aptrte.h
-    )
-endif(MSVC)
+        )        
+    
+#else(MSVC)
+#    FILE(GLOB MEFISTO2_source_files
+#        src/MEFISTO2/*.cpp
+#        src/MEFISTO2/trte.f
+#        inc/Rn.h
+#        inc/aptrte.h
+#    )
+#endif(MSVC)
 
 ADD_LIBRARY(MEFISTO2 SHARED ${MEFISTO2_source_files})
 
 SET_BIN_DIR(MEFISTO2 MEFISTO2)
-if(MSVC)
-    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} MEFISTO2f.lib) # in case of Windows link the prebuild Fortran lib
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
-    else(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS -D__WATCOM__")
-    endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
-elseif(MINGW)
-    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
+#if(MSVC)
+    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS}) # in case of Windows link the prebuild Fortran lib
     set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
-else(MSVC)
-    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
-    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "${MEFISTO2_CFLAGS}")
-endif(MSVC)
+#    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+#        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
+#    else(CMAKE_SIZEOF_VOID_P EQUAL 8)
+#        set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS -D__WATCOM__")
+#    endif(CMAKE_SIZEOF_VOID_P EQUAL 8)
+#elseif(MINGW)
+#    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
+#    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "-DMEFISTO2D_EXPORTS")
+#else(MSVC)
+#    TARGET_LINK_LIBRARIES(MEFISTO2 ${SMESH_LIBS} gfortran)
+#    set_target_properties(MEFISTO2 PROPERTIES COMPILE_FLAGS "${MEFISTO2_CFLAGS}")
+#endif(MSVC)
 
 
 ##############
@@ -337,7 +346,7 @@ endif(WIN32)
 #ENDIF(MINGW)
 
 # Disable for all other compilers but MSVC
-if (FREECAD_BUILD_FEM_NETGEN)
+if (BUILD_FEM_NETGEN)
 
 ################
 # NETGENPlugin #
@@ -351,7 +360,7 @@ if(WIN32)
     set_target_properties(NETGENPlugin PROPERTIES COMPILE_FLAGS "-DNETGENPLUGIN_EXPORTS -DNO_PARALLEL_THREADS -DOCCGEOMETRY -DNETGEN_V5")
 endif(WIN32)
 
-endif (FREECAD_BUILD_FEM_NETGEN)
+endif (BUILD_FEM_NETGEN)
 
 #IF(WIN32)
 #  SET_TARGET_PROPERTIES(SMESH PROPERTIES COMPILE_FLAGS "-DNETGENPluginimpl_EXPORTS ")
@@ -372,7 +381,7 @@ else(WIN32)
     )
 endif(WIN32)
 
-if (FREECAD_BUILD_FEM_NETGEN)
+if (BUILD_FEM_NETGEN)
     if(WIN32)
         INSTALL(TARGETS NETGENPlugin
             RUNTIME DESTINATION bin
@@ -383,5 +392,5 @@ if (FREECAD_BUILD_FEM_NETGEN)
             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         )
     endif(WIN32)
-endif (FREECAD_BUILD_FEM_NETGEN)
+endif (BUILD_FEM_NETGEN)
 
