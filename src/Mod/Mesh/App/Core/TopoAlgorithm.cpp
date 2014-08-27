@@ -444,7 +444,7 @@ void MeshTopoAlgorithm::AdjustEdgesToCurvatureDirection()
       unsigned long ulT1 = jt->_aulPoints[(i+1)%3];
       unsigned long ulP0 = std::min<unsigned long>(ulT0, ulT1);
       unsigned long ulP1 = std::max<unsigned long>(ulT0, ulT1);
-      aclEdgeMap[std::make_pair<unsigned long, unsigned long>(ulP0, ulP1)].push_front(k);
+      aclEdgeMap[std::make_pair(ulP0, ulP1)].push_front(k);
       aIdx.push_back( (int)jt->_aulPoints[i] );
     }
   }

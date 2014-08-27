@@ -4,6 +4,10 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
+if (PCL_FOUND)
+    add_definitions(-DPCL_FOUND)
+endif(PCL_FOUND)
+
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${Boost_INCLUDE_DIRS}
@@ -11,6 +15,9 @@ include_directories(
     ${PYTHON_INCLUDE_PATH}
     ${XERCESC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${EIGEN3_INCLUDE_DIR}
+    ${PCL_INCLUDE_DIRS}
+    ${FLANN_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -18,7 +25,12 @@ link_directories(${OCC_LIBRARY_DIR})
 set(Reen_LIBS
     Part
     Mesh
+    Points
     FreeCADApp
+    ${PCL_COMMON_LIBRARIES}
+    ${PCL_KDTREE_LIBRARIES}
+    ${PCL_FEATURES_LIBRARIES}
+    ${PCL_SURFACE_LIBRARIES}
 )
 
 SET(Reen_SRCS
@@ -26,6 +38,8 @@ SET(Reen_SRCS
     AppReverseEngineeringPy.cpp
     ApproxSurface.cpp
     ApproxSurface.h
+    SurfaceTriangulation.cpp
+    SurfaceTriangulation.h
     PreCompiled.cpp
     PreCompiled.h
 )

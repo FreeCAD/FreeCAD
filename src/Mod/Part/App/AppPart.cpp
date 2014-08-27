@@ -100,6 +100,8 @@ void PartExport initPart()
 #endif
     App::Application::Config()["OCC_VERSION"] = str.str();
 
+	Base::Console().Log("Module: Part\n");
+
     // This is highly experimental and we should keep an eye on it
     // if we have mysterious crashes
     // The argument must be 'Standard_False' to avoid FPE caused by

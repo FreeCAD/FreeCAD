@@ -236,7 +236,7 @@ bool TaskWatcherPython::shouldShow()
     try {
         if (watcher.hasAttr(std::string("shouldShow"))) {
             Py::Callable method(watcher.getAttr(std::string("shouldShow")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
         }
@@ -326,7 +326,7 @@ void TaskDialogPython::open()
     try {
         if (dlg.hasAttr(std::string("open"))) {
             Py::Callable method(dlg.getAttr(std::string("open")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             method.apply(args);
         }
     }
@@ -359,7 +359,7 @@ bool TaskDialogPython::accept()
     try {
         if (dlg.hasAttr(std::string("accept"))) {
             Py::Callable method(dlg.getAttr(std::string("accept")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
         }
@@ -378,7 +378,7 @@ bool TaskDialogPython::reject()
     try {
         if (dlg.hasAttr(std::string("reject"))) {
             Py::Callable method(dlg.getAttr(std::string("reject")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
         }
@@ -397,7 +397,7 @@ void TaskDialogPython::helpRequested()
     try {
         if (dlg.hasAttr(std::string("helpRequested"))) {
             Py::Callable method(dlg.getAttr(std::string("helpRequested")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             method.apply(args);
         }
     }
@@ -413,7 +413,7 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons(void) con
     try {
         if (dlg.hasAttr(std::string("getStandardButtons"))) {
             Py::Callable method(dlg.getAttr(std::string("getStandardButtons")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             Py::Int ret(method.apply(args));
             int value = (int)ret;
             return QDialogButtonBox::StandardButtons(value);
@@ -437,7 +437,7 @@ bool TaskDialogPython::isAllowedAlterDocument(void) const
     try {
         if (dlg.hasAttr(std::string("isAllowedAlterDocument"))) {
             Py::Callable method(dlg.getAttr(std::string("isAllowedAlterDocument")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
         }
@@ -456,7 +456,7 @@ bool TaskDialogPython::isAllowedAlterView(void) const
     try {
         if (dlg.hasAttr(std::string("isAllowedAlterView"))) {
             Py::Callable method(dlg.getAttr(std::string("isAllowedAlterView")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
         }
@@ -475,7 +475,7 @@ bool TaskDialogPython::isAllowedAlterSelection(void) const
     try {
         if (dlg.hasAttr(std::string("isAllowedAlterSelection"))) {
             Py::Callable method(dlg.getAttr(std::string("isAllowedAlterSelection")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
         }
@@ -494,7 +494,7 @@ bool TaskDialogPython::needsFullSpace() const
     try {
         if (dlg.hasAttr(std::string("needsFullSpace"))) {
             Py::Callable method(dlg.getAttr(std::string("needsFullSpace")));
-            Py::Tuple args(0);
+            Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
         }

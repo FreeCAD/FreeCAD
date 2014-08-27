@@ -32,8 +32,12 @@
 #include <Base/Console.h>
 
 #include <Mod/Part/App/BSplineSurfacePy.h>
+#include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Mesh/App/MeshPy.h>
+#include <Mod/Points/App/PointsPy.h>
 
 #include "ApproxSurface.h"
+#include "SurfaceTriangulation.h"
 
 using namespace Reen;
 
@@ -75,8 +79,31 @@ static PyObject * approxSurface(PyObject *self, PyObject *args)
     } PY_CATCH;
 }
 
+#if defined(PCL_FOUND)
+static PyObject * 
+triangulate(PyObject *self, PyObject *args)
+{
+    PyObject *pcObj;
+    if (!PyArg_ParseTuple(args, "O!", &(Points::PointsPy::Type), &pcObj))
+        return NULL;
+        
+    Points::PointsPy* pPoints = static_cast<Points::PointsPy*>(pcObj);
+    Points::PointKernel* points = pPoints->getPointKernelPtr();
+    
+    Mesh::MeshObject* mesh = new Mesh::MeshObject();
+    SurfaceTriangulation tria(*points, *mesh);
+    tria.perform();
+
+    return new Mesh::MeshPy(mesh);
+}
+#endif
+
 /* registration table  */
 struct PyMethodDef ReverseEngineering_methods[] = {
     {"approxSurface"   , approxSurface,  1},
+#if defined(PCL_FOUND)
+    {"triangulate"     , triangulate,  1},
+#endif
     {NULL, NULL}        /* end of table marker */
 };
+

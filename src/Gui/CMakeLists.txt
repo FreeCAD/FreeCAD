@@ -34,7 +34,8 @@ if(MSVC)
          optimized ${SOQT_LIBRARY_RELEASE}
          ${QT_DEBUG_LIBRARIES}
          ${QT_LIBRARIES}
-         QtUiTools.lib
+         optimized QtUiTools.lib
+         debug QtUiToolsd.lib
          ${OPENGL_gl_LIBRARY}
     )
 else(MSVC)
