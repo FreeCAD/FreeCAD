@@ -106,7 +106,6 @@
 #include <Standard_SStream.hxx>
 #include <Standard_Storable.hxx>
 #include <Standard_Stream.hxx>
-#include <Standard_String.hxx>
 #include <Standard_TooManyUsers.hxx>
 #include <Standard_Transient.hxx>
 #include <Standard_Transient_proto.hxx>

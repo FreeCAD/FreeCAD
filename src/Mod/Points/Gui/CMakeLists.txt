@@ -1,3 +1,8 @@
+
+if(PCL_FOUND)
+    add_definitions(-DHAVE_PCL)
+endif(PCL_FOUND)
+
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}

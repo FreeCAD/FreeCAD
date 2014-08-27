@@ -4,13 +4,13 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
-if (FREECAD_BUILD_SMESH)
+if (BUILD_SMESH)
     add_definitions(-DHAVE_SMESH -DHAVE_MEFISTO)
-endif(FREECAD_BUILD_SMESH)
+endif(BUILD_SMESH)
 
-if(FREECAD_BUILD_FEM_NETGEN)
+if(BUILD_FEM_NETGEN)
     add_definitions(-DHAVE_NETGEN)
-endif(FREECAD_BUILD_FEM_NETGEN)
+endif(BUILD_FEM_NETGEN)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
@@ -27,7 +27,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 
-if(FREECAD_BUILD_FEM_NETGEN)
+if(BUILD_FEM_NETGEN)
     set(MeshPart_LIBS
         Part
         Mesh
@@ -35,14 +35,14 @@ if(FREECAD_BUILD_FEM_NETGEN)
         NETGENPlugin
         SMESH
     )
-else(FREECAD_BUILD_FEM_NETGEN)
+else(BUILD_FEM_NETGEN)
     set(MeshPart_LIBS
         Part
         Mesh
         StdMeshers
         SMESH
     )
-endif(FREECAD_BUILD_FEM_NETGEN)
+endif(BUILD_FEM_NETGEN)
 
 
 SET(MeshPart_SRCS

@@ -12,9 +12,9 @@ if(DOXYGEN_FOUND)
     MARK_AS_ADVANCED(DOXYGEN_LANGUAGE)
 
 # note: this test is obsolete if DevDoc target is used
-    if (NOT FREECAD_BUILD_GUI)
+    if (NOT BUILD_GUI)
         message("Note: Gui is not built. Documentation may lack some parts.")
-    endif (NOT FREECAD_BUILD_GUI)
+    endif (NOT BUILD_GUI)
 
     # directory order seems important for correct macro expansion
     # (files containing macros definitions must be parsed before the files using them)
@@ -97,7 +97,7 @@ if(DOXYGEN_FOUND)
         # generate source documentation
         # delete CMakeCache to reset to default build options next time 
         ADD_CUSTOM_TARGET(DevDoc
-            ${CMAKE_COMMAND} -D FREECAD_BUILD_GUI:BOOL=ON -D FREECAD_BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
+            ${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
             COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg
             COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/CMakeCache.txt
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
