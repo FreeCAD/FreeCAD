@@ -108,7 +108,7 @@ QVariant ButtonModel::data (const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void ButtonModel::insertRows(int number)
+void ButtonModel::insertButtonRows(int number)
 {
     int buttonCount = spaceballButtonGroup()->GetGroups().size();
     beginInsertRows(QModelIndex(), buttonCount, number-buttonCount+1);
@@ -134,7 +134,7 @@ void ButtonModel::goButtonPress(int number)
     QString numberString;
     numberString.setNum(number);
     if (!spaceballButtonGroup()->HasGroup(numberString.toAscii()))
-        insertRows(number);
+        insertButtonRows(number);
 }
 
 void ButtonModel::goMacroRemoved(const QByteArray& macroName)

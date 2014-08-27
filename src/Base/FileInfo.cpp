@@ -301,7 +301,6 @@ bool FileInfo::isWritable () const
 
 bool FileInfo::setPermissions (Permissions perms)
 {
-    bool ret = false;
     int mode = 0;
 
     if (perms & FileInfo::ReadOnly)
