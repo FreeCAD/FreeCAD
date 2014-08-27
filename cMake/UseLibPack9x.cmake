@@ -471,3 +471,39 @@ SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide-1.2.1)
 SET(PYSIDE_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7_d.lib)
 SET(PYSIDE_PYTHONPATH  ${FREECAD_LIBPACK_DIR}/pyside/Lib/site-packages)
 SET(PYSIDE_TYPESYSTEMS ${FREECAD_LIBPACK_DIR}/pyside/share/PySide/typesystems)
+
+# Pointscloud library
+set(PCL_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/pcl-1.6)
+set(PCL_LIBRARIES
+    debug     pcl_common_debug.lib
+    optimized pcl_common_release.lib
+    debug     pcl_features_debug.lib
+    optimized pcl_features_release.lib
+    debug     pcl_filters_debug.lib
+    optimized pcl_filters_release.lib
+    debug     pcl_io_debug.lib
+    debug     pcl_io_ply_debug.lib
+    optimized pcl_io_ply_release.lib
+    optimized pcl_io_release.lib
+    debug     pcl_kdtree_debug.lib
+    optimized pcl_kdtree_release.lib
+    debug     pcl_keypoints_debug.lib
+    optimized pcl_keypoints_release.lib
+    debug     pcl_octree_debug.lib
+    optimized pcl_octree_release.lib
+    debug     pcl_registration_debug.lib
+    optimized pcl_registration_release.lib
+    debug     pcl_sample_consensus_debug.lib
+    optimized pcl_sample_consensus_release.lib
+    debug     pcl_search_debug.lib
+    optimized pcl_search_release.lib
+    debug     pcl_segmentation_debug.lib
+    optimized pcl_segmentation_release.lib
+    debug     pcl_surface_debug.lib
+    optimized pcl_surface_release.lib
+    debug     pcl_tracking_debug.lib
+    optimized pcl_tracking_release.lib
+)
+set(PCL_FOUND TRUE)
+
+set(FLANN_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/flann-1.7.1)
