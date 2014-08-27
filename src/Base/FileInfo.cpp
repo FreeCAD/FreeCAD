@@ -521,15 +521,16 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent(void) const
 {
     std::vector<Base::FileInfo> List;
 #if defined (FC_OS_WIN32)
-    struct _wfinddata_t dentry;
-    long hFile;
+	struct _wfinddata_t dentry;
+
+    intptr_t hFile;
 
     // Find first directory entry
     std::wstring wstr = toStdWString();
     wstr += L"/*";
 
     if ((hFile = _wfindfirst( wstr.c_str(), &dentry)) == -1L)
-        return List;
+		return List;
 
     while (_wfindnext(hFile, &dentry) == 0)
         if (wcscmp(dentry.name,L"..") != 0)
