@@ -2,12 +2,12 @@ if(WIN32)
     add_definitions(-DFCAppImage)
 endif(WIN32)
 
-if(OPENCV_FOUND)
-    add_definitions(-DHAVE_OPENCV)
-endif(OPENCV_FOUND)
+if(OPENCV2_FOUND)
+    add_definitions(-DHAVE_OPENCV2)
+endif(OPENCV2_FOUND)
 
 include_directories(
-    ${OPENCV_INCLUDE_DIR}
+    ${OPENCV_INCLUDE2_DIR}
     ${PYTHON_INCLUDE_PATH}
     ${Boost_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
@@ -16,7 +16,7 @@ include_directories(
 )
 
 set(Image_LIBS
-    ${OPENCV_LIBRARIES}
+    ${OPENCV2_LIBRARIES}
     FreeCADApp
 )
 

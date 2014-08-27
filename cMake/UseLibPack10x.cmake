@@ -294,8 +294,8 @@ set(SOQT_LIBRARY_DEBUG  soqt1d.lib)
 set(SOQT_FOUND TRUE) 
 
 # OpenCV
-set(OPENCV_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/opencv)
-set(OPENCV_LIBRARIES
+set(OPENCV2_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/opencv)
+set(OPENCV2_LIBRARIES
     optimized opencv_calib3d249.lib
     debug     opencv_calib3d249d.lib
     optimized opencv_contrib249.lib
@@ -335,7 +335,7 @@ set(OPENCV_LIBRARIES
     optimized opencv_videostab249.lib
     debug     opencv_videostab249d.lib
 )
-set(OPENCV_FOUND TRUE) 
+set(OPENCV2_FOUND TRUE) 
 
 # NGLIB (NetGen)
 
