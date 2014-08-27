@@ -79,7 +79,7 @@ static PyObject * approxSurface(PyObject *self, PyObject *args)
     } PY_CATCH;
 }
 
-#if defined(PCL_FOUND)
+#if defined(HAVE_PCL_SURFACE)
 static PyObject * 
 triangulate(PyObject *self, PyObject *args)
 {
@@ -101,7 +101,7 @@ triangulate(PyObject *self, PyObject *args)
 /* registration table  */
 struct PyMethodDef ReverseEngineering_methods[] = {
     {"approxSurface"   , approxSurface,  1},
-#if defined(PCL_FOUND)
+#if defined(HAVE_PCL_SURFACE)
     {"triangulate"     , triangulate,  1},
 #endif
     {NULL, NULL}        /* end of table marker */

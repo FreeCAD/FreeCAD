@@ -529,7 +529,7 @@ else(FREECAD_LIBPACK_USE)
 
 # -------------------------------- pcl ----------------------------------
 
-    find_package(PCL COMPONENTS common kdtree features surface)
+    find_package(PCL COMPONENTS common kdtree features surface io)
 
 # -------------------------------- ODE ----------------------------------
 
