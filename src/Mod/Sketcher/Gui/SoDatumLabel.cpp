@@ -338,8 +338,8 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         SoState *state = action->getState();
         const SbViewVolume & vv = SoViewVolumeElement::get(state);
         float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
-	SbVec2s vp_size = static_cast<SoGLRenderAction*>(action)->getViewportRegion().getWindowSize();
-	scale /= float(vp_size[0]);
+        SbVec2s vp_size = SoViewportRegionElement::get(state).getWindowSize();
+        scale /= float(vp_size[0]);
 
         SbVec3f dir = (p2-p1);
         dir.normalize();
@@ -457,6 +457,14 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         float aspectRatio =  (float) srcw / (float) srch;
         this->imgHeight = scale * (float) (srch);
         this->imgWidth  = aspectRatio * (float) this->imgHeight;
+    }
+    
+    if (this->datumtype.getValue() == SYMMETRIC) {
+        // For the symmetry constraint that does not have text, but does have arrows
+        //this->imgHeight = 3.36f;
+        //this->imgWidth  = 5.26f;
+        this->imgHeight = 1.5f;
+        this->imgWidth  = 1.5f;
     }
    
     // Get the points stored in the pnt field
