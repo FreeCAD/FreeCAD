@@ -36,5 +36,6 @@ ParGrp.SetString("WorkBenchName",    "Points Design")
 
 # Append the open handler
 FreeCAD.EndingAdd("Point formats (*.asc)","Points")
+FreeCAD.EndingAdd("Ply points (*.ply)","Points")
 
 

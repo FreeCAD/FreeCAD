@@ -54,7 +54,7 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
             if (feature.hasAttr("__object__")) {
                 Py::Callable method(feature.getAttr(std::string("execute")));
-                Py::Tuple args(0);
+				Py::Tuple args;
                 method.apply(args);
             }
             else {

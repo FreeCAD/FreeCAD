@@ -4,9 +4,9 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
-if(FREECAD_BUILD_FEM_NETGEN)
+if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen)
-endif(FREECAD_BUILD_FEM_NETGEN)
+endif(BUILD_FEM_NETGEN)
 
 
 include_directories(
@@ -27,7 +27,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 
-if(FREECAD_BUILD_FEM_NETGEN)
+if(BUILD_FEM_NETGEN)
     set(Fem_LIBS
         Part
         FreeCADApp
@@ -35,14 +35,14 @@ if(FREECAD_BUILD_FEM_NETGEN)
         NETGENPlugin
         SMESH
     )
-else(FREECAD_BUILD_FEM_NETGEN)
+else(BUILD_FEM_NETGEN)
     set(Fem_LIBS
         Part
         FreeCADApp
         StdMeshers
         SMESH
     )
-endif(FREECAD_BUILD_FEM_NETGEN)
+endif(BUILD_FEM_NETGEN)
 
 generate_from_xml(FemMeshPy)
 

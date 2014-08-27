@@ -34,6 +34,13 @@
 #include <App/DocumentObject.h>
 #include <App/Property.h>
 
+// PCL test
+#ifdef HAVE_PCL
+#  include <iostream>
+#  include <pcl/io/ply_io.h>
+#  include <pcl/point_types.h>
+#endif
+
 #include "Points.h"
 #include "PointsPy.h"
 #include "PointsAlgos.h"
@@ -66,6 +73,27 @@ open(PyObject *self, PyObject *args)
             pcFeature->Points.setValue( pkTemp );
 
         }
+#ifdef HAVE_PCL
+        else 
+        if (file.hasExtension("ply")) {
+            // create new document import
+            App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
+            Points::PointKernel pkTemp;
+
+			// pcl test
+			pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
+			pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
+
+			for(pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
+				pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
+
+
+
+            pcFeature->Points.setValue( pkTemp );
+
+        }
+#endif
         else {
             Py_Error(PyExc_Exception,"unknown file ending");
         }
@@ -140,3 +168,4 @@ struct PyMethodDef Points_Import_methods[] = {
 
     {NULL, NULL}                /* end of table marker */
 };
+

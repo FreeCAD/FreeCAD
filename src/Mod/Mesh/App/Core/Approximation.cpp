@@ -53,9 +53,9 @@ namespace ublas = boost::numeric::ublas;
 extern "C" void LAPACK_DGESV (int const* n, int const* nrhs, 
                      double* a, int const* lda, int* ipiv, 
                      double* b, int const* ldb, int* info);
-#elif defined(FC_USE_EIGEN)
-# include <Eigen/LeastSquares>
+
 #endif
+
 # include <Eigen/LeastSquares>
 
 using namespace MeshCore;
