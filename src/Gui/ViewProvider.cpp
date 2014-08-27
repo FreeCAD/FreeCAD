@@ -61,7 +61,12 @@ using namespace Gui;
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::PropertyContainer)
 
 ViewProvider::ViewProvider() 
-    : pcAnnotation(0), pyViewObject(0), _iActualMode(-1), _iEditMode(-1), _updateData(true), viewOverrideMode(-1)
+    : pcAnnotation(0)
+    , pyViewObject(0)
+    , _iActualMode(-1)
+    , _iEditMode(-1)
+    , viewOverrideMode(-1)
+    , _updateData(true)
 {
     pcRoot = new SoSeparator();
     pcRoot->ref();

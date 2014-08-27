@@ -119,7 +119,7 @@ FeatureTest::~FeatureTest()
 DocumentObjectExecReturn *FeatureTest::execute(void)
 {
 
-  int *i,j;
+  int *i=0,j;
   float f;
   void *s;
 

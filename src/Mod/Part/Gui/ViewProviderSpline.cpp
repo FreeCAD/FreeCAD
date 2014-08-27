@@ -37,6 +37,7 @@
 # include <TopoDS_Wire.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shape.hxx>
+# include <TopoDS_Shell.hxx>
 # include <TopExp_Explorer.hxx>
 # include <Inventor/nodes/SoCoordinate3.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -111,7 +112,7 @@ void ViewProviderSpline::showControlPoints(bool show, const App::Property* prop)
 
         for (TopExp_Explorer xp(shape, TopAbs_SHELL); xp.More(); xp.Next()) {
             const TopoDS_Shell& shell = TopoDS::Shell(xp.Current());
-            for (TopExp_Explorer xp2(xp.Current(), TopAbs_FACE); xp2.More(); xp2.Next()) {
+            for (TopExp_Explorer xp2(shell, TopAbs_FACE); xp2.More(); xp2.Next()) {
                 const TopoDS_Face& face = TopoDS::Face(xp2.Current());
                 showControlPointsOfFace(face);
             }
@@ -122,7 +123,7 @@ void ViewProviderSpline::showControlPoints(bool show, const App::Property* prop)
         }
         for (TopExp_Explorer xp(shape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
             const TopoDS_Wire& wire = TopoDS::Wire(xp.Current());
-            for (TopExp_Explorer xp2(xp.Current(), TopAbs_EDGE); xp2.More(); xp2.Next()) {
+            for (TopExp_Explorer xp2(wire, TopAbs_EDGE); xp2.More(); xp2.Next()) {
                 const TopoDS_Edge& edge = TopoDS::Edge(xp2.Current());
                 showControlPointsOfEdge(edge);
             }

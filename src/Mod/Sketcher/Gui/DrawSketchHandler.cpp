@@ -341,6 +341,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                                         ,geoId1, it->GeoId
                                        );
                 } break;
+            default:
+                break;
             }
 
             Gui::Command::commitCommand();
@@ -387,10 +389,14 @@ void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstrain
         case Tangent:
             iconType = QString::fromAscii("Constraint_Tangent");
             break;
+        default:
+            break;
         }
 
-        QPixmap icon = Gui::BitmapFactory().pixmap(iconType.toAscii()).scaledToWidth(iconSize);
-        qp.drawPixmap(QPoint(baseIcon.width() + i * iconSize, baseIcon.height() - iconSize), icon);
+        if (!iconType.isEmpty()) {
+            QPixmap icon = Gui::BitmapFactory().pixmap(iconType.toAscii()).scaledToWidth(iconSize);
+            qp.drawPixmap(QPoint(baseIcon.width() + i * iconSize, baseIcon.height() - iconSize), icon);
+        }
     }
 
     qp.end(); // Finish painting

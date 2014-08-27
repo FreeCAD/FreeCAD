@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com	     *
+ *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -56,38 +56,50 @@ using namespace Gui::TaskView;
 /// CMDSTR is the string registered in the commandManager
 /// FUNC is the name of the member function to be executed on selection of the menu item
 /// ACTSONSELECTION is a true/false value to activate the command only if a selection is made
-#define CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION) 						\
-QIcon icon_ ## FUNC( Gui::BitmapFactory().pixmap(ICONSTR) ); 					\
-    QAction* constr_ ## FUNC = menu.addAction(icon_ ## FUNC,tr(NAMESTR), this, SLOT(FUNC()), 	\
-        QKeySequence(QString::fromUtf8(Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));		\
+#define CONTEXT_ITEM(ICONSTR,NAMESTR,CMDSTR,FUNC,ACTSONSELECTION) \
+QIcon icon_ ## FUNC( Gui::BitmapFactory().pixmap(ICONSTR) ); \
+    QAction* constr_ ## FUNC = menu.addAction(icon_ ## FUNC,tr(NAMESTR), this, SLOT(FUNC()), \
+        QKeySequence(QString::fromUtf8(Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel()))); \
     if(ACTSONSELECTION) constr_ ## FUNC->setEnabled(!items.isEmpty()); else constr_ ## FUNC->setEnabled(true);
 
 /// Defines the member function corresponding to the CONTEXT_ITEM macro
-#define CONTEXT_MEMBER_DEF(CMDSTR,FUNC) 							\
-void ElementView::FUNC(){								\
+#define CONTEXT_MEMBER_DEF(CMDSTR,FUNC) \
+void ElementView::FUNC(){ \
    Gui::Application::Instance->commandManager().runCommandByName(CMDSTR);}
-	 
+
 // helper class to store additional information about the listWidget entry.
 class ElementItem : public QListWidgetItem
 {
 public:
-    ElementItem(	const QIcon & icon, const QString & text, int elementnr, 
-		int startingVertex, int midVertex, int endVertex,
-		Base::Type geometryType)
-        : QListWidgetItem(icon,text),ElementNbr(elementnr),
-	  StartingVertex(startingVertex), MidVertex(midVertex), EndVertex(endVertex),
-	  GeometryType(geometryType),isLineSelected(false),
-	  isStartingPointSelected(false),isEndPointSelected(false),isMidPointSelected(false)
+    ElementItem(const QIcon & icon, const QString & text, int elementnr, 
+                int startingVertex, int midVertex, int endVertex,
+                Base::Type geometryType)
+        : QListWidgetItem(icon,text)
+        , ElementNbr(elementnr)
+        , StartingVertex(startingVertex)
+        , MidVertex(midVertex)
+        , EndVertex(endVertex)
+        , isLineSelected(false)
+        , isStartingPointSelected(false)
+        , isEndPointSelected(false)
+        , isMidPointSelected(false)
+        , GeometryType(geometryType)
     {
           
     }
-    ElementItem( const QString & text,int elementnr,
-		int startingVertex, int midVertex, int endVertex,
-		Base::Type geometryType)
-        : QListWidgetItem(text),ElementNbr(elementnr),
-	  StartingVertex(startingVertex), MidVertex(midVertex), EndVertex(endVertex),
-	  GeometryType(geometryType),isLineSelected(false),
-	  isStartingPointSelected(false),isEndPointSelected(false),isMidPointSelected(false)
+    ElementItem(const QString & text,int elementnr,
+                int startingVertex, int midVertex, int endVertex,
+                Base::Type geometryType)
+        : QListWidgetItem(text)
+        , ElementNbr(elementnr)
+        , StartingVertex(startingVertex)
+        , MidVertex(midVertex)
+        , EndVertex(endVertex)
+        , isLineSelected(false)
+        , isStartingPointSelected(false)
+        , isEndPointSelected(false)
+        , isMidPointSelected(false)
+        , GeometryType(geometryType)
     {
       
     }
@@ -118,7 +130,6 @@ ElementView::~ElementView()
 void ElementView::contextMenuEvent (QContextMenuEvent* event)
 {
     QMenu menu;
-    QListWidgetItem* item = currentItem();
     QList<QListWidgetItem *> items = selectedItems();
 
     // CONTEXT_ITEM(ICONSTR,NAMESTR,FUNC,KEY)
@@ -138,11 +149,11 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Constraint_Radius","Radius Constraint","Sketcher_ConstrainRadius",doRadiusConstraint,true)
     CONTEXT_ITEM("Constraint_InternalAngle","Angle Constraint","Sketcher_ConstrainAngle",doAngleConstraint,true)
     
-    QAction* sep = menu.addSeparator();
+    menu.addSeparator();
     
     CONTEXT_ITEM("Sketcher_AlterConstruction","Toggle construction line","Sketcher_ToggleConstruction",doToggleConstruction,true)
     
-    QAction* sep1 = menu.addSeparator();
+    menu.addSeparator();
     
     CONTEXT_ITEM("Sketcher_CloseShape","Close Shape","Sketcher_CloseShape",doCloseShape,true)
     CONTEXT_ITEM("Sketcher_ConnectLines","Connect","Sketcher_ConnectLines",doConnect,true)
@@ -151,7 +162,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Sketcher_SelectHorizontalAxis","Select Horizontal Axis","Sketcher_SelectHorizontalAxis",doSelectHAxis,false)
     CONTEXT_ITEM("Sketcher_SelectVerticalAxis","Select Vertical Axis","Sketcher_SelectVerticalAxis",doSelectVAxis,false)
         
-    QAction* sep2 = menu.addSeparator();
+    menu.addSeparator();
         
     QAction* remove = menu.addAction(tr("Delete"), this, SLOT(deleteSelectedItems()),
         QKeySequence(QKeySequence::Delete));
@@ -207,24 +218,29 @@ void ElementView::keyPressEvent(QKeyEvent * event)
     switch (event->key())
     {
       case Qt::Key_Z:
-	// signal
-	onFilterShortcutPressed();
-	break;
+        // signal
+        onFilterShortcutPressed();
+        break;
       default:
-	QListWidget::keyPressEvent( event );
-	break;
+        QListWidget::keyPressEvent( event );
+        break;
     }
 }
+
 // ----------------------------------------------------------------------------
 
 TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
-    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Elements"),true, 0),
-    sketchView(sketchView), inhibitSelectionUpdate(false), focusItemIndex(-1),
-    isNamingBoxChecked(false), isautoSwitchBoxChecked(false), previouslySelectedItemIndex(-1)
+    : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Elements"),true, 0)
+    , sketchView(sketchView)
+    , ui(new Ui_TaskSketcherElements())
+    , focusItemIndex(-1)
+    , previouslySelectedItemIndex(-1)
+    , isNamingBoxChecked(false)
+    , isautoSwitchBoxChecked(false) 
+    , inhibitSelectionUpdate(false)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
-    ui = new Ui_TaskSketcherElements();
     ui->setupUi(proxy);
     ui->listWidgetElements->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetElements->setEditTriggers(QListWidget::NoEditTriggers);
@@ -287,7 +303,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     std::string temp;
     if (msg.Type == Gui::SelectionChanges::ClrSelection) {
-	clearWidget();
+        clearWidget();
     }
     else if (msg.Type == Gui::SelectionChanges::AddSelection ||
              msg.Type == Gui::SelectionChanges::RmvSelection) {
@@ -297,89 +313,91 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
             strcmp(msg.pObjectName,sketchView->getSketchObject()->getNameInDocument())== 0) {
             if (msg.pSubName) {
                 QString expr = QString::fromAscii(msg.pSubName);
-		std::string shapetype(msg.pSubName);
-		// if-else edge vertex
-		if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge")
-		{
-		  QRegExp rx(QString::fromAscii("^Edge(\\d+)$"));
-		  int pos = expr.indexOf(rx);
-		  if (pos > -1) {
-		      bool ok;
-		      int ElementId = rx.cap(1).toInt(&ok) - 1;
-		      if (ok) {
-			  int countItems = ui->listWidgetElements->count();
-			  for (int i=0; i < countItems; i++) {
-			      ElementItem* item = static_cast<ElementItem*>
-				  (ui->listWidgetElements->item(i));
-			      if (item->ElementNbr == ElementId) {
-				  item->isLineSelected=select;
-				  break;
-			      }
-			  }
-		      }
-		  }
-		}
-		else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex"){
-		  QRegExp rx(QString::fromAscii("^Vertex(\\d+)$"));
-		  int pos = expr.indexOf(rx);
-		  if (pos > -1) {
-		      bool ok;
-		      int ElementId = rx.cap(1).toInt(&ok) - 1;
-		      if (ok) {
-			  // Get the GeoID&Pos
-			  int GeoId; 
-			  Sketcher::PointPos PosId;
-			  sketchView->getSketchObject()->getGeoVertexIndex(ElementId,GeoId, PosId);
-			  
-			  int countItems = ui->listWidgetElements->count();
-			  for (int i=0; i < countItems; i++) {
-			      ElementItem* item = static_cast<ElementItem*>
-				  (ui->listWidgetElements->item(i));
-			      if (item->ElementNbr == GeoId) {
-				  switch(PosId)
-				  {
-				    case Sketcher::start:
-				    item->isStartingPointSelected=select;
-				    break;
-				    case Sketcher::end:
-				    item->isEndPointSelected=select;
-				    break;
-				    case Sketcher::mid:
-				    item->isMidPointSelected=select;
-				    break;				    
-				  }
-				  break;
-			      }
-			  }
-		      }
-		  }		  		  
-		}
-		// update the listwidget
-		int element=ui->comboBoxElementFilter->currentIndex();
+                std::string shapetype(msg.pSubName);
+                // if-else edge vertex
+                if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge")
+                {
+                  QRegExp rx(QString::fromAscii("^Edge(\\d+)$"));
+                  int pos = expr.indexOf(rx);
+                  if (pos > -1) {
+                      bool ok;
+                      int ElementId = rx.cap(1).toInt(&ok) - 1;
+                      if (ok) {
+                          int countItems = ui->listWidgetElements->count();
+                          for (int i=0; i < countItems; i++) {
+                              ElementItem* item = static_cast<ElementItem*>
+                                  (ui->listWidgetElements->item(i));
+                              if (item->ElementNbr == ElementId) {
+                                  item->isLineSelected=select;
+                                  break;
+                              }
+                          }
+                      }
+                  }
+                }
+                else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex"){
+                  QRegExp rx(QString::fromAscii("^Vertex(\\d+)$"));
+                  int pos = expr.indexOf(rx);
+                  if (pos > -1) {
+                      bool ok;
+                      int ElementId = rx.cap(1).toInt(&ok) - 1;
+                      if (ok) {
+                          // Get the GeoID&Pos
+                          int GeoId;
+                          Sketcher::PointPos PosId;
+                          sketchView->getSketchObject()->getGeoVertexIndex(ElementId,GeoId, PosId);
 
-		ui->listWidgetElements->blockSignals(true);
+                          int countItems = ui->listWidgetElements->count();
+                          for (int i=0; i < countItems; i++) {
+                              ElementItem* item = static_cast<ElementItem*>
+                                  (ui->listWidgetElements->item(i));
+                              if (item->ElementNbr == GeoId) {
+                                  switch(PosId)
+                                  {
+                                    case Sketcher::start:
+                                    item->isStartingPointSelected=select;
+                                    break;
+                                    case Sketcher::end:
+                                    item->isEndPointSelected=select;
+                                    break;
+                                    case Sketcher::mid:
+                                    item->isMidPointSelected=select;
+                                    break;
+                                    default:
+                                    break;
+                                  }
+                                  break;
+                              }
+                          }
+                      }
+                  }
+                }
+                // update the listwidget
+                int element=ui->comboBoxElementFilter->currentIndex();
+
+                ui->listWidgetElements->blockSignals(true);
 
 
-		for (int i=0;i<ui->listWidgetElements->count(); i++) {
-		    ElementItem * ite=static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-		       
-		    switch(element){
-		      case 0:		
-			  ite->setSelected(ite->isLineSelected);
-			  break;
-		      case 1:
-			  ite->setSelected(ite->isStartingPointSelected);
-			  break;
-		      case 2:
-			  ite->setSelected(ite->isEndPointSelected);
-			  break;
-		      case 3:
-			  ite->setSelected(ite->isMidPointSelected);
-			  break;	
-		    }
-		}
+                for (int i=0;i<ui->listWidgetElements->count(); i++) {
+                    ElementItem * ite=static_cast<ElementItem*>(ui->listWidgetElements->item(i));
 
-		ui->listWidgetElements->blockSignals(false);
+                    switch(element){
+                      case 0:
+                          ite->setSelected(ite->isLineSelected);
+                          break;
+                      case 1:
+                          ite->setSelected(ite->isStartingPointSelected);
+                          break;
+                      case 2:
+                          ite->setSelected(ite->isEndPointSelected);
+                          break;
+                      case 3:
+                          ite->setSelected(ite->isMidPointSelected);
+                          break;
+                    }
+                }
+
+                ui->listWidgetElements->blockSignals(false);
 
             }
         }
@@ -409,37 +427,37 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
     bool multipleselection=true; // ctrl type of selection in listWidget
     bool multipleconsecutiveselection=false; // shift type of selection in listWidget
     
-    if(!inhibitSelectionUpdate){	
+    if(!inhibitSelectionUpdate){
       if(itf!=NULL) {
-	switch(element){
-	  case 0:
-	      itf->isLineSelected=!itf->isLineSelected;	
-	      break;
-	  case 1:
-	      itf->isStartingPointSelected=!itf->isStartingPointSelected;
-	      break;
-	  case 2:
-	      itf->isEndPointSelected=!itf->isEndPointSelected;
-	      break;
-	  case 3:
-	      itf->isMidPointSelected=!itf->isMidPointSelected;
-	      break;	
-	} 
+        switch(element){
+          case 0:
+              itf->isLineSelected=!itf->isLineSelected;
+              break;
+          case 1:
+              itf->isStartingPointSelected=!itf->isStartingPointSelected;
+              break;
+          case 2:
+              itf->isEndPointSelected=!itf->isEndPointSelected;
+              break;
+          case 3:
+              itf->isMidPointSelected=!itf->isMidPointSelected;
+              break;
+        }
       }
       
       if(QApplication::keyboardModifiers()==Qt::ControlModifier)// multiple ctrl selection?
-	multipleselection=true;
+        multipleselection=true;
       else
-	multipleselection=false;
+        multipleselection=false;
       
       if(QApplication::keyboardModifiers()==Qt::ShiftModifier)// multiple shift selection?
-	multipleconsecutiveselection=true;
+        multipleconsecutiveselection=true;
       else
-	multipleconsecutiveselection=false;
+        multipleconsecutiveselection=false;
       
       if(multipleselection && multipleconsecutiveselection){ // ctrl takes priority over shift functionality
-	multipleselection=true;
-	multipleconsecutiveselection=false;
+        multipleselection=true;
+        multipleconsecutiveselection=false;
       }
     }      
     
@@ -448,92 +466,92 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
 
     bool block = this->blockConnection(true); // avoid to be notified by itself
     Gui::Selection().clearSelection();
-	  
+
     for (int i=0;i<ui->listWidgetElements->count(); i++) {
-	ElementItem * ite=static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-	
-	if(multipleselection==false && multipleconsecutiveselection==false && ite!=itf)
-	{
-	  ite->isLineSelected=false;
-	  ite->isStartingPointSelected=false;
-	  ite->isEndPointSelected=false;
-	  ite->isMidPointSelected=false;
-	}
-	
-	if(multipleconsecutiveselection==true)
-	{
-	    if(	(( i>focusItemIndex && i<previouslySelectedItemIndex ) ||
-		( i<focusItemIndex && i>previouslySelectedItemIndex )) &&
-		previouslySelectedItemIndex>=0){
-	      // select the element of the Item
-	      	switch(element){
-		  case 0:		
-		      ite->isLineSelected=true;
-		      break;
-		  case 1:
-		      ite->isStartingPointSelected=true;
-		      break;
-		  case 2:
-		      ite->isEndPointSelected=true;
-		      break;
-		  case 3:
-		      ite->isMidPointSelected=true;
-		      break;	
-		}
-	    }
-	}
-	
-	// first update the listwidget
-	switch(element){
-	  case 0:		
-	      ite->setSelected(ite->isLineSelected);
-	      break;
-	  case 1:
-	      ite->setSelected(ite->isStartingPointSelected);
-	      break;
-	  case 2:
-	      ite->setSelected(ite->isEndPointSelected);
-	      break;
-	  case 3:
-	      ite->setSelected(ite->isMidPointSelected);
-	      break;	
-	}
-	
-	// now the scene
-	std::stringstream ss;
-	int vertex;
-	
-	if(ite->isLineSelected){
-	  ss << "Edge" << ite->ElementNbr + 1;
-	  Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-	}
-	
-	if(ite->isStartingPointSelected){
-	  ss.str(std::string());
-	  vertex= ite->StartingVertex;
-	  if(vertex!=-1){
-	    ss << "Vertex" << vertex + 1;
-	    Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-	  }	  
-	}
-	
-	if(ite->isEndPointSelected){
-	  ss.str(std::string());
-	  vertex= ite->EndVertex;
-	  if(vertex!=-1){
-	    ss << "Vertex" << vertex + 1;
-	    Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-	  }	  
-	}
-	
-	if(ite->isMidPointSelected){
-	  ss.str(std::string());
-	  vertex= ite->MidVertex;
-	  if(vertex!=-1){
-	    ss << "Vertex" << vertex + 1;
-	    Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-	  }	  
-	}
+        ElementItem * ite=static_cast<ElementItem*>(ui->listWidgetElements->item(i));
+
+        if(multipleselection==false && multipleconsecutiveselection==false && ite!=itf)
+        {
+          ite->isLineSelected=false;
+          ite->isStartingPointSelected=false;
+          ite->isEndPointSelected=false;
+          ite->isMidPointSelected=false;
+        }
+
+        if(multipleconsecutiveselection==true)
+        {
+            if(        (( i>focusItemIndex && i<previouslySelectedItemIndex ) ||
+                ( i<focusItemIndex && i>previouslySelectedItemIndex )) &&
+                previouslySelectedItemIndex>=0){
+              // select the element of the Item
+                      switch(element){
+                  case 0:
+                      ite->isLineSelected=true;
+                      break;
+                  case 1:
+                      ite->isStartingPointSelected=true;
+                      break;
+                  case 2:
+                      ite->isEndPointSelected=true;
+                      break;
+                  case 3:
+                      ite->isMidPointSelected=true;
+                      break;
+                }
+            }
+        }
+
+        // first update the listwidget
+        switch(element){
+          case 0:
+              ite->setSelected(ite->isLineSelected);
+              break;
+          case 1:
+              ite->setSelected(ite->isStartingPointSelected);
+              break;
+          case 2:
+              ite->setSelected(ite->isEndPointSelected);
+              break;
+          case 3:
+              ite->setSelected(ite->isMidPointSelected);
+              break;
+        }
+
+        // now the scene
+        std::stringstream ss;
+        int vertex;
+
+        if(ite->isLineSelected){
+          ss << "Edge" << ite->ElementNbr + 1;
+          Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+        }
+
+        if(ite->isStartingPointSelected){
+          ss.str(std::string());
+          vertex= ite->StartingVertex;
+          if(vertex!=-1){
+            ss << "Vertex" << vertex + 1;
+            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+          }
+        }
+
+        if(ite->isEndPointSelected){
+          ss.str(std::string());
+          vertex= ite->EndVertex;
+          if(vertex!=-1){
+            ss << "Vertex" << vertex + 1;
+            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+          }
+        }
+
+        if(ite->isMidPointSelected){
+          ss.str(std::string());
+          vertex= ite->MidVertex;
+          if(vertex!=-1){
+            ss << "Vertex" << vertex + 1;
+            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+          }
+        }
     }
     this->blockConnection(block);
     ui->listWidgetElements->blockSignals(false);
@@ -572,7 +590,7 @@ void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *it
     }
     
     int element=ui->comboBoxElementFilter->currentIndex();
-		  
+
     focusItemIndex=tempitemindex;
     
     int vertex;
@@ -580,18 +598,18 @@ void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *it
     switch(element)
     {
       case 0: 
-	ss << "Edge" << it->ElementNbr + 1;
-	Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-	break;
+        ss << "Edge" << it->ElementNbr + 1;
+        Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+        break;
       case 1:
       case 2:
-      case 3:	
-	vertex= sketchView->getSketchObject()->getVertexIndexGeoPos(it->ElementNbr,static_cast<Sketcher::PointPos>(element));
-	if(vertex!=-1){
-	  ss << "Vertex" << vertex + 1;
-	  Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
-	}
-	break;
+      case 3:
+        vertex= sketchView->getSketchObject()->getVertexIndexGeoPos(it->ElementNbr,static_cast<Sketcher::PointPos>(element));
+        if(vertex!=-1){
+          ss << "Vertex" << vertex + 1;
+          Gui::Selection().setPreselect(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+        }
+        break;
     }
     
 }
@@ -631,37 +649,37 @@ void TaskSketcherElements::slotElementsChanged(void)
       Base::Type type = (*it)->getTypeId();      
       
       ui->listWidgetElements->addItem(new ElementItem(
-	(type == Part::GeomPoint::getClassTypeId() 	&& element==1) ? Sketcher_Element_Point_StartingPoint :
-	(type == Part::GeomLineSegment::getClassTypeId()  && element==0) ? Sketcher_Element_Line_Edge :
-	(type == Part::GeomLineSegment::getClassTypeId()  && element==1) ? Sketcher_Element_Line_StartingPoint :
-	(type == Part::GeomLineSegment::getClassTypeId()  && element==2) ? Sketcher_Element_Line_EndPoint :
-	(type == Part::GeomArcOfCircle::getClassTypeId() 	&& element==0) ? Sketcher_Element_Arc_Edge :
-	(type == Part::GeomArcOfCircle::getClassTypeId() 	&& element==1) ? Sketcher_Element_Arc_StartingPoint :
-	(type == Part::GeomArcOfCircle::getClassTypeId() 	&& element==2) ? Sketcher_Element_Arc_EndPoint :
-	(type == Part::GeomArcOfCircle::getClassTypeId() 	&& element==3) ? Sketcher_Element_Arc_MidPoint :
-	(type == Part::GeomCircle::getClassTypeId()	&& element==0) ? Sketcher_Element_Circle_Edge :
-	(type == Part::GeomCircle::getClassTypeId()	&& element==3) ? Sketcher_Element_Circle_MidPoint :
-	none,
-	type == Part::GeomPoint::getClassTypeId() 	? ( isNamingBoxChecked ? 
-							    (tr("Point") + QString::fromLatin1("(Edge%1)").arg(i)):
-							    (QString::fromLatin1("%1-").arg(i)+tr("Point"))) 	:
-	type == Part::GeomLineSegment::getClassTypeId()	? ( isNamingBoxChecked ? 
-							    (tr("Line") + QString::fromLatin1("(Edge%1)").arg(i)):
-							    (QString::fromLatin1("%1-").arg(i)+tr("Line"))) 	:
-	type == Part::GeomArcOfCircle::getClassTypeId()	? ( isNamingBoxChecked ? 
-							    (tr("Arc") + QString::fromLatin1("(Edge%1)").arg(i)):
-							    (QString::fromLatin1("%1-").arg(i)+tr("Arc"))) 	:
-	type == Part::GeomCircle::getClassTypeId()	? ( isNamingBoxChecked ? 
-							    (tr("Circle") + QString::fromLatin1("(Edge%1)").arg(i)):
-							    (QString::fromLatin1("%1-").arg(i)+tr("Circle"))) 	:
-	( isNamingBoxChecked ? 
-	  (tr("Other") + QString::fromLatin1("(Edge%1)").arg(i)):
-	  (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
-	i-1,
-	sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::start),
-	sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::mid),
-	sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::end),
-	type));  
+        (type == Part::GeomPoint::getClassTypeId()         && element==1) ? Sketcher_Element_Point_StartingPoint :
+        (type == Part::GeomLineSegment::getClassTypeId()  && element==0) ? Sketcher_Element_Line_Edge :
+        (type == Part::GeomLineSegment::getClassTypeId()  && element==1) ? Sketcher_Element_Line_StartingPoint :
+        (type == Part::GeomLineSegment::getClassTypeId()  && element==2) ? Sketcher_Element_Line_EndPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Arc_Edge :
+        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==1) ? Sketcher_Element_Arc_StartingPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==2) ? Sketcher_Element_Arc_EndPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Arc_MidPoint :
+        (type == Part::GeomCircle::getClassTypeId()        && element==0) ? Sketcher_Element_Circle_Edge :
+        (type == Part::GeomCircle::getClassTypeId()        && element==3) ? Sketcher_Element_Circle_MidPoint :
+        none,
+        type == Part::GeomPoint::getClassTypeId()         ? ( isNamingBoxChecked ?
+                                                            (tr("Point") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                            (QString::fromLatin1("%1-").arg(i)+tr("Point")))         :
+        type == Part::GeomLineSegment::getClassTypeId()        ? ( isNamingBoxChecked ?
+                                                            (tr("Line") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                            (QString::fromLatin1("%1-").arg(i)+tr("Line")))         :
+        type == Part::GeomArcOfCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
+                                                            (tr("Arc") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                            (QString::fromLatin1("%1-").arg(i)+tr("Arc")))         :
+        type == Part::GeomCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
+                                                            (tr("Circle") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                            (QString::fromLatin1("%1-").arg(i)+tr("Circle")))         :
+        ( isNamingBoxChecked ?
+          (tr("Other") + QString::fromLatin1("(Edge%1)").arg(i)):
+          (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
+        i-1,
+        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::start),
+        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::mid),
+        sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::end),
+        type));
     }
 }
 
@@ -684,22 +702,22 @@ void TaskSketcherElements::on_listWidgetElements_filterShortcutPressed()
       
       switch(element)
       {
-	case 0: // Edge
-	  element =	( type == Part::GeomCircle::getClassTypeId() ) ? 3 : 1;
-	  break;
-	case 1: // StartingPoint
-	  element =	( type == Part::GeomCircle::getClassTypeId() ) ? 3 : 
-			( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 2;
-	  break;
-	case 2: // EndPoint
-	  element =	( type == Part::GeomLineSegment::getClassTypeId() ) ? 0 :
-			( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 3;
-	  break;
-	case 3: // MidPoint
-	  element =	( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 0;
-	  break;
-	default:
-	  element = 0;
+        case 0: // Edge
+          element =        ( type == Part::GeomCircle::getClassTypeId() ) ? 3 : 1;
+          break;
+        case 1: // StartingPoint
+          element =        ( type == Part::GeomCircle::getClassTypeId() ) ? 3 :
+                        ( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 2;
+          break;
+        case 2: // EndPoint
+          element =        ( type == Part::GeomLineSegment::getClassTypeId() ) ? 0 :
+                        ( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 3;
+          break;
+        case 3: // MidPoint
+          element =        ( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 0;
+          break;
+        default:
+          element = 0;
       }
            
       ui->comboBoxElementFilter->setCurrentIndex(element);
@@ -710,8 +728,8 @@ void TaskSketcherElements::on_listWidgetElements_filterShortcutPressed()
     }
     else{
       element = (ui->comboBoxElementFilter->currentIndex()+1) % 
-		ui->comboBoxElementFilter->count();
-		
+                ui->comboBoxElementFilter->count();
+
       ui->comboBoxElementFilter->setCurrentIndex(element);
       
       Gui::Selection().rmvPreselect();
@@ -769,7 +787,7 @@ void TaskSketcherElements::clearWidget()
       item->isLineSelected=false;
       item->isStartingPointSelected=false;
       item->isEndPointSelected=false;
-      item->isMidPointSelected=false;		
+      item->isMidPointSelected=false;
     }
 }
 
@@ -791,17 +809,17 @@ void TaskSketcherElements::updateIcons(int element)
       Base::Type type = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->GeometryType;
 
       ui->listWidgetElements->item(i)->setIcon(
-	(type == Part::GeomPoint::getClassTypeId() 	&& element==1) ? Sketcher_Element_Point_StartingPoint :
-	(type == Part::GeomLineSegment::getClassTypeId()  && element==0) ? Sketcher_Element_Line_Edge :
-	(type == Part::GeomLineSegment::getClassTypeId()  && element==1) ? Sketcher_Element_Line_StartingPoint :
-	(type == Part::GeomLineSegment::getClassTypeId()  && element==2) ? Sketcher_Element_Line_EndPoint :
-	(type == Part::GeomArcOfCircle::getClassTypeId() 	&& element==0) ? Sketcher_Element_Arc_Edge :
-	(type == Part::GeomArcOfCircle::getClassTypeId() 	&& element==1) ? Sketcher_Element_Arc_StartingPoint :
-	(type == Part::GeomArcOfCircle::getClassTypeId() 	&& element==2) ? Sketcher_Element_Arc_EndPoint :
-	(type == Part::GeomArcOfCircle::getClassTypeId() 	&& element==3) ? Sketcher_Element_Arc_MidPoint :
-	(type == Part::GeomCircle::getClassTypeId()	&& element==0) ? Sketcher_Element_Circle_Edge :
-	(type == Part::GeomCircle::getClassTypeId()	&& element==3) ? Sketcher_Element_Circle_MidPoint :
-	none);
+        (type == Part::GeomPoint::getClassTypeId()         && element==1) ? Sketcher_Element_Point_StartingPoint :
+        (type == Part::GeomLineSegment::getClassTypeId()  && element==0) ? Sketcher_Element_Line_Edge :
+        (type == Part::GeomLineSegment::getClassTypeId()  && element==1) ? Sketcher_Element_Line_StartingPoint :
+        (type == Part::GeomLineSegment::getClassTypeId()  && element==2) ? Sketcher_Element_Line_EndPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Arc_Edge :
+        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==1) ? Sketcher_Element_Arc_StartingPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==2) ? Sketcher_Element_Arc_EndPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Arc_MidPoint :
+        (type == Part::GeomCircle::getClassTypeId()        && element==0) ? Sketcher_Element_Circle_Edge :
+        (type == Part::GeomCircle::getClassTypeId()        && element==3) ? Sketcher_Element_Circle_MidPoint :
+        none);
     }
 }
 

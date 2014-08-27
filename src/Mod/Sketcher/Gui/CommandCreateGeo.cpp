@@ -2925,9 +2925,6 @@ public:
             EditCurve[35] = EditCurve[0] ;
             //EditCurve[34] = EditCurve[0];
 
-            // Display radius for user
-            float radius = (onSketchPos - EditCurve[0]).Length();
-
             SbString text;
             text.sprintf(" (%.1fR %.1fL)", r,lx);
             setPositionText(onSketchPos, text);

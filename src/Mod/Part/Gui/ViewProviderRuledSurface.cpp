@@ -71,8 +71,8 @@ void ViewProviderRuledSurface::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
     if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
-        const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
-            (prop)->getValues();
+        //const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
+        //    (prop)->getValues();
     }
     /*  //The following hides the Children shapes. If the edges from which the Ruled Surface was created 
      * were selected from the subshapes of another shape, it is likely that one would not want to hide the shape 
