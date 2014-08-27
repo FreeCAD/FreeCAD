@@ -1483,7 +1483,9 @@ std::set<int> ViewProviderSketch::detectPreselectionConstr(const SoPickedPoint *
 
                 } else {
                     // Assume second icon was hit
-                    constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
+                    if(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID<sep->getNumChildren()){
+                        constrIds = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
+                    }
                 }
                 if(constrIds) {
                     QString constrIdsStr = QString::fromAscii(constrIds->string.getValue().getString());
