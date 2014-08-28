@@ -1348,14 +1348,12 @@ def getArcData(edge):
         ve2 = edge.Vertexes[-1].Point
         ang1 = -math.degrees(DraftVecUtils.angle(ve1.sub(ce)))
         ang2 = -math.degrees(DraftVecUtils.angle(ve2.sub(ce)))
-        
-        a1 = -DraftVecUtils.angle(ve1.sub(ce))
-        a2 = -DraftVecUtils.angle(ve2.sub(ce))
-        if round(a1,Draft.precision()) == round(a2,Draft.precision()):
+
+        if round(ang1,Draft.precision()) == round(ang2,Draft.precision()):
             return None,None, None, None
         if edge.Curve.Axis.z < 0.0:
             ang1, ang2 = ang2, ang1
-        pseudoarc = Part.ArcOfCircle(edge.Curve,a1,a2).toShape()
+        pseudoarc = Part.ArcOfCircle(edge.Curve,math.radians(ang1),math.radians(ang2)).toShape()
         if round(pseudoarc.Length,Draft.precision()) != round(edge.Length,Draft.precision()):
             ang1, ang2 = ang2, ang1
         
@@ -1377,25 +1375,21 @@ def getArcData(edge):
 def getSplineSegs(edge):
     "returns an array of vectors from a Spline or Bezier edge"
     params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    seglength = params.GetInt("maxsplinesegment")
+    seglength = params.GetFloat("maxsegmentlength",5.0)
     points = []
     if seglength == 0:
         points.append(edge.Vertexes[0].Point)
         points.append(edge.Vertexes[-1].Point)
     else:
-        if DraftGeomUtils.geomType(edge) == "BezierCurve":
-            l = 1.0
-        else:
-            l = edge.Length
-        points.append(edge.valueAt(0))
+        points.append(edge.valueAt(edge.FirstParameter))
         if (edge.Length > seglength):
             nbsegs = int(math.ceil(edge.Length/seglength))
-            step = l/nbsegs
+            step = (edge.LastParameter-edge.FirstParameter)/nbsegs
             for nv in range(1,nbsegs):
                 #print "value at",nv*step,"=",edge.valueAt(nv*step)
-                v = edge.valueAt(nv*step)
+                v = edge.valueAt(edge.FirstParameter+(nv*step))
                 points.append(v)
-        points.append(edge.valueAt(l))
+        points.append(edge.valueAt(edge.LastParameter))
     return points
 
 def getWire(wire,nospline=False,lw=True):
@@ -1412,9 +1406,7 @@ def getWire(wire,nospline=False,lw=True):
     # print "processing wire ",wire.Edges
     for edge in edges:
         v1 = edge.Vertexes[0].Point
-        if len(edge.Vertexes) < 2:
-            points.append(fmt(v1))
-        elif DraftGeomUtils.geomType(edge) == "Circle":
+        if DraftGeomUtils.geomType(edge) == "Circle":
             mp = DraftGeomUtils.findMidpoint(edge)
             v2 = edge.Vertexes[-1].Point
             c = edge.Curve.Center
@@ -1445,7 +1437,7 @@ def getWire(wire,nospline=False,lw=True):
             if not DraftGeomUtils.isClockwise(edge):
                 bul = -bul
             points.append(fmt(v1,bul))
-        elif (DraftGeomUtils.geomType(edge) in ["BSplineCurve","BezierCurve"]) and (not nospline):
+        elif (DraftGeomUtils.geomType(edge) in ["BSplineCurve","BezierCurve","Ellipse"]) and (not nospline):
             spline = getSplineSegs(edge)
             spline.pop()
             for p in spline:
@@ -1499,7 +1491,7 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
             if not(e.hashCode() in processededges): loneedges.append(e)
         # print "lone edges ",loneedges
         for edge in loneedges:
-            if (DraftGeomUtils.geomType(edge) in ["BSplineCurve","BezierCurve"]) and ((not nospline) or (len(edge.Vertexes) == 1)): # splines
+            if (DraftGeomUtils.geomType(edge) in ["BSplineCurve","BezierCurve"]): # splines
                 if (len(edge.Vertexes) == 1) and (edge.Curve.isClosed()):
                     # special case: 1-vert closed spline, approximate as a circle
                     c = DraftGeomUtils.getCircleFromSpline(edge)
