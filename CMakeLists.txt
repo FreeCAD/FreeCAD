@@ -118,7 +118,7 @@ OPTION(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line an
 OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3rd party libs. On Windows the Installer is build." OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
-OPTION(BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 
 OPTION(BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
 OPTION(BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
@@ -163,10 +163,10 @@ OPTION(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OF
 endif(MSVC)
 
 # if this is set override some options
-if (BUILD_DEBIAN)
+if (FREECAD_BUILD_DEBIAN)
     set(FREECAD_USE_EXTERNAL_ZIPIOS ON)
     set(FREECAD_USE_EXTERNAL_PIVY ON)
-endif (BUILD_DEBIAN)
+endif (FREECAD_BUILD_DEBIAN)
 
 # ==============================================================================
 #inter-module dependencies
