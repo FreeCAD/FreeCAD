@@ -28,6 +28,7 @@
 # include <qevent.h>
 # include <qpainter.h>
 # include <qpixmap.h>
+# include <QGLFramebufferObject>
 # include <QMenu>
 # include <Inventor/SbBox.h>
 # include <Inventor/events/SoEvent.h>
@@ -852,7 +853,9 @@ void RubberbandSelection::initialize()
 {
     d = new Private(_pcView3D);
     _pcView3D->addGraphicsItem(d);
-    _pcView3D->setRenderFramebuffer(true);
+    if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
+        _pcView3D->setRenderFramebuffer(true);
+    }
     _pcView3D->scheduleRedraw();
 }
 
@@ -860,7 +863,9 @@ void RubberbandSelection::terminate()
 {
     _pcView3D->removeGraphicsItem(d);
     delete d; d = 0;
-    _pcView3D->setRenderFramebuffer(false);
+    if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
+        _pcView3D->setRenderFramebuffer(false);
+    }
     _pcView3D->scheduleRedraw();
 }
 
