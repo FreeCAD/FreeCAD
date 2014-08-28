@@ -103,7 +103,7 @@ def getParamType(param):
     if param in ["dimsymbol","dimPrecision","dimorientation","precision","defaultWP",
                  "snapRange","gridEvery","linewidth","UiMode","modconstrain","modsnap",
                  "maxSnapEdges","modalt","HatchPatternResolution","snapStyle",
-                 "dimstyle"]:
+                 "dimstyle","gridSize"]:
         return "int"
     elif param in ["constructiongroupname","textfont","patternFile","template",
                    "snapModes","FontFile"]:

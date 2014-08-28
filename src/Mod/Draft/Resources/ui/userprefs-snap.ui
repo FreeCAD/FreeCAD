@@ -264,6 +264,55 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_17">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
+          <property name="toolTip">
+           <string>If checked, a grid will appear when drawing</string>
+          </property>
+          <property name="text">
+           <string>Use grid</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>grid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_15">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
+          </property>
+          <property name="text">
+           <string>Always show the grid</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>alwaysShowGrid</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
          <widget class="QLabel" name="label_16">
@@ -295,6 +344,9 @@
           </property>
           <property name="toolTip">
            <string>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
           <property name="value">
            <number>10</number>
@@ -342,6 +394,12 @@
           <property name="toolTip">
            <string>The spacing between each grid line</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string>mm</string>
+          </property>
           <property name="decimals">
            <number>4</number>
           </property>
@@ -362,46 +420,46 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_15">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="toolTip">
-           <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
-          </property>
+         <widget class="QLabel" name="label">
           <property name="text">
-           <string>Always show the grid</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>alwaysShowGrid</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
+           <string>Grid size</string>
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_17">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="spinBox">
           <property name="toolTip">
-           <string>If checked, a grid will appear when drawing</string>
+           <string>the number of horizontal or vertical lines of the grid</string>
           </property>
-          <property name="text">
-           <string>Use grid</string>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
           </property>
-          <property name="checked">
-           <bool>true</bool>
+          <property name="suffix">
+           <string> lines</string>
+          </property>
+          <property name="maximum">
+           <number>9999</number>
+          </property>
+          <property name="value">
+           <number>100</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>grid</cstring>
+           <cstring>gridSize</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>

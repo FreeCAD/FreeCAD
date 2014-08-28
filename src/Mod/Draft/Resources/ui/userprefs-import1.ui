@@ -383,7 +383,7 @@
         <item>
          <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Max Spline Segment (mm): </string>
+           <string>Max Spline Segment: </string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -397,6 +397,9 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string>mm</string>
           </property>
           <property name="maximum">
            <double>9999.989999999999782</double>
