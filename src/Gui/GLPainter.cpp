@@ -55,7 +55,7 @@ bool GLPainter::begin(View3DInventorViewer* v)
     this->width = view[0];
     this->height = view[1];
 
-    viewer->makeCurrent();
+    static_cast<QGLWidget*>(viewer->viewport())->makeCurrent();
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();

@@ -81,6 +81,7 @@
 #include "View3DPy.h"
 #include "SoFCDB.h"
 #include "NavigationStyle.h"
+#include "PropertyView.h"
 
 #include <locale>
 
@@ -146,6 +147,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
     _viewer = new View3DInventorViewer(f,this);
     _viewer->setDocument(this->_pcDocument);
 #endif
+    
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");

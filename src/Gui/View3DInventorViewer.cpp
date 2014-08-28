@@ -1123,7 +1123,7 @@ void View3DInventorViewer::setRenderFramebuffer(const SbBool enable)
         SbVec2s origin = vp.getViewportOriginPixels();
         SbVec2s size = vp.getViewportSizePixels();
 
-        this->makeCurrent();
+        static_cast<QGLWidget*>(this->viewport())->makeCurrent();
         this->framebuffer = new QGLFramebufferObject(size[0],size[1],QGLFramebufferObject::Depth);
         renderToFramebuffer(this->framebuffer);
     }
@@ -1136,7 +1136,7 @@ SbBool View3DInventorViewer::isRenderFramebuffer() const
 
 void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
 {
-    this->makeCurrent();
+    static_cast<QGLWidget*>(this->viewport())->makeCurrent();
     fbo->bind();
     int width = fbo->size().width();
     int height = fbo->size().height();
@@ -2589,7 +2589,7 @@ void View3DInventorViewer::setAntiAliasingMode(View3DInventorViewer::AntiAliasin
     if(getSoRenderManager()->getGLRenderAction()->isSmoothing() != smoothing)
         getSoRenderManager()->getGLRenderAction()->setSmoothing(smoothing);
 
-    if(this->format().sampleBuffers() != buffers)
+    if(static_cast<QGLWidget*>(this->viewport())->format().sampleBuffers() != buffers)
         Base::Console().Message("To change multisampling settings please close and open the 3d view again");
 
 }
@@ -2599,7 +2599,7 @@ View3DInventorViewer::AntiAliasing View3DInventorViewer::getAntiAliasingMode() c
     if(getSoRenderManager()->getGLRenderAction()->isSmoothing())
         return Smoothing;
 
-    int buffers = this->format().sampleBuffers();
+    int buffers = static_cast<QGLWidget*>(this->viewport())->format().sampleBuffers();
 
     switch(buffers) {
     case 1:

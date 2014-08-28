@@ -38,6 +38,7 @@
 #include <Inventor/actions/SoGLRenderAction.h>
 
 #include <QtGui/QColor>
+#include <QGraphicsView>
 #include <QtCore/QUrl>
 #include <QtOpenGL/QGLWidget>
 #include "Gui/Quarter/Basic.h"
@@ -56,8 +57,8 @@ namespace SIM { namespace Coin3D { namespace Quarter {
 class EventFilter;
 const char DEFAULT_NAVIGATIONFILE []  = "coin:///scxml/navigation/examiner.xml";
 
-class QUARTER_DLL_API QuarterWidget : public QGLWidget {
-  typedef QGLWidget inherited;
+class QUARTER_DLL_API QuarterWidget : public QGraphicsView {
+  typedef QGraphicsView inherited;
   Q_OBJECT
 
   Q_PROPERTY(QUrl navigationModeFile READ navigationModeFile WRITE setNavigationModeFile RESET resetNavigationModeFile)
@@ -183,15 +184,17 @@ public Q_SLOTS:
   void setTransparencyType(TransparencyType type);
 
 protected:
-  virtual void resizeGL(int width, int height);
-  virtual void initializeGL(void);
-  virtual void paintGL(void);
+  virtual void paintEvent(QPaintEvent*);
+  virtual void resizeEvent(QResizeEvent*);
+  virtual bool viewportEvent(QEvent* event);
   virtual void actualRedraw(void);
 
 private:
-  void constructor(const QGLWidget * sharewidget);
+  void constructor(const QGLFormat& format, const QGLWidget* sharewidget);
   friend class QuarterWidgetP;
   class QuarterWidgetP * pimpl;
+  bool initialized;
+  
 };
 
 }}} // namespace
