@@ -529,7 +529,10 @@ else(FREECAD_LIBPACK_USE)
 
 # -------------------------------- pcl ----------------------------------
 
-    find_package(PCL COMPONENTS common kdtree features surface io)
+    find_package(PCL QUIET COMPONENTS common kdtree features surface io)
+    if (NOT PCL_FOUND)
+        MESSAGE("-- pcl not found")
+    endif(NOT PCL_FOUND)
 
 # -------------------------------- ODE ----------------------------------
 
@@ -633,7 +636,7 @@ else(FREECAD_LIBPACK_USE)
         IF(MATPLOTLIB_FOUND)
             message("-- matplotlib-${MATPLOTLIB_VERSION} has been found.")
         ELSE(MATPLOTLIB_FOUND)
-            message("matplotlib not found, Plot module will not available until matplotlib is installed!")
+            message("-- matplotlib not found, Plot module won't be available!")
         ENDIF(MATPLOTLIB_FOUND)
 
 # ------------------------------------------------------------------------
