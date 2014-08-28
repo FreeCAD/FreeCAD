@@ -141,7 +141,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Constraint_Perpendicular","Perpendicular Constraint","Sketcher_ConstrainPerpendicular",doPerpendicularConstraint,true)
     CONTEXT_ITEM("Constraint_Tangent","Tangent Constraint","Sketcher_ConstrainTangent",doTangentConstraint,true)
     CONTEXT_ITEM("Constraint_EqualLength","Equal Length","Sketcher_ConstrainEqual",doEqualConstraint,true)
-    CONTEXT_ITEM("Constraint_Symmetric","Symetric","Sketcher_ConstrainSymmetric",doSymetricConstraint,true)
+    CONTEXT_ITEM("Constraint_Symmetric","Symmetric","Sketcher_ConstrainSymmetric",doSymetricConstraint,true)
     CONTEXT_ITEM("Sketcher_ConstrainLock","Lock Constraint","Sketcher_ConstrainLock",doLockConstraint,true)    
     CONTEXT_ITEM("Constraint_HorizontalDistance","Horizontal Distance","Sketcher_ConstrainDistanceX",doHorizontalDistance,true)
     CONTEXT_ITEM("Constraint_VerticalDistance","Vertical Distance","Sketcher_ConstrainDistanceY",doVerticalDistance,true)
@@ -585,7 +585,12 @@ void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *it
     // Edge Auto-Switch functionality
     if(isautoSwitchBoxChecked && tempitemindex!=focusItemIndex){
       ui->listWidgetElements->blockSignals(true);
-      ui->comboBoxElementFilter->setCurrentIndex(0);
+      if(it->GeometryType==Part::GeomPoint::getClassTypeId()) {
+        ui->comboBoxElementFilter->setCurrentIndex(1);
+      }
+      else {
+        ui->comboBoxElementFilter->setCurrentIndex(0);  
+      }
       ui->listWidgetElements->blockSignals(false);
     }
     
