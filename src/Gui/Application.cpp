@@ -1623,11 +1623,11 @@ void Application::runApplication(void)
     }
 #if QT_VERSION >= 0x040200
     if (!QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
-        Base::Console().Log("This system does not support framebuffer objects");
+        Base::Console().Log("This system does not support framebuffer objects\n");
     }
 #endif
     if (!QGLPixelBuffer::hasOpenGLPbuffers()) {
-        Base::Console().Log("This system does not support pbuffers");
+        Base::Console().Log("This system does not support pbuffers\n");
     }
 
     QGLFormat::OpenGLVersionFlags version = QGLFormat::openGLVersionFlags ();
