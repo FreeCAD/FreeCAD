@@ -439,6 +439,8 @@ def formatObject(target,origin=None):
             if matchrep.DisplayMode in obrep.listDisplayModes():
                 obrep.DisplayMode = matchrep.DisplayMode
             if hasattr(matchrep,"DiffuseColor") and hasattr(obrep,"DiffuseColor"):
+                if matchrep.DiffuseColor:
+                    FreeCAD.ActiveDocument.recompute()
                 obrep.DiffuseColor = matchrep.DiffuseColor
 
 def getSelection():
@@ -1033,7 +1035,7 @@ def makeArray(baseobject,arg1,arg2,arg3,arg4=None,name="Array"):
         obj.Angle = arg2
         obj.NumberPolar = arg3
     if gui:
-        _ViewProviderDraftArray(obj.ViewObject)  
+        _ViewProviderDraftArray(obj.ViewObject)
         baseobject.ViewObject.hide()
         select(obj)
     return obj
