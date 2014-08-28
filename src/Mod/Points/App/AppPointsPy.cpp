@@ -80,11 +80,11 @@ open(PyObject *self, PyObject *args)
             Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
             Points::PointKernel pkTemp;
 
-			// pcl test
-			pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
-			pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
+            // pcl test
+            pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
+            pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
 
-			for (pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
+            for (pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
                 pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
             pcFeature->Points.setValue( pkTemp );
         }
@@ -135,11 +135,11 @@ insert(PyObject *self, PyObject *args)
             Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
             Points::PointKernel pkTemp;
 
-			// pcl test
-			pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
-			pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
+            // pcl test
+            pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
+            pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
 
-			for (pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
+            for (pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
                 pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
             pcFeature->Points.setValue( pkTemp );
         }
@@ -176,10 +176,8 @@ show(PyObject *self, PyObject *args)
 
 // registration table  
 struct PyMethodDef Points_Import_methods[] = {
-    {"open",  open,   1},				/* method name, C func ptr, always-tuple */
+    {"open",  open,   1},       /* method name, C func ptr, always-tuple */
     {"insert",insert, 1},
     {"show",show, 1},
-
     {NULL, NULL}                /* end of table marker */
 };
-
