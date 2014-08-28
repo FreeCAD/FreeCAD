@@ -27,14 +27,14 @@ Quantity(string) -- arbitrary mixture of numbers and chars defining a Quantity
 		</UserDocu>
 		<DeveloperDocu>Quantity</DeveloperDocu>
 	</Documentation>
-    <Methode Name="getUserPreferred">
+    <Methode Name="getUserPreferred" Const="true">
       <Documentation>
         <UserDocu>
           returns a quantity with the translation factor and a string with the prevered unit
         </UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getValueAs">
+    <Methode Name="getValueAs" Const="true">
       <Documentation>
         <UserDocu>
           returns a floating point value as the provided unit

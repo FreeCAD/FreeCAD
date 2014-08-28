@@ -349,7 +349,7 @@ App::DocumentObjectExecReturn *Sweep::execute(void)
                 }
                 path = mkWire.Wire();
             }
-            if (shape._Shape.ShapeType() == TopAbs_EDGE) {
+            else if (shape._Shape.ShapeType() == TopAbs_EDGE) {
                 path = shape._Shape;
             }
             else if (shape._Shape.ShapeType() == TopAbs_WIRE) {
