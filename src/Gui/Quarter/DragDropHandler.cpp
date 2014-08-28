@@ -155,7 +155,7 @@ DragDropHandlerP::dropEvent(QDropEvent * event)
 
   // set new scenegraph
   this->quarterwidget->setSceneGraph(root);
-  this->quarterwidget->updateGL();
+  this->quarterwidget->viewport()->update();
 }
 
 #undef PRIVATE

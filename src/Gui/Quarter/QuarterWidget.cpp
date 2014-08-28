@@ -54,6 +54,8 @@
 #include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtGui/QAction>
+#include <QPaintEvent>
+#include <QResizeEvent>
 
 #include <Inventor/SbViewportRegion.h>
 #include <Inventor/system/gl.h>
@@ -121,28 +123,38 @@ using namespace SIM::Coin3D::Quarter;
 
 /*! constructor */
 QuarterWidget::QuarterWidget(const QGLFormat & format, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
-  : inherited(format, parent, sharewidget, f)
+  : inherited(parent)
 {
-  this->constructor(sharewidget);
+  this->constructor(format, sharewidget);
 }
 
 /*! constructor */
 QuarterWidget::QuarterWidget(QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
-  : inherited(parent, sharewidget, f)
+  : inherited(parent)
 {
-  this->constructor(sharewidget);
+  this->constructor(QGLFormat(), sharewidget);
 }
 
 /*! constructor */
 QuarterWidget::QuarterWidget(QGLContext * context, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
-  : inherited(context, parent, sharewidget, f)
+  : inherited(parent)
 {
-  this->constructor(sharewidget);
+  this->constructor(context->format(), sharewidget);
 }
 
 void
-QuarterWidget::constructor(const QGLWidget * sharewidget)
+QuarterWidget::constructor(const QGLFormat & format, const QGLWidget * sharewidget)
 {
+  QGraphicsScene* scene = new QGraphicsScene;
+  setScene(scene);
+  setViewport(new QGLWidget(format, this, sharewidget)); 
+  
+  setFrameStyle(QFrame::NoFrame);
+  setAutoFillBackground(false);
+  viewport()->setAutoFillBackground(false);
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+  setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    
   PRIVATE(this) = new QuarterWidgetP(this, sharewidget);
 
   PRIVATE(this)->sorendermanager = new SoRenderManager;
@@ -181,6 +193,8 @@ QuarterWidget::constructor(const QGLWidget * sharewidget)
 
   this->installEventFilter(PRIVATE(this)->eventfilter);
   this->installEventFilter(PRIVATE(this)->interactionmode);
+  
+  initialized = false;
 }
 
 /*! destructor */
@@ -638,68 +652,105 @@ QuarterWidget::seek(void)
     }
   }
 }
-
-/*!
-  This function will be called whenever the GLContext changes, 
-  for instance when the widget is reparented. 
-  
-  Overridden from QGLWidget to enable OpenGL depth buffer 
-  and reinitialize the SoRenderManager.
- */
-void
-QuarterWidget::initializeGL(void)
-{
-  glEnable(GL_DEPTH_TEST);
-  this->getSoRenderManager()->reinitialize();
-}
-
 /*!
   Overridden from QGLWidget to resize the Coin scenegraph
  */
-void
-QuarterWidget::resizeGL(int width, int height)
+void QuarterWidget::resizeEvent(QResizeEvent* event)
 {
-  SbViewportRegion vp(width, height);
-  PRIVATE(this)->sorendermanager->setViewportRegion(vp);
-  PRIVATE(this)->soeventmanager->setViewportRegion(vp);
+    SbViewportRegion vp(event->size().width(), event->size().height());
+    PRIVATE(this)->sorendermanager->setViewportRegion(vp);
+    PRIVATE(this)->soeventmanager->setViewportRegion(vp);
 }
 
 /*!
   Overridden from QGLWidget to render the scenegraph
 */
-void
-QuarterWidget::paintGL(void)
-{
-  assert(this->isValid() && "No valid GL context found!");
-  // We might have to process the delay queue here since we don't know
-  // if paintGL() is called from Qt, and we might have some sensors
-  // waiting to trigger (the redraw sensor has a lower priority than a
-  // normal field sensor to guarantee that your sensor is processed
-  // before the next redraw). Disable autorendering while we do this
-  // to avoid recursive redraws.
+void QuarterWidget::paintEvent(QPaintEvent* event)
+{       
+    if(!initialized) {
+        glEnable(GL_DEPTH_TEST);
+        this->getSoRenderManager()->reinitialize();
+        initialized = true;
+    } 
+    
+    getSoRenderManager()->activate();
+    
+    glEnable(GL_DEPTH_TEST);
+    glMatrixMode(GL_PROJECTION);
+    
+    QGLWidget* w = static_cast<QGLWidget*>(this->viewport());
+    assert(w->isValid() && "No valid GL context found!");
+    // We might have to process the delay queue here since we don't know
+    // if paintGL() is called from Qt, and we might have some sensors
+    // waiting to trigger (the redraw sensor has a lower priority than a
+    // normal field sensor to guarantee that your sensor is processed
+    // before the next redraw). Disable autorendering while we do this
+    // to avoid recursive redraws.
 
-  // We set the PRIVATE(this)->processdelayqueue = false in redraw()
-  // to avoid processing the delay queue when paintGL() is triggered
-  // by us, and we don't want to process the delay queue in those
-  // cases
+    // We set the PRIVATE(this)->processdelayqueue = false in redraw()
+    // to avoid processing the delay queue when paintGL() is triggered
+    // by us, and we don't want to process the delay queue in those
+    // cases
 
-  PRIVATE(this)->autoredrawenabled = false;
-  if (PRIVATE(this)->processdelayqueue && SoDB::getSensorManager()->isDelaySensorPending()) {
-    // processing the sensors might trigger a redraw in another
-    // context. Release this context temporarily
-    this->doneCurrent();
-    SoDB::getSensorManager()->processDelayQueue(FALSE);
-    this->makeCurrent();
-  }
-  assert(this->isValid() && "No valid GL context found!");
-  // we need to render immediately here, and not do scheduleRedraw()
-  // since Qt will swap the GL buffers after calling paintGL().
-  this->actualRedraw();
-  PRIVATE(this)->autoredrawenabled = true;
-  
-  // process the delay queue the next time we enter this function,
-  // unless we get here after a call to redraw().
-  PRIVATE(this)->processdelayqueue = true;
+    PRIVATE(this)->autoredrawenabled = false;
+
+    if(PRIVATE(this)->processdelayqueue && SoDB::getSensorManager()->isDelaySensorPending()) {
+        // processing the sensors might trigger a redraw in another
+        // context. Release this context temporarily
+        w->doneCurrent();
+        SoDB::getSensorManager()->processDelayQueue(FALSE);
+        w->makeCurrent();
+    }
+
+    assert(w->isValid() && "No valid GL context found!");
+
+    glDrawBuffer(w->doubleBuffer() ? GL_BACK : GL_FRONT);
+    
+    w->makeCurrent();
+    this->actualRedraw();
+    
+    //start the standart graphicsview processing for all widgets and graphic items. As 
+    //QGraphicsView initaliizes a QPainter whcih changes the opengl context in an unpredictable 
+    //manner we need to store the context and recreate it after qt is done.
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glPushAttrib(GL_MULTISAMPLE_BIT_EXT);
+      
+    inherited::paintEvent(event);
+      
+    glPopAttrib();
+    glPopAttrib();
+    
+    if (w->doubleBuffer()) { w->swapBuffers(); }
+    
+    PRIVATE(this)->autoredrawenabled = true;
+
+    // process the delay queue the next time we enter this function,
+    // unless we get here after a call to redraw().
+    PRIVATE(this)->processdelayqueue = true;
+}
+
+bool QuarterWidget::viewportEvent(QEvent* event)
+{    
+     if( event->type() == QEvent::Paint || event->type() == QEvent::Resize) {
+        return QGraphicsView::viewportEvent(event);
+     }
+     else if(event->type() == QEvent::MouseMove
+            || event->type() == QEvent::Wheel
+            || event->type() == QEvent::MouseButtonDblClick
+            || event->type() == QEvent::MouseButtonRelease
+            || event->type() == QEvent::MouseButtonPress) {
+        
+          QMouseEvent* mouse = static_cast<QMouseEvent*>(event);
+          QGraphicsItem *item = itemAt(mouse->pos());
+          if(!item) {
+              return false;
+          }
+          return QGraphicsView::viewportEvent(event);
+      }
+     //if we return false the events get processed normally, this means they get passed to the quarter
+     //event filters for processing in the scene graph. If we return true event processing stops here.
+     return false;
+        
 }
 
 /*!
@@ -716,7 +767,7 @@ QuarterWidget::redraw(void)
   // we're triggering the next paintGL(). Set a flag to remember this
   // to avoid that we process the delay queue in paintGL()
   PRIVATE(this)->processdelayqueue = false;
-  this->updateGL();
+  this->viewport()->update();
 }
 
 /*!

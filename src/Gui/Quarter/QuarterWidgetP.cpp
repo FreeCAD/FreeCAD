@@ -93,7 +93,8 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QGLWidget * shar
 
 QuarterWidgetP::~QuarterWidgetP()
 {
-  removeFromCacheContext(this->cachecontext, this->master);
+  //TODO:fix this function call
+  //removeFromCacheContext(this->cachecontext, this->master);
   if (this->contextmenu) {
     delete this->contextmenu;
   }
