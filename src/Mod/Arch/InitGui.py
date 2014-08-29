@@ -73,22 +73,22 @@ class ArchWorkbench(Workbench):
                      "Arch_Floor","Arch_Building","Arch_Site",
                      "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
-                     "Arch_Panel",
+                     "Arch_Panel","Arch_Equipment",
                      "Arch_Frame","Arch_Add","Arch_Remove","Arch_Survey"]
         self.utilities = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
-                     "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag"]
+                     "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views"]
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
-                        "Draft_Dimension", "Draft_BSpline","Draft_Point","Draft_ShapeString",
+                        "Draft_Dimension", "Draft_BSpline","Draft_Point",
                         "Draft_Facebinder","Draft_BezCurve"]
         self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
-                        "Draft_PathArray","Draft_Clone"]
+                        "Draft_Clone"]
         self.extramodtools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane",

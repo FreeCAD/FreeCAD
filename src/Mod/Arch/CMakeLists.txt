@@ -27,6 +27,7 @@ SET(Arch_SRCS
     TestArch.py
     ArchFrame.py
     ArchPanel.py
+    ArchEquipment.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
