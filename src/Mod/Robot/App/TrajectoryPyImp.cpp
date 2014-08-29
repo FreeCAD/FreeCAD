@@ -112,7 +112,7 @@ PyObject* TrajectoryPy::insertWaypoints(PyObject * args)
         return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
     }
 
-    Py_Error(PyExc_Exception, "Wrong parameters - waypoint or placement expected");
+    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - waypoint or placement expected");
 
 }
 

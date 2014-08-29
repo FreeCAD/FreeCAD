@@ -838,7 +838,7 @@ PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args,PyObject 
         return Py_None;
     }
     else {
-        PyErr_Format(PyExc_Exception, "No such command '%s'", pName);
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such command '%s'", pName);
         return 0;
     }
 } 

@@ -185,7 +185,7 @@ writeCameraFile(PyObject *self, PyObject *args)
     for(int i=0;i<4;i++) {
         // check the right size of the Tuple of floats
         if(PyTuple_GET_SIZE(Arg[i]) != 3)
-            Py_Error(PyExc_Exception,"Wrong parameter format, four Tuple of three floats needed!");
+            Py_Error(Base::BaseExceptionFreeCADError,"Wrong parameter format, four Tuple of three floats needed!");
 
         // go through the Tuple of floats
         for(int l=0;l<3;l++) {
@@ -198,7 +198,7 @@ writeCameraFile(PyObject *self, PyObject *args)
             else if (PyInt_Check(temp))
                 vecs[i][l] = (double)  PyInt_AsLong(temp);
             else
-                Py_Error(PyExc_Exception,"Wrong parameter format, four Tuple of three floats needed!");
+                Py_Error(Base::BaseExceptionFreeCADError,"Wrong parameter format, four Tuple of three floats needed!");
         }
     }
 

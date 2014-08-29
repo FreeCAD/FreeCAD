@@ -62,7 +62,7 @@ open(PyObject *self, PyObject *args)
 
         // extract ending
         if (file.extension() == "")
-            Py_Error(PyExc_Exception,"no file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
 
         if (file.hasExtension("asc")) {
             // create new document and add Import feature
@@ -90,7 +90,7 @@ open(PyObject *self, PyObject *args)
         }
 #endif
         else {
-            Py_Error(PyExc_Exception,"unknown file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
         }
     } PY_CATCH;
 
@@ -111,7 +111,7 @@ insert(PyObject *self, PyObject *args)
 
         // extract ending
         if (file.extension() == "")
-            Py_Error(PyExc_Exception,"no file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
 
         if (file.hasExtension("asc")) {
             // add Import feature
@@ -145,7 +145,7 @@ insert(PyObject *self, PyObject *args)
         }
 #endif
         else {
-            Py_Error(PyExc_Exception,"unknown file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
         }
     } PY_CATCH;
 

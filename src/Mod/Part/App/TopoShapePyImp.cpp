@@ -1763,7 +1763,7 @@ Py::String TopoShapePy::getShapeType(void) const
 {
     TopoDS_Shape sh = getTopoShapePtr()->_Shape;
     if (sh.IsNull())
-        throw Py::Exception(PyExc_Exception, "cannot determine type of null shape");
+        throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot determine type of null shape");
     TopAbs_ShapeEnum type = sh.ShapeType();
     std::string name;
     switch (type)
@@ -1804,7 +1804,7 @@ Py::String TopoShapePy::getOrientation(void) const
 {
     TopoDS_Shape sh = getTopoShapePtr()->_Shape;
     if (sh.IsNull())
-        throw Py::Exception(PyExc_Exception, "cannot determine orientation of null shape");
+        throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot determine orientation of null shape");
     TopAbs_Orientation type = sh.Orientation();
     std::string name;
     switch (type)
@@ -1830,7 +1830,7 @@ void TopoShapePy::setOrientation(Py::String arg)
 {
     TopoDS_Shape& sh = getTopoShapePtr()->_Shape;
     if (sh.IsNull())
-        throw Py::Exception(PyExc_Exception, "cannot determine orientation of null shape");
+        throw Py::Exception(Base::BaseExceptionFreeCADError, "cannot determine orientation of null shape");
     std::string name = (std::string)arg;
     TopAbs_Orientation type;
     if (name == "Forward") {

@@ -202,7 +202,7 @@ PyObject*  DocumentPy::addObject(PyObject *args)
     else {
         std::stringstream str;
         str << "No document object found of type '" << sType << "'" << std::ends;
-        throw Py::Exception(PyExc_Exception,str.str());
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
 }
 
@@ -220,7 +220,7 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
     } else {
         std::stringstream str;
         str << "No document object found with name '" << sName << "'" << std::ends;
-        throw Py::Exception(PyExc_Exception,str.str());
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
 }
 
@@ -239,7 +239,7 @@ PyObject*  DocumentPy::copyObject(PyObject *args)
     }
     else {
         std::string str("Failed to copy the object");
-        throw Py::Exception(PyExc_Exception,str);
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str);
     }
 }
 
@@ -256,7 +256,7 @@ PyObject*  DocumentPy::moveObject(PyObject *args)
     }
     else {
         std::string str("Failed to move the object");
-        throw Py::Exception(PyExc_Exception,str);
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str);
     }
 }
 
@@ -358,12 +358,12 @@ PyObject*  DocumentPy::findObjects(PyObject *args)
 
     Base::Type type = Base::Type::fromName(sType);
     if (type == Base::Type::badType()) {
-        PyErr_Format(PyExc_Exception, "'%s' is not a valid type", sType);
+        PyErr_Format(Base::BaseExceptionFreeCADError, "'%s' is not a valid type", sType);
         return NULL;
     }
 
     if (!type.isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-        PyErr_Format(PyExc_Exception, "Type '%s' does not inherit from 'App::DocumentObject'", sType);
+        PyErr_Format(Base::BaseExceptionFreeCADError, "Type '%s' does not inherit from 'App::DocumentObject'", sType);
         return NULL;
     }
 

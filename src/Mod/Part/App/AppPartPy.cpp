@@ -153,7 +153,7 @@ static PyObject * open(PyObject *self, PyObject *args)
 
         // extract ending
         if (file.extension() == "")
-            Py_Error(PyExc_Exception,"no file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
 
         if (file.hasExtension("stp") || file.hasExtension("step")) {
             // create new document and add Import feature
@@ -186,7 +186,7 @@ static PyObject * open(PyObject *self, PyObject *args)
                 pcDoc->recompute();
             }
             catch (const Base::Exception& e) {
-                Py_Error(PyExc_Exception, e.what());
+                Py_Error(Base::BaseExceptionFreeCADError, e.what());
             }
         }
     } PY_CATCH_OCC;
@@ -208,7 +208,7 @@ static PyObject * insert(PyObject *self, PyObject *args)
 
         // extract ending
         if (file.extension() == "")
-            Py_Error(PyExc_Exception,"no file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
         App::Document *pcDoc = App::GetApplication().getDocument(DocName);
         if (!pcDoc) {
             pcDoc = App::GetApplication().newDocument(DocName);
@@ -241,7 +241,7 @@ static PyObject * insert(PyObject *self, PyObject *args)
                 pcDoc->recompute();
             }
             catch (const Base::Exception& e) {
-                Py_Error(PyExc_Exception, e.what());
+                Py_Error(Base::BaseExceptionFreeCADError, e.what());
             }
         }
     } PY_CATCH_OCC;

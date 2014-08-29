@@ -61,7 +61,7 @@ static PyObject * open(PyObject *self, PyObject *args)
 
         // extract ending
         if (file.extension() == "")
-            Py_Error(PyExc_Exception,"no file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
 
         //if (file.hasExtension("igs") || file.hasExtension("iges")) {
         //    // create new document and add Import feature
@@ -71,7 +71,7 @@ static PyObject * open(PyObject *self, PyObject *args)
         //    pcDoc->recompute();
         //}
         // else {
-            Py_Error(PyExc_Exception,"unknown file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
         //}
 
     Py_Return;
@@ -91,7 +91,7 @@ static PyObject * insert(PyObject *self, PyObject *args)
 
         // extract ending
         if (file.extension() == "")
-            Py_Error(PyExc_Exception,"no file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
         App::Document *pcDoc = App::GetApplication().getDocument(DocName);
         if (!pcDoc) {
             pcDoc = App::GetApplication().newDocument(DocName);
@@ -105,7 +105,7 @@ static PyObject * insert(PyObject *self, PyObject *args)
             pcDoc->recompute();
         }
         else {
-            Py_Error(PyExc_Exception,"unknown file ending");
+            Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
         }
 
     } PY_CATCH;

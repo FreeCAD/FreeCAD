@@ -1252,14 +1252,14 @@ PyObject*  MeshPy::collapseFacets(PyObject *args)
                 facets.push_back(iIdx);
             }
             else {
-                Py_Error(PyExc_Exception, "list of integers needed");
+                Py_Error(Base::BaseExceptionFreeCADError, "list of integers needed");
             }
         }
 
         getMeshObjectPtr()->collapseFacets(facets);
     }
     else {
-        Py_Error(PyExc_Exception, "List of Integers needed");
+        Py_Error(Base::BaseExceptionFreeCADError, "List of Integers needed");
     }
 
     Py_Return; 

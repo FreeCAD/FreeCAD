@@ -397,7 +397,7 @@ BaseExport extern PyObject* BaseExceptionFreeCADError;
  *     Feature *pcFtr = _pcDocTypeStd->AddFeature(pstr);
  *   }catch(...)                                                        \
  *   {                                                                 \
- * 	 	Py_Error(PyExc_Exception,"Unknown C++ exception");          \
+ * 	 	Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception");          \
  *   }catch(FCException e) ..... // and so on....                                                               \
  * }
  * \endcode
