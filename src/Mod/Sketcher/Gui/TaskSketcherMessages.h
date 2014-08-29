@@ -51,6 +51,7 @@ public:
     void slotSolved(QString msg);
 
 private Q_SLOTS:
+    void on_labelConstrainStatus_linkActivated(const QString &);
     
 protected:
     ViewProviderSketch *sketchView;

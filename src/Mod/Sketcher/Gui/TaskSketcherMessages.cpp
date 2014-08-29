@@ -34,6 +34,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
+#include <Gui/Command.h>
 
 #include <boost/bind.hpp>
 
@@ -56,6 +57,13 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
 
     connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this,_1));
     connectionSolved = sketchView->signalSolved.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSolved, this,_1));
+    
+    ui->labelConstrainStatus->setOpenExternalLinks(false);
+    
+    QObject::connect(
+        ui->labelConstrainStatus, SIGNAL(linkActivated(const QString &)),
+        this                     , SLOT  (on_labelConstrainStatus_linkActivated(const QString &))
+       );
 }
 
 TaskSketcherMessages::~TaskSketcherMessages()
@@ -74,5 +82,15 @@ void TaskSketcherMessages::slotSolved(QString msg)
 {
     ui->labelSolverStatus->setText(msg);
 }
+
+void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &str)
+{
+    if( str == QString::fromLatin1("#conflicting"))
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
+    
+    if( str == QString::fromLatin1("#redundant"))
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");            
+}
+
 
 #include "moc_TaskSketcherMessages.cpp"

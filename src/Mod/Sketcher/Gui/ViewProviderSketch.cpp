@@ -3688,8 +3688,8 @@ QString ViewProviderSketch::appendConflictMsg(const std::vector<int> &conflictin
     if (conflicting.size() > 0) {
         if (conflicting.size() == 1)
             ss << tr("Please remove the following constraint:");
-        else
-            ss << tr("Please remove at least one of the following constraints:");
+        else 
+            ss << tr("Please remove at least one of the following constraints:");        
         ss << "\n";
         ss << conflicting[0];
         for (unsigned int i=1; i < conflicting.size(); i++)
@@ -3712,9 +3712,20 @@ QString ViewProviderSketch::appendRedundantMsg(const std::vector<int> &redundant
         ss << redundant[0];
         for (unsigned int i=1; i < redundant.size(); i++)
             ss << ", " << redundant[i];
+        
         ss << "\n";
     }
     return msg;
+}
+
+const std::vector<int> &ViewProviderSketch::getConflicting(void) const
+{
+    return edit->ActSketch.getConflicting();
+}
+
+const std::vector<int> &ViewProviderSketch::getRedundant(void) const
+{
+    return edit->ActSketch.getRedundant();  
 }
 
 void ViewProviderSketch::solveSketch(void)
@@ -3730,29 +3741,33 @@ void ViewProviderSketch::solveSketch(void)
     else if (dofs < 0) { // over-constrained sketch
         std::string msg;
         SketchObject::appendConflictMsg(edit->ActSketch.getConflicting(), msg);
-        signalSetUp(QString::fromLatin1("<font color='red'>%1<br/>%2</font>")
-                    .arg(tr("Over-constrained sketch"))
-                    .arg(QString::fromStdString(msg)));
+        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff;\">%2</span></a><br/>%3</font><br/>")
+                    .arg(tr("Over-constrained sketch "))
+                    .arg(tr("(click to select)"))
+                    .arg(QString::fromStdString(msg)));        
         signalSolved(QString());
     }
     else if (edit->ActSketch.hasConflicts()) { // conflicting constraints
-        signalSetUp(QString::fromLatin1("<font color='red'>%1<br/>%2</font>")
-                    .arg(tr("Sketch contains conflicting constraints"))
+        signalSetUp(QString::fromLatin1("<font color='red'>%1<a href=\"#conflicting\"><span style=\" text-decoration: underline; color:#0000ff;\">%2</span></a><br/>%3</font><br/>")
+                    .arg(tr("Sketch contains conflicting constraints "))
+                    .arg(tr("(click to select)"))
                     .arg(appendConflictMsg(edit->ActSketch.getConflicting())));
         signalSolved(QString());
     }
     else {
         if (edit->ActSketch.hasRedundancies()) { // redundant constraints
-            signalSetUp(QString::fromLatin1("<font color='orange'>%1<br/>%2</font>")
-                        .arg(tr("Sketch contains redundant constraints"))
+            signalSetUp(QString::fromLatin1("<font color='DarkOrange'>%1<a href=\"#redundant\"><span style=\" text-decoration: underline; color:#0000ff;\">%2</span></a><br/>%3</font><br/>")
+                        .arg(tr("Sketch contains redundant constraints "))
+                        .arg(tr("(click to select)"))
                         .arg(appendRedundantMsg(edit->ActSketch.getRedundant())));
         }
         if (edit->ActSketch.solve() == 0) { // solving the sketch
             if (dofs == 0) {
                 // color the sketch as fully constrained
                 edit->FullyConstrained = true;
-                if (!edit->ActSketch.hasRedundancies())
+                if (!edit->ActSketch.hasRedundancies()) {
                     signalSetUp(QString::fromLatin1("<font color='green'>%1</font>").arg(tr("Fully constrained sketch")));
+                }
             }
             else if (!edit->ActSketch.hasRedundancies()) {
                 if (dofs == 1)
@@ -3760,6 +3775,7 @@ void ViewProviderSketch::solveSketch(void)
                 else
                     signalSetUp(tr("Under-constrained sketch with %1 degrees of freedom").arg(dofs));
             }
+            
             signalSolved(tr("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
         }
         else {
