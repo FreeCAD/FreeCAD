@@ -220,7 +220,12 @@ public:
     /// signals if the elements list has changed
     boost::signal<void ()> signalElementsChanged;
     
-
+    /** @name Act sketch interface */
+    //@{
+    const std::vector<int> &getConflicting(void) const;
+    const std::vector<int> &getRedundant(void) const; 
+    //@}
+    
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);

@@ -108,6 +108,7 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     }
 
     Sketch sketch;
+    
     int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
     if (dofs < 0) { // over-constrained sketch
