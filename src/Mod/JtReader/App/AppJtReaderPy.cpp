@@ -101,7 +101,7 @@ open(PyObject *self, PyObject *args)
 
     // extract ending
     if(file.extension() == "")
-      Py_Error(PyExc_Exception,"no file ending");
+      Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
 
     if(file.hasExtension("jt"))
     {
@@ -140,7 +140,7 @@ open(PyObject *self, PyObject *args)
     }
     else
     {
-      Py_Error(PyExc_Exception,"unknown file ending");
+      Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
     }
 
 
@@ -165,7 +165,7 @@ insert(PyObject *self, PyObject *args)
 
     // extract ending
     if(file.extension() == "")
-      Py_Error(PyExc_Exception,"no file ending");
+      Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
 
     if(file.hasExtension("jt") )
     {
@@ -175,7 +175,7 @@ insert(PyObject *self, PyObject *args)
         {
             char szBuf[200];
             snprintf(szBuf, 200, "Import called to the non-existing document '%s'", DocName);
-            Py_Error(PyExc_Exception,szBuf);
+            Py_Error(Base::BaseExceptionFreeCADError,szBuf);
         }
 
         readFile(Name,0);
@@ -211,13 +211,13 @@ insert(PyObject *self, PyObject *args)
 
         }else{
             clearData();
-            //Py_Error(PyExc_Exception,"No Mesh in file");
+            //Py_Error(Base::BaseExceptionFreeCADError,"No Mesh in file");
             Base::Console().Warning("No Mesh in file: %s\n",Name);
         }
      }
     else
     {
-      Py_Error(PyExc_Exception,"unknown file ending");
+      Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
     }
 
   } PY_CATCH;

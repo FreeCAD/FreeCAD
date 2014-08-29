@@ -106,13 +106,13 @@ PyObject* DocumentPy::setEdit(PyObject *args)
         return NULL;  // NULL triggers exception 
     App::DocumentObject * obj = getDocumentPtr()->getDocument()->getObject(psFeatStr);
     if (!obj) {
-        PyErr_Format(PyExc_Exception, "No such object found in document: '%s'", psFeatStr);
+        PyErr_Format(Base::BaseExceptionFreeCADError, "No such object found in document: '%s'", psFeatStr);
         return 0;
     }
     
     bool ok = getDocumentPtr()->setEdit(getDocumentPtr()->getViewProvider(obj),mod);
     if (!ok) {
-        PyErr_Format(PyExc_Exception, "Failed to set object '%s' in edit mode", psFeatStr);
+        PyErr_Format(Base::BaseExceptionFreeCADError, "Failed to set object '%s' in edit mode", psFeatStr);
         return 0;
     }
 
@@ -227,7 +227,7 @@ PyObject*  DocumentPy::mdiViewsOfType(PyObject *args)
 
     Base::Type type = Base::Type::fromName(sType);
     if (type == Base::Type::badType()) {
-        PyErr_Format(PyExc_Exception, "'%s' is not a valid type", sType);
+        PyErr_Format(Base::BaseExceptionFreeCADError, "'%s' is not a valid type", sType);
         return NULL;
     }
 

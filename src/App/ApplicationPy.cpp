@@ -260,7 +260,7 @@ PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args,PyObjec
     Document* doc = GetApplication().getDocument(pDoc);
     if ( doc ) {
         if ( doc->save() == false ) {
-            PyErr_Format(PyExc_Exception, "Cannot save document '%s'", pDoc);
+            PyErr_Format(Base::BaseExceptionFreeCADError, "Cannot save document '%s'", pDoc);
             return 0L;
         }
     }

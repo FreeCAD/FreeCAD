@@ -55,17 +55,17 @@ loftOnCurve(PyObject *self, PyObject *args)
     std::vector<Base::Vector3f> poly;
 
     if (!PyList_Check(pcListObj))
-        Py_Error(PyExc_Exception,"List of Tuble of three or two floats needed as second parameter!");
+        Py_Error(Base::BaseExceptionFreeCADError,"List of Tuble of three or two floats needed as second parameter!");
   
     int nSize = PyList_Size(pcListObj);
     for (int i=0; i<nSize;++i)
     {
         PyObject* item = PyList_GetItem(pcListObj, i);
         if (!PyTuple_Check(item))
-            Py_Error(PyExc_Exception,"List of Tuble of three or two floats needed as second parameter!");
+            Py_Error(Base::BaseExceptionFreeCADError,"List of Tuble of three or two floats needed as second parameter!");
         int nTSize = PyTuple_Size(item);
         if(nTSize != 2 && nTSize != 3)
-            Py_Error(PyExc_Exception,"List of Tuble of three or two floats needed as second parameter!");
+            Py_Error(Base::BaseExceptionFreeCADError,"List of Tuble of three or two floats needed as second parameter!");
 
         Base::Vector3f vec(0,0,0);
 
@@ -73,7 +73,7 @@ loftOnCurve(PyObject *self, PyObject *args)
         {
             PyObject* item2 = PyTuple_GetItem(item, l);
             if (!PyFloat_Check(item2))
-                Py_Error(PyExc_Exception,"List of Tuble of three or two floats needed as second parameter!");
+                Py_Error(Base::BaseExceptionFreeCADError,"List of Tuble of three or two floats needed as second parameter!");
             vec[l] = (float)PyFloat_AS_DOUBLE(item2);
         }
         poly.push_back(vec);

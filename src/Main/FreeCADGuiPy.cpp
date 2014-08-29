@@ -271,7 +271,7 @@ QWidget* setupMainWindow()
                 Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiInit"));
             }
             catch (const Base::Exception& e) {
-                PyErr_Format(PyExc_Exception, "Error in FreeCADGuiInit.py: %s\n", e.what());
+                PyErr_Format(Base::BaseExceptionFreeCADError, "Error in FreeCADGuiInit.py: %s\n", e.what());
                 return 0;
             }
             init = true;

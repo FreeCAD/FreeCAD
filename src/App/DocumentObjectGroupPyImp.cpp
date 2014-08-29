@@ -50,7 +50,7 @@ PyObject*  DocumentObjectGroupPy::newObject(PyObject *args)
         return object->getPyObject();
     } 
     else {
-        PyErr_Format(PyExc_Exception, "Cannot create object of type '%s'", sType);
+        PyErr_Format(Base::BaseExceptionFreeCADError, "Cannot create object of type '%s'", sType);
         return NULL;
     }
 }
