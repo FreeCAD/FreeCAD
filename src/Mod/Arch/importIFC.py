@@ -39,7 +39,8 @@ typesmap = { "Site":       ["IfcSite"],
              "Roof":       ["IfcRoof"],
              "Stairs":     ["IfcStair", "IfcStairFlight", "IfcRamp", "IfcRampFlight"],
              "Space":      ["IfcSpace"],
-             "Rebar":      ["IfcReinforcingBar"]
+             "Rebar":      ["IfcReinforcingBar"],
+             "Equipment":  ["IfcFurnishingElement","IfcFurniture","IfcSanitaryTerminal","IfcFlowTerminal","IfcElectricAppliance"]
            }
 
 ifctemplate = """ISO-10303-21;
@@ -297,6 +298,9 @@ def export(exportList,filename):
             ifctype = "BuildingStorey"
         elif ifctype == "Rebar":
             ifctype = "ReinforcingBar"
+        elif ifctype == "HydroEquipment":
+        elif ifctype == "ElectricEquipment":
+            ifctype == "ElectricAppliance"
         ifctype = "Ifc" + ifctype
         if ifctype == "IfcGroup":
             continue
