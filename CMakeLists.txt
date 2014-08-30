@@ -702,8 +702,13 @@ ELSE(MSVC)
         MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 ENDIF(MSVC)
 IF(MINGW)
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads")
-	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthreads")
+	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=12477
+	# Actually '-Wno-inline-dllimport' should work to suppress warnings of the form:
+	# inline function 'foo' is declared as dllimport: attribute ignored
+	# But it doesn't work with MinGW gcc 4.5.0 while using '-Wno-attributes' seems to
+	# do the trick.
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads -Wno-attributes")
+	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthreads -Wno-attributes")
 	SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
 	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
 	# http://stackoverflow.com/questions/8375310/warning-auto-importing-has-been-activated-without-enable-auto-import-specifie
