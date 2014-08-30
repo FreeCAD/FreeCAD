@@ -89,7 +89,7 @@ class ArchWorkbench(Workbench):
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
                         "Draft_Clone"]
-        self.extramodtools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint"]
+        self.draftextratools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint","Draft_ShapeString","Draft_PathArray"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
@@ -107,7 +107,7 @@ class ArchWorkbench(Workbench):
         self.appendToolbar(translate("arch","Draft mod tools"),self.draftmodtools)
         self.appendMenu([translate("arch","&Architecture"),translate("arch","Utilities")],self.utilities)
         self.appendMenu(translate("arch","&Architecture"),self.archtools)
-        self.appendMenu(translate("arch","&Draft"),self.drafttools+self.draftmodtools+self.extramodtools)
+        self.appendMenu(translate("arch","&Draft"),self.drafttools+self.draftmodtools+self.draftextratools)
         self.appendMenu([translate("arch","&Draft"),translate("arch","Utilities")],self.draftutils+self.draftcontexttools)
         self.appendMenu([translate("arch","&Draft"),translate("arch","Snapping")],self.snapList)
         FreeCADGui.addIconPath(":/icons")

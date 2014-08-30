@@ -41,9 +41,12 @@ else:
 Roles = ["Furniture", "Hydro Equipment", "Electric Equipment"]
 
 
-def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment")):
-    "makeEquipment([baseobj,placement,name]): creates an equipment object from the given base object"
-    obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
+def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment"),type="Part"):
+    "makeEquipment([baseobj,placement,name,type]): creates an equipment object from the given base object"
+    if type == "Part":
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    else:
+        obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
     obj.Label = name
     _Equipment(obj)
     if baseobj:
@@ -52,6 +55,8 @@ def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment")
         obj.Placement = placement
     if FreeCAD.GuiUp:
         _ViewProviderEquipment(obj.ViewObject)
+        if baseobj:
+            baseobj.ViewObject.hide()
         
 
 def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largestonly=False):
@@ -230,25 +235,36 @@ class _Equipment(ArchComponent.Component):
         
     def execute(self,obj):
         pl = obj.Placement
-        m = None
         if obj.Base:
-            
-            if obj.Base.isDerivedFrom("Part::Feature"):
-                base = obj.Base.Shape.copy()
-                base = self.processSubShapes(obj,base,pl)
+            if obj.isDerivedFrom("Mesh::Feature"):
+                m = None
+                if obj.Base.isDerivedFrom("Part::Feature"):
+                    base = obj.Base.Shape.copy()
+                    base = self.processSubShapes(obj,base,pl)
+                    if base:
+                        import Mesh
+                        m = Mesh.Mesh(base.tessellate(1))
+                        
+                elif obj.Base.isDerivedFrom("Mesh::Feature"):
+                    m = obj.Base.Mesh.copy()
+                if m:
+                    if not pl.isNull():
+                        m.Placement = pl
+                    obj.Mesh = m
+            else:
+                base = None
+                if obj.Base.isDerivedFrom("Part::Feature"):
+                    base = obj.Base.Shape.copy()
+                elif obj.Base.isDerivedFrom("Mesh::Feature"):
+                    import Part
+                    base = Part.Shape()
+                    base.makeShapeFromMesh(obj.Base.Mesh.Topology,0.05)
+                    base = base.removeSplitteR()
                 if base:
-                    import Mesh
-                    m = Mesh.Mesh(base.tessellate(1))
-                    
-            elif obj.Base.isDerivedFrom("Mesh::Feature"):
-                m = obj.Base.Mesh.copy()
-                
-        if m:
-            if not pl.isNull():
-                m.Placement = pl
-            obj.Mesh = m
-                
-                
+                    base = self.processSubShapes(obj,base,pl)
+                    self.applyShape(obj,base,pl)
+
+
 class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
     "A View Provider for the Equipment object"
 
