@@ -80,7 +80,8 @@ ifctypes = ["IfcSite", "IfcBuilding", "IfcBuildingStorey", "IfcBeam", "IfcBeamSt
             "IfcPlateStandardCase", "IfcRailing", "IfcRamp", "IfcRampFlight", "IfcRoof",
             "IfcSlab", "IfcStair", "IfcStairFlight", "IfcWall","IfcSpace",
             "IfcWallStandardCase", "IfcWindow", "IfcWindowStandardCase", "IfcBuildingElementProxy",
-            "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon", "IfcGroup"]
+            "IfcPile", "IfcFooting", "IfcReinforcingBar", "IfcTendon", "IfcGroup",
+            "FurnishingElement", "SanitaryTerminal", "ElectricAppliance"]
 
 
 def explore(filename=None):
@@ -301,7 +302,9 @@ def export(exportList,filename):
         elif ifctype == "HydroEquipment":
             ifctype = "SanitaryTerminal"
         elif ifctype == "ElectricEquipment":
-            ifctype == "ElectricAppliance"
+            ifctype = "ElectricAppliance"
+        elif ifctype == "Furniture":
+            ifctype = "FurnishingElement"
         ifctype = "Ifc" + ifctype
         if ifctype == "IfcGroup":
             continue
