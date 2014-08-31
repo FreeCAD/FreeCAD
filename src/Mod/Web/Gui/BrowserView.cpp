@@ -145,7 +145,7 @@ void BrowserView::onLinkClicked (const QUrl & url)
 
     //QString fragment = url.	fragment();
 
-    if (scheme==QString::fromLatin1("http")) {
+    if (scheme==QString::fromLatin1("http") || scheme==QString::fromLatin1("https")) {
         load(url);
     }
     // Small trick to force opening a link in an external browser: use exthttp or exthttp

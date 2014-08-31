@@ -44,6 +44,7 @@
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 #include "Language/Translator.h"
+#include "DownloadManager.h"
 #include <App/DocumentObjectPy.h>
 #include <App/PropertyFile.h>
 #include <Base/Interpreter.h>
@@ -142,6 +143,9 @@ PyMethodDef Application::Methods[] = {
   {"addModule",               (PyCFunction) Application::sAddModule,        1,
    "addModule(string) -> None\n\n"
    "Prints the given module import only once in the macro recording"},
+  {"showDownloads",               (PyCFunction) Application::sShowDownloads,1,
+   "showDownloads() -> None\n\n"
+   "Shows the downloads manager window"},
 
   {NULL, NULL}		/* Sentinel */
 };
@@ -865,3 +869,11 @@ PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args,PyObject *
     Command::addModule(Command::Doc,pstr);
     return Py_None;
 }
+
+PyObject* Application::sShowDownloads(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))             // convert args: Python->C 
+        return NULL;                             // NULL triggers exception 
+    Gui::Dialog::DownloadManager::getInstance();
+    return Py_None;
+} 
