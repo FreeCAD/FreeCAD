@@ -1372,7 +1372,7 @@ void Application::LoadParameters(void)
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
         Base::Console().Error("%s in file %s.\n"
-                              "Continue with an empty configuration.",
+                              "Continue with an empty configuration.\n",
                               e.what(), mConfig["SystemParameter"].c_str());
         _pcSysParamMngr->CreateDocument();
     }
@@ -1391,7 +1391,7 @@ void Application::LoadParameters(void)
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
         Base::Console().Error("%s in file %s.\n"
-                              "Continue with an empty configuration.",
+                              "Continue with an empty configuration.\n",
                               e.what(), mConfig["UserParameter"].c_str());
         _pcUserParamMngr->CreateDocument();
     }
