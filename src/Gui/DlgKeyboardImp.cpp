@@ -198,10 +198,42 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
     CommandManager & cCmdMgr = Application::Instance->commandManager();
     Command* cmd = cCmdMgr.getCommandByName(name.constData());
     if (cmd && cmd->getAction()) {
+        Action* action = cmd->getAction();
         QKeySequence shortcut = editShortcut->text();
-        cmd->getAction()->setShortcut(shortcut);
+        action->setShortcut(shortcut);
         accelLineEditShortcut->setText(editShortcut->text());
         editShortcut->clear();
+
+        // update the tool tip
+        QString accel = shortcut.toString(QKeySequence::NativeText);
+        QString toolTip = QCoreApplication::translate(cmd->className(),
+            cmd->getToolTipText(), 0, QCoreApplication::UnicodeUTF8);
+        if (!accel.isEmpty()) {
+            if (!toolTip.isEmpty()) {
+                QString tip = QString::fromLatin1("%1 (%2)")
+                    .arg(toolTip).arg(accel);
+                action->setToolTip(tip);
+            }
+        }
+        else {
+            action->setToolTip(toolTip);
+        }
+
+        // update the status tip
+        QString statusTip = QCoreApplication::translate(cmd->className(),
+            cmd->getStatusTip(), 0, QCoreApplication::UnicodeUTF8);
+        if (statusTip.isEmpty())
+            statusTip = toolTip;
+        if (!accel.isEmpty()) {
+            if (!statusTip.isEmpty()) {
+                QString tip = QString::fromLatin1("(%1)\t%2")
+                    .arg(accel).arg(statusTip);
+                action->setStatusTip(tip);
+            }
+        }
+        else {
+            action->setStatusTip(statusTip);
+        }
 
         ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Shortcut");
         hGrp->SetASCII(name.constData(), accelLineEditShortcut->text().toUtf8());

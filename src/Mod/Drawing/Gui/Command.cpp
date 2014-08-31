@@ -118,7 +118,7 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
 
     QAction* defaultAction = 0;
     int defaultId = 0;

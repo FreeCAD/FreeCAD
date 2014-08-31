@@ -224,7 +224,7 @@ Action * StdCmdFreezeViews::createAction(void)
 {
     ActionGroup* pcAction = new ActionGroup(this, getMainWindow());
     pcAction->setDropDownMenu(true);
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
 
     // add the action items
     saveView = pcAction->addAction(QObject::tr("Save views..."));
@@ -559,7 +559,7 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
 
     QAction* a0 = pcAction->addAction(QString());
     a0->setCheckable(true);
