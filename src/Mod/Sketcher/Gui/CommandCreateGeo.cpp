@@ -1560,7 +1560,7 @@ Gui::Action * CmdSketcherCompCreateArc::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
     arc1->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateArc", QSize(24,24)));
@@ -2036,7 +2036,7 @@ Gui::Action * CmdSketcherCompCreateCircle::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
     arc1->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateCircle", QSize(24,24)));
@@ -3466,7 +3466,7 @@ Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
 
     QAction* triangle = pcAction->addAction(QString());
     triangle->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateTriangle", QSize(24,24)));

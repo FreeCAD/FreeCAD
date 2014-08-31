@@ -219,6 +219,9 @@ public:
     void setEnabled(bool);
     void setVisible(bool);
 
+private Q_SLOTS:
+    void actionChanged();
+
 private:
     QAction* _toolAction;
 };
@@ -240,6 +243,9 @@ public:
     void addTo ( QWidget * w );
     void setEnabled(bool);
     void setVisible(bool);
+
+private Q_SLOTS:
+    void actionChanged();
 
 private:
     QAction* _toolAction;

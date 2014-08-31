@@ -125,10 +125,10 @@ Action * StdCmdWorkbench::createAction(void)
     Action *pcAction;
 
     pcAction = new WorkbenchGroup(this,getMainWindow());
-    applyCommandData(pcAction);
+    pcAction->setShortcut(QString::fromAscii(sAccel));
+    applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-      pcAction->setShortcut(QString::fromAscii(sAccel));
 
     return pcAction;
 }
@@ -169,7 +169,7 @@ Action * StdCmdRecentFiles::createAction(void)
     RecentFilesAction* pcAction = new RecentFilesAction(this, getMainWindow());
     pcAction->setObjectName(QLatin1String("recentFiles"));
     pcAction->setDropDownMenu(true);
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
     return pcAction;
 }
 
