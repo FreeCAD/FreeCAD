@@ -299,6 +299,7 @@ def export(exportList,filename):
         elif ifctype == "Rebar":
             ifctype = "ReinforcingBar"
         elif ifctype == "HydroEquipment":
+            ifctype = "SanitaryTerminal"
         elif ifctype == "ElectricEquipment":
             ifctype == "ElectricAppliance"
         ifctype = "Ifc" + ifctype
