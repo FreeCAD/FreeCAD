@@ -1090,9 +1090,13 @@ int  ParameterManager::LoadDocument(const char* sFileName)
 #endif
         return LoadDocument(inputSource);
     }
+    catch (const Base::Exception& e) {
+        std::cerr << e.what() << std::endl;
+        throw;
+    }
     catch (...) {
         std::cerr << "An error occurred during parsing\n " << std::endl;
-        return 0;
+        throw;
     }
 }
 
