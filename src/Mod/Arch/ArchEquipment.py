@@ -57,7 +57,7 @@ def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment")
         _ViewProviderEquipment(obj.ViewObject)
         if baseobj:
             baseobj.ViewObject.hide()
-        
+    return obj
 
 def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largestonly=False):
     """createMeshView(obj,[direction,outeronly,largestonly]): creates a flat shape that is the
