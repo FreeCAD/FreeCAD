@@ -214,11 +214,19 @@ void ObjectLabelObserver::slotRelabelObject(const App::DocumentObject& obj, cons
             }
 
             // make sure that there is a name conflict otherwise we don't have to do anything
-            if (match) {
+            if (match && !label.empty()) {
                 // remove number from end to avoid lengthy names
                 size_t lastpos = label.length()-1;
-                while (label[lastpos] >= 48 && label[lastpos] <= 57)
+                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
+                    // if 'lastpos' becomes 0 then all characters are digits. In this case we use
+                    // the complete label again
+                    if (lastpos == 0) {
+                        lastpos = label.length()-1;
+                        break;
+                    }
                     lastpos--;
+                }
+
                 label = label.substr(0, lastpos+1);
                 label = Base::Tools::getUniqueName(label, objectLabels, 3);
                 this->current = &obj;
