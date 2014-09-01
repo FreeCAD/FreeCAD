@@ -14,7 +14,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
-    ${ODE_INCLUDE_DIRS}
+    #${ODE_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
 
 )
@@ -22,7 +22,7 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Assembly_LIBS
-    ${ODE_LIBRARIES}
+    #${ODE_LIBRARIES}
     ${OCC_LIBRARIES}
     ${Boost_LIBRARIES}
     ${Boost_LOG_LIBRARY_RELEASE}
