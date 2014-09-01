@@ -314,7 +314,7 @@ def getGroupContents(objectslist,walls=False,addgroups=False):
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
     for obj in objectslist:
-        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) == "Space") and hasattr(obj,"Group")):
             if obj.isDerivedFrom("Drawing::FeaturePage"):
                 # skip if the group is a page
                 newlist.append(obj)

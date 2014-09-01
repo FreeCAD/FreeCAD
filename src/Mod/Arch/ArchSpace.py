@@ -113,6 +113,7 @@ class _Space(ArchComponent.Component):
         obj.addProperty("App::PropertyString",     "FinishFloor",  "Arch",translate("Arch","The finishing of the floor of this space"))
         obj.addProperty("App::PropertyString",     "FinishWalls",  "Arch",translate("Arch","The finishing of the walls of this space"))
         obj.addProperty("App::PropertyString",     "FinishCeiling","Arch",translate("Arch","The finishing of the ceiling of this space"))
+        obj.addProperty("App::PropertyLinkList",   "Group",        "Arch",translate("Arch","Objects that are included inside this space, such as furniture"))
         self.Type = "Space"
 
     def execute(self,obj):

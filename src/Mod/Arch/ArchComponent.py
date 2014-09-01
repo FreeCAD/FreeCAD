@@ -676,6 +676,8 @@ class ViewProviderComponent:
                     c.append(s)
             if hasattr(self.Object,"Armatures"):
                 c.extend(self.Object.Armatures)
+            if hasattr(self.Object,"Group"):
+                c.extend(self.Object.Group)
             if hasattr(self.Object,"Tool"):
                 if self.Object.Tool:
                     c.append(self.Object.Tool)
