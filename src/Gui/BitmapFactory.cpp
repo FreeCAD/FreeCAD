@@ -257,6 +257,9 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
                         break;
                     }
                 }
+
+                if (!icon.isNull())
+                    break;
             }
         }
     }
