@@ -377,61 +377,86 @@ static HMODULE s_hDbgHelpMod;
 static MINIDUMP_TYPE s_dumpTyp = MiniDumpNormal;
 static std::string s_szMiniDumpFileName;  // initialize with whatever appropriate...
 
-static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
+#include <Base/StackWalker.h>
+class MyStackWalker : public StackWalker
 {
-#ifdef _M_IX86
-  if (pEx->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW)
-  {
-    // be sure that we have enought space...
-    static char MyStack[1024*128];
-    // it assumes that DS and SS are the same!!! (this is the case for Win32)
-    // change the stack only if the selectors are the same (this is the case for Win32)
-    //__asm push offset MyStack[1024*128];
-    //__asm pop esp;
-    __asm mov eax,offset MyStack[1024*128];
-    __asm mov esp,eax;
-  }
-#endif
-  bool bFailed = true;
-  HANDLE hFile;
-  hFile = CreateFile(s_szMiniDumpFileName.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-  if (hFile != INVALID_HANDLE_VALUE)
-  {
-    MINIDUMP_EXCEPTION_INFORMATION stMDEI;
-    stMDEI.ThreadId = GetCurrentThreadId();
-    stMDEI.ExceptionPointers = pEx;
-    stMDEI.ClientPointers = TRUE;
-    // try to create an miniDump:
-    if (s_pMDWD(
-      GetCurrentProcess(),
-      GetCurrentProcessId(),
-      hFile,
-      s_dumpTyp,
-      &stMDEI,
-      NULL,
-      NULL
-      ))
+    DWORD threadId;
+public:
+    MyStackWalker() : StackWalker(), threadId(GetCurrentThreadId())
     {
-      bFailed = false;  // suceeded
+        std::string name = App::Application::Config()["UserAppData"] + "crash.log";
+        Base::Console().AttachObserver(new Base::ConsoleObserverFile(name.c_str()));
     }
-    CloseHandle(hFile);
-  }
+    MyStackWalker(DWORD dwProcessId, HANDLE hProcess) : StackWalker(dwProcessId, hProcess) {}
+    virtual void OnOutput(LPCSTR szText)
+    {
+        Base::Console().Log("Id: %ld: %s", threadId, szText);
+        //StackWalker::OnOutput(szText);
+    }
+};
 
-  if (bFailed)
-  {
-    return EXCEPTION_CONTINUE_SEARCH;
-  }
+static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx) 
+{
+#ifdef _M_IX86 
+  if (pEx->ExceptionRecord->ExceptionCode == EXCEPTION_STACK_OVERFLOW)   
+  { 
+    // be sure that we have enought space... 
+    static char MyStack[1024*128];   
+    // it assumes that DS and SS are the same!!! (this is the case for Win32) 
+    // change the stack only if the selectors are the same (this is the case for Win32) 
+    //__asm push offset MyStack[1024*128]; 
+    //__asm pop esp; 
+    __asm mov eax,offset MyStack[1024*128]; 
+    __asm mov esp,eax; 
+  } 
+#endif 
+  MyStackWalker sw;
+  sw.ShowCallstack(GetCurrentThread(), pEx->ContextRecord);
+  Base::Console().Log("*** Unhandled Exception!\n");
+  Base::Console().Log("   ExpCode: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionCode);
+  Base::Console().Log("   ExpFlags: %d\n", pEx->ExceptionRecord->ExceptionFlags);
+  Base::Console().Log("   ExpAddress: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionAddress);
 
-  // Optional display an error message
-  // FatalAppExit(-1, ("Application failed!"));
+  bool bFailed = true; 
+  HANDLE hFile; 
+  hFile = CreateFile(s_szMiniDumpFileName.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL); 
+  if (hFile != INVALID_HANDLE_VALUE) 
+  { 
+    MINIDUMP_EXCEPTION_INFORMATION stMDEI; 
+    stMDEI.ThreadId = GetCurrentThreadId(); 
+    stMDEI.ExceptionPointers = pEx; 
+    stMDEI.ClientPointers = TRUE; 
+    // try to create an miniDump: 
+    if (s_pMDWD( 
+      GetCurrentProcess(), 
+      GetCurrentProcessId(), 
+      hFile, 
+      s_dumpTyp, 
+      &stMDEI, 
+      NULL, 
+      NULL 
+      )) 
+    { 
+      bFailed = false;  // suceeded 
+    } 
+    CloseHandle(hFile); 
+  } 
+
+  if (bFailed) 
+  { 
+    return EXCEPTION_CONTINUE_SEARCH; 
+  } 
+
+  // Optional display an error message 
+  // FatalAppExit(-1, ("Application failed!")); 
 
 
-  // or return one of the following:
-  // - EXCEPTION_CONTINUE_SEARCH
-  // - EXCEPTION_CONTINUE_EXECUTION
-  // - EXCEPTION_EXECUTE_HANDLER
-  return EXCEPTION_CONTINUE_SEARCH;  // this will trigger the "normal" OS error-dialog
-}
+  // or return one of the following: 
+  // - EXCEPTION_CONTINUE_SEARCH 
+  // - EXCEPTION_CONTINUE_EXECUTION 
+  // - EXCEPTION_EXECUTE_HANDLER 
+  return EXCEPTION_CONTINUE_SEARCH;  // this will trigger the "normal" OS error-dialog 
+} 
 
 void InitMiniDumpWriter(const std::string& filename)
 {

@@ -33,6 +33,7 @@ if(MSVC)
         optimized MSVCRT.LIB
         optimized MSVCPRT.LIB
         Rpcrt4.lib
+        version.lib
     )
 elseif(MINGW)
     set(FreeCADBase_LIBS
@@ -290,6 +291,14 @@ SET(FreeCADBase_SRCS
     PreCompiled.cpp
     PreCompiled.h
 )
+
+IF (MSVC)
+    SET(FreeCADBase_SRCS
+        ${FreeCADBase_SRCS}
+        StackWalker.cpp
+        StackWalker.h
+)
+ENDIF(MSVC)
 
 # Use external zipios++ if specified.
 if(FREECAD_USE_EXTERNAL_ZIPIOS)
