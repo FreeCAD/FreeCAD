@@ -1064,7 +1064,9 @@ bool Document::canClose ()
     bool ok = true;
     switch(QMessageBox::question(getActiveView(),
         QObject::tr("Unsaved document"),
-        QObject::tr("Save document before close?"),
+        QObject::tr("The document '%1' has been modified.\n"
+                    "Do you want to save your changes?")
+        .arg(QString::fromUtf8(getDocument()->Label.getValue())),
         QMessageBox::Yes | QMessageBox::Default,
         QMessageBox::No,
         QMessageBox::Cancel | QMessageBox::Escape))
