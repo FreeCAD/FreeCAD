@@ -4889,7 +4889,11 @@ class _ShapeString(_DraftObject):
             for char in CharList:
                 CharFaces = []
                 for CWire in char:
-                    f = Part.Face(CWire)
+                    try:
+                        f = Part.Face(CWire)
+                    except:
+                        # allow sticky characters with no face
+                        f = CWire
                     if f:
                         CharFaces.append(f)
                 # whitespace (ex: ' ') has no faces. This breaks OpenSCAD2Dgeom...
@@ -4913,33 +4917,46 @@ class _ShapeString(_DraftObject):
             compEdges = compEdges.connectEdgesToWires()
             fixedwire.append(compEdges.Wires[0])
         wirelist = fixedwire
-
         sep_wirelist = []
+        stick = False
         while len(wirelist) > 0:
             wire2Face = [wirelist[0]]
-            face = Part.Face(wirelist[0])
-            for w in wirelist[1:]:
-                p = w.Vertexes[0].Point
-                u,v = face.Surface.parameter(p)
-                if face.isPartOfDomain(u,v):
-                    f = Part.Face(w)
-                    if face.Orientation == f.Orientation:
-                        if f.Surface.Axis * face.Surface.Axis < 0:
-                            w.reverse()
+            try:
+                face = Part.Face(wirelist[0])
+            except:
+                stick = True
+                wirelist = []
+            else:
+                for w in wirelist[1:]:
+                    p = w.Vertexes[0].Point
+                    u,v = face.Surface.parameter(p)
+                    if face.isPartOfDomain(u,v):
+                        try:
+                            f = Part.Face(w)
+                        except:
+                            stick = True
+                            wirelist = []
+                        else:
+                            if face.Orientation == f.Orientation:
+                                if f.Surface.Axis * face.Surface.Axis < 0:
+                                    w.reverse()
+                            else:
+                                if f.Surface.Axis * face.Surface.Axis > 0:
+                                    w.reverse()
+                            wire2Face.append(w)
                     else:
-                        if f.Surface.Axis * face.Surface.Axis > 0:
-                            w.reverse()
-                    wire2Face.append(w)
-                else:
-                    sep_wirelist.append(w)
-            wirelist = sep_wirelist
-            sep_wirelist = []
-            face = Part.Face(wire2Face)
-            face.validate()
-            if face.Surface.Axis.z < 0.0:
-                face.reverse()
-            compFaces.append(face)
-        ret = Part.Compound(compFaces)
+                        sep_wirelist.append(w)
+                wirelist = sep_wirelist
+                sep_wirelist = []
+                face = Part.Face(wire2Face)
+                face.validate()
+                if face.Surface.Axis.z < 0.0:
+                    face.reverse()
+                compFaces.append(face)
+        if stick:
+            ret = Part.Compound(fixedwire)
+        elif compFaces:
+            ret = Part.Compound(compFaces)
         return ret
 
     def makeGlyph(self, facelist):
