@@ -912,6 +912,11 @@ def makeCopy(obj,force=None,reparent=False):
         _Rectangle(newobj)
         if gui:
             _ViewProviderRectangle(newobj.ViewObject)
+    elif (getType(obj) == "Point") or (force == "Point"):
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
+        _Point(newobj)
+        if gui:
+            _ViewProviderPoint(newobj.ViewObject)
     elif (getType(obj) == "Dimension") or (force == "Dimension"):
         newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
         _Dimension(newobj)
@@ -4766,7 +4771,7 @@ class _PathArray(_DraftObject):
 
 class _Point(_DraftObject):
     "The Draft Point object"
-    def __init__(self, obj,x,y,z):
+    def __init__(self, obj,x=0,y=0,z=0):
         _DraftObject.__init__(self,obj,"Point")
         obj.addProperty("App::PropertyFloat","X","Draft","Location").X = x
         obj.addProperty("App::PropertyFloat","Y","Draft","Location").Y = y
