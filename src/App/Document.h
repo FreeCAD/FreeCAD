@@ -30,6 +30,7 @@
 
 #include "PropertyContainer.h"
 #include "PropertyStandard.h"
+#include "PropertyLinks.h"
 
 #include <map>
 #include <vector>
@@ -91,10 +92,14 @@ public:
     App::PropertyString  LicenseURL;
     /// Meta descriptons
     App::PropertyMap     Meta;
-    /// Meta descriptons
+    /// Material descriptons, used and defined in the Material module.
     App::PropertyMap     Material;
     /// read-only name of the temp dir created wen the document is opened
-    PropertyString TransientDir;
+    PropertyString		TransientDir;
+	/// Tip object of the document (if any)
+	PropertyLink		Tip;
+ 	/// Tip object of the document (if any)
+	PropertyString		TipName;
     //@}
 
     /** @name Signals of the document */

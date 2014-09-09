@@ -74,7 +74,6 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "DocumentPy.h"
 #include "Application.h"
 #include "DocumentObject.h"
-#include "PropertyLinks.h"
 #include "MergeDocuments.h"
 
 #include <Base/Console.h>
@@ -987,6 +986,10 @@ Document::Document(void)
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
         "Transient directory, where the files live while the document is open");
+    ADD_PROPERTY_TYPE(Tip,(0),0,PropertyType(Prop_Transient),
+        "Link of the tip object of the document");
+    ADD_PROPERTY_TYPE(TipName,(""),0,PropertyType(Prop_Hidden|Prop_ReadOnly),
+        "Link of the tip object of the document");
     Uid.touch();
 }
 
@@ -1134,6 +1137,10 @@ void Document::Restore(Base::XMLReader &reader)
     else if ( scheme >= 3 ) {
         // read the feature types
         readObjects(reader);
+
+		// tip object handling. First the whole document has to be read, then we
+		// can restore the Tip link out of the TipName Property:
+		Tip.setValue(getObject(TipName.getValue()));
     }
 
     reader.readEndElement("Document");
@@ -1340,6 +1347,11 @@ bool Document::save (void)
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     if (*(FileName.getValue()) != '\0') {
+        // Save the name of the tip object in order to handle in Restore()
+        if(Tip.getValue()) {
+            TipName.setValue(Tip.getValue()->getNameInDocument());
+        }
+
         std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
         LastModifiedDate.setValue(LastModifiedDateString.c_str());
         // set author if needed
