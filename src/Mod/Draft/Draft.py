@@ -4915,9 +4915,11 @@ class _ShapeString(_DraftObject):
     def makeFaces(self, wireChar):
         import Part
         compFaces=[]
+        allEdges = []
         wirelist=sorted(wireChar,key=(lambda shape: shape.BoundBox.DiagonalLength),reverse=True)
         fixedwire = []
         for w in wirelist:
+            allEdges.extend(w.Edges)
             compEdges = Part.Compound(w.Edges)
             compEdges = compEdges.connectEdgesToWires()
             fixedwire.append(compEdges.Wires[0])
@@ -4953,13 +4955,18 @@ class _ShapeString(_DraftObject):
                         sep_wirelist.append(w)
                 wirelist = sep_wirelist
                 sep_wirelist = []
-                face = Part.Face(wire2Face)
-                face.validate()
-                if face.Surface.Axis.z < 0.0:
-                    face.reverse()
-                compFaces.append(face)
+                try:
+                    face = Part.Face(wire2Face)
+                    face.validate()
+                    if face.Surface.Axis.z < 0.0:
+                        face.reverse()
+                except:
+                    stick = True
+                    wirelist = []
+                else:
+                    compFaces.append(face)
         if stick:
-            ret = Part.Compound(fixedwire)
+            ret = Part.Compound(allEdges)
         elif compFaces:
             ret = Part.Compound(compFaces)
         return ret
