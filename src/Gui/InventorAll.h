@@ -151,9 +151,6 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 
-#include <Inventor/Qt/SoQt.h>
-#include <Inventor/Qt/SoQtCursor.h>
-#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
 
 
 #endif

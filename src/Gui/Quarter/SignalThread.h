@@ -51,7 +51,7 @@ public:
   void trigger(void);
   void stopThread(void);
 
-signals:
+Q_SIGNALS:
 
   void triggerSignal(void);
 

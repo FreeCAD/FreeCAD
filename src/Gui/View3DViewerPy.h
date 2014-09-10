@@ -26,6 +26,7 @@
 
 #include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
+#include <list>
 
 namespace Gui {
 

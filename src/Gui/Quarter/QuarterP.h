@@ -2,7 +2,9 @@
 #define QUARTER_QUARTERP_H
 #include <Inventor/SbName.h>
 #include <QtGui/QCursor>
+#ifndef _MSC_VER
 #include <config.h>
+#endif
 
 template <class Key, class T> class QMap;
 

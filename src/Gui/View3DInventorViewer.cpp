@@ -126,6 +126,74 @@
 
 using namespace Gui;
 
+/*** zoom-style cursor ******/
+
+#define ZOOM_WIDTH 16
+#define ZOOM_HEIGHT 16
+#define ZOOM_BYTES ((ZOOM_WIDTH + 7) / 8) * ZOOM_HEIGHT
+#define ZOOM_HOT_X 5
+#define ZOOM_HOT_Y 7
+
+static unsigned char zoom_bitmap[ZOOM_BYTES] =
+{
+  0x00, 0x0f, 0x80, 0x1c, 0x40, 0x38, 0x20, 0x70,
+  0x90, 0xe4, 0xc0, 0xcc, 0xf0, 0xfc, 0x00, 0x0c,
+  0x00, 0x0c, 0xf0, 0xfc, 0xc0, 0xcc, 0x90, 0xe4,
+  0x20, 0x70, 0x40, 0x38, 0x80, 0x1c, 0x00, 0x0f
+};
+
+static unsigned char zoom_mask_bitmap[ZOOM_BYTES] =
+{
+ 0x00,0x0f,0x80,0x1f,0xc0,0x3f,0xe0,0x7f,0xf0,0xff,0xf0,0xff,0xf0,0xff,0x00,
+ 0x0f,0x00,0x0f,0xf0,0xff,0xf0,0xff,0xf0,0xff,0xe0,0x7f,0xc0,0x3f,0x80,0x1f,
+ 0x00,0x0f
+};
+
+/*** pan-style cursor *******/
+
+#define PAN_WIDTH 16
+#define PAN_HEIGHT 16
+#define PAN_BYTES ((PAN_WIDTH + 7) / 8) * PAN_HEIGHT
+#define PAN_HOT_X 7
+#define PAN_HOT_Y 7
+
+static unsigned char pan_bitmap[PAN_BYTES] =
+{
+  0xc0, 0x03, 0x60, 0x02, 0x20, 0x04, 0x10, 0x08,
+  0x68, 0x16, 0x54, 0x2a, 0x73, 0xce, 0x01, 0x80,
+  0x01, 0x80, 0x73, 0xce, 0x54, 0x2a, 0x68, 0x16,
+  0x10, 0x08, 0x20, 0x04, 0x40, 0x02, 0xc0, 0x03
+};
+
+static unsigned char pan_mask_bitmap[PAN_BYTES] =
+{
+ 0xc0,0x03,0xe0,0x03,0xe0,0x07,0xf0,0x0f,0xe8,0x17,0xdc,0x3b,0xff,0xff,0xff,
+ 0xff,0xff,0xff,0xff,0xff,0xdc,0x3b,0xe8,0x17,0xf0,0x0f,0xe0,0x07,0xc0,0x03,
+ 0xc0,0x03
+};
+
+/*** rotate-style cursor ****/
+
+#define ROTATE_WIDTH 16
+#define ROTATE_HEIGHT 16
+#define ROTATE_BYTES ((ROTATE_WIDTH + 7) / 8) * ROTATE_HEIGHT
+#define ROTATE_HOT_X 6
+#define ROTATE_HOT_Y 8
+
+static unsigned char rotate_bitmap[ROTATE_BYTES] = {
+  0xf0, 0xef, 0x18, 0xb8, 0x0c, 0x90, 0xe4, 0x83,
+  0x34, 0x86, 0x1c, 0x83, 0x00, 0x81, 0x00, 0xff,
+  0xff, 0x00, 0x81, 0x00, 0xc1, 0x38, 0x61, 0x2c,
+  0xc1, 0x27, 0x09, 0x30, 0x1d, 0x18, 0xf7, 0x0f
+};
+
+static unsigned char rotate_mask_bitmap[ROTATE_BYTES] = {
+ 0xf0,0xef,0xf8,0xff,0xfc,0xff,0xfc,0xff,0x3c,0xfe,0x1c,0xff,0x00,0xff,0x00,
+ 0xff,0xff,0x00,0xff,0x00,0xff,0x38,0x7f,0x3c,0xff,0x3f,0xff,0x3f,0xff,0x1f,
+ 0xf7,0x0f
+};
+
+
 /*!
 As ProgressBar has no chance to control the incoming Qt events of Quarter so we need to stop
 the event handling to prevent the scenegraph from being selected or deselected
@@ -388,6 +456,19 @@ void View3DInventorViewer::init()
     viewerEventFilter = new ViewerEventFilter;
     installEventFilter(viewerEventFilter);
     getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
+    
+    //create the cursors
+    QBitmap cursor = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_bitmap);
+    QBitmap mask = QBitmap::fromData(QSize(ROTATE_WIDTH, ROTATE_HEIGHT), rotate_mask_bitmap);
+    spinCursor = QCursor(cursor, mask, ROTATE_HOT_X, ROTATE_HOT_Y);
+    
+    cursor = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_bitmap);
+    mask = QBitmap::fromData(QSize(ZOOM_WIDTH, ZOOM_HEIGHT), zoom_mask_bitmap);
+    zoomCursor = QCursor(cursor, mask, ZOOM_HOT_X, ZOOM_HOT_Y);
+    
+    cursor = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_bitmap);
+    mask = QBitmap::fromData(QSize(PAN_WIDTH, PAN_HEIGHT), pan_mask_bitmap);
+    panCursor = QCursor(cursor, mask, PAN_HOT_X, PAN_HOT_Y);
 }
 
 View3DInventorViewer::~View3DInventorViewer()
@@ -1393,7 +1474,7 @@ void View3DInventorViewer::selectAll()
 }
 
 
-bool View3DInventorViewer::processSoEvent(const SoEvent* const ev)
+bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 {
     if(isRedirectedToSceneGraph()) {
         SbBool processed = inherited::processSoEvent(ev);
@@ -2365,14 +2446,12 @@ void View3DInventorViewer::setCursorRepresentation(int modearg)
 
     case NavigationStyle::DRAGGING:
     case NavigationStyle::SPINNING:
-        //TODO: add qcursor spinning cursor
-        //this->getWidget()->setCursor(getNativeCursor(SoQtCursor::getRotateCursor().getCustomCursor()));
+        this->getWidget()->setCursor(spinCursor);
         break;
 
     case NavigationStyle::ZOOMING:
     {
-        //TODO:add qcursor zoom cursor
-        //this->getWidget()->setCursor(getNativeCursor(SoQtCursor::getZoomCursor().getCustomCursor()));
+        this->getWidget()->setCursor(zoomCursor);
     }
     break;
 
@@ -2385,8 +2464,7 @@ void View3DInventorViewer::setCursorRepresentation(int modearg)
     break;
 
     case NavigationStyle::PANNING:
-        //TODO: add qcursor pan cursor
-        //this->getWidget()->setCursor(getNativeCursor(SoQtCursor::getPanCursor().getCustomCursor()));
+        this->getWidget()->setCursor(panCursor);
         break;
 
     case NavigationStyle::SELECTION:
@@ -2589,7 +2667,7 @@ void View3DInventorViewer::setAntiAliasingMode(View3DInventorViewer::AntiAliasin
     if(getSoRenderManager()->getGLRenderAction()->isSmoothing() != smoothing)
         getSoRenderManager()->getGLRenderAction()->setSmoothing(smoothing);
 
-    if(static_cast<QGLWidget*>(this->viewport())->format().sampleBuffers() != buffers)
+    if(static_cast<QGLWidget*>(this->viewport())->format().samples() != buffers)
         Base::Console().Message("To change multisampling settings please close and open the 3d view again");
 
 }
@@ -2599,7 +2677,7 @@ View3DInventorViewer::AntiAliasing View3DInventorViewer::getAntiAliasingMode() c
     if(getSoRenderManager()->getGLRenderAction()->isSmoothing())
         return Smoothing;
 
-    int buffers = static_cast<QGLWidget*>(this->viewport())->format().sampleBuffers();
+    int buffers = static_cast<QGLWidget*>(this->viewport())->format().samples();
 
     switch(buffers) {
     case 1:

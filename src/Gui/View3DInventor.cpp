@@ -128,6 +128,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
           break;
       case View3DInventorViewer::None:
       default:
+          f.setSamples(1);
           break;
     };
     

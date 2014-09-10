@@ -26,6 +26,8 @@
 #ifndef _PreComp_
 # include <QMenu>
 # include <Inventor/SbBox2s.h>
+# include <Inventor/SbLine.h>
+# include <Inventor/SbPlane.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/actions/SoToVRML2Action.h>
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>

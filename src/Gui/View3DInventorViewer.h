@@ -354,7 +354,7 @@ protected:
     virtual void actualRedraw(void);
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
-    virtual bool processSoEvent(const SoEvent * const ev);
+    virtual bool processSoEvent(const SoEvent * ev);
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
@@ -402,7 +402,7 @@ private:
 
 
     SbBool editing;
-    QCursor editCursor;
+    QCursor editCursor, zoomCursor, panCursor, spinCursor;
     SbBool redirected;
     SbBool allowredir;
 

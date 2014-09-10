@@ -1,7 +1,7 @@
 #add_subdirectory(Icons)
 
 if(WIN32)
-    add_definitions(-DFCGui -DQIIS_MAKEDLL -DOVR_OS_WIN32)
+add_definitions(-DFCGui -DQIIS_MAKEDLL -DOVR_OS_WIN32 -DQUARTER_INTERNAL -DQUARTER_MAKE_DLL -DCOIN_DLL)
 endif(WIN32)
 
 if (FREECAD_USE_3DCONNEXION)
@@ -684,7 +684,7 @@ SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 #quarter sources
 FILE(GLOB_RECURSE Quarter_CPP_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.cpp)
 FILE(GLOB_RECURSE Quarter_H_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.h)
-fc_wrap_cpp(Quarter_MOC_SRCS ${Quarter_H_SRC})
+qt4_wrap_cpp(Quarter_MOC_SRCS ${Quarter_H_SRC})
 SET(Quarter_SRCS 
     ${Quarter_CPP_SRC} 
     ${Quarter_H_SRC}
@@ -954,7 +954,6 @@ if(MSVC)
         ${Editor_CPP_SRCS}
         ${Help_CPP_SRCS}
         ${Inventor_CPP_SRCS}
-        ${Quarter_SRCS}
         ${View3D_CPP_SRCS}
         ${Viewprovider_CPP_SRCS}
         ${Widget_CPP_SRCS}
