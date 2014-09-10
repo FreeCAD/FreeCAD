@@ -1903,8 +1903,10 @@ void View3DInventorViewer::viewAll()
     if(isAnimationEnabled())
         animatedViewAll(10, 20);
 
-    // call the default implementation first to make sure everything is visible
-    SoQTQuarterAdaptor::viewAll();
+    // make sure everything is visible
+    if(cam)
+        cam->viewAll(getSoRenderManager()->getSceneGraph(), this->getSoRenderManager()->getViewportRegion());
+    
 
     for(int i = 0; i < pathlist.getLength(); i++) {
         SoPath* path = pathlist[i];
