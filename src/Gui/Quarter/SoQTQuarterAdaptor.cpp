@@ -77,7 +77,7 @@ QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getWidget()
 
 QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getGLWidget()
 {
-    return this;
+    return viewport();
 }
 
 QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getWidget() const
@@ -89,7 +89,7 @@ QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getWidget() const
 
 QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getGLWidget() const
 {
-    return const_cast<SoQTQuarterAdaptor*>(this);
+    return const_cast<QWidget*>(viewport());
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
