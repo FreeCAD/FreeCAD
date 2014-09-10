@@ -35,6 +35,7 @@
 
 #include "Workbench.h"
 #include <App/Plane.h>
+#include <App/Part.h>
 #include <App/Placement.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
@@ -94,6 +95,45 @@ Workbench::Workbench()
 Workbench::~Workbench()
 {
 }
+
+
+PartDesign::Body *Workbench::setUpPart(const App::Part *part)
+{
+	// add the standard planes at the root of the feature tree
+    // first check if they already exist
+    // FIXME: If the user renames them, they won't be found...
+    bool found = false;
+    std::vector<App::DocumentObject*> planes = part->getObjectsOfType(App::Plane::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
+        for (unsigned i = 0; i < 3; i++) {
+            if (strcmp(PartDesignGui::BaseplaneNames[i], (*p)->getNameInDocument()) == 0) {
+                found = true;
+                break;
+            }
+        }
+        if (found) break;
+    }
+
+    if (!found) {
+        // Add the planes ...
+        Gui::Command::doCommand( Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[0]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[1]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),-90))");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
+        // ... and put them in the 'Origin' group
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','%s')", QObject::tr("Origin").toStdString().c_str());
+        for (unsigned i = 0; i < 3; i++)
+            Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('%s'))", PartDesignGui::BaseplaneNames[i]);
+        // TODO: Fold the group (is that possible through the Python interface?)
+    }
+
+	return NULL;
+}
+
 
 void switchToDocument(const App::Document* doc)
 {

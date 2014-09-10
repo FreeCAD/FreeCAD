@@ -48,6 +48,7 @@
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Plane.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
@@ -75,7 +76,7 @@
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
-
+#include "Workbench.h"
 #include "FeaturePickDialog.h"
 #include "Workbench.h"
 
@@ -105,37 +106,14 @@ void CmdPartDesignBody::activated(int iMsg)
     openCommand("Add a body feature");
     std::string FeatName = getUniqueObjectName("Body");
 
-    // add the standard planes at the root of the feature tree
-    // first check if they already exist
-    // FIXME: If the user renames them, they won't be found...
-    bool found = false;
-    std::vector<App::DocumentObject*> planes = getDocument()->getObjectsOfType(App::Plane::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
-        for (unsigned i = 0; i < 3; i++) {
-            if (strcmp(PartDesignGui::BaseplaneNames[i], (*p)->getNameInDocument()) == 0) {
-                found = true;
-                break;
-            }
-        }
-        if (found) break;
-    }
+	// first check if Part is already created:
+	App::Part *actPart =  getDocument()->Tip.getValue<App::Part *>();
 
-    if (!found) {
-        // Add the planes ...
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[0]);
-        doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[1]);
-        doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),-90))");
-        doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
-        doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
-        doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
-        doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
-        // ... and put them in the 'Origin' group
-        doCommand(Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','%s')", QObject::tr("Origin").toStdString().c_str());
-        for (unsigned i = 0; i < 3; i++)
-            doCommand(Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('%s'))", PartDesignGui::BaseplaneNames[i]);
-        // TODO: Fold the group (is that possible through the Python interface?)
-    }
+	if(!actPart){
+		std::string PartName = getUniqueObjectName("Part");
+		doCommand(Doc,"App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
+		PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
+	}
 
     // add the Body feature itself, and make it active
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",FeatName.c_str());
