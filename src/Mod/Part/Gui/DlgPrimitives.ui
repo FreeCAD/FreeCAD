@@ -210,7 +210,7 @@
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="planeLength">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -234,7 +234,7 @@
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="planeWidth">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -293,7 +293,7 @@
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="boxWidth">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -303,7 +303,7 @@
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="boxHeight">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -334,7 +334,7 @@
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="boxLength">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -371,7 +371,7 @@
             <item>
              <widget class="Gui::QuantitySpinBox" name="cylinderAngle">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>360.000000000000000</double>
@@ -431,7 +431,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderHeight">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -441,7 +441,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="cylinderRadius">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -478,7 +478,7 @@
             <item>
              <widget class="Gui::QuantitySpinBox" name="coneAngle">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>360.000000000000000</double>
@@ -524,7 +524,7 @@
             <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="coneHeight">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -534,7 +534,7 @@
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="coneRadius1">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -565,7 +565,7 @@
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="coneRadius2">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>4.000000000000000</double>
@@ -635,7 +635,7 @@
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="sphereAngle1">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>-90.000000000000000</double>
@@ -645,7 +645,7 @@
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="sphereAngle2">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>90.000000000000000</double>
@@ -655,7 +655,7 @@
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="sphereAngle3">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>360.000000000000000</double>
@@ -698,7 +698,7 @@
             <item>
              <widget class="Gui::QuantitySpinBox" name="sphereRadius">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>5.000000000000000</double>
@@ -765,7 +765,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius1">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -775,7 +775,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>4.000000000000000</double>
@@ -825,7 +825,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle3">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>360.000000000000000</double>
@@ -835,7 +835,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle1">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>-90.000000000000000</double>
@@ -845,7 +845,7 @@
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidAngle2">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>90.000000000000000</double>
@@ -915,7 +915,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="torusAngle3">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>360.000000000000000</double>
@@ -925,7 +925,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="torusAngle1">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>-180.000000000000000</double>
@@ -935,7 +935,7 @@
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="torusAngle2">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>180.000000000000000</double>
@@ -971,7 +971,7 @@
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="torusRadius1">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -995,7 +995,7 @@
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="torusRadius2">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -1025,7 +1025,7 @@
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismCircumradius">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -1069,7 +1069,7 @@
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="prismHeight">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -1141,7 +1141,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeXmin">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1151,7 +1151,7 @@
             <item row="0" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeXmax">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -1161,7 +1161,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeYmin">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1171,7 +1171,7 @@
             <item row="1" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeYmax">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -1181,7 +1181,7 @@
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeZmin">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1191,7 +1191,7 @@
             <item row="2" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeZmax">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -1201,7 +1201,7 @@
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeX2min">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -1211,7 +1211,7 @@
             <item row="3" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeX2max">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>8.000000000000000</double>
@@ -1221,7 +1221,7 @@
             <item row="4" column="1">
              <widget class="Gui::QuantitySpinBox" name="wedgeZ2min">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -1231,7 +1231,7 @@
             <item row="4" column="2">
              <widget class="Gui::QuantitySpinBox" name="wedgeZ2max">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>8.000000000000000</double>
@@ -1336,7 +1336,7 @@
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixAngle">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1346,7 +1346,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixPitch">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>1.000000000000000</double>
@@ -1356,7 +1356,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixHeight">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -1366,7 +1366,7 @@
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="helixRadius">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>1.000000000000000</double>
@@ -1430,7 +1430,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="spiralGrowth">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>1.000000000000000</double>
@@ -1450,7 +1450,7 @@
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="spiralRadius">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>1.000000000000000</double>
@@ -1495,7 +1495,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="circleAngle0">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1505,7 +1505,7 @@
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="circleAngle1">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>360.000000000000000</double>
@@ -1515,7 +1515,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="circleRadius">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -1598,7 +1598,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseMajorRadius">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>4.000000000000000</double>
@@ -1608,7 +1608,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseMinorRadius">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>
@@ -1618,7 +1618,7 @@
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseAngle0">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1628,7 +1628,7 @@
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipseAngle1">
               <property name="unit" stdset="0">
-               <string>deg</string>
+               <string notr="true">deg</string>
               </property>
               <property name="value">
                <double>360.000000000000000</double>
@@ -1689,7 +1689,7 @@
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexX">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1699,7 +1699,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexY">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1709,7 +1709,7 @@
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="vertexZ">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1824,7 +1824,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeX1">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1834,7 +1834,7 @@
             <item row="2" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeY1">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1844,7 +1844,7 @@
             <item row="3" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeZ1">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>0.000000000000000</double>
@@ -1854,7 +1854,7 @@
             <item row="6" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeX2">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -1864,7 +1864,7 @@
             <item row="7" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeY2">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -1874,7 +1874,7 @@
             <item row="8" column="1">
              <widget class="Gui::QuantitySpinBox" name="edgeZ2">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>10.000000000000000</double>
@@ -1944,7 +1944,7 @@
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="regularPolygonCircumradius">
               <property name="unit" stdset="0">
-               <string>mm</string>
+               <string notr="true">mm</string>
               </property>
               <property name="value">
                <double>2.000000000000000</double>

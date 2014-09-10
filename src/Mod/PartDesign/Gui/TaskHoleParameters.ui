@@ -56,7 +56,7 @@
      <item>
       <widget class="Gui::QuantitySpinBox" name="doubleSpinBox">
        <property name="unit" stdset="0">
-        <string>mm</string>
+        <string notr="true">mm</string>
        </property>
        <property name="minimum">
         <double>0.000000000000000</double>
