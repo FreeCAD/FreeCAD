@@ -27,6 +27,8 @@
 # include <algorithm>
 # include <QMenu>
 # include <QTimer>
+# include <Inventor/SbLine.h>
+# include <Inventor/SbPlane.h>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoPointDetail.h>

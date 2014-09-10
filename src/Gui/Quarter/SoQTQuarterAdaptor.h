@@ -26,7 +26,6 @@
 #include <Inventor/SbSphere.h>
 #include <Inventor/SoType.h>
 #include <Inventor/events/SoKeyboardEvent.h>
-#include <Inventor/Qt/SoQtCursor.h>
 #include <Inventor/lists/SoCallbackList.h>
 #include <Inventor/sensors/SoTimerSensor.h>
 #include <Inventor/actions/SoGetMatrixAction.h>

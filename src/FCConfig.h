@@ -260,8 +260,10 @@ typedef unsigned __int64    uint64_t;
 //**************************************************************************
 // Coin3D
 #if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
-# ifndef COIN_DLL
-#	 define COIN_DLL
+# ifndef FCGui //COIN_DLL is defined in the FreeCADGui target
+#  ifndef COIN_DLL
+#    define COIN_DLL
+#  endif
 # endif
 #endif
 
@@ -270,6 +272,16 @@ typedef unsigned __int64    uint64_t;
 #if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
 # ifndef SOQT_DLL
 #   define SOQT_DLL
+# endif
+#endif
+
+//**************************************************************************
+// Quarter
+#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
+# ifndef QUARTER_INTERNAL
+#  ifndef QUARTER_DLL
+#   define QUARTER_DLL
+#  endif
 # endif
 #endif
 

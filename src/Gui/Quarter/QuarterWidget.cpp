@@ -121,6 +121,10 @@ using namespace SIM::Coin3D::Quarter;
 
 #define PRIVATE(obj) obj->pimpl
 
+#ifndef GL_MULTISAMPLE_BIT_EXT
+#define GL_MULTISAMPLE_BIT_EXT 0x20000000
+#endif
+
 /*! constructor */
 QuarterWidget::QuarterWidget(const QGLFormat & format, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
@@ -1021,7 +1025,11 @@ QuarterWidget::setNavigationModeFile(const QUrl & url)
     QFile file(filenametmp);
     if (file.open(QIODevice::ReadOnly)){
       QByteArray fileContents = file.readAll();
+#if COIN_MAJOR_VERSION >= 4
       stateMachine = ScXML::readBuffer(SbByteBuffer(fileContents.size(), fileContents.constData()));
+#else
+      stateMachine = ScXML::readBuffer(fileContents.constData());
+#endif
       file.close();
     }
   }
