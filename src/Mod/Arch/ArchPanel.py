@@ -258,6 +258,7 @@ class _Panel(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of this element, if not based on a profile"))
         obj.addProperty("App::PropertyLength","Thickness","Arch",translate("Arch","The thickness or extrusion depth of this element"))
         obj.addProperty("App::PropertyInteger","Sheets","Arch",translate("Arch","The number of sheets to use"))
+        obj.addProperty("App::PropertyLength","Offset","Arch",translate("Arch","The offset between this panel and its baseline"))
         obj.Sheets = 1
         self.Type = "Panel"
         
@@ -307,9 +308,13 @@ class _Panel(ArchComponent.Component):
                 self.BaseProfile = base
                 self.ExtrusionVector = normal
                 base = base.extrude(normal)
-            elif (len(base.Wires) == 1):
-                if base.Wires[0].isClosed():
-                    base = Part.Face(base.Wires[0])
+            elif base.Wires:
+                closed = True
+                for w in base.Wires:
+                    if not w.isClosed():
+                        closed = False
+                if closed:
+                    base = ArchCommands.makeFace(base.Wires)
                     self.BaseProfile = base
                     self.ExtrusionVector = normal
                     base = base.extrude(normal)               
@@ -341,6 +346,11 @@ class _Panel(ArchComponent.Component):
                 b.translate(n)
                 bases.append(b)
             base = Part.makeCompound(bases)
+            
+        if base and normal and hasattr(obj,"Offset"):
+            if obj.Offset.Value:
+                v = DraftVecUtils.scaleTo(normal,obj.Offset.Value)
+                base.translate(v)
 
         # process subshapes
         base = self.processSubShapes(obj,base,pl)

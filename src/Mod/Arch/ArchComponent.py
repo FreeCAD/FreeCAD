@@ -312,7 +312,7 @@ class Component:
         pass
         
     def getSiblings(self,obj):
-        "returns a list of objects with the same base as this object"
+        "returns a list of objects with the same type and same base as this object"
         if not hasattr(obj,"Base"):
             return []
         if not obj.Base:
@@ -323,7 +323,8 @@ class Component:
                 if o.Base:
                     if o.Base.Name == obj.Base.Name:
                         if o.Name != obj.Name:
-                            siblings.append(o)
+                            if Draft.getType(o) == Draft.getType(obj):
+                                siblings.append(o)
         return siblings
 
     def getAxis(self,obj):
