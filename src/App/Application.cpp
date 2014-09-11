@@ -95,6 +95,7 @@
 #include "MeasureDistance.h"
 #include "Placement.h"
 #include "Plane.h"
+#include "Part.h"
 #include "MaterialObject.h"
 #include "Expression.h"
 
@@ -1129,6 +1130,7 @@ void Application::initTypes(void)
     App ::MaterialObjectPython      ::init();
     App ::Placement                 ::init();
     App ::Plane                     ::init();
+    App ::Part                      ::init();
 
     // Expression classes
     App ::Expression                ::init();
