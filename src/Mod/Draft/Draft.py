@@ -968,6 +968,12 @@ def makeCopy(obj,force=None,reparent=False):
         ArchWindow._Window(newobj)
         if gui:
             ArchWindow._ViewProviderWindow(newobj.ViewObject)
+    elif (getType(obj) == "Panel") or (force == "Panel"):
+        import ArchPanel
+        newobj = FreeCAD.ActiveDocument.addObject(obj.TypeId,getRealName(obj.Name))
+        ArchPanel._Panel(newobj)
+        if gui:
+            ArchPanel._ViewProviderPanel(newobj.ViewObject)
     elif (getType(obj) == "Sketch") or (force == "Sketch"):
         newobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",getRealName(obj.Name))
         for geo in obj.Geometry:
