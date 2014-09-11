@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
-#define GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+#ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
+#define GUI_VIEWPROVIDER_ViewProviderPart_H
 
 
 #include "ViewProviderGeometryObject.h"

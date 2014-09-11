@@ -108,22 +108,25 @@ void CmdPartDesignBody::activated(int iMsg)
 
 	// first check if Part is already created:
 	App::Part *actPart =  getDocument()->Tip.getValue<App::Part *>();
-
+	std::string PartName;
 	if(!actPart){
-		std::string PartName = getUniqueObjectName("Part");
-		doCommand(Doc,"App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
+		// if not, creating a part and set it up by calling the appropiated function in Workbench
+		PartName = getUniqueObjectName("Part");
+		doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
 		PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
-	}
+	}else
+		PartName = actPart->getNameInDocument();
 
     // add the Body feature itself, and make it active
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Model = []",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Tip = None",FeatName.c_str());
-    doCommand(Doc,"import PartDesignGui");
+    //doCommand(Doc,"App.activeDocument().%s.Model = []",FeatName.c_str());
+    //doCommand(Doc,"App.activeDocument().%s.Tip = None",FeatName.c_str());
+    addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
     doCommand(Gui,"PartDesignGui.setActivePart(App.ActiveDocument.%s)", FeatName.c_str());
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",PartName.c_str(),FeatName.c_str());
 
     updateActive();
 }
