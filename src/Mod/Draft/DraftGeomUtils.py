@@ -58,6 +58,8 @@ def edg(p1,p2):
 
 def getVerts(shape):
     "getVerts(shape): returns a list containing vectors of each vertex of the shape"
+    if not hasattr(shape,"Vertexes"):
+        return []
     p = []
     for v in shape.Vertexes:
             p.append(v.Point)
@@ -126,6 +128,26 @@ def isAligned(edge,axis="x"):
             if edge.StartPoint.z == edge.EndPoint.z:
                     return True
     return False
+    
+def getQuad(face):
+    """getQuad(face): returns a list of 3 vectors (basepoint, Xdir, Ydir) if the face
+    is a quad, or None if not."""
+    if len(face.Edges) != 4:
+        return None
+    v1 = vec(face.Edges[0])
+    v2 = vec(face.Edges[1])
+    v3 = vec(face.Edges[2])
+    v4 = vec(face.Edges[3])
+    angles90 = [round(math.pi*0.5,precision()),round(math.pi*1.5,precision())]
+    angles180 = [0,round(math.pi,precision()),round(math.pi*2,precision())]
+    for ov in [v2,v3,v4]:
+        if not (round(v1.getAngle(ov),precision()) in angles90+angles180):
+            return None
+    for ov in [v2,v3,v4]:
+        if round(v1.getAngle(ov),precision()) in angles90:
+            v1.normalize()
+            ov.normalize()
+            return [face.Edges[0].Vertexes[0].Point,v1,ov]
 
 def areColinear(e1,e2):
     """areColinear(e1,e2): returns True if both edges are colinear"""
@@ -881,10 +903,12 @@ def offset(edge,vector):
         v1 = Vector.add(edge.Vertexes[0].Point, vector)
         v2 = Vector.add(edge.Vertexes[-1].Point, vector)
         return Part.Line(v1,v2).toShape()
-    else:
+    elif geomType(edge) == "Circle":
         rad = edge.Vertexes[0].Point.sub(edge.Curve.Center)
         newrad = Vector.add(rad,vector).Length
         return Part.Circle(edge.Curve.Center,NORM,newrad).toShape()
+    else:
+        return None
 
 def isReallyClosed(wire):
     "checks if a wire is really closed"
@@ -981,6 +1005,8 @@ def offsetWire(wire,dvec,bind=False,occ=False):
             angle = DraftVecUtils.angle(vec(edges[0]),v,norm)
             delta = DraftVecUtils.rotate(delta,angle,norm)
         nedge = offset(curredge,delta)
+        if not nedge:
+            return None
         if isinstance(curredge.Curve,Part.Circle):
             nedge = Part.ArcOfCircle(nedge.Curve,curredge.FirstParameter,curredge.LastParameter).toShape()
         nedges.append(nedge)
@@ -1078,6 +1104,8 @@ def findDistance(point,edge,strict=False):
                 ve2 = None
             center = edge.Curve.Center
             segment = center.sub(point)
+            if segment.Length == 0:
+                return None
             ratio = (segment.Length - edge.Curve.Radius) / segment.Length
             dist = segment.multiply(ratio)
             newpoint = Vector.add(point, dist)
@@ -1482,7 +1510,7 @@ def fillet(lEdges,r,chamfer=False):
             elif issubclass(type(edge.Curve),Part.Circle) :
                     existingCurveType['Arc']  += [edge]
             else :
-                    raise Exception("Edge's curve must be either Line or Arc")
+                    raise ValueError("Edge's curve must be either Line or Arc")
             return existingCurveType
             
     rndEdges = lEdges[0:2]

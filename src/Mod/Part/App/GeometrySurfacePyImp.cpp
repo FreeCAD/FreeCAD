@@ -311,6 +311,40 @@ PyObject* GeometrySurfacePy::VPeriod(PyObject * args)
     }
 }
 
+Py::String GeometrySurfacePy::getContinuity(void) const
+{
+    GeomAbs_Shape c = Handle_Geom_Surface::DownCast
+        (getGeometryPtr()->handle())->Continuity();
+    std::string str;
+    switch (c) {
+    case GeomAbs_C0:
+        str = "C0";
+        break;
+    case GeomAbs_G1:
+        str = "G1";
+        break;
+    case GeomAbs_C1:
+        str = "C1";
+        break;
+    case GeomAbs_G2:
+        str = "G2";
+        break;
+    case GeomAbs_C2:
+        str = "C2";
+        break;
+    case GeomAbs_C3:
+        str = "C3";
+        break;
+    case GeomAbs_CN:
+        str = "CN";
+        break;
+    default:
+        str = "Unknown";
+        break;
+    }
+    return Py::String(str);
+}
+
 PyObject* GeometrySurfacePy::toBSpline(PyObject * args)
 {
     double tol3d;

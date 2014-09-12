@@ -514,7 +514,7 @@ public:
     }
     QString whatsThis() const
     {
-        return QLatin1String("A widget to work qith quantities.");
+        return QLatin1String("A widget to work with quantities.");
     }
     bool isContainer() const
     {
@@ -524,12 +524,98 @@ public:
     {
         return "<ui language=\"c++\">\n"
                " <widget class=\"Gui::InputField\" name=\"inputField\">\n"
+               "  <property name=\"unit\" stdset=\"0\">\n"
+               "   <string notr=\"true\"></string>\n"
+               "  </property>\n"
                " </widget>\n"
                "</ui>";
     }
     QString name() const
     {
         return QLatin1String("Gui::InputField");
+    }
+};
+
+/* XPM */
+static const char *quantityspinbox_pixmap[]={
+"22 22 6 1",
+"a c #000000",
+"# c #000080",
+"b c #008080",
+"c c #808080",
+"d c #c0c0c0",
+". c #ffffff",
+"...#aaaaaaaaaaaaaa#...",
+".baccccccccccccccccab.",
+".acccddddddddddddddca.",
+"#ccd................d#",
+"acc.............dcd.da",
+"acd.............dbd..a",
+"acd............dcbbd.a",
+"acd.d..dd..d...dbbbc.a",
+"acddb.dbbdcbb.dbbb#bda",
+"acd.b.d.cc..b.bb###bda",
+"acd.b...bd.cb.dddccdda",
+"acd.b...b..db...dddd.a",
+"acd.b..cd...bdddccbbda",
+"acd.b.dbbccdb.ccbbbbda",
+"acddd.ddd.dd..dbbb#cda",
+"acd............bb##cda",
+"acd............db#cd.a",
+"acd.............bbcdda",
+"#cd.............ddd.d#",
+".ac................da.",
+".badd............dda#.",
+"...#aaaaaaaaaaaaaa#..."};
+
+class QuantitySpinBoxPlugin : public QDesignerCustomWidgetInterface
+{
+    Q_INTERFACES(QDesignerCustomWidgetInterface)
+public:
+    QuantitySpinBoxPlugin()
+    {
+    }
+    QWidget *createWidget(QWidget *parent)
+    {
+        return new Gui::QuantitySpinBox(parent);
+    }
+    QString group() const
+    {
+        return QLatin1String("Input Widgets");
+    }
+    QIcon icon() const
+    {
+        return QIcon( QPixmap( quantityspinbox_pixmap ) );
+    }
+    QString includeFile() const
+    {
+        return QLatin1String("Gui/QuantitySpinBox.h");
+    }
+    QString toolTip() const
+    {
+        return QLatin1String("Quantity spin box");
+    }
+    QString whatsThis() const
+    {
+        return QLatin1String("A widget to work with quantities.");
+    }
+    bool isContainer() const
+    {
+        return false;
+    }
+    QString domXml() const
+    {
+        return "<ui language=\"c++\">\n"
+               " <widget class=\"Gui::QuantitySpinBox\" name=\"quantitySpinBox\">\n"
+               "  <property name=\"unit\" stdset=\"0\">\n"
+               "   <string notr=\"true\"></string>\n"
+               "  </property>\n"
+               " </widget>\n"
+               "</ui>";
+    }
+    QString name() const
+    {
+        return QLatin1String("Gui::QuantitySpinBox");
     }
 };
 
@@ -1333,6 +1419,7 @@ QList<QDesignerCustomWidgetInterface *> CustomWidgetPlugin::customWidgets () con
     cw.append(new AccelLineEditPlugin);
     cw.append(new ActionSelectorPlugin);
     cw.append(new InputFieldPlugin);
+    cw.append(new QuantitySpinBoxPlugin);
     cw.append(new CommandIconViewPlugin);
     cw.append(new UIntSpinBoxPlugin);
     cw.append(new ColorButtonPlugin);

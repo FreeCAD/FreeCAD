@@ -38,9 +38,6 @@ else:
     def translate(ctxt,txt):
         return txt
 
-p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-DISCRETIZE = p.GetBool("webGlDiscretizeCurves",False)
-
 tab = "                " # the tab size
 wireframeStyle = "faceloop" # this can be "faceloop", "multimaterial" or None
 cameraPosition = None # set this to a tuple to change, for ex. (0,0,0)
@@ -175,14 +172,7 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
         for f in obj.Shape.Faces:
             for w in f.Wires:
                 wo = Part.Wire(DraftGeomUtils.sortEdges(w.Edges))
-                if DISCRETIZE:
-                    wires.append(wo.discretize(0.1))
-                else:
-                    p = []
-                    for v in wo.Vertexes:
-                        p.append(v.Point)
-                    p.append(wo.Vertexes[0].Point)
-                    wires.append(p)
+                wires.append(wo.discretize(QuasiDeflection=0.1))
 
     elif obj.isDerivedFrom("Mesh::Feature"):
         mesh = obj.Mesh

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jrgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -394,7 +394,6 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Obj.getNameInDocument());
         }
 #endif
-
         std::list<Gui::BaseView*>::iterator vIt;
         // cycling to all views of the document
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
@@ -697,8 +696,12 @@ void Document::RestoreDocFile(Base::Reader &reader)
         sMsg += ppReturn;
         if (strcmp(ppReturn, "") != 0) { // non-empty attribute
             try {
-                if (d->_pcAppWnd->sendHasMsgToActiveView("SetCamera"))
-                    d->_pcAppWnd->sendMsgToActiveView(sMsg.c_str());
+                const char** pReturnIgnore=0;
+                std::list<MDIView*> mdi = getMDIViews();
+                for (std::list<MDIView*>::iterator it = mdi.begin(); it != mdi.end(); ++it) {
+                    if ((*it)->onHasMsg("SetCamera"))
+                        (*it)->onMsg(sMsg.c_str(), pReturnIgnore);
+                }
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -1061,7 +1064,9 @@ bool Document::canClose ()
     bool ok = true;
     switch(QMessageBox::question(getActiveView(),
         QObject::tr("Unsaved document"),
-        QObject::tr("Save document before close?"),
+        QObject::tr("The document '%1' has been modified.\n"
+                    "Do you want to save your changes?")
+        .arg(QString::fromUtf8(getDocument()->Label.getValue())),
         QMessageBox::Yes | QMessageBox::Default,
         QMessageBox::No,
         QMessageBox::Cancel | QMessageBox::Escape))

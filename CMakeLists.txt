@@ -12,6 +12,7 @@ cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
 
 # include local  modules
 include(AddFileDependencies)
+include(cMake/FreeCadMacros.cmake)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
 
@@ -117,7 +118,7 @@ OPTION(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line an
 OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3rd party libs. On Windows the Installer is build." OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
-OPTION(BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 
 OPTION(BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
 OPTION(BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
@@ -162,10 +163,10 @@ OPTION(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OF
 endif(MSVC)
 
 # if this is set override some options
-if (BUILD_DEBIAN)
+if (FREECAD_BUILD_DEBIAN)
     set(FREECAD_USE_EXTERNAL_ZIPIOS ON)
     set(FREECAD_USE_EXTERNAL_PIVY ON)
-endif (BUILD_DEBIAN)
+endif (FREECAD_BUILD_DEBIAN)
 
 # ==============================================================================
 #inter-module dependencies
@@ -368,7 +369,6 @@ if(FREECAD_LIBPACK_USE)
 
 else(FREECAD_LIBPACK_USE)
 
-
 # ================================================================================
 # == for other OSes search the packages ==========================================
 
@@ -461,8 +461,14 @@ else(FREECAD_LIBPACK_USE)
             TKXDESTEP
             TKXDEIGES
             TKMeshVS
-            TKAdvTools
         )
+        CHECK_MINIMUM_OCC_VERSION_HEX(0x060703)
+        if (NOT OCC_MIN_VERSION)
+            set(OCC_OCAF_LIBRARIES
+                ${OCC_OCAF_LIBRARIES}
+                TKAdvTools
+            )
+        endif()
         set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
         set(OCC_FOUND ${OCE_FOUND})
     else() #look for OpenCASCADE
@@ -523,7 +529,10 @@ else(FREECAD_LIBPACK_USE)
 
 # -------------------------------- pcl ----------------------------------
 
-    find_package(PCL COMPONENTS common kdtree features surface)
+    find_package(PCL QUIET COMPONENTS common kdtree features surface io)
+    if (NOT PCL_FOUND)
+        MESSAGE("-- pcl not found")
+    endif(NOT PCL_FOUND)
 
 # -------------------------------- ODE ----------------------------------
 
@@ -627,7 +636,7 @@ else(FREECAD_LIBPACK_USE)
         IF(MATPLOTLIB_FOUND)
             message("-- matplotlib-${MATPLOTLIB_VERSION} has been found.")
         ELSE(MATPLOTLIB_FOUND)
-            message("matplotlib not found, Plot module will not available until matplotlib is installed!")
+            message("-- matplotlib not found, Plot module won't be available!")
         ENDIF(MATPLOTLIB_FOUND)
 
 # ------------------------------------------------------------------------
@@ -649,7 +658,6 @@ if(WIN32)
 endif(WIN32)
 
 
-include(cMake/FreeCadMacros.cmake)
 
 
 # ================================================================================
@@ -696,8 +704,13 @@ ELSE(MSVC)
         MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 ENDIF(MSVC)
 IF(MINGW)
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads")
-	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthreads")
+	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=12477
+	# Actually '-Wno-inline-dllimport' should work to suppress warnings of the form:
+	# inline function 'foo' is declared as dllimport: attribute ignored
+	# But it doesn't work with MinGW gcc 4.5.0 while using '-Wno-attributes' seems to
+	# do the trick.
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mthreads -Wno-attributes")
+	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mthreads -Wno-attributes")
 	SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
 	SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -mthreads -Wl,--export-all-symbols")
 	# http://stackoverflow.com/questions/8375310/warning-auto-importing-has-been-activated-without-enable-auto-import-specifie

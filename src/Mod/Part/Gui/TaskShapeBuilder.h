@@ -45,10 +45,11 @@ private Q_SLOTS:
     void switchMode(int);
 
 private:
-    void createEdge();
-    void createFace();
-    void createShell();
-    void createSolid();
+    void createEdgeFromVertex();
+    void createFaceFromVertex();
+    void createFaceFromEdge();
+    void createShellFromFace();
+    void createSolidFromShell();
     void changeEvent(QEvent *e);
 
 private:

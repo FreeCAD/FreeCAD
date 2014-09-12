@@ -28,6 +28,8 @@
 #ifndef SMESH_MeshEditor_HeaderFile
 #define SMESH_MeshEditor_HeaderFile
 
+#include "Standard_Version.hxx"
+
 #include "SMESH_SMESH.hxx"
 
 #include "SMDS_MeshElement.hxx"

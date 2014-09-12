@@ -44,3 +44,5 @@ from ArchSpace import *
 from ArchStairs import *
 from ArchRebar import *
 from ArchFrame import *
+from ArchPanel import *
+from ArchEquipment import *

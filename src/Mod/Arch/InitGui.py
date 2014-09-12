@@ -73,28 +73,29 @@ class ArchWorkbench(Workbench):
                      "Arch_Floor","Arch_Building","Arch_Site",
                      "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
+                     "Arch_Panel","Arch_Equipment",
                      "Arch_Frame","Arch_Add","Arch_Remove","Arch_Survey"]
         self.utilities = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
-                     "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag"]
+                     "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views"]
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
                         "Draft_Polygon","Draft_Rectangle", "Draft_Text",
-                        "Draft_Dimension", "Draft_BSpline","Draft_Point","Draft_ShapeString",
+                        "Draft_Dimension", "Draft_BSpline","Draft_Point",
                         "Draft_Facebinder","Draft_BezCurve"]
         self.draftmodtools = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Drawing","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
-                        "Draft_PathArray","Draft_Clone"]
-        self.extramodtools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint"]
+                        "Draft_Clone"]
+        self.draftextratools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint","Draft_ShapeString","Draft_PathArray"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
                             "Draft_FinishLine","Draft_CloseLine"]
         self.draftutils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
-                           "Draft_ToggleConstructionMode","Draft_ToggleContinueMode"]
+                           "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
@@ -106,21 +107,21 @@ class ArchWorkbench(Workbench):
         self.appendToolbar(translate("arch","Draft mod tools"),self.draftmodtools)
         self.appendMenu([translate("arch","&Architecture"),translate("arch","Utilities")],self.utilities)
         self.appendMenu(translate("arch","&Architecture"),self.archtools)
-        self.appendMenu(translate("arch","&Draft"),self.drafttools+self.draftmodtools+self.extramodtools)
+        self.appendMenu(translate("arch","&Draft"),self.drafttools+self.draftmodtools+self.draftextratools)
         self.appendMenu([translate("arch","&Draft"),translate("arch","Utilities")],self.draftutils+self.draftcontexttools)
         self.appendMenu([translate("arch","&Draft"),translate("arch","Snapping")],self.snapList)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/archprefs-base.ui","Arch")
         FreeCADGui.addPreferencePage(":/ui/archprefs-defaults.ui","Arch")
-        FreeCADGui.addPreferencePage(":/ui/archprefs-import.ui","Arch")
+        FreeCADGui.addPreferencePage(":/ui/archprefs-import.ui","Import-Export")
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/userprefs-snap.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/userprefs-visual.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-import1.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-import2.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-import1.ui","Import-Export")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-import2.ui","Import-Export")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Arch module... done\n')
 

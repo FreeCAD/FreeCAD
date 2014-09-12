@@ -104,6 +104,15 @@ void ViewProviderDrawingPage::updateData(const App::Property* prop)
                 view->viewAll();
         }
     }
+    else if (pcObject && prop == &pcObject->Label) {
+        if (view){
+            const char* objname = pcObject->Label.getValue();
+            view->setObjectName(QString::fromUtf8(objname));
+            Gui::Document* doc = Gui::Application::Instance->getDocument
+                (pcObject->getDocument());
+            view->onRelabel(doc);
+        }
+    }
 }
 
 void ViewProviderDrawingPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -136,7 +145,10 @@ DrawingView* ViewProviderDrawingPage::showDrawingView()
             (this->pcObject->getDocument());
         view = new DrawingView(doc, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
-        view->setWindowTitle(QObject::tr("Drawing viewer") + QString::fromAscii("[*]"));
+
+        const char* objname = pcObject->Label.getValue();
+        view->setObjectName(QString::fromUtf8(objname));
+        view->onRelabel(doc);
         Gui::getMainWindow()->addWindow(view);
     }
 

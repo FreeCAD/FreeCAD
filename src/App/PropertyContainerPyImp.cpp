@@ -103,15 +103,66 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
 {
     char* name;
     short type;
-    if (!PyArg_ParseTuple(args, "sh", &name, &type))     // convert args: Python->C
+    if (PyArg_ParseTuple(args, "sh", &name, &type)) {
+        App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
+        if (!prop) {
+            PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", name);
+            return 0;
+        }
+
+        prop->StatusBits.set(2,(type & 1) > 0);
+        prop->StatusBits.set(3,(type & 2) > 0);
+
+        Py_Return;
+    }
+
+    PyErr_Clear();
+    PyObject *iter;
+    if (PyArg_ParseTuple(args, "sO", &name, &iter)) {
+        if (PyTuple_Check(iter) || PyList_Check(iter)) {
+            Py::Sequence seq(iter);
+            App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
+            if (!prop) {
+                PyErr_Format(PyExc_AttributeError, "Property container has no property '%s'", name);
+                return 0;
+            }
+
+            // reset all bits first
+            prop->StatusBits.reset(2);
+            prop->StatusBits.reset(3);
+
+            for (Py::Sequence::iterator it = seq.begin();it!=seq.end();++it) {
+                std::string str = (std::string)Py::String(*it);
+                if (str == "ReadOnly")
+                    prop->StatusBits.set(2);
+                else if (str == "Hidden")
+                    prop->StatusBits.set(3);
+            }
+
+            Py_Return;
+        }
+    }
+
+    PyErr_SetString(PyExc_TypeError, "First argument must be str, second can be int, list or tuple");
+    return 0;
+}
+
+PyObject*  PropertyContainerPy::getEditorMode(PyObject *args)
+{
+    char* name;
+    if (!PyArg_ParseTuple(args, "s", &name))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     App::Property* prop = getPropertyContainerPtr()->getPropertyByName(name);
+    Py::List ret;
     if (prop) {
-        prop->StatusBits.set(2,(type & 1) > 0);
-        prop->StatusBits.set(3,(type & 2) > 0);
+        short Type =  prop->getType();
+        if ((prop->StatusBits.test(2)) || (Type & Prop_ReadOnly))
+            ret.append(Py::String("ReadOnly"));
+        if ((prop->StatusBits.test(3)) || (Type & Prop_Hidden))
+            ret.append(Py::String("Hidden"));
     }
-    Py_Return;
+    return Py::new_reference_to(ret);
 }
 
 PyObject*  PropertyContainerPy::getGroupOfProperty(PyObject *args)

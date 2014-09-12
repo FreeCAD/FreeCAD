@@ -54,6 +54,7 @@ protected:
 
 protected:
     PropertyMeshKernelItem();
+    void initialize();
 
 private:
     Gui::PropertyEditor::PropertyIntegerItem* m_p;

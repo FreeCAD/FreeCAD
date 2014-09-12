@@ -54,6 +54,7 @@ App::Color calcColor(double value,double min, double max)
         return App::Color (0.0,1-((value-(min/2.0)) / (min/2.0)),1.0);
     if ( value < 0.0 )
         return App::Color (0.0,1.0,value/(min/2.0)) ;
+    return App::Color (0,0,0);
 }
 
 

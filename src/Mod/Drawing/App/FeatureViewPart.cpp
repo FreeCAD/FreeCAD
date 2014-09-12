@@ -52,7 +52,6 @@
 #include <TopTools_ListOfShape.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepMesh.hxx>
 
 
 #include <Base/Exception.h>
@@ -94,88 +93,6 @@ FeatureViewPart::~FeatureViewPart()
 {
 }
 
-#if 0 
-
-App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
-{
-    std::stringstream result;
-	std::string ViewName = Label.getValue();
-
-    App::DocumentObject* link = Source.getValue();
-    if (!link)
-        return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
-    if (shape.IsNull())
-        return new App::DocumentObjectExecReturn("Linked shape object is empty");
-
-    Handle( HLRBRep_Algo ) brep_hlr = new HLRBRep_Algo;
-    brep_hlr->Add( shape );
-
-    gp_Ax2 transform(gp_Pnt(0,0,0),gp_Dir(0,0,1));
-    HLRAlgo_Projector projector( transform );
-    brep_hlr->Projector( projector );
-    brep_hlr->Update();
-    brep_hlr->Hide();
-
-    // extracting the result sets:
-    HLRBRep_HLRToShape shapes( brep_hlr );
-
-    TopoDS_Shape VisiblyEdges;
-    VisiblyEdges = shapes.VCompound();
-
-    TopoDS_Shape HiddenEdges;
-    HiddenEdges = shapes.HCompound();
-
-	BRepMesh::Mesh(VisiblyEdges,0.1);
-    //HLRBRep_HLRToShape Tool(Hider);
-    //TopoDS_Shape V  = Tool.VCompound       ();// artes vives       vues
-    //TopoDS_Shape V1 = Tool.Rg1LineVCompound();// artes rgulires  vues
-    //TopoDS_Shape VN = Tool.RgNLineVCompound();// artes de couture  vues
-    //TopoDS_Shape VO = Tool.OutLineVCompound();// contours apparents vus
-    //TopoDS_Shape VI = Tool.IsoLineVCompound();// isoparamtriques   vues
-    //TopoDS_Shape H  = Tool.HCompound       ();// artes vives       caches
-    //TopoDS_Shape H1 = Tool.Rg1LineHCompound();// artes rgulires  caches
-    //TopoDS_Shape HN = Tool.RgNLineHCompound();// artes de couture  caches
-    //TopoDS_Shape HO = Tool.OutLineHCompound();// contours apparents cachs
-    //TopoDS_Shape HI = Tool.IsoLineHCompound();// isoparamtriques   caches
-
-    result  << "<g" 
-            << " id=\"" << ViewName << "\"" << endl
-		    << "   stroke=\"rgb(0, 0, 0)\"" << endl 
-			<< "   stroke-width=\"0.35\"" << endl
-			<< "   stroke-linecap=\"butt\"" << endl
-			<< "   stroke-linejoin=\"miter\"" << endl
-			<< "   transform=\"translate("<< X.getValue()<<","<<Y.getValue()<<") scale("<< Scale.getValue()<<","<<Scale.getValue()<<")\"" << endl
-            << "   fill=\"none\"" << endl
-            << "  >" << endl;
-
-    TopExp_Explorer edges( VisiblyEdges, TopAbs_EDGE );
-    for (int i = 1 ; edges.More(); edges.Next(),i++ ) {
-      TopoDS_Edge edge = TopoDS::Edge( edges.Current() );
-      TopLoc_Location location;
-      Handle( Poly_Polygon3D ) polygon = BRep_Tool::Polygon3D( edge, location );
-      if ( !polygon.IsNull() ) {
-        const TColgp_Array1OfPnt& nodes = polygon->Nodes();
-         char c = 'M';
-        result << "<path id= \"" << ViewName << i << "\" d=\" "; 
-        for ( int i = nodes.Lower(); i<= nodes.Upper(); i++ ){
-            result << c << " " << nodes(i).X() << " " << nodes(i).Y()<< " " ; 
-            c = 'L';
-        }
-        result << "\" />" << endl;
-      }
-    }
-
-    result << "</g>" << endl;
-
-    // Apply the resulting fragment
-    ViewResult.setValue(result.str().c_str());
-
-    return App::DocumentObject::StdReturn;
-}
-#else 
 App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
 {
     std::stringstream result;
@@ -218,7 +135,6 @@ App::DocumentObjectExecReturn *FeatureViewPart::execute(void)
     }
 }
 
-#endif 
 
 
 // Python Drawing feature ---------------------------------------------------------

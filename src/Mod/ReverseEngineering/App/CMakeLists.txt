@@ -4,9 +4,9 @@ else(MSVC)
     add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
-if (PCL_FOUND)
-    add_definitions(-DPCL_FOUND)
-endif(PCL_FOUND)
+if (PCL_SURFACE_FOUND AND PCL_FEATURES_FOUND)
+    add_definitions(-DHAVE_PCL_SURFACE)
+endif ()
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
@@ -30,6 +30,7 @@ set(Reen_LIBS
     ${PCL_COMMON_LIBRARIES}
     ${PCL_KDTREE_LIBRARIES}
     ${PCL_FEATURES_LIBRARIES}
+    ${PCL_SEARCH_LIBRARIES}
     ${PCL_SURFACE_LIBRARIES}
 )
 

@@ -301,7 +301,6 @@ bool FileInfo::isWritable () const
 
 bool FileInfo::setPermissions (Permissions perms)
 {
-    bool ret = false;
     int mode = 0;
 
     if (perms & FileInfo::ReadOnly)
@@ -523,7 +522,8 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent(void) const
     std::vector<Base::FileInfo> List;
 #if defined (FC_OS_WIN32)
     struct _wfinddata_t dentry;
-    long hFile;
+
+    intptr_t hFile;
 
     // Find first directory entry
     std::wstring wstr = toStdWString();

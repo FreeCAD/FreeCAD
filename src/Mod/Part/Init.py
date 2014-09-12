@@ -51,11 +51,3 @@ FreeCAD.addImportType("IGES format (*.iges *.igs)","Part")
 FreeCAD.addExportType("IGES format (*.iges *.igs)","Part")
 FreeCAD.addImportType("STEP with colors (*.step *.stp)","ImportGui")
 FreeCAD.addExportType("STEP with colors (*.step *.stp)","ImportGui")
-
-# weird behaviour as 64-bit application on Windows:
-# some modules like Sketcher doesn't load if Part is not loaded before with this error:
-# DLL load failed: The specified procedure could not be found
-import platform
-if platform.architecture()[0] == '64bit' and platform.system() == 'Windows':
-    import Part
-

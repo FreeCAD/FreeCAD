@@ -28,10 +28,49 @@ import FreeCAD, Part
 if open.__module__ == '__builtin__':
         pythonopen = open
 
-def f2s(n):
-    '''convert to numerical value to string'''
+# unsupported primitives
+# Part:: Wedge, Helix, Spiral, Elipsoid
+# Draft: Rectangle, BSpline, BezCurve
+
+def f2s(n,angle=False):
+    '''convert to numerical value to string
+    try to remove no significant digits, by guessing a former rounding
+    if it fail use 18 decimal place in fixed point notation
+    '''
+    if abs(n) < 1e-14: return '0'
+    elif len(('%0.13e' % n).split('e')[0].rstrip('0') ) < 6:
+        return ('%0.10f' % n).rstrip('0').rstrip('.')
+    elif not angle and len(('%0.15e' % n).split('e')[0].rstrip('0') ) < 15:
+        return ('%0.15f' % n).rstrip('0').rstrip('.')
+    elif angle and len(('%0.6e' % n).split('e')[0].rstrip('0') ) < 3:
+        return ('%0.5f' % n).rstrip('0').rstrip('.')
+    else:
+        return ('%0.18f' % n).rstrip('0').rstrip('.')
     #return str(float(n))
-    return ('%0.18f' % n).rstrip('0')
+
+def polygonstr(r,pcount):
+    import math
+    v=FreeCAD.Vector(r,0,0)
+    m=FreeCAD.Matrix()
+    m.rotateZ(2*math.pi/pcount)
+    points=[]
+    for i in range(pcount):
+        points.append(v)
+        v=m.multiply(v)
+    points.append(v)
+    return ' '.join('%s %s %s'%(f2s(v.x),f2s(v.y),f2s(v.z)) \
+            for v in points)
+
+def formatobjtype(ob):
+    objtype=ob.TypeId
+    if (ob.isDerivedFrom('Part::FeaturePython') or \
+            ob.isDerivedFrom('Part::Part2DObjectPython') or\
+            ob.isDerivedFrom('App::FeaturePython')) and \
+            hasattr(ob.Proxy,'__module__'):
+        return '%s::%s.%s' % (ob.TypeId,ob.Proxy.__module__,\
+                    ob.Proxy.__class__.__name__)
+    else:
+        return ob.TypeId
 
 def placement2draw(placement,name='object'):
     """converts a FreeCAD Placement to trotate and ttranslate commands"""
@@ -41,21 +80,25 @@ def placement2draw(placement,name='object'):
         dx,dy,dz=placement.Rotation.Axis
         an=math.degrees(placement.Rotation.Angle)
         drawcommand += "trotate %s 0 0 0 %s %s %s %s\n" % \
-            (name,f2s(dx),f2s(dy),f2s(dz),f2s(an))
+            (name,f2s(dx),f2s(dy),f2s(dz),f2s(an,angle=True))
     if placement.Base.Length > 1e-8:
         x,y,z=placement.Base
         drawcommand += "ttranslate %s %s %s %s\n" % \
             (name,f2s(x),f2s(y),f2s(z))
     return drawcommand
 
-def saveShape(csg,filename,shape,name,hasplacement = True):
+def saveShape(csg,filename,shape,name,hasplacement = True,cleanshape=False):
     import os
     spath,sname = os.path.split(filename)
     sname=sname.replace('.','-')
     uname='%s-%s' %(sname,name)
     breppath=os.path.join(spath,'%s.brep'%uname)
-    csg.write("restore %s.brep\n"%uname)
-    csg.write("renamevar %s %s\n"%(uname,name))
+    csg.write("restore %s.brep %s\n" % (uname,name))
+    if cleanshape:
+        try:
+            shape = shape.cleaned()
+        except:
+            shape = shape.copy()
     if hasplacement is None:  # saved with placement
         hasplacement = False # saved with placement
         shape.exportBrep(breppath)
@@ -64,64 +107,14 @@ def saveShape(csg,filename,shape,name,hasplacement = True):
     else: #remove placement
         sh=shape.copy()
         sh.Placement=FreeCAD.Placement()
+        # it not yet tested if changing the placement recreated the
+        # tesselation. but for now we simply do the cleaing once agian
+        # to stay on the safe side
+        if cleanshape:
+            shape = shape.cleaned()
         sh.exportBrep(breppath)
     return hasplacement
 
-def saveSweep(csg,ob,filename):
-    import Part
-    spine,subshapelst=ob.Spine
-    #process_object(csg,spine,filename)
-    try:
-        path=Part.Wire([spine.Shape.getElement(subshapename) for \
-                subshapename in spine,subshapelst])
-    except: # BRep_API: command not done
-        if spine.Shape.ShapeType == 'Edge':
-            path = spine.Shape
-        elif spine.Shape.ShapeType == 'Wire':
-            path = Part.Wire(spine.Shape)
-        else:
-            raise ValueError('Unsuitabel Shape Type')
-    spinename = '%s-0-spine' % ob.Name
-    hasplacement = saveShape(csg,filename, path,spinename,None) # placement with shape
-    #safePlacement(ob.Placement,ob.Name)
-    csg.write('mksweep %s\n' % spinename)
-    #setsweep
-    setoptions=[]
-    buildoptions=[]
-    if ob.Frenet:
-        setoptions.append('-FR')
-    else:
-        setoptions.append('-CF')
-    if ob.Transition == 'Transformed':
-        buildoptions.append('-M')
-    elif ob.Transition == 'Right corner':
-        buildoptions.append('-C')
-    elif ob.Transition == 'Round corner':
-        buildoptions.append('-R')
-    if ob.Solid:
-        buildoptions.append('-S')
-    csg.write('setsweep %s\n' % (" ".join(setoptions)))
-    #addsweep
-    sections=ob.Sections
-    sectionnames = []
-    for i,subobj in enumerate(ob.Sections):
-        #process_object(csg,subobj,filename)
-        #sectionsnames.append(subobj.Name)
-        #d1['basename']=subobj.Name
-        sectionname = '%s-0-section-%02d-%s' % (ob.Name,i,subobj.Name)
-        addoptions=[]
-        sh = subobj.Shape
-        if sh.ShapeType == 'Vertex':
-            pass
-        elif sh.ShapeType == 'Wire' or sh.ShapeType == 'Edge':
-            sh = Part.Wire(sh)
-        elif sh.ShapeType == 'Face':
-            sh = sh.OuterWire
-        else:
-            raise ValueError('Unrecognized Shape Type')
-        hasplacement = saveShape(csg,filename,sh,sectionname,None) # placement with shape
-        csg.write('addsweep %s %s\n' % (sectionname," ".join(addoptions)))
-    csg.write('buildsweep %s %s\n' % (ob.Name," ".join(buildoptions)))
 
 
 def isDraftFeature(ob):
@@ -142,6 +135,16 @@ def isDraftCircle(ob):
     if isDraftFeature(ob):
         import Draft
         return isinstance(ob.Proxy,Draft._Circle)
+
+def isDraftPolygon(ob):
+    if isDraftFeature(ob):
+        import Draft
+        return isinstance(ob.Proxy,Draft._Polygon)
+
+def isDraftPoint(ob):
+    if isDraftFeature(ob):
+        import Draft
+        return isinstance(ob.Proxy,Draft._Point)
 
 def isDraftWire(ob):
     if isDraftFeature(ob):
@@ -182,230 +185,505 @@ def isDeform(ob):
 
 
 
-def process_object(csg,ob,filename):
-    d1 = {'name':ob.Name}
-    hasplacement = not ob.Placement.isNull()
-    if ob.TypeId in ["Part::Cut","Part::Fuse","Part::Common","Part::Section"]:
-        d1.update({'part':ob.Base.Name,'tool':ob.Tool.Name,\
-            'command':'b%s' % ob.TypeId[6:].lower()})
-        process_object(csg,ob.Base,filename)
-        process_object(csg,ob.Tool,filename)
-        csg.write("%(command)s %(name)s %(part)s %(tool)s\n"%d1)
-    elif ob.TypeId == "Part::Sphere" :
-        d1.update({'radius':f2s(ob.Radius),'angle1':f2s(ob.Angle1),\
-            'angle2':f2s(ob.Angle2),'angle3':f2s(ob.Angle3)})
-        csg.write('psphere %(name)s %(radius)s %(angle1)s %(angle2)s '\
-            '%(angle3)s\n'%d1)
-    elif ob.TypeId == "Part::Box" :
-        d1.update({'dx':f2s(ob.Length),'dy':f2s(ob.Width),'dz':f2s(ob.Height)})
-        csg.write('box %(name)s %(dx)s %(dy)s %(dz)s\n'%d1)
-    elif ob.TypeId == "Part::Cylinder" :
-        d1.update({'radius':f2s(ob.Radius),'height':f2s(ob.Height),\
-            'angle':f2s(ob.Angle)})
-        csg.write('pcylinder %(name)s %(radius)s %(height)s %(angle)s\n'%d1)
-    elif ob.TypeId == "Part::Cone" :
-        d1.update({'radius1':f2s(ob.Radius1),'radius2':f2s(ob.Radius2),\
-            'height':f2s(ob.Height)})
-        csg.write('pcone %(name)s %(radius1)s %(radius2)s %(height)s\n'%d1)
-    elif ob.TypeId == "Part::Torus" :
-        d1.update({'radius1':f2s(ob.Radius1),'radius2':f2s(ob.Radius2),\
-            'angle1': f2s(ob.Angle1),'angle2':f2s(ob.Angle2),\
-            'angle3': f2s(ob.Angle3)})
-        csg.write('ptorus %(name)s %(radius1)s %(radius2)s %(angle1)s '\
-                '%(angle2)s %(angle3)s\n' % d1)
-    elif ob.TypeId == "Part::Mirroring" :
-        process_object(csg,ob.Source,filename)
-        csg.write('tcopy %s %s\n'%(ob.Source.Name,d1['name']))
-        b=ob.Base
-        d1['x']=f2s(ob.Base.x)
-        d1['y']=f2s(ob.Base.y)
-        d1['z']=f2s(ob.Base.z)
-        d1['dx']=f2s(ob.Normal.x)
-        d1['dy']=f2s(ob.Normal.y)
-        d1['dz']=f2s(ob.Normal.z)
-        csg.write('tmirror %(name)s %(x)s %(y)s %(z)s %(dx)s %(dy)s %(dz)s\n' \
-                % d1)
-    elif ob.TypeId == 'Part::Compound':
-        if len(ob.Links) == 0:
-            pass
-        elif len(ob.Links) == 1:
-            process_object(csg,ob.Links[0],filename)
-            csg.write('tcopy %s %s\n'%(ob.Links[0].Name,d1['name']))
-        else:
-            basenames=[]
-            for i,subobj in enumerate(ob.Links):
-                process_object(csg,subobj,filename)
-                basenames.append(subobj.Name)
-            csg.write('compound %s %s\n' % (' '.join(basenames),ob.Name))
-    elif ob.TypeId in ["Part::MultiCommon", "Part::MultiFuse"]:
-        if len(ob.Shapes) == 0:
-            pass
-        elif len(ob.Shapes) == 1:
-            process_object(csg,ob.Shapes[0],filename)
-            csg.write('tcopy %s %s\n'%(ob.Shapes[0].Name,d1['name']))
-        else:
-            topname = ob.Name
-            command = 'b%s' % ob.TypeId[11:].lower()
-            lst1=ob.Shapes[:]
-            current=lst1.pop(0)
-            curname=current.Name
-            process_object(csg,current,filename)
-            i=1
-            while lst1:
-                if len(lst1) >= 2:
-                    nxtname='to-%s-%03d-t'%(topname,i)
-                else:
-                    nxtname=topname
-                nxt=lst1.pop(0)
-                process_object(csg,nxt,filename)
-                csg.write("%s %s %s %s\n"%(command,nxtname,curname,nxt.Name))
-                curname=nxtname
-                i+=1
-    elif ob.TypeId == "Part::Prism" :
-        import math
-        polyname = '%s-polyline' % d1['name']
-        wirename = '%s-polywire' % d1['name']
-        facename = '%s-polyface' % d1['name']
-        d1['base']= facename
-        m=FreeCAD.Matrix()
-        v=FreeCAD.Vector(ob.Circumradius.Value,0,0)
-        m.rotateZ(2*math.pi/ob.Polygon)
-        points=[]
-        for i in range(ob.Polygon):
-            points.append(v)
-            v=m.multiply(v)
-        points.append(v)
-        pointstr=' '.join('%s %s %s'%(f2s(v.x),f2s(v.y),f2s(v.z)) \
-                for v in points)
-        csg.write('polyline %s %s\n' % (polyname,pointstr))
-        csg.write('wire %s %s\n' %(wirename,polyname))
-        csg.write('mkplane %s %s\n' % (facename,polyname))
-        csg.write('prism %s %s 0 0 %s\n' % (d1['name'],facename,\
-            f2s(ob.Height.Value)))
-    elif ob.TypeId == "Part::Sweep" and True:
-        saveSweep(csg,ob,filename)
-    elif ob.TypeId == "Part::Loft":
-        sectionnames=[]
-        for i,subobj in enumerate(ob.Sections):
-            sh = subobj.Shape
-            if not sh.isNull():
-                if sh.ShapeType == 'Compound':
-                    sh = sh.Shape.childShapes()[0]
-                if sh.ShapeType == 'Face':
-                    sh = sh.OuterWire
-                elif sh.ShapeType == 'Edge':
-                    import Part
-                    sh = Part.Wire([sh])
-                elif sh.ShapeType == 'Wire':
-                    import Part
-                    sh = Part.Wire(sh)
-                elif sh.ShapeType == 'Vertex':
-                    pass
-                else:
-                    raise ValueError('Unsuitabel Shape Type')
-                sectionname = '%s-%02d-section' % (ob.Name,i)
-                hasplacement = saveShape(csg,filename, sh,sectionname,None)
-                # placement with shape
-                sectionnames.append(sectionname)
-        if ob.Closed:
-            sectionnames.append(sectionnames[0])
-        csg.write('thrusections %s %d %d %s\n' % (ob.Name,int(ob.Solid),\
-                int(ob.Ruled), ' '.join(sectionnames)))
-    elif isDeform(ob): #non-uniform scaling
-        m=ob.Matrix
-        process_object(csg,ob.Base,filename)
-        #csg.write('tcopy %s %s\n'%(ob.Base.Name,d1['name']))
-        d1['basename']=ob.Base.Name
-        d1['cx']=f2s(m.A11)
-        d1['cy']=f2s(m.A22)
-        d1['cz']=f2s(m.A33)
-        csg.write('deform %(name)s %(basename)s %(cx)s %(cy)s %(cz)s\n' % d1)
-        if m.A14 > 1e-8 or m.A24 > 1e-8 or m.A34 > 1e-8:
-            csg.write("ttranslate %s %s %s %s\n" % \
-                (ob.Name,f2s(m.A14),f2s(m.A24),f2s(m.A34)))
-    elif isDraftCircle(ob):
-        "circle name x y [z [dx dy dz]] [ux uy [uz]] radius"
-        d1['radius']=ob.Radius.Value
-        pfirst=f2s(ob.FirstAngle.getValueAs('rad').Value)
-        plast=f2s(ob.LastAngle.getValueAs('rad').Value)
 
-        #todo ofirst and p last as arguements to mkedge getValueAs('rad').Value
-        curvename = '%s-curve' % d1['name']
-        edgename = '%s-edge' % d1['name']
-        wirename = '%s-dwirewire' % d1['name']
-        csg.write('circle %s 0 0 0 %s\n' % (curvename,ob.Radius.Value))
-        csg.write('mkedge %s %s %s %s\n' % (edgename,curvename,pfirst,plast))
-        csg.write('wire %s %s\n' %(wirename,edgename))
-        if ob.MakeFace:
-            csg.write('mkplane %s %s\n' % (d1['name'],wirename))
-        else:
-            csg.write("renamevar %s %s\n"%(wirename,d1['name'])) #the wire is the final object
-    elif isDraftWire(ob):
-        points=ob.Points
-        if ob.Closed:
-            points.append(points[0])
-        polyname = '%s-dwireline' % d1['name']
-        pointstr=' '.join('%s %s %s'%(f2s(v.x),f2s(v.y),f2s(v.z)) \
-                for v in points)
-        csg.write('polyline %s %s\n' % (polyname,pointstr))
-        if ob.MakeFace:
-            wirename = '%s-dwirewire' % d1['name']
-            csg.write('wire %s %s\n' %(wirename,polyname))
-            facename =  d1['name']
-            csg.write('mkplane %s %s\n' % (facename,polyname))
-        else:
-            wirename =  d1['name']
-            csg.write('wire %s %s\n' %(wirename,polyname))
-    elif isDraftClone(ob):
-        x,y,z=ob.Scale.x
-        if x == y == z: #uniform scaling
-            d1['scale']=f2s(x)
-        else:
-            d1['cx']=f2s(x)
-            d1['cy']=f2s(y)
-            d1['cz']=f2s(z)
-        if len(ob.Objects) == 1:
-            d1['basename']=ob.Objects[0].Name
-            process_object(csg,ob.Objects[0],filename)
-            if x == y == z: #uniform scaling
-                csg.write('tcopy %(basename)s %(name)s\n' % d1)
-                csg.write('pscale %(name)s 0 0 0 %(scale)s\n' % d1)
+class Drawexporter(object):
+    def __init__(self, filename):
+        self.objectcache=set()
+        self.csg = pythonopen(filename,'w')
+        #self.csg=csg
+        self.filename=filename
+        #settings
+        self.alwaysexplode = True
+        self.cleanshape = False
+
+    def __enter__(self):
+        return self
+
+    def write_header(self):
+        import FreeCAD
+        self.csg.write('#generated by FreeCAD %s\n' % \
+                '.'.join(FreeCAD.Version()[0:3]))
+        self.csg.write('pload MODELING\n')
+
+    def write_displayonly(self,objlst):
+        self.csg.write('donly %s\n'%' '.join([obj.Name for obj in objlst]))
+
+    def saveSweep(self,ob):
+        import Part
+        spine,subshapelst=ob.Spine
+        #process_object(csg,spine,filename)
+        explodeshape = self.alwaysexplode or self.process_object(spine,True)
+        if explodeshape:
+            self.process_object(spine)
+            if len(subshapelst) and spine.Shape.ShapeType != 'Edge':
+                #raise NotImplementedError # hit the fallback
+                # currently all subshapes are edges
+                self.csg.write('explode %s E\n' % spine.Name )
+                edgelst = ' '.join(('%s_%s' % (spine.Name,ss[4:]) for ss \
+                        in subshapelst))
+                spinename = '%s-0-spine' % ob.Name
+                self.csg.write('wire %s %s\n' %(spinename,edgelst))
+            elif spine.Shape.ShapeType == 'Wire':
+                spinename = spine.Name
+            elif spine.Shape.ShapeType == 'Edge':
+                spinename = '%s-0-spine' % ob.Name
+                self.csg.write('wire %s %s\n' %(spinename,spine.Name))
+        else: # extract only the used subshape
+            if len(subshapelst):
+                path=Part.Wire([spine.Shape.getElement(subshapename) for \
+                        subshapename in subshapelst])
+            elif spine.Shape.ShapeType == 'Edge':
+                path = spine.Shape
+            elif spine.Shape.ShapeType == 'Wire':
+                path = Part.Wire(spine.Shape)
             else:
-                csg.write('deform %(name)s %(basename)s'\
-                        ' %(cx)s %(cy)s %(cz)s\n' % d1)
-        else: #compound
-            newnames=[]
-            for i,subobj in enumerate(ob.Objects):
-                process_object(csg,subobj,filename)
-                d1['basename']=subobj.Name
-                newname='%s-%2d' % (ob.Name,i)
-                d1['newname']=newname
-                newnames.append(newname)
-                if x == y == z: #uniform scaling
-                    csg.write('tcopy %(basename)s %(newname)s\n' % d1)
-                    csg.write('pscale %(newname)s 0 0 0 %(scale)s\n' % d1)
+                raise ValueError('Unsuitabel Shape Type')
+            spinename = '%s-0-spine' % ob.Name
+            saveShape(self.csg,self.filename, path,spinename,None,\
+                    self.cleanshape) # placement with shape
+        #safePlacement(ob.Placement,ob.Name)
+        self.csg.write('mksweep %s\n' % spinename)
+        #setsweep
+        setoptions=[]
+        buildoptions=[]
+        if ob.Frenet:
+            setoptions.append('-FR')
+        else:
+            setoptions.append('-CF')
+        if ob.Transition == 'Transformed':
+            buildoptions.append('-M')
+        elif ob.Transition == 'Right corner':
+            buildoptions.append('-C')
+        elif ob.Transition == 'Round corner':
+            buildoptions.append('-R')
+        if ob.Solid:
+            buildoptions.append('-S')
+        self.csg.write('setsweep %s\n' % (" ".join(setoptions)))
+        #addsweep
+        sections=ob.Sections
+        sectionnames = []
+        for i,subobj in enumerate(ob.Sections):
+            #process_object(csg,subobj,filename)
+            #sectionsnames.append(subobj.Name)
+            #d1['basename']=subobj.Name
+            sectionname = '%s-0-section-%02d-%s' % (ob.Name,i,subobj.Name)
+            addoptions=[]
+            explodeshape = self.alwaysexplode or \
+                    self.process_object(subobj,True)
+            if explodeshape:
+                sh = subobj.Shape
+                if sh.ShapeType == 'Vertex' or sh.ShapeType == 'Wire' or \
+                        sh.ShapeType == 'Edge' or \
+                        sh.ShapeType == 'Face' and len(sh.Wires) == 1:
+                    self.process_object(subobj)
+                    if sh.ShapeType == 'Wire' or sh.ShapeType == 'Vertex':
+                        #csg.write('tcopy %s %s\n' %(subobj.Name,sectionname))
+                        sectionname = subobj.Name
+                    if sh.ShapeType == 'Edge':
+                        self.csg.write('explode %s E\n' % subobj.Name )
+                        self.csg.write('wire %s %s_1\n' %(sectionname,subobj.Name))
+                    if sh.ShapeType == 'Face':
+                        #we should use outer wire when it becomes avaiable
+                        self.csg.write('explode %s W\n' % subobj.Name )
+                        #csg.write('tcopy %s_1 %s\n' %(subobj.Name,sectionname))
+                        sectionname ='%s_1' % subobj.Name
                 else:
-                    csg.write('deform %(newname)s %(basename)s'\
+                    explodeshape = False
+            if not explodeshape: # extract only the used subshape
+                sh = subobj.Shape
+                if sh.ShapeType == 'Vertex':
+                    pass
+                elif sh.ShapeType == 'Wire' or sh.ShapeType == 'Edge':
+                    sh = Part.Wire(sh)
+                elif sh.ShapeType == 'Face':
+                    sh = sh.OuterWire
+                else:
+                    raise ValueError('Unrecognized Shape Type')
+                saveShape(self.csg,self.filename,sh,sectionname,None,\
+                        self.cleanshape) # placement with shape
+            self.csg.write('addsweep %s %s\n' % \
+                    (sectionname," ".join(addoptions)))
+        self.csg.write('buildsweep %s %s\n' % (ob.Name," ".join(buildoptions)))
+
+    def process_object(self,ob,checksupported=False,toplevel=False):
+        if not checksupported and ob.Name in self.objectcache:
+            return # object in present
+        if not checksupported:
+            self.objectcache.add(ob.Name)
+        d1 = {'name':ob.Name}
+        if hasattr(ob,'Placement'):
+            hasplacement = not ob.Placement.isNull()
+        else:
+            hasplacement = False
+        if ob.TypeId in ["Part::Cut","Part::Fuse","Part::Common","Part::Section"]:
+            if checksupported: return True # The object is supported
+            d1.update({'part':ob.Base.Name,'tool':ob.Tool.Name,\
+                'command':'b%s' % ob.TypeId[6:].lower()})
+            self.process_object(ob.Base)
+            self.process_object(ob.Tool)
+            self.csg.write("%(command)s %(name)s %(part)s %(tool)s\n"%d1)
+        elif ob.TypeId == "Part::Plane" :
+            if checksupported: return True # The object is supported
+            d1.update({'uname':'%s-untrimmed' % d1['name'],\
+                    'length': f2s(ob.Length),'width': f2s(ob.Width)})
+            self.csg.write("plane %s 0 0 0\n"%d1['uname'])
+            self.csg.write(\
+                    "mkface %(name)s %(uname)s 0 %(length)s 0 %(width)s\n"%d1)
+        elif ob.TypeId == "Part::Ellipse" :
+            if checksupported: return True # The object is supported
+            d1.update({'uname':'%s-untrimmed'%d1['name'], 'maj':\
+                    f2s(ob.MajorRadius), 'min': f2s(ob.MinorRadius),\
+                    'pf':f2s(ob.Angle0.getValueAs('rad').Value), \
+                    'pl':f2s(ob.Angle1.getValueAs('rad').Value)})
+            self.csg.write("ellipse %(uname)s 0 0 0 %(maj)s %(min)s\n"%d1)
+            self.csg.write('mkedge %(name)s %(uname)s %(pf)s %(pl)s\n' % d1)
+        elif ob.TypeId == "Part::Sphere" :
+            if checksupported: return True # The object is supported
+            d1.update({'radius':f2s(ob.Radius),'angle1':f2s(ob.Angle1),\
+                'angle2':f2s(ob.Angle2),'angle3':f2s(ob.Angle3)})
+            self.csg.write('psphere %(name)s %(radius)s %(angle1)s %(angle2)s '\
+                '%(angle3)s\n'%d1)
+        elif ob.TypeId == "Part::Box" :
+            if checksupported: return True # The object is supported
+            d1.update({'dx':f2s(ob.Length),'dy':f2s(ob.Width),'dz':f2s(ob.Height)})
+            self.csg.write('box %(name)s %(dx)s %(dy)s %(dz)s\n'%d1)
+        elif ob.TypeId == "Part::Cylinder" :
+            if checksupported: return True # The object is supported
+            d1.update({'radius':f2s(ob.Radius),'height':f2s(ob.Height),\
+                'angle':f2s(ob.Angle)})
+            self.csg.write('pcylinder %(name)s %(radius)s %(height)s %(angle)s\n'%d1)
+        elif ob.TypeId == "Part::Cone" :
+            if checksupported: return True # The object is supported
+            d1.update({'radius1':f2s(ob.Radius1),'radius2':f2s(ob.Radius2),\
+                    'height':f2s(ob.Height),'angle':f2s(ob.Angle)})
+            self.csg.write('pcone %(name)s %(radius1)s %(radius2)s %(height)s %(angle)s\n'%d1)
+        elif ob.TypeId == "Part::Torus" :
+            if checksupported: return True # The object is supported
+            d1.update({'radius1':f2s(ob.Radius1),'radius2':f2s(ob.Radius2),\
+                'angle1': f2s(ob.Angle1),'angle2':f2s(ob.Angle2),\
+                'angle3': f2s(ob.Angle3)})
+            self.csg.write('ptorus %(name)s %(radius1)s %(radius2)s %(angle1)s '\
+                    '%(angle2)s %(angle3)s\n' % d1)
+        elif ob.TypeId == "Part::Mirroring" :
+            if checksupported: return True # The object is supported
+            self.process_object(ob.Source)
+            self.csg.write('tcopy %s %s\n'%(ob.Source.Name,d1['name']))
+            b=ob.Base
+            d1['x']=f2s(ob.Base.x)
+            d1['y']=f2s(ob.Base.y)
+            d1['z']=f2s(ob.Base.z)
+            d1['dx']=f2s(ob.Normal.x)
+            d1['dy']=f2s(ob.Normal.y)
+            d1['dz']=f2s(ob.Normal.z)
+            self.csg.write('tmirror %(name)s %(x)s %(y)s %(z)s %(dx)s %(dy)s %(dz)s\n' \
+                    % d1)
+        elif ob.TypeId == 'Part::Compound':
+            if len(ob.Links) == 0:
+                pass
+            elif len(ob.Links) == 1:
+                if checksupported:
+                    return self.process_object(ob.Links[0],True)
+                self.process_object(ob.Links[0])
+                self.csg.write('tcopy %s %s\n'%(ob.Links[0].Name,d1['name']))
+            else:
+                if checksupported: return True # The object is supported
+                basenames=[]
+                for i,subobj in enumerate(ob.Links):
+                    self.process_object(subobj)
+                    basenames.append(subobj.Name)
+                self.csg.write('compound %s %s\n' % (' '.join(basenames),ob.Name))
+        elif ob.TypeId in ["Part::MultiCommon", "Part::MultiFuse"]:
+            if len(ob.Shapes) == 0:
+                pass
+            elif len(ob.Shapes) == 1:
+                if checksupported:
+                    return self.process_object(ob.Shapes[0],True)
+                self.process_object(ob.Shapes[0],)
+                self.csg.write('tcopy %s %s\n'%(ob.Shapes[0].Name,d1['name']))
+            else:
+                if checksupported: return True # The object is supported
+                topname = ob.Name
+                command = 'b%s' % ob.TypeId[11:].lower()
+                lst1=ob.Shapes[:]
+                current=lst1.pop(0)
+                curname=current.Name
+                self.process_object(current)
+                i=1
+                while lst1:
+                    if len(lst1) >= 2:
+                        nxtname='to-%s-%03d-t'%(topname,i)
+                    else:
+                        nxtname=topname
+                    nxt=lst1.pop(0)
+                    self.process_object(nxt)
+                    self.csg.write("%s %s %s %s\n"%(command,nxtname,curname,nxt.Name))
+                    curname=nxtname
+                    i+=1
+        elif (isDraftPolygon(ob) and ob.ChamferSize.Value == 0 and\
+                ob.FilletRadius.Value == 0 and ob.Support == None) or\
+                ob.TypeId == "Part::Prism" or \
+                ob.TypeId == "Part::RegularPolygon":
+            if checksupported: return True # The object is supported
+            draftpolygon = isDraftPolygon(ob)
+            if draftpolygon:
+                pcount = ob.FacesNumber
+                if ob.DrawMode =='inscribed':
+                    r=ob.Radius.Value
+                elif ob.DrawMode =='circumscribed':
+                    import math
+                    r =  ob.Radius.Value/math.cos(math.pi/pcount)
+                else:
+                    raise ValueError
+            else:
+                pcount = ob.Polygon
+                r=ob.Circumradius.Value
+            justwire = ob.TypeId == "Part::RegularPolygon" or \
+                    (draftpolygon and ob.MakeFace == False)
+            polyname = '%s-polyline' % d1['name']
+            if justwire:
+                wirename = d1['name']
+            else:
+                wirename = '%s-polywire' % d1['name']
+                if ob.TypeId == "Part::Prism":
+                    facename = '%s-polyface' % d1['name']
+                else:
+                    facename = d1['name']
+            self.csg.write('polyline %s %s\n' % (polyname,polygonstr(r,pcount)))
+            self.csg.write('wire %s %s\n' %(wirename,polyname))
+            if not justwire:
+                self.csg.write('mkplane %s %s\n' % (facename,polyname))
+                if ob.TypeId == "Part::Prism":
+                    self.csg.write('prism %s %s 0 0 %s\n' % \
+                            (d1['name'],facename, f2s(ob.Height.Value)))
+        elif ob.TypeId == "Part::Extrusion" and ob.TaperAngle.Value == 0:
+            if checksupported: return True # The object is supported
+            self.process_object(ob.Base)
+            #Warning does not fully ressemle the functionallity of
+            #Part::Extrusion
+            #csg.write('tcopy %s %s\n'%(ob.Base.Name,d1['name']))
+            facename=ob.Base.Name
+            self.csg.write('prism %s %s %s %s %s\n' % (d1['name'],facename,\
+                f2s(ob.Dir.x),f2s(ob.Dir.y),f2s(ob.Dir.z)))
+        elif ob.TypeId == "Part::Fillet" and True: #disabled
+            if checksupported: return True # The object is supported
+            self.process_object(ob.Base)
+            self.csg.write('explode %s E\n' % ob.Base.Name )
+            self.csg.write('blend %s %s %s\n' % (d1['name'],ob.Base.Name,\
+                ' '.join(('%s %s'%(f2s(e[1]),'%s_%d' % (ob.Base.Name,e[0])) \
+                for e in ob.Edges))))
+        elif ob.TypeId == "Part::Sweep" and True:
+            if checksupported: return True # The object is supported
+            self.saveSweep(ob)
+        elif ob.TypeId == "Part::Loft":
+            if checksupported: return True # The object is supported
+            sectionnames=[]
+            for i,subobj in enumerate(ob.Sections):
+                explodeshape = self.alwaysexplode or \
+                        self.process_object(suboobj,True)
+                if explodeshape and False: #diabled TBD
+                    try:
+                        raise NotImplementedError
+                        sectionname = '%s-%02d-section' % (ob.Name,i)
+                        sh = subobj.Shape
+                        if sh.isNull():
+                            raise ValueError # hit the fallback
+                        tempname=spine.Name
+                        if sh.ShapeType == 'Compound':
+                            sh = sh.childShapes()[0]
+                            self.csg.write('explode %s\n' % tempname )
+                            tempname = '%s_1' % tempname
+                        if sh.ShapeType == 'Face':
+                            #sh = sh.OuterWire #not available
+                            if len(sh.Wires) == 1:
+                                sh=sh.Wires[0]
+                                self.csg.write('explode %s\n W' % tempname )
+                                tempname = '%s_1' % tempname
+                            else:
+                                raise NotImplementedError
+                        elif sh.ShapeType == 'Edge':
+                            self.csg.write('wire %s %s\n' %(sectionname,tempname))
+                            tempname = sectionname
+                        sectionname = tempname
+                    except NotImplementedError:
+                        explodeshape = False # fallback
+                if not explodeshape: # extract only the used subshape
+                    sh = subobj.Shape
+                    if not sh.isNull():
+                        if sh.ShapeType == 'Compound':
+                            sh = sh.childShapes()[0]
+                        if sh.ShapeType == 'Face':
+                            sh = sh.OuterWire
+                        elif sh.ShapeType == 'Edge':
+                            import Part
+                            sh = Part.Wire([sh])
+                        elif sh.ShapeType == 'Wire':
+                            import Part
+                            sh = Part.Wire(sh)
+                        elif sh.ShapeType == 'Vertex':
+                            pass
+                        else:
+                            raise ValueError('Unsuitabel Shape Type')
+                        sectionname = '%s-%02d-section' % (ob.Name,i)
+                        saveShape(self.csg,self.filename, sh,sectionname,None,\
+                                self.cleanshape) # placement with shape
+                    sectionnames.append(sectionname)
+            if ob.Closed:
+                sectionnames.append(sectionnames[0])
+            self.csg.write('thrusections %s %d %d %s\n' % \
+                    (ob.Name,int(ob.Solid),\
+                    int(ob.Ruled), ' '.join(sectionnames)))
+        elif isDeform(ob): #non-uniform scaling
+            if checksupported: return True # The object is supported
+            m=ob.Matrix
+            self.process_object(ob.Base)
+            #csg.write('tcopy %s %s\n'%(ob.Base.Name,d1['name']))
+            d1['basename']=ob.Base.Name
+            d1['cx']=f2s(m.A11)
+            d1['cy']=f2s(m.A22)
+            d1['cz']=f2s(m.A33)
+            self.csg.write('deform %(name)s %(basename)s %(cx)s %(cy)s %(cz)s\n' % d1)
+            if m.A14 > 1e-8 or m.A24 > 1e-8 or m.A34 > 1e-8:
+                self.csg.write("ttranslate %s %s %s %s\n" % \
+                    (ob.Name,f2s(m.A14),f2s(m.A24),f2s(m.A34)))
+        elif isDraftPoint(ob) or ob.TypeId == "Part::Vertex":
+            if checksupported: return True # The object is supported
+            d1['x']=f2s(ob.X)
+            d1['y']=f2s(ob.Y)
+            d1['z']=f2s(ob.Z)
+            self.csg.write('vertex %(name)s %(x)s %(y)s %(z)s\n' % d1)
+
+        elif isDraftCircle(ob) or ob.TypeId == "Part::Circle":
+            if checksupported: return True # The object is supported
+            "circle name x y [z [dx dy dz]] [ux uy [uz]] radius"
+            curvename = '%s-curve' % d1['name']
+            if ob.TypeId == "Part::Circle":
+                radius=f2s(float(ob.Radius))
+                pfirst=f2s(ob.Angle0.getValueAs('rad').Value)
+                plast=f2s(ob.Angle1.getValueAs('rad').Value)
+                self.csg.write('circle %s 0 0 0 %s\n' % (curvename,radius))
+                self.csg.write('mkedge %s %s %s %s\n' % \
+                    (d1['name'],curvename,pfirst,plast))
+            else:
+                radius=f2s(ob.Radius.Value)
+                pfirst=f2s(ob.FirstAngle.getValueAs('rad').Value)
+                plast=f2s(ob.LastAngle.getValueAs('rad').Value)
+                makeface = ob.MakeFace and \
+                    (ob.Shape.isNull() or ob.Shape.ShapeType == 'Face')
+                #FreeCAD ignore a failed mkplane but it may
+                #brake the model in DRAWEXE
+
+                edgename  = '%s-edge' % d1['name']
+                self.csg.write('circle %s 0 0 0 %s\n' % (curvename,radius))
+                self.csg.write('mkedge %s %s %s %s\n' % \
+                        (edgename,curvename,pfirst,plast))
+                if makeface:
+                    wirename = '%s-wire' % d1['name']
+                    self.csg.write('wire %s %s\n' %(wirename,edgename))
+                    self.csg.write('mkplane %s %s\n' % (d1['name'],wirename))
+                else:
+                    self.csg.write('wire %s %s\n' %(d1['name'],edgename))
+
+        elif ob.TypeId == "Part::Line":
+            if checksupported: return True # The object is supported
+            self.csg.write('polyline %s %s %s %s %s %s %s\n' % \
+                    (d1['name'],f2s(ob.X1),f2s(ob.Y1),f2s(ob.Z1),\
+                    f2s(ob.X2),f2s(ob.Y2),f2s(ob.Z2)))
+        elif isDraftWire(ob):
+            if checksupported: return True # The object is supported
+            points=ob.Points
+            if ob.Closed:
+                points.append(points[0])
+            polyname = '%s-dwireline' % d1['name']
+            pointstr=' '.join('%s %s %s'%(f2s(v.x),f2s(v.y),f2s(v.z)) \
+                    for v in points)
+            self.csg.write('polyline %s %s\n' % (polyname,pointstr))
+            if ob.MakeFace:
+                wirename = '%s-dwirewire' % d1['name']
+                self.csg.write('wire %s %s\n' %(wirename,polyname))
+                facename =  d1['name']
+                self.csg.write('mkplane %s %s\n' % (facename,polyname))
+            else:
+                wirename =  d1['name']
+                self.csg.write('wire %s %s\n' %(wirename,polyname))
+        elif isDraftClone(ob):
+            if checksupported: return True # The object is supported
+            x,y,z=ob.Scale.x
+            if x == y == z: #uniform scaling
+                d1['scale']=f2s(x)
+            else:
+                d1['cx']=f2s(x)
+                d1['cy']=f2s(y)
+                d1['cz']=f2s(z)
+            if len(ob.Objects) == 1:
+                d1['basename']=ob.Objects[0].Name
+                self.process_object(ob.Objects[0])
+                if x == y == z: #uniform scaling
+                    self.csg.write('tcopy %(basename)s %(name)s\n' % d1)
+                    self.csg.write('pscale %(name)s 0 0 0 %(scale)s\n' % d1)
+                else:
+                    self.csg.write('deform %(name)s %(basename)s'\
                             ' %(cx)s %(cy)s %(cz)s\n' % d1)
-            csg.write('compound %s %s\n' % (' '.join(newnames),ob.Name))
-        
-    #elif ob.isDerivedFrom('Part::FeaturePython') and \
-    #    hasattr(ob.Proxy,'__module__'):
-    #    pass
-    elif ob.isDerivedFrom('Part::Feature') :
-        if ob.Shape.isNull(): #would crash in exportBrep otherwise
-            raise ValueError
-        hasplacement = saveShape(csg,filename,ob.Shape,ob.Name,hasplacement)
-    if hasplacement:
-        csg.write(placement2draw(ob.Placement,ob.Name))
+            else: #compound
+                newnames=[]
+                for i,subobj in enumerate(ob.Objects):
+                    self.process_object(subobj)
+                    d1['basename']=subobj.Name
+                    newname='%s-%2d' % (ob.Name,i)
+                    d1['newname']=newname
+                    newnames.append(newname)
+                    if x == y == z: #uniform scaling
+                        self.csg.write('tcopy %(basename)s %(newname)s\n' % d1)
+                        self.csg.write('pscale %(newname)s 0 0 0 %(scale)s\n' % d1)
+                    else:
+                        self.csg.write('deform %(newname)s %(basename)s'\
+                                ' %(cx)s %(cy)s %(cz)s\n' % d1)
+                self.csg.write('compound %s %s\n' % (' '.join(newnames),ob.Name))
+
+        #elif ob.isDerivedFrom('Part::FeaturePython') and \
+        #    hasattr(ob.Proxy,'__module__'):
+        #    pass
+        elif ob.isDerivedFrom('Part::Feature') :
+            if ob.Shape.isNull(): #would crash in exportBrep otherwise
+                raise ValueError('Shape of %s is Null' % ob.Name)
+            if checksupported: return False # The object is not supported
+            self.csg.write('#saved shape of unsupported %s Object\n' % \
+                    formatobjtype(ob))
+            hasplacement = saveShape(self.csg,self.filename,ob.Shape,ob.Name,\
+                    hasplacement,self.cleanshape)
+        else: # not derived from Part::Feature
+            if not toplevel:
+                raise ValueError('Can not export child object')
+            else:
+                if ob.Name != ob.Label:
+                    labelstr = 'Label %s' % ob.Label.encode('unicode-escape')
+                else:
+                    labelstr = ''
+                self.csg.write('#omitted unsupported %s Object %s%s\n' %\
+                        (formatobjtype(ob),ob.Name,labelstr))
+                self.csg.write('#Properties: %s\n' % \
+                        ','.join(ob.PropertiesList))
+                return False
+                #The object is not present and can not be referenced
+        if hasplacement:
+            self.csg.write(placement2draw(ob.Placement,ob.Name))
+        if ob.Name != ob.Label:
+            self.csg.write('#Object Label: %s\n' % ob.Label.encode('unicode-escape'))
+        return ob.Name #The object is present and can be referenced
+
+    def export_objects(self,objlst,toplevel=True):
+        self.write_header()
+        toplevelobjs = [self.process_object(ob, toplevel=toplevel)\
+                for ob in objlst]
+        names = [name for name in toplevelobjs if name is not False]
+        self.csg.write('donly %s\n'%(' '.join(names)))
+        #for ob in objlst:
+        #    self.process_object(ob,toplevel=toplevel)
+        #self.write_displayonly(objlst)
+
+    def __exit__(self,exc_type, exc_val, exc_tb ):
+        self.csg.close()
 
 def export(exportList,filename):
     "called when freecad exports a file"
-    # process Objects
-    csg = pythonopen(filename,'w')
-    csg.write('#generated by FreeCAD\n')
-    csg.write('pload ALL\n')
-    for ob in exportList:
-        process_object(csg,ob,filename)
-    csg.write('donly %s\n'%' '.join([obj.Name for obj in exportList]))
-    csg.close()
+    with Drawexporter(filename) as exporter:
+        exporter.export_objects(exportList)

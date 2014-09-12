@@ -44,6 +44,7 @@
 # include <BRepFill.hxx>
 # include <BRepLib.hxx>
 # include <gp_Circ.hxx>
+# include <gp_Ax3.hxx>
 # include <gp_Pnt.hxx>
 # include <gp_Lin.hxx>
 # include <GCE2d_MakeSegment.hxx>
@@ -576,10 +577,11 @@ static PyObject * makeSolid(PyObject *self, PyObject *args)
 static PyObject * makePlane(PyObject *self, PyObject *args)
 {
     double length, width;
-    PyObject *pPnt=0, *pDir=0;
-    if (!PyArg_ParseTuple(args, "dd|O!O!", &length, &width,
-                                           &(Base::VectorPy::Type), &pPnt,
-                                           &(Base::VectorPy::Type), &pDir))
+    PyObject *pPnt=0, *pDirZ=0, *pDirX=0;
+    if (!PyArg_ParseTuple(args, "dd|O!O!O!", &length, &width,
+                                             &(Base::VectorPy::Type), &pPnt,
+                                             &(Base::VectorPy::Type), &pDirZ,
+                                             &(Base::VectorPy::Type), &pDirX))
         return NULL;
 
     if (length < Precision::Confusion()) {
@@ -598,11 +600,21 @@ static PyObject * makePlane(PyObject *self, PyObject *args)
             Base::Vector3d pnt = static_cast<Base::VectorPy*>(pPnt)->value();
             p.SetCoord(pnt.x, pnt.y, pnt.z);
         }
-        if (pDir) {
-            Base::Vector3d vec = static_cast<Base::VectorPy*>(pDir)->value();
+        if (pDirZ) {
+            Base::Vector3d vec = static_cast<Base::VectorPy*>(pDirZ)->value();
             d.SetCoord(vec.x, vec.y, vec.z);
         }
-        Handle_Geom_Plane aPlane = new Geom_Plane(p, d);
+        Handle_Geom_Plane aPlane;
+        if (pDirX) {
+            Base::Vector3d vec = static_cast<Base::VectorPy*>(pDirX)->value();
+            gp_Dir dx;
+            dx.SetCoord(vec.x, vec.y, vec.z);
+            aPlane = new Geom_Plane(gp_Ax3(p, d, dx));
+        }
+        else {
+            aPlane = new Geom_Plane(p, d);
+        }
+
         BRepBuilderAPI_MakeFace Face(aPlane, 0.0, length, 0.0, width
 #if OCC_VERSION_HEX >= 0x060502
           , Precision::Confusion()
@@ -611,6 +623,10 @@ static PyObject * makePlane(PyObject *self, PyObject *args)
         return new TopoShapeFacePy(new TopoShape((Face.Face()))); 
     }
     catch (Standard_DomainError) {
+        PyErr_SetString(PyExc_Exception, "creation of plane failed");
+        return NULL;
+    }
+    catch (Standard_Failure) {
         PyErr_SetString(PyExc_Exception, "creation of plane failed");
         return NULL;
     }
@@ -1022,7 +1038,8 @@ static PyObject * makeLine(PyObject *self, PyObject *args)
 static PyObject * makePolygon(PyObject *self, PyObject *args)
 {
     PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O", &pcObj))     // convert args: Python->C
+    PyObject *pclosed=Py_False;
+    if (!PyArg_ParseTuple(args, "O|O!", &pcObj, &(PyBool_Type), &pclosed))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
     PY_TRY {
@@ -1047,6 +1064,13 @@ static PyObject * makePolygon(PyObject *self, PyObject *args)
 
             if (!mkPoly.IsDone())
                 Standard_Failure::Raise("Cannot create polygon because less than two vertices are given");
+
+            // if the polygon should be closed
+            if (PyObject_IsTrue(pclosed)) {
+                if (!mkPoly.FirstVertex().IsSame(mkPoly.LastVertex())) {
+                    mkPoly.Add(mkPoly.FirstVertex());
+                }
+            }
 
             return new TopoShapeWirePy(new TopoShape(mkPoly.Wire()));
         }
@@ -1680,8 +1704,8 @@ struct PyMethodDef Part_methods[] = {
      "makeSolid(shape) -- Create a solid out of the shells inside a shape."},
 
     {"makePlane"  ,makePlane ,METH_VARARGS,
-     "makePlane(length,width,[pnt,dir]) -- Make a plane\n"
-     "By default pnt=Vector(0,0,0) and dir=Vector(0,0,1)"},
+     "makePlane(length,width,[pnt,dirZ,dirX]) -- Make a plane\n"
+     "By default pnt=Vector(0,0,0) and dirZ=Vector(0,0,1), dirX is ignored in this case"},
 
     {"makeBox"    ,makeBox ,METH_VARARGS,
      "makeBox(length,width,height,[pnt,dir]) -- Make a box located\n"

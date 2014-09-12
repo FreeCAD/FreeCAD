@@ -34,14 +34,17 @@ __title__="FreeCAD Site"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeSite(objectslist=None,name=translate("Arch","Site")):
+def makeSite(objectslist=None,baseobj=None,name=translate("Arch","Site")):
     '''makeBuilding(objectslist): creates a site including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Site(obj)
-    _ViewProviderSite(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderSite(obj.ViewObject)
     if objectslist:
         obj.Group = objectslist
+    if baseobj:
+        obj.Terrain = baseobj
     return obj
 
 class _CommandSite:
@@ -61,7 +64,7 @@ class _CommandSite:
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Building","Floor"]:
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("obj = Arch.makeSite()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
                 FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
@@ -79,7 +82,7 @@ class _CommandSite:
                 ss += "FreeCAD.ActiveDocument."+o.Name
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Site"))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeSite("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()

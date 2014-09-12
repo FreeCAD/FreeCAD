@@ -41,7 +41,8 @@ def makeAxis(num=5,size=1000,name=translate("Arch","Axes")):
     based on the given number of axes and interval distances'''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
     _Axis(obj)
-    _ViewProviderAxis(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderAxis(obj.ViewObject)
     if num:
         dist = []
         angles = []
@@ -63,7 +64,7 @@ class _CommandAxis:
         
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
-        FreeCADGui.doCommand("import Arch")
+        FreeCADGui.addModule("Arch")
         sel = FreeCADGui.Selection.getSelection()
         st = Draft.getObjectsOfType(sel,"Structure")
         if st:

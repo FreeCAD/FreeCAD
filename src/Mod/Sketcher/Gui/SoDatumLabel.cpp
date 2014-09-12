@@ -291,7 +291,6 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         float length     = this->param1.getValue();
         float startangle = this->param2.getValue();
         float range      = this->param3.getValue();
-        float endangle   = startangle + range;
 
         float r = 2*length;
 

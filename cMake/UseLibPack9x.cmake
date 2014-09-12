@@ -471,3 +471,57 @@ SET(PYSIDE_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/PySide-1.2.1)
 SET(PYSIDE_LIBRARY     optimized ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7.lib debug ${FREECAD_LIBPACK_DIR}/lib/pyside-python2.7_d.lib)
 SET(PYSIDE_PYTHONPATH  ${FREECAD_LIBPACK_DIR}/pyside/Lib/site-packages)
 SET(PYSIDE_TYPESYSTEMS ${FREECAD_LIBPACK_DIR}/pyside/share/PySide/typesystems)
+
+# Pointscloud library
+set(PCL_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/pcl-1.6)
+set(PCL_LIBRARY_DIRS ${FREECAD_LIBPACK_DIR}/lib)
+
+set(PCL_COMMON_LIBRARIES optimized pcl_common_release debug pcl_common_debug)
+set(PCL_FEATURES_LIBRARIES optimized pcl_features_release debug pcl_features_debug)
+set(PCL_FILTERS_LIBRARIES optimized pcl_filters_release debug pcl_filters_debug)
+set(PCL_IO_LIBRARIES optimized pcl_io_release debug pcl_io_debug)
+set(PCL_IO_PLY_LIBRARIES optimized pcl_io_ply_release debug pcl_io_ply_debug)
+set(PCL_KDTREE_LIBRARIES optimized pcl_kdtree_release debug pcl_kdtree_debug)
+set(PCL_KEYPOINTS_LIBRARIES optimized pcl_keypoints_release debug pcl_keypoints_debug)
+set(PCL_OCTREE_LIBRARIES optimized pcl_octree_release debug pcl_octree_debug)
+set(PCL_REGISTRATION_LIBRARIES optimized pcl_registration_release debug pcl_registration_debug)
+set(PCL_SAMPLE_CONSENSUS_LIBRARIES optimized pcl_sample_consensus_release debug pcl_sample_consensus_debug)
+set(PCL_SEARCH_LIBRARIES optimized pcl_search_release debug pcl_search_debug)
+set(PCL_SEGMENTATION_LIBRARIES optimized pcl_segmentation_release debug pcl_segmentation_debug)
+set(PCL_SURFACE_LIBRARIES optimized pcl_surface_release debug pcl_surface_debug)
+set(PCL_TRACKING_LIBRARIES optimized pcl_tracking_release debug pcl_tracking_debug)
+
+set(PCL_LIBRARIES
+    ${PCL_COMMON_LIBRARIES}
+    ${PCL_FEATURES_LIBRARIES}
+    ${PCL_FILTERS_LIBRARIES}
+    ${PCL_IO_LIBRARIES}
+    ${PCL_IO_PLY_LIBRARIES}
+    ${PCL_KDTREE_LIBRARIES}
+    ${PCL_KEYPOINTS_LIBRARIES}
+    ${PCL_OCTREE_LIBRARIES}
+    ${PCL_REGISTRATION_LIBRARIES}
+    ${PCL_SAMPLE_CONSENSUS_LIBRARIES}
+    ${PCL_SEARCH_LIBRARIES}
+    ${PCL_SEGMENTATION_LIBRARIES}
+    ${PCL_SURFACE_LIBRARIES}
+    ${PCL_TRACKING_LIBRARIES}
+)
+set(PCL_FOUND TRUE)
+set(PCL_COMMON_FOUND TRUE)
+set(PCL_FEATURES_FOUND TRUE)
+set(PCL_FILTERS_FOUND TRUE)
+set(PCL_IO_FOUND TRUE)
+set(PCL_IO_PLY_FOUND TRUE)
+set(PCL_KDTREE_FOUND TRUE)
+set(PCL_KEYPOINTS_FOUND TRUE)
+set(PCL_OCTREE_FOUND TRUE)
+set(PCL_REGISTRATION_FOUND TRUE)
+set(PCL_SAMPLE_CONSENSUS_FOUND TRUE)
+set(PCL_SEARCH_FOUND TRUE)
+set(PCL_SEGMENTATION_FOUND TRUE)
+set(PCL_SURFACE_FOUND TRUE)
+set(PCL_TRACKING_FOUND TRUE)
+
+set(FLANN_LIBRARIES optimized flann debug flann)
+set(FLANN_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/flann-1.7.1)

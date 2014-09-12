@@ -33,6 +33,7 @@ if(MSVC)
         optimized MSVCRT.LIB
         optimized MSVCPRT.LIB
         Rpcrt4.lib
+        version.lib
     )
 elseif(MINGW)
     set(FreeCADBase_LIBS
@@ -182,6 +183,7 @@ SET(FreeCADBase_CPP_SRCS
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
+    CoordinateSystem.cpp
     Debugger.cpp
     Exception.cpp
     Factory.cpp
@@ -235,6 +237,7 @@ SET(FreeCADBase_HPP_SRCS
     BoundBox.h
     Builder3D.h
     Console.h
+    CoordinateSystem.h
     Debugger.h
     Exception.h
     Factory.h
@@ -288,6 +291,14 @@ SET(FreeCADBase_SRCS
     PreCompiled.cpp
     PreCompiled.h
 )
+
+IF (MSVC)
+    SET(FreeCADBase_SRCS
+        ${FreeCADBase_SRCS}
+        StackWalker.cpp
+        StackWalker.h
+)
+ENDIF(MSVC)
 
 # Use external zipios++ if specified.
 if(FREECAD_USE_EXTERNAL_ZIPIOS)

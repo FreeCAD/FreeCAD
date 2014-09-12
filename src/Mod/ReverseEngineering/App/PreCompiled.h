@@ -39,6 +39,12 @@
 # define PointsExport
 #endif
 
+#ifdef _MSC_VER
+#   pragma warning(disable : 4181)
+#   pragma warning(disable : 4275)
+#   pragma warning(disable : 4305)
+#endif
+
 #ifdef _PreComp_
 
 // standard

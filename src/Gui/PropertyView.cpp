@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,6 +52,11 @@ using namespace Gui::PropertyEditor;
 
 /* TRANSLATOR Gui::PropertyView */
 
+/*! Property Editor Widget
+ *
+ * Provides two Gui::PropertyEditor::PropertyEditor widgets, for "View" and "Data",
+ * in two tabs.
+ */
 PropertyView::PropertyView(QWidget *parent)
   : QWidget(parent)
 {
@@ -129,7 +134,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         if (ob) {
             for (pt = dataList.begin(); pt != dataList.end(); ++pt) {
                 PropInfo nameType;
-                nameType.propName = ob->getName(*pt);
+                nameType.propName = ob->getPropertyName(*pt);
                 nameType.propId = (*pt)->getTypeId().getKey();
 
                 if (!ob->isHidden(*pt) && !(*pt)->StatusBits.test(3)) {

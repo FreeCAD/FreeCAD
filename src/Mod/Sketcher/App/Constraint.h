@@ -56,9 +56,9 @@ class SketcherExport Constraint : public Base::Persistence
     TYPESYSTEM_HEADER();
 
 public:
-    ~Constraint();
     Constraint();
     Constraint(const Constraint&);
+    virtual ~Constraint();
     virtual Constraint *clone(void) const;
 
     static const int GeoUndef;

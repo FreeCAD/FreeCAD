@@ -201,6 +201,7 @@ set(Gui_MOC_HDRS
     PythonConsole.h
     PythonDebugger.h
     PythonEditor.h
+    QuantitySpinBox.h
     ReportView.h
     SceneInspector.h
     SelectionView.h
@@ -769,6 +770,7 @@ SET(Widget_CPP_SRCS
     PrefWidgets.cpp
     InputField.cpp
     ProgressBar.cpp
+    QuantitySpinBox.cpp
     SpinBox.cpp
     Splashscreen.cpp
     WidgetFactory.cpp
@@ -781,6 +783,7 @@ SET(Widget_HPP_SRCS
     PrefWidgets.h
     InputField.h
     ProgressBar.h
+    QuantitySpinBox.h
     SpinBox.h
     Splashscreen.h
     WidgetFactory.h

@@ -82,7 +82,7 @@ public:
     explicit MeshObject(const MeshCore::MeshKernel& Kernel);
     explicit MeshObject(const MeshCore::MeshKernel& Kernel, const Base::Matrix4D &Mtrx);
     MeshObject(const MeshObject&);
-    ~MeshObject();
+    virtual ~MeshObject();
 
     void operator = (const MeshObject&);
 

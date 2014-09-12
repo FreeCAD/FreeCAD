@@ -23,7 +23,10 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# include <Geom_TrimmedCurve.hxx>
 #endif
+
+#include <boost/shared_ptr.hpp>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Part/App/LinePy.h>
@@ -67,16 +70,77 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
 
     if (PyObject_TypeCheck(pcObj, &(Part::GeometryPy::Type))) {
         Part::Geometry *geo = static_cast<Part::GeometryPy*>(pcObj)->getGeometryPtr();
-        return Py::new_reference_to(Py::Int(this->getSketchObjectPtr()->addGeometry(geo)));
+        int ret;
+        // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
+        if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
+            Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
+            Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+            if (!circle.IsNull()) {
+                // create the definition struct for that geom
+                Part::GeomArcOfCircle aoc;
+                aoc.setHandle(trim);
+                ret = this->getSketchObjectPtr()->addGeometry(&aoc);
+            }
+            else {
+                std::stringstream str;
+                str << "Unsupported geometry type: " << geo->getTypeId().getName();
+                PyErr_SetString(PyExc_TypeError, str.str().c_str());
+                return 0;
+            }
+        }
+        else if (geo->getTypeId() == Part::GeomPoint::getClassTypeId() ||
+                 geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                 geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+                 geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            ret = this->getSketchObjectPtr()->addGeometry(geo);
+        }
+        else {
+            std::stringstream str;
+            str << "Unsupported geometry type: " << geo->getTypeId().getName();
+            PyErr_SetString(PyExc_TypeError, str.str().c_str());
+            return 0;
+        }
+        return Py::new_reference_to(Py::Int(ret));
     }
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
              PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         std::vector<Part::Geometry *> geoList;
+        std::vector<boost::shared_ptr <Part::Geometry> > tmpList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::GeometryPy::Type))) {
                 Part::Geometry *geo = static_cast<Part::GeometryPy*>((*it).ptr())->getGeometryPtr();
-                geoList.push_back(geo);
+
+                // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
+                if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
+                    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
+                    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+                    if (!circle.IsNull()) {
+                        // create the definition struct for that geom
+                        boost::shared_ptr<Part::GeomArcOfCircle> aoc(new Part::GeomArcOfCircle());
+                        aoc->setHandle(trim);
+                        geoList.push_back(aoc.get());
+                        tmpList.push_back(aoc);
+                    }
+                    else {
+                        std::stringstream str;
+                        str << "Unsupported geometry type: " << geo->getTypeId().getName();
+                        PyErr_SetString(PyExc_TypeError, str.str().c_str());
+                        return 0;
+                    }
+                }
+                else if (geo->getTypeId() == Part::GeomPoint::getClassTypeId() ||
+                         geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                         geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+                         geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    geoList.push_back(geo);
+                }
+                else {
+                    std::stringstream str;
+                    str << "Unsupported geometry type: " << geo->getTypeId().getName();
+                    PyErr_SetString(PyExc_TypeError, str.str().c_str());
+                    return 0;
+                }
             }
         }
 
@@ -87,6 +151,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
             int geoId = ret - int(numGeo - i);
             tuple.setItem(i, Py::Int(geoId));
         }
+
         return Py::new_reference_to(tuple);
     }
 
@@ -292,20 +357,91 @@ PyObject* SketchObjectPy::setDatum(PyObject *args)
     int    Index;
     PyObject* object;
     Base::Quantity Quantity;
-    if (PyArg_ParseTuple(args,"iO!", &Index, &(Base::QuantityPy::Type), &object)) {
-        Quantity = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
-        if (Quantity.getUnit() == Base::Unit::Angle)
-            //Datum = Quantity.getValueAs(Base::Quantity::Radian);
-            Datum = Base::toRadians<double>(Quantity.getValue());
-        else
-            Datum = Quantity.getValue();
-    }
-    else {
+
+    do {
+        // handle (int,Quantity)
+        if (PyArg_ParseTuple(args,"iO!", &Index, &(Base::QuantityPy::Type), &object)) {
+            Quantity = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
+            if (Quantity.getUnit() == Base::Unit::Angle) {
+                Datum = Base::toRadians<double>(Quantity.getValue());
+                break;
+            }
+            else {
+                Datum = Quantity.getValue();
+                break;
+            }
+        }
+
+        // handle (int,double)
         PyErr_Clear();
-        if (!PyArg_ParseTuple(args, "id", &Index, &Datum))
-            return 0;
-        Quantity.setValue(Datum);
+        if (PyArg_ParseTuple(args, "id", &Index, &Datum)) {
+            Quantity.setValue(Datum);
+            break;
+        }
+
+        // handle (string,Quantity)
+        char* constrName;
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args,"sO!", &constrName, &(Base::QuantityPy::Type), &object)) {
+            Quantity = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
+            if (Quantity.getUnit() == Base::Unit::Angle) {
+                Datum = Base::toRadians<double>(Quantity.getValue());
+            }
+            else {
+                Datum = Quantity.getValue();
+            }
+
+            int i = 0;
+            Index = -1;
+            const std::vector<Constraint*>& vals = this->getSketchObjectPtr()->Constraints.getValues();
+            for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it, ++i) {
+                if ((*it)->Name == constrName) {
+                    Index = i;
+                    break;
+                }
+            }
+
+            if (Index >= 0) {
+                break;
+            }
+            else {
+                std::stringstream str;
+                str << "Invalid constraint name: '" << constrName << "'";
+                PyErr_SetString(PyExc_ValueError, str.str().c_str());
+                return 0;
+            }
+        }
+
+        // handle (string,double)
+        PyErr_Clear();
+        if (PyArg_ParseTuple(args, "sd", &constrName, &Datum)) {
+            Quantity.setValue(Datum);
+            int i = 0;
+            Index = -1;
+            const std::vector<Constraint*>& vals = this->getSketchObjectPtr()->Constraints.getValues();
+            for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it, ++i) {
+                if ((*it)->Name == constrName) {
+                    Index = i;
+                    break;
+                }
+            }
+
+            if (Index >= 0) {
+                break;
+            }
+            else {
+                std::stringstream str;
+                str << "Invalid constraint name: '" << constrName << "'";
+                PyErr_SetString(PyExc_ValueError, str.str().c_str());
+                return 0;
+            }
+        }
+
+        // error handling
+        PyErr_SetString(PyExc_TypeError, "Wrong arguments");
+        return 0;
     }
+    while (false);
 
     int err=this->getSketchObjectPtr()->setDatum(Index, Datum);
     if (err) {
@@ -357,7 +493,18 @@ PyObject* SketchObjectPy::getPoint(PyObject *args)
     if (!PyArg_ParseTuple(args, "ii", &GeoId, &PointType))
         return 0;
 
-    return new Base::VectorPy(new Base::Vector3d(this->getSketchObjectPtr()->getPoint(GeoId,(Sketcher::PointPos)PointType)));
+    if (PointType < 0 || PointType > 3) {
+        PyErr_SetString(PyExc_ValueError, "Invalid point type");
+        return 0;
+    }
+
+    SketchObject* obj = this->getSketchObjectPtr();
+    if (GeoId > obj->getHighestCurveIndex() || -GeoId > obj->getExternalGeometryCount()) {
+        PyErr_SetString(PyExc_ValueError, "Invalid geometry Id");
+        return 0;
+    }
+
+    return new Base::VectorPy(new Base::Vector3d(obj->getPoint(GeoId,(Sketcher::PointPos)PointType)));
 }
 
 PyObject* SketchObjectPy::getAxis(PyObject *args)

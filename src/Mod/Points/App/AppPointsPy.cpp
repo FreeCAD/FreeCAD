@@ -35,7 +35,7 @@
 #include <App/Property.h>
 
 // PCL test
-#ifdef HAVE_PCL
+#ifdef HAVE_PCL_IO
 #  include <iostream>
 #  include <pcl/io/ply_io.h>
 #  include <pcl/point_types.h>
@@ -53,7 +53,7 @@ static PyObject *
 open(PyObject *self, PyObject *args)
 {
     const char* Name;
-    if (! PyArg_ParseTuple(args, "s",&Name))
+    if (!PyArg_ParseTuple(args, "s",&Name))
         return NULL;
 
     PY_TRY {
@@ -73,25 +73,20 @@ open(PyObject *self, PyObject *args)
             pcFeature->Points.setValue( pkTemp );
 
         }
-#ifdef HAVE_PCL
-        else 
-        if (file.hasExtension("ply")) {
+#ifdef HAVE_PCL_IO
+        else if (file.hasExtension("ply")) {
             // create new document import
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
             Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
             Points::PointKernel pkTemp;
 
-			// pcl test
-			pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
-			pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
+            // pcl test
+            pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
+            pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
 
-			for(pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
-				pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
-
-
-
+            for (pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
+                pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
             pcFeature->Points.setValue( pkTemp );
-
         }
 #endif
         else {
@@ -130,6 +125,25 @@ insert(PyObject *self, PyObject *args)
             pkTemp.load(Name);
             pcFeature->Points.setValue( pkTemp );
         }
+#ifdef HAVE_PCL_IO
+        else if (file.hasExtension("ply")) {
+            App::Document *pcDoc = App::GetApplication().getDocument(DocName);
+            if (!pcDoc) {
+                pcDoc = App::GetApplication().newDocument(DocName);
+            }
+
+            Points::Feature *pcFeature = (Points::Feature *)pcDoc->addObject("Points::Feature", file.fileNamePure().c_str());
+            Points::PointKernel pkTemp;
+
+            // pcl test
+            pcl::PointCloud<pcl::PointXYZRGB> cloud_in;
+            pcl::io::loadPLYFile<pcl::PointXYZRGB>(Name,cloud_in); 
+
+            for (pcl::PointCloud<pcl::PointXYZRGB>::const_iterator it = cloud_in.begin();it!=cloud_in.end();++it)
+                pkTemp.push_back(Base::Vector3d(it->x,it->y,it->z));
+            pcFeature->Points.setValue( pkTemp );
+        }
+#endif
         else {
             Py_Error(PyExc_Exception,"unknown file ending");
         }
@@ -162,10 +176,8 @@ show(PyObject *self, PyObject *args)
 
 // registration table  
 struct PyMethodDef Points_Import_methods[] = {
-    {"open",  open,   1},				/* method name, C func ptr, always-tuple */
+    {"open",  open,   1},       /* method name, C func ptr, always-tuple */
     {"insert",insert, 1},
     {"show",show, 1},
-
     {NULL, NULL}                /* end of table marker */
 };
-

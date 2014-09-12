@@ -361,6 +361,7 @@ AccelLineEdit::AccelLineEdit ( QWidget * parent )
   : QLineEdit(parent)
 {
     setText(tr("none"));
+    keyPressedCount = 0;
 }
 
 /**
@@ -368,72 +369,68 @@ AccelLineEdit::AccelLineEdit ( QWidget * parent )
  */
 void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
 {
-    QString txt;
-    setText(tr("none"));
+    QString txtLine = text();
 
     int key = e->key();
     Qt::KeyboardModifiers state = e->modifiers();
 
-    if (key == Qt::Key_Control)
-        return;
-    else if (key == Qt::Key_Shift)
-        return;
-    else if (key == Qt::Key_Alt)
-        return;
-    else if (state == Qt::NoModifier && key == Qt::Key_Backspace)
-        return; // clears the edit field
+    // Backspace clears the shortcut
+    // If a modifier is pressed without any other key, return.
+    // AltGr is not a modifier but doesn't have a QtSring representation.
+    switch(key) {
+	case Qt::Key_Backspace:
+	    if (state == Qt::NoModifier){
+	        keyPressedCount = 0;
+                setText(tr("none"));
+	    }   
+	case Qt::Key_Control:
+        case Qt::Key_Shift:
+	case Qt::Key_Alt:
+	case Qt::Key_Meta:
+	case Qt::Key_AltGr:
+            return; 
+        
 
-    switch(state)
-    {
-    case Qt::ControlModifier:
-        {
-            QKeySequence ks(Qt::CTRL+key);
-            txt += (QString)(ks);
-            setText(txt);
-        }   break;
-    case Qt::AltModifier:
-        {
-            QKeySequence ks(Qt::ALT+key);
-            txt += (QString)(ks);
-            setText(txt);
-        }   break;
-    case Qt::ShiftModifier:
-        {
-            QKeySequence ks(Qt::SHIFT+key);
-            txt += (QString)(ks);
-            setText(txt);
-        }   break;
-    case Qt::ControlModifier+Qt::AltModifier:
-        {
-            QKeySequence ks(Qt::CTRL+Qt::ALT+key);
-            txt += (QString)(ks);
-            setText(txt);
-        }   break;
-    case Qt::ControlModifier+Qt::ShiftModifier:
-        {
-            QKeySequence ks(Qt::CTRL+Qt::SHIFT+key);
-            txt += (QString)(ks);
-            setText(txt);
-        }   break;
-    case Qt::ShiftModifier+Qt::AltModifier:
-        {
-            QKeySequence ks(Qt::SHIFT+Qt::ALT+key);
-            txt += (QString)(ks);
-            setText(txt);
-        }   break;
-    case Qt::ControlModifier+Qt::AltModifier+Qt::ShiftModifier:
-        {
-            QKeySequence ks(Qt::CTRL+Qt::ALT+Qt::SHIFT+key);
-            txt += (QString)(ks);
-            setText(txt);
-        }   break;
-    default:
-        {
-            QKeySequence ks(key);
-            txt += (QString)(ks);
-            setText(txt);
-        }   break;
+	default:
+	     break;
     }
+
+    // 4 keys are allowed for QShortcut
+    switch(keyPressedCount) {
+	case 4:
+	    keyPressedCount = 0;
+	case 0:
+	    txtLine.clear();
+	    break;
+	default:
+            txtLine += QString::fromAscii(",");
+	    break;
+    }
+    
+    // Handles modifiers applying a mask.
+    if ((state & Qt::ControlModifier) == Qt::ControlModifier) {
+        QKeySequence ks(Qt::CTRL);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if (( state & Qt::AltModifier) == Qt::AltModifier) {
+        QKeySequence ks(Qt::ALT);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if (( state & Qt::ShiftModifier) == Qt::ShiftModifier) {
+        QKeySequence ks(Qt::SHIFT);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+    if (( state & Qt::MetaModifier) == Qt::MetaModifier) {
+        QKeySequence ks(Qt::META);
+        txtLine += ks.toString(QKeySequence::NativeText);
+    }
+
+    // Handles normal keys
+    QKeySequence ks(key);
+    txtLine += ks.toString(QKeySequence::NativeText);
+ 
+    setText(txtLine);
+    keyPressedCount ++ ;
 }
 
 // ------------------------------------------------------------------------------

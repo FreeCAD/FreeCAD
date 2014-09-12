@@ -129,9 +129,11 @@ void TaskLinearPatternParameters::setupUI()
 
     ui->comboDirection->setEnabled(true);
     ui->checkReverse->setEnabled(true);
+    ui->spinLength->blockSignals(true);
     ui->spinLength->setEnabled(true);
+    ui->spinLength->setUnit(Base::Unit::Length);
+    ui->spinLength->blockSignals(false);
     ui->spinOccurrences->setEnabled(true);
-    ui->spinLength->setDecimals(Base::UnitsApi::getDecimals());
     updateUI();
 }
 
@@ -370,7 +372,7 @@ const bool TaskLinearPatternParameters::getReverse(void) const
 
 const double TaskLinearPatternParameters::getLength(void) const
 {
-    return ui->spinLength->value();
+    return ui->spinLength->value().getValue();
 }
 
 const unsigned TaskLinearPatternParameters::getOccurrences(void) const

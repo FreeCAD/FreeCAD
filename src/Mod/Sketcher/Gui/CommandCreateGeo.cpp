@@ -1560,7 +1560,7 @@ Gui::Action * CmdSketcherCompCreateArc::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
     arc1->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateArc", QSize(24,24)));
@@ -2036,7 +2036,7 @@ Gui::Action * CmdSketcherCompCreateCircle::createAction(void)
 {
     Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
     pcAction->setDropDownMenu(true);
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
     arc1->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateCircle", QSize(24,24)));
@@ -2925,9 +2925,6 @@ public:
             EditCurve[35] = EditCurve[0] ;
             //EditCurve[34] = EditCurve[0];
 
-            // Display radius for user
-            float radius = (onSketchPos - EditCurve[0]).Length();
-
             SbString text;
             text.sprintf(" (%.1fR %.1fL)", r,lx);
             setPositionText(onSketchPos, text);
@@ -3097,6 +3094,445 @@ bool CmdSketcherCreateSlot::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+
+/* Create Regular Polygon ==============================================*/
+
+/* XPM */
+static const char *cursor_createregularpolygon[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+................###......",
+"......+.......##########.##.....",
+".............#.........###......",
+"............#.............#.....",
+"...........#...............#....",
+"...........#...............#....",
+"..........#.................#...",
+".........#...................#..",
+".........#...................#..",
+"........#.........###.........#.",
+".......#..........#.#..........#",
+"........#.........###.........#.",
+".........#...................#..",
+".........#...................#..",
+"..........#.................#...",
+"...........#...............#....",
+"...........#...............#....",
+"............#.............#.....",
+".............#...........#......",
+"..............###########.......",
+"................................"};
+
+class DrawSketchHandlerRegularPolygon: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerRegularPolygon( size_t nof_corners ):
+        Corners( nof_corners ),
+        AngleOfSeparation( 2.0*M_PI/static_cast<double>(Corners) ),
+        cos_v( cos( AngleOfSeparation ) ),
+        sin_v( sin( AngleOfSeparation ) ),
+        Mode(STATUS_SEEK_First),
+        EditCurve(Corners+1)
+    {
+    }
+    virtual ~DrawSketchHandlerRegularPolygon(){}
+    /// mode table
+    enum SelectMode {
+        STATUS_SEEK_First,      /**< enum value ----. */
+        STATUS_SEEK_Second,     /**< enum value ----. */
+        STATUS_End
+    };
+
+    virtual void activated(ViewProviderSketch *sketchgui)
+    {
+        setCursor(QPixmap(cursor_createregularpolygon),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2D onSketchPos)
+    {
+
+        if (Mode==STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr1);
+                return;
+            }
+        }
+        else if (Mode==STATUS_SEEK_Second) {
+            EditCurve[0]= Base::Vector2D(onSketchPos.fX, onSketchPos.fY);
+            EditCurve[Corners]= Base::Vector2D(onSketchPos.fX, onSketchPos.fY);
+
+            Base::Vector2D dV = onSketchPos - StartPos;
+            double rx = dV.fX;
+            double ry = dV.fY;
+            for (int i=1; i < static_cast<int>(Corners); i++) {
+            	const double old_rx = rx;
+                rx = cos_v * rx - sin_v * ry;
+                ry = cos_v * ry + sin_v * old_rx;
+                EditCurve[i] = Base::Vector2D(StartPos.fX + rx, StartPos.fY + ry);
+            }
+
+            // Display radius for user
+            const float radius = dV.Length();
+            const float angle = ( 180.0 / M_PI ) * atan2( dV.fY, dV.fX );
+
+            SbString text;
+            text.sprintf(" (%.1fR %.1fdeg)", radius, angle );
+            setPositionText(onSketchPos, text);
+
+            sketchgui->drawEdit(EditCurve);
+            if (seekAutoConstraint(sugConstr2, onSketchPos, dV)) {
+                renderSuggestConstraintsCursor(sugConstr2);
+                return;
+            }
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2D onSketchPos)
+    {
+        if (Mode==STATUS_SEEK_First){
+            StartPos = onSketchPos;
+            Mode = STATUS_SEEK_Second;
+        }
+        else {
+            Mode = STATUS_End;
+        }
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    {
+
+        if (Mode==STATUS_End){
+            unsetCursor();
+            resetPositionText();
+            Gui::Command::openCommand("Add hexagon");
+
+            try {
+            	Gui::Command::doCommand(Gui::Command::Doc,
+            			"import ProfileLib.RegularPolygon\n"
+            			"ProfileLib.RegularPolygon.makeRegularPolygon('%s',%i,App.Vector(%f,%f,0),App.Vector(%f,%f,0))",
+            	                            sketchgui->getObject()->getNameInDocument(),
+            	                            Corners,
+            	                            StartPos.fX,StartPos.fY,EditCurve[0].fX,EditCurve[0].fY);
+
+                Gui::Command::commitCommand();
+                Gui::Command::updateActive();
+
+                // add auto constraints at the start of the first side
+                if (sugConstr1.size() > 0) {
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::mid);
+                    sugConstr1.clear();
+                }
+
+                // add auto constraints at the end of the second side
+                if (sugConstr2.size() > 0) {
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
+                    sugConstr2.clear();
+                }
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+                Gui::Command::updateActive();
+            }
+
+            EditCurve.clear();
+            sketchgui->drawEdit(EditCurve);
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        }
+        return true;
+    }
+protected:
+    const size_t Corners;
+    const double AngleOfSeparation;
+    const double cos_v, sin_v;
+    SelectMode Mode;
+    Base::Vector2D StartPos;
+    std::vector<Base::Vector2D> EditCurve;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+};
+
+
+DEF_STD_CMD_A(CmdSketcherCreateTriangle);
+CmdSketcherCreateTriangle::CmdSketcherCreateTriangle()
+  : Command("Sketcher_CreateTriangle")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create equilateral triangle");
+    sToolTipText    = QT_TR_NOOP("Create an equilateral triangle in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateTriangle";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateTriangle::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(3) );
+}
+
+bool CmdSketcherCreateTriangle::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+DEF_STD_CMD_A(CmdSketcherCreateSquare);
+CmdSketcherCreateSquare::CmdSketcherCreateSquare()
+  : Command("Sketcher_CreateSquare")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create square");
+    sToolTipText    = QT_TR_NOOP("Create a square in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateSquare";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateSquare::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(4) );
+}
+
+bool CmdSketcherCreateSquare::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+DEF_STD_CMD_A(CmdSketcherCreatePentagon);
+CmdSketcherCreatePentagon::CmdSketcherCreatePentagon()
+  : Command("Sketcher_CreatePentagon")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create pentagon");
+    sToolTipText    = QT_TR_NOOP("Create a pentagon in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreatePentagon";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreatePentagon::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(5) );
+}
+
+bool CmdSketcherCreatePentagon::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+DEF_STD_CMD_A(CmdSketcherCreateHexagon);
+CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
+  : Command("Sketcher_CreateHexagon")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create hexagon");
+    sToolTipText    = QT_TR_NOOP("Create a hexagon in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateHexagon";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateHexagon::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(6) );
+}
+
+bool CmdSketcherCreateHexagon::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+DEF_STD_CMD_A(CmdSketcherCreateHeptagon);
+CmdSketcherCreateHeptagon::CmdSketcherCreateHeptagon()
+  : Command("Sketcher_CreateHeptagon")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create heptagon");
+    sToolTipText    = QT_TR_NOOP("Create a heptagon in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateHeptagon";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateHeptagon::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(7) );
+}
+
+bool CmdSketcherCreateHeptagon::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+DEF_STD_CMD_A(CmdSketcherCreateOctagon);
+CmdSketcherCreateOctagon::CmdSketcherCreateOctagon()
+  : Command("Sketcher_CreateOctagon")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create octagon");
+    sToolTipText    = QT_TR_NOOP("Create an octagon in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateOctagon";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateOctagon::activated(int iMsg)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8) );
+}
+
+bool CmdSketcherCreateOctagon::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+DEF_STD_CMD_ACL(CmdSketcherCompCreateRegularPolygon);
+
+CmdSketcherCompCreateRegularPolygon::CmdSketcherCompCreateRegularPolygon()
+  : Command("Sketcher_CompCreateRegularPolygon")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create regular polygon");
+    sToolTipText    = QT_TR_NOOP("Create an regular polygon in the sketcher");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+void CmdSketcherCompCreateRegularPolygon::activated(int iMsg)
+{
+    switch( iMsg ){
+    case 0:
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(3)); break;
+    case 1:
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(4)); break;
+    case 2:
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(5)); break;
+    case 3:
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(6)); break;
+    case 4:
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(7)); break;
+    case 5:
+        ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8)); break;
+    default:
+        return;
+    }
+
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* triangle = pcAction->addAction(QString());
+    triangle->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateTriangle", QSize(24,24)));
+    QAction* square = pcAction->addAction(QString());
+    square->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateSquare", QSize(24,24)));
+    QAction* pentagon = pcAction->addAction(QString());
+    pentagon->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreatePentagon", QSize(24,24)));
+    QAction* hexagon = pcAction->addAction(QString());
+    hexagon->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateHexagon", QSize(24,24)));
+    QAction* heptagon = pcAction->addAction(QString());
+    heptagon->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateHeptagon", QSize(24,24)));
+    QAction* octagon = pcAction->addAction(QString());
+    octagon->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateOctagon", QSize(24,24)));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(hexagon->icon());
+    int defaultId = 3;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateRegularPolygon::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* triangle = a[0];
+    triangle->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Triangle"));
+    triangle->setToolTip(QApplication::translate("Sketcher_CreateTriangle","Create an equilateral triangle by its center and by one corner"));
+    triangle->setStatusTip(QApplication::translate("Sketcher_CreateTriangle","Create an equilateral triangle by its center and by one corner"));
+    QAction* square = a[1];
+    square->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Square"));
+    square->setToolTip(QApplication::translate("Sketcher_CreateSquare","Create a square by its center and by one corner"));
+    square->setStatusTip(QApplication::translate("Sketcher_CreateSquare","Create a square by its center and by one corner"));
+    QAction* pentagon = a[2];
+    pentagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Pentagon"));
+    pentagon->setToolTip(QApplication::translate("Sketcher_CreatePentagon","Create a pentagon by its center and by one corner"));
+    pentagon->setStatusTip(QApplication::translate("Sketcher_CreatePentagon","Create a pentagon by its center and by one corner"));
+    QAction* hexagon = a[3];
+    hexagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Hexagon"));
+    hexagon->setToolTip(QApplication::translate("Sketcher_CreateHexagon","Create a hexagon by its center and by one corner"));
+    hexagon->setStatusTip(QApplication::translate("Sketcher_CreateHexagon","Create a hexagon by its center and by one corner"));
+    QAction* heptagon = a[4];
+    heptagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Heptagon"));
+    heptagon->setToolTip(QApplication::translate("Sketcher_CreateHeptagon","Create a heptagon by its center and by one corner"));
+    heptagon->setStatusTip(QApplication::translate("Sketcher_CreateHeptagon","Create a heptagon by its center and by one corner"));
+    QAction* octagon = a[5];
+    octagon->setText(QApplication::translate("CmdSketcherCompCreateRegularPolygon","Octagon"));
+    octagon->setToolTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
+    octagon->setStatusTip(QApplication::translate("Sketcher_CreateOctagon","Create an octagon by its center and by one corner"));
+}
+
+bool CmdSketcherCompCreateRegularPolygon::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+
 void CreateSketcherCommandsCreateGeo(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -3111,6 +3547,13 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateRegularPolygon());
+    rcCmdMgr.addCommand(new CmdSketcherCreateTriangle());
+    rcCmdMgr.addCommand(new CmdSketcherCreateSquare());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePentagon());
+    rcCmdMgr.addCommand(new CmdSketcherCreateHexagon());
+    rcCmdMgr.addCommand(new CmdSketcherCreateHeptagon());
+    rcCmdMgr.addCommand(new CmdSketcherCreateOctagon());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     //rcCmdMgr.addCommand(new CmdSketcherCreateText());

@@ -61,7 +61,12 @@ using namespace Gui;
 PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::PropertyContainer)
 
 ViewProvider::ViewProvider() 
-    : pcAnnotation(0), pyViewObject(0), _iActualMode(-1), _iEditMode(-1), _updateData(true), viewOverrideMode(-1)
+    : pcAnnotation(0)
+    , pyViewObject(0)
+    , _iActualMode(-1)
+    , _iEditMode(-1)
+    , viewOverrideMode(-1)
+    , _updateData(true)
 {
     pcRoot = new SoSeparator();
     pcRoot->ref();
@@ -137,12 +142,6 @@ bool ViewProvider::isUpdatesEnabled () const
 void ViewProvider::setUpdatesEnabled (bool enable)
 {
     _updateData = enable;
-}
-
-void highlight(const HighlightMode& high)
-{
-    
-
 }
 
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
@@ -393,7 +392,7 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir
     return (pick ? new SoPickedPoint(*pick) : 0);
 }
 
-std::vector<Base::Vector3d> ViewProvider::getPickedPoints(const SoPickedPoint* pp) const
+std::vector<Base::Vector3d> ViewProvider::getModelPoints(const SoPickedPoint* pp) const
 {
     // the default implementation just returns the picked point from the visual representation
     std::vector<Base::Vector3d> pts;

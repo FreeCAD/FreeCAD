@@ -69,7 +69,7 @@ def addToComponent(compobject,addobject,mod=None):
                     if Draft.getType(addobject) == "Axis":
                         l = getattr(compobject,mod)
                         l.append(addobject)
-                        setattr(compobject,mod,l)                        
+                        setattr(compobject,mod,l)
                 else:
                     l = getattr(compobject,mod)
                     l.append(addobject)
@@ -312,7 +312,7 @@ class Component:
         pass
         
     def getSiblings(self,obj):
-        "returns a list of objects with the same base as this object"
+        "returns a list of objects with the same type and same base as this object"
         if not hasattr(obj,"Base"):
             return []
         if not obj.Base:
@@ -323,7 +323,8 @@ class Component:
                 if o.Base:
                     if o.Base.Name == obj.Base.Name:
                         if o.Name != obj.Name:
-                            siblings.append(o)
+                            if Draft.getType(o) == Draft.getType(obj):
+                                siblings.append(o)
         return siblings
 
     def getAxis(self,obj):
@@ -335,12 +336,13 @@ class Component:
                         if not obj.Base.Shape.Wires[0].isClosed():
                             return obj.Base.Shape.copy()
                     elif not(obj.Base.Shape.Solids):
-                        p1 = obj.Base.Shape.CenterOfMass
-                        v = self.getExtrusionVector(obj)
-                        if v:
-                            p2 = p1.add(v)
-                            import Part
-                            return Part.Line(p1,p2).toShape()
+                        if hasattr(obj.Base.Shape,"CenterOfMass"):
+                            p1 = obj.Base.Shape.CenterOfMass
+                            v = self.getExtrusionVector(obj)
+                            if v:
+                                p2 = p1.add(v)
+                                import Part
+                                return Part.Line(p1,p2).toShape()
         else:
             p1 = FreeCAD.Vector()
             v = self.getExtrusionVector(obj)
@@ -361,8 +363,12 @@ class Component:
                     if noplacement:
                         base.Placement = FreeCAD.Placement()
                     if not base.Solids:
-                        if base.Faces: 
+                        if base.Faces:
+                            import DraftGeomUtils
+                            if not DraftGeomUtils.isCoplanar(base.Faces):
+                                return []
                             return [base]
+                                
                         basewires = []
                         if not base.Wires:
                             if len(base.Edges) == 1:
@@ -411,7 +417,7 @@ class Component:
                                         wires.append(sh)
                                 else:
                                     wires.append(wire)
-        else:
+        elif Draft.getType(obj) in ["Wall","Structure"]:
             if (Draft.getType(obj) == "Structure") and (l > h):
                 if noplacement:
                     h2 = h/2 or 0.5
@@ -653,20 +659,26 @@ class ViewProviderComponent:
 
     def claimChildren(self):
         if hasattr(self,"Object"):
-            if Draft.getType(self.Object) != "Wall":
-                c = [self.Object.Base]
-            elif Draft.getType(self.Object.Base) == "Space":
-                c = []
-            else:
-                c = [self.Object.Base]
-            c = c + self.Object.Additions
-            for s in self.Object.Subtractions:
-                if Draft.getType(self.Object) == "Wall":
-                    if Draft.getType(s) == "Roof":
-                        continue
-                c.append(s)
+            c = []
+            if hasattr(self.Object,"Base"):
+                if Draft.getType(self.Object) != "Wall":
+                    c = [self.Object.Base]
+                elif Draft.getType(self.Object.Base) == "Space":
+                    c = []
+                else:
+                    c = [self.Object.Base]
+            if hasattr(self.Object,"Additions"):
+                c.extend(self.Object.Additions)
+            if hasattr(self.Object,"Subtractions"):
+                for s in self.Object.Subtractions:
+                    if Draft.getType(self.Object) == "Wall":
+                        if Draft.getType(s) == "Roof":
+                            continue
+                    c.append(s)
             if hasattr(self.Object,"Armatures"):
                 c.extend(self.Object.Armatures)
+            if hasattr(self.Object,"Group"):
+                c.extend(self.Object.Group)
             if hasattr(self.Object,"Tool"):
                 if self.Object.Tool:
                     c.append(self.Object.Tool)

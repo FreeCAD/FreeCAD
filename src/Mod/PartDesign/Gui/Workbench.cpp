@@ -28,6 +28,7 @@
 #endif
 
 #include "Workbench.h"
+#include <Mod/Sketcher/Gui/Workbench.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Gui/MenuManager.h>
@@ -166,53 +167,17 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* geom = new Gui::MenuItem();
     geom->setCommand("Sketcher geometries");
-    *geom << "Sketcher_CreatePoint"
-          << "Sketcher_CreateArc"
-          << "Sketcher_Create3PointArc"
-          << "Sketcher_CreateCircle"
-          << "Sketcher_Create3PointCircle"
-          << "Sketcher_CreateLine"
-          << "Sketcher_CreatePolyline"
-          << "Sketcher_CreateRectangle"
-          << "Sketcher_CreateSlot"
-          << "Separator"
-          << "Sketcher_CreateFillet"
-          << "Sketcher_Trimming"
-          << "Sketcher_External"
-          << "Sketcher_ToggleConstruction"
-          /*<< "Sketcher_CreateText"*/
-          /*<< "Sketcher_CreateDraftLine"*/;
+    SketcherGui::addSketcherWorkbenchGeometries( *geom );
 
     Gui::MenuItem* cons = new Gui::MenuItem();
     cons->setCommand("Sketcher constraints");
-    *cons << "Sketcher_ConstrainCoincident"
-          << "Sketcher_ConstrainPointOnObject"
-          << "Sketcher_ConstrainVertical"
-          << "Sketcher_ConstrainHorizontal"
-          << "Sketcher_ConstrainParallel"
-          << "Sketcher_ConstrainPerpendicular"
-          << "Sketcher_ConstrainTangent"
-          << "Sketcher_ConstrainEqual"
-          << "Sketcher_ConstrainSymmetric"
-          << "Separator"
-          << "Sketcher_ConstrainLock"
-          << "Sketcher_ConstrainDistanceX"
-          << "Sketcher_ConstrainDistanceY"
-          << "Sketcher_ConstrainDistance"
-          << "Sketcher_ConstrainRadius"
-          << "Sketcher_ConstrainAngle";
+    SketcherGui::addSketcherWorkbenchConstraints( *cons );
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
     part->setCommand("&Part Design");
-    *part << "Sketcher_NewSketch"
-          << "Sketcher_EditSketch"
-          << "Sketcher_LeaveSketch"
-          << "Sketcher_ViewSketch"
-          << "Sketcher_MapSketch"
-          << "Sketcher_ReorientSketch"
-          << "Sketcher_ValidateSketch"
-          << geom
+    SketcherGui::addSketcherWorkbenchSketchActions( *part );
+    *part << geom
           << cons
           << "Separator"
           << "PartDesign_Pad"
@@ -226,11 +191,13 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "PartDesign_LinearPattern"
           << "PartDesign_PolarPattern"
 //          << "PartDesign_Scaled"
-          << "PartDesign_MultiTransform"
-          << "PartDesign_InvoluteGear";
+          << "PartDesign_MultiTransform";
     // For 0.13 a couple of python packages like numpy, matplotlib and others
     // are not deployed with the installer on Windows. Thus, the WizardShaft is
     // not deployed either hence the check for the existence of the command.
+    if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_InvoluteGear")) {
+        *part << "PartDesign_InvoluteGear";
+    }
     if (Gui::Application::Instance->commandManager().getCommandByName("PartDesign_WizardShaft")) {
         *part << "Separator" << "PartDesign_WizardShaft";
     }
@@ -243,11 +210,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* part = new Gui::ToolBarItem(root);
     part->setCommand("Part Design");
-    *part << "Sketcher_NewSketch"
-          << "Sketcher_ViewSketch"
-          << "Sketcher_MapSketch"
-          << "Sketcher_LeaveSketch"
-          << "Separator"
+    SketcherGui::addSketcherWorkbenchSketchActions( *part );
+    *part << "Separator"
           << "PartDesign_Pad"
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
@@ -263,41 +227,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
     geom->setCommand("Sketcher geometries");
-    *geom << "Sketcher_CreatePoint"
-          << "Sketcher_CompCreateArc"
-          << "Sketcher_CompCreateCircle"
-          << "Sketcher_CreateLine"
-          << "Sketcher_CreatePolyline"
-          << "Sketcher_CreateRectangle"
-          << "Sketcher_CreateSlot"
-          << "Separator"
-          << "Sketcher_CreateFillet"
-          << "Sketcher_Trimming"
-          << "Sketcher_External"
-          << "Sketcher_ToggleConstruction"
-          /*<< "Sketcher_CreateText"*/
-          /*<< "Sketcher_CreateDraftLine"*/;
+    SketcherGui::addSketcherWorkbenchGeometries( *geom );
 
     Gui::ToolBarItem* cons = new Gui::ToolBarItem(root);
     cons->setCommand("Sketcher constraints");
-    *cons << "Sketcher_ConstrainCoincident"
-          << "Sketcher_ConstrainPointOnObject"
-          << "Sketcher_ConstrainVertical"
-          << "Sketcher_ConstrainHorizontal"
-          << "Sketcher_ConstrainParallel"
-          << "Sketcher_ConstrainPerpendicular"
-          << "Sketcher_ConstrainTangent"
-          << "Sketcher_ConstrainEqual"
-          << "Sketcher_ConstrainSymmetric"
-          << "Separator"
-          << "Sketcher_ConstrainLock"
-          << "Sketcher_ConstrainDistanceX"
-          << "Sketcher_ConstrainDistanceY"
-          << "Sketcher_ConstrainDistance"
-          << "Sketcher_ConstrainRadius"
-          << "Sketcher_ConstrainAngle";
+    SketcherGui::addSketcherWorkbenchConstraints( *cons );
 
-     return root;
+    return root;
 }
 
 Gui::ToolBarItem* Workbench::setupCommandBars() const

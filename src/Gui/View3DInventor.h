@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ protected:
 
 /** The 3D view window
  *  It consists out of the 3D view 
- *  \author Jürgen Riegel
+ *  \author Juergen Riegel
  */
 class GuiExport View3DInventor : public MDIView, public ParameterGrp::ObserverType
 {
@@ -70,7 +70,7 @@ public:
     View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags=0);
     ~View3DInventor();
 
-    /// Mesage handler
+    /// Message handler
     virtual bool onMsg(const char* pMsg, const char** ppReturn);
     virtual bool onHasMsg(const char* pMsg) const;
     virtual void deleteSelf();

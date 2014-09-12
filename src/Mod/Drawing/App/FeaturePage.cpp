@@ -76,8 +76,12 @@ void FeaturePage::onChanged(const App::Property* prop)
             if (!fi.exists())
                 return;
         }
-    }
-    if (prop == &Template) {
+    } else if (prop == &EditableTexts) {
+        if (!this->isRestoring()) {
+            this->execute();
+            return;
+        }
+    } else if (prop == &Template) {
         if (!this->isRestoring()) {
             EditableTexts.setValues(getEditableTextsFromTemplate());
         }
@@ -155,23 +159,31 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
 
     // checking for freecad editable texts
     string outfragment(ofile.str());
-    if (EditableTexts.getSize() > 0) {
+    const std::vector<std::string>& editText = EditableTexts.getValues();
+    if (!editText.empty()) {
         boost::regex e1 ("<text.*?freecad:editable=\"(.*?)\".*?<tspan.*?>(.*?)</tspan>");
         string::const_iterator begin, end;
         begin = outfragment.begin();
         end = outfragment.end();
         boost::match_results<std::string::const_iterator> what;
-        int count = 0;
+        std::size_t count = 0;
+        std::string newfragment;
+        newfragment.reserve(outfragment.size());
 
         while (boost::regex_search(begin, end, what, e1)) {
-            if (count < EditableTexts.getSize()) {
+            if (count < editText.size()) {
                 // change values of editable texts
                 boost::regex e2 ("(<text.*?freecad:editable=\""+what[1].str()+"\".*?<tspan.*?)>(.*?)(</tspan>)");
-                outfragment = boost::regex_replace(outfragment, e2, "$1>"+EditableTexts.getValues()[count]+"$3");
+                boost::re_detail::string_out_iterator<std::string > out(newfragment);
+                boost::regex_replace(out, begin, what[0].second, e2, "$1>"+editText[count]+"$3");
             }
-            count ++;
+            count++;
             begin = what[0].second;
         }
+
+        // now copy the rest
+        newfragment.insert(newfragment.end(), begin, end);
+        outfragment = newfragment;
     }
 
     // restoring linebreaks and saving the file
@@ -184,13 +196,6 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
 
     PageResult.setValue(tempName.c_str());
 
-    //const char* text = "lskdfjlsd";
-    //const char* regex = "lskdflds";
-    //boost::regex e(regex);
-    //boost::smatch what;
-    //if(boost::regex_match(string(text), what, e))
-    //{
-    //}
     return App::DocumentObject::StdReturn;
 }
 

@@ -51,9 +51,44 @@ Make a loft defined by a list of profiles along a wire. Transition can be
         <UserDocu>Approximate B-Spline-curve from this wire</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="discretize" Const="true">
+    <Methode Name="discretize" Const="true" Keyword="true">
       <Documentation>
-        <UserDocu>Discretizes the wire using a given deflection or number of points and returns a list of points</UserDocu>
+        <UserDocu>Discretizes the wire and returns a list of points.
+The function accepts keywords as argument:
+discretize(Number=n) => gives a list of 'n' equidistant points
+discretize(QuasiNumber=n) => gives a list of 'n' quasi equidistant points (is faster than the method above)
+discretize(Distance=d) => gives a list of equidistant points with distance 'd'
+discretize(Deflection=d) => gives a list of points with a maximum deflection 'd' to the wire
+discretize(QuasiDeflection=d) => gives a list of points with a maximum deflection 'd' to the wire (faster)
+discretize(Angular=a,Curvature=c,[Minimum=m]) => gives a list of points with an angular deflection of 'a'
+                                    and a curvature deflection of 'c'. Optionally a minimum number of points
+                                    can be set which by default is set to 2.
+
+Optionally you can set the keywords 'First' and 'Last' to define a sub-range of the parameter range
+of the wire.
+
+If no keyword is given then it depends on whether the argument is an int or float.
+If it's an int then the behaviour is as if using the keyword 'Number', if it's float
+then the behaviour is as if using the keyword 'Distance'.
+
+Example:
+
+import Part
+V=App.Vector
+
+e1=Part.makeCircle(5,V(0,0,0),V(0,0,1),0,180)
+e2=Part.makeCircle(5,V(10,0,0),V(0,0,1),180,360)
+w=Part.Wire([e1,e2])
+
+p=w.discretize(Number=50)
+s=Part.Compound([Part.Vertex(i) for i in p])
+Part.show(s)
+
+
+p=w.discretize(Angular=0.09,Curvature=0.01,Minimum=100)
+s=Part.Compound([Part.Vertex(i) for i in p])
+Part.show(s)
+</UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="CenterOfMass" ReadOnly="true">

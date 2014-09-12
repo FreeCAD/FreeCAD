@@ -160,7 +160,7 @@ protected:
     /// Creates the used Action
     virtual Action * createAction(void);
     /// Applies the menu text, tool and status tip to the passed action object
-    void applyCommandData(Action* );
+    void applyCommandData(const char* context, Action* );
     const char* keySequenceToAccel(int) const;
     void adjustCameraPosition();
     //@}
@@ -328,7 +328,7 @@ protected:
     /// if the command is not always active
     virtual bool isActive(void);
     /// Get the help URL
-    const char* getHelpUrl(void);
+    const char* getHelpUrl(void) const;
     /// Creates the used Action
     virtual Action * createAction(void);
     //@}

@@ -124,6 +124,115 @@ def CreateExternalGear(w, m, Z, phi, split=True):
     w.close()
     return w
 
+def CreateInternalGear(w, m, Z, phi, split=True):
+    """
+    Create an internal gear
+
+    w is wirebuilder object (in which the gear will be constructed)
+
+    if split is True, each profile of a teeth will consist in 2 Bezier
+    curves of degree 3, otherwise it will be made of one Bezier curve
+    of degree 4
+    """
+    # ****** external gear specifications
+    addendum = 0.6 * m              # distance from pitch circle to tip circle (ref G.M.Maitra)
+    dedendum = 1.25 * m             # pitch circle to root, sets clearance
+    clearance = 0.25 * m
+
+    # Calculate radii
+    Rpitch = Z * m / 2              # pitch circle radius
+    Rb = Rpitch*cos(phi * pi / 180) # base circle radius
+    Ra = Rpitch - addendum          # tip (addendum) circle radius
+    Rroot = Rpitch + dedendum       # root circle radius
+    fRad = 1.5 * clearance          # fillet radius, max 1.5*clearance
+    Rf = Rroot - clearance # radius at top of fillet (end of profile)
+ 
+    # ****** calculate angles (all in radians)
+    pitchAngle = 2 * pi / Z  # angle subtended by whole tooth (rads)
+    baseToPitchAngle = genInvolutePolar(Rb, Rpitch)
+    tipToPitchAngle = baseToPitchAngle
+    if (Ra > Rb):         # start profile at top of fillet (if its greater)
+        tipToPitchAngle -= genInvolutePolar(Rb, Ra)
+    pitchToFilletAngle = genInvolutePolar(Rb, Rf) - baseToPitchAngle;
+    filletAngle = 1.414*clearance/Rf  # // to make fillet tangential to root
+
+    # ****** generate Higuchi involute approximation
+    fe = 1       # fraction of profile length at end of approx
+    fs = 0.01    # fraction of length offset from base to avoid singularity
+    if (Ra > Rb):
+        fs = (Ra**2 - Rb**2) / (Rf**2 - Rb**2)  # offset start to top of fillet
+
+    if split:
+        # approximate in 2 sections, split 25% along the involute
+        fm = fs + (fe - fs) / 4   # fraction of length at junction (25% along profile)
+        addInv = BezCoeffs(m, Z, phi, 3, fs, fm)
+        dedInv = BezCoeffs(m, Z, phi, 3, fm, fe)
+
+        # join the 2 sets of coeffs (skip duplicate mid point)
+        invR = addInv + dedInv[1:]
+    else:
+        invR = BezCoeffs(m, Z, phi, 4, fs, fe)
+
+    # create the back profile of tooth (mirror image)
+    inv = []
+    for i, pt in enumerate(invR):
+        # rotate involute to put center of tooth at y = 0
+        ptx, pty = invR[i] = rotate(pt,  pitchAngle / 4 - baseToPitchAngle)
+        # generate the back of tooth profile nodes, flip Y coords
+        inv.append((ptx, -pty))
+
+    # ****** calculate section junction points R=back of tooth, Next=front of next tooth)
+    #fillet = inv[6] # top of fillet, front of tooth   #toCartesian(Rf, -pitchAngle / 4 - pitchToFilletAngle) # top of fillet
+    fillet = [ptx,-pty]
+    tip = toCartesian(Ra, -pitchAngle/4+tipToPitchAngle)  # tip, front of tooth
+    tipR = [ tip[0], -tip[1] ]
+    #filletR = [fillet[0], -fillet[1]]   # flip to make same point on back of tooth
+    rootR = toCartesian(Rroot, pitchAngle / 4 + pitchToFilletAngle + filletAngle)
+    rootNext = toCartesian(Rroot, 3 * pitchAngle / 4 - pitchToFilletAngle - filletAngle)
+    filletNext = rotate(fillet, pitchAngle)  # top of fillet, front of next tooth
+
+    # Build the shapes using FreeCAD.Part
+    t_inc = 2.0 * pi / float(Z)
+    thetas = [(x * t_inc) for x in range(Z)]
+
+    w.move(fillet) # start at top of front profile
+
+
+    for theta in thetas:
+        w.theta = theta
+        if split:
+            w.curve(inv[5], inv[4], inv[3])
+            w.curve(inv[2], inv[1], inv[0])
+        else:
+            w.curve(*inv[-2::-1])
+
+        if (Ra < Rb):
+            w.line(tip) # line from fillet up to base circle
+
+        if split:
+            w.arc(tipR, Ra, 0) # arc across addendum circle
+        else:
+            #w.arc(tipR[-1], Ra, 0) # arc across addendum circle
+            w.arc(tipR, Ra, 0)
+
+        if (Ra < Rb):
+            w.line(invR[0]) # line down to topof fillet
+
+        if split:
+            w.curve(invR[1], invR[2], invR[3])
+            w.curve(invR[4], invR[5], invR[6])
+        else:
+            w.curve(*invR[1:])
+
+        if (rootNext[1] > rootR[1]):    # is there a section of root circle between fillets?
+            w.arc(rootR, fRad, 1) # back fillet
+            w.arc(rootNext, Rroot, 0) # root circle arc
+
+        w.arc(filletNext, fRad, 1)
+    
+    
+    w.close()
+    return w
 
 
 def genInvolutePolar(Rb, R):

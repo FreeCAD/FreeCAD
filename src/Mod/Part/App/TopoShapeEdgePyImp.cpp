@@ -58,6 +58,10 @@
 #include <GProp_GProps.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <GCPnts_UniformAbscissa.hxx>
+#include <GCPnts_UniformDeflection.hxx>
+#include <GCPnts_TangentialDeflection.hxx>
+#include <GCPnts_QuasiUniformAbscissa.hxx>
+#include <GCPnts_QuasiUniformDeflection.hxx>
 
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
@@ -387,49 +391,169 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
     }
 }
 
-PyObject* TopoShapeEdgePy::discretize(PyObject *args)
+PyObject* TopoShapeEdgePy::discretize(PyObject *args, PyObject *kwds)
 {
-    PyObject* defl_or_num;
-    if (!PyArg_ParseTuple(args, "O", &defl_or_num))
-        return 0;
-
     try {
         BRepAdaptor_Curve adapt(TopoDS::Edge(getTopoShapePtr()->_Shape));
-        GCPnts_UniformAbscissa discretizer;
-        if (PyInt_Check(defl_or_num)) {
-            int num = PyInt_AsLong(defl_or_num);
-            discretizer.Initialize (adapt, num);
-        }
-        else if (PyFloat_Check(defl_or_num)) {
-            double defl = PyFloat_AsDouble(defl_or_num);
-            discretizer.Initialize (adapt, defl);
-        }
-        else {
-            PyErr_SetString(PyExc_TypeError, "Either int or float expected");
-            return 0;
-        }
-        if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
-            Py::List points;
-            int nbPoints = discretizer.NbPoints ();
-            for (int i=1; i<=nbPoints; i++) {
-                gp_Pnt p = adapt.Value (discretizer.Parameter (i));
-                points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
-            }
+        bool uniformAbscissaPoints = false;
+        bool uniformAbscissaDistance = false;
+        int numPoints = -1;
+        double distance = -1;
+        double first = adapt.FirstParameter();
+        double last = adapt.LastParameter();
 
-            return Py::new_reference_to(points);
+        // use no kwds
+        PyObject* dist_or_num;
+        if (PyArg_ParseTuple(args, "O", &dist_or_num)) {
+            if (PyInt_Check(dist_or_num)) {
+                numPoints = PyInt_AsLong(dist_or_num);
+                uniformAbscissaPoints = true;
+            }
+            else if (PyFloat_Check(dist_or_num)) {
+                distance = PyFloat_AsDouble(dist_or_num);
+                uniformAbscissaDistance = true;
+            }
+            else {
+                PyErr_SetString(PyExc_TypeError, "Either int or float expected");
+                return 0;
+            }
         }
         else {
-            PyErr_SetString(PyExc_Exception, "Descretization of curve failed");
-            return 0;
+            // use Number kwds
+            static char* kwds_numPoints[] = {"Number","First","Last",NULL};
+            PyErr_Clear();
+            if (PyArg_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_numPoints, &numPoints, &first, &last)) {
+                uniformAbscissaPoints = true;
+            }
+            else {
+                // use Abscissa kwds
+                static char* kwds_Distance[] = {"Distance","First","Last",NULL};
+                PyErr_Clear();
+                if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Distance, &distance, &first, &last)) {
+                    uniformAbscissaDistance = true;
+                }
+            }
+        }
+
+        if (uniformAbscissaPoints || uniformAbscissaDistance) {
+            GCPnts_UniformAbscissa discretizer;
+            if (uniformAbscissaPoints)
+                discretizer.Initialize (adapt, numPoints, first, last);
+            else
+                discretizer.Initialize (adapt, distance, first, last);
+
+            if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+                Py::List points;
+                int nbPoints = discretizer.NbPoints ();
+                for (int i=1; i<=nbPoints; i++) {
+                    gp_Pnt p = adapt.Value (discretizer.Parameter (i));
+                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                }
+
+                return Py::new_reference_to(points);
+            }
+            else {
+                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                return 0;
+            }
+        }
+
+        // use Deflection kwds
+        static char* kwds_Deflection[] = {"Deflection","First","Last",NULL};
+        PyErr_Clear();
+        double deflection;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_Deflection, &deflection, &first, &last)) {
+            GCPnts_UniformDeflection discretizer(adapt, deflection, first, last);
+            if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+                Py::List points;
+                int nbPoints = discretizer.NbPoints ();
+                for (int i=1; i<=nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value (i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                }
+
+                return Py::new_reference_to(points);
+            }
+            else {
+                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                return 0;
+            }
+        }
+
+        // use TangentialDeflection kwds
+        static char* kwds_TangentialDeflection[] = {"Angular","Curvature","First","Last","Minimum",NULL};
+        PyErr_Clear();
+        double angular;
+        double curvature;
+        int minimumPoints = 2;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "dd|ddi", kwds_TangentialDeflection, &angular, &curvature, &first, &last, &minimumPoints)) {
+            GCPnts_TangentialDeflection discretizer(adapt, first, last, angular, curvature, minimumPoints);
+            if (discretizer.NbPoints () > 0) {
+                Py::List points;
+                int nbPoints = discretizer.NbPoints ();
+                for (int i=1; i<=nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value (i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                }
+
+                return Py::new_reference_to(points);
+            }
+            else {
+                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                return 0;
+            }
+        }
+
+        // use QuasiNumber kwds
+        static char* kwds_QuasiNumPoints[] = {"QuasiNumber","First","Last",NULL};
+        PyErr_Clear();
+        int quasiNumPoints;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "i|dd", kwds_QuasiNumPoints, &quasiNumPoints, &first, &last)) {
+            GCPnts_QuasiUniformAbscissa discretizer(adapt, quasiNumPoints, first, last);
+            if (discretizer.NbPoints () > 0) {
+                Py::List points;
+                int nbPoints = discretizer.NbPoints ();
+                for (int i=1; i<=nbPoints; i++) {
+                    gp_Pnt p = adapt.Value (discretizer.Parameter (i));
+                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                }
+
+                return Py::new_reference_to(points);
+            }
+            else {
+                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                return 0;
+            }
+        }
+
+        // use QuasiDeflection kwds
+        static char* kwds_QuasiDeflection[] = {"QuasiDeflection","First","Last",NULL};
+        PyErr_Clear();
+        double quasiDeflection;
+        if (PyArg_ParseTupleAndKeywords(args, kwds, "d|dd", kwds_QuasiDeflection, &quasiDeflection, &first, &last)) {
+            GCPnts_QuasiUniformDeflection discretizer(adapt, quasiDeflection, first, last);
+            if (discretizer.NbPoints () > 0) {
+                Py::List points;
+                int nbPoints = discretizer.NbPoints ();
+                for (int i=1; i<=nbPoints; i++) {
+                    gp_Pnt p = discretizer.Value (i);
+                    points.append(Py::Vector(Base::Vector3d(p.X(),p.Y(),p.Z())));
+                }
+
+                return Py::new_reference_to(points);
+            }
+            else {
+                PyErr_SetString(PyExc_Exception, "Discretization of edge failed");
+                return 0;
+            }
         }
     }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_Exception, e.what());
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "Geometry is not a curve");
+    PyErr_SetString(PyExc_Exception,"Wrong arguments");
     return 0;
 }
 

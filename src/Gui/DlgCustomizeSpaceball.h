@@ -57,7 +57,7 @@ namespace Gui
             ButtonModel(QObject *parent);
             virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
             virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-            void insertRows(int number);
+            void insertButtonRows(int number);
             void setCommand(int row, QString command);
             void goButtonPress(int number);
             void goMacroRemoved(const QByteArray& macroName);

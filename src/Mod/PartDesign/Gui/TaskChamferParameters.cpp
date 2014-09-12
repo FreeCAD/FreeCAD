@@ -67,6 +67,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderChamfer *ChamferView,QW
 
     ui->chamferDistance->setUnit(Base::Unit::Length);
     ui->chamferDistance->setValue(r);
+    ui->chamferDistance->setMinimum(0);
     ui->chamferDistance->selectNumber();
     QMetaObject::invokeMethod(ui->chamferDistance, "setFocus", Qt::QueuedConnection);
 }
@@ -120,7 +121,11 @@ TaskDlgChamferParameters::~TaskDlgChamferParameters()
 
 void TaskDlgChamferParameters::open()
 {
-
+    // a transaction is already open at creation time of the chamfer
+    if (!Gui::Command::hasPendingCommand()) {
+        QString msg = tr("Edit chamfer");
+        Gui::Command::openCommand((const char*)msg.toUtf8());
+    }
 }
 
 void TaskDlgChamferParameters::clicked(int)

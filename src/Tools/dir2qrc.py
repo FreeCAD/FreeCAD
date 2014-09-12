@@ -115,6 +115,7 @@ def updateResourceFile(Dir, Output,prefix=""):
 	file = open(Output,"w")
 	file.write(hhcHeader % (prefix))
 	DirPath = Dir + os.path.sep
+	filelist=[]
 	for root, dirs, files in os.walk(Dir):
 		for name in files:
 			if ( (1 in [c in name for c in EndingList]) and not ('.svn' in root) ):
@@ -123,9 +124,12 @@ def updateResourceFile(Dir, Output,prefix=""):
 				FilePath = FilePath.replace('.\\','')
 				FilePath = FilePath.replace('\\','/')
 				if Verbose: print FilePathOrg + ' -> ' + FilePath 
-				
-				file.write('        <file>' + FilePath + '</file>\n')
+				filelist.append(FilePath)
 
+
+	filelist.sort()
+	for i in filelist:
+		file.write('        <file>' + i + '</file>\n')
 
 	file.write(hhcFooter)
 	file.close()

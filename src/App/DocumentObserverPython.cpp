@@ -199,7 +199,7 @@ void DocumentObserverPython::slotChangedObject(const App::DocumentObject& Obj,
             Py::Callable method(this->inst.getAttr(std::string("slotChangedObject")));
             Py::Tuple args(2);
             args.setItem(0, Py::Object(const_cast<App::DocumentObject&>(Obj).getPyObject(), true));
-            std::string prop_name = Obj.getName(&Prop);
+            std::string prop_name = Obj.getPropertyName(&Prop);
             args.setItem(1, Py::String(prop_name));
             method.apply(args);
         }

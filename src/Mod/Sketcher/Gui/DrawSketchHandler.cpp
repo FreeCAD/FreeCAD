@@ -200,16 +200,21 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
     if (constr.Type != Sketcher::None)
         suggestedConstraints.push_back(constr);
- 
+
     // Find if there are tangent constraints (currently arcs and circles)
-    // FIXME needs to consider when zooming out?
-    const double tangDeviation = 2.;
 
     int tangId = Constraint::GeoUndef;
-    double smlTangDist = 1e15f;
+
+    // Do not consider if distance is more than that.
+    // Decrease this value when a candidate is found.
+    double tangDeviation = 0.1 * sketchgui->getScaleFactor();
 
     // Get geometry list
     const std::vector<Part::Geometry *> geomlist = sketchgui->getSketchObject()->getCompleteGeometry();
+
+    Base::Vector3d tmpPos(Pos.fX, Pos.fY, 0.f);                 // Current cursor point
+    Base::Vector3d tmpDir(Dir.fX, Dir.fY, 0.f);                 // Direction of line
+    Base::Vector3d tmpStart(Pos.fX-Dir.fX, Pos.fY-Dir.fY, 0.f);  // Start point
 
     // Iterate through geometry
     int i = 0;
@@ -219,20 +224,21 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>((*it));
 
             Base::Vector3d center = circle->getCenter();
-            Base::Vector3d tmpPos(Pos.fX, Pos.fY, 0.f);
 
             double radius = circle->getRadius();
 
-            Base::Vector3d projPnt(0.f, 0.f, 0.f);
-            projPnt = projPnt.ProjToLine(center - tmpPos, Base::Vector3d(Dir.fX, Dir.fY));
-            double projDist = projPnt.Length();
+            // ignore if no touch (use dot product)
+            if(tmpDir * (center-tmpPos) > 0 || tmpDir * (center-tmpStart) < 0)
+                continue;
 
-            if ( (projDist < radius + tangDeviation ) && (projDist > radius - tangDeviation)) {
-                // Find if nearest
-                if (projDist < smlTangDist) {
-                    tangId = i;
-                    smlTangDist = projDist;
-                }
+            Base::Vector3d projPnt(0.f, 0.f, 0.f);
+            projPnt = projPnt.ProjToLine(center - tmpPos, tmpDir);
+            double projDist = std::abs(projPnt.Length() - radius);
+
+            // Find if nearest
+            if (projDist < tangDeviation) {
+                tangId = i;
+                tangDeviation = projDist;
             }
 
         } else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
@@ -241,24 +247,26 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             Base::Vector3d center = arc->getCenter();
             double radius = arc->getRadius();
 
+            // ignore if no touch (use dot product)
+            if(tmpDir * (center-tmpPos) > 0 || tmpDir * (center-tmpStart) < 0)
+                continue;
+
             Base::Vector3d projPnt(0.f, 0.f, 0.f);
-            Base::Vector3d tmpPos(Pos.fX, Pos.fY, 0.f);
+            projPnt = projPnt.ProjToLine(center - tmpPos, tmpDir);
+            double projDist = std::abs(projPnt.Length() - radius);
 
-            projPnt = projPnt.ProjToLine(center - tmpPos, Base::Vector3d(Dir.fX, Dir.fY));
-            double projDist = projPnt.Length();
-
-            if ( projDist < radius + tangDeviation && projDist > radius - tangDeviation) {
+            if (projDist < tangDeviation) {
                 double startAngle, endAngle;
                 arc->getRange(startAngle, endAngle);
 
-                projPnt += center;
                 double angle = atan2(projPnt.y, projPnt.x);
+                while(angle < startAngle)
+                    angle += 2*D_PI;         // Bring it to range of arc
 
-                // if the pnt is on correct side of arc and find if nearest
-                if ((angle > startAngle && angle < endAngle) &&
-                    (projDist < smlTangDist) ) {
+                // if the point is on correct side of arc
+                if (angle <= endAngle) {     // Now need to check only one side
                     tangId = i;
-                    smlTangDist = projDist;
+                    tangDeviation = projDist;
                 }
             }
         }
@@ -333,6 +341,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                                         ,geoId1, it->GeoId
                                        );
                 } break;
+            default:
+                break;
             }
 
             Gui::Command::commitCommand();
@@ -379,10 +389,14 @@ void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstrain
         case Tangent:
             iconType = QString::fromAscii("Constraint_Tangent");
             break;
+        default:
+            break;
         }
 
-        QPixmap icon = Gui::BitmapFactory().pixmap(iconType.toAscii()).scaledToWidth(iconSize);
-        qp.drawPixmap(QPoint(baseIcon.width() + i * iconSize, baseIcon.height() - iconSize), icon);
+        if (!iconType.isEmpty()) {
+            QPixmap icon = Gui::BitmapFactory().pixmap(iconType.toAscii()).scaledToWidth(iconSize);
+            qp.drawPixmap(QPoint(baseIcon.width() + i * iconSize, baseIcon.height() - iconSize), icon);
+        }
     }
 
     qp.end(); // Finish painting

@@ -58,6 +58,7 @@
 #include <Base/Stream.h>
 #include <Base/gzstream.h>
 #include <Base/PyObjectBase.h>
+#include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/WaitCursor.h>
 
@@ -312,6 +313,20 @@ bool DrawingView::onMsg(const char* pMsg, const char** ppReturn)
         viewAll();
         return true;
     }
+    else if (strcmp("Save",pMsg) == 0) {
+        Gui::Document *doc = getGuiDocument();
+        if (doc) {
+            doc->save();
+            return true;
+        }
+    }
+    else if (strcmp("SaveAs",pMsg) == 0) {
+        Gui::Document *doc = getGuiDocument();
+        if (doc) {
+            doc->saveAs();
+            return true;
+        }
+    }
     return false;
 }
 
@@ -319,13 +334,27 @@ bool DrawingView::onHasMsg(const char* pMsg) const
 {
     if (strcmp("ViewFit",pMsg) == 0)
         return true;
+    else if (strcmp("Save",pMsg) == 0)
+        return getGuiDocument() != 0;
+    else if (strcmp("SaveAs",pMsg) == 0)
+        return getGuiDocument() != 0;
     else if (strcmp("Print",pMsg) == 0)
-        return true; 
+        return true;
     else if (strcmp("PrintPreview",pMsg) == 0)
-        return true; 
+        return true;
     else if (strcmp("PrintPdf",pMsg) == 0)
-        return true; 
+        return true;
     return false;
+}
+
+void DrawingView::onRelabel(Gui::Document *pDoc)
+{
+    if (!bIsPassive && pDoc) {
+        QString cap = QString::fromLatin1("%1 : %2[*]")
+            .arg(QString::fromUtf8(pDoc->getDocument()->Label.getValue()))
+            .arg(objectName());
+        setWindowTitle(cap);
+    }
 }
 
 void DrawingView::printPdf()

@@ -720,7 +720,7 @@ class gridTracker(Tracker):
         self.space = Draft.getParam("gridSpacing",1)
         # self.mainlines = 10
         self.mainlines = Draft.getParam("gridEvery",10)
-        self.numlines = 100
+        self.numlines = Draft.getParam("gridSize",100)
         col = [0.2,0.2,0.3]
 
         pick = coin.SoPickStyle()
@@ -806,6 +806,10 @@ class gridTracker(Tracker):
                 pts.extend([[curr,-bound,0],[curr,bound,0]])
         self.coords1.point.setValues(pts)
         self.coords2.point.setValues(mpts)
+        
+    def setSize(self,size):
+        self.numlines = size
+        self.update()
 
     def setSpacing(self,space):
         self.space = space

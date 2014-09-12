@@ -54,7 +54,7 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
             if (feature.hasAttr("__object__")) {
                 Py::Callable method(feature.getAttr(std::string("execute")));
-				Py::Tuple args;
+                Py::Tuple args;
                 method.apply(args);
             }
             else {
@@ -88,7 +88,7 @@ void FeaturePythonImp::onChanged(const Property* prop)
                 if (feature.hasAttr("__object__")) {
                     Py::Callable method(feature.getAttr(std::string("onChanged")));
                     Py::Tuple args(1);
-                    std::string prop_name = object->getName(prop);
+                    std::string prop_name = object->getPropertyName(prop);
                     args.setItem(0, Py::String(prop_name));
                     method.apply(args);
                 }
@@ -96,7 +96,7 @@ void FeaturePythonImp::onChanged(const Property* prop)
                     Py::Callable method(feature.getAttr(std::string("onChanged")));
                     Py::Tuple args(2);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
-                    std::string prop_name = object->getName(prop);
+                    std::string prop_name = object->getPropertyName(prop);
                     args.setItem(1, Py::String(prop_name));
                     method.apply(args);
                 }

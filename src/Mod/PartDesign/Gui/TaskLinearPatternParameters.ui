@@ -75,12 +75,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="spinLength">
-       <property name="decimals">
-        <number>3</number>
-       </property>
-       <property name="maximum">
-        <double>999999.000000000000000</double>
+      <widget class="Gui::QuantitySpinBox" name="spinLength">
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
        </property>
        <property name="value">
         <double>100.000000000000000</double>
@@ -146,6 +143,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

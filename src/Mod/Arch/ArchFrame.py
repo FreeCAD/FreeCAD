@@ -38,15 +38,19 @@ __url__ = "http://www.freecadweb.org"
 # Possible roles for frames
 Roles = ['Covering','Member','Railing','Shading Device','Tendon']
     
-def makeFrame(base,profile,name=translate("Arch","Frame")):
-    """makeFrame(base,profile,[name]): creates a frame object from a base sketch (or any other object
+def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
+    """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object
     containing wires) and a profile object (an extrudable 2D object containing faces or closed wires)"""
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Frame(obj)
-    _ViewProviderFrame(obj.ViewObject)
-    obj.Base = base
-    obj.Profile = profile
-    #profile.ViewObject.hide()
+    if FreeCAD.GuiUp:
+        _ViewProviderFrame(obj.ViewObject)
+    if baseobj:
+        obj.Base = baseobj
+    if profile:
+        obj.Profile = profile
+        if FreeCAD.GuiUp:
+            profile.ViewObject.hide()
     return obj
 
 class _CommandFrame:
@@ -65,7 +69,7 @@ class _CommandFrame:
         s = FreeCADGui.Selection.getSelection()
         if len(s) == 2:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Frame"))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeFrame(FreeCAD.ActiveDocument."+s[0].Name+",FreeCAD.ActiveDocument."+s[1].Name+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
