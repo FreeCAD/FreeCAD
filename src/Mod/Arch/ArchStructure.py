@@ -295,10 +295,13 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=translate
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Structure(obj)
-    _ViewProviderStructure(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderStructure(obj.ViewObject)
+        obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     if baseobj:
         obj.Base = baseobj
-        obj.Base.ViewObject.hide()
+        if FreeCAD.GuiUp:
+            obj.Base.ViewObject.hide()
     if width:
         obj.Width = width
     else:
@@ -316,7 +319,6 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=translate
             obj.Length = p.GetFloat("StructureLength",100)
     if height > length:
         obj.Role = "Column"
-    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     return obj
 
 def makeStructuralSystem(objects,axes,name=translate("Arch","StructuralSystem")):
@@ -329,12 +331,14 @@ def makeStructuralSystem(objects,axes,name=translate("Arch","StructuralSystem"))
         for o in objects:
             obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
             _StructuralSystem(obj)
-            _ViewProviderStructuralSystem(obj.ViewObject)
+            if FreeCAD.GuiUp:
+                _ViewProviderStructuralSystem(obj.ViewObject)
             obj.Base = o
             obj.Axes = axes
             result.append(obj)
-            o.ViewObject.hide()
-            Draft.formatObject(obj,o)
+            if FreeCAD.GuiUp:
+                o.ViewObject.hide()
+                Draft.formatObject(obj,o)
         FreeCAD.ActiveDocument.recompute()
     if len(result) == 1:
         return result[0]
@@ -353,7 +357,8 @@ def makeProfile(W=46,H=80,tw=3.8,tf=5.2,name="Profile"):
     obj.Height = H
     obj.WebThickness = tw
     obj.FlangeThickness = tf
-    Draft._ViewProviderDraft(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        Draft._ViewProviderDraft(obj.ViewObject)
     return obj
 
 class _CommandStructure:
@@ -383,14 +388,14 @@ class _CommandStructure:
             ax = Draft.getObjectsOfType(sel,"Axis")
             if st and ax:
                 FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structural System")))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 return
             elif not(ax) and not(st):
                 FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 for obj in sel:
                     FreeCADGui.doCommand("Arch.makeStructure(FreeCAD.ActiveDocument." + obj.Name + ")")
                 FreeCAD.ActiveDocument.commitTransaction()
@@ -415,7 +420,7 @@ class _CommandStructure:
         if point == None:
             return
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structure")))
-        FreeCADGui.doCommand('import Arch')
+        FreeCADGui.addModule("Arch")
         if self.Profile:
             pr = Presets[self.Profile]
             FreeCADGui.doCommand('p = Arch.makeProfile('+str(pr[2])+','+str(pr[3])+','+str(pr[4])+','+str(pr[5])+')')
@@ -430,6 +435,7 @@ class _CommandStructure:
         else:
             FreeCADGui.doCommand('s = Arch.makeStructure(length='+str(self.Length)+',width='+str(self.Width)+',height='+str(self.Height)+')')
         FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
+        FreeCADGui.doCommand('s.Placement.Rotation=FreeCAD.DraftWorkingPlane.getRotation().Rotation')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         if self.continueCmd:

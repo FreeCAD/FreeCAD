@@ -34,10 +34,9 @@ __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeFloor(objectslist=None,join=True,name=translate("Arch","Floor")):
-    '''makeFloor(objectslist,[joinmode]): creates a floor including the
-    objects from the given list. If joinmode is False, components will
-    not be joined.'''
+def makeFloor(objectslist=None,baseobj=None,name=translate("Arch","Floor")):
+    '''makeFloor(objectslist): creates a floor including the
+    objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Floor(obj)
     if FreeCAD.GuiUp:
@@ -63,7 +62,7 @@ class _CommandFloor:
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Site","Building"]:
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("obj = Arch.makeFloor()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
                 FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
@@ -77,7 +76,7 @@ class _CommandFloor:
                 ss += "FreeCAD.ActiveDocument."+o.Name
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Floor"))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

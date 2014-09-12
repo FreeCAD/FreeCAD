@@ -48,6 +48,7 @@ class AppExport Segment: public Base::BaseClass
     TYPESYSTEM_HEADER();
 
 public:
+    virtual ~Segment(){}
     virtual std::string getName() const=0;
 };
 

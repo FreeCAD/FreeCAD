@@ -138,9 +138,9 @@ private:
 private:
     typedef std::pair<std::string, std::list<std::string> > TGroupPages;
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
+    Ui_DlgPreferences* ui;
     bool invalidParameter;
     bool canEmbedScrollArea;
-    Ui_DlgPreferences* ui;
 };
 
 } // namespace Dialog

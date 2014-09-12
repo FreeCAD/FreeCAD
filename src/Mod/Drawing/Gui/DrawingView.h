@@ -89,6 +89,7 @@ public Q_SLOTS:
 public:
     bool onMsg(const char* pMsg,const char** ppReturn);
     bool onHasMsg(const char* pMsg) const;
+    void onRelabel(Gui::Document *pDoc);
     void print();
     void printPdf();
     void printPreview();

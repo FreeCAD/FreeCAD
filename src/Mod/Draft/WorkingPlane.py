@@ -22,7 +22,7 @@
 #***************************************************************************
 
 
-import FreeCAD, FreeCADGui, math, DraftVecUtils
+import FreeCAD, math, DraftVecUtils
 from FreeCAD import Vector
 
 __title__="FreeCAD Working Plane utility"
@@ -112,7 +112,7 @@ class plane:
         t.multiply(self.offsetToPoint(p, direction))
         return p.add(t)
 
-    def alignToPointAndAxis(self, point, axis, offset, upvec=None):
+    def alignToPointAndAxis(self, point, axis, offset=0, upvec=None):
         self.doc = FreeCAD.ActiveDocument
         self.axis = axis;
         self.axis.normalize()
@@ -224,14 +224,23 @@ class plane:
     def alignToFace(self, shape, offset=0):
         # Set face to the unique selected face, if found
         if shape.ShapeType == 'Face':
-            #we should really use face.tangentAt to get u and v here, and implement alignToUVPoint
             self.alignToPointAndAxis(shape.Faces[0].CenterOfMass, shape.Faces[0].normalAt(0,0), offset)
+            import DraftGeomUtils
+            q = DraftGeomUtils.getQuad(shape)
+            if q:
+                self.u = q[1]
+                self.v = q[2]
+                if not DraftVecUtils.equals(self.u.cross(self.v),self.axis):
+                    self.u = q[2]
+                    self.v = q[1]
+            self.weak = False
             return True
         else:
             return False
 
     def alignToSelection(self, offset):
         '''If selection uniquely defines a plane, align working plane to it.  Return success (bool)'''
+        import FreeCADGui
         sex = FreeCADGui.Selection.getSelectionEx(FreeCAD.ActiveDocument.Name)
         if len(sex) == 0:
             return False
@@ -252,13 +261,14 @@ class plane:
                 self.alignToPointAndAxis(point, direction, 0, upvec)
             else:
                 try:
+                    import FreeCADGui
                     from pivy import coin
                     rot = FreeCADGui.ActiveDocument.ActiveView.getCameraNode().getField("orientation").getValue()
                     upvec = Vector(rot.multVec(coin.SbVec3f(0,1,0)).getValue())
                     vdir = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
                     self.alignToPointAndAxis(Vector(0,0,0), vdir.negative(), 0, upvec)
                 except:
-                    print "Draft: Unable to align the working plane to the current view"
+                    pass
             self.weak = True
 
     def reset(self):

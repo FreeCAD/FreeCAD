@@ -34,12 +34,13 @@ __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeBuilding(objectslist=None,join=False,name=translate("Arch","Building")):
-    '''makeBuilding(objectslist,[joinmode]): creates a building including the
-    objects from the given list. If joinmode is True, components will be joined.'''
+def makeBuilding(objectslist=None,baseobj=None,name=translate("Arch","Building")):
+    '''makeBuilding(objectslist): creates a building including the
+    objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
     _Building(obj)
-    _ViewProviderBuilding(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderBuilding(obj.ViewObject)
     if objectslist:
         obj.Group = objectslist
     return obj
@@ -61,7 +62,7 @@ class _CommandBuilding:
         if (len(sel) == 1):
             if Draft.getType(sel[0]) in ["Cell","Site","Floor"]:
                 FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("obj = Arch.makeBuilding()")
                 FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
                 FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
@@ -76,7 +77,7 @@ class _CommandBuilding:
                 ss += "FreeCAD.ActiveDocument."+o.Name
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Floor"))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeBuilding("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()

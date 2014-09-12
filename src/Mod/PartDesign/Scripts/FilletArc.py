@@ -75,7 +75,7 @@ def makeFilletArc(M1,P,Q,N,r2,ccw):
 	cc = 2.0 * r2 * (b.dot(v)-r1)
 	dd = uv * uv - uu * cc
 	if dd < 0:
-		raise Exception("Unable to caluclate intersection points")
+		raise RuntimeError("Unable to caluclate intersection points")
 	t1 = (-uv + math.sqrt(dd)) / uu 
 	t2 = (-uv - math.sqrt(dd)) / uu
 	

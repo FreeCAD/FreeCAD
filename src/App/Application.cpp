@@ -34,6 +34,9 @@
 # include <unistd.h>
 # include <pwd.h>
 # include <sys/types.h>
+# elif defined(__MINGW32__)
+# define WINVER 0x502 // needed for SetDllDirectory
+# include <Windows.h>
 # endif
 # include <ctime>
 # include <csignal>
@@ -1208,6 +1211,10 @@ void Application::initApplication(void)
        ("User parameter:BaseApp/Preferences/Units");
     UnitsApi::setSchema((UnitSystem)hGrp->GetInt("UserSchema",0));
 
+#if defined (_DEBUG)
+    Console().Log("Application is built with debug information\n");
+#endif
+
     // starting the init script
     Console().Log("Run App init script\n");
     Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
@@ -1365,7 +1372,7 @@ void Application::LoadParameters(void)
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
         Base::Console().Error("%s in file %s.\n"
-                              "Continue with an empty configuration.",
+                              "Continue with an empty configuration.\n",
                               e.what(), mConfig["SystemParameter"].c_str());
         _pcSysParamMngr->CreateDocument();
     }
@@ -1384,7 +1391,7 @@ void Application::LoadParameters(void)
     catch (const Base::Exception& e) {
         // try to proceed with an empty XML document
         Base::Console().Error("%s in file %s.\n"
-                              "Continue with an empty configuration.",
+                              "Continue with an empty configuration.\n",
                               e.what(), mConfig["UserParameter"].c_str());
         _pcUserParamMngr->CreateDocument();
     }
@@ -2005,6 +2012,10 @@ std::string Application::FindHomePath(const char* sCall)
             *i = '/';
     }
 
+    // fixes #0001638 to avoid to load DLLs from Windows' system directories before FreeCAD's bin folder
+    std::string binPath = TempHomePath;
+    binPath += "bin";
+    SetDllDirectory(binPath.c_str());
     return TempHomePath;
 }
 

@@ -38,6 +38,14 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Attribute Name="Continuity" ReadOnly="true">
+			<Documentation>
+				<UserDocu>
+					Returns the global continuity of the surface.
+				</UserDocu>
+			</Documentation>
+			<Parameter Name="Continuity" Type="String"/>
+		</Attribute>
 		<Methode Name="isUPeriodic">
 			<Documentation>
 				<UserDocu>Returns true if this patch is periodic in the given parametric direction.</UserDocu>

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
-    <height>524</height>
+    <width>521</width>
+    <height>528</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DXF / DWG options</string>
+   <string>DXF / DWG</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -368,6 +368,19 @@
          </widget>
         </item>
         <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
          <widget class="QLabel" name="label_7">
           <property name="text">
            <string>Max Spline Segment: </string>
@@ -378,21 +391,24 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_2">
-          <property name="maximumSize">
-           <size>
-            <width>60</width>
-            <height>16777215</height>
-           </size>
-          </property>
+         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
           <property name="toolTip">
            <string>When exporting splines to DXF, they are transformed in polylines. This value is the maximum length of each of the polyline segments. If 0, then the whole spline is treated as a straight segment.</string>
           </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="suffix">
+           <string>mm</string>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
           <property name="value">
-           <number>5</number>
+           <double>5.000000000000000</double>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>maxsplinesegment</cstring>
+           <cstring>maxsegmentlength</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -466,11 +482,6 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefRadioButton</class>
    <extends>QRadioButton</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -478,6 +489,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

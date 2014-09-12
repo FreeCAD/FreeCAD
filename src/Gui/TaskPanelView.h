@@ -55,8 +55,7 @@ public:
                           Gui::SelectionSingleton::MessageType Reason);
 
 
-    bool onMsg(const char* pMsg);
-
+    virtual bool onMsg(const char* pMsg,const char** ppReturn);
     virtual const char *getName(void) const {return "TaskPanelView";}
 
     /// get called when the document is changed or updated

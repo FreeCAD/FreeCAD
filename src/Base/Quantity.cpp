@@ -102,13 +102,13 @@ Quantity Quantity::pow(const Quantity &p) const
 Quantity Quantity::operator +(const Quantity &p) const
 {
     if(this->_Unit != p._Unit) 
-        throw Base::Exception("Quantity::operator +(): Unit missmatch in plus operation");
+        throw Base::Exception("Quantity::operator +(): Unit mismatch in plus operation");
     return Quantity(this->_Value + p._Value,this->_Unit);
 }
 Quantity Quantity::operator -(const Quantity &p) const
 {
     if(this->_Unit != p._Unit) 
-        throw Base::Exception("Quantity::operator +(): Unit missmatch in plus operation");
+        throw Base::Exception("Quantity::operator +(): Unit mismatch in minus operation");
     return Quantity(this->_Value - p._Value,this->_Unit);
 }
 
@@ -239,7 +239,28 @@ Quantity Quantity::Gon              (360.0/400.0   ,Unit(0,0,0,0,0,0,0,1)); // g
 
 Quantity QuantResult;
 
-
+/* helper function for tuning number strings with groups in a locale agnostic way... */
+double num_change(char* yytext,char dez_delim,char grp_delim)
+{
+    double ret_val;
+    char temp[40];
+    int i = 0;
+    for(char* c=yytext;*c!='\0';c++){ 
+        // skipp group delimiter
+        if(*c==grp_delim) continue;
+        // check for a dez delimiter othere then dot
+        if(*c==dez_delim && dez_delim !='.')
+             temp[i++] = '.';
+        else
+            temp[i++] = *c; 
+        // check buffor overflow
+        if (i>39) return 0.0;
+    }
+    temp[i] = '\0';
+    
+    ret_val = atof( temp ); 
+    return ret_val;
+};
 
 // error func
 void Quantity_yyerror(char *errorinfo)

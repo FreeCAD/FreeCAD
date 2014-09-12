@@ -37,11 +37,14 @@
 #include "SoDatumLabel.h"
 #include "SoZoomTranslation.h"
 #include "SketcherSettings.h"
+#include "PropertyConstraintListItem.h"
+
 
 // create the commands
 void CreateSketcherCommands(void);
 void CreateSketcherCommandsCreateGeo(void);
 void CreateSketcherCommandsConstraints(void);
+void CreateSketcherCommandsConstraintAccel(void);
 void CreateSketcherCommandsAlterGeo(void);
 
 void loadSketcherResource()
@@ -80,6 +83,7 @@ void SketcherGuiExport initSketcherGui()
     CreateSketcherCommandsCreateGeo();
     CreateSketcherCommandsConstraints();
     CreateSketcherCommandsAlterGeo();
+    CreateSketcherCommandsConstraintAccel();
 
     SketcherGui::Workbench::init();
 
@@ -90,6 +94,7 @@ void SketcherGuiExport initSketcherGui()
     SketcherGui::ViewProviderCustomPython   ::init();
     SketcherGui::SoDatumLabel               ::initClass();
     SketcherGui::SoZoomTranslation          ::initClass();
+    SketcherGui::PropertyConstraintListItem ::init();
 
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>  ( QT_TRANSLATE_NOOP("QObject","Display") );
 

@@ -36,7 +36,7 @@
      <item>
        <widget class="Gui::InputField" name="gridSize">
          <property name="unit" stdset="0">
-           <string>mm</string>
+           <string notr="true">mm</string>
          </property>
          <property name="decimals" stdset="0">
            <number>3</number>

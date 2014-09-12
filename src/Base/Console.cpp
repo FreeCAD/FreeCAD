@@ -652,6 +652,7 @@ void ConsoleObserverStd::Warning(const char *sWarn)
     ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
 #   elif defined(FC_OS_LINUX)
     printf("\033[0m");
+    fflush(stdout);
 #   endif
 }
 
@@ -667,6 +668,7 @@ void ConsoleObserverStd::Error  (const char *sErr)
     ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
 #   elif defined(FC_OS_LINUX)
     printf("\033[0m");
+    fflush(stdout);
 #   endif
 }
 
@@ -682,6 +684,7 @@ void ConsoleObserverStd::Log    (const char *sErr)
     ::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE );
 #   elif defined(FC_OS_LINUX)
     printf("\033[0m");
+    fflush(stdout);
 #   endif
 }
 

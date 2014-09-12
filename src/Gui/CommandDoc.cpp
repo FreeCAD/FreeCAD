@@ -724,10 +724,10 @@ Action * StdCmdUndo::createAction(void)
     Action *pcAction;
 
     pcAction = new UndoAction(this,getMainWindow());
-    applyCommandData(pcAction);
+    pcAction->setShortcut(QString::fromAscii(sAccel));
+    applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-    pcAction->setShortcut(QString::fromAscii(sAccel));
 
     return pcAction;
 }
@@ -767,10 +767,10 @@ Action * StdCmdRedo::createAction(void)
     Action *pcAction;
 
     pcAction = new RedoAction(this,getMainWindow());
-    applyCommandData(pcAction);
+    pcAction->setShortcut(QString::fromAscii(sAccel));
+    applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-    pcAction->setShortcut(QString::fromAscii(sAccel));
 
     return pcAction;
 }

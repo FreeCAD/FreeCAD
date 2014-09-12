@@ -88,7 +88,7 @@ class TaskPanel:
         for i in toplevel:
             if i.metaObject().className() == "Gui::MainWindow":
                 return i
-        raise Exception("No main window found")
+        raise RuntimeError("No main window found")
 
     def widget(self, class_id, name):
         """Return the selected widget.

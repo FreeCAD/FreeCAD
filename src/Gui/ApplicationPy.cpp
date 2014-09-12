@@ -44,6 +44,7 @@
 #include "Workbench.h"
 #include "WorkbenchManager.h"
 #include "Language/Translator.h"
+#include "DownloadManager.h"
 #include <App/DocumentObjectPy.h>
 #include <App/PropertyFile.h>
 #include <Base/Interpreter.h>
@@ -136,9 +137,15 @@ PyMethodDef Application::Methods[] = {
   {"doCommand",               (PyCFunction) Application::sDoCommand,        1,
    "doCommand(string) -> None\n\n"
    "Prints the given string in the python console and runs it"},
+  {"doCommandGui",               (PyCFunction) Application::sDoCommandGui,  1,
+   "doCommandGui(string) -> None\n\n"
+   "Prints the given string in the python console and runs it but doesn't record it in macros"},
   {"addModule",               (PyCFunction) Application::sAddModule,        1,
    "addModule(string) -> None\n\n"
    "Prints the given module import only once in the macro recording"},
+  {"showDownloads",               (PyCFunction) Application::sShowDownloads,1,
+   "showDownloads() -> None\n\n"
+   "Shows the downloads manager window"},
 
   {NULL, NULL}		/* Sentinel */
 };
@@ -534,12 +541,13 @@ PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *
     catch (const XERCES_CPP_NAMESPACE_QUALIFIER TranscodingException& e) {
         std::stringstream err;
         char *pMsg = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(e.getMessage());
-        err << "Transcoding exception raised in activateWorkbench.\n"
+        err << "Transcoding exception in Xerces-c:\n\n"
+            << "Transcoding exception raised in activateWorkbench.\n"
             << "Check if your user configuration file is valid.\n"
             << "  Exception message:"
             << pMsg;
         XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&pMsg);
-        PyErr_SetString(PyExc_RuntimeError, "Transcoding exception in Xerces-c: ");
+        PyErr_SetString(PyExc_RuntimeError, err.str().c_str());
         return 0;
     }
     catch (...) {
@@ -844,11 +852,28 @@ PyObject* Application::sDoCommand(PyObject * /*self*/, PyObject *args,PyObject *
     return Py_None;
 }
 
+PyObject* Application::sDoCommandGui(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    char *pstr=0;
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+    Command::runCommand(Command::Gui,pstr);
+    return Py_None;
+}
+
 PyObject* Application::sAddModule(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     char *pstr=0;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C 
+    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
     Command::addModule(Command::Doc,pstr);
     return Py_None;
 }
+
+PyObject* Application::sShowDownloads(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))             // convert args: Python->C 
+        return NULL;                             // NULL triggers exception 
+    Gui::Dialog::DownloadManager::getInstance();
+    return Py_None;
+} 

@@ -126,9 +126,8 @@ void SelectionView::onUpdate(void)
 {
 }
 
-bool SelectionView::onMsg(const char* pMsg)
+bool SelectionView::onMsg(const char* pMsg,const char** ppReturn)
 {
-    // no messages yet
     return false;
 }
 /// @endcond

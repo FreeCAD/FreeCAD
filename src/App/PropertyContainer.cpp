@@ -143,7 +143,7 @@ bool PropertyContainer::isHidden(const char *name) const
     return (getPropertyData().getType(this,name) & Prop_Hidden) == Prop_Hidden;
 }
 
-const char* PropertyContainer::getName(const Property* prop)const
+const char* PropertyContainer::getPropertyName(const Property* prop)const
 {
     return getPropertyData().getName(this,prop);
 }

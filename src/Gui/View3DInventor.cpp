@@ -171,7 +171,7 @@ View3DInventor::~View3DInventor()
     hGrp->Detach(this);
 
     //If we destroy this viewer by calling 'delete' directly the focus proxy widget which is defined 
-    //by a widget in SoQtViewer isn't resetted. This widget becomes to a dangling pointer and makes
+    //by a widget in SoQtViewer isn't reset. This widget becomes a dangling pointer and makes
     //the application crash. (Probably it's better to destroy this viewer by calling close().)
     //See also Gui::Document::~Document().
     QWidget* foc = qApp->focusWidget();

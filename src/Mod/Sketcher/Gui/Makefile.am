@@ -5,6 +5,7 @@ lib_LTLIBRARIES=libSketcherGui.la SketcherGui.la
 BUILT_SOURCES=\
 		moc_SketchOrientationDialog.cpp \
 		moc_TaskSketcherConstrains.cpp \
+		moc_TaskSketcherElements.cpp \
 		moc_TaskSketcherCreateCommands.cpp \
 		moc_TaskSketcherGeneral.cpp \
 		moc_TaskSketcherMessages.cpp \
@@ -12,6 +13,7 @@ BUILT_SOURCES=\
 		ui_InsertDatum.h \
 		ui_SketchOrientationDialog.h \
 		ui_TaskSketcherConstrains.h \
+		ui_TaskSketcherElements.h \
 		ui_TaskSketcherGeneral.h \
 		ui_TaskSketcherMessages.h
 
@@ -19,6 +21,7 @@ libSketcherGui_la_UI=\
 		InsertDatum.ui \
 		SketchOrientationDialog.ui \
 		TaskSketcherConstrains.ui \
+		TaskSketcherElements.ui \
 		TaskSketcherGeneral.ui \
 		TaskSketcherMessages.ui
 
@@ -36,6 +39,8 @@ libSketcherGui_la_SOURCES=\
 		SoZoomTranslation.h \
 		TaskSketcherConstrains.cpp \
 		TaskSketcherConstrains.h \
+		TaskSketcherElements.cpp \
+		TaskSketcherElements.h \
 		TaskSketcherCreateCommands.cpp \
 		TaskSketcherCreateCommands.h \
 		TaskSketcherGeneral.cpp \

@@ -50,7 +50,7 @@
 #include <Gui/Placement.h>
 #include <Gui/FileDialog.h>
 #include <Gui/DlgPropertyLink.h>
-#include <Gui/InputField.h>
+#include <Gui/QuantitySpinBox.h>
 
 #include "PropertyItem.h"
 
@@ -66,6 +66,10 @@ PropertyItem::PropertyItem() : parentItem(0), readonly(false)
 PropertyItem::~PropertyItem()
 {
     qDeleteAll(childItems);
+}
+
+void PropertyItem::initialize()
+{
 }
 
 void PropertyItem::reset()
@@ -85,11 +89,26 @@ void PropertyItem::setPropertyData(const std::vector<App::Property*>& items)
             ro &= (parent->isReadOnly(*it) || (*it)->StatusBits.test(2));
     }
     this->setReadOnly(ro);
+    this->initialize();
 }
 
 const std::vector<App::Property*>& PropertyItem::getPropertyData() const
 {
     return propertyItems;
+}
+
+App::Property* PropertyItem::getFirstProperty()
+{
+    if (propertyItems.empty())
+        return 0;
+    return propertyItems.front();
+}
+
+const App::Property* PropertyItem::getFirstProperty() const
+{
+    if (propertyItems.empty())
+        return 0;
+    return propertyItems.front();
 }
 
 void PropertyItem::setParent(PropertyItem* parent)
@@ -174,7 +193,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
     if (parent->getTypeId() == App::Document::getClassTypeId()) {
         App::Document* doc = static_cast<App::Document*>(parent);
         QString docName = QString::fromAscii(App::GetApplication().getDocumentName(doc));
-        QString propName = QString::fromAscii(parent->getName(prop));
+        QString propName = QString::fromAscii(parent->getPropertyName(prop));
         return QString::fromAscii("FreeCAD.getDocument(\"%1\").%2").arg(docName).arg(propName);
     }
     if (parent->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
@@ -182,7 +201,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromAscii(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromAscii(obj->getNameInDocument());
-        QString propName = QString::fromAscii(parent->getName(prop));
+        QString propName = QString::fromAscii(parent->getPropertyName(prop));
         return QString::fromAscii("FreeCAD.getDocument(\"%1\").getObject(\"%2\").%3")
             .arg(docName).arg(objName).arg(propName);
     }
@@ -191,7 +210,7 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromAscii(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromAscii(obj->getNameInDocument());
-        QString propName = QString::fromAscii(parent->getName(prop));
+        QString propName = QString::fromAscii(parent->getPropertyName(prop));
         return QString::fromAscii("FreeCADGui.getDocument(\"%1\").getObject(\"%2\").%3")
             .arg(docName).arg(objName).arg(propName);
     }
@@ -512,11 +531,10 @@ QWidget* PropertyIntegerConstraintItem::createEditor(QWidget* parent, const QObj
 
 void PropertyIntegerConstraintItem::setEditorData(QWidget *editor, const QVariant& /*data*/) const
 {
-    const std::vector<App::Property*>& items = getPropertyData();
-    App::PropertyIntegerConstraint* prop = (App::PropertyIntegerConstraint*)items[0];
+    const App::PropertyIntegerConstraint* prop = static_cast
+        <const App::PropertyIntegerConstraint*>(getFirstProperty());
 
-    const App::PropertyIntegerConstraint::Constraints* c = 
-        ((App::PropertyIntegerConstraint*)prop)->getConstraints();
+    const App::PropertyIntegerConstraint::Constraints* c = prop->getConstraints();
     QSpinBox *sb = qobject_cast<QSpinBox*>(editor);
     if (c) {
         sb->setMinimum(c->LowerBound);
@@ -625,7 +643,7 @@ void PropertyUnitItem::setValue(const QVariant& value)
 
 QWidget* PropertyUnitItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
-    Gui::InputField *infield = new Gui::InputField(parent);
+    Gui::QuantitySpinBox *infield = new Gui::QuantitySpinBox(parent);
     infield->setFrame(false);
     infield->setMinimumHeight(0);
     QObject::connect(infield, SIGNAL(valueChanged(double)), receiver, method);
@@ -636,14 +654,14 @@ void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) cons
 {
     const Base::Quantity& value = data.value<Base::Quantity>();
 
-    Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
+    Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     infield->setValue(value);
 }
 
 QVariant PropertyUnitItem::editorData(QWidget *editor) const
 {
-    Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
-    Base::Quantity value = infield->getQuantity();
+    Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
+    Base::Quantity value = infield->value();
     return QVariant::fromValue<Base::Quantity>(value);
 }
 
@@ -661,14 +679,13 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
 {
     const Base::Quantity& value = data.value<Base::Quantity>();
 
-    Gui::InputField *infield = qobject_cast<Gui::InputField*>(editor);
+    Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     infield->setValue(value);
 
-    const std::vector<App::Property*>& items = getPropertyData();
-    App::PropertyQuantityConstraint* prop = (App::PropertyQuantityConstraint*)items[0];
+    const App::PropertyQuantityConstraint* prop = static_cast
+        <const App::PropertyQuantityConstraint*>(getFirstProperty());
 
-    const App::PropertyQuantityConstraint::Constraints* c = 
-        ((App::PropertyQuantityConstraint*)prop)->getConstraints();
+    const App::PropertyQuantityConstraint::Constraints* c = prop->getConstraints();
 
     if (c) {
         infield->setMinimum(c->LowerBound);
@@ -724,10 +741,10 @@ QWidget* PropertyFloatConstraintItem::createEditor(QWidget* parent, const QObjec
 
 void PropertyFloatConstraintItem::setEditorData(QWidget *editor, const QVariant& /*data*/) const
 {
-    const std::vector<App::Property*>& items = getPropertyData();
-    App::PropertyFloatConstraint* prop = (App::PropertyFloatConstraint*)items[0];
+    const App::PropertyFloatConstraint* prop = static_cast
+        <const App::PropertyFloatConstraint*>(getFirstProperty());
 
-    const App::PropertyFloatConstraint::Constraints* c = ((App::PropertyFloatConstraint*)prop)->getConstraints();
+    const App::PropertyFloatConstraint::Constraints* c = prop->getConstraints();
     QDoubleSpinBox *sb = qobject_cast<QDoubleSpinBox*>(editor);
     if (c) {
         sb->setMinimum(c->LowerBound);
@@ -758,10 +775,11 @@ PropertyAngleItem::PropertyAngleItem()
 
 void PropertyAngleItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
+    const App::PropertyQuantityConstraint* prop = static_cast
+        <const App::PropertyQuantityConstraint*>(getFirstProperty());
+
     const App::PropertyQuantityConstraint::Constraints* c = 0;
-    const std::vector<App::Property*>& items = getPropertyData();
-    if (!items.empty()) {
-        App::PropertyAngle* prop = static_cast<App::PropertyAngle*>(items[0]);
+    if (prop) {
         c = prop->getConstraints();
     }
 
@@ -992,7 +1010,6 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     q = Base::Quantity(value.y, Base::Unit::Length);
     unit + QString::fromLatin1("'%1 %2'").arg(q.getValue()).arg(q.getUnit().getString());
     q = Base::Quantity(value.z, Base::Unit::Length);
-    QString::fromLatin1("'%1 %2')").arg(q.getValue()).arg(q.getUnit().getString());
 
     setPropertyValue(unit);
 }

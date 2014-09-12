@@ -106,6 +106,7 @@ SET(Sketcher_Scripts
 	TestSketcherApp.py
 	Profiles.py
 	ProfileLib/Hexagon.py
+	ProfileLib/RegularPolygon.py
 	ProfileLib/__init__.py
 )
 

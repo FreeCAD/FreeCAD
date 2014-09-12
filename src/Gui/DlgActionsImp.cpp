@@ -28,6 +28,7 @@
 # include <QFileInfo>
 # include <QHeaderView>
 # include <QImageReader>
+# include <QKeySequence>
 # include <QMessageBox>
 # include <QTextStream>
 #endif
@@ -261,7 +262,7 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     m_sPixmap = QString::null;
 
     if (!actionAccel->text().isEmpty()) {
-      macro->setAccel(actionAccel->text().toAscii());
+        macro->setAccel(actionAccel->text().toAscii());
     }
     actionAccel->clear();
 
@@ -329,9 +330,22 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
         action->setToolTip(QString::fromUtf8(macro->getToolTipText()));
         action->setWhatsThis(QString::fromUtf8(macro->getWhatsThis()));
         action->setStatusTip(QString::fromUtf8(macro->getStatusTip()));
-        if( macro->getPixmap() )
+        if (macro->getPixmap())
             action->setIcon(Gui::BitmapFactory().pixmap(macro->getPixmap()));
         action->setShortcut(QString::fromAscii(macro->getAccel()));
+
+        QString accel = action->shortcut().toString(QKeySequence::NativeText);
+        if (!accel.isEmpty()) {
+            // show shortcut inside tooltip
+            QString ttip = QString::fromLatin1("%1 (%2)")
+                .arg(action->toolTip()).arg(accel);
+            action->setToolTip(ttip);
+
+            // show shortcut inside status tip
+            QString stip = QString::fromLatin1("(%1)\t%2")
+                .arg(accel).arg(action->statusTip());
+            action->setStatusTip(stip);
+        }
     }
 
     // emit signal to notify the container widget

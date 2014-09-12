@@ -58,6 +58,7 @@ namespace GCS
         int tag;
     public:
         Constraint();
+        virtual ~Constraint(){}
 
         inline VEC_pD params() { return pvec; }
 

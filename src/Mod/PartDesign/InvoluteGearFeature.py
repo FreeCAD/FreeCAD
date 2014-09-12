@@ -46,7 +46,7 @@ def makeInvoluteGear(name):
 class _CommandInvoluteGear:
     "the Fem InvoluteGear command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'PartDesign_InvoluteGear',
+        return {'Pixmap'  : 'PartDesign_InternalExternalGear',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","Involute gear..."),
                 'Accel': "",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PartDesign_InvoluteGear","Creates or edit the involute gear definition.")}
@@ -72,12 +72,14 @@ class _InvoluteGear:
         obj.addProperty("App::PropertyInteger","NumberOfTeeth","Gear","Number of gear teeth")
         obj.addProperty("App::PropertyLength","Modules","Gear","Modules of the gear")
         obj.addProperty("App::PropertyAngle","PressureAngle","Gear","Pressure angle of gear teeth")
-        obj.addProperty("App::PropertyInteger","NumberOfCurves","Gear","0=2x3 1=1x4 ")
+        obj.addProperty("App::PropertyBool","HighPrecision","Gear","True=2 curves with each 3 control points False=1 curve with 4 control points ")
+        obj.addProperty("App::PropertyBool","ExternalGear","Gear","True=external Gear False=internal Gear ")
         
         obj.NumberOfTeeth = 26
         obj.Modules = "2.5 mm" 
         obj.PressureAngle = "20 deg" 
-        obj.NumberOfCurves = 0
+        obj.HighPrecision = True 
+        obj.ExternalGear = True 
         
         obj.Proxy = self
         
@@ -85,7 +87,10 @@ class _InvoluteGear:
     def execute(self,obj):
         #print "_InvoluteGear.execute()"
         w = fcgear.FCWireBuilder()
-        involute.CreateExternalGear(w, obj.Modules.Value,obj.NumberOfTeeth, obj.PressureAngle.Value, obj.NumberOfCurves == 0)
+        if obj.ExternalGear:
+            involute.CreateExternalGear(w, obj.Modules.Value,obj.NumberOfTeeth, obj.PressureAngle.Value, obj.HighPrecision)
+        else:
+            involute.CreateInternalGear(w, obj.Modules.Value,obj.NumberOfTeeth, obj.PressureAngle.Value, obj.HighPrecision)
         gearw = Part.Wire([o.toShape() for o in w.wire])
         obj.Shape = gearw
         return
@@ -98,7 +103,7 @@ class _ViewProviderInvoluteGear:
         vobj.Proxy = self
        
     def getIcon(self):
-        return ":/icons/PartDesign_InvoluteGear.svg"
+        return ":/icons/PartDesign_InternalExternalGear.svg"
 
     def attach(self, vobj):
         self.ViewObject = vobj
@@ -129,22 +134,37 @@ class _InvoluteGearTaskPanel:
         self.obj = obj
         
         self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/PartDesign/InvoluteGearFeature.ui")
-
+        self.form.setWindowIcon(QtGui.QIcon(":/icons/PartDesign_InternalExternalGear.svg"))
+        
         QtCore.QObject.connect(self.form.Quantity_Modules, QtCore.SIGNAL("valueChanged(double)"), self.modulesChanged)
         QtCore.QObject.connect(self.form.Quantity_PressureAngle, QtCore.SIGNAL("valueChanged(double)"), self.angleChanged)
         QtCore.QObject.connect(self.form.spinBox_NumberOfTeeth, QtCore.SIGNAL("valueChanged(int)"), self.numTeethChanged)
+        QtCore.QObject.connect(self.form.comboBox_HighPrecision, QtCore.SIGNAL("currentIndexChanged(int)"), self.numCurvesChanged)
+        #QtCore.QObject.connect(self.form.comboBox_ExternalGear, QtCore.SIGNAL("activated(QString)"), self.externalGearChanged)
+        #QtCore.QObject.connect(self.form.comboBox_ExternalGear, QtCore.SIGNAL("currentIndexChanged(int)"), self.externalGearChanged)
+        QtCore.QObject.connect(self.form.comboBox_ExternalGear, QtCore.SIGNAL("currentIndexChanged(int)"), self.externalGearChanged)
         
         self.update()
         
         if mode == 0: # fresh created
             self.obj.Proxy.execute(self.obj)  # calculate once 
+            FreeCAD.Gui.SendMsgToActiveView("ViewFit")
         
     def transferTo(self):
         "Transfer from the dialog to the object" 
         self.obj.NumberOfTeeth  = self.form.spinBox_NumberOfTeeth.value()
         self.obj.Modules        = self.form.Quantity_Modules.text()
         self.obj.PressureAngle  = self.form.Quantity_PressureAngle.text()
-        self.obj.NumberOfCurves = self.form.comboBox_NumberOfCurves.currentIndex()
+        if self.form.comboBox_HighPrecision.currentIndex() == 0:
+            self.obj.HighPrecision = True
+        else:
+            self.obj.HighPrecision = False
+        #self.obj.HighPrecision = self.form.comboBox_HighPrecision.currentIndex()
+        if self.form.comboBox_ExternalGear.currentIndex() == 0:
+            self.obj.ExternalGear = True
+        else:
+            self.obj.ExternalGear = False
+        #self.obj.ExternalGear       = self.form.comboBox_ExternalGear.currentIndex()
         
     
     def transferFrom(self):
@@ -152,12 +172,22 @@ class _InvoluteGearTaskPanel:
         self.form.spinBox_NumberOfTeeth.setValue(self.obj.NumberOfTeeth)
         self.form.Quantity_Modules.setText(self.obj.Modules.UserString)
         self.form.Quantity_PressureAngle.setText(self.obj.PressureAngle.UserString)
-        self.form.comboBox_NumberOfCurves.setCurrentIndex(self.obj.NumberOfCurves)
+        if self.obj.HighPrecision:
+            self.form.comboBox_HighPrecision.setCurrentIndex(0)
+        else:
+            self.form.comboBox_HighPrecision.setCurrentIndex(1)
+        #self.form.comboBox_HighPrecision.setCurrentIndex(self.obj.HighPrecision)
+        if self.obj.ExternalGear:
+            self.form.comboBox_ExternalGear.setCurrentIndex(0)
+        else:
+            self.form.comboBox_ExternalGear.setCurrentIndex(1)
+        #self.form.comboBox_ExternalGear.setCurrentIndex(self.obj.ExternalGear)
         
     def modulesChanged(self, value):
         #print value
         self.obj.Modules = value
         self.obj.Proxy.execute(self.obj)
+        FreeCAD.Gui.SendMsgToActiveView("ViewFit")
         
     def angleChanged(self, value):
         #print value
@@ -167,6 +197,25 @@ class _InvoluteGearTaskPanel:
     def numTeethChanged(self, value):
         #print value
         self.obj.NumberOfTeeth = value
+        self.obj.Proxy.execute(self.obj)
+        FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+        
+    def numCurvesChanged(self, value):
+        #print value
+        if value == 0:
+            v=True
+        else:
+            v=False
+        self.obj.HighPrecision = v
+        self.obj.Proxy.execute(self.obj)
+        
+    def externalGearChanged(self, value):
+        #print value
+        if value == 0:
+           v=True
+        else:
+           v=False
+        self.obj.ExternalGear = v
         self.obj.Proxy.execute(self.obj)
         
     def getStandardButtons(self):

@@ -60,8 +60,8 @@ private:
 
 InputField::InputField(QWidget * parent)
   : QLineEdit(parent),
-    actUnitValue(0),
     validInput(true),
+    actUnitValue(0),
     Maximum(DOUBLE_MAX),
     Minimum(-DOUBLE_MAX),
     StepSize(1.0),
@@ -180,7 +180,9 @@ void InputField::newInput(const QString & text)
 {
     Quantity res;
     try {
-        res = Quantity::parse(text);
+        QString input = text;
+        fixup(input);
+        res = Quantity::parse(input);
     }
     catch(Base::Exception &e){
         ErrorText = e.what();
@@ -448,21 +450,27 @@ void InputField::setHistorySize(int i)
 
 void InputField::selectNumber(void)
 {
-    QByteArray str = text().toLatin1();
+    QString str = text();
     unsigned int i = 0;
 
-    for (QByteArray::iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it >= '0' && *it <= '9')
+    QChar d = locale().decimalPoint();
+    QChar g = locale().groupSeparator();
+    QChar n = locale().negativeSign();
+
+    for (QString::iterator it = str.begin(); it != str.end(); ++it) {
+        if (it->isDigit())
             i++;
-        else if (*it == ',' || *it == '.')
+        else if (*it == d)
             i++;
-        else if (*it == '-')
+        else if (*it == g)
+            i++;
+        else if (*it == n)
             i++;
         else // any non-number character
             break;
     }
 
-    setSelection(0,i);
+    setSelection(0, i);
 }
 
 void InputField::showEvent(QShowEvent * event)
@@ -483,6 +491,8 @@ void InputField::focusInEvent(QFocusEvent * event)
         if (!this->hasSelectedText())
             selectNumber();
     }
+
+    QLineEdit::focusInEvent(event);
 }
 
 void InputField::keyPressEvent(QKeyEvent *event)
@@ -524,13 +534,20 @@ void InputField::wheelEvent (QWheelEvent * event)
 
 void InputField::fixup(QString& input) const
 {
+    input.remove(locale().groupSeparator());
+    if (locale().negativeSign() != QLatin1Char('-'))
+        input.replace(locale().negativeSign(), QLatin1Char('-'));
+    if (locale().positiveSign() != QLatin1Char('+'))
+        input.replace(locale().positiveSign(), QLatin1Char('+'));
 }
 
 QValidator::State InputField::validate(QString& input, int& pos) const
 {
     try {
         Quantity res;
-        res = Quantity::parse(input);
+        QString text = input;
+        fixup(text);
+        res = Quantity::parse(text);
 
         double factor;
         QString unitStr;

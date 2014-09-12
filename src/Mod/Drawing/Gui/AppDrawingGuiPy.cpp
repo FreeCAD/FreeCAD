@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QFileInfo>
 # include <QIcon>
 # include <QImage>
 # include <sstream>
@@ -61,7 +62,8 @@ open(PyObject *self, PyObject *args)
             DrawingView* view = new DrawingView(0, Gui::getMainWindow());
             view->load(fileName);
             view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
-            view->setWindowTitle(QObject::tr("Drawing viewer"));
+            QFileInfo fi(fileName);
+            view->setWindowTitle(fi.fileName());
             view->resize( 400, 300 );
             Gui::getMainWindow()->addWindow(view);
         }
@@ -91,7 +93,8 @@ importer(PyObject *self, PyObject *args)
             DrawingView* view = new DrawingView(0, Gui::getMainWindow());
             view->load(fileName);
             view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
-            view->setWindowTitle(QObject::tr("Drawing viewer"));
+            QFileInfo fi(fileName);
+            view->setWindowTitle(fi.fileName());
             view->resize( 400, 300 );
             Gui::getMainWindow()->addWindow(view);
         } else {

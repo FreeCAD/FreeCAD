@@ -198,8 +198,10 @@ void MeshSelection::startDeselection()
 void MeshSelection::stopSelection()
 {
     Gui::View3DInventorViewer* viewer = getViewer();
-    if (viewer)
+    if (viewer) {
         stopInteractiveCallback(viewer);
+        viewer->navigationStyle()->stopSelection();
+    }
 }
 
 void MeshSelection::fullSelection()
@@ -317,9 +319,10 @@ void MeshSelection::selectTriangle()
 
     Gui::View3DInventorViewer* viewer = this->getViewer();
     if (viewer) {
-        viewer->setEditingCursor(QCursor(Qt::OpenHandCursor));
         stopInteractiveCallback(viewer);
+        viewer->navigationStyle()->stopSelection();
         startInteractiveCallback(viewer, pickFaceCallback);
+        viewer->setEditingCursor(QCursor(Qt::PointingHandCursor));
     }
 }
 
@@ -329,9 +332,10 @@ void MeshSelection::deselectTriangle()
 
     Gui::View3DInventorViewer* viewer = this->getViewer();
     if (viewer) {
-        viewer->setEditingCursor(QCursor(Qt::OpenHandCursor));
         stopInteractiveCallback(viewer);
+        viewer->navigationStyle()->stopSelection();
         startInteractiveCallback(viewer, pickFaceCallback);
+        viewer->setEditingCursor(QCursor(Qt::PointingHandCursor));
     }
 }
 

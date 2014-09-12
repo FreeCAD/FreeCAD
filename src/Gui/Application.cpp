@@ -214,11 +214,19 @@ void ObjectLabelObserver::slotRelabelObject(const App::DocumentObject& obj, cons
             }
 
             // make sure that there is a name conflict otherwise we don't have to do anything
-            if (match) {
+            if (match && !label.empty()) {
                 // remove number from end to avoid lengthy names
                 size_t lastpos = label.length()-1;
-                while (label[lastpos] >= 48 && label[lastpos] <= 57)
+                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
+                    // if 'lastpos' becomes 0 then all characters are digits. In this case we use
+                    // the complete label again
+                    if (lastpos == 0) {
+                        lastpos = label.length()-1;
+                        break;
+                    }
                     lastpos--;
+                }
+
                 label = label.substr(0, lastpos+1);
                 label = Base::Tools::getUniqueName(label, objectLabels, 3);
                 this->current = &obj;
@@ -350,12 +358,14 @@ Application::Application(bool GUIenabled)
             throw Base::Exception("Invalid system settings");
         }
 #endif
+#if 0 // QuantitySpinBox and InputField try to handle the group separator now
         // http://forum.freecadweb.org/viewtopic.php?f=10&t=6910
         // A workaround is to disable the group separator for double-to-string conversion, i.e.
         // setting the flag 'OmitGroupSeparator'.
         QLocale loc = QLocale::system();
         loc.setNumberOptions(QLocale::OmitGroupSeparator);
         QLocale::setDefault(loc);
+#endif
 
         // setting up Python binding
         Base::PyGILStateLocker lock;
@@ -1621,11 +1631,11 @@ void Application::runApplication(void)
     }
 #if QT_VERSION >= 0x040200
     if (!QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
-        Base::Console().Log("This system does not support framebuffer objects");
+        Base::Console().Log("This system does not support framebuffer objects\n");
     }
 #endif
     if (!QGLPixelBuffer::hasOpenGLPbuffers()) {
-        Base::Console().Log("This system does not support pbuffers");
+        Base::Console().Log("This system does not support pbuffers\n");
     }
 
     QGLFormat::OpenGLVersionFlags version = QGLFormat::openGLVersionFlags ();

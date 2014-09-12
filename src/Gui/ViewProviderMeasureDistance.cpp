@@ -320,14 +320,10 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
 
     // Mark all incoming mouse button events as handled, especially, to deactivate the selection node
     n->getAction()->setHandled();
-    if (mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP) {
-        n->setHandled();
-        view->setEditing(false);
-        view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), measureDistanceCallback, ud);
-        pm->deleteLater();
-    }
-    else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
+    
+    if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint * point = n->getPickedPoint();
+	// I think this is where we need to snap.  IR 20140630
         if (point == NULL) {
             Base::Console().Message("No point picked.\n");
             return;
@@ -343,5 +339,10 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), measureDistanceCallback, ud);
             pm->deleteLater();
         }
+    } else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
+        n->setHandled();
+        view->setEditing(false);
+        view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), measureDistanceCallback, ud);
+        pm->deleteLater();
     }
 }

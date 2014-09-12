@@ -93,13 +93,12 @@ class DraftWorkbench (Workbench):
         if not depsOK:
             return
 
-        # import Draft tools, icons and macros menu
+        # import Draft tools, icons
         try:
-            import os,macros,Draft_rc,DraftTools, DraftGui
+            import os,Draft_rc,DraftTools, DraftGui
             from DraftTools import translate
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
-            self.appendMenu(["&Macro",translate("draft","Installed Macros")],macros.macrosList)
         except Exception as inst:
             print inst
             FreeCAD.Console.PrintError("Error: Initializing one or more of the Draft modules failed, Draft will not work as expected.\n")
@@ -119,7 +118,7 @@ class DraftWorkbench (Workbench):
                             "Draft_ShowSnapBar","Draft_ToggleGrid"]
         self.lineList = ["Draft_UndoLine","Draft_FinishLine","Draft_CloseLine"]
         self.utils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
-                      "Draft_ToggleConstructionMode","Draft_ToggleContinueMode"]
+                      "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
@@ -136,8 +135,8 @@ class DraftWorkbench (Workbench):
                 FreeCADGui.addPreferencePage(":/ui/userprefs-base.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/userprefs-snap.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/userprefs-visual.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-import1.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/userprefs-import2.ui","Draft")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-import1.ui","Import-Export")
+                FreeCADGui.addPreferencePage(":/ui/userprefs-import2.ui","Import-Export")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Draft module...done\n')
 

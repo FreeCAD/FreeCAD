@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>553</width>
-    <height>612</height>
+    <width>503</width>
+    <height>526</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Import / export</string>
+   <string>IFC / DAE / WebGL</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -47,46 +47,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
-          <property name="toolTip">
-           <string>If this is checked, IFC files will always be imported with the internal python parser, even if IfcOpenShell is installed</string>
-          </property>
-          <property name="text">
-           <string>Force python parser</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>forceIfcPythonParser</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
-          <property name="toolTip">
-           <string>Creates groups for each Arch object type</string>
-          </property>
-          <property name="text">
-           <string>Group components by types</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>createIfcGroups</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
@@ -98,26 +58,6 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcSeparateOpenings</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_2">
-          <property name="toolTip">
-           <string>If this is checked, placements will be recomputed and applied to the objects as they were in the IFC file (slower)</string>
-          </property>
-          <property name="text">
-           <string>Separate placements</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcSeparatePlacements</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -164,7 +104,7 @@
            <string/>
           </property>
           <property name="placeholderText">
-           <string>IfcBuildingElementProxy,IfcFlowTerminal,IfcFurnishingElement</string>
+           <string/>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcSkip</cstring>
@@ -177,39 +117,12 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Custom IFC schema (internal parser only)</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
-          <property name="prefEntry" stdset="0">
-           <cstring>CustomIfcSchema</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>IFC export</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="label_2">
+          <property name="toolTip">
+           <string>A scaling factor to apply to imported IFC objects</string>
+          </property>
           <property name="text">
            <string>Scaling factor</string>
           </property>
@@ -239,26 +152,15 @@
         </item>
        </layout>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
-          <property name="toolTip">
-           <string>If this is checked, a text file will be exported together with the ifc file, containing the list of exported objects, for verification purposes.</string>
-          </property>
-          <property name="text">
-           <string>Save a list of exported objects</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>IfcExportList</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>IFC export</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
@@ -267,7 +169,7 @@
            <string>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</string>
           </property>
           <property name="text">
-           <string>Force export as Breps</string>
+           <string>Force export as Brep</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcExportAsBrep</cstring>
@@ -322,35 +224,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_4">
-     <property name="title">
-      <string>WebGL export</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_15">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_5">
-          <property name="toolTip">
-           <string>If this is checked, wires will be discretized, which results in more accurate curves, but heavier files.</string>
-          </property>
-          <property name="text">
-           <string>Discretize wires</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>webGlDiscretizeCurves</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -368,16 +241,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
-  <customwidget>
-   <class>Gui::FileChooser</class>
-   <extends>QWidget</extends>
-   <header>Gui/FileDialog.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefFileChooser</class>
-   <extends>Gui::FileChooser</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>

@@ -1631,6 +1631,16 @@ void SketchObject::getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) 
     PosId = VertexId2PosId[VertexId];
 }
 
+int SketchObject::getVertexIndexGeoPos(int GeoId, PointPos PosId) const
+{
+    for(int i=0;i<VertexId2GeoId.size();i++) {
+        if(VertexId2GeoId[i]==GeoId && VertexId2PosId[i]==PosId)
+            return i;
+    }
+
+    return -1;
+}
+
 // Python Sketcher feature ---------------------------------------------------------
 
 namespace App {

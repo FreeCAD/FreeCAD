@@ -47,6 +47,7 @@
 #include "DlgCustomizeSpaceball.h"
 #include "DlgCustomizeSpNavSettings.h"
 #include "InputField.h"
+#include "QuantitySpinBox.h"
 
 using namespace Gui;
 using namespace Gui::Dialog;
@@ -100,4 +101,5 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::UrlLabel>;
     new WidgetProducer<Gui::FileChooser>;
     new WidgetProducer<Gui::UIntSpinBox>;
+    new WidgetProducer<Gui::QuantitySpinBox>;
 }

@@ -37,8 +37,6 @@ __title__="FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-CURVEMODE = "PARAMETER" # For trimmed curves. CARTESIAN or PARAMETER
-
 # module functions ###############################################
 
 def getStringList(objects):
@@ -64,6 +62,8 @@ def getDefaultColor(objectType):
         c = p.GetUnsigned("WindowGlassColor",1772731135)
     elif objectType == "Rebar":
         c = p.GetUnsigned("RebarColor",3111475967)
+    elif objectType == "Panel":
+        c = p.GetUnsigned("PanelColor",3416289279)
     else:
         c = p.GetUnsigned("WindowsColor",810781695)
     r = float((c>>24)&0xFF)/255.0
@@ -85,7 +85,7 @@ def addComponents(objectsList,host):
             if not o in c:
                 c.append(o)
         host.Group = c
-    elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem"]:
+    elif hostType in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
         import DraftGeomUtils
         a = host.Additions
         if hasattr(host,"Axes"):
@@ -126,7 +126,7 @@ def removeComponents(objectsList,host=None):
     if not isinstance(objectsList,list):
         objectsList = [objectsList]
     if host:
-        if Draft.getType(host) in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem"]:
+        if Draft.getType(host) in ["Wall","Structure","Window","Roof","Stairs","StructuralSystem","Panel"]:
             if hasattr(host,"Tool"):
                 if objectsList[0] == host.Tool:
                     host.Tool = None
@@ -140,6 +140,8 @@ def removeComponents(objectsList,host=None):
             for o in objectsList:
                 if not o in s:
                     s.append(o)
+                    if FreeCAD.GuiUp:
+                        o.ViewObject.hide()
                     if Draft.getType(o) == "Window":
                         # fix for sketch-based windows
                         if o.Base:
@@ -348,14 +350,14 @@ def getCutVolume(cutplane,shapes):
         else:
             p = cutplane.copy().Faces[0]
     except:
-        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane"))
+        FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane\n"))
         return None,None,None 
     ce = p.CenterOfMass
     ax = p.normalAt(0,0)
     u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
     v = u.cross(ax)
     if not bb.isCutPlane(ce,ax):
-        FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane"))
+        FreeCAD.Console.PrintMessage(translate("Arch","No objects are cut by the plane\n"))
         return None,None,None
     else:
         corners = [FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin),
@@ -487,8 +489,9 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
     return None
 
 def removeShape(objs,mark=True):
-    '''takes an arch object (wall or structure) built on a cubic shape, and removes
-    the inner shape, keeping its length, width and height as parameters.'''
+    '''removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes
+    the inner shape, keeping its length, width and height as parameters. If mark is True, objects that cannot
+    be processed by this function will become red.'''
     import DraftGeomUtils
     if not isinstance(objs,list):
         objs = [objs]
@@ -547,8 +550,9 @@ def mergeCells(objectslist):
     return base
 
 def download(url,force=False):
-    '''downloads a file from the given URL and saves it in the
-    macro path. Returns the path to the saved file'''
+    '''download(url,force=False): downloads a file from the given URL and saves it in the
+    macro path. Returns the path to the saved file. If force is True, the file will be
+    downloaded again evn if it already exists.'''
     import urllib2, os
     name = url.split('/')[-1]
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
@@ -597,191 +601,6 @@ def check(objectslist,includehidden=False):
                     bad.append([o,translate("Arch","contains faces that are not part of any solid")])
     return bad
 
-def getTuples(data,scale=1,placement=None,normal=None,close=True):
-    """getTuples(data,[scale,placement,normal,close]): returns a tuple or a list of tuples from a vector
-    or from the vertices of a shape. Scale can indicate a scale factor"""
-    rnd = False
-    import Part
-    if isinstance(data,FreeCAD.Vector):
-        if placement:
-            data = placement.multVec(data)
-        if rnd:
-            data = DraftVecUtils.rounded(data)
-        return (data.x*scale,data.y*scale,data.z*scale)
-    elif isinstance(data,Part.Shape):
-        t = []
-        if len(data.Wires) == 1:
-            import Part,DraftGeomUtils
-            data = Part.Wire(DraftGeomUtils.sortEdges(data.Wires[0].Edges))
-            verts = data.Vertexes
-            try:
-                c = data.CenterOfMass
-                v1 = verts[0].Point.sub(c)
-                v2 = verts[1].Point.sub(c)
-                if DraftVecUtils.angle(v2,v1,normal) >= 0:
-                    # inverting verts order if the direction is couterclockwise
-                    verts.reverse()
-            except:
-                pass
-            for v in verts:
-                pt = v.Point
-                if placement:
-                    if not placement.isNull():
-                        pt = placement.multVec(pt)
-                if rnd:
-                    pt = DraftVecUtils.rounded(pt)
-                t.append((pt.x*scale,pt.y*scale,pt.z*scale))
-
-            if close: # faceloops must not be closed, but ifc profiles must.
-                t.append(t[0])
-        else:
-            print "Arch.getTuples(): Wrong profile data"
-        return t
-
-def getIfcExtrusionData(obj,scale=1,nosubs=False):
-    """getIfcExtrusionData(obj,[scale,nosubs]): returns a closed path (a list of tuples), a tuple expressing an extrusion
-    vector, and a list of 3 tuples for base position, x axis and z axis. Or returns None, if a base loop and 
-    an extrusion direction cannot be extracted. Scale can indicate a scale factor."""
-    if hasattr(obj,"Additions"):
-        if obj.Additions:
-            # TODO provisorily treat objs with additions as breps
-            return None
-    if hasattr(obj,"Subtractions") and not nosubs:
-        if obj.Subtractions:
-            return None
-    if hasattr(obj,"Proxy"):
-        if hasattr(obj.Proxy,"getProfiles"):
-            p = obj.Proxy.getProfiles(obj,noplacement=True)
-            v = obj.Proxy.getExtrusionVector(obj,noplacement=True)
-            if (len(p) == 1) and v:
-                p = p[0]
-                r = FreeCAD.Placement()
-                #b = p.CenterOfMass
-                r = obj.Proxy.getPlacement(obj)
-                #b = obj.Placement.multVec(FreeCAD.Vector())
-                #r.Rotation = DraftVecUtils.getRotation(v,FreeCAD.Vector(0,0,1))
-                d = [r.Base,DraftVecUtils.rounded(r.Rotation.multVec(FreeCAD.Vector(1,0,0))),DraftVecUtils.rounded(r.Rotation.multVec(FreeCAD.Vector(0,0,1)))]
-                #r = r.inverse()
-                #print "getExtrusionData: computed placement:",r
-                import Part
-                if len(p.Edges) == 1:
-                    if isinstance(p.Edges[0].Curve,Part.Circle):
-                        # Circle profile
-                        r1 = p.Edges[0].Curve.Radius*scale
-                        return "circle", [getTuples(p.Edges[0].Curve.Center,scale), r1], getTuples(v,scale), d
-                    elif isinstance(p.Edges[0].Curve,Part.Ellipse):
-                        # Ellipse profile
-                        r1 = p.Edges[0].Curve.MajorRadius*scale
-                        r2 = p.Edges[0].Curve.MinorRadius*scale
-                        return "ellipse", [getTuples(p.Edges[0].Curve.Center,scale), r1, r2], getTuples(v,scale), d
-                curves = False
-                for e in p.Edges:
-                    if isinstance(e.Curve,Part.Circle):
-                        curves = True
-                    elif not isinstance(e.Curve,Part.Line):
-                        print "Arch.getIfcExtrusionData: Warning: unsupported edge type in profile"
-                if curves:
-                    # Composite profile
-                    ecurves = []
-                    last = None
-                    import DraftGeomUtils
-                    edges = DraftGeomUtils.sortEdges(p.Edges)
-                    for e in edges:
-                        if isinstance(e.Curve,Part.Circle):
-                            import math
-                            follow = True
-                            if last:
-                                if not DraftVecUtils.equals(last,e.Vertexes[0].Point):
-                                    follow = False
-                                    last = e.Vertexes[0].Point
-                                else:
-                                    last = e.Vertexes[-1].Point
-                            else:
-                                last = e.Vertexes[-1].Point
-                            p1 = math.degrees(-DraftVecUtils.angle(e.Vertexes[0].Point.sub(e.Curve.Center)))
-                            p2 = math.degrees(-DraftVecUtils.angle(e.Vertexes[-1].Point.sub(e.Curve.Center)))
-                            da = DraftVecUtils.angle(e.valueAt(e.FirstParameter+0.1).sub(e.Curve.Center),e.Vertexes[0].Point.sub(e.Curve.Center))
-                            if p1 < 0: 
-                                p1 = 360 + p1
-                            if p2 < 0:
-                                p2 = 360 + p2
-                            if da > 0:
-                                follow = not(follow)
-                            if CURVEMODE == "CARTESIAN":
-                                # BUGGY
-                                p1 = getTuples(e.Vertexes[0].Point,scale)
-                                p2 = getTuples(e.Vertexes[-1].Point,scale)
-                            ecurves.append(["arc",getTuples(e.Curve.Center,scale),e.Curve.Radius*scale,[p1,p2],follow,CURVEMODE])
-                        else:
-                            verts = [vertex.Point for vertex in e.Vertexes]
-                            if last:
-                                if not DraftVecUtils.equals(last,verts[0]):
-                                    verts.reverse()
-                                    last = e.Vertexes[0].Point
-                                else:
-                                    last = e.Vertexes[-1].Point
-                            else:
-                                last = e.Vertexes[-1].Point
-                            ecurves.append(["line",[getTuples(vert,scale) for vert in verts]])
-                    return "composite", ecurves, getTuples(v,scale), d
-                else:
-                    # Polyline profile
-                    return "polyline", getTuples(p,scale), getTuples(v,scale), d
-    return None   
-    
-def getIfcBrepFacesData(obj,scale=1,sub=False,tessellation=1):
-    """getIfcBrepFacesData(obj,[scale,tesselation]): returns a list(0) of lists(1) of lists(2) of lists(3), 
-    list(3) being a list of vertices defining a loop, list(2) describing a face from one or 
-    more loops, list(1) being the whole solid made of several faces, list(0) being the list
-    of solids inside the object. Scale can indicate a scaling factor. Tesselation is the tesselation
-    factor to apply on curved faces."""
-    shape = None
-    if sub:
-        if hasattr(obj,"Proxy"):
-            if hasattr(obj.Proxy,"getSubVolume"):
-                shape = obj.Proxy.getSubVolume(obj)
-    if not shape:
-        if hasattr(obj,"Shape"):
-            if obj.Shape:
-                if not obj.Shape.isNull():
-                    if obj.Shape.isValid():
-                        shape = obj.Shape
-    if shape:
-        import Part
-        sols = []
-        for sol in shape.Solids:
-            s = []
-            curves = False
-            for face in sol.Faces:
-                for e in face.Edges:
-                    if not isinstance(e.Curve,Part.Line):
-                        curves = True
-            if curves:
-                tris = sol.tessellate(tessellation)
-                for tri in tris[1]:
-                    f = []
-                    for i in tri:
-                        f.append(getTuples(tris[0][i],scale))
-                    s.append([f])
-            else:
-                for face in sol.Faces:
-                    f = []
-                    f.append(getTuples(face.OuterWire,scale,normal=face.normalAt(0,0),close=False))
-                    for wire in face.Wires:
-                        if wire.hashCode() != face.OuterWire.hashCode():
-                            f.append(getTuples(wire,scale,normal=DraftVecUtils.neg(face.normalAt(0,0)),close=False))
-                    s.append(f)
-            sols.append(s)
-        return sols
-    return None
-    
-def getIfcElevation(obj):
-    """getIfcElevation(obj): Returns the lowest height (Z coordinate) of this object"""
-    if obj.isDerivedFrom("Part::Feature"):
-        b = obj.Shape.BoundBox
-        return b.ZMin
-    return 0
-    
 def getHost(obj,strict=True):
     """getHost(obj,[strict]): returns the host of the current object. If strict is true (default),
     the host can only be an object of a higher level than the given one, or in other words, if a wall
@@ -951,18 +770,95 @@ def toggleIfcBrepFlag(obj):
         FreeCAD.Console.PrintMessage(translate("Arch","Object doesn't have settable IFC Attributes"))
     else:
         d = obj.IfcAttributes
-        if "ForceBrep" in d.keys():
-            if d["ForceBrep"] == "True":
-                d["ForceBrep"] = "False"
+        if "FlagForceBrep" in d.keys():
+            if d["FlagForceBrep"] == "True":
+                d["FlagForceBrep"] = "False"
                 FreeCAD.Console.PrintMessage(translate("Arch","Disabling Brep force flag of object")+" "+obj.Label+"\n")
             else:
-                d["ForceBrep"] = "True"
+                d["FlagForceBrep"] = "True"
                 FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
         else:
-            d["ForceBrep"] = "True"
+            d["FlagForceBrep"] = "True"
             FreeCAD.Console.PrintMessage(translate("Arch","Enabling Brep force flag of object")+" "+obj.Label+"\n")
         obj.IfcAttributes = d
 
+
+def makeCompoundFromSelected(objects=None):
+    """makeCompoundFromSelected([objects]): Creates a new compound object from the given 
+    subobjects (faces, edges) or from the the selection if objects is None"""
+    import FreeCADGui,Part
+    so = []
+    if not objects: 
+        objects = FreeCADGui.Selection.getSelectionEx()
+    if not isinstance(objects,list):
+        objects = [objects]
+    for o in objects:
+        so.extend(o.SubObjects)
+    if so:
+        c = Part.makeCompound(so)
+        Part.show(c)
+        
+
+def cleanArchSplitter(objets=None):
+    """cleanArchSplitter([objects]): removes the splitters from the base shapes 
+    of the given Arch objects or selected Arch objects if objects is None"""
+    import FreeCAD,FreeCADGui
+    if not objects:
+        objects = FreeCADGui.Selection.getSelection()
+    if not isinstance(objects,list):
+        objects = [objects]
+    for obj in objects:
+        if obj.isDerivedFrom("Part::Feature"):
+            if hasattr(obj,"Base"):
+                if obj.Base:
+                    print "Attempting to clean splitters from ",obj.Label
+                    if obj.Base.isDerivedFrom("Part::Feature"):
+                        if not obj.Base.Shape.isNull():
+                            obj.Base.Shape = obj.Base.Shape.removeSplitter()
+    FreeCAD.ActiveDocument.recompute()
+
+
+def rebuildArchShape(objects=None):
+    """rebuildArchShape([objects]): takes the faces from the base shape of the given (
+    or selected if objects is None) Arch objects, and tries to rebuild a valid solid from them."""
+    import FreeCAD,FreeCADGui,Part
+    if not objects:
+        objects = FreeCADGui.Selection.getSelection()
+    if not isinstance(objects,list):
+        objects = [objects]
+    for obj in objects:
+        success = False
+        if obj.isDerivedFrom("Part::Feature"):
+            if hasattr(obj,"Base"):
+                if obj.Base:
+                    try:
+                        print "Attempting to rebuild ",obj.Label
+                        if obj.Base.isDerivedFrom("Part::Feature"):
+                            if not obj.Base.Shape.isNull():
+                                faces = []
+                                for f in obj.Base.Shape.Faces:
+                                    f2 = Part.Face(f.Wires)
+                                    #print "rebuilt face: isValid is ",f2.isValid()
+                                    faces.append(f2)
+                                if faces:
+                                    shell = Part.Shell(faces)
+                                    if shell:
+                                        #print "rebuilt shell: isValid is ",shell.isValid()
+                                        solid = Part.Solid(shell)
+                                        if solid:
+                                            if not solid.isValid():
+                                                solid.sewShape()
+                                                solid = Part.Solid(solid)
+                                            #print "rebuilt solid: isValid is ",solid.isValid()
+                                            if solid.isValid(): 
+                                                print "Success"
+                                                obj.Base.Shape = solid
+                                                success = True
+                    except:
+                        pass
+        if not success:
+            print "Failed"
+    FreeCAD.ActiveDocument.recompute()
 
 # command definitions ###############################################
                        
@@ -980,7 +876,7 @@ class _CommandAdd:
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Add space boundary")))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.addSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelectionEx() )")
         else:
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Grouping")))
@@ -992,7 +888,7 @@ class _CommandAdd:
                         ss += ","
                     ss += "FreeCAD.ActiveDocument."+o.Name
                 ss += "]"
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -1012,11 +908,11 @@ class _CommandRemove:
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Remove space boundary")))
-            FreeCADGui.doCommand("import Arch")
+            FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.removeSpaceBoundaries( FreeCAD.ActiveDocument."+sel[-1].Name+", FreeCADGui.Selection.getSelection() )")
         else:
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Ungrouping")))
-            if (Draft.getType(sel[-1]) in ["Wall","Structure","Stairs","Roof","Window"]) and (len(sel) > 1):
+            if (Draft.getType(sel[-1]) in ["Wall","Structure","Stairs","Roof","Window","Panel"]) and (len(sel) > 1):
                 host = sel.pop()
                 ss = "["
                 for o in sel:
@@ -1024,10 +920,10 @@ class _CommandRemove:
                         ss += ","
                     ss += "FreeCAD.ActiveDocument."+o.Name
                 ss += "]"
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("Arch.removeComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
             else:
-                FreeCADGui.doCommand("import Arch")
+                FreeCADGui.addModule("Arch")
                 FreeCADGui.doCommand("Arch.removeComponents(FreeCAD.ActiveDocument."+sel[-1].Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -1197,8 +1093,8 @@ class _CommandSurvey:
         return not FreeCAD.ActiveDocument is None
         
     def Activated(self):
-        FreeCADGui.doCommand("import Arch")
-        FreeCADGui.doCommand("Arch.survey()")
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.doCommandGui("Arch.survey()")
 
 
 class _ToggleIfcBrepFlag:

@@ -616,6 +616,11 @@ void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane
 
     // Find projection points for the last and current mouse coordinates.
     SbViewVolume vv = cam->getViewVolume(aspectratio);
+
+    // See note in Coin docs for SoCamera::getViewVolume re:viewport mapping
+    if(aspectratio < 1.0)
+        vv.scale(1.0 / aspectratio);
+
     SbLine line;
     vv.projectPointToLine(currpos, line);
     SbVec3f current_planept;
@@ -639,7 +644,13 @@ void NavigationStyle::pan(SoCamera* camera)
     }
     else {
         const SbViewportRegion & vp = viewer->getViewportRegion();
-        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
+        float aspectratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = camera->getViewVolume(aspectratio);
+
+        // See note in Coin docs for SoCamera::getViewVolume re:viewport mapping
+        if(aspectratio < 1.0)
+            vv.scale(1.0 / aspectratio);
+
         this->panningplane = vv.getPlane(camera->focalDistance.getValue());
     }
 }

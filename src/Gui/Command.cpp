@@ -309,7 +309,7 @@ void Command::invoke(int i)
     }
 #ifndef FC_DEBUG
     catch (...) {
-        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown", i);
+        Base::Console().Error("Gui::Command::activated(%d): Unknown C++ exception thrown\n", i);
     }
 #endif
 }
@@ -557,35 +557,41 @@ const char * Command::endCmdHelp(void)
     return "</body></html>\n\n";
 }
 
-void Command::applyCommandData(Action* action)
+void Command::applyCommandData(const char* context, Action* action)
 {
     action->setText(QCoreApplication::translate(
-        this->className(), sMenuText, 0,
+        context, getMenuText(), 0,
         QCoreApplication::UnicodeUTF8));
     action->setToolTip(QCoreApplication::translate(
-        this->className(), sToolTipText, 0,
+        context, getToolTipText(), 0,
         QCoreApplication::UnicodeUTF8));
     if (sStatusTip)
         action->setStatusTip(QCoreApplication::translate(
-            this->className(), sStatusTip, 0,
+            context, getStatusTip(), 0,
             QCoreApplication::UnicodeUTF8));
     else
         action->setStatusTip(QCoreApplication::translate(
-            this->className(), sToolTipText, 0,
+            context, getToolTipText(), 0,
             QCoreApplication::UnicodeUTF8));
     if (sWhatsThis)
         action->setWhatsThis(QCoreApplication::translate(
-            this->className(), sWhatsThis, 0,
+            context, getWhatsThis(), 0,
             QCoreApplication::UnicodeUTF8));
     else
         action->setWhatsThis(QCoreApplication::translate(
-            this->className(), sToolTipText, 0,
+            context, getToolTipText(), 0,
             QCoreApplication::UnicodeUTF8));
-    QString accel = action->shortcut().toString();
+    QString accel = action->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
-        QString tip = QString::fromAscii("(%1)\t%2")
+        // show shortcut inside tooltip
+        QString ttip = QString::fromLatin1("%1 (%2)")
+            .arg(action->toolTip()).arg(accel);
+        action->setToolTip(ttip);
+
+        // show shortcut inside status tip
+        QString stip = QString::fromLatin1("(%1)\t%2")
             .arg(accel).arg(action->statusTip());
-        action->setStatusTip(tip);
+        action->setStatusTip(stip);
     }
 }
 
@@ -647,10 +653,10 @@ Action * Command::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this,getMainWindow());
-    applyCommandData(pcAction);
+    pcAction->setShortcut(QString::fromAscii(sAccel));
+    applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-      pcAction->setShortcut(QString::fromAscii(sAccel));
 
     return pcAction;
 }
@@ -658,7 +664,7 @@ Action * Command::createAction(void)
 void Command::languageChange()
 {
     if (_pcAction) {
-        applyCommandData(_pcAction);
+        applyCommandData(this->className(), _pcAction);
     }
 }
 
@@ -700,10 +706,26 @@ Action * MacroCommand::createAction(void)
     pcAction->setText(QString::fromUtf8(sMenuText));
     pcAction->setToolTip(QString::fromUtf8(sToolTipText));
     pcAction->setStatusTip(QString::fromUtf8(sStatusTip));
+    if (pcAction->statusTip().isEmpty())
+        pcAction->setStatusTip(pcAction->toolTip());
     pcAction->setWhatsThis(QString::fromUtf8(sWhatsThis));
-    if ( sPixmap )
+    if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-      pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromAscii(sAccel));
+
+    QString accel = pcAction->shortcut().toString(QKeySequence::NativeText);
+    if (!accel.isEmpty()) {
+        // show shortcut inside tooltip
+        QString ttip = QString::fromLatin1("%1 (%2)")
+            .arg(pcAction->toolTip()).arg(accel);
+        pcAction->setToolTip(ttip);
+
+        // show shortcut inside status tip
+        QString stip = QString::fromLatin1("(%1)\t%2")
+            .arg(accel).arg(pcAction->statusTip());
+        pcAction->setStatusTip(stip);
+    }
+
     return pcAction;
 }
 
@@ -854,16 +876,11 @@ bool PythonCommand::isActive(void)
 void PythonCommand::languageChange()
 {
     if (_pcAction) {
-        _pcAction->setText         (qApp->translate(getName(), getMenuText   ()));
-        _pcAction->setToolTip      (qApp->translate(getName(), getToolTipText()));
-        _pcAction->setStatusTip    (qApp->translate(getName(), getStatusTip  ()));
-        _pcAction->setWhatsThis    (qApp->translate(getName(), getWhatsThis  ()));
-        if (_pcAction->statusTip().isEmpty())
-            _pcAction->setStatusTip(qApp->translate(getName(), getToolTipText()));
+        applyCommandData(getName(), _pcAction);
     }
 }
 
-const char* PythonCommand::getHelpUrl(void)
+const char* PythonCommand::getHelpUrl(void) const
 {
     PyObject* pcTemp;
     pcTemp = Interpreter().runMethodObject(_pcPyCommand, "CmdHelpURL");
@@ -879,16 +896,10 @@ Action * PythonCommand::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this,getMainWindow());
-
-    pcAction->setText         (qApp->translate(getName(), getMenuText   ()));
-    pcAction->setToolTip      (qApp->translate(getName(), getToolTipText()));
-    pcAction->setStatusTip    (qApp->translate(getName(), getStatusTip  ()));
-    pcAction->setWhatsThis    (qApp->translate(getName(), getWhatsThis  ()));
-    if (pcAction->statusTip().isEmpty())
-        pcAction->setStatusTip(qApp->translate(getName(), getToolTipText()));
+    pcAction->setShortcut(QString::fromAscii(getAccel()));
+    applyCommandData(this->getName(), pcAction);
     if (strcmp(getResource("Pixmap"),"") != 0)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(getResource("Pixmap")));
-    pcAction->setShortcut     (QString::fromAscii(getAccel()));
 
     return pcAction;
 }

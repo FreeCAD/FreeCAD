@@ -27,13 +27,12 @@
 
 int main( int argc, char** argv )
 {
-	QApplication app( argc, argv );
+    QApplication app(argc, argv);
 
-	RegExpDialog dialog( 0, 0, TRUE );
-	app.setMainWidget(&dialog);
+    RegExpDialog dialog(0);
+    app.setActiveWindow(&dialog);
+    dialog.exec();
 
-	dialog.exec();
-
-	return 0;
+    return 0;
 }
 

@@ -30,19 +30,24 @@
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 
 // http://svn.pointclouds.org/pcl/tags/pcl-1.5.1/test/
-#if defined(PCL_FOUND)
+#if defined(HAVE_PCL_SURFACE)
+#include <pcl/pcl_config.h>
 #include <pcl/point_types.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/mls.h>
 #include <pcl/point_traits.h>
 #include <pcl/surface/gp3.h>
 #include <pcl/surface/grid_projection.h>
-#include <pcl/surface/convex_hull.h>
-#include <pcl/surface/concave_hull.h>
+//#include <pcl/surface/convex_hull.h>
+//#include <pcl/surface/concave_hull.h>
 #include <pcl/surface/organized_fast_mesh.h>
 #include <pcl/surface/ear_clipping.h>
 #include <pcl/common/common.h>
 #include <boost/random.hpp>
+
+#ifndef PCL_REVISION_VERSION
+#define PCL_REVISION_VERSION 0
+#endif
 
 using namespace pcl;
 using namespace pcl::io;
@@ -104,10 +109,10 @@ void SurfaceTriangulation::perform()
     gp3.reconstruct (mesh);
 
     // number of points
-    int nr_points  = mesh.cloud.width * mesh.cloud.height;
-    int point_size = mesh.cloud.data.size () / nr_points;
+    size_t nr_points  = mesh.cloud.width * mesh.cloud.height;
+    size_t point_size = mesh.cloud.data.size () / nr_points;
     // number of faces for header
-    int nr_faces = mesh.polygons.size ();
+    size_t nr_faces = mesh.polygons.size ();
 
     MeshCore::MeshPointArray points;
     points.reserve(nr_points);
@@ -116,13 +121,18 @@ void SurfaceTriangulation::perform()
 
     // get vertices
     MeshCore::MeshPoint vertex;
-    for (int i = 0; i < nr_points; ++i) {
+    for (size_t i = 0; i < nr_points; ++i) {
         int xyz = 0;
         for (size_t d = 0; d < mesh.cloud.fields.size(); ++d) {
             int c = 0;
             // adding vertex
-            if ((mesh.cloud.fields[d].datatype == pcl::PCLPointField::FLOAT32) && (
-                 mesh.cloud.fields[d].name == "x" ||
+            if ((mesh.cloud.fields[d].datatype ==
+#if PCL_VERSION_COMPARE(>,1,6,0)
+                 pcl::PCLPointField::FLOAT32) &&
+#else
+                 sensor_msgs::PointField::FLOAT32) &&
+#endif
+                (mesh.cloud.fields[d].name == "x" ||
                  mesh.cloud.fields[d].name == "y" ||
                  mesh.cloud.fields[d].name == "z"))
             {
@@ -138,7 +148,7 @@ void SurfaceTriangulation::perform()
     }
     // get faces
     MeshCore::MeshFacet face;
-    for(int i = 0; i < nr_faces; i++) {
+    for (size_t i = 0; i < nr_faces; i++) {
         face._aulPoints[0] = mesh.polygons[i].vertices[0];
         face._aulPoints[1] = mesh.polygons[i].vertices[1];
         face._aulPoints[2] = mesh.polygons[i].vertices[2];
@@ -155,5 +165,5 @@ void SurfaceTriangulation::perform()
     //std::vector<int> states = gp3.getPointStates();
 }
 
-#endif // PCL_FOUND
+#endif // HAVE_PCL_SURFACE
 

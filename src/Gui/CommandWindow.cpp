@@ -316,7 +316,7 @@ Action * StdCmdDockViewMenu::createAction(void)
 {
     Action *pcAction;
     pcAction = new DockWidgetAction(this, getMainWindow());
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
     return pcAction;
 }
 
@@ -351,7 +351,7 @@ Action * StdCmdToolBarMenu::createAction(void)
 {
     Action *pcAction;
     pcAction = new ToolBarAction(this, getMainWindow());
-    applyCommandData(pcAction);
+    applyCommandData(this->className(), pcAction);
     return pcAction;
 }
 

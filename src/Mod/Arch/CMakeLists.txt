@@ -5,7 +5,7 @@ SET(Arch_SRCS
     ArchComponent.py
     ArchWall.py
     importIFC.py
-    ifcReader.py
+    importIFClegacy.py
     Arch_rc.py
     Arch.py
     ArchBuilding.py
@@ -25,8 +25,9 @@ SET(Arch_SRCS
     ArchSpace.py
     ArchRebar.py
     TestArch.py
-    ifcWriter.py
     ArchFrame.py
+    ArchPanel.py
+    ArchEquipment.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 

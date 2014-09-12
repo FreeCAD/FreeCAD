@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
-# include <BRepMesh.hxx>
+# include <BRepMesh_IncrementalMesh.hxx>
 # include <BRepBuilderAPI_Copy.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepBuilderAPI_Transform.hxx>
@@ -172,6 +172,31 @@ PyObject* TopoShapePy::copy(PyObject *args)
     return cpy;
 }
 
+PyObject* TopoShapePy::cleaned(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    const TopoDS_Shape& shape = this->getTopoShapePtr()->_Shape;
+    PyTypeObject* type = this->GetType();
+    PyObject* cpy = 0;
+    // let the type object decide
+    if (type->tp_new)
+        cpy = type->tp_new(type, this, 0);
+    if (!cpy) {
+        PyErr_SetString(PyExc_TypeError, "failed to create copy of shape");
+        return 0;
+    }
+
+    if (!shape.IsNull()) {
+        BRepBuilderAPI_Copy c(shape);
+        const TopoDS_Shape& copiedShape = c.Shape();
+        BRepTools::Clean(copiedShape); // remove triangulation
+        static_cast<TopoShapePy*>(cpy)->getTopoShapePtr()->_Shape = c.Shape();
+    }
+    return cpy;
+}
+
 PyObject* TopoShapePy::replaceShape(PyObject *args)
 {
     PyObject *l;
@@ -250,7 +275,7 @@ PyObject* TopoShapePy::writeInventor(PyObject * args)
         return NULL;
 
     std::stringstream result;
-    BRepMesh::Mesh(getTopoShapePtr()->_Shape,dev);
+    BRepMesh_IncrementalMesh(getTopoShapePtr()->_Shape,dev);
     if (mode == 0)
         getTopoShapePtr()->exportFaceSet(dev, angle, result);
     else if (mode == 1)

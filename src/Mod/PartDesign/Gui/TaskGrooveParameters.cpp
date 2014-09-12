@@ -57,7 +57,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
-    connect(ui->doubleSpinBox, SIGNAL(valueChanged(double)),
+    connect(ui->grooveAngle, SIGNAL(valueChanged(double)),
             this, SLOT(onAngleChanged(double)));
     connect(ui->axis, SIGNAL(activated(int)),
             this, SLOT(onAxisChanged(int)));
@@ -71,7 +71,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     this->groupLayout()->addWidget(proxy);
 
     // Temporarily prevent unnecessary feature updates
-    ui->doubleSpinBox->blockSignals(true);
+    ui->grooveAngle->blockSignals(true);
     ui->axis->blockSignals(true);
     ui->checkBoxMidplane->blockSignals(true);
     ui->checkBoxReversed->blockSignals(true);
@@ -81,8 +81,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     bool mirrored = pcGroove->Midplane.getValue();
     bool reversed = pcGroove->Reversed.getValue();
 
-    ui->doubleSpinBox->setDecimals(Base::UnitsApi::getDecimals());
-    ui->doubleSpinBox->setValue(l);
+    ui->grooveAngle->setValue(l);
 
     int count=pcGroove->getSketchAxisCount();
 
@@ -115,7 +114,7 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     ui->checkBoxMidplane->setChecked(mirrored);
     ui->checkBoxReversed->setChecked(reversed);
 
-    ui->doubleSpinBox->blockSignals(false);
+    ui->grooveAngle->blockSignals(false);
     ui->axis->blockSignals(false);
     ui->checkBoxMidplane->blockSignals(false);
     ui->checkBoxReversed->blockSignals(false);
@@ -195,7 +194,7 @@ void TaskGrooveParameters::onUpdateView(bool on)
 
 double TaskGrooveParameters::getAngle(void) const
 {
-    return ui->doubleSpinBox->value();
+    return ui->grooveAngle->value().getValue();
 }
 
 QString TaskGrooveParameters::getReferenceAxis(void) const
@@ -275,7 +274,11 @@ TaskDlgGrooveParameters::~TaskDlgGrooveParameters()
 
 void TaskDlgGrooveParameters::open()
 {
-
+    // a transaction is already open at creation time of the groove
+    if (!Gui::Command::hasPendingCommand()) {
+        QString msg = QObject::tr("Edit groove");
+        Gui::Command::openCommand((const char*)msg.toUtf8());
+    }
 }
 
 void TaskDlgGrooveParameters::clicked(int)
