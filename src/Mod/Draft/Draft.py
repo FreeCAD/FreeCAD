@@ -3345,21 +3345,24 @@ class _ViewProviderDimension(_ViewProviderDraft):
             # set text value
             l = self.p3.sub(self.p2).Length
             if hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su).encode("utf8")
+                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su)
             else:
-                self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length',su).encode("utf8")
+                self.string = DraftGui.displayExternal(l,getParam("dimPrecision",2),'Length',su)
             if hasattr(obj.ViewObject,"Override"):
                 if obj.ViewObject.Override:
-                    try:
-                        from pivy import coin
-                        if coin.COIN_MAJOR_VERSION >= 4:
-                            self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
-                        else:
-                            self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1","replace")
-                    except:
-                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1","replace")
-            self.text.string = self.text3d.string = self.string
-
+                    self.string = obj.ViewObject.Override.replace("$dim",\
+                            self.string)
+            try:
+                from pivy import coin
+                coin4 = coin.COIN_MAJOR_VERSION >= 4
+            except ImportError, AttributeError:
+                coin4 = False
+            if coin4:
+                self.text.string = self.text3d.string = \
+                            self.string.encode('utf-8')
+            else:
+                self.text.string = self.text3d.string = \
+                            self.string.encode('latin1')
             # set the distance property
             if round(obj.Distance.Value,precision()) != round(l,precision()):
                 obj.Distance = l
