@@ -366,7 +366,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
 	_viewer->turnDeltaDimensionsOn();
       else
 	_viewer->turnDeltaDimensionsOff();
-    }
+    } 
     else{
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
         unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
@@ -543,6 +543,11 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
 {
     if (strcmp("ViewFit",pMsg) == 0) {
         _viewer->viewAll();
+        return true;
+    }
+    else if (strcmp("ViewVR",pMsg) == 0) {
+		// call the VR portion of the viewer
+		_viewer->viewVR();
         return true;
     }
     else if(strcmp("ViewSelection",pMsg) == 0) {
@@ -728,6 +733,12 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
         return true;
     else if(strcmp("ViewFit",pMsg) == 0)
         return true;
+    else if(strcmp("ViewVR",pMsg) == 0)
+#ifdef BUILD_VR
+        return true;
+#elif
+		return false;
+#endif 
     else if(strcmp("ViewSelection",pMsg) == 0)
         return true;
     else if(strcmp("ViewBottom",pMsg) == 0)

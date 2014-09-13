@@ -1636,6 +1636,19 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
     }
 }
 
+#if BUILD_VR
+extern int oculusTest(void);
+#endif 
+
+void View3DInventorViewer::viewVR(void)
+{
+#if BUILD_VR
+	oculusTest();
+#endif
+}
+
+
+
 void View3DInventorViewer::boxZoom(const SbBox2s& box)
 {
     navigation->boxZoom(box);
