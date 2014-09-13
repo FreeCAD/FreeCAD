@@ -1637,13 +1637,18 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
 }
 
 #if BUILD_VR
-extern int oculusTest(void);
+extern int  oculusStart(void);
+extern bool oculusUp   (void);
+extern void oculusStop (void);
 #endif 
 
 void View3DInventorViewer::viewVR(void)
 {
 #if BUILD_VR
-	oculusTest();
+	if(oculusUp())
+		oculusStop();
+	else
+		oculusStart();
 #endif
 }
 
