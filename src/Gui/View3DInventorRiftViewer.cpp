@@ -33,7 +33,11 @@
 #include "PreCompiled.h"
 
 
-#if _USE_OCULUS_RIFT_SDK
+#if BUILD_VR
+
+#ifndef OCULUS_FOUND
+# error "Build VR without the Oculus SDK makes no sense at all"
+#endif
 
 #define USE_SO_OFFSCREEN_RENDERER
 //#define USE_FRAMEBUFFER
@@ -480,4 +484,4 @@ int oculusTest(void)
     //return app.exec();
 }
 
-#endif //_USE_OCULUS_RIFT_SDK
+#endif //BUILD_VR

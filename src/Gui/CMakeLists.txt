@@ -8,9 +8,9 @@ if (FREECAD_USE_3DCONNEXION)
     add_definitions(-D_USE_3DCONNEXION_SDK)
 endif(FREECAD_USE_3DCONNEXION)
 
-if (OCULUS_FOUND)
-    add_definitions(-D_USE_OCULUS_RIFT_SDK )
-endif(OCULUS_FOUND)
+if (BUILD_VR)
+    add_definitions(-DBUILD_VR )
+endif(BUILD_VR)
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
