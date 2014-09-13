@@ -41,16 +41,29 @@ else:
 Roles = ["Furniture", "Hydro Equipment", "Electric Equipment"]
 
 
-def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment"),type="Part"):
+def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment"),type=None):
     "makeEquipment([baseobj,placement,name,type]): creates an equipment object from the given base object"
-    if type == "Part":
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    if type:
+        if type == "Part":
+            obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+        else:
+            obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
+        if baseobj:
+            obj.Base = baseobj
     else:
-        obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
+        if baseobj:
+            if baseobj.isDerivedFrom("Mesh::Feature"):
+                obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
+            else:
+                obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+            obj.Base = baseobj
+        else:
+            obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = name
     _Equipment(obj)
     if baseobj:
         obj.Base = baseobj
+    else:
     if placement:
         obj.Placement = placement
     if FreeCAD.GuiUp:
