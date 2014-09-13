@@ -48,6 +48,7 @@ def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment")
             obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
         else:
             obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
+        _Equipment(obj)
         if baseobj:
             obj.Base = baseobj
     else:
@@ -56,14 +57,12 @@ def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment")
                 obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
             else:
                 obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+            _Equipment(obj)
             obj.Base = baseobj
         else:
             obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+            _Equipment(obj)
     obj.Label = name
-    _Equipment(obj)
-    if baseobj:
-        obj.Base = baseobj
-    else:
     if placement:
         obj.Placement = placement
     if FreeCAD.GuiUp:
