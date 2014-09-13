@@ -83,6 +83,18 @@ public:
     virtual void onUpdate(void);
 
     QListWidget* selectionView;
+
+public Q_SLOTS:
+    /// get called when text is entered in the search box
+    void search(QString text);
+    /// get called when the list is right-clicked
+    void onItemContextMenu(QPoint point);
+    /// different actions
+    void select(QListWidgetItem* item=0);
+    void deselect(void);
+    void zoom(void);
+    void treeSelect(void);
+
 };
 
 } // namespace DockWnd

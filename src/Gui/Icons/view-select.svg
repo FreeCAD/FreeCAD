@@ -66,9 +66,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.7781746"
-     inkscape:cx="4.4437281"
-     inkscape:cy="31.499963"
+     inkscape:zoom="2.75"
+     inkscape:cx="-28.52788"
+     inkscape:cy="4.7563882"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -86,7 +86,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -95,7 +95,13 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <path
-       style="color:#000000;fill:#858585;fill-opacity:1;fill-rule:evenodd;stroke:#606060;stroke-width:5;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;opacity:0.62727273"
+       inkscape:connector-curvature="0"
+       style="opacity:0.62000002;color:#000000;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 21.903211,22.639937 9.506983,6.86285 L 14.849835,53.787796 26.753863,61.905353 43.31422,37.620344 53.548475,45.028647 58.175009,4.8977691 21.903211,22.639937 z"
+       id="rect2925-0"
+       sodipodi:nodetypes="cccccccc" />
+    <path
+       style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        d="m 15.493231,20.991587 9.506983,6.86285 L 8.4398554,52.139446 20.343883,60.257003 36.90424,35.971994 47.138495,43.380297 51.765029,3.2494191 15.493231,20.991587 z"
        id="rect2925"
        sodipodi:nodetypes="cccccccc" />

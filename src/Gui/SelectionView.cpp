@@ -26,15 +26,19 @@
 # include <QVBoxLayout>
 # include <QListWidget>
 # include <QListWidgetItem>
+# include <QLineEdit>
+# include <QToolButton>
+# include <QMenu>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <App/Document.h>
-
 #include "SelectionView.h"
+#include "Command.h"
 #include "Application.h"
 #include "Document.h"
 #include "ViewProvider.h"
+#include "BitmapFactory.h"
 
 
 
@@ -53,11 +57,29 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     pLayout->setSpacing( 0 );
     pLayout->setMargin ( 0 );
 
-  
+    QLineEdit* searchBox = new QLineEdit(this);
+    searchBox->setPlaceholderText( tr( "Search" ) );
+    searchBox->setToolTip( tr( "Searches object labels" ) );
+    pLayout->addWidget( searchBox );
+    QHBoxLayout* llayout = new QHBoxLayout(searchBox);
+    QToolButton* clearButton = new QToolButton(searchBox);
+    clearButton->setFixedSize(18, 21);
+    clearButton->setCursor(Qt::ArrowCursor);
+    clearButton->setStyleSheet(QString::fromAscii("QToolButton {margin-bottom:6px}"));
+    clearButton->setIcon(BitmapFactory().pixmap(":/icons/edit-cleartext.svg"));
+    clearButton->setToolTip( tr( "Clears the search field" ) );
+    llayout->addWidget(clearButton,0,Qt::AlignRight);
+
     selectionView = new QListWidget(this);
-    pLayout->addWidget( selectionView);
+    selectionView->setContextMenuPolicy(Qt::CustomContextMenu);
+    pLayout->addWidget( selectionView );
     resize( 200, 200 );
 
+    QObject::connect(clearButton, SIGNAL(clicked()), searchBox, SLOT(clear()));
+    QObject::connect(searchBox, SIGNAL(textChanged(QString)), this, SLOT(search(QString)));
+    QObject::connect(selectionView, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(select(QListWidgetItem*)));
+    QObject::connect(selectionView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(onItemContextMenu(QPoint)));
+    
     Gui::Selection().Attach(this);
 }
 
@@ -81,7 +103,12 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
             temp += ".";
             temp += Reason.pSubName;
         }
-
+        App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
+        App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
+        temp += " (";
+        temp += obj->Label.getValue();
+        temp += ")";
+        
         new QListWidgetItem(QString::fromAscii(temp.c_str()), selectionView);
     }
     else if (Reason.Type == SelectionChanges::ClrSelection) {
@@ -97,6 +124,11 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
             temp += ".";
             temp += Reason.pSubName;
         }
+        App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
+        App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
+        temp += " (";
+        temp += obj->Label.getValue();
+        temp += ")";
 
         // remove all items
         QList<QListWidgetItem *> l = selectionView->findItems(QLatin1String(temp.c_str()),Qt::MatchExactly);
@@ -117,9 +149,96 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                 temp += ".";
                 temp += it->SubName;
             }
+            App::Document* doc = App::GetApplication().getDocument(it->DocName);
+            App::DocumentObject* obj = doc->getObject(it->FeatName);
+            temp += " (";
+            temp += obj->Label.getValue();
+            temp += ")";
+            
             new QListWidgetItem(QString::fromAscii(temp.c_str()), selectionView);
         }
     }
+}
+
+void SelectionView::search(QString text)
+{
+    if (!text.isEmpty()) {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        std::vector<App::DocumentObject*> objects;
+        if (doc) {
+            Gui::Selection().clearSelection();
+            objects = doc->getObjects();
+            for (std::vector<App::DocumentObject*>::iterator it = objects.begin(); it != objects.end(); ++it) {
+                QString label = QString::fromUtf8((*it)->Label.getValue());
+                if (label.contains(text,Qt::CaseInsensitive)) {
+                    if (!Gui::Selection().hasSelection((*it)->getNameInDocument())) {
+                        Gui::Selection().addSelection(doc->getName(),(*it)->getNameInDocument(),0);
+                    }
+                }
+            }
+        }
+    }
+}
+
+void SelectionView::select(QListWidgetItem* item)
+{
+    if (!item)
+        item = selectionView->currentItem();
+    if (!item)
+        return;
+    QStringList elements = item->text().split(QString::fromAscii("."));
+    // remove possible space from object name followed by label
+    elements[1] = elements[1].split(QString::fromAscii(" "))[0];
+    //Gui::Selection().clearSelection();
+    Gui::Command::runCommand(Gui::Command::Gui,"Gui.Selection.clearSelection()");
+    //Gui::Selection().addSelection(elements[0].toAscii(),elements[1].toAscii(),0);
+    QString cmd = QString::fromAscii("Gui.Selection.addSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+}
+
+void SelectionView::deselect(void)
+{
+    QListWidgetItem *item = selectionView->currentItem();
+    if (!item)
+        return;
+    QStringList elements = item->text().split(QString::fromAscii("."));
+    // remove possible space from object name followed by label
+    elements[1] = elements[1].split(QString::fromAscii(" "))[0];
+    //Gui::Selection().rmvSelection(elements[0].toAscii(),elements[1].toAscii(),0);
+    QString cmd = QString::fromAscii("Gui.Selection.removeSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+}
+
+void SelectionView::zoom(void)
+{
+    select();
+    Gui::Command::runCommand(Gui::Command::Gui,"Gui.SendMsgToActiveView(\"ViewSelection\")"); 
+}
+
+void SelectionView::treeSelect(void)
+{
+    select();
+    Gui::Command::runCommand(Gui::Command::Gui,"Gui.runCommand(\"Std_TreeSelection\")"); 
+}
+
+void SelectionView::onItemContextMenu(QPoint point)
+{
+    QListWidgetItem *item = selectionView->itemAt(point);
+    if (!item)
+        return;
+    QMenu *menu = new QMenu;
+    QAction *selectAction = menu->addAction(tr("Select only"),this,SLOT(select()));
+    selectAction->setIcon(QIcon(QString::fromAscii(":/icons/view-select.svg")));
+    selectAction->setToolTip(tr("Selects only this object"));
+    QAction *deselectAction = menu->addAction(tr("Deselect"),this,SLOT(deselect()));
+    deselectAction->setIcon(QIcon(QString::fromAscii(":/icons/view-unselectable.svg")));
+    deselectAction->setToolTip(tr("Deselects this object"));
+    QAction *zoomAction = menu->addAction(tr("Zoom fit"),this,SLOT(zoom()));
+    zoomAction->setIcon(QIcon(QString::fromAscii(":/icons/view-zoom-fit.svg")));
+    zoomAction->setToolTip(tr("Selects and fits this object in the 3D window"));
+    QAction *gotoAction = menu->addAction(tr("Go to selection"),this,SLOT(treeSelect()));
+    gotoAction->setToolTip(tr("Selects and locates this object in the tree view"));
+    menu->exec(selectionView->mapToGlobal(point));
 }
 
 void SelectionView::onUpdate(void)
