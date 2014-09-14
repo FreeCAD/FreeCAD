@@ -37,7 +37,7 @@ std::string QuantityPy::representation(void) const
 {
     std::stringstream ret;
     ret << getQuantityPtr()->getValue() << " "; 
-    ret << getQuantityPtr()->getUnit().getString().toLatin1().constData();
+    ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
 
     return ret.str();
 }
@@ -83,20 +83,29 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    const char* string;
-    if (PyArg_ParseTuple(args,"s", &string)) {
-        try {
-            *self = Quantity::parse(QString::fromLatin1(string));
-        }catch(const Base::Exception& e) {
-            PyErr_SetString(PyExc_ValueError, e.what());
-            return-1;
-        }
-
-        return 0;
-    }
-
-    PyErr_SetString(PyExc_TypeError, "Either three floats, tuple or Vector expected");
-    return -1;
+    if (PyArg_ParseTuple(args,"O", &object)) {
+        if (PyString_Check(object) || PyUnicode_Check(object)) {
+            QString qstr;
+            if (PyUnicode_Check(object)) {
+                PyObject * utf8str = PyUnicode_AsUTF8String(object);
+                qstr = QString::fromUtf8(PyString_AsString(utf8str));
+                Py_DECREF(utf8str);
+            }
+            else {
+                qstr = QString::fromUtf8(PyString_AsString(object));
+            }
+            try {
+                *self = Quantity::parse(qstr);
+            }
+            catch(const Base::Exception& e) {
+                PyErr_SetString(PyExc_ValueError, e.what());
+                return -1;
+            }
+            return 0;
+        } // Not string or unicode
+    } // zero or more than one object
+    PyErr_SetString(PyExc_TypeError, "Either quantity, float and Base unit, float and 8 integers or unicode or utf-8 string expected");
+    return -1; 
 }
 
 PyObject* QuantityPy::getUserPreferred(PyObject *args)
@@ -107,9 +116,9 @@ PyObject* QuantityPy::getUserPreferred(PyObject *args)
 
     QString uss = getQuantityPtr()->getUserString(factor,uus);
 
-    res[0] = Py::String(uss.toLatin1());
+    res[0] = Py::String(uss.toUtf8(),"utf-8");
     res[1] = Py::Float(factor);
-    res[2] = Py::String(uus.toLatin1());
+    res[2] = Py::String(uus.toUtf8(),"utf-8");
 
     return Py::new_reference_to(res);
 }
@@ -169,14 +178,32 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
 
     if (!quant.isValid()) {
         PyErr_Clear();
-        const char* string;
-        if (PyArg_ParseTuple(args,"s", &string)) {
-            quant = Quantity::parse(QString::fromLatin1(string));
-        }
-    }
+        PyObject *object;
+        if (PyArg_ParseTuple(args,"O", &object)) {
+            if (PyString_Check(object) || PyUnicode_Check(object)) {
+                QString qstr;
+                if (PyUnicode_Check(object)) {
+                    PyObject * utf8str = PyUnicode_AsUTF8String(object);
+                    qstr = QString::fromUtf8(PyString_AsString(utf8str));
+                    Py_DECREF(utf8str);
+                }
+                else {
+                    qstr = QString::fromUtf8(PyString_AsString(object));
+                }
+                try {
+                    quant = Quantity::parse(qstr);
+                }
+                catch(const Base::Exception& e) {
+                    PyErr_SetString(PyExc_ValueError, e.what());
+                    return 0;
+                }
+                return 0;
+            } // Not string or unicode
+        } // zero or more than one object
+    } // !isValid
 
     if (!quant.isValid()) {
-        PyErr_SetString(PyExc_TypeError, "Either quantity, string, float or unit expected");
+        PyErr_SetString(PyExc_TypeError, "Either quantity, float and Base unit, float and 8 integers or unicode or utf-8 string expected");
         return 0;
     }
 
@@ -559,7 +586,7 @@ void QuantityPy::setUnit(Py::Object arg)
 
 Py::String QuantityPy::getUserString(void) const
 {
-    return Py::String(getQuantityPtr()->getUserString().toLatin1());
+    return Py::String(getQuantityPtr()->getUserString().toUtf8(),"utf-8");
 }
 
 PyObject *QuantityPy::getCustomAttributes(const char* /*attr*/) const

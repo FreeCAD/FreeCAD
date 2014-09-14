@@ -16,7 +16,7 @@ std::string UnitPy::representation(void) const
     const UnitSignature &  Sig = getUnitPtr()->getSignature();
 	std::stringstream ret;
     ret << "Unit: "; 
-	ret << getUnitPtr()->getString().toLatin1().constData() << " (";
+	ret << getUnitPtr()->getString().toUtf8().constData() << " (";
     ret << Sig.Length << ",";                 
     ret << Sig.Mass  << ",";                    
     ret << Sig.Time  << ",";                   
@@ -25,7 +25,7 @@ std::string UnitPy::representation(void) const
     ret << Sig.AmountOfSubstance  << ",";      
     ret << Sig.LuminoseIntensity  << ",";      
     ret << Sig.Angle  << ")"; 
-    std::string type = getUnitPtr()->getTypeString().toLatin1().constData();
+    std::string type = getUnitPtr()->getTypeString().toUtf8().constData();
     if(! type.empty())
         ret << " [" << type << "]";
 
@@ -72,13 +72,27 @@ int UnitPy::PyInit(PyObject* args, PyObject* kwd)
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    const char* string;
-    if (PyArg_ParseTuple(args,"s", &string)) {
-            
-        *self = Quantity::parse(QString::fromLatin1(string)).getUnit();
-        return 0;
-    }
-
+    if (PyArg_ParseTuple(args,"O", &object)) {
+        if (PyString_Check(object) || PyUnicode_Check(object)) {
+            QString qstr;
+            if (PyUnicode_Check(object)) {
+                PyObject * utf8str = PyUnicode_AsUTF8String(object);
+                qstr = QString::fromUtf8(PyString_AsString(utf8str));
+                Py_DECREF(utf8str);
+            }
+            else {
+                qstr = QString::fromUtf8(PyString_AsString(object));
+            }
+            try {
+                *self = Quantity::parse(qstr).getUnit();
+            }
+            catch(const Base::Exception& e) {
+                PyErr_SetString(PyExc_ValueError, e.what());
+                return -1;
+            }
+            return 0;
+        } // Not string or unicode
+    } // zero or more than one object
     PyErr_SetString(PyExc_TypeError, "Either string, (float,8 ints), Unit() or Quantity()");
     return -1;
 }
@@ -178,7 +192,7 @@ PyObject* UnitPy::richCompare(PyObject *v, PyObject *w, int op)
 
 Py::String UnitPy::getType(void) const
 {
-    return Py::String(getUnitPtr()->getTypeString().toLatin1());
+    return Py::String(getUnitPtr()->getTypeString().toUtf8(),"utf-8");
 }
 
 
