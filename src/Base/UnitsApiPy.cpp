@@ -128,23 +128,33 @@ PyMethodDef UnitsApi::Methods[] = {
 
 PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
-
-	Quantity rtn;
-    try {
-        rtn = Quantity::parse(QString::fromLatin1(pstr));
-	}
-    catch (const Base::Exception&) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-        return 0L;
-    }
-    catch (const std::exception&) {
-        PyErr_Format(PyExc_IOError, "invalid unit expression \n");
-        return 0L;
-    }
-
-	return new QuantityPy(new Quantity(rtn));
-
+    PyObject * object;
+    if (PyArg_ParseTuple(args,"O", &object)) {
+        if (PyString_Check(object) || PyUnicode_Check(object)) {
+            QString qstr;
+            if (PyUnicode_Check(object)) {
+                PyObject * utf8str = PyUnicode_AsUTF8String(object);
+                qstr = QString::fromUtf8(PyString_AsString(utf8str));
+                Py_DECREF(utf8str);
+            }
+            else {
+                qstr = QString::fromUtf8(PyString_AsString(object));
+            }
+            Quantity rtn;
+            try {
+                rtn = Quantity::parse(qstr);
+            }
+            catch (const Base::Exception&) {
+                PyErr_Format(PyExc_IOError, "invalid unit expression \n");
+                return 0L;
+            }
+            catch (const std::exception&) {
+                PyErr_Format(PyExc_IOError, "invalid unit expression \n");
+                return 0L;
+            }
+            return new QuantityPy(new Quantity(rtn));
+        } //string or unicode
+    } //if one object
+    PyErr_Format(PyExc_IOError, "invalid unit expression \n");
+    return 0L;
 }

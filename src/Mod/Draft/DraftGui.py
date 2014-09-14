@@ -142,7 +142,7 @@ def displayExternal(internValue,decimals=4,dim='Length',showUnit=True):
         qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle)
         pref=qty.getUserPreferred()
         conversion = pref[1]
-        uom = pref[2].decode('latin-1')
+        uom = pref[2]
     else:
         conversion = 1.0
         uom = "??"
