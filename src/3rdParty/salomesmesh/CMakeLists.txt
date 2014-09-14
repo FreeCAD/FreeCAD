@@ -109,7 +109,8 @@ INCLUDE(CMakeDetermineFortranCompiler)
 IF (${CMAKE_SIZEOF_VOID_P} MATCHES "8") # It is 64bit, 32 bit systems returns 4
     ADD_DEFINITIONS(-D_OCC64)
     IF(CMAKE_COMPILER_IS_GNUCXX)
-        ADD_DEFINITIONS(-DPCLINUX64)
+    # 0001715: Mefisto Mesh Fails since translated by f2c
+    #    ADD_DEFINITIONS(-DPCLINUX64)
     ENDIF(CMAKE_COMPILER_IS_GNUCXX)
     #MESSAGE("-- Build 64bit")
 ELSE (${CMAKE_SIZEOF_VOID_P} MATCHES "8")
