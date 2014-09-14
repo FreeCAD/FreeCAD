@@ -90,6 +90,18 @@ arrowtypes = ["Dot","Circle","Arrow"]
 # General functions
 #---------------------------------------------------------------------------
 
+def stringencodecoin(str):
+    """Encode a unicode object to be used as a string in coin"""
+    try:
+	from pivy import coin
+	coin4 = coin.COIN_MAJOR_VERSION >= 4
+    except ImportError, AttributeError:
+	coin4 = False
+    if coin4:
+        return str.encode('utf-8')
+    else:
+        return str.encode('latin1')
+
 def typecheck (args_and_types, name="?"):
     "typecheck([arg1,type),(arg2,type),...]): checks arguments types"
     for v,t in args_and_types:
@@ -881,14 +893,7 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     if not isinstance(stringslist,list): stringslist = [stringslist]
     textbuffer = []
     for l in stringslist: 
-        try:
-            from pivy import coin
-            if coin.COIN_MAJOR_VERSION >= 4:
-                textbuffer.append(str(l))
-            else:
-                textbuffer.append(l.decode("utf8").encode('latin1'))
-        except:
-            textbuffer.append(l.decode("utf8").encode('latin1'))
+	textbuffer.append(stringencodecoin(l.decode("utf8"))
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
     obj.LabelText=textbuffer
     obj.Position=point
@@ -3368,17 +3373,8 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 if obj.ViewObject.Override:
                     self.string = obj.ViewObject.Override.replace("$dim",\
                             self.string)
-            try:
-                from pivy import coin
-                coin4 = coin.COIN_MAJOR_VERSION >= 4
-            except ImportError, AttributeError:
-                coin4 = False
-            if coin4:
-                self.text.string = self.text3d.string = \
-                            self.string.encode('utf-8')
-            else:
-                self.text.string = self.text3d.string = \
-                            self.string.encode('latin1')
+	    self.text.string = self.text3d.string = \
+	        textbuffer.append(stringencodecoin(self.string)
             # set the distance property
             if round(obj.Distance.Value,precision()) != round(l,precision()):
                 obj.Distance = l
@@ -3656,19 +3652,14 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             if hasattr(obj.ViewObject,"ShowUnit"):
                 su = obj.ViewObject.ShowUnit
             if hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(a,obj.ViewObject.Decimals,'Angle',su).encode("utf8")
+                self.string = DraftGui.displayExternal(a,obj.ViewObject.Decimals,'Angle',su)
             else:
-                self.string = DraftGui.displayExternal(a,getParam("dimPrecision",2),'Angle',su).encode("utf8")
+                self.string = DraftGui.displayExternal(a,getParam("dimPrecision",2),'Angle',su)
             if obj.ViewObject.Override:
-                try:
-                    from pivy import coin
-                    if coin.COIN_MAJOR_VERSION >= 4:
-                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string)
-                    else:
-                        self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1","replace")
-                except:
-                    self.string = obj.ViewObject.Override.encode("utf8").replace("$dim",self.string).decode("latin1","replace")
-            self.text.string = self.text3d.string = self.string
+		self.string = obj.ViewObject.Override.replace("$dim",\
+		    self.string)
+	    self.text.string = self.text3d.string = \
+	        textbuffer.append(stringencodecoin(self.string)
             
             # check display mode
             try:
