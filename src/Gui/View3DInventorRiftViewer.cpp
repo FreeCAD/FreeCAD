@@ -114,6 +114,8 @@ protected:
         glOrtho(-1.0, 1.0, -1.0, 1.0, 0.0, 1000.0);
         glMatrixMode(GL_MODELVIEW);
     }
+
+	SbVec3f basePosition;
 };
 
 
@@ -139,7 +141,10 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
 	if (!ovrHmd_ConfigureTracking (hmd, ovrTrackingCap_Orientation |
 										ovrTrackingCap_MagYawCorrection |
 										ovrTrackingCap_Position, 
-										ovrTrackingCap_Orientation)) { // Capabilities we require.
+										ovrTrackingCap_Orientation |
+										ovrTrackingCap_MagYawCorrection |
+										ovrTrackingCap_Position
+										)) { // Capabilities we require.
         qDebug() << "Could not start Rift motion sensor.";
         throw;
     }
@@ -164,13 +169,14 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
                                                        std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
     m_sceneManager->setBackgroundColor(SbColor(.0f, .0f, .8f));
 #endif
+	basePosition = SbVec3f(0.0f, 0.0f, 5.0f);
 
     scene = new SoSeparator(0); // Placeholder.
     for (int eye = 0; eye < 2; eye++) {
         rootScene[eye] = new SoSeparator(3);
         rootScene[eye]->ref();
         camera[eye] = new SoFrustumCamera();
-        camera[eye]->position.setValue(0.0f, 0.0f, 5.0f);
+        camera[eye]->position.setValue(basePosition);
         camera[eye]->focalDistance.setValue(5.0f);
         camera[eye]->viewportMapping.setValue(SoCamera::LEAVE_ALONE);
         rootScene[eye]->addChild(camera[eye]);
@@ -215,6 +221,7 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     DistortionCaps |= ovrDistortionCap_Chromatic;
 // DistortionCaps |= ovrDistortionCap_TimeWarp; // Produces black screen...
     DistortionCaps |= ovrDistortionCap_Vignette;
+    DistortionCaps |= ovrDistortionCap_HqDistortion;
 
     bool VSyncEnabled(false); // TODO This is a guess.
     if (!ovrHmd_ConfigureRendering( hmd, 
@@ -363,7 +370,7 @@ void CoinRiftWidget::paintGL()
 
     glEnable(GL_TEXTURE_2D);
 
-    /*ovrFrameTiming hmdFrameTiming =*/ ovrHmd_BeginFrame(hmd, 0);
+    ovrFrameTiming hmdFrameTiming = ovrHmd_BeginFrame(hmd, 0);
     for (int eyeIndex = 0; eyeIndex < ovrEye_Count; eyeIndex++) {
         ovrEyeType eye = hmd->EyeRenderOrder[eyeIndex];
         eyePose[eye] = ovrHmd_GetEyePose(hmd, eye);
@@ -373,10 +380,15 @@ void CoinRiftWidget::paintGL()
                                           eyePose[eye].Orientation.z,
                                           eyePose[eye].Orientation.w);
 
-        SbVec3f originalPosition(camera[eye]->position.getValue());
-        camera[eye]->position.setValue(originalPosition - SbVec3f(eyeRenderDesc[eye].ViewAdjust.x,
+		SbVec3f riftPosition =   SbVec3f(eyePose[eye].Position.x,
+										 eyePose[eye].Position.y,
+										 eyePose[eye].Position.z);
+
+        //SbVec3f originalPosition(camera[eye]->position.getValue());
+
+        camera[eye]->position.setValue(basePosition - SbVec3f(eyeRenderDesc[eye].ViewAdjust.x,
                                                                   eyeRenderDesc[eye].ViewAdjust.y,
-                                                                  eyeRenderDesc[eye].ViewAdjust.z));
+                                                                  eyeRenderDesc[eye].ViewAdjust.z) + riftPosition);
 
 #ifdef USE_SO_OFFSCREEN_RENDERER
         ovrGLTextureData *texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
@@ -409,7 +421,7 @@ void CoinRiftWidget::paintGL()
         Q_ASSERT(!glGetError());
 #endif
 
-        camera[eye]->position.setValue(originalPosition);
+        //camera[eye]->position.setValue(originalPosition);
 
     }
     
