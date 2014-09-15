@@ -421,6 +421,7 @@ class DraftToolBar:
         self.finishButton = self._pushbutton("finishButton", self.layout, icon='Draft_Finish')
         self.closeButton = self._pushbutton("closeButton", self.layout, icon='Draft_Lock')
         self.wipeButton = self._pushbutton("wipeButton", self.layout, icon='Draft_Wipe')
+        self.selectButton = self._pushbutton("selectButton", self.layout, icon='view-select')
         self.xyButton = self._pushbutton("xyButton", self.layout)
         self.xzButton = self._pushbutton("xzButton", self.layout)
         self.yzButton = self._pushbutton("yzButton", self.layout)
@@ -469,6 +470,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.closeButton,QtCore.SIGNAL("pressed()"),self.closeLine)
         QtCore.QObject.connect(self.wipeButton,QtCore.SIGNAL("pressed()"),self.wipeLine)
         QtCore.QObject.connect(self.undoButton,QtCore.SIGNAL("pressed()"),self.undoSegment)
+        QtCore.QObject.connect(self.selectButton,QtCore.SIGNAL("pressed()"),self.selectEdge)
         QtCore.QObject.connect(self.xyButton,QtCore.SIGNAL("clicked()"),self.selectXY)
         QtCore.QObject.connect(self.xzButton,QtCore.SIGNAL("clicked()"),self.selectXZ)
         QtCore.QObject.connect(self.yzButton,QtCore.SIGNAL("clicked()"),self.selectYZ)
@@ -590,6 +592,8 @@ class DraftToolBar:
         self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line (C)"))
         self.wipeButton.setText(translate("draft", "&Wipe"))
         self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point (W)"))
+        self.selectButton.setText(translate("draft", "&Select edge"))
+        self.selectButton.setToolTip(translate("draft", "Selects an existing edge to be measured by this dimension (E)"))
         self.numFacesLabel.setText(translate("draft", "Sides"))
         self.numFaces.setToolTip(translate("draft", "Number of sides"))
         self.offsetLabel.setText(translate("draft", "Offset"))
@@ -795,6 +799,7 @@ class DraftToolBar:
             self.undoButton.hide()
             self.closeButton.hide()
             self.wipeButton.hide()
+            self.selectButton.hide()
             self.xyButton.hide()
             self.xzButton.hide()
             self.yzButton.hide()
@@ -1236,6 +1241,11 @@ class DraftToolBar:
     def wipeLine(self):
         "wipes existing segments of a line"
         self.sourceCmd.wipe()
+        
+    def selectEdge(self):
+        "allows the dimension command to select an edge"
+        if hasattr(self.sourceCmd,"selectEdge"):
+            self.sourceCmd.selectEdge()
 
     def selectXY(self):
         self.sourceCmd.selectHandler("XY")
@@ -1278,6 +1288,8 @@ class DraftToolBar:
             self.toggleContinue()
         elif txt.endswith("w"):
             self.wipeLine()
+        elif txt.endswith("e"):
+            self.selectEdge()
         elif txt.endswith("s"):
             self.togglesnap()
         elif txt.endswith("["):

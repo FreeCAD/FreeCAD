@@ -1661,6 +1661,7 @@ class Dimension(Creator):
             if self.ui:
                 self.ui.pointUi(name)
                 self.ui.continueCmd.show()
+                self.ui.selectButton.show()
                 self.altdown = False
                 self.call = self.view.addEventCallback("SoEvent",self.action)
                 self.dimtrack = dimTracker()
@@ -1675,6 +1676,7 @@ class Dimension(Creator):
                 self.point2 = None
                 self.force = None
                 self.info = None
+                self.selectmode = False
                 msg(translate("draft", "Pick first point:\n"))
                 FreeCADGui.draftToolBar.show()
 
@@ -1740,6 +1742,9 @@ class Dimension(Creator):
                     self.dir = self.node[1].sub(self.node[0])
             self.node = [self.node[1]]
         self.link = None
+        
+    def selectEdge(self):
+        self.selectmode = not(self.selectmode)
 
     def action(self,arg):
         "scene event handler"
@@ -1752,7 +1757,7 @@ class Dimension(Creator):
             self.point,ctrlPoint,self.info = getPoint(self,arg,noTracker=(len(self.node)>0))
             if self.arcmode or self.point2:
                 setMod(arg,MODCONSTRAIN,False)
-            if hasMod(arg,MODALT) and (len(self.node)<3):
+            if (hasMod(arg,MODALT) or self.selectmode) and (len(self.node)<3):
                 self.dimtrack.off()
                 if not self.altdown:
                     self.altdown = True
@@ -1837,7 +1842,7 @@ class Dimension(Creator):
                     self.ui.redraw()
                     if (not self.node) and (not self.support):
                         getSupport(arg)
-                    if hasMod(arg,MODALT) and (len(self.node)<3):
+                    if (hasMod(arg,MODALT) or self.selectmode) and (len(self.node)<3):
                         #print "snapped: ",self.info
                         if self.info:
                             ob = self.doc.getObject(self.info['Object'])
@@ -1888,6 +1893,7 @@ class Dimension(Creator):
                                 self.dimtrack.on()
                     else:
                         self.node.append(self.point)
+                    self.selectmode = False
                     #print "node",self.node
                     self.dimtrack.update(self.node)
                     if (len(self.node) == 2):
