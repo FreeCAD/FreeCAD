@@ -195,8 +195,8 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     eyeTexture[1].Header.TextureSize = eyeTexture[0].Header.TextureSize;
 #endif
 #ifdef USE_FRAMEBUFFER
-    eyes[0].TextureSize = recommenedTex0Size;
-    eyes[1].TextureSize = recommenedTex1Size;
+    eyeTexture[0].Header.TextureSize = recommenedTex0Size;
+    eyeTexture[1].Header.TextureSize = recommenedTex1Size;
 #endif
     eyeTexture[0].Header.RenderViewport.Pos.x = 0;
     eyeTexture[0].Header.RenderViewport.Pos.y = 0;
@@ -290,7 +290,7 @@ void CoinRiftWidget::initializeGL()
     // Infer hardware capabilites.
 #ifdef USE_FRAMEBUFFER
     OVR::CAPI::GL::InitGLExtensions();
-    if (OVR::CAPI::GL::glBindFramebufferEXT == NULL) {
+    if (OVR::CAPI::GL::glBindFramebuffer == NULL) {
         qDebug() << "No GL extensions found.";
         exit(4);
     }
@@ -307,12 +307,13 @@ void CoinRiftWidget::initializeGL()
         OVR::CAPI::GL::glGenFramebuffers(1, &frameBufferID[eye]);
         OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferID[eye]);
         // Create the render buffer.
-        OVR::CAPI::GL::glGenRenderbuffers(1, &depthBufferID[eye]);
-        OVR::CAPI::GL::glBindRenderbuffer(GL_RENDERBUFFER_EXT, depthBufferID[eye]);
-        OVR::CAPI::GL::glRenderbufferStorage(GL_RENDERBUFFER_EXT,
+		// TODO: need to check for OpenGl 3 or higher and load the functions JR 2014
+        /*OVR::CAPI::GL::*/glGenRenderbuffers(1, &depthBufferID[eye]);
+        /*OVR::CAPI::GL::*/glBindRenderbuffer(GL_RENDERBUFFER_EXT, depthBufferID[eye]);
+        /*OVR::CAPI::GL::*/glRenderbufferStorage(GL_RENDERBUFFER_EXT,
                                                 GL_DEPTH_COMPONENT16,
-                                                eyes[eye].TextureSize.w,
-                                                eyes[eye].TextureSize.h);
+                                                eyeTexture[eye].Header.TextureSize.w,
+                                                eyeTexture[eye].Header.TextureSize.h);
         // Attach renderbuffer to framebuffer.
         OVR::CAPI::GL::glFramebufferRenderbuffer(GL_FRAMEBUFFER_EXT,
                                                     GL_DEPTH_ATTACHMENT_EXT,
@@ -337,10 +338,10 @@ void CoinRiftWidget::initializeGL()
         Q_ASSERT(!glGetError());
 #ifdef USE_FRAMEBUFFER
         // Attach texture to framebuffer color object.
-        OVR::CAPI::GL::glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,
+        OVR::CAPI::GL::glFramebufferTexture2D(GL_FRAMEBUFFER_EXT,
                                                  GL_COLOR_ATTACHMENT0_EXT,
                                                  GL_TEXTURE_2D, texData->TexId, 0);
-        if (OVR::CAPI::GL::glCheckFramebufferStatusEXT(GL_FRAMEBUFFER) !=
+        if (OVR::CAPI::GL::glCheckFramebufferStatus(GL_FRAMEBUFFER) !=
                 GL_FRAMEBUFFER_COMPLETE)
             qDebug() << "ERROR: FrameBuffer is not operational!";
 #endif
@@ -350,7 +351,7 @@ void CoinRiftWidget::initializeGL()
 
 #ifdef USE_FRAMEBUFFER
     // Continue rendering to the orgiginal frame buffer (likely 0, the onscreen buffer).
-    OVR::CAPI::GL::glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, oldfb);
+    OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, oldfb);
 #endif
     doneCurrent();
 }
@@ -410,14 +411,14 @@ void CoinRiftWidget::paintGL()
         GLint oldfb;
         glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &oldfb);
         // Set up framebuffer for rendering.
-        OVR::CAPI::GL::glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, frameBufferID[eye]);
+        OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferID[eye]);
 
         m_sceneManager->setSceneGraph(rootScene[eye]);
 // m_sceneManager->setCamera(camera[eye]); // SoSceneManager does this implicitly.
         m_sceneManager->render();
 
         // Continue rendering to the orgiginal frame buffer (likely 0, the onscreen buffer).
-        OVR::CAPI::GL::glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, oldfb);
+        OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, oldfb);
         Q_ASSERT(!glGetError());
 #endif
 
