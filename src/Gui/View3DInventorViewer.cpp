@@ -781,7 +781,9 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
 
     SoSearchAction sa;
     sa.setNode(this->backlight);
-    SoNode* scene = this->getSceneGraph();
+    //we want the rendered scene with all lights and cameras, viewer->getSceneGraph would return 
+    //the geometry scene only
+    SoNode* scene = this->getSoRenderManager()->getSceneGraph();
 
     if(scene && scene->getTypeId().isDerivedFrom(SoSeparator::getClassTypeId())) {
         sa.apply(scene);
