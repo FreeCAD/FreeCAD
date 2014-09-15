@@ -256,10 +256,10 @@ ViewProviderSketch::ViewProviderSketch()
     PointSize.setValue(4);
 
     zCross=0.001f;
-    zConstr=0.003f; // constraint not construction
     zLines=0.005f;
-    zHighLine=0.006f;
-    zPoints=0.007f;
+    zConstr=0.006f; // constraint not construction
+    zHighLine=0.007f;
+    zPoints=0.008f;
     zHighlight=0.009f;
     zText=0.011f;
     zEdit=0.001f;
