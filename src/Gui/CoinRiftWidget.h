@@ -96,6 +96,9 @@ public:
     explicit CoinRiftWidget();
     ~CoinRiftWidget();
     void setSceneGraph(SoNode *sceneGraph);
+	void setBase(const SbVec3f &pos){basePosition=pos;}
+	void setBackgoundColor(const SbColor &Col){BackgroundColor = Col;}
+
 protected:
 	void handlingSafetyWarning(void);
     void initializeGL();
@@ -103,6 +106,7 @@ protected:
     void resizeGL(int width, int height);
 
 	SbVec3f basePosition;
+	SbColor BackgroundColor;
 };
 
 

@@ -84,7 +84,8 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     renderer = new SoOffscreenRenderer(SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
                                                         std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
     renderer->setComponents(SoOffscreenRenderer::RGB_TRANSPARENCY);
-    renderer->setBackgroundColor(SbColor(.0f, .0f, .8f));
+	BackgroundColor = SbColor(.0f, .0f, .8f);
+    renderer->setBackgroundColor(BackgroundColor);
 #endif
 #ifdef USE_FRAMEBUFFER
     m_sceneManager = new SoSceneManager();
@@ -154,7 +155,7 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
 									hmd->DefaultEyeFov,//eyes, 
 									eyeRenderDesc)) {
         qDebug() << "Could not configure OVR rendering.";
-        exit(3);
+        throw;
     }
 
     for (int eye = 0; eye < 2; eye++) {

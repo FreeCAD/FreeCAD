@@ -103,6 +103,7 @@
 #include "SoFCInteractiveElement.h"
 #include "SoFCBoundingBox.h"
 #include "SoAxisCrossKit.h"
+#include "View3DInventorRiftViewer.h"
 
 #include "Selection.h"
 #include "SoFCSelectionAction.h"
@@ -1637,9 +1638,10 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
 }
 
 #if BUILD_VR
-extern int  oculusStart(void);
+extern View3DInventorRiftViewer* oculusStart(void);
 extern bool oculusUp   (void);
 extern void oculusStop (void);
+void oculusSetTestScene(View3DInventorRiftViewer *window);
 #endif 
 
 void View3DInventorViewer::viewVR(void)
@@ -1647,8 +1649,17 @@ void View3DInventorViewer::viewVR(void)
 #if BUILD_VR
 	if(oculusUp())
 		oculusStop();
-	else
-		oculusStart();
+	else{
+#if 0
+		// start and load the simple test scene:
+		oculusSetTestScene(oculusStart());
+#else
+		View3DInventorRiftViewer* riftWin = oculusStart();
+		riftWin->setSceneGraph(pcViewProviderRoot);
+
+#endif
+
+	}
 #endif
 }
 

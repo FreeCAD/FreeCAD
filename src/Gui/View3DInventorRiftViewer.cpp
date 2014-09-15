@@ -34,40 +34,9 @@ using namespace Gui;
 
 static View3DInventorRiftViewer *window=0;
 
-
-void oculusStop()
+void oculusSetTestScene(View3DInventorRiftViewer *window)
 {
-    //SoDB::finish();
-	if(window){
-		delete window;
-		window = 0;
-	}
-
-    ovr_Shutdown();
-}
-
-bool oculusUp(void)
-{
-	return window!=0;
-}
-
-int oculusStart(void)
-{
-    //SoDB::init();
-
-    //QApplication app(argc, argv);
-    //qAddPostRoutine(cleanup);
-
-    // Moved here because of https://developer.oculusvr.com/forums/viewtopic.php?f=17&t=7915&p=108503#p108503
-    // Init libovr.
-    if (!ovr_Initialize()) {
-        qDebug() << "Could not initialize Oculus SDK.";
-        return 0;
-    }
-
-    window = new View3DInventorRiftViewer;
-    window->show();
-
+	assert(window);
     // An example scene.
     static const char * inlineSceneGraph[] = {
         "#Inventor V2.1 ascii\n",
@@ -105,9 +74,49 @@ int oculusStart(void)
     in.setStringArray(inlineSceneGraph);
 
     window->setSceneGraph(SoDB::readAll(&in));
+}
 
-	return 1;
+
+void oculusStop()
+{
+    //SoDB::finish();
+	if(window){
+		delete window;
+		window = 0;
+	}
+
+    ovr_Shutdown();
+}
+
+bool oculusUp(void)
+{
+	return window!=0;
+}
+
+View3DInventorRiftViewer* oculusStart(void)
+{
+    //SoDB::init();
+
+    //QApplication app(argc, argv);
+    //qAddPostRoutine(cleanup);
+
+    // Moved here because of https://developer.oculusvr.com/forums/viewtopic.php?f=17&t=7915&p=108503#p108503
+    // Init libovr.
+    if (!ovr_Initialize()) {
+        qDebug() << "Could not initialize Oculus SDK.";
+        return 0;
+    }
+	if(window)
+		return window;
+
+    window = new View3DInventorRiftViewer;
+    window->show();
+
+
+	return window;
     //return app.exec();
 }
+
+
 
 #endif //BUILD_VR
