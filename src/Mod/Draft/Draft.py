@@ -93,10 +93,10 @@ arrowtypes = ["Dot","Circle","Arrow"]
 def stringencodecoin(str):
     """Encode a unicode object to be used as a string in coin"""
     try:
-	from pivy import coin
-	coin4 = coin.COIN_MAJOR_VERSION >= 4
+        from pivy import coin
+        coin4 = coin.COIN_MAJOR_VERSION >= 4
     except ImportError, AttributeError:
-	coin4 = False
+        coin4 = False
     if coin4:
         return str.encode('utf-8')
     else:
@@ -893,7 +893,7 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     if not isinstance(stringslist,list): stringslist = [stringslist]
     textbuffer = []
     for l in stringslist: 
-	textbuffer.append(stringencodecoin(l.decode("utf8"))
+        textbuffer.append(stringencodecoin(l.decode("utf8")))
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
     obj.LabelText=textbuffer
     obj.Position=point
@@ -3373,8 +3373,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 if obj.ViewObject.Override:
                     self.string = obj.ViewObject.Override.replace("$dim",\
                             self.string)
-	    self.text.string = self.text3d.string = \
-	        textbuffer.append(stringencodecoin(self.string)
+            self.text.string = self.text3d.string = stringencodecoin(self.string)
             # set the distance property
             if round(obj.Distance.Value,precision()) != round(l,precision()):
                 obj.Distance = l
@@ -3484,10 +3483,10 @@ class _ViewProviderDimension(_ViewProviderDraft):
             /* XPM */
             static char * dim_xpm[] = {
             "16 16 4 1",
-            " 	c None",
-            ".	c #000000",
-            "+	c #FFFF00",
-            "@	c #FFFFFF",
+            "   c None",
+            ".  c #000000",
+            "+  c #FFFF00",
+            "@  c #FFFFFF",
             "                ",
             "                ",
             "     .    .     ",
@@ -3656,10 +3655,9 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             else:
                 self.string = DraftGui.displayExternal(a,getParam("dimPrecision",2),'Angle',su)
             if obj.ViewObject.Override:
-		self.string = obj.ViewObject.Override.replace("$dim",\
-		    self.string)
-	    self.text.string = self.text3d.string = \
-	        textbuffer.append(stringencodecoin(self.string)
+                self.string = obj.ViewObject.Override.replace("$dim",\
+                    self.string)
+            self.text.string = self.text3d.string = stringencodecoin(self.string)
             
             # check display mode
             try:
@@ -3821,10 +3819,10 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
                         /* XPM */
                         static char * dim_xpm[] = {
                         "16 16 4 1",
-                        " 	c None",
-                        ".	c #000000",
-                        "+	c #FFFF00",
-                        "@	c #FFFFFF",
+                        "   c None",
+                        ".  c #000000",
+                        "+  c #FFFF00",
+                        "@  c #FFFFFF",
                         "                ",
                         "                ",
                         "     .    .     ",
