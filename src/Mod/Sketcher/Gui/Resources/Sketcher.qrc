@@ -67,9 +67,12 @@
         <file>icons/Sketcher_MapSketch.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>
+        <file>icons/Sketcher_SelectConflictingConstraints.svg</file>
         <file>icons/Sketcher_SelectConstraints.svg</file>
+        <file>icons/Sketcher_SelectElementsAssociatedWithConstraints.svg</file>
         <file>icons/Sketcher_SelectHorizontalAxis.svg</file>
         <file>icons/Sketcher_SelectOrigin.svg</file>
+        <file>icons/Sketcher_SelectRedundantConstraints.svg</file>
         <file>icons/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/Sketcher_Sketch.svg</file>
         <file>icons/Sketcher_Trimming.svg</file>
