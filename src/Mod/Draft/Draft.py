@@ -2421,6 +2421,15 @@ def upgrade(objects,delete=False,force=None):
     addList = []
     
     # definitions of actions to perform
+    
+    def turnToLine(obj):
+        """turns an edge into a Draft line"""
+        p1 = obj.Shape.Vertexes[0].Point
+        p2 = obj.Shape.Vertexes[-1].Point
+        newobj = makeLine(p1,p2)
+        addList.append(newobj)
+        deleteList.append(obj)
+        return newobj
 
     def makeCompound(objectslist):
         """returns a compound object made from the given objects"""
@@ -2643,7 +2652,7 @@ def upgrade(objects,delete=False,force=None):
     
     if force:
         if force in ["makeCompound","closeGroupWires","makeSolid","closeWire","turnToParts","makeFusion",
-                     "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires"]:
+                     "makeShell","makeFaces","draftify","joinFaces","makeSketchFace","makeWires","turnToLine"]:
             result = eval(force)(objects)
         else:
             msg(translate("Upgrade: Unknow force method:")+" "+force)
@@ -2692,6 +2701,13 @@ def upgrade(objects,delete=False,force=None):
             elif len(objects) == 1 and (not objects[0].isDerivedFrom("Part::Part2DObjectPython")):
                 result = draftify(objects[0])
                 if result: msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
+                
+        # we have only one object that contains one edge: turn to Draft line
+        elif (not faces) and (len(objects) == 1) and (len(objects[0].Shape.Edges) == 1):
+            e = objects[0].Shape.Edges[0]
+            if isinstance(e.Curve,Part.Line):
+                result = turnToLine(objects[0])
+                if result: msg(translate("draft", "Found 1 linear object: converting to line\n"))
                 
         # we have only closed wires, no faces
         elif wires and (not faces) and (not openwires):
