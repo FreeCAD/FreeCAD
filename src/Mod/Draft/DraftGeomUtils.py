@@ -578,9 +578,86 @@ def isLine(bsp):
         if bsp.tangent(i*step) != b:
             return False
     return True
+    
+def vpoint(vertex):
+    """Turn a vertex into a triple of its point coordinates.  This is
+    so we can put it into a dictionary; vertexes hash on their identity
+    and compare equal on object identity rather than coordinates.
+    And vertex.Point compares on value, but is mutable so it doesn't
+    have a hash value.
+    """
+    p = vertex.Point
+    return (p.x, p.y, p.z)
 
-def sortEdges(lEdges, aVertex=None):
-    "an alternative, more accurate version of Part.__sortEdges__"
+def sortEdges(edges):
+    """Sort edges in path order, i.e., such that the end point of edge N
+    equals the start point of edge N+1.
+    """
+    # Build a dictionary of vertexes according to their end points.
+    # Each entry is a set of vertexes that starts, or ends, at the
+    # given vertex position.
+    sdict = dict()
+    edict = dict()
+    for e in edges:
+        v1, v2 = e.Vertexes
+        v1 = vpoint(v1)
+        v2 = vpoint(v2)
+        try:
+            sdict[v1].add(e)
+        except KeyError:
+            sdict[v1] = set()
+            sdict[v1].add(e)            
+        try:
+            edict[v2].add(e)
+        except KeyError:
+            edict[v2] = set()
+            edict[v2].add(e)            
+    # Find the start of the path.  The start is the vertex that appears
+    # in the sdict dictionary but not in the edict dictionary, and has
+    # only one edge ending there.
+    startedge = None
+    for v, se in sdict.iteritems():
+        if v not in edict and len (se) == 1:
+            startedge = se
+            break
+    # The above may not find a start vertex; if the start edge is reversed, 
+    # the start vertex will appear in edict (and not sdict).
+    if not startedge:
+        for v, se in edict.iteritems():
+            if v not in sdict and len (se) == 1:
+                startedge = se
+                break
+    # If we still have no start vertex, it was a closed path.  If so, start
+    # with the first edge in the supplied list
+    if not startedge:
+        startedge = edges[0]
+        v = vpoint (startedge.Vertexes[0])
+    # Now build the return list by walking the edges starting at the start
+    # vertex we found.  We're done when we've visited each edge, so the
+    # end check is simply the count of input elements (that works for closed
+    # as well as open paths).
+    ret = list()
+    for i in xrange(len(edges)):
+        try:
+            eset = sdict[v]
+            e = eset.pop()
+            if not eset:
+                del sdict[v]
+            v = e.Vertexes[1]
+        except KeyError:
+            eset = edict[v]
+            e = eset.pop()
+            if not eset:
+                del edict[v]
+            v = e.Vertexes[0]
+            e = e.reverse()
+        ret.append(e)
+        v = vpoint(v)
+    # All done.
+    return ret
+
+def sortEdgesOld(lEdges, aVertex=None):
+    "an alternative, more accurate version of Part.__sortEdges__ (old version)"
 
     #There is no reason to limit this to lines only because every non-closed edge always
     #has exactly two vertices (wmayer)
