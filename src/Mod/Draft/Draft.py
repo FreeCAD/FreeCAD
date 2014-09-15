@@ -4895,32 +4895,44 @@ class _ShapeString(_DraftObject):
                         
     def execute(self, obj):                                    
         import Part
-#        import OpenSCAD2Dgeom
+        # import OpenSCAD2Dgeom
         import os
         if obj.String and obj.FontFile:
             if obj.Placement:
                 plm = obj.Placement
-            CharList = Part.makeWireString(obj.String,
-                                           obj.FontFile,
-                                           obj.Size,
-                                           obj.Tracking)
+            CharList = Part.makeWireString(obj.String,obj.FontFile,obj.Size,obj.Tracking)
             SSChars = []
+            
+            # test a simple letter to know if we have a sticky font or not
+            sticky = False
+            testWire = Part.makeWireString("L",obj.FontFile,obj.Size,obj.Tracking)[0][0]
+            if testWire.isClosed:
+                try:
+                    testFace = Part.Face(testWire)
+                except:
+                    stricky = True
+                else:
+                    if not testFace.isValid():
+                        sticky = True
+            else:
+                sticky = True
+                
             for char in CharList:
-                CharFaces = []
-                for CWire in char:
-                    try:
+                if sticky:
+                    for CWire in char:
+                        SSChars.append(CWire)
+                else:
+                    CharFaces = []
+                    for CWire in char:
                         f = Part.Face(CWire)
-                    except:
-                        # allow sticky characters with no face
-                        f = CWire
-                    if f:
-                        CharFaces.append(f)
-                # whitespace (ex: ' ') has no faces. This breaks OpenSCAD2Dgeom...
-                if CharFaces:
-#                    s = OpenSCAD2Dgeom.Overlappingfaces(CharFaces).makeshape()
-                    #s = self.makeGlyph(CharFaces)
-                    s = self.makeFaces(char)
-                    SSChars.append(s)
+                        if f:
+                            CharFaces.append(f)
+                    # whitespace (ex: ' ') has no faces. This breaks OpenSCAD2Dgeom...
+                    if CharFaces:
+                        # s = OpenSCAD2Dgeom.Overlappingfaces(CharFaces).makeshape()
+                        # s = self.makeGlyph(CharFaces)
+                        s = self.makeFaces(char)
+                        SSChars.append(s)
             shape = Part.Compound(SSChars)
             obj.Shape = shape 
             if plm:                     
@@ -4933,56 +4945,36 @@ class _ShapeString(_DraftObject):
         wirelist=sorted(wireChar,key=(lambda shape: shape.BoundBox.DiagonalLength),reverse=True)
         fixedwire = []
         for w in wirelist:
-            allEdges.extend(w.Edges)
             compEdges = Part.Compound(w.Edges)
             compEdges = compEdges.connectEdgesToWires()
             fixedwire.append(compEdges.Wires[0])
         wirelist = fixedwire
         sep_wirelist = []
-        stick = False
         while len(wirelist) > 0:
             wire2Face = [wirelist[0]]
-            try:
-                face = Part.Face(wirelist[0])
-            except:
-                stick = True
-                wirelist = []
-            else:
-                for w in wirelist[1:]:
-                    p = w.Vertexes[0].Point
-                    u,v = face.Surface.parameter(p)
-                    if face.isPartOfDomain(u,v):
-                        try:
-                            f = Part.Face(w)
-                        except:
-                            stick = True
-                            wirelist = []
-                        else:
-                            if face.Orientation == f.Orientation:
-                                if f.Surface.Axis * face.Surface.Axis < 0:
-                                    w.reverse()
-                            else:
-                                if f.Surface.Axis * face.Surface.Axis > 0:
-                                    w.reverse()
-                            wire2Face.append(w)
+            face = Part.Face(wirelist[0])
+            for w in wirelist[1:]:
+                p = w.Vertexes[0].Point
+                u,v = face.Surface.parameter(p)
+                if face.isPartOfDomain(u,v):
+                    f = Part.Face(w)
+                    if face.Orientation == f.Orientation:
+                        if f.Surface.Axis * face.Surface.Axis < 0:
+                            w.reverse()
                     else:
-                        sep_wirelist.append(w)
-                wirelist = sep_wirelist
-                sep_wirelist = []
-                try:
-                    face = Part.Face(wire2Face)
-                    face.validate()
-                    if face.Surface.Axis.z < 0.0:
-                        face.reverse()
-                except:
-                    stick = True
-                    wirelist = []
+                        if f.Surface.Axis * face.Surface.Axis > 0:
+                            w.reverse()
+                    wire2Face.append(w)
                 else:
-                    compFaces.append(face)
-        if stick:
-            ret = Part.Compound(allEdges)
-        elif compFaces:
-            ret = Part.Compound(compFaces)
+                    sep_wirelist.append(w)
+            wirelist = sep_wirelist
+            sep_wirelist = []
+            face = Part.Face(wire2Face)
+            face.validate()
+            if face.Surface.Axis.z < 0.0:
+                face.reverse()
+            compFaces.append(face)
+        ret = Part.Compound(compFaces)
         return ret
 
     def makeGlyph(self, facelist):
