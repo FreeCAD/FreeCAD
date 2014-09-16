@@ -46,6 +46,9 @@ class WebGuiExport WebView : public QWebView
 public:
     WebView(QWidget *parent = 0);
     void wheelEvent(QWheelEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event);
+protected Q_SLOTS:
+    void openLinkInExternalBrowser(const QString& url);
 };
 
 /**
