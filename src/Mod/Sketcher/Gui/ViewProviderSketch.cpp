@@ -3756,7 +3756,7 @@ void ViewProviderSketch::solveSketch(void)
     }
     else {
         if (edit->ActSketch.hasRedundancies()) { // redundant constraints
-            signalSetUp(QString::fromLatin1("<font color='DarkOrange'>%1<a href=\"#redundant\"><span style=\" text-decoration: underline; color:#0000ff;\">%2</span></a><br/>%3</font><br/>")
+            signalSetUp(QString::fromLatin1("<font color='orangered'>%1<a href=\"#redundant\"><span style=\" text-decoration: underline; color:#0000ff;\">%2</span></a><br/>%3</font><br/>")
                         .arg(tr("Sketch contains redundant constraints "))
                         .arg(tr("(click to select)"))
                         .arg(appendRedundantMsg(edit->ActSketch.getRedundant())));
