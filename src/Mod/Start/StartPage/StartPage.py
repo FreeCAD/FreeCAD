@@ -104,6 +104,15 @@ text54 = translate("StartPage","The <b>Ship Design</b> module offers several too
 text55 = translate("StartPage","Load an Architectural example model")
 text56 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Tutorials")
 text57 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Power_users_hub")
+text58 = translate("StartPage","Your version of FreeCAD is up to date.")
+text59 = translate("StartPage","There is a new release of FreeCAD available.")
+
+# get FreeCAD version
+
+v = FreeCAD.Version()
+vmajor = v[0]
+vminor = v[1]
+vbuild = v[2].split(" ")[0]
 
 # here is the html page skeleton
 
@@ -153,14 +162,35 @@ page = """
             if (theText == "") theText = "&nbsp;";
             ddiv.innerHTML = theText;
         }
+        
+        function checkVersion(data) {
+            vdiv = document.getElementById("versionbox");
+            var cmajor = """ + vmajor + """;
+            var cminor = """ + vminor + """;
+            var cbuild = """ + vbuild + """;
+            var amajor = data[0]['major'];
+            var aminor = data[0]['minor'];
+            var abuild = data[0]['build'];
+            if (cmajor >= amajor && cminor >= aminor && cbuild >= abuild) {
+                vdiv.innerHTML=" """ + text58 + """ ";
+            } else {
+                vdiv.innerHTML="<a href=exthttp://www.freecadweb.org> """ + text59 + """ </a>";
+            }
+        }
 
         function load() {
+            // load latest news
             ddiv = document.getElementById("news");
             ddiv.innerHTML = "Connecting...";
             var tobj=new JSONscriptRequest('http://pipes.yahoo.com/pipes/pipe.run?_id=da8b612e97a6bb4588b1ce27db30efd9&_render=json&_callback=showTweets');
             tobj.buildScriptTag(); // Build the script tag
             tobj.addScriptTag(); // Execute (add) the script tag
             ddiv.innerHTML = "Downloading latest news...";
+            
+            // load version
+            var script = document.createElement('script');
+            script.src = 'http://www.freecadweb.org/version.php?callback=checkVersion';
+            document.body.appendChild(script);
         }
 
         function stripTags(text) {
@@ -294,6 +324,15 @@ page = """
             font-size: 0.7em;
             font-weight: normal;
         }
+        
+        #versionbox {
+            float: right;
+            text-align: right;
+            font-size: 0.33em;
+            font-weight: normal;
+            padding-right: 20px;
+            letter-spacing: 0;
+        }
 
         #description {
             background: #windowcolor;
@@ -329,7 +368,7 @@ page = """
 
   <body onload="load()">
 
-    <h1><img src="FreeCAD.png">&nbsp;""" + text01 + """</h1>
+    <h1><img src="FreeCAD.png">&nbsp;""" + text01 + """<div id=versionbox>&nbsp</div></h1>
 
     <div id="description">
       &nbsp;
