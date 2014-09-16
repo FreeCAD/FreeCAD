@@ -392,7 +392,7 @@ class _CommandWindow:
         self.FORMAT = DraftGui.makeFormatSpec(self.DECIMALS,'Length')
         
         # auto mode
-        if sel:
+        if sel and FreeCADGui.Selection.getSelectionEx():
             obj = sel[0]
             if Draft.getType(obj) in AllowedHosts:
                 # make sure only one face is selected

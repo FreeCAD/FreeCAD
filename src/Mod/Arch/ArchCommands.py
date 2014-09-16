@@ -140,8 +140,6 @@ def removeComponents(objectsList,host=None):
             for o in objectsList:
                 if not o in s:
                     s.append(o)
-                    if FreeCAD.GuiUp:
-                        o.ViewObject.hide()
                     if Draft.getType(o) == "Window":
                         # fix for sketch-based windows
                         if o.Base:
@@ -158,7 +156,10 @@ def removeComponents(objectsList,host=None):
                                     if o.Base.ExternalGeometry[i][0].Name == host.Name:
                                         o.Base.delExternal(i)
                                         FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                                        break                                        
+                                        break
+                    else:
+                        if FreeCAD.GuiUp:
+                            o.ViewObject.hide()
             host.Subtractions = s
     else:
         for o in objectsList:
