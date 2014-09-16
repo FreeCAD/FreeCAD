@@ -48,6 +48,7 @@
 # include <QTimer>
 # include <QFileInfo>
 # include <QDesktopServices>
+# include <QMenu>
 #endif
 
 #include "BrowserView.h"
@@ -85,6 +86,33 @@ void WebView::wheelEvent(QWheelEvent *event)
       return;
   }
   QWebView::wheelEvent(event);
+}
+
+void WebView::contextMenuEvent(QContextMenuEvent *event)
+{
+    QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
+    if (!r.linkUrl().isEmpty()) {
+        QMenu menu(this);
+        menu.addAction(pageAction(QWebPage::OpenLink));
+        
+        // building a custom signal for external browser action
+        QSignalMapper* signalMapper = new QSignalMapper (this);
+        QAction* extAction = menu.addAction(tr("Open in External Browser"));
+        connect (extAction, SIGNAL(triggered()), signalMapper, SLOT(map()));
+        signalMapper->setMapping(extAction,r.linkUrl().toString());
+        connect (signalMapper, SIGNAL(mapped(const QString &)), this, SLOT(openLinkInExternalBrowser(const QString &)));
+        
+        menu.addAction(pageAction(QWebPage::DownloadLinkToDisk));
+        menu.addAction(pageAction(QWebPage::CopyLinkToClipboard));
+        menu.exec(mapToGlobal(event->pos()));
+        return;
+    }
+    QWebView::contextMenuEvent(event);
+}
+
+void WebView::openLinkInExternalBrowser(const QString& url)
+{   
+    QDesktopServices::openUrl(QUrl(url));
 }
 
 /* TRANSLATOR Gui::BrowserView */
