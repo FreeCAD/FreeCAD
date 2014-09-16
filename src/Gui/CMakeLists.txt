@@ -684,7 +684,19 @@ SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 #quarter sources
 FILE(GLOB_RECURSE Quarter_CPP_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.cpp)
 FILE(GLOB_RECURSE Quarter_H_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} Quarter/*.h)
-qt4_wrap_cpp(Quarter_MOC_SRCS ${Quarter_H_SRC})
+
+SET(Quarter_MOC_HDR
+    Quarter/SignalThread.h
+    Quarter/InteractionMode.h
+    Quarter/SensorManager.h
+    Quarter/ContextMenu.h
+    Quarter/eventhandlers/FocusHandler.h
+    Quarter/eventhandlers/DragDropHandler.h
+    Quarter/eventhandlers/EventFilter.h
+    Quarter/QuarterWidget.h
+)  
+qt4_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
+
 SET(Quarter_SRCS 
     ${Quarter_CPP_SRC} 
     ${Quarter_H_SRC}
