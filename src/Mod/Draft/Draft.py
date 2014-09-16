@@ -4910,7 +4910,7 @@ class _ShapeString(_DraftObject):
                 try:
                     testFace = Part.Face(testWire)
                 except:
-                    stricky = True
+                    sticky = True
                 else:
                     if not testFace.isValid():
                         sticky = True
