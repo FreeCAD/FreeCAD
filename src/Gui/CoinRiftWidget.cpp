@@ -33,6 +33,8 @@
 #include "PreCompiled.h"
 #include "CoinRiftWidget.h"
 
+#include <Base/Console.h>
+
 #if BUILD_VR
 
 
@@ -318,6 +320,10 @@ void CoinRiftWidget::paintGL()
 		SbVec3f riftPosition =   SbVec3f(eyePose[eye].Position.x,
 										 eyePose[eye].Position.y,
 										 eyePose[eye].Position.z);
+
+		//Base::Console().Log("Pos: (%d) %f, %f, %f \n",eye, eyePose[eye].Position.x,
+		//								 eyePose[eye].Position.y,
+		//								 eyePose[eye].Position.z);
 
         //SbVec3f originalPosition(camera[eye]->position.getValue());
 

@@ -99,13 +99,14 @@ public:
 	void setBase(const SbVec3f &pos){basePosition=pos;}
 	void setBackgoundColor(const SbColor &Col){BackgroundColor = Col;}
 
+	SbVec3f basePosition;
+
 protected:
 	void handlingSafetyWarning(void);
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);
 
-	SbVec3f basePosition;
 	SbColor BackgroundColor;
 };
 
