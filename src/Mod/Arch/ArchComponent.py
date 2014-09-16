@@ -639,6 +639,10 @@ class ViewProviderComponent:
         return
 
     def onChanged(self,vobj,prop):
+        if prop == "Visibility":
+            for obj in vobj.Object.Additions+vobj.Object.Subtractions:
+                if Draft.getType(obj) == "Window":
+                    obj.ViewObject.Visibility = vobj.Visibility
         return
 
     def attach(self,vobj):
