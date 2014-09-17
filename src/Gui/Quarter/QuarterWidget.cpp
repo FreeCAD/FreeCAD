@@ -79,6 +79,8 @@
 #include <Quarter/eventhandlers/EventFilter.h>
 #include <Quarter/eventhandlers/DragDropHandler.h>
 
+#include <ctime>
+
 #include "InteractionMode.h"
 #include "QuarterWidgetP.h"
 #include "QuarterP.h"
@@ -671,6 +673,8 @@ void QuarterWidget::resizeEvent(QResizeEvent* event)
 */
 void QuarterWidget::paintEvent(QPaintEvent* event)
 {       
+    std::clock_t begin = std::clock();
+    
     if(!initialized) {
         glEnable(GL_DEPTH_TEST);
         this->getSoRenderManager()->reinitialize();
@@ -731,6 +735,9 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     // process the delay queue the next time we enter this function,
     // unless we get here after a call to redraw().
     PRIVATE(this)->processdelayqueue = true;
+    
+    std::clock_t end = std::clock();
+    renderTime = double(double(end-begin)/CLOCKS_PER_SEC)*1000.0;
 }
 
 bool QuarterWidget::viewportEvent(QEvent* event)
