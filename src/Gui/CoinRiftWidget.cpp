@@ -63,13 +63,13 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
         throw;
     }
 
-	if (!ovrHmd_ConfigureTracking (hmd, ovrTrackingCap_Orientation |
-										ovrTrackingCap_MagYawCorrection |
-										ovrTrackingCap_Position, 
-										ovrTrackingCap_Orientation |
-										ovrTrackingCap_MagYawCorrection |
-										ovrTrackingCap_Position
-										)) { // Capabilities we require.
+    if (!ovrHmd_ConfigureTracking (hmd, ovrTrackingCap_Orientation |
+                                        ovrTrackingCap_MagYawCorrection |
+                                        ovrTrackingCap_Position, 
+                                        ovrTrackingCap_Orientation |
+                                        ovrTrackingCap_MagYawCorrection |
+                                        ovrTrackingCap_Position
+                                        )) { // Capabilities we require.
         qDebug() << "Could not start Rift motion sensor.";
         throw;
     }
@@ -86,7 +86,7 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     renderer = new SoOffscreenRenderer(SbViewportRegion(std::max(recommenedTex0Size.w, recommenedTex0Size.w),
                                                         std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
     renderer->setComponents(SoOffscreenRenderer::RGB_TRANSPARENCY);
-	BackgroundColor = SbColor(.0f, .0f, .8f);
+    BackgroundColor = SbColor(.0f, .0f, .8f);
     renderer->setBackgroundColor(BackgroundColor);
 #endif
 #ifdef USE_FRAMEBUFFER
@@ -95,7 +95,7 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
                                                        std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
     m_sceneManager->setBackgroundColor(SbColor(.0f, .0f, .8f));
 #endif
-	basePosition = SbVec3f(0.0f, 0.0f, 5.0f);
+    basePosition = SbVec3f(0.0f, 0.0f, 5.0f);
 
     scene = new SoSeparator(0); // Placeholder.
     for (int eye = 0; eye < 2; eye++) {
@@ -151,11 +151,11 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
 
     bool VSyncEnabled(false); // TODO This is a guess.
     if (!ovrHmd_ConfigureRendering( hmd, 
-									&cfg.Config, 
-									/*(VSyncEnabled ? 0 : ovrHmdCap_NoVSync),*/
+                                    &cfg.Config, 
+                                    /*(VSyncEnabled ? 0 : ovrHmdCap_NoVSync),*/
                                     DistortionCaps, 
-									hmd->DefaultEyeFov,//eyes, 
-									eyeRenderDesc)) {
+                                    hmd->DefaultEyeFov,//eyes, 
+                                    eyeRenderDesc)) {
         qDebug() << "Could not configure OVR rendering.";
         throw;
     }
@@ -243,7 +243,7 @@ void CoinRiftWidget::initializeGL()
         OVR::CAPI::GL::glGenFramebuffers(1, &frameBufferID[eye]);
         OVR::CAPI::GL::glBindFramebuffer(GL_FRAMEBUFFER_EXT, frameBufferID[eye]);
         // Create the render buffer.
-		// TODO: need to check for OpenGl 3 or higher and load the functions JR 2014
+        // TODO: need to check for OpenGl 3 or higher and load the functions JR 2014
         /*OVR::CAPI::GL::*/glGenRenderbuffers(1, &depthBufferID[eye]);
         /*OVR::CAPI::GL::*/glBindRenderbuffer(GL_RENDERBUFFER_EXT, depthBufferID[eye]);
         /*OVR::CAPI::GL::*/glRenderbufferStorage(GL_RENDERBUFFER_EXT,
@@ -298,12 +298,12 @@ void CoinRiftWidget::paintGL()
     const int ms(1000 / 75 /*fps*/);
     QTimer::singleShot(ms, this, SLOT(updateGL()));
 
-	// handling the sfety warning
-	handlingSafetyWarning();
+    // handling the sfety warning
+    handlingSafetyWarning();
 
     makeCurrent();
 
-	ovrPosef eyePose[2];
+    ovrPosef eyePose[2];
 
     glEnable(GL_TEXTURE_2D);
 
@@ -312,18 +312,21 @@ void CoinRiftWidget::paintGL()
         ovrEyeType eye = hmd->EyeRenderOrder[eyeIndex];
         eyePose[eye] = ovrHmd_GetEyePose(hmd, eye);
 
-        camera[eye]->orientation.setValue(eyePose[eye].Orientation.x,
-                                          eyePose[eye].Orientation.y,
-                                          eyePose[eye].Orientation.z,
-                                          eyePose[eye].Orientation.w);
 
-		SbVec3f riftPosition =   SbVec3f(eyePose[eye].Position.x,
-										 eyePose[eye].Position.y,
-										 eyePose[eye].Position.z);
+        SbRotation    riftOrientation(  eyePose[eye].Orientation.x,
+                                        eyePose[eye].Orientation.y,
+                                        eyePose[eye].Orientation.z,
+                                        eyePose[eye].Orientation.w);
 
-		//Base::Console().Log("Pos: (%d) %f, %f, %f \n",eye, eyePose[eye].Position.x,
-		//								 eyePose[eye].Position.y,
-		//								 eyePose[eye].Position.z);
+        camera[eye]->orientation.setValue(riftOrientation);
+
+        SbVec3f riftPosition =   SbVec3f(eyePose[eye].Position.x,
+                                         eyePose[eye].Position.y,
+                                         eyePose[eye].Position.z);
+
+        //Base::Console().Log("Pos: (%d) %f, %f, %f \n",eye, eyePose[eye].Position.x,
+        //                                 eyePose[eye].Position.y,
+        //                                 eyePose[eye].Position.z);
 
         //SbVec3f originalPosition(camera[eye]->position.getValue());
 
@@ -337,8 +340,8 @@ void CoinRiftWidget::paintGL()
         renderer->render(rootScene[eye]);
         Q_ASSERT(!glGetError());
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-					 eyeTexture[eye].Header.TextureSize.w,
-					 eyeTexture[eye].Header.TextureSize.h,
+                     eyeTexture[eye].Header.TextureSize.w,
+                     eyeTexture[eye].Header.TextureSize.h,
                      0, GL_RGBA /*GL_BGRA*/, GL_UNSIGNED_BYTE, renderer->getBuffer());
         Q_ASSERT(!glGetError());
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -366,8 +369,8 @@ void CoinRiftWidget::paintGL()
 
     }
     
-	// Submit the texture for distortion.     
-	ovrHmd_EndFrame(hmd, eyePose, eyeTexture);
+    // Submit the texture for distortion.     
+    ovrHmd_EndFrame(hmd, eyePose, eyeTexture);
 
     // Swap buffers.
     glDisable(GL_CULL_FACE);
@@ -382,32 +385,32 @@ void CoinRiftWidget::paintGL()
 
 void CoinRiftWidget::handlingSafetyWarning(void)
 {
-	// Health and Safety Warning display state.
-	ovrHSWDisplayState hswDisplayState;
-	ovrHmd_GetHSWDisplayState(hmd, &hswDisplayState);
-	if (hswDisplayState.Displayed)
-	{
-		// Dismiss the warning if the user pressed the appropriate key or if the user
-		// is tapping the side of the HMD.
-		// If the user has requested to dismiss the warning via keyboard or controller input...
-		//if (Util_GetAndResetHSWDismissedState())
-			ovrHmd_DismissHSWDisplay(hmd);
-		//else
-		//{
-		//	// Detect a moderate tap on the side of the HMD.
-		//	ovrTrackingState ts = ovrHmd_GetTrackingState(hmd, ovr_GetTimeInSeconds());
-		//	if (ts.StatusFlags & ovrStatus_OrientationTracked)
-		//	{
-		//		const OVR::Vector3f v(ts.RawSensorData.Accelerometer.x,
-		//						      ts.RawSensorData.Accelerometer.y,
-		//		                      ts.RawSensorData.Accelerometer.z);
-		//		// Arbitrary value and representing moderate tap on the side of the DK2 Rift.
-		//		if (v.LengthSq() > 250.f)
-		//			ovrHmd_DismissHSWDisplay(hmd);
-		//	}
-		//}
-	}
-	
+    // Health and Safety Warning display state.
+    ovrHSWDisplayState hswDisplayState;
+    ovrHmd_GetHSWDisplayState(hmd, &hswDisplayState);
+    if (hswDisplayState.Displayed)
+    {
+        // Dismiss the warning if the user pressed the appropriate key or if the user
+        // is tapping the side of the HMD.
+        // If the user has requested to dismiss the warning via keyboard or controller input...
+        //if (Util_GetAndResetHSWDismissedState())
+            ovrHmd_DismissHSWDisplay(hmd);
+        //else
+        //{
+        //    // Detect a moderate tap on the side of the HMD.
+        //    ovrTrackingState ts = ovrHmd_GetTrackingState(hmd, ovr_GetTimeInSeconds());
+        //    if (ts.StatusFlags & ovrStatus_OrientationTracked)
+        //    {
+        //        const OVR::Vector3f v(ts.RawSensorData.Accelerometer.x,
+        //                              ts.RawSensorData.Accelerometer.y,
+        //                              ts.RawSensorData.Accelerometer.z);
+        //        // Arbitrary value and representing moderate tap on the side of the DK2 Rift.
+        //        if (v.LengthSq() > 250.f)
+        //            ovrHmd_DismissHSWDisplay(hmd);
+        //    }
+        //}
+    }
+    
 }
 
 
