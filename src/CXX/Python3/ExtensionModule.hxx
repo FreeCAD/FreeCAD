@@ -66,6 +66,7 @@ namespace Py
         const std::string m_module_name;
         const std::string m_full_module_name;
         MethodTable m_method_table;
+        PyModuleDef m_module_def;
         PyObject *m_module;
 
     private:
@@ -80,8 +81,6 @@ namespace Py
     extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple, PyObject * );
     extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple, PyObject *_args );
     extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple, PyObject *_args, PyObject *_keywords );
-
-    extern "C" void do_not_dealloc( void * );
 
     template<TEMPLATE_TYPENAME T>
     class ExtensionModule : public ExtensionModuleBase
@@ -133,11 +132,11 @@ namespace Py
             {
                 MethodDefExt<T> *method_def = (*i).second;
 
-                static PyObject *self = PyCObject_FromVoidPtr( this, do_not_dealloc );
+                static PyObject *self = PyCapsule_New( this, NULL, NULL );
 
                 Tuple args( 2 );
                 args[0] = Object( self, true );
-                args[1] = Object( PyCObject_FromVoidPtr( method_def, do_not_dealloc ), true );
+                args[1] = Object( PyCapsule_New( method_def, NULL, NULL ), true );
 
                 PyObject *func = PyCFunction_New
                                     (
@@ -195,8 +194,8 @@ namespace Py
         //
         // prevent the compiler generating these unwanted functions
         //
-        ExtensionModule( const ExtensionModule<T> & );  //unimplemented
-        void operator=( const ExtensionModule<T> & );   //unimplemented
+        ExtensionModule( const ExtensionModule<T> & );    //unimplemented
+        void operator=( const ExtensionModule<T> & );    //unimplemented
     };
 } // Namespace Py
 

@@ -40,8 +40,9 @@
 
 #include "CXX/WrapPython.h"
 #include "CXX/Version.hxx"
-#include "CXX/Config.hxx"
-#include "CXX/IndirectPythonInterface.hxx"
+#include "CXX/Python3/Config.hxx"
+#include "CXX/Python3/CxxDebug.hxx"
+#include "CXX/Python3/IndirectPythonInterface.hxx"
 
 #include <string>
 #include <iostream>
@@ -56,23 +57,23 @@ namespace Py
     class Exception
     {
     public:
-        Exception( ExtensionExceptionType &exception, const std::string& reason );
+        Exception( ExtensionExceptionType &exception, const std::string &reason );
         Exception( ExtensionExceptionType &exception, Object &reason );
 
         explicit Exception ()
         {}
         
-        Exception (const std::string& reason)
+        Exception (const std::string &reason)
         {
-            PyErr_SetString (Py::_Exc_RuntimeError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_RuntimeError(), reason.c_str() );
         }
         
-        Exception (PyObject* exception, const std::string& reason)
+        Exception( PyObject *exception, const std::string &reason )
         {
-            PyErr_SetString (exception, reason.c_str());
+            PyErr_SetString( exception, reason.c_str() );
         }
         
-        Exception (PyObject* exception, Object &reason);        
+        Exception( PyObject *exception, Object &reason );        
 
         void clear() // clear the error
         // technically but not philosophically const
@@ -117,9 +118,9 @@ namespace Py
     {
     public:
         TypeError (const std::string& reason)
-            : StandardError()
+        : StandardError()
         {
-            PyErr_SetString (Py::_Exc_TypeError(),reason.c_str());
+            PyErr_SetString( Py::_Exc_TypeError(),reason.c_str() );
         }
     };
     
@@ -127,9 +128,9 @@ namespace Py
     {
     public:
         IndexError (const std::string& reason)
-            : LookupError()
+        : LookupError()
         {
-            PyErr_SetString (Py::_Exc_IndexError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_IndexError(), reason.c_str() );
         }
     };
     
@@ -137,9 +138,9 @@ namespace Py
     {
     public:
         AttributeError (const std::string& reason)
-            : StandardError()
+        : StandardError()
         {
-            PyErr_SetString (Py::_Exc_AttributeError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_AttributeError(), reason.c_str() );
         }        
     };
     
@@ -147,9 +148,9 @@ namespace Py
     {
     public:
         NameError (const std::string& reason)
-            : StandardError()
+        : StandardError()
         {
-            PyErr_SetString (Py::_Exc_NameError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_NameError(), reason.c_str() );
         }
     };
     
@@ -157,9 +158,9 @@ namespace Py
     {
     public:
         RuntimeError (const std::string& reason)
-            : StandardError()
+        : StandardError()
         {
-            PyErr_SetString (Py::_Exc_RuntimeError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_RuntimeError(), reason.c_str() );
         }
     };
     
@@ -177,9 +178,9 @@ namespace Py
     {
     public:
         SystemError (const std::string& reason)
-            : StandardError()
+        : StandardError()
         {
-            PyErr_SetString (Py::_Exc_SystemError(),reason.c_str());
+            PyErr_SetString( Py::_Exc_SystemError(),reason.c_str() );
         }
     };
     
@@ -187,9 +188,9 @@ namespace Py
     {
     public:
         KeyError (const std::string& reason)
-            : LookupError()
+        : LookupError()
         {
-            PyErr_SetString (Py::_Exc_KeyError(),reason.c_str());
+            PyErr_SetString( Py::_Exc_KeyError(),reason.c_str() );
         }
     };
     
@@ -198,9 +199,9 @@ namespace Py
     {
     public:
         ValueError (const std::string& reason)
-            : StandardError()
+        : StandardError()
         {
-            PyErr_SetString (Py::_Exc_ValueError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_ValueError(), reason.c_str() );
         }
     };
     
@@ -208,9 +209,9 @@ namespace Py
     {
     public:
         OverflowError (const std::string& reason)
-            : ArithmeticError()
+        : ArithmeticError()
         {
-            PyErr_SetString (Py::_Exc_OverflowError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_OverflowError(), reason.c_str() );
         }        
     };
     
@@ -218,9 +219,9 @@ namespace Py
     {
     public:
         ZeroDivisionError (const std::string& reason)
-            : ArithmeticError() 
+        : ArithmeticError() 
         {
-            PyErr_SetString (Py::_Exc_ZeroDivisionError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_ZeroDivisionError(), reason.c_str() );
         }
     };
     
@@ -228,9 +229,9 @@ namespace Py
     {
     public:
         FloatingPointError (const std::string& reason)
-            : ArithmeticError() 
+        : ArithmeticError() 
         {
-            PyErr_SetString (Py::_Exc_FloatingPointError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_FloatingPointError(), reason.c_str() );
         }
     };
     
@@ -238,9 +239,9 @@ namespace Py
     {
     public:
         MemoryError (const std::string& reason)
-            : StandardError()
+        : StandardError()
         {
-            PyErr_SetString (Py::_Exc_MemoryError(), reason.c_str());
+            PyErr_SetString( Py::_Exc_MemoryError(), reason.c_str() );
         }    
     };
     
@@ -248,9 +249,9 @@ namespace Py
     {
     public:
         SystemExit (const std::string& reason)
-            : StandardError() 
+        : StandardError() 
         {
-            PyErr_SetString (Py::_Exc_SystemExit(),reason.c_str());
+            PyErr_SetString( Py::_Exc_SystemExit(),reason.c_str() );
         }
     };
 

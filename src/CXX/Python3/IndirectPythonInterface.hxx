@@ -78,14 +78,10 @@ PyObject * _Exc_ZeroDivisionError();
 PyObject * _Exc_WindowsError();
 #endif
 
-PyObject * _Exc_MemoryErrorInst();
-
-#if PY_MAJOR_VERSION >= 2
 PyObject * _Exc_IndentationError();
 PyObject * _Exc_TabError();
 PyObject * _Exc_UnboundLocalError();
 PyObject * _Exc_UnicodeError();
-#endif
 
 //
 //    Wrap Object variables as function calls
@@ -112,9 +108,6 @@ bool _Instance_Check( PyObject *op );
 
 PyTypeObject * _Method_Type();
 bool _Method_Check( PyObject *op );
-
-PyTypeObject * _CObject_Type();
-bool _CObject_Check( PyObject *op );
 
 PyTypeObject * _Complex_Type();
 bool _Complex_Check( PyObject *op );
@@ -161,11 +154,11 @@ bool _Range_Check( PyObject *op );
 PyTypeObject * _Slice_Type();
 bool _Slice_Check( PyObject *op );
 
-PyTypeObject * _String_Type();
-bool _String_Check( PyObject *op );
-
 PyTypeObject * _Unicode_Type();
 bool _Unicode_Check( PyObject *op );
+
+PyTypeObject * _Bytes_Type();
+bool _Bytes_Check( PyObject *op );
 
 PyTypeObject * _TraceBack_Type();
 bool _TraceBack_Check( PyObject *v );
@@ -173,26 +166,18 @@ bool _TraceBack_Check( PyObject *v );
 PyTypeObject * _Tuple_Type();
 bool _Tuple_Check( PyObject *op );
 
-#if PY_MAJOR_VERSION >= 2
-PyTypeObject * _Unicode_Type();
-bool _Unicode_Check( PyObject *op );
-#endif
-
 int &_Py_DebugFlag();
 int &_Py_InteractiveFlag();
 int &_Py_OptimizeFlag();
 int &_Py_NoSiteFlag();
 int &_Py_TabcheckFlag();
 int &_Py_VerboseFlag();
-
-#if PY_MAJOR_VERSION >= 2
 int &_Py_UnicodeFlag();
-#endif
 
 void _XINCREF( PyObject *op );
 void _XDECREF( PyObject *op );
 
 char *__Py_PackageContext();
-}
+};
 
 #endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__

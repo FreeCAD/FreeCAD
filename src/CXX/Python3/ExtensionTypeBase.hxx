@@ -70,7 +70,9 @@ namespace Py
         virtual void reinit( Tuple &args, Dict &kwds );
 
         // object basics
+#ifdef PYCXX_PYTHON_2TO3
         virtual int print( FILE *, int );
+#endif
         virtual Object getattr( const char * );
         virtual int setattr( const char *, const Object & );
         virtual Object getattro( const String & );
@@ -91,9 +93,7 @@ namespace Py
         virtual Object sequence_concat( const Object & );
         virtual Object sequence_repeat( Py_ssize_t );
         virtual Object sequence_item( Py_ssize_t );
-        virtual Object sequence_slice( Py_ssize_t, Py_ssize_t );
         virtual int sequence_ass_item( Py_ssize_t, const Object & );
-        virtual int sequence_ass_slice( Py_ssize_t, Py_ssize_t, const Object & );
 
         // Mapping
         virtual int mapping_length();
@@ -101,7 +101,6 @@ namespace Py
         virtual int mapping_ass_subscript( const Object &, const Object & );
 
         // Number
-        virtual int number_nonzero();
         virtual Object number_negative();
         virtual Object number_positive();
         virtual Object number_absolute();
@@ -109,12 +108,9 @@ namespace Py
         virtual Object number_int();
         virtual Object number_float();
         virtual Object number_long();
-        virtual Object number_oct();
-        virtual Object number_hex();
         virtual Object number_add( const Object & );
         virtual Object number_subtract( const Object & );
         virtual Object number_multiply( const Object & );
-        virtual Object number_divide( const Object & );
         virtual Object number_remainder( const Object & );
         virtual Object number_divmod( const Object & );
         virtual Object number_lshift( const Object & );
@@ -125,9 +121,8 @@ namespace Py
         virtual Object number_power( const Object &, const Object & );
 
         // Buffer
-        virtual Py_ssize_t buffer_getreadbuffer( Py_ssize_t, void** );
-        virtual Py_ssize_t buffer_getwritebuffer( Py_ssize_t, void** );
-        virtual Py_ssize_t buffer_getsegcount( Py_ssize_t* );
+        virtual int buffer_get( Py_buffer *, int flags );
+        virtual int buffer_release( Py_buffer *buf );
 
     public:
         // helper functions to call function fn_name with 0 to 9 args
