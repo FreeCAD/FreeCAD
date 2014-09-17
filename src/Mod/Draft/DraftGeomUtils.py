@@ -579,20 +579,21 @@ def isLine(bsp):
             return False
     return True
     
-def vpoint(vertex):
-    """Turn a vertex into a triple of its point coordinates.  This is
-    so we can put it into a dictionary; vertexes hash on their identity
-    and compare equal on object identity rather than coordinates.
-    And vertex.Point compares on value, but is mutable so it doesn't
-    have a hash value.
-    """
-    p = vertex.Point
-    return (p.x, p.y, p.z)
-
 def sortEdges(edges):
     """Sort edges in path order, i.e., such that the end point of edge N
     equals the start point of edge N+1.
     """
+    
+    def vpoint(vertex):
+        """Turn a vertex into a triple of its point coordinates.  This is
+        so we can put it into a dictionary; vertexes hash on their identity
+        and compare equal on object identity rather than coordinates.
+        And vertex.Point compares on value, but is mutable so it doesn't
+        have a hash value.
+        """
+        p = vertex.Point
+        return (p.x, p.y, p.z)
+    
     # Build a dictionary of vertexes according to their end points.
     # Each entry is a set of vertexes that starts, or ends, at the
     # given vertex position.
@@ -645,12 +646,16 @@ def sortEdges(edges):
                 del sdict[v]
             v = e.Vertexes[1]
         except KeyError:
-            eset = edict[v]
-            e = eset.pop()
-            if not eset:
-                del edict[v]
-            v = e.Vertexes[0]
-            e = e.reverse()
+            try:
+                eset = edict[v]
+                e = eset.pop()
+                if not eset:
+                    del edict[v]
+                v = e.Vertexes[0]
+                e.reverse()
+            except KeyError:
+                print "DraftGeomUtils.sortEdges failed"
+                return sortEdgesOld(edges)
         ret.append(e)
         v = vpoint(v)
     # All done.
@@ -708,17 +713,17 @@ def sortEdgesOld(lEdges, aVertex=None):
             if len(lEdges[i/2].Vertexes) > 1:
                 result = lookfor(lEdges[i/2].Vertexes[i%2],lEdges)
                 if result[0] == 1 :  # Have we found an end ?
-                    olEdges = sortEdges(lEdges, result[3].Vertexes[result[2]])
+                    olEdges = sortEdgesOld(lEdges, result[3].Vertexes[result[2]])
                     return olEdges
         # if the wire is closed there is no end so choose 1st Vertex
         # print "closed wire, starting from ",lEdges[0].Vertexes[0].Point
-        return sortEdges(lEdges, lEdges[0].Vertexes[0]) 
+        return sortEdgesOld(lEdges, lEdges[0].Vertexes[0]) 
     else :
         #print "looking ",aVertex.Point
         result = lookfor(aVertex,lEdges)
         if result[0] != 0 :
             del lEdges[result[1]]
-            next = sortEdges(lEdges, result[3].Vertexes[-((-result[2])^1)])
+            next = sortEdgesOld(lEdges, result[3].Vertexes[-((-result[2])^1)])
             #print "result ",result[3].Vertexes[0].Point,"    ",result[3].Vertexes[1].Point, " compared to ",aVertex.Point
             if aVertex.Point == result[3].Vertexes[0].Point:
                 #print "keeping"
