@@ -44,7 +44,7 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
 
     rotation1     = new SoRotationXYZ   ;
     rotation1->axis.setValue(SoRotationXYZ::X);
-    rotation1->angle.setValue(M_PI/2);
+    rotation1->angle.setValue(-M_PI/2);
     workplace->addChild(rotation1);
 
     rotation2     = new SoRotationXYZ   ;
