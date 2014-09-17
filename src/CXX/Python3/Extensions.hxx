@@ -47,9 +47,9 @@
 
 #include "CXX/WrapPython.h"
 #include "CXX/Version.hxx"
-#include "CXX/Python2/Config.hxx"
-#include "CXX/Python2/CxxDebug.hxx"
-#include "CXX/Python2/Objects.hxx"
+#include "CXX/Python3/Config.hxx"
+#include "CXX/Python3/CxxDebug.hxx"
+#include "CXX/Python3/Objects.hxx"
 
 extern "C" { extern PyObject py_object_initializer; }
 
@@ -179,11 +179,11 @@ namespace Py
     };
 } // Namespace Py
 
-#include "CXX/Python2/ExtensionModule.hxx"
-#include "CXX/Python2/PythonType.hxx"
-#include "CXX/Python2/ExtensionTypeBase.hxx"
-#include "CXX/Python2/ExtensionOldType.hxx"
-#include "CXX/Python2/ExtensionType.hxx"
+#include "CXX/Python3/ExtensionModule.hxx"
+#include "CXX/Python3/PythonType.hxx"
+#include "CXX/Python3/ExtensionTypeBase.hxx"
+#include "CXX/Python3/ExtensionOldType.hxx"
+#include "CXX/Python3/ExtensionType.hxx"
 
 // End of CXX_Extensions.h
 #endif

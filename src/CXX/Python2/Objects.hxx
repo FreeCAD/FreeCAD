@@ -52,7 +52,7 @@
 
 namespace Py
 {
-    typedef size_t sequence_index_type;    // type of an index into a sequence
+    typedef int sequence_index_type;    // type of an index into a sequence
 
     // Forward declarations
     class Object;
@@ -141,7 +141,7 @@ namespace Py
     // which you can use in accepts when writing a wrapper class.
     // See Demo/range.h and Demo/range.cxx for an example.
 
-    class PYCXX_EXPORT Object
+    class Object
     {
     private:
         // the pointer to the Python object
@@ -469,11 +469,11 @@ namespace Py
 
     // TMM: 31May'01 - Added the #ifndef so I can exlude iostreams.
 #ifndef CXX_NO_IOSTREAMS
-    PYCXX_EXPORT std::ostream& operator<< (std::ostream& os, const Object& ob);
+    std::ostream& operator<< (std::ostream& os, const Object& ob);
 #endif
 
     // Class Type
-    class PYCXX_EXPORT Type: public Object
+    class Type: public Object
     {
     public:
         explicit Type (PyObject* pyob, bool owned = false): Object(pyob, owned)
@@ -519,7 +519,7 @@ namespace Py
 
     // ===============================================
     // class boolean
-    class PYCXX_EXPORT Boolean: public Object
+    class Boolean: public Object
     {
     public:
         // Constructor
@@ -582,7 +582,7 @@ namespace Py
 
     // ===============================================
     // class Int
-    class PYCXX_EXPORT Int: public Object
+    class Int: public Object
     {
     public:
         // Constructor
@@ -695,7 +695,7 @@ namespace Py
 
     // ===============================================
     // class Long
-    class PYCXX_EXPORT Long: public Object
+    class Long: public Object
     {
     public:
         // Constructor
@@ -798,7 +798,7 @@ namespace Py
 #ifdef HAVE_LONG_LONG
     // ===============================================
     // class LongLong
-    class PYCXX_EXPORT LongLong: public Object
+    class LongLong: public Object
     {
     public:
         // Constructor
@@ -927,7 +927,7 @@ namespace Py
     // ===============================================
     // class Float
     //
-    class PYCXX_EXPORT Float: public Object
+    class Float: public Object
     {
     public:
         // Constructor
@@ -1004,7 +1004,7 @@ namespace Py
 
     // ===============================================
     // class Complex
-    class PYCXX_EXPORT Complex: public Object
+    class Complex: public Object
     {
     public:
         // Constructor
@@ -1115,7 +1115,7 @@ namespace Py
     {
     protected:
         SeqBase<T>& s; // the sequence
-        size_t  offset; // item number
+        int offset; // item number
         T the_item; // lvalue
     public:
 
@@ -1130,7 +1130,7 @@ namespace Py
         // TMM: added this seqref ctor for use with STL algorithms
         seqref (Object& obj)
             : s(dynamic_cast< SeqBase<T>&>(obj))
-            , offset( 0 )
+            , offset( NULL )
             , the_item(s.getItem(offset))
         {}
         ~seqref()
@@ -1449,7 +1449,7 @@ namespace Py
         protected:
             friend class SeqBase<T>;
             SeqBase<T>* seq;
-            size_type count;
+            int count;
 
         public:
             ~iterator ()
@@ -1460,7 +1460,7 @@ namespace Py
                 , count( 0 )
             {}
 
-            iterator (SeqBase<T>* s, size_type where)
+            iterator (SeqBase<T>* s, int where)
                 : seq( s )
                 , count( where )
             {}
@@ -1587,7 +1587,7 @@ namespace Py
             sequence_index_type count;
 
         private:
-            const_iterator (const SeqBase<T>* s, size_type where)
+            const_iterator (const SeqBase<T>* s, int where)
                 : seq( s )
                 , count( where )
             {}
@@ -1724,19 +1724,19 @@ namespace Py
     template <TEMPLATE_TYPENAME T> bool operator<=(const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& right);
     template <TEMPLATE_TYPENAME T> bool operator>=(const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& right); 
 
-    PYCXX_EXPORT extern bool operator==(const Sequence::iterator& left, const Sequence::iterator& right);
-    PYCXX_EXPORT extern bool operator!=(const Sequence::iterator& left, const Sequence::iterator& right);
-    PYCXX_EXPORT extern bool operator< (const Sequence::iterator& left, const Sequence::iterator& right);
-    PYCXX_EXPORT extern bool operator> (const Sequence::iterator& left, const Sequence::iterator& right);
-    PYCXX_EXPORT extern bool operator<=(const Sequence::iterator& left, const Sequence::iterator& right);
-    PYCXX_EXPORT extern bool operator>=(const Sequence::iterator& left, const Sequence::iterator& right);
+    extern bool operator==(const Sequence::iterator& left, const Sequence::iterator& right);
+    extern bool operator!=(const Sequence::iterator& left, const Sequence::iterator& right);
+    extern bool operator< (const Sequence::iterator& left, const Sequence::iterator& right);
+    extern bool operator> (const Sequence::iterator& left, const Sequence::iterator& right);
+    extern bool operator<=(const Sequence::iterator& left, const Sequence::iterator& right);
+    extern bool operator>=(const Sequence::iterator& left, const Sequence::iterator& right);
 
-    PYCXX_EXPORT extern bool operator==(const Sequence::const_iterator& left, const Sequence::const_iterator& right);
-    PYCXX_EXPORT extern bool operator!=(const Sequence::const_iterator& left, const Sequence::const_iterator& right);
-    PYCXX_EXPORT extern bool operator< (const Sequence::const_iterator& left, const Sequence::const_iterator& right);
-    PYCXX_EXPORT extern bool operator> (const Sequence::const_iterator& left, const Sequence::const_iterator& right);
-    PYCXX_EXPORT extern bool operator<=(const Sequence::const_iterator& left, const Sequence::const_iterator& right);
-    PYCXX_EXPORT extern bool operator>=(const Sequence::const_iterator& left, const Sequence::const_iterator& right); 
+    extern bool operator==(const Sequence::const_iterator& left, const Sequence::const_iterator& right);
+    extern bool operator!=(const Sequence::const_iterator& left, const Sequence::const_iterator& right);
+    extern bool operator< (const Sequence::const_iterator& left, const Sequence::const_iterator& right);
+    extern bool operator> (const Sequence::const_iterator& left, const Sequence::const_iterator& right);
+    extern bool operator<=(const Sequence::const_iterator& left, const Sequence::const_iterator& right);
+    extern bool operator>=(const Sequence::const_iterator& left, const Sequence::const_iterator& right); 
 
     // ==================================================
     // class Char
@@ -1746,7 +1746,7 @@ namespace Py
     typedef std::basic_string<Py_UNICODE> unicodestring;
     extern Py_UNICODE unicode_null_string[1];
 
-    class PYCXX_EXPORT Char: public Object
+    class Char: public Object
     {
     public:
         explicit Char (PyObject *pyob, bool owned = false): Object(pyob, owned)
@@ -1833,7 +1833,7 @@ namespace Py
     // String and Bytes compatible with Python3 version in 6.0.0 PyCXX
     class Bytes;
 
-    class PYCXX_EXPORT String: public SeqBase<Char>
+    class String: public SeqBase<Char>
     {
     public:
         virtual size_type capacity() const
@@ -1885,13 +1885,6 @@ namespace Py
 
         String( const std::string &s, const char *encoding, const char *error="strict" )
         : SeqBase<Char>( PyUnicode_Decode( s.c_str(), s.length(), encoding, error ), true )
-        {
-            validate();
-        }
-
-        String( const std::string &v, std::string::size_type vsize )
-        : SeqBase<Char>(PyString_FromStringAndSize( const_cast<char*>(v.data()),
-                    static_cast<int>( vsize ) ), true)
         {
             validate();
         }
@@ -1989,7 +1982,7 @@ namespace Py
             }
         }
     };
-    class PYCXX_EXPORT Bytes: public SeqBase<Char>
+    class Bytes: public SeqBase<Char>
     {
     public:
         virtual size_type capacity() const
@@ -2015,12 +2008,6 @@ namespace Py
 
         Bytes( const std::string& v )
         : SeqBase<Char>( PyString_FromStringAndSize( const_cast<char*>(v.data()), static_cast<int>( v.length() ) ), true )
-        {
-            validate();
-        }
-
-        Bytes( const std::string& v, std::string::size_type vsize )
-        : SeqBase<Char>(PyString_FromStringAndSize( const_cast<char*>(v.data()), static_cast<int>( vsize ) ), true)
         {
             validate();
         }
@@ -2072,7 +2059,7 @@ namespace Py
 
         String decode( const char *encoding, const char *error="strict" )
         {
-            return Object( PyString_AsDecodedObject( ptr(), encoding, error ) );
+            return Object( PyString_AsDecodedObject( ptr(), encoding, error ), true );
         }
 
         // Queries
@@ -2121,7 +2108,7 @@ namespace Py
 
 #else
     // original PyCXX 5.4.x version of String
-    class PYCXX_EXPORT String: public SeqBase<Char>
+    class String: public SeqBase<Char>
     {
     public:
         virtual size_type capacity() const
@@ -2166,13 +2153,6 @@ namespace Py
 
         String( const std::string &s, const char *encoding, const char *error="strict" )
             : SeqBase<Char>( PyUnicode_Decode( s.c_str(), s.length(), encoding, error ), true )
-        {
-            validate();
-        }
-
-        String( const std::string& v, std::string::size_type vsize )
-            : SeqBase<Char>(PyString_FromStringAndSize( const_cast<char*>(v.data()),
-                    static_cast<int>( vsize ) ), true)
         {
             validate();
         }
@@ -2228,17 +2208,17 @@ namespace Py
         {
             if( isUnicode() )
             {
-                return String( PyUnicode_AsEncodedString( ptr(), encoding, error ) );
+                return String( PyUnicode_AsEncodedString( ptr(), encoding, error ), true );
             }
             else
             {
-                return String( PyString_AsEncodedObject( ptr(), encoding, error ) );
+                return String( PyString_AsEncodedObject( ptr(), encoding, error ), true );
             }
         }
 
         String decode( const char *encoding, const char *error="strict" )
         {
-            return Object( PyString_AsDecodedObject( ptr(), encoding, error ) );
+            return Object( PyString_AsDecodedObject( ptr(), encoding, error ), true );
         }
 
         // Queries
@@ -2290,7 +2270,7 @@ namespace Py
 
     // ==================================================
     // class Tuple
-    class PYCXX_EXPORT Tuple: public Sequence
+    class Tuple: public Sequence
     {
     public:
         virtual void setItem (sequence_index_type offset, const Object&ob)
@@ -2314,7 +2294,7 @@ namespace Py
         }
 
         // New tuple of a given size
-        explicit Tuple (sequence_index_type size = 0)
+        explicit Tuple (int size = 0)
         {
             set(PyTuple_New (size), true);
             validate ();
@@ -2368,11 +2348,11 @@ namespace Py
 
     };
 
-    class PYCXX_EXPORT TupleN: public Tuple
+    class TupleN: public Tuple
     {
     public:
         TupleN()
-        : Tuple( (sequence_index_type)0 )
+        : Tuple( 0 )
         {
         }
 
@@ -2483,7 +2463,7 @@ namespace Py
     // ==================================================
     // class List
 
-    class PYCXX_EXPORT List: public Sequence
+    class List: public Sequence
     {
     public:
         // Constructor
@@ -2496,7 +2476,7 @@ namespace Py
             validate();
         }
         // Creation at a fixed size
-        List (sequence_index_type size = 0)
+        List (int size = 0)
         {
             set(PyList_New (size), true);
             validate();
@@ -2512,7 +2492,7 @@ namespace Py
         // List from a sequence
         List (const Sequence& s): Sequence()
         {
-            sequence_index_type n = s.length();
+            int n = (int)s.length();
             set(PyList_New (n), true);
             validate();
             for (sequence_index_type i=0; i < n; i++)
@@ -2858,7 +2838,7 @@ namespace Py
             return mapref<T>(*this, key);
         }
 
-        size_type length () const
+        int length () const
         {
             return PyMapping_Length (ptr());
         }
@@ -2956,7 +2936,7 @@ namespace Py
             //
             MapBase<T>* map;
             List        keys;       // for iterating over the map
-            size_type   pos;        // index into the keys
+            int         pos;        // index into the keys
 
         private:
             iterator( MapBase<T>* m, List k, int p )
@@ -3059,7 +3039,7 @@ namespace Py
             friend class MapBase<T>;
             const MapBase<T>* map;
             List            keys;   // for iterating over the map
-            size_type       pos;    // index into the keys
+            int             pos;    // index into the keys
 
         private:
             const_iterator( const MapBase<T>* m, List k, int p )
@@ -3148,15 +3128,15 @@ namespace Py
     template <TEMPLATE_TYPENAME T> bool operator==(const EXPLICIT_TYPENAME MapBase<T>::const_iterator& left, const EXPLICIT_TYPENAME MapBase<T>::const_iterator& right);
     template <TEMPLATE_TYPENAME T> bool operator!=(const EXPLICIT_TYPENAME MapBase<T>::const_iterator& left, const EXPLICIT_TYPENAME MapBase<T>::const_iterator& right);
 
-    PYCXX_EXPORT extern bool operator==(const Mapping::iterator& left, const Mapping::iterator& right);
-    PYCXX_EXPORT extern bool operator!=(const Mapping::iterator& left, const Mapping::iterator& right);
-    PYCXX_EXPORT extern bool operator==(const Mapping::const_iterator& left, const Mapping::const_iterator& right);
-    PYCXX_EXPORT extern bool operator!=(const Mapping::const_iterator& left, const Mapping::const_iterator& right);
+    extern bool operator==(const Mapping::iterator& left, const Mapping::iterator& right);
+    extern bool operator!=(const Mapping::iterator& left, const Mapping::iterator& right);
+    extern bool operator==(const Mapping::const_iterator& left, const Mapping::const_iterator& right);
+    extern bool operator!=(const Mapping::const_iterator& left, const Mapping::const_iterator& right);
 
 
     // ==================================================
     // class Dict
-    class PYCXX_EXPORT Dict: public Mapping
+    class Dict: public Mapping
     {
     public:
         // Constructor
@@ -3194,7 +3174,7 @@ namespace Py
         }
     };
 
-    class PYCXX_EXPORT Callable: public Object
+    class Callable: public Object
     {
     public:
         // Constructor
@@ -3247,7 +3227,7 @@ namespace Py
         }
     };
 
-    class PYCXX_EXPORT Module: public Object
+    class Module: public Object
     {
     public:
         explicit Module (PyObject* pyob, bool owned = false): Object (pyob, owned)
@@ -3292,7 +3272,7 @@ namespace Py
     inline Object Object::callMemberFunction( const std::string &function_name ) const
     {
         Callable target( getAttr( function_name ) );
-        Tuple args( (sequence_index_type)0 );
+        Tuple args( 0 );
         return target.apply( args );
     }
 

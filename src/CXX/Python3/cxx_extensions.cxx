@@ -36,6 +36,7 @@
 //-----------------------------------------------------------------------------
 #include "CXX/Extensions.hxx"
 #include "CXX/Exception.hxx"
+
 #include <assert.h>
 
 #ifdef PYCXX_DEBUG
@@ -54,46 +55,6 @@ void printRefCount( PyObject *obj )
 
 namespace Py
 {
-#ifdef PYCXX_PYTHON_2TO3
-std::string String::as_std_string( const char *encoding, const char *error ) const
-{
-    if( isUnicode() )
-    {
-        Bytes encoded( encode( encoding, error ) );
-        return encoded.as_std_string();
-    }
-    else
-    {
-        return std::string( PyString_AsString( ptr() ), static_cast<size_type>( PyString_Size( ptr() ) ) );
-    }
-}
-
-Bytes String::encode( const char *encoding, const char *error ) const
-{
-    if( isUnicode() )
-    {
-        return Bytes( PyUnicode_AsEncodedString( ptr(), encoding, error ) );
-    }
-    else
-    {
-        return Bytes( PyString_AsEncodedObject( ptr(), encoding, error ) );
-    }
-}
-
-#else
-std::string String::as_std_string( const char *encoding, const char *error ) const
-{
-    if( isUnicode() )
-    {
-        String encoded( encode( encoding, error ) );
-        return encoded.as_std_string();
-    }
-    else
-    {
-        return std::string( PyString_AsString( ptr() ), static_cast<size_type>( PyString_Size( ptr() ) ) );
-    }
-}
-#endif
 
 void Object::validate()
 {
@@ -108,7 +69,7 @@ void Object::validate()
         {
             String from_repr = repr();
             s += " from ";
-            s += from_repr.as_std_string( "utf-8" );
+            s += from_repr.as_std_string();
         }
         else
         {
@@ -134,13 +95,14 @@ void Object::validate()
 //    Implementation of MethodTable
 //
 //================================================================================
+
 PyMethodDef MethodTable::method( const char *method_name, PyCFunction f, int flags, const char *doc )
 {
     PyMethodDef m;
-    m.ml_name = const_cast<char*>( method_name );
+    m.ml_name = const_cast<char *>( method_name );
     m.ml_meth = f;
     m.ml_flags = flags;
-    m.ml_doc = const_cast<char*>( doc );
+    m.ml_doc = const_cast<char *>( doc );
     return m;
 }
 
@@ -191,6 +153,8 @@ ExtensionModuleBase::ExtensionModuleBase( const char *name )
 : m_module_name( name )
 , m_full_module_name( __Py_PackageContext() != NULL ? std::string( __Py_PackageContext() ) : m_module_name )
 , m_method_table()
+//m_module_def
+, m_module( NULL )
 {}
 
 ExtensionModuleBase::~ExtensionModuleBase()
@@ -221,20 +185,19 @@ public:
 
 void ExtensionModuleBase::initialize( const char *module_doc )
 {
-    PyObject *module_ptr = new ExtensionModuleBasePtr( this );
-    Py_InitModule4
-    (
-    const_cast<char *>( m_module_name.c_str() ),    // name
-    m_method_table.table(),                         // methods
-    const_cast<char *>( module_doc ),               // docs
-    module_ptr,                                     // pass to functions as "self"
-    PYTHON_API_VERSION                              // API version
-    );
+    memset( &m_module_def, 0, sizeof( m_module_def ) );
+
+    m_module_def.m_name = const_cast<char *>( m_module_name.c_str() );
+    m_module_def.m_doc = const_cast<char *>( module_doc );
+    m_module_def.m_methods = m_method_table.table();
+    // where does module_ptr get passed in?
+
+    m_module = PyModule_Create( &m_module_def );
 }
 
 Py::Module ExtensionModuleBase::module( void ) const
 {
-    return Module( m_full_module_name );
+    return Module( m_module );
 }
 
 Py::Dict ExtensionModuleBase::moduleDictionary( void ) const
@@ -254,20 +217,15 @@ extern "C"
     // All the following functions redirect the call from Python
     // onto the matching virtual function in PythonExtensionBase
     //
-#if defined( PYCXX_PYTHON_2TO3 )
     static int print_handler( PyObject *, FILE *, int );
-#endif
     static PyObject *getattr_handler( PyObject *, char * );
     static int setattr_handler( PyObject *, char *, PyObject * );
     static PyObject *getattro_handler( PyObject *, PyObject * );
     static int setattro_handler( PyObject *, PyObject *, PyObject * );
-#if defined( PYCXX_PYTHON_2TO3 )
-    static int compare_handler( PyObject *, PyObject * );
-#endif
     static PyObject *rich_compare_handler( PyObject *, PyObject *, int );
     static PyObject *repr_handler( PyObject * );
     static PyObject *str_handler( PyObject * );
-    static long hash_handler( PyObject * );
+    static Py_hash_t hash_handler( PyObject * );
     static PyObject *call_handler( PyObject *, PyObject *, PyObject * );
     static PyObject *iter_handler( PyObject * );
     static PyObject *iternext_handler( PyObject * );
@@ -277,9 +235,7 @@ extern "C"
     static PyObject *sequence_concat_handler( PyObject *,PyObject * );
     static PyObject *sequence_repeat_handler( PyObject *, Py_ssize_t );
     static PyObject *sequence_item_handler( PyObject *, Py_ssize_t );
-    static PyObject *sequence_slice_handler( PyObject *, Py_ssize_t, Py_ssize_t );
     static int sequence_ass_item_handler( PyObject *, Py_ssize_t, PyObject * );
-    static int sequence_ass_slice_handler( PyObject *, Py_ssize_t, Py_ssize_t, PyObject * );
 
     // Mapping
     static Py_ssize_t mapping_length_handler( PyObject * );
@@ -287,20 +243,15 @@ extern "C"
     static int mapping_ass_subscript_handler( PyObject *, PyObject *, PyObject * );
 
     // Numeric methods
-    static int number_nonzero_handler( PyObject * );
     static PyObject *number_negative_handler( PyObject * );
     static PyObject *number_positive_handler( PyObject * );
     static PyObject *number_absolute_handler( PyObject * );
     static PyObject *number_invert_handler( PyObject * );
     static PyObject *number_int_handler( PyObject * );
     static PyObject *number_float_handler( PyObject * );
-    static PyObject *number_long_handler( PyObject * );
-    static PyObject *number_oct_handler( PyObject * );
-    static PyObject *number_hex_handler( PyObject * );
     static PyObject *number_add_handler( PyObject *, PyObject * );
     static PyObject *number_subtract_handler( PyObject *, PyObject * );
     static PyObject *number_multiply_handler( PyObject *, PyObject * );
-    static PyObject *number_divide_handler( PyObject *, PyObject * );
     static PyObject *number_remainder_handler( PyObject *, PyObject * );
     static PyObject *number_divmod_handler( PyObject *, PyObject * );
     static PyObject *number_lshift_handler( PyObject *, PyObject * );
@@ -311,9 +262,8 @@ extern "C"
     static PyObject *number_power_handler( PyObject *, PyObject *, PyObject * );
 
     // Buffer
-    static Py_ssize_t buffer_getreadbuffer_handler( PyObject *, Py_ssize_t, void ** );
-    static Py_ssize_t buffer_getwritebuffer_handler( PyObject *, Py_ssize_t, void ** );
-    static Py_ssize_t buffer_getsegcount_handler( PyObject *, Py_ssize_t * );
+    static int buffer_get_handler( PyObject *, Py_buffer *, int );
+    static void buffer_release_handler( PyObject *, Py_buffer * );
 }
 
 extern "C" void standard_dealloc( PyObject *p )
@@ -337,9 +287,10 @@ PythonType &PythonType::supportSequenceType()
         sequence_table->sq_concat = sequence_concat_handler;
         sequence_table->sq_repeat = sequence_repeat_handler;
         sequence_table->sq_item = sequence_item_handler;
-        sequence_table->sq_slice = sequence_slice_handler;
+
         sequence_table->sq_ass_item = sequence_ass_item_handler;    // BAS setup seperately?
-        sequence_table->sq_ass_slice = sequence_ass_slice_handler;  // BAS setup seperately?
+        // QQQ sq_inplace_concat
+        // QQQ sq_inplace_repeat
     }
     return *this;
 }
@@ -368,26 +319,22 @@ PythonType &PythonType::supportNumberType()
         number_table->nb_add = number_add_handler;
         number_table->nb_subtract = number_subtract_handler;
         number_table->nb_multiply = number_multiply_handler;
-        number_table->nb_divide = number_divide_handler;
         number_table->nb_remainder = number_remainder_handler;
         number_table->nb_divmod = number_divmod_handler;
         number_table->nb_power = number_power_handler;
         number_table->nb_negative = number_negative_handler;
         number_table->nb_positive = number_positive_handler;
         number_table->nb_absolute = number_absolute_handler;
-        number_table->nb_nonzero = number_nonzero_handler;
         number_table->nb_invert = number_invert_handler;
         number_table->nb_lshift = number_lshift_handler;
         number_table->nb_rshift = number_rshift_handler;
         number_table->nb_and = number_and_handler;
         number_table->nb_xor = number_xor_handler;
         number_table->nb_or = number_or_handler;
-        number_table->nb_coerce = 0;
         number_table->nb_int = number_int_handler;
-        number_table->nb_long = number_long_handler;
         number_table->nb_float = number_float_handler;
-        number_table->nb_oct = number_oct_handler;
-        number_table->nb_hex = number_hex_handler;
+
+        // QQQ lots of new methods to add
     }
     return *this;
 }
@@ -399,9 +346,8 @@ PythonType &PythonType::supportBufferType()
         buffer_table = new PyBufferProcs;
         memset( buffer_table, 0, sizeof( PyBufferProcs ) );   // ensure new fields are 0
         table->tp_as_buffer = buffer_table;
-        buffer_table->bf_getreadbuffer = buffer_getreadbuffer_handler;
-        buffer_table->bf_getwritebuffer = buffer_getwritebuffer_handler;
-        buffer_table->bf_getsegcount = buffer_getsegcount_handler;
+        buffer_table->bf_getbuffer = buffer_get_handler;
+        buffer_table->bf_releasebuffer = buffer_release_handler;
     }
     return *this;
 }
@@ -420,9 +366,8 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
 
     memset( table, 0, sizeof( PyTypeObject ) );   // ensure new fields are 0
     *reinterpret_cast<PyObject *>( table ) = py_object_initializer;
-    table->ob_type = _Type_Type();
-    table->ob_size = 0;
-
+    reinterpret_cast<PyObject *>( table )->ob_type = _Type_Type();
+    // QQQ table->ob_size = 0;
     table->tp_name = const_cast<char *>( default_name );
     table->tp_basicsize = basic_size;
     table->tp_itemsize = itemsize;
@@ -432,7 +377,6 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
     table->tp_print = 0;
     table->tp_getattr = 0;
     table->tp_setattr = 0;
-    table->tp_compare = 0;
     table->tp_repr = 0;
 
     // Method suites for standard classes
@@ -456,34 +400,50 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
     // Documentation string
     table->tp_doc = 0;
 
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 0)
-    table->tp_traverse = 0L;
+    table->tp_traverse = 0;
 
     // delete references to contained objects
-    table->tp_clear = 0L;
-#else
-    table->tp_xxx5 = 0L;
-    table->tp_xxx6 = 0L;
-#endif
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
-    // first defined in 2.1
-    table->tp_richcompare = 0L;
+    table->tp_clear = 0;
+
+    // Assigned meaning in release 2.1
+    // rich comparisons
+    table->tp_richcompare = 0;
     // weak reference enabler
-    table->tp_weaklistoffset = 0L;
-#else
-    table->tp_xxx7 = 0L;
-    table->tp_xxx8 = 0L;
-#endif
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 2)
-    // first defined in 2.3
+    table->tp_weaklistoffset = 0;
+
     // Iterators
-    table->tp_iter = 0L;
-    table->tp_iternext = 0L;
-#endif
+    table->tp_iter = 0;
+    table->tp_iternext = 0;
+
+    // Attribute descriptor and subclassing stuff
+    table->tp_methods = 0;
+    table->tp_members = 0;
+    table->tp_getset = 0;
+    table->tp_base = 0;
+    table->tp_dict = 0;
+    table->tp_descr_get = 0;
+    table->tp_descr_set = 0;
+    table->tp_dictoffset = 0;
+    table->tp_init = 0;
+    table->tp_alloc = 0;
+    table->tp_new = 0;
+    table->tp_free = 0;     // Low-level free-memory routine
+    table->tp_is_gc = 0;    // For PyObject_IS_GC
+    table->tp_bases = 0;
+    table->tp_mro = 0;      // method resolution order
+    table->tp_cache = 0;
+    table->tp_subclasses = 0;
+    table->tp_weaklist = 0;
+    table->tp_del = 0;
+
+    // Type attribute cache version tag. Added in version 2.6
+    table->tp_version_tag = 0;
+
 #ifdef COUNT_ALLOCS
     table->tp_alloc = 0;
     table->tp_free = 0;
     table->tp_maxalloc = 0;
+    table->tp_orev = 0;
     table->tp_next = 0;
 #endif
 }
@@ -554,13 +514,7 @@ PythonType &PythonType::supportClass()
     return *this;
 }
 
-PythonType &PythonType::dealloc( void( *f )( PyObject * ))
-{
-    table->tp_dealloc = f;
-    return *this;
-}
-
-#if defined( PYCXX_PYTHON_2TO3 )
+#ifdef PYCXX_PYTHON_2TO3
 PythonType &PythonType::supportPrint()
 {
     table->tp_print = print_handler;
@@ -592,21 +546,19 @@ PythonType &PythonType::supportSetattro()
     return *this;
 }
 
-#if defined( PYCXX_PYTHON_2TO3 )
-PythonType &PythonType::supportCompare()
+#ifdef PYCXX_PYTHON_2TO3
+PythonType &PythonType::supportCompare( void )
 {
-    table->tp_compare = compare_handler;
     return *this;
 }
 #endif
 
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
+
 PythonType &PythonType::supportRichCompare()
 {
     table->tp_richcompare = rich_compare_handler;
     return *this;
 }
-#endif
 
 PythonType &PythonType::supportRepr()
 {
@@ -657,8 +609,7 @@ PythonExtensionBase *getPythonExtensionBase( PyObject *self )
     }
 }
 
-
-#if defined( PYCXX_PYTHON_2TO3 )
+#ifdef PYCXX_PYTHON_2TO3
 extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
 {
     try
@@ -666,7 +617,7 @@ extern "C" int print_handler( PyObject *self, FILE *fp, int flags )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->print( fp, flags );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return -1;    // indicate error
     }
@@ -680,7 +631,7 @@ extern "C" PyObject *getattr_handler( PyObject *self, char *name )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->getattr( name ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -693,7 +644,7 @@ extern "C" int setattr_handler( PyObject *self, char *name, PyObject *value )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->setattr( name, Py::Object( value ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return -1;    // indicate error
     }
@@ -706,7 +657,7 @@ extern "C" PyObject *getattro_handler( PyObject *self, PyObject *name )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->getattro( Py::String( name ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -719,28 +670,12 @@ extern "C" int setattro_handler( PyObject *self, PyObject *name, PyObject *value
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->setattro( Py::String( name ), Py::Object( value ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return -1;    // indicate error
     }
 }
 
-#if defined( PYCXX_PYTHON_2TO3 )
-extern "C" int compare_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->compare( Py::Object( other ) );
-    }
-    catch( Py::Exception &)
-    {
-        return -1;    // indicate error
-    }
-}
-#endif
-
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
 extern "C" PyObject *rich_compare_handler( PyObject *self, PyObject *other, int op )
 {
     try
@@ -748,12 +683,11 @@ extern "C" PyObject *rich_compare_handler( PyObject *self, PyObject *other, int 
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->rich_compare( Py::Object( other ), op ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
 }
-#endif
 
 extern "C" PyObject *repr_handler( PyObject *self )
 {
@@ -762,7 +696,7 @@ extern "C" PyObject *repr_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->repr() );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -775,20 +709,20 @@ extern "C" PyObject *str_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->str() );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
 }
 
-extern "C" long hash_handler( PyObject *self )
+extern "C" Py_hash_t hash_handler( PyObject *self )
 {
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->hash();
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return -1;    // indicate error
     }
@@ -804,7 +738,7 @@ extern "C" PyObject *call_handler( PyObject *self, PyObject *args, PyObject *kw 
         else
             return new_reference_to( p->call( Py::Object( args ), Py::Object() ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -817,7 +751,7 @@ extern "C" PyObject *iter_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->iter() );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -830,11 +764,12 @@ extern "C" PyObject *iternext_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->iternext();  // might be a NULL ptr on end of iteration
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
 }
+
 
 // Sequence methods
 extern "C" Py_ssize_t sequence_length_handler( PyObject *self )
@@ -844,7 +779,7 @@ extern "C" Py_ssize_t sequence_length_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->sequence_length();
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return -1;    // indicate error
     }
@@ -857,7 +792,7 @@ extern "C" PyObject *sequence_concat_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->sequence_concat( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -870,7 +805,7 @@ extern "C" PyObject *sequence_repeat_handler( PyObject *self, Py_ssize_t count )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->sequence_repeat( count ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -883,20 +818,7 @@ extern "C" PyObject *sequence_item_handler( PyObject *self, Py_ssize_t index )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->sequence_item( index ) );
     }
-    catch( Py::Exception &)
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *sequence_slice_handler( PyObject *self, Py_ssize_t first, Py_ssize_t last )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->sequence_slice( first, last ) );
-    }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -909,20 +831,7 @@ extern "C" int sequence_ass_item_handler( PyObject *self, Py_ssize_t index, PyOb
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->sequence_ass_item( index, Py::Object( value ) );
     }
-    catch( Py::Exception &)
-    {
-        return -1;    // indicate error
-    }
-}
-
-extern "C" int sequence_ass_slice_handler( PyObject *self, Py_ssize_t first, Py_ssize_t last, PyObject *value )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->sequence_ass_slice( first, last, Py::Object( value ) );
-    }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return -1;    // indicate error
     }
@@ -936,7 +845,7 @@ extern "C" Py_ssize_t mapping_length_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->mapping_length();
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return -1;    // indicate error
     }
@@ -949,7 +858,7 @@ extern "C" PyObject *mapping_subscript_handler( PyObject *self, PyObject *key )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->mapping_subscript( Py::Object( key ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -962,26 +871,13 @@ extern "C" int mapping_ass_subscript_handler( PyObject *self, PyObject *key, PyO
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return p->mapping_ass_subscript( Py::Object( key ), Py::Object( value ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return -1;    // indicate error
     }
 }
 
 // Number
-extern "C" int number_nonzero_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->number_nonzero();
-    }
-    catch( Py::Exception &)
-    {
-        return -1;    // indicate error
-    }
-}
-
 extern "C" PyObject *number_negative_handler( PyObject *self )
 {
     try
@@ -989,7 +885,7 @@ extern "C" PyObject *number_negative_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_negative() );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1002,7 +898,7 @@ extern "C" PyObject *number_positive_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_positive() );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1015,7 +911,7 @@ extern "C" PyObject *number_absolute_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_absolute() );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1028,7 +924,7 @@ extern "C" PyObject *number_invert_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_invert() );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1041,7 +937,7 @@ extern "C" PyObject *number_int_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_int() );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1054,46 +950,7 @@ extern "C" PyObject *number_float_handler( PyObject *self )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_float() );
     }
-    catch( Py::Exception &)
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_long_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_long() );
-    }
-    catch( Py::Exception &)
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_oct_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_oct() );
-    }
-    catch( Py::Exception &)
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_hex_handler( PyObject *self )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_hex() );
-    }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1106,7 +963,7 @@ extern "C" PyObject *number_add_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_add( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1119,7 +976,7 @@ extern "C" PyObject *number_subtract_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_subtract( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1132,20 +989,7 @@ extern "C" PyObject *number_multiply_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_multiply( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
-    {
-        return NULL;    // indicate error
-    }
-}
-
-extern "C" PyObject *number_divide_handler( PyObject *self, PyObject *other )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return new_reference_to( p->number_divide( Py::Object( other ) ) );
-    }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1158,7 +1002,7 @@ extern "C" PyObject *number_remainder_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_remainder( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1171,7 +1015,7 @@ extern "C" PyObject *number_divmod_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_divmod( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1184,7 +1028,7 @@ extern "C" PyObject *number_lshift_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_lshift( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1197,7 +1041,7 @@ extern "C" PyObject *number_rshift_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_rshift( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1210,7 +1054,7 @@ extern "C" PyObject *number_and_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_and( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1223,7 +1067,7 @@ extern "C" PyObject *number_xor_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_xor( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1236,7 +1080,7 @@ extern "C" PyObject *number_or_handler( PyObject *self, PyObject *other )
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_or( Py::Object( other ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
@@ -1249,50 +1093,31 @@ extern "C" PyObject *number_power_handler( PyObject *self, PyObject *x1, PyObjec
         PythonExtensionBase *p = getPythonExtensionBase( self );
         return new_reference_to( p->number_power( Py::Object( x1 ), Py::Object( x2 ) ) );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return NULL;    // indicate error
     }
 }
 
 // Buffer
-extern "C" Py_ssize_t buffer_getreadbuffer_handler( PyObject *self, Py_ssize_t index, void **pp )
+extern "C" int buffer_get_handler( PyObject *self, Py_buffer *buf, int flags )
 {
     try
     {
         PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->buffer_getreadbuffer( index, pp );
+        return p->buffer_get( buf, flags );
     }
-    catch( Py::Exception &)
+    catch( Py::Exception & )
     {
         return -1;    // indicate error
     }
 }
 
-extern "C" Py_ssize_t buffer_getwritebuffer_handler( PyObject *self, Py_ssize_t index, void **pp )
+extern "C" void buffer_release_handler( PyObject *self, Py_buffer *buf )
 {
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->buffer_getwritebuffer( index, pp );
-    }
-    catch( Py::Exception &)
-    {
-        return -1;    // indicate error
-    }
-}
-
-extern "C" Py_ssize_t buffer_getsegcount_handler( PyObject *self, Py_ssize_t *count )
-{
-    try
-    {
-        PythonExtensionBase *p = getPythonExtensionBase( self );
-        return p->buffer_getsegcount( count );
-    }
-    catch( Py::Exception &)
-    {
-        return -1;    // indicate error
-    }
+    PythonExtensionBase *p = getPythonExtensionBase( self );
+    p->buffer_release( buf );
+    // NOTE: No way to indicate error to Python
 }
 
 //================================================================================
@@ -1396,6 +1221,7 @@ void PythonExtensionBase::reinit( Tuple &args, Dict &kwds )
     throw RuntimeError( "Must not call __init__ twice on this class" );
 }
 
+
 Py::Object PythonExtensionBase::genericGetAttro( const Py::String &name )
 {
     return asObject( PyObject_GenericGetAttr( selfPtr(), name.ptr() ) );
@@ -1406,11 +1232,13 @@ int PythonExtensionBase::genericSetAttro( const Py::String &name, const Py::Obje
     return PyObject_GenericSetAttr( selfPtr(), name.ptr(), value.ptr() );
 }
 
+#ifdef PYCXX_PYTHON_2TO3
 int PythonExtensionBase::print( FILE *, int )
 {
     missing_method( print );
     return -1;
 }
+#endif
 
 Py::Object PythonExtensionBase::getattr( const char * )
 {
@@ -1418,7 +1246,7 @@ Py::Object PythonExtensionBase::getattr( const char * )
     return Py::None();
 }
 
-int PythonExtensionBase::setattr( const char *, const Py::Object &)
+int PythonExtensionBase::setattr( const char *, const Py::Object & )
 {
     missing_method( setattr );
     return -1;
@@ -1426,28 +1254,27 @@ int PythonExtensionBase::setattr( const char *, const Py::Object &)
 
 Py::Object PythonExtensionBase::getattro( const Py::String &name )
 {
-    return genericGetAttro( name );
+    return asObject( PyObject_GenericGetAttr( selfPtr(), name.ptr() ) );
 }
 
 int PythonExtensionBase::setattro( const Py::String &name, const Py::Object &value )
 {
-    return genericSetAttro( name, value );
+    return PyObject_GenericSetAttr( selfPtr(), name.ptr(), value.ptr() );
 }
 
-int PythonExtensionBase::compare( const Py::Object &)
+
+int PythonExtensionBase::compare( const Py::Object & )
 {
     missing_method( compare );
     return -1;
 }
 
-#if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
-Py::Object PythonExtensionBase::rich_compare( const Py::Object &, int op )
+Py::Object PythonExtensionBase::rich_compare( const Py::Object &, int )
 {
     missing_method( rich_compare );
     return Py::None();
 }
 
-#endif
 Py::Object PythonExtensionBase::repr()
 {
     missing_method( repr );
@@ -1463,10 +1290,10 @@ Py::Object PythonExtensionBase::str()
 long PythonExtensionBase::hash()
 {
     missing_method( hash );
-    return -1;
-}
+    return -1; }
 
-Py::Object PythonExtensionBase::call( const Py::Object &, const Py::Object &)
+
+Py::Object PythonExtensionBase::call( const Py::Object &, const Py::Object & )
 {
     missing_method( call );
     return Py::None();
@@ -1481,17 +1308,18 @@ Py::Object PythonExtensionBase::iter()
 PyObject *PythonExtensionBase::iternext()
 {
     missing_method( iternext );
-    return NULL;
-}
+    return NULL; }
+
+
 
 // Sequence methods
 int PythonExtensionBase::sequence_length()
 {
     missing_method( sequence_length );
-    return -1;
-}
+    return -1; }
 
-Py::Object PythonExtensionBase::sequence_concat( const Py::Object &)
+
+Py::Object PythonExtensionBase::sequence_concat( const Py::Object & )
 {
     missing_method( sequence_concat );
     return Py::None();
@@ -1509,23 +1337,12 @@ Py::Object PythonExtensionBase::sequence_item( Py_ssize_t )
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::sequence_slice( Py_ssize_t, Py_ssize_t )
-{
-    missing_method( sequence_slice );
-    return Py::None();
-}
-
-int PythonExtensionBase::sequence_ass_item( Py_ssize_t, const Py::Object &)
+int PythonExtensionBase::sequence_ass_item( Py_ssize_t, const Py::Object & )
 {
     missing_method( sequence_ass_item );
     return -1;
 }
 
-int PythonExtensionBase::sequence_ass_slice( Py_ssize_t, Py_ssize_t, const Py::Object &)
-{
-    missing_method( sequence_ass_slice );
-    return -1;
-}
 
 // Mapping
 int PythonExtensionBase::mapping_length()
@@ -1534,22 +1351,16 @@ int PythonExtensionBase::mapping_length()
     return -1;
 }
 
-Py::Object PythonExtensionBase::mapping_subscript( const Py::Object &)
+
+Py::Object PythonExtensionBase::mapping_subscript( const Py::Object & )
 {
     missing_method( mapping_subscript );
     return Py::None();
 }
 
-int PythonExtensionBase::mapping_ass_subscript( const Py::Object &, const Py::Object &)
+int PythonExtensionBase::mapping_ass_subscript( const Py::Object &, const Py::Object & )
 {
     missing_method( mapping_ass_subscript );
-    return -1;
-}
-
-// Number
-int PythonExtensionBase::number_nonzero()
-{
-    missing_method( number_nonzero );
     return -1;
 }
 
@@ -1595,107 +1406,85 @@ Py::Object PythonExtensionBase::number_long()
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_oct()
-{
-    missing_method( number_oct );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_hex()
-{
-    missing_method( number_hex );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_add( const Py::Object &)
+Py::Object PythonExtensionBase::number_add( const Py::Object & )
 {
     missing_method( number_add );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_subtract( const Py::Object &)
+Py::Object PythonExtensionBase::number_subtract( const Py::Object & )
 {
     missing_method( number_subtract );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_multiply( const Py::Object &)
+Py::Object PythonExtensionBase::number_multiply( const Py::Object & )
 {
     missing_method( number_multiply );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_divide( const Py::Object &)
-{
-    missing_method( number_divide );
-    return Py::None();
-}
-
-Py::Object PythonExtensionBase::number_remainder( const Py::Object &)
+Py::Object PythonExtensionBase::number_remainder( const Py::Object & )
 {
     missing_method( number_remainder );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_divmod( const Py::Object &)
+Py::Object PythonExtensionBase::number_divmod( const Py::Object & )
 {
     missing_method( number_divmod );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_lshift( const Py::Object &)
+Py::Object PythonExtensionBase::number_lshift( const Py::Object & )
 {
     missing_method( number_lshift );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_rshift( const Py::Object &)
+Py::Object PythonExtensionBase::number_rshift( const Py::Object & )
 {
     missing_method( number_rshift );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_and( const Py::Object &)
+Py::Object PythonExtensionBase::number_and( const Py::Object & )
 {
     missing_method( number_and );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_xor( const Py::Object &)
+Py::Object PythonExtensionBase::number_xor( const Py::Object & )
 {
     missing_method( number_xor );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_or( const Py::Object &)
+Py::Object PythonExtensionBase::number_or( const Py::Object & )
 {
     missing_method( number_or );
     return Py::None();
 }
 
-Py::Object PythonExtensionBase::number_power( const Py::Object &, const Py::Object &)
+Py::Object PythonExtensionBase::number_power( const Py::Object &, const Py::Object & )
 {
     missing_method( number_power );
     return Py::None();
 }
 
+
 // Buffer
-Py_ssize_t PythonExtensionBase::buffer_getreadbuffer( Py_ssize_t, void** )
+int PythonExtensionBase::buffer_get( Py_buffer *buf, int flags )
 {
-    missing_method( buffer_getreadbuffer );
+    missing_method( buffer_get );
     return -1;
 }
 
-Py_ssize_t PythonExtensionBase::buffer_getwritebuffer( Py_ssize_t, void** )
+int PythonExtensionBase::buffer_release( Py_buffer *buf )
 {
-    missing_method( buffer_getwritebuffer );
-    return -1;
-}
-
-Py_ssize_t PythonExtensionBase::buffer_getsegcount( Py_ssize_t* )
-{
-    missing_method( buffer_getsegcount );
-    return -1;
+    /* This method is optional and only required if the buffer's
+       memory is dynamic. */
+    return 0;
 }
 
 //--------------------------------------------------------------------------------
@@ -1705,53 +1494,23 @@ Py_ssize_t PythonExtensionBase::buffer_getsegcount( Py_ssize_t* )
 //        ExtensionModuleBase
 //
 //--------------------------------------------------------------------------------
-extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple, PyObject *_args, PyObject *_keywords )
+// Note: Python calls noargs as varargs buts args==NULL
+extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple, PyObject * )
 {
     try
     {
         Tuple self_and_name_tuple( _self_and_name_tuple );
 
         PyObject *self_in_cobject = self_and_name_tuple[0].ptr();
-        void *self_as_void = PyCObject_AsVoidPtr( self_in_cobject );
+        void *self_as_void = PyCapsule_GetPointer( self_in_cobject, NULL );
         if( self_as_void == NULL )
             return NULL;
 
         ExtensionModuleBase *self = static_cast<ExtensionModuleBase *>( self_as_void );
 
-        Tuple args( _args );
+        Object result( self->invoke_method_noargs( PyCapsule_GetPointer( self_and_name_tuple[1].ptr(), NULL ) ) );
 
-        if( _keywords == NULL )
-        {
-            Dict keywords;    // pass an empty dict
-
-            Object result
-                    (
-                    self->invoke_method_keyword
-                        (
-                        PyCObject_AsVoidPtr( self_and_name_tuple[1].ptr() ),
-                        args,
-                        keywords
-                        )
-                    );
-
-            return new_reference_to( result.ptr() );
-        }
-        else
-        {
-            Dict keywords( _keywords ); // make dict
-
-            Object result
-                    (
-                    self->invoke_method_keyword
-                        (
-                        PyCObject_AsVoidPtr( self_and_name_tuple[1].ptr() ),
-                        args,
-                        keywords
-                        )
-                    );
-
-            return new_reference_to( result.ptr() );
-        }
+        return new_reference_to( result.ptr() );
     }
     catch( Exception & )
     {
@@ -1766,18 +1525,17 @@ extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple
         Tuple self_and_name_tuple( _self_and_name_tuple );
 
         PyObject *self_in_cobject = self_and_name_tuple[0].ptr();
-        void *self_as_void = PyCObject_AsVoidPtr( self_in_cobject );
+        void *self_as_void = PyCapsule_GetPointer( self_in_cobject, NULL );
         if( self_as_void == NULL )
             return NULL;
 
         ExtensionModuleBase *self = static_cast<ExtensionModuleBase *>( self_as_void );
         Tuple args( _args );
-
         Object result
                 (
                 self->invoke_method_varargs
                     (
-                    PyCObject_AsVoidPtr( self_and_name_tuple[1].ptr() ),
+                    PyCapsule_GetPointer( self_and_name_tuple[1].ptr(), NULL ),
                     args
                     )
                 );
@@ -1790,8 +1548,60 @@ extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple
     }
 }
 
-extern "C" void do_not_dealloc( void * )
-{}
+extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple, PyObject *_args, PyObject *_keywords )
+{
+    try
+    {
+        Tuple self_and_name_tuple( _self_and_name_tuple );
+
+        PyObject *self_in_cobject = self_and_name_tuple[0].ptr();
+        void *self_as_void = PyCapsule_GetPointer( self_in_cobject, NULL );
+        if( self_as_void == NULL )
+            return NULL;
+
+        ExtensionModuleBase *self = static_cast<ExtensionModuleBase *>( self_as_void );
+
+        Tuple args( _args );
+
+        if( _keywords == NULL )
+        {
+            Dict keywords;    // pass an empty dict
+
+            Object result
+                (
+                self->invoke_method_keyword
+                    (
+                    PyCapsule_GetPointer( self_and_name_tuple[1].ptr(), NULL ),
+                    args,
+                    keywords
+                    )
+                );
+
+            return new_reference_to( result.ptr() );
+        }
+        else
+        {
+            Dict keywords( _keywords ); // make dict
+
+            Object result
+                    (
+                    self->invoke_method_keyword
+                        (
+                        PyCapsule_GetPointer( self_and_name_tuple[1].ptr(), NULL ),
+                        args,
+                        keywords
+                        )
+                    );
+
+            return new_reference_to( result.ptr() );
+        }
+    }
+    catch( Exception & )
+    {
+        return 0;
+    }
+}
+
 
 //--------------------------------------------------------------------------------
 //
@@ -1799,7 +1609,7 @@ extern "C" void do_not_dealloc( void * )
 //
 //--------------------------------------------------------------------------------
 ExtensionExceptionType::ExtensionExceptionType()
-: Py::Object()
+    : Py::Object()
 {
 }
 
@@ -1808,15 +1618,17 @@ void ExtensionExceptionType::init( ExtensionModuleBase &module, const std::strin
     std::string module_name( module.fullName() );
     module_name += ".";
     module_name += name;
+
     set( PyErr_NewException( const_cast<char *>( module_name.c_str() ), NULL, NULL ), true );
 }
 
-void ExtensionExceptionType::init( ExtensionModuleBase &module, const std::string& name, ExtensionExceptionType &parent)
-{
+void ExtensionExceptionType::init( ExtensionModuleBase &module, const std::string& name, ExtensionExceptionType &parent )
+ {
      std::string module_name( module.fullName() );
      module_name += ".";
      module_name += name;
-     set( PyErr_NewException( const_cast<char *>( module_name.c_str() ), parent.ptr(), NULL ), true );
+
+    set( PyErr_NewException( const_cast<char *>( module_name.c_str() ), parent.ptr(), NULL ), true );
 }
 
 ExtensionExceptionType::~ExtensionExceptionType()
@@ -1836,6 +1648,330 @@ Exception::Exception( ExtensionExceptionType &exception, Object &reason )
 Exception::Exception( PyObject *exception, Object &reason )
 {
     PyErr_SetObject( exception, reason.ptr() );
+}
+
+#if 1
+//------------------------------------------------------------
+// compare operators
+bool operator!=( const Long &a, const Long &b )
+{
+    return a.as_long() != b.as_long();
+}
+
+bool operator!=( const Long &a, int b )
+{
+    return a.as_long() != b;
+}
+
+bool operator!=( const Long &a, long b )
+{
+    return a.as_long() != b;
+}
+
+bool operator!=( int a, const Long &b )
+{
+    return a != b.as_long();
+}
+
+bool operator!=( long a, const Long &b )
+{
+    return a != b.as_long();
+}
+
+//------------------------------
+bool operator==( const Long &a, const Long &b )
+{
+    return a.as_long() == b.as_long();
+}
+
+bool operator==( const Long &a, int b )
+{
+    return a.as_long() == b;
+}
+
+bool operator==( const Long &a, long b )
+{
+    return a.as_long() == b;
+}
+
+bool operator==( int a, const Long &b )
+{
+    return a == b.as_long();
+}
+
+bool operator==( long a, const Long &b )
+{
+    return a == b.as_long();
+}
+
+//------------------------------
+bool operator>( const Long &a, const Long &b )
+{
+    return a.as_long() > b.as_long();
+}
+
+bool operator>( const Long &a, int b )
+{
+    return a.as_long() > b;
+}
+
+bool operator>( const Long &a, long b )
+{
+    return a.as_long() > b;
+}
+
+bool operator>( int a, const Long &b )
+{
+    return a > b.as_long();
+}
+
+bool operator>( long a, const Long &b )
+{
+    return a > b.as_long();
+}
+
+//------------------------------
+bool operator>=( const Long &a, const Long &b )
+{
+    return a.as_long() >= b.as_long();
+}
+
+bool operator>=( const Long &a, int b )
+{
+    return a.as_long() >= b;
+}
+
+bool operator>=( const Long &a, long b )
+{
+    return a.as_long() >= b;
+}
+
+bool operator>=( int a, const Long &b )
+{
+    return a >= b.as_long();
+}
+
+bool operator>=( long a, const Long &b )
+{
+    return a >= b.as_long();
+}
+
+//------------------------------
+bool operator<( const Long &a, const Long &b )
+{
+    return a.as_long() < b.as_long();
+}
+
+bool operator<( const Long &a, int b )
+{
+    return a.as_long() < b;
+}
+
+bool operator<( const Long &a, long b )
+{
+    return a.as_long() < b;
+}
+
+bool operator<( int a, const Long &b )
+{
+    return a < b.as_long();
+}
+
+bool operator<( long a, const Long &b )
+{
+    return a < b.as_long();
+}
+
+//------------------------------
+bool operator<=( const Long &a, const Long &b )
+{
+    return a.as_long() <= b.as_long();
+}
+
+bool operator<=( int a, const Long &b )
+{
+    return a <= b.as_long();
+}
+
+bool operator<=( long a, const Long &b )
+{
+    return a <= b.as_long();
+}
+
+bool operator<=( const Long &a, int b )
+{
+    return a.as_long() <= b;
+}
+
+bool operator<=( const Long &a, long b )
+{
+    return a.as_long() <= b;
+}
+
+#ifdef HAVE_LONG_LONG
+//------------------------------
+bool operator!=( const Long &a, PY_LONG_LONG b )
+{
+    return a.as_long_long() != b;
+}
+
+bool operator!=( PY_LONG_LONG a, const Long &b )
+{
+    return a != b.as_long_long();
+}
+
+//------------------------------
+bool operator==( const Long &a, PY_LONG_LONG b )
+{
+    return a.as_long_long() == b;
+}
+
+bool operator==( PY_LONG_LONG a, const Long &b )
+{
+    return a == b.as_long_long();
+}
+
+//------------------------------
+bool operator>( const Long &a, PY_LONG_LONG b )
+{
+    return a.as_long_long() > b;
+}
+
+bool operator>( PY_LONG_LONG a, const Long &b )
+{
+    return a > b.as_long_long();
+}
+
+//------------------------------
+bool operator>=( const Long &a, PY_LONG_LONG b )
+{
+    return a.as_long_long() >= b;
+}
+
+bool operator>=( PY_LONG_LONG a, const Long &b )
+{
+    return a >= b.as_long_long();
+}
+
+//------------------------------
+bool operator<( const Long &a, PY_LONG_LONG b )
+{
+    return a.as_long_long() < b;
+}
+
+bool operator<( PY_LONG_LONG a, const Long &b )
+{
+    return a < b.as_long_long();
+}
+
+//------------------------------
+bool operator<=( const Long &a, PY_LONG_LONG b )
+{
+    return a.as_long_long() <= b;
+}
+
+bool operator<=( PY_LONG_LONG a, const Long &b )
+{
+    return a <= b.as_long_long();
+}
+#endif
+#endif
+
+//------------------------------------------------------------
+// compare operators
+bool operator!=( const Float &a, const Float &b )
+{
+    return a.as_double() != b.as_double();
+}
+
+bool operator!=( const Float &a, double b )
+{
+    return a.as_double() != b;
+}
+
+bool operator!=( double a, const Float &b )
+{
+    return a != b.as_double();
+}
+
+//------------------------------
+bool operator==( const Float &a, const Float &b )
+{
+    return a.as_double() == b.as_double();
+}
+
+bool operator==( const Float &a, double b )
+{
+    return a.as_double() == b;
+}
+
+bool operator==( double a, const Float &b )
+{
+    return a == b.as_double();
+}
+
+//------------------------------
+bool operator>( const Float &a, const Float &b )
+{
+    return a.as_double() > b.as_double();
+}
+
+bool operator>( const Float &a, double b )
+{
+    return a.as_double() > b;
+}
+
+bool operator>( double a, const Float &b )
+{
+    return a > b.as_double();
+}
+
+//------------------------------
+bool operator>=( const Float &a, const Float &b )
+{
+    return a.as_double() >= b.as_double();
+}
+
+bool operator>=( const Float &a, double b )
+{
+    return a.as_double() >= b;
+}
+
+bool operator>=( double a, const Float &b )
+{
+    return a >= b.as_double();
+}
+
+//------------------------------
+bool operator<( const Float &a, const Float &b )
+{
+    return a.as_double() < b.as_double();
+}
+
+bool operator<( const Float &a, double b )
+{
+    return a.as_double() < b;
+}
+
+bool operator<( double a, const Float &b )
+{
+    return a < b.as_double();
+}
+
+//------------------------------
+bool operator<=( const Float &a, const Float &b )
+{
+    return a.as_double() <= b.as_double();
+}
+
+bool operator<=( double a, const Float &b )
+{
+    return a <= b.as_double();
+}
+
+bool operator<=( const Float &a, double b )
+{
+    return a.as_double() <= b;
 }
 
 }    // end of namespace Py

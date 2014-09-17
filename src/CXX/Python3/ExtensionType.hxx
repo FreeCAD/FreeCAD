@@ -105,7 +105,6 @@
 namespace Py
 {
     extern PythonExtensionBase *getPythonExtensionBase( PyObject *self );
-
     struct PythonClassInstance
     {
         PyObject_HEAD
@@ -160,10 +159,10 @@ namespace Py
 
             // add method into the table
             PyMethodDef *p = &m_methods_table[ m_methods_used ];
-            p->ml_name = const_cast<char *>( name );
+            p->ml_name = name;
             p->ml_meth = function;
             p->ml_flags = flags;
-            p->ml_doc = const_cast<char *>( doc );
+            p->ml_doc = doc;
 
             m_methods_used++;
             p++;
@@ -224,6 +223,7 @@ namespace Py
                 p->set_tp_new( extension_object_new );
                 p->set_tp_init( extension_object_init );
                 p->set_tp_dealloc( extension_object_deallocator );
+
                 // we are a class
                 p->supportClass();
 
