@@ -476,17 +476,6 @@ class _Wall(ArchComponent.Component):
         
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        # propagate movements to children windows
-        if prop == "Placement":
-            if obj.Shape:
-                if not obj.Shape.isNull():
-                    vo = obj.Shape.Placement.Base
-                    vn = obj.Placement.Base
-                    if not DraftVecUtils.equals(vo,vn):
-                        delta = vn.sub(vo)
-                        for o in obj.OutList:
-                            if (Draft.getType(o) == "Window") or Draft.isClone(o,"Window"):
-                                o.Placement.move(delta)
         ArchComponent.Component.onChanged(self,obj,prop)
 
 
