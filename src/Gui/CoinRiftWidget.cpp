@@ -95,7 +95,24 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
                                                        std::max(recommenedTex1Size.h, recommenedTex1Size.h)));
     m_sceneManager->setBackgroundColor(SbColor(.0f, .0f, .8f));
 #endif
-    basePosition = SbVec3f(0.0f, 0.0f, 5.0f);
+    basePosition = SbVec3f(0.0f, 0.0f, -2.0f);
+    // light handling 
+    SoGroup *lightGroup = new SoGroup;
+    
+    SoTranslation *lightTranslation1  = new SoTranslation;
+    lightTranslation1->translation.setValue(0,1,1);
+    lightGroup->addChild (lightTranslation1);
+
+    SoDirectionalLight *light = new SoDirectionalLight();
+    lightGroup->addChild (light);
+
+    SoTranslation *lightTranslation2  = new SoTranslation;
+    lightTranslation2->translation.setValue(0,-1,-1);
+    lightGroup->addChild (lightTranslation2);
+
+
+    //translation->translation.setValue(0,-1,0);
+    //workplace->addChild(translation);
 
     scene = new SoSeparator(0); // Placeholder.
     for (int eye = 0; eye < 2; eye++) {
@@ -106,7 +123,7 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
         camera[eye]->focalDistance.setValue(5.0f);
         camera[eye]->viewportMapping.setValue(SoCamera::LEAVE_ALONE);
         rootScene[eye]->addChild(camera[eye]);
-        rootScene[eye]->addChild(new SoDirectionalLight()); // TODO Connect direction to camera.
+        rootScene[eye]->addChild(lightGroup); // TODO Connect direction to camera.
         rootScene[eye]->addChild(scene);
     }
 
@@ -159,16 +176,17 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
         qDebug() << "Could not configure OVR rendering.";
         throw;
     }
+    static const float nearPlane = 0.01;
 
     for (int eye = 0; eye < 2; eye++) {
         camera[eye]->aspectRatio.setValue((eyeRenderDesc[eye].Fov.LeftTan + eyeRenderDesc[eye].Fov.RightTan) /
                 (eyeRenderDesc[eye].Fov.UpTan + eyeRenderDesc[eye].Fov.DownTan));
-        camera[eye]->nearDistance.setValue(1.0f);
-        camera[eye]->farDistance.setValue(100.0f);
-        camera[eye]->left.setValue(-eyeRenderDesc[eye].Fov.LeftTan);
-        camera[eye]->right.setValue(eyeRenderDesc[eye].Fov.RightTan);
-        camera[eye]->top.setValue(eyeRenderDesc[eye].Fov.UpTan);
-        camera[eye]->bottom.setValue(-eyeRenderDesc[eye].Fov.DownTan);
+        camera[eye]->nearDistance.setValue(nearPlane);
+        camera[eye]->farDistance.setValue(10000.0f);
+        camera[eye]->left.setValue(-eyeRenderDesc[eye].Fov.LeftTan * nearPlane);
+        camera[eye]->right.setValue(eyeRenderDesc[eye].Fov.RightTan * nearPlane);
+        camera[eye]->top.setValue(eyeRenderDesc[eye].Fov.UpTan * nearPlane);
+        camera[eye]->bottom.setValue(-eyeRenderDesc[eye].Fov.DownTan * nearPlane);
     }
 }
 
@@ -199,6 +217,13 @@ CoinRiftWidget::~CoinRiftWidget()
     scene = 0;
     //ovrHmd_StopSensor(hmd);
     ovrHmd_Destroy(hmd);
+}
+
+
+void CoinRiftWidget::setBackgroundColor(const SbColor &Col)
+{
+    BackgroundColor = Col;
+    renderer->setBackgroundColor(BackgroundColor);
 }
 
 
@@ -324,15 +349,23 @@ void CoinRiftWidget::paintGL()
                                          eyePose[eye].Position.y,
                                          eyePose[eye].Position.z);
 
-        //Base::Console().Log("Pos: (%d) %f, %f, %f \n",eye, eyePose[eye].Position.x,
-        //                                 eyePose[eye].Position.y,
-        //                                 eyePose[eye].Position.z);
 
         //SbVec3f originalPosition(camera[eye]->position.getValue());
+        SbVec3f viewAdjust(eyeRenderDesc[eye].ViewAdjust.x,
+                                                              eyeRenderDesc[eye].ViewAdjust.y,
+                                                              eyeRenderDesc[eye].ViewAdjust.z);
 
-        camera[eye]->position.setValue(basePosition - SbVec3f(eyeRenderDesc[eye].ViewAdjust.x,
-                                                                  eyeRenderDesc[eye].ViewAdjust.y,
-                                                                  eyeRenderDesc[eye].ViewAdjust.z) + riftPosition);
+        riftOrientation.multVec(viewAdjust,viewAdjust);
+
+        camera[eye]->position.setValue(basePosition - viewAdjust + riftPosition);
+        //camera[eye]->position.setValue(basePosition - riftPosition);
+
+        //Base::Console().Log("Eye(%d) Pos: %f, %f, %f  ViewAdjust:  %f, %f, %f \n",eye, eyePose[eye].Position.x,
+        //                                                eyePose[eye].Position.y,
+        //                                 eyePose[eye].Position.z,
+        //                                 eyeRenderDesc[eye].ViewAdjust.x,
+        //                                                      eyeRenderDesc[eye].ViewAdjust.y,
+        //                                                      eyeRenderDesc[eye].ViewAdjust.z);
 
 #ifdef USE_SO_OFFSCREEN_RENDERER
         ovrGLTextureData *texData = reinterpret_cast<ovrGLTextureData*>(&eyeTexture[eye]);
