@@ -1650,7 +1650,7 @@ void View3DInventorViewer::viewVR(void)
 	if(oculusUp())
 		oculusStop();
 	else{
-#if 1
+#if 0
 		// start and load the simple test scene:
 		oculusSetTestScene(oculusStart());
 #else

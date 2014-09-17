@@ -26,12 +26,85 @@
 
 #if BUILD_VR
 
+#include <Base/Console.h>
 #include "View3DInventorRiftViewer.h"
+#include <App/Application.h>
 
 #define new DEBUG_CLIENTBLOCK
 
 using namespace Gui;
 
+View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
+{
+    workplace = new SoGroup();
+    translation  = new SoTranslation   ; 
+    rotation     = new SoRotationXYZ   ;
+    rotation->axis.setValue(SoRotationXYZ::X);
+    rotation->angle.setValue(M_PI/4);
+    workplace->addChild(rotation);
+
+
+    scale        = new SoScale         ;
+    scale->scaleFactor.setValue(0.01f,0.01f,0.01f); // scale from mm to m as neede by the Rift
+    workplace->addChild(scale);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Oculus");
+    
+    this->setGeometry( hGrp->GetInt("RenderWindowPosX",100) ,
+                       hGrp->GetInt("RenderWindowPosY",100) ,
+                       hGrp->GetInt("RenderWindowSizeW",1920) ,
+                       hGrp->GetInt("RenderWindowSizeH",1080)                   
+                     );
+
+
+}
+
+//void saveWinPostion(void)
+//{
+//  
+// 
+//
+//}
+
+View3DInventorRiftViewer::~View3DInventorRiftViewer() 
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Oculus");
+
+    // remeber last postion on close
+    hGrp->SetInt("RenderWindowPosX",pos().x());
+    hGrp->SetInt("RenderWindowPosY",pos().y());
+    hGrp->SetInt("RenderWindowSizeW",size().width());
+    hGrp->SetInt("RenderWindowSizeH",size().height());
+
+    Base::Console().Log("pos: %d %d  size: %d %d \n",pos().x(),pos().y(),
+                                                        size().width(),size().height());
+}
+
+void View3DInventorRiftViewer::setSceneGraph(SoNode *sceneGraph)
+{
+
+    workplace->addChild(sceneGraph);
+
+    CoinRiftWidget::setSceneGraph(workplace);
+}
+
+
+
+
+void View3DInventorRiftViewer::keyPressEvent(QKeyEvent *event)
+{
+    if ((event->key() == Qt::Key_Delete
+        || event->key() == Qt::Key_Backspace)) {
+        ; // TODO
+    } else {
+        CoinRiftWidget::keyPressEvent(event);
+    }
+}
+
+
+
+
+// static test code ================================================================================
 static View3DInventorRiftViewer *window=0;
 
 void oculusSetTestScene(View3DInventorRiftViewer *window)
