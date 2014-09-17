@@ -72,11 +72,17 @@ if not libsok:
     files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
     baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+str(CURRENTDXFLIB)+"/"
     import ArchCommands
+    from FreeCAD import Base
+    progressbar = Base.ProgressIndicator()
+    progressbar.start("Downloading files...",4)
     for f in files:
+        progressbar.next()
         p = None
         p = ArchCommands.download(baseurl+f,force=True)
         if not p:
             FreeCAD.Console.PrintWarning("Download of dxf libraries failed. Please download them manually from\nhttps://github.com/yorikvanhavre/Draft-dxf-importer\nand place them in your macros folder\n")
+            break
+    progressbar.stop() 
 
     sys.path.append(FreeCAD.ConfigGet("UserAppData"))
     try:
