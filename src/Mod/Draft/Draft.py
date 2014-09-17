@@ -1176,12 +1176,13 @@ def cut(object1,object2):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def move(objectslist,vector,copy=False):
-    '''move(objects,vector,[copy]): Moves the objects contained
+def move(objectslist,vector,copy=False,arch=True):
+    '''move(objects,vector,[copy,arch]): Moves the objects contained
     in objects (that can be an object or a list of objects)
     in the direction and distance indicated by the given
     vector. If copy is True, the actual objects are not moved, but copies
-    are created instead.he objects (or their copies) are returned.'''
+    are created instead.he objects (or their copies) are returned. If arch
+    is True (default), included windows and siblings are moved too'''
     typecheck([(vector,Vector), (copy,bool)], "move")
     if not isinstance(objectslist,list): objectslist = [objectslist]
     newobjlist = []
@@ -1200,7 +1201,7 @@ def move(objectslist,vector,copy=False):
                 newobj = obj
             newobj.X = v.x
             newobj.Y = v.y
-            newobj.Z = v.z           
+            newobj.Z = v.z
         elif (obj.isDerivedFrom("Part::Feature")):
             if copy:
                 newobj = makeCopy(obj)
@@ -1208,6 +1209,14 @@ def move(objectslist,vector,copy=False):
                 newobj = obj
             pla = newobj.Placement
             pla.move(vector)
+            if arch and hasattr(obj,"Proxy"):
+                if hasattr(obj,"Additions") and hasattr(obj,"Subtractions"):
+                    for o in obj.Additions+obj.Subtractions:
+                        if (getType(o) == "Window") or isClone(o,"Window"):
+                            o.Placement.move(vector)
+                if hasattr(obj.Proxy,"getSiblings"):
+                    for o in obj.Proxy.getSiblings(obj):
+                        o.Placement.move(vector)
         elif getType(obj) == "Annotation":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::Annotation",getRealName(obj.Name))
@@ -1277,13 +1286,14 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
     else:
         polarArray(objectslist,arg1,arg2,arg3)
                 
-def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False):
+def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False,arch=True):
     '''rotate(objects,angle,[center,axis,copy]): Rotates the objects contained
     in objects (that can be a list of objects or an object) of the given angle
     (in degrees) around the center, using axis as a rotation axis. If axis is
     omitted, the rotation will be around the vertical Z axis.
     If copy is True, the actual objects are not moved, but copies
-    are created instead. The objects (or their copies) are returned.'''
+    are created instead. The objects (or their copies) are returned.
+    If arch is True, inserted windows and siblings are rotated too'''
     import Part
     typecheck([(copy,bool)], "rotate")
     if not isinstance(objectslist,list): objectslist = [objectslist]
@@ -1302,6 +1312,18 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False)
             shape = obj.Shape.copy()
             shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
             newobj.Shape = shape
+            if arch and hasattr(obj,"Proxy"):
+                if hasattr(obj,"Additions") and hasattr(obj,"Subtractions"):
+                    for o in obj.Additions+obj.Subtractions:
+                        if (getType(o) == "Window") or isClone(o,"Window"):
+                            shape = o.Shape.copy()
+                            shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
+                            o.Shape = shape
+                if hasattr(obj.Proxy,"getSiblings"):
+                    for o in obj.Proxy.getSiblings(obj):
+                        shape = o.Shape.copy()
+                        shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
+                        o.Shape = shape
         elif (obj.isDerivedFrom("App::Annotation")):
             if axis.normalize() == Vector(1,0,0):
                 newobj.ViewObject.RotationAxis = "X"

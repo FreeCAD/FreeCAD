@@ -671,8 +671,6 @@ class _Window(ArchComponent.Component):
                                 shapes.append(shape)
                         if shapes:
                             base = Part.makeCompound(shapes)
-                            if not DraftGeomUtils.isNull(pl):
-                                base.Placement = pl
                     elif not obj.WindowParts:
                         if not obj.Base.Shape.isNull():
                             base = obj.Base.Shape.copy()
