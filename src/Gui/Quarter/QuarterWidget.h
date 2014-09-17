@@ -188,13 +188,14 @@ protected:
   virtual void resizeEvent(QResizeEvent*);
   virtual bool viewportEvent(QEvent* event);
   virtual void actualRedraw(void);
+  
+  double renderTime;
 
 private:
   void constructor(const QGLFormat& format, const QGLWidget* sharewidget);
   friend class QuarterWidgetP;
   class QuarterWidgetP * pimpl;
-  bool initialized;
-  
+  bool initialized;  
 };
 
 }}} // namespace

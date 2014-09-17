@@ -59,6 +59,7 @@
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoSelection.h>
+# include <Inventor/nodes/SoText2.h>
 # include <Inventor/actions/SoBoxHighlightRenderAction.h>
 # include <Inventor/events/SoEvent.h>
 # include <Inventor/events/SoKeyboardEvent.h>
@@ -118,6 +119,7 @@
 #include "View3DViewerPy.h"
 
 #include <Inventor/draggers/SoCenterballDragger.h>
+#include <Inventor/annex/Profiler/SoProfiler.h>
 
 
 //#define FC_LOGGING_CB
@@ -690,11 +692,7 @@ void View3DInventorViewer::setGradientBackgroundColor(const SbColor& fromColor,
 
 void View3DInventorViewer::setEnabledFPSCounter(bool on)
 {
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
-    setenv("COIN_SHOW_FPS_COUNTER", (on?"1":"0"), 1);
-#else
-    on ? _putenv("COIN_SHOW_FPS_COUNTER=1") : _putenv("COIN_SHOW_FPS_COUNTER=0");
-#endif
+    fpsEnabled = on;
 }
 
 void View3DInventorViewer::setAxisCross(bool on)
@@ -1376,6 +1374,13 @@ void View3DInventorViewer::renderScene(void)
 
     for(std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
         (*it)->paintGL();
+    
+    //fps rendering
+    if(fpsEnabled) {
+      std::stringstream stream;
+      stream << renderTime << " ms / " << 1000./renderTime << " fps";
+      draw2DString(stream.str().c_str(), SbVec2s(10,10), SbVec2f(0.1,0.1));
+    };
 
 #if 0 // this breaks highlighting of edges
     glEnable(GL_LIGHTING);

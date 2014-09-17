@@ -38,6 +38,9 @@
 
 #include <Gui/Selection.h>
 
+class SoTranslation;
+class SoTransform;
+class SoText2;
 namespace Quarter = SIM::Coin3D::Quarter;
 
 class SoSeparator;
@@ -335,11 +338,12 @@ public:
     void setGradientBackgroundColor(const SbColor& fromColor,
                                     const SbColor& toColor,
                                     const SbColor& midColor);
-    void setEnabledFPSCounter(bool b);
     void setNavigationType(Base::Type);
 
     void setAxisCross(bool b);
     bool hasAxisCross(void);
+    
+    void setEnabledFPSCounter(bool b);
 
     NavigationStyle* navigationStyle() const;
 
@@ -399,7 +403,10 @@ private:
     // big one in the middle
     SoShapeScale* axisCross;
     SoGroup* axisGroup;
-
+    
+    //stuff needed to draw the fps counter
+    bool fpsEnabled;
+    SoSeparator* fpsRoot;
 
     SbBool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;

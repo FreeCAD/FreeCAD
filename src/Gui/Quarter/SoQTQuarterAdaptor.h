@@ -92,7 +92,7 @@ public:
     virtual bool processSoEvent(const SoEvent* event) {
         return QuarterWidget::processSoEvent(event);
     };
-
+          
     //this functions still need to be ported
     virtual void afterRealizeHook(void) {}; //enables spacenav and joystick in soqt, dunno if this is needed
 
@@ -120,6 +120,10 @@ private:
     SoGetMatrixAction matrixaction;
     // Home position storage.
     SoNode * m_storedcamera;
+    
+protected:
+    void draw2DString(const char * str, SbVec2s glsize, SbVec2f position);
+    void printString(const char * s);
 };
 
 } //Quarter
