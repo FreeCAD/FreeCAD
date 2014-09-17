@@ -2547,7 +2547,7 @@ def upgrade(objects,delete=False,force=None):
         """makes one big face from selected objects, if possible"""
         faces = []
         for obj in objectslist:
-            faces.append(obj.Shape.Faces)
+            faces.extend(obj.Shape.Faces)
         u = faces.pop(0)
         for f in faces:
             u = u.fuse(f)
