@@ -31,7 +31,20 @@ namespace Gui {
 
 class View3DInventorRiftViewer : public CoinRiftWidget
 {
-    
+public:
+    View3DInventorRiftViewer();
+    ~View3DInventorRiftViewer();
+
+     virtual void setSceneGraph(SoNode *sceneGraph);
+
+protected:
+    SoGroup         *workplace;
+    SoTranslation   *translation;
+    SoRotationXYZ   *rotation;
+    SoScale         *scale;
+
+protected:
+    void keyPressEvent(QKeyEvent *);
 };
 
 
