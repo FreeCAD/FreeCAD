@@ -95,19 +95,20 @@ class CoinRiftWidget : public QGLWidget
 public:
     explicit CoinRiftWidget();
     ~CoinRiftWidget();
-    void setSceneGraph(SoNode *sceneGraph);
-	void setBase(const SbVec3f &pos){basePosition=pos;}
-	void setBackgoundColor(const SbColor &Col){BackgroundColor = Col;}
+    virtual void setSceneGraph(SoNode *sceneGraph);
+    void setBase(const SbVec3f &pos){basePosition=pos;}
+    void setBackgoundColor(const SbColor &Col){BackgroundColor = Col;}
 
-	SbVec3f basePosition;
+    SbVec3f    basePosition;
+    SbRotation baseOrientation;
 
 protected:
-	void handlingSafetyWarning(void);
+    void handlingSafetyWarning(void);
     void initializeGL();
     void paintGL();
     void resizeGL(int width, int height);
 
-	SbColor BackgroundColor;
+    SbColor BackgroundColor;
 };
 
 
