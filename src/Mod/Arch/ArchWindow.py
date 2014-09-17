@@ -385,6 +385,7 @@ class _CommandWindow:
         self.Width = p.GetFloat("WindowWidth",1000)
         self.Height = p.GetFloat("WindowHeight",1000)
         self.Preset = 0
+        self.Sill = 0
         self.baseFace = None
         self.wparams = ["Width","Height","H1","H2","H3","W1","W2","O1","O2"]
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
@@ -449,6 +450,7 @@ class _CommandWindow:
         FreeCADGui.Control.closeDialog()
         if point == None:
             return
+        point = point.add(FreeCAD.Vector(0,0,self.Sill))
         if not self.Preset:
             if obj and (self.baseFace != None):
                 if Draft.getType(obj) in AllowedHosts:
@@ -487,6 +489,7 @@ class _CommandWindow:
     def update(self,point,info):
         "this function is called by the Snapper when the mouse is moved"
         delta = FreeCAD.Vector(self.Width/2,self.Thickness/2,self.Height/2)
+        delta = delta.add(FreeCAD.Vector(0,0,self.Sill))
         rot = FreeCAD.Rotation()
         self.baseFace = None
         if info:
@@ -508,25 +511,32 @@ class _CommandWindow:
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Window options"))
         grid = QtGui.QGridLayout(w)
+        
+        # sill height
+        labels = QtGui.QLabel(translate("Arch","Sill height"))
+        values = ui.createWidget("Gui::InputField")
+        grid.addWidget(labels,0,0,1,1)
+        grid.addWidget(values,0,1,1,1)
+        QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
 
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset"))
         valuep = QtGui.QComboBox()
         valuep.addItems(["Create from scratch"]+WindowPresets)
         valuep.setCurrentIndex(self.Preset)
-        grid.addWidget(labelp,0,0,1,1)
-        grid.addWidget(valuep,0,1,1,1)
+        grid.addWidget(labelp,1,0,1,1)
+        grid.addWidget(valuep,1,1,1,1)
         QtCore.QObject.connect(valuep,QtCore.SIGNAL("currentIndexChanged(int)"),self.setPreset)
         
         # image display
         self.im = QtSvg.QSvgWidget(":/ui/ParametersWindowFixed.svg")
         self.im.setMaximumWidth(200)
         self.im.setMinimumHeight(120)
-        grid.addWidget(self.im,1,0,1,2)
+        grid.addWidget(self.im,2,0,1,2)
         self.im.hide()
 
         # parameters
-        i = 2
+        i = 3
         for param in self.wparams:
             lab = QtGui.QLabel(translate("Arch",param).decode("utf8"))
             setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
@@ -546,6 +556,9 @@ class _CommandWindow:
                 setArchWindowParamFunction('"""+param+"""',d)""")
             QtCore.QObject.connect(getattr(self,"val"+param),QtCore.SIGNAL("valueChanged(double)"),valueChanged)
         return w
+        
+    def setSill(self,d):
+        self.Sill = d
         
     def setParams(self,param,d):
         setattr(self,param,d)
