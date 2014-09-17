@@ -96,34 +96,28 @@ CoinRiftWidget::CoinRiftWidget() : QGLWidget()
     m_sceneManager->setBackgroundColor(SbColor(.0f, .0f, .8f));
 #endif
     basePosition = SbVec3f(0.0f, 0.0f, -2.0f);
-    // light handling 
-    SoGroup *lightGroup = new SoGroup;
     
-    SoTranslation *lightTranslation1  = new SoTranslation;
-    lightTranslation1->translation.setValue(0,1,1);
-    lightGroup->addChild (lightTranslation1);
+    // light handling 
+     SoDirectionalLight *light = new SoDirectionalLight();
+    light->direction.setValue(1,-1,-1);
 
-    SoDirectionalLight *light = new SoDirectionalLight();
-    lightGroup->addChild (light);
+    SoDirectionalLight *light2 = new SoDirectionalLight();
+    light2->direction.setValue(-1,-1,-1);
+    light2->intensity.setValue(0.6);
+    light2->color.setValue(0.8,0.8,1);
 
-    SoTranslation *lightTranslation2  = new SoTranslation;
-    lightTranslation2->translation.setValue(0,-1,-1);
-    lightGroup->addChild (lightTranslation2);
-
-
-    //translation->translation.setValue(0,-1,0);
-    //workplace->addChild(translation);
 
     scene = new SoSeparator(0); // Placeholder.
     for (int eye = 0; eye < 2; eye++) {
-        rootScene[eye] = new SoSeparator(3);
+        rootScene[eye] = new SoSeparator();
         rootScene[eye]->ref();
         camera[eye] = new SoFrustumCamera();
         camera[eye]->position.setValue(basePosition);
         camera[eye]->focalDistance.setValue(5.0f);
         camera[eye]->viewportMapping.setValue(SoCamera::LEAVE_ALONE);
         rootScene[eye]->addChild(camera[eye]);
-        rootScene[eye]->addChild(lightGroup); // TODO Connect direction to camera.
+        rootScene[eye]->addChild(light); 
+        rootScene[eye]->addChild(light2);
         rootScene[eye]->addChild(scene);
     }
 
@@ -358,7 +352,6 @@ void CoinRiftWidget::paintGL()
         riftOrientation.multVec(viewAdjust,viewAdjust);
 
         camera[eye]->position.setValue(basePosition - viewAdjust + riftPosition);
-        //camera[eye]->position.setValue(basePosition - riftPosition);
 
         //Base::Console().Log("Eye(%d) Pos: %f, %f, %f  ViewAdjust:  %f, %f, %f \n",eye, eyePose[eye].Position.x,
         //                                                eyePose[eye].Position.y,

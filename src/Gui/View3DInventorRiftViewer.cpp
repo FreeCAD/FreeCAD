@@ -67,7 +67,7 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
 
     
     setBackgroundColor(SbColor(51,51,101));
-    basePosition = SbVec3f(0.0f, 0.5f, 0.5f);
+    basePosition = SbVec3f(0.0f, 0.5f, 0.8f);
 }
 
 //void saveWinPostion(void)
