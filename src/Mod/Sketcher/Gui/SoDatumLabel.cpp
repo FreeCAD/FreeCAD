@@ -56,6 +56,8 @@
 #include "SoDatumLabel.h"
 #include <Gui/BitmapFactory.h>
 
+#define ZCONSTR 0.006f
+
 using namespace SketcherGui;
 
 // ------------------------------------------------------
@@ -338,8 +340,8 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         SoState *state = action->getState();
         const SbViewVolume & vv = SoViewVolumeElement::get(state);
         float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
-	SbVec2s vp_size = static_cast<SoGLRenderAction*>(action)->getViewportRegion().getWindowSize();
-	scale /= float(vp_size[0]);
+        SbVec2s vp_size = SoViewportRegionElement::get(state).getWindowSize();
+        scale /= float(vp_size[0]);
 
         SbVec3f dir = (p2-p1);
         dir.normalize();
@@ -349,14 +351,14 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
 
         // Calculate coordinates for the first arrow
         SbVec3f ar0, ar1, ar2;
-        ar0  = p1 + dir * 5 * margin;
+        ar0  = p1 + dir * 5 * margin ;
         ar1  = ar0 - dir * 0.866f * 2 * margin; // Base Point of Arrow
         ar2  = ar1 + norm * margin; // Triangular corners
         ar1 -= norm * margin;
 
         // Calculate coordinates for the second arrow
         SbVec3f ar3, ar4, ar5;
-        ar3  = p2 - dir * 5 * margin;
+        ar3  = p2 - dir * 5 * margin ;
         ar4  = ar3 + dir * 0.866f * 2 * margin; // Base Point of 2nd Arrow
 
         ar5  = ar4 + norm * margin; // Triangular corners
@@ -457,6 +459,14 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         float aspectRatio =  (float) srcw / (float) srch;
         this->imgHeight = scale * (float) (srch);
         this->imgWidth  = aspectRatio * (float) this->imgHeight;
+    }
+    
+    if (this->datumtype.getValue() == SYMMETRIC) {
+        // For the symmetry constraint that does not have text, but does have arrows
+        //this->imgHeight = 3.36f;
+        //this->imgWidth  = 5.26f;
+        this->imgHeight = 1.5f;
+        this->imgWidth  = 1.5f;
     }
    
     // Get the points stored in the pnt field
@@ -823,14 +833,14 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         ar1  = ar0 - dir * 0.866f * 2 * margin;
         ar2  = ar1 + norm * margin;
         ar1 -= norm * margin;
-
+        
         glBegin(GL_LINES);
-          glVertex2f(p1[0],p1[1]);
-          glVertex2f(ar0[0],ar0[1]);
-          glVertex2f(ar0[0],ar0[1]);
-          glVertex2f(ar1[0],ar1[1]);
-          glVertex2f(ar0[0],ar0[1]);
-          glVertex2f(ar2[0],ar2[1]);
+          glVertex3f(p1[0], p1[1], ZCONSTR); 
+          glVertex3f(ar0[0], ar0[1], ZCONSTR);
+          glVertex3f(ar0[0], ar0[1], ZCONSTR);
+          glVertex3f(ar1[0], ar1[1], ZCONSTR);
+          glVertex3f(ar0[0], ar0[1], ZCONSTR);
+          glVertex3f(ar2[0], ar2[1], ZCONSTR);
         glEnd();
 
         // Calculate coordinates for the second arrow
@@ -841,12 +851,12 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         ar4 -= norm * margin;
 
         glBegin(GL_LINES);
-          glVertex2f(p2[0],p2[1]);
-          glVertex2f(ar3[0],ar3[1]);
-          glVertex2f(ar3[0], ar3[1]);
-          glVertex2f(ar4[0], ar4[1]);
-          glVertex2f(ar3[0], ar3[1]);
-          glVertex2f(ar5[0], ar5[1]);
+          glVertex3f(p2[0], p2[1], ZCONSTR); 
+          glVertex3f(ar3[0], ar3[1], ZCONSTR); 
+          glVertex3f(ar3[0], ar3[1], ZCONSTR); 
+          glVertex3f(ar4[0], ar4[1], ZCONSTR); 
+          glVertex3f(ar3[0], ar3[1], ZCONSTR); 
+          glVertex3f(ar5[0], ar5[1], ZCONSTR); 
         glEnd();
 
         // BOUNDING BOX CALCULATION - IMPORTANT
