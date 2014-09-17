@@ -40,7 +40,8 @@ public:
 protected:
     SoGroup         *workplace;
     SoTranslation   *translation;
-    SoRotationXYZ   *rotation;
+    SoRotationXYZ   *rotation1;
+    SoRotationXYZ   *rotation2;
     SoScale         *scale;
 
 protected:

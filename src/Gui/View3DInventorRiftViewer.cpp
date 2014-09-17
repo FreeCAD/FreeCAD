@@ -37,15 +37,24 @@ using namespace Gui;
 View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
 {
     workplace = new SoGroup();
-    translation  = new SoTranslation   ; 
-    rotation     = new SoRotationXYZ   ;
-    rotation->axis.setValue(SoRotationXYZ::X);
-    rotation->angle.setValue(M_PI/4);
-    workplace->addChild(rotation);
+
+    //translation  = new SoTranslation   ; 
+    //translation->translation.setValue(0,-1,0);
+    //workplace->addChild(translation);
+
+    rotation1     = new SoRotationXYZ   ;
+    rotation1->axis.setValue(SoRotationXYZ::X);
+    rotation1->angle.setValue(M_PI/2);
+    workplace->addChild(rotation1);
+
+    rotation2     = new SoRotationXYZ   ;
+    rotation2->axis.setValue(SoRotationXYZ::Z);
+    rotation2->angle.setValue(0);
+    workplace->addChild(rotation2);
 
 
     scale        = new SoScale         ;
-    scale->scaleFactor.setValue(0.01f,0.01f,0.01f); // scale from mm to m as neede by the Rift
+    scale->scaleFactor.setValue(0.001f,0.001f,0.001f); // scale from mm to m as neede by the Rift
     workplace->addChild(scale);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Oculus");
@@ -56,7 +65,9 @@ View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()
                        hGrp->GetInt("RenderWindowSizeH",1080)                   
                      );
 
-
+    
+    setBackgroundColor(SbColor(51,51,101));
+    basePosition = SbVec3f(0.0f, 0.5f, 0.5f);
 }
 
 //void saveWinPostion(void)
@@ -93,10 +104,32 @@ void View3DInventorRiftViewer::setSceneGraph(SoNode *sceneGraph)
 
 void View3DInventorRiftViewer::keyPressEvent(QKeyEvent *event)
 {
-    if ((event->key() == Qt::Key_Delete
-        || event->key() == Qt::Key_Backspace)) {
-        ; // TODO
+    static const float increment = 0.02; // move two centimeter per key
+    static const float rotIncrement = M_PI/4; // move two 90°  per key
+
+
+    if (event->key() == Qt::Key_Plus) {
+        scale->scaleFactor.setValue(scale->scaleFactor.getValue() * 2.0f) ;
+    } else if (event->key() == Qt::Key_Minus) {
+        scale->scaleFactor.setValue(scale->scaleFactor.getValue() * 0.2f) ;
+    } else if (event->key() == Qt::Key_S) {
+            basePosition += SbVec3f(0,0,increment) ;
+    } else if (event->key() == Qt::Key_W) {
+            basePosition += SbVec3f(0,0,-increment) ;
+    } else if (event->key() == Qt::Key_Up) {
+            basePosition += SbVec3f(0,-increment,0) ;
+    } else if (event->key() == Qt::Key_Down) {
+            basePosition += SbVec3f(0,increment,0) ;
+    } else if (event->key() == Qt::Key_Left) {
+        rotation2->angle.setValue( rotation2->angle.getValue() + rotIncrement);
+    } else if (event->key() == Qt::Key_Right) {
+        rotation2->angle.setValue( rotation2->angle.getValue() - rotIncrement);
+    } else if (event->key() == Qt::Key_A) {
+            basePosition += SbVec3f(-increment,0,0) ;
+    } else if (event->key() == Qt::Key_D) {
+        basePosition += SbVec3f(increment,0,0) ;
     } else {
+
         CoinRiftWidget::keyPressEvent(event);
     }
 }
@@ -156,9 +189,9 @@ void oculusStop()
 	if(window){
 		delete window;
 		window = 0;
+        ovr_Shutdown();
 	}
 
-    ovr_Shutdown();
 }
 
 bool oculusUp(void)
