@@ -716,19 +716,43 @@ class wireTracker(Tracker):
 class gridTracker(Tracker):
     "A grid tracker"
     def __init__(self):
-        # self.space = 1
-        self.space = Draft.getParam("gridSpacing",1)
-        # self.mainlines = 10
-        self.mainlines = Draft.getParam("gridEvery",10)
-        self.numlines = Draft.getParam("gridSize",100)
         col = [0.2,0.2,0.3]
-
         pick = coin.SoPickStyle()
         pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
-        
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0,0,0])
-                
+        mat1 = coin.SoMaterial()
+        mat1.transparency.setValue(0.7)
+        mat1.diffuseColor.setValue(col)
+        self.coords1 = coin.SoCoordinate3()
+        self.lines1 = coin.SoLineSet()
+        mat2 = coin.SoMaterial()
+        mat2.transparency.setValue(0.3)
+        mat2.diffuseColor.setValue(col)
+        self.coords2 = coin.SoCoordinate3()
+        self.lines2 = coin.SoLineSet()
+        mat3 = coin.SoMaterial()
+        mat3.transparency.setValue(0)
+        mat3.diffuseColor.setValue(col)
+        self.coords3 = coin.SoCoordinate3()
+        self.lines3 = coin.SoLineSet()
+        s = coin.SoSeparator()
+        s.addChild(pick)
+        s.addChild(self.trans)
+        s.addChild(mat1)
+        s.addChild(self.coords1)
+        s.addChild(self.lines1)
+        s.addChild(mat2)
+        s.addChild(self.coords2)
+        s.addChild(self.lines2)
+        s.addChild(mat3)
+        s.addChild(self.coords3)
+        s.addChild(self.lines3)
+        Tracker.__init__(self,children=[s])
+        self.reset()
+
+    def update(self):
+        "redraws the grid"
         bound = (self.numlines/2)*self.space
         pts = []
         mpts = []
@@ -755,57 +779,12 @@ class gridTracker(Tracker):
             midx.append(2)
         for ap in range(0,len(apts),2):
             aidx.append(2)
-            
-        mat1 = coin.SoMaterial()
-        mat1.transparency.setValue(0.7)
-        mat1.diffuseColor.setValue(col)
-        self.coords1 = coin.SoCoordinate3()
         self.coords1.point.setValues(pts)
-        lines1 = coin.SoLineSet()
-        lines1.numVertices.setValues(idx)
-        mat2 = coin.SoMaterial()
-        mat2.transparency.setValue(0.3)
-        mat2.diffuseColor.setValue(col)
-        self.coords2 = coin.SoCoordinate3()
+        self.lines1.numVertices.setValues(idx)
         self.coords2.point.setValues(mpts)
-        lines2 = coin.SoLineSet()
-        lines2.numVertices.setValues(midx)
-        mat3 = coin.SoMaterial()
-        mat3.transparency.setValue(0)
-        mat3.diffuseColor.setValue(col)
-        self.coords3 = coin.SoCoordinate3()
+        self.lines2.numVertices.setValues(midx)
         self.coords3.point.setValues(apts)
-        lines3 = coin.SoLineSet()
-        lines3.numVertices.setValues(aidx)
-        s = coin.SoSeparator()
-        s.addChild(pick)
-        s.addChild(self.trans)
-        s.addChild(mat1)
-        s.addChild(self.coords1)
-        s.addChild(lines1)
-        s.addChild(mat2)
-        s.addChild(self.coords2)
-        s.addChild(lines2)
-        s.addChild(mat3)
-        s.addChild(self.coords3)
-        s.addChild(lines3)
-        Tracker.__init__(self,children=[s])
-        self.update()
-
-    def update(self):
-        bound = (self.numlines/2)*self.space
-        pts = []
-        mpts = []
-        for i in range(self.numlines+1):
-            curr = -bound + i*self.space
-            if i/float(self.mainlines) == i/self.mainlines:
-                mpts.extend([[-bound,curr,0],[bound,curr,0]])
-                mpts.extend([[curr,-bound,0],[curr,bound,0]])
-            else:
-                pts.extend([[-bound,curr,0],[bound,curr,0]])
-                pts.extend([[curr,-bound,0],[curr,bound,0]])
-        self.coords1.point.setValues(pts)
-        self.coords2.point.setValues(mpts)
+        self.lines3.numVertices.setValues(aidx)
         
     def setSize(self,size):
         self.numlines = size
@@ -818,8 +797,17 @@ class gridTracker(Tracker):
     def setMainlines(self,ml):
         self.mainlines = ml
         self.update()
+        
+    def reset(self):
+        "resets the grid according to preferences settings"
+        self.space = Draft.getParam("gridSpacing",1)
+        self.mainlines = Draft.getParam("gridEvery",10)
+        self.numlines = Draft.getParam("gridSize",100)
+        self.update()
 
     def set(self):
+        "moves and rotates the grid according to the current WP"
+        self.reset()
         Q = FreeCAD.DraftWorkingPlane.getRotation().Rotation.Q
         P = FreeCAD.DraftWorkingPlane.position
         self.trans.rotation.setValue([Q[0],Q[1],Q[2],Q[3]])
