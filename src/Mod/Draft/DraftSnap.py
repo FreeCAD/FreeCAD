@@ -575,7 +575,10 @@ class Snapper:
                             vecs.extend([v,v.negative()])
                 for v in vecs:
                     if not DraftVecUtils.isNull(v):
-                        de = Part.Line(last,last.add(v)).toShape()  
+                        try:
+                            de = Part.Line(last,last.add(v)).toShape()
+                        except Part.OCCError:
+                            return point,None
                         np = self.getPerpendicular(de,point)
                         if ((self.radius == 0) and (point.sub(last).getAngle(v) < 0.087)) \
                         or ((np.sub(point)).Length < self.radius):
