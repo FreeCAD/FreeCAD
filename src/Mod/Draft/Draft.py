@@ -3371,7 +3371,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
             # setting text
             try:
                 m = obj.ViewObject.DisplayMode
-            except AttributeError:
+            except: # swallow all exceptions here since it always fails on first run (Displaymode enum no set yet)
                 m = ["2D","3D"][getParam("dimstyle",0)]
             if m== "3D":
                 offset = offset.negative()
@@ -3684,7 +3684,7 @@ class _ViewProviderAngularDimension(_ViewProviderDraft):
             # check display mode
             try:
                 m = obj.ViewObject.DisplayMode
-            except AttributeError:
+            except: # swallow all exceptions here since it always fails on first run (Displaymode enum no set yet)
                 m = ["2D","3D"][getParam("dimstyle",0)]
     
             # set the arc

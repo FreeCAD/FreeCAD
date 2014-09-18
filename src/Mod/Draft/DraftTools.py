@@ -4198,6 +4198,7 @@ class ToggleGrid():
                     FreeCADGui.Snapper.grid.off()
                     FreeCADGui.Snapper.forceGridOff=True
                 else:
+                    FreeCADGui.Snapper.grid.reset()
                     FreeCADGui.Snapper.grid.on()
                     FreeCADGui.Snapper.forceGridOff=False
             else:
