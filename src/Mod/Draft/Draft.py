@@ -891,11 +891,8 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     If screen is True, the text always faces the view direction.'''
     typecheck([(point,Vector)], "makeText")
     if not isinstance(stringslist,list): stringslist = [stringslist]
-    textbuffer = []
-    for l in stringslist: 
-        textbuffer.append(stringencodecoin(l.decode("utf8")))
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
-    obj.LabelText=textbuffer
+    obj.LabelText=stringlist
     obj.Position=point
     if FreeCAD.GuiUp:
         if not screen: 
