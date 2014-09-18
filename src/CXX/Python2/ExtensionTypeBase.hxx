@@ -59,7 +59,7 @@ namespace Py
 
     // This special deallocator does a delete on the pointer.
 
-    class PythonExtensionBase : public PyObject
+    class PYCXX_EXPORT PythonExtensionBase : public PyObject
     {
     public:
         PythonExtensionBase();

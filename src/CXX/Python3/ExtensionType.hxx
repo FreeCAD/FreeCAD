@@ -112,7 +112,7 @@ namespace Py
     };
 
 
-    class ExtensionClassMethodsTable
+    class PYCXX_EXPORT ExtensionClassMethodsTable
     {
     public:
         ExtensionClassMethodsTable()

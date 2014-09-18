@@ -63,7 +63,7 @@ namespace Py
     class ExtensionModuleBase;
 
     // Make an Exception Type for use in raising custom exceptions
-    class ExtensionExceptionType : public Object
+    class PYCXX_EXPORT ExtensionExceptionType : public Object
     {
     public:
         ExtensionExceptionType();
@@ -74,7 +74,7 @@ namespace Py
         void init( ExtensionModuleBase &module, const std::string &name );
     };
 
-    class MethodTable
+    class PYCXX_EXPORT MethodTable
     {
     public:
         MethodTable();

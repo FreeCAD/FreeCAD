@@ -40,7 +40,7 @@
 
 namespace Py
 {
-    class ExtensionModuleBase
+    class PYCXX_EXPORT ExtensionModuleBase
     {
     public:
         ExtensionModuleBase( const char *name );
@@ -78,9 +78,9 @@ namespace Py
     };
 
     // Note: Python calls noargs as varargs buts args==NULL
-    extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple, PyObject * );
-    extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple, PyObject *_args );
-    extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple, PyObject *_args, PyObject *_keywords );
+    extern "C" PYCXX_EXPORT PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple, PyObject * );
+    extern "C" PYCXX_EXPORT PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple, PyObject *_args );
+    extern "C" PYCXX_EXPORT PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple, PyObject *_args, PyObject *_keywords );
 
     template<TEMPLATE_TYPENAME T>
     class ExtensionModule : public ExtensionModuleBase
