@@ -465,8 +465,9 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // For the symmetry constraint that does not have text, but does have arrows
         //this->imgHeight = 3.36f;
         //this->imgWidth  = 5.26f;
-        this->imgHeight = 1.5f;
-        this->imgWidth  = 1.5f;
+
+        this->imgHeight = scale*25.0f;
+        this->imgWidth = scale*25.0f;
     }
    
     // Get the points stored in the pnt field

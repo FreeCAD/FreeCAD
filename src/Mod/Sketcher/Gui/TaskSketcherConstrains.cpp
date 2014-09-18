@@ -125,7 +125,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     QListWidgetItem* item = currentItem();
     QList<QListWidgetItem *> items = selectedItems();
     
-    CONTEXT_ITEM("Constraint_SelectElements","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
+    CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
     
     QAction* sep = menu.addSeparator();
 
