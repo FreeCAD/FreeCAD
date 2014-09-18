@@ -39,7 +39,7 @@ class ImportWorkbench ( Workbench ):
 			Log ('Loading ImportGui module')
 			import Import
 			import ImportGui
-		except:
+		except ImportError:
 			Err('Cannot load ImportGui')
 			raise
 	def GetIcon(self):

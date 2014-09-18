@@ -68,13 +68,13 @@ class PartDesignWorkbench ( Workbench ):
                 # load the module
                 try:
                     from WizardShaft import WizardShaft
-                except:
+                except ImportError:
                     print "Wizard shaft module cannot be loaded"
                 import PartDesignGui
                 import PartDesign
                 try:
                     import InvoluteGearFeature
-                except:
+                except ImportError:
                     print "Involute gear module cannot be loaded"
         def GetClassName(self):
                 return "PartDesignGui::Workbench"

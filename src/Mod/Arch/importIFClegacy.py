@@ -73,7 +73,7 @@ def insert(filename,docname,skip=None):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     getConfig()
@@ -108,10 +108,10 @@ def getIfcOpenShell():
     IFCOPENSHELL5 = False
     try:
         import IfcImport
-    except:
+    except ImportError:
         try:
             import ifc_wrapper as IfcImport
-        except:
+        except ImportError:
             FreeCAD.Console.PrintMessage(translate("Arch","Couldn't locate IfcOpenShell\n"))
             return False
         else:
@@ -937,10 +937,10 @@ def export(exportList,filename):
     ifcw = None
     try:
         import IfcImport as ifcw
-    except:
+    except ImportError:
         try:
             import ifc_wrapper as ifcw
-        except:
+        except ImportError:
             FreeCAD.Console.PrintError(translate("Arch","Error: IfcOpenShell is not installed\n"))
             print """importIFC: ifcOpenShell is not installed. IFC export is unavailable.
                     Note: IFC export currently requires an experimental version of IfcOpenShell

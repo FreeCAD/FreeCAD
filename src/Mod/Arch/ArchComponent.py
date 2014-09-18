@@ -566,7 +566,7 @@ class Component:
                                         if base.Solids:
                                             try:
                                                 base = base.fuse(s)
-                                            except:
+                                            except Part.OCCError:
                                                 print "Arch: unable to fuse object ",obj.Name, " with ", o.Name
                                     else:
                                         base = s
@@ -604,7 +604,7 @@ class Component:
                                         s.Placement = s.Placement.multiply(placement)
                                     try:
                                         base = base.cut(s)
-                                    except:
+                                    except Part.OCCError:
                                         print "Arch: unable to cut object ",o.Name, " from ", obj.Name
         return base
         

@@ -357,7 +357,7 @@ class _ArchDrawingView:
                                         try:
                                             s = Part.Wire(s.Edges)
                                             s = Part.Face(s)
-                                        except:
+                                        except Part.OCCError:
                                             pass
                                         nsh.extend(c.Solids)
                                         sshapes.append(s)

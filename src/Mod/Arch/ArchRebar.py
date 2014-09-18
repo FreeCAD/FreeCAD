@@ -203,7 +203,7 @@ class _Rebar(ArchComponent.Component):
         circle = Part.Wire(circle)
         try:
             bar = wire.makePipeShell([circle],True,False,2)
-        except:
+        except Part.OCCError:
             print "Arch: error sweeping rebar profile along the base sketch"
             return
         # building final shape

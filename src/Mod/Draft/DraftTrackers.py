@@ -304,12 +304,12 @@ class bsplineTracker(Tracker):
                 # YVH: Added a try to bypass some hazardous situations
                 try:
                     c.interpolate(self.points[:-1], True)
-                except:
+                except Part.OCCError:
                     pass
             elif self.points:
                 try:
                     c.interpolate(self.points, False)
-                except:
+                except Part.OCCError:
                     pass
             c = c.toShape()
             buf=c.writeInventor(2,0.01)
@@ -373,13 +373,13 @@ class bezcurveTracker(Tracker):
                 try:
 ###                    c.interpolate(self.points[:-1], True)  #!!!!!!!!!!!!
                        c.setPoles(self.points[:-1])
-                except:
+                except Part.OCCError:
                     pass
             elif self.points:
                 try:
 ###                   c.interpolate(self.points, False)  #!!!!!!!
                       c.setPoles(self.points)
-                except:
+                except Part.OCCError:
                     pass
             c = c.toShape()                              #???? c = Part.Edge(c)?, c = Part.Wire(c)??
             buf=c.writeInventor(2,0.01)

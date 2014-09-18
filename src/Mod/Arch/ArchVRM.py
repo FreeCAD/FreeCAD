@@ -225,7 +225,7 @@ class Renderer:
             wires.append(Part.makePolygon(verts))
         try:
             sh = Part.Face(wires)
-        except:
+        except Part.OCCError:
             if DEBUG: print "Error: Unable to flatten face"
             return None
         else:
@@ -408,6 +408,7 @@ class Renderer:
 
     def join(self,otype):
         "joins the objects of same type"
+        import Part
         walls = []
         structs = []
         objs = []
@@ -428,7 +429,7 @@ class Renderer:
                     try:
                         fs = s.fuse(o.Shape)
                         fs = fs.removeSplitter()
-                    except:
+                    except Part.OCCError:
                         print "shape fusion failed"
                         objs.append([o.Shape,o.ViewObject.DiffuseColor[0]])
                     else:

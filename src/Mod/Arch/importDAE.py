@@ -40,7 +40,7 @@ def checkCollada():
     COLLADA = None
     try:
         import collada
-    except:
+    except ImportError:
         FreeCAD.Console.PrintError(translate("Arch","pycollada not found, collada support is disabled.\n"))
         return False
     else:
@@ -63,7 +63,7 @@ def insert(filename,docname):
         return
     try:
         doc = FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     read(filename)
