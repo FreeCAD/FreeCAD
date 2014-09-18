@@ -40,7 +40,7 @@
 
 namespace Py
 {
-    class PythonType
+    class PYCXX_EXPORT PythonType
     {
     public:
         // if you define one sequence method you must define 

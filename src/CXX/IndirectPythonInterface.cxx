@@ -39,29 +39,29 @@
 
 namespace Py
 {
-bool _CFunction_Check( PyObject *op )   { return op->ob_type == _CFunction_Type(); }
-bool _Complex_Check( PyObject *op )     { return op->ob_type == _Complex_Type(); }
-bool _Dict_Check( PyObject *op )        { return op->ob_type == _Dict_Type(); }
-bool _Float_Check( PyObject *op )       { return op->ob_type == _Float_Type(); }
-bool _Function_Check( PyObject *op )    { return op->ob_type == _Function_Type(); }
-bool _Boolean_Check( PyObject *op )     { return op->ob_type == _Bool_Type(); }
-bool _List_Check( PyObject *op )        { return op->ob_type == _List_Type(); }
-bool _Long_Check( PyObject *op )        { return op->ob_type == _Long_Type(); }
-bool _Method_Check( PyObject *op )      { return op->ob_type == _Method_Type(); }
-bool _Module_Check( PyObject *op )      { return op->ob_type == _Module_Type(); }
-bool _Range_Check( PyObject *op )       { return op->ob_type == _Range_Type(); }
-bool _Slice_Check( PyObject *op )       { return op->ob_type == _Slice_Type(); }
-bool _TraceBack_Check( PyObject *op )   { return op->ob_type == _TraceBack_Type(); }
-bool _Tuple_Check( PyObject *op )       { return op->ob_type == _Tuple_Type(); }
-bool _Type_Check( PyObject *op )        { return op->ob_type == _Type_Type(); }
-bool _Unicode_Check( PyObject *op )     { return op->ob_type == _Unicode_Type(); }
+PYCXX_EXPORT bool _CFunction_Check( PyObject *op )   { return op->ob_type == _CFunction_Type(); }
+PYCXX_EXPORT bool _Complex_Check( PyObject *op )     { return op->ob_type == _Complex_Type(); }
+PYCXX_EXPORT bool _Dict_Check( PyObject *op )        { return op->ob_type == _Dict_Type(); }
+PYCXX_EXPORT bool _Float_Check( PyObject *op )       { return op->ob_type == _Float_Type(); }
+PYCXX_EXPORT bool _Function_Check( PyObject *op )    { return op->ob_type == _Function_Type(); }
+PYCXX_EXPORT bool _Boolean_Check( PyObject *op )     { return op->ob_type == _Bool_Type(); }
+PYCXX_EXPORT bool _List_Check( PyObject *op )        { return op->ob_type == _List_Type(); }
+PYCXX_EXPORT bool _Long_Check( PyObject *op )        { return op->ob_type == _Long_Type(); }
+PYCXX_EXPORT bool _Method_Check( PyObject *op )      { return op->ob_type == _Method_Type(); }
+PYCXX_EXPORT bool _Module_Check( PyObject *op )      { return op->ob_type == _Module_Type(); }
+PYCXX_EXPORT bool _Range_Check( PyObject *op )       { return op->ob_type == _Range_Type(); }
+PYCXX_EXPORT bool _Slice_Check( PyObject *op )       { return op->ob_type == _Slice_Type(); }
+PYCXX_EXPORT bool _TraceBack_Check( PyObject *op )   { return op->ob_type == _TraceBack_Type(); }
+PYCXX_EXPORT bool _Tuple_Check( PyObject *op )       { return op->ob_type == _Tuple_Type(); }
+PYCXX_EXPORT bool _Type_Check( PyObject *op )        { return op->ob_type == _Type_Type(); }
+PYCXX_EXPORT bool _Unicode_Check( PyObject *op )     { return op->ob_type == _Unicode_Type(); }
 #if PY_MAJOR_VERSION == 2
-bool _String_Check( PyObject *op )      { return op->ob_type == _String_Type(); }
-bool _Int_Check( PyObject *op )         { return op->ob_type == _Int_Type(); }
-bool _CObject_Check( PyObject *op )     { return op->ob_type == _CObject_Type(); }
+PYCXX_EXPORT bool _String_Check( PyObject *op )      { return op->ob_type == _String_Type(); }
+PYCXX_EXPORT bool _Int_Check( PyObject *op )         { return op->ob_type == _Int_Type(); }
+PYCXX_EXPORT bool _CObject_Check( PyObject *op )     { return op->ob_type == _CObject_Type(); }
 #endif
 #if PY_MAJOR_VERSION >= 3
-bool _Bytes_Check( PyObject *op )       { return op->ob_type == _Bytes_Type(); }
+PYCXX_EXPORT bool _Bytes_Check( PyObject *op )       { return op->ob_type == _Bytes_Type(); }
 #endif
 
 #if defined(PY_WIN32_DELAYLOAD_PYTHON_DLL)
@@ -324,84 +324,84 @@ bool InitialisePythonIndirectInterface()
 //
 //    Wrap variables as function calls
 //
-PyObject *_Exc_ArithmeticError()        { return ptr__Exc_ArithmeticError; }
-PyObject *_Exc_AssertionError()         { return ptr__Exc_AssertionError; }
-PyObject *_Exc_AttributeError()         { return ptr__Exc_AttributeError; }
-PyObject *_Exc_EnvironmentError()       { return ptr__Exc_EnvironmentError; }
-PyObject *_Exc_EOFError()               { return ptr__Exc_EOFError; }
-PyObject *_Exc_Exception()              { return ptr__Exc_Exception; }
-PyObject *_Exc_FloatingPointError()     { return ptr__Exc_FloatingPointError; }
-PyObject *_Exc_ImportError()            { return ptr__Exc_ImportError; }
-PyObject *_Exc_IndexError()             { return ptr__Exc_IndexError; }
-PyObject *_Exc_IOError()                { return ptr__Exc_IOError; }
-PyObject *_Exc_KeyboardInterrupt()      { return ptr__Exc_KeyboardInterrupt; }
-PyObject *_Exc_KeyError()               { return ptr__Exc_KeyError; }
-PyObject *_Exc_LookupError()            { return ptr__Exc_LookupError; }
-PyObject *_Exc_MemoryError()            { return ptr__Exc_MemoryError; }
-PyObject *_Exc_NameError()              { return ptr__Exc_NameError; }
-PyObject *_Exc_NotImplementedError()    { return ptr__Exc_NotImplementedError; }
-PyObject *_Exc_OSError()                { return ptr__Exc_OSError; }
-PyObject *_Exc_OverflowError()          { return ptr__Exc_OverflowError; }
-PyObject *_Exc_RuntimeError()           { return ptr__Exc_RuntimeError; }
-PyObject *_Exc_StandardError()          { return ptr__Exc_StandardError; }
-PyObject *_Exc_SyntaxError()            { return ptr__Exc_SyntaxError; }
-PyObject *_Exc_SystemError()            { return ptr__Exc_SystemError; }
-PyObject *_Exc_SystemExit()             { return ptr__Exc_SystemExit; }
-PyObject *_Exc_TypeError()              { return ptr__Exc_TypeError; }
-PyObject *_Exc_ValueError()             { return ptr__Exc_ValueError; }
+PYCXX_EXPORT PyObject *_Exc_ArithmeticError()        { return ptr__Exc_ArithmeticError; }
+PYCXX_EXPORT PyObject *_Exc_AssertionError()         { return ptr__Exc_AssertionError; }
+PYCXX_EXPORT PyObject *_Exc_AttributeError()         { return ptr__Exc_AttributeError; }
+PYCXX_EXPORT PyObject *_Exc_EnvironmentError()       { return ptr__Exc_EnvironmentError; }
+PYCXX_EXPORT PyObject *_Exc_EOFError()               { return ptr__Exc_EOFError; }
+PYCXX_EXPORT PyObject *_Exc_Exception()              { return ptr__Exc_Exception; }
+PYCXX_EXPORT PyObject *_Exc_FloatingPointError()     { return ptr__Exc_FloatingPointError; }
+PYCXX_EXPORT PyObject *_Exc_ImportError()            { return ptr__Exc_ImportError; }
+PYCXX_EXPORT PyObject *_Exc_IndexError()             { return ptr__Exc_IndexError; }
+PYCXX_EXPORT PyObject *_Exc_IOError()                { return ptr__Exc_IOError; }
+PYCXX_EXPORT PyObject *_Exc_KeyboardInterrupt()      { return ptr__Exc_KeyboardInterrupt; }
+PYCXX_EXPORT PyObject *_Exc_KeyError()               { return ptr__Exc_KeyError; }
+PYCXX_EXPORT PyObject *_Exc_LookupError()            { return ptr__Exc_LookupError; }
+PYCXX_EXPORT PyObject *_Exc_MemoryError()            { return ptr__Exc_MemoryError; }
+PYCXX_EXPORT PyObject *_Exc_NameError()              { return ptr__Exc_NameError; }
+PYCXX_EXPORT PyObject *_Exc_NotImplementedError()    { return ptr__Exc_NotImplementedError; }
+PYCXX_EXPORT PyObject *_Exc_OSError()                { return ptr__Exc_OSError; }
+PYCXX_EXPORT PyObject *_Exc_OverflowError()          { return ptr__Exc_OverflowError; }
+PYCXX_EXPORT PyObject *_Exc_RuntimeError()           { return ptr__Exc_RuntimeError; }
+PYCXX_EXPORT PyObject *_Exc_StandardError()          { return ptr__Exc_StandardError; }
+PYCXX_EXPORT PyObject *_Exc_SyntaxError()            { return ptr__Exc_SyntaxError; }
+PYCXX_EXPORT PyObject *_Exc_SystemError()            { return ptr__Exc_SystemError; }
+PYCXX_EXPORT PyObject *_Exc_SystemExit()             { return ptr__Exc_SystemExit; }
+PYCXX_EXPORT PyObject *_Exc_TypeError()              { return ptr__Exc_TypeError; }
+PYCXX_EXPORT PyObject *_Exc_ValueError()             { return ptr__Exc_ValueError; }
 #ifdef MS_WINDOWS
-PyObject *_Exc_WindowsError()           { return ptr__Exc_WindowsError; }
+PYCXX_EXPORT PyObject *_Exc_WindowsError()           { return ptr__Exc_WindowsError; }
 #endif
-PyObject *_Exc_ZeroDivisionError()      { return ptr__Exc_ZeroDivisionError; }
-PyObject *_Exc_IndentationError()       { return ptr__Exc_IndentationError; }
-PyObject *_Exc_TabError()               { return ptr__Exc_TabError; }
-PyObject *_Exc_UnboundLocalError()      { return ptr__Exc_UnboundLocalError; }
-PyObject *_Exc_UnicodeError()           { return ptr__Exc_UnicodeError; }
+PYCXX_EXPORT PyObject *_Exc_ZeroDivisionError()      { return ptr__Exc_ZeroDivisionError; }
+PYCXX_EXPORT PyObject *_Exc_IndentationError()       { return ptr__Exc_IndentationError; }
+PYCXX_EXPORT PyObject *_Exc_TabError()               { return ptr__Exc_TabError; }
+PYCXX_EXPORT PyObject *_Exc_UnboundLocalError()      { return ptr__Exc_UnboundLocalError; }
+PYCXX_EXPORT PyObject *_Exc_UnicodeError()           { return ptr__Exc_UnicodeError; }
 
 //
 //    wrap items in Object.h
 //
-PyObject *_None()                       { return ptr__PyNone; }
+PYCXX_EXPORT PyObject *_None()                       { return ptr__PyNone; }
 
-PyObject *_False()                      { return ptr__PyFalse; }
-PyObject *_True()                       { return ptr__PyTrue; }
+PYCXX_EXPORT PyObject *_False()                      { return ptr__PyFalse; }
+PYCXX_EXPORT PyObject *_True()                       { return ptr__PyTrue; }
 
-PyTypeObject *_CFunction_Type()         { return ptr__CFunction_Type; }
-PyTypeObject *_Complex_Type()           { return ptr__Complex_Type; }
-PyTypeObject *_Dict_Type()              { return ptr__Dict_Type; }
-PyTypeObject *_Float_Type()             { return ptr__Float_Type; }
-PyTypeObject *_Function_Type()          { return ptr__Function_Type; }
-PyTypeObject *_Bool_Type()              { return ptr__Bool_Type; }
-PyTypeObject *_List_Type()              { return ptr__List_Type; }
-PyTypeObject *_Long_Type()              { return ptr__Long_Type; }
-PyTypeObject *_Method_Type()            { return ptr__Method_Type; }
-PyTypeObject *_Module_Type()            { return ptr__Module_Type; }
-PyTypeObject *_Range_Type()             { return ptr__Range_Type; }
-PyTypeObject *_Slice_Type()             { return ptr__Slice_Type; }
-PyTypeObject *_TraceBack_Type()         { return ptr__TraceBack_Type; }
-PyTypeObject *_Tuple_Type()             { return ptr__Tuple_Type; }
-PyTypeObject *_Type_Type()              { return ptr__Type_Type; }
-PyTypeObject *_Unicode_Type()           { return ptr__Unicode_Type; }
+PYCXX_EXPORT PyTypeObject *_CFunction_Type()         { return ptr__CFunction_Type; }
+PYCXX_EXPORT PyTypeObject *_Complex_Type()           { return ptr__Complex_Type; }
+PYCXX_EXPORT PyTypeObject *_Dict_Type()              { return ptr__Dict_Type; }
+PYCXX_EXPORT PyTypeObject *_Float_Type()             { return ptr__Float_Type; }
+PYCXX_EXPORT PyTypeObject *_Function_Type()          { return ptr__Function_Type; }
+PYCXX_EXPORT PyTypeObject *_Bool_Type()              { return ptr__Bool_Type; }
+PYCXX_EXPORT PyTypeObject *_List_Type()              { return ptr__List_Type; }
+PYCXX_EXPORT PyTypeObject *_Long_Type()              { return ptr__Long_Type; }
+PYCXX_EXPORT PyTypeObject *_Method_Type()            { return ptr__Method_Type; }
+PYCXX_EXPORT PyTypeObject *_Module_Type()            { return ptr__Module_Type; }
+PYCXX_EXPORT PyTypeObject *_Range_Type()             { return ptr__Range_Type; }
+PYCXX_EXPORT PyTypeObject *_Slice_Type()             { return ptr__Slice_Type; }
+PYCXX_EXPORT PyTypeObject *_TraceBack_Type()         { return ptr__TraceBack_Type; }
+PYCXX_EXPORT PyTypeObject *_Tuple_Type()             { return ptr__Tuple_Type; }
+PYCXX_EXPORT PyTypeObject *_Type_Type()              { return ptr__Type_Type; }
+PYCXX_EXPORT PyTypeObject *_Unicode_Type()           { return ptr__Unicode_Type; }
 #if PY_MAJOR_VERSION == 2
-PyTypeObject *_String_Type()            { return ptr__String_Type; }
-PyTypeObject *_Int_Type()               { return ptr__Int_Type; }
-PyTypeObject *_CObject_Type()           { return ptr__CObject_Type; }
+PYCXX_EXPORT PyTypeObject *_String_Type()            { return ptr__String_Type; }
+PYCXX_EXPORT PyTypeObject *_Int_Type()               { return ptr__Int_Type; }
+PYCXX_EXPORT PyTypeObject *_CObject_Type()           { return ptr__CObject_Type; }
 #endif
 #if PY_MAJOR_VERSION >= 3
-PyTypeObject *_Bytes_Type()             { return ptr__Bytes_Type; }
+PYCXX_EXPORT PyTypeObject *_Bytes_Type()             { return ptr__Bytes_Type; }
 #endif
 
-char *__Py_PackageContext()             { return *ptr__Py_PackageContext; }
+PYCXX_EXPORT char *__Py_PackageContext()             { return *ptr__Py_PackageContext; }
 
 
 //
 //    wrap the Python Flag variables
 //
-int &_Py_DebugFlag()                    { return *ptr_Py_DebugFlag; }
-int &_Py_InteractiveFlag()              { return *ptr_Py_InteractiveFlag; }
-int &_Py_OptimizeFlag()                 { return *ptr_Py_OptimizeFlag; }
-int &_Py_NoSiteFlag()                   { return *ptr_Py_NoSiteFlag; }
-int &_Py_VerboseFlag()                  { return *ptr_Py_VerboseFlag; }
+PYCXX_EXPORT int &_Py_DebugFlag()                    { return *ptr_Py_DebugFlag; }
+PYCXX_EXPORT int &_Py_InteractiveFlag()              { return *ptr_Py_InteractiveFlag; }
+PYCXX_EXPORT int &_Py_OptimizeFlag()                 { return *ptr_Py_OptimizeFlag; }
+PYCXX_EXPORT int &_Py_NoSiteFlag()                   { return *ptr_Py_NoSiteFlag; }
+PYCXX_EXPORT int &_Py_VerboseFlag()                  { return *ptr_Py_VerboseFlag; }
 
 #if 0
 #define Py_INCREF(op) (                         \
@@ -460,38 +460,38 @@ void _XDECREF( PyObject *op )
 //    Wrap variables as function calls
 //
 
-PyObject *_Exc_ArithmeticError()        { return ::PyExc_ArithmeticError; }
-PyObject *_Exc_AssertionError()         { return ::PyExc_AssertionError; }
-PyObject *_Exc_AttributeError()         { return ::PyExc_AttributeError; }
-PyObject *_Exc_EnvironmentError()       { return ::PyExc_EnvironmentError; }
-PyObject *_Exc_EOFError()               { return ::PyExc_EOFError; }
-PyObject *_Exc_Exception()              { return ::PyExc_Exception; }
-PyObject *_Exc_FloatingPointError()     { return ::PyExc_FloatingPointError; }
-PyObject *_Exc_ImportError()            { return ::PyExc_ImportError; }
-PyObject *_Exc_IndexError()             { return ::PyExc_IndexError; }
-PyObject *_Exc_IOError()                { return ::PyExc_IOError; }
-PyObject *_Exc_KeyboardInterrupt()      { return ::PyExc_KeyboardInterrupt; }
-PyObject *_Exc_KeyError()               { return ::PyExc_KeyError; }
-PyObject *_Exc_LookupError()            { return ::PyExc_LookupError; }
-PyObject *_Exc_MemoryError()            { return ::PyExc_MemoryError; }
-PyObject *_Exc_NameError()              { return ::PyExc_NameError; }
-PyObject *_Exc_NotImplementedError()    { return ::PyExc_NotImplementedError; }
-PyObject *_Exc_OSError()                { return ::PyExc_OSError; }
-PyObject *_Exc_OverflowError()          { return ::PyExc_OverflowError; }
-PyObject *_Exc_RuntimeError()           { return ::PyExc_RuntimeError; }
-PyObject *_Exc_SyntaxError()            { return ::PyExc_SyntaxError; }
-PyObject *_Exc_SystemError()            { return ::PyExc_SystemError; }
-PyObject *_Exc_SystemExit()             { return ::PyExc_SystemExit; }
-PyObject *_Exc_TypeError()              { return ::PyExc_TypeError; }
-PyObject *_Exc_ValueError()             { return ::PyExc_ValueError; }
-PyObject *_Exc_ZeroDivisionError()      { return ::PyExc_ZeroDivisionError; }
-PyObject *_Exc_IndentationError()       { return ::PyExc_IndentationError; }
-PyObject *_Exc_TabError()               { return ::PyExc_TabError; }
-PyObject *_Exc_UnboundLocalError()      { return ::PyExc_UnboundLocalError; }
-PyObject *_Exc_UnicodeError()           { return ::PyExc_UnicodeError; }
+PYCXX_EXPORT PyObject *_Exc_ArithmeticError()        { return ::PyExc_ArithmeticError; }
+PYCXX_EXPORT PyObject *_Exc_AssertionError()         { return ::PyExc_AssertionError; }
+PYCXX_EXPORT PyObject *_Exc_AttributeError()         { return ::PyExc_AttributeError; }
+PYCXX_EXPORT PyObject *_Exc_EnvironmentError()       { return ::PyExc_EnvironmentError; }
+PYCXX_EXPORT PyObject *_Exc_EOFError()               { return ::PyExc_EOFError; }
+PYCXX_EXPORT PyObject *_Exc_Exception()              { return ::PyExc_Exception; }
+PYCXX_EXPORT PyObject *_Exc_FloatingPointError()     { return ::PyExc_FloatingPointError; }
+PYCXX_EXPORT PyObject *_Exc_ImportError()            { return ::PyExc_ImportError; }
+PYCXX_EXPORT PyObject *_Exc_IndexError()             { return ::PyExc_IndexError; }
+PYCXX_EXPORT PyObject *_Exc_IOError()                { return ::PyExc_IOError; }
+PYCXX_EXPORT PyObject *_Exc_KeyboardInterrupt()      { return ::PyExc_KeyboardInterrupt; }
+PYCXX_EXPORT PyObject *_Exc_KeyError()               { return ::PyExc_KeyError; }
+PYCXX_EXPORT PyObject *_Exc_LookupError()            { return ::PyExc_LookupError; }
+PYCXX_EXPORT PyObject *_Exc_MemoryError()            { return ::PyExc_MemoryError; }
+PYCXX_EXPORT PyObject *_Exc_NameError()              { return ::PyExc_NameError; }
+PYCXX_EXPORT PyObject *_Exc_NotImplementedError()    { return ::PyExc_NotImplementedError; }
+PYCXX_EXPORT PyObject *_Exc_OSError()                { return ::PyExc_OSError; }
+PYCXX_EXPORT PyObject *_Exc_OverflowError()          { return ::PyExc_OverflowError; }
+PYCXX_EXPORT PyObject *_Exc_RuntimeError()           { return ::PyExc_RuntimeError; }
+PYCXX_EXPORT PyObject *_Exc_SyntaxError()            { return ::PyExc_SyntaxError; }
+PYCXX_EXPORT PyObject *_Exc_SystemError()            { return ::PyExc_SystemError; }
+PYCXX_EXPORT PyObject *_Exc_SystemExit()             { return ::PyExc_SystemExit; }
+PYCXX_EXPORT PyObject *_Exc_TypeError()              { return ::PyExc_TypeError; }
+PYCXX_EXPORT PyObject *_Exc_ValueError()             { return ::PyExc_ValueError; }
+PYCXX_EXPORT PyObject *_Exc_ZeroDivisionError()      { return ::PyExc_ZeroDivisionError; }
+PYCXX_EXPORT PyObject *_Exc_IndentationError()       { return ::PyExc_IndentationError; }
+PYCXX_EXPORT PyObject *_Exc_TabError()               { return ::PyExc_TabError; }
+PYCXX_EXPORT PyObject *_Exc_UnboundLocalError()      { return ::PyExc_UnboundLocalError; }
+PYCXX_EXPORT PyObject *_Exc_UnicodeError()           { return ::PyExc_UnicodeError; }
 
 #ifdef MS_WINDOWS
-PyObject *_Exc_WindowsError()           { return ::PyExc_WindowsError; }
+PYCXX_EXPORT PyObject *_Exc_WindowsError()           { return ::PyExc_WindowsError; }
 #endif
 
 
@@ -500,45 +500,45 @@ PyObject *_Exc_WindowsError()           { return ::PyExc_WindowsError; }
 //
 //    wrap items in Object.h
 //
-PyObject *_None()                       { return &::_Py_NoneStruct; }
+PYCXX_EXPORT PyObject *_None()                       { return &::_Py_NoneStruct; }
 
-PyObject *_False()                      { return Py_False; }
-PyObject *_True()                       { return Py_True; }
+PYCXX_EXPORT PyObject *_False()                      { return Py_False; }
+PYCXX_EXPORT PyObject *_True()                       { return Py_True; }
 
-PyTypeObject *_CFunction_Type()         { return &PyCFunction_Type; }
-PyTypeObject *_Complex_Type()           { return &PyComplex_Type; }
-PyTypeObject *_Dict_Type()              { return &PyDict_Type; }
-PyTypeObject *_Float_Type()             { return &PyFloat_Type; }
-PyTypeObject *_Function_Type()          { return &PyFunction_Type; }
-PyTypeObject *_Bool_Type()              { return &PyBool_Type; }
-PyTypeObject *_List_Type()              { return &PyList_Type; }
-PyTypeObject *_Long_Type()              { return &PyLong_Type; }
-PyTypeObject *_Method_Type()            { return &PyMethod_Type; }
-PyTypeObject *_Module_Type()            { return &PyModule_Type; }
-PyTypeObject *_Range_Type()             { return &PyRange_Type; }
-PyTypeObject *_Slice_Type()             { return &PySlice_Type; }
-PyTypeObject *_TraceBack_Type()         { return &PyTraceBack_Type; }
-PyTypeObject *_Tuple_Type()             { return &PyTuple_Type; }
-PyTypeObject *_Type_Type()              { return &PyType_Type; }
-PyTypeObject *_Unicode_Type()           { return &PyUnicode_Type; }
+PYCXX_EXPORT PyTypeObject *_CFunction_Type()         { return &PyCFunction_Type; }
+PYCXX_EXPORT PyTypeObject *_Complex_Type()           { return &PyComplex_Type; }
+PYCXX_EXPORT PyTypeObject *_Dict_Type()              { return &PyDict_Type; }
+PYCXX_EXPORT PyTypeObject *_Float_Type()             { return &PyFloat_Type; }
+PYCXX_EXPORT PyTypeObject *_Function_Type()          { return &PyFunction_Type; }
+PYCXX_EXPORT PyTypeObject *_Bool_Type()              { return &PyBool_Type; }
+PYCXX_EXPORT PyTypeObject *_List_Type()              { return &PyList_Type; }
+PYCXX_EXPORT PyTypeObject *_Long_Type()              { return &PyLong_Type; }
+PYCXX_EXPORT PyTypeObject *_Method_Type()            { return &PyMethod_Type; }
+PYCXX_EXPORT PyTypeObject *_Module_Type()            { return &PyModule_Type; }
+PYCXX_EXPORT PyTypeObject *_Range_Type()             { return &PyRange_Type; }
+PYCXX_EXPORT PyTypeObject *_Slice_Type()             { return &PySlice_Type; }
+PYCXX_EXPORT PyTypeObject *_TraceBack_Type()         { return &PyTraceBack_Type; }
+PYCXX_EXPORT PyTypeObject *_Tuple_Type()             { return &PyTuple_Type; }
+PYCXX_EXPORT PyTypeObject *_Type_Type()              { return &PyType_Type; }
+PYCXX_EXPORT PyTypeObject *_Unicode_Type()           { return &PyUnicode_Type; }
 #if PY_MAJOR_VERSION == 2
-PyTypeObject *_String_Type()            { return &PyString_Type; }
-PyTypeObject *_Int_Type()               { return &PyInt_Type; }
-PyTypeObject *_CObject_Type()           { return &PyCObject_Type; }
+PYCXX_EXPORT PyTypeObject *_String_Type()            { return &PyString_Type; }
+PYCXX_EXPORT PyTypeObject *_Int_Type()               { return &PyInt_Type; }
+PYCXX_EXPORT PyTypeObject *_CObject_Type()           { return &PyCObject_Type; }
 #endif
 #if PY_MAJOR_VERSION >= 3
-PyTypeObject *_Bytes_Type()             { return &PyBytes_Type; }
+PYCXX_EXPORT PyTypeObject *_Bytes_Type()             { return &PyBytes_Type; }
 #endif
 
 //
 //    wrap flags
 //
-int &_Py_DebugFlag()                    { return Py_DebugFlag; }
-int &_Py_InteractiveFlag()              { return Py_InteractiveFlag; }
-int &_Py_OptimizeFlag()                 { return Py_OptimizeFlag; }
-int &_Py_NoSiteFlag()                   { return Py_NoSiteFlag; }
-int &_Py_VerboseFlag()                  { return Py_VerboseFlag; }
-char *__Py_PackageContext()             { return _Py_PackageContext; }
+PYCXX_EXPORT int &_Py_DebugFlag()                    { return Py_DebugFlag; }
+PYCXX_EXPORT int &_Py_InteractiveFlag()              { return Py_InteractiveFlag; }
+PYCXX_EXPORT int &_Py_OptimizeFlag()                 { return Py_OptimizeFlag; }
+PYCXX_EXPORT int &_Py_NoSiteFlag()                   { return Py_NoSiteFlag; }
+PYCXX_EXPORT int &_Py_VerboseFlag()                  { return Py_VerboseFlag; }
+PYCXX_EXPORT char *__Py_PackageContext()             { return _Py_PackageContext; }
 
 //
 //    Needed to keep the abstactions for delayload interface

@@ -107,6 +107,20 @@
 #    define TEMPLATE_TYPENAME class
 #endif
 
+// export macro
+#if defined( _MSC_VER )
+#  pragma warning( disable : 4251 )
+#endif
+#if defined( _MSC_VER ) || defined( __MINGW32__ )
+#  ifdef PYCXX_DLL
+#    define PYCXX_EXPORT  __declspec(dllexport)
+#  else
+#    define PYCXX_EXPORT  __declspec(dllimport)
+#  endif
+#else
+#    define PYCXX_EXPORT
+#endif
+
 // before 3.2 Py_hash_t was missing
 #ifndef PY_MAJOR_VERSION
 #error not defined PY_MAJOR_VERSION
