@@ -37,7 +37,7 @@
 #include "CXX/WrapPython.h"
 
 #if PY_MAJOR_VERSION == 2
-#include "Src/Python2/cxxextensions.c"
+#include "Python2/cxxextensions.c"
 #else
-#include "Src/Python3/cxxextensions.c"
+#include "Python3/cxxextensions.c"
 #endif
