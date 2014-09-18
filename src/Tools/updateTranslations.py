@@ -86,7 +86,8 @@ locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources
              ["StartPage","../Mod/Start/Gui/Resources/translations","../Mod/Start/Gui/Resources/Start.qrc"],
              ["Test","../Mod/Test/Gui/Resources/translations","../Mod/Test/Gui/Resources/Test.qrc"],
              ["Ship","../Mod/Ship/resources/translations","../Mod/Ship/resources/Ship.qrc"],
-             ["Plot","../Mod/Plot/resources/translations","../Mod/Plot/resources/Plot.qrc"]]
+             ["Plot","../Mod/Plot/resources/translations","../Mod/Plot/resources/Plot.qrc"],
+             ["Test","../Mod/Web/Gui/Resources/translations","../Mod/Web/Gui/Resources/Web.qrc"]]
 
 def updateqrc(qrcpath,lncode):
     "updates a qrc file with the given translation entry"
@@ -116,7 +117,12 @@ def updateqrc(qrcpath,lncode):
         if ".qm" in resources[i]:
             pos = i
     if pos == None:
-        print "ERROR: couldn't find any qm file entry in this resource: " + qrcpath
+        print "No existing .qm file in this resource. Appending to the end position"
+        for i in range(len(resources)):
+            if "</qresource>" in resources[i]:
+                pos = i-1
+    if pos == None:
+        print "ERROR: couldn't add qm files to this resource: " + qrcpath
         sys.exit()
 
     # inserting new entry just after the last one
