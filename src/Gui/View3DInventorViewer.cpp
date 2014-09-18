@@ -1650,15 +1650,8 @@ void View3DInventorViewer::viewVR(void)
 	if(oculusUp())
 		oculusStop();
 	else{
-#if 0
-		// start and load the simple test scene:
-		oculusSetTestScene(oculusStart());
-#else
 		View3DInventorRiftViewer* riftWin = oculusStart();
 		riftWin->setSceneGraph(pcViewProviderRoot);
-
-#endif
-
 	}
 #endif
 }

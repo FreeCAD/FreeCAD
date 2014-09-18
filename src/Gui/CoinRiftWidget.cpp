@@ -1,5 +1,5 @@
 /**************************************************************************\
-* Copyright (c) Bastiaan Veelo (Bastiaan a_t Veelo d_o_t net)
+* Copyright (c) Bastiaan Veelo (Bastiaan a_t Veelo d_o_t net) & Juergen Riegel (FreeCAD@juergen-riegel.net)
 * All rights reserved. Contact me if the below is too restrictive for you.
 *
 * Redistribution and use in source and binary forms, with or without
