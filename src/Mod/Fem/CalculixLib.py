@@ -175,7 +175,7 @@ def insert(filename,docname):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     

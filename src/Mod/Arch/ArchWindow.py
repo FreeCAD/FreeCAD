@@ -1072,7 +1072,7 @@ class _ArchWindowTaskPanel:
                     try:
                         q = FreeCAD.Units.Quantity(t)
                         t = str(q.Value)
-                    except:
+                    except (ValueError,TypeError):
                         ok = False
             ar.append(t)
             

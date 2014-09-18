@@ -583,7 +583,7 @@ class _Structure(ArchComponent.Component):
                     if obj.Tool:
                         try:
                             base = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
-                        except:
+                        except Part.OCCError:
                             FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object"))
                             return
                 if not base:

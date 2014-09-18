@@ -324,7 +324,7 @@ def closeHole(shape):
         nface = Part.Face(Part.Wire(bound))
         shell = Part.makeShell(shape.Faces+[nface])
         solid = Part.Solid(shell)
-    except:
+    except Part.OCCError:
         raise
     else:
         return solid
@@ -350,7 +350,7 @@ def getCutVolume(cutplane,shapes):
             p = cutplane.Shape.copy().Faces[0]
         else:
             p = cutplane.copy().Faces[0]
-    except:
+    except Part.OCCError:
         FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane\n"))
         return None,None,None 
     ce = p.CenterOfMass
@@ -430,17 +430,17 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
         se = se.removeSplitter()
         if flat:
             return se
-    except:
+    except Part.OCCError:
         try:
             cp = Part.makeCompound(faces)
-        except:
+        except Part.OCCError:
             return None
         else:
             return cp
     else:
         try:
             solid = Part.Solid(se)
-        except:
+        except Part.OCCError:
             return se
         else:
             return solid

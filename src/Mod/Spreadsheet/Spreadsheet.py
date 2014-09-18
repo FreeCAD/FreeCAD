@@ -1047,7 +1047,7 @@ def insert(filename,docname):
     "called when freecad wants to import a csv file"
     try:
         doc = FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     read(filename)
@@ -1069,10 +1069,10 @@ def read(filename):
                 #print "setting ",cl+str(rn)," ",c
                 try:
                     c = int(c)
-                except:
+                except ValueError:
                     try:
                         c = float(c)
-                    except:
+                    except ValueError:
                         c = str(c)
                 setattr(sp.Proxy,cl+str(rn),c)
                 cn += 1

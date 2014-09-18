@@ -223,7 +223,7 @@ class _Space(ArchComponent.Component):
             w = Part.Wire(e)
             f = Part.Face(w)
             return f.Area
-        except:
+        except Part.OCCError:
             return 0
 
 
@@ -303,7 +303,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     pos = vobj.Object.Shape.CenterOfMass
                     z = vobj.Object.Shape.BoundBox.ZMin
                     pos = FreeCAD.Vector(pos.x,pos.y,z)
-                except:
+                except (AttributeError, RuntimeError):
                     pos = FreeCAD.Vector()
             else:
                 pos = vobj.TextPosition

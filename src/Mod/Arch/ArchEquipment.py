@@ -135,7 +135,7 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
                 shape = shape.fuse(p)
             else:
                 shape = p
-        except:
+        except Part.OCCError:
             pass
     shape = shape.removeSplitter()
 
@@ -151,7 +151,7 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
         if largest:
             try:
                 f = Part.Face(w)
-            except:
+            except Part.OCCError:
                 print "Unable to produce a face from the outer wire."
             else:
                 shape = f

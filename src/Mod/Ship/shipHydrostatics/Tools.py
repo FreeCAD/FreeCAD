@@ -78,14 +78,14 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
         p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin)
         try:
             box = Part.makeBox(1.5 * L + x, 3.0 * B, -bbox.ZMin, p)
-        except:
+        except Part.OCCError:
             areas.append([x, area])
             continue
         # Compute the common part with ship
         for s in shape.Solids:
             try:
                 common = box.common(s)
-            except:
+            except Part.OCCError:
                 continue
             if common.Volume == 0.0:
                 continue
@@ -93,7 +93,7 @@ def areas(ship, draft, roll=0.0, trim=0.0, yaw=0.0, n=30):
             # computed desired data we can remove it.
             try:
                 Part.show(common)
-            except:
+            except App.Base.FreeCADError:
                 continue
             # Divide the solid by faces and compute only the well placed ones
             faces = common.Faces
@@ -150,7 +150,7 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
     p = Vector(-1.5*L, -1.5*B, bbox.ZMin - 1.0)
     try:
         box = Part.makeBox(3.0*L, 3.0*B, - bbox.ZMin + 1.0, p)
-    except:
+    except Part.OCCError:
         return [0.0, Vector(), 0.0]
 
     vol = 0.0
@@ -159,7 +159,7 @@ def displacement(ship, draft, roll=0.0, trim=0.0, yaw=0.0):
         # Compute the common part of the "sea" with the ship
         try:
             common = box.common(solid)
-        except:
+        except Part.OCCError:
             continue
         # Get the data
         vol = vol + common.Volume / Units.Metre.Value**3
@@ -219,13 +219,13 @@ def wettedArea(shape, draft, trim):
     p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin - 1.0)
     try:
         box = Part.makeBox(3.0 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
-    except:
+    except Part.OCCError:
         return 0.0
 
     for f in shape.Faces:
         try:
             common = box.common(f)
-        except:
+        except Part.OCCError:
             continue
         area = area + common.Area
     return area
@@ -280,7 +280,7 @@ def FloatingArea(ship, draft, trim):
     p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin - 1.0)
     try:
         box = Part.makeBox(3.0 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
-    except:
+    except Part.OCCError:
         return [area, cf]
 
     maxX = bbox.XMin / Units.Metre.Value
@@ -290,7 +290,7 @@ def FloatingArea(ship, draft, trim):
     for s in shape.Solids:
         try:
             common = box.common(s)
-        except:
+        except Part.OCCError:
             continue
         if common.Volume == 0.0:
             continue
@@ -298,7 +298,7 @@ def FloatingArea(ship, draft, trim):
         # performing an internal tesellation doing that
         try:
             Part.show(common)
-        except:
+        except (TypeError,Part.OCCError):
             continue
         # Divide the solid by faces and filter the well placed ones
         faces = common.Faces
@@ -377,7 +377,7 @@ def mainFrameCoeff(ship, draft):
     p = Vector(-1.5 * L, -1.5 * B, bbox.ZMin - 1.0)
     try:
         box = Part.makeBox(1.5 * L, 3.0 * B, - bbox.ZMin + 1.0, p)
-    except:
+    except Part.OCCError:
         return cm
 
     maxY = bbox.YMin / Units.Metre.Value
@@ -385,7 +385,7 @@ def mainFrameCoeff(ship, draft):
     for s in shape.Solids:
         try:
             common = box.common(s)
-        except:
+        except Part.OCCError:
             continue
         if common.Volume == 0.0:
             continue
@@ -393,7 +393,7 @@ def mainFrameCoeff(ship, draft):
         # performing an internal tesellation doing that
         try:
             Part.show(common)
-        except:
+        except (TypeError,Part.OCCError):
             continue
         # Divide the solid by faces and filter the well placed ones
         faces = common.Faces

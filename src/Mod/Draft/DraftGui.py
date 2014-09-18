@@ -35,7 +35,7 @@ import FreeCAD, FreeCADGui, os, Draft, sys
 
 try:
     from PySide import QtCore,QtGui,QtSvg
-except:
+except ImportError:
     FreeCAD.Console.PrintMessage("Error: Python-pyside package must be installed on your system to use the Draft module.")
 
 class todo:
