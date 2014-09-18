@@ -320,7 +320,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     if (UserName)
         _pActiveDoc->Label.setValue(UserName);
     else
-        _pActiveDoc->Label.setValue(name);
+        _pActiveDoc->Label.setValue(Name);
 
     return _pActiveDoc;
 }
