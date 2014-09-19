@@ -103,6 +103,7 @@
 #include "SoFCInteractiveElement.h"
 #include "SoFCBoundingBox.h"
 #include "SoAxisCrossKit.h"
+#include "View3DInventorRiftViewer.h"
 
 #include "Selection.h"
 #include "SoFCSelectionAction.h"
@@ -1635,6 +1636,27 @@ void View3DInventorViewer::animatedViewAll(int steps, int ms)
         loop.exec(QEventLoop::ExcludeUserInputEvents);
     }
 }
+
+#if BUILD_VR
+extern View3DInventorRiftViewer* oculusStart(void);
+extern bool oculusUp   (void);
+extern void oculusStop (void);
+void oculusSetTestScene(View3DInventorRiftViewer *window);
+#endif 
+
+void View3DInventorViewer::viewVR(void)
+{
+#if BUILD_VR
+	if(oculusUp())
+		oculusStop();
+	else{
+		View3DInventorRiftViewer* riftWin = oculusStart();
+		riftWin->setSceneGraph(pcViewProviderRoot);
+	}
+#endif
+}
+
+
 
 void View3DInventorViewer::boxZoom(const SbBox2s& box)
 {
