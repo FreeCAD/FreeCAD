@@ -20,7 +20,6 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
-def QT_TRANSLATE_NOOP(scope, text): return text
 
 class ArchWorkbench(Workbench):
     "Arch workbench object"
@@ -103,6 +102,7 @@ class ArchWorkbench(Workbench):
                          'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho',
                          'Draft_Snap_Dimensions','Draft_Snap_WorkingPlane']
 
+        def QT_TRANSLATE_NOOP(scope, text): return text
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Arch tools"),self.archtools)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft tools"),self.drafttools)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft mod tools"),self.draftmodtools)
