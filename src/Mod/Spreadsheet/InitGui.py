@@ -19,6 +19,7 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
+def QT_TRANSLATE_NOOP(scope, text): return text
 
 class SpreadsheetWorkbench(Workbench):
     "Spreadsheet workbench object"
@@ -55,7 +56,7 @@ class SpreadsheetWorkbench(Workbench):
         import Spreadsheet,Spreadsheet_rc
         from DraftTools import translate
         commands = ["Spreadsheet_Create","Spreadsheet_Controller","Spreadsheet_PropertyController"]
-        self.appendToolbar(str(translate("Spreadsheet","Spreadsheet tools")),commands)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Spreadsheet tools"),commands)
         self.appendMenu(str(translate("Spreadsheet","&Spreadsheet")),commands)
         FreeCADGui.addIconPath(":/icons")
         FreeCADGui.addLanguagePath(":/translations")
