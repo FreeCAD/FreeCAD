@@ -310,6 +310,10 @@ public:
      */
     void viewAll();
     void viewAll(float factor);
+
+	/// Breaks out a VR window for a Rift
+	void viewVR(void);
+
     /**
      * Reposition the current camera so we can see all selected objects 
      * of the scene. Therefore we search for all SOFCSelection nodes, if

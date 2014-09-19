@@ -1,12 +1,16 @@
 #add_subdirectory(Icons)
 
 if(WIN32)
-add_definitions(-DFCGui -DQIIS_MAKEDLL)
+    add_definitions(-DFCGui -DQIIS_MAKEDLL -DOVR_OS_WIN32)
 endif(WIN32)
 
 if (FREECAD_USE_3DCONNEXION)
-add_definitions(-D_USE_3DCONNEXION_SDK)
+    add_definitions(-D_USE_3DCONNEXION_SDK)
 endif(FREECAD_USE_3DCONNEXION)
+
+if (BUILD_VR)
+    add_definitions(-DBUILD_VR )
+endif(BUILD_VR)
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -60,6 +64,17 @@ IF(SPNAV_FOUND)
         ${SPNAV_LIBRARIES}
     )
 ENDIF(SPNAV_FOUND)
+
+IF(OCULUS_FOUND)
+    add_definitions(-DOCULUS_FOUND)
+    include_directories(
+        ${OCULUS_INCLUDE_DIRS}
+    )
+    set(FreeCADGui_LIBS
+        ${FreeCADGui_LIBS}
+        ${OCULUS_LIBRARIES}
+    )
+ENDIF(OCULUS_FOUND)
 
 if(SHIBOKEN_INCLUDE_DIR)
     add_definitions(-DHAVE_SHIBOKEN)
@@ -645,6 +660,8 @@ SET(View3D_CPP_SRCS
     View3DInventor.cpp
     View3DInventorExamples.cpp
     View3DInventorViewer.cpp
+    View3DInventorRiftViewer.cpp
+	CoinRiftWidget.cpp
     View3DPy.cpp
 )
 SET(View3D_SRCS
@@ -659,6 +676,9 @@ SET(View3D_SRCS
     View3DInventorExamples.h
     View3DInventorViewer.h
     View3DPy.h
+    View3DInventorRiftViewer.h
+	CoinRiftWidget.h
+
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 
