@@ -19,7 +19,6 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
-def QT_TRANSLATE_NOOP(scope, text): return text
 
 class SpreadsheetWorkbench(Workbench):
     "Spreadsheet workbench object"
@@ -53,6 +52,7 @@ class SpreadsheetWorkbench(Workbench):
     ToolTip = "Spreadsheet workbench"
 
     def Initialize(self):
+        def QT_TRANSLATE_NOOP(scope, text): return text
         import Spreadsheet,Spreadsheet_rc
         from DraftTools import translate
         commands = ["Spreadsheet_Create","Spreadsheet_Controller","Spreadsheet_PropertyController"]
