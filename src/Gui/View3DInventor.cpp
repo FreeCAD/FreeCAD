@@ -736,7 +736,7 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     else if(strcmp("ViewVR",pMsg) == 0)
 #ifdef BUILD_VR
         return true;
-#elif
+#else
 		return false;
 #endif 
     else if(strcmp("ViewSelection",pMsg) == 0)
