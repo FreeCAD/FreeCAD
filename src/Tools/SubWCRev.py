@@ -137,13 +137,12 @@ class GitControl(VersionControl):
             return False
         self.rev='%04d (Git)' % (info.count('\n'))
         # date/time
-        info=os.popen("git log -1 --date=iso").read()
-        info=info.split("\n")
-        for i in info:
-            r = re.match("^Date:\\W+(\\d+-\\d+-\\d+\\W+\\d+:\\d+:\\d+)", i)
-            if r != None:
-                self.date = r.groups()[0].replace('-','/')
-                break
+        import time
+        info=os.popen("git log -1 --date=raw --pretty=format:%cd").read()
+        # commit time is more meaningfull than author time
+        # use UTC
+        self.date = time.strftime("%Y/%m/%d %H:%M:%S",time.gmtime(\
+                float(info.strip().split(' ',1)[0])))
         self.hash=os.popen("git log -1 --pretty=format:%H").read()
         for self.branch in os.popen("git branch").read().split('\n'):
             if re.match( "\*", self.branch ) != None:
