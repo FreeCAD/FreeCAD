@@ -892,7 +892,7 @@ def makeText(stringslist,point=Vector(0,0,0),screen=False):
     typecheck([(point,Vector)], "makeText")
     if not isinstance(stringslist,list): stringslist = [stringslist]
     obj=FreeCAD.ActiveDocument.addObject("App::Annotation","Text")
-    obj.LabelText=stringlist
+    obj.LabelText=stringslist
     obj.Position=point
     if FreeCAD.GuiUp:
         if not screen: 
