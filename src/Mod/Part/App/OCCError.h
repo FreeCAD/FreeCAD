@@ -27,7 +27,9 @@
 # include <Standard_Failure.hxx>
 # include <Standard_AbortiveTransaction.hxx>
 # include <Standard_ConstructionError.hxx>
+# if OCC_VERSION_HEX >= 0x060500
 # include <Standard_DefineException.hxx>
+# endif
 # include <Standard_DimensionError.hxx>
 # include <Standard_DimensionMismatch.hxx>
 # include <Standard_DivideByZero.hxx>

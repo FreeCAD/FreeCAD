@@ -58,7 +58,9 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     pLayout->setMargin ( 0 );
 
     QLineEdit* searchBox = new QLineEdit(this);
+#if QT_VERSION >= 0x040700
     searchBox->setPlaceholderText( tr( "Search" ) );
+#endif
     searchBox->setToolTip( tr( "Searches object labels" ) );
     pLayout->addWidget( searchBox );
     QHBoxLayout* llayout = new QHBoxLayout(searchBox);
