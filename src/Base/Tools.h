@@ -153,6 +153,7 @@ struct BaseExport Tools
     static std::string getIdentifier(const std::string&);
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);
+    static std::string escapedUnicodeFromUtf8(const char *s);
 };
 
 } // namespace Base

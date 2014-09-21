@@ -56,8 +56,7 @@
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
-
-
+#include <Mod/Part/App/encodeFilename.h>
 
 /* module functions */
 
@@ -65,12 +64,15 @@ static PyObject * importer(PyObject *self, PyObject *args)
 {
     char* Name;
     char* DocName=0;
-    if (!PyArg_ParseTuple(args, "s|s",&Name,&DocName))
-        return 0;
+    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
+        return NULL;
+    std::string Utf8Name = std::string(Name);
+    PyMem_Free(Name);
+    std::string name8bit = Part::encodeFilename(Utf8Name);
 
     PY_TRY {
         //Base::Console().Log("Insert in Part with %s",Name);
-        Base::FileInfo file(Name);
+        Base::FileInfo file(Utf8Name.c_str());
 
         App::Document *pcDoc = 0;
         if (DocName) {
@@ -90,7 +92,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
-                if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
+                if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
                     PyErr_SetString(Base::BaseExceptionFreeCADError, "cannot read STEP file");
                     return 0;
                 }
@@ -107,7 +109,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
                 Base::Console().Error("%s\n", e->GetMessageString());
                 Base::Console().Message("Try to load STEP file without colors...\n");
 
-                Part::ImportStepParts(pcDoc,Name);
+                Part::ImportStepParts(pcDoc,Utf8Name.c_str());
                 pcDoc->recompute();
             }
         }
@@ -119,7 +121,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
-                if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
+                if (aReader.ReadFile((Standard_CString)(name8bit.c_str())) != IFSelect_RetDone) {
                     PyErr_SetString(Base::BaseExceptionFreeCADError, "cannot read IGES file");
                     return 0;
                 }
@@ -136,7 +138,7 @@ static PyObject * importer(PyObject *self, PyObject *args)
                 Base::Console().Error("%s\n", e->GetMessageString());
                 Base::Console().Message("Try to load IGES file without colors...\n");
 
-                Part::ImportIgesParts(pcDoc,Name);
+                Part::ImportIgesParts(pcDoc,Utf8Name.c_str());
                 pcDoc->recompute();
             }
         }
@@ -173,9 +175,12 @@ static PyObject * open(PyObject *self, PyObject *args)
 static PyObject * exporter(PyObject *self, PyObject *args)
 {
     PyObject* object;
-    const char* filename;
-    if (!PyArg_ParseTuple(args, "Os",&object,&filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "Oet",&object,"utf-8",&Name))
         return NULL;
+    std::string Utf8Name = std::string(Name);
+    PyMem_Free(Name);
+    std::string name8bit = Part::encodeFilename(Utf8Name);
 
     PY_TRY {
         Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
@@ -216,7 +221,7 @@ static PyObject * exporter(PyObject *self, PyObject *args)
             }
         }
 
-        Base::FileInfo file(filename);
+        Base::FileInfo file(Utf8Name.c_str());
         if (file.hasExtension("stp") || file.hasExtension("step")) {
             //Interface_Static::SetCVal("write.step.schema", "AP214IS");
             STEPCAFControl_Writer writer;
@@ -228,14 +233,14 @@ static PyObject * exporter(PyObject *self, PyObject *args)
 #else
             APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
 #endif
-            makeHeader.SetName(new TCollection_HAsciiString((const Standard_CString)filename));
+            makeHeader.SetName(new TCollection_HAsciiString((const Standard_CString)Utf8Name.c_str()));
             makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
             makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
             makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
             makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
-            IFSelect_ReturnStatus ret = writer.Write(filename);
+            IFSelect_ReturnStatus ret = writer.Write(name8bit.c_str());
             if (ret == IFSelect_RetError || ret == IFSelect_RetFail || ret == IFSelect_RetStop) {
-                PyErr_Format(PyExc_IOError, "Cannot open file '%s'", filename);
+                PyErr_Format(PyExc_IOError, "Cannot open file '%s'", Utf8Name.c_str());
                 return 0;
             }
         }
@@ -243,9 +248,9 @@ static PyObject * exporter(PyObject *self, PyObject *args)
             IGESControl_Controller::Init();
             IGESCAFControl_Writer writer;
             writer.Transfer(hDoc);
-            Standard_Boolean ret = writer.Write(filename);
+            Standard_Boolean ret = writer.Write(name8bit.c_str());
             if (!ret) {
-                PyErr_Format(PyExc_IOError, "Cannot open file '%s'", filename);
+                PyErr_Format(PyExc_IOError, "Cannot open file '%s'", Utf8Name.c_str());
                 return 0;
             }
         }

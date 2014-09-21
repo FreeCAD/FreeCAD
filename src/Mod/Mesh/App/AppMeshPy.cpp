@@ -52,13 +52,15 @@ using namespace MeshCore;
 /* module functions */
 static PyObject * read(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         std::auto_ptr<MeshObject> mesh(new MeshObject);
-        if (mesh->load(Name)) {
+        if (mesh->load(EncodedName.c_str())) {
             return new MeshPy(mesh.release());
         }
         else {
@@ -72,14 +74,16 @@ static PyObject * read(PyObject *self, PyObject *args)
 
 static PyObject * open(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         MeshObject mesh;
-        if (mesh.load(Name)) {
-            Base::FileInfo file(Name);
+        if (mesh.load(EncodedName.c_str())) {
+            Base::FileInfo file(EncodedName.c_str());
             // create new document and add Import feature
             App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
             unsigned long segmct = mesh.countSegments();
@@ -108,11 +112,12 @@ static PyObject * open(PyObject *self, PyObject *args)
 
 static PyObject * importer(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    const char* DocName=0;
-
-    if (!PyArg_ParseTuple(args, "s|s",&Name,&DocName))
+    char* Name;
+    char* DocName=0;
+    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         App::Document *pcDoc = 0;
@@ -126,8 +131,8 @@ static PyObject * importer(PyObject *self, PyObject *args)
         }
 
         MeshObject mesh;
-        if (mesh.load(Name)) {
-            Base::FileInfo file(Name);
+        if (mesh.load(EncodedName.c_str())) {
+            Base::FileInfo file(EncodedName.c_str());
             unsigned long segmct = mesh.countSegments();
             if (segmct > 1) {
                 for (unsigned long i=0; i<segmct; i++) {
@@ -155,9 +160,11 @@ static PyObject * importer(PyObject *self, PyObject *args)
 static PyObject * exporter(PyObject *self, PyObject *args)
 {
     PyObject* object;
-    const char* filename;
-    if (!PyArg_ParseTuple(args, "Os",&object,&filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "Oet",&object,"utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     float fTolerance = 0.1f;
     MeshObject global_mesh;
@@ -200,7 +207,7 @@ static PyObject * exporter(PyObject *self, PyObject *args)
         }
 
         // export mesh compound
-        global_mesh.save(filename);
+        global_mesh.save(EncodedName.c_str());
     } PY_CATCH;
 
     Py_Return;

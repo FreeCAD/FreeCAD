@@ -50,14 +50,16 @@ using namespace DrawingGui;
 static PyObject * 
 open(PyObject *self, PyObject *args) 
 {
-    const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
-        return NULL; 
-    
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+        return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
+
     PY_TRY {
-        Base::FileInfo file(Name);
+        Base::FileInfo file(EncodedName.c_str());
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
-            QString fileName = QString::fromUtf8(Name);
+            QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
             DrawingView* view = new DrawingView(0, Gui::getMainWindow());
             view->load(fileName);
@@ -80,15 +82,17 @@ open(PyObject *self, PyObject *args)
 static PyObject *
 importer(PyObject *self, PyObject *args)
 {
-    const char* Name;
+    char* Name;
     const char* dummy;
-    if (!PyArg_ParseTuple(args, "s|s",&Name,&dummy))
-        return NULL; 
-    
+    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&dummy))
+        return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
+
     PY_TRY {
-        Base::FileInfo file(Name);
+        Base::FileInfo file(EncodedName.c_str());
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
-            QString fileName = QString::fromUtf8(Name);
+            QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
             DrawingView* view = new DrawingView(0, Gui::getMainWindow());
             view->load(fileName);
@@ -110,9 +114,11 @@ static PyObject *
 exporter(PyObject *self, PyObject *args)
 {
     PyObject* object;
-    const char* filename;
-    if (!PyArg_ParseTuple(args, "Os",&object,&filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "Oet",&object,"utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         Py::Sequence list(object);
@@ -121,11 +127,11 @@ exporter(PyObject *self, PyObject *args)
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(Drawing::FeaturePage::getClassTypeId())) {
-                    Base::FileInfo fi_out(filename);
+                    Base::FileInfo fi_out(EncodedName.c_str());
                     Base::ofstream str_out(fi_out, std::ios::out | std::ios::binary);
                     if (!str_out) {
                         std::stringstream str;
-                        str << "Cannot open file '" << filename << "' for writing";
+                        str << "Cannot open file '" << EncodedName << "' for writing";
                         PyErr_SetString(PyExc_IOError, str.str().c_str());
                         return NULL;
                     }

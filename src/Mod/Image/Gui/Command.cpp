@@ -74,7 +74,7 @@ void CmdImageOpen::activated(int iMsg)
         try{
             // load the file with the module
             Command::doCommand(Command::Gui, "import Image, ImageGui");
-            Command::doCommand(Command::Gui, "ImageGui.open(\"%s\")", (const char*)s.toUtf8());
+            Command::doCommand(Command::Gui, "ImageGui.open(unicode(\"%s\",\"utf-8\"))", (const char*)s.toUtf8());
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow

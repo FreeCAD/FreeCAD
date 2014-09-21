@@ -29,7 +29,7 @@
 #endif
 
 # include <QTime>
-
+#include <Python.h>
 #include "Tools.h"
 
 namespace Base {
@@ -142,6 +142,16 @@ std::string Base::Tools::narrow(const std::wstring& str)
     return stm.str();
 }
 
+std::string Base::Tools::escapedUnicodeFromUtf8(const char *s)
+{
+    PyObject* unicode = PyUnicode_FromString(s);
+    PyObject* escaped = PyUnicode_AsUnicodeEscapeString(unicode);
+    Py_DECREF(unicode);
+    std::string escapedstr = std::string(PyString_AsString(escaped));
+    Py_DECREF(escaped);
+    return escapedstr;
+}
+
 // ----------------------------------------------------------------------------
 
 using namespace Base;
@@ -191,3 +201,6 @@ std::string StopWatch::toString(int ms) const
         str << msec << "ms";
     return str.str();
 }
+
+
+

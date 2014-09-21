@@ -108,9 +108,11 @@ using MeshCore::MeshKernel;
 static PyObject *
 open(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    if (! PyArg_ParseTuple(args, "s",&Name))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY
     {
@@ -125,10 +127,12 @@ open(PyObject *self, PyObject *args)
 /* module functions */
 static PyObject * insert(PyObject *self, PyObject *args)
 {
-    const char* Name;
+    char* Name;
     const char* DocName;
-    if (! PyArg_ParseTuple(args, "ss",&Name,&DocName))
+    if (!PyArg_ParseTuple(args, "ets","utf-8",&Name,&DocName))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY
     {
@@ -141,9 +145,11 @@ static PyObject * insert(PyObject *self, PyObject *args)
 /* module functions */
 static PyObject * read(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    if (! PyArg_ParseTuple(args, "s",&Name))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
     PY_TRY
     {
 

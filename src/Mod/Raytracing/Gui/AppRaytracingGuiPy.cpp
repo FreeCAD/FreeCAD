@@ -53,12 +53,14 @@ static PyObject *
 open(PyObject *self, PyObject *args)
 {
     // only used to open Povray files
-    const char* Name;
+    char* Name;
     const char* DocName;
-    if (!PyArg_ParseTuple(args, "s|s",&Name, &DocName))
+    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
     PY_TRY {
-        QString fileName = QString::fromUtf8(Name);
+        QString fileName = QString::fromUtf8(EncodedName.c_str());
         QFileInfo fi;
         fi.setFile(fileName);
         QString ext = fi.completeSuffix().toLower();
