@@ -479,7 +479,7 @@ void Application::open(const char* FileName, const char* Module)
     wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     string te = File.extension();
-
+    string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
     // if the active document is empty and not modified, close it
     // in case of an automatically created empty document at startup
     App::Document* act = App::GetApplication().getActiveDocument();
@@ -494,7 +494,7 @@ void Application::open(const char* FileName, const char* Module)
         Command::doCommand(Command::App, "import %s", Module);
         try {
             // load the file with the module
-            Command::doCommand(Command::App, "%s.open(\"%s\")", Module, File.filePath().c_str());
+            Command::doCommand(Command::App, "%s.open(u\"%s\")", Module, unicodepath.c_str());
             // ViewFit
             if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit")) {
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
@@ -525,6 +525,7 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
     wc.setIgnoreEvents(WaitCursor::NoEvents);
     Base::FileInfo File(FileName);
     std::string te = File.extension();
+    string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
 
     if (Module != 0) {
         // issue module loading
@@ -533,14 +534,14 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
         try {
             // load the file with the module
             if (File.hasExtension("FCStd")) {
-                Command::doCommand(Command::App, "%s.open(\"%s\")"
-                                               , Module, File.filePath().c_str());
+                Command::doCommand(Command::App, "%s.open(u\"%s\")"
+                                               , Module, unicodepath.c_str());
                 if (activeDocument())
                     activeDocument()->setModified(false);
             }
             else {
-                Command::doCommand(Command::App, "%s.insert(\"%s\",\"%s\")"
-                                               , Module, File.filePath().c_str(), DocName);
+                Command::doCommand(Command::App, "%s.insert(u\"%s\",\"%s\")"
+                                               , Module, unicodepath.c_str(), DocName);
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                     ("User parameter:BaseApp/Preferences/View");
                 if (hGrp->GetBool("AutoFitToView", true))
@@ -570,6 +571,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
     WaitCursor wc;
     Base::FileInfo File(FileName);
     std::string te = File.extension();
+    string unicodepath = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
 
     if (Module != 0) {
         try {
@@ -588,7 +590,7 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             }
 
             str << "import " << Module << std::endl;
-            str << Module << ".export(__objs__,\"" << File.filePath() << "\")" << std::endl;
+            str << Module << ".export(__objs__,u\"" << unicodepath << "\")" << std::endl;
             str << "del __objs__" << std::endl;
 
             std::string code = str.str();

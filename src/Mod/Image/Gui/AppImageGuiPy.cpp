@@ -43,15 +43,17 @@ using namespace ImageGui;
 static PyObject * 
 open(PyObject *self, PyObject *args) 
 {
-    const char* Name;
+    char* Name;
     const char* DocName=0;
-    if (!PyArg_ParseTuple(args, "s|s",&Name,&DocName))
-        return NULL; 
-    
+    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
+        return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
+
     PY_TRY {
-        QString fileName = QString::fromUtf8(Name);
+        QString fileName = QString::fromUtf8(EncodedName.c_str());
         QFileInfo file(fileName);
-            
+
         // Load image from file into a QImage object
         QImage imageq(fileName);
 

@@ -233,11 +233,13 @@ PyObject* Application::sShowObject(PyObject * /*self*/, PyObject *args,PyObject 
 PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     // only used to open Python files
-    const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string Utf8Name = std::string(Name);
+    PyMem_Free(Name);
     PY_TRY {
-        QString fileName = QString::fromUtf8(Name);
+        QString fileName = QString::fromUtf8(Utf8Name.c_str());
         QFileInfo fi;
         fi.setFile(fileName);
         QString ext = fi.completeSuffix().toLower();
@@ -291,13 +293,15 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args,PyObject * /*kw
 
 PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
-    const char* Name;
-    const char* DocName=0;
-    if (!PyArg_ParseTuple(args, "s|s",&Name,&DocName))
+    char* Name;
+    char* DocName=0;
+    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
         return NULL;
+    std::string Utf8Name = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
-        QString fileName = QString::fromUtf8(Name);
+        QString fileName = QString::fromUtf8(Utf8Name.c_str());
         QFileInfo fi;
         fi.setFile(fileName);
         QString ext = fi.completeSuffix().toLower();
@@ -352,9 +356,11 @@ PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args,PyObject * /*
 PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     PyObject* object;
-    const char* filename;
-    if (!PyArg_ParseTuple(args, "Os",&object,&filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "Oet",&object,"utf-8",&Name))
         return NULL;
+    std::string Utf8Name = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         App::Document* doc = 0;
@@ -370,7 +376,7 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
 
         // get the view that belongs to the found document
         if (doc) {
-            QString fileName = QString::fromUtf8(filename);
+            QString fileName = QString::fromUtf8(Utf8Name.c_str());
             QFileInfo fi;
             fi.setFile(fileName);
             QString ext = fi.completeSuffix().toLower();
@@ -687,9 +693,10 @@ PyObject* Application::sActiveWorkbenchHandler(PyObject * /*self*/, PyObject *ar
 PyObject* Application::sAddResPath(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     char* filePath;
-    if (!PyArg_ParseTuple(args, "s", &filePath))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args, "et", "utf-8", &filePath))     // convert args: Python->C
         return NULL;                    // NULL triggers exception
     QString path = QString::fromUtf8(filePath);
+    PyMem_Free(filePath);
     if (QDir::isRelativePath(path)) {
         // Home path ends with '/'
         QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
@@ -705,9 +712,10 @@ PyObject* Application::sAddResPath(PyObject * /*self*/, PyObject *args,PyObject 
 PyObject* Application::sAddLangPath(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     char* filePath;
-    if (!PyArg_ParseTuple(args, "s", &filePath))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args, "et", "utf-8", &filePath))     // convert args: Python->C
         return NULL;                    // NULL triggers exception
     QString path = QString::fromUtf8(filePath);
+    PyMem_Free(filePath);
     if (QDir::isRelativePath(path)) {
         // Home path ends with '/'
         QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
@@ -722,9 +730,10 @@ PyObject* Application::sAddLangPath(PyObject * /*self*/, PyObject *args,PyObject
 PyObject* Application::sAddIconPath(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     char* filePath;
-    if (!PyArg_ParseTuple(args, "s", &filePath))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "et", "utf-8", &filePath))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
     QString path = QString::fromUtf8(filePath);
+    PyMem_Free(filePath);
     if (QDir::isRelativePath(path)) {
         // Home path ends with '/'
         QString home = QString::fromUtf8(App::GetApplication().GetHomePath());

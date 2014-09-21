@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2014 Sebastian Hoogen <github[at]sebastianhoogen.de>    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,50 +20,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-#ifndef _PreComp_
-# include <qimage.h>
+
+#ifndef PART_ENCODEFILENAME_H
+#define PART_ENCODEFILENAME_H
+
+#if (OCC_VERSION_HEX < 0x060800 && defined(_WIN32))
+#include <QString>
 #endif
 
-
-#include <Base/Console.h>
-#include <Base/Exception.h>
-#include <Base/FileInfo.h>
-#include <App/Application.h>
-#include <Gui/MainWindow.h>
-#include <Gui/BitmapFactory.h>
-
-
-
-/* module functions */
-static PyObject * 
-open(PyObject *self, PyObject *args) 
+namespace Part
 {
-    char* Name;
-    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
-        return NULL;
-    std::string EncodedName = std::string(Name);
-    PyMem_Free(Name);
-    
-    PY_TRY {
-     } PY_CATCH;
-
-	Py_Return; 
+inline std::string encodeFilename(std::string fn)
+{
+#if (OCC_VERSION_HEX < 0x060800 && defined(_WIN32))
+    // Workaround to support latin1 characters in path until OCCT supports
+    // conversion from UTF8 to wchar_t on windows
+    // http://tracker.dev.opencascade.org/view.php?id=22484
+    QByteArray str8bit = QString::fromUtf8(fn.c_str()).toLocal8Bit();
+    return std::string(str8bit.constData());
+#else
+    return fn;
+#endif
 }
 
+} //namespace Part
 
-/* module functions */
-static PyObject *
-insert(PyObject *self, PyObject *args)
-{
-  // not supported to insert an image (by dropping on an image view)
-  // hence do nothing
-  Py_Return;
-}
-
-/* registration table  */
-struct PyMethodDef SketcherGui_Import_methods[] = {
-    {"open"       ,open ,       1},				/* method name, C func ptr, always-tuple */
-    {"insert"     ,insert,      1},
-    {NULL, NULL}                   /* end of table marker */
-};
+#endif // PART_ENCODEFILENAME_H

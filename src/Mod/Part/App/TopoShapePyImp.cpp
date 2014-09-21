@@ -260,11 +260,13 @@ PyObject* TopoShapePy::removeShape(PyObject *args)
 
 PyObject*  TopoShapePy::read(PyObject *args)
 {
-    char* filename;
-    if (!PyArg_ParseTuple(args, "s", &filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
-    getTopoShapePtr()->read(filename);
+    getTopoShapePtr()->read(EncodedName.c_str());
     Py_Return;
 }
 
@@ -292,13 +294,15 @@ PyObject* TopoShapePy::writeInventor(PyObject * args)
 
 PyObject*  TopoShapePy::exportIges(PyObject *args)
 {
-    char* filename;
-    if (!PyArg_ParseTuple(args, "s", &filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     try {
         // write iges file
-        getTopoShapePtr()->exportIges(filename);
+        getTopoShapePtr()->exportIges(EncodedName.c_str());
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PartExceptionOCCError,e.what());
@@ -310,13 +314,15 @@ PyObject*  TopoShapePy::exportIges(PyObject *args)
 
 PyObject*  TopoShapePy::exportStep(PyObject *args)
 {
-    char* filename;
-    if (!PyArg_ParseTuple(args, "s", &filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     try {
         // write step file
-        getTopoShapePtr()->exportStep(filename);
+        getTopoShapePtr()->exportStep(EncodedName.c_str());
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PartExceptionOCCError,e.what());
@@ -328,13 +334,15 @@ PyObject*  TopoShapePy::exportStep(PyObject *args)
 
 PyObject*  TopoShapePy::exportBrep(PyObject *args)
 {
-    char* filename;
-    if (!PyArg_ParseTuple(args, "s", &filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     try {
         // write brep file
-        getTopoShapePtr()->exportBrep(filename);
+        getTopoShapePtr()->exportBrep(EncodedName.c_str());
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PartExceptionOCCError,e.what());
@@ -449,14 +457,16 @@ PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
 
 PyObject*  TopoShapePy::exportStl(PyObject *args)
 {
-    char* filename;
     double deflection = 0;
-    if (!PyArg_ParseTuple(args, "s|d", &filename, &deflection))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et|d","utf-8",&Name,&deflection))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     try {
         // write stl file
-        getTopoShapePtr()->exportStl(filename, deflection);
+        getTopoShapePtr()->exportStl(EncodedName.c_str(), deflection);
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PartExceptionOCCError,e.what());

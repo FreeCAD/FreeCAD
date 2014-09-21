@@ -48,17 +48,18 @@ using namespace MeshCore;
 //using namespace JtReader;
 
 /* module functions */
-static PyObject * read(PyObject *self, PyObject *args)     
-{                                        
-  const char* Name;
-  if (! PyArg_ParseTuple(args, "s",&Name))			 
-    return NULL;                         
-    
+static PyObject * read(PyObject *self, PyObject *args)
+{
+  char* Name;
+  if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+        return NULL;
+  std::string EncodedName = std::string(Name);
+  PyMem_Free(Name);
+
   PY_TRY {
-    
     std::auto_ptr<MeshCore::MeshKernel> apcKernel(new MeshCore::MeshKernel());
 
-    readFile(Name,0);
+    readFile(EncodedName.c_str(),0);
 
     vector<MeshGeomFacet> facets;
     facets.resize(iterSize());
@@ -87,17 +88,19 @@ static PyObject * read(PyObject *self, PyObject *args)
 	Py_Return;    
 }
 
-static PyObject *                        
-open(PyObject *self, PyObject *args)     
-{                                        
-  const char* Name;
-  if (! PyArg_ParseTuple(args, "s",&Name))			 
-    return NULL;                         
-    
+static PyObject *
+open(PyObject *self, PyObject *args)
+{
+  char* Name;
+  if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+        return NULL;
+  std::string EncodedName = std::string(Name);
+  PyMem_Free(Name);
+
   PY_TRY {
 
     //Base::Console().Log("Open in Mesh with %s",Name);
-    Base::FileInfo file(Name);
+    Base::FileInfo file(EncodedName.c_str());
 
     // extract ending
     if(file.extension() == "")
@@ -111,7 +114,7 @@ open(PyObject *self, PyObject *args)
           
         std::auto_ptr<MeshCore::MeshKernel> apcKernel(new MeshCore::MeshKernel());
 
-        readFile(Name,0);
+        readFile(EncodedName.c_str(),0);
 
         vector<MeshGeomFacet> facets;
         facets.resize(iterSize());
@@ -151,17 +154,19 @@ open(PyObject *self, PyObject *args)
 
 
 /* module functions */
-static PyObject *                        
-insert(PyObject *self, PyObject *args)     
+static PyObject *
+insert(PyObject *self, PyObject *args)
 {
-  const char* Name;
+  char* Name;
   const char* DocName;
-  if (! PyArg_ParseTuple(args, "ss",&Name,&DocName))	 		 
-    return NULL;                         
-    
+  if (!PyArg_ParseTuple(args, "ets","utf-8",&Name,&DocName))
+        return NULL;
+  std::string EncodedName = std::string(Name);
+  PyMem_Free(Name);
+
   PY_TRY {
 
-    Base::FileInfo file(Name);
+    Base::FileInfo file(EncodedName.c_str());
 
     // extract ending
     if(file.extension() == "")
@@ -178,7 +183,7 @@ insert(PyObject *self, PyObject *args)
             Py_Error(Base::BaseExceptionFreeCADError,szBuf);
         }
 
-        readFile(Name,0);
+        readFile(EncodedName.c_str(),0);
 
         vector<MeshGeomFacet> facets;
 
@@ -212,7 +217,7 @@ insert(PyObject *self, PyObject *args)
         }else{
             clearData();
             //Py_Error(Base::BaseExceptionFreeCADError,"No Mesh in file");
-            Base::Console().Warning("No Mesh in file: %s\n",Name);
+            Base::Console().Warning("No Mesh in file: %s\n",EncodedName.c_str());
         }
      }
     else

@@ -1268,10 +1268,12 @@ void Application::processCmdLineFiles(void)
             else {
                 std::vector<std::string> mods = App::GetApplication().getImportModules(Ext.c_str());
                 if (!mods.empty()) {
+                    std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(File.filePath().c_str());
                     Base::Interpreter().loadModule(mods.front().c_str());
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
-                    Base::Interpreter().runStringArg("%s.open(\"%s\")",mods.front().c_str(),File.filePath().c_str());
-                    Base::Console().Log("Command line open: %s.Open(\"%s\")\n",mods.front().c_str(),File.filePath().c_str());
+                    Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
+                            escapedstr.c_str());
+                    Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else {
                     Console().Warning("File format not supported: %s \n", File.filePath().c_str());

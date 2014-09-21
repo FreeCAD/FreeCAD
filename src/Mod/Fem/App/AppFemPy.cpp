@@ -74,14 +74,16 @@ using namespace Fem;
 /* module functions */
 static PyObject * read(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         std::auto_ptr<FemMesh> mesh(new FemMesh);
         try {
-            mesh->read(Name);
+            mesh->read(EncodedName.c_str());
             return new FemMeshPy(mesh.release());
         }
         catch(...) {
@@ -95,14 +97,16 @@ static PyObject * read(PyObject *self, PyObject *args)
 
 static PyObject * open(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         std::auto_ptr<FemMesh> mesh(new FemMesh);
-        mesh->read(Name);
-        Base::FileInfo file(Name);
+        mesh->read(EncodedName.c_str());
+        Base::FileInfo file(EncodedName.c_str());
         // create new document and add Import feature
         App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
         FemMeshObject *pcFeature = static_cast<FemMeshObject *>
@@ -144,11 +148,12 @@ show(PyObject *self, PyObject *args)
 
 static PyObject * importer(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    const char* DocName=0;
-
-    if (!PyArg_ParseTuple(args, "s|s",&Name,&DocName))
+    char* Name;
+    const char* DocName = 0;
+    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         App::Document *pcDoc = 0;
@@ -162,8 +167,9 @@ static PyObject * importer(PyObject *self, PyObject *args)
         }
 
         std::auto_ptr<FemMesh> mesh(new FemMesh);
-        mesh->read(Name);
-        Base::FileInfo file(Name);
+        mesh->read(EncodedName.c_str());
+        Base::FileInfo file(EncodedName.c_str());
+
         FemMeshObject *pcFeature = static_cast<FemMeshObject *>
             (pcDoc->addObject("Fem::FemMeshObject", file.fileNamePure().c_str()));
         pcFeature->Label.setValue(file.fileNamePure().c_str());
@@ -535,9 +541,11 @@ static PyObject * importer(PyObject *self, PyObject *args)
 static PyObject * exporter(PyObject *self, PyObject *args)
 {
     PyObject* object;
-    const char* filename;
-    if (!PyArg_ParseTuple(args, "Os",&object,&filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "Oet",&object,"utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         Py::Sequence list(object);
@@ -547,7 +555,7 @@ static PyObject * exporter(PyObject *self, PyObject *args)
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(meshId)) {
-                    static_cast<FemMeshObject*>(obj)->FemMesh.getValue().write(filename);
+                    static_cast<FemMeshObject*>(obj)->FemMesh.getValue().write(EncodedName.c_str());
                     break;
                 }
             }

@@ -50,14 +50,16 @@ using namespace std;
 /* module functions */
 static PyObject * open(PyObject *self, PyObject *args)
 {
-    const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
     } PY_CATCH;
         //Base::Console().Log("Open in Part with %s",Name);
-        Base::FileInfo file(Name);
+        Base::FileInfo file(EncodedName.c_str());
 
         // extract ending
         if (file.extension() == "")
@@ -80,14 +82,16 @@ static PyObject * open(PyObject *self, PyObject *args)
 /* module functions */
 static PyObject * insert(PyObject *self, PyObject *args)
 {
-    const char* Name;
+    char* Name;
     const char* DocName;
-    if (!PyArg_ParseTuple(args, "ss",&Name,&DocName))
+    if (!PyArg_ParseTuple(args, "ets","utf-8",&Name,&DocName))
         return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     PY_TRY {
         //Base::Console().Log("Insert in Part with %s",Name);
-        Base::FileInfo file(Name);
+        Base::FileInfo file(EncodedName.c_str());
 
         // extract ending
         if (file.extension() == "")
@@ -100,7 +104,7 @@ static PyObject * insert(PyObject *self, PyObject *args)
         if (file.hasExtension("skf")) {
 
             Sketcher::SketchObjectSF *pcFeature = (Sketcher::SketchObjectSF *)pcDoc->addObject("Sketcher::SketchObjectSF",file.fileNamePure().c_str());
-            pcFeature->SketchFlatFile.setValue(Name);
+            pcFeature->SketchFlatFile.setValue(EncodedName.c_str());
 
             pcDoc->recompute();
         }

@@ -71,7 +71,7 @@ void CmdDrawingOpen::activated(int iMsg)
     {
         // load the file with the module
         Command::doCommand(Command::Gui, "import Drawing, DrawingGui");
-        Command::doCommand(Command::Gui, "DrawingGui.open(\"%s\")", (const char*)filename.toUtf8());
+        Command::doCommand(Command::Gui, "DrawingGui.open(unicode(\"%s\",\"utf-8\"))", (const char*)filename.toUtf8());
     }
 }
 

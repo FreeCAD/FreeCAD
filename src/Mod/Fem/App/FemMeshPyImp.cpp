@@ -442,12 +442,14 @@ PyObject* FemMeshPy::copy(PyObject *args)
 
 PyObject* FemMeshPy::read(PyObject *args)
 {
-    char* filename;
-    if (!PyArg_ParseTuple(args, "s", &filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return 0;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     try {
-        getFemMeshPtr()->read(filename);
+        getFemMeshPtr()->read(EncodedName.c_str());
     }
     catch (const std::exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
@@ -458,12 +460,14 @@ PyObject* FemMeshPy::read(PyObject *args)
 
 PyObject* FemMeshPy::write(PyObject *args)
 {
-    char* filename;
-    if (!PyArg_ParseTuple(args, "s", &filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return 0;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     try {
-        getFemMeshPtr()->write(filename);
+        getFemMeshPtr()->write(EncodedName.c_str());
     }
     catch (const std::exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
@@ -474,12 +478,14 @@ PyObject* FemMeshPy::write(PyObject *args)
 
 PyObject* FemMeshPy::writeABAQUS(PyObject *args)
 {
-    char* filename;
-    if (!PyArg_ParseTuple(args, "s", &filename))
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
         return 0;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
 
     try {
-        getFemMeshPtr()->writeABAQUS(filename);
+        getFemMeshPtr()->writeABAQUS(EncodedName.c_str());
     }
     catch (const std::exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
