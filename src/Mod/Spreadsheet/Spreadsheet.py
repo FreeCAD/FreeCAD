@@ -680,6 +680,7 @@ class SpreadsheetPropertyController:
                             return
                     try:
                         setattr(b,p,value)
+                        FreeCAD.ActiveDocument.recompute()
                         if DEBUG: print "setting property ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
                     except:
                         if DEBUG: print "unable to set property ",obj.TargetProperty, " of object ",obj.TargetObject.Name, " to ",value
