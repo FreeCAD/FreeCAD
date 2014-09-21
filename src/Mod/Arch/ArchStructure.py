@@ -556,9 +556,8 @@ class _Structure(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height or extrusion depth of this element. Keep 0 for automatic"))
         obj.addProperty("App::PropertyLinkList","Armatures","Arch",translate("Arch","Armatures contained in this element"))
         obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this structural element"))
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",translate("Arch","The structural nodes of this element"))
-        obj.addProperty("App::PropertyString","Profile","Arch","A description of the standard profile this element is based upon")
+        obj.addProperty("App::PropertyString","Profile","Arch",translate("Arch","A description of the standard profile this element is based upon"))
         self.Type = "Structure"
         obj.Role = Roles
         

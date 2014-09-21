@@ -26,9 +26,10 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 # Possible roles for IFC objects
-Roles = ['Undefined','Beam','Chimney','Column','Covering','Curtain Wall','Door','Foundation',
-         'Member','Plate','Railing','Ramp','Ramp Flight','Rebar','Pile','Roof','Shading Device','Slab',
-         'Stair','Stair Flight','Tendon','Wall','Wall Layer','Window']
+Roles = ['Undefined','Beam','Beam Standard Case','Chimney','Column','Column Standard Case','Covering','Curtain Wall',
+         'Door','Door Standard Case','Foundation','Furniture','Hydro Equipment','Electric Equipment', 
+         'Member','Plate','Railing','Ramp','Ramp Flight','Rebar','Pile','Roof','Shading Device','Slab','Space'
+         'Stair','Stair Flight','Tendon','Wall','Wall Standard Case','Wall Layer','Window','Window Standard Case']
 
 import FreeCAD,Draft
 from FreeCAD import Vector
@@ -294,6 +295,7 @@ class Component:
         obj.addProperty("App::PropertyString","Tag","Arch","An optional tag for this component")
         obj.addProperty("App::PropertyMap","IfcAttributes","Arch","Custom IFC properties and attributes")
         obj.addProperty("App::PropertyMap","Material","Arch","A material for this object")
+        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this object"))
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None

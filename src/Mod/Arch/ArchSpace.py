@@ -27,6 +27,8 @@ __title__="FreeCAD Arch Space"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+Roles = ["Space"]
+
 import FreeCAD,ArchComponent,ArchCommands,math,Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -115,6 +117,7 @@ class _Space(ArchComponent.Component):
         obj.addProperty("App::PropertyString",     "FinishCeiling","Arch",translate("Arch","The finishing of the ceiling of this space"))
         obj.addProperty("App::PropertyLinkList",   "Group",        "Arch",translate("Arch","Objects that are included inside this space, such as furniture"))
         self.Type = "Space"
+        obj.Role = Roles
 
     def execute(self,obj):
         self.getShape(obj)

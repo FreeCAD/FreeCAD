@@ -608,7 +608,6 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this window (for preset windows only)"))
         obj.addProperty("App::PropertyVector","Normal","Arch",translate("Arch","The normal direction of this window"))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this window"))
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"

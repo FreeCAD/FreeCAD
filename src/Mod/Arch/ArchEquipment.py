@@ -237,7 +237,6 @@ class _Equipment(ArchComponent.Component):
         obj.addProperty("Part::PropertyPartShape","SideView","Arch",translate("Arch","an optional 2D shape representing a side view of this equipment"))
         obj.addProperty("App::PropertyString","Model","Arch",translate("Arch","The model description of this equipment"))
         obj.addProperty("App::PropertyString","Url","Arch",translate("Arch","The url of the product page of this equipment"))
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this equipment"))
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self
