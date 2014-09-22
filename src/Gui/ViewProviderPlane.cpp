@@ -64,13 +64,15 @@ PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderGeometryObject)
 
 ViewProviderPlane::ViewProviderPlane() 
 {
+
+    ADD_PROPERTY(Size,(1.0));
  
     pMat = new SoMaterial();
     pMat->ref();
 
-    const float size = 10; // Note: If you change this, you need to also adapt App/Plane.cpp getBoundBox()
+    float size = Size.getValue(); // Note: If you change this, you need to also adapt App/Plane.cpp getBoundBox()
 
-    static const SbVec3f verts[4] =
+    SbVec3f verts[4] =
     {
         SbVec3f(size,size,0), SbVec3f(size,-size,0),
         SbVec3f(-size,-size,0), SbVec3f(-size,size,0),
@@ -106,7 +108,19 @@ ViewProviderPlane::~ViewProviderPlane()
 
 void ViewProviderPlane::onChanged(const App::Property* prop)
 {
-        ViewProviderGeometryObject::onChanged(prop);
+        if (prop == &Size){
+                float size = Size.getValue(); // Note: If you change this, you need to also adapt App/Plane.cpp getBoundBox()
+
+                SbVec3f verts[4] =
+                {
+                    SbVec3f(size,size,0), SbVec3f(size,-size,0),
+                    SbVec3f(-size,-size,0), SbVec3f(-size,size,0),
+                };
+
+                pCoords->point.setValues(0, 4, verts);
+        }
+        else
+         ViewProviderGeometryObject::onChanged(prop);
 }
 
 std::vector<std::string> ViewProviderPlane::getDisplayModes(void) const
