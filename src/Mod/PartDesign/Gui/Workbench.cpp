@@ -45,6 +45,7 @@
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
+#include <Gui/DlgCheckableMessageBox.h>
 
 #include <Mod/Sketcher/Gui/Workbench.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -150,6 +151,26 @@ void switchToDocument(const App::Document* doc)
 
     // Is there a body feature in this document?
     if (bodies.empty()) {
+
+        if(doc->countObjects() != 0) {
+             // show a warning about the convertion
+             Gui::Dialog::DlgCheckableMessageBox::showMessage(
+                QString::fromLatin1("PartDesign conversion warning"), 
+                QString::fromLatin1(
+                "<h2>Converting PartDesign features to new Body centric schema</h2>"
+                "If you are unsure what that mean save the document under a new name.<br>"
+                "You will not be able to load your work in an older Version of FreeCAD,<br>"
+                "After the translation took place...<br><br>"
+                "More information you will find here:<br>"
+                " <a href=\"http://www.freecadweb.org/wiki/index.php?title=Assembly_project\">http://www.freecadweb.org/wiki/index.php?title=Assembly_project</a> <br>"
+                "Or the Assembly dedicated portion of our forum:<br>"
+                " <a href=\"http://forum.freecadweb.org/viewforum.php?f=20&sid=2a1a326251c44576f450739e4a74c37d\">http://forum.freecadweb.org/</a> <br>"
+                                    ),
+                false,
+                QString::fromLatin1("Don't tell me again, I know!")
+                                                        );
+        }
+
         Gui::Command::openCommand("Migrate part to Body feature");
 
         // Get the objects now, before adding the Body and the base planes
