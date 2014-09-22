@@ -49,6 +49,8 @@ public:
     ViewProviderPlane(void);
     virtual ~ViewProviderPlane();
 
+    App::PropertyFloat Size;
+
     void attach(App::DocumentObject *);
     void updateData(const App::Property*);
     std::vector<std::string> getDisplayModes(void) const;
