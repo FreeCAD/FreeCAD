@@ -1,48 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport 
-      Father="GeoFeaturePy" 
+      Father="GeoFeatureGroupPy" 
       Name="PartPy" 
       Twin="Part" 
       TwinPointer="Part" 
       Include="App/Part.h" 
       Namespace="App" 
-      FatherInclude="App/GeoFeaturePy.h" 
+      FatherInclude="App/GeoFeatureGroupPy.h" 
       FatherNamespace="App">
     <Documentation>
-      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>This class handles document objects in Part</UserDocu>
     </Documentation>
-    <Methode Name="newObject">
-      <Documentation>
-        <UserDocu>Create and add an object with given type and name to the Part</UserDocu>
-      </Documentation>
-    </Methode>
-	  <Methode Name="addObject">
-		  <Documentation>
-			  <UserDocu>Add an object to the Part</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="removeObject">
-      <Documentation>
-        <UserDocu>Remove an object from the Part</UserDocu>
-      </Documentation>
-    </Methode>
-	  <Methode Name="removeObjectsFromDocument">
-		  <Documentation>
-			  <UserDocu>Remove all child objects from the Part and document</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="getObject">
-      <Documentation>
-        <UserDocu>Return the object with the given name</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="hasObject">
-      <Documentation>
-        <UserDocu>Checks if the Part has a given object</UserDocu>
-      </Documentation>
-    </Methode>
+
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

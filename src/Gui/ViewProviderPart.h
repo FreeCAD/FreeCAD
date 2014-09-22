@@ -25,12 +25,12 @@
 #define GUI_VIEWPROVIDER_ViewProviderPart_H
 
 
-#include "ViewProviderGeometryObject.h"
+#include "ViewProviderGeoFeatureGroup.h"
 #include "ViewProviderPythonFeature.h"
 
 namespace Gui {
 
-class GuiExport ViewProviderPart : public ViewProviderGeometryObject
+class GuiExport ViewProviderPart : public ViewProviderGeoFeatureGroup
 {
     PROPERTY_HEADER(Gui::ViewProviderPart);
 
@@ -39,8 +39,6 @@ public:
     ViewProviderPart();
     /// destructor.
     virtual ~ViewProviderPart();
-
-    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
 
     void attach(App::DocumentObject *pcObject);
     void updateData(const App::Property*);

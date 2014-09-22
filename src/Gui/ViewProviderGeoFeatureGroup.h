@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2014    *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,64 +21,44 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
-#endif
-
-#include <App/Document.h>
-#include "Part.h"
-#include "PartPy.h"
-//#define new DEBUG_CLIENTBLOCK
-using namespace App;
+#ifndef GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
+#define GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
 
 
-PROPERTY_SOURCE(App::Part, App::GeoFeatureGroup)
+#include "ViewProviderGeometryObject.h"
+#include "ViewProviderPythonFeature.h"
 
+namespace Gui {
 
-//===========================================================================
-// Feature
-//===========================================================================
-
-Part::Part(void)
+class GuiExport ViewProviderGeoFeatureGroup : public ViewProviderGeometryObject
 {
-    ADD_PROPERTY(Member,(0));
-}
+    PROPERTY_HEADER(Gui::ViewProviderGeoFeatureGroup);
 
-Part::~Part(void)
-{
-}
+public:
+    /// constructor.
+    ViewProviderGeoFeatureGroup();
+    /// destructor.
+    virtual ~ViewProviderGeoFeatureGroup();
+
+    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
+    virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
 
 
-PyObject *Part::getPyObject()
-{
-    if (PythonObject.is(Py::_None())){
-        // ref counter is set to 1
-        PythonObject = Py::Object(new PartPy(this),true);
-    }
-    return Py::new_reference_to(PythonObject); 
-}
+    QIcon getIcon(void) const;
 
-// Python feature ---------------------------------------------------------
+    virtual bool onDelete(const std::vector<std::string> &);
 
-// Not quit sure yet makeing Part derivable in Python is good Idea!
-// JR 2014
+    /// get called if the user hover over a object in the tree 
+    //virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
+    /// get called if the user drops some objects
+    //virtual void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
 
-//namespace App {
-///// @cond DOXERR
-//PROPERTY_SOURCE_TEMPLATE(App::PartPython, App::Part)
-//template<> const char* App::PartPython::getViewProviderName(void) const {
-//    return "Gui::ViewProviderPartPython";
-//}
-//template<> PyObject* App::PartPython::getPyObject(void) {
-//    if (PythonObject.is(Py::_None())) {
-//        // ref counter is set to 1
-//        PythonObject = Py::Object(new FeaturePythonPyT<App::PartPy>(this),true);
-//    }
-//    return Py::new_reference_to(PythonObject);
-//}
-///// @endcond
-//
-//// explicit template instantiation
-//template class AppExport FeaturePythonT<App::Part>;
-//}
+
+};
+
+typedef ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup> ViewProviderGeoFeatureGroupPython;
+
+} // namespace Gui
+
+#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
+
