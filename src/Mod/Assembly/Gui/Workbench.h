@@ -21,10 +21,11 @@
  ***************************************************************************/
 
 
-#ifndef IMAGE_WORKBENCH_H
-#define IMAGE_WORKBENCH_H
+#ifndef ASSEMBLY_WORKBENCH_H
+#define ASSEMBLY_WORKBENCH_H
 
 #include <Gui/Workbench.h>
+#include <Gui/Application.h>
 
 namespace AssemblyGui {
 
@@ -49,9 +50,14 @@ protected:
   Gui::ToolBarItem* setupCommandBars() const;
   Gui::MenuItem*    setupMenuBar() const;
 
+private:
+   void slotActiveDocument(const Gui::Document&);
+   void slotFinishRestoreDocument(const App::Document&);
+   void slotNewDocument(const App::Document&);
+   void slotDeleteDocument(const App::Document&);
 };
 
 } // namespace AssemblyGui
 
 
-#endif // IMAGE_WORKBENCH_H 
+#endif // ASSEMBLY_WORKBENCH_H 

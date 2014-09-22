@@ -113,6 +113,7 @@ void CmdPartDesignBody::activated(int iMsg)
 		// if not, creating a part and set it up by calling the appropiated function in Workbench
 		PartName = getUniqueObjectName("Part");
 		doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
+		doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr(PartName.c_str()).toStdString().c_str());
 		PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
 	}else
 		PartName = actPart->getNameInDocument();

@@ -24,7 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
+#include <math.h>
+#include <Inventor/nodes/SoGroup.h>
 #include <QMessageBox>
 #endif
 
@@ -35,7 +36,7 @@
 #include <Gui/Application.h>
 
 #include <Mod/Assembly/App/Product.h>
-#include <Mod/Assembly/App/PartRef.h>
+#include <Mod/Assembly/App/ProductRef.h>
 
 using namespace AssemblyGui;
 
@@ -93,12 +94,16 @@ std::vector<std::string> ViewProviderProductRef::getDisplayModes(void) const
 
 std::vector<App::DocumentObject*> ViewProviderProductRef::claimChildren(void)const
 {
-    return (static_cast<Assembly::Product*>(getObject())->Items.getValues());
+    std::vector<App::DocumentObject*> ret(1);
+    ret[0] =  static_cast<Assembly::ProductRef*>(getObject())->Item.getValue();
+    return ret;
 }
 
 std::vector<App::DocumentObject*> ViewProviderProductRef::claimChildren3D(void)const
 {
-    return static_cast<Assembly::Product*>(getObject())->Items.getValues();
+    std::vector<App::DocumentObject*> ret(1);
+    ret[0] =  static_cast<Assembly::ProductRef*>(getObject())->Item.getValue();
+    return ret;
 }
 
 void ViewProviderProductRef::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
