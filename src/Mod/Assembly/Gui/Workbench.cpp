@@ -25,18 +25,46 @@
 
 #ifndef _PreComp_
 # include <qobject.h>
+# include <boost/bind.hpp>
+
 #endif
 
-#include "Workbench.h"
-#include <App/Application.h>
 #include <Gui/MenuManager.h>
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/DlgCheckableMessageBox.h>
-
+#include <Mod/PartDesign/Gui/Workbench.h>
+#include <App/Part.h>
+#include "Workbench.h"
 
 using namespace AssemblyGui;
+
+
+
+
+void switchToDocument(const App::Document* doc)
+{
+
+    if(doc->countObjects() == 0){ // -> set up a empty document
+        std::string PartName = doc->getUniqueObjectName("Part");
+        std::string ProductName = doc->getUniqueObjectName("Product");
+        std::string RefName = doc->getUniqueObjectName((PartName + "-1").c_str());
+
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Tip = App.activeDocument().addObject('Assembly::Product','%s')",ProductName.c_str());
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ProductRef','%s')",RefName.c_str());
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Items = App.activeDocument().%s",ProductName.c_str(),RefName.c_str());
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Item = App.activeDocument().%s",RefName.c_str(),PartName.c_str());
+		PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>( doc->getObject(PartName.c_str())) );
+
+    }
+}
+
+
+
+
 
 /// @namespace AssemblyGui @class Workbench
 TYPESYSTEM_SOURCE(AssemblyGui::Workbench, Gui::StdWorkbench)
@@ -127,14 +155,18 @@ void Workbench::activated()
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
 
-    App::Document *doc = App::GetApplication().getActiveDocument();
-    if(!doc){
-        // create a new document
-        std::string uniqueName = App::GetApplication().getUniqueDocumentName("Assembly1");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.newDocument('%s')",uniqueName.c_str());
-        doc = App::GetApplication().getActiveDocument();
+    //App::Document *doc = App::GetApplication().getActiveDocument();
+    //if(!doc){
+    //    // create a new document
+    //    std::string uniqueName = App::GetApplication().getUniqueDocumentName("Assembly1");
+    //    Gui::Command::doCommand(Gui::Command::Doc,"App.newDocument('%s')",uniqueName.c_str());
+    //    doc = App::GetApplication().getActiveDocument();
 
-    }
+    //    switchToDocument(doc);
+
+    //}
+
+
     // show a warning about the Alpha state of FreeCAD Assembly
     Gui::Dialog::DlgCheckableMessageBox::showMessage(
         QString::fromLatin1("Assembly warning"), 
@@ -152,12 +184,19 @@ void Workbench::activated()
                                                     );
 
     // now we should have a document! 
-    assert(doc);
+    //assert(doc);
 
-    if(doc->countObjects()==0){
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','Assembly')");
-        Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().Assembly)");
-    }
+    //if(doc->countObjects()==0){
+    //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ItemAssembly','Assembly')");
+    //    Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().Assembly)");
+    //}
+
+    // Let us be notified when a document is activated, so that we can update the ActivePartObject
+    Gui::Application::Instance->signalActiveDocument.connect(boost::bind(&Workbench::slotActiveDocument, this, _1));
+    App::GetApplication().signalNewDocument.connect(boost::bind(&Workbench::slotNewDocument, this, _1));
+    App::GetApplication().signalFinishRestoreDocument.connect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
+    App::GetApplication().signalDeleteDocument.connect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
+
 
     Gui::Control().showModelView();
 }
@@ -166,8 +205,36 @@ void Workbench::deactivated()
 {
     Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(None)");
 
+    // Disconnect all document signals...
+    Gui::Application::Instance->signalActiveDocument.disconnect(boost::bind(&Workbench::slotActiveDocument, this, _1));
+    App::GetApplication().signalNewDocument.disconnect(boost::bind(&Workbench::slotNewDocument, this, _1));
+    App::GetApplication().signalFinishRestoreDocument.disconnect(boost::bind(&Workbench::slotFinishRestoreDocument, this, _1));
+    App::GetApplication().signalDeleteDocument.disconnect(boost::bind(&Workbench::slotDeleteDocument, this, _1));
+
     Gui::Workbench::deactivated();
     removeTaskWatcher();
 
 }
 
+void Workbench::slotActiveDocument(const Gui::Document& Doc)
+{
+    switchToDocument(Doc.getDocument());
+}
+
+void Workbench::slotNewDocument(const App::Document& Doc)
+{
+    switchToDocument(&Doc);
+}
+
+void Workbench::slotFinishRestoreDocument(const App::Document& Doc)
+{    
+    switchToDocument(&Doc);
+}
+
+void Workbench::slotDeleteDocument(const App::Document&)
+{
+    //ActivePartObject = 0;
+    //ActiveGuiDoc = 0;
+    //ActiveAppDoc = 0;
+    //ActiveVp = 0;
+}
