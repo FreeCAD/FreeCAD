@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="GeoFeaturePy" 
+      Name="GeoFeatureGroupPy" 
+      Twin="GeoFeatureGroup" 
+      TwinPointer="GeoFeatureGroup" 
+      Include="App/GeoFeatureGroup.h" 
+      Namespace="App" 
+      FatherInclude="App/GeoFeaturePy.h" 
+      FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+      <UserDocu>This class handles document objects in Part</UserDocu>
+    </Documentation>
+    <Methode Name="newObject">
+      <Documentation>
+        <UserDocu>Create and add an object with given type and name to the GeoFeatureGroup</UserDocu>
+      </Documentation>
+    </Methode>
+	  <Methode Name="addObject">
+		  <Documentation>
+			  <UserDocu>Add an object to the GeoFeatureGroup</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="removeObject">
+      <Documentation>
+        <UserDocu>Remove an object from the GeoFeatureGroup</UserDocu>
+      </Documentation>
+    </Methode>
+	  <Methode Name="removeObjectsFromDocument">
+		  <Documentation>
+			  <UserDocu>Remove all child objects from the GeoFeatureGroup and document</UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="getObject">
+      <Documentation>
+        <UserDocu>Return the object with the given name</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="hasObject">
+      <Documentation>
+        <UserDocu>Checks if the GeoFeatureGroup has a given object</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@
 #include <App/Document.h>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
-#include "ViewProviderPart.h"
+#include "ViewProviderGeoFeatureGroup.h"
 #include "Application.h"
 #include "Command.h"
 #include "BitmapFactory.h"
@@ -45,49 +45,35 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderPart, Gui::ViewProviderGeometryObject)
+PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroup, Gui::ViewProviderGeometryObject)
 
 
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderPart::ViewProviderPart() : visible(false)
-{
-#if 0
-    setDefaultMode(SO_SWITCH_ALL);
-#endif
-}
-
-ViewProviderPart::~ViewProviderPart()
-{
-}
-
-/**
- * Whenever a property of the group gets changed then the same property of all
- * associated view providers of the objects of the object group get changed as well.
- */
-void ViewProviderPart::onChanged(const App::Property* prop)
-{
-    ViewProviderDocumentObject::onChanged(prop);
-}
-
-void ViewProviderPart::attach(App::DocumentObject *pcObj)
-{
-    ViewProviderDocumentObject::attach(pcObj);
-}
-
-void ViewProviderPart::updateData(const App::Property* prop)
+ViewProviderGeoFeatureGroup::ViewProviderGeoFeatureGroup()
 {
 
 }
 
-std::vector<std::string> ViewProviderPart::getDisplayModes(void) const
+ViewProviderGeoFeatureGroup::~ViewProviderGeoFeatureGroup()
 {
-    // empty
-    return std::vector<std::string>();
 }
 
-bool ViewProviderPart::onDelete(const std::vector<std::string> &)
+
+
+std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroup::claimChildren(void)const
+{
+    return std::vector<App::DocumentObject*>(static_cast<App::Part*>(getObject())->Items.getValues());
+}
+
+std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroup::claimChildren3D(void)const
+{
+   return std::vector<App::DocumentObject*>(static_cast<App::Part*>(getObject())->Items.getValues());
+}
+
+
+bool ViewProviderGeoFeatureGroup::onDelete(const std::vector<std::string> &)
 {
     //Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
     //                                 ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
@@ -95,33 +81,11 @@ bool ViewProviderPart::onDelete(const std::vector<std::string> &)
 }
 
 
-void ViewProviderPart::hide(void)
-{
-
-}
-
-void ViewProviderPart::show(void)
-{
-
-}
-
-bool ViewProviderPart::isShow(void) const
-{
-    return Visibility.getValue();
-}
-
-void ViewProviderPart::Restore(Base::XMLReader &reader)
-{
-    Visibility.StatusBits.set(9); // tmp. set
-    ViewProviderDocumentObject::Restore(reader);
-    Visibility.StatusBits.reset(9); // unset
-}
-
 
 /**
  * Returns the pixmap for the list item.
  */
-QIcon ViewProviderPart::getIcon() const
+QIcon ViewProviderGeoFeatureGroup::getIcon() const
 {
     QIcon groupIcon;
     groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirClosedIcon),
@@ -136,9 +100,9 @@ QIcon ViewProviderPart::getIcon() const
 
 namespace Gui {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderPartPython, Gui::ViewProviderPart)
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderGeoFeatureGroupPython, Gui::ViewProviderGeoFeatureGroup)
 /// @endcond
 
 // explicit template instantiation
-template class GuiExport ViewProviderPythonFeatureT<ViewProviderPart>;
+template class GuiExport ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup>;
 }
