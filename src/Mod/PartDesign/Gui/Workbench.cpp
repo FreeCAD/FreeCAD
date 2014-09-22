@@ -144,6 +144,9 @@ PartDesign::Body *Workbench::setUpPart(const App::Part *part)
 
 void switchToDocument(const App::Document* doc)
 {
+    bool groupCreated = false;
+
+
     if (doc == NULL) return;        
 
     PartDesign::Body* activeBody = NULL;
@@ -177,14 +180,14 @@ void switchToDocument(const App::Document* doc)
         std::vector<App::DocumentObject*> features = doc->getObjects();        
 
         // Assign all non-PartDesign features to a new group
-        bool groupCreated = false;
         for (std::vector<App::DocumentObject*>::iterator f = features.begin(); f != features.end(); ) {
             if ((*f)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
                 (*f)->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
                  ++f;
             } else {
                 if (!groupCreated) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','%s')",
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','NonBodyFeatures')");
+                   Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'",
                                             QObject::tr("NonBodyFeatures").toStdString().c_str());
                     groupCreated = true;
                 }
@@ -398,6 +401,10 @@ void switchToDocument(const App::Document* doc)
     // If there is only one body, make it active
     if ((activeBody == NULL) && (bodies.size() == 1))
         activeBody = static_cast<PartDesign::Body*>(bodies.front());
+
+    // add the non PartDesign feature group to the Part 
+    if( groupCreated && doc->Tip.getValue() != NULL)
+         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Tip.addObject(App.activeDocument().NonBodyFeatures)");
 
     if (activeBody != NULL) {
         Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
