@@ -2280,7 +2280,7 @@ void ViewProviderSketch::drawConstraintIcons()
             
             Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
             Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
-            SoCamera* pCam = viewer->getCamera();
+            SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
             if (!pCam) return;
             
             SbViewVolume  vol = pCam->getViewVolume();
