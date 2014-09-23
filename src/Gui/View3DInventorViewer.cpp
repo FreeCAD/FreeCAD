@@ -1376,11 +1376,13 @@ void View3DInventorViewer::renderScene(void)
         (*it)->paintGL();
     
     //fps rendering
-    if(fpsEnabled) {
-      std::stringstream stream;
-      stream << renderTime << " ms / " << 1000./renderTime << " fps";
-      draw2DString(stream.str().c_str(), SbVec2s(10,10), SbVec2f(0.1,0.1));
-    };
+    if (fpsEnabled) {
+        std::stringstream stream;
+        stream.precision(1);
+        stream.setf(std::ios::fixed | std::ios::showpoint);
+        stream << renderTime << " ms / " << 1000./renderTime << " fps";
+        draw2DString(stream.str().c_str(), SbVec2s(10,10), SbVec2f(0.1f,0.1f));
+    }
 
 #if 0 // this breaks highlighting of edges
     glEnable(GL_LIGHTING);
