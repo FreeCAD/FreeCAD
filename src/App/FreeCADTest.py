@@ -1,12 +1,12 @@
 # FreeCAD test module  
-# (c) 2002 Jürgen Riegel
+# (c) 2002 Juergen Riegel
 #
 # Testing the function of the base system and run 
 # (if existing) the test function of the modules
 #
 
 #***************************************************************************
-#*   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
