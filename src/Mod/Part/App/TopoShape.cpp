@@ -2055,8 +2055,6 @@ TopoDS_Shape TopoShape::mirror(const gp_Ax2& ax2) const
 {
     gp_Trsf mat;
     mat.SetMirror(ax2);
-    TopLoc_Location loc = this->_Shape.Location();
-    gp_Trsf placement = loc.Transformation();
     BRepBuilderAPI_Transform mkTrf(this->_Shape, mat);
     return mkTrf.Shape();
 }

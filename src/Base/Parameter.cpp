@@ -1450,18 +1450,3 @@ bool DOMPrintErrorHandler::handleError(const DOMError &domError)
     // Instructs the serializer to continue serialization if possible.
     return true;
 }
-
-
-//**************************************************************************
-//**************************************************************************
-// XMLCh
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-static const XMLCh  element_person[]= {
-    chLatin_p, chLatin_e, chLatin_r, chLatin_s, chLatin_o, chLatin_n, chNull
-};
-
-static const XMLCh  element_link[]= {
-    chLatin_l, chLatin_i, chLatin_n, chLatin_k, chNull
-};

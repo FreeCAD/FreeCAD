@@ -127,7 +127,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     
     CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
     
-    QAction* sep = menu.addSeparator();
+    menu.addSeparator();
 
     QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
     QVariant v = item ? item->data(Qt::UserRole) : QVariant();

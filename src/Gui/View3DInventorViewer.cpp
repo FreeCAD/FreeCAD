@@ -1201,7 +1201,6 @@ void View3DInventorViewer::setRenderFramebuffer(const SbBool enable)
     }
     else if(!this->framebuffer) {
         const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-        SbVec2s origin = vp.getViewportOriginPixels();
         SbVec2s size = vp.getViewportSizePixels();
 
         static_cast<QGLWidget*>(this->viewport())->makeCurrent();
@@ -2385,7 +2384,7 @@ void View3DInventorViewer::drawArrow(void)
 }
 
 // ************************************************************************
-
+#if 0
 #define HAND_WITH 24
 #define HAND_HEIGHT 24
 #define HAND_HOT_X 9
@@ -2429,7 +2428,7 @@ static unsigned char cross_mask_bitmap[] = {
     0xff, 0xff, 0xff, 0xff, 0xc0, 0x03, 0xc0, 0x03,
     0xc0, 0x03, 0xc0, 0x03, 0xc0, 0x03, 0xc0, 0x03
 };
-
+#endif
 // Set cursor graphics according to mode.
 void View3DInventorViewer::setCursorRepresentation(int modearg)
 {

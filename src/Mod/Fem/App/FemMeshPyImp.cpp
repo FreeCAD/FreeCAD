@@ -273,7 +273,6 @@ PyObject* FemMeshPy::addFace(PyObject *args)
 
     PyObject *obj;
     int ElementId=-1;
-    float min_eps = 1.0e-2f;
     if (PyArg_ParseTuple(args, "O!|i", &PyList_Type, &obj, &ElementId))
     {
         Py::List list(obj);
@@ -364,7 +363,6 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
 
     PyObject *obj;
     int ElementId=-1;
-    float min_eps = 1.0e-2f;
     if (PyArg_ParseTuple(args, "O!|i", &PyList_Type, &obj, &ElementId))
     {
         Py::List list(obj);

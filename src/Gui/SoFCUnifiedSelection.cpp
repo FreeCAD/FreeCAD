@@ -638,7 +638,7 @@ void SoSelectionElementAction::initClass()
     SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
 }
 
-SoSelectionElementAction::SoSelectionElementAction (Type t) : _type(t), _select(FALSE), _det(0)
+SoSelectionElementAction::SoSelectionElementAction (Type t) : _type(t), _det(0)
 {
     SO_ACTION_CONSTRUCTOR(SoSelectionElementAction);
 }

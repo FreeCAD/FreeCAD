@@ -463,7 +463,6 @@ void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNod
 {
 
     if(HighlightedNodes.size()){
-        const Fem::PropertyFemMesh* mesh = &(dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh);
         SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
 
         pcAnoCoords->point.setNum(HighlightedNodes.size());
@@ -713,16 +712,16 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop, SoCoordin
     Base::Console().Log("Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
 
 	const SMDS_MeshInfo& info = data->GetMeshInfo();
-    int numNode = info.NbNodes();
+  //int numNode = info.NbNodes();
     int numTria = info.NbTriangles();
     int numQuad = info.NbQuadrangles();
     int numPoly = info.NbPolygons();
-    int numVolu = info.NbVolumes();
+  //int numVolu = info.NbVolumes();
     int numTetr = info.NbTetras();
     int numHexa = info.NbHexas();
     int numPyrd = info.NbPyramids();
     int numPris = info.NbPrisms();
-    int numHedr = info.NbPolyhedrons();
+  //int numHedr = info.NbPolyhedrons();
 
 
     bool ShowFaces = false;

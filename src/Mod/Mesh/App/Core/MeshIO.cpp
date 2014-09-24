@@ -2064,7 +2064,6 @@ bool MeshOutput::SaveVRML (std::ostream &rstrOut) const
         return false;
 
     Base::BoundBox3f clBB = _rclMesh.GetBoundBox();
-    Base::Vector3f   clCenter = clBB.CalcCenter();
 
     Base::SequencerLauncher seq("Saving VRML file...", 
         _rclMesh.CountPoints() + _rclMesh.CountFacets());

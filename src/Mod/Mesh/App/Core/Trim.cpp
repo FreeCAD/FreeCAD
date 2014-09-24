@@ -618,10 +618,6 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
 
     MeshGeomFacet clFac;
 
-    Base::Vector3f pnt = myMesh._aclPointArray[facet._aulPoints[1]];
-    Base::Vector3f dir = myMesh._aclPointArray[facet._aulPoints[2]] - 
-                         myMesh._aclPointArray[facet._aulPoints[1]];
-
     float fDistEdgeP1 = clP1.DistanceToLineSegment(
         myMesh._aclPointArray[facet._aulPoints[1]],
         myMesh._aclPointArray[facet._aulPoints[2]]).Length();

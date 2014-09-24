@@ -58,8 +58,7 @@ protected:
 
 
 private:
-    QWidget* proxy;
-
+    //QWidget* proxy;
 };
 
 } //namespace TaskView
