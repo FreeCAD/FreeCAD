@@ -648,7 +648,7 @@ void CmdRaytracingRender::activated(int iMsg)
             doCommand(Doc,"f.close()");
 #ifdef FC_OS_WIN32
             // http://povray.org/documentation/view/3.6.1/603/
-            doCommand(Doc,"subprocess.call(\"%s %s +W%s +H%s +O%s /EXIT /RENDER \"+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
+            doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" /EXIT /RENDER '+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
 #else
             doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" '+TempFile,shell=True)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
 #endif
