@@ -579,7 +579,7 @@ def isLine(bsp):
             return False
     return True
     
-def sortEdges(edges):
+def sortEdgesNew(edges):
     """Sort edges in path order, i.e., such that the end point of edge N
     equals the start point of edge N+1.
     """
@@ -767,6 +767,11 @@ def flattenWire(wire):
     verts.append(o)
     w = Part.makePolygon(verts)
     return w
+    
+def sortEdges(edges):
+    "define here which version to use"
+    #return sortEdgesNew(edges)
+    return sortEdgesOld(edges)
 
 
 def findWires(edgeslist):
