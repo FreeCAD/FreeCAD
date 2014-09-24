@@ -333,17 +333,17 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                                 qt = str(qt)
                             if hasattr(vobj,"ShowUnit"):
                                 if vobj.ShowUnit:
-                                    qt = qt + q[2].replace("^2","²")
-                            t = t.replace("$area",qt.decode("utf8"))
-                        t = t.replace("$label",vobj.Object.Label.decode("utf8"))
+                                    qt = qt + q[2].replace("^2",u"\xb2") # square symbol
+                            t = t.replace("$area",qt)
+                        t = t.replace("$label",vobj.Object.Label)
                         if hasattr(vobj.Object,"Tag"):
-                            t = t.replace("$tag",vobj.Object.Tag.decode("utf8"))
+                            t = t.replace("$tag",vobj.Object.Tag)
                         if hasattr(vobj.Object,"FinishFloor"):
-                            t = t.replace("$floor",vobj.Object.FinishFloor.decode("utf8"))
+                            t = t.replace("$floor",vobj.Object.FinishFloor)
                         if hasattr(vobj.Object,"FinishWalls"):
-                            t = t.replace("$walls",vobj.Object.FinishWalls.decode("utf8"))
+                            t = t.replace("$walls",vobj.Object.FinishWalls)
                         if hasattr(vobj.Object,"FinishCeiling"):
-                            t = t.replace("$ceiling",vobj.Object.FinishCeiling.decode("utf8"))
+                            t = t.replace("$ceiling",vobj.Object.FinishCeiling)
                         if first:
                             text1.append(t.encode("utf8"))
                         else:
