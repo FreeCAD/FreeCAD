@@ -630,7 +630,6 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     {
                         case Sketcher::none:
                             ss << "Edge" << vals[ConstrId]->Second + 1;
-                            vals[ConstrId]->Second;
                             break;
                         case Sketcher::start:
                         case Sketcher::end:
@@ -652,7 +651,6 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
                     {
                         case Sketcher::none:
                             ss << "Edge" << vals[ConstrId]->Third + 1;
-                            vals[ConstrId]->Third;
                             break;
                         case Sketcher::start:
                         case Sketcher::end:

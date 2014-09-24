@@ -171,23 +171,25 @@ App::DocumentObject* TaskTransformedParameters::getSketchObject() const
 void TaskTransformedParameters::hideObject()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc)
+    if (doc) {
         if (insideMultiTransform) {
             doc->setHide(parentTask->TransformedView->getObject()->getNameInDocument());
         } else {
             doc->setHide(TransformedView->getObject()->getNameInDocument());
         }
+    }
 }
 
 void TaskTransformedParameters::showObject()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    if (doc)
+    if (doc) {
         if (insideMultiTransform) {
             doc->setShow(parentTask->TransformedView->getObject()->getNameInDocument());
         } else {
             doc->setShow(TransformedView->getObject()->getNameInDocument());
         }
+    }
 }
 
 void TaskTransformedParameters::hideOriginals()
