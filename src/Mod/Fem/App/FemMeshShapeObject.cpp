@@ -202,19 +202,19 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 #endif 
 
 
-    
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
-	const SMDS_MeshInfo& info = data->GetMeshInfo();
-    int numNode = info.NbNodes();
-    int numTria = info.NbTriangles();
-    int numQuad = info.NbQuadrangles();
-    int numPoly = info.NbPolygons();
-    int numVolu = info.NbVolumes();
-    int numTetr = info.NbTetras();
-    int numHexa = info.NbHexas();
-    int numPyrd = info.NbPyramids();
-    int numPris = info.NbPrisms();
-    int numHedr = info.NbPolyhedrons();
+ 
+    //SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
+    //const SMDS_MeshInfo& info = data->GetMeshInfo();
+    //int numNode = info.NbNodes();
+    //int numTria = info.NbTriangles();
+    //int numQuad = info.NbQuadrangles();
+    //int numPoly = info.NbPolygons();
+    //int numVolu = info.NbVolumes();
+    //int numTetr = info.NbTetras();
+    //int numHexa = info.NbHexas();
+    //int numPyrd = info.NbPyramids();
+    //int numPris = info.NbPrisms();
+    //int numHedr = info.NbPolyhedrons();
 
     // set the value to the object
     FemMesh.setValue(newMesh);

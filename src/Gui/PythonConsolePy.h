@@ -142,9 +142,6 @@ public:
 
     Py::Object repr();
     Py::Object readline(const Py::Tuple&);
-
-private:
-    PythonConsole* console;
 };
 
 } // namespace Gui

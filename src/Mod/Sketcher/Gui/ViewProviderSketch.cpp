@@ -157,7 +157,7 @@ struct EditData {
     CurvesMaterials(0),
     PointsCoordinate(0),
     CurvesCoordinate(0),
-    CurveSet(0), EditCurveSet(0), RootCrossSet(0),
+    CurveSet(0), RootCrossSet(0), EditCurveSet(0),
     PointSet(0), pickStyleAxes(0)
     {}
 
@@ -809,7 +809,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             //Create the Context Menu using the Main View Qt Widget
                             QMenu contextMenu(viewer->getGLWidget());
                             Gui::MenuManager::getInstance()->setupContextMenu(geom, contextMenu);
-                            QAction *used = contextMenu.exec(QCursor::pos());
+                            contextMenu.exec(QCursor::pos());
 
                             return true;
                         }
@@ -870,7 +870,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         //Create the Context Menu using the Main View Qt Widget
                         QMenu contextMenu(viewer->getGLWidget());
                         Gui::MenuManager::getInstance()->setupContextMenu(geom, contextMenu);
-                        QAction *used = contextMenu.exec(QCursor::pos());
+                        contextMenu.exec(QCursor::pos());
 
                         return true;
                     }
@@ -1543,9 +1543,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
         //Base::Console().Log("Point pick\n");
         SoPath *path = Point->getPath();
         SoNode *tail = path->getTail();
-        SoNode *tailFather = path->getNode(path->getLength()-2);
         SoNode *tailFather2 = path->getNode(path->getLength()-3);
-
 
         // checking for a hit in the points
         if (tail == edit->PointSet) {
@@ -1944,7 +1942,7 @@ void ViewProviderSketch::updateColor(void)
     SbColor *crosscolor = edit->RootCrossMaterials->diffuseColor.startEditing();
     
     SbVec3f *verts = edit->CurvesCoordinate->point.startEditing();
-    int32_t *index = edit->CurveSet->numVertices.startEditing();
+  //int32_t *index = edit->CurveSet->numVertices.startEditing();
     
     // colors of the point set
     if (edit->FullyConstrained)
@@ -1962,11 +1960,11 @@ void ViewProviderSketch::updateColor(void)
     for (std::set<int>::iterator it=edit->SelPointSet.begin();
          it != edit->SelPointSet.end(); it++)
         pcolor[*it] = (*it==(edit->PreselectPoint + 1) && (edit->PreselectPoint != -1))?
-	     PreselectSelectedColor:SelectColor;
+        PreselectSelectedColor:SelectColor;
 
     // colors of the curves
-    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-    int extGeoCount = getSketchObject()->getExternalGeometryCount();
+  //int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
+  //int extGeoCount = getSketchObject()->getExternalGeometryCount();
     
     float x,y,z;
     
@@ -1974,65 +1972,62 @@ void ViewProviderSketch::updateColor(void)
     
     for (int  i=0; i < CurvNum; i++) {
         int GeoId = edit->CurvIdToGeoId[i];
-	// CurvId has several vertex a ssociated to 1 material
-	//edit->CurveSet->numVertices => [i] indicates number of vertex for line i.
-	int indexes=(edit->CurveSet->numVertices[i]);
-	
-	bool selected=(edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end());
-	bool preselected=(edit->PreselectCurve == GeoId);
-	
-	if (selected && preselected){
+        // CurvId has several vertex a ssociated to 1 material
+        //edit->CurveSet->numVertices => [i] indicates number of vertex for line i.
+        int indexes=(edit->CurveSet->numVertices[i]);
+
+        bool selected=(edit->SelCurvSet.find(GeoId) != edit->SelCurvSet.end());
+        bool preselected=(edit->PreselectCurve == GeoId);
+
+        if (selected && preselected){
             color[i] = PreselectSelectedColor;
-	    for(int k=j; j<k+indexes; j++){
-	      verts[j].getValue(x,y,z);
-	      verts[j]=SbVec3f(x,y,zHighLine);
-	    }
-	}
+            for(int k=j; j<k+indexes; j++){
+              verts[j].getValue(x,y,z);
+              verts[j]=SbVec3f(x,y,zHighLine);
+            }
+        }
         else if (selected){
             color[i] = SelectColor;
-	    for(int k=j; j<k+indexes; j++){
-	      verts[j].getValue(x,y,z);
-	      verts[j]=SbVec3f(x,y,zHighLine);
-	    }
-	}
+            for(int k=j; j<k+indexes; j++){
+              verts[j].getValue(x,y,z);
+              verts[j]=SbVec3f(x,y,zHighLine);
+            }
+        }
         else if (preselected){
             color[i] = PreselectColor;
-	    for(int k=j; j<k+indexes; j++){
-	      verts[j].getValue(x,y,z);
-	      verts[j]=SbVec3f(x,y,zHighLine);
-	    }
-	}
+            for(int k=j; j<k+indexes; j++){
+              verts[j].getValue(x,y,z);
+              verts[j]=SbVec3f(x,y,zHighLine);
+            }
+        }
         else if (GeoId < -2) {  // external Geometry
             color[i] = CurveExternalColor;
-	    for(int k=j; j<k+indexes; j++){
-	      verts[j].getValue(x,y,z);
-	      verts[j]=SbVec3f(x,y,zConstr);
-	    }
-	}
-        else if (getSketchObject()->getGeometry(GeoId)->Construction)
-	{
+            for(int k=j; j<k+indexes; j++){
+              verts[j].getValue(x,y,z);
+              verts[j]=SbVec3f(x,y,zConstr);
+            }
+        }
+        else if (getSketchObject()->getGeometry(GeoId)->Construction) {
             color[i] = CurveDraftColor;
-	    for(int k=j; j<k+indexes; j++){
-	      verts[j].getValue(x,y,z);
-	      verts[j]=SbVec3f(x,y,zLines);
-	    }
-	}
-        else if (edit->FullyConstrained)
-	{
+            for(int k=j; j<k+indexes; j++){
+              verts[j].getValue(x,y,z);
+              verts[j]=SbVec3f(x,y,zLines);
+            }
+        }
+        else if (edit->FullyConstrained) {
             color[i] = FullyConstrainedColor;
-	    for(int k=j; j<k+indexes; j++){
-	      verts[j].getValue(x,y,z);
-	      verts[j]=SbVec3f(x,y,zLines);
-	    }
-	}
-        else
-	{
+            for(int k=j; j<k+indexes; j++){
+              verts[j].getValue(x,y,z);
+              verts[j]=SbVec3f(x,y,zLines);
+            }
+        }
+        else {
             color[i] = CurveColor;
-	    for(int k=j; j<k+indexes; j++){
-	      verts[j].getValue(x,y,z);
-	      verts[j]=SbVec3f(x,y,zLines);
-	    }
-	}
+            for(int k=j; j<k+indexes; j++){
+              verts[j].getValue(x,y,z);
+              verts[j]=SbVec3f(x,y,zLines);
+            }
+        }
     }
 
     // colors of the cross

@@ -27,7 +27,6 @@ set(PartDesignGui_LIBS
 
 set(PartDesignGui_MOC_HDRS
     FeaturePickDialog.h
-    ReferenceSelection.h
     TaskPadParameters.h
     TaskPocketParameters.h
     TaskChamferParameters.h

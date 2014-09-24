@@ -1387,6 +1387,9 @@ void messageHandler(QtMsgType type, const char *msg)
     case QtWarningMsg:
         Base::Console().Warning("%s\n", msg);
         break;
+    case QtCriticalMsg:
+        Base::Console().Error("%s\n", msg);
+        break;
     case QtFatalMsg:
         Base::Console().Error("%s\n", msg);
         abort();                    // deliberately core dump

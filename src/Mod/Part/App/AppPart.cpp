@@ -127,7 +127,7 @@ void PartExport initPart()
     }
     else {
         Base::Console().Error("Can not inherit Part.OCCError form BaseFreeCADError.\n");
-        PyObject* OCCError = PyErr_NewException("Part.OCCError", 
+        OCCError = PyErr_NewException("Part.OCCError", 
             PyExc_RuntimeError, NULL);
     }
     Py_INCREF(OCCError);

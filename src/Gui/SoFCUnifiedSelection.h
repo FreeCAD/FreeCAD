@@ -173,7 +173,6 @@ private:
 
 private:
     Type _type;
-    SbBool _select;
     SbColor _color;
     const SoDetail* _det;
 };

@@ -200,7 +200,6 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
 
 
     SoType perspectivetype = SoPerspectiveCamera::getClassTypeId();
-    SoType orthotype = SoOrthographicCamera::getClassTypeId();
     SbBool oldisperspective = getSoRenderManager()->getCamera()->getTypeId().isDerivedFrom(perspectivetype);
     SbBool newisperspective = type.isDerivedFrom(perspectivetype);
 
@@ -226,7 +225,6 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
     getSoEventManager()->setCamera(newcamera);
 
     //if the superscene has a camera we need to replace it too
-    SoCamera* camera = NULL;
     SoSeparator* superscene = (SoSeparator*) getSoRenderManager()->getSceneGraph();
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
