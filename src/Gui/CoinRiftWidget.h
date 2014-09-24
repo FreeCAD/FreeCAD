@@ -115,4 +115,4 @@ protected:
 
 #endif //BUILD_VR
 
-#endif GUI_CoinRiftWidget
+#endif // GUI_CoinRiftWidget
