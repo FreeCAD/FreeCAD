@@ -496,9 +496,12 @@ void Application::open(const char* FileName, const char* Module)
             // load the file with the module
             Command::doCommand(Command::App, "%s.open(\"%s\")", Module, File.filePath().c_str());
             // ViewFit
-            if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit"))
-                //Command::doCommand(Command::Gui, "Gui.activeDocument().activeView().fitAll()");
-                Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+            if (!File.hasExtension("FCStd") && sendHasMsgToActiveView("ViewFit")) {
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+                    ("User parameter:BaseApp/Preferences/View");
+                if (hGrp->GetBool("AutoFitToView", true))
+                    Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+            }
             // the original file name is required
             getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
         }
@@ -538,7 +541,10 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             else {
                 Command::doCommand(Command::App, "%s.insert(\"%s\",\"%s\")"
                                                , Module, File.filePath().c_str(), DocName);
-                Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+                    ("User parameter:BaseApp/Preferences/View");
+                if (hGrp->GetBool("AutoFitToView", true))
+                    Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
                 if (getDocument(DocName))
                     getDocument(DocName)->setModified(true);
             }
