@@ -672,20 +672,20 @@ void QuarterWidget::resizeEvent(QResizeEvent* event)
   Overridden from QGLWidget to render the scenegraph
 */
 void QuarterWidget::paintEvent(QPaintEvent* event)
-{       
+{
     std::clock_t begin = std::clock();
-    
+
     if(!initialized) {
         glEnable(GL_DEPTH_TEST);
         this->getSoRenderManager()->reinitialize();
         initialized = true;
-    } 
-    
+    }
+
     getSoRenderManager()->activate();
-    
+
     glEnable(GL_DEPTH_TEST);
     glMatrixMode(GL_PROJECTION);
-    
+
     QGLWidget* w = static_cast<QGLWidget*>(this->viewport());
     assert(w->isValid() && "No valid GL context found!");
     // We might have to process the delay queue here since we don't know
@@ -713,29 +713,29 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     assert(w->isValid() && "No valid GL context found!");
 
     glDrawBuffer(w->doubleBuffer() ? GL_BACK : GL_FRONT);
-    
+
     w->makeCurrent();
     this->actualRedraw();
-    
-    //start the standart graphicsview processing for all widgets and graphic items. As 
-    //QGraphicsView initaliizes a QPainter whcih changes the opengl context in an unpredictable 
-    //manner we need to store the context and recreate it after qt is done.
+
+    //start the standard graphics view processing for all widgets and graphic items. As 
+    //QGraphicsView initaliizes a QPainter which changes the Opengl context in an unpredictable 
+    //manner we need to store the context and recreate it after Qt is done.
     glPushAttrib(GL_ALL_ATTRIB_BITS);
     glPushAttrib(GL_MULTISAMPLE_BIT_EXT);
-      
+
     inherited::paintEvent(event);
-      
+
     glPopAttrib();
     glPopAttrib();
-    
+
     if (w->doubleBuffer()) { w->swapBuffers(); }
-    
+
     PRIVATE(this)->autoredrawenabled = true;
 
     // process the delay queue the next time we enter this function,
     // unless we get here after a call to redraw().
     PRIVATE(this)->processdelayqueue = true;
-    
+
     std::clock_t end = std::clock();
     renderTime = double(double(end-begin)/CLOCKS_PER_SEC)*1000.0;
 }
