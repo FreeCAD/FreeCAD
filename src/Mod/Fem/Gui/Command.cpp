@@ -483,14 +483,14 @@ void DefineNodesCallback(void * ud, SoEventCallback * n)
     Base::Vector3f pt2d;
     std::set<int> IntSet;
 
-    for (int i=0;aNodeIter->more();) {
+    while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3f vec(aNode->X(),aNode->Y(),aNode->Z());
         pt2d = proj(vec);
         if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y)) == true) 
             IntSet.insert(aNode->GetID());
     }
-    
+
     std::stringstream  set;
 
     set << "[";

@@ -393,10 +393,10 @@ void FemMesh::compute()
 std::set<long> FemMesh::getSurfaceNodes(long ElemId,short FaceId, float Angle) const
 {
     std::set<long> result;
-    const SMESHDS_Mesh* data = myMesh->GetMeshDS();
+    //const SMESHDS_Mesh* data = myMesh->GetMeshDS();
 
-    const SMDS_MeshElement * element = data->FindElement(ElemId);
-    int fNbr = element->NbFaces();
+    //const SMDS_MeshElement * element = data->FindElement(ElemId);
+    //int fNbr = element->NbFaces();
     //element->
 
     return result;
@@ -406,7 +406,6 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
 {
 
     std::set<long> result;
-    const SMESHDS_Mesh* data = myMesh->GetMeshDS();
 
     Bnd_Box box;
     BRepBndLib::Add(face, box);
@@ -418,8 +417,8 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
     const Base::Matrix4D Mtrx(getTransform());
 
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
-	for (int i=0;aNodeIter->more();i++) {
-		const SMDS_MeshNode* aNode = aNodeIter->next();
+    while (aNodeIter->more()) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
         // Apply the matrix to hold the BoundBox in absolute space. 
         vec = Mtrx * vec;
@@ -438,7 +437,7 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
                 result.insert(aNode->GetID());
 
         }
-	}
+    }
 
     return result;
 }

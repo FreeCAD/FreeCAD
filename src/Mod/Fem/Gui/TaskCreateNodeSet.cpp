@@ -168,7 +168,7 @@ void TaskCreateNodeSet::DefineNodes(const Base::Polygon2D &polygon,const Gui::Vi
     if(! ui->checkBox_Add->isChecked())
         tempSet.clear();
 
-    for (int i=0;aNodeIter->more();) {
+    while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3f vec(aNode->X(),aNode->Y(),aNode->Z());
         pt2d = proj(vec);
@@ -177,7 +177,6 @@ void TaskCreateNodeSet::DefineNodes(const Base::Polygon2D &polygon,const Gui::Vi
     }
 
     MeshViewProvider->setHighlightNodes(tempSet);
-    
 }
 
 void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)
