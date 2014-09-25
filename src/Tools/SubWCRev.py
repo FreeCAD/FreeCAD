@@ -206,6 +206,31 @@ different form the master repository"""
                     pass
         self.rev = result or ('%04d (Git)' % (countall+referencerevision))
 
+    def namebranchbyparents(self):
+        """name multiple branches in case that the last commit was a merge
+a merge is identified by having two or more parents
+if the describe does not return a ref name (the hash is added)
+if one parent is the master and the second one has no ref name, one branch was
+merged."""
+        parents=os.popen("git log -n1 --pretty=%P").read()\
+                .strip().split(' ')
+        if len(parents) >= 2: #merge commit
+            parentrefs=[]
+            names=[]
+            hasnames=0
+            for p in parents:
+                refs=os.popen("git show -s --pretty=%%d %s" % p).read()\
+                        .strip(" ()\n").split(', ')
+                if refs[0] != '': #has a ref name
+                    parentrefs.append(refs)
+                    names.append(refs[-1])
+                    hasnames += 1
+                else:
+                    parentrefs.append(p)
+                    names.append(p[:7])
+            if hasnames >=2: # merging master into dev is not enough
+                self.branch=','.join(names)
+
     def extractInfo(self, srcdir):
         self.hash=os.popen("git log -1 --pretty=format:%H").read().strip()
         if self.hash == "":
@@ -237,6 +262,9 @@ different form the master repository"""
                 break
 
         self.revisionNumber(srcdir,origin)
+        if self.branch.lower() != 'master' and \
+                'release' not in self.branch.lower():
+            self.namebranchbyparents()
         if self.branch == '(no branch)': #check for remote branches
             if len(self.branchlst) >= 2:
                 self.branch = self.branchlst[1]
