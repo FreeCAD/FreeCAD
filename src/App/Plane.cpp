@@ -41,6 +41,7 @@ PROPERTY_SOURCE(App::Plane, App::GeoFeature)
 
 Plane::Plane(void)
 {
+    ADD_PROPERTY(PlaneType,(""));
 
 }
 

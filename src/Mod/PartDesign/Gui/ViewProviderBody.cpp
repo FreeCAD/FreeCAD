@@ -105,7 +105,7 @@ bool ViewProviderBody::doubleClicked(void)
     // assure the PartDesign workbench
     Gui::Command::assureWorkbench("PartDesignWorkbench");
     Gui::Command::addModule(Gui::Command::Gui,"PartDesignGui");
-    Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)",this->getObject()->getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActiveBody(App.activeDocument().%s)",this->getObject()->getNameInDocument());
     return true;
 }
 

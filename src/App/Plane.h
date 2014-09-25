@@ -48,6 +48,9 @@ public:
   /// Constructor
   Plane(void);
   virtual ~Plane();
+  /// additional information about the plane usage (e.g. "BasePlane-xy" in a Part)
+  PropertyString PlaneType;
+
 
   /// returns the type name of the ViewProvider
   virtual const char* getViewProviderName(void) const {

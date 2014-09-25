@@ -40,7 +40,7 @@ class AppExport Part : public App::GeoFeatureGroup
     PROPERTY_HEADER(App::Part);
 
 public:
-    PropertyLinkList Member;
+    PropertyString Type;
 
     /// Constructor
     Part(void);
@@ -54,7 +54,7 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-
+    static const char* BaseplaneTypes[3];
 };
 
 //typedef App::FeaturePythonT<Part> PartPython;
