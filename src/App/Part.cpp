@@ -27,8 +27,11 @@
 #endif
 
 #include <App/Document.h>
+#include <App/Plane.h>
+
 #include "Part.h"
 #include "PartPy.h"
+
 //#define new DEBUG_CLIENTBLOCK
 using namespace App;
 
@@ -36,13 +39,17 @@ using namespace App;
 PROPERTY_SOURCE(App::Part, App::GeoFeatureGroup)
 
 
+
 //===========================================================================
 // Feature
 //===========================================================================
 
+
+const char* Part::BaseplaneTypes[3] = {"XY-Plane", "XZ-Plane", "YZ-Plane"};
+
 Part::Part(void)
 {
-    ADD_PROPERTY(Member,(0));
+    ADD_PROPERTY(Type,(""));
 }
 
 Part::~Part(void)
@@ -58,6 +65,7 @@ PyObject *Part::getPyObject()
     }
     return Py::new_reference_to(PythonObject); 
 }
+
 
 // Python feature ---------------------------------------------------------
 

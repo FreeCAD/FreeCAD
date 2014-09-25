@@ -46,6 +46,7 @@
 #include <Gui/ToolBarManager.h>
 #include <Gui/Control.h>
 #include <Gui/DlgCheckableMessageBox.h>
+#include <Gui/ViewProviderPart.h>
 
 #include <Mod/Sketcher/Gui/Workbench.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -100,44 +101,7 @@ Workbench::~Workbench()
 
 PartDesign::Body *Workbench::setUpPart(const App::Part *part)
 {
-	// add the standard planes at the root of the feature tree
-    // first check if they already exist
-    // FIXME: If the user renames them, they won't be found...
-    bool found = false;
-    std::vector<App::DocumentObject*> planes = part->getObjectsOfType(App::Plane::getClassTypeId());
-    for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
-        for (unsigned i = 0; i < 3; i++) {
-            if (strcmp(PartDesignGui::BaseplaneNames[i], (*p)->getNameInDocument()) == 0) {
-                found = true;
-                break;
-            }
-        }
-        if (found) break;
-    }
-
-    if (!found) {
-        // ... and put them in the 'Origin' group
-        Gui::Command::doCommand(Gui::Command::Doc,"OGroup = App.activeDocument().addObject('App::DocumentObjectGroup','%s')", "Origin");
-        Gui::Command::doCommand(Gui::Command::Doc,"OGroup.Label = '%s'", QObject::tr("Origin").toStdString().c_str());
-        // Add the planes ...
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[0]);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"OGroup.addObject(App.activeDocument().ActiveObject)");
-        
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[1]);
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),-90))");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"OGroup.addObject(App.activeDocument().ActiveObject)");
-
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"OGroup.addObject(App.activeDocument().ActiveObject)");
-        
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(OGroup)", part->getNameInDocument());
-        // TODO: Fold the group (is that possible through the Python interface?)
-    }
-
+	Gui::ViewProviderPart::setUpPart(part);
 	return NULL;
 }
 
@@ -408,7 +372,7 @@ void switchToDocument(const App::Document* doc)
 
     if (activeBody != NULL) {
         Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
-        Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(App.activeDocument().%s)", activeBody->getNameInDocument());
+        Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActiveBody(App.activeDocument().%s)", activeBody->getNameInDocument());
     } else {
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Could not create body"),
             QObject::tr("No body was found in this document, and none could be created. Please report this bug."
@@ -670,7 +634,7 @@ void Workbench::deactivated()
     removeTaskWatcher();
     // reset the active Body
     Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
-    Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActivePart(None)");
+    Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActiveBody(None)");
 
     Gui::Workbench::deactivated();
 

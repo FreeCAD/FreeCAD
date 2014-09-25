@@ -29,6 +29,8 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 
+#include <App/PartPy.h>
+
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -36,6 +38,8 @@
 #include <Mod/PartDesign/App/BodyPy.h>
 
 #include "ViewProviderBody.h"
+#include "Workbench.h"
+
 
 namespace PartDesignGui {
 
@@ -50,7 +54,7 @@ const char* BaseplaneNames[3] = {"BaseplaneXY", "BaseplaneXZ", "BaseplaneYZ"};
 
 }
 
-static PyObject * setActivePart(PyObject *self, PyObject *args)
+static PyObject * setActiveBody(PyObject *self, PyObject *args)
 {
     PyObject *object=0;
     if (PyArg_ParseTuple(args,"|O!",&(PartDesign::BodyPy::Type), &object)&& object) {
@@ -78,10 +82,12 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
 
     Py_Return;
 }
-<<<<<<< 35072e8d22a22eaf711a74958d47b351d55292ae:src/Mod/Assembly/App/AppAssemblyPy.cpp
+<<<<<<< 394f4c51924312cf9cfcce09be5c3ba696a82cf4:src/Mod/Assembly/App/AppAssemblyPy.cpp
+static PyObject * getActivePart(PyObject *, PyObject *)
 =======
 
-static PyObject * getActivePart(PyObject *, PyObject *)
+static PyObject * getActiveBody(PyObject *, PyObject *)
+>>>>>>> Assembly: Rename to setActiveBody and make link indeipendant Part initialization:src/Mod/PartDesign/Gui/AppPartDesignGuiPy.cpp
 {
     if (PartDesignGui::ActivePartObject == NULL) {
         return Py::_None();
@@ -90,18 +96,41 @@ static PyObject * getActivePart(PyObject *, PyObject *)
     return PartDesignGui::ActivePartObject->getPyObject();
 }
 
->>>>>>> getActivePart() python function as complement to setActivePart():src/Mod/PartDesign/Gui/AppPartDesignGuiPy.cpp
+void setUpPart(App::Part *part);
+
+static PyObject * setUpPart(PyObject *self, PyObject *args)
+{
+    PyObject *object=0;
+    if (! PyArg_ParseTuple(args,"O!",&(App::PartPy::Type), &object) )
+        return NULL;
+
+   
+    App::Part* part = static_cast<App::PartPy*>(object)->getPartPtr();
+    // Should be set!
+    assert(part);    
+    
+    PartDesignGui::Workbench::setUpPart(part);
+
+    Py_Return;
+}
+
+
 /* registration table  */
+<<<<<<< 394f4c51924312cf9cfcce09be5c3ba696a82cf4:src/Mod/Assembly/App/AppAssemblyPy.cpp
 struct PyMethodDef Assembly_methods[] = {
     {"setActivePart"       ,setActivePart      ,METH_VARARGS,
      "setActivePart(BodyObject) -- Set the PartBody object in work."},
-
-<<<<<<< 35072e8d22a22eaf711a74958d47b351d55292ae:src/Mod/Assembly/App/AppAssemblyPy.cpp
-    {NULL, NULL}        /* end of table marker */
 =======
-    {"getActivePart"       ,getActivePart      ,METH_NOARGS,
-     "getActivePart() -- Get the PartBody object in work."},
+struct PyMethodDef PartDesignGui_Import_methods[] = {
+    {"setActiveBody"       ,setActiveBody      ,METH_VARARGS,
+     "setActiveBody(BodyObject) -- Set the PartBody object in work."},
 
-    {NULL, NULL}                   /* end of table marker */
->>>>>>> getActivePart() python function as complement to setActivePart():src/Mod/PartDesign/Gui/AppPartDesignGuiPy.cpp
+    {"setActiveBody"       ,getActiveBody      ,METH_NOARGS,
+     "setActiveBody() -- Get the PartBody object in work."},
+>>>>>>> Assembly: Rename to setActiveBody and make link indeipendant Part initialization:src/Mod/PartDesign/Gui/AppPartDesignGuiPy.cpp
+
+    {"setUpPart"       ,setUpPart      ,METH_VARARGS,
+     "setUpPart(Part) -- Sets a empty part object up for usage in PartDesign."},
+
+    {NULL, NULL}        /* end of table marker */
 };

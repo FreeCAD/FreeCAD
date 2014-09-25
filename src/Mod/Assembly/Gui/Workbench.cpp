@@ -35,7 +35,6 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/DlgCheckableMessageBox.h>
-#include <Mod/PartDesign/Gui/Workbench.h>
 #include <App/Part.h>
 #include "Workbench.h"
 
@@ -57,8 +56,11 @@ void switchToDocument(const App::Document* doc)
 		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Items = App.activeDocument().%s",ProductName.c_str(),RefName.c_str());
 		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
 		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Item = App.activeDocument().%s",RefName.c_str(),PartName.c_str());
-		PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>( doc->getObject(PartName.c_str())) );
-
+        Gui::Command::addModule(Gui::Command::Gui,"AssemblyGui");
+        Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().%s)",ProductName.c_str());
+        // create a PartDesign Part for now, can be later any kind of Part or an empty one
+        Gui::Command::addModule(Gui::Command::Doc,"PartDesignGui");
+        Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setUpPart(App.activeDocument().%s)",PartName.c_str());
     }
 }
 

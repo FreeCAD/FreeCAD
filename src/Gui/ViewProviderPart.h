@@ -28,6 +28,11 @@
 #include "ViewProviderGeoFeatureGroup.h"
 #include "ViewProviderPythonFeature.h"
 
+#include <App/PropertyStandard.h>
+#include <App/Part.h>
+
+
+
 namespace Gui {
 
 class GuiExport ViewProviderPart : public ViewProviderGeoFeatureGroup
@@ -40,11 +45,17 @@ public:
     /// destructor.
     virtual ~ViewProviderPart();
 
+    /// Name of the workbench which created that Part
+    App::PropertyString Workbench;
+
     void attach(App::DocumentObject *pcObject);
     void updateData(const App::Property*);
     void Restore(Base::XMLReader &reader);
     QIcon getIcon(void) const;
     /// returns a list of all possible modes
+
+    virtual bool doubleClicked(void);
+
     std::vector<std::string> getDisplayModes(void) const;
     void hide(void);
     void show(void);
@@ -57,14 +68,15 @@ public:
     /// get called if the user drops some objects
     //virtual void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
 
+    /// helper to set up the standard content of a Part Object
+    static void setUpPart(const App::Part *part);
 protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop);
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;
 
 private:
-    bool visible; // helper variable
-    std::vector<ViewProvider*> nodes;
+    
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;

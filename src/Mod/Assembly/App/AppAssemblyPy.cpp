@@ -29,6 +29,8 @@
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 
+#include <App/PartPy.h>
+
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -36,6 +38,8 @@
 #include <Mod/PartDesign/App/BodyPy.h>
 
 #include "ViewProviderBody.h"
+#include "Workbench.h"
+
 
 namespace PartDesignGui {
 
@@ -50,7 +54,7 @@ const char* BaseplaneNames[3] = {"BaseplaneXY", "BaseplaneXZ", "BaseplaneYZ"};
 
 }
 
-static PyObject * setActivePart(PyObject *self, PyObject *args)
+static PyObject * setActiveBody(PyObject *self, PyObject *args)
 {
     PyObject *object=0;
     if (PyArg_ParseTuple(args,"|O!",&(PartDesign::BodyPy::Type), &object)&& object) {
@@ -78,7 +82,7 @@ static PyObject * setActivePart(PyObject *self, PyObject *args)
 
     Py_Return;
 }
-static PyObject * getActivePart(PyObject *, PyObject *)
+static PyObject * getActiveBody(PyObject *, PyObject *)
 {
     if (PartDesignGui::ActivePartObject == NULL) {
         return Py::_None();
@@ -87,13 +91,35 @@ static PyObject * getActivePart(PyObject *, PyObject *)
     return PartDesignGui::ActivePartObject->getPyObject();
 }
 
+void setUpPart(App::Part *part);
+
+static PyObject * setUpPart(PyObject *self, PyObject *args)
+{
+    PyObject *object=0;
+    if (! PyArg_ParseTuple(args,"O!",&(App::PartPy::Type), &object) )
+        return NULL;
+
+   
+    App::Part* part = static_cast<App::PartPy*>(object)->getPartPtr();
+    // Should be set!
+    assert(part);    
+    
+    PartDesignGui::Workbench::setUpPart(part);
+
+    Py_Return;
+}
+
+
 /* registration table  */
 struct PyMethodDef Assembly_methods[] = {
-    {"setActivePart"       ,setActivePart      ,METH_VARARGS,
-     "setActivePart(BodyObject) -- Set the PartBody object in work."},
+    {"setActiveBody"       ,setActiveBody      ,METH_VARARGS,
+     "setActiveBody(BodyObject) -- Set the PartBody object in work."},
 
-    {"getActivePart"       ,getActivePart      ,METH_NOARGS,
-     "getActivePart() -- Get the PartBody object in work."},
+    {"setActiveBody"       ,getActiveBody      ,METH_NOARGS,
+     "setActiveBody() -- Get the PartBody object in work."},
+
+    {"setUpPart"       ,setUpPart      ,METH_VARARGS,
+     "setUpPart(Part) -- Sets a empty part object up for usage in PartDesign."},
 
     {NULL, NULL}        /* end of table marker */
 };

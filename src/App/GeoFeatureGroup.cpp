@@ -31,7 +31,7 @@
 #include "GeoFeatureGroupPy.h"
 #include "FeaturePythonPyImp.h"
 
-#define new DEBUG_CLIENTBLOCK
+// #define new DEBUG_CLIENTBLOCK
 using namespace App;
 
 

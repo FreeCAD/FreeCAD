@@ -29,6 +29,7 @@
 #endif
 
 #include <App/Part.h>
+#include <App/Plane.h>
 #include <App/Document.h>
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -51,11 +52,9 @@ PROPERTY_SOURCE(Gui::ViewProviderPart, Gui::ViewProviderGeometryObject)
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderPart::ViewProviderPart() : visible(false)
+ViewProviderPart::ViewProviderPart() 
 {
-#if 0
-    setDefaultMode(SO_SWITCH_ALL);
-#endif
+    ADD_PROPERTY(Workbench,("PartDesignWorkbench"));
 }
 
 ViewProviderPart::~ViewProviderPart()
@@ -80,6 +79,17 @@ void ViewProviderPart::updateData(const App::Property* prop)
 {
 
 }
+
+
+bool ViewProviderPart::doubleClicked(void)
+{
+    if(Workbench.getValue() != "")
+        // assure the PartDesign workbench
+        Gui::Command::assureWorkbench( Workbench.getValue() );
+
+    return true;
+}
+
 
 std::vector<std::string> ViewProviderPart::getDisplayModes(void) const
 {
@@ -129,6 +139,51 @@ QIcon ViewProviderPart::getIcon() const
     groupIcon.addPixmap(QApplication::style()->standardPixmap(QStyle::SP_DirOpenIcon),
                         QIcon::Normal, QIcon::On);
     return groupIcon;
+}
+
+void ViewProviderPart::setUpPart(const App::Part *part)
+{
+	// add the standard planes at the root of the Part
+    // first check if they already exist
+    // FIXME: If the user renames them, they won't be found...
+    bool found = false;
+    std::vector<App::DocumentObject*> planes = part->getObjectsOfType(App::Plane::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
+        for (unsigned i = 0; i < 3; i++) {
+            if (strcmp(App::Part::BaseplaneTypes[i], dynamic_cast<App::Plane*>(*p)->PlaneType.getValue()) == 0) {
+                found = true;
+                break;
+            }
+        }
+        if (found) break;
+    }
+
+    if (!found) {
+        // ... and put them in the 'Origin' group
+        //Gui::Command::doCommand(Gui::Command::Doc,"OGroup = App.activeDocument().addObject('App::DocumentObjectGroup','%s')", "Origin");
+        //Gui::Command::doCommand(Gui::Command::Doc,"OGroup.Label = '%s'", QObject::tr("Origin").toStdString().c_str());
+        // Add the planes ...
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", App::Part::BaseplaneTypes[0]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
+        //Gui::Command::doCommand(Gui::Command::Doc,"OGroup.addObject(App.activeDocument().ActiveObject)");
+        
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", App::Part::BaseplaneTypes[1]);
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),-90))");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
+        //Gui::Command::doCommand(Gui::Command::Doc,"OGroup.addObject(App.activeDocument().ActiveObject)");
+
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", App::Part::BaseplaneTypes[2]);
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
+        //Gui::Command::doCommand(Gui::Command::Doc,"OGroup.addObject(App.activeDocument().ActiveObject)");
+        
+		//Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(OGroup)", part->getNameInDocument());
+        // TODO: Fold the group (is that possible through the Python interface?)
+    }
+
 }
 
 
