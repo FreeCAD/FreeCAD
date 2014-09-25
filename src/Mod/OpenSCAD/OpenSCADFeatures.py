@@ -77,7 +77,11 @@ class ViewProviderTree:
         return objs
    
     def getIcon(self):
-        #if self.Object.Proxy.__class__ == MatrixTransform:
+        import OpenSCAD_rc
+        if isinstance(self.Object.Proxy,RefineShape):
+            return(":/icons/OpenSCAD_RefineShapeFeature.svg")
+        if isinstance(self.Object.Proxy,IncreaseTolerance):
+            return(":/icons/OpenSCAD_IncreaseToleranceFeature.svg")
         if isinstance(self.Object.Proxy,MatrixTransform):
             return """/* XPM */
 static char * matrix_xpm[] = {
@@ -101,64 +105,6 @@ static char * matrix_xpm[] = {
 " ............. .",
 "   .........   .",
 "................"};"""
-        elif False:
-            return """/* XPM */
-static char * qm_xpm[] = {
-"16 16 37 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #CBE3FF",
-"@	c #70B3FF",
-"#	c #3092FF",
-"$	c #0D7FFF",
-"%	c #047BFF",
-"&	c #1885FF",
-"*	c #56A6FF",
-"=	c #CFE5FF",
-"-	c #0079FF",
-";	c #067CFF",
-">	c #B9DAFF",
-",	c #88C0FF",
-"'	c #CAE3FF",
-")	c #F2F8FF",
-"!	c #FAFCFF",
-"~	c #CEE5FF",
-"{	c #459DFF",
-"]	c #2D90FF",
-"^	c #EEF6FF",
-"/	c #077CFF",
-"(	c #B1D6FF",
-"_	c #3494FF",
-":	c #90C4FF",
-"<	c #037AFF",
-"[	c #BCDBFF",
-"}	c #6EB2FF",
-"|	c #087DFF",
-"1	c #A8D1FF",
-"2	c #8AC1FF",
-"3	c #1C87FF",
-"4	c #CCE4FF",
-"5	c #1F89FF",
-"6	c #CDE4FF",
-"7	c #027AFF",
-"8	c #FDFDFF",
-"....+@#$%&*=....",
-"....-------;>...",
-"....#,')!~{-]...",
-"..........^-/...",
-"..........(-_...",
-".........:/<[...",
-"........}-|1....",
-".......2-34.....",
-".......5-6......",
-".......7-8......",
-".......--.......",
-"................",
-"................",
-".......--.......",
-".......--.......",
-".......--......."};
-"""
         else:
             return """/* XPM */
 static char * openscadlogo_xpm[] = {
