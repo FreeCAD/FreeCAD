@@ -92,7 +92,7 @@ def insert(filename,docname):
     groupname = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc=FreeCAD.getDocument(docname)
-    except FreeCAD.Base.FreeCADError:
+    except NameError:
         doc=FreeCAD.newDocument(docname)
     #importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
     if filename.lower().endswith('.scad'):

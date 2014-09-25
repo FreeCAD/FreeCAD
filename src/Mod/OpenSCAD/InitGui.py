@@ -93,6 +93,8 @@ static char * openscadlogo_xpm[] = {
     MenuText = "OpenSCAD"
     ToolTip = "OpenSCAD workbench"
     def Initialize(self):
+        def QT_TRANSLATE_NOOP(scope, text):
+            return text
         import OpenSCAD_rc,OpenSCADCommands
         commands=['OpenSCAD_ReplaceObject','OpenSCAD_RemoveSubtree',\
             'OpenSCAD_RefineShapeFeature',\
@@ -124,9 +126,9 @@ static char * openscadlogo_xpm[] = {
         else:
             FreeCAD.Console.PrintWarning('OpenSCAD executable not found\n')
 
-        self.appendToolbar("OpenSCADTools",toolbarcommands)
+        self.appendToolbar(QT_TRANSLATE_NOOP('Workbench','OpenSCADTools'),toolbarcommands)
         self.appendMenu('OpenSCAD',commands)
-        self.appendToolbar('OpenSCAD Part tools',parttoolbarcommands)
+        self.appendToolbar(QT_TRANSLATE_NOOP('Workbech','OpenSCAD Part tools'),parttoolbarcommands)
         #self.appendMenu('OpenSCAD',["AddOpenSCADElement"])
         ###self.appendCommandbar("&Generic Tools",["ColorCodeShape"])
         FreeCADGui.addIconPath(":/icons")
