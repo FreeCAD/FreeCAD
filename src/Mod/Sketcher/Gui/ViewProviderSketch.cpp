@@ -476,7 +476,7 @@ void ViewProviderSketch::getCoordsOnSketchPlane(double &u, double &v,const SbVec
     // line
     Base::Vector3d R1(point[0],point[1],point[2]),RA(normal[0],normal[1],normal[2]);
     if (fabs(RN*RA) < FLT_EPSILON)
-        throw Base::Exception("View direction is parallel to sketch plane");
+        throw Base::DivisionByZeroError("View direction is parallel to sketch plane");
     // intersection point on plane
     Base::Vector3d S = R1 + ((RN * (R0-R1))/(RN*RA))*RA;
 
@@ -513,8 +513,13 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
         }
     }
 
-    getCoordsOnSketchPlane(x,y,pos,normal);
-    snapToGrid(x, y);
+    try {
+        getCoordsOnSketchPlane(x,y,pos,normal);
+        snapToGrid(x, y);
+    }
+    catch (const Base::DivisionByZeroError&) {
+        return false;
+    }
 
     // Left Mouse button ****************************************************
     if (Button == 1) {
@@ -945,8 +950,13 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
     getProjectingLine(cursorPos, viewer, line);
 
     double x,y;
-    getCoordsOnSketchPlane(x,y,line.getPosition(),line.getDirection());
-    snapToGrid(x, y);
+    try {
+        getCoordsOnSketchPlane(x,y,line.getPosition(),line.getDirection());
+        snapToGrid(x, y);
+    }
+    catch (const Base::DivisionByZeroError&) {
+        return false;
+    }
 
     bool preselectChanged;
     if (Mode != STATUS_SELECT_Point &&
@@ -1154,7 +1164,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                 double radius = circle->getRadius();
                 p1 = circle->getCenter();
                 Base::Vector3d tmpDir =  Base::Vector3d(toPos.fX, toPos.fY, 0) - p1;
-                double angle = atan2f(tmpDir.y, tmpDir.x);
+                double angle = atan2(tmpDir.y, tmpDir.x);
                 p2 = p1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
             } else
                 return;
@@ -1173,7 +1183,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
 
         if (Constr->Type == Radius) {
             Constr->LabelDistance = vec.x * dir.x + vec.y * dir.y;
-            Constr->LabelPosition = atan2f(dir.y, dir.x);
+            Constr->LabelPosition = atan2(dir.y, dir.x);
         } else {
             Base::Vector3d norm(-dir.y,dir.x,0);
             Constr->LabelDistance = vec.x * norm.x + vec.y * norm.y;
@@ -2262,13 +2272,11 @@ void ViewProviderSketch::drawConstraintIcons()
         thisIcon.position = absPos;
         thisIcon.destination = coinIconPtr;
         thisIcon.infoPtr = infoPtr;
-        
-        
-        if((*it)->Type==Symmetric) {
-            
+
+        if ((*it)->Type==Symmetric) {
             Base::Vector3d startingpoint = getSketchObject()->getPoint((*it)->First,(*it)->FirstPos);
             Base::Vector3d endpoint = getSketchObject()->getPoint((*it)->Second,(*it)->SecondPos);
-                       
+
             double x0,y0,x1,y1;
             SbVec3f pos0(startingpoint.x,startingpoint.y,startingpoint.z);
             SbVec3f pos1(endpoint.x,endpoint.y,endpoint.z);
@@ -2277,20 +2285,24 @@ void ViewProviderSketch::drawConstraintIcons()
             Gui::View3DInventorViewer *viewer = static_cast<Gui::View3DInventor *>(mdi)->getViewer();
             SoCamera* pCam = viewer->getSoRenderManager()->getCamera();
             if (!pCam) return;
-            
-            SbViewVolume  vol = pCam->getViewVolume();
-            
-            getCoordsOnSketchPlane(x0,y0,pos0,vol.getProjectionDirection());
-            getCoordsOnSketchPlane(x1,y1,pos1,vol.getProjectionDirection());
-            
-            thisIcon.iconRotation = -atan2f((y1-y0),(x1-x0))*180/M_PI;
-            
+
+            try {
+                SbViewVolume vol = pCam->getViewVolume();
+
+                getCoordsOnSketchPlane(x0,y0,pos0,vol.getProjectionDirection());
+                getCoordsOnSketchPlane(x1,y1,pos1,vol.getProjectionDirection());
+
+                thisIcon.iconRotation = -atan2((y1-y0),(x1-x0))*180/M_PI;
+            }
+            catch (const Base::DivisionByZeroError&) {
+                thisIcon.iconRotation = 0;
+            }
         }
         else {
             thisIcon.iconRotation = 0;
         }
 
-        if(multipleIcons) {
+        if (multipleIcons) {
             if((*it)->Name.empty())
                 thisIcon.label = QString::number(constrId + 1);
             else
@@ -2311,11 +2323,10 @@ void ViewProviderSketch::drawConstraintIcons()
             thisIcon.infoPtr = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
         }
         else
-            if((*it)->Name.empty())
+            if ((*it)->Name.empty())
                 thisIcon.label = QString();
             else
                 thisIcon.label = QString::fromAscii((*it)->Name.c_str());
-
 
         iconQueue.push_back(thisIcon);
     }

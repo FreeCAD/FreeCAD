@@ -304,6 +304,23 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
 
 // ---------------------------------------------------------
 
+DivisionByZeroError::DivisionByZeroError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+DivisionByZeroError::DivisionByZeroError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
 #include <stdexcept>
 #include <iostream>
