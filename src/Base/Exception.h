@@ -270,6 +270,22 @@ public:
   virtual ~RuntimeError() throw() {}
 };
 
+/**
+ * The DivisionByZeroError can be used to indicate a division by zero.
+ * @author Werner Mayer
+ */
+class BaseExport DivisionByZeroError : public Exception
+{
+public:
+  /// Construction
+  DivisionByZeroError(const char * sMessage);
+  DivisionByZeroError(const std::string& sMessage);
+  /// Construction
+  DivisionByZeroError(const DivisionByZeroError &inst);
+  /// Destruction
+  virtual ~DivisionByZeroError() throw() {}
+};
+
 
 inline void Exception::setMessage(const char * sMessage)
 {
