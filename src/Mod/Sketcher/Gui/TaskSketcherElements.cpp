@@ -686,6 +686,48 @@ void TaskSketcherElements::slotElementsChanged(void)
         sketchView->getSketchObject()->getVertexIndexGeoPos(i-1,Sketcher::end),
         type));
     }
+    
+    const std::vector< Part::Geometry * > &ext_vals = sketchView->getSketchObject()->getExternalGeometry();
+        
+    int j=1;
+    for(std::vector< Part::Geometry * >::const_iterator it= ext_vals.begin();it!=ext_vals.end();++it,++i,++j){
+      Base::Type type = (*it)->getTypeId();      
+      
+      if(j>2) { // we do not want the H and V axes
+        ui->listWidgetElements->addItem(new ElementItem(
+            (type == Part::GeomPoint::getClassTypeId()         && element==1) ? Sketcher_Element_Point_StartingPoint :
+            (type == Part::GeomLineSegment::getClassTypeId()  && element==0) ? Sketcher_Element_Line_Edge :
+            (type == Part::GeomLineSegment::getClassTypeId()  && element==1) ? Sketcher_Element_Line_StartingPoint :
+            (type == Part::GeomLineSegment::getClassTypeId()  && element==2) ? Sketcher_Element_Line_EndPoint :
+            (type == Part::GeomArcOfCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Arc_Edge :
+            (type == Part::GeomArcOfCircle::getClassTypeId()         && element==1) ? Sketcher_Element_Arc_StartingPoint :
+            (type == Part::GeomArcOfCircle::getClassTypeId()         && element==2) ? Sketcher_Element_Arc_EndPoint :
+            (type == Part::GeomArcOfCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Arc_MidPoint :
+            (type == Part::GeomCircle::getClassTypeId()        && element==0) ? Sketcher_Element_Circle_Edge :
+            (type == Part::GeomCircle::getClassTypeId()        && element==3) ? Sketcher_Element_Circle_MidPoint :
+            none,
+            type == Part::GeomPoint::getClassTypeId()         ? ( isNamingBoxChecked ?
+                                                                (tr("Point") + QString::fromLatin1("(ExternalEdge%1)").arg(j-2)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Point")))         :
+            type == Part::GeomLineSegment::getClassTypeId()        ? ( isNamingBoxChecked ?
+                                                                (tr("Line") + QString::fromLatin1("(ExternalEdge%1)").arg(j-2)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Line")))         :
+            type == Part::GeomArcOfCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
+                                                                (tr("Arc") + QString::fromLatin1("(ExternalEdge%1)").arg(j-2)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Arc")))         :
+            type == Part::GeomCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
+                                                                (tr("Circle") + QString::fromLatin1("(ExternalEdge%1)").arg(j-2)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Circle")))         :
+            ( isNamingBoxChecked ?
+            (tr("Other") + QString::fromLatin1("(ExternalEdge%1)").arg(j-2)):
+            (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
+            -j,
+            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::start),
+            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::mid),
+            sketchView->getSketchObject()->getVertexIndexGeoPos(-j,Sketcher::end),
+            type));
+      }
+    }
 }
 
 
