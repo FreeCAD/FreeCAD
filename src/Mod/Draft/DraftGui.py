@@ -133,6 +133,7 @@ def displayExternal(internValue,decimals=4,dim='Length',showUnit=True):
     '''return an internal value (ie mm) Length or Angle converted for display according 
     to Units Schema in use.'''
     from FreeCAD import Units
+
     if dim == 'Length':
         qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
         pref = qty.getUserPreferred()
@@ -150,6 +151,7 @@ def displayExternal(internValue,decimals=4,dim='Length',showUnit=True):
         uom = ""
     fmt = "{0:."+ str(decimals) + "f} "+ uom
     displayExt = fmt.format(float(internValue) / float(conversion))
+    displayExt = displayExt.replace(".",QtCore.QLocale().decimalPoint())
     return displayExt
 
 #---------------------------------------------------------------------------
