@@ -126,6 +126,16 @@ using namespace SIM::Coin3D::Quarter;
 #ifndef GL_MULTISAMPLE_BIT_EXT
 #define GL_MULTISAMPLE_BIT_EXT 0x20000000
 #endif
+  
+//We need to avoid buffer swaping when initializing a QPainter on this widget
+class QUARTER_DLL_API CustomGLWidget : public QGLWidget {
+public:
+    CustomGLWidget(const QGLFormat& fo, QWidget* parent = 0, const QGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
+     : QGLWidget(fo, parent, shareWidget, f) {
+       
+         setAutoBufferSwap(false);
+     };    
+};
 
 /*! constructor */
 QuarterWidget::QuarterWidget(const QGLFormat & format, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
@@ -153,7 +163,7 @@ QuarterWidget::constructor(const QGLFormat & format, const QGLWidget * sharewidg
 {
   QGraphicsScene* scene = new QGraphicsScene;
   setScene(scene);
-  setViewport(new QGLWidget(format, this, sharewidget)); 
+  setViewport(new CustomGLWidget(format, this, sharewidget)); 
   
   setFrameStyle(QFrame::NoFrame);
   setAutoFillBackground(false);
@@ -720,12 +730,8 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     //start the standard graphics view processing for all widgets and graphic items. As 
     //QGraphicsView initaliizes a QPainter which changes the Opengl context in an unpredictable 
     //manner we need to store the context and recreate it after Qt is done.
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
     glPushAttrib(GL_MULTISAMPLE_BIT_EXT);
-
     inherited::paintEvent(event);
-
-    glPopAttrib();
     glPopAttrib();
 
     if (w->doubleBuffer()) { w->swapBuffers(); }
