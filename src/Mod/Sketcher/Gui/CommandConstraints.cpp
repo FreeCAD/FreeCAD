@@ -561,11 +561,11 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
         bool constraintExists=false;
 
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
-            if ((*it)->Type == Sketcher::Coincident && 
-              ( (*it)->First == GeoId1 && (*it)->FirstPos == PosId1 && 
+            if ((*it)->Type == Sketcher::Coincident && (
+               ((*it)->First == GeoId1 && (*it)->FirstPos == PosId1 &&
                 (*it)->Second == GeoId2 && (*it)->SecondPos == PosId2  ) ||
-              ( (*it)->First == GeoId2 && (*it)->FirstPos == PosId2 && 
-                (*it)->Second == GeoId1 && (*it)->SecondPos == PosId1  ) ) {
+               ((*it)->First == GeoId2 && (*it)->FirstPos == PosId2 &&
+                (*it)->Second == GeoId1 && (*it)->SecondPos == PosId1  ) ) ) {
                 constraintExists=true;
                 break;
             }
