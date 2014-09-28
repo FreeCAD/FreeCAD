@@ -566,23 +566,23 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if(strcmp("SetStereoRedGreen",pMsg) == 0 ) {
-        _viewer->setProperty("StereoMode", Quarter::SoQTQuarterAdaptor::ANAGLYPH);
+        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::ANAGLYPH);
         return true;
     }
     else if(strcmp("SetStereoQuadBuff",pMsg) == 0 ) {
-        _viewer->setProperty("StereoMode", Quarter::SoQTQuarterAdaptor::QUAD_BUFFER );
+        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::QUAD_BUFFER );
         return true;
     }
     else if(strcmp("SetStereoInterleavedRows",pMsg) == 0 ) {
-        _viewer->setProperty("StereoMode", Quarter::SoQTQuarterAdaptor::INTERLEAVED_ROWS );
+        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::INTERLEAVED_ROWS );
         return true;
     }
     else if(strcmp("SetStereoInterleavedColumns",pMsg) == 0 ) {
-        _viewer->setProperty("StereoMode", Quarter::SoQTQuarterAdaptor::INTERLEAVED_COLUMNS  );
+        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::INTERLEAVED_COLUMNS  );
         return true;
     }
     else if(strcmp("SetStereoOff",pMsg) == 0 ) {
-        _viewer->setProperty("StereoMode", Quarter::SoQTQuarterAdaptor::MONO );
+        _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO );
         return true;
    }
     else if(strcmp("Example1",pMsg) == 0 ) {

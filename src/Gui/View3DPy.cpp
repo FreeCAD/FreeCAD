@@ -1046,7 +1046,7 @@ Py::Object View3DInventorPy::setStereoType(const Py::Tuple& args)
         if (stereomode < 0 || stereomode > 4)
             throw Py::Exception("Out of range");
         Quarter::SoQTQuarterAdaptor::StereoMode mode = Quarter::SoQTQuarterAdaptor::StereoMode(stereomode);
-        _view->getViewer()->setProperty("StereoMode",mode);
+        _view->getViewer()->setStereoMode(mode);
         return Py::None();
     }
     catch (const Base::Exception& e) {
