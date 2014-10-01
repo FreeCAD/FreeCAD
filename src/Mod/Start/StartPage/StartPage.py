@@ -332,6 +332,7 @@ page = """
             font-weight: normal;
             padding-right: 20px;
             letter-spacing: 0;
+            color: #ffffff;
         }
 
         #description {
