@@ -82,7 +82,7 @@ CmdRaytracingWriteCamera::CmdRaytracingWriteCamera()
     sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("Export camera to POV-Ray...");
     sToolTipText  = QT_TR_NOOP("Export the camera positon of the active 3D view in POV-Ray format to a file");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Raytracing_WriteCamera";
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Camera";
 }
@@ -175,7 +175,7 @@ CmdRaytracingWritePart::CmdRaytracingWritePart()
     sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("Export part to POV-Ray...");
     sToolTipText  = QT_TR_NOOP("Write the selected Part (object) as a POV-Ray file");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Raytracing_WritePart";
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Part";
 }
@@ -221,7 +221,7 @@ CmdRaytracingWriteView::CmdRaytracingWriteView()
     sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("Export view to POV-Ray...");
     sToolTipText  = QT_TR_NOOP("Write the active 3D view with camera and all its content to a POV-Ray file");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Raytracing_WriteView";
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Export";
 }

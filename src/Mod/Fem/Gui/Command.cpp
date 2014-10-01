@@ -90,7 +90,7 @@ CmdFemCreateFromShape::CmdFemCreateFromShape()
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create FEM mesh");
     sToolTipText    = QT_TR_NOOP("Create FEM mesh from shape");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Fem_CreateFromShape";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_FemMesh";
 }
@@ -119,7 +119,7 @@ CmdFemCreateAnalysis::CmdFemCreateAnalysis()
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create a FEM analysis");
     sToolTipText    = QT_TR_NOOP("Create a FEM analysis");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Fem_CreateAnalysis";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_Analysis";
 }
@@ -183,7 +183,7 @@ CmdFemAddPart::CmdFemAddPart()
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Add a part to the Analysis");
     sToolTipText    = QT_TR_NOOP("Add a part to the Analysis");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Fem_FemAddPart";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_AddFemMesh";
 }
@@ -250,7 +250,7 @@ CmdFemConstraintBearing::CmdFemConstraintBearing()
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create FEM bearing constraint");
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for a bearing");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Fem_ConstraintBearing";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_ConstraintBearing";
 }
@@ -288,7 +288,7 @@ CmdFemConstraintFixed::CmdFemConstraintFixed()
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create FEM fixed constraint");
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for a fixed geometric entity");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Fem_ConstraintFixed";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_ConstraintFixed";
 }
@@ -326,7 +326,7 @@ CmdFemConstraintForce::CmdFemConstraintForce()
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create FEM force constraint");
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for a force acting on a geometric entity");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Fem_ConstraintForce";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_ConstraintForce";
 }
@@ -365,7 +365,7 @@ CmdFemConstraintGear::CmdFemConstraintGear()
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create FEM gear constraint");
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for a gear");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Fem_ConstraintGear";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_ConstraintGear";
 }
@@ -403,7 +403,7 @@ CmdFemConstraintPulley::CmdFemConstraintPulley()
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Create FEM pulley constraint");
     sToolTipText    = QT_TR_NOOP("Create FEM constraint for a pulley");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Fem_ConstraintPulley";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_ConstraintPulley";
 }
@@ -592,7 +592,7 @@ CmdFemCreateNodesSet::CmdFemCreateNodesSet()
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Define/create a nodes set...");
     sToolTipText    = QT_TR_NOOP("Define/create a nodes set...");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Fem_CreateNodesSet";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_FemMesh_createnodebypoly";
 

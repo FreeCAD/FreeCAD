@@ -81,7 +81,7 @@ CmdPartPickCurveNet::CmdPartPickCurveNet()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Pick curve network");
     sToolTipText  = QT_TR_NOOP("Pick a curve network");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_PickCurveNet";
     sStatusTip    = sToolTipText;
     sPixmap       = "Test1";
 }
@@ -103,7 +103,7 @@ CmdPartNewDoc::CmdPartNewDoc()
     sGroup        = "Part";
     sMenuText     = "New document";
     sToolTipText  = "Create an empty part document";
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_NewDoc";
     sStatusTip    = sToolTipText;
     sPixmap       = "New";
 }
@@ -859,7 +859,7 @@ CmdPartExtrude::CmdPartExtrude()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Extrude...");
     sToolTipText  = QT_TR_NOOP("Extrude a selected sketch");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Extrude";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Extrude";
 }
@@ -886,7 +886,7 @@ CmdPartRevolve::CmdPartRevolve()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Revolve...");
     sToolTipText  = QT_TR_NOOP("Revolve a selected shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Revolve";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Revolve";
 }
@@ -913,7 +913,7 @@ CmdPartFillet::CmdPartFillet()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Fillet...");
     sToolTipText  = QT_TR_NOOP("Fillet the selected edges of a shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Fillet";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Fillet";
 }
@@ -940,7 +940,7 @@ CmdPartChamfer::CmdPartChamfer()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Chamfer...");
     sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Chamfer";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Chamfer";
 }
@@ -967,7 +967,7 @@ CmdPartMirror::CmdPartMirror()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Mirroring...");
     sToolTipText  = QT_TR_NOOP("Mirroring a selected shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Mirror";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Mirror.svg";
 }
@@ -1033,7 +1033,7 @@ CmdPartBuilder::CmdPartBuilder()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Shape builder...");
     sToolTipText  = QT_TR_NOOP("Advanced utility to create shapes");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Builder";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Shapebuilder";
 }
@@ -1061,7 +1061,7 @@ CmdPartLoft::CmdPartLoft()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Loft...");
     sToolTipText  = QT_TR_NOOP("Utility to loft");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Loft";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Loft";
 }
@@ -1089,7 +1089,7 @@ CmdPartSweep::CmdPartSweep()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Sweep...");
     sToolTipText  = QT_TR_NOOP("Utility to sweep");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Sweep";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Sweep";
 }
@@ -1117,7 +1117,7 @@ CmdPartOffset::CmdPartOffset()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Offset...");
     sToolTipText  = QT_TR_NOOP("Utility to offset");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Offset";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Offset";
 }
@@ -1164,7 +1164,7 @@ CmdPartThickness::CmdPartThickness()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Thickness...");
     sToolTipText  = QT_TR_NOOP("Utility to apply a thickness");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Thickness";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Thickness";
 }
@@ -1238,7 +1238,7 @@ CmdShapeInfo::CmdShapeInfo()
     sGroup        = "Part";
     sMenuText     = "Shape info...";
     sToolTipText  = "Info about shape";
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_ShapeInfo";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_ShapeInfo";
 }
@@ -1337,7 +1337,7 @@ CmdPartRuledSurface::CmdPartRuledSurface()
     sGroup          = QT_TR_NOOP("Part");
     sMenuText       = QT_TR_NOOP("Create ruled surface");
     sToolTipText    = QT_TR_NOOP("Create a ruled surface from either two Edges or two wires");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Part_RuledSurface";
     sStatusTip      = sToolTipText;
     sPixmap         = "Part_RuledSurface";
 }
@@ -1452,7 +1452,7 @@ CmdCheckGeometry::CmdCheckGeometry()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Check Geometry");
     sToolTipText  = QT_TR_NOOP("Analyzes Geometry For Errors");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_CheckGeometry";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_CheckGeometry";
 }
@@ -1521,7 +1521,7 @@ CmdMeasureLinear::CmdMeasureLinear()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Measure Linear");
     sToolTipText  = QT_TR_NOOP("Measure Linear");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Measure_Linear";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Linear";
 }
@@ -1549,7 +1549,7 @@ CmdMeasureAngular::CmdMeasureAngular()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Measure Angular");
     sToolTipText  = QT_TR_NOOP("Measure Angular");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Measure_Angular";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Angular";
 }
@@ -1577,7 +1577,7 @@ CmdMeasureClearAll::CmdMeasureClearAll()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Clear All");
     sToolTipText  = QT_TR_NOOP("Clear All");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Measure_Clear_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Clear_All";
 }
@@ -1605,7 +1605,7 @@ CmdMeasureToggleAll::CmdMeasureToggleAll()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle All");
     sToolTipText  = QT_TR_NOOP("Toggle All");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Measure_Toggle_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_All";
 }
@@ -1639,7 +1639,7 @@ CmdMeasureToggle3d::CmdMeasureToggle3d()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle 3d");
     sToolTipText  = QT_TR_NOOP("Toggle 3d");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Measure_Toggle_3d";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_3d";
 }
@@ -1667,7 +1667,7 @@ CmdMeasureToggleDelta::CmdMeasureToggleDelta()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Toggle Delta");
     sToolTipText  = QT_TR_NOOP("Toggle Delta");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Measure_Toggle_Delta";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Toggle_Delta";
 }

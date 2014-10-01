@@ -2419,7 +2419,7 @@ CmdViewMeasureClearAll::CmdViewMeasureClearAll()
     sGroup        = QT_TR_NOOP("Measure");
     sMenuText     = QT_TR_NOOP("Clear measurement");
     sToolTipText  = QT_TR_NOOP("Clear measurement");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "View_Measure_Clear_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Clear_All";
 }
@@ -2448,7 +2448,7 @@ CmdViewMeasureToggleAll::CmdViewMeasureToggleAll()
   sGroup        = QT_TR_NOOP("Measure");
   sMenuText     = QT_TR_NOOP("Toggle measurement");
   sToolTipText  = QT_TR_NOOP("Toggle measurement");
-  sWhatsThis    = sToolTipText;
+  sWhatsThis    = "View_Measure_Toggle_All";
   sStatusTip    = sToolTipText;
   sPixmap       = "Part_Measure_Toggle_All";
 }

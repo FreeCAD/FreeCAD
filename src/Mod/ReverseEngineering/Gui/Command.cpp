@@ -52,7 +52,7 @@ CmdApproxSurface::CmdApproxSurface()
     sGroup          = QT_TR_NOOP("Reverse Engineering");
     sMenuText       = QT_TR_NOOP("Approximate surface...");
     sToolTipText    = QT_TR_NOOP("Approximate a B-Spline surface");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Reen_ApproxSurface";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/FitSurface";
 }
@@ -112,7 +112,7 @@ CmdApproxPlane::CmdApproxPlane()
     sGroup          = QT_TR_NOOP("Reverse Engineering");
     sMenuText       = QT_TR_NOOP("Approximate plane...");
     sToolTipText    = QT_TR_NOOP("Approximate a plane");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Reen_ApproxPlane";
     sStatusTip      = sToolTipText;
 }
 

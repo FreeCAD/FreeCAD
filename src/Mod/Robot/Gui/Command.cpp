@@ -55,7 +55,7 @@ CmdRobotSetHomePos::CmdRobotSetHomePos()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Set the home position");
     sToolTipText    = QT_TR_NOOP("Set the home position");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_SetHomePos";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_SetHomePos";
 }
@@ -104,7 +104,7 @@ CmdRobotRestoreHomePos::CmdRobotRestoreHomePos()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Move to home");
     sToolTipText    = QT_TR_NOOP("Move to home");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_RestoreHomePos";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_RestoreHomePos";
 }
@@ -158,7 +158,7 @@ CmdRobotConstraintAxle::CmdRobotConstraintAxle()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Place robot...");
     sToolTipText    = QT_TR_NOOP("Place a robot (experimental!)");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_Create";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_CreateRobot";
 }
@@ -199,7 +199,7 @@ CmdRobotSimulate::CmdRobotSimulate()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Simulate a trajectory");
     sToolTipText    = QT_TR_NOOP("Run a simulation on a trajectory");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_Simulate";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_Simulate";
 }

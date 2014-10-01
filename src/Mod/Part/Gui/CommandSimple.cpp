@@ -57,7 +57,7 @@ CmdPartSimpleCylinder::CmdPartSimpleCylinder()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Create Cylinder...");
     sToolTipText  = QT_TR_NOOP("Create a Cylinder");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_SimpleCylinder";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Cylinder";
 }
@@ -107,7 +107,7 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Create shape from mesh...");
     sToolTipText  = QT_TR_NOOP("Create shape from selected mesh object");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_ShapeFromMesh";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Shape_from_Mesh.svg";
 }
@@ -170,7 +170,7 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Create simple copy");
     sToolTipText  = QT_TR_NOOP("Create a simple non-parametric copy");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_SimpleCopy";
     sStatusTip    = sToolTipText;
 }
 
@@ -213,7 +213,7 @@ CmdPartRefineShape::CmdPartRefineShape()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Refine shape");
     sToolTipText  = QT_TR_NOOP("Refine the copy of a shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_RefineShape";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Refine_Shape";
 }

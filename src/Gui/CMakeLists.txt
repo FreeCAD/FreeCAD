@@ -133,6 +133,7 @@ endif(FREECAD_USE_3DCONNEXION)
 
 set(Gui_MOC_HDRS
     Action.h
+    Assistant.h
     CallTips.h
     CombiView.h
     Control.h

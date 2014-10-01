@@ -51,7 +51,7 @@ CmdRobotInsertKukaIR500::CmdRobotInsertKukaIR500()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Kuka IR500");
     sToolTipText    = QT_TR_NOOP("Insert a Kuka IR500 into the document.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_InsertKukaIR500";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_CreateRobot";
 }
@@ -93,7 +93,7 @@ CmdRobotInsertKukaIR16::CmdRobotInsertKukaIR16()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Kuka IR16");
     sToolTipText    = QT_TR_NOOP("Insert a Kuka IR16 into the document.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_InsertKukaIR16";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_CreateRobot";
 }
@@ -134,7 +134,7 @@ CmdRobotInsertKukaIR210::CmdRobotInsertKukaIR210()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Kuka IR210");
     sToolTipText    = QT_TR_NOOP("Insert a Kuka IR210 into the document.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_InsertKukaIR210";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_CreateRobot";
 }
@@ -174,7 +174,7 @@ CmdRobotInsertKukaIR125::CmdRobotInsertKukaIR125()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Kuka IR125");
     sToolTipText    = QT_TR_NOOP("Insert a Kuka IR125 into the document.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_InsertKukaIR125";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_CreateRobot";
 }
@@ -215,7 +215,7 @@ CmdRobotAddToolShape::CmdRobotAddToolShape()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Add tool");
     sToolTipText    = QT_TR_NOOP("Add a tool shape to the robot");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_AddToolShape";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_CreateRobot";
 }
