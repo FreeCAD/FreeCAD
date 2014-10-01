@@ -56,8 +56,8 @@ void Assistant::showDocumentation(const QString &page)
         return;
     if (!page.isEmpty()) {
         QTextStream str(proc);
-        str << QLatin1String("SetSource qthelp://org.freecad.usermanual/doc/")
-            << page << QLatin1Char('\0') << endl;
+        str << QLatin1String("setSource qthelp://org.freecad.usermanual/doc/")
+            << page << QLatin1Char('\n') << endl;
     }
 }
 
@@ -70,8 +70,13 @@ bool Assistant::startAssistant()
     return false;
 #endif
 
-    if (!proc)
+    if (!proc) {
         proc = new QProcess();
+        connect(proc, SIGNAL(readyReadStandardOutput()),
+                this, SLOT(readyReadStandardOutput()));
+        connect(proc, SIGNAL(readyReadStandardError()),
+                this, SLOT(readyReadStandardError()));
+    }
 
     if (proc->state() != QProcess::Running) {
 #ifdef Q_OS_WIN
@@ -114,3 +119,17 @@ bool Assistant::startAssistant()
 
     return true;
 }
+
+void Assistant::readyReadStandardOutput()
+{
+    QByteArray data = proc->readAllStandardOutput();
+    Base::Console().Log("Help view: %s\n", data.constData());
+}
+
+void Assistant::readyReadStandardError()
+{
+    QByteArray data = proc->readAllStandardError();
+    Base::Console().Log("Help view: %s\n", data.constData());
+}
+
+#include "moc_Assistant.cpp"

@@ -24,17 +24,24 @@
 #ifndef GUI_ASSISTANT_H
 #define GUI_ASSISTANT_H
 
+#include <QObject>
 
 class QProcess;
 
 namespace Gui {
 
-class Assistant
+class Assistant : public QObject
 {
+    Q_OBJECT
+
 public:
     Assistant();
     ~Assistant();
     void showDocumentation(const QString &file);
+
+private Q_SLOTS:
+    void readyReadStandardOutput();
+    void readyReadStandardError();
 
 private:
     bool startAssistant();

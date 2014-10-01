@@ -63,7 +63,7 @@ CmdSketcherNewSketch::CmdSketcherNewSketch()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Create sketch");
     sToolTipText    = QT_TR_NOOP("Create a new sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_NewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_NewSketch";
 }
@@ -184,7 +184,7 @@ CmdSketcherEditSketch::CmdSketcherEditSketch()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Edit sketch");
     sToolTipText    = QT_TR_NOOP("Edit the selected sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_EditSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_EditSketch";
 }
@@ -214,7 +214,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Leave sketch");
     sToolTipText    = QT_TR_NOOP("Close the editing of the sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_LeaveSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_LeaveSketch";
     eType           = 0;
@@ -250,7 +250,7 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Reorient sketch...");
     sToolTipText    = QT_TR_NOOP("Reorient the selected sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_ReorientSketch";
     sStatusTip      = sToolTipText;
 }
 
@@ -332,7 +332,7 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Map sketch to face...");
     sToolTipText    = QT_TR_NOOP("Map a sketch to a face");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_MapSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_MapSketch";
 }
@@ -437,7 +437,7 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("View sketch");
     sToolTipText    = QT_TR_NOOP("View sketch perpendicular to sketch plane");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_ViewSketch";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ViewSketch";
     eType           = 0;
@@ -472,7 +472,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Validate sketch...");
     sToolTipText    = QT_TR_NOOP("Validate sketch");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_ValidateSketch";
     sStatusTip      = sToolTipText;
     eType           = 0;
 }

@@ -60,7 +60,7 @@ Std_TestQM::Std_TestQM()
     sGroup        = "Standard-Test";
     sMenuText     = "Test translation files...";
     sToolTipText  = "Test function to check .qm translation files";
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Std_TestQM";
     sStatusTip    = sToolTipText;
 }
 
@@ -97,7 +97,7 @@ Std_TestReloadQM::Std_TestReloadQM()
     sGroup        = "Standard-Test";
     sMenuText     = "Reload translation files";
     sToolTipText  = "Test function to check .qm translation files";
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Std_TestReloadQM";
     sStatusTip    = sToolTipText;
 }
 
@@ -117,7 +117,7 @@ FCCmdTest1::FCCmdTest1()
     sGroup        = "Standard-Test";
     sMenuText     = "Test1";
     sToolTipText  = "Test function 1";
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Std_Test1";
     sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool1";
     sAccel        = "Ctrl+T";

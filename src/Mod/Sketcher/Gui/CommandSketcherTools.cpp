@@ -73,7 +73,7 @@ CmdSketcherCloseShape::CmdSketcherCloseShape()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Close Shape");
     sToolTipText    = QT_TR_NOOP("Produce closed shape by Link end point of element with next elements' starting point");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_CloseShape";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CloseShape";
     sAccel          = "CTRL+SHIFT+S";
@@ -179,7 +179,7 @@ CmdSketcherConnect::CmdSketcherConnect()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Connect Edges");
     sToolTipText    = QT_TR_NOOP("Link end point of element with next elements' starting point");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_ConnectLines";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_ConnectLines";
     sAccel          = "CTRL+SHIFT+K";
@@ -260,7 +260,7 @@ CmdSketcherSelectConstraints::CmdSketcherSelectConstraints()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Select Constraints");
     sToolTipText    = QT_TR_NOOP("Select the constraints associated to the selected elements");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_SelectConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectConstraints";
     sAccel          = "CTRL+SHIFT+C";
@@ -325,7 +325,7 @@ CmdSketcherSelectOrigin::CmdSketcherSelectOrigin()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Select Origin");
     sToolTipText    = QT_TR_NOOP("Select the origin point");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_SelectOrigin";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectOrigin";
     sAccel          = "CTRL+SHIFT+O";
@@ -372,7 +372,7 @@ CmdSketcherSelectVerticalAxis::CmdSketcherSelectVerticalAxis()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Select Vertical Axis");
     sToolTipText    = QT_TR_NOOP("Select the vertical axis");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_SelectVerticalAxis";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectVerticalAxis";
     sAccel          = "CTRL+SHIFT+V";
@@ -415,7 +415,7 @@ CmdSketcherSelectHorizontalAxis::CmdSketcherSelectHorizontalAxis()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Select Horizontal Axis");
     sToolTipText    = QT_TR_NOOP("Select the horizontal axis");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_SelectHorizontalAxis";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectHorizontalAxis";
     sAccel          = "CTRL+SHIFT+H";
@@ -457,7 +457,7 @@ CmdSketcherSelectRedundantConstraints::CmdSketcherSelectRedundantConstraints()
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Select Redundant Constraints");
     sToolTipText    = QT_TR_NOOP("Select Redundant Constraints");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_SelectRedundantConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectRedundantConstraints";
     sAccel          = "CTRL+SHIFT+R";
@@ -512,7 +512,7 @@ CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Select Conflicting Constraints");
     sToolTipText    = QT_TR_NOOP("Select Conflicting Constraints");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_SelectConflictingConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectConflictingConstraints";
     sAccel          = "CTRL+SHIFT+E";
@@ -565,7 +565,7 @@ CmdSketcherSelectElementsAssociatedWithConstraints::CmdSketcherSelectElementsAss
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Select Elements associated with constraints");
     sToolTipText    = QT_TR_NOOP("Select Elements associated with constraints");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Sketcher_SelectElementsAssociatedWithConstraints";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_SelectElementsAssociatedWithConstraints";
     sAccel          = "CTRL+SHIFT+E";

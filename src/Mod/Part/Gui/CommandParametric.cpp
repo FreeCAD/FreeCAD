@@ -46,7 +46,7 @@ CmdPartCylinder::CmdPartCylinder()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Cylinder");
     sToolTipText  = QT_TR_NOOP("Create a Cylinder");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_Cylinder";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Cylinder";
 }

@@ -50,7 +50,7 @@ CmdRobotExportKukaCompact::CmdRobotExportKukaCompact()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Kuka compact subroutine...");
     sToolTipText    = QT_TR_NOOP("Export the trajectory as a compact KRL subroutine.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_ExportKukaCompact";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_Export";
 }
@@ -115,7 +115,7 @@ CmdRobotExportKukaFull::CmdRobotExportKukaFull()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Kuka full subroutine...");
     sToolTipText    = QT_TR_NOOP("Export the trajectory as a full KRL subroutine.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_ExportKukaFull";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_Export";
 }

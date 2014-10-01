@@ -553,7 +553,7 @@ CmdMeshFromPartShape::CmdMeshFromPartShape()
     sGroup        = QT_TR_NOOP("Mesh");
     sMenuText     = QT_TR_NOOP("Create mesh from shape...");
     sToolTipText  = QT_TR_NOOP("Tessellate shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Mesh_FromPartShape";
     sStatusTip    = sToolTipText;
     sPixmap       = "Mesh_Mesh_from_Shape.svg";
 }

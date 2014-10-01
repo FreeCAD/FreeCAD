@@ -179,7 +179,7 @@ CmdPartDesignPad::CmdPartDesignPad()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pad");
     sToolTipText  = QT_TR_NOOP("Pad a selected sketch");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Pad";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pad";
 }
@@ -257,7 +257,7 @@ CmdPartDesignPocket::CmdPartDesignPocket()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Pocket");
     sToolTipText  = QT_TR_NOOP("create a pocket with the selected sketch");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Pocket";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Pocket";
 }
@@ -329,7 +329,7 @@ CmdPartDesignRevolution::CmdPartDesignRevolution()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Revolution");
     sToolTipText  = QT_TR_NOOP("Revolve a selected sketch");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Revolution";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Revolution";
 }
@@ -409,7 +409,7 @@ CmdPartDesignGroove::CmdPartDesignGroove()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Groove");
     sToolTipText  = QT_TR_NOOP("Groove a selected sketch");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Groove";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Groove";
 }
@@ -489,7 +489,7 @@ CmdPartDesignFillet::CmdPartDesignFillet()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Fillet");
     sToolTipText  = QT_TR_NOOP("Make a fillet on an edge, face or body");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Fillet";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Fillet";
 }
@@ -640,7 +640,7 @@ CmdPartDesignChamfer::CmdPartDesignChamfer()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Chamfer");
     sToolTipText  = QT_TR_NOOP("Chamfer the selected edges of a shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Chamfer";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Chamfer";
 }
@@ -792,7 +792,7 @@ CmdPartDesignDraft::CmdPartDesignDraft()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Draft");
     sToolTipText  = QT_TR_NOOP("Make a draft on a face");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Draft";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Draft";
 }
@@ -908,7 +908,7 @@ CmdPartDesignMirrored::CmdPartDesignMirrored()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Mirrored");
     sToolTipText  = QT_TR_NOOP("create a mirrored feature");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Mirrored";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Mirrored";
 }
@@ -984,7 +984,7 @@ CmdPartDesignLinearPattern::CmdPartDesignLinearPattern()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("LinearPattern");
     sToolTipText  = QT_TR_NOOP("create a linear pattern feature");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_LinearPattern";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_LinearPattern";
 }
@@ -1067,7 +1067,7 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("PolarPattern");
     sToolTipText  = QT_TR_NOOP("create a polar pattern feature");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_PolarPattern";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_PolarPattern";
 }
@@ -1150,7 +1150,7 @@ CmdPartDesignScaled::CmdPartDesignScaled()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Scaled");
     sToolTipText  = QT_TR_NOOP("create a scaled feature");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_Scaled";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Scaled";
 }
@@ -1222,7 +1222,7 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("MultiTransform");
     sToolTipText  = QT_TR_NOOP("create a multitransform feature");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "PartDesign_MultiTransform";
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_MultiTransform";
 }
