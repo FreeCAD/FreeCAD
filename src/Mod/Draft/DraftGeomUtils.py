@@ -222,10 +222,11 @@ def findEdge(anEdge,aList):
     return None
     
 
-def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=False) :
-    '''findIntersection(edge1,edge2,infinite1=False,infinite2=False):
+def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=False,dts=True) :
+    '''findIntersection(edge1,edge2,infinite1=False,infinite2=False,dts=True):
     returns a list containing the intersection point(s) of 2 edges.
-    You can also feed 4 points instead of edge1 and edge2'''
+    You can also feed 4 points instead of edge1 and edge2. If dts is used,
+    Shape.distToShape() is used, which can be buggy'''
 
     def getLineIntersections(pt1,pt2,pt3,pt4,infinite1,infinite2):
         if pt1:
@@ -276,7 +277,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
             return [] # Lines aren't on same plane
 
     # First, try to use distToShape if possible
-    if isinstance(edge1,Part.Edge) and isinstance(edge2,Part.Edge) and (not infinite1) and (not infinite2):
+    if dts and isinstance(edge1,Part.Edge) and isinstance(edge2,Part.Edge) and (not infinite1) and (not infinite2):
         dist, pts, geom = edge1.distToShape(edge2)
         sol = []
         for p in pts:
@@ -437,6 +438,76 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         return int
     else :
         print "DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")"
+        
+def wiresIntersect(wire1,wire2):
+    "wiresIntersect(wire1,wire2): returns True if some of the edges of the wires are intersecting otherwise False"
+    for e1 in wire1.Edges:
+        for e2 in wire2.Edges:
+            if findIntersection(e1,e2,dts=False):
+                return True
+    return False
+    
+def pocket2d(shape,offset):
+    """pocket2d(shape,offset): return a list of wires obtained from offsetting the wires from the given shape
+    by the given offset, and intersection if needed."""
+    # find the outer wire
+    l = 0
+    outerWire = None
+    innerWires = []
+    for w in shape.Wires:
+        if w.BoundBox.DiagonalLength > l:
+            outerWire = w
+            l = w.BoundBox.DiagonalLength
+    if not outerWire:
+        return []
+    for w in shape.Wires:
+        if w.hashCode() != outerWire.hashCode():
+            innerWires.append(w)
+    o = outerWire.makeOffset(-offset)
+    if not o.Wires:
+        return []
+    offsetWires = o.Wires
+    print "base offset wires:",offsetWires
+    if not innerWires:
+        return offsetWires
+    for innerWire in innerWires:
+        i = innerWire.makeOffset(offset)
+        if i.Wires:
+            print "offsetting island ",innerWire," : ",i.Wires
+            for w in i.Wires:
+                added = False
+                print "checking wire ",w
+                k = range(len(offsetWires))
+                for j in k:
+                    print "checking against existing wire ",j
+                    ow = offsetWires[j]
+                    if ow:
+                        if wiresIntersect(w,ow):
+                            print "intersect"
+                            f1 = Part.Face(ow)
+                            f2 = Part.Face(w)
+                            f3  = f1.cut(f2)
+                            print "made new wires: ",f3.Wires
+                            offsetWires[j] = f3.Wires[0]
+                            if len(f3.Wires) > 1:
+                                print "adding more"
+                                offsetWires.extend(f3.Wires[1:])
+                            added = True
+                        else:
+                            a = w.BoundBox
+                            b = ow.BoundBox
+                            if (a.XMin <= b.XMin) and (a.YMin <= b.YMin) and (a.ZMin <= b.ZMin) and (a.XMax >= b.XMax) and (a.YMax >= b.YMax) and (a.ZMax >= b.ZMax):
+                                print "this wire is bigger than the outer wire"
+                                offsetWires[j] = None
+                                added = True
+                            else:
+                                print "doesn't intersect"
+                if not added:
+                    print "doesn't intersect with any other"
+                    offsetWires.append(w)
+    offsetWires = [o for o in offsetWires if o != None]
+    return offsetWires
+    
 
 def geom(edge,plac=FreeCAD.Placement()):
     "returns a Line, ArcOfCircle or Circle geom from the given edge, according to the given placement"
