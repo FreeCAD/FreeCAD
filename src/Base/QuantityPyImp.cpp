@@ -83,29 +83,22 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    if (PyArg_ParseTuple(args,"O", &object)) {
-        if (PyString_Check(object) || PyUnicode_Check(object)) {
-            QString qstr;
-            if (PyUnicode_Check(object)) {
-                PyObject * utf8str = PyUnicode_AsUTF8String(object);
-                qstr = QString::fromUtf8(PyString_AsString(utf8str));
-                Py_DECREF(utf8str);
-            }
-            else {
-                qstr = QString::fromUtf8(PyString_AsString(object));
-            }
-            try {
-                *self = Quantity::parse(qstr);
-            }
-            catch(const Base::Exception& e) {
-                PyErr_SetString(PyExc_ValueError, e.what());
-                return -1;
-            }
-            return 0;
-        } // Not string or unicode
-    } // zero or more than one object
-    PyErr_SetString(PyExc_TypeError, "Either quantity, float and Base unit, float and 8 integers or unicode or utf-8 string expected");
-    return -1; 
+    char* string;
+    if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
+        QString qstr = QString::fromUtf8(string);
+        PyMem_Free(string);
+        try {
+            *self = Quantity::parse(qstr);
+        }catch(const Base::Exception& e) {
+            PyErr_SetString(PyExc_ValueError, e.what());
+            return-1;
+        }
+
+        return 0;
+    }
+
+    PyErr_SetString(PyExc_TypeError, "Either three floats, tuple or Vector expected");
+    return -1;
 }
 
 PyObject* QuantityPy::getUserPreferred(PyObject *args)
@@ -178,32 +171,16 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
 
     if (!quant.isValid()) {
         PyErr_Clear();
-        PyObject *object;
-        if (PyArg_ParseTuple(args,"O", &object)) {
-            if (PyString_Check(object) || PyUnicode_Check(object)) {
-                QString qstr;
-                if (PyUnicode_Check(object)) {
-                    PyObject * utf8str = PyUnicode_AsUTF8String(object);
-                    qstr = QString::fromUtf8(PyString_AsString(utf8str));
-                    Py_DECREF(utf8str);
-                }
-                else {
-                    qstr = QString::fromUtf8(PyString_AsString(object));
-                }
-                try {
-                    quant = Quantity::parse(qstr);
-                }
-                catch(const Base::Exception& e) {
-                    PyErr_SetString(PyExc_ValueError, e.what());
-                    return 0;
-                }
-                return 0;
-            } // Not string or unicode
-        } // zero or more than one object
-    } // !isValid
+        char* string;
+        if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
+        QString qstr = QString::fromUtf8(string);
+        PyMem_Free(string);
+        quant = Quantity::parse(qstr);
+        }
+    }
 
     if (!quant.isValid()) {
-        PyErr_SetString(PyExc_TypeError, "Either quantity, float and Base unit, float and 8 integers or unicode or utf-8 string expected");
+        PyErr_SetString(PyExc_TypeError, "Either quantity, string, float or unit expected");
         return 0;
     }
 

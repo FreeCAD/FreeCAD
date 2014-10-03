@@ -72,27 +72,14 @@ int UnitPy::PyInit(PyObject* args, PyObject* kwd)
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    if (PyArg_ParseTuple(args,"O", &object)) {
-        if (PyString_Check(object) || PyUnicode_Check(object)) {
-            QString qstr;
-            if (PyUnicode_Check(object)) {
-                PyObject * utf8str = PyUnicode_AsUTF8String(object);
-                qstr = QString::fromUtf8(PyString_AsString(utf8str));
-                Py_DECREF(utf8str);
-            }
-            else {
-                qstr = QString::fromUtf8(PyString_AsString(object));
-            }
-            try {
-                *self = Quantity::parse(qstr).getUnit();
-            }
-            catch(const Base::Exception& e) {
-                PyErr_SetString(PyExc_ValueError, e.what());
-                return -1;
-            }
-            return 0;
-        } // Not string or unicode
-    } // zero or more than one object
+    char* string;
+    if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
+        QString qstr = QString::fromUtf8(string);
+        PyMem_Free(string);
+        *self = Quantity::parse(qstr).getUnit();
+        return 0;
+    }
+
     PyErr_SetString(PyExc_TypeError, "Either string, (float,8 ints), Unit() or Quantity()");
     return -1;
 }
