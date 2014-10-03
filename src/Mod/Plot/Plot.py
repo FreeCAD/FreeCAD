@@ -35,18 +35,18 @@ try:
     from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as NavigationToolbar
     from matplotlib.figure import Figure
 except ImportError:
-    msg = QtGui.QApplication.translate(
+    msg = PySide.QtGui.QApplication.translate(
         "plot_console",
         "matplotlib not found, so Plot module can not be loaded",
         None,
-        QtGui.QApplication.UnicodeUTF8)
+        PySide.QtGui.QApplication.UnicodeUTF8)
     FreeCAD.Console.PrintMessage(msg + '\n')
     raise ImportError("matplotlib not installed")
 
 
 def getMainWindow():
     """ Return the FreeCAD main window. """
-    toplevel = QtGui.qApp.topLevelWidgets()
+    toplevel = PySide.QtGui.qApp.topLevelWidgets()
     for i in toplevel:
         if i.metaObject().className() == "Gui::MainWindow":
             return i
@@ -364,11 +364,11 @@ class Line():
         return plt.getp(self.line, prop)
 
 
-class Plot(QtGui.QWidget):
+class Plot(PySide.QtGui.QWidget):
     def __init__(self,
                  winTitle="plot",
                  parent=None,
-                 flags=QtCore.Qt.WindowFlags(0)):
+                 flags=PySide.QtCore.Qt.WindowFlags(0)):
         """Construct a new plot widget.
 
         Keyword arguments:
@@ -376,7 +376,7 @@ class Plot(QtGui.QWidget):
         parent -- Widget parent.
         flags -- QWidget flags
         """
-        QtGui.QWidget.__init__(self, parent, flags)
+        PySide.QtGui.QWidget.__init__(self, parent, flags)
         self.setWindowTitle(winTitle)
         # Create matplotlib canvas
         self.fig = Figure()
@@ -390,7 +390,7 @@ class Plot(QtGui.QWidget):
         self.axes.yaxis.set_ticks_position('left')
         self.axes.spines['right'].set_color('none')
         # Setup layout
-        vbox = QtGui.QVBoxLayout()
+        vbox = PySide.QtGui.QVBoxLayout()
         vbox.addWidget(self.canvas)
         self.setLayout(vbox)
         # Active series
