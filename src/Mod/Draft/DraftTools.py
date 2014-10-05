@@ -3240,7 +3240,7 @@ class Edit(Modifier):
                 if hasattr(self.obj.ViewObject,"Selectable"):
                     self.selectstate = self.obj.ViewObject.Selectable
                     self.obj.ViewObject.Selectable = False
-# ??????
+                FreeCADGui.Selection.clearSelection()
                 if Draft.getType(self.obj) in ["Wire","BSpline"]:
                     self.ui.setEditButtons(True)
                     self.ui.setBezEditButtons(False)
@@ -3393,8 +3393,8 @@ class Edit(Modifier):
                                 FreeCADGui.Snapper.setSelectMode(False)
                 else:
                     self.trackers[self.editing].on()
-                    if hasattr(self.obj.ViewObject,"Selectable"):
-                        self.obj.ViewObject.Selectable = True
+                    #if hasattr(self.obj.ViewObject,"Selectable"):
+                    #    self.obj.ViewObject.Selectable = True
                     FreeCADGui.Snapper.setSelectMode(True)
                     self.numericInput(self.trackers[self.editing].get())
 
