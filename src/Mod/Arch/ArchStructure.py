@@ -321,25 +321,31 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name=translate
         obj.Role = "Column"
     return obj
 
-def makeStructuralSystem(objects,axes,name=translate("Arch","StructuralSystem")):
+def makeStructuralSystem(objects=[],axes=[],name=translate("Arch","StructuralSystem")):
     '''makeStructuralSystem(objects,axes): makes a structural system
     based on the given objects and axes'''
     result = []
-    if objects and axes:
+    if not axes:
+        print "At least one axis must be given"
+        return
+    if objects:
         if not isinstance(objects,list):
             objects = [objects]
-        for o in objects:
-            obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-            _StructuralSystem(obj)
-            if FreeCAD.GuiUp:
-                _ViewProviderStructuralSystem(obj.ViewObject)
+    else:
+        objects = [None]
+    for o in objects:
+        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+        _StructuralSystem(obj)
+        if FreeCAD.GuiUp:
+            _ViewProviderStructuralSystem(obj.ViewObject)
+        if o:
             obj.Base = o
-            obj.Axes = axes
-            result.append(obj)
-            if FreeCAD.GuiUp:
-                o.ViewObject.hide()
-                Draft.formatObject(obj,o)
-        FreeCAD.ActiveDocument.recompute()
+        obj.Axes = axes
+        result.append(obj)
+        if FreeCAD.GuiUp and o:
+            o.ViewObject.hide()
+            Draft.formatObject(obj,o)
+    FreeCAD.ActiveDocument.recompute()
     if len(result) == 1:
         return result[0]
     else:
@@ -386,10 +392,13 @@ class _CommandStructure:
         if sel:
             st = Draft.getObjectsOfType(sel,"Structure")
             ax = Draft.getObjectsOfType(sel,"Axis")
-            if st and ax:
+            if ax:
                 FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Structural System")))
                 FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
+                if st:
+                    FreeCADGui.doCommand("Arch.makeStructuralSystem(" + ArchCommands.getStringList(st) + "," + ArchCommands.getStringList(ax) + ")")
+                else:
+                    FreeCADGui.doCommand("Arch.makeStructuralSystem(axes=" + ArchCommands.getStringList(ax) + ")")
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 return

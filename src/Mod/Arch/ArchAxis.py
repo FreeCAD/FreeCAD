@@ -82,11 +82,11 @@ class _Axis:
     def __init__(self,obj):
         obj.addProperty("App::PropertyFloatList","Distances","Arch", translate("Arch","The intervals between axes"))
         obj.addProperty("App::PropertyFloatList","Angles","Arch", translate("Arch","The angles of each axis"))
-        obj.addProperty("App::PropertyFloat","Length","Arch", translate("Arch","The length of the axes"))
+        obj.addProperty("App::PropertyLength","Length","Arch", translate("Arch","The length of the axes"))
         obj.addProperty("App::PropertyPlacement","Placement","Base","")
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
         self.Type = "Axis"
-        obj.Length=1.0
+        obj.Length=3000
         obj.Proxy = self
         
     def execute(self,obj):
@@ -96,10 +96,14 @@ class _Axis:
         if obj.Distances:
             if len(obj.Distances) == len(obj.Angles):
                 for i in range(len(obj.Distances)):
+                    if hasattr(obj.Length,"Value"):
+                        l = obj.Length.Value
+                    else:
+                        l = obj.Length
                     dist += obj.Distances[i]
                     ang = math.radians(obj.Angles[i])
                     p1 = Vector(dist,0,0)
-                    p2 = Vector(dist+(obj.Length/math.cos(ang))*math.sin(ang),obj.Length,0)
+                    p2 = Vector(dist+(l/math.cos(ang))*math.sin(ang),l,0)
                     geoms.append(Part.Line(p1,p2).toShape())
         if geoms:
             sh = Part.Compound(geoms)
@@ -121,7 +125,7 @@ class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyFloat","BubbleSize","Arch", translate("Arch","The size of the axis bubbles"))
+        vobj.addProperty("App::PropertyLength","BubbleSize","Arch", translate("Arch","The size of the axis bubbles"))
         vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", translate("Arch","The numbering style"))
         vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
@@ -129,7 +133,7 @@ class _ViewProviderAxis:
         vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
         vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
         vobj.Proxy = self
-        vobj.BubbleSize = .1
+        vobj.BubbleSize = 500
         vobj.LineWidth = 1
         vobj.LineColor = (0.13,0.15,0.37)
         vobj.DrawStyle = "Dashdot"
@@ -220,7 +224,10 @@ class _ViewProviderAxis:
                             p2 = verts[1].Point
                             dv = p2.sub(p1)
                             dv.normalize()
-                            rad = vobj.BubbleSize
+                            if hasattr(vobj.BubbleSize,"Value"):
+                                rad = vobj.BubbleSize.Value/2
+                            else:
+                                rad = vobj.BubbleSize/2
                             center = p2.add(dv.scale(rad,rad,rad))
                             buf = Part.makeCircle(rad,center).writeInventor()
                             try:
@@ -248,11 +255,11 @@ class _ViewProviderAxis:
                             self.bubbles.addChild(line)
                             st = coin.SoSeparator()
                             tr = coin.SoTransform()
-                            tr.translation.setValue((center.x,center.y-rad/4,center.z))
+                            tr.translation.setValue((center.x,center.y-rad/2,center.z))
                             fo = coin.SoFont()
                             fo.name = Draft.getParam("textfont","Arial,Sans")
-                            fo.size = rad*100
-                            tx = coin.SoText2()
+                            fo.size = rad*1.5
+                            tx = coin.SoAsciiText()
                             tx.justification = coin.SoText2.CENTER
                             self.bubbletexts.append(tx)
                             st.addChild(tr)
@@ -332,6 +339,8 @@ class _AxisTaskPanel:
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
         
+        self.updating = False
+        
         self.obj = None
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
@@ -363,6 +372,7 @@ class _AxisTaskPanel:
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemChanged(QTreeWidgetItem *, int)"), self.edit)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -376,6 +386,7 @@ class _AxisTaskPanel:
     
     def update(self):
         'fills the treewidget'
+        self.updating = True
         self.tree.clear()
         if self.obj:
             for i in range(len(self.obj.Distances)):
@@ -386,6 +397,7 @@ class _AxisTaskPanel:
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
                 item.setTextAlignment(0,QtCore.Qt.AlignLeft)
         self.retranslateUi(self.form)
+        self.updating = False
                 
     def addElement(self):
         item = QtGui.QTreeWidgetItem(self.tree)
@@ -401,8 +413,13 @@ class _AxisTaskPanel:
             nr = int(it.text(0))-1
             self.resetObject(remove=nr)
             self.update()
+            
+    def edit(self,item,column):
+        if not self.updating:
+            self.resetObject()
 
     def resetObject(self,remove=None):
+        "transfers the values from the widget to the object"
         d = []
         a = []
         for i in range(self.tree.topLevelItemCount()):
