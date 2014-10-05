@@ -468,7 +468,7 @@ class arcTracker(Tracker):
         center = Vector(c[0],c[1],c[2])
         rad = pt.sub(center)
         a = DraftVecUtils.angle(rad,self.basevector,self.normal)
-        #print a
+        #print(a)
         return(a)
 
     def getAngles(self):
@@ -600,7 +600,7 @@ class ghostTracker(Tracker):
             sep.addChild(coinobj.getChildren()[1])
             # sep.addChild(coinobj)
         except:
-            print "Error retrieving coin node"
+            print("Error retrieving coin node")
         return sep
 
 class editTracker(Tracker):

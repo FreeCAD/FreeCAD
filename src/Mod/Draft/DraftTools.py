@@ -269,7 +269,6 @@ class DraftTool:
 
     def commit(self,name,func):
         "stores actions to be committed to the FreeCAD document"
-        # print "committing"
         self.commitList.append((name,func))
 
     def getStrings(self,addrot=None):
@@ -670,7 +669,7 @@ class BSpline(Line):
                             ['points='+pts,
                              'Draft.makeBSpline(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
             except:
-                print "Draft: error delaying commit"
+                print("Draft: error delaying commit")
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
@@ -773,7 +772,7 @@ class BezCurve(Line):
                             ['points='+pts,
                              'Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+')'])
             except:
-                print "Draft: error delaying commit"
+                print("Draft: error delaying commit")
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
@@ -908,7 +907,7 @@ class Rectangle(Creator):
                              'pl.Base = '+DraftVecUtils.toString(p1),
                              'Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')'])
         except:
-            print "Draft: error delaying commit"
+            print("Draft: error delaying commit")
         self.finish(cont=True)
 
     def action(self,arg):
@@ -1166,7 +1165,7 @@ class Arc(Creator):
                                  'pl.Base='+DraftVecUtils.toString(self.center),
                                  'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',support='+sup+')'])
             except:
-                print "Draft: error delaying commit"
+                print("Draft: error delaying commit")
         else:
             sta = math.degrees(self.firstangle)
             end = math.degrees(self.firstangle+self.angle)
@@ -1192,7 +1191,7 @@ class Arc(Creator):
                                  'pl.Base='+DraftVecUtils.toString(self.center),
                                  'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',startangle='+str(sta)+',endangle='+str(end)+',support='+sup+')'])
             except:
-                    print "Draft: error delaying commit"
+                    print("Draft: error delaying commit")
         self.finish(cont=True)
 
     def numericInput(self,numx,numy,numz):
@@ -1518,7 +1517,7 @@ class Ellipse(Creator):
                              'pl.Base = '+DraftVecUtils.toString(center),
                              'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl,face='+fil+',support='+sup+')'])
         except:
-            print "Draft: Error: Unable to create object."
+            print("Draft: Error: Unable to create object.")
         self.finish(cont=True)
 
     def action(self,arg):
@@ -1598,7 +1597,7 @@ class Text(Creator):
         for l in self.text:
             if len(tx) > 1:
                 tx += ','
-            tx += '"'+str(unicode(l).encode("utf8"))+'"'
+            tx += '"'+str(unicode(l).encode("utf8"))+'"' #Python3 no more unicode
         tx += ']'
         FreeCADGui.addModule("Draft")
         self.commit(translate("draft","Create Text"),
@@ -1843,7 +1842,7 @@ class Dimension(Creator):
                     if (not self.node) and (not self.support):
                         getSupport(arg)
                     if (hasMod(arg,MODALT) or self.selectmode) and (len(self.node)<3):
-                        #print "snapped: ",self.info
+                        #print("snapped: ",self.info)
                         if self.info:
                             ob = self.doc.getObject(self.info['Object'])
                             if 'Edge' in self.info['Component']:
@@ -1878,7 +1877,7 @@ class Dimension(Creator):
                                                                    self.node[3],
                                                                    True,True)
                                         if c:
-                                            #print "centers:",c
+                                            #print("centers:",c)
                                             self.center = c[0]
                                             self.arctrack.setCenter(self.center)
                                             self.arctrack.on()
@@ -1894,7 +1893,7 @@ class Dimension(Creator):
                     else:
                         self.node.append(self.point)
                     self.selectmode = False
-                    #print "node",self.node
+                    #print("node",self.node)
                     self.dimtrack.update(self.node)
                     if (len(self.node) == 2):
                         self.point2 = self.node[1]
@@ -1959,18 +1958,18 @@ class ShapeString(Creator):
 
     def createObject(self):
         "creates object in the current doc"
-        #print "debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString))
+        #print("debug: D_T ShapeString.createObject type(self.SString): "  str(type(self.SString)))
 
         dquote = '"'
-        if type(self.SString) == unicode:
+        if type(self.SString) == unicode: # Python3: no more unicode
             String  = 'u' + dquote + self.SString.encode('unicode_escape') + dquote             
         else:
             String  = dquote + self.SString + dquote             
         Size = str(self.SSSize)                              # numbers are ascii so this should always work
         Tracking = str(self.SSTrack)                         # numbers are ascii so this should always work
         FFile = dquote + self.FFile + dquote                 
-#        print "debug: D_T ShapeString.createObject type(String): "  str(type(String))
-#        print "debug: D_T ShapeString.createObject type(FFile): "  str(type(FFile))
+#        print("debug: D_T ShapeString.createObject type(String): "  str(type(String)))
+#        print("debug: D_T ShapeString.createObject type(FFile): "  str(type(FFile)))
 
         try:
             qr,sup,points,fil = self.getStrings() 
@@ -2529,7 +2528,7 @@ class Offset(Modifier):
                 if hasMod(arg,MODALT) or self.ui.isCopy.isChecked(): copymode = True
                 FreeCADGui.addModule("Draft")
                 if self.npts:
-                    print "offset:npts=",self.npts
+                    print("offset:npts=",self.npts)
                     self.commit(translate("draft","Offset"),
                                 ['Draft.offset(FreeCAD.ActiveDocument.'+self.sel.Name+','+DraftVecUtils.toString(self.npts)+',copy='+str(copymode)+')',
                                  'FreeCAD.ActiveDocument.recompute()'])
@@ -2837,7 +2836,7 @@ class Trimex(Modifier):
             self.ui.labelRadius.setText("Angle")
             dist = math.degrees(-ang2)
             # if ang1 > ang2: ang1,ang2 = ang2,ang1
-            #print "last calculated:",math.degrees(-ang1),math.degrees(-ang2)
+            #print("last calculated:",math.degrees(-ang1),math.degrees(-ang2))
             ghost.setEndAngle(-ang2)
             ghost.setStartAngle(-ang1)
             ghost.setCenter(center)
@@ -2855,9 +2854,11 @@ class Trimex(Modifier):
         ghost.on()
 
         # resetting the visible edges
-        if not reverse: list = range(npoint+1,len(self.edges))
-        else: list = range(npoint-1,-1,-1)
-        for i in list:
+        if not reverse: 
+            li = list(range(npoint+1,len(self.edges)))
+        else: 
+            li = list(range(npoint-1,-1,-1))
+        for i in li:
             edge = self.edges[i]
             ghost = self.ghost[i]
             if DraftGeomUtils.geomType(edge) == "Line":
@@ -2882,7 +2883,7 @@ class Trimex(Modifier):
         "trims the actual object"
         if self.extrudeMode:
             delta = self.extrude(self.shift,real=True)
-            #print "delta",delta
+            #print("delta",delta)
             self.doc.openTransaction("Extrude")
             obj = Draft.extrude(self.obj,delta)
             self.doc.commitTransaction()
@@ -2928,8 +2929,8 @@ class Trimex(Modifier):
                     self.obj.Z1 = p[0].z
             elif Draft.getType(self.obj) == "Circle":
                 angles = self.ghost[0].getAngles()
-                #print "original",self.obj.FirstAngle," ",self.obj.LastAngle
-                #print "new",angles
+                #print("original",self.obj.FirstAngle," ",self.obj.LastAngle)
+                #print("new",angles)
                 if angles[0] > angles[1]: angles = (angles[1],angles[0])
                 self.obj.FirstAngle = angles[0]
                 self.obj.LastAngle = angles[1]
@@ -3930,7 +3931,7 @@ class Shape2DView(Modifier):
             for e in s.SubElementNames:
                 if "Face" in e:
                     faces.append(int(e[4:])-1)
-        #print objs,faces
+        #print(objs,faces)
         if len(objs) == 1:
             if faces:
                 Draft.makeShape2DView(objs[0],facenumbers=faces)
@@ -4041,7 +4042,7 @@ class PathArray(Modifier):
             if self.ui:
                 self.ui.selectUi()
                 msg(translate("draft", "Please select base and path objects\n"))
-#                print "Please select base and path objects"
+#                print("Please select base and path objects")
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
         else:
             self.proceed()

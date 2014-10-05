@@ -100,7 +100,7 @@ class DraftWorkbench (Workbench):
             FreeCADGui.addLanguagePath(":/translations")
             FreeCADGui.addIconPath(":/icons")
         except Exception as inst:
-            print inst
+            print(inst)
             FreeCAD.Console.PrintError("Error: Initializing one or more of the Draft modules failed, Draft will not work as expected.\n")
 
         # setup menus

@@ -75,12 +75,12 @@ def equals(u,v):
 
 def scale(u,scalar):
     "scale(Vector,Float) - scales (multiplies) a vector by a factor"
-    typecheck ([(u,Vector), (scalar,(int,long,float))], "scale")
+    typecheck ([(u,Vector), (scalar,(int,float))], "scale")
     return Vector(u.x*scalar, u.y*scalar, u.z*scalar)
 
 def scaleTo(u,l):
     "scaleTo(Vector,length) - scales a vector to a given length"
-    typecheck ([(u,Vector),(l,(int,long,float))], "scaleTo")
+    typecheck ([(u,Vector),(l,(int,float))], "scaleTo")
     if u.Length == 0:
         return Vector(u)
     else:
@@ -137,7 +137,7 @@ def rotate(u,angle,axis=Vector(0,0,1)):
     '''rotate(Vector,Float,axis=Vector): rotates the first Vector
     around the given axis, at the given angle.
     If axis is omitted, the rotation is made on the xy plane.'''
-    typecheck ([(u,Vector), (angle,(int,long,float)), (axis,Vector)], "rotate")
+    typecheck ([(u,Vector), (angle,(int,float)), (axis,Vector)], "rotate")
 
     if angle == 0: 
         return u
