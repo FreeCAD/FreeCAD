@@ -2221,7 +2221,7 @@ namespace Py
     {
     public:
         TupleN()
-        : Tuple( (sequence_index_type)0 )
+        : Tuple( 0 )
         {
         }
 
@@ -3198,7 +3198,7 @@ namespace Py
     inline Object Object::callMemberFunction( const std::string &function_name ) const
     {
         Callable target( getAttr( function_name ) );
-        Tuple args( (sequence_index_type)0 );
+        Tuple args( 0 );
         return target.apply( args );
     }
 
