@@ -1518,6 +1518,7 @@ extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple,
     }
 }
 
+#if 0
 extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple, PyObject * )
 {
     try
@@ -1545,7 +1546,7 @@ extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple,
     {
         return 0;
     }
-#if 0
+// #if 0
     try
     {
         Tuple self_and_name_tuple( _self_and_name_tuple );
@@ -1568,10 +1569,11 @@ extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple,
     {
         return 0;
     }
-#else
+// #else
     return 0;
-#endif
+// #endif
 }
+#endif
 
 extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple, PyObject *_args )
 {
