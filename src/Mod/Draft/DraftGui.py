@@ -50,10 +50,10 @@ class todo:
     
     @staticmethod
     def doTasks():
-        # print "debug: doing delayed tasks: commitlist: ",todo.commitlist," itinerary: ",todo.itinerary
+        # print("debug: doing delayed tasks: commitlist: ",todo.commitlist," itinerary: ",todo.itinerary)
         for f, arg in todo.itinerary:
             try:
-                # print "debug: executing",f
+                # print("debug: executing",f)
                 if arg:
                     f(arg)
                 else:
@@ -64,7 +64,7 @@ class todo:
         todo.itinerary = []
         if todo.commitlist:
             for name,func in todo.commitlist:
-                #print "debug: committing ",str(name)
+                #print("debug: committing ",str(name))
                 try:
                     name = str(name)
                     FreeCAD.ActiveDocument.openTransaction(name)
@@ -84,14 +84,14 @@ class todo:
 
     @staticmethod
     def delay (f, arg):
-        # print "debug: delaying",f
+        # print("debug: delaying",f)
         if todo.itinerary == []:
             QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.itinerary.append((f,arg))
 
     @staticmethod
     def delayCommit (cl):
-        # print "debug: delaying commit",cl
+        # print("debug: delaying commit",cl)
         QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.commitlist = cl
 
@@ -214,7 +214,7 @@ class DraftToolBar:
         self.cancel = None
         self.pointcallback = None
         self.taskmode = Draft.getParam("UiMode",1)
-        #print "taskmode: ",str(self.taskmode)
+        #print("taskmode: ",str(self.taskmode))
         self.paramcolor = Draft.getParam("color",255)>>8
         self.color = QtGui.QColor(self.paramcolor)
         self.facecolor = QtGui.QColor(204,204,204)
@@ -1138,13 +1138,13 @@ class DraftToolBar:
                                     last = self.sourceCmd.node[0]
                                 else:
                                     last = self.sourceCmd.node[-1]
-                                #print "last:",last
+                                #print("last:",last)
                                 v = FreeCAD.Vector(numx,numy,numz)
-                                #print "orig:",v
+                                #print("orig:",v)
                                 if FreeCAD.DraftWorkingPlane:
                                     v = FreeCAD.Vector(numx,numy,numz)
                                     v = FreeCAD.DraftWorkingPlane.getGlobalRot(v)
-                                    #print "rotated:",v
+                                    #print("rotated:",v)
                                 numx = last.x + v.x
                                 numy = last.y + v.y
                                 numz = last.z + v.z
@@ -1175,7 +1175,7 @@ class DraftToolBar:
         if self.sourceCmd: 
             if (self.labelSString.isVisible()):
                 if self.SStringValue.text():
-#                    print "debug: D_G DraftToolBar.validateSString type(SStringValue.text): "  str(type(self.SStringValue.text))
+                    #print("debug: D_G DraftToolBar.validateSString type(SStringValue.text): "  str(type(self.SStringValue.text)))
                     #self.sourceCmd.validSString(str(self.SStringValue.text()))    # QString to QByteArray to PyString
                     self.sourceCmd.validSString(self.SStringValue.text())    # PySide returns Unicode from QString
                 else:
@@ -1194,15 +1194,15 @@ class DraftToolBar:
                                                               dialogCaption, 
                                                               dialogDir,
                                                               dialogFilter)
-                    # print fname
+                    # print(fname)
                     #fname = str(fname.toUtf8())                                 # QString to PyString
                     fname = fname[0].decode("utf8")
-#                    print "debug: D_G DraftToolBar.pickFile type(fname): "  str(type(fname))
+#                    print("debug: D_G DraftToolBar.pickFile type(fname): "  str(type(fname)))
                                                               
                 except Exception as e:
                     FreeCAD.Console.PrintMessage("DraftGui.pickFile: unable to select a font file.")
-                    print type(e)
-                    print e.args
+                    print(type(e))
+                    print(e.args)
                 else:
                     if fname:
                         self.FFileValue.setText(fname)
@@ -1444,7 +1444,8 @@ class DraftToolBar:
             r = color.red()/255.0
             g = color.green()/255.0
             b = color.blue()/255.0
-        else: print "draft: error: couldn't get a color for ",type," type."
+        else: 
+            print("draft: error: couldn't get a color for ",type," type.")
         if rgb:
             return("rgb("+str(int(r*255))+","+str(int(g*255))+","+str(int(b*255))+")")
         else:
@@ -1545,13 +1546,13 @@ class DraftToolBar:
             self.delButton.setChecked(False)
 
     def setRadiusValue(self,val,unit=None):
-        #print "DEBUG: setRadiusValue val: ", val, " unit: ", unit
-        if  not isinstance(val, (int, long, float)):       #??some code passes strings or ??? 
+        #print("DEBUG: setRadiusValue val: ", val, " unit: ", unit)
+        if  not isinstance(val, (int, float)):       #??some code passes strings or ??? 
             t = val
         elif unit:
             t= displayExternal(val,self.DECIMALS, unit)
         else:
-            print "Error: setRadiusValue called for number without Dimension"
+            print("Error: setRadiusValue called for number without Dimension")
             t = displayExternal(val,self.DECIMALS, None)
         self.radiusValue.setText(t)
         self.radiusValue.setFocus()
@@ -1667,7 +1668,7 @@ class DraftToolBar:
                                 
     def changeEvent(self, event):
         if event.type() == QtCore.QEvent.LanguageChange:
-            #print "Language changed!"
+            #print("Language changed!")
             self.ui.retranslateUi(self)
 
     def Activated(self):

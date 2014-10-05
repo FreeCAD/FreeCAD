@@ -437,7 +437,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         
         return int
     else :
-        print "DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")"
+        print("DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")")
         
 def wiresIntersect(wire1,wire2):
     "wiresIntersect(wire1,wire2): returns True if some of the edges of the wires are intersecting otherwise False"
@@ -467,43 +467,43 @@ def pocket2d(shape,offset):
     if not o.Wires:
         return []
     offsetWires = o.Wires
-    print "base offset wires:",offsetWires
+    print("base offset wires:",offsetWires)
     if not innerWires:
         return offsetWires
     for innerWire in innerWires:
         i = innerWire.makeOffset(offset)
         if i.Wires:
-            print "offsetting island ",innerWire," : ",i.Wires
+            print("offsetting island ",innerWire," : ",i.Wires)
             for w in i.Wires:
                 added = False
-                print "checking wire ",w
-                k = range(len(offsetWires))
+                print("checking wire ",w)
+                k = list(range(len(offsetWires)))
                 for j in k:
-                    print "checking against existing wire ",j
+                    print("checking against existing wire ",j)
                     ow = offsetWires[j]
                     if ow:
                         if wiresIntersect(w,ow):
-                            print "intersect"
+                            print("intersect")
                             f1 = Part.Face(ow)
                             f2 = Part.Face(w)
                             f3  = f1.cut(f2)
-                            print "made new wires: ",f3.Wires
+                            print("made new wires: ",f3.Wires)
                             offsetWires[j] = f3.Wires[0]
                             if len(f3.Wires) > 1:
-                                print "adding more"
+                                print("adding more")
                                 offsetWires.extend(f3.Wires[1:])
                             added = True
                         else:
                             a = w.BoundBox
                             b = ow.BoundBox
                             if (a.XMin <= b.XMin) and (a.YMin <= b.YMin) and (a.ZMin <= b.ZMin) and (a.XMax >= b.XMax) and (a.YMax >= b.YMax) and (a.ZMax >= b.ZMax):
-                                print "this wire is bigger than the outer wire"
+                                print("this wire is bigger than the outer wire")
                                 offsetWires[j] = None
                                 added = True
                             else:
-                                print "doesn't intersect"
+                                print("doesn't intersect")
                 if not added:
-                    print "doesn't intersect with any other"
+                    print("doesn't intersect with any other")
                     offsetWires.append(w)
     offsetWires = [o for o in offsetWires if o != None]
     return offsetWires
@@ -530,7 +530,7 @@ def geom(edge,plac=FreeCAD.Placement()):
             # direction check
             if edge.Curve.Axis.getAngle(normal) > 1:
                 a1,a2 = a2,a1
-            #print "creating sketch arc from ",cu, ", p1=",v1, " (",math.degrees(a1), "d) p2=",v2," (", math.degrees(a2),"d)"
+            #print("creating sketch arc from ",cu, ", p1=",v1, " (",math.degrees(a1), "d) p2=",v2," (", math.degrees(a2),"d)")
             
             p= Part.ArcOfCircle(cu,a1,a2)
             return p
@@ -617,7 +617,7 @@ def concatenate(shape):
         wire=Part.Wire(edges)
         face=Part.Face(wire)
     except:
-        print "DraftGeomUtils: Couldn't join faces into one"
+        print("DraftGeomUtils: Couldn't join faces into one")
         return(shape)
     else:
         if not wire.isClosed(): return(wire)
@@ -633,7 +633,7 @@ def getBoundary(shape):
     for f in shape.Faces:
         for e in f.Edges:
             hc= e.hashCode()
-            if lut.has_key(hc): lut[hc]=lut[hc]+1
+            if hc in lut: lut[hc]=lut[hc]+1
             else: lut[hc]=1
     # filter out the edges shared by more than one sub-face
     bound=[]
@@ -688,14 +688,14 @@ def sortEdgesNew(edges):
     # in the sdict dictionary but not in the edict dictionary, and has
     # only one edge ending there.
     startedge = None
-    for v, se in sdict.iteritems():
+    for v, se in sdict.items():
         if v not in edict and len (se) == 1:
             startedge = se
             break
     # The above may not find a start vertex; if the start edge is reversed, 
     # the start vertex will appear in edict (and not sdict).
     if not startedge:
-        for v, se in edict.iteritems():
+        for v, se in edict.xitems():
             if v not in sdict and len (se) == 1:
                 startedge = se
                 break
@@ -709,7 +709,7 @@ def sortEdgesNew(edges):
     # end check is simply the count of input elements (that works for closed
     # as well as open paths).
     ret = list()
-    for i in xrange(len(edges)):
+    for i in range(len(edges)):
         try:
             eset = sdict[v]
             e = eset.pop()
@@ -725,7 +725,7 @@ def sortEdgesNew(edges):
                 v = e.Vertexes[0]
                 e.reverse()
             except KeyError:
-                print "DraftGeomUtils.sortEdges failed"
+                print("DraftGeomUtils.sortEdges failed")
                 return sortEdgesOld(edges)
         ret.append(e)
         v = vpoint(v)
@@ -739,7 +739,7 @@ def sortEdgesOld(lEdges, aVertex=None):
     #has exactly two vertices (wmayer)
     #for e in lEdges:
     #        if not isinstance(e.Curve,Part.Line):
-    #                print "Warning: sortedges cannot treat wired containing curves yet."
+    #                print("Warning: sortedges cannot treat wired containing curves yet.")
     #                return lEdges
 
     def lookfor(aVertex, inEdges):
@@ -787,20 +787,20 @@ def sortEdgesOld(lEdges, aVertex=None):
                     olEdges = sortEdgesOld(lEdges, result[3].Vertexes[result[2]])
                     return olEdges
         # if the wire is closed there is no end so choose 1st Vertex
-        # print "closed wire, starting from ",lEdges[0].Vertexes[0].Point
+        # print("closed wire, starting from ",lEdges[0].Vertexes[0].Point)
         return sortEdgesOld(lEdges, lEdges[0].Vertexes[0]) 
     else :
-        #print "looking ",aVertex.Point
+        #print("looking ",aVertex.Point)
         result = lookfor(aVertex,lEdges)
         if result[0] != 0 :
             del lEdges[result[1]]
             next = sortEdgesOld(lEdges, result[3].Vertexes[-((-result[2])^1)])
-            #print "result ",result[3].Vertexes[0].Point,"    ",result[3].Vertexes[1].Point, " compared to ",aVertex.Point
+            #print("result ",result[3].Vertexes[0].Point,"    ",result[3].Vertexes[1].Point, " compared to ",aVertex.Point)
             if aVertex.Point == result[3].Vertexes[0].Point:
-                #print "keeping"
+                #print("keeping")
                 olEdges += [result[3]] + next
             else:
-                #print "inverting", result[3].Curve
+                #print("inverting", result[3].Curve)
                 if geomType(result[3]) == "Line":
                     newedge = Part.Line(aVertex.Point,result[3].Vertexes[0].Point).toShape()
                     olEdges += [newedge] + next
@@ -898,7 +898,7 @@ def findWires(edgeslist):
         try:
             wi = Part.Wire(w)
         except:
-            print "couldn't join some edges"
+            print("couldn't join some edges")
         else:
             nwires.append(wi)
     return nwires
@@ -911,7 +911,7 @@ def superWire(edgeslist,closed=False):
                 vd.scale(.5,.5,.5)
                 return v1.add(vd)
         edges = sortEdges(edgeslist)
-        print edges
+        print(edges)
         newedges = []
         for i in range(len(edges)):
                 curr = edges[i]
@@ -929,7 +929,7 @@ def superWire(edgeslist,closed=False):
                                 next = None
                 else:
                         next = edges[i+1]
-                print i,prev,curr,next
+                print(i,prev,curr,next)
                 if prev:
                         if curr.Vertexes[0].Point == prev.Vertexes[-1].Point:
                                 p1 = curr.Vertexes[0].Point
@@ -945,16 +945,16 @@ def superWire(edgeslist,closed=False):
                 else:
                         p2 = curr.Vertexes[-1].Point
                 if geomType(curr) == "Line":
-                        print "line",p1,p2
+                        print("line",p1,p2)
                         newedges.append(Part.Line(p1,p2).toShape())
                 elif geomType(curr) == "Circle":
                         p3 = findMidpoint(curr)
-                        print "arc",p1,p3,p2
+                        print("arc",p1,p3,p2)
                         newedges.append(Part.Arc(p1,p3,p2).toShape())
                 else:
-                        print "Cannot superWire edges that are not lines or arcs"
+                        print("Cannot superWire edges that are not lines or arcs")
                         return None
-        print newedges
+        print(newedges)
         return Part.Wire(newedges)
 
 def findMidpoint(edge):
@@ -1185,7 +1185,7 @@ def connect(edges,closed=False):
         nedges = []
         for i in range(len(edges)):
             curr = edges[i]
-            #print "debug: DraftGeomUtils.connect edge ",i," : ",curr.Vertexes[0].Point,curr.Vertexes[-1].Point
+            #print("debug: DraftGeomUtils.connect edge ",i," : ",curr.Vertexes[0].Point,curr.Vertexes[-1].Point)
             if i > 0:
                 prev = edges[i-1]
             else:
@@ -1200,7 +1200,7 @@ def connect(edges,closed=False):
                 else:
                     next = None
             if prev:
-                #print "debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point
+                #print("debug: DraftGeomUtils.connect prev : ",prev.Vertexes[0].Point,prev.Vertexes[-1].Point)
                 i = findIntersection(curr,prev,True,True)
                 if i:
                     v1 = i[0]
@@ -1209,7 +1209,7 @@ def connect(edges,closed=False):
             else:
                 v1 = curr.Vertexes[0].Point
             if next:
-                #print "debug: DraftGeomUtils.connect next : ",next.Vertexes[0].Point,next.Vertexes[-1].Point
+                #print("debug: DraftGeomUtils.connect next : ",next.Vertexes[0].Point,next.Vertexes[-1].Point)
                 i = findIntersection(curr,next,True,True)
                 if i:
                     v2 = i[0]
@@ -1226,7 +1226,7 @@ def connect(edges,closed=False):
         try:
             return Part.Wire(nedges)
         except:
-            print "DraftGeomUtils.connect: unable to connect edges:",nedges
+            print("DraftGeomUtils.connect: unable to connect edges:",nedges)
             return None
 
 def findDistance(point,edge,strict=False):
@@ -1286,15 +1286,15 @@ def findDistance(point,edge,strict=False):
                     np = edge.Curve.value(pr)
                     dist = np.sub(point)
             except:
-                    print "DraftGeomUtils: Unable to get curve parameter for point ",point
+                    print("DraftGeomUtils: Unable to get curve parameter for point ",point)
                     return None
             else:
                     return dist
         else:
-            print "DraftGeomUtils: Couldn't project point"
+            print("DraftGeomUtils: Couldn't project point")
             return None
     else:
-        print "DraftGeomUtils: Couldn't project point"
+        print("DraftGeomUtils: Couldn't project point")
         return None
 
 
@@ -1427,7 +1427,7 @@ def bind(w1,w2):
             w4 = Part.Line(w1.Vertexes[-1].Point,w2.Vertexes[-1].Point).toShape()
             return Part.Face(Part.Wire(w1.Edges+[w3]+w2.Edges+[w4]))
         except:
-            print "DraftGeomUtils: unable to bind wires"
+            print("DraftGeomUtils: unable to bind wires")
             return None
 
 def cleanFaces(shape):
@@ -1458,13 +1458,13 @@ def cleanFaces(shape):
                                 lut[edge.hashCode()].append(face.hashCode())
                         else:
                                 lut[edge.hashCode()] = [face.hashCode()]
-        # print "lut:",lut
+        # print("lut:",lut)
         # take edges shared by 2 faces
         sharedhedges = []
-        for k,v in lut.iteritems():
+        for k,v in lut.items():
                 if len(v) == 2:
                         sharedhedges.append(k)
-        # print len(sharedhedges)," shared edges:",sharedhedges
+        # print(len(sharedhedges)," shared edges:",sharedhedges)
         # find those with same normals
         targethedges = []
         for hedge in sharedhedges:
@@ -1473,7 +1473,7 @@ def cleanFaces(shape):
                 n2 = find(faces[1]).normalAt(0.5,0.5)
                 if n1 == n2:
                         targethedges.append(hedge)
-        # print len(targethedges)," target edges:",targethedges
+        # print(len(targethedges)," target edges:",targethedges)
         # get target faces
         hfaces = []
         for hedge in targethedges:
@@ -1481,7 +1481,7 @@ def cleanFaces(shape):
                         if not f in hfaces:
                                 hfaces.append(f)
 
-        # print len(hfaces)," target faces:",hfaces
+        # print(len(hfaces)," target faces:",hfaces)
         # sort islands
         islands = [[hfaces.pop(0)]]
         currentisle = 0
@@ -1503,7 +1503,7 @@ def cleanFaces(shape):
                                 islands[currentisle].append(hfaces.pop(f))
                         else:
                                 found = False
-        # print len(islands)," islands:",islands
+        # print(len(islands)," islands:",islands)
         # make new faces from islands
         newfaces = []
         treated = []
@@ -1517,12 +1517,12 @@ def cleanFaces(shape):
                 if shp.normalAt(0.5,0.5) != find(isle[0]).normalAt(0.5,0.5):
                         shp.reverse()
                 newfaces.append(shp)
-        # print "new faces:",newfaces
+        # print("new faces:",newfaces)
         # add remaining faces
         for f in faceset:
                 if not f.hashCode() in treated:
                         newfaces.append(f)
-        # print "final faces"
+        # print("final faces")
         # finishing
         fshape = Part.makeShell(newfaces)
         if shape.isClosed():
@@ -1585,7 +1585,7 @@ def getCubicDimensions(shape):
         for e in shape.Faces[i].Edges:
             if basepoint in [e.Vertexes[0].Point,e.Vertexes[1].Point]:
                 vtemp = vec(e)
-                # print vtemp
+                # print(vtemp)
                 if round(vtemp.getAngle(vx),precision()) == rpi:
                     if round(vtemp.getAngle(vy),precision()) == rpi:
                         vz = vtemp
@@ -1626,7 +1626,7 @@ def arcFromSpline(edge):
         segments such as those from imported svg files. Use this only
         if you are sure your edge is really an arc..."""
         if geomType(edge) == "Line":
-                print "This edge is straight, cannot build an arc on it"
+                print("This edge is straight, cannot build an arc on it")
                 return None
         if len(edge.Vertexes) > 1:
                 # 2-point arc
@@ -1637,7 +1637,7 @@ def arcFromSpline(edge):
                 try:
                         return Part.Arc(p1,p3,p2).toShape()
                 except:
-                        print "Couldn't make an arc out of this edge"
+                        print("Couldn't make an arc out of this edge")
                         return None
         else:
                 # circle
@@ -1651,7 +1651,7 @@ def arcFromSpline(edge):
                 try:
                         return Part.makeCircle(radius,center)
                 except:
-                        print "couldn't make a circle out of this edge"
+                        print("couldn't make a circle out of this edge")
 
 # Fillet code graciously donated by Jacques-Antoine Gaudin
 
@@ -1678,7 +1678,7 @@ def fillet(lEdges,r,chamfer=False):
         return rndEdges
     
     if r <= 0 :
-        print "DraftGeomUtils.fillet : Error : radius is negative."
+        print("DraftGeomUtils.fillet : Error : radius is negative.")
         return rndEdges
         
     curveType = getCurveType(rndEdges[0])
@@ -1700,7 +1700,7 @@ def fillet(lEdges,r,chamfer=False):
             r = (r/2)/math.cos(beta)
             
         if round(alpha,precision()) == 0 or round(alpha - math.pi,precision()) == 0: # Edges have same direction
-            print "DraftGeomUtils.fillet : Warning : edges have same direction. Did nothing"
+            print("DraftGeomUtils.fillet : Warning : edges have same direction. Did nothing")
             return rndEdges
             
         dToCenter = r / math.sin(alpha/2.) 
@@ -1716,7 +1716,7 @@ def fillet(lEdges,r,chamfer=False):
         arcPt3 = lVertexes[1].Point.add(dirVect)
             
         if (dToTangent>lEdges[0].Length) or (dToTangent>lEdges[1].Length) :
-            print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
+            print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
             return rndEdges
         if chamfer:
             rndEdges[1]   =  Part.Edge(Part.Line(arcPt1,arcPt3))
@@ -1761,14 +1761,14 @@ def fillet(lEdges,r,chamfer=False):
         elif round(projCenter,precision()) < 0 or (round(projCenter,precision()) == 0 and U1.dot(T) > 0):
             newRadius = arcRadius + r
         else :
-            print "DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing"
+            print("DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing")
             return rndEdges
         
         toNewCent = newRadius**2-dCenterToLine**2
         if toNewCent > 0 :
             toNewCent = abs(abs(projCenter) - toNewCent**(0.5))
         else :
-            print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
+            print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
             return rndEdges
             
         U1.scale(toNewCent,toNewCent,toNewCent)
@@ -1801,7 +1801,7 @@ def fillet(lEdges,r,chamfer=False):
         
         delLength = arcRadius * V[0].sub(arcCenter).getAngle(toCenter)
         if delLength > arcLength or toNewCent > curveType['Line'][0].Length: 
-            print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
+            print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
             return rndEdges
             
         arcAsEdge = arcFrom2Pts(V[-arcFirst],V[-myTrick],arcCenter,arcAxis)
@@ -1847,7 +1847,7 @@ def fillet(lEdges,r,chamfer=False):
                 newRadius += [arcRadius[0]+r]
                 newRadius += [arcRadius[1]+r]
             else :
-                print "DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing"
+                print("DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing")
                 return rndEdges
         elif not sameDirection : 
             if   round(TcrossT.dot(arcAxis[0]),precision()) > 0 :
@@ -1864,16 +1864,16 @@ def fillet(lEdges,r,chamfer=False):
                     newRadius += [arcRadius[0]+r]
                     newRadius += [arcRadius[1]-r]
                 else :
-                    print "DraftGeomUtils.fillet : Warning : arcs are coincident. Did nothing"
+                    print("DraftGeomUtils.fillet : Warning : arcs are coincident. Did nothing")
                     return rndEdges
             else :
-                print "DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing"
+                print("DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing")
                 return rndEdges
                 
         if newRadius[0]+newRadius[1] < dCentToCent or \
            newRadius[0]-newRadius[1] > dCentToCent or \
            newRadius[1]-newRadius[0] > dCentToCent :
-            print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
+            print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
             return rndEdges
                 
         x = (dCentToCent**2+newRadius[0]**2-newRadius[1]**2)/(2*dCentToCent)
@@ -1906,7 +1906,7 @@ def fillet(lEdges,r,chamfer=False):
             toCenter[i].scale(-1,-1,-1)
             delLength = arcRadius[i] * arcPt[-i].sub(arcCenter[i]).getAngle(toCenter[i])
             if delLength > arcLength[i] :
-                print "DraftGeomUtils.fillet : Error : radius value ", r," is too high"
+                print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
                 return rndEdges
             V = [arcPt[-i],lVertexes[-i].Point]
             arcAsEdge += [arcFrom2Pts(V[i-1],V[-i],arcCenter[i],arcAxis[i])]
@@ -1967,7 +1967,7 @@ def getCircleFromSpline(edge):
     c = i[0]
     r = (p1.sub(c)).Length
     circle = Part.makeCircle(r,c,n)
-    #print circle.Curve
+    #print(circle.Curve)
     return circle
 
 def curvetowire(obj,steps):
@@ -2021,7 +2021,7 @@ def cleanProjection(shape,tessellate=True,seglength=.05):
             else:
                 newedges.append(e)
         except:
-            print "Debug: error cleaning edge ",e
+            print("Debug: error cleaning edge ",e)
     return Part.makeCompound(newedges)
     
 def curvetosegment(curve,seglen):
@@ -2052,7 +2052,7 @@ def tessellateProjection(shape,seglen):
             else:
                 newedges.append(e)
         except:
-            print "Debug: error cleaning edge ",e
+            print("Debug: error cleaning edge ",e)
     return Part.makeCompound(newedges)
 
 # circle functions *********************************************************
@@ -2382,7 +2382,7 @@ def outerSoddyCircle(circle1, circle2, circle3):
 
         X = -z.real
         Y = -z.imag
-        print "Outer Soddy circle: " + str(X) + " " + str(Y) + "\n" # Debug
+        print("Outer Soddy circle: " + str(X) + " " + str(Y) + "\n") # Debug
 
         # The Radius of the outer soddy circle can also be calculated with the following formula:
         # radiusOuter = abs(r1*r2*r3 / (r1*r2 + r1*r3 + r2*r3 - 2 * math.sqrt(r1*r2*r3 * (r1+r2+r3))))
@@ -2390,7 +2390,7 @@ def outerSoddyCircle(circle1, circle2, circle3):
         return circ
 
     else:
-        print "debug: outerSoddyCircle bad parameters!\n"
+        print("debug: outerSoddyCircle bad parameters!\n")
         # FreeCAD.Console.PrintMessage("debug: outerSoddyCircle bad parameters!\n")
         return None
 
@@ -2434,7 +2434,7 @@ def innerSoddyCircle(circle1, circle2, circle3):
 
         X = z.real
         Y = z.imag
-        print "Outer Soddy circle: " + str(X) + " " + str(Y) + "\n" # Debug
+        print("Outer Soddy circle: " + str(X) + " " + str(Y) + "\n") # Debug
 
         # The Radius of the inner soddy circle can also be calculated with the following formula:
         # radiusInner = abs(r1*r2*r3 / (r1*r2 + r1*r3 + r2*r3 + 2 * math.sqrt(r1*r2*r3 * (r1+r2+r3))))
@@ -2442,7 +2442,7 @@ def innerSoddyCircle(circle1, circle2, circle3):
         return circ
 
     else:
-        print "debug: innerSoddyCircle bad parameters!\n"
+        print("debug: innerSoddyCircle bad parameters!\n")
         # FreeCAD.Console.PrintMessage("debug: innerSoddyCircle bad parameters!\n")
         return None
  
@@ -2472,10 +2472,10 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
                 r2 = circle2.Curve.Radius
                 r3 = circle3.Curve.Radius
                 outerSoddy = outerSoddyCircle(circle1, circle2, circle3)
-#               print str(outerSoddy) + "\n" # Debug
+#               print(str(outerSoddy) + "\n") # Debug
 
                 innerSoddy = innerSoddyCircle(circle1, circle2, circle3)
-#               print str(innerSoddy) + "\n" # Debug
+#               print(str(innerSoddy) + "\n") # Debug
 
                 circles = []
                 if outerSoddy:
@@ -2495,7 +2495,7 @@ def circleFrom3CircleTangents(circle1, circle2, circle3):
             return None
 
     else:
-        print "debug: circleFrom3CircleTangents bad parameters!\n"
+        print("debug: circleFrom3CircleTangents bad parameters!\n")
         # FreeCAD.Console.PrintMessage("debug: circleFrom3CircleTangents bad parameters!\n")
         return None
 
@@ -2593,7 +2593,7 @@ def findHomotheticCenterOfCircles(circle1, circle2):
             return None
 
     else:
-        print "debug: findHomotheticCenterOfCircles bad parameters!\n"
+        print("debug: findHomotheticCenterOfCircles bad parameters!\n")
         FreeCAD.Console.PrintMessage("debug: findHomotheticCenterOfCirclescleFrom3tan bad parameters!\n")
         return None
 
@@ -2644,7 +2644,7 @@ def findRadicalAxis(circle1, circle2):
         else:
             return None
     else:
-        print "debug: findRadicalAxis bad parameters!\n"
+        print("debug: findRadicalAxis bad parameters!\n")
         FreeCAD.Console.PrintMessage("debug: findRadicalAxis bad parameters!\n")
         return None
 
@@ -2678,7 +2678,7 @@ def findRadicalCenter(circle1, circle2, circle3):
             # No radical center could be calculated.
             return None
     else:
-        print "debug: findRadicalCenter bad parameters!\n"
+        print("debug: findRadicalCenter bad parameters!\n")
         FreeCAD.Console.PrintMessage("debug: findRadicalCenter bad parameters!\n")
         return None
 
@@ -2714,7 +2714,7 @@ def pointInversion(circle, point):
         return invPoint
 
     else:
-        print "debug: pointInversion bad parameters!\n"
+        print("debug: pointInversion bad parameters!\n")
         FreeCAD.Console.PrintMessage("debug: pointInversion bad parameters!\n")
         return None
 
@@ -2736,7 +2736,7 @@ def polarInversion(circle, edge):
                 return inversionPole
 
     else:
-        print "debug: circleInversionPole bad parameters!\n"
+        print("debug: circleInversionPole bad parameters!\n")
         FreeCAD.Console.PrintMessage("debug: circleInversionPole bad parameters!\n")
         return None
 
@@ -2761,7 +2761,7 @@ def circleInversion(circle, circle2):
         return Part.Circle(invCen2, norm, DraftVecUtils.dist(invCen2, invPointOnCircle2))
 
     else:
-        print "debug: circleInversion bad parameters!\n"
+        print("debug: circleInversion bad parameters!\n")
         FreeCAD.Console.PrintMessage("debug: circleInversion bad parameters!\n")
         return None
 

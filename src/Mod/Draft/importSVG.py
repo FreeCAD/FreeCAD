@@ -201,7 +201,7 @@ svgcolors = {
           'OldLace': (253, 245, 230)
           }
 svgcolorslower = dict((key.lower(),value) for key,value in \
-    svgcolors.items())
+    list(svgcolors.items()))
 
 def getcolor(color):
     "checks if the given string is a RGB value, or if it is a named color. returns 1-based RGBA tuple."
@@ -411,7 +411,7 @@ class svgHandler(xml.sax.ContentHandler):
                 FreeCAD.Console.PrintMessage('existing group transform: %s\n'%(str(self.grouptransform)))
                 
                 data = {}
-                for (keyword,content) in attrs.items():
+                for (keyword,content) in list(attrs.items()):
                         #print keyword,content
                         content = content.replace(',',' ')
                         content = content.split()
@@ -670,9 +670,9 @@ class svgHandler(xml.sax.ContentHandler):
                                         (d =="S" or d == "s"):
                                         smooth = (d == 'S'  or d == 's')
                                         if smooth:
-                                            piter = zip(pointlist[2::4],pointlist[3::4],pointlist[0::4],pointlist[1::4],pointlist[2::4],pointlist[3::4])
+                                            piter = list(zip(pointlist[2::4],pointlist[3::4],pointlist[0::4],pointlist[1::4],pointlist[2::4],pointlist[3::4]))
                                         else:
-                                            piter = zip(pointlist[0::6],pointlist[1::6],pointlist[2::6],pointlist[3::6],pointlist[4::6],pointlist[5::6])
+                                            piter = list(zip(pointlist[0::6],pointlist[1::6],pointlist[2::6],pointlist[3::6],pointlist[4::6],pointlist[5::6]))
                                         for p1x,p1y,p2x,p2y,x,y in piter:
                                                 if smooth:
                                                         if lastpole is not None and lastpole[0]=='cubic':
@@ -714,9 +714,9 @@ class svgHandler(xml.sax.ContentHandler):
                                         (d =="T" or d == "t"):
                                         smooth = (d == 'T'  or d == 't')
                                         if smooth:
-                                            piter = zip(pointlist[1::2],pointlist[1::2],pointlist[0::2],pointlist[1::2])
+                                            piter = list(zip(pointlist[1::2],pointlist[1::2],pointlist[0::2],pointlist[1::2]))
                                         else:
-                                            piter = zip(pointlist[0::4],pointlist[1::4],pointlist[2::4],pointlist[3::4])
+                                            piter = list(zip(pointlist[0::4],pointlist[1::4],pointlist[2::4],pointlist[3::4]))
                                         for px,py,x,y in piter:
                                                 if smooth:
                                                         if lastpole is not None and lastpole[0]=='quadratic':

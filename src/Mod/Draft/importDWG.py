@@ -91,15 +91,15 @@ def convertToDxf(dwgfilename):
         outdir = tempfile.mkdtemp()
         basename = os.path.basename(dwgfilename)
         cmdline = '"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"' % (teigha, indir, outdir, basename)
-        print "Converting: " + cmdline
+        print("Converting: " + cmdline)
         os.system(cmdline)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
         if os.path.exists(result):
-            print "Conversion successful"
+            print("Conversion successful")
             return result
         else:
-            print "Error during DWG to DXF conversion. Try moving the DWG file to a directory path"
-            print "without spaces and non-english characters, or try saving to a lower DWG version"
+            print("Error during DWG to DXF conversion. Try moving the DWG file to a directory path")
+            print("without spaces and non-english characters, or try saving to a lower DWG version")
     return None
     
 def convertToDwg(dxffilename,dwgfilename):
@@ -111,7 +111,7 @@ def convertToDwg(dxffilename,dwgfilename):
         outdir = os.path.dirname(dwgfilename)
         basename = os.path.basename(dxffilename)
         cmdline = '"%s" "%s" "%s" "ACAD2000" "DWG" "0" "1" "%s"' % (teigha, indir, outdir, basename)
-        print "converting " + cmdline
+        print("converting " + cmdline)
         os.system(cmdline)
         return dwgfilename
     return None
