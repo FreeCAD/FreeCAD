@@ -2077,8 +2077,13 @@ bool Sketch::updateGeometry()
                 double phi = atan2(fd.y,fd.x);
                 
                 aoe->setCenter(center);
-                aoe->setMajorRadius(radmaj);
-                aoe->setMinorRadius(radmin);
+                if ( radmaj >= aoe->getMinorRadius() ){//ensure that ellipse's major radius is always larger than minor raduis... may still cause problems with degenerates.
+                    aoe->setMajorRadius(radmaj);
+                    aoe->setMinorRadius(radmin);
+                }  else {
+                    aoe->setMinorRadius(radmin);
+                    aoe->setMajorRadius(radmaj);
+                }
                 aoe->setAngleXU(phi);
                 aoe->setRange(*myArc.startAngle, *myArc.endAngle);
             } else if (it->type == Circle) {
@@ -2102,8 +2107,13 @@ bool Sketch::updateGeometry()
                 double phi = atan2(fd.y,fd.x);
                 
                 ellipse->setCenter(center);
-                ellipse->setMajorRadius(radmaj);
-                ellipse->setMinorRadius(radmin);
+                if ( radmaj >= ellipse->getMinorRadius() ){//ensure that ellipse's major radius is always larger than minor raduis... may still cause problems with degenerates.
+                    ellipse->setMajorRadius(radmaj);
+                    ellipse->setMinorRadius(radmin);
+                }  else {
+                    ellipse->setMinorRadius(radmin);
+                    ellipse->setMajorRadius(radmaj);
+                }
                 ellipse->setAngleXU(phi);
             }
         } catch (Base::Exception e) {
