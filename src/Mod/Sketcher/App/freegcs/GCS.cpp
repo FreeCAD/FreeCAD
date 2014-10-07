@@ -829,18 +829,70 @@ int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, I
 
 int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId)
 {
-    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMajorX,tagId);
-    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMajorY,tagId);
-    addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMajorX,tagId);
-    return addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMajorY,tagId);    
+    //chechk which of the points is closer to satisfying positivemajor
+    double err1=0.0, err2=0.0;
+    {
+    ConstraintInternalAlignmentPoint2Ellipse constr (e,p1,EllipsePositiveMajorX);
+    err1+=abs(constr.error());
+    };
+    {
+    ConstraintInternalAlignmentPoint2Ellipse constr (e,p1,EllipsePositiveMajorY);
+    err1+=abs(constr.error());
+    };
+    {
+    ConstraintInternalAlignmentPoint2Ellipse constr (e,p2,EllipsePositiveMajorX);
+    err2+=abs(constr.error());
+    };
+    {
+    ConstraintInternalAlignmentPoint2Ellipse constr (e,p2,EllipsePositiveMajorY);
+    err2+=abs(constr.error());
+    };
+    if(err1<=err2){
+        //p1 is closer to  positivemajor
+        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMajorX,tagId);
+        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMajorY,tagId);
+        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMajorX,tagId);
+        return addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMajorY,tagId);
+    } else {
+        //p2 is closer to  positivemajor. Assign constraints back-to-front.
+        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipsePositiveMajorX,tagId);
+        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipsePositiveMajorY,tagId);
+        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseNegativeMajorX,tagId);
+        return addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseNegativeMajorY,tagId);
+    }
 }
 
 int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId)
 {
-    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMinorX,tagId);
-    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMinorY,tagId);
-    addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMinorX,tagId);
-    return addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMinorY,tagId);    
+    //chechk which of the points is closer to satisfying positivemajor
+    double err1=0.0, err2=0.0;
+    {
+    ConstraintInternalAlignmentPoint2Ellipse constr (e,p1,EllipsePositiveMinorX);
+    err1+=abs(constr.error());
+    };
+    {
+    ConstraintInternalAlignmentPoint2Ellipse constr (e,p1,EllipsePositiveMinorY);
+    err1+=abs(constr.error());
+    };
+    {
+    ConstraintInternalAlignmentPoint2Ellipse constr (e,p2,EllipsePositiveMinorX);
+    err2+=abs(constr.error());
+    };
+    {
+    ConstraintInternalAlignmentPoint2Ellipse constr (e,p2,EllipsePositiveMinorY);
+    err2+=abs(constr.error());
+    };
+    if(err1<=err2){
+        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMinorX,tagId);
+        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMinorY,tagId);
+        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMinorX,tagId);
+        return addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMinorY,tagId);
+    } else {
+        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipsePositiveMinorX,tagId);
+        addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipsePositiveMinorY,tagId);
+        addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseNegativeMinorX,tagId);
+        return addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseNegativeMinorY,tagId);
+    };
 }
 
 int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse &e, Point &p1, int tagId)
