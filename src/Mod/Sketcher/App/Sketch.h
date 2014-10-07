@@ -82,8 +82,6 @@ public:
 
     /// retrieves the index of a point
     int getPointId(int geoId, PointPos pos) const;
-    int getVisiblePointId(int geoId, PointPos pos) const;
-    
     /// retrieves a point
     Base::Vector3d getPoint(int geoId, PointPos pos);
 

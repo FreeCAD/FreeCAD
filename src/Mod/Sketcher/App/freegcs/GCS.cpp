@@ -28,6 +28,7 @@
 #include <Eigen/QR>
 
 #define _GCS_DEBUG 1
+#undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX 
 
 #ifdef _GCS_DEBUG
 #include <Base/Writer.h>
@@ -844,7 +845,8 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse &e, Point
 
 int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse &e, Point &p1, int tagId)
 {
-    return addConstraintP2PCoincident(e.focus1,p1);
+           addConstraintEqual(e.focus1X, p1.x, tagId);
+    return addConstraintEqual(e.focus1Y, p1.y, tagId);
 }
 
 int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse &e, Point &p1, int tagId)
@@ -878,7 +880,8 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(ArcOfEllipse &a, 
 
 int System::addConstraintInternalAlignmentEllipseFocus1(ArcOfEllipse &a, Point &p1, int tagId)
 {
-    return addConstraintP2PCoincident(a.focus1,p1);
+           addConstraintEqual(a.focus1X, p1.x, tagId);
+    return addConstraintEqual(a.focus1Y, p1.y, tagId);
 }
 
 int System::addConstraintInternalAlignmentEllipseFocus2(ArcOfEllipse &a, Point &p1, int tagId)
@@ -1694,7 +1697,7 @@ int System::diagnose()
         Eigen::MatrixXd Q = qrJT.matrixQ ();
         int paramsNum = qrJT.rows();
         int constrNum = qrJT.cols();
-        //qrJT.setThreshold(0);
+        qrJT.setThreshold(1e-10);
         int rank = qrJT.rank();
 
         Eigen::MatrixXd R;
@@ -1703,6 +1706,21 @@ int System::diagnose()
         else
             R = qrJT.matrixQR().topRows(constrNum)
                                .triangularView<Eigen::Upper>();
+                               
+                
+        #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+        // Debug code starts
+        std::stringstream stream;
+        
+        stream << "[";
+        stream << R ;
+        stream << "]";
+        
+        const std::string tmp = stream.str();
+        
+        Base::Console().Warning(tmp.c_str());
+        // Debug code ends
+        #endif
 
         if (constrNum > rank) { // conflicting or redundant constraints
             for (int i=1; i < rank; i++) {

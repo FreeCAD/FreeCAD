@@ -918,8 +918,8 @@ ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point &p, Ellipse &e)
     pvec.push_back(p.y);
     pvec.push_back(e.center.x);
     pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1.x);
-    pvec.push_back(e.focus1.y);
+    pvec.push_back(e.focus1X);
+    pvec.push_back(e.focus1Y);
     pvec.push_back(e.radmin);
     origpvec = pvec;
     rescale();
@@ -931,8 +931,8 @@ ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point &p, ArcOfEllipse &a)
     pvec.push_back(p.y);
     pvec.push_back(a.center.x);
     pvec.push_back(a.center.y);
-    pvec.push_back(a.focus1.x);
-    pvec.push_back(a.focus1.y);
+    pvec.push_back(a.focus1X);
+    pvec.push_back(a.focus1Y);
     pvec.push_back(a.radmin);
     origpvec = pvec;
     rescale();
@@ -940,7 +940,7 @@ ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point &p, ArcOfEllipse &a)
 
 ConstraintType ConstraintPointOnEllipse::getTypeId()
 {
-    return P2OnEllipse;
+    return PointOnEllipse;
 }
 
 void ConstraintPointOnEllipse::rescale(double coef)
@@ -1022,8 +1022,8 @@ ConstraintEllipseTangentLine::ConstraintEllipseTangentLine(Line &l, Ellipse &e)
     pvec.push_back(l.p2.y);
     pvec.push_back(e.center.x);
     pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1.x);
-    pvec.push_back(e.focus1.y);
+    pvec.push_back(e.focus1X);
+    pvec.push_back(e.focus1Y);
     pvec.push_back(e.radmin);
     origpvec = pvec;
     rescale();
@@ -1037,8 +1037,8 @@ ConstraintEllipseTangentLine::ConstraintEllipseTangentLine(Line &l, ArcOfEllipse
     pvec.push_back(l.p2.y);
     pvec.push_back(a.center.x);
     pvec.push_back(a.center.y);
-    pvec.push_back(a.focus1.x);
-    pvec.push_back(a.focus1.y);
+    pvec.push_back(a.focus1X);
+    pvec.push_back(a.focus1Y);
     pvec.push_back(a.radmin);
     origpvec = pvec;
     rescale();    
@@ -1346,8 +1346,8 @@ ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellip
     pvec.push_back(p1.y);
     pvec.push_back(e.center.x);
     pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1.x);
-    pvec.push_back(e.focus1.y);
+    pvec.push_back(e.focus1X);
+    pvec.push_back(e.focus1Y);
     pvec.push_back(e.radmin);
     origpvec = pvec;
     rescale();
@@ -1360,8 +1360,8 @@ ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellip
     pvec.push_back(p1.y);
     pvec.push_back(a.center.x);
     pvec.push_back(a.center.y);
-    pvec.push_back(a.focus1.x);
-    pvec.push_back(a.focus1.y);
+    pvec.push_back(a.focus1X);
+    pvec.push_back(a.focus1Y);
     pvec.push_back(a.radmin);
     origpvec = pvec;
     rescale();
@@ -1795,13 +1795,13 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
 {
     pvec.push_back(e1.center.x);
     pvec.push_back(e1.center.y);
-    pvec.push_back(e1.focus1.x);
-    pvec.push_back(e1.focus1.y);
+    pvec.push_back(e1.focus1X);
+    pvec.push_back(e1.focus1Y);
     pvec.push_back(e1.radmin);
     pvec.push_back(e2.center.x);
     pvec.push_back(e2.center.y);
-    pvec.push_back(e2.focus1.x);
-    pvec.push_back(e2.focus1.y);
+    pvec.push_back(e2.focus1X);
+    pvec.push_back(e2.focus1Y);
     pvec.push_back(e2.radmin);
     origpvec = pvec;
     rescale();
@@ -1908,8 +1908,8 @@ ConstraintEllipticalArcRangeToEndPoints::ConstraintEllipticalArcRangeToEndPoints
     pvec.push_back(angle_t);
     pvec.push_back(a.center.x);
     pvec.push_back(a.center.y);
-    pvec.push_back(a.focus1.x);
-    pvec.push_back(a.focus1.y);
+    pvec.push_back(a.focus1X);
+    pvec.push_back(a.focus1Y);
     pvec.push_back(a.radmin);
     origpvec = pvec;
     rescale();

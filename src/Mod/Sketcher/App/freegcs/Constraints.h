@@ -47,12 +47,11 @@ namespace GCS
         L2LAngle = 10,
         MidpointOnLine = 11,
         TangentCircumf = 12,
-        P2OnEllipse = 13,
+        PointOnEllipse = 13,
         TangentEllipseLine = 14,
-        Point2EllipseDistance = 15,
-        InternalAlignmentPoint2Ellipse = 16,
-        EqualMajorAxesEllipse = 17,
-        EllipticalArcRangeToEndPoints = 18
+        InternalAlignmentPoint2Ellipse = 15,
+        EqualMajorAxesEllipse = 16,
+        EllipticalArcRangeToEndPoints = 17
     };
     
     enum InternalAlignmentType {
