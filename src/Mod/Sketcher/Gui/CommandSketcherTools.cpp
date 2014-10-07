@@ -866,9 +866,6 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                     phi=aoe->getAngleXU();                    
                 }
 
-                majord*=0.99;
-                minord*=0.99;
-
                 
                 Base::Vector3d majorpositiveend = center + majord * Base::Vector3d(cos(phi),sin(phi),0);
                 Base::Vector3d majornegativeend = center - majord * Base::Vector3d(cos(phi),sin(phi),0);  
@@ -885,7 +882,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                     {
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
                         Obj->getNameInDocument(),
-                        majornegativeend.x,majornegativeend.y,majorpositiveend.x,majorpositiveend.y); // create line for major axis
+                        majorpositiveend.x,majorpositiveend.y,majornegativeend.x,majornegativeend.y); // create line for major axis
                         
                         Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
                         selection[0].getFeatName(),currentgeoid+incrgeo+1,GeoId); // constrain major axis
