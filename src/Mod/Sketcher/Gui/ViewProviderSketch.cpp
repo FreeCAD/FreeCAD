@@ -2145,9 +2145,9 @@ void ViewProviderSketch::updateColor(void)
                 m->diffuseColor = SelectColor;
             } else if (type == Sketcher::Coincident) {
                 int index;
-                index = edit->ActSketch.getVisiblePointId(constraint->First, constraint->FirstPos) + 1;
+                index = edit->ActSketch.getPointId(constraint->First, constraint->FirstPos) + 1;
                 if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
-                index = edit->ActSketch.getVisiblePointId(constraint->Second, constraint->SecondPos) + 1;
+                index = edit->ActSketch.getPointId(constraint->Second, constraint->SecondPos) + 1;
                 if (index >= 0 && index < PtNum) pcolor[index] = SelectColor;
             }
         } else if (edit->PreselectConstraintSet.count(i)) {
