@@ -71,7 +71,8 @@ namespace GCS
     public:
         Ellipse(){ radmin = 0;}
         Point center; 
-        Point focus1; //+x
+        double *focus1X; //+u
+        double *focus1Y;
         double *radmin;
     };
     
@@ -85,7 +86,8 @@ namespace GCS
         Point start;
         Point end;
         Point center;
-        Point focus1; //+x
+        double *focus1X; //+u
+        double *focus1Y;
     };
 
 } //namespace GCS
