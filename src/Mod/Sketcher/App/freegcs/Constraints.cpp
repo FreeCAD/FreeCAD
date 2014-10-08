@@ -1791,7 +1791,7 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
 }
 
 //  ConstraintEqualMajorAxesEllipse
- ConstraintEqualMajorAxesEllipse:: ConstraintEqualMajorAxesEllipse(Ellipse &e1, Ellipse &e2)
+ConstraintEqualMajorAxesEllipse:: ConstraintEqualMajorAxesEllipse(Ellipse &e1, Ellipse &e2)
 {
     pvec.push_back(e1.center.x);
     pvec.push_back(e1.center.y);
@@ -1803,6 +1803,38 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
     pvec.push_back(e2.focus1X);
     pvec.push_back(e2.focus1Y);
     pvec.push_back(e2.radmin);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintEqualMajorAxesEllipse:: ConstraintEqualMajorAxesEllipse(ArcOfEllipse &a1, Ellipse &e2)
+{
+    pvec.push_back(a1.center.x);
+    pvec.push_back(a1.center.y);
+    pvec.push_back(a1.focus1X);
+    pvec.push_back(a1.focus1Y);
+    pvec.push_back(a1.radmin);
+    pvec.push_back(e2.center.x);
+    pvec.push_back(e2.center.y);
+    pvec.push_back(e2.focus1X);
+    pvec.push_back(e2.focus1Y);
+    pvec.push_back(e2.radmin);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintEqualMajorAxesEllipse:: ConstraintEqualMajorAxesEllipse(ArcOfEllipse &a1, ArcOfEllipse &a2)
+{
+    pvec.push_back(a1.center.x);
+    pvec.push_back(a1.center.y);
+    pvec.push_back(a1.focus1X);
+    pvec.push_back(a1.focus1Y);
+    pvec.push_back(a1.radmin);
+    pvec.push_back(a2.center.x);
+    pvec.push_back(a2.center.y);
+    pvec.push_back(a2.focus1X);
+    pvec.push_back(a2.focus1Y);
+    pvec.push_back(a2.radmin);
     origpvec = pvec;
     rescale();
 }

@@ -721,8 +721,14 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
     // go through the selected subelements
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
         // only handle edges
-        if (it->size() > 4 && it->substr(0,4) == "Edge") {
-            int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
+        if ( (it->size() > 4 && it->substr(0,4) == "Edge") ||
+             (it->size() > 12 && it->substr(0,12) == "ExternalEdge")) {
+            int GeoId;
+            if(it->substr(0,4) == "Edge")
+               GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
+            else
+               GeoId = -std::atoi(it->substr(12,4000).c_str()) - 2;    
+            
             const Part::Geometry *geo = Obj->getGeometry(GeoId);            
             // Only for supported types
             if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
