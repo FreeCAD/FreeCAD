@@ -1887,13 +1887,10 @@ public:
                 return;
             }
         }
-        else if (Mode==STATUS_SEEK_Third) {
-            double rx0 = EditCurve[1].fX - EditCurve[0].fX;    // first semidiameter
-            double ry0 = EditCurve[1].fY - EditCurve[0].fY;     // first semidiameter
-                        
+        else if (Mode==STATUS_SEEK_Third) {                        
             // angle between the major axis of the ellipse and the X axis
             double a = (EditCurve[1]-EditCurve[0]).Length();
-            double phi = atan2f(EditCurve[1].fY-EditCurve[0].fY,EditCurve[1].fX-EditCurve[0].fX);
+            double phi = atan2(EditCurve[1].fY-EditCurve[0].fY,EditCurve[1].fX-EditCurve[0].fX);
             
             // This is the angle at cursor point
             double angleatpoint = acos((onSketchPos.fX-EditCurve[0].fX+(onSketchPos.fY-EditCurve[0].fY)*tan(phi))/(a*(cos(phi)+tan(phi)*sin(phi))));
@@ -1915,9 +1912,9 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f),
                                    AutoConstraint::CURVE)) {
-                renderSuggestConstraintsCursor(sugConstr2);
+                renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
         }
@@ -1949,11 +1946,11 @@ public:
             
             // angle between the major axis of the ellipse and the X axis
             double a = (EditCurve[1]-EditCurve[0]).Length();
-            double phi = atan2f(EditCurve[1].fY-EditCurve[0].fY,EditCurve[1].fX-EditCurve[0].fX);
+            double phi = atan2(EditCurve[1].fY-EditCurve[0].fY,EditCurve[1].fX-EditCurve[0].fX);
             
             // This is the angle at cursor point
             double angleatpoint = acos((EditCurve[2].fX-EditCurve[0].fX+(EditCurve[2].fY-EditCurve[0].fY)*tan(phi))/(a*(cos(phi)+tan(phi)*sin(phi))));
-            double b=(EditCurve[2].fY-EditCurve[0].fY-a*cos(angleatpoint)*sin(phi))/(sin(angleatpoint)*cos(phi));
+            double b=abs((EditCurve[2].fY-EditCurve[0].fY-a*cos(angleatpoint)*sin(phi))/(sin(angleatpoint)*cos(phi)));
                         
             Base::Vector2D majAxisDir,minAxisDir,minAxisPoint,majAxisPoint;
             // We always create a CCW ellipse, because we want our XY reference system to be in the +X +Y direction
@@ -2012,7 +2009,7 @@ public:
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2D> EditCurve;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 
 };
 
@@ -2136,13 +2133,10 @@ public:
                 return;
             }
         }
-        else if (Mode==STATUS_SEEK_Third) {
-            double rx0 = EditCurve[1].fX - EditCurve[0].fX;    // first semidiameter
-            double ry0 = EditCurve[1].fY - EditCurve[0].fY;     // first semidiameter
-                        
+        else if (Mode==STATUS_SEEK_Third) {                       
             // angle between the major axis of the ellipse and the X axis
             double a = (EditCurve[1]-EditCurve[0]).Length();
-            double phi = atan2f(EditCurve[1].fY-EditCurve[0].fY,EditCurve[1].fX-EditCurve[0].fX);
+            double phi = atan2(EditCurve[1].fY-EditCurve[0].fY,EditCurve[1].fX-EditCurve[0].fX);
             
             // This is the angle at cursor point
             double angleatpoint = acos((onSketchPos.fX-EditCurve[0].fX+(onSketchPos.fY-EditCurve[0].fY)*tan(phi))/(a*(cos(phi)+tan(phi)*sin(phi))));
@@ -2172,9 +2166,6 @@ public:
         }
         else if (Mode==STATUS_SEEK_Fourth) { // here we differ from ellipse creation
             
-            double rx0 = axisPoint.fX - centerPoint.fX;    // first semidiameter
-            double ry0 = axisPoint.fY - centerPoint.fY;     // first semidiameter
-             
             // angle between the major axis of the ellipse and the X axis
             double a = (axisPoint-centerPoint).Length();
             double phi = atan2(axisPoint.fY-centerPoint.fY,axisPoint.fX-centerPoint.fX);
@@ -3119,9 +3110,11 @@ namespace SketcherGui {
                 const Part::Geometry *geom = Sketch->getGeometry(GeoId);
                 if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                     geom->getTypeId() == Part::GeomCircle::getClassTypeId()||
-                    geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
+                    geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()||
+                    geom->getTypeId() == Part::GeomEllipse::getClassTypeId()||
+                    geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
+                )
                     return true;
-                // TODO: ellipse 
             }
             return  false;
         }
@@ -3201,9 +3194,9 @@ public:
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
                 geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
-                geom->getTypeId() == Part::GeomCircle::getClassTypeId()
-                // TODO: ellipse
-            ) {
+                geom->getTypeId() == Part::GeomCircle::getClassTypeId()      ||
+                geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                geom->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
                 try {
                     Gui::Command::openCommand("Trim edge");
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.trim(%d,App.Vector(%f,%f,0))",

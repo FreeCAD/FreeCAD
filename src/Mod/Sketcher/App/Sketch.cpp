@@ -1761,6 +1761,26 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         GCSsys.addConstraintEqualRadius(a1, a2, tag);
         return ConstraintsCounter;
     }
+    
+    if (Geoms[geoId2].type == ArcOfEllipse) {
+        if (Geoms[geoId1].type == ArcOfEllipse) {
+            GCS::ArcOfEllipse &a1 = ArcsOfEllipse[Geoms[geoId1].index];
+            GCS::ArcOfEllipse &a2 = ArcsOfEllipse[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintEqualRadii(a1, a2, tag);
+            return ConstraintsCounter;
+        }
+    }
+    
+    if (Geoms[geoId1].type == Ellipse) {
+        GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
+        if (Geoms[geoId2].type == ArcOfEllipse) {
+            GCS::ArcOfEllipse &a2 = ArcsOfEllipse[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintEqualRadii(a2, e1, tag);
+            return ConstraintsCounter;
+        }
+    }
 
     Base::Console().Warning("Equality constraints between %s and %s are not supported.\n",
                             nameByType(Geoms[geoId1].type), nameByType(Geoms[geoId2].type));
