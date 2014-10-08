@@ -400,6 +400,8 @@ namespace GCS
         inline double* e2rmin() { return pvec[9]; }
     public:
         ConstraintEqualMajorAxesEllipse(Ellipse &e1, Ellipse &e2);
+        ConstraintEqualMajorAxesEllipse(ArcOfEllipse &a1, Ellipse &e2);
+        ConstraintEqualMajorAxesEllipse(ArcOfEllipse &a1, ArcOfEllipse &a2);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
