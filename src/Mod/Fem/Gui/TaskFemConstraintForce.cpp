@@ -142,7 +142,7 @@ void TaskFemConstraintForce::updateUI()
     else if (ref.substr(pos+1, 4) == "Edge")
         ui->labelForce->setText(tr("Force [N/mm]"));
     else if (ref.substr(pos+1, 4) == "Face")
-        ui->labelForce->setText(tr("Force [N/mm²]"));
+        ui->labelForce->setText(trUtf8("Force [N/mm\xc2\xb2]"));
 }
 
 void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg)
