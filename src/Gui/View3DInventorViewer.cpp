@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 J?rgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -19,6 +19,8 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
+
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <float.h>
@@ -203,48 +205,39 @@ while the progress bar is running.
 */
 class Gui::ViewerEventFilter : public QObject
 {
-
 public:
-    ViewerEventFilter() {};
-    ~ViewerEventFilter() {};
+    ViewerEventFilter() {}
+    ~ViewerEventFilter() {}
 
     bool eventFilter(QObject* obj, QEvent* event) {
         // Bug #0000607: Some mices also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
         // Thus, we filter out horizontal scrolling.
-        if(event->type() == QEvent::Wheel) {
+        if (event->type() == QEvent::Wheel) {
             QWheelEvent* we = static_cast<QWheelEvent*>(event);
-
-            if(we->orientation() == Qt::Horizontal)
+            if (we->orientation() == Qt::Horizontal)
                 return true;
         }
-
-        if(event->type() == QEvent::KeyPress) {
+        else if (event->type() == QEvent::KeyPress) {
             QKeyEvent* ke = static_cast<QKeyEvent*>(event);
-
-            if(ke->matches(QKeySequence::SelectAll)) {
+            if (ke->matches(QKeySequence::SelectAll)) {
                 static_cast<View3DInventorViewer*>(obj)->selectAll();
                 return true;
             }
         }
-
-        if(Base::Sequencer().isRunning() &&
-                Base::Sequencer().isBlocking())
+        if (Base::Sequencer().isRunning() && Base::Sequencer().isBlocking())
             return false;
 
-        if(event->type() == Spaceball::ButtonEvent::ButtonEventType) {
+        if (event->type() == Spaceball::ButtonEvent::ButtonEventType) {
             Spaceball::ButtonEvent* buttonEvent = static_cast<Spaceball::ButtonEvent*>(event);
-
-            if(!buttonEvent) {
+            if (!buttonEvent) {
                 Base::Console().Log("invalid spaceball button event\n");
                 return true;
             }
         }
-
-        if(event->type() == Spaceball::MotionEvent::MotionEventType) {
+        else if (event->type() == Spaceball::MotionEvent::MotionEventType) {
             Spaceball::MotionEvent* motionEvent = static_cast<Spaceball::MotionEvent*>(event);
-
-            if(!motionEvent) {
+            if (!motionEvent) {
                 Base::Console().Log("invalid spaceball motion event\n");
                 return true;
             }
@@ -254,16 +247,15 @@ public:
     }
 };
 
-class  SpaceNavigatorDevice : public Quarter::InputDevice {
+class SpaceNavigatorDevice : public Quarter::InputDevice {
 public:
-    SpaceNavigatorDevice(void) {};
-    virtual ~SpaceNavigatorDevice() {};
+    SpaceNavigatorDevice(void) {}
+    virtual ~SpaceNavigatorDevice() {}
     virtual const SoEvent* translateEvent(QEvent* event) {
 
-        if(event->type() == Spaceball::MotionEvent::MotionEventType) {
+        if (event->type() == Spaceball::MotionEvent::MotionEventType) {
             Spaceball::MotionEvent* motionEvent = static_cast<Spaceball::MotionEvent*>(event);
-
-            if(!motionEvent) {
+            if (!motionEvent) {
                 Base::Console().Log("invalid spaceball motion event\n");
                 return NULL;
             }
@@ -288,7 +280,7 @@ public:
 
             return motion3Event;
         }
-        
+
         return NULL;
     };
 };

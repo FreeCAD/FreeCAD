@@ -128,13 +128,13 @@ using namespace SIM::Coin3D::Quarter;
 #endif
   
 //We need to avoid buffer swaping when initializing a QPainter on this widget
-class QUARTER_DLL_API CustomGLWidget : public QGLWidget {
+class CustomGLWidget : public QGLWidget {
 public:
     CustomGLWidget(const QGLFormat& fo, QWidget* parent = 0, const QGLWidget* shareWidget = 0, Qt::WindowFlags f = 0)
-     : QGLWidget(fo, parent, shareWidget, f) {
-       
+     : QGLWidget(fo, parent, shareWidget, f)
+    {
          setAutoBufferSwap(false);
-     };    
+    }
 };
 
 /*! constructor */
