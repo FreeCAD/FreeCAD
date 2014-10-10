@@ -309,7 +309,10 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
         return Base::Vector3d(0,0,0);
     std::string subName = names.front();
     Part::Feature* feat = static_cast<Part::Feature*>(obj);
-    TopoDS_Shape sh = feat->Shape.getShape().getSubShape(subName.c_str());
+    const Part::TopoShape& shape = feat->Shape.getShape();
+    if (shape.isNull())
+        return Base::Vector3d(0,0,0);
+    TopoDS_Shape sh = shape.getSubShape(subName.c_str());
     gp_Dir dir;
 
     if (sh.ShapeType() == TopAbs_FACE) {

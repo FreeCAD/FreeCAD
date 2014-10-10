@@ -55,8 +55,6 @@ ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce()
 
 bool ViewProviderFemConstraintForce::setEdit(int ModNum)
 {
-    Base::Console().Error("ViewProviderFemConstraintForce::setEdit(%u)\n", ModNum);
-
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
