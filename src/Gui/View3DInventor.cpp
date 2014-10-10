@@ -117,24 +117,30 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
       case View3DInventorViewer::MSAA2x:
           f.setSampleBuffers(true);
           f.setSamples(2);
+          _viewer = new View3DInventorViewer(f,this);
           break;
       case View3DInventorViewer::MSAA4x:
           f.setSampleBuffers(true);
           f.setSamples(4);
+          _viewer = new View3DInventorViewer(f,this);
           break;
       case View3DInventorViewer::MSAA8x:
           f.setSampleBuffers(true);
           f.setSamples(8);
+          _viewer = new View3DInventorViewer(f,this);
+          break;
+      case View3DInventorViewer::Smoothing:
+          _viewer = new View3DInventorViewer(this);
+          _viewer->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
           break;
       case View3DInventorViewer::None:
       default:
-          f.setSamples(1);
+          _viewer = new View3DInventorViewer(this);
           break;
-    };
-    
+    }
+
     // create the inventor widget and set the defaults
-#if !defined (NO_USE_QT_MDI_AREA)    
-    _viewer = new View3DInventorViewer(f,this);
+#if !defined (NO_USE_QT_MDI_AREA)
     _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
@@ -145,7 +151,6 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
     //_viewer->getGLWidget()->setAttribute(Qt::WA_NoMousePropagation);
     setCentralWidget(stack);
 #else
-    _viewer = new View3DInventorViewer(f,this);
     _viewer->setDocument(this->_pcDocument);
 #endif
     
