@@ -453,8 +453,11 @@ void TopoShape::convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf)
 {
     trsf.SetValues(mtrx[0][0],mtrx[0][1],mtrx[0][2],mtrx[0][3],
                    mtrx[1][0],mtrx[1][1],mtrx[1][2],mtrx[1][3],
-                   mtrx[2][0],mtrx[2][1],mtrx[2][2],mtrx[2][3],
-                   0.00001,0.00001);
+                   mtrx[2][0],mtrx[2][1],mtrx[2][2],mtrx[2][3]
+#if OCC_VERSION_HEX < 0x060800
+                  , 0.00001,0.00001
+#endif
+                ); //precision was removed in OCCT CR0025194
 }
 
 void TopoShape::convertToMatrix(const gp_Trsf& trsf, Base::Matrix4D& mtrx)
@@ -2043,8 +2046,11 @@ void TopoShape::transformShape(const Base::Matrix4D& rclTrf, bool copy)
     gp_Trsf mat;
     mat.SetValues(rclTrf[0][0],rclTrf[0][1],rclTrf[0][2],rclTrf[0][3],
                   rclTrf[1][0],rclTrf[1][1],rclTrf[1][2],rclTrf[1][3],
-                  rclTrf[2][0],rclTrf[2][1],rclTrf[2][2],rclTrf[2][3],
-                  0.00001,0.00001);
+                  rclTrf[2][0],rclTrf[2][1],rclTrf[2][2],rclTrf[2][3]
+#if OCC_VERSION_HEX < 0x060800
+                  , 0.00001,0.00001
+#endif
+                ); //precision was removed in OCCT CR0025194
 
     // location transformation
     BRepBuilderAPI_Transform mkTrf(this->_Shape, mat, copy ? Standard_True : Standard_False);
