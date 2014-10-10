@@ -116,14 +116,14 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
     switch( hGrp->GetInt("AntiAliasing",0) ) {
       case View3DInventorViewer::MSAA2x:
           f.setSampleBuffers(true);
-	  f.setSamples(2);
+          f.setSamples(2);
           break;
       case View3DInventorViewer::MSAA4x:
-	  f.setSampleBuffers(true);
+          f.setSampleBuffers(true);
           f.setSamples(4);
           break;
       case View3DInventorViewer::MSAA8x:
-	  f.setSampleBuffers(true);
+          f.setSampleBuffers(true);
           f.setSamples(8);
           break;
       case View3DInventorViewer::None:
@@ -360,23 +360,23 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     else if (strcmp(Reason, "DimensionsVisible") == 0)
     {
       if (rGrp.GetBool("DimensionsVisible", true))
-	_viewer->turnAllDimensionsOn();
+        _viewer->turnAllDimensionsOn();
       else
-	_viewer->turnAllDimensionsOff();
+        _viewer->turnAllDimensionsOff();
     }
     else if (strcmp(Reason, "Dimensions3dVisible") == 0)
     {
       if (rGrp.GetBool("Dimensions3dVisible", true))
-	_viewer->turn3dDimensionsOn();
+        _viewer->turn3dDimensionsOn();
       else
-	_viewer->turn3dDimensionsOff();
+        _viewer->turn3dDimensionsOff();
     }
     else if (strcmp(Reason, "DimensionsDeltaVisible") == 0)
     {
       if (rGrp.GetBool("DimensionsDeltaVisible", true))
-	_viewer->turnDeltaDimensionsOn();
+        _viewer->turnDeltaDimensionsOn();
       else
-	_viewer->turnDeltaDimensionsOff();
+        _viewer->turnDeltaDimensionsOff();
     } 
     else{
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
@@ -388,7 +388,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
         r3 = ((col3 >> 24) & 0xff) / 255.0; g3 = ((col3 >> 16) & 0xff) / 255.0; b3 = ((col3 >> 8) & 0xff) / 255.0;
         r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
-	_viewer->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
+        _viewer->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
         if (rGrp.GetBool("UseBackgroundColorMid",false) == false)
             _viewer->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));
         else
@@ -557,8 +557,8 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
         return true;
     }
     else if (strcmp("ViewVR",pMsg) == 0) {
-		// call the VR portion of the viewer
-		_viewer->viewVR();
+        // call the VR portion of the viewer
+        _viewer->viewVR();
         return true;
     }
     else if(strcmp("ViewSelection",pMsg) == 0) {
@@ -724,7 +724,7 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
 #ifdef BUILD_VR
         return true;
 #else
-		return false;
+        return false;
 #endif 
     else if(strcmp("ViewSelection",pMsg) == 0)
         return true;
