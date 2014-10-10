@@ -39,6 +39,7 @@
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
+# include <Standard_Version.hxx>
 #endif
 
 #include <Base/Writer.h>
@@ -1245,8 +1246,11 @@ void SketchObject::rebuildExternalGeometry(void)
     gp_Trsf mov;
     mov.SetValues(invMat[0][0],invMat[0][1],invMat[0][2],invMat[0][3],
                   invMat[1][0],invMat[1][1],invMat[1][2],invMat[1][3],
-                  invMat[2][0],invMat[2][1],invMat[2][2],invMat[2][3],
-                  0.00001,0.00001);
+                  invMat[2][0],invMat[2][1],invMat[2][2],invMat[2][3]
+#if OCC_VERSION_HEX < 0x060800
+                  , 0.00001, 0.00001
+#endif
+                  ); //precision was removed in OCCT CR0025194
 
     gp_Ax3 sketchAx3(gp_Pnt(Pos.x,Pos.y,Pos.z),
                      gp_Dir(dN.x,dN.y,dN.z),
