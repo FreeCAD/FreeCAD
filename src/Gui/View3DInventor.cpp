@@ -931,7 +931,6 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     //
     // It is important to set the focus proxy to get all key events otherwise we would loose
     // control after redirecting the first key event to the GL widget.
-    // We redirect these events in keyPressEvent() and keyReleaseEvent().
     if (oldmode == Child) {
         // To make a global shortcut working from this window we need to add
         // all existing actions from the mainwindow and its sub-widgets 
@@ -980,30 +979,14 @@ void View3DInventor::keyPressEvent (QKeyEvent* e)
         if (e->key() == Qt::Key_Escape) {
             setCurrentViewMode(Child);
         }
-        else {
-            // Note: The key events should be redirected directly to the GL widget and not to the main window
-            // otherwise the first redirected key event always disappears in hyperspace.
-            //
-            // send the event to the GL widget that converts to and handles an SoEvent
-            QWidget* w = _viewer->getGLWidget();
-            QApplication::sendEvent(w,e);
-        }
     }
-    else {
-        QMainWindow::keyPressEvent(e);
-    }
+
+    QMainWindow::keyPressEvent(e);
 }
 
 void View3DInventor::keyReleaseEvent (QKeyEvent* e)
 {
-    ViewMode mode = MDIView::currentViewMode();
-    if (mode != Child) {
-        // send the event to the GL widget that converts to and handles an SoEvent
-        QWidget* w = _viewer->getGLWidget();
-        QApplication::sendEvent(w,e);
-    } else {
-        QMainWindow::keyReleaseEvent(e);
-    }
+    QMainWindow::keyReleaseEvent(e);
 }
 
 void View3DInventor::focusInEvent (QFocusEvent * e)
