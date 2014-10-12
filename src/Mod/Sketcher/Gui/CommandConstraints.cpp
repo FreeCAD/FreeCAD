@@ -2431,7 +2431,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                 it != vals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->First == GeoId)
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
             {
                 switch((*it)->AlignmentType){
                     case Sketcher::EllipseMajorDiameter:

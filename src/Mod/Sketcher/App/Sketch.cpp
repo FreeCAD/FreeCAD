@@ -2308,42 +2308,26 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
         // TODO: Ellipse
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
-        if (pos == mid) {
+        if (pos == mid | pos == none) {
             MoveParameters.resize(2); // cx,cy
             p0.x = &MoveParameters[0];
             p0.y = &MoveParameters[1];
             *p0.x = *center.x;
             *p0.y = *center.y;
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
-        } else if (pos == none) {
-            // TODO: Ellipse
-            MoveParameters.resize(4); // x,y,cx,cy
-            GCS::Ellipse &e = Ellipses[Geoms[geoId].index];
-            p0.x = &MoveParameters[0];
-            p0.y = &MoveParameters[1];
-            *p0.x = *center.x;
-            *p0.y = *center.y + *e.radmin;
-            GCSsys.addConstraintPointOnEllipse(p0,e,-1);
-            p1.x = &MoveParameters[2];
-            p1.y = &MoveParameters[3];
-            *p1.x = *center.x;
-            *p1.y = *center.y;
-            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
-            GCSsys.rescaleConstraint(i-1, 0.01);
-            GCSsys.rescaleConstraint(i, 0.01);
         }
     } else if (Geoms[geoId].type == ArcOfEllipse) {
         // TODO: ArcOfEllipse
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
-        if (pos == mid) {
+        if (pos == mid || pos == none) {
             MoveParameters.resize(2); // cx,cy
             p0.x = &MoveParameters[0];
             p0.y = &MoveParameters[1];
             *p0.x = *center.x;
             *p0.y = *center.y;
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
-        } else if (pos == start || pos == end || pos == none) {
+        } else if (pos == start || pos == end) {
             // TODO: Ellipse
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == start || pos == end) {
@@ -2354,14 +2338,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 *p0.x = *p.x;
                 *p0.y = *p.y;
                 GCSsys.addConstraintP2PCoincident(p0,p,-1);
-            } else if (pos == none) {
-                GCS::ArcOfEllipse &a = ArcsOfEllipse[Geoms[geoId].index];
-                p0.x = &MoveParameters[0];
-                p0.y = &MoveParameters[1];
-                *p0.x = *center.x;
-                *p0.y = *center.y + *a.radmin;
-                GCSsys.addConstraintPointOnArcOfEllipse(p0,a,-1);
-            }
+            } 
             p1.x = &MoveParameters[2];
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
