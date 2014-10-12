@@ -8,6 +8,7 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+	exportDRAWEXE.py
     DESTINATION
         Mod/Sandbox
 )
