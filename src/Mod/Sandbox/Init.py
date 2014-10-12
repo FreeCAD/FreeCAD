@@ -33,6 +33,6 @@ ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Sandbox")
 ParGrp.SetString("HelpIndex",        "Sandbox/Help/index.html")
 ParGrp.SetString("WorkBenchName",    "Sandbox Design")
 ParGrp.SetString("WorkBenchModule",  "SandboxWorkbench.py")
-
-
+import FreeCAD
+FreeCAD.addExportType("DRAWEXE source (*.draw)","exportDRAWEXE")
 
