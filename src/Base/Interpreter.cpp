@@ -26,7 +26,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#   include <Python.h>
 #   include <sstream>
 #   include <boost/regex.hpp>
 #endif

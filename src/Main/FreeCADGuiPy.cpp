@@ -27,7 +27,6 @@
 #   include <config.h>
 #endif // HAVE_CONFIG_H
 
-#include <Python.h>
 #include <QApplication>
 #include <QIcon>
 #include <QThread>
@@ -37,6 +36,7 @@
 #include <QX11EmbedWidget>
 #endif
 // FreeCAD Base header
+#include <CXX/WrapPython.h>
 #include <Base/Exception.h>
 #include <Base/Factory.h>
 #include <Base/Interpreter.h>

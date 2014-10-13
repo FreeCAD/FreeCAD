@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
 # include <QApplication>
 # include <QClipboard>
 # include <QDialogButtonBox>
@@ -38,6 +37,7 @@
 #include "Splashscreen.h"
 #include "ui_AboutApplication.h"
 #include <Base/Console.h>
+#include <CXX/WrapPython.h>
 #include <App/Application.h>
 #include <Gui/MainWindow.h>
 
