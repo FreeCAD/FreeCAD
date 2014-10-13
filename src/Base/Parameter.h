@@ -36,9 +36,21 @@
 
 // Include files
 #include <Python.h>
+
+#ifdef FC_OS_MACOSX
+#undef toupper
+#undef tolower
+#undef isupper
+#undef islower
+#undef isspace
+#undef isalpha
+#undef isalnum
+#endif
+
 #ifdef FC_OS_LINUX
 #include <sstream>
 #endif
+
 #include <map>
 #include <vector>
 #include <xercesc/util/XercesDefs.hpp>

@@ -29,7 +29,6 @@
 
 #include "Document.h"
 #include <Base/FileInfo.h>
-#include <Base/PyTools.h>
 #include "DocumentObject.h"
 #include "DocumentObjectPy.h"
 
