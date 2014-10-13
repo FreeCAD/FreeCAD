@@ -2290,10 +2290,20 @@ public:
                 startAngle += M_PI/2;
             }
             
-            //startAngle=-M_PI/4;
-            //endAngle=M_PI/4;
-            
+            //calculate focus point vecF2
+            double cf;//distance from center to focus
+            cf = sqrt( abs(a*a - b*b) );//using abs, avoided using different formula for a>b/a<b cases
+            Base::Vector2D vecCF;// a vector from center to focus2
+            vecCF = majAxisDir;
+            vecCF.Normalize();
+            vecCF.Scale(-cf);//minus sign is because we want focus2 not focus1
+            Base::Vector2D vecF2 = centerPoint + vecCF;
+
             Gui::Command::openCommand("Add sketch arc of ellipse");
+
+            //Add arc of ellipse, point and constrain point as focus2. We add focus2 for it to balance
+            //the intrinsic focus1, in order to balance out the intrinsic invisible focus1 when AOE is
+            //dragged by its center
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.ArcOfEllipse"
                 "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),"
@@ -2302,7 +2312,21 @@ public:
                     majAxisPoint.fX, majAxisPoint.fY,                                    
                     minAxisPoint.fX, minAxisPoint.fY,
                     centerPoint.fX, centerPoint.fY,
-                    startAngle, endAngle); //arcAngle > 0 ? 0 : 1);
+                    startAngle, endAngle);
+            int iAOE = getHighestCurveIndex();//index of the arc of ellipse we just created
+
+            Gui::Command::doCommand(Gui::Command::Doc,
+                "App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                    sketchgui->getObject()->getNameInDocument(),
+                    vecF2.fX,vecF2.fY);
+            int iPointF2 = getHighestCurveIndex();//index of the point we just created
+
+            Gui::Command::doCommand(Gui::Command::Doc,
+                "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    iPointF2,Sketcher::start,iAOE);
+
+
 
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
