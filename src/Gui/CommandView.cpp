@@ -1876,10 +1876,10 @@ StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
   : Command("Std_ViewIvStereoRedGreen")
 {
   sGroup        = QT_TR_NOOP("Standard-View");
-  sMenuText     = QT_TR_NOOP("Stereo red/green");
-  sToolTipText  = QT_TR_NOOP("Switch stereo viewing to red/green");
+  sMenuText     = QT_TR_NOOP("Stereo red/cyan");
+  sToolTipText  = QT_TR_NOOP("Switch stereo viewing to red/cyan");
   sWhatsThis    = "Std_ViewIvStereo";
-  sStatusTip    = QT_TR_NOOP("Switch stereo viewing to red/green");
+  sStatusTip    = QT_TR_NOOP("Switch stereo viewing to red/cyan");
   sPixmap       = "Std_Tool7";
   eType         = Alter3DView;
 }
