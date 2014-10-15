@@ -27,6 +27,7 @@
 # include <qapplication.h>
 # include <qdir.h>
 # include <qfileinfo.h>
+# include <QGLWidget>
 # include <qmessagebox.h>
 # include <qstatusbar.h>
 # include <boost/signals.hpp>
@@ -920,41 +921,44 @@ void Document::addRootObjectsToGroup(const std::vector<App::DocumentObject*>& ob
     }
 }
 
-void Document::createView(const char* sType) 
+void Document::createView(const Base::Type& typeId)
 {
-    View3DInventor* view3D = new View3DInventor(this, getMainWindow());
+    if (!typeId.isDerivedFrom(MDIView::getClassTypeId()))
+        return;
 
-    //get first view override mode and copy
-    std::list<MDIView*> theViews = this->getMDIViews();
-    std::list<MDIView*>::iterator viewIt;
-    for (viewIt = theViews.begin(); viewIt != theViews.end(); ++viewIt)
-    {
-        View3DInventor *tempView = dynamic_cast<View3DInventor *>(*viewIt);
-        if (!tempView)
-            continue;
-        std::string overrideMode = tempView->getViewer()->getOverrideMode();
-        view3D->getViewer()->setOverrideMode(overrideMode);
-        break;
+    std::list<MDIView*> theViews = this->getMDIViewsOfType(typeId);
+    if (typeId == View3DInventor::getClassTypeId()) {
+        View3DInventor* firstView = 0;
+        QGLWidget* shareWidget = 0;
+        if (!theViews.empty()) {
+            firstView = dynamic_cast<View3DInventor*>(theViews.front());
+            shareWidget = qobject_cast<QGLWidget*>(firstView->getViewer()->getGLWidget());
+        }
+
+        View3DInventor* view3D = new View3DInventor(this, getMainWindow(), shareWidget);
+        if (firstView) {
+            std::string overrideMode = firstView->getViewer()->getOverrideMode();
+            view3D->getViewer()->setOverrideMode(overrideMode);
+        }
+
+        // attach the viewprovider
+        std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
+        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1)
+            view3D->getViewer()->addViewProvider(It1->second);
+        std::map<std::string,ViewProvider*>::const_iterator It2;
+        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2)
+            view3D->getViewer()->addViewProvider(It2->second);
+
+        const char* name = getDocument()->Label.getValue();
+        QString title = QString::fromAscii("%1 : %2[*]")
+            .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
+
+        view3D->setWindowTitle(title);
+        view3D->setWindowModified(this->isModified());
+        view3D->setWindowIcon(QApplication::windowIcon());
+        view3D->resize(400, 300);
+        getMainWindow()->addWindow(view3D);
     }
-
-    // attach the viewprovider
-    std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
-    for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1)
-        view3D->getViewer()->addViewProvider(It1->second);
-    std::map<std::string,ViewProvider*>::const_iterator It2;
-    for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2)
-        view3D->getViewer()->addViewProvider(It2->second);
-
-    const char* name = getDocument()->Label.getValue();
-
-    QString title = QString::fromAscii("%1 : %2[*]")
-        .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
-
-    view3D->setWindowTitle(title);
-    view3D->setWindowModified(this->isModified());
-    view3D->setWindowIcon(QApplication::windowIcon());
-    view3D->resize(400, 300);
-    getMainWindow()->addWindow(view3D);
 }
 
 void Document::attachView(Gui::BaseView* pcView, bool bPassiv)

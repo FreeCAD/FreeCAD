@@ -297,16 +297,16 @@ public:
 
 
 // *************************************************************************
-View3DInventorViewer::View3DInventorViewer(QWidget* parent)
-    : Quarter::SoQTQuarterAdaptor(parent), editViewProvider(0), navigation(0),
+View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QGLWidget* sharewidget)
+    : Quarter::SoQTQuarterAdaptor(parent, sharewidget), editViewProvider(0), navigation(0),
       framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
       allowredir(FALSE), overrideMode("As Is")
 {
     init();
 };
 
-View3DInventorViewer::View3DInventorViewer(const QGLFormat& format, QWidget* parent)
-    : Quarter::SoQTQuarterAdaptor(format, parent), editViewProvider(0), navigation(0),
+View3DInventorViewer::View3DInventorViewer(const QGLFormat& format, QWidget* parent, const QGLWidget* sharewidget)
+    : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), editViewProvider(0), navigation(0),
       framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
       allowredir(FALSE), overrideMode("As Is")
 {

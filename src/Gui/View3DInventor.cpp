@@ -98,7 +98,8 @@ void GLOverlayWidget::paintEvent(QPaintEvent* ev)
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
 
-View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags)
+View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
+                               const QGLWidget* sharewidget, Qt::WFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
 {
     stack = new QStackedWidget(this);
@@ -106,38 +107,46 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent, Qt::W
     setMouseTracking(true);
     // accept drops on the window, get handled in dropEvent, dragEnterEvent   
     setAcceptDrops(true);
-  
+
     // attach parameter Observer
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     hGrp->Attach(this);
 
-    //anti aliasing settings
+    //anti-aliasing settings
     QGLFormat f;
+    bool smoothing = false;
+    bool glformat = false;
     switch( hGrp->GetInt("AntiAliasing",0) ) {
       case View3DInventorViewer::MSAA2x:
+          glformat = true;
           f.setSampleBuffers(true);
           f.setSamples(2);
-          _viewer = new View3DInventorViewer(f,this);
           break;
       case View3DInventorViewer::MSAA4x:
+          glformat = true;
           f.setSampleBuffers(true);
           f.setSamples(4);
-          _viewer = new View3DInventorViewer(f,this);
           break;
       case View3DInventorViewer::MSAA8x:
+          glformat = true;
           f.setSampleBuffers(true);
           f.setSamples(8);
-          _viewer = new View3DInventorViewer(f,this);
           break;
       case View3DInventorViewer::Smoothing:
-          _viewer = new View3DInventorViewer(this);
-          _viewer->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
+          smoothing = true;
           break;
       case View3DInventorViewer::None:
       default:
-          _viewer = new View3DInventorViewer(this);
           break;
     }
+
+    if (glformat)
+        _viewer = new View3DInventorViewer(f, this, sharewidget);
+    else
+        _viewer = new View3DInventorViewer(this, sharewidget);
+
+    if (smoothing)
+        _viewer->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
 
     // create the inventor widget and set the defaults
 #if !defined (NO_USE_QT_MDI_AREA)
