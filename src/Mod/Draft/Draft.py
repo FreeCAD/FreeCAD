@@ -1765,7 +1765,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     v = getProj(e.Vertexes[-1].Point)
                     svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
                 else:
-                    bspline=e.Curve.toBSpline()
+                    bspline=e.Curve.toBSpline(e.FirstParameter,e.LastParameter)
                     if bspline.Degree > 3 or bspline.isRational():
                         try:
                             bspline=bspline.approximateBSpline(0.05,20, 3,'C0')
