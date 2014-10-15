@@ -641,7 +641,7 @@ void Application::slotNewDocument(const App::Document& Doc)
 
 
     signalNewDocument(*pDoc);
-    pDoc->createView("View3DIv");
+    pDoc->createView(View3DInventor::getClassTypeId());
     qApp->processEvents(); // make sure to show the window stuff on the right place
 }
 

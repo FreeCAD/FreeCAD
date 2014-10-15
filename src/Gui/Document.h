@@ -142,7 +142,7 @@ public:
     Gui::MDIView* getActiveView(void) const;
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
     /// Creat a new view
-    void createView(const char* sType); 
+    void createView(const Base::Type& typeId);
     /** send messages to the active view 
      * Send a specific massage to the active view and is able to recive a
      * return massage

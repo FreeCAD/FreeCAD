@@ -120,8 +120,8 @@ public:
     };
     //@}
 
-    View3DInventorViewer (QWidget *parent);
-    View3DInventorViewer (const QGLFormat& format, QWidget *parent);
+    View3DInventorViewer (QWidget *parent, const QGLWidget* sharewidget = 0);
+    View3DInventorViewer (const QGLFormat& format, QWidget *parent, const QGLWidget* sharewidget = 0);
     virtual ~View3DInventorViewer();
     
     void init();
