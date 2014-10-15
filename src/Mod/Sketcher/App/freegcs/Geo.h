@@ -65,6 +65,30 @@ namespace GCS
         Point center;
         double *rad;
     };
+    
+    class Ellipse
+    {
+    public:
+        Ellipse(){ radmin = 0;}
+        Point center; 
+        double *focus1X; //+u
+        double *focus1Y;
+        double *radmin;
+    };
+    
+    class ArcOfEllipse
+    {
+    public:
+        ArcOfEllipse(){startAngle=0;endAngle=0;radmin = 0;}
+        double *startAngle;
+        double *endAngle;
+        double *radmin;
+        Point start;
+        Point end;
+        Point center;
+        double *focus1X; //+u
+        double *focus1Y;
+    };
 
 } //namespace GCS
 

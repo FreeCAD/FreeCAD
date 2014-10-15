@@ -93,6 +93,20 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = Equal;
                 valid = true;
             }
+            else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
+                this->getConstraintPtr()->Type = InternalAlignment;
+                
+                valid = true;
+                if(strstr(ConstraintType,"EllipseMajorDiameter") != NULL)
+                    this->getConstraintPtr()->AlignmentType=EllipseMajorDiameter;
+                else if(strstr(ConstraintType,"EllipseMinorDiameter") != NULL)
+                    this->getConstraintPtr()->AlignmentType=EllipseMinorDiameter;                    
+                else {
+                    this->getConstraintPtr()->AlignmentType=Undef;
+                    valid = false;
+                }
+            }
+            
             if (valid) {
                 this->getConstraintPtr()->First = FirstIndex;
                 this->getConstraintPtr()->Second = SecondIndex;
@@ -154,6 +168,20 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             else if (strcmp("PointOnObject", ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = PointOnObject;
                 valid = true;
+            }
+            else if (strstr(ConstraintType,"InternalAlignment") != NULL) {
+                this->getConstraintPtr()->Type = InternalAlignment;
+                
+                valid = true;
+                   
+                if(strstr(ConstraintType,"EllipseFocus1") != NULL)
+                    this->getConstraintPtr()->AlignmentType=EllipseFocus1; 
+                else if(strstr(ConstraintType,"EllipseFocus2") != NULL)
+                    this->getConstraintPtr()->AlignmentType=EllipseFocus2;
+                else {
+                    this->getConstraintPtr()->AlignmentType=Undef;
+                    valid = false;
+                }
             }
             if (valid) {
                 this->getConstraintPtr()->First    = FirstIndex;
@@ -340,17 +368,27 @@ std::string ConstraintPy::representation(void) const
     std::stringstream result;
     result << "<Constraint " ;
     switch(this->getConstraintPtr()->Type) {
-        case None       : result << "'None'>";break;
-        case DistanceX  : result << "'DistanceX'>";break;
-        case DistanceY  : result << "'DistanceY'>";break;
-        case Coincident : result << "'Coincident'>";break;
-        case Horizontal : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
-        case Vertical   : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
-        case Parallel   : result << "'Parallel'>";break;
-        case Tangent    : result << "'Tangent'>";break;
-        case Distance   : result << "'Distance'>";break;
-        case Angle      : result << "'Angle'>";break;
-        default         : result << "'?'>";break;
+        case None               : result << "'None'>";break;
+        case DistanceX          : result << "'DistanceX'>";break;
+        case DistanceY          : result << "'DistanceY'>";break;
+        case Coincident         : result << "'Coincident'>";break;
+        case Horizontal         : result << "'Horizontal' (" << getConstraintPtr()->First << ")>";break;
+        case Vertical           : result << "'Vertical' (" << getConstraintPtr()->First << ")>";break;
+        case Parallel           : result << "'Parallel'>";break;
+        case Tangent            : result << "'Tangent'>";break;
+        case Distance           : result << "'Distance'>";break;
+        case Angle              : result << "'Angle'>";break;
+        case InternalAlignment  : 
+            switch(this->getConstraintPtr()->AlignmentType) {
+                case Undef                  : result << "'InternalAlignment:Undef'>";break;
+                case EllipseMajorDiameter   : result << "'InternalAlignment:EllipseMajorDiameter'>";break;
+                case EllipseMinorDiameter   : result << "'InternalAlignment:EllipseMinorDiameter'>";break;
+                case EllipseFocus1          : result << "'InternalAlignment:EllipseFocus1'>";break;
+                case EllipseFocus2          : result << "'InternalAlignment:EllipseFocus2'>";break;
+                default                     : result << "'InternalAlignment:?'>";break;
+            }
+        break;   
+        default                 : result << "'?'>";break;
     }
     return result.str();
 }

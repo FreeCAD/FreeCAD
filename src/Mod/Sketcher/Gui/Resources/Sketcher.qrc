@@ -1,10 +1,19 @@
 <RCC>
     <qresource> 
         <file>icons/Constraint_Concentric.svg</file>
+        <file>icons/Constraint_Ellipse_Axis_Angle.svg</file>
+        <file>icons/Constraint_Ellipse_Major_Radius.svg</file>
+        <file>icons/Constraint_Ellipse_Minor_Radius.svg</file>
+        <file>icons/Constraint_Ellipse_Radii.svg</file>
         <file>icons/Constraint_EqualLength.svg</file>
         <file>icons/Constraint_ExternalAngle.svg</file>
         <file>icons/Constraint_Horizontal.svg</file>
         <file>icons/Constraint_HorizontalDistance.svg</file>
+        <file>icons/Constraint_InternalAlignment.svg</file>
+        <file>icons/Constraint_InternalAlignment_Ellipse_Focus1.svg</file>
+        <file>icons/Constraint_InternalAlignment_Ellipse_Focus2.svg</file>
+        <file>icons/Constraint_InternalAlignment_Ellipse_MajorAxis.svg</file>
+        <file>icons/Constraint_InternalAlignment_Ellipse_MinorAxis.svg</file>
         <file>icons/Constraint_InternalAngle.svg</file>
         <file>icons/Constraint_Length.svg</file>
         <file>icons/Constraint_Parallel.svg</file>
@@ -36,6 +45,7 @@
         <file>icons/Sketcher_Create3PointCircle.svg</file>
         <file>icons/Sketcher_CreateArc.svg</file>
         <file>icons/Sketcher_CreateCircle.svg</file>
+        <file>icons/Sketcher_CreateEllipse.svg</file>
         <file>icons/Sketcher_CreateFillet.svg</file>
         <file>icons/Sketcher_CreateHeptagon.svg</file>
         <file>icons/Sketcher_CreateHexagon.svg</file>
@@ -57,11 +67,24 @@
         <file>icons/Sketcher_Element_Arc_StartingPoint.svg</file>
         <file>icons/Sketcher_Element_Circle_Edge.svg</file>
         <file>icons/Sketcher_Element_Circle_MidPoint.svg</file>
+        <file>icons/Sketcher_Element_Ellipse_All.svg</file>
+        <file>icons/Sketcher_Element_Ellipse_CentrePoint.svg</file>
+        <file>icons/Sketcher_Element_Ellipse_Edge_1.svg</file>
+        <file>icons/Sketcher_Element_Ellipse_Edge_2.svg</file>
+        <file>icons/Sketcher_Element_Ellipse_Focus1.svg</file>
+        <file>icons/Sketcher_Element_Ellipse_Focus2.svg</file>
+        <file>icons/Sketcher_Element_Ellipse_MajorAxis.svg</file>
+        <file>icons/Sketcher_Element_Ellipse_MinorAxis.svg</file>
+        <file>icons/Sketcher_Element_Elliptical_Arc_Centre_Point.svg</file>
+        <file>icons/Sketcher_Element_Elliptical_Arc_Edge.svg</file>
+        <file>icons/Sketcher_Element_Elliptical_Arc_End_Point.svg</file>
+        <file>icons/Sketcher_Element_Elliptical_Arc_Start_Point.svg</file>
         <file>icons/Sketcher_Element_Line_Edge.svg</file>
         <file>icons/Sketcher_Element_Line_EndPoint.svg</file>
         <file>icons/Sketcher_Element_Line_StartingPoint.svg</file>
         <file>icons/Sketcher_Element_Point_StartingPoint.svg</file>
         <file>icons/Sketcher_Element_SelectionTypeInvalid.svg</file>
+        <file>icons/Sketcher_Elliptical_Arc.svg</file>
         <file>icons/Sketcher_External.svg</file>
         <file>icons/Sketcher_LeaveSketch.svg</file>
         <file>icons/Sketcher_MapSketch.svg</file>

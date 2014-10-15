@@ -43,6 +43,7 @@ const int Constraint::GeoUndef = -2000;
 
 Constraint::Constraint()
 : Type(None),
+  AlignmentType(Undef),
   Name(""),
   Value(0.0),
   First(GeoUndef),
@@ -58,6 +59,7 @@ Constraint::Constraint()
 
 Constraint::Constraint(const Constraint& from)
 : Type(from.Type),
+  AlignmentType(from.AlignmentType),
   Name(from.Name),
   Value(from.Value),
   First(from.First),
@@ -92,18 +94,22 @@ unsigned int Constraint::getMemSize (void) const
 
 void Constraint::Save (Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Constrain "
-    << "Name=\""          <<  Name            << "\" "
-    << "Type=\""          <<  (int)Type       << "\" "
-    << "Value=\""         <<  Value           << "\" "
-    << "First=\""         <<  First           << "\" "
-    << "FirstPos=\""      <<  (int)  FirstPos << "\" "
-    << "Second=\""        <<  Second          << "\" "
-    << "SecondPos=\""     <<  (int) SecondPos << "\" "
-    << "Third=\""         <<  Third           << "\" "
-    << "ThirdPos=\""      <<  (int) ThirdPos  << "\" "
-    << "LabelDistance=\"" <<  LabelDistance   << "\" "
-    << "LabelPosition=\"" <<  LabelPosition   << "\" />"
+    writer.Stream() << writer.ind()     << "<Constrain "
+    << "Name=\""                        <<  Name                << "\" "
+    << "Type=\""                        <<  (int)Type           << "\" ";
+    if(this->Type==InternalAlignment)
+        writer.Stream() 
+        << "InternalAlignmentType=\""   <<  (int)AlignmentType  << "\" ";
+    writer.Stream()     
+    << "Value=\""                       <<  Value               << "\" "
+    << "First=\""                       <<  First               << "\" "
+    << "FirstPos=\""                    <<  (int)  FirstPos     << "\" "
+    << "Second=\""                      <<  Second              << "\" "
+    << "SecondPos=\""                   <<  (int) SecondPos     << "\" "
+    << "Third=\""                       <<  Third               << "\" "
+    << "ThirdPos=\""                    <<  (int) ThirdPos      << "\" "
+    << "LabelDistance=\""               <<  LabelDistance       << "\" "
+    << "LabelPosition=\""               <<  LabelPosition       << "\" />"
     << std::endl;
 }
 
@@ -118,6 +124,11 @@ void Constraint::Restore(XMLReader &reader)
     Second    = reader.getAttributeAsInteger("Second");
     SecondPos = (PointPos)  reader.getAttributeAsInteger("SecondPos");
 
+    if(this->Type==InternalAlignment)
+        AlignmentType = (InternalAlignmentType) reader.getAttributeAsInteger("InternalAlignmentType");
+    else
+        AlignmentType = Undef;
+    
     // read the third geo group if present
     if (reader.hasAttribute("Third")) {
         Third    = reader.getAttributeAsInteger("Third");
