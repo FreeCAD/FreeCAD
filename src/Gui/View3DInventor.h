@@ -30,6 +30,7 @@
 #include <QImage>
 
 class SoNode;
+class QGLWidget;
 class QPrinter;
 class QStackedWidget;
 
