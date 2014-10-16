@@ -82,6 +82,8 @@
 # include <GC_MakeEllipse.hxx>
 # include <gce_MakeParab.hxx>
 # include <GC_MakeArcOfParabola.hxx>
+# include <GC_MakeHyperbola.hxx>
+# include <GC_MakeArcOfHyperbola.hxx>
 # include <GC_MakeLine.hxx>
 # include <GC_MakeSegment.hxx>
 # include <Precision.hxx>
@@ -98,6 +100,7 @@
 #include "BezierCurvePy.h"
 #include "BSplineCurvePy.h"
 #include "HyperbolaPy.h"
+#include "ArcOfHyperbolaPy.h"
 #include "OffsetCurvePy.h"
 #include "ParabolaPy.h"
 #include "BezierSurfacePy.h"
@@ -1313,16 +1316,441 @@ Geometry *GeomHyperbola::clone(void) const
     return newHyp;
 }
 
+Base::Vector3d GeomHyperbola::getCenter(void) const
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+    gp_Ax1 axis = h->Axis();
+    const gp_Pnt& loc = axis.Location();
+    return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
+}
+
+void GeomHyperbola::setCenter(const Base::Vector3d& Center)
+{
+    gp_Pnt p1(Center.x,Center.y,Center.z);
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+
+    try {
+        h->SetLocation(p1);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomHyperbola::getMajorRadius(void) const
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+    return h->MajorRadius();
+}
+
+void GeomHyperbola::setMajorRadius(double Radius)
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+
+    try {
+        h->SetMajorRadius(Radius);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomHyperbola::getMinorRadius(void) const
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+    return h->MinorRadius();
+}
+
+void GeomHyperbola::setMinorRadius(double Radius)
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(handle());
+
+    try {
+        h->SetMinorRadius(Radius);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomHyperbola::getAngleXU(void) const
+{   
+    gp_Pnt center = this->myCurve->Axis().Location();
+    gp_Dir normal = this->myCurve->Axis().Direction();
+    gp_Dir xdir = this->myCurve->XAxis().Direction(); 
+    
+    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
+    
+    return -xdir.AngleWithRef(xdirref.XDirection(),normal);
+}
+
+void GeomHyperbola::setAngleXU(double angle)
+{
+    try {
+        gp_Pnt center = this->myCurve->Axis().Location();
+        gp_Dir normal = this->myCurve->Axis().Direction();
+        
+        gp_Ax1 normaxis(center, normal);
+        
+        gp_Ax2 xdirref(center, normal);
+        
+        xdirref.Rotate(normaxis,angle);
+        
+        this->myCurve->SetPosition(xdirref);
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
 // Persistence implementer 
-unsigned int GeomHyperbola::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomHyperbola::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomHyperbola::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomHyperbola::getMemSize (void) const
+{
+    return sizeof(Geom_Hyperbola);
+}
+
+void GeomHyperbola::Save(Base::Writer& writer) const
+{
+    // save the attributes of the father class
+    GeomCurve::Save(writer);
+
+    gp_Pnt center = this->myCurve->Axis().Location();
+    gp_Dir normal = this->myCurve->Axis().Direction();
+    gp_Dir xdir = this->myCurve->XAxis().Direction();
+    
+    gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
+    
+    double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
+    
+    writer.Stream()
+         << writer.ind()
+            << "<Hyperbola "
+            << "CenterX=\"" <<  center.X() << "\" "
+            << "CenterY=\"" <<  center.Y() << "\" "
+            << "CenterZ=\"" <<  center.Z() << "\" "
+            << "NormalX=\"" <<  normal.X() << "\" "
+            << "NormalY=\"" <<  normal.Y() << "\" "
+            << "NormalZ=\"" <<  normal.Z() << "\" "
+            << "MajorRadius=\"" <<  this->myCurve->MajorRadius() << "\" "
+            << "MinorRadius=\"" <<  this->myCurve->MinorRadius() << "\" "
+            << "AngleXU=\"" << AngleXU << "\" "
+            << "/>" << endl;
+}
+
+void GeomHyperbola::Restore(Base::XMLReader& reader)
+{
+    // read the attributes of the father class
+    GeomCurve::Restore(reader);
+
+    double CenterX,CenterY,CenterZ,NormalX,NormalY,NormalZ,MajorRadius,MinorRadius,AngleXU;
+    // read my Element
+    reader.readElement("Hyperbola");
+    // get the value of my Attribute
+    CenterX = reader.getAttributeAsFloat("CenterX");
+    CenterY = reader.getAttributeAsFloat("CenterY");
+    CenterZ = reader.getAttributeAsFloat("CenterZ");
+    NormalX = reader.getAttributeAsFloat("NormalX");
+    NormalY = reader.getAttributeAsFloat("NormalY");
+    NormalZ = reader.getAttributeAsFloat("NormalZ");
+    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
+    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    AngleXU = reader.getAttributeAsFloat("AngleXU");
+
+    // set the read geometry
+    gp_Pnt p1(CenterX,CenterY,CenterZ);
+    gp_Dir norm(NormalX,NormalY,NormalZ);
+    
+    gp_Ax1 normaxis(p1,norm);
+    
+    gp_Ax2 xdir(p1, norm);
+    
+    xdir.Rotate(normaxis,AngleXU); 
+    
+    try {
+        GC_MakeHyperbola mc(xdir, MajorRadius, MinorRadius);
+        if (!mc.IsDone())
+            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+
+        this->myCurve = mc.Value();
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
 
 PyObject *GeomHyperbola::getPyObject(void)
 {
     return new HyperbolaPy((GeomHyperbola*)this->clone());
 }
+// -------------------------------------------------
 
+TYPESYSTEM_SOURCE(Part::GeomArcOfHyperbola,Part::GeomCurve);
+
+GeomArcOfHyperbola::GeomArcOfHyperbola()
+{
+    gp_Ax2 ax2 = gp_Ax2();
+    Handle_Geom_Hyperbola h = new Geom_Hyperbola(gp_Hypr(ax2, 1,1));
+    this->myCurve = new Geom_TrimmedCurve(h, h->FirstParameter(),h->LastParameter());
+}
+
+GeomArcOfHyperbola::GeomArcOfHyperbola(const Handle_Geom_Hyperbola& h)
+{
+    this->myCurve = new Geom_TrimmedCurve(h, h->FirstParameter(),h->LastParameter());
+}
+
+GeomArcOfHyperbola::~GeomArcOfHyperbola()
+{
+}
+
+void GeomArcOfHyperbola::setHandle(const Handle_Geom_TrimmedCurve& c)
+{
+    Handle_Geom_Hyperbola basis = Handle_Geom_Hyperbola::DownCast(c->BasisCurve());
+    if (basis.IsNull())
+        Standard_Failure::Raise("Basis curve is not an hyperbola");
+    this->myCurve = Handle_Geom_TrimmedCurve::DownCast(c->Copy());
+}
+
+const Handle_Geom_Geometry& GeomArcOfHyperbola::handle() const
+{
+    return myCurve;
+}
+
+Geometry *GeomArcOfHyperbola::clone(void) const
+{
+    GeomArcOfHyperbola* copy = new GeomArcOfHyperbola();
+    copy->setHandle(this->myCurve);
+    copy->Construction = this->Construction;
+    return copy;
+}
+
+Base::Vector3d GeomArcOfHyperbola::getStartPoint() const
+{
+    gp_Pnt pnt = this->myCurve->StartPoint();
+    return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
+}
+
+Base::Vector3d GeomArcOfHyperbola::getEndPoint() const
+{
+    gp_Pnt pnt = this->myCurve->EndPoint();
+    return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
+}
+
+Base::Vector3d GeomArcOfHyperbola::getCenter(void) const
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    gp_Ax1 axis = h->Axis();
+    const gp_Pnt& loc = axis.Location();
+    return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
+}
+
+void GeomArcOfHyperbola::setCenter(const Base::Vector3d& Center)
+{
+    gp_Pnt p1(Center.x,Center.y,Center.z);
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+
+    try {
+        h->SetLocation(p1);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomArcOfHyperbola::getMajorRadius(void) const
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    return h->MajorRadius();
+}
+
+void GeomArcOfHyperbola::setMajorRadius(double Radius)
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+
+    try {
+        h->SetMajorRadius(Radius);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomArcOfHyperbola::getMinorRadius(void) const
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    return h->MinorRadius();
+}
+
+void GeomArcOfHyperbola::setMinorRadius(double Radius)
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+
+    try {
+        h->SetMinorRadius(Radius);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+double GeomArcOfHyperbola::getAngleXU(void) const
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    
+    gp_Pnt center = h->Axis().Location();
+    gp_Dir normal = h->Axis().Direction();
+    gp_Dir xdir = h->XAxis().Direction();
+    
+    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
+    
+    return -xdir.AngleWithRef(xdirref.XDirection(),normal);
+
+}
+
+void GeomArcOfHyperbola::setAngleXU(double angle)
+{
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+
+    try {
+        gp_Pnt center = h->Axis().Location();
+        gp_Dir normal = h->Axis().Direction();
+        
+        gp_Ax1 normaxis(center, normal);
+        
+        gp_Ax2 xdirref(center, normal);
+        
+        xdirref.Rotate(normaxis,angle);
+        
+        h->SetPosition(xdirref);
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+void GeomArcOfHyperbola::getRange(double& u, double& v) const
+{
+    u = myCurve->FirstParameter();
+    v = myCurve->LastParameter();
+}
+
+void GeomArcOfHyperbola::setRange(double u, double v)
+{
+    try {
+        myCurve->SetTrim(u, v);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+// Persistence implementer 
+unsigned int GeomArcOfHyperbola::getMemSize (void) const
+{
+    return sizeof(Geom_Hyperbola) + 2 *sizeof(double);
+}
+
+void GeomArcOfHyperbola::Save(Base::Writer &writer) const 
+{
+    // save the attributes of the father class
+    GeomCurve::Save(writer);
+    
+    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(this->myCurve->BasisCurve());
+
+    gp_Pnt center = h->Axis().Location();
+    gp_Dir normal = h->Axis().Direction();
+    gp_Dir xdir = h->XAxis().Direction();
+    
+    gp_Ax2 xdirref(center, normal); // this is a reference XY for the ellipse
+    
+    double AngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
+     
+    writer.Stream()
+         << writer.ind()
+            << "<ArcOfHyperbola "
+            << "CenterX=\"" <<  center.X() << "\" "
+            << "CenterY=\"" <<  center.Y() << "\" "
+            << "CenterZ=\"" <<  center.Z() << "\" "
+            << "NormalX=\"" <<  normal.X() << "\" "
+            << "NormalY=\"" <<  normal.Y() << "\" "
+            << "NormalZ=\"" <<  normal.Z() << "\" "
+            << "MajorRadius=\"" <<  h->MajorRadius() << "\" "
+            << "MinorRadius=\"" <<  h->MinorRadius() << "\" "
+            << "AngleXU=\"" << AngleXU << "\" "
+            << "StartAngle=\"" <<  this->myCurve->FirstParameter() << "\" "
+            << "EndAngle=\"" <<  this->myCurve->LastParameter() << "\" "           
+            << "/>" << endl;
+}
+
+void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)    
+{
+    // read the attributes of the father class
+    GeomCurve::Restore(reader);
+
+    double CenterX,CenterY,CenterZ,NormalX,NormalY,NormalZ,MajorRadius,MinorRadius,AngleXU,StartAngle,EndAngle;
+    // read my Element
+    reader.readElement("ArcOfHyperbola");
+    // get the value of my Attribute
+    CenterX = reader.getAttributeAsFloat("CenterX");
+    CenterY = reader.getAttributeAsFloat("CenterY");
+    CenterZ = reader.getAttributeAsFloat("CenterZ");
+    NormalX = reader.getAttributeAsFloat("NormalX");
+    NormalY = reader.getAttributeAsFloat("NormalY");
+    NormalZ = reader.getAttributeAsFloat("NormalZ");
+    MajorRadius = reader.getAttributeAsFloat("MajorRadius");
+    MinorRadius = reader.getAttributeAsFloat("MinorRadius");
+    AngleXU = reader.getAttributeAsFloat("AngleXU");
+    StartAngle = reader.getAttributeAsFloat("StartAngle");
+    EndAngle = reader.getAttributeAsFloat("EndAngle");
+    
+    
+    // set the read geometry
+    gp_Pnt p1(CenterX,CenterY,CenterZ);
+    gp_Dir norm(NormalX,NormalY,NormalZ);
+    
+    gp_Ax1 normaxis(p1,norm);
+    
+    gp_Ax2 xdir(p1, norm);
+    
+    xdir.Rotate(normaxis,AngleXU); 
+    
+    try {
+        GC_MakeHyperbola mc(xdir, MajorRadius, MinorRadius);
+        if (!mc.IsDone())
+            throw Base::Exception(gce_ErrorStatusText(mc.Status()));
+        
+        GC_MakeArcOfHyperbola ma(mc.Value()->Hypr(), StartAngle, EndAngle, 1);
+        if (!ma.IsDone())
+            throw Base::Exception(gce_ErrorStatusText(ma.Status()));
+        
+        Handle_Geom_TrimmedCurve tmpcurve = ma.Value();
+        Handle_Geom_Hyperbola tmphyperbola = Handle_Geom_Hyperbola::DownCast(tmpcurve->BasisCurve());
+        Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(this->myCurve->BasisCurve());
+ 
+        hyperbola->SetHypr(tmphyperbola->Hypr());
+        this->myCurve->SetTrim(tmpcurve->FirstParameter(), tmpcurve->LastParameter());
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+PyObject *GeomArcOfHyperbola::getPyObject(void)
+{
+    return new ArcOfHyperbolaPy(static_cast<GeomArcOfHyperbola*>(this->clone()));
+}
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomParabola,Part::GeomCurve);

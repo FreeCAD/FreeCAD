@@ -173,6 +173,7 @@
 #include <GC_MakeArcOfCircle.hxx>
 #include <GC_MakeArcOfEllipse.hxx>
 #include <GC_MakeArcOfParabola.hxx>
+#include <GC_MakeArcOfHyperbola.hxx>
 #include <GC_MakeCircle.hxx>
 #include <GC_MakeConicalSurface.hxx>
 #include <GC_MakeCylindricalSurface.hxx>
