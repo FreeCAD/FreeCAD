@@ -67,6 +67,7 @@
 #include "ArcPy.h"
 #include "ArcOfCirclePy.h"
 #include "ArcOfEllipsePy.h"
+#include "ArcOfParabolaPy.h"
 #include "BezierCurvePy.h"
 #include "BSplineCurvePy.h"
 #include "HyperbolaPy.h"
@@ -174,6 +175,7 @@ void PartExport initPart()
     Base::Interpreter().addType(&Part::ArcPy                ::Type,partModule,"Arc");
     Base::Interpreter().addType(&Part::ArcOfCirclePy        ::Type,partModule,"ArcOfCircle");
     Base::Interpreter().addType(&Part::ArcOfEllipsePy       ::Type,partModule,"ArcOfEllipse");
+    Base::Interpreter().addType(&Part::ArcOfParabolaPy      ::Type,partModule,"ArcOfParabola");    
     Base::Interpreter().addType(&Part::BezierCurvePy        ::Type,partModule,"BezierCurve");
     Base::Interpreter().addType(&Part::BSplineCurvePy       ::Type,partModule,"BSplineCurve");
     Base::Interpreter().addType(&Part::OffsetCurvePy        ::Type,partModule,"OffsetCurve");
@@ -264,6 +266,7 @@ void PartExport initPart()
     Part::GeomCircle              ::init();
     Part::GeomArcOfCircle         ::init();
     Part::GeomArcOfEllipse        ::init();
+    Part::GeomArcOfParabola       ::init();
     Part::GeomEllipse             ::init();
     Part::GeomHyperbola           ::init();
     Part::GeomParabola            ::init();
