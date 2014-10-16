@@ -718,7 +718,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomEllipse::getClassTypeId()||
-                            geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) { // TODO: ellipse
+                            geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) { 
                             Gui::Command::openCommand("Drag Curve");
                             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
                                                    ,getObject()->getNameInDocument()
@@ -3133,7 +3133,7 @@ Restart:
                             norm1 = Base::Vector3d(cos(midangle),sin(midangle),0);
                             dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
                             midpos1 = arc->getCenter() + arc->getRadius() * norm1;
-                        } else if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) { // TODO: ellipse
+                        } else if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
                             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
                             norm1 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
                             dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
@@ -3154,7 +3154,7 @@ Restart:
                             norm2 = Base::Vector3d(cos(midangle),sin(midangle),0);
                             dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
                             midpos2 = arc->getCenter() + arc->getRadius() * norm2;
-                        } else if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) { // TODO: ellipse
+                        } else if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
                             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo2);
                             norm2 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
                             dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
@@ -3201,7 +3201,7 @@ Restart:
                         if (Constr->Type == Equal) {
                             double r1a,r1b,r2a,r2b;
                             double angle1,angle1plus=0.,  angle2, angle2plus=0.;//angle1 = rotation of object as a whole; angle1plus = arc angle (t parameter for ellipses).
-                            if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) { // TODO: ellipse
+                            if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
                                 const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
                                 r1a = circle->getRadius();
                                 angle1 = M_PI/4;
@@ -3463,7 +3463,7 @@ Restart:
                             const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo1);
                             Base::Vector3d dir = (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Normalize();
                             Base::Vector3d norm(-dir.y, dir.x, 0);
-                            if (geo2->getTypeId()== Part::GeomCircle::getClassTypeId()) { // TODO: ellipse
+                            if (geo2->getTypeId()== Part::GeomCircle::getClassTypeId()) { 
                                 const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo2);
                                 // tangency between a line and a circle
                                 float length = (circle->getCenter() - lineSeg->getStartPoint())*dir;
@@ -3472,7 +3472,7 @@ Restart:
                                 relPos = norm * 1;  //TODO Huh?
                             }
                             else if (geo2->getTypeId()== Part::GeomEllipse::getClassTypeId() || 
-                                     geo2->getTypeId()== Part::GeomArcOfEllipse::getClassTypeId()) { // TODO: ellipse
+                                     geo2->getTypeId()== Part::GeomArcOfEllipse::getClassTypeId()) { 
                                      
                                 Base::Vector3d center;
                                 if(geo2->getTypeId()== Part::GeomEllipse::getClassTypeId()){
@@ -3499,7 +3499,7 @@ Restart:
                             }
                         }
 
-                        if (geo1->getTypeId()== Part::GeomCircle::getClassTypeId() && // TODO: ellipse
+                        if (geo1->getTypeId()== Part::GeomCircle::getClassTypeId() && 
                             geo2->getTypeId()== Part::GeomCircle::getClassTypeId()) {
                             const Part::GeomCircle *circle1 = dynamic_cast<const Part::GeomCircle *>(geo1);
                             const Part::GeomCircle *circle2 = dynamic_cast<const Part::GeomCircle *>(geo2);
@@ -3508,12 +3508,12 @@ Restart:
                             pos =  circle1->getCenter() + dir *  circle1->getRadius();
                             relPos = dir * 1;
                         }
-                        else if (geo2->getTypeId()== Part::GeomCircle::getClassTypeId()) { // TODO: ellipse
+                        else if (geo2->getTypeId()== Part::GeomCircle::getClassTypeId()) { 
                             std::swap(geo1,geo2);
                         }
 
                         if (geo1->getTypeId()== Part::GeomCircle::getClassTypeId() &&
-                            geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) { // TODO: ellipse
+                            geo2->getTypeId()== Part::GeomArcOfCircle::getClassTypeId()) { 
                             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
                             const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
                             // tangency between a circle and an arc

@@ -1311,8 +1311,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 std::swap(GeoId1,GeoId2);
                 std::swap(point1,point2);
             } else if (theta2 > 0.999*arcLength) {
-            }
-            else
+            } else
                 return -1;
         }
 

@@ -441,7 +441,7 @@ int Sketch::addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool f
 
     // arcs require an ArcRules constraint for the end points
     if (!fixed)
-        GCSsys.addConstraintArcOfEllipseRules(a); // TODO: ArcOfEllipse implementation.
+        GCSsys.addConstraintArcOfEllipseRules(a);
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
@@ -492,7 +492,7 @@ int Sketch::addCircle(const Part::GeomCircle &cir, bool fixed)
 
 int Sketch::addEllipse(const Part::GeomEllipse &elip, bool fixed)
 {
-    // TODO: Ellipse
+    
     std::vector<double *> &params = fixed ? FixParameters : Parameters;
 
     // create our own copy
@@ -1040,7 +1040,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {
-            // TODO: Ellipse
+            
             GCS::Ellipse &c2 = Ellipses[Geoms[geoId2].index];
             GCS::Point &p2 = Points[Geoms[geoId2].midPointId];
             int tag = ++ConstraintsCounter;
@@ -1059,7 +1059,6 @@ int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Arc || Geoms[geoId2].type == Circle || Geoms[geoId2].type == Ellipse) {
-            // TODO: ellipse real implementation
             int tag = ++ConstraintsCounter;
             GCS::Point &center = Points[Geoms[geoId2].midPointId];
             double *radius;
@@ -1072,7 +1071,7 @@ int Sketch::addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2)
                 radius = c2.rad;
             }
             else {
-                // TODO: Ellipse
+                
                 GCS::Ellipse &c2 = Ellipses[Geoms[geoId2].index];
                 radius = c2.radmin;
             }
@@ -1254,7 +1253,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
         }
     } else if (Geoms[geoId1].type == Ellipse) {
         GCS::Ellipse &e = Ellipses[Geoms[geoId1].index];
-        // TODO: Ellipse
+        
         if (Geoms[geoId2].type == Circle) {
             GCS::Circle &c = Circles[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
@@ -1274,7 +1273,7 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             GCSsys.addConstraintTangent(c, a, tag);
             return ConstraintsCounter;
         } else if (Geoms[geoId2].type == Ellipse) {
-            // TODO: Ellipse
+            
             GCS::Ellipse &e = Ellipses[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(e, a, tag);
@@ -1329,7 +1328,7 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2)
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {
-            // TODO: Ellipse
+            
             GCS::Ellipse &e = Ellipses[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintPointOnEllipse(p1, e, tag);
@@ -1366,7 +1365,7 @@ int Sketch::addTangentConstraint(int geoId1, PointPos pos1, int geoId2)
                 return ConstraintsCounter;
             }
         } else if (Geoms[geoId2].type == Ellipse) {
-            // TODO: Ellipse
+            
             GCS::Ellipse &e = Ellipses[Geoms[geoId2].index];
             if (pos1 == start) {
                 int tag = ++ConstraintsCounter;
@@ -1591,7 +1590,7 @@ int Sketch::addDistanceConstraint(int geoId1, PointPos pos1, int geoId2, PointPo
     return -1;
 }
 
-int Sketch::addRadiusConstraint(int geoId, double value, int radiusnumber)
+int Sketch::addRadiusConstraint(int geoId, double value)
 {
     geoId = checkGeoId(geoId);
 
@@ -1730,7 +1729,7 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         else
             std::swap(geoId1, geoId2);
     }
-    // TODO: Ellipse
+    
     if (Geoms[geoId2].type == Ellipse) {
         if (Geoms[geoId1].type == Ellipse) {
             GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
@@ -2108,7 +2107,7 @@ bool Sketch::updateGeometry()
                                );
                 circ->setRadius(*Circles[it->index].rad);
             } else if (it->type == Ellipse) {
-                // TODO: Ellipse
+                
                 GeomEllipse *ellipse = dynamic_cast<GeomEllipse*>(it->geo);
                 
                 Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
@@ -2305,7 +2304,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.rescaleConstraint(i, 0.01);
         }
     } else if (Geoms[geoId].type == Ellipse) {
-        // TODO: Ellipse
+        
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
         if (pos == mid | pos == none) {
@@ -2317,7 +2316,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
         }
     } else if (Geoms[geoId].type == ArcOfEllipse) {
-        // TODO: ArcOfEllipse
+        
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
         if (pos == mid || pos == none) {
@@ -2328,7 +2327,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.y = *center.y;
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
         } else if (pos == start || pos == end) {
-            // TODO: Ellipse
+            
             MoveParameters.resize(4); // x,y,cx,cy
             if (pos == start || pos == end) {
                 GCS::Point &p = (pos == start) ? Points[Geoms[geoId].startPointId]

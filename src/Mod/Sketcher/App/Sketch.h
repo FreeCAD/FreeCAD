@@ -165,7 +165,7 @@ public:
     int addTangentConstraint(int geoId1, PointPos pos1, int geoId2);
     int addTangentConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2);
     /// add a radius constraint on a circle or an arc
-    int addRadiusConstraint(int geoId, double value, int radiusnumber=0);
+    int addRadiusConstraint(int geoId, double value);
     /// add an angle constraint on a line or between two lines
     int addAngleConstraint(int geoId, double value);
     int addAngleConstraint(int geoId1, int geoId2, double value);
@@ -198,7 +198,7 @@ public:
         Line    = 2, // 2 Points(start,end), 4 Parameters(x1,y1,x2,y2)
         Arc     = 3, // 3 Points(start,end,mid), (4)+5 Parameters((x1,y1,x2,y2),x,y,r,a1,a2)
         Circle  = 4, // 1 Point(mid), 3 Parameters(x,y,r)
-        Ellipse = 5,  // 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)  phi=angle xaxis of elipse with respect of sketch xaxis// TODO: Ellipse
+        Ellipse = 5,  // 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)  phi=angle xaxis of elipse with respect of sketch xaxis
         ArcOfEllipse = 6
     };
 
