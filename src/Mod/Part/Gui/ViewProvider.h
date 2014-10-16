@@ -131,23 +131,6 @@ private:
     std::map<SoVertexShape*, TopoDS_Shape> vertexShapeMap;
 };
 
-class PartGuiExport ViewProviderEllipsoid : public ViewProviderPartBase
-{
-    PROPERTY_HEADER(PartGui::ViewProviderEllipsoid);
-
-public:
-    /// constructor
-    ViewProviderEllipsoid();
-    /// destructor
-    virtual ~ViewProviderEllipsoid();
-
-    void updateData(const App::Property*);
-
-private:
-    SoSphere* pSphere;
-    SoScale * pScaling;
-};
-
 #if defined(FC_USE_FAST_SHAPE_RENDERING)
 class PartGuiExport ViewProviderPart : public ViewProviderPartExt
 {
