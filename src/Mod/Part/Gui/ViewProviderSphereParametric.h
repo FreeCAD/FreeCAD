@@ -26,22 +26,9 @@
 
 #include "ViewProvider.h"
 
-
-class TopoDS_Shape;
-class TopoDS_Face;
-class SoSeparator;
-class SbVec3f;
-class SoTransform;
-
-namespace Gui {
-  class View3DInventorViewer;
-  class SoFCSelection;
-}
-
 namespace PartGui {
 
-
-class PartGuiExport ViewProviderSphereParametric:public ViewProviderPart
+class PartGuiExport ViewProviderSphereParametric : public ViewProviderPart
 {
     PROPERTY_HEADER(PartGui::ViewProviderSphereParametric);
 
@@ -55,6 +42,18 @@ public:
 
 protected:
 
+};
+
+class PartGuiExport ViewProviderEllipsoid : public ViewProviderPart
+{
+    PROPERTY_HEADER(PartGui::ViewProviderEllipsoid);
+
+public:
+    /// constructor
+    ViewProviderEllipsoid();
+    /// destructor
+    virtual ~ViewProviderEllipsoid();
+    std::vector<std::string> getDisplayModes(void) const;
 };
 
 } // namespace PartGui
