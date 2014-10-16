@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="GeometryCurvePy" 
+      Name="ArcOfHyperbolaPy" 
+      Twin="GeomArcOfHyperbola" 
+      TwinPointer="GeomArcOfHyperbola" 
+      Include="Mod/Part/App/Geometry.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo[at]gmail.com" />
+      <UserDocu>Describes a portion of an hyperbola</UserDocu>
+    </Documentation>
+    <Attribute Name="MajorRadius" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The major radius of the hyperbola.</UserDocu>
+      </Documentation>
+      <Parameter Name="MajorRadius" Type="Float"/>
+    </Attribute>      
+    <Attribute Name="MinorRadius" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The minor radius of the hyperbola.</UserDocu>
+      </Documentation>
+      <Parameter Name="MinorRadius" Type="Float"/>
+    </Attribute>
+    <Attribute Name="AngleXU" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The angle between the X axis and the major axis of the hyperbola.</UserDocu>
+      </Documentation>
+      <Parameter Name="AngleXU" Type="Float"/>
+    </Attribute> 
+    <Attribute Name="Center" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Center of the hyperbola.</UserDocu>
+      </Documentation>
+      <Parameter Name="Center" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Axis" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The axis direction of the hyperbola</UserDocu>
+      </Documentation>
+      <Parameter Name="Axis" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Hyperbola" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The internal hyperbola representation</UserDocu>
+      </Documentation>
+      <Parameter Name="Hyperbola" Type="Object"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>
