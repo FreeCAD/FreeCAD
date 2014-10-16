@@ -1976,6 +1976,20 @@ public:
                 minAxisPoint = EditCurve[0]+minAxisDir;
             }
             
+            Base::Vector3d center = Base::Vector3d(EditCurve[0].fX,EditCurve[0].fY,0);
+            
+            Base::Vector3d majorpositiveend = center + a * Base::Vector3d(cos(phi),sin(phi),0);
+            Base::Vector3d majornegativeend = center - a * Base::Vector3d(cos(phi),sin(phi),0);  
+            Base::Vector3d minorpositiveend = center + b * Base::Vector3d(-sin(phi),cos(phi),0);
+            Base::Vector3d minornegativeend = center - b * Base::Vector3d(-sin(phi),cos(phi),0);
+                
+            double cf = sqrt( abs(a*a - b*b) );//using abs, avoided using different formula for a>b/a<b cases
+                
+            Base::Vector3d focus1P = center + cf * Base::Vector3d(cos(phi),sin(phi),0);
+            Base::Vector3d focus2P = center - cf * Base::Vector3d(cos(phi),sin(phi),0);
+            
+            int currentgeoid = getHighestCurveIndex();//index of the arc of ellipse we just created
+
             Gui::Command::openCommand("Add sketch ellipse");
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.Ellipse"
@@ -1984,6 +1998,50 @@ public:
                     majAxisPoint.fX, majAxisPoint.fY,                                    
                     minAxisPoint.fX, minAxisPoint.fY,
                     EditCurve[0].fX, EditCurve[0].fY);
+            
+            currentgeoid++;
+            
+            try {                 
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                    sketchgui->getObject()->getNameInDocument(),
+                    majorpositiveend.x,majorpositiveend.y,majornegativeend.x,majornegativeend.y); // create line for major axis
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1);
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1,currentgeoid); // constrain major axis
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                    sketchgui->getObject()->getNameInDocument(),
+                    minorpositiveend.x,minorpositiveend.y,minornegativeend.x,minornegativeend.y); // create line for minor axis
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2);
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2,currentgeoid); // constrain minor axis
+
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                    sketchgui->getObject()->getNameInDocument(),
+                    focus1P.x,focus1P.y);
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+3,Sketcher::start,currentgeoid);
+
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                    sketchgui->getObject()->getNameInDocument(),
+                    focus2P.x,focus2P.y);
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+4,Sketcher::start,currentgeoid);     
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+                Gui::Command::updateActive();
+                return false;
+            }
 
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
@@ -2290,14 +2348,19 @@ public:
                 startAngle += M_PI/2;
             }
             
-            //calculate focus point vecF2
-            double cf;//distance from center to focus
-            cf = sqrt( abs(a*a - b*b) );//using abs, avoided using different formula for a>b/a<b cases
-            Base::Vector2D vecCF;// a vector from center to focus2
-            vecCF = majAxisDir;
-            vecCF.Normalize();
-            vecCF.Scale(-cf);//minus sign is because we want focus2 not focus1
-            Base::Vector2D vecF2 = centerPoint + vecCF;
+            Base::Vector3d center = Base::Vector3d(centerPoint.fX,centerPoint.fY,0);
+            
+            Base::Vector3d majorpositiveend = center + a * Base::Vector3d(cos(phi),sin(phi),0);
+            Base::Vector3d majornegativeend = center - a * Base::Vector3d(cos(phi),sin(phi),0);  
+            Base::Vector3d minorpositiveend = center + b * Base::Vector3d(-sin(phi),cos(phi),0);
+            Base::Vector3d minornegativeend = center - b * Base::Vector3d(-sin(phi),cos(phi),0);
+                
+            double cf = sqrt( abs(a*a - b*b) );//using abs, avoided using different formula for a>b/a<b cases
+                
+            Base::Vector3d focus1P = center + cf * Base::Vector3d(cos(phi),sin(phi),0);
+            Base::Vector3d focus2P = center - cf * Base::Vector3d(cos(phi),sin(phi),0);
+            
+            int currentgeoid = getHighestCurveIndex();//index of the arc of ellipse we just created
 
             Gui::Command::openCommand("Add sketch arc of ellipse");
 
@@ -2313,20 +2376,50 @@ public:
                     minAxisPoint.fX, minAxisPoint.fY,
                     centerPoint.fX, centerPoint.fY,
                     startAngle, endAngle);
-            int iAOE = getHighestCurveIndex();//index of the arc of ellipse we just created
-
-            Gui::Command::doCommand(Gui::Command::Doc,
-                "App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+            
+            currentgeoid++;
+            
+            try {                 
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
                     sketchgui->getObject()->getNameInDocument(),
-                    vecF2.fX,vecF2.fY);
-            int iPointF2 = getHighestCurveIndex();//index of the point we just created
-
-            Gui::Command::doCommand(Gui::Command::Doc,
-                "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
+                    majorpositiveend.x,majorpositiveend.y,majornegativeend.x,majornegativeend.y); // create line for major axis
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1);
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1,currentgeoid); // constrain major axis
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
                     sketchgui->getObject()->getNameInDocument(),
-                    iPointF2,Sketcher::start,iAOE);
+                    minorpositiveend.x,minorpositiveend.y,minornegativeend.x,minornegativeend.y); // create line for minor axis
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2);
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2,currentgeoid); // constrain minor axis
 
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                    sketchgui->getObject()->getNameInDocument(),
+                    focus1P.x,focus1P.y);
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+3,Sketcher::start,currentgeoid);
 
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                    sketchgui->getObject()->getNameInDocument(),
+                    focus2P.x,focus2P.y);
+                
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+4,Sketcher::start,currentgeoid);     
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+                Gui::Command::updateActive();
+                return false;
+            }
 
             Gui::Command::commitCommand();
             Gui::Command::updateActive();

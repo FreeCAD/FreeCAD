@@ -242,7 +242,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             }
 
         } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
-            // TODO: Ellipse
+            
             const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>((*it));
 
             Base::Vector3d center = ellipse->getCenter();
