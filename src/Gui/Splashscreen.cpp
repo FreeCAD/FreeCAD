@@ -253,11 +253,41 @@ static QString getOperatingSystem()
             return QString::fromAscii("Windows Vista");
         case QSysInfo::WV_WINDOWS7:
             return QString::fromAscii("Windows 7");
+#if QT_VERSION >= 0x040800
+        case QSysInfo::WV_WINDOWS8:
+            return QString::fromAscii("Windows 8");
+#endif
+#if ((QT_VERSION >= 0x050200) || (QT_VERSION >= 0x040806 && QT_VERSION < 0x050000))
+        case QSysInfo::WV_WINDOWS8_1:
+            return QString::fromAscii("Windows 8.1");
+#endif
         default:
             return QString::fromAscii("Windows");
     }
 #elif defined (Q_OS_MAC)
-    return QString::fromAscii("Mac OS X");
+    switch(QSysInfo::MacVersion())
+    {
+        case QSysInfo::MV_10_3:
+            return QString::fromAscii("Mac OS X 10.3");
+        case QSysInfo::MV_10_4:
+            return QString::fromAscii("Mac OS X 10.4");
+        case QSysInfo::MV_10_5:
+            return QString::fromAscii("Mac OS X 10.5");
+#if QT_VERSION >= 0x040700
+        case QSysInfo::MV_10_6:
+            return QString::fromAscii("Mac OS X 10.6");
+#endif
+#if QT_VERSION >= 0x040800
+        case QSysInfo::MV_10_7:
+            return QString::fromAscii("Mac OS X 10.7");
+        case QSysInfo::MV_10_8:
+            return QString::fromAscii("Mac OS X 10.8");
+        case QSysInfo::MV_10_9:
+            return QString::fromAscii("Mac OS X 10.9");
+#endif
+        default:
+            return QString::fromAscii("Mac OS X");
+    }
 #elif defined (Q_OS_LINUX)
     QString exe(QLatin1String("lsb_release"));
     QStringList args;
