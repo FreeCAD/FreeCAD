@@ -184,6 +184,27 @@ namespace GCS
         virtual ArcOfEllipse* Copy();
     };
 
+    class ArcOfHyperbola: public Curve
+    {
+    public:
+        ArcOfHyperbola(){startAngle=0;endAngle=0;radmaj = 0;}
+        virtual ~ArcOfHyperbola(){}
+	// parameters
+        double *startAngle;
+        double *endAngle;
+        double *radmaj;
+        Point start;
+        Point end;
+        Point center;
+	Point focus;
+	// interface helpers
+        virtual int PushOwnParams(VEC_pD &pvec);
+        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
+        virtual ArcOfHyperbola* Copy();
+	// Curve interface
+        DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
+    };
+
 } //namespace GCS
 
 #endif // PLANEGCS_GEO_H

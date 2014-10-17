@@ -128,6 +128,8 @@ public:
     int addEllipse(const Part::GeomEllipse &ellipse, bool fixed=false);
     /// add an arc of ellipse
     int addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool fixed=false);
+    /// add an arc of hyperbola
+    int addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, bool fixed=false);
     //@}
 
 
@@ -317,7 +319,7 @@ public:
     //icstr should be the value returned by addXXXXConstraint
     //see more info in respective function in GCS.
     double calculateConstraintError(int icstr) { return GCSsys.calculateConstraintErrorByTag(icstr);}
-    
+
     /// Returns the size of the Geometry
     int getGeometrySize(void) const {return Geoms.size();}
 
@@ -328,7 +330,8 @@ public:
         Arc     = 3, // 3 Points(start,end,mid), (4)+5 Parameters((x1,y1,x2,y2),x,y,r,a1,a2)
         Circle  = 4, // 1 Point(mid), 3 Parameters(x,y,r)
         Ellipse = 5,  // 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)  phi=angle xaxis of elipse with respect of sketch xaxis
-        ArcOfEllipse = 6
+        ArcOfEllipse = 6,
+        ArcOfHyperbola = 7
     };
 
     float SolveTime;
@@ -375,6 +378,7 @@ protected:
     std::vector<GCS::Circle> Circles;
     std::vector<GCS::Ellipse> Ellipses;
     std::vector<GCS::ArcOfEllipse>  ArcsOfEllipse;
+    std::vector<GCS::ArcOfHyperbola>    ArcsOfHyperbola;
 
     bool isInitMove;
     bool isFine;

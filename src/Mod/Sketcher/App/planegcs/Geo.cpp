@@ -301,5 +301,59 @@ ArcOfEllipse* ArcOfEllipse::Copy()
     return crv;
 }
 
+//---------------arc of hyperbola
+int ArcOfHyperbola::PushOwnParams(VEC_pD &pvec)
+{
+    int cnt=0;
+    // hyperbola
+    pvec.push_back(center.x); cnt++;
+    pvec.push_back(center.y); cnt++;
+    pvec.push_back(focus.x); cnt++;
+    pvec.push_back(focus.y); cnt++;
+    pvec.push_back(radmaj); cnt++;
+    // arc
+    pvec.push_back(start.x); cnt++;
+    pvec.push_back(start.y); cnt++;
+    pvec.push_back(end.x); cnt++;
+    pvec.push_back(end.y); cnt++;
+    pvec.push_back(startAngle); cnt++;
+    pvec.push_back(endAngle); cnt++;
+    return cnt;
+    
+}
+void ArcOfHyperbola::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
+{
+    // hyperbola
+    center.x=pvec[cnt]; cnt++;
+    center.y=pvec[cnt]; cnt++;
+    focus.x=pvec[cnt]; cnt++;
+    focus.y=pvec[cnt]; cnt++;
+    radmaj=pvec[cnt]; cnt++;
+    //arc
+    start.x=pvec[cnt]; cnt++;
+    start.y=pvec[cnt]; cnt++;
+    end.x=pvec[cnt]; cnt++;
+    end.y=pvec[cnt]; cnt++;
+    startAngle=pvec[cnt]; cnt++;
+    endAngle=pvec[cnt]; cnt++;
+}
+ArcOfHyperbola* ArcOfHyperbola::Copy()
+{
+    ArcOfHyperbola* crv = new ArcOfHyperbola(*this);
+    return crv;
+}
+
+DeriVector2 ArcOfHyperbola::CalculateNormal(Point &p, double* derivparam)
+{
+    //fill some vectors in
+    DeriVector2 cv (center, derivparam);
+    DeriVector2 fv (focus, derivparam);
+    DeriVector2 pv (p, derivparam);
+    
+    DeriVector2 ret = fv;
+    
+    return ret;
+}
+
 
 }//namespace GCS
