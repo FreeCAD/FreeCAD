@@ -768,7 +768,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomEllipse::getClassTypeId()||
-                            geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) { 
+                            geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()||
+                            geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
                             Gui::Command::openCommand("Drag Curve");
                             try {
                                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
@@ -2099,7 +2100,6 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
                 }
             }
-
         } else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
             // Check if arc lies inside box selection
             const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(*it);
@@ -2107,6 +2107,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt0 = aoe->getStartPoint(/*emulateCCW=*/true);
             pnt1 = aoe->getEndPoint(/*emulateCCW=*/true);
             pnt2 = aoe->getCenter();
+
             VertexId += 3;
 
             Plm.multVec(pnt0, pnt0);
@@ -2139,11 +2140,13 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             if (pnt0Inside && pnt1Inside) {
                 double startangle, endangle;
                 aoe->getRange(startangle, endangle, /*emulateCCW=*/true);
+
                 if (startangle > endangle) // if arc is reversed
                     std::swap(startangle, endangle);
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
+
                 double segment = (range) / countSegments;
 
                                                 // circumscribed polygon radius
@@ -2157,6 +2160,85 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 double angle = (startangle) + segment/2;
                 for (int i = 0; i < countSegments; ++i, angle += segment) {
                     pnt = pnt0 + cos(angle)*a*majdir + sin(angle)*b*mindir;
+
+                    Plm.multVec(pnt, pnt);
+                    pnt = proj(pnt);
+                    if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
+                        bpolyInside = false;
+                        break;
+                    }
+                }
+
+                if (bpolyInside) {
+                    std::stringstream ss;
+                    ss << "Edge" << GeoId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+            }
+
+        } else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+            // Check if arc lies inside box selection
+            const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola *>(*it);
+
+            pnt0 = aoh->getStartPoint();
+            pnt1 = aoh->getEndPoint();
+            pnt2 = aoh->getCenter();
+
+            VertexId += 3;
+
+            Plm.multVec(pnt0, pnt0);
+            Plm.multVec(pnt1, pnt1);
+            Plm.multVec(pnt2, pnt2);
+            pnt0 = proj(pnt0);
+            pnt1 = proj(pnt1);
+            pnt2 = proj(pnt2);
+
+            bool pnt0Inside = polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y));
+            if (pnt0Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId - 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            bool pnt1Inside = polygon.Contains(Base::Vector2D(pnt1.x, pnt1.y));
+            if (pnt1Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            if (polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y))) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId + 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            if (pnt0Inside && pnt1Inside) {
+                double startangle, endangle;
+
+                aoh->getRange(startangle, endangle);
+
+                if (startangle > endangle) // if arc is reversed
+                    std::swap(startangle, endangle);
+
+                double range = endangle-startangle;
+                int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
+
+                float segment = float(range) / countSegments;
+
+                                                // circumscribed polygon radius
+                float a = float(aoh->getMajorRadius()) / cos(segment/2);
+                float b = float(aoh->getMinorRadius()) / cos(segment/2);
+                float phi = float(aoh->getAngleXU());
+ 
+                bool bpolyInside = true;
+                pnt0 = aoh->getCenter();
+                float angle = float(startangle) + segment/2;
+                for (int i = 0; i < countSegments; ++i, angle += segment) {
+                    pnt = Base::Vector3d(pnt0.x + a * cosh(angle) * cos(phi) - b * sinh(angle) * sin(phi),
+                                         pnt0.y + a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi),
+                                         0.f);
+
                     Plm.multVec(pnt, pnt);
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
@@ -3087,6 +3169,39 @@ void ViewProviderSketch::draw(bool temp)
             Base::Vector3d center = arc->getCenter();
             Base::Vector3d start  = arc->getStartPoint(/*emulateCCW=*/true);
             Base::Vector3d end    = arc->getEndPoint(/*emulateCCW=*/true);
+
+            for (int i=0; i < countSegments; i++) {
+                gp_Pnt pnt = curve->Value(startangle);
+                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                startangle += segment;
+            }
+
+            // end point
+            gp_Pnt pnt = curve->Value(endangle);
+            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+
+            Index.push_back(countSegments+1);
+            edit->CurvIdToGeoId.push_back(GeoId);
+            Points.push_back(start);
+            Points.push_back(end);
+            Points.push_back(center);
+        }
+        else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) { 
+            const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola *>(*it);
+            Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(aoh->handle());
+
+            double startangle, endangle;
+            aoh->getRange(startangle, endangle);
+            if (startangle > endangle) // if arc is reversed
+                std::swap(startangle, endangle);
+
+            double range = endangle-startangle;
+            int countSegments = std::max(6, int(50.0 * range / (2 * M_PI)));
+            double segment = range / countSegments;
+
+            Base::Vector3d center = aoh->getCenter();
+            Base::Vector3d start  = aoh->getStartPoint();
+            Base::Vector3d end    = aoh->getEndPoint();
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
