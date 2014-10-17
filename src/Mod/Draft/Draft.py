@@ -1747,25 +1747,56 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 egroups.append(w.Edges)
         for g in egroups:
             edges = DraftGeomUtils.sortEdges(g)
-            v = getProj(edges[0].Vertexes[0].Point)
+	    e0=edges[0]
+            v = getProj(e0.Vertexes[-1*(e0.Orientation=="Reversed")].Point)
             svg += 'M '+ str(v.x) +' '+ str(v.y) + ' '
             for e in edges:
-                if DraftGeomUtils.geomType(e) == "Circle":
-                    if len(e.Vertexes) == 1:
-                        # complete circle
+	        if e.Orientation == "Forward":
+		    vs = e.Vertexes
+		else:
+		    vs = e.Vertexes[::-1]
+                iscircle = DraftGeomUtils.geomType(e) == "Circle"
+                isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
+                if iscircle or isellipse:
+                    c = e.Curve
+                    if len(e.Vertexes) == 1 and iscircle: #complete curve
                         svg = getCircle(e)
                         return svg
-                    r = e.Curve.Radius
+                    elif len(e.Vertexes) == 1 and isellipse:
+                        endpoints = (getProj(c.value((c.LastParameter-\
+                                c.FirstParameter)/2.0)), \
+                                getProj(vs[-1].Point))
+                    else:
+                        endpoints = (getProj(vs[-1].Point),)
+
+                    # arc
+                    if iscircle:
+                        rx = ry = c.Radius
+                        rot = 0
+                    else: #ellipse
+                        import math
+                        rx = c.MajorRadius
+                        ry = c.MinorRadius
+                        rot = math.degrees(c.AngleXU * (c.Axis * \
+                            FreeCAD.Vector(0,0,1)))
+                        if rot > 90:
+                            rot -=180
+                        if rot < -90:
+                            rot += 180
+                        #be carefull with the sweep flag
                     drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
                     if plane: drawing_plane_normal = plane.axis
-                    flag_large_arc = (((e.ParameterRange[1] - e.ParameterRange[0]) / math.pi) % 2) > 1
-                    flag_sweep = e.Curve.Axis * drawing_plane_normal >= 0
-                    v = getProj(e.Vertexes[-1].Point)
-                    svg += 'A ' + str(r) + ' ' + str(r) + ' '
-                    svg += '0 ' + str(int(flag_large_arc)) + ' ' + str(int(flag_sweep)) + ' '
-                    svg += str(v.x) + ' ' + str(v.y) + ' '
+                    flag_large_arc = (((e.ParameterRange[1] - \
+                            e.ParameterRange[0]) / math.pi) % 2) > 1
+                    flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
+		            == (e.Orientation == "Forward")
+                    for v in endpoints:
+                        svg += 'A %s %s %s %s %s %s %s ' % \
+                                (str(rx),str(ry),str(rot),\
+                                str(int(flag_large_arc)),\
+                                str(int(flag_sweep)),str(v.x),str(v.y))
                 elif DraftGeomUtils.geomType(e) == "Line":
-                    v = getProj(e.Vertexes[-1].Point)
+                    v = getProj(vs[-1].Point)
                     svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
                 else:
                     bspline=e.Curve.toBSpline(e.FirstParameter,e.LastParameter)
