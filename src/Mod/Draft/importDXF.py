@@ -69,27 +69,39 @@ else:
         FreeCAD.Console.PrintWarning("DXF libraries need to be updated. Downloading...\n")
         libsok = False
 if not libsok:
-    files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
-    baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+str(CURRENTDXFLIB)+"/"
-    import ArchCommands
-    from FreeCAD import Base
-    progressbar = Base.ProgressIndicator()
-    progressbar.start("Downloading files...",4)
-    for f in files:
-        progressbar.next()
-        p = None
-        p = ArchCommands.download(baseurl+f,force=True)
-        if not p:
-            FreeCAD.Console.PrintWarning("Download of dxf libraries failed. Please download them manually from\nhttps://github.com/yorikvanhavre/Draft-dxf-importer\nand place them in your macros folder\n")
-            break
-    progressbar.stop() 
-
-    sys.path.append(FreeCAD.ConfigGet("UserAppData"))
-    try:
-        import dxfColorMap, dxfLibrary, dxfReader
-    except ImportError:
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    dxfAllowDownload = p.GetBool("dxfAllowDownload",False)
+    if dxfAllowDownload:
+        files = ['dxfColorMap.py','dxfImportObjects.py','dxfLibrary.py','dxfReader.py']
+        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/Draft-dxf-importer/'+str(CURRENTDXFLIB)+"/"
+        import ArchCommands
+        from FreeCAD import Base
+        progressbar = Base.ProgressIndicator()
+        progressbar.start("Downloading files...",4)
+        for f in files:
+            progressbar.next()
+            p = None
+            p = ArchCommands.download(baseurl+f,force=True)
+            if not p:
+                FreeCAD.Console.PrintWarning("Download of dxf libraries failed. Please download them manually from\nhttps://github.com/yorikvanhavre/Draft-dxf-importer\nand place them in your macros folder\n")
+                break
+        progressbar.stop() 
+    
+        sys.path.append(FreeCAD.ConfigGet("UserAppData"))
+        try:
+            import dxfColorMap, dxfLibrary, dxfReader
+        except ImportError:
+            dxfReader = None
+            dxfLibrary = None
+    else:
+        FreeCAD.Console.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format\n")
+        FreeCAD.Console.PrintWarning("were not found on this system. Please either enable FreeCAD to download these\n")
+        FreeCAD.Console.PrintWarning("libraries (menu Edit > Preferences > Import-Export > DXF > Enable downloads) or download\n")
+        FreeCAD.Console.PrintWarning("these libraries manually, as explained on\n")
+        FreeCAD.Console.PrintWarning("https://github.com/yorikvanhavre/Draft-dxf-importer\n")
         dxfReader = None
         dxfLibrary = None
+        
 
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
