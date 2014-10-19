@@ -191,20 +191,25 @@ void StdCmdImport::activated(int iMsg)
     }
     formatList += QObject::tr(allFiles);
 
-    QString selectedFilter;
+    Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                               ->GetGroup("Preferences")->GetGroup("General");
+    QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileImportFilter"));
     QStringList fileList = FileDialog::getOpenFileNames(getMainWindow(),
         QObject::tr("Import file"), QString(), formatList, &selectedFilter);
-    SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
-    // load the files with the associated modules
-    for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-        getGuiApplication()->importFrom(it.key().toUtf8(),
-            getActiveGuiDocument()->getDocument()->getName(),
-            it.value().toAscii());
-    }
+    if (!fileList.isEmpty()) {
+        hPath->SetASCII("FileImportFilter", selectedFilter.toLatin1().constData());
+        SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
+        // load the files with the associated modules
+        for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
+            getGuiApplication()->importFrom(it.key().toUtf8(),
+                getActiveGuiDocument()->getDocument()->getName(),
+                it.value().toAscii());
+        }
 
-    std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
-    for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
-        (*it)->viewAll();
+        std::list<Gui::MDIView*> views = getActiveGuiDocument()->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+        for (std::list<MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+            (*it)->viewAll();
+        }
     }
 }
 
@@ -255,10 +260,14 @@ void StdCmdExport::activated(int iMsg)
         }
     }
 
-    QString selectedFilter;
+    Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+                               ->GetGroup("Preferences")->GetGroup("General");
+    QString selectedFilter = QString::fromStdString(hPath->GetASCII("FileExportFilter"));
+
     QString fileName = FileDialog::getSaveFileName(getMainWindow(),
         QObject::tr("Export file"), QString(), formatList, &selectedFilter);
     if (!fileName.isEmpty()) {
+        hPath->SetASCII("FileExportFilter", selectedFilter.toLatin1().constData());
         SelectModule::Dict dict = SelectModule::exportHandler(fileName, selectedFilter);
         // export the files with the associated modules
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
