@@ -522,7 +522,7 @@ PyObject* Application::sGetResourceDir(PyObject * /*self*/, PyObject *args,PyObj
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL;                       // NULL triggers exception
 
-    Py::String datadir(Application::getResourceDir());
+    Py::String datadir(Application::getResourceDir(),"utf-8");
     return Py::new_reference_to(datadir);
 }
 
@@ -531,7 +531,7 @@ PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args,PyObject
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL;                       // NULL triggers exception
 
-    Py::String homedir(GetApplication().getHomePath());
+    Py::String homedir(GetApplication().getHomePath(),"utf-8");
     return Py::new_reference_to(homedir);
 }
 

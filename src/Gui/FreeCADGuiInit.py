@@ -104,13 +104,13 @@ def InitApplications():
 	ModDirs = FreeCAD.__path__
 	#print ModDirs
 	Log('Init:   Searching modules...\n')
-	ModPar = FreeCAD.ParamGet("System parameter:Modules")
 	for Dir in ModDirs:
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
 			InstallFile = os.path.join(Dir,"InitGui.py")
 			if (os.path.exists(InstallFile)):
 				try:
-					execfile(InstallFile)
+					#execfile(InstallFile)
+					exec open(InstallFile).read()
 				except Exception, inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
 					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
