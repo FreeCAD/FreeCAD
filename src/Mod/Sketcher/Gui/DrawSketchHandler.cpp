@@ -246,20 +246,27 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>((*it));
 
             Base::Vector3d center = ellipse->getCenter();
-            Base::Vector3d tmpPos(Pos.fX, Pos.fY, 0.f);
 
-            double radius = ellipse->getMajorRadius();
+            double a = ellipse->getMajorRadius();
+            double b = ellipse->getMinorRadius();
+            double phi = ellipse->getAngleXU();
+            
+            double cf = sqrt(a*a - b*b);
+                
+            Base::Vector3d focus1P = center + cf * Base::Vector3d(cos(phi),sin(phi),0);
+            Base::Vector3d focus2P = center - cf * Base::Vector3d(cos(phi),sin(phi),0);
+            
+            Base::Vector3d norm = Base::Vector3d(Dir.fY,-Dir.fX).Normalize();
+            
+            double distancetoline = norm*(tmpPos - focus1P); // distance focus1 to line
+                        
+            Base::Vector3d focus1PMirrored = focus1P + 2*distancetoline*norm; // mirror of focus1 with respect to the line
+            
+            double error = abs((focus1PMirrored-focus2P).Length() - 2*a);
 
-            Base::Vector3d projPnt(0.f, 0.f, 0.f);
-            projPnt = projPnt.ProjToLine(center - tmpPos, Base::Vector3d(Dir.fX, Dir.fY));
-            double projDist = projPnt.Length();
-
-            if ( (projDist < radius + tangDeviation ) && (projDist > radius - tangDeviation)) {
-                //Find if nearest
-                if (projDist < tangDeviation) {
+            if ( error< tangDeviation ) {
                     tangId = i;
-                    tangDeviation = projDist;
-                }
+                    tangDeviation = error;
             }
 
         } else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
@@ -290,7 +297,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
                     tangDeviation = projDist;
                 }
             }
-        }
+        } 
     }
 
     if (tangId != Constraint::GeoUndef) {
