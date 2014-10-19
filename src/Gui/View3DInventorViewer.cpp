@@ -774,11 +774,9 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
     //we want the rendered scene with all lights and cameras, viewer->getSceneGraph would return 
     //the geometry scene only
     SoNode* scene = this->getSoRenderManager()->getSceneGraph();
-
-    if(scene && scene->getTypeId().isDerivedFrom(SoSeparator::getClassTypeId())) {
+    if (scene && scene->getTypeId().isDerivedFrom(SoSeparator::getClassTypeId())) {
         sa.apply(scene);
-
-        if(!sa.getPath())
+        if (!sa.getPath())
             static_cast<SoSeparator*>(scene)->insertChild(this->backlight, 0);
     }
 }
@@ -895,7 +893,7 @@ void View3DInventorViewer::saveGraphic(int pagesize, int eBackgroundType, SoVect
     SbVec2s vpsize = this->getSoRenderManager()->getViewportRegion().getViewportSizePixels();
     float vpratio = ((float)vpsize[0]) / ((float)vpsize[1]);
 
-    if(vpratio > 1.0f) {
+    if (vpratio > 1.0f) {
         va->setOrientation(SoVectorizeAction::LANDSCAPE);
         vpratio = 1.0f / vpratio;
     }
@@ -911,7 +909,7 @@ void View3DInventorViewer::saveGraphic(int pagesize, int eBackgroundType, SoVect
     float pageratio = size[0] / size[1];
     float xsize, ysize;
 
-    if(pageratio < vpratio) {
+    if (pageratio < vpratio) {
         xsize = size[0];
         ysize = xsize / vpratio;
     }
@@ -1230,7 +1228,7 @@ void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
     gl.apply(this->getSoRenderManager()->getSceneGraph());
     gl.apply(this->foregroundroot);
 
-    if(this->axiscrossEnabled) {
+    if (this->axiscrossEnabled) {
         this->drawAxisCross();
     }
 
@@ -1699,7 +1697,7 @@ bool View3DInventorViewer::pickPoint(const SbVec2s& pos,SbVec3f& point,SbVec3f& 
     rp.apply(getSoRenderManager()->getSceneGraph());
     SoPickedPoint* Point = rp.getPickedPoint();
 
-    if(Point) {
+    if (Point) {
         point = Point->getObjectPoint();
         norm  = Point->getObjectNormal();
         return true;
@@ -1728,7 +1726,7 @@ SoPickedPoint* View3DInventorViewer::pickPoint(const SbVec2s& pos) const
 
 const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) const
 {
-    if(selectionRoot)
+    if (selectionRoot)
         return selectionRoot->getPickedPoint(n->getAction());
     else
         return n->getPickedPoint();
