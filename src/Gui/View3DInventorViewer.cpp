@@ -300,18 +300,18 @@ public:
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(parent, sharewidget), editViewProvider(0), navigation(0),
       framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
-      allowredir(FALSE), overrideMode("As Is")
+      allowredir(FALSE), overrideMode("As Is"), _viewerPy(0)
 {
     init();
-};
+}
 
 View3DInventorViewer::View3DInventorViewer(const QGLFormat& format, QWidget* parent, const QGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), editViewProvider(0), navigation(0),
       framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
-      allowredir(FALSE), overrideMode("As Is")
+      allowredir(FALSE), overrideMode("As Is"), _viewerPy(0)
 {
     init();
-};
+}
 
 void View3DInventorViewer::init()
 {
@@ -486,13 +486,18 @@ View3DInventorViewer::~View3DInventorViewer()
     delete this->navigation;
 
     // Note: When closing the application the main window doesn't exist any more.
-    if(getMainWindow())
+    if (getMainWindow())
         getMainWindow()->setPaneText(2, QLatin1String(""));
 
     Gui::Selection().Detach(this);
 
     removeEventFilter(viewerEventFilter);
     delete viewerEventFilter;
+
+    if (_viewerPy) {
+        static_cast<View3DInventorViewerPy*>(_viewerPy)->_viewer = 0;
+        Py_DECREF(_viewerPy);
+    }
 }
 
 void View3DInventorViewer::setDocument(Gui::Document* pcDocument)
