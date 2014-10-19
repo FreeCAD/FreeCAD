@@ -137,14 +137,15 @@ inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom){
             << "Sketcher_Create3PointArc"
             << "Sketcher_CreateCircle"
             << "Sketcher_Create3PointCircle"
-            << "Sketcher_CreateEllipse"
+            << "Sketcher_CreateEllipseByCenter"
+            << "Sketcher_CreateEllipseBy3Points"
             << "Sketcher_CreateArcOfEllipse";
 }
 template <>
 inline void SketcherAddWorkspaceArcs<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
     geom    << "Sketcher_CompCreateArc"
             << "Sketcher_CompCreateCircle"
-            << "Sketcher_CreateEllipse"
+            << "Sketcher_CompCreateEllipse"
             << "Sketcher_CreateArcOfEllipse";
 }
 template <typename T>
