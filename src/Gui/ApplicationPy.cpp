@@ -699,7 +699,7 @@ PyObject* Application::sAddResPath(PyObject * /*self*/, PyObject *args,PyObject 
     PyMem_Free(filePath);
     if (QDir::isRelativePath(path)) {
         // Home path ends with '/'
-        QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
+        QString home = QString::fromUtf8(App::GetApplication().getHomePath());
         path = home + path;
     }
 
@@ -718,7 +718,7 @@ PyObject* Application::sAddLangPath(PyObject * /*self*/, PyObject *args,PyObject
     PyMem_Free(filePath);
     if (QDir::isRelativePath(path)) {
         // Home path ends with '/'
-        QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
+        QString home = QString::fromUtf8(App::GetApplication().getHomePath());
         path = home + path;
     }
 
@@ -736,7 +736,7 @@ PyObject* Application::sAddIconPath(PyObject * /*self*/, PyObject *args,PyObject
     PyMem_Free(filePath);
     if (QDir::isRelativePath(path)) {
         // Home path ends with '/'
-        QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
+        QString home = QString::fromUtf8(App::GetApplication().getHomePath());
         path = home + path;
     }
 

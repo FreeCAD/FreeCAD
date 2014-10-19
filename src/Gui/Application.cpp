@@ -1617,7 +1617,7 @@ void Application::runApplication(void)
     }
     mainApp.setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
     QString plugin;
-    plugin = QString::fromUtf8(App::GetApplication().GetHomePath());
+    plugin = QString::fromUtf8(App::GetApplication().getHomePath());
     plugin += QLatin1String("/plugins");
     QCoreApplication::addLibraryPath(plugin);
 
@@ -1673,7 +1673,7 @@ void Application::runApplication(void)
     SIM::Coin3D::Quarter::Quarter::init();
     SoFCDB::init();
 
-    QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
+    QString home = QString::fromUtf8(App::GetApplication().getHomePath());
 
     it = cfg.find("WindowTitle");
     if (it != cfg.end()) {

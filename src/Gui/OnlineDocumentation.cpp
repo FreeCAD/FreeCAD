@@ -72,7 +72,7 @@ static const unsigned char navicon_data[] = {
 OnlineDocumentation::OnlineDocumentation()
 {
     // store the listed files in a stringlist
-    std::string path = App::GetApplication().GetHomePath();
+    std::string path = App::GetApplication().getHomePath();
     path += "/doc/docs.zip";
     zipios::ZipFile zip(path);
     if (zip.isValid()) {
@@ -143,7 +143,7 @@ QByteArray OnlineDocumentation::loadResource(const QString& filename) const
     }
     else if (this->files.contains(fn)) {
         // load the requested page from zip 
-        std::string path = App::GetApplication().GetHomePath();
+        std::string path = App::GetApplication().getHomePath();
         path += "/doc/docs.zip";
         zipios::ZipFile zip(path);
         zipios::ConstEntryPointer entry = zip.getEntry((const char*)fn.toAscii());
