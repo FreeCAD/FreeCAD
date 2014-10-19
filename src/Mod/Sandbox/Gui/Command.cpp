@@ -46,9 +46,6 @@
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoImage.h>
 # include <Inventor/nodes/SoCone.h>
-# include <Inventor/Qt/viewers/SoQtPlaneViewer.h>
-# include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
-# include <Inventor/Qt/viewers/SoQtFlyViewer.h>
 # include <cmath>
 # include <boost/thread/thread.hpp>
 # include <boost/thread/mutex.hpp>
@@ -1188,72 +1185,6 @@ void CmdTestWidgetShape::activated(int iMsg)
     static_cast<SoGroup*>(viewer->getSceneGraph())->addChild(shape);
 }
 
-//===========================================================================
-// Sandbox_PlaneViewer
-//===========================================================================
-DEF_STD_CMD(CmdSandboxPlaneViewer);
-
-CmdSandboxPlaneViewer::CmdSandboxPlaneViewer()
-  : Command("Sandbox_PlaneViewer")
-{
-    sGroup          = "Standard-Test";
-    sMenuText       = "Plane viewer";
-    sToolTipText    = "Plane viewer";
-    sWhatsThis      = sToolTipText;
-    sStatusTip      = sToolTipText;
-}
-
-void CmdSandboxPlaneViewer::activated(int iMsg)
-{
-    SoQtPlaneViewer* viewer = new SoQtPlaneViewer();
-    viewer->show();
-    viewer->setSceneGraph(new SoCone);
-}
-
-//===========================================================================
-// Sandbox_ExaminerViewer
-//===========================================================================
-DEF_STD_CMD(CmdSandboxExaminerViewer);
-
-CmdSandboxExaminerViewer::CmdSandboxExaminerViewer()
-  : Command("Sandbox_ExaminerViewer")
-{
-    sGroup          = "Standard-Test";
-    sMenuText       = "Examiner viewer";
-    sToolTipText    = "Examiner viewer";
-    sWhatsThis      = sToolTipText;
-    sStatusTip      = sToolTipText;
-}
-
-void CmdSandboxExaminerViewer::activated(int iMsg)
-{
-    SoQtExaminerViewer* viewer = new SoQtExaminerViewer();
-    viewer->show();
-    viewer->setSceneGraph(new SoCone);
-}
-
-//===========================================================================
-// Sandbox_FlyViewer
-//===========================================================================
-DEF_STD_CMD(CmdSandboxFlyViewer);
-
-CmdSandboxFlyViewer::CmdSandboxFlyViewer()
-  : Command("Sandbox_FlyViewer")
-{
-    sGroup          = "Standard-Test";
-    sMenuText       = "Fly viewer";
-    sToolTipText    = "Fly viewer";
-    sWhatsThis      = sToolTipText;
-    sStatusTip      = sToolTipText;
-}
-
-void CmdSandboxFlyViewer::activated(int iMsg)
-{
-    SoQtFlyViewer* viewer = new SoQtFlyViewer();
-    viewer->show();
-    viewer->setSceneGraph(new SoCone);
-}
-
 // -------------------------------------------------------------------------------
 
 DEF_STD_CMD(CmdMengerSponge);
@@ -1479,9 +1410,6 @@ void CreateSandboxCommands(void)
     rcCmdMgr.addCommand(new CmdTestGDIWidget());
     rcCmdMgr.addCommand(new CmdTestRedirectPaint());
     rcCmdMgr.addCommand(new CmdTestCryptographicHash());
-    rcCmdMgr.addCommand(new CmdSandboxPlaneViewer());
-    rcCmdMgr.addCommand(new CmdSandboxExaminerViewer());
-    rcCmdMgr.addCommand(new CmdSandboxFlyViewer());
     rcCmdMgr.addCommand(new CmdMengerSponge());
     rcCmdMgr.addCommand(new CmdTestGraphicsView());
 }
