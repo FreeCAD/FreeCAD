@@ -44,11 +44,10 @@
 
 using namespace SandboxGui;
 
-
 class MyPaintable : public Gui::GLGraphicsItem
 {
     QGLFramebufferObject* fbo;
-    SoQtViewer* view;
+    Gui::View3DInventorViewer* view;
     QImage img;
 public:
     ~MyPaintable()
@@ -87,14 +86,14 @@ public:
         //img = fbo->toImage();
         //img = QGLWidget::convertToGLFormat(img);
 
-        view->scheduleRedraw();
+        view->getSoRenderManager()->scheduleRedraw();
     }
  #ifndef GL_MULTISAMPLE
  #define GL_MULTISAMPLE  0x809D
  #endif
     void paintGL()
     {
-    const SbViewportRegion vp = view->getViewportRegion();
+    const SbViewportRegion vp = view->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
     glMatrixMode(GL_PROJECTION);
@@ -148,12 +147,12 @@ class Teapots : public Gui::GLGraphicsItem
     QPoint rubberBandCorner1;
     QPoint rubberBandCorner2;
     bool rubberBandIsShown;
-    SoQtViewer* view;
+    Gui::View3DInventorViewer* view;
 
 public:
 Teapots(Gui::View3DInventorViewer* v) :view(v)
 {
-    const SbViewportRegion vp = view->getViewportRegion();
+    const SbViewportRegion vp = view->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
     rubberBandIsShown = false;
@@ -170,7 +169,7 @@ Teapots(Gui::View3DInventorViewer* v) :view(v)
     rubberBandCorner2.setX(800);
     rubberBandCorner2.setY(600);
 
-    view->scheduleRedraw();
+    view->getSoRenderManager()->scheduleRedraw();
 }
 
 ~Teapots()
@@ -235,14 +234,14 @@ void resizeGL(int width, int height)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDepthRange(0.1,1.0);
     SoGLRenderAction gl(SbViewportRegion(fbObject->size().width(),fbObject->size().height()));
-    gl.apply(view->getSceneManager()->getSceneGraph());
+    gl.apply(view->getSoRenderManager()->getSceneGraph());
     fbObject->release();
 #endif
 }
 
 void paintGL()
 {
-    const SbViewportRegion vp = view->getViewportRegion();
+    const SbViewportRegion vp = view->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
 
@@ -342,7 +341,7 @@ Rubberband(Gui::View3DInventorViewer* v) :view(v)
     rubberBandCorner2.setX(800);
     rubberBandCorner2.setY(600);
     v->setRenderFramebuffer(true);
-    v->scheduleRedraw();
+    v->getSoRenderManager()->scheduleRedraw();
 }
 
 ~Rubberband()
@@ -351,7 +350,7 @@ Rubberband(Gui::View3DInventorViewer* v) :view(v)
 
 void paintGL()
 {
-    const SbViewportRegion vp = view->getViewportRegion();
+    const SbViewportRegion vp = view->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
 
 
@@ -497,7 +496,7 @@ void DrawingPlane::terminate()
     glDepthRange(0.1,1.0);
     glEnable(GL_LINE_SMOOTH);
     SoGLRenderAction a(SbViewportRegion(128,128));
-    a.apply(_pcView3D->getSceneManager()->getSceneGraph());
+    a.apply(_pcView3D->getSoRenderManager()->getSceneGraph());
     fbo->release();
     fbo->toImage().save(QString::fromAscii("C:/Temp/DrawingPlane.png"));
     delete fbo;
@@ -506,7 +505,7 @@ void DrawingPlane::terminate()
 void DrawingPlane::draw ()
 {return;
     if (1/*mustRedraw*/) {
-        SbVec2s view = _pcView3D->getSize();
+        SbVec2s view = _pcView3D->getSoRenderManager()->getSize();
         static_cast<QGLWidget*>(_pcView3D->getGLWidget())->makeCurrent();
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
