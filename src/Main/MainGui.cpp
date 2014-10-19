@@ -310,7 +310,7 @@ int main( int argc, char ** argv )
 
     // Now it's time to read-in the file branding.xml if it exists
     Branding brand;
-    QString path = QString::fromUtf8(App::GetApplication().GetHomePath());
+    QString path = QString::fromUtf8(App::GetApplication().getHomePath());
     QFileInfo fi(path, QString::fromAscii("branding.xml"));
     if (brand.readFile(fi.absoluteFilePath())) {
         Branding::XmlConfig cfg = brand.getUserDefines();
