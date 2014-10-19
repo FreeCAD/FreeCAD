@@ -223,7 +223,7 @@ public:
     static char** GetARGV(void){return _argv;}
     //@}
 
-    const char* GetHomePath(void) const;
+    const char* getHomePath(void) const;
     const char* getExecutableName(void) const;
     static std::string getUserAppDataDir();
     static std::string getResourceDir();

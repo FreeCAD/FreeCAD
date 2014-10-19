@@ -853,7 +853,7 @@ void PyResource::load( const char* name )
     // checks whether it's a relative path
     if (fi.isRelative()) {
         QString cwd = QDir::currentPath ();
-        QString home= QDir(QString::fromUtf8(App::GetApplication().GetHomePath())).path();
+        QString home= QDir(QString::fromUtf8(App::GetApplication().getHomePath())).path();
 
         // search in cwd and home path for the file
         //

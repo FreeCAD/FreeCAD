@@ -531,7 +531,7 @@ PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args,PyObject
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL;                       // NULL triggers exception
 
-    Py::String homedir(GetApplication().GetHomePath());
+    Py::String homedir(GetApplication().getHomePath());
     return Py::new_reference_to(homedir);
 }
 

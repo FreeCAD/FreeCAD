@@ -486,7 +486,7 @@ void StdCmdDownloadOnlineHelp::activated(int iMsg)
         bool canStart = false;
 
         // set output directory
-        QString path = QString::fromUtf8(App::GetApplication().GetHomePath());
+        QString path = QString::fromUtf8(App::GetApplication().getHomePath());
         path += QString::fromAscii("/doc/");
         ParameterGrp::handle hURLGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OnlineHelp");
         path = QString::fromUtf8(hURLGrp->GetASCII( "DownloadLocation", path.toAscii() ).c_str());

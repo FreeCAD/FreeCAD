@@ -78,14 +78,14 @@ BitmapFactoryInst& BitmapFactoryInst::instance(void)
         std::map<std::string,std::string>::const_iterator it;
         it = App::GetApplication().Config().find("ProgramIcons");
         if (it != App::GetApplication().Config().end()) {
-            QString home = QString::fromUtf8(App::GetApplication().GetHomePath());
+            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
             QString path = QString::fromUtf8(it->second.c_str());
             if (QDir(path).isRelative()) {
                 path = QFileInfo(QDir(home), path).absoluteFilePath();
             }
             _pcSingleton->addPath(path);
         }
-        _pcSingleton->addPath(QString::fromAscii("%1/icons").arg(QString::fromUtf8(App::GetApplication().GetHomePath())));
+        _pcSingleton->addPath(QString::fromAscii("%1/icons").arg(QString::fromUtf8(App::GetApplication().getHomePath())));
         _pcSingleton->addPath(QString::fromAscii("%1/icons").arg(QString::fromUtf8(App::GetApplication().Config()["UserAppData"].c_str())));
         _pcSingleton->addPath(QLatin1String(":/icons/"));
         _pcSingleton->addPath(QLatin1String(":/Icons/"));

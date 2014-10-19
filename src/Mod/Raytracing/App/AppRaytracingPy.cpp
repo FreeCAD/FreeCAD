@@ -219,7 +219,7 @@ copyResource(PyObject *self, PyObject *args)
     if (! PyArg_ParseTuple(args, "ss",&FileName,&DestDir))
         return NULL;
 
-    std::string resName = App::GetApplication().GetHomePath(); 
+    std::string resName = App::GetApplication().getHomePath(); 
     resName += "Mod"; 
     resName += PATHSEP ;
     resName += "Raytracing"; 

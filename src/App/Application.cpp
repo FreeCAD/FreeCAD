@@ -487,7 +487,7 @@ void Application::setActiveDocument(const char *Name)
     }
 }
 
-const char* Application::GetHomePath(void) const
+const char* Application::getHomePath(void) const
 {
     return _mConfig["AppHomePath"].c_str();
 }

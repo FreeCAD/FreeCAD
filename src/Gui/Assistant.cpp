@@ -82,7 +82,7 @@ bool Assistant::startAssistant()
 #ifdef Q_OS_WIN
         QString app;
         app = QDir::toNativeSeparators(QString::fromUtf8
-            (App::GetApplication().GetHomePath()) + QLatin1String("bin/"));
+            (App::GetApplication().getHomePath()) + QLatin1String("bin/"));
 #else
         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
 #endif 
