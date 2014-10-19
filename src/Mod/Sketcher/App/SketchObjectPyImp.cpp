@@ -75,12 +75,19 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
         if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
             Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
             Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+            Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
             if (!circle.IsNull()) {
                 // create the definition struct for that geom
                 Part::GeomArcOfCircle aoc;
                 aoc.setHandle(trim);
                 ret = this->getSketchObjectPtr()->addGeometry(&aoc);
             }
+            else if (!ellipse.IsNull()) {
+                // create the definition struct for that geom
+                Part::GeomArcOfEllipse aoe;
+                aoe.setHandle(trim);
+                ret = this->getSketchObjectPtr()->addGeometry(&aoe);
+            }             
             else {
                 std::stringstream str;
                 str << "Unsupported geometry type: " << geo->getTypeId().getName();
@@ -117,12 +124,20 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
                 if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
                     Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast(geo->handle());
                     Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
+                    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
                     if (!circle.IsNull()) {
                         // create the definition struct for that geom
                         boost::shared_ptr<Part::GeomArcOfCircle> aoc(new Part::GeomArcOfCircle());
                         aoc->setHandle(trim);
                         geoList.push_back(aoc.get());
                         tmpList.push_back(aoc);
+                    }
+                    else if (!ellipse.IsNull()) {
+                        // create the definition struct for that geom
+                        boost::shared_ptr<Part::GeomArcOfEllipse> aoe(new Part::GeomArcOfEllipse());
+                        aoe->setHandle(trim);
+                        geoList.push_back(aoe.get());
+                        tmpList.push_back(aoe);
                     }
                     else {
                         std::stringstream str;
