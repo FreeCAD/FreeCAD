@@ -213,8 +213,6 @@ int main( int argc, char ** argv )
     {
         QCoreApplication app(argc, argv);
         QStringList args = app.arguments();
-        args.pop_front(); // remove 1st argument
-        argv_.push_back(argv[0]);
         for (QStringList::iterator it = args.begin(); it != args.end(); ++it) {
             data.push_back(it->toUtf8());
             argv_.push_back(data.back().data());

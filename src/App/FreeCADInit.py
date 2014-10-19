@@ -52,7 +52,6 @@ def InitApplications():
 	HomeMod = os.path.realpath(HomeMod)
 	MacroDir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
 	MacroMod = os.path.realpath(MacroDir+"/Mod")
-	ModPar = FreeCAD.ParamGet("System parameter:Modules")
 
 	#print FreeCAD.getHomePath()
 	if os.path.isdir(FreeCAD.getHomePath()+'src\\Tools'):
@@ -88,13 +87,13 @@ def InitApplications():
 	FreeCAD.__path__ = ModDict.values()
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
-			ModGrp = ModPar.GetGroup(Dir)
 			sys.path.insert(0,Dir)
 			PathExtension += Dir + os.pathsep
 			InstallFile = os.path.join(Dir,"Init.py")
 			if (os.path.exists(InstallFile)):
 				try:
-					execfile(InstallFile)
+					#execfile(InstallFile)
+					exec open(InstallFile).read()
 				except Exception, inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
 					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')

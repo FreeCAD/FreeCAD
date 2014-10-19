@@ -2000,31 +2000,38 @@ std::string Application::FindHomePath(const char* sCall)
     // We have three ways to start this application either use one of the both executables or
     // import the FreeCAD.pyd module from a running Python session. In the latter case the
     // Python interpreter is already initialized.
-    char  szFileName [MAX_PATH] ;
+    wchar_t szFileName [MAX_PATH];
     if (Py_IsInitialized()) {
-        GetModuleFileName(GetModuleHandle(sCall),szFileName, MAX_PATH-1);
+        GetModuleFileNameW(GetModuleHandle(sCall),szFileName, MAX_PATH-1);
     }
     else {
-        GetModuleFileName(0, szFileName, MAX_PATH-1);
+        GetModuleFileNameW(0, szFileName, MAX_PATH-1);
     }
 
-    std::string Call(szFileName), TempHomePath;
-    std::string::size_type pos = Call.find_last_of(PATHSEP);
-    TempHomePath.assign(Call,0,pos);
-    pos = TempHomePath.find_last_of(PATHSEP);
-    TempHomePath.assign(TempHomePath,0,pos+1);
+    std::wstring Call(szFileName), homePath;
+    std::wstring::size_type pos = Call.find_last_of(PATHSEP);
+    homePath.assign(Call,0,pos);
+    pos = homePath.find_last_of(PATHSEP);
+    homePath.assign(homePath,0,pos+1);
 
     // switch to posix style
-    for (std::string::iterator i=TempHomePath.begin();i!=TempHomePath.end();++i) {
-        if (*i == '\\')
-            *i = '/';
+    for (std::wstring::iterator it = homePath.begin(); it != homePath.end(); ++it) {
+        if (*it == '\\')
+            *it = '/';
     }
 
     // fixes #0001638 to avoid to load DLLs from Windows' system directories before FreeCAD's bin folder
-    std::string binPath = TempHomePath;
-    binPath += "bin";
-    SetDllDirectory(binPath.c_str());
-    return TempHomePath;
+    std::wstring binPath = homePath;
+    binPath += L"bin";
+    SetDllDirectoryW(binPath.c_str());
+
+    // http://stackoverflow.com/questions/5625884/conversion-of-stdwstring-to-qstring-throws-linker-error
+#ifdef _MSC_VER
+    QString str = QString::fromUtf16(reinterpret_cast<const ushort *>(homePath.c_str()));
+#else
+    QString str = QString::fromStdWString(homePath);
+#endif
+    return str.toStdString();
 }
 
 #else
