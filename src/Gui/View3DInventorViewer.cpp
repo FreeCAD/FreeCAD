@@ -2669,11 +2669,11 @@ void View3DInventorViewer::setAntiAliasingMode(View3DInventorViewer::AntiAliasin
         break;
     };
 
-    if(getSoRenderManager()->getGLRenderAction()->isSmoothing() != smoothing)
+    if (getSoRenderManager()->getGLRenderAction()->isSmoothing() != smoothing)
         getSoRenderManager()->getGLRenderAction()->setSmoothing(smoothing);
 
-    if(static_cast<QGLWidget*>(this->viewport())->format().samples() != buffers)
-        Base::Console().Message("To change multisampling settings please close and open the 3d view again");
+    if (static_cast<QGLWidget*>(this->viewport())->format().samples() != buffers)
+        Base::Console().Message("To change multisampling settings please close and open the 3d view again\n");
 
 }
 
