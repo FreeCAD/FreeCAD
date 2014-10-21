@@ -1009,7 +1009,6 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
     QString unit = QString::fromLatin1("('%1 %2'").arg(q.getValue()).arg(q.getUnit().getString());
     q = Base::Quantity(value.y, Base::Unit::Length);
     unit + QString::fromLatin1("'%1 %2'").arg(q.getValue()).arg(q.getUnit().getString());
-    q = Base::Quantity(value.z, Base::Unit::Length);
 
     setPropertyValue(unit);
 }
