@@ -211,6 +211,16 @@ std::string Translator::activeLanguage() const
     return d->activatedLanguage;
 }
 
+std::string Translator::locale(const std::string& lang) const
+{
+    std::string loc;
+    std::map<std::string, std::string>::const_iterator tld = d->mapLanguageTopLevelDomain.find(lang);
+    if (tld != d->mapLanguageTopLevelDomain.end())
+        loc = tld->second;
+
+    return loc;
+}
+
 QStringList Translator::directories() const
 {
     QStringList list;

@@ -31,6 +31,7 @@
 # include <QMimeData>
 # include <QCloseEvent>
 # include <QContextMenuEvent>
+# include <QDesktopServices>
 # include <QDesktopWidget>
 # include <QDockWidget>
 # include <QFontMetrics>
@@ -548,12 +549,17 @@ void MainWindow::whatsThis()
     QWhatsThis::enterWhatsThisMode();
 }
 
-void MainWindow::showDocumentation(const char* Article)
+void MainWindow::showDocumentation(const QString& help)
 {
-    QString help;
-    if (Article && Article[0] != '\0')
-        help = QString::fromUtf8("%1.html").arg(QLatin1String(Article));
-    d->assistant->showDocumentation(help);
+    QUrl url(help);
+    if (url.scheme().isEmpty()) {
+        QString page;
+        page = QString::fromUtf8("%1.html").arg(help);
+        d->assistant->showDocumentation(page);
+    }
+    else {
+        QDesktopServices::openUrl(url);
+    }
 }
 
 bool MainWindow::event(QEvent *e)
@@ -576,7 +582,7 @@ bool MainWindow::event(QEvent *e)
     }
     else if (e->type() == QEvent::WhatsThisClicked) {
         QWhatsThisClickedEvent* wt = static_cast<QWhatsThisClickedEvent*>(e);
-        showDocumentation((const char*)wt->href().toUtf8());
+        showDocumentation(wt->href());
     }
     else if (e->type() == QEvent::ApplicationWindowIconChange) {
         // if application icon changes apply it to the main window and the "About..." dialog
