@@ -64,6 +64,8 @@ public:
     void refresh();
     /** Returns the currently installed language. If no language is installed an empty string is returned. */
     std::string activeLanguage() const;
+    /** Returns the locale (e.g. "de") to the given language name. */
+    std::string locale(const std::string&) const;
     /** Returns a list of supported languages. */
     TStringList supportedLanguages() const;
     /** Returns a map of supported languages/locales. */

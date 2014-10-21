@@ -134,7 +134,7 @@ public:
     /** Shows the Tip-of-the-day dialog after startup. */
     void showTipOfTheDay(bool force=false);
     /** Shows the online documentation. */
-    void showDocumentation(const char* Article=0);
+    void showDocumentation(const QString& help);
     //@}
 
     /** @name Layout Methods 

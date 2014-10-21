@@ -430,7 +430,7 @@ StdCmdOnlineHelp::StdCmdOnlineHelp()
 
 void StdCmdOnlineHelp::activated(int iMsg)
 {
-    Gui::getMainWindow()->showDocumentation();
+    Gui::getMainWindow()->showDocumentation(QString());
 }
 
 //===========================================================================
