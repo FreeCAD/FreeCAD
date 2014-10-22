@@ -129,10 +129,6 @@ using namespace boost::program_options;
 # include <new>
 #endif
 
-#ifdef MemDebugOn
-# define new DEBUG_CLIENTBLOCK
-#endif
-
 
 //using Base::GetConsole;
 using namespace Base;

@@ -38,7 +38,6 @@
 #pragma warning( disable : 4723 )
 #endif
 
-#define new DEBUG_CLIENTBLOCK
 using namespace App;
 
 

@@ -27,7 +27,7 @@
 #endif
 
 #include "GeoFeature.h"
-#define new DEBUG_CLIENTBLOCK
+
 using namespace App;
 
 

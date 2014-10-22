@@ -105,10 +105,6 @@ using namespace std;
 using namespace boost;
 using namespace zipios;
 
-#ifdef MemDebugOn
-# define new DEBUG_CLIENTBLOCK
-#endif
-
 #if FC_DEBUG
 #  define FC_LOGFEATUREUPDATE
 #endif 

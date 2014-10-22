@@ -45,7 +45,6 @@
 #include <Base/FileInfo.h>
 #include <Base/UnitsApi.h>
 
-#define new DEBUG_CLIENTBLOCK
 //using Base::GetConsole;
 using namespace Base;
 using namespace App;
