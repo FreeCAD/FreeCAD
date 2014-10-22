@@ -93,8 +93,8 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QGLWidget * shar
 
 QuarterWidgetP::~QuarterWidgetP()
 {
-  //TODO:fix this function call
-  //removeFromCacheContext(this->cachecontext, this->master);
+  QGLWidget* glMaster = static_cast<QGLWidget*>(this->master->viewport());
+  removeFromCacheContext(this->cachecontext, glMaster);
   if (this->contextmenu) {
     delete this->contextmenu;
   }
@@ -135,14 +135,14 @@ QuarterWidgetP::findCacheContext(QuarterWidget * widget, const QGLWidget * share
 
     for (int j = 0; j < cachecontext->widgetlist.getLength(); j++) {
       if (cachecontext->widgetlist[j] == sharewidget) {
-        cachecontext->widgetlist.append((const QGLWidget*) widget);
+        cachecontext->widgetlist.append(static_cast<const QGLWidget*>(widget->viewport()));
         return cachecontext;
       }
     }
   }
   QuarterWidgetP_cachecontext * cachecontext = new QuarterWidgetP_cachecontext;
   cachecontext->id = SoGLCacheContextElement::getUniqueCacheContext();
-  cachecontext->widgetlist.append((const QGLWidget*) widget);
+  cachecontext->widgetlist.append(static_cast<const QGLWidget*>(widget->viewport()));
   cachecontext_list->append(cachecontext);
 
   return cachecontext;
