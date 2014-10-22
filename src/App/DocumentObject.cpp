@@ -33,7 +33,7 @@
 #include "DocumentObjectPy.h"
 #include "DocumentObjectGroup.h"
 #include "PropertyLinks.h"
-#define new DEBUG_CLIENTBLOCK
+
 using namespace App;
 
 

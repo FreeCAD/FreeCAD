@@ -126,8 +126,6 @@
 
 //#define FC_LOGGING_CB
 
-#define new DEBUG_CLIENTBLOCK
-
 using namespace Gui;
 
 /*** zoom-style cursor ******/

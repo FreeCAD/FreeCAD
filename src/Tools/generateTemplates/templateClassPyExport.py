@@ -238,8 +238,6 @@ public:
 #include <Base/Exception.h>
 #include <CXX/Objects.hxx>
 
-#define new DEBUG_CLIENTBLOCK
-
 using Base::streq;
 using namespace @self.export.Namespace@;
 

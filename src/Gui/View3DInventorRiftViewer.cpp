@@ -30,8 +30,6 @@
 #include "View3DInventorRiftViewer.h"
 #include <App/Application.h>
 
-#define new DEBUG_CLIENTBLOCK
-
 using namespace Gui;
 
 View3DInventorRiftViewer::View3DInventorRiftViewer() : CoinRiftWidget()

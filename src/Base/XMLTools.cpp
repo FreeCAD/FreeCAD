@@ -30,8 +30,6 @@
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "XMLTools.h"
 
-#define new DEBUG_CLIENTBLOCK
-
 using namespace Base;
 
 std::auto_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> StrXUTF8::transcoder;
