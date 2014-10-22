@@ -207,7 +207,7 @@ void Flag::drawLine (View3DInventorViewer* v, int tox, int toy)
     if (false) fromx += width();
 
     GLPainter p;
-    p.begin(v);
+    p.begin(v->getGLWidget());
     p.setDrawBuffer(GL_BACK);
 
     // the line

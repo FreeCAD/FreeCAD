@@ -36,6 +36,9 @@
 #include <Base/BaseClass.h>
 #include <QPoint>
 
+class QPaintDevice;
+class QGLWidget;
+
 namespace Gui {
 class View3DInventorViewer;
 class GuiExport GLPainter
@@ -44,7 +47,7 @@ public:
     GLPainter();
     virtual ~GLPainter();
 
-    bool begin(View3DInventorViewer*);
+    bool begin(QPaintDevice * device);
     bool end();
     bool isActive() const;
 
@@ -68,7 +71,7 @@ public:
     //@}
 
 private:
-    View3DInventorViewer* viewer;
+    QGLWidget* viewer;
     GLfloat depthrange[2];
     GLdouble projectionmatrix[16];
     GLint width, height;
@@ -92,18 +95,19 @@ public:
 
 class GuiExport Rubberband : public Gui::GLGraphicsItem
 {
-    Gui::View3DInventorViewer* viewer;
+    View3DInventorViewer* viewer;
     int x_old, y_old, x_new, y_new;
     float rgb_r, rgb_g, rgb_b, rgb_a;
     bool working, stipple;
+
 public:
-    Rubberband(Gui::View3DInventorViewer* v);
+    Rubberband(View3DInventorViewer* v);
     Rubberband();
     ~Rubberband();
     void setWorking(bool on);
     void setLineStipple(bool on);
     bool isWorking();
-    void setViewer(Gui::View3DInventorViewer* v);
+    void setViewer(View3DInventorViewer* v);
     void setCoords(int x1, int y1, int x2, int y2);
     void setColor(float r, float g, float b, float a);
     void paintGL();
@@ -111,7 +115,7 @@ public:
 
 class Polyline : public Gui::GLGraphicsItem
 {
-    Gui::View3DInventorViewer* viewer;
+    View3DInventorViewer* viewer;
     std::vector<QPoint> _cNodeVector;
     int x_new, y_new;
     float rgb_r, rgb_g, rgb_b, rgb_a, line;
@@ -119,17 +123,17 @@ class Polyline : public Gui::GLGraphicsItem
     GLPainter p;
 
 public:
-    Polyline(Gui::View3DInventorViewer* v);
+    Polyline(View3DInventorViewer* v);
     Polyline();
     ~Polyline();
     void setWorking(bool on);
     bool isWorking();
-    void setViewer(Gui::View3DInventorViewer* v);
+    void setViewer(View3DInventorViewer* v);
     void setCoords(int x, int y);
     void setColor(int r, int g, int b, int a=0);
     void setLineWidth(float l);
     void setClosed(bool c);
-    void addNode(QPoint p);
+    void addNode(const QPoint& p);
     void clear();
     void paintGL();
 };

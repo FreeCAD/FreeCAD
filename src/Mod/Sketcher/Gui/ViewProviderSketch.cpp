@@ -82,7 +82,6 @@
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
-#include <Gui/GLPainter.h>
 #include <Gui/Selection.h>
 #include <Gui/Utilities.h>
 #include <Gui/MainWindow.h>
