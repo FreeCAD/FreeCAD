@@ -116,6 +116,7 @@ void GLImageBox::paintGL()
     // clear background (in back buffer)
     glDrawBuffer(GL_BACK);
     glClear(GL_COLOR_BUFFER_BIT);
+    glDisable(GL_DEPTH_TEST);
 
     // Draw the image
     drawImage();
