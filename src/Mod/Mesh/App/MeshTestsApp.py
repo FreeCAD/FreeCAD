@@ -92,9 +92,9 @@ class PivyTestCases(unittest.TestCase):
 		if not sys.modules.has_key("pivy.gui.soqt"): from pivy.gui import soqt
 		Mesh.show(planarMeshObject)
 		view=FreeCADGui.ActiveDocument.ActiveView.getViewer()
-		rp=coin.SoRayPickAction(view.getViewportRegion())
+		rp=coin.SoRayPickAction(view.getSoRenderManager().getViewportRegion())
 		rp.setRay(coin.SbVec3f(-16.05,16.0,16.0),coin.SbVec3f(0,-1,0))
-		rp.apply(view.getSceneManager().getSceneGraph())
+		rp.apply(view.getSoRenderManager().getSceneGraph())
 		pp=rp.getPickedPoint()
 		self.failUnless(pp != None)
 		det=pp.getDetail()
@@ -116,7 +116,7 @@ class PivyTestCases(unittest.TestCase):
 		from pivy import coin, sogui; import FreeCADGui
 		if not sys.modules.has_key("pivy.gui.soqt"): from pivy.gui import soqt
 		Mesh.show(planarMeshObject)
-		view=FreeCADGui.ActiveDocument.ActiveView.getViewer()
+		view=FreeCADGui.ActiveDocument.ActiveView
 		pc=coin.SoGetPrimitiveCountAction()
 		pc.apply(view.getSceneGraph())
 		self.failUnless(pc.getTriangleCount() == 2)
