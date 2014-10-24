@@ -149,9 +149,9 @@ Py::Object View3DInventorViewerPy::getSoRenderManager(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        SoEventManager* manager = _viewer->getSoEventManager();
+        SoRenderManager* manager = _viewer->getSoRenderManager();
         PyObject* proxy = 0;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoEventManager *", (void*)manager, 1);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoRenderManager *", (void*)manager, 0);
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
@@ -165,9 +165,9 @@ Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
         throw Py::Exception();
 
     try {
-        SoRenderManager* manager = _viewer->getSoRenderManager();
+        SoEventManager* manager = _viewer->getSoEventManager();
         PyObject* proxy = 0;
-        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoRenderManager *", (void*)manager, 1);
+        proxy = Base::Interpreter().createSWIGPointerObj("pivy.coin", "SoEventManager *", (void*)manager, 0);
         return Py::Object(proxy, true);
     }
     catch (const Base::Exception& e) {
