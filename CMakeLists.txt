@@ -314,6 +314,7 @@ if(FREECAD_LIBPACK_USE)
     find_file(FREECAD_LIBPACK_CHECKFILE9X boost_program_options-vc90-mt-gd-1_54.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKFILE10X boost_program_options-vc110-mt-1_55.lib ${FREECAD_LIBPACK_DIR}/lib )
     find_file(FREECAD_LIBPACK_CHECKCUSTOM boost_program_options-vc90-mt-gd-1_41.lib ${FREECAD_LIBPACK_DIR}/lib )
+    find_file(FREECAD_LIBPACK_CHECKFILE_CLBUNDLER MANIFEST.db ${FREECAD_LIBPACK_DIR})
 
     # don't show them in the GUI
     set(FREECAD_LIBPACK_CHECKFILE6X "${FREECAD_LIBPACK_CHECKFILE6X}" CACHE INTERNAL "Find libpack")
@@ -322,8 +323,12 @@ if(FREECAD_LIBPACK_USE)
     set(FREECAD_LIBPACK_CHECKFILE9X "${FREECAD_LIBPACK_CHECKFILE9X}" CACHE INTERNAL "Find libpack")
     set(FREECAD_LIBPACK_CHECKFILE10X "${FREECAD_LIBPACK_CHECKFILE10X}" CACHE INTERNAL "Find libpack")
     set(FREECAD_LIBPACK_CHECKCUSTOM "${FREECAD_LIBPACK_CHECKCUSTOM}" CACHE INTERNAL "Find libpack")
+    set(FREECAD_LIBPACK_CHECKFILE_CLBUNDLER "${FREECAD_LIBPACK_CHECKFILE_CLBUNDLER}" CACHE INTERNAL "Find libpack")
 
-    IF(FREECAD_LIBPACK_CHECKFILE6X)
+    IF(FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
+        set(FREECAD_LIBPACK_VERSION "CLbundler" CACHE STRING "Displays if the libpack has been found" FORCE)
+        include(cMake/UseLibPackCLbundler.cmake)
+    ELSEIF(FREECAD_LIBPACK_CHECKFILE6X)
         set(FREECAD_LIBPACK_VERSION "6.x" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPack6x.cmake)
     ELSEIF(FREECAD_LIBPACK_CHECKFILE7X)
@@ -372,7 +377,9 @@ if(FREECAD_LIBPACK_USE)
 
     find_package(PySideTools REQUIRED) # Pyside utilities (pyside-uic & pyside-rcc)
 
-else(FREECAD_LIBPACK_USE)
+endif(FREECAD_LIBPACK_USE)
+
+if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
 # ================================================================================
 # == for other OSes search the packages ==========================================
@@ -436,7 +443,6 @@ else(FREECAD_LIBPACK_USE)
     find_package (OCE QUIET)
     if(${OCE_FOUND})
         message("-- OpenCASCADE Community Edition has been found.")
-        add_definitions (-DHAVE_CONFIG_H)
         #lib list copied from FreeCAD's FindOpenCasCade.cmake
         set(OCC_LIBRARIES
             TKFillet
@@ -472,6 +478,8 @@ else(FREECAD_LIBPACK_USE)
             TKXDEIGES
             TKMeshVS
         )
+        set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
+        
         CHECK_MINIMUM_OCC_VERSION_HEX(0x060703)
         if (NOT OCC_MIN_VERSION)
             set(OCC_OCAF_LIBRARIES
@@ -479,7 +487,7 @@ else(FREECAD_LIBPACK_USE)
                 TKAdvTools
             )
         endif()
-        set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
+        
         set(OCC_FOUND ${OCE_FOUND})
     else() #look for OpenCASCADE
         find_package(OpenCasCade)
@@ -582,7 +590,11 @@ else(FREECAD_LIBPACK_USE)
         foreach(it ${moc_files})
             get_filename_component(it ${it} ABSOLUTE)
             QT4_MAKE_OUTPUT_FILE(${it} moc_ cpp outfile)
-            QT4_CREATE_MOC_COMMAND(${it} ${outfile} "${moc_flags}" "${moc_options}" "${moc_target}")
+            ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
+                COMMAND ${QT_MOC_EXECUTABLE}
+                ARGS ${moc_options} ${it} -o ${outfile}
+                MAIN_DEPENDENCY ${it}
+            )
             set(${outfiles} ${${outfiles}} ${outfile})
             add_file_dependencies(${it} ${outfile})
         endforeach(it)
@@ -648,7 +660,7 @@ else(FREECAD_LIBPACK_USE)
     endif(BUILD_GUI)
 
 
-endif(FREECAD_LIBPACK_USE)
+endif(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
 if(BUILD_VR)
     find_package(Rift)
@@ -685,7 +697,7 @@ ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
 IF(MSVC)
 	# set default compiler settings
 	SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /EHa")
-	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG")
+	SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DFC_DEBUG /Zm128")
 	# set default libs
 	SET (CMAKE_C_STANDARD_LIBRARIES "kernel32.lib user32.lib gdi32.lib winspool.lib SHFolder.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib winmm.lib comsupp.lib Ws2_32.lib dbghelp.lib ")
 	set (CMAKE_CXX_STANDARD_LIBRARIES "${CMAKE_C_STANDARD_LIBRARIES}")
