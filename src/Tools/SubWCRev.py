@@ -176,23 +176,35 @@ the first number reflects the number of commits in common with the
 blessed master repository.
 the second part, seperated by " +"reflects the number of commits that are
 different form the master repository"""
+        #referencecommit="f119e740c87918b103140b66b2316ae96f136b0e"
+        #referencerevision=4138
+        referencecommit="49646282910aeef73db44943b88df06f0957422c"
+        referencerevision=4244
+
         result = None
-        countall=int(os.popen("git rev-list --count HEAD").read().strip())
+        countallfh=os.popen("git rev-list --count %s..HEAD" % \
+                referencecommit)
+        countallstr=countallfh.read().strip()
+        if countallfh.close() is not None: #reference commit not present
+            self.rev = '%04d (Git shallow)' % referencerevision
+            return
+        else:
+            countall = int(countallstr)
+
         if origin is not None and self.branch.lower() != 'master' and \
                 'release' not in self.branch.lower():
-            #mbfh=os.popen("git merge-base --fork-point %s/master" % origin)
             mbfh=os.popen("git merge-base %s/master HEAD" % origin)
             mergebase = mbfh.read().strip()
             if mbfh.close() is None: # exit code == 0
                 try:
-                    countmergebase=int(os.popen("git rev-list --count %s"\
-                        % mergebase).read().strip())
+                    countmergebase=int(os.popen("git rev-list --count %s..%s"\
+                        % (referencecommit,mergebase)).read().strip())
                     if countall > countmergebase:
-                        result = '%04d +%d (Git)' % (countmergebase,\
-                            countall-countmergebase)
+                        result = '%04d +%d (Git)' % (countmergebase +\
+                            referencerevision,countall-countmergebase)
                 except ValueError:
                     pass
-        self.rev = result or ('%04d (Git)' % countall)
+        self.rev = result or ('%04d (Git)' % (countall+referencerevision))
 
     def extractInfo(self, srcdir):
         self.hash=os.popen("git log -1 --pretty=format:%H").read().strip()
