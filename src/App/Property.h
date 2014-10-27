@@ -96,7 +96,7 @@ public:
     /// Paste the value from the property (mainly for Undo/Redo and transactions)
     virtual void Paste(const Property &from) = 0;
     /// Encodes an attribute upon saving.
-    std::string encodeAttribute(const std::string&) const;
+    static std::string encodeAttribute(const std::string&);
 
 
     friend class PropertyContainer;

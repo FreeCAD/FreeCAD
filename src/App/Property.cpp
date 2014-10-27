@@ -114,7 +114,7 @@ void Property::Paste(const Property& /*from*/)
     assert(0);
 }
 
-std::string Property::encodeAttribute(const std::string& str) const
+std::string Property::encodeAttribute(const std::string& str)
 {
     std::string tmp;
     for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
