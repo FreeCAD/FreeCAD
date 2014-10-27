@@ -2830,6 +2830,8 @@ public:
                 minAxisPoint = centerPoint+minAxisDir;
                 endAngle +=  M_PI/2;
                 startAngle += M_PI/2;
+                phi-=M_PI/2;
+                double t=a; a=b; b=t;//swap a,b
             }
             
             Base::Vector3d center = Base::Vector3d(centerPoint.fX,centerPoint.fY,0);
@@ -2844,13 +2846,10 @@ public:
             Base::Vector3d focus1P = center + cf * Base::Vector3d(cos(phi),sin(phi),0);
             Base::Vector3d focus2P = center - cf * Base::Vector3d(cos(phi),sin(phi),0);
             
-            int currentgeoid = getHighestCurveIndex();//index of the arc of ellipse we just created
+            int currentgeoid = getHighestCurveIndex();
 
             Gui::Command::openCommand("Add sketch arc of ellipse");
 
-            //Add arc of ellipse, point and constrain point as focus2. We add focus2 for it to balance
-            //the intrinsic focus1, in order to balance out the intrinsic invisible focus1 when AOE is
-            //dragged by its center
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.ArcOfEllipse"
                 "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),"
@@ -2896,7 +2895,7 @@ public:
                     focus2P.x,focus2P.y);
                 
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+4,Sketcher::start,currentgeoid);     
+                    sketchgui->getObject()->getNameInDocument(),currentgeoid+4,Sketcher::start,currentgeoid);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
