@@ -286,6 +286,23 @@ Document* Application::newDocument(const char * Name, const char * UserName)
         Name = "Unnamed";
     string name = getUniqueDocumentName(Name);
 
+    std::string userName;
+    if (UserName && UserName[0] != '\0') {
+        userName = UserName;
+    }
+    else {
+        userName = Name;
+        std::vector<std::string> names;
+        names.reserve(DocMap.size());
+        std::map<string,Document*>::const_iterator pos;
+        for (pos = DocMap.begin();pos != DocMap.end();++pos) {
+            names.push_back(pos->second->Label.getValue());
+        }
+
+        if (!names.empty())
+            userName = Base::Tools::getUniqueName(userName, names);
+    }
+
     // create the FreeCAD document
     auto_ptr<Document> newDoc(new Document() );
 
@@ -313,10 +330,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     signalNewDocument(*_pActiveDoc);
 
     // set the UserName after notifying all observers
-    if (UserName)
-        _pActiveDoc->Label.setValue(UserName);
-    else
-        _pActiveDoc->Label.setValue(Name);
+    _pActiveDoc->Label.setValue(userName);
 
     return _pActiveDoc;
 }
