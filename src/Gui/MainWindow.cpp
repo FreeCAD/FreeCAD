@@ -952,7 +952,7 @@ void MainWindow::onWindowActivated(QWidget* w)
     if (!w) return;
     MDIView* view = dynamic_cast<MDIView*>(w->widget());
 #else
-     MDIView* view = dynamic_cast<MDIView*>(w);
+    MDIView* view = dynamic_cast<MDIView*>(w);
 #endif
 
     // Even if windowActivated() signal is emitted mdi doesn't need to be a top-level window.
@@ -1624,6 +1624,18 @@ void MainWindow::changeEvent(QEvent *e)
         // reload current workbench to retranslate all actions and window titles
         Workbench* wb = WorkbenchManager::instance()->active();
         if (wb) wb->retranslate();
+    }
+    else if (e->type() == QEvent::ActivationChange) {
+        if (isActiveWindow()) {
+            QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
+            if (mdi) {
+                MDIView* view =dynamic_cast<MDIView*>(mdi->widget());
+                if (getMainWindow()->activeWindow() != view) {
+                    d->activeView = view;
+                    Application::Instance->viewActivated(view);
+                }
+            }
+        }
     }
     else {
         QMainWindow::changeEvent(e);
