@@ -2146,7 +2146,7 @@ PropertyLinkItem::PropertyLinkItem()
 QVariant PropertyLinkItem::toString(const QVariant& prop) const
 {
     QStringList list = prop.toStringList();
-    return QVariant(list.last());
+    return QVariant(list[2]);
 }
 
 QVariant PropertyLinkItem::value(const App::Property* prop) const
