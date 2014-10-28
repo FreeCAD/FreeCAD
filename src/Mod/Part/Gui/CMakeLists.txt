@@ -59,6 +59,8 @@ set(PartGui_UIC_SRCS
     DlgBooleanOperation.ui
     DlgExtrusion.ui
     DlgFilletEdges.ui
+    DlgImportExportIges.ui
+    DlgImportExportStep.ui
     DlgPartBox.ui
     DlgPartCylinder.ui
     DlgPartImportIges.ui
@@ -99,6 +101,8 @@ SET(PartGui_SRCS
     DlgFilletEdges.cpp
     DlgFilletEdges.h
     DlgFilletEdges.ui
+    DlgImportExportIges.ui
+    DlgImportExportStep.ui
     DlgPartBox.ui
     DlgPartBoxImp.cpp
     DlgPartBoxImp.h

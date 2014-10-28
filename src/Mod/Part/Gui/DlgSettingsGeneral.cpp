@@ -30,6 +30,8 @@
 
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
+#include "ui_DlgImportExportIges.h"
+#include "ui_DlgImportExportStep.h"
 
 using namespace PartGui;
 
@@ -51,24 +53,6 @@ DlgSettingsGeneral::~DlgSettingsGeneral()
 
 void DlgSettingsGeneral::saveSettings()
 {
-    int unit = ui->comboBoxUnits->currentIndex();
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-    hGrp->SetInt("Unit", unit);
-    switch (unit) {
-        case 1:
-            Interface_Static::SetCVal("write.iges.unit","M");
-            Interface_Static::SetCVal("write.step.unit","M");
-            break;
-        case 2:
-            Interface_Static::SetCVal("write.iges.unit","IN");
-            Interface_Static::SetCVal("write.step.unit","IN");
-            break;
-        default:
-            Interface_Static::SetCVal("write.iges.unit","MM");
-            Interface_Static::SetCVal("write.step.unit","MM");
-            break;
-    }
     ui->checkBooleanCheck->onSave();
     ui->checkBooleanRefine->onSave();
     ui->checkSketchBaseRefine->onSave();
@@ -77,10 +61,6 @@ void DlgSettingsGeneral::saveSettings()
 
 void DlgSettingsGeneral::loadSettings()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-    int unit = hGrp->GetInt("Unit", 0);
-    ui->comboBoxUnits->setCurrentIndex(unit);
     ui->checkBooleanCheck->onRestore();
     ui->checkBooleanRefine->onRestore();
     ui->checkSketchBaseRefine->onRestore();
@@ -99,5 +79,128 @@ void DlgSettingsGeneral::changeEvent(QEvent *e)
         QWidget::changeEvent(e);
     }
 }
-#include "moc_DlgSettingsGeneral.cpp"
 
+// ----------------------------------------------------------------------------
+
+DlgImportExportIges::DlgImportExportIges(QWidget* parent)
+  : PreferencePage(parent)
+{
+    ui = new Ui_DlgImportExportIges();
+    ui->setupUi(this);
+}
+
+/** 
+ *  Destroys the object and frees any allocated resources
+ */
+DlgImportExportIges::~DlgImportExportIges()
+{
+    // no need to delete child widgets, Qt does it all for us
+    delete ui;
+}
+
+void DlgImportExportIges::saveSettings()
+{
+    int unit = ui->comboBoxUnits->currentIndex();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+    hGrp->SetInt("UnitIges", unit);
+    switch (unit) {
+        case 1:
+            Interface_Static::SetCVal("write.iges.unit","M");
+            break;
+        case 2:
+            Interface_Static::SetCVal("write.iges.unit","IN");
+            break;
+        default:
+            Interface_Static::SetCVal("write.iges.unit","MM");
+            break;
+    }
+
+    hGrp->SetBool("BrepMode", ui->checkBrepMode->isChecked());
+    Interface_Static::SetIVal("write.iges.brep.mode",ui->checkBrepMode->isChecked() ? 1 : 0);
+}
+
+void DlgImportExportIges::loadSettings()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+    int unit = hGrp->GetInt("UnitIges", 0);
+    ui->comboBoxUnits->setCurrentIndex(unit);
+
+    int value = Interface_Static::IVal("write.iges.brep.mode");
+    bool brep = hGrp->GetBool("BrepMode", value > 0);
+    ui->checkBrepMode->setChecked(brep);
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgImportExportIges::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
+
+// ----------------------------------------------------------------------------
+
+DlgImportExportStep::DlgImportExportStep(QWidget* parent)
+  : PreferencePage(parent)
+{
+    ui = new Ui_DlgImportExportStep();
+    ui->setupUi(this);
+}
+
+/** 
+ *  Destroys the object and frees any allocated resources
+ */
+DlgImportExportStep::~DlgImportExportStep()
+{
+    // no need to delete child widgets, Qt does it all for us
+    delete ui;
+}
+
+void DlgImportExportStep::saveSettings()
+{
+    int unit = ui->comboBoxUnits->currentIndex();
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+    hGrp->SetInt("UnitStep", unit);
+    switch (unit) {
+        case 1:
+            Interface_Static::SetCVal("write.step.unit","M");
+            break;
+        case 2:
+            Interface_Static::SetCVal("write.step.unit","IN");
+            break;
+        default:
+            Interface_Static::SetCVal("write.step.unit","MM");
+            break;
+    }
+}
+
+void DlgImportExportStep::loadSettings()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+    int unit = hGrp->GetInt("UnitStep", 0);
+    ui->comboBoxUnits->setCurrentIndex(unit);
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgImportExportStep::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
+
+#include "moc_DlgSettingsGeneral.cpp"

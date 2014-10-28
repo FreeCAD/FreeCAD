@@ -287,18 +287,32 @@ void PartExport initPart()
     // set the user-defined units
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-    int unit = hGrp->GetInt("Unit", 0);
-    switch (unit) {
+    int value = Interface_Static::IVal("write.iges.brep.mode");
+    bool brep = hGrp->GetBool("BrepMode", value > 0);
+    Interface_Static::SetIVal("write.iges.brep.mode",brep ? 1 : 0);
+
+    int unitIges = hGrp->GetInt("UnitIges", 0);
+    switch (unitIges) {
         case 1:
             Interface_Static::SetCVal("write.iges.unit","M");
-            Interface_Static::SetCVal("write.step.unit","M");
             break;
         case 2:
             Interface_Static::SetCVal("write.iges.unit","IN");
-            Interface_Static::SetCVal("write.step.unit","IN");
             break;
         default:
             Interface_Static::SetCVal("write.iges.unit","MM");
+            break;
+    }
+
+    int unitStep = hGrp->GetInt("UnitStep", 0);
+    switch (unitStep) {
+        case 1:
+            Interface_Static::SetCVal("write.step.unit","M");
+            break;
+        case 2:
+            Interface_Static::SetCVal("write.step.unit","IN");
+            break;
+        default:
             Interface_Static::SetCVal("write.step.unit","MM");
             break;
     }
