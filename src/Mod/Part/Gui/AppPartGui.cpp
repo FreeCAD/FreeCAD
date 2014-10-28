@@ -5,7 +5,7 @@
  *   published by the Free Software Foundation; either version 2 of the    *
  *   License, or (at your option) any later version.                       *
  *   for detail see the LICENCE text file.                                 *
- *   J�rgen Riegel 2002                                                    *
+ *   Juergen Riegel 2002                                                   *
  *                                                                         *
  ***************************************************************************/
 
@@ -160,6 +160,8 @@ void PartGuiExport initPartGui()
     // register preferences pages
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );
     (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>   ( QT_TRANSLATE_NOOP("QObject","Part design") );
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>  ( QT_TRANSLATE_NOOP("QObject","Display") );
     Gui::ViewProviderBuilder::add(
         Part::PropertyPartShape::getClassTypeId(),

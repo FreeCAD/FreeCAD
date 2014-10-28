@@ -46,6 +46,42 @@ private:
     Ui_DlgSettingsGeneral* ui;
 };
 
+class Ui_DlgImportExportIges;
+class DlgImportExportIges : public Gui::Dialog::PreferencePage
+{
+    Q_OBJECT
+
+public:
+    DlgImportExportIges(QWidget* parent = 0);
+    ~DlgImportExportIges();
+
+protected:
+    void saveSettings();
+    void loadSettings();
+    void changeEvent(QEvent *e);
+
+private:
+    Ui_DlgImportExportIges* ui;
+};
+
+class Ui_DlgImportExportStep;
+class DlgImportExportStep : public Gui::Dialog::PreferencePage
+{
+    Q_OBJECT
+
+public:
+    DlgImportExportStep(QWidget* parent = 0);
+    ~DlgImportExportStep();
+
+protected:
+    void saveSettings();
+    void loadSettings();
+    void changeEvent(QEvent *e);
+
+private:
+    Ui_DlgImportExportStep* ui;
+};
+
 } // namespace Gui
 
 #endif // PARTGUI_DLGSETTINGSGENERAL_H
