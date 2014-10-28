@@ -2061,6 +2061,8 @@ private:
      * +Z coming out of the sketch, this b position is in the +Y direction from the centroid.
      */
     Base::Vector2D positiveB;
+    /// the other b position
+    Base::Vector2D negativeB;
     /// cart. position vector for primary focus
     Base::Vector2D f;
     /// cart. position vector for other focus
@@ -2396,19 +2398,27 @@ private:
          * limit of 25 attempts, I have been unable to make it fail.
          */
 
-        // simulate loss of precision in centroid and periapsis
+        // simulate loss of precision in centroid, periapsis, and apoapsis
         char cx[64];
         char cy[64];
         char px[64];
         char py[64];
+        char ax[64];
+        char ay[64];
         sprintf(cx, "%.6lf\n", centroid.fX);
         sprintf(cy, "%.6lf\n", centroid.fY);
         sprintf(px, "%.6lf\n", periapsis.fX);
         sprintf(py, "%.6lf\n", periapsis.fY);
+        sprintf(ax, "%.6lf\n", apoapsis.fX);
+        sprintf(ay, "%.6lf\n", apoapsis.fY);
         centroid.fX = atof(cx);
         centroid.fY = atof(cy);
         periapsis.fX = atof(px);
         periapsis.fY = atof(py);
+        apoapsis.fX = atof(ax);
+        apoapsis.fY = atof(ay);
+        double majorLength = (periapsis - apoapsis).Length();
+        double minorLength = 0;
 
         /* GC_MakeEllipse requires a right-handed coordinate system, with +X
          * from centroid to periapsis, +Z out of the page.
@@ -2420,87 +2430,127 @@ private:
         int count = 0;
         int limit = 25;             // no infinite loops!
         bool success = false;
+        double tempB = b;
 
-        // adjust b until our mangled vectors produce a good ellispe
+        // adjust b until our mangled vectors produce a good ellipse in GC_MakeEllipse
+        // and the mangled major and minor lines in LinePy::PyInit(...) are such that
+        // major is at least slightly larger than minor
         do {
-            j = j.Normalize() * (b - double(count * beta));
+            tempB = b - double(count * beta);
+            j = j.Normalize() * tempB;
             positiveB.fX = centroid.fX + j.x;
             positiveB.fY = centroid.fY + j.y;
-            char bx[64];
-            char by[64];
-            sprintf(bx, "%.6lf\n", positiveB.fX);
-            sprintf(by, "%.6lf\n", positiveB.fY);
-            positiveB.fX = atof(bx);
-            positiveB.fY = atof(by);
+            negativeB.fX = centroid.fX + (j.x * -1);
+            negativeB.fY = centroid.fY + (j.y * -1);
+            char bpx[64];
+            char bpy[64];
+            char bnx[64];
+            char bny[64];
+            sprintf(bpx, "%.6lf\n", positiveB.fX);
+            sprintf(bpy, "%.6lf\n", positiveB.fY);
+            sprintf(bnx, "%.6lf\n", negativeB.fX);
+            sprintf(bny, "%.6lf\n", negativeB.fY);
+            positiveB.fX = atof(bpx);
+            positiveB.fY = atof(bpy);
+            negativeB.fX = atof(bnx);
+            negativeB.fY = atof(bny);
             GC_MakeEllipse me(gp_Pnt(periapsis.fX,periapsis.fY,0),
                               gp_Pnt(positiveB.fX,positiveB.fY,0),
                               gp_Pnt(centroid.fX,centroid.fY,0));
+            minorLength = (negativeB - positiveB).Length();
             count++;
-            success = me.IsDone();
+            success = me.IsDone() && (minorLength + beta < majorLength);
         } while (!success && (count <= limit));
         if (!success) {
             qDebug() << "Failed to create a valid mangled ellipse after" << count << "attempts";
         }
-        
-        Base::Vector3d center = Base::Vector3d(centroid.fX,centroid.fY,0);
 
-        Base::Vector3d majorpositiveend = center + a * Base::Vector3d(cos(phi),sin(phi),0);
-        Base::Vector3d majornegativeend = center - a * Base::Vector3d(cos(phi),sin(phi),0);
-        Base::Vector3d minorpositiveend = center + b * Base::Vector3d(-sin(phi),cos(phi),0);
-        Base::Vector3d minornegativeend = center - b * Base::Vector3d(-sin(phi),cos(phi),0);
+        // save any changes to b, then recalculate ellipse as required due to change in b
+        b = tempB;
+        e = sqrt(1 - ((b * b) / (a * a)));
+        ae = a * e;
+        f = apseHat;
+        f.Scale(ae);
+        f = centroid + f;
+        fPrime = apseHat;
+        fPrime.Scale(-1 * ae);
+        fPrime = centroid + fPrime;
 
-        double cf = sqrt( abs(a*a - b*b) );//using abs, avoided using different formula for a>b/a<b cases
-
-        Base::Vector3d focus1P = center + cf * Base::Vector3d(cos(phi),sin(phi),0);
-        Base::Vector3d focus2P = center - cf * Base::Vector3d(cos(phi),sin(phi),0);
-
-        int currentgeoid = getHighestCurveIndex();//index of the arc of ellipse we just created
+        int currentgeoid = getHighestCurveIndex(); // index of the ellipse we just created
 
         Gui::Command::openCommand("Add sketch ellipse");
         Gui::Command::doCommand(Gui::Command::Doc,
-            "App.ActiveDocument.%s.addGeometry(Part.Ellipse"
-            "(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                sketchgui->getObject()->getNameInDocument(),
-                periapsis.fX, periapsis.fY,
-                positiveB.fX, positiveB.fY,
-                centroid.fX, centroid.fY);
+                                "App.ActiveDocument.%s.addGeometry(Part.Ellipse"
+                                "(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                                sketchgui->getObject()->getNameInDocument(),
+                                periapsis.fX, periapsis.fY,
+                                positiveB.fX, positiveB.fY,
+                                centroid.fX, centroid.fY);
 
         currentgeoid++;
 
         try {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-            sketchgui->getObject()->getNameInDocument(),
-            majorpositiveend.x,majorpositiveend.y,majornegativeend.x,majornegativeend.y); // create line for major axis
+            // create line for major axis
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.addGeometry(Part.Line"
+                                    "(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    periapsis.fX,periapsis.fY,
+                                    apoapsis.fX,apoapsis.fY);
 
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
-            sketchgui->getObject()->getNameInDocument(),currentgeoid+1);
+                                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1);
 
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
-            sketchgui->getObject()->getNameInDocument(),currentgeoid+1,currentgeoid); // constrain major axis
+            // constrain major axis
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint"
+                                    "('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    currentgeoid+1,currentgeoid);
 
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-            sketchgui->getObject()->getNameInDocument(),
-            minorpositiveend.x,minorpositiveend.y,minornegativeend.x,minornegativeend.y); // create line for minor axis
+            // create line for minor axis
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.addGeometry(Part.Line"
+                                    "(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    positiveB.fX,positiveB.fY,
+                                    negativeB.fX,negativeB.fY);
 
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
-            sketchgui->getObject()->getNameInDocument(),currentgeoid+2);
+                                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2);
 
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
-            sketchgui->getObject()->getNameInDocument(),currentgeoid+2,currentgeoid); // constrain minor axis
+            // constrain minor axis
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint"
+                                    "('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    currentgeoid+2,currentgeoid);
 
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-            sketchgui->getObject()->getNameInDocument(),
-            focus1P.x,focus1P.y);
+            // create point for focus
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    f.fX,f.fY);
 
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
-            sketchgui->getObject()->getNameInDocument(),currentgeoid+3,Sketcher::start,currentgeoid);
+            // constrain focus
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint"
+                                    "('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    currentgeoid+3,Sketcher::start,currentgeoid);
 
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-            sketchgui->getObject()->getNameInDocument(),
-            focus2P.x,focus2P.y);
+            // create point for second focus
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    fPrime.fX,fPrime.fY);
 
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-            sketchgui->getObject()->getNameInDocument(),currentgeoid+4,Sketcher::start,currentgeoid);
+            // constrain second focus
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint"
+                                    "('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    currentgeoid+4,Sketcher::start,currentgeoid);
         }
         catch (const Base::Exception& e) {
             Base::Console().Error("%s\n", e.what());
