@@ -15,7 +15,7 @@
    id="svg2918"
    sodipodi:version="0.32"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="Sketcher_CreateEllipse.svg"
+   sodipodi:docname="Sketcher_CreateEllipse_2.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/sketcher/Sketcher_CreateCircle_from_3points_2_16px.png"
@@ -138,7 +138,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -160,7 +160,7 @@
          style="fill:#000000;fill-opacity:0.58469944;fill-rule:nonzero;stroke:none;stroke-width:5.80000019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
       <path
          style="fill:#000000;fill-opacity:0.58469944;fill-rule:nonzero;stroke:none;stroke-width:5.80000019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         d="m 1744.4042,565.93689 c -0.7934,0.0218 -1.5602,0.0904 -2.3599,0.15344 -25.5938,2.0169 -44.7187,24.14996 -42.659,49.40343 2.0596,25.25348 24.5025,44.1072 50.0963,42.0903 25.5939,-2.01691 44.7189,-24.14993 42.6592,-49.40343 -1.9956,-24.4643 -23.1497,-42.94738 -47.7366,-42.24374 z"
+         d="m 1588.8774,687.02561 c -0.7934,0.0218 -1.5602,0.0904 -2.3599,0.15344 -25.5938,2.0169 -44.7187,24.14996 -42.659,49.40343 2.0596,25.25348 24.5025,44.1072 50.0963,42.0903 25.5939,-2.01691 44.7189,-24.14993 42.6592,-49.40343 -1.9956,-24.4643 -23.1497,-42.94738 -47.7366,-42.24374 z"
          id="path3766"
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="cssssc" />
@@ -203,7 +203,7 @@
       </g>
       <g
          id="g3800"
-         transform="matrix(0.95686384,-0.03824836,0.03934821,0.94411711,112.41292,612.18331)">
+         transform="matrix(0.95686384,-0.03824836,0.03934821,0.94411711,-43.113878,733.27203)">
         <g
            transform="translate(-10.941933,-540.84412)"
            id="g3778">
