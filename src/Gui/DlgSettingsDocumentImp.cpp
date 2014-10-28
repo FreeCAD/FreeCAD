@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include <climits>
 
 #include "DlgSettingsDocumentImp.h"
 #include "PrefWidgets.h"
@@ -38,6 +39,7 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     : PreferencePage( parent )
 {
     this->setupUi(this);
+    prefCountBackupFiles->setMaximum(INT_MAX);
 }
 
 /** 
