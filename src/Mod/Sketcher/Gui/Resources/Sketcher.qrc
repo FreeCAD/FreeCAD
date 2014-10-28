@@ -49,6 +49,7 @@
         <file>icons/Sketcher_CreateArc.svg</file>
         <file>icons/Sketcher_CreateCircle.svg</file>
         <file>icons/Sketcher_CreateEllipse.svg</file>
+        <file>icons/Sketcher_CreateEllipse_3points.svg</file>
         <file>icons/Sketcher_CreateFillet.svg</file>
         <file>icons/Sketcher_CreateHeptagon.svg</file>
         <file>icons/Sketcher_CreateHexagon.svg</file>
