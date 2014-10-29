@@ -87,6 +87,7 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
 {
     ui = new Ui_DlgImportExportIges();
     ui->setupUi(this);
+    ui->groupBoxHeader->hide();
 }
 
 /** 
@@ -118,6 +119,15 @@ void DlgImportExportIges::saveSettings()
 
     hGrp->SetBool("BrepMode", ui->checkBrepMode->isChecked());
     Interface_Static::SetIVal("write.iges.brep.mode",ui->checkBrepMode->isChecked() ? 1 : 0);
+
+    // header info
+    //hGrp->SetASCII("CompanyIges", ui->lineEditCompany->text().toLatin1());
+    //hGrp->SetASCII("ProductIges", ui->lineEditProduct->text().toLatin1());
+    //hGrp->SetASCII("AuthorIges", ui->lineEditAuthor->text().toLatin1());
+
+    //Interface_Static::SetCVal("write.iges.header.company", ui->lineEditCompany->text().toLatin1());
+    //Interface_Static::SetCVal("write.iges.header.product", ui->lineEditProduct->text().toLatin1());
+    //Interface_Static::SetCVal("write.iges.header.author", ui->lineEditAuthor->text().toLatin1());
 }
 
 void DlgImportExportIges::loadSettings()
@@ -130,6 +140,11 @@ void DlgImportExportIges::loadSettings()
     int value = Interface_Static::IVal("write.iges.brep.mode");
     bool brep = hGrp->GetBool("BrepMode", value > 0);
     ui->checkBrepMode->setChecked(brep);
+
+    // header info
+    //ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("CompanyIges")));
+    //ui->lineEditProduct->setText(QString::fromStdString(hGrp->GetASCII("ProductIges")));
+    //ui->lineEditAuthor->setText(QString::fromStdString(hGrp->GetASCII("AuthorIges")));
 }
 
 /**
