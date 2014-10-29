@@ -87,7 +87,7 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
 {
     ui = new Ui_DlgImportExportIges();
     ui->setupUi(this);
-    ui->groupBoxHeader->hide();
+    ui->lineEditProduct->setReadOnly(true);
 }
 
 /** 
@@ -103,8 +103,8 @@ void DlgImportExportIges::saveSettings()
 {
     int unit = ui->comboBoxUnits->currentIndex();
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-    hGrp->SetInt("UnitIges", unit);
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
+    hGrp->SetInt("Unit", unit);
     switch (unit) {
         case 1:
             Interface_Static::SetCVal("write.iges.unit","M");
@@ -121,20 +121,20 @@ void DlgImportExportIges::saveSettings()
     Interface_Static::SetIVal("write.iges.brep.mode",ui->checkBrepMode->isChecked() ? 1 : 0);
 
     // header info
-    //hGrp->SetASCII("CompanyIges", ui->lineEditCompany->text().toLatin1());
-    //hGrp->SetASCII("ProductIges", ui->lineEditProduct->text().toLatin1());
-    //hGrp->SetASCII("AuthorIges", ui->lineEditAuthor->text().toLatin1());
+    hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
+    hGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
+    hGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
 
-    //Interface_Static::SetCVal("write.iges.header.company", ui->lineEditCompany->text().toLatin1());
-    //Interface_Static::SetCVal("write.iges.header.product", ui->lineEditProduct->text().toLatin1());
-    //Interface_Static::SetCVal("write.iges.header.author", ui->lineEditAuthor->text().toLatin1());
+    Interface_Static::SetCVal("write.iges.header.company", ui->lineEditCompany->text().toLatin1());
+    Interface_Static::SetCVal("write.iges.header.author", ui->lineEditAuthor->text().toLatin1());
+  //Interface_Static::SetCVal("write.iges.header.product", ui->lineEditProduct->text().toLatin1());
 }
 
 void DlgImportExportIges::loadSettings()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-    int unit = hGrp->GetInt("UnitIges", 0);
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
+    int unit = hGrp->GetInt("Unit", 0);
     ui->comboBoxUnits->setCurrentIndex(unit);
 
     int value = Interface_Static::IVal("write.iges.brep.mode");
@@ -142,9 +142,13 @@ void DlgImportExportIges::loadSettings()
     ui->checkBrepMode->setChecked(brep);
 
     // header info
-    //ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("CompanyIges")));
-    //ui->lineEditProduct->setText(QString::fromStdString(hGrp->GetASCII("ProductIges")));
-    //ui->lineEditAuthor->setText(QString::fromStdString(hGrp->GetASCII("AuthorIges")));
+    ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("Company",
+        Interface_Static::CVal("write.iges.header.company"))));
+    ui->lineEditAuthor->setText(QString::fromStdString(hGrp->GetASCII("Author",
+        Interface_Static::CVal("write.iges.header.author"))));
+  //ui->lineEditProduct->setText(QString::fromStdString(hGrp->GetASCII("Product")));
+    ui->lineEditProduct->setText(QString::fromLatin1(
+        Interface_Static::CVal("write.iges.header.product")));
 }
 
 /**
@@ -182,8 +186,8 @@ void DlgImportExportStep::saveSettings()
 {
     int unit = ui->comboBoxUnits->currentIndex();
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-    hGrp->SetInt("UnitStep", unit);
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
+    hGrp->SetInt("Unit", unit);
     switch (unit) {
         case 1:
             Interface_Static::SetCVal("write.step.unit","M");
@@ -200,8 +204,8 @@ void DlgImportExportStep::saveSettings()
 void DlgImportExportStep::loadSettings()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-    int unit = hGrp->GetInt("UnitStep", 0);
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
+    int unit = hGrp->GetInt("Unit", 0);
     ui->comboBoxUnits->setCurrentIndex(unit);
 }
 

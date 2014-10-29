@@ -39,6 +39,8 @@
 # include <IGESCAFControl_Reader.hxx>
 # include <IGESCAFControl_Writer.hxx>
 # include <IGESControl_Controller.hxx>
+# include <IGESData_GlobalSection.hxx>
+# include <IGESData_IGESModel.hxx>
 # include <Interface_Static.hxx>
 # include <Transfer_TransientProcess.hxx>
 # include <XSControl_WorkSession.hxx>
@@ -247,6 +249,11 @@ static PyObject * exporter(PyObject *self, PyObject *args)
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
             IGESControl_Controller::Init();
             IGESCAFControl_Writer writer;
+            IGESData_GlobalSection header = writer.Model()->GlobalSection();
+            header.SetAuthorName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.author")));
+            header.SetCompanyName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.company")));
+          //header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
+            writer.Model()->SetGlobalSection(header);
             writer.Transfer(hDoc);
             Standard_Boolean ret = writer.Write(name8bit.c_str());
             if (!ret) {
