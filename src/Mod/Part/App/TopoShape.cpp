@@ -98,6 +98,8 @@
 # include <IGESControl_Controller.hxx>
 # include <IGESControl_Writer.hxx>
 # include <IGESControl_Reader.hxx>
+# include <IGESData_GlobalSection.hxx>
+# include <IGESData_IGESModel.hxx>
 # include <STEPControl_Writer.hxx>
 # include <STEPControl_Reader.hxx>
 # include <TopTools_MapOfShape.hxx>
@@ -695,6 +697,11 @@ void TopoShape::exportIges(const char *filename) const
         // write iges file
         IGESControl_Controller::Init();
         IGESControl_Writer aWriter;
+        IGESData_GlobalSection header = aWriter.Model()->GlobalSection();
+        header.SetAuthorName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.author")));
+        header.SetCompanyName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.company")));
+      //header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
+        aWriter.Model()->SetGlobalSection(header);
         aWriter.AddShape(this->_Shape);
         aWriter.ComputeModel();
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone)
