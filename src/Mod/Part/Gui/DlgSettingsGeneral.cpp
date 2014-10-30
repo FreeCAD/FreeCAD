@@ -201,6 +201,17 @@ void DlgImportExportStep::saveSettings()
             break;
     }
 
+    // scheme
+    if (ui->radioButtonAP203->isChecked()) {
+        Interface_Static::SetCVal("write.step.schema","AP203");
+        hGrp->GetASCII("Scheme", "AP203");
+    }
+    else {
+        // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002)
+        Interface_Static::SetCVal("write.step.schema","AP214CD");
+        hGrp->GetASCII("Scheme", "AP214CD");
+    }
+
     // header info
     hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
     hGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
@@ -213,6 +224,14 @@ void DlgImportExportStep::loadSettings()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
     int unit = hGrp->GetInt("Unit", 0);
     ui->comboBoxUnits->setCurrentIndex(unit);
+
+    // scheme
+    QString ap = QString::fromStdString(hGrp->GetASCII("Scheme", 
+        Interface_Static::CVal("write.step.schema")));
+    if (ap.startsWith(QLatin1String("AP203")))
+        ui->radioButtonAP203->setChecked(true);
+    else
+        ui->radioButtonAP214->setChecked(true);
 
     // header info
     ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("Company")));
