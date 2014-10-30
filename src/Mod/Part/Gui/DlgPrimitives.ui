@@ -762,6 +762,13 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="textLabel23">
+              <property name="text">
+               <string>Radius 3:</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius1">
               <property name="unit" stdset="0">
@@ -774,6 +781,16 @@
             </item>
             <item row="1" column="1">
              <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius2">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
+              </property>
+              <property name="value">
+               <double>4.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="Gui::QuantitySpinBox" name="ellipsoidRadius3">
               <property name="unit" stdset="0">
                <string notr="true">mm</string>
               </property>
@@ -2003,6 +2020,7 @@
   <tabstop>sphereAngle2</tabstop>
   <tabstop>ellipsoidRadius1</tabstop>
   <tabstop>ellipsoidRadius2</tabstop>
+  <tabstop>ellipsoidRadius3</tabstop>
   <tabstop>ellipsoidAngle3</tabstop>
   <tabstop>ellipsoidAngle1</tabstop>
   <tabstop>ellipsoidAngle2</tabstop>

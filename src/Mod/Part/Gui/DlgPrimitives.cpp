@@ -209,6 +209,7 @@ DlgPrimitives::DlgPrimitives(QWidget* parent)
     // ellipsoid
     ui.ellipsoidRadius1->setMaximum(INT_MAX);
     ui.ellipsoidRadius2->setMaximum(INT_MAX);
+    ui.ellipsoidRadius3->setMaximum(INT_MAX);
     // torus
     ui.torusRadius1->setMaximum(INT_MAX);
     ui.torusRadius2->setMaximum(INT_MAX);
@@ -435,14 +436,16 @@ void DlgPrimitives::createPrimitive(const QString& placement)
                 "App.ActiveDocument.addObject(\"Part::Ellipsoid\",\"%1\")\n"
                 "App.ActiveDocument.%1.Radius1=%2\n"
                 "App.ActiveDocument.%1.Radius2=%3\n"
-                "App.ActiveDocument.%1.Angle1=%4\n"
-                "App.ActiveDocument.%1.Angle2=%5\n"
-                "App.ActiveDocument.%1.Angle3=%6\n"
-                "App.ActiveDocument.%1.Placement=%7\n"
-                "App.ActiveDocument.%1.Label='%8'\n")
+                "App.ActiveDocument.%1.Radius3=%4\n"
+                "App.ActiveDocument.%1.Angle1=%5\n"
+                "App.ActiveDocument.%1.Angle2=%6\n"
+                "App.ActiveDocument.%1.Angle3=%7\n"
+                "App.ActiveDocument.%1.Placement=%8\n"
+                "App.ActiveDocument.%1.Label='%9'\n")
                 .arg(name)
                 .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',2)
                 .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',2)
+                .arg(ui.ellipsoidRadius3->value().getValue(),0,'f',2)
                 .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',2)
                 .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',2)
                 .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',2)
