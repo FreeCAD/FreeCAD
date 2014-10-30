@@ -122,8 +122,8 @@ void DlgImportExportIges::saveSettings()
 
     // header info
     hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
-    hGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
     hGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
+  //hGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
 
     Interface_Static::SetCVal("write.iges.header.company", ui->lineEditCompany->text().toLatin1());
     Interface_Static::SetCVal("write.iges.header.author", ui->lineEditAuthor->text().toLatin1());
@@ -171,6 +171,7 @@ DlgImportExportStep::DlgImportExportStep(QWidget* parent)
 {
     ui = new Ui_DlgImportExportStep();
     ui->setupUi(this);
+    ui->lineEditProduct->setReadOnly(true);
 }
 
 /** 
@@ -199,6 +200,11 @@ void DlgImportExportStep::saveSettings()
             Interface_Static::SetCVal("write.step.unit","MM");
             break;
     }
+
+    // header info
+    hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
+    hGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
+  //hGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
 }
 
 void DlgImportExportStep::loadSettings()
@@ -207,6 +213,12 @@ void DlgImportExportStep::loadSettings()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
     int unit = hGrp->GetInt("Unit", 0);
     ui->comboBoxUnits->setCurrentIndex(unit);
+
+    // header info
+    ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("Company")));
+    ui->lineEditAuthor->setText(QString::fromStdString(hGrp->GetASCII("Author")));
+    ui->lineEditProduct->setText(QString::fromLatin1(
+        Interface_Static::CVal("write.step.product.name")));
 }
 
 /**
