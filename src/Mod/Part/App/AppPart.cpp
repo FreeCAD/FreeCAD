@@ -324,6 +324,9 @@ void PartExport initPart()
             Interface_Static::SetCVal("write.step.unit","MM");
             break;
     }
+
+    std::string ap = hStepGrp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+    Interface_Static::SetCVal("write.step.schema", ap.c_str());
 }
 
 } // extern "C"
