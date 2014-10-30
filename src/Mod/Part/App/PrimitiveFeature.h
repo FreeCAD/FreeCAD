@@ -157,6 +157,7 @@ public:
 
     App::PropertyFloatConstraint Radius1;
     App::PropertyFloatConstraint Radius2;
+    App::PropertyFloatConstraint Radius3;
     App::PropertyFloatConstraint Angle1;
     App::PropertyFloatConstraint Angle2;
     App::PropertyFloatConstraint Angle3;

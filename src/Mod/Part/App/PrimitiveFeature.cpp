@@ -358,6 +358,8 @@ Ellipsoid::Ellipsoid(void)
     Radius1.setConstraints(&floatRange);
     ADD_PROPERTY_TYPE(Radius2,(4.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
     Radius2.setConstraints(&floatRange);
+    ADD_PROPERTY_TYPE(Radius3,(0.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
+    Radius3.setConstraints(&floatRange);
     ADD_PROPERTY_TYPE(Angle1,(-90.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
     Angle1.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle2,(90.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
@@ -371,6 +373,8 @@ short Ellipsoid::mustExecute() const
     if (Radius1.isTouched())
         return 1;
     if (Radius2.isTouched())
+        return 1;
+    if (Radius3.isTouched())
         return 1;
     if (Angle1.isTouched())
         return 1;
@@ -388,6 +392,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
         return new App::DocumentObjectExecReturn("Radius of ellipsoid too small");
     if (Radius2.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of ellipsoid too small");
+
     try {
         gp_Pnt pnt(0.0,0.0,0.0);
         gp_Dir dir(0.0,0.0,1.0);
@@ -397,19 +402,24 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
                                         Angle1.getValue()/180.0f*M_PI,
                                         Angle2.getValue()/180.0f*M_PI,
                                         Angle3.getValue()/180.0f*M_PI);
-        Standard_Real scale = Radius1.getValue()/Radius2.getValue();
-        gp_Dir xDir = ax2.XDirection();
-        gp_Dir yDir = ax2.YDirection();
+        Standard_Real scaleX = 1.0;
+        Standard_Real scaleZ = Radius1.getValue()/Radius2.getValue();
+        // issue #1798: A third radius has been introduced. To be backward
+        // compatible if Radius3 is 0.0 (default) it's handled to be the same
+        // as Radius2
+        Standard_Real scaleY = 1.0;
+        if (Radius3.getValue() >= Precision::Confusion())
+            scaleY = Radius3.getValue()/Radius2.getValue();
         gp_GTrsf mat;
-        mat.SetValue(1,1,xDir.X());
-        mat.SetValue(2,1,xDir.Y());
-        mat.SetValue(3,1,xDir.Z());
-        mat.SetValue(1,2,yDir.X());
-        mat.SetValue(2,2,yDir.Y());
-        mat.SetValue(3,2,yDir.Z());
-        mat.SetValue(1,3,dir.X()*scale);
-        mat.SetValue(2,3,dir.Y()*scale);
-        mat.SetValue(3,3,dir.Z()*scale);
+        mat.SetValue(1,1,scaleX);
+        mat.SetValue(2,1,0.0);
+        mat.SetValue(3,1,0.0);
+        mat.SetValue(1,2,0.0);
+        mat.SetValue(2,2,scaleY);
+        mat.SetValue(3,2,0.0);
+        mat.SetValue(1,3,0.0);
+        mat.SetValue(2,3,0.0);
+        mat.SetValue(3,3,scaleZ);
         BRepBuilderAPI_GTransform mkTrsf(mkSphere.Shape(), mat);
         TopoDS_Shape ResultShape = mkTrsf.Shape();
         this->Shape.setValue(ResultShape);
