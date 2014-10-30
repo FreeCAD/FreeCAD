@@ -235,10 +235,13 @@ static PyObject * exporter(PyObject *self, PyObject *args)
 #else
             APIHeaderSection_MakeHeader makeHeader(writer.Writer().Model());
 #endif
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
+
             makeHeader.SetName(new TCollection_HAsciiString((const Standard_CString)Utf8Name.c_str()));
-            makeHeader.SetAuthorValue (1, new TCollection_HAsciiString("FreeCAD"));
-            makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString("FreeCAD"));
-            makeHeader.SetOriginatingSystem(new TCollection_HAsciiString("FreeCAD"));
+            makeHeader.SetAuthorValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Author", "Author").c_str()));
+            makeHeader.SetOrganizationValue (1, new TCollection_HAsciiString(hGrp->GetASCII("Company").c_str()));
+            makeHeader.SetOriginatingSystem(new TCollection_HAsciiString(App::GetApplication().getExecutableName()));
             makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
             IFSelect_ReturnStatus ret = writer.Write(name8bit.c_str());
             if (ret == IFSelect_RetError || ret == IFSelect_RetFail || ret == IFSelect_RetStop) {
