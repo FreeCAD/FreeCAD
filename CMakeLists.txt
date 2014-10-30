@@ -161,6 +161,7 @@ else(MSVC)
 set(FREECAD_USE_3DCONNEXION OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
+OPTION(FREECAD_USE_PCL "Build the features that use PCL libs" OFF)
 endif(MSVC)
 
 # if this is set override some options
@@ -389,7 +390,12 @@ else(FREECAD_LIBPACK_USE)
         MESSAGE("Python not found, install python!")
     ENDIF(NOT PYTHONLIBS_FOUND)
 
-
+# -------------------------------- pcl ----------------------------------
+    #PCL needs to be found before boost because the PCLConfig also calls find_package(Boost ...),
+    #but with different components
+    if(FREECAD_USE_PCL)
+        find_package(PCL REQUIRED COMPONENTS common kdtree features surface io)
+    endif(FREECAD_USE_PCL)
 
 # -------------------------------- Boost --------------------------------
 
@@ -526,13 +532,6 @@ else(FREECAD_LIBPACK_USE)
 # -------------------------------- Eigen --------------------------------
 
     find_package(Eigen3)
-
-# -------------------------------- pcl ----------------------------------
-
-    find_package(PCL QUIET COMPONENTS common kdtree features surface io)
-    if (NOT PCL_FOUND)
-        MESSAGE("-- pcl not found")
-    endif(NOT PCL_FOUND)
 
 # -------------------------------- ODE ----------------------------------
 
