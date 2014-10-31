@@ -232,6 +232,16 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Get the number of wrong oriented facets</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="hasInvalidPoints" Const="true">
+			<Documentation>
+				<UserDocu>Check if the mesh has points with invalid coordinates (NaN)</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeInvalidPoints">
+			<Documentation>
+				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="countComponents" Const="true">
 			<Documentation>
 				<UserDocu>Get the number of topologic independent areas</UserDocu>

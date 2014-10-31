@@ -1195,6 +1195,12 @@ void MeshObject::removeFullBoundaryFacets()
     }
 }
 
+bool MeshObject::hasInvalidPoints() const
+{
+    MeshCore::MeshEvalNaNPoints nan(_kernel);
+    return !nan.GetIndices().empty();
+}
+
 void MeshObject::removeInvalidPoints()
 {
     MeshCore::MeshEvalNaNPoints nan(_kernel);

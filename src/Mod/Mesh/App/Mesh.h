@@ -268,6 +268,7 @@ public:
     void removeSelfIntersections(const std::vector<unsigned long>&);
     void removeFoldsOnSurface();
     void removeFullBoundaryFacets();
+    bool hasInvalidPoints() const;
     void removeInvalidPoints();
     //@}
 
