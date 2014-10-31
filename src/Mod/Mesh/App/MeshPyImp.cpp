@@ -833,6 +833,28 @@ PyObject*  MeshPy::removeFoldsOnSurface(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshPy::hasInvalidPoints(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    bool ok = getMeshObjectPtr()->hasInvalidPoints();
+    return Py_BuildValue("O", (ok ? Py_True : Py_False)); 
+}
+
+PyObject*  MeshPy::removeInvalidPoints(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    try {
+        getMeshObjectPtr()->removeInvalidPoints();
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        return NULL;
+    }
+    Py_Return;
+}
+
 PyObject*  MeshPy::flipNormals(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))

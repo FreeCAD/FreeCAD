@@ -191,6 +191,23 @@ PyObject*  MeshFeaturePy::removeFoldsOnSurface(PyObject *args)
     Py_Return;
 }
 
+PyObject*  MeshFeaturePy::removeInvalidPoints(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    try {
+        Mesh::Feature* obj = getFeaturePtr();
+        MeshObject* kernel = obj->Mesh.startEditing();
+        kernel->removeInvalidPoints();
+        obj->Mesh.finishEditing();
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
+        return NULL;
+    }
+    Py_Return;
+}
+
 PyObject *MeshFeaturePy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;

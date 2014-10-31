@@ -72,5 +72,10 @@ d.addObject(\"Mesh::Feature\").
 				<UserDocu>Remove folds on surfaces</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="removeInvalidPoints">
+			<Documentation>
+				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
+			</Documentation>
+		</Methode>
 	</PythonExport>
 </GenerateModel>
