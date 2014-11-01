@@ -1709,7 +1709,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
+            if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - EditCurve[0],
                                    AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -1928,7 +1928,8 @@ public:
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
                 setPositionText(onSketchPos);
-                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) { // TODO: ellipse prio 1
+                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f),
+                    AutoConstraint::CURVE)) { 
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
@@ -1945,6 +1946,11 @@ public:
                 sketchgui->drawEdit(editCurve);
                 // Suggestions for ellipse and curves are disabled because many tangent constraints
                 // need an intermediate point or line.
+                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
+                    AutoConstraint::CURVE)) {
+                    renderSuggestConstraintsCursor(sugConstr2);
+                    return;
+                }
             } else if (mode == STATUS_SEEK_B) {
                 solveEllipse(onSketchPos);
                 approximateEllipse();
@@ -1955,6 +1961,11 @@ public:
                 setPositionText(onSketchPos, text);
 
                 sketchgui->drawEdit(editCurve);
+                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f),
+                    AutoConstraint::CURVE)) {
+                    renderSuggestConstraintsCursor(sugConstr3);
+                    return;
+                }
             }
         } else { // method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
@@ -1974,6 +1985,11 @@ public:
                 setPositionText(onSketchPos, text);
 
                 sketchgui->drawEdit(editCurve);
+                if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - centroid,
+                    AutoConstraint::CURVE)) {
+                    renderSuggestConstraintsCursor(sugConstr2);
+                    return;
+                }
             } else if ((mode == STATUS_SEEK_A) || (mode == STATUS_SEEK_B)) {
                 solveEllipse(onSketchPos);
                 approximateEllipse();
@@ -1984,6 +2000,11 @@ public:
                 setPositionText(onSketchPos, text);
 
                 sketchgui->drawEdit(editCurve);
+                if (seekAutoConstraint(sugConstr3, onSketchPos, onSketchPos - centroid,
+                    AutoConstraint::CURVE)) {
+                    renderSuggestConstraintsCursor(sugConstr3);
+                    return;
+                }
             }
         }
         applyCursor();
@@ -2037,7 +2058,7 @@ public:
         return true;
     }
 protected:
-    std::vector<AutoConstraint> sugConstr1;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 private:
     SelectMode mode;
     /// the method of constructing the ellipse
@@ -2344,7 +2365,6 @@ private:
         octave << "plot(centroid(1), centroid(2), \"b.\", \"markersize\", 5);\n";
         octave << "plot(f(1), f(2), \"c.\", \"markersize\", 5);\n";
         octave << "plot(fPrime(1), fPrime(2), \"m.\", \"markersize\", 5);\n";
-
         octave << "n = [periapsis(1) - f(1), periapsis(2) - f(2)];\n";
         octave << "h = quiver(f(1),f(2),n(1),n(2), 0);\n";
         octave << "set (h, \"maxheadsize\", 0.1);\n\n";
@@ -2490,67 +2510,10 @@ private:
         currentgeoid++;
 
         try {
-            // create line for major axis
             Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.addGeometry(Part.Line"
-                                    "(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    periapsis.fX,periapsis.fY,
-                                    apoapsis.fX,apoapsis.fY);
-
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
-                                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1);
-
-            // constrain major axis
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint"
-                                    "('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    currentgeoid+1,currentgeoid);
-
-            // create line for minor axis
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.addGeometry(Part.Line"
-                                    "(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    positiveB.fX,positiveB.fY,
-                                    negativeB.fX,negativeB.fY);
-
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
-                                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2);
-
-            // constrain minor axis
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint"
-                                    "('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    currentgeoid+2,currentgeoid);
-
-            // create point for focus
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    f.fX,f.fY);
-
-            // constrain focus
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint"
-                                    "('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    currentgeoid+3,Sketcher::start,currentgeoid);
-
-            // create point for second focus
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    fPrime.fX,fPrime.fY);
-
-            // constrain second focus
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.addConstraint(Sketcher.Constraint"
-                                    "('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    currentgeoid+4,Sketcher::start,currentgeoid);
+                                "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                sketchgui->getObject()->getNameInDocument(),
+                                currentgeoid);
         }
         catch (const Base::Exception& e) {
             Base::Console().Error("%s\n", e.what());
@@ -2562,10 +2525,35 @@ private:
         Gui::Command::commitCommand();
         Gui::Command::updateActive();
 
-        // add auto constraints for the center point
-        if (sugConstr1.size() > 0) {
-            createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
-            sugConstr1.clear();
+        if (method == CENTER_PERIAPSIS_B) {
+            // add auto constraints for the center point
+            if (sugConstr1.size() > 0) {
+                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
+                sugConstr1.clear();
+            }
+            if (sugConstr2.size() > 0) {
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
+                sugConstr2.clear();
+            }
+            if (sugConstr3.size() > 0) {
+                createAutoConstraints(sugConstr3, currentgeoid, Sketcher::none);
+                sugConstr3.clear();
+            }
+        }
+        
+        if (method == PERIAPSIS_APOAPSIS_B) {
+            if (sugConstr1.size() > 0) {
+                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::none);
+                sugConstr1.clear();
+            }            
+            if (sugConstr2.size() > 0) {
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
+                sugConstr2.clear();
+            }
+            if (sugConstr3.size() > 0) {
+                createAutoConstraints(sugConstr3, currentgeoid, Sketcher::none);
+                sugConstr3.clear();
+            }
         }
 
         // delete the temp construction curve from the sketch
@@ -2720,11 +2708,11 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
+            if (seekAutoConstraint(sugConstr2, onSketchPos, onSketchPos - centerPoint,
                                    AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
-            }
+            } 
         }
         else if (Mode==STATUS_SEEK_Third) {                       
             // angle between the major axis of the ellipse and the X axis
@@ -2751,8 +2739,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f),
-                                   AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
@@ -2791,8 +2778,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2D(0.f,0.f),
-                                   AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2D(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr4);
                 return;
             }
@@ -2849,11 +2835,14 @@ public:
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
             arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;
             
+            bool isOriginalArcCCW=true;
+            
             if (arcAngle > 0)
                 endAngle = startAngle + arcAngle;
             else {
                 endAngle = startAngle;
                 startAngle += arcAngle;
+                isOriginalArcCCW=false;
             }
             
             Base::Vector2D majAxisDir,minAxisDir,minAxisPoint,majAxisPoint;
@@ -2883,19 +2872,7 @@ public:
                 phi-=M_PI/2;
                 double t=a; a=b; b=t;//swap a,b
             }
-            
-            Base::Vector3d center = Base::Vector3d(centerPoint.fX,centerPoint.fY,0);
-            
-            Base::Vector3d majorpositiveend = center + a * Base::Vector3d(cos(phi),sin(phi),0);
-            Base::Vector3d majornegativeend = center - a * Base::Vector3d(cos(phi),sin(phi),0);  
-            Base::Vector3d minorpositiveend = center + b * Base::Vector3d(-sin(phi),cos(phi),0);
-            Base::Vector3d minornegativeend = center - b * Base::Vector3d(-sin(phi),cos(phi),0);
-                
-            double cf = sqrt( abs(a*a - b*b) );//using abs, avoided using different formula for a>b/a<b cases
-                
-            Base::Vector3d focus1P = center + cf * Base::Vector3d(cos(phi),sin(phi),0);
-            Base::Vector3d focus2P = center - cf * Base::Vector3d(cos(phi),sin(phi),0);
-            
+                        
             int currentgeoid = getHighestCurveIndex();
 
             Gui::Command::openCommand("Add sketch arc of ellipse");
@@ -2913,39 +2890,10 @@ public:
             currentgeoid++;
             
             try {                 
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    majorpositiveend.x,majorpositiveend.y,majornegativeend.x,majornegativeend.y); // create line for major axis
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1);
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+1,currentgeoid); // constrain major axis
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    minorpositiveend.x,minorpositiveend.y,minornegativeend.x,minornegativeend.y); // create line for minor axis
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2);
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+2,currentgeoid); // constrain minor axis
-
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    focus1P.x,focus1P.y);
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+3,Sketcher::start,currentgeoid);
-
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    focus2P.x,focus2P.y);
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-                    sketchgui->getObject()->getNameInDocument(),currentgeoid+4,Sketcher::start,currentgeoid);
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                        sketchgui->getObject()->getNameInDocument(),
+                                        currentgeoid);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -2959,14 +2907,26 @@ public:
             
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
+                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
                 sugConstr1.clear();
             }
 
-            // add suggested constraints for circumference
+            // add suggested constraints for arc
             if (sugConstr2.size() > 0) {
-                //createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::none);
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
                 sugConstr2.clear();
+            }
+            
+            // add suggested constraints for start of arc
+            if (sugConstr3.size() > 0) {
+                createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::start:Sketcher::end);
+                sugConstr3.clear();
+            }
+            
+            // add suggested constraints for start of arc
+            if (sugConstr4.size() > 0) {
+                createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
+                sugConstr4.clear();
             }
 
             EditCurve.clear();
