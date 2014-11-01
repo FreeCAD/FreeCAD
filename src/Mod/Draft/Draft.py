@@ -4707,6 +4707,7 @@ class _PathArray(_DraftObject):
         
     def orientShape(self,shape,edge,offset,RefPt,xlate,align):
         '''Orient shape to tangent at parm offset along edge.'''
+        # http://en.wikipedia.org/wiki/Euler_angles
         import Part
         import DraftGeomUtils
         import math
@@ -4733,27 +4734,31 @@ class _PathArray(_DraftObject):
         except FreeCAD.Base.FreeCADError:                                                      # no normal defined here
             n = nullv
             b = nullv 
-            FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Shape not oriented (no normal).\n")
+            FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Cannot calculate Path normal.\n")
         lnodes = z.cross(b)
         if lnodes != nullv:
             lnodes.normalize()                                       # Can't normalize null vector.                                       
                                                                      # pathological cases:
-        if n == nullv:                                               # 1) edge has inf. normals (ie line segment)
-            psi = math.degrees(DraftVecUtils.angle(x,t,z))           #    align shape to tangent
+        if n == nullv:                                               # 1) can't determine normal, don't align.
+            psi = 0.0
             theta = 0.0
             phi = 0.0
+            FreeCAD.Console.PrintWarning("Draft PathArray.orientShape - Path normal is Null. Cannot align.\n")
         elif b == z:                                                 # 2) binormal is same as z
-            psi = math.degrees(DraftVecUtils.angle(x,t,z))           #    align shape to tangent 
+            psi = math.degrees(DraftVecUtils.angle(x,t,z))           #    align shape x to tangent 
             theta = 0.0
             phi = 0.0
-            FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Aligned to tangent only (no line of nodes).\n")
+            FreeCAD.Console.PrintLog ("Draft PathArray.orientShape - Aligned to tangent only (b == z).\n")
         else:                                                        # regular case                                
-            psi = math.degrees(DraftVecUtils.angle(lnodes,t,z))
-            theta = abs(math.degrees(DraftVecUtils.angle(z,b,x)))    # 0<=theta<=pi
-            phi = math.degrees(DraftVecUtils.angle(x,lnodes,z))
-        ns.rotate(RefPt,z,psi)
-        ns.rotate(RefPt,x,theta)
-        ns.rotate(RefPt,z,phi)
+            psi = math.degrees(DraftVecUtils.angle(x,lnodes,z))
+            theta = math.degrees(DraftVecUtils.angle(z,b,lnodes))
+            phi = math.degrees(DraftVecUtils.angle(lnodes,t,b))
+        if psi != 0.0:
+            ns.rotate(RefPt,z,psi)
+        if theta != 0.0:
+            ns.rotate(RefPt,lnodes,theta)
+        if phi != 0.0:
+            ns.rotate(RefPt,b,phi)
         return ns
                 
     def pathArray(self,shape,pathwire,count,xlate,align):
