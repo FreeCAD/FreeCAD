@@ -62,6 +62,7 @@ SET(SketcherGui_SRCS
     AppSketcherGuiPy.cpp
     Command.cpp
     CommandCreateGeo.cpp
+    CommandConstraints.h
     CommandConstraints.cpp
     CommandSketcherTools.cpp
     CommandAlterGeometry.cpp

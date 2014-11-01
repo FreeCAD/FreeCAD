@@ -2307,7 +2307,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
         
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
-        if (pos == mid | pos == none) {
+        if (pos == mid || pos == none) {
             MoveParameters.resize(2); // cx,cy
             p0.x = &MoveParameters[0];
             p0.y = &MoveParameters[1];

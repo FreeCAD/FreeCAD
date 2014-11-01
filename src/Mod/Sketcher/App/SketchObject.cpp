@@ -355,6 +355,8 @@ int SketchObject::delGeometry(int GeoId)
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
+    this->DeleteUnusedInternalGeometry(GeoId);
+    
     std::vector< Part::Geometry * > newVals(vals);
     newVals.erase(newVals.begin()+GeoId);
 
@@ -1358,17 +1360,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     delConstraintOnPoint(GeoId, end, false);
                     Part::GeomArcOfEllipse *aoe1 = dynamic_cast<Part::GeomArcOfEllipse*>(geomlist[GeoId]);
                     aoe1->setRange(startAngle, startAngle + theta1);
-                    Sketcher::Constraint *newConstr = new Sketcher::Constraint();
-                    newConstr->Type = constrType;
-                    newConstr->First = GeoId;
-                    newConstr->FirstPos = end;
-                    newConstr->Second = GeoId1;
-
-                    if (constrType == Sketcher::Coincident)
-                        newConstr->SecondPos = secondPos;
-
-                    addConstraint(newConstr);
-                    delete newConstr;
+ 
                     return 0;
                 }
             }
@@ -1376,6 +1368,264 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     }
 
     return -1;
+}
+
+int SketchObject::ExposeInternalGeometry(int GeoId)
+{
+    if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return -1;
+    
+    const Part::Geometry *geo = getGeometry(GeoId);            
+    // Only for supported types
+    if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+        // First we search what has to be restored
+        bool major=false;
+        bool minor=false;
+        bool focus1=false;
+        bool focus2=false;
+        
+        int majorelementindex=-1;
+        int minorelementindex=-1;
+        int focus1elementindex=-1;
+        int focus2elementindex=-1;
+        
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+        
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+                it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::EllipseMajorDiameter:
+                        major=true;
+                        majorelementindex=(*it)->First;
+                        break;
+                    case Sketcher::EllipseMinorDiameter:
+                        minor=true;
+                        minorelementindex=(*it)->First;
+                        break;
+                    case Sketcher::EllipseFocus1: 
+                        focus1=true;
+                        focus1elementindex=(*it)->First;
+                        break;
+                    case Sketcher::EllipseFocus2: 
+                        focus2=true;
+                        focus2elementindex=(*it)->First;
+                        break;
+                }
+            }
+        }
+        
+        int currentgeoid= getHighestCurveIndex();
+        int incrgeo= 0;
+        
+        Base::Vector3d center;
+        double majord;
+        double minord;
+        double phi;
+        
+        if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId()){
+            const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo);
+            
+            center=ellipse->getCenter();
+            majord=ellipse->getMajorRadius();
+            minord=ellipse->getMinorRadius();
+            phi=ellipse->getAngleXU();
+        }
+        else {
+            const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo);
+            
+            center=aoe->getCenter();
+            majord=aoe->getMajorRadius();
+            minord=aoe->getMinorRadius();
+            phi=aoe->getAngleXU();                    
+        }
+  
+        Base::Vector3d majorpositiveend = center + majord * Base::Vector3d(cos(phi),sin(phi),0);
+        Base::Vector3d majornegativeend = center - majord * Base::Vector3d(cos(phi),sin(phi),0);  
+        Base::Vector3d minorpositiveend = center + minord * Base::Vector3d(-sin(phi),cos(phi),0);
+        Base::Vector3d minornegativeend = center - minord * Base::Vector3d(-sin(phi),cos(phi),0);
+        
+        double df= sqrt(majord*majord-minord*minord);
+        
+        Base::Vector3d focus1P = center + df * Base::Vector3d(cos(phi),sin(phi),0);
+        Base::Vector3d focus2P = center - df * Base::Vector3d(cos(phi),sin(phi),0);
+        
+        if(!major)
+        {
+            Part::GeomLineSegment *lmajor = new Part::GeomLineSegment();
+            lmajor->setPoints(majorpositiveend,majornegativeend);
+            
+            this->addGeometry(lmajor); // create line for major axis                
+            this->setConstruction(currentgeoid+incrgeo+1,true);
+            delete lmajor;
+            
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = EllipseMajorDiameter;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->Second = GeoId;
+
+            addConstraint(newConstr);
+            delete newConstr;
+            incrgeo++;
+        }
+        if(!minor)
+        {       
+            Part::GeomLineSegment *lminor = new Part::GeomLineSegment();
+            lminor->setPoints(minorpositiveend,minornegativeend);
+            
+            this->addGeometry(lminor); // create line for major axis                
+            this->setConstruction(currentgeoid+incrgeo+1,true);
+            delete lminor;
+            
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = EllipseMinorDiameter;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->Second = GeoId;
+
+            addConstraint(newConstr);
+            delete newConstr;
+            incrgeo++;
+        }
+        if(!focus1)
+        {
+            Part::GeomPoint *pf1 = new Part::GeomPoint();
+            pf1->setPoint(focus1P);
+            this->addGeometry(pf1); 
+            delete pf1;
+            
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = EllipseFocus1;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->FirstPos = Sketcher::start;
+            newConstr->Second = GeoId;
+
+            addConstraint(newConstr);
+            delete newConstr;
+            incrgeo++;
+        }
+        if(!focus2)
+        {
+            Part::GeomPoint *pf2 = new Part::GeomPoint();
+            pf2->setPoint(focus2P);
+            this->addGeometry(pf2);                 
+            delete pf2;
+            
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = EllipseFocus2;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->FirstPos = Sketcher::start;
+            newConstr->Second = GeoId;
+
+            addConstraint(newConstr);
+            delete newConstr;  
+        }
+        
+        return incrgeo; //number of added elements
+    }
+    else
+        return -1; // not supported type
+}
+
+int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
+{
+   if (GeoId < 0 || GeoId > getHighestCurveIndex())
+        return -1;
+    
+    const Part::Geometry *geo = getGeometry(GeoId);            
+    // Only for supported types
+    if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+        // First we search what has to be deleted
+        bool major=false;
+        bool minor=false;
+        bool focus1=false;
+        bool focus2=false;
+        
+        int majorelementindex=-1;
+        int minorelementindex=-1;
+        int focus1elementindex=-1;
+        int focus2elementindex=-1;
+        
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+        
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+                it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::EllipseMajorDiameter:
+                        major=true;
+                        majorelementindex=(*it)->First;
+                        break;
+                    case Sketcher::EllipseMinorDiameter:
+                        minor=true;
+                        minorelementindex=(*it)->First;
+                        break;
+                    case Sketcher::EllipseFocus1: 
+                        focus1=true;
+                        focus1elementindex=(*it)->First;
+                        break;
+                    case Sketcher::EllipseFocus2: 
+                        focus2=true;
+                        focus2elementindex=(*it)->First;
+                        break;
+                }
+            }
+        }
+        
+        // Hide unused geometry here
+        int majorconstraints=0; // number of constraints associated to the geoid of the major axis
+        int minorconstraints=0;
+        int focus1constraints=0;
+        int focus2constraints=0;
+        
+        int decrgeo=0;
+        
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+            it != vals.end(); ++it) {
+            
+            if((*it)->Second == majorelementindex || (*it)->First == majorelementindex || (*it)->Third == majorelementindex)
+                majorconstraints++;
+            else if((*it)->Second == minorelementindex || (*it)->First == minorelementindex || (*it)->Third == minorelementindex)
+                minorconstraints++;
+            else if((*it)->Second == focus1elementindex || (*it)->First == focus1elementindex || (*it)->Third == focus1elementindex)
+                focus1constraints++;
+            else if((*it)->Second == focus2elementindex || (*it)->First == focus2elementindex || (*it)->Third == focus2elementindex)
+                focus2constraints++;
+        }
+        
+        std::vector<int> delgeometries;
+        
+        // those with less than 2 constraints must be removed       
+        if(focus2constraints<2)
+            delgeometries.push_back(focus2elementindex);
+        
+        if(focus1constraints<2) 
+            delgeometries.push_back(focus1elementindex);
+        
+        if(minorconstraints<2) 
+            delgeometries.push_back(minorelementindex);
+              
+        if(majorconstraints<2) 
+            delgeometries.push_back(majorelementindex);
+        
+        std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
+        
+        if(delgeometries.size()>0)
+        {
+            for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
+                delGeometry(*it);
+            }
+        }
+
+        return delgeometries.size(); //number of deleted elements
+    }
+    else
+        return -1; // not supported type
 }
 
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)

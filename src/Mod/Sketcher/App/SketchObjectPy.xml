@@ -112,6 +112,16 @@
         <UserDocu>trim a curve with a given id at a given reference point</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="ExposeInternalGeometry">
+      <Documentation>
+        <UserDocu>Exposes all internal geometry of an object supporting internal geometry</UserDocu>
+      </Documentation>    
+    </Methode>
+    <Methode Name="DeleteUnusedInternalGeometry">
+      <Documentation>
+        <UserDocu>Deletes all unused (not further constrained) internal geometry</UserDocu>
+      </Documentation>    
+    </Methode>    
     <Attribute Name="ConstraintCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of Constraints in this sketch</UserDocu>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) Jï¿½rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -47,6 +47,7 @@ public:
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalGeometry;
+    const char* ss;
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
@@ -127,6 +128,10 @@ public:
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
+    /// Exposes all internal geometry of an object supporting internal geometry
+    int ExposeInternalGeometry(int GeoId);
+    /// Deletes all unused (not further constrained) internal geometry
+    int DeleteUnusedInternalGeometry(int GeoId);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
@@ -158,6 +163,7 @@ public:
     virtual int getAxisCount(void) const;
     /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
     virtual Base::Axis getAxis(int axId) const;
+    const char*& it(int arg1, int arg2);
 
 protected:
     /// get called by the container when a property has changed
