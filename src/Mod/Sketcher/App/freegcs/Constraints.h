@@ -51,7 +51,8 @@ namespace GCS
         TangentEllipseLine = 14,
         InternalAlignmentPoint2Ellipse = 15,
         EqualMajorAxesEllipse = 16,
-        EllipticalArcRangeToEndPoints = 17
+        EllipticalArcRangeToEndPoints = 17,
+        AngleViaPoint = 19 //DeepSOIC: skipped 18 for the very unlikely case that tangency via point will be included
     };
     
     enum InternalAlignmentType {
@@ -74,6 +75,7 @@ namespace GCS
         VEC_pD pvec;
         double scale;
         int tag;
+        bool remapped;  //indicates that pvec has changed and saved pointers must be reconstructed (currently used only in AngleViaPoint)
     public:
         Constraint();
         virtual ~Constraint(){}
@@ -429,6 +431,23 @@ namespace GCS
         virtual double maxStep(MAP_pD_D &dir, double lim=1.);
     };
     
+    class ConstraintAngleViaPoint : public Constraint
+    {
+    private:
+        inline double* angle() { return pvec[0]; };
+        Curve* crv1;
+        Curve* crv2;//warning: need to be reconstructed if pvec was redirected (test remapped variable before use!)
+        Point poa;//pot=point of angle //warning: needs to be reconstructed if pvec was redirected (test remapped variable before use!)
+        void ReconstructEverything();
+    public:
+        ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Point p, double* angle);
+        ~ConstraintAngleViaPoint();
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+    };
+
 
 } //namespace GCS
 

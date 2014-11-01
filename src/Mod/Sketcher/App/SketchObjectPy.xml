@@ -127,6 +127,36 @@
         <UserDocu>Deletes all unused (not further constrained) internal geometry</UserDocu>
       </Documentation>    
     </Methode>    
+    <Methode Name="calculateAngleViaPoint">
+      <Documentation>
+        <UserDocu>
+          calculateAngleViaPoint(GeoId1, GeoId2, px, py) - calculates angle between
+          curves identified by GeoId1 and GeoId2 at point (x,y). The point must be
+          on intersection of the curves, otherwise the result may be useless (except
+          line-to-line, where (0,0) is OK). Returned value is in radians.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isPointOnCurve">
+      <Documentation>
+        <UserDocu>
+          isPointOnObject(GeoIdCurve, float x, float y) - tests if the point (x,y)
+          geometrically lies on a curve (e.g. ellipse). It treats lines as infinte,
+          arcs as full circles/ellipses/etc. Returns boolean value.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="calculateConstraintError">
+      <Documentation>
+        <UserDocu>
+          calculateConstraintError(index) - calculates the error function of the
+          constraint identified by its index and returns the signed error value.
+          The error value roughly corresponds to by how much the constraint is
+          violated. If the constraint internally has more than one error function,
+          the returned value is RMS of all errors (sign is lost in this case).
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="ConstraintCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of Constraints in this sketch</UserDocu>

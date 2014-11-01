@@ -22,6 +22,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cfloat>
+#include <limits>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -415,6 +416,13 @@ int System::addConstraintL2LAngle(Point &l1p1, Point &l1p2,
     return addConstraint(constr);
 }
 
+int System::addConstraintAngleViaPoint(Curve &crv1, Curve &crv2, Point &p, double *angle, int tagId)
+{
+    Constraint *constr = new ConstraintAngleViaPoint(crv1, crv2, p, angle);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
 int System::addConstraintMidpointOnLine(Line &l1, Line &l2, int tagId)
 {
     Constraint *constr = new ConstraintMidpointOnLine(l1, l2);
@@ -672,95 +680,6 @@ int System::addConstraintTangent(Ellipse &e, Arc &a, int tagId)
     return addConstraintTangentCircumf(e.center, a.center, e.radmaj, a.rad,
                                        (d < *e.radmaj || d < *a.rad), tagId);*/
     return 0;
-}
-
-int System::addConstraintTangentLine2Arc(Point &p1, Point &p2, Arc &a, int tagId)
-{
-    addConstraintP2PCoincident(p2, a.start, tagId);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? M_PI/2 : -M_PI/2;
-    return addConstraintP2PAngle(p1, p2, a.startAngle, incrAngle, tagId);
-}
-
-int System::addConstraintTangentArc2Line(Arc &a, Point &p1, Point &p2, int tagId)
-{
-    addConstraintP2PCoincident(p1, a.end, tagId);
-    double incrAngle = *(a.startAngle) < *(a.endAngle) ? M_PI/2 : -M_PI/2;
-    return addConstraintP2PAngle(p1, p2, a.endAngle, incrAngle, tagId);
-}
-
-int System::addConstraintTangentLine2ArcOfEllipse(Point &p1, Point &p2, Line &l, ArcOfEllipse &a, int tagId)
-{
-    addConstraintP2PCoincident(p2, a.start, tagId);
-    return addConstraintTangent(l, a, tagId);
-}
-
-int System::addConstraintTangentArcOfEllipse2Line(ArcOfEllipse &a, Line &l, Point &p1, Point &p2, int tagId)
-{
-    addConstraintP2PCoincident(p1, a.end, tagId);
-    return addConstraintTangent(l, a, tagId);
-}
-
-int System::addConstraintTangentCircle2Arc(Circle &c, Arc &a, int tagId)
-{
-    addConstraintPointOnCircle(a.start, c, tagId);
-    double dx = *(a.start.x) - *(c.center.x);
-    double dy = *(a.start.y) - *(c.center.y);
-    if (dx * cos(*(a.startAngle)) + dy * sin(*(a.startAngle)) > 0)
-        return addConstraintP2PAngle(c.center, a.start, a.startAngle, 0, tagId);
-    else
-        return addConstraintP2PAngle(c.center, a.start, a.startAngle, M_PI, tagId);
-}
-
-int System::addConstraintTangentEllipse2Arc(Ellipse &e, Arc &a, int tagId)
-{
-    
-    /*addConstraintPointOnEllipse(a.start, e, tagId);
-    double dx = *(a.start.x) - *(e.center.x);
-    double dy = *(a.start.y) - *(e.center.y);
-    if (dx * cos(*(a.startAngle)) + dy * sin(*(a.startAngle)) > 0)
-        return addConstraintP2PAngle(e.center, a.start, a.startAngle, 0, tagId);
-    else
-        return addConstraintP2PAngle(e.center, a.start, a.startAngle, M_PI, tagId);*/
-    return 0;
-}
-
-int System::addConstraintTangentArc2Circle(Arc &a, Circle &c, int tagId)
-{
-    addConstraintPointOnCircle(a.end, c, tagId);
-    double dx = *(a.end.x) - *(c.center.x);
-    double dy = *(a.end.y) - *(c.center.y);
-    if (dx * cos(*(a.endAngle)) + dy * sin(*(a.endAngle)) > 0)
-        return addConstraintP2PAngle(c.center, a.end, a.endAngle, 0, tagId);
-    else
-        return addConstraintP2PAngle(c.center, a.end, a.endAngle, M_PI, tagId);
-}
-
-int System::addConstraintTangentArc2Ellipse(Arc &a, Ellipse &e, int tagId)
-{
-    
-    /*addConstraintPointOnEllipse(a.end, e, tagId);
-    double dx = *(a.end.x) - *(e.center.x);
-    double dy = *(a.end.y) - *(e.center.y);
-    if (dx * cos(*(a.endAngle)) + dy * sin(*(a.endAngle)) > 0)
-        return addConstraintP2PAngle(e.center, a.end, a.endAngle, 0, tagId);
-    else
-        return addConstraintP2PAngle(e.center, a.end, a.endAngle, M_PI, tagId);*/
-    return 0;
-}
-
-int System::addConstraintTangentArc2Arc(Arc &a1, bool reverse1, Arc &a2, bool reverse2,
-                                        int tagId)
-{
-    Point &p1 = reverse1 ? a1.start : a1.end;
-    Point &p2 = reverse2 ? a2.end : a2.start;
-    addConstraintP2PCoincident(p1, p2, tagId);
-
-    double *angle1 = reverse1 ? a1.startAngle : a1.endAngle;
-    double *angle2 = reverse2 ? a2.endAngle : a2.startAngle;
-    if (cos(*angle1) * cos(*angle2) + sin(*angle1) * sin(*angle2) > 0)
-        return addConstraintEqual(angle1, angle2, tagId);
-    else
-        return addConstraintP2PAngle(p2, a2.center, angle1, 0, tagId);
 }
 
 int System::addConstraintCircleRadius(Circle &c, double *radius, int tagId)
@@ -1029,6 +948,53 @@ int System::addConstraintInternalAlignmentEllipseFocus2(ArcOfEllipse &a, Point &
     return addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipseFocus2Y,tagId);
 }
 
+//calculates angle between two curves at point of their intersection p. If two
+//points are supplied, p is used for first curve and p2 for second, yielding a
+//remote angle computation (this is useful when the endpoints haven't) been
+//made coincident yet
+double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p)
+    {return calculateAngleViaPoint(crv1, crv2, p, p);}
+double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2)
+{
+    GCS::Vector2D n1 = crv1.CalculateNormal(p1);
+    GCS::Vector2D n2 = crv2.CalculateNormal(p2);
+    return atan2(-n2.x*n1.y+n2.y*n1.x, n2.x*n1.x + n2.y*n1.y);
+}
+
+void System::calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY)
+{
+    GCS::Vector2D n1 = crv.CalculateNormal(p);
+    rtnX = n1.x;
+    rtnY = n1.y;
+}
+
+double System::calculateConstraintErrorByTag(int tagId)
+{
+    int cnt = 0; //how many constraints have been accumulated
+    double sqErr = 0.0; //accumulator of squared errors
+    double err = 0.0;//last computed signed error value
+
+    for (std::vector<Constraint *>::const_iterator
+         constr=clist.begin(); constr != clist.end(); ++constr) {
+        if ((*constr)->getTag() == tagId){
+            err = (*constr)->error();
+            sqErr += err*err;
+            cnt++;
+        };
+    }
+    switch (cnt) {
+        case 0: //constraint not found!
+            return std::numeric_limits<double>::quiet_NaN();
+        break;
+        case 1:
+            return err;
+        break;
+        default:
+            return sqrt(sqErr/(double)cnt);
+    }
+
+}
+
 void System::rescaleConstraint(int id, double coeff)
 {
     if (id >= clist.size() || id < 0)
@@ -1223,11 +1189,16 @@ int System::solve(bool isFine, Algorithm alg)
     }
     if (res == Success) {
         for (std::set<Constraint *>::const_iterator constr=redundant.begin();
-             constr != redundant.end(); constr++)
-             if ((*constr)->error() > XconvergenceFine) {
-                 res = Converged;
-                 return res;
-             }
+             constr != redundant.end(); constr++){
+            //DeepSOIC: there used to be a comparison of signed error value to
+            //convergence, which makes no sense. Potentially I fixed bug, and
+            //chances are low I've broken anything.
+            double err = (*constr)->error();
+            if (err*err > XconvergenceFine) {
+                res = Converged;
+                return res;
+            }
+        }
     }
     return res;
 }
@@ -1652,7 +1623,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine)
     subsysA->calcResidual(resA);
 
     double convergence = isFine ? XconvergenceFine : XconvergenceRough;
-    int maxIterNumber = MaxIterations * xsize;
+    int maxIterNumber = MaxIterations;
     double divergingLim = 1e6*subsysA->error() + 1e12;
 
     double mu = 0;

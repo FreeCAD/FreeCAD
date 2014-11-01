@@ -677,7 +677,56 @@ PyObject* SketchObjectPy::trim(PyObject *args)
     }
 
     Py_Return;
+}
 
+PyObject* SketchObjectPy::calculateAngleViaPoint(PyObject *args)
+{
+    int GeoId1=0, GeoId2=0;
+    double px=0, py=0;
+    if (!PyArg_ParseTuple(args, "iidd", &GeoId1, &GeoId2, &px, &py))
+        return 0;
+
+    SketchObject* obj = this->getSketchObjectPtr();
+    if (GeoId1 > obj->getHighestCurveIndex() || -GeoId1 > obj->getExternalGeometryCount() ||
+        GeoId2 > obj->getHighestCurveIndex() || -GeoId2 > obj->getExternalGeometryCount()    ) {
+        PyErr_SetString(PyExc_ValueError, "Invalid geometry Id");
+        return 0;
+    }
+    double ang = obj->calculateAngleViaPoint(GeoId1, GeoId2, px, py);
+
+    return Py::new_reference_to(Py::Float(ang));
+}
+
+PyObject* SketchObjectPy::isPointOnCurve(PyObject *args)
+{
+    int GeoId=Constraint::GeoUndef;
+    double px=0, py=0;
+    if (!PyArg_ParseTuple(args, "idd", &GeoId, &px, &py))
+        return 0;
+
+    SketchObject* obj = this->getSketchObjectPtr();
+    if (GeoId > obj->getHighestCurveIndex() || -GeoId > obj->getExternalGeometryCount()) {
+        PyErr_SetString(PyExc_ValueError, "Invalid geometry Id");
+        return 0;
+    }
+
+    return Py::new_reference_to(Py::Boolean(obj->isPointOnCurve(GeoId, px, py)));
+}
+
+PyObject* SketchObjectPy::calculateConstraintError(PyObject *args)
+{
+    int ic=-1;
+    if (!PyArg_ParseTuple(args, "i", &ic))
+        return 0;
+
+    SketchObject* obj = this->getSketchObjectPtr();
+    if (ic >= obj->Constraints.getSize() || ic < 0) {
+        PyErr_SetString(PyExc_ValueError, "Invalid constraint Id");
+        return 0;
+    }
+    double err = obj->calculateConstraintError(ic);
+
+    return Py::new_reference_to(Py::Float(err));
 }
 
 PyObject* SketchObjectPy::ExposeInternalGeometry(PyObject *args)

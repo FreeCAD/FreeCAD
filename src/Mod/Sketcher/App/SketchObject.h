@@ -152,6 +152,10 @@ public:
     /// generates a warning message about redundant constraints and appends it to the given message
     static void appendRedundantMsg(const std::vector<int> &redundant, std::string &msg);
 
+    double calculateAngleViaPoint(int geoId1, int geoId2, double px, double py);
+    bool isPointOnCurve(int geoIdCurve, double px, double py);
+    double calculateConstraintError(int ConstrId);
+
     // from base class
     virtual PyObject *getPyObject(void);
     virtual unsigned int getMemSize(void) const;
