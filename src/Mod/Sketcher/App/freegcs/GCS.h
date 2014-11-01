@@ -27,6 +27,14 @@
 
 namespace GCS
 {
+    ///////////////////////////////////////
+    // BFGS Solver parameters
+    ///////////////////////////////////////
+    #define XconvergenceRough 1e-8
+    #define XconvergenceFine  1e-10
+    #define smallF            1e-20
+    #define MaxIterations     100 //Note that the total number of iterations allowed is MaxIterations *xLength
+
 
     ///////////////////////////////////////
     // Solver
@@ -109,6 +117,8 @@ namespace GCS
         int addConstraintL2LAngle(Line &l1, Line &l2, double *angle, int tagId=0);
         int addConstraintL2LAngle(Point &l1p1, Point &l1p2, Point &l2p1, Point &l2p2,
                                   double *angle, int tagId=0);
+        int addConstraintAngleViaPoint(Curve &crv1, Curve &crv2, Point &p,
+                                  double *angle, int tagId=0);
         int addConstraintMidpointOnLine(Line &l1, Line &l2, int tagId=0);
         int addConstraintMidpointOnLine(Point &l1p1, Point &l1p2, Point &l2p1, Point &l2p2,
                                         int tagId=0);
@@ -149,16 +159,7 @@ namespace GCS
         int addConstraintTangent(Arc &a1, Arc &a2, int tagId=0);
         int addConstraintTangent(Circle &c, Arc &a, int tagId=0);
         int addConstraintTangent(Ellipse &e, Arc &a, int tagId=0);
-        int addConstraintTangentLine2ArcOfEllipse(Point &p1, Point &p2, Line &l, ArcOfEllipse &a, int tagId=0);
-        int addConstraintTangentArcOfEllipse2Line(ArcOfEllipse &a, Line &l, Point &p1, Point &p2, int tagId=0);
-        int addConstraintTangentLine2Arc(Point &p1, Point &p2, Arc &a, int tagId=0);
-        int addConstraintTangentArc2Line(Arc &a, Point &p1, Point &p2, int tagId=0);
-        int addConstraintTangentCircle2Arc(Circle &c, Arc &a, int tagId=0);
-        int addConstraintTangentEllipse2Arc(Ellipse &e, Arc &a, int tagId=0);
-        int addConstraintTangentArc2Circle(Arc &a, Circle &c, int tagId=0);
-        int addConstraintTangentArc2Ellipse(Arc &a, Ellipse &e, int tagId=0);
-        int addConstraintTangentArc2Arc(Arc &a1, bool reverse1, Arc &a2, bool reverse2,
-                                        int tagId=0);
+
         int addConstraintCircleRadius(Circle &c, double *radius, int tagId=0);
         int addConstraintEllipseAngleXU(Ellipse &e, double *angle, int tagId=0);
         int addConstraintArcRadius(Arc &a, double *radius, int tagId=0);
@@ -183,6 +184,17 @@ namespace GCS
         int addConstraintInternalAlignmentEllipseMinorDiameter(ArcOfEllipse &a, Point &p1, Point &p2, int tagId=0);
         int addConstraintInternalAlignmentEllipseFocus1(ArcOfEllipse &a, Point &p1, int tagId=0);
         int addConstraintInternalAlignmentEllipseFocus2(ArcOfEllipse &a, Point &p1, int tagId=0);
+
+        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p);
+        double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2);
+        void calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY);
+
+        // Calculates errors of all constraints which have a tag equal to
+        // the one supplied. Individual errors are summed up using RMS.
+        // If none are found, NAN is returned
+        // If there's only one, a signed value is returned.
+        // Effectively, it calculates the error of a UI constraint
+        double calculateConstraintErrorByTag(int tagId);
         
         void rescaleConstraint(int id, double coeff);
 
@@ -197,6 +209,8 @@ namespace GCS
         void applySolution();
         void undoSolution();
 
+        double getFinePrecision(){ return XconvergenceFine;}//FIXME: looks like XconvergenceFine is not the solver precision, at least in DogLeg slover.
+
         int diagnose();
         int dofsNumber() { return hasDiagnosis ? dofs : -1; }
         void getConflicting(VEC_I &conflictingOut) const
@@ -205,13 +219,6 @@ namespace GCS
           { redundantOut = hasDiagnosis ? redundantTags : VEC_I(0); }
     };
 
-    ///////////////////////////////////////
-    // BFGS Solver parameters
-    ///////////////////////////////////////
-    #define XconvergenceRough 1e-8
-    #define XconvergenceFine  1e-10
-    #define smallF            1e-20
-    #define MaxIterations     100 //Note that the total number of iterations allowed is MaxIterations *xLength
 
     ///////////////////////////////////////
     // Helper elements

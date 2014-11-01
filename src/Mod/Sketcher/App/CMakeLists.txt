@@ -73,6 +73,7 @@ SET(FreeGCS_SRCS
     freegcs/GCS.cpp
     freegcs/GCS.h
     freegcs/Util.h
+    freegcs/Geo.cpp
     freegcs/Geo.h
     freegcs/Constraints.cpp
     freegcs/Constraints.h

@@ -2213,6 +2213,7 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
                     return false;
             }
             break;
+        //TODO: angle-via-point, tangent-via-point, perp-via-point, snell's law
         default:
             break;
     }
@@ -2261,6 +2262,67 @@ void SketchObject::validateConstraints()
         Constraints.setValues(newConstraints);
         acceptGeometry();
     }
+}
+
+double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, double py)
+{
+    //DeepSOIC: this may be slow, but I wanted to reuse the conversion from Geometry to GCS shapes that is done in Sketch
+    Sketcher::Sketch sk;
+    int i1 = sk.addGeometry(this->getGeometry(GeoId1));
+    int i2 = sk.addGeometry(this->getGeometry(GeoId2));
+
+    return sk.calculateAngleViaPoint(i1,i2,px,py);
+}
+
+bool SketchObject::isPointOnCurve(int geoIdCurve, double px, double py)
+{
+    //DeepSOIC: this may be slow, but I wanted to reuse the existing code
+    Sketcher::Sketch sk;
+    int icrv = sk.addGeometry(this->getGeometry(geoIdCurve));
+    Base::Vector3d pp;
+    pp.x = px; pp.y = py;
+    Part::GeomPoint p(pp);
+    int ipnt = sk.addPoint(p);
+    int icstr = sk.addPointOnObjectConstraint(ipnt, Sketcher::start, icrv);
+    double err = sk.calculateConstraintError(icstr);
+    return err*err < 10.0*sk.getSolverPrecision();
+}
+
+double SketchObject::calculateConstraintError(int ConstrId)
+{
+    Sketcher::Sketch sk;
+    const std::vector<Constraint *> &clist = this->Constraints.getValues();
+    if (ConstrId < 0 || ConstrId >= int(clist.size()))
+        return std::numeric_limits<double>::quiet_NaN();
+
+    Constraint* cstr = clist[ConstrId]->clone();
+    double result=0.0;
+    try{
+        std::vector<int> GeoIdList;
+        int g;
+        GeoIdList.push_back(cstr->First);
+        GeoIdList.push_back(cstr->Second);
+        GeoIdList.push_back(cstr->Third);
+
+        //add only necessary geometry to the sketch
+        for(int i=0; i<GeoIdList.size(); i++){
+            g = GeoIdList[i];
+            if (g != Constraint::GeoUndef){
+                GeoIdList[i] = sk.addGeometry(this->getGeometry(g));
+            }
+        }
+
+        cstr->First = GeoIdList[0];
+        cstr->Second = GeoIdList[1];
+        cstr->Third = GeoIdList[2];
+        int icstr = sk.addConstraint(cstr);
+        result = sk.calculateConstraintError(icstr);
+    } catch(...) {//cleanup
+        delete cstr;
+        throw;
+    }
+    delete cstr;
+    return result;
 }
 
 PyObject *SketchObject::getPyObject(void)

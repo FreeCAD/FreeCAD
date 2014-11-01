@@ -24,6 +24,11 @@
 #include "Constraints.h"
 #include <algorithm>
 
+#define DEBUG_DERIVS 0
+#if DEBUG_DERIVS
+#include <cassert>
+#endif
+
 namespace GCS
 {
 
@@ -32,7 +37,7 @@ namespace GCS
 ///////////////////////////////////////
 
 Constraint::Constraint()
-: origpvec(0), pvec(0), scale(1.), tag(0)
+: origpvec(0), pvec(0), scale(1.), tag(0), remapped(true)
 {
 }
 
@@ -45,11 +50,13 @@ void Constraint::redirectParams(MAP_pD_pD redirectionmap)
         if (it != redirectionmap.end())
             pvec[i] = it->second;
     }
+    remapped=true;
 }
 
 void Constraint::revertParams()
 {
     pvec = origpvec;
+    remapped=true;
 }
 
 ConstraintType Constraint::getTypeId()
@@ -2176,5 +2183,108 @@ double ConstraintEllipticalArcRangeToEndPoints::maxStep(MAP_pD_D &dir, double li
     }
     return lim;
 }
+
+// L2LAngle
+ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Point p, double* angle)
+{
+    pvec.push_back(angle);
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    acrv1.PushOwnParams(pvec);
+    acrv2.PushOwnParams(pvec);
+    crv1 = acrv1.Copy();
+    crv2 = acrv2.Copy();
+    origpvec = pvec;
+    remapped=true;
+    rescale();
+}
+ConstraintAngleViaPoint::~ConstraintAngleViaPoint()
+{
+    delete crv1; crv1 = 0;
+    delete crv2; crv2 = 0;
+}
+
+void ConstraintAngleViaPoint::ReconstructEverything()
+{
+    int cnt=0;
+    cnt++;//skip angle - we have an inline function for that
+    poa.x = pvec[cnt]; cnt++;
+    poa.y = pvec[cnt]; cnt++;
+    crv1->ReconstructOnNewPvec(pvec,cnt);
+    crv2->ReconstructOnNewPvec(pvec,cnt);
+    remapped=false;
+}
+
+ConstraintType ConstraintAngleViaPoint::getTypeId()
+{
+    return AngleViaPoint;
+}
+
+void ConstraintAngleViaPoint::rescale(double coef)
+{
+    scale = coef * 1.;
+}
+
+double ConstraintAngleViaPoint::error()
+{
+    if (remapped) ReconstructEverything();
+    double ang=*angle();
+    Vector2D n1 = crv1->CalculateNormal(poa);
+    Vector2D n2 = crv2->CalculateNormal(poa);
+
+    //rotate n1 by angle
+    Vector2D n1r (n1.x*cos(ang) - n1.y*sin(ang), n1.x*sin(ang) + n1.y*cos(ang) );
+
+    //calculate angle between n1r and n2. Since we have rotated the n1, the angle is the error function.
+    //for our atan2, y is a dot product (n2) * (n1r rotated ccw by 90 degrees).
+    //               x is a dot product (n2) * (n1r)
+    double err = atan2(-n2.x*n1r.y+n2.y*n1r.x, n2.x*n1r.x + n2.y*n1r.y);
+    //essentially, the function is equivalent to atan2(n2)-(atan2(n1)+angle). The only difference is behavior when normals are zero (the intended result is also zero in this case).
+    return scale * err;
+}
+
+double ConstraintAngleViaPoint::grad(double *param)
+{
+    //first of all, check that we need to compute anything.
+    int i;
+    for( i=0 ; i<pvec.size() ; i++ ){
+        if ( param == pvec[i] ) break;
+    };
+    if ( i == pvec.size() ) return 0.0;
+
+    double deriv=0.;
+
+    if (remapped) ReconstructEverything();
+
+    if (param == angle()) deriv += -1.0;
+    Vector2D n1 = crv1->CalculateNormal(poa);
+    Vector2D n2 = crv2->CalculateNormal(poa);
+
+    Vector2D dn1 = crv1->CalculateNormal(poa, param);
+    Vector2D dn2 = crv2->CalculateNormal(poa, param);
+    deriv -= ( (-dn1.x)*n1.y / pow(n1.length(),2)  +  dn1.y*n1.x / pow(n1.length(),2) );
+    deriv += ( (-dn2.x)*n2.y / pow(n2.length(),2)  +  dn2.y*n2.x / pow(n2.length(),2) );
+
+
+//use numeric for testing
+#if 0
+    double const eps = 0.00001;
+    double oldparam = *param;
+    double v0 = this->error();
+    *param += eps;
+    double vr = this->error();
+    *param = oldparam - eps;
+    double vl = this->error();
+    *param = oldparam;
+    //If not nasty, real derivative should be between left one and right one
+    double numretl = (v0-vl)/eps;
+    double numretr = (vr-v0)/eps;
+    assert(deriv <= std::max(numretl,numretr) );
+    assert(deriv >= std::min(numretl,numretr) );
+#endif
+
+    return scale * deriv;
+}
+
 
 } //namespace GCS

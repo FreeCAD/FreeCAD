@@ -1208,32 +1208,43 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
 
         Base::Vector3d p0(0.,0.,0.);
         if (Constr->Second != Constraint::GeoUndef) { // line to line angle
-            const Part::Geometry *geo1 = GeoById(geomlist, Constr->First);
-            const Part::Geometry *geo2 = GeoById(geomlist, Constr->Second);
-            if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
-                geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
-                return;
-            const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
-            const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
-
-            bool flip1 = (Constr->FirstPos == end);
-            bool flip2 = (Constr->SecondPos == end);
-            Base::Vector3d dir1 = (flip1 ? -1. : 1.) * (lineSeg1->getEndPoint()-lineSeg1->getStartPoint());
-            Base::Vector3d dir2 = (flip2 ? -1. : 1.) * (lineSeg2->getEndPoint()-lineSeg2->getStartPoint());
-            Base::Vector3d pnt1 = flip1 ? lineSeg1->getEndPoint() : lineSeg1->getStartPoint();
-            Base::Vector3d pnt2 = flip2 ? lineSeg2->getEndPoint() : lineSeg2->getStartPoint();
-
-            // line-line intersection
-            {
-                double det = dir1.x*dir2.y - dir1.y*dir2.x;
-                if ((det > 0 ? det : -det) < 1e-10)
+            Base::Vector3d dir1, dir2;
+            if(Constr->Third == Constraint::GeoUndef) { //angle between two lines
+                const Part::Geometry *geo1 = GeoById(geomlist, Constr->First);
+                const Part::Geometry *geo2 = GeoById(geomlist, Constr->Second);
+                if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
+                    geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
                     return;
-                double c1 = dir1.y*pnt1.x - dir1.x*pnt1.y;
-                double c2 = dir2.y*pnt2.x - dir2.x*pnt2.y;
-                double x = (dir1.x*c2 - dir2.x*c1)/det;
-                double y = (dir1.y*c2 - dir2.y*c1)/det;
-                p0 = Base::Vector3d(x,y,0);
+                const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
+                const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
+
+                bool flip1 = (Constr->FirstPos == end);
+                bool flip2 = (Constr->SecondPos == end);
+                dir1 = (flip1 ? -1. : 1.) * (lineSeg1->getEndPoint()-lineSeg1->getStartPoint());
+                dir2 = (flip2 ? -1. : 1.) * (lineSeg2->getEndPoint()-lineSeg2->getStartPoint());
+                Base::Vector3d pnt1 = flip1 ? lineSeg1->getEndPoint() : lineSeg1->getStartPoint();
+                Base::Vector3d pnt2 = flip2 ? lineSeg2->getEndPoint() : lineSeg2->getStartPoint();
+
+                // line-line intersection
+                {
+                    double det = dir1.x*dir2.y - dir1.y*dir2.x;
+                    if ((det > 0 ? det : -det) < 1e-10)
+                        return;// lines are parallel - constraint unmoveable (DeepSOIC: why?..)
+                    double c1 = dir1.y*pnt1.x - dir1.x*pnt1.y;
+                    double c2 = dir2.y*pnt2.x - dir2.x*pnt2.y;
+                    double x = (dir1.x*c2 - dir2.x*c1)/det;
+                    double y = (dir1.y*c2 - dir2.y*c1)/det;
+                    p0 = Base::Vector3d(x,y,0);
+                }
+            } else {//angle-via-point
+                Base::Vector3d p = edit->ActSketch.getPoint(Constr->Third, Constr->ThirdPos);
+                p0 = Base::Vector3d(p.x, p.y, 0);
+                dir1 = edit->ActSketch.calculateNormalAtPoint(Constr->First, p.x, p.y);
+                dir1.RotateZ(-M_PI/2);//convert to vector of tangency by rotating
+                dir2 = edit->ActSketch.calculateNormalAtPoint(Constr->Second, p.x, p.y);
+                dir2.RotateZ(-M_PI/2);
             }
+
         } else if (Constr->First != Constraint::GeoUndef) { // line angle
             const Part::Geometry *geo = GeoById(geomlist, Constr->First);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId())
@@ -3419,9 +3430,34 @@ Restart:
                     assert(Constr->Second >= -extGeoCount && Constr->Second < intGeoCount);
 
                     Base::Vector3d pos, relPos;
-                    if (Constr->Type == PointOnObject) {
-                        pos = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
-                        relPos = Base::Vector3d(0.f, 1.f, 0.f);
+                    if (  Constr->Type == PointOnObject ||
+                          (Constr->Type == Tangent && Constr->Third != Constraint::GeoUndef) || //Tangency via point
+                          (Constr->Type == Tangent && Constr->FirstPos != Sketcher::none) //endpoint-to-curve or endpoint-to-endpoint tangency
+                            ) {
+
+                        //find the point of tangency/point that is on object
+                        //just any point among first/second/third should be OK
+                        int ptGeoId;
+                        Sketcher::PointPos ptPosId;
+                        do {//dummy loop to use break =) Maybe goto?
+                            ptGeoId = Constr->First;
+                            ptPosId = Constr->FirstPos;
+                            if (ptPosId != Sketcher::none) break;
+                            ptGeoId = Constr->Second;
+                            ptPosId = Constr->SecondPos;
+                            if (ptPosId != Sketcher::none) break;
+                            ptGeoId = Constr->Third;
+                            ptPosId = Constr->ThirdPos;
+                            if (ptPosId != Sketcher::none) break;
+                            assert(0);//no point found!
+                        } while (false);
+                        pos = edit->ActSketch.getPoint(ptGeoId, ptPosId);
+
+                        Base::Vector3d norm = edit->ActSketch.calculateNormalAtPoint(Constr->Second, pos.x, pos.y);
+                        norm.Normalize();
+                        Base::Vector3d dir = norm; dir.RotateZ(-M_PI/2.0);
+
+                        relPos = seekConstraintPosition(pos, norm, dir, 2.5, edit->constrGroup->getChild(i));
                         dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(pos.x, pos.y, zConstr); //Absolute Reference
                         dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relPos.x, relPos.y, 0);
                     }
@@ -3575,50 +3611,60 @@ Restart:
                     SbVec3f p0;
                     double startangle,range,endangle;
                     if (Constr->Second != Constraint::GeoUndef) {
-                        const Part::Geometry *geo1 = GeoById(*geomlist, Constr->First);
-                        const Part::Geometry *geo2 = GeoById(*geomlist, Constr->Second);
-                        if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
-                            geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
-                            break;
-                        const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
-                        const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
+                        Base::Vector3d dir1, dir2;
+                        if(Constr->Third == Constraint::GeoUndef) { //angle between two lines
+                            const Part::Geometry *geo1 = GeoById(*geomlist, Constr->First);
+                            const Part::Geometry *geo2 = GeoById(*geomlist, Constr->Second);
+                            if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() ||
+                                geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
+                                break;
+                            const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
+                            const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geo2);
 
-                        bool flip1 = (Constr->FirstPos == end);
-                        bool flip2 = (Constr->SecondPos == end);
-                        Base::Vector3d dir1 = (flip1 ? -1. : 1.) * (lineSeg1->getEndPoint()-lineSeg1->getStartPoint());
-                        Base::Vector3d dir2 = (flip2 ? -1. : 1.) * (lineSeg2->getEndPoint()-lineSeg2->getStartPoint());
-                        Base::Vector3d pnt1 = flip1 ? lineSeg1->getEndPoint() : lineSeg1->getStartPoint();
-                        Base::Vector3d pnt2 = flip2 ? lineSeg2->getEndPoint() : lineSeg2->getStartPoint();
+                            bool flip1 = (Constr->FirstPos == end);
+                            bool flip2 = (Constr->SecondPos == end);
+                            dir1 = (flip1 ? -1. : 1.) * (lineSeg1->getEndPoint()-lineSeg1->getStartPoint());
+                            dir2 = (flip2 ? -1. : 1.) * (lineSeg2->getEndPoint()-lineSeg2->getStartPoint());
+                            Base::Vector3d pnt1 = flip1 ? lineSeg1->getEndPoint() : lineSeg1->getStartPoint();
+                            Base::Vector3d pnt2 = flip2 ? lineSeg2->getEndPoint() : lineSeg2->getStartPoint();
 
-                        // line-line intersection
-                        {
-                            double det = dir1.x*dir2.y - dir1.y*dir2.x;
-                            if ((det > 0 ? det : -det) < 1e-10) {
-                                // lines are coincident (or parallel) and in this case the center
-                                // of the point pairs with the shortest distance is used
-                                Base::Vector3d p1[2], p2[2];
-                                p1[0] = lineSeg1->getStartPoint();
-                                p1[1] = lineSeg1->getEndPoint();
-                                p2[0] = lineSeg2->getStartPoint();
-                                p2[1] = lineSeg2->getEndPoint();
-                                double length = DBL_MAX;
-                                for (int i=0; i <= 1; i++) {
-                                    for (int j=0; j <= 1; j++) {
-                                        double tmp = (p2[j]-p1[i]).Length();
-                                        if (tmp < length) {
-                                            length = tmp;
-                                            p0.setValue((p2[j].x+p1[i].x)/2,(p2[j].y+p1[i].y)/2,0);
+                            // line-line intersection
+                            {
+                                double det = dir1.x*dir2.y - dir1.y*dir2.x;
+                                if ((det > 0 ? det : -det) < 1e-10) {
+                                    // lines are coincident (or parallel) and in this case the center
+                                    // of the point pairs with the shortest distance is used
+                                    Base::Vector3d p1[2], p2[2];
+                                    p1[0] = lineSeg1->getStartPoint();
+                                    p1[1] = lineSeg1->getEndPoint();
+                                    p2[0] = lineSeg2->getStartPoint();
+                                    p2[1] = lineSeg2->getEndPoint();
+                                    double length = DBL_MAX;
+                                    for (int i=0; i <= 1; i++) {
+                                        for (int j=0; j <= 1; j++) {
+                                            double tmp = (p2[j]-p1[i]).Length();
+                                            if (tmp < length) {
+                                                length = tmp;
+                                                p0.setValue((p2[j].x+p1[i].x)/2,(p2[j].y+p1[i].y)/2,0);
+                                            }
                                         }
                                     }
                                 }
+                                else {
+                                    double c1 = dir1.y*pnt1.x - dir1.x*pnt1.y;
+                                    double c2 = dir2.y*pnt2.x - dir2.x*pnt2.y;
+                                    double x = (dir1.x*c2 - dir2.x*c1)/det;
+                                    double y = (dir1.y*c2 - dir2.y*c1)/det;
+                                    p0 = SbVec3f(x,y,0);
+                                }
                             }
-                            else {
-                                double c1 = dir1.y*pnt1.x - dir1.x*pnt1.y;
-                                double c2 = dir2.y*pnt2.x - dir2.x*pnt2.y;
-                                double x = (dir1.x*c2 - dir2.x*c1)/det;
-                                double y = (dir1.y*c2 - dir2.y*c1)/det;
-                                p0 = SbVec3f(x,y,0);
-                            }
+                        } else {//angle-via-point
+                            Base::Vector3d p = edit->ActSketch.getPoint(Constr->Third, Constr->ThirdPos);
+                            p0 = SbVec3f(p.x, p.y, 0);
+                            dir1 = edit->ActSketch.calculateNormalAtPoint(Constr->First, p.x, p.y);
+                            dir1.RotateZ(-M_PI/2);//convert to vector of tangency by rotating
+                            dir2 = edit->ActSketch.calculateNormalAtPoint(Constr->Second, p.x, p.y);
+                            dir2.RotateZ(-M_PI/2);
                         }
 
                         startangle = atan2(dir1.y,dir1.x);

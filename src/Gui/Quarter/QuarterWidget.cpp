@@ -784,7 +784,7 @@ QuarterWidget::redraw(void)
   // we're triggering the next paintGL(). Set a flag to remember this
   // to avoid that we process the delay queue in paintGL()
   PRIVATE(this)->processdelayqueue = false;
-  this->viewport()->update();
+  this->viewport()->repaint();
 }
 
 /*!
