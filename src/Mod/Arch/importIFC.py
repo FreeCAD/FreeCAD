@@ -138,6 +138,9 @@ def insert(filename,docname,skip=[]):
     
     global ifcfile # keeping global for debugging purposes
     ifcopenshell.clean()
+    if isinstance(filename,unicode): 
+        import sys #workaround since ifcopenshell currently can't handle unicode filenames
+        filename = filename.encode(sys.getfilesystemencoding())
     ifcfile = ifcopenshell.open(filename)
     shape_attributes = ifcopenshell.SEW_SHELLS
     if SEPARATE_OPENINGS: shape_attributes += ifcopenshell.DISABLE_OPENING_SUBTRACTIONS
