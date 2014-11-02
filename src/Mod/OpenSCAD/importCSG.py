@@ -401,7 +401,6 @@ def p_not_supported(p):
     not_supported : glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  | cut LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | subdiv LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   '''
     if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
@@ -1085,7 +1084,32 @@ def p_polyhedron_action(p) :
 def p_projection_action(p) :
     'projection_action : projection LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     if printverbose: print 'Projection'
-    if gui:
-        from PySide import QtGui
-        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Projection Not yet Coded waiting for Peter Li")),unicode(translate('OpenSCAD'," Press OK")))
-
+    if p[3]['cut']=='true' :
+        planedim=1e9 # large but finite
+        #inifinite planes look bad in the GUI
+        planename='xy_plane_used_for_project_cut'
+        obj=doc.addObject('Part::MultiCommon','projection_cut')
+        plane = doc.getObject(planename)
+        if not plane:
+            plane=doc.addObject("Part::Plane",planename)
+            plane.Length=planedim*2
+            plane.Width=planedim*2
+            plane.Placement = FreeCAD.Placement(FreeCAD.Vector(\
+                     -planedim,-planedim,0),FreeCAD.Rotation())
+            if gui:
+                plane.ViewObject.hide()
+        if (len(p[6]) > 1):
+            subobj = [fuse(p[6],"projection_cut_implicit_group")]
+        else:
+            subobj = p[6]
+        obj.Shapes = [plane]+subobj
+        if gui:
+            subobj[0].ViewObject.hide()
+        p[0] = [obj]
+    else: # cut == 'false' => true projection
+        if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+                GetBool('usePlaceholderForUnsupported'):
+            from PySide import QtGui
+            QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
+        else:
+            p[0] = [placeholder(p[1],p[6],p[3])]
