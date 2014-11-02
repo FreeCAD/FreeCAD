@@ -1,5 +1,7 @@
+PYSIDE_WRAP_RC(Draft_QRC_SRCS Resources/Draft.qrc)
 
 SET(Draft_SRCS
+    ${Draft_QRC_SRCS}
     Init.py
     InitGui.py
     Draft.py
@@ -15,7 +17,6 @@ SET(Draft_SRCS
     importSVG.py
     importDWG.py
     importAirfoilDAT.py
-    Draft_rc.py
     TestDraft.py
 )
 SOURCE_GROUP("" FILES ${Draft_SRCS})

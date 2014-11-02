@@ -509,7 +509,7 @@ else(FREECAD_LIBPACK_USE)
     #IF(NOT SMESH_FOUND)
     #    MESSAGE("Salome SMESH was not found!")
     #ENDIF(NOT SMESH_FOUND)
-    
+
 # -------------------------------- Netgen --------------------------------
 
     if (BUILD_FEM_NETGEN)
@@ -627,6 +627,7 @@ else(FREECAD_LIBPACK_USE)
         SET(PYTHON_BASENAME -python2.7) # for PySide
         find_package(Shiboken REQUIRED)
         find_package(PySide REQUIRED)
+        find_package(PySideTools REQUIRED) # Pyside utilities (pyside-uic & pyside-rcc)
 
 # ------------------------------ Matplotlib ------------------------------
 
@@ -757,7 +758,7 @@ if(FREECAD_MAINTAINERS_BUILD AND NOT WIN32)
 	set(CPACK_DEBIAN_PACKAGE_DEPENDS "python, oce | opencascade, libqtgui4, libcoin60, libxerces-c3.1, zlib1g, libboost-dev, libeigen2-dev")
 	set(CPACK_PACKAGE_CONTACT "<root@localhost>")
 	set(CPACK_PACKAGE_FILE_NAME "${PACKAGE_NAME}-${PACKAGE_VERSION}_${PKG_ARCH}")
-	
+
 	if(WIN32)
 		set(CPACK_GENERATOR "ZIP")
 		set(CPACK_SOURCE_GENERATOR "ZIP")
@@ -845,4 +846,3 @@ if(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
               WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endif(CMAKE_COMPILER_IS_GNUCXX OR MINGW)
-
