@@ -1,12 +1,13 @@
+PYSIDE_WRAP_RC(Arch_QRC_SRCS Resources/Arch.qrc)
 
 SET(Arch_SRCS
+    ${Arch_QRC_SRCS}
     Init.py
     InitGui.py
     ArchComponent.py
     ArchWall.py
     importIFC.py
     importIFClegacy.py
-    Arch_rc.py
     Arch.py
     ArchBuilding.py
     ArchFloor.py
