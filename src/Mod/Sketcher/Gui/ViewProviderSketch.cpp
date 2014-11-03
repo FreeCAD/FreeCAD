@@ -752,8 +752,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     rubberband->setWorking(false);
                     
                     //disable framebuffer drawing in viewer
-                    if(Gui::Application::Instance->activeDocument()->getActiveView()) {
-                        static_cast<Gui::View3DInventor *>(Gui::Application::Instance->activeDocument()->getActiveView())->getViewer()->setRenderFramebuffer(false);
+                    if (Gui::Application::Instance->activeDocument()->getActiveView()) {
+                        static_cast<Gui::View3DInventor *>(Gui::Application::Instance->activeDocument()->getActiveView())->getViewer()->setRenderType(Gui::View3DInventorViewer::Native);
                     }
                     
                     // a redraw is required in order to clear the rubberband
@@ -1085,7 +1085,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         case STATUS_SKETCH_StartRubberBand: {
             Mode = STATUS_SKETCH_UseRubberBand;
             rubberband->setWorking(true);
-            viewer->setRenderFramebuffer(true);
+            viewer->setRenderType(Gui::View3DInventorViewer::Framebuffer);
             return true;
         }
         case STATUS_SKETCH_UseRubberBand: {
