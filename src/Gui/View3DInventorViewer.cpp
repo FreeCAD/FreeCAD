@@ -297,7 +297,7 @@ public:
 // *************************************************************************
 View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(parent, sharewidget), editViewProvider(0), navigation(0),
-      framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
+      renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
       allowredir(FALSE), overrideMode("As Is"), _viewerPy(0)
 {
     init();
@@ -305,7 +305,7 @@ View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QGLWidget* sha
 
 View3DInventorViewer::View3DInventorViewer(const QGLFormat& format, QWidget* parent, const QGLWidget* sharewidget)
     : Quarter::SoQTQuarterAdaptor(format, parent, sharewidget), editViewProvider(0), navigation(0),
-      framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
+      renderType(Native), framebuffer(0), axisCross(0), axisGroup(0), editing(FALSE), redirected(FALSE),
       allowredir(FALSE), overrideMode("As Is"), _viewerPy(0)
 {
     init();
@@ -1186,25 +1186,45 @@ void View3DInventorViewer::clearGraphicsItems()
     this->graphicsItems.clear();
 }
 
-void View3DInventorViewer::setRenderFramebuffer(const SbBool enable)
+void View3DInventorViewer::setRenderType(const RenderType type)
 {
-    if(!enable) {
+    renderType = type;
+
+    glImage = QImage();
+    if (type != Framebuffer) {
         delete framebuffer;
         framebuffer = 0;
     }
-    else if(!this->framebuffer) {
-        const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
-        SbVec2s size = vp.getViewportSizePixels();
 
-        static_cast<QGLWidget*>(this->viewport())->makeCurrent();
-        this->framebuffer = new QGLFramebufferObject(size[0],size[1],QGLFramebufferObject::Depth);
-        renderToFramebuffer(this->framebuffer);
+    switch (type) {
+    case Native:
+        break;
+    case Framebuffer:
+        if (!framebuffer) {
+            const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+            SbVec2s size = vp.getViewportSizePixels();
+
+            QGLWidget* gl = static_cast<QGLWidget*>(this->viewport());
+            gl->makeCurrent();
+            framebuffer = new QGLFramebufferObject(size[0],size[1],QGLFramebufferObject::Depth);
+            renderToFramebuffer(framebuffer);
+        }
+        break;
+    case Image:
+        {
+            const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+            SbVec2s size = vp.getViewportSizePixels();
+
+            QGLWidget* gl = static_cast<QGLWidget*>(this->viewport());
+            gl->makeCurrent();
+            int w = gl->width();
+            int h = gl->height();
+            QImage img(QSize(w,h), QImage::Format_RGB32);
+            glReadPixels(0, 0, w, h, GL_RGBA, GL_UNSIGNED_BYTE, img.bits());
+            glImage = img;
+        }
+        break;
     }
-}
-
-SbBool View3DInventorViewer::isRenderFramebuffer() const
-{
-    return this->framebuffer != 0;
 }
 
 void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
@@ -1240,10 +1260,17 @@ void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
 
 void View3DInventorViewer::actualRedraw()
 {
-    if(this->framebuffer)
-        renderFramebuffer();
-    else
+    switch (renderType) {
+    case Native:
         renderScene();
+        break;
+    case Framebuffer:
+        renderFramebuffer();
+        break;
+    case Image:
+        renderGLImage();
+        break;
+    }
 }
 
 void View3DInventorViewer::renderFramebuffer()
@@ -1278,7 +1305,33 @@ void View3DInventorViewer::renderFramebuffer()
     printDimension();
     navigation->redraw();
 
-    for(std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
+    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
+        (*it)->paintGL();
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+}
+
+void View3DInventorViewer::renderGLImage()
+{
+    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    SbVec2s size = vp.getViewportSizePixels();
+
+    glDisable(GL_LIGHTING);
+    glViewport(0, 0, size[0], size[1]);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glDisable(GL_DEPTH_TEST);
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawPixels(glImage.width(),glImage.height(),GL_RGBA,GL_UNSIGNED_BYTE,glImage.bits());
+
+    printDimension();
+    navigation->redraw();
+
+    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
         (*it)->paintGL();
 
     glEnable(GL_LIGHTING);
@@ -1342,7 +1395,7 @@ void View3DInventorViewer::renderScene(void)
     // Render overlay front scenegraph.
     glra->apply(this->foregroundroot);
 
-    if(this->axiscrossEnabled) {
+    if (this->axiscrossEnabled) {
         this->drawAxisCross();
     }
 
@@ -1352,7 +1405,7 @@ void View3DInventorViewer::renderScene(void)
 #endif
 
     // Immediately reschedule to get continous spin animation.
-    if(this->isAnimating()) {
+    if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
     }
 
@@ -1364,7 +1417,7 @@ void View3DInventorViewer::renderScene(void)
     printDimension();
     navigation->redraw();
 
-    for(std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
+    for (std::list<GLGraphicsItem*>::iterator it = this->graphicsItems.begin(); it != this->graphicsItems.end(); ++it)
         (*it)->paintGL();
     
     //fps rendering
@@ -2638,66 +2691,6 @@ void View3DInventorViewer::turnDeltaDimensionsOn()
 void View3DInventorViewer::turnDeltaDimensionsOff()
 {
     static_cast<SoSwitch*>(dimensionRoot->getChild(1))->whichChild = SO_SWITCH_NONE;
-}
-
-void View3DInventorViewer::setAntiAliasingMode(View3DInventorViewer::AntiAliasing mode)
-{
-    int buffers = 1;
-    SbBool smoothing = false;
-
-    switch(mode) {
-    case Smoothing:
-        smoothing = true;
-        break;
-
-    case MSAA2x:
-        buffers = 2;
-        break;
-
-    case MSAA4x:
-        buffers = 4;
-        break;
-
-    case MSAA8x:
-        buffers = 8;
-        break;
-
-    case None:
-    default:
-        break;
-    };
-
-    if (getSoRenderManager()->getGLRenderAction()->isSmoothing() != smoothing)
-        getSoRenderManager()->getGLRenderAction()->setSmoothing(smoothing);
-
-    if (static_cast<QGLWidget*>(this->viewport())->format().samples() != buffers)
-        Base::Console().Message("To change multisampling settings please close and open the 3d view again\n");
-
-}
-
-View3DInventorViewer::AntiAliasing View3DInventorViewer::getAntiAliasingMode() const
-{
-    if(getSoRenderManager()->getGLRenderAction()->isSmoothing())
-        return Smoothing;
-
-    int buffers = static_cast<QGLWidget*>(this->viewport())->format().samples();
-
-    switch(buffers) {
-    case 1:
-        return None;
-
-    case 2:
-        return MSAA2x;
-
-    case 4:
-        return MSAA4x;
-
-    case 8:
-        return MSAA8x;
-
-    default:
-        return None;
-    };
 }
 
 PyObject *View3DInventorViewer::getPyObject(void)

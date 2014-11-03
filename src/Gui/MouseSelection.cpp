@@ -55,8 +55,6 @@ void AbstractMouseSelection::grabMouseModel(Gui::View3DInventorViewer* viewer)
 {
     _pcView3D = viewer;
     m_cPrevCursor = _pcView3D->getWidget()->cursor();
-    m_antiAliasing = (int)_pcView3D->getAntiAliasingMode();
-    _pcView3D->setAntiAliasingMode(View3DInventorViewer::None);
 
     // do initialization of your mousemodel
     initialize();
@@ -64,12 +62,11 @@ void AbstractMouseSelection::grabMouseModel(Gui::View3DInventorViewer* viewer)
 
 void AbstractMouseSelection::releaseMouseModel()
 {
-    if(_pcView3D) {
+    if (_pcView3D) {
         // do termination of your mousemodel
         terminate();
 
         _pcView3D->getWidget()->setCursor(m_cPrevCursor);
-        _pcView3D->setAntiAliasingMode(View3DInventorViewer::AntiAliasing(m_antiAliasing));
         _pcView3D = 0;
     }
 }
@@ -95,11 +92,11 @@ int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewpor
     loc.getValue(x,y);
     y = h-y; // the origin is at the left bottom corner (instead of left top corner)
 
-    if(ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
+    if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
         const SoMouseButtonEvent* const event = (const SoMouseButtonEvent*) ev;
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
 
-        if(press) {
+        if (press) {
             _clPoly.push_back(ev->getPosition());
             ret = mouseButtonEvent(static_cast<const SoMouseButtonEvent*>(ev), QPoint(x,y));
         }
@@ -107,14 +104,14 @@ int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewpor
             ret = mouseButtonEvent(static_cast<const SoMouseButtonEvent*>(ev), QPoint(x,y));
         }
     }
-    else if(ev->getTypeId().isDerivedFrom(SoLocation2Event::getClassTypeId())) {
+    else if (ev->getTypeId().isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         ret = locationEvent(static_cast<const SoLocation2Event*>(ev), QPoint(x,y));
     }
-    else if(ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
+    else if (ev->getTypeId().isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
         ret = keyboardEvent(static_cast<const SoKeyboardEvent*>(ev));
     }
 
-    if(ret == Restart)
+    if (ret == Restart)
         _clPoly.clear();
 
     return ret;
@@ -264,14 +261,14 @@ void PolyPickerSelection::initialize()
     polyline.setColor(0.0,0.0,1.0,1.0);
     
     _pcView3D->addGraphicsItem(&polyline);
-    _pcView3D->setRenderFramebuffer(true);
+    _pcView3D->setRenderType(View3DInventorViewer::Framebuffer);
     _pcView3D->redraw();
 }
 
 void PolyPickerSelection::terminate()
 {
     _pcView3D->removeGraphicsItem(&polyline);
-    _pcView3D->setRenderFramebuffer(false);
+    _pcView3D->setRenderType(View3DInventorViewer::Native);
     _pcView3D->redraw();
 }
 
@@ -296,9 +293,9 @@ int PolyPickerSelection::popupMenu()
 
     QAction* id = menu.exec(QCursor::pos());
 
-    if(id == fi)
+    if (id == fi)
         return Finish;
-    else if(id == ca)
+    else if (id == ca)
         return Cancel;
     else
         return Restart;
@@ -314,7 +311,7 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
         {
         case SoMouseButtonEvent::BUTTON1:
         {
-            if(!polyline.isWorking()) {
+            if (!polyline.isWorking()) {
                 polyline.setWorking(true);
                 polyline.clear();
             };
@@ -352,10 +349,10 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
             // an inconsistent state.
             int id = popupMenu();
 
-            if(id == Finish || id == Cancel) {
+            if (id == Finish || id == Cancel) {
                 releaseMouseModel();
             }
-            else if(id == Restart) {
+            else if (id == Restart) {
                 _pcView3D->getWidget()->setCursor(cur);
             }
 
@@ -378,21 +375,21 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const e, const QP
     // do all the drawing stuff for us
     QPoint clPoint = pos;
 
-    if(polyline.isWorking()) {
+    if (polyline.isWorking()) {
         // check the position
         QRect r = _pcView3D->getGLWidget()->rect();
 
-        if(!r.contains(clPoint)) {
-            if(clPoint.x() < r.left())
+        if (!r.contains(clPoint)) {
+            if (clPoint.x() < r.left())
                 clPoint.setX(r.left());
 
-            if(clPoint.x() > r.right())
+            if (clPoint.x() > r.right())
                 clPoint.setX(r.right());
 
-            if(clPoint.y() < r.top())
+            if (clPoint.y() < r.top())
                 clPoint.setY(r.top());
 
-            if(clPoint.y() > r.bottom())
+            if (clPoint.y() > r.bottom())
                 clPoint.setY(r.bottom());
 
 #ifdef FC_OS_WINDOWS
@@ -432,22 +429,22 @@ int PolyClipSelection::popupMenu()
     QAction* co = menu.addAction(QObject::tr("Outer"));
     QAction* ca = menu.addAction(QObject::tr("Cancel"));
 
-    if(getPositions().size() < 3) {
+    if (getPositions().size() < 3) {
         ci->setEnabled(false);
         co->setEnabled(false);
     }
 
     QAction* id = menu.exec(QCursor::pos());
 
-    if(id == ci) {
+    if (id == ci) {
         m_bInner = true;
         return Finish;
     }
-    else if(id == co) {
+    else if (id == co) {
         m_bInner = false;
         return Finish;
     }
-    else if(id == ca)
+    else if (id == ca)
         return Cancel;
     else
         return Restart;
@@ -492,9 +489,9 @@ int BrushSelection::popupMenu()
 
     QAction* id = menu.exec(QCursor::pos());
 
-    if(id == fi)
+    if (id == fi)
         return Finish;
-    else if(id == ca)
+    else if (id == ca)
         return Cancel;
     else
         return Restart;
@@ -505,28 +502,28 @@ int BrushSelection::locationEvent(const SoLocation2Event* const e, const QPoint&
     // do all the drawing stuff for us
     QPoint clPoint = pos;
 
-    if(polyline.isWorking()) {
+    if (polyline.isWorking()) {
         // check the position
         QRect r = _pcView3D->getGLWidget()->rect();
 
-        if(!r.contains(clPoint)) {
-            if(clPoint.x() < r.left())
+        if (!r.contains(clPoint)) {
+            if (clPoint.x() < r.left())
                 clPoint.setX(r.left());
 
-            if(clPoint.x() > r.right())
+            if (clPoint.x() > r.right())
                 clPoint.setX(r.right());
 
-            if(clPoint.y() < r.top())
+            if (clPoint.y() < r.top())
                 clPoint.setY(r.top());
 
-            if(clPoint.y() > r.bottom())
+            if (clPoint.y() > r.bottom())
                 clPoint.setY(r.bottom());
         }
 
         SbVec2s last = _clPoly.back();
         SbVec2s curr = e->getPosition();
 
-        if(abs(last[0]-curr[0]) > 20 || abs(last[1]-curr[1]) > 20)
+        if (abs(last[0]-curr[0]) > 20 || abs(last[1]-curr[1]) > 20)
             _clPoly.push_back(curr);
 
         polyline.addNode(clPoint);
@@ -570,7 +567,7 @@ void RubberbandSelection::initialize()
     rubberband.setColor(1.0, 1.0, 0.0, 0.5);
     _pcView3D->addGraphicsItem(&rubberband);
     if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
-        _pcView3D->setRenderFramebuffer(true);
+        _pcView3D->setRenderType(View3DInventorViewer::Image);
     }
     _pcView3D->redraw();
 }
@@ -579,7 +576,7 @@ void RubberbandSelection::terminate()
 {
     _pcView3D->removeGraphicsItem(&rubberband);
     if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
-        _pcView3D->setRenderFramebuffer(false);
+        _pcView3D->setRenderType(View3DInventorViewer::Native);
     }
     _pcView3D->redraw();
 }
@@ -596,7 +593,7 @@ int RubberbandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
 
     int ret = Continue;
 
-    if(press) {
+    if (press) {
         switch(button)
         {
         case SoMouseButtonEvent::BUTTON1:

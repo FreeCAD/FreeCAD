@@ -340,7 +340,7 @@ Rubberband(Gui::View3DInventorViewer* v) :view(v)
     rubberBandCorner1.setY(200);
     rubberBandCorner2.setX(800);
     rubberBandCorner2.setY(600);
-    v->setRenderFramebuffer(true);
+    v->setRenderType(Gui::View3DInventorViewer::Image);
     v->getSoRenderManager()->scheduleRedraw();
 }
 
