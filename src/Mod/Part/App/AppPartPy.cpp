@@ -1377,6 +1377,7 @@ static PyObject * makeLoft(PyObject *self, PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
+    PY_CATCH;
 #endif
 }
 
@@ -1563,38 +1564,41 @@ static PyObject * getSortedClusters(PyObject *self, PyObject *args)
         return 0;
     }
 
-    Py::Sequence list(obj);
-    std::vector<TopoDS_Edge> edges;
-    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-        PyObject* item = (*it).ptr();
-        if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-            const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->_Shape;
-            if (sh.ShapeType() == TopAbs_EDGE)
-                edges.push_back(TopoDS::Edge(sh));
+    PY_TRY {
+        Py::Sequence list(obj);
+        std::vector<TopoDS_Edge> edges;
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            PyObject* item = (*it).ptr();
+            if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->_Shape;
+                if (sh.ShapeType() == TopAbs_EDGE)
+                    edges.push_back(TopoDS::Edge(sh));
+                else {
+                    PyErr_SetString(PyExc_TypeError, "shape is not an edge");
+                    return 0;
+                }
+            }
             else {
-                PyErr_SetString(PyExc_TypeError, "shape is not an edge");
+                PyErr_SetString(PyExc_TypeError, "item is not a shape");
                 return 0;
             }
         }
-        else {
-            PyErr_SetString(PyExc_TypeError, "item is not a shape");
-            return 0;
+
+        Edgecluster acluster(edges);
+        tEdgeClusterVector aclusteroutput = acluster.GetClusters();
+
+        Py::List root_list;
+        for (tEdgeClusterVector::iterator it=aclusteroutput.begin(); it != aclusteroutput.end();++it) {
+            Py::List add_list;
+            for (tEdgeVector::iterator it1=(*it).begin();it1 != (*it).end();++it1) {
+                add_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it1)),true));
+            }
+            root_list.append(add_list);
         }
+
+        return Py::new_reference_to(root_list);
     }
-
-    Edgecluster acluster(edges);
-    tEdgeClusterVector aclusteroutput = acluster.GetClusters();
-
-    Py::List root_list;
-    for (tEdgeClusterVector::iterator it=aclusteroutput.begin(); it != aclusteroutput.end();++it) {
-        Py::List add_list;
-        for (tEdgeVector::iterator it1=(*it).begin();it1 != (*it).end();++it1) {
-            add_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(*it1)),true));
-        }
-        root_list.append(add_list);
-    }
-
-    return Py::new_reference_to(root_list);
+    PY_CATCH_OCC;
 }
 
 
@@ -1607,26 +1611,26 @@ static PyObject * sortEdges(PyObject *self, PyObject *args)
     }
 
 
-    Py::Sequence list(obj);
-    std::vector<TopoDS_Edge> edges;
-    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-        PyObject* item = (*it).ptr();
-        if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-            const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->_Shape;
-            if (sh.ShapeType() == TopAbs_EDGE)
-                edges.push_back(TopoDS::Edge(sh));
+    PY_TRY {
+        Py::Sequence list(obj);
+        std::vector<TopoDS_Edge> edges;
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            PyObject* item = (*it).ptr();
+            if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->_Shape;
+                if (sh.ShapeType() == TopAbs_EDGE)
+                    edges.push_back(TopoDS::Edge(sh));
+                else {
+                    PyErr_SetString(PyExc_TypeError, "shape is not an edge");
+                    return 0;
+                }
+            }
             else {
-                PyErr_SetString(PyExc_TypeError, "shape is not an edge");
+                PyErr_SetString(PyExc_TypeError, "item is not a shape");
                 return 0;
             }
         }
-        else {
-            PyErr_SetString(PyExc_TypeError, "item is not a shape");
-            return 0;
-        }
-    }
 
-    try {
         std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
 
         Py::List sorted_list;
@@ -1641,6 +1645,7 @@ static PyObject * sortEdges(PyObject *self, PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
+    PY_CATCH;
 }
 
 static PyObject * cast_to_shape(PyObject *self, PyObject *args)

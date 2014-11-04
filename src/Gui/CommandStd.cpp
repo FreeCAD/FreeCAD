@@ -55,7 +55,6 @@
 #include "DlgPreferencesImp.h"
 #include "DlgCustomizeImp.h"
 #include "Widgets.h"
-#include "NetworkRetriever.h"
 #include "OnlineDocumentation.h"
 #include "GuiConsole.h"
 #include "WorkbenchManager.h"
