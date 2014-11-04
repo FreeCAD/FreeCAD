@@ -255,6 +255,9 @@ float PlaneFit::Fit()
 
     if (nSize > 3)
         sigma = sqrt(sigma/(nSize-3));
+    else
+        sigma = 0;
+
     _fLastResult = sigma;
     return _fLastResult;
 }
