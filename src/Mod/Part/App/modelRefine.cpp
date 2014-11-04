@@ -29,8 +29,11 @@
 #include <Geom_Plane.hxx>
 #include <Geom_CylindricalSurface.hxx>
 #include <gp_Ax3.hxx>
+#include <Geom_BSplineSurface.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Cylinder.hxx>
+#include <TColgp_Array2OfPnt.hxx>
+#include <TColStd_Array1OfReal.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS.hxx>
@@ -753,6 +756,162 @@ void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &ma
 }
 #endif
 
+FaceTypedBSpline::FaceTypedBSpline() : FaceTypedBase(GeomAbs_BSplineSurface)
+{
+}
+
+bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
+{
+    Handle(Geom_BSplineSurface) surfaceOne = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceOne));
+    Handle(Geom_BSplineSurface) surfaceTwo = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceTwo));
+
+    if (surfaceOne.IsNull() || surfaceTwo.IsNull())
+        return false;
+
+    if (surfaceOne->IsURational() != surfaceTwo->IsURational()) return false;
+    if (surfaceTwo->IsVRational() != surfaceTwo->IsVRational()) return false;
+    if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic()) return false;
+    if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic()) return false;
+    if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed()) return false;
+    if (surfaceOne->IsVClosed() != surfaceTwo->IsVClosed()) return false;
+    if (surfaceOne->UDegree() != surfaceTwo->UDegree()) return false;
+    if (surfaceOne->VDegree() != surfaceTwo->VDegree()) return false;
+
+    //pole test
+    int uPoleCountOne(surfaceOne->NbUPoles());
+    int vPoleCountOne(surfaceOne->NbVPoles());
+    int uPoleCountTwo(surfaceTwo->NbUPoles());
+    int vPoleCountTwo(surfaceTwo->NbVPoles());
+
+    if (uPoleCountOne != uPoleCountTwo || vPoleCountOne != vPoleCountTwo)
+        return false;
+
+    TColgp_Array2OfPnt polesOne(1, uPoleCountOne, 1, vPoleCountOne);
+    TColgp_Array2OfPnt polesTwo(1, uPoleCountTwo, 1, vPoleCountTwo);
+    surfaceOne->Poles(polesOne);
+    surfaceTwo->Poles(polesTwo);
+
+    for (int indexU = 1; indexU <= uPoleCountOne; ++indexU)
+    {
+        for (int indexV = 1; indexV <= vPoleCountOne; ++indexV)
+        {
+            if (!(polesOne.Value(indexU, indexV).IsEqual(polesTwo.Value(indexU, indexV), Precision::Confusion())))
+                return false;
+        }
+    }
+
+    //knot test
+    int uKnotCountOne(surfaceOne->NbUKnots());
+    int vKnotCountOne(surfaceOne->NbVKnots());
+    int uKnotCountTwo(surfaceTwo->NbUKnots());
+    int vKnotCountTwo(surfaceTwo->NbVKnots());
+    if (uKnotCountOne != uKnotCountTwo || vKnotCountOne != vKnotCountTwo)
+        return false;
+    TColStd_Array1OfReal uKnotsOne(1, uKnotCountOne);
+    TColStd_Array1OfReal vKnotsOne(1, vKnotCountOne);
+    TColStd_Array1OfReal uKnotsTwo(1, uKnotCountTwo);
+    TColStd_Array1OfReal vKnotsTwo(1, vKnotCountTwo);
+    surfaceOne->UKnots(uKnotsOne);
+    surfaceOne->VKnots(vKnotsOne);
+    surfaceTwo->UKnots(uKnotsTwo);
+    surfaceTwo->VKnots(vKnotsTwo);
+    for (int indexU = 1; indexU <= uKnotCountOne; ++indexU)
+        if (uKnotsOne.Value(indexU) != uKnotsTwo.Value(indexU))
+            return false;
+    for (int indexV = 1; indexV <= vKnotCountOne; ++indexV)
+        if (vKnotsOne.Value(indexV) != vKnotsTwo.Value(indexV))
+            return false;
+
+    //knot sequence.
+    int uKnotSequenceOneCount(uPoleCountOne + surfaceOne->UDegree() + 1);
+    int vKnotSequenceOneCount(vPoleCountOne + surfaceOne->VDegree() + 1);
+    int uKnotSequenceTwoCount(uPoleCountTwo + surfaceTwo->UDegree() + 1);
+    int vKnotSequenceTwoCount(vPoleCountTwo + surfaceTwo->VDegree() + 1);
+    if (uKnotSequenceOneCount != uKnotSequenceTwoCount || vKnotSequenceOneCount != vKnotSequenceTwoCount)
+        return false;
+    TColStd_Array1OfReal uKnotSequenceOne(1, uKnotSequenceOneCount);
+    TColStd_Array1OfReal vKnotSequenceOne(1, vKnotSequenceOneCount);
+    TColStd_Array1OfReal uKnotSequenceTwo(1, uKnotSequenceTwoCount);
+    TColStd_Array1OfReal vKnotSequenceTwo(1, vKnotSequenceTwoCount);
+    surfaceOne->UKnotSequence(uKnotSequenceOne);
+    surfaceOne->VKnotSequence(vKnotSequenceOne);
+    surfaceTwo->UKnotSequence(uKnotSequenceTwo);
+    surfaceTwo->VKnotSequence(vKnotSequenceTwo);
+    for (int indexU = 1; indexU <= uKnotSequenceOneCount; ++indexU)
+        if (uKnotSequenceOne.Value(indexU) != uKnotSequenceTwo.Value(indexU))
+            return false;
+    for (int indexV = 1; indexV <= vKnotSequenceOneCount; ++indexV)
+        if (vKnotSequenceOne.Value(indexV) != vKnotSequenceTwo.Value(indexV))
+            return false;
+    return true;
+}
+
+GeomAbs_SurfaceType FaceTypedBSpline::getType() const
+{
+    return GeomAbs_BSplineSurface;
+}
+
+TopoDS_Face FaceTypedBSpline::buildFace(const FaceVectorType &faces) const
+{
+    std::vector<TopoDS_Wire> wires;
+
+    std::vector<EdgeVectorType> splitEdges;
+    this->boundarySplit(faces, splitEdges);
+    if (splitEdges.empty())
+        return TopoDS_Face();
+    std::vector<EdgeVectorType>::iterator splitIt;
+    for (splitIt = splitEdges.begin(); splitIt != splitEdges.end(); ++splitIt)
+    {
+        BRepLib_MakeWire wireMaker;
+        EdgeVectorType::iterator it;
+        for (it = (*splitIt).begin(); it != (*splitIt).end(); ++it)
+            wireMaker.Add(*it);
+        TopoDS_Wire currentWire = wireMaker.Wire();
+        wires.push_back(currentWire);
+    }
+
+    std::sort(wires.begin(), wires.end(), ModelRefine::WireSort());
+
+    //make face from surface and outer wire.
+    Handle(Geom_BSplineSurface) surface = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faces.at(0)));
+    if (!surface)
+        return TopoDS_Face();
+    std::vector<TopoDS_Wire>::iterator wireIt;
+    wireIt = wires.begin();
+    BRepBuilderAPI_MakeFace faceMaker(surface, *wireIt);
+    if (!faceMaker.IsDone())
+        return TopoDS_Face();
+
+    //add additional boundaries.
+    for (wireIt++; wireIt != wires.end(); ++wireIt)
+    {
+        faceMaker.Add(*wireIt);
+        if (!faceMaker.IsDone())
+            return TopoDS_Face();
+    }
+
+    //fix newly constructed face. Orientation doesn't seem to get fixed the first call.
+    ShapeFix_Face faceFixer(faceMaker.Face());
+    faceFixer.SetContext(new ShapeBuild_ReShape());
+    faceFixer.Perform();
+    if (faceFixer.Status(ShapeExtend_FAIL))
+        return TopoDS_Face();
+    faceFixer.FixOrientation();
+    faceFixer.Perform();
+    if (faceFixer.Status(ShapeExtend_FAIL))
+        return TopoDS_Face();
+
+    return faceFixer.Face();
+}
+
+FaceTypedBSpline& ModelRefine::getBSplineObject()
+{
+    static FaceTypedBSpline object;
+    return object;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 FaceUniter::FaceUniter(const TopoDS_Shell &shellIn) : modifiedSignal(false)
 {
     workShell = shellIn;
@@ -766,6 +925,7 @@ bool FaceUniter::process()
     deletedShapes.clear();
     typeObjects.push_back(&getPlaneObject());
     typeObjects.push_back(&getCylinderObject());
+    typeObjects.push_back(&getBSplineObject());
     //add more face types.
 
     ModelRefine::FaceTypeSplitter splitter;
