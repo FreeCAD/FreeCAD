@@ -261,7 +261,7 @@ void PolyPickerSelection::initialize()
     polyline.setColor(0.0,0.0,1.0,1.0);
     
     _pcView3D->addGraphicsItem(&polyline);
-    _pcView3D->setRenderType(View3DInventorViewer::Framebuffer);
+    _pcView3D->setRenderType(View3DInventorViewer::Image);
     _pcView3D->redraw();
 }
 

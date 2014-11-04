@@ -261,8 +261,10 @@ void Rubberband::paintGL()
     SbVec2s size = vp.getViewportSizePixels();
 
     glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
     glOrtho(0, size[0], size[1], 0, 0, 100);
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -372,8 +374,10 @@ void Polyline::paintGL()
     SbVec2s size = vp.getViewportSizePixels();
 
     glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
     glOrtho(0, size[0], size[1], 0, 0, 100);
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     glDisable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
