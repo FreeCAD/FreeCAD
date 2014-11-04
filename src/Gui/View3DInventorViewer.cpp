@@ -1321,11 +1321,14 @@ void View3DInventorViewer::renderGLImage()
     glViewport(0, 0, size[0], size[1]);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
+    glOrtho(0, size[0], 0, size[1], 0, 100);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glDisable(GL_DEPTH_TEST);
 
+    glDisable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    glRasterPos2f(0,0);
     glDrawPixels(glImage.width(),glImage.height(),GL_RGBA,GL_UNSIGNED_BYTE,glImage.bits());
 
     printDimension();
@@ -1359,6 +1362,7 @@ void View3DInventorViewer::renderScene(void)
     const QColor col = this->backgroundColor();
     glClearColor(col.redF(), col.greenF(), col.blueF(), 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
 
 #if defined(ENABLE_GL_DEPTH_RANGE)
     // using 90% of the z-buffer for the background and the main node
