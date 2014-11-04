@@ -95,6 +95,18 @@ namespace ModelRefine
     };
     FaceTypedCylinder& getCylinderObject();
 
+    class FaceTypedBSpline : public FaceTypedBase
+    {
+    private:
+        FaceTypedBSpline();
+    public:
+        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
+        virtual GeomAbs_SurfaceType getType() const;
+        virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
+        friend FaceTypedBSpline& getBSplineObject();
+    };
+    FaceTypedBSpline& getBSplineObject();
+
     class FaceTypeSplitter
     {
         typedef std::map<GeomAbs_SurfaceType, FaceVectorType> SplitMapType;
