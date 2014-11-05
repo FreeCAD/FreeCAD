@@ -42,7 +42,7 @@ MACRO(PYSIDE_WRAP_UI outfiles)
   FOREACH(it ${ARGN})
     GET_FILENAME_COMPONENT(outfile ${it} NAME_WE)
     GET_FILENAME_COMPONENT(infile ${it} ABSOLUTE)
-    SET(outfile ${CMAKE_CURRENT_SOURCE_DIR}/ui_${outfile}.py)
+    SET(outfile ${CMAKE_CURRENT_BINARY_DIR}/ui_${outfile}.py)
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
@@ -58,7 +58,7 @@ MACRO(PYSIDE_WRAP_RC outfiles)
   FOREACH(it ${ARGN})
     GET_FILENAME_COMPONENT(outfile ${it} NAME_WE)
     GET_FILENAME_COMPONENT(infile ${it} ABSOLUTE)
-    SET(outfile ${CMAKE_CURRENT_SOURCE_DIR}/${outfile}_rc.py)
+    SET(outfile ${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py)
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
