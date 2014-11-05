@@ -1026,6 +1026,7 @@ bool FaceUniter::process()
         collectConicEdges(workShell, map);
         edgeFuse.AvoidEdges(map);
 #endif
+        edgeFuse.Perform();
         TopTools_DataMapOfShapeShape affectedFaces;
         edgeFuse.Faces(affectedFaces);
         TopTools_DataMapIteratorOfDataMapOfShapeShape mapIt;
