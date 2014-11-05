@@ -1614,9 +1614,6 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
     gp_Dir2d aDir(2. * M_PI, pitch);
     Standard_Real coneDir = 1.0;
     if (leftHanded) {
-        //aPnt.SetCoord(0.0, height);
-        //aDir.SetCoord(2.0 * PI, -pitch);
-        aPnt.SetCoord(2. * M_PI, 0.0);
         aDir.SetCoord(-2. * M_PI, pitch);
         coneDir = -1.0;
     }
@@ -1685,7 +1682,6 @@ TopoDS_Shape TopoShape::makeLongHelix(Standard_Real pitch, Standard_Real height,
     gp_Dir2d aDir(2. * M_PI, pitch);
     Standard_Real coneDir = 1.0;
     if (leftHanded) {
-        aPnt.SetCoord(2. * M_PI, 0.0);
         aDir.SetCoord(-2. * M_PI, pitch);
         coneDir = -1.0;
     }
