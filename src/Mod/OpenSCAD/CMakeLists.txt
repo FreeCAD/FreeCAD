@@ -1,7 +1,9 @@
+PYSIDE_WRAP_RC(OpenSCAD_QRC_SRCS Resources/OpenSCAD.qrc)
+
 SET(OpenSCAD_SRCS
+        ${OpenSCAD_QRC_SRCS}
         Init.py
         InitGui.py
-        OpenSCAD_rc.py
         OpenSCAD2Dgeom.py
         OpenSCADFeatures.py
         OpenSCADUtils.py
