@@ -241,7 +241,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
             parent->replaceChild(node, newcamera);
         }
     }
-};
+}
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertOrtho2Perspective(const SoOrthographicCamera* in,
         SoPerspectiveCamera* out)
@@ -265,7 +265,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertOrtho2Perspective(const So
 
     // 45° is the default value of this field in SoPerspectiveCamera.
     out->heightAngle = (float)(M_PI / 4.0);
-};
+}
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertPerspective2Ortho(const SoPerspectiveCamera* in,
         SoOrthographicCamera* out)
@@ -279,7 +279,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertPerspective2Ortho(const So
     float focaldist = in->focalDistance.getValue();
 
     out->height = 2.0f * focaldist * (float)tan(in->heightAngle.getValue() / 2.0);
-};
+}
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
 {
@@ -628,7 +628,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::moveCameraScreen(const SbVec2f& s
     // Reposition camera according to the vector difference between the
     // projected points.
     cam->position = cam->position.getValue() - (current_planept - old_planept);
-};
+}
 
 bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::processSoEvent(const SoEvent* event) {
 
@@ -660,8 +660,7 @@ bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::processSoEvent(const SoEvent* eve
                 break;
             }
         }
-
-        return SIM::Coin3D::Quarter::QuarterWidget::processSoEvent(event);
     }
-};
 
+    return SIM::Coin3D::Quarter::QuarterWidget::processSoEvent(event);
+}
