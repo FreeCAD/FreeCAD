@@ -38,6 +38,7 @@
 # include <Inventor/actions/SoHandleEventAction.h>
 # include <Inventor/actions/SoToVRML2Action.h>
 # include <Inventor/actions/SoWriteAction.h>
+# include <Inventor/elements/SoViewportRegionElement.h>
 # include <Inventor/manips/SoClipPlaneManip.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoCallback.h>
@@ -631,9 +632,20 @@ void View3DInventorViewer::updateOverrideMode(const std::string& mode)
     overrideMode = mode;
 }
 
+void setViewportRegionCB(void* userdata, SoAction* action)
+{
+    // Make sure to override the value set inside SoOffscreenRenderer::render()
+    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
+        SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
+        const SbViewportRegion& vp = renderer.getViewportRegion();
+        SoViewportRegionElement::set(action->getState(), vp);
+        static_cast<SoGLRenderAction*>(action)->setViewportRegion(vp);
+    }
+}
+
 void View3DInventorViewer::clearBuffer(void* userdata, SoAction* action)
 {
-    if(action->isOfType(SoGLRenderAction::getClassTypeId())) {
+    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
         // do stuff specific for GL rendering here.
         glClear(GL_DEPTH_BUFFER_BIT);
     }
@@ -644,7 +656,7 @@ void View3DInventorViewer::setGLWidget(void* userdata, SoAction* action)
     //FIXME: This causes the Coin error message:
     // Coin error in SoNode::GLRenderS(): GL error: 'GL_STACK_UNDERFLOW', nodetype:
     // Separator (set envvar COIN_GLERROR_DEBUGGING=1 and re-run to get more information)
-    if(action->isOfType(SoGLRenderAction::getClassTypeId())) {
+    if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
         QWidget* gl = reinterpret_cast<QWidget*>(userdata);
         SoGLWidgetElement::set(action->getState(), qobject_cast<QGLWidget*>(gl));
     }
@@ -790,7 +802,7 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
     bool useBackground = false;
     SbViewportRegion vp(getSoRenderManager()->getViewportRegion());
 
-    if(w>0 && h>0)
+    if (w>0 && h>0)
         vp.setWindowSize((short)w, (short)h);
 
     //NOTE: To support pixels per inch we must use SbViewportRegion::setPixelsPerInch( ppi );
@@ -802,9 +814,9 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
     SoCallback* cb = 0;
 
     // if we use transparency then we must not set a background color
-    switch(eBackgroundType) {
+    switch (eBackgroundType) {
     case Current:
-        if(backgroundroot->findChild(pcBackGround) == -1) {
+        if (backgroundroot->findChild(pcBackGround) == -1) {
             const QColor col = this->backgroundColor();
             renderer.setBackgroundColor(SbColor(col.redF(), col.greenF(), col.blueF()));
         }
@@ -813,7 +825,6 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
             cb = new SoCallback;
             cb->setCallback(clearBuffer);
         }
-
         break;
 
     case White:
@@ -837,10 +848,19 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
 
     SoCamera* camera = getSoRenderManager()->getCamera();
 
-    if(useBackground) {
+    if (useBackground) {
         root->addChild(backgroundroot);
         root->addChild(cb);
     }
+
+#if (COIN_MAJOR_VERSION >= 4)
+    // The behaviour in Coin4 has changed so that when using the same instance of 'SoFCOffscreenRenderer'
+    // multiple times internally the biggest viewport size is stored and set to the SoGLRenderAction.
+    // The trick is to add a callback node and override the viewport size with wath we want.
+    SoCallback* cbvp = new SoCallback;
+    cbvp->setCallback(setViewportRegionCB);
+    root->addChild(cbvp);
+#endif
 
     root->addChild(getHeadlight());
     root->addChild(camera);
@@ -849,20 +869,20 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
     root->addChild(gl);
     root->addChild(pcViewProviderRoot);
 
-    if(useBackground)
+    if (useBackground)
         root->addChild(cb);
 
     root->addChild(foregroundroot);
 
     try {
         // render the scene
-        if(!renderer.render(root))
+        if (!renderer.render(root))
             throw Base::Exception("Offscreen rendering failed");
 
         renderer.writeToImage(img);
         root->unref();
     }
-    catch(...) {
+    catch (...) {
         root->unref();
         throw; // re-throw exception
     }
