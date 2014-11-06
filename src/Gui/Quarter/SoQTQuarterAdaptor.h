@@ -89,9 +89,7 @@ public:
         QuarterWidget::setSceneGraph(root);
     };
     
-    virtual bool processSoEvent(const SoEvent* event) {
-        return QuarterWidget::processSoEvent(event);
-    };
+    virtual bool processSoEvent(const SoEvent* event);
           
     //this functions still need to be ported
     virtual void afterRealizeHook(void) {}; //enables spacenav and joystick in soqt, dunno if this is needed
@@ -102,6 +100,7 @@ private:
     void convertOrtho2Perspective(const SoOrthographicCamera* in, SoPerspectiveCamera* out);
     void getCameraCoordinateSystem(SoCamera * camera, SoNode * root, SbMatrix & matrix, SbMatrix & inverse);
     static void seeksensorCB(void * data, SoSensor * s);
+    void moveCameraScreen(const SbVec2f & screenpos);
 
     bool m_viewingflag;
     int  m_interactionnesting;
