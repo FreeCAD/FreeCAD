@@ -12,12 +12,12 @@ Build-Depends: debhelper (>= 7.0.50~), cmake,
  libboost-regex-dev, libboost-serialization-dev, libboost-signals-dev,
  libboost-thread-dev, libboost-python-dev, python-dev, python-support,
  libqt4-dev, libxt-dev, libxext-dev, libxmu-dev, libxi-dev, libx11-dev,
- libcoin60-dev, libsoqt4-dev, libeigen3-dev,
- zlib1g-dev, libxerces-c2-dev, libopencascade-foundation-dev,
- libopencascade-modeling-dev, libopencascade-ocaf-dev, 
- libopencascade-visualization-dev, python-cxx-dev, libswscale-dev, 
+ libcoin80-dev, libsoqt4-dev, libeigen3-dev,
+ zlib1g-dev, libxerces-c-dev, liboce-foundation-dev,
+ liboce-modeling-dev, liboce-ocaf-dev, 
+ liboce-visualization-dev, python-cxx-dev, libswscale-dev, 
  libzipios++-dev, swig, gfortran, f2c, libqtwebkit-dev, libspnav-dev, libfreetype6-dev,
- libpyside-dev, libshiboken-dev
+ libpyside-dev, libshiboken-dev, pyside-tools
 Standards-Version: 3.9.1
 
 Package: freecad
@@ -62,7 +62,7 @@ Description: FreeCAD documentation
  .
  This package contains the FreeCAD documentation.
  .
- The documentation is provided in Qt's new help format;
+ The documentation is provided in Qt help format;
  the new help format version can be viewed in conjunction with the Qt Assistant
  found in the qt4-dev-tools package.
 
