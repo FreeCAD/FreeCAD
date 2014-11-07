@@ -368,6 +368,10 @@ if(FREECAD_LIBPACK_USE)
         MESSAGE("SWIG was not found, build no SWIG binding for pivy")
     ENDIF(NOT SWIG_FOUND)
 
+# -------------------------------- Shiboken/PySide ------------------------
+
+    find_package(PySideTools REQUIRED) # Pyside utilities (pyside-uic & pyside-rcc)
+
 else(FREECAD_LIBPACK_USE)
 
 # ================================================================================
