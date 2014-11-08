@@ -796,7 +796,7 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
     }
 }
 
-void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage& img) const
+void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& img) const
 {
     // if no valid color use the current background
     bool useBackground = false;
@@ -813,9 +813,8 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
     renderer.setViewportRegion(vp);
     SoCallback* cb = 0;
 
-    // if we use transparency then we must not set a background color
-    switch (eBackgroundType) {
-    case Current:
+    // for an invalid color use the viewer's current background color
+    if (!bg.isValid()) {
         if (backgroundroot->findChild(pcBackGround) == -1) {
             const QColor col = this->backgroundColor();
             renderer.setBackgroundColor(SbColor(col.redF(), col.greenF(), col.blueF()));
@@ -825,22 +824,9 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
             cb = new SoCallback;
             cb->setCallback(clearBufferCB);
         }
-        break;
-
-    case White:
-        renderer.setBackgroundColor(SbColor(1.0, 1.0, 1.0));
-        break;
-
-    case Black:
-        renderer.setBackgroundColor(SbColor(0.0, 0.0, 0.0));
-        break;
-
-    case Transparent:
-        renderer.setComponents(SoFCOffscreenRenderer::RGB_TRANSPARENCY);
-        break;
-
-    default:
-        break;
+    }
+    else {
+        renderer.setBackgroundColor(SbColor(bg.redF(), bg.greenF(), bg.blueF()));
     }
 
     SoSeparator* root = new SoSeparator;
@@ -888,29 +874,10 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
     }
 }
 
-void View3DInventorViewer::saveGraphic(int pagesize, int eBackgroundType, SoVectorizeAction* va) const
+void View3DInventorViewer::saveGraphic(int pagesize, const QColor& bgcolor, SoVectorizeAction* va) const
 {
-    const QColor col = this->backgroundColor();
-
-    switch(eBackgroundType) {
-    case Current:
-        va->setBackgroundColor(true, SbColor(col.redF(), col.greenF(), col.blueF()));
-        break;
-
-    case White:
-        va->setBackgroundColor(true, SbColor(1.0, 1.0, 1.0));
-        break;
-
-    case Black:
-        va->setBackgroundColor(true, SbColor(0.0, 0.0, 0.0));
-        break;
-
-    case Transparent:
-        break; // not supported
-
-    default:
-        break;
-    }
+    if (bgcolor.isValid())
+        va->setBackgroundColor(true, SbColor(bgcolor.redF(), bgcolor.greenF(), bgcolor.blueF()));
 
     float border = 10.0f;
     SbVec2s vpsize = this->getSoRenderManager()->getViewportRegion().getViewportSizePixels();
@@ -1069,9 +1036,9 @@ bool View3DInventorViewer::dumpToFile(const char* filename, bool binary) const
     Base::FileInfo fi(filename);
 
     // Write VRML V2.0
-    if(fi.hasExtension("wrl") || fi.hasExtension("vrml") || fi.hasExtension("wrz")) {
+    if (fi.hasExtension("wrl") || fi.hasExtension("vrml") || fi.hasExtension("wrz")) {
         // If 'wrz' is set then force compression
-        if(fi.hasExtension("wrz"))
+        if (fi.hasExtension("wrz"))
             binary = true;
 
         SoToVRML2Action tovrml2;
@@ -1081,7 +1048,7 @@ bool View3DInventorViewer::dumpToFile(const char* filename, bool binary) const
         std::string buffer = SoFCDB::writeNodesToString(vrmlRoot);
         vrmlRoot->unref(); // release the memory as soon as possible
 
-        if(binary) {
+        if (binary) {
             // We want to write compressed VRML but Coin 2.4.3 doesn't do it even though
             // SoOutput::getAvailableCompressionMethods() delivers a string list that
             // contains 'GZIP'. setCompression() was called directly after opening the file,
@@ -1091,7 +1058,7 @@ bool View3DInventorViewer::dumpToFile(const char* filename, bool binary) const
             Base::ofstream str(fi, std::ios::out | std::ios::binary);
             zipios::GZIPOutputStream gzip(str);
 
-            if(gzip) {
+            if (gzip) {
                 gzip << buffer;
                 gzip.close();
                 ret = true;
@@ -1107,11 +1074,12 @@ bool View3DInventorViewer::dumpToFile(const char* filename, bool binary) const
             }
         }
     }
-    else if(fi.hasExtension("idtf") || fi.hasExtension("svg")) {
-        int ps=4, t=2;
+    else if (fi.hasExtension("idtf") || fi.hasExtension("svg")) {
+        int ps=4;
+        QColor c = Qt::white;
         std::auto_ptr<SoVectorizeAction> vo;
 
-        if(fi.hasExtension("svg")) {
+        if (fi.hasExtension("svg")) {
             vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
         }
         else if(fi.hasExtension("idtf")) {
@@ -1123,13 +1091,13 @@ bool View3DInventorViewer::dumpToFile(const char* filename, bool binary) const
 
         SoVectorOutput* out = vo->getOutput();
 
-        if(!out || !out->openFile(filename)) {
+        if (!out || !out->openFile(filename)) {
             std::ostringstream a_out;
             a_out << "Cannot open file '" << filename << "'";
             throw Base::Exception(a_out.str());
         }
 
-        saveGraphic(ps,t,vo.get());
+        saveGraphic(ps,c,vo.get());
         out->closeFile();
     }
     else {
@@ -1137,7 +1105,7 @@ bool View3DInventorViewer::dumpToFile(const char* filename, bool binary) const
         std::string buffer = SoFCDB::writeNodesToString(pcViewProviderRoot);
         Base::ofstream str(Base::FileInfo(filename), std::ios::out);
 
-        if(str) {
+        if (str) {
             str << buffer;
             str.close();
             ret = true;

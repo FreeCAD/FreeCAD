@@ -76,13 +76,6 @@ class GuiExport View3DInventorViewer : public Quarter::SoQTQuarterAdaptor, publi
     typedef Quarter::SoQTQuarterAdaptor inherited;
     
 public:
-    /// Background modes for the savePicture() method
-    enum eBackgroundType { 
-        Current     = 0,  /**< Use the current viewer Background */
-        Black       = 1,  /**< Black background */
-        White       = 2,  /**< White background  */ 
-        Transparent = 3,  /**< Transparent background  */
-    };
     /// Pick modes for picking points in the scene
     enum SelectionMode {
         Lasso       = 0,  /**< Select objects using a lasso. */
@@ -204,8 +197,8 @@ public:
      * Creates an image with width \a w and height \a h of the current scene graph
      * and exports the rendered scenegraph to an image.
      */
-    void savePicture(int w, int h, int eBackgroundType, QImage&) const;
-    void saveGraphic(int pagesize, int eBackgroundType, SoVectorizeAction* va) const;
+    void savePicture(int w, int h, const QColor&, QImage&) const;
+    void saveGraphic(int pagesize, const QColor&, SoVectorizeAction* va) const;
     //@}
     /**
      * Writes the current scenegraph to an Inventor file, either in ascii or binary. 
