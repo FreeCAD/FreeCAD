@@ -340,7 +340,7 @@ void SoDatumLabel::generatePrimitives(SoAction * action)
         SoState *state = action->getState();
         const SbViewVolume & vv = SoViewVolumeElement::get(state);
         float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
-        SbVec2s vp_size = SoViewportRegionElement::get(state).getWindowSize();
+        SbVec2s vp_size = SoViewportRegionElement::get(state).getViewportSizePixels();
         scale /= float(vp_size[0]);
 
         SbVec3f dir = (p2-p1);
@@ -434,7 +434,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     */
     const SbViewVolume & vv = SoViewVolumeElement::get(state);
     float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.f);
-    SbVec2s vp_size = action->getViewportRegion().getWindowSize();
+    SbVec2s vp_size = action->getViewportRegion().getViewportSizePixels();
     scale /= float(vp_size[0]);
 
     const SbString* s = string.getValues(0);
