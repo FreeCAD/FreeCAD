@@ -1,7 +1,6 @@
 PYSIDE_WRAP_RC(OpenSCAD_QRC_SRCS Resources/OpenSCAD.qrc)
 
 SET(OpenSCAD_SRCS
-        ${OpenSCAD_QRC_SRCS}
         Init.py
         InitGui.py
         OpenSCAD2Dgeom.py
@@ -28,10 +27,15 @@ SOURCE_GROUP("ply" FILES ${ply_SRCS})
 set(all_files ${OpenSCAD_SRCS} ${ply_SRCS})
 
 ADD_CUSTOM_TARGET(OpenSCAD ALL
-    SOURCES ${allfiles}
+    SOURCES ${allfiles} ${OpenSCAD_QRC_SRCS}
 )
 
 fc_copy_sources(OpenSCAD "${CMAKE_BINARY_DIR}/Mod/OpenSCAD" ${all_files})
+
+fc_target_copy_resource(OpenSCAD
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/OpenSCAD
+    OpenSCAD_rc.py)
 
 INSTALL(
     FILES
@@ -42,6 +46,7 @@ INSTALL(
 INSTALL(
     FILES
         ${OpenSCAD_SRCS}
+        ${OpenSCAD_QRC_SRCS}
     DESTINATION
         Mod/OpenSCAD
 )
