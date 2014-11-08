@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2014     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2014    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,7 +31,7 @@
 #include "GeoFeatureGroupPy.h"
 #include "FeaturePythonPyImp.h"
 
-// #define new DEBUG_CLIENTBLOCK
+
 using namespace App;
 
 
