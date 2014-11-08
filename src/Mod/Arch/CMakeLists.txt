@@ -1,7 +1,6 @@
 PYSIDE_WRAP_RC(Arch_QRC_SRCS Resources/Arch.qrc)
 
 SET(Arch_SRCS
-    ${Arch_QRC_SRCS}
     Init.py
     InitGui.py
     ArchComponent.py
@@ -32,15 +31,20 @@ SET(Arch_SRCS
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
-SET(all_files ${Arch_SRCS})
-
 ADD_CUSTOM_TARGET(Arch ALL
-    SOURCES ${all_files}
+    SOURCES ${Arch_SRCS} ${Arch_QRC_SRCS}
 )
 
-fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${all_files})
+fc_copy_sources(Arch "${CMAKE_BINARY_DIR}/Mod/Arch" ${Arch_SRCS})
+
+fc_target_copy_resource(Arch
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Arch
+    Arch_rc.py)
 
 INSTALL(
-    FILES ${Arch_SRCS}
+    FILES
+        ${Arch_SRCS}
+        ${Arch_QRC_SRCS}
     DESTINATION Mod/Arch
 )
