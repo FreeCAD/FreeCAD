@@ -1235,6 +1235,7 @@ void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
     glDepthRange(0.1,1.0);
 
     SoGLRenderAction gl(SbViewportRegion(width, height));
+    gl.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
     gl.apply(this->backgroundroot);
     gl.apply(this->getSoRenderManager()->getSceneGraph());
     gl.apply(this->foregroundroot);
