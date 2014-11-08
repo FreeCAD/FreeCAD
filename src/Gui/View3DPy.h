@@ -113,7 +113,7 @@ private:
     typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
     static method_varargs_handler pycxx_handler;
     static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
-    void createImageFromFramebuffer(int backgroundType, int width, int height, QImage&);
+    void createImageFromFramebuffer(int width, int height, const QColor&, QImage&);
 
 private:
     std::list<PyObject*> callbacks;
