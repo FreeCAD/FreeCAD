@@ -658,7 +658,10 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
 
 void View3DInventorPy::createImageFromFramebuffer(int width, int height, const QColor& bgcolor, QImage& img)
 {
-    QGLFramebufferObject fbo(width, height, QGLFramebufferObject::Depth);
+    QGLFramebufferObjectFormat format;
+    format.setSamples(8);
+    format.setAttachment(QGLFramebufferObject::Depth);
+    QGLFramebufferObject fbo(width, height, format);
     const QColor col = _view->getViewer()->backgroundColor();
     bool on = _view->getViewer()->hasGradientBackground();
 
@@ -683,7 +686,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 
     QColor bg;
     QString colname = QString::fromLatin1(cColor);
-    if (colname.compare(QLatin1String("Current"), Qt::CaseInsensitive))
+    if (colname.compare(QLatin1String("Current"), Qt::CaseInsensitive) == 0)
         bg = QColor(); // assign an invalid color here
     else
         bg.setNamedColor(colname);
@@ -743,7 +746,7 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
 
     QColor bg;
     QString colname = QString::fromLatin1(name);
-    if (colname.compare(QLatin1String("Current"), Qt::CaseInsensitive))
+    if (colname.compare(QLatin1String("Current"), Qt::CaseInsensitive) == 0)
         bg = _view->getViewer()->backgroundColor();
     else
         bg.setNamedColor(colname);
