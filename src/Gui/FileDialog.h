@@ -94,9 +94,6 @@ public:
 protected Q_SLOTS:
     void toggleExtension();
 
-Q_SIGNALS:
-    void filterSelected(const QString&);
-
 private:
     QPushButton* extensionButton;
 };

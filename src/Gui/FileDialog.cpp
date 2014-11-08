@@ -345,10 +345,6 @@ FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WFlags fl )
 #endif
 
     connect(extensionButton, SIGNAL(clicked()), this, SLOT(toggleExtension()));
-
-    // get the filter combobox to connect its activated() signal with our filterSelected() signal
-    QComboBox* box = this->findChildren<QComboBox*>().last();
-    connect(box, SIGNAL(activated(const QString&)), this, SIGNAL(filterSelected(const QString&)));
 }
 
 FileOptionsDialog::~FileOptionsDialog()

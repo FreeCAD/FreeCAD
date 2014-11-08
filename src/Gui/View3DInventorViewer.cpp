@@ -632,7 +632,7 @@ void View3DInventorViewer::updateOverrideMode(const std::string& mode)
     overrideMode = mode;
 }
 
-void setViewportRegionCB(void* userdata, SoAction* action)
+void View3DInventorViewer::setViewportCB(void* userdata, SoAction* action)
 {
     // Make sure to override the value set inside SoOffscreenRenderer::render()
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
@@ -643,7 +643,7 @@ void setViewportRegionCB(void* userdata, SoAction* action)
     }
 }
 
-void View3DInventorViewer::clearBuffer(void* userdata, SoAction* action)
+void View3DInventorViewer::clearBufferCB(void* userdata, SoAction* action)
 {
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
         // do stuff specific for GL rendering here.
@@ -651,7 +651,7 @@ void View3DInventorViewer::clearBuffer(void* userdata, SoAction* action)
     }
 }
 
-void View3DInventorViewer::setGLWidget(void* userdata, SoAction* action)
+void View3DInventorViewer::setGLWidgetCB(void* userdata, SoAction* action)
 {
     //FIXME: This causes the Coin error message:
     // Coin error in SoNode::GLRenderS(): GL error: 'GL_STACK_UNDERFLOW', nodetype:
@@ -823,7 +823,7 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
         else {
             useBackground = true;
             cb = new SoCallback;
-            cb->setCallback(clearBuffer);
+            cb->setCallback(clearBufferCB);
         }
         break;
 
@@ -846,6 +846,15 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
     SoSeparator* root = new SoSeparator;
     root->ref();
 
+#if (COIN_MAJOR_VERSION >= 4)
+    // The behaviour in Coin4 has changed so that when using the same instance of 'SoFCOffscreenRenderer'
+    // multiple times internally the biggest viewport size is stored and set to the SoGLRenderAction.
+    // The trick is to add a callback node and override the viewport size with wath we want.
+    SoCallback* cbvp = new SoCallback;
+    cbvp->setCallback(setViewportCB);
+    root->addChild(cbvp);
+#endif
+
     SoCamera* camera = getSoRenderManager()->getCamera();
 
     if (useBackground) {
@@ -853,19 +862,10 @@ void View3DInventorViewer::savePicture(int w, int h, int eBackgroundType, QImage
         root->addChild(cb);
     }
 
-#if (COIN_MAJOR_VERSION >= 4)
-    // The behaviour in Coin4 has changed so that when using the same instance of 'SoFCOffscreenRenderer'
-    // multiple times internally the biggest viewport size is stored and set to the SoGLRenderAction.
-    // The trick is to add a callback node and override the viewport size with wath we want.
-    SoCallback* cbvp = new SoCallback;
-    cbvp->setCallback(setViewportRegionCB);
-    root->addChild(cbvp);
-#endif
-
     root->addChild(getHeadlight());
     root->addChild(camera);
     SoCallback* gl = new SoCallback;
-    gl->setCallback(setGLWidget, this->getGLWidget());
+    gl->setCallback(setGLWidgetCB, this->getGLWidget());
     root->addChild(gl);
     root->addChild(pcViewProviderRoot);
 
