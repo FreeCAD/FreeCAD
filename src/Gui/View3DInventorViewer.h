@@ -365,8 +365,10 @@ protected:
     void printDimension();
     void selectAll();
 
-    static void clearBuffer(void * userdata, SoAction * action);
-    static void setGLWidget(void * userdata, SoAction * action);
+private:
+    static void setViewportCB(void * userdata, SoAction * action);
+    static void clearBufferCB(void * userdata, SoAction * action);
+    static void setGLWidgetCB(void * userdata, SoAction * action);
     static void handleEventCB(void * userdata, SoEventCallback * n);
     static void interactionStartCB(void * data, Quarter::SoQTQuarterAdaptor * viewer);
     static void interactionFinishCB(void * data, Quarter::SoQTQuarterAdaptor * viewer);
