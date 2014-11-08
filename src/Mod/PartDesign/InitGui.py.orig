@@ -36,14 +36,17 @@ class PartDesignWorkbench ( Workbench ):
         self.__class__.MenuText = "Part Design"
         self.__class__.ToolTip = "Part Design workbench"
 
-<<<<<<< ae478b98ed61389183af93a610e1a07448918eb5
     def Initialize(self):
             # load the module
             try:
                 from WizardShaft import WizardShaft
             except ImportError:
                 print "Wizard shaft module cannot be loaded"
-                from FeatureHole import HoleGui
+                try:
+                    from FeatureHole import HoleGui
+                except:
+                    pass
+<<<<<<< 1cdecc120fcdcd3447f72fdd734cf6c4f78b056b
             import PartDesignGui
             import PartDesign
             try:
@@ -53,24 +56,19 @@ class PartDesignWorkbench ( Workbench ):
     def GetClassName(self):
             return "PartDesignGui::Workbench"
 =======
-        def Initialize(self):
-                # load the module
-                try:
-                    from WizardShaft import WizardShaft
-                except ImportError:
-                    print "Wizard shaft module cannot be loaded"
-                try:
-                    from FeatureHole import HoleGui
-                except:
-                    pass
                 import PartDesignGui
                 import PartDesign
                 try:
                     import InvoluteGearFeature
                 except ImportError:
                     print "Involute gear module cannot be loaded"
+                try:
+                    from FeatureHole import HoleGui
+                except:
+                    pass
+
         def GetClassName(self):
                 return "PartDesignGui::Workbench"
->>>>>>> Error handling if NumPy is not there
+>>>>>>> some fixes
 
 Gui.addWorkbench(PartDesignWorkbench())
