@@ -52,9 +52,15 @@ namespace Import {
 class ImportExport ImportOCAFAssembly
 {
 public:
-    ImportOCAFAssembly(Handle_TDocStd_Document h, App::Document* d, const std::string& name);
+    ImportOCAFAssembly(Handle_TDocStd_Document h, App::Document* d, const std::string& name, App::DocumentObject *target);
     virtual ~ImportOCAFAssembly();
     void loadShapes();
+    void loadAssembly();
+
+protected:
+    std::string getName(const TDF_Label& label);
+    App::DocumentObject *targetObj;
+
 
 private:
     void loadShapes(const TDF_Label& label, const TopLoc_Location&, const std::string& partname, const std::string& assembly, bool isRef, int dep);
@@ -72,46 +78,7 @@ private:
     static const int HashUpper = INT_MAX;
 };
 
-class ImportExport ExportOCAFAssembly
-{
-public:
-    ExportOCAFAssembly(Handle_TDocStd_Document h);
-    void saveShape(Part::Feature* part, const std::vector<App::Color>&);
 
-private:
-    Handle_TDocStd_Document pDoc;
-    Handle_XCAFDoc_ShapeTool aShapeTool;
-    Handle_XCAFDoc_ColorTool aColorTool;
-    TDF_Label rootLabel;
-};
-
-
-class ImportXCAFAssembly
-{
-public:
-    ImportXCAFAssembly(Handle_TDocStd_Document h, App::Document* d, const std::string& name);
-    virtual ~ImportXCAFAssembly();
-    void loadShapes();
-
-private:
-    void createShape(const TopoDS_Shape& shape, bool perface=false, bool setname=false) const;
-    void loadShapes(const TDF_Label& label);
-    virtual void applyColors(Part::Feature*, const std::vector<App::Color>&){}
-
-private:
-    Handle_TDocStd_Document hdoc;
-    App::Document* doc;
-    Handle_XCAFDoc_ShapeTool aShapeTool;
-    Handle_XCAFDoc_ColorTool hColors;
-    std::string default_name;
-    std::map<Standard_Integer, TopoDS_Shape> mySolids;
-    std::map<Standard_Integer, TopoDS_Shape> myShells;
-    std::map<Standard_Integer, TopoDS_Shape> myCompds;
-    std::map<Standard_Integer, TopoDS_Shape> myShapes;
-    std::map<Standard_Integer, Quantity_Color> myColorMap;
-    std::map<Standard_Integer, std::string> myNameMap;
-};
-
-}
+} // namespace Import {
 
 #endif //IMPORT_ImportOCAFAssembly_H
