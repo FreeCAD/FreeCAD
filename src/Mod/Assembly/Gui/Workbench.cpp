@@ -46,22 +46,30 @@ using namespace AssemblyGui;
 void switchToDocument(const App::Document* doc)
 {
 
-    if(doc->countObjects() == 0){ // -> set up a empty document
-        std::string PartName = doc->getUniqueObjectName("Part");
+    if( doc->Tip.getValue() && doc->Tip.getValue()->getTypeId() == App::Part::getClassTypeId() )
+    {  // in case of a Part document
+        std::string PartName = doc->Tip.getValue()->getNameInDocument();
         std::string ProductName = doc->getUniqueObjectName("Product");
         std::string RefName = doc->getUniqueObjectName((PartName + "-1").c_str());
 
 		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Tip = App.activeDocument().addObject('Assembly::Product','%s')",ProductName.c_str());
 		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('Assembly::ProductRef','%s')",RefName.c_str());
 		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Items = App.activeDocument().%s",ProductName.c_str(),RefName.c_str());
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
 		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Item = App.activeDocument().%s",RefName.c_str(),PartName.c_str());
         Gui::Command::addModule(Gui::Command::Gui,"AssemblyGui");
         Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().%s)",ProductName.c_str());
-        // create a PartDesign Part for now, can be later any kind of Part or an empty one
-        Gui::Command::addModule(Gui::Command::Doc,"PartDesignGui");
-        Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setUpPart(App.activeDocument().%s)",PartName.c_str());
+        //// create a PartDesign Part for now, can be later any kind of Part or an empty one
+        //Gui::Command::addModule(Gui::Command::Doc,"PartDesignGui");
+        //Gui::Command::doCommand(Gui::Command::Doc,"PartDesignGui.setUpPart(App.activeDocument().%s)",PartName.c_str());
+
+    } else  if(doc->countObjects() == 0){ // -> set up a empty document
+        std::string ProductName = doc->getUniqueObjectName("Product");
+
+		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Tip = App.activeDocument().addObject('Assembly::Product','%s')",ProductName.c_str());
+        Gui::Command::addModule(Gui::Command::Gui,"AssemblyGui");
+        Gui::Command::doCommand(Gui::Command::Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().%s)",ProductName.c_str());
     }
+
 }
 
 
@@ -157,16 +165,16 @@ void Workbench::activated()
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
 
-    //App::Document *doc = App::GetApplication().getActiveDocument();
+    App::Document *doc = App::GetApplication().getActiveDocument();
     //if(!doc){
     //    // create a new document
     //    std::string uniqueName = App::GetApplication().getUniqueDocumentName("Assembly1");
     //    Gui::Command::doCommand(Gui::Command::Doc,"App.newDocument('%s')",uniqueName.c_str());
     //    doc = App::GetApplication().getActiveDocument();
 
-    //    switchToDocument(doc);
-
     //}
+    if(doc)
+        switchToDocument(doc);
 
 
     // show a warning about the Alpha state of FreeCAD Assembly

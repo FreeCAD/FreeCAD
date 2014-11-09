@@ -76,34 +76,23 @@ void CmdAssemblyAddNewPart::activated(int iMsg)
     }
 
     openCommand("Insert Part");
+    // need the help of the Part module to set up a Part
+    addModule(App,"PartDesign");
+    addModule(Gui,"PartDesignGui");
+    addModule(Gui,"AssemblyGui");
+
     std::string PartName = getUniqueObjectName("Part");
-    doCommand(Doc,"App.activeDocument().addObject('Assembly::ItemPart','%s')",PartName.c_str());
-    if(dest){
-        std::string fatherName = dest->getNameInDocument();
-        doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),PartName.c_str());
-    }
-    Command::addModule(App,"PartDesign");
-    Command::addModule(Gui,"PartDesignGui");
+    std::string ProductName = dest->getNameInDocument();
+    std::string RefName = getUniqueObjectName((PartName + "-1").c_str());
 
-
-    std::string BodyName = getUniqueObjectName("Body");
-    // add the standard planes 
-    std::string Plane1Name = BodyName + "_PlaneXY";
-    std::string Plane2Name = BodyName + "_PlaneYZ";
-    std::string Plane3Name = BodyName + "_PlaneXZ";
-    doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane1Name.c_str());
-    doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'XY-Plane'");
-    doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane2Name.c_str());
-    doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
-    doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'YZ-Plane'");
-    doCommand(Doc,"App.activeDocument().addObject('App::Plane','%s')",Plane3Name.c_str());
-    doCommand(Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
-    doCommand(Doc,"App.activeDocument().ActiveObject.Label = 'XZ-Plane'");
-    // add to anotation set of the Part object
-    doCommand(Doc,"App.activeDocument().%s.Annotation = [App.activeDocument().%s,App.activeDocument().%s,App.activeDocument().%s] ",PartName.c_str(),Plane1Name.c_str(),Plane2Name.c_str(),Plane3Name.c_str());
-    // add the main body
-    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Body','%s')",BodyName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Model = App.activeDocument().%s ",PartName.c_str(),BodyName.c_str());
+    doCommand(Doc,"App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
+	doCommand(Doc,"App.activeDocument().addObject('Assembly::ProductRef','%s')",RefName.c_str());
+	doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s]",ProductName.c_str(),ProductName.c_str(),RefName.c_str());
+	doCommand(Doc,"App.activeDocument().%s.Item = App.activeDocument().%s",RefName.c_str(),PartName.c_str());
+    doCommand(Doc,"AssemblyGui.setActiveAssembly(App.activeDocument().%s)",ProductName.c_str());
+    
+    // create a PartDesign Part for now, can be later any kind of Part or an empty one
+    doCommand(Gui::Command::Doc,"PartDesignGui.setUpPart(App.activeDocument().%s)",PartName.c_str());
 
     this->updateActive();
 }
@@ -135,15 +124,23 @@ void CmdAssemblyAddNewComponent::activated(int iMsg)
         dest = dynamic_cast<Assembly::Product*>(Sel.front());
     }else if(ActiveAsmObject && ActiveAsmObject->getTypeId().isDerivedFrom(Assembly::Product::getClassTypeId())) {
         dest = dynamic_cast<Assembly::Product*>(ActiveAsmObject);
+    }else {
+
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active or selected assembly"),
+                             QObject::tr("You need a active or selected assembly to insert a component in."));
+	    return;
     }
 
     openCommand("Insert Component");
-    std::string CompName = getUniqueObjectName("Assembly");
-    doCommand(Doc,"App.activeDocument().addObject('Assembly::Product','%s')",CompName.c_str());
-    if(dest){
-        std::string fatherName = dest->getNameInDocument();
-        doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s] ",fatherName.c_str(),fatherName.c_str(),CompName.c_str());
-    }
+    std::string NewProdName = getUniqueObjectName("Product");
+    std::string ProductName = dest->getNameInDocument();
+    std::string RefName = getUniqueObjectName((NewProdName + "-1").c_str());
+
+    doCommand(Doc,"App.activeDocument().addObject('Assembly::Product','%s')",NewProdName.c_str());
+	doCommand(Doc,"App.activeDocument().addObject('Assembly::ProductRef','%s')",RefName.c_str());
+	doCommand(Doc,"App.activeDocument().%s.Items = App.activeDocument().%s.Items + [App.activeDocument().%s]",ProductName.c_str(),ProductName.c_str(),RefName.c_str());
+	doCommand(Doc,"App.activeDocument().%s.Item = App.activeDocument().%s",RefName.c_str(),NewProdName.c_str());
+
 }
 
 //===========================================================================
