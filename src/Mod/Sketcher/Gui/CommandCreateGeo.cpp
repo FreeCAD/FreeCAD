@@ -29,6 +29,7 @@
 
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -802,6 +803,7 @@ public:
                 resetPositionText();
                 sketchgui->drawEdit(EditCurve);
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                return true; // 'this' instance is destroyed now!
             }
 
             Mode = STATUS_Do;
@@ -824,15 +826,22 @@ public:
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
         if (Mode == STATUS_Do || Mode == STATUS_Close) {
-
+            bool addedGeometry = true;
             if (SegmentMode == SEGMENT_MODE_Line) {
                 // open the transaction
                 Gui::Command::openCommand("Add line to sketch wire");
                 // issue the geometry
-                Gui::Command::doCommand(Gui::Command::Doc,
-                    "App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
+                try {
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                        sketchgui->getObject()->getNameInDocument(),
+                        EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
+                }
+                catch (const Base::Exception& e) {
+                    addedGeometry = false;
+                    Base::Console().Error("Failed to add line: %s\n", e.what());
+                    Gui::Command::abortCommand();
+                }
             }
             else if (SegmentMode == SEGMENT_MODE_Arc) { // We're dealing with an Arc
                 if (!boost::math::isnormal(arcRadius)) {
@@ -840,15 +849,22 @@ public:
                     return true;
                 }
                 Gui::Command::openCommand("Add arc to sketch wire");
-                Gui::Command::doCommand(Gui::Command::Doc,
-                    "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
-                    "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
-                    sketchgui->getObject()->getNameInDocument(),
-                    CenterPoint.fX, CenterPoint.fY, std::abs(arcRadius),
-                    std::min(startAngle,endAngle), std::max(startAngle,endAngle));
+                try {
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
+                        "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))",
+                        sketchgui->getObject()->getNameInDocument(),
+                        CenterPoint.fX, CenterPoint.fY, std::abs(arcRadius),
+                        std::min(startAngle,endAngle), std::max(startAngle,endAngle));
+                }
+                catch (const Base::Exception& e) {
+                    addedGeometry = false;
+                    Base::Console().Error("Failed to add arc: %s\n", e.what());
+                    Gui::Command::abortCommand();
+                }
             }
             // issue the constraint
-            if (previousPosId != Sketcher::none) {
+            if (addedGeometry && (previousPosId != Sketcher::none)) {
                 int lastCurve = getHighestCurveIndex();
                 Sketcher::PointPos lastStartPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
                                                     Sketcher::end : Sketcher::start;
