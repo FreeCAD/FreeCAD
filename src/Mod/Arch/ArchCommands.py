@@ -712,18 +712,19 @@ def survey(callback=False):
                                 if o.Object.Shape.Solids:
                                     t = FreeCAD.Units.Quantity(o.Object.Shape.Volume,FreeCAD.Units.Volume)
                                     t = t.getUserPreferred()[0]
-                                    t = t.replace("^3","³")
+                                    t = t.encode("utf8").replace("^3","³")
                                     anno.LabelText = "v " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Volume: " + t.decode("utf8") + "\n")
                                 elif o.Object.Shape.Faces:
                                     t = FreeCAD.Units.Quantity(o.Object.Shape.Area,FreeCAD.Units.Area)
                                     t = t.getUserPreferred()[0]
-                                    t = t.replace("^2","²")
+                                    t = t.encode("utf8").replace("^2","²")
                                     anno.LabelText = "a " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Area: " + t.decode("utf8") + "\n")
                                 else:
                                     t = FreeCAD.Units.Quantity(o.Object.Shape.Length,FreeCAD.Units.Length)
                                     t = t.getUserPreferred()[0]
+                                    t = t.encode("utf8")
                                     anno.LabelText = "l " + t
                                     FreeCAD.Console.PrintMessage("Object: " + n + ", Element: Whole, Length: " + t + "\n")
                                 if FreeCAD.GuiUp and t:
@@ -745,17 +746,18 @@ def survey(callback=False):
                                     if "Face" in el:
                                         t = FreeCAD.Units.Quantity(e.Area,FreeCAD.Units.Area)
                                         t = t.getUserPreferred()[0]
-                                        t = t.replace("^2","²")
+                                        t = t.encode("utf8").replace("^2","²")
                                         anno.LabelText = "a " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ t.decode("utf8")  + "\n")
                                     elif "Edge" in el:
                                         t = FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
-                                        t = t.getUserPreferred()[0]
+                                        t = t.encode("utf8").getUserPreferred()[0]
                                         anno.LabelText = "l " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + t + "\n")
                                     elif "Vertex" in el:
                                         t = FreeCAD.Units.Quantity(e.Z,FreeCAD.Units.Length)
                                         t = t.getUserPreferred()[0]
+                                        t = t.encode("utf8")
                                         anno.LabelText = "z " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Zcoord: " + t + "\n")
                                     if FreeCAD.GuiUp and t:
