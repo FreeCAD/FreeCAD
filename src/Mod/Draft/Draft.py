@@ -1114,13 +1114,14 @@ def makeVisGroup(group=None,name="VisGroup"):
         group.addObject(obj)
     return obj
 
-def extrude(obj,vector):
+def extrude(obj,vector,solid=False):
     '''makeExtrusion(object,vector): extrudes the given object
     in the direction given by the vector. The original object
     gets hidden.'''
     newobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion","Extrusion")
     newobj.Base = obj
     newobj.Dir = vector
+    newobj.Solid = solid
     obj.ViewObject.Visibility = False
     formatObject(newobj,obj)
     FreeCAD.ActiveDocument.recompute()
