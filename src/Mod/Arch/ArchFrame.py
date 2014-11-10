@@ -83,6 +83,7 @@ class _Frame(ArchComponent.Component):
         obj.addProperty("App::PropertyLink","Profile","Arch","The profile used to build this frame")
         obj.addProperty("App::PropertyBool","Align","Arch","Specifies if the profile must be aligned with the extrusion wires")
         obj.addProperty("App::PropertyVector","Offset","Arch","An offset vector between the base sketch and the frame")
+        obj.addProperty("App::PropertyInteger","BasePoint","Arch","The point of the profile by which the path passes.")
         obj.addProperty("App::PropertyAngle","Rotation","Arch","The rotation of the profile around its extrusion axis")
         self.Type = "Frame"
         obj.Role = Roles
@@ -132,8 +133,15 @@ class _Frame(ArchComponent.Component):
                 bpoint = e.Vertexes[0].Point
                 profile = baseprofile.copy()
                 #basepoint = profile.Placement.Base
-                basepoint = profile.CenterOfMass
-                profile.translate(bpoint.sub(basepoint))
+                #basepoint = profile.CenterOfMass
+                #profile.translate(bpoint.sub(basepoint))
+                if obj.BasePoint == 0 :
+                    basepoint = profile.CenterOfMass
+                    profile.translate(bpoint.sub(basepoint))
+                else :
+                    # TODO add mid point of edges and make an ordered list point, mid point , ...
+                    basepoint = profile.Vertexes[obj.BasePoint - 1].Point
+                    profile.translate(bpoint.sub(basepoint))
                 if obj.Align:
                     axis = profile.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
                     angle = bvec.getAngle(axis)
