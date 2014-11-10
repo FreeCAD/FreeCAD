@@ -22,10 +22,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/actions/SoGLRenderAction.h>
+# include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/fields/SoSFImage.h>
+# include <Inventor/nodes/SoNode.h>
 # include <QBuffer>
 # include <QDateTime>
 # include <QFile>
+# include <QGLFormat>
+# include <QGLFramebufferObject>
+# include <QGLPixelBuffer>
+# include <QImage>
 # include <QImageWriter>
 #endif
 
@@ -365,3 +372,362 @@ void writeJPEGComment(const std::string& comment, QByteArray& ba)
         }
     }
 }
+
+// ---------------------------------------------------------------
+
+#define PRIVATE(p) p
+#define PUBLIC(p) p
+
+void SoQtOffscreenRenderer::init(const SbViewportRegion & vpr,
+                                 SoGLRenderAction * glrenderaction)
+{
+    this->backgroundcolor.setValue(0,0,0);
+
+    if (glrenderaction) {
+        this->renderaction = glrenderaction;
+    }
+    else {
+        this->renderaction = new SoGLRenderAction(vpr);
+        this->renderaction->setCacheContext(SoGLCacheContextElement::getUniqueCacheContext());
+        this->renderaction->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
+    }
+
+    this->didallocation = glrenderaction ? FALSE : TRUE;
+    this->viewport = vpr;
+
+    this->pixelbuffer = NULL;                // constructed later
+    this->framebuffer = NULL;
+    this->numSamples = -1;
+    this->pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
+}
+
+/*!
+  Constructor. Argument is the \a viewportregion we should use when
+  rendering. An internal SoGLRenderAction will be constructed.
+*/
+SoQtOffscreenRenderer::SoQtOffscreenRenderer(const SbViewportRegion & viewportregion)
+{
+    init(viewportregion);
+}
+
+/*!
+  Constructor. Argument is the \a action we should apply to the
+  scene graph when rendering the scene. Information about the
+  viewport is extracted from the \a action.
+*/
+SoQtOffscreenRenderer::SoQtOffscreenRenderer(SoGLRenderAction * action)
+{
+    init(action->getViewportRegion(), action);
+}
+
+/*!
+  Destructor.
+*/
+SoQtOffscreenRenderer::~SoQtOffscreenRenderer()
+{
+    delete pixelbuffer;
+    delete framebuffer;
+
+    if (this->didallocation) {
+        delete this->renderaction;
+    }
+}
+
+/*!
+  Sets the viewport region.
+
+  This will invalidate the current buffer, if any. The buffer will not
+  contain valid data until another call to
+  SoOffscreenRendererQt::render() happens.
+*/
+void
+SoQtOffscreenRenderer::setViewportRegion(const SbViewportRegion & region)
+{
+    PRIVATE(this)->viewport = region;
+}
+
+/*!
+  Returns the viewerport region.
+*/
+const SbViewportRegion &
+SoQtOffscreenRenderer::getViewportRegion(void) const
+{
+    return PRIVATE(this)->viewport;
+}
+
+/*!
+  Sets the background color. The buffer is cleared to this color
+  before rendering.
+*/
+void
+SoQtOffscreenRenderer::setBackgroundColor(const SbColor & color)
+{
+    PRIVATE(this)->backgroundcolor = color;
+}
+
+/*!
+  Returns the background color.
+*/
+const SbColor &
+SoQtOffscreenRenderer::getBackgroundColor(void) const
+{
+    return PRIVATE(this)->backgroundcolor;
+}
+
+/*!
+  Sets the render action. Use this if you have special rendering needs.
+*/
+void
+SoQtOffscreenRenderer::setGLRenderAction(SoGLRenderAction * action)
+{
+    if (action == PRIVATE(this)->renderaction) { return; }
+
+    if (PRIVATE(this)->didallocation) { delete PRIVATE(this)->renderaction; }
+    PRIVATE(this)->renderaction = action;
+    PRIVATE(this)->didallocation = FALSE;
+}
+
+/*!
+  Returns the rendering action currently used.
+*/
+SoGLRenderAction *
+SoQtOffscreenRenderer::getGLRenderAction(void) const
+{
+    return PRIVATE(this)->renderaction;
+}
+
+void
+SoQtOffscreenRenderer::setNumPasses(const int num)
+{
+    PRIVATE(this)->numSamples = num;
+}
+
+int
+SoQtOffscreenRenderer::getNumPasses(void) const
+{
+    return PRIVATE(this)->numSamples;
+}
+
+void
+SoQtOffscreenRenderer::setPbufferEnable(SbBool enable)
+{
+    PRIVATE(this)->pbuffer = enable;
+}
+
+SbBool
+SoQtOffscreenRenderer::getPbufferEnable(void) const
+{
+    return PRIVATE(this)->pbuffer;
+}
+
+// *************************************************************************
+
+void
+SoQtOffscreenRenderer::pre_render_cb(void * userdata, SoGLRenderAction * action)
+{
+    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);
+    action->setRenderingIsRemote(FALSE);
+}
+
+void
+SoQtOffscreenRenderer::makePixelBuffer(int width, int height, int samples)
+{
+    if (pixelbuffer) {
+        delete pixelbuffer;
+        pixelbuffer = NULL;
+    }
+
+    viewport.setWindowSize(width, height);
+
+    QGLFormat fmt;
+    if (samples > 0) {
+        fmt.setSampleBuffers(true);
+        fmt.setSamples(samples);
+    }
+    else {
+        fmt.setSampleBuffers(false);
+    }
+
+    pixelbuffer = new QGLPixelBuffer(width, height, fmt);
+    cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure
+}
+
+void
+SoQtOffscreenRenderer::makeFrameBuffer(int width, int height, int samples)
+{
+    if (framebuffer) {
+        delete framebuffer;
+        framebuffer = NULL;
+    }
+
+    viewport.setWindowSize(width, height);
+
+#if QT_VERSION >= 0x040600
+    QGLFramebufferObjectFormat fmt;
+    fmt.setSamples(samples);
+    fmt.setAttachment(QGLFramebufferObject::Depth);
+#else
+    QGLFramebufferObject::Attachment fmt;
+    fmt = QGLFramebufferObject::Depth;
+#endif
+
+    framebuffer = new QGLFramebufferObject(width, height, fmt);
+    cache_context = SoGLCacheContextElement::getUniqueCacheContext(); // unique per pixel buffer object, just to be sure
+}
+
+SbBool
+SoQtOffscreenRenderer::renderFromBase(SoBase * base)
+{
+    const SbVec2s fullsize = this->viewport.getViewportSizePixels();
+
+    if (PRIVATE(this)->pbuffer) {
+        if (!pixelbuffer) {
+            makePixelBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
+        }
+        else if (pixelbuffer->width() != fullsize[0] || pixelbuffer->height() != fullsize[1]) {
+            // get the size right!
+            makePixelBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
+        }
+
+        pixelbuffer->makeCurrent();                // activate us!
+    }
+    else {
+        if (!framebuffer) {
+            makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
+        }
+        else if (framebuffer->width() != fullsize[0] || framebuffer->height() != fullsize[1]) {
+            // get the size right!
+            makeFrameBuffer(fullsize[0], fullsize[1], PRIVATE(this)->numSamples);
+        }
+
+        framebuffer->bind();                // activate us!
+    }
+
+    // oldcontext is used to restore the previous context id, in case
+    // the render action is not allocated by us.
+    const uint32_t oldcontext = this->renderaction->getCacheContext();
+    this->renderaction->setCacheContext(cache_context);
+
+    glEnable(GL_DEPTH_TEST);
+    glClearColor(this->backgroundcolor[0],
+                 this->backgroundcolor[1],
+                 this->backgroundcolor[2],
+                 0.0f);
+
+    // needed to clear viewport after glViewport() is called from
+    // SoGLRenderAction
+    this->renderaction->addPreRenderCallback(pre_render_cb, NULL);
+    this->renderaction->setViewportRegion(this->viewport);
+
+    if (base->isOfType(SoNode::getClassTypeId()))
+        this->renderaction->apply((SoNode *)base);
+    else if (base->isOfType(SoPath::getClassTypeId()))
+        this->renderaction->apply((SoPath *)base);
+    else  {
+        assert(FALSE && "Cannot apply to anything else than an SoNode or an SoPath");
+    }
+
+    this->renderaction->removePreRenderCallback(pre_render_cb, NULL);
+
+    if (PRIVATE(this)->pbuffer) {
+        pixelbuffer->doneCurrent();
+    }
+    else {
+        framebuffer->release();
+    }
+
+    this->renderaction->setCacheContext(oldcontext); // restore old
+
+    return TRUE;
+}
+
+/*!
+  Render the scenegraph rooted at \a scene into our internal pixel
+  buffer.
+
+  Important note: make sure you pass in a \a scene node pointer which
+  has both a camera and at least one lightsource below it -- otherwise
+  you are likely to end up with just a blank or black image buffer.
+
+  This mistake is easily made if you use an SoQtOffscreenRenderer on a
+  scenegraph from one of the standard viewer components, as you will
+  often just leave the addition of a camera and a headlight
+  lightsource to the viewer to set up. This camera and lightsource are
+  then part of the viewer's private "super-graph" outside of the scope
+  of the scenegraph passed in by the application programmer. To make
+  sure the complete scenegraph (including the viewer's "private parts"
+  (*snicker*)) are passed to this method, you can get the scenegraph
+  root from the viewer's internal SoSceneManager instance instead of
+  from the viewer's own getSceneGraph() method, like this:
+
+  \code
+  SoQtOffscreenRenderer * myRenderer = new SoQtOffscreenRenderer(vpregion);
+  SoNode * root = myViewer->getSceneManager()->getSceneGraph();
+  SbBool ok = myRenderer->render(root);
+  // [then use image buffer in a texture, or write it to file, or whatever]
+  \endcode
+
+  If you do this and still get a blank buffer, another common problem
+  is to have a camera which is not actually pointing at the scene
+  geometry you want a snapshot of. If you suspect that could be the
+  cause of problems on your end, take a look at SoCamera::pointAt()
+  and SoCamera::viewAll() to see how you can make a camera node
+  guaranteed to be directed at the scene geometry.
+
+  Yet another common mistake when setting up the camera is to specify
+  values for the SoCamera::nearDistance and SoCamera::farDistance
+  fields which doesn't not enclose the full scene. This will result in
+  either just the background color, or that parts at the front or the
+  back of the scene will not be visible in the rendering.
+
+  \sa writeToImage()
+*/
+SbBool
+SoQtOffscreenRenderer::render(SoNode * scene)
+{
+    return PRIVATE(this)->renderFromBase(scene);
+}
+
+/*!
+  Render the \a scene path into our internal memory buffer.
+*/
+SbBool
+SoQtOffscreenRenderer::render(SoPath * scene)
+{
+    return PRIVATE(this)->renderFromBase(scene);
+}
+
+/*! 
+   Writes the rendered image buffer directly into a QImage object.
+*/
+void
+SoQtOffscreenRenderer::writeToImage (QImage& img) const
+{
+    if (PRIVATE(this)->pbuffer) {
+        if (pixelbuffer)
+            img = pixelbuffer->toImage();
+    }
+    else {
+        if (framebuffer)
+            img = framebuffer->toImage();
+    }
+}
+
+/*!
+   This method returns all image file formats supported by Coin3D (see getWriteFiletypeInfo()) with all QImage file formats that are 
+   not directly supported by Coin3D, if so.
+*/
+QStringList SoQtOffscreenRenderer::getWriteImageFiletypeInfo() const
+{
+    QList<QByteArray> qtformats = QImageWriter::supportedImageFormats();
+
+    QStringList formats;
+    for (QList<QByteArray>::Iterator it = qtformats.begin(); it != qtformats.end(); ++it) {
+        formats << QLatin1String(*it);
+    }
+    formats.sort();
+    return formats;
+}
+
+#undef PRIVATE
+#undef PUBLIC
