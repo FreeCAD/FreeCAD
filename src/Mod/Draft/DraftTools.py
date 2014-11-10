@@ -2885,7 +2885,7 @@ class Trimex(Modifier):
             delta = self.extrude(self.shift,real=True)
             #print("delta",delta)
             self.doc.openTransaction("Extrude")
-            obj = Draft.extrude(self.obj,delta)
+            obj = Draft.extrude(self.obj,delta,solid=True)
             self.doc.commitTransaction()
             self.obj = obj
         else:
