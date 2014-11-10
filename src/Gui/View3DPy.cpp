@@ -658,10 +658,14 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
 
 void View3DInventorPy::createImageFromFramebuffer(int width, int height, const QColor& bgcolor, QImage& img)
 {
+#if QT_VERSION >= 0x040600
     QGLFramebufferObjectFormat format;
     format.setSamples(8);
     format.setAttachment(QGLFramebufferObject::Depth);
     QGLFramebufferObject fbo(width, height, format);
+#else
+    QGLFramebufferObject fbo(width, height, QGLFramebufferObject::Depth);
+#endif
     const QColor col = _view->getViewer()->backgroundColor();
     bool on = _view->getViewer()->hasGradientBackground();
 

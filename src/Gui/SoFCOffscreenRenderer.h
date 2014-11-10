@@ -29,6 +29,8 @@
 #include <QStringList>
 
 class QImage;
+class QGLFramebufferObject;
+class QGLPixelBuffer;
 
 namespace Gui {
 
@@ -95,6 +97,53 @@ public:
   QStringList getWriteImageFiletypeInfo();
 
   std::string createMIBA(const SbMatrix& mat) const;
+};
+
+class GuiExport SoQtOffscreenRenderer
+{
+public:
+    SoQtOffscreenRenderer(const SbViewportRegion & viewportregion);
+    SoQtOffscreenRenderer(SoGLRenderAction * action);
+    ~SoQtOffscreenRenderer();
+
+    void setViewportRegion(const SbViewportRegion & region);
+    const SbViewportRegion & getViewportRegion(void) const;
+
+    void setBackgroundColor(const SbColor & color);
+    const SbColor & getBackgroundColor(void) const;
+
+    void setGLRenderAction(SoGLRenderAction * action);
+    SoGLRenderAction * getGLRenderAction(void) const;
+
+    void setNumPasses(const int num);
+    int getNumPasses(void) const;
+
+    void setPbufferEnable(SbBool enable);
+    SbBool getPbufferEnable(void) const;
+
+    SbBool render(SoNode * scene);
+    SbBool render(SoPath * scene);
+
+    void writeToImage (QImage&) const;
+    QStringList getWriteImageFiletypeInfo() const;
+
+private:
+    void init(const SbViewportRegion & vpr, SoGLRenderAction * glrenderaction = NULL);
+    static void pre_render_cb(void * userdata, SoGLRenderAction * action);
+    SbBool renderFromBase(SoBase * base);
+    void makePixelBuffer(int width, int height, int samples);
+    void makeFrameBuffer(int width, int height, int samples);
+
+    QGLPixelBuffer*        pixelbuffer; // the offscreen rendering supported by Qt
+    QGLFramebufferObject*  framebuffer;
+    uint32_t               cache_context; // our unique context id
+
+    SbViewportRegion viewport;
+    SbColor backgroundcolor;
+    SoGLRenderAction * renderaction;
+    SbBool didallocation;
+    SbBool pbuffer;
+    int numSamples;
 };
 
 } // namespace Gui

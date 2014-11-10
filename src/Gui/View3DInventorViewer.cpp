@@ -809,8 +809,8 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
     //The default value is 72.0.
     //If we need to support grayscale images with must either use SoOffscreenRenderer::LUMINANCE or
     //SoOffscreenRenderer::LUMINANCE_TRANSPARENCY.
-    SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
-    renderer.setViewportRegion(vp);
+    SoQtOffscreenRenderer renderer(vp);
+    renderer.setNumPasses(4);
     SoCallback* cb = 0;
 
     // for an invalid color use the viewer's current background color
@@ -836,9 +836,9 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
     // The behaviour in Coin4 has changed so that when using the same instance of 'SoFCOffscreenRenderer'
     // multiple times internally the biggest viewport size is stored and set to the SoGLRenderAction.
     // The trick is to add a callback node and override the viewport size with wath we want.
-    SoCallback* cbvp = new SoCallback;
-    cbvp->setCallback(setViewportCB);
-    root->addChild(cbvp);
+    //SoCallback* cbvp = new SoCallback;
+    //cbvp->setCallback(setViewportCB);
+    //root->addChild(cbvp);
 #endif
 
     SoCamera* camera = getSoRenderManager()->getCamera();

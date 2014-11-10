@@ -1463,7 +1463,7 @@ void StdViewScreenShot::activated(int iMsg)
         QStringList formats;
         SbViewportRegion vp(view->getViewer()->getSoRenderManager()->getViewportRegion());
         {
-            SoFCOffscreenRenderer& rd = SoFCOffscreenRenderer::instance();
+            SoQtOffscreenRenderer rd(vp);
             formats = rd.getWriteImageFiletypeInfo();
         }
 
