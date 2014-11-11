@@ -2,8 +2,8 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -98,7 +98,7 @@ def addComponents(objectsList,host):
                     host.Tool = o
                 elif Draft.getType(o) == "Axis":
                     if not o in x:
-                        x.append(o) 
+                        x.append(o)
                 elif not o in a:
                     if hasattr(o,"Shape"):
                         a.append(o)
@@ -116,7 +116,7 @@ def addComponents(objectsList,host):
         for o in objectsList:
             if not o in c:
                 c.append(o)
-        host.Group = c       
+        host.Group = c
 
 def removeComponents(objectsList,host=None):
     '''removeComponents(objectsList,[hostObject]): removes the given component or
@@ -224,7 +224,7 @@ def copyProperties(obj1,obj2):
             if prop in obj2.ViewObject.PropertiesList:
                 if not prop in ["Proxy","Shape"]:
                     setattr(obj2.ViewObject,prop,getattr(obj1.ViewObject,prop))
-                       
+
 def splitMesh(obj,mark=True):
     '''splitMesh(object,[mark]): splits the given mesh object into separated components.
     If mark is False, nothing else is done. If True (default), non-manifold components
@@ -249,7 +249,7 @@ def makeFace(wires,method=2,cleanup=False):
     '''makeFace(wires): makes a face from a list of wires, finding which ones are holes'''
     #print "makeFace: start:", wires
     import Part
-        
+
     if not isinstance(wires,list):
         if len(wires.Vertexes) < 3:
             raise
@@ -261,7 +261,7 @@ def makeFace(wires,method=2,cleanup=False):
         return Part.Face(wires[0])
 
     wires = wires[:]
-    
+
     #print "makeFace: inner wires found"
     ext = None
     max_length = 0
@@ -352,7 +352,7 @@ def getCutVolume(cutplane,shapes):
             p = cutplane.copy().Faces[0]
     except Part.OCCError:
         FreeCAD.Console.PrintMessage(translate("Arch","Invalid cutplane\n"))
-        return None,None,None 
+        return None,None,None
     ce = p.CenterOfMass
     ax = p.normalAt(0,0)
     u = p.Vertexes[1].Point.sub(p.Vertexes[0].Point).normalize()
@@ -393,6 +393,16 @@ def getCutVolume(cutplane,shapes):
         invcutvolume = cutface.extrude(cutnormal)
         return cutface,cutvolume,invcutvolume
 
+def cutComponent(cutPlane, archObject):
+	"""cut object from a plan"""
+    cutVolume = Arch.getCutVolume(cutPlane, archObject.Object.Shape)
+    cutVolume = cutVolume[2]
+    if cutVolume:
+        obj = App.activeDocument().addObject("Part::Feature", "CutVolume")
+        obj.Shape = cutVolume
+        # add substraction component to Arch object
+        return Arch.removeComponents(obj,archObject.Object)
+
 def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
     import Part, MeshPart, DraftGeomUtils
     if mesh.isSolid() and (mesh.countComponents() == 1) and fast:
@@ -409,7 +419,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
         solid = solid.removeSplitter()
         return solid
 
-    faces = []  
+    faces = []
     segments = mesh.getPlanarSegments(tolerance)
     #print len(segments)
     for i in segments:
@@ -444,7 +454,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
             return se
         else:
             return solid
-            
+
 def projectToVector(shape,vector):
     '''projectToVector(shape,vector): projects the given shape on the given
     vector'''
@@ -473,7 +483,7 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
 
     name = obj.Name
     if "Mesh" in obj.PropertiesList:
-        faces = []  
+        faces = []
         mesh = obj.Mesh
         plac = obj.Placement
         solid = getShapeFromMesh(mesh,fast,tol,flat,cut)
@@ -605,7 +615,7 @@ def check(objectslist,includehidden=False):
 def getHost(obj,strict=True):
     """getHost(obj,[strict]): returns the host of the current object. If strict is true (default),
     the host can only be an object of a higher level than the given one, or in other words, if a wall
-    is contained in another wall which is part of a floor, the floor is returned instead of the parent wall"""    
+    is contained in another wall which is part of a floor, the floor is returned instead of the parent wall"""
     import Draft
     t = Draft.getType(obj)
     for par in obj.InList:
@@ -618,7 +628,7 @@ def getHost(obj,strict=True):
             else:
                 return par
     return None
-    
+
 def pruneIncluded(objectslist):
     """pruneIncluded(objectslist): removes from a list of Arch objects, those that are subcomponents of
     another shape-based object, leaving only the top-level shapes."""
@@ -644,7 +654,7 @@ class _SurveyObserver:
         self.cancellable = False
         self.selection = []
         self.labels = []
-        
+
     def addSelection(self,document, object, element, position):
         self.cancellable = False
         self.callback(True)
@@ -788,11 +798,11 @@ def toggleIfcBrepFlag(obj):
 
 
 def makeCompoundFromSelected(objects=None):
-    """makeCompoundFromSelected([objects]): Creates a new compound object from the given 
+    """makeCompoundFromSelected([objects]): Creates a new compound object from the given
     subobjects (faces, edges) or from the the selection if objects is None"""
     import FreeCADGui,Part
     so = []
-    if not objects: 
+    if not objects:
         objects = FreeCADGui.Selection.getSelectionEx()
     if not isinstance(objects,list):
         objects = [objects]
@@ -801,10 +811,10 @@ def makeCompoundFromSelected(objects=None):
     if so:
         c = Part.makeCompound(so)
         Part.show(c)
-        
+
 
 def cleanArchSplitter(objets=None):
-    """cleanArchSplitter([objects]): removes the splitters from the base shapes 
+    """cleanArchSplitter([objects]): removes the splitters from the base shapes
     of the given Arch objects or selected Arch objects if objects is None"""
     import FreeCAD,FreeCADGui
     if not objects:
@@ -854,7 +864,7 @@ def rebuildArchShape(objects=None):
                                                 solid.sewShape()
                                                 solid = Part.Solid(solid)
                                             #print "rebuilt solid: isValid is ",solid.isValid()
-                                            if solid.isValid(): 
+                                            if solid.isValid():
                                                 print "Success"
                                                 obj.Base.Shape = solid
                                                 success = True
@@ -865,7 +875,6 @@ def rebuildArchShape(objects=None):
     FreeCAD.ActiveDocument.recompute()
 
 # command definitions ###############################################
-                       
 class _CommandAdd:
     "the Arch Add command definition"
     def GetResources(self):
@@ -875,7 +884,7 @@ class _CommandAdd:
 
     def IsActive(self):
         return len(FreeCADGui.Selection.getSelection()) > 1
-        
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
@@ -896,8 +905,8 @@ class _CommandAdd:
                 FreeCADGui.doCommand("Arch.addComponents("+ss+",FreeCAD.ActiveDocument."+host.Name+")")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
-        
-        
+
+
 class _CommandRemove:
     "the Arch Add command definition"
     def GetResources(self):
@@ -907,7 +916,7 @@ class _CommandRemove:
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())
-        
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         if Draft.getType(sel[-1]) == "Space":
@@ -933,6 +942,26 @@ class _CommandRemove:
         FreeCAD.ActiveDocument.recompute()
 
 
+class _CommandCutPlane:
+    "the Arch CutPlane command definition"
+    def GetResources(self):
+       return {'Pixmap'  : 'Arch_CutPlane',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut object"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut the object with plane")}
+
+    def IsActive(self):
+        return len(FreeCADGui.Selection.getSelection()) > 1
+
+    def Activated(self):
+        face = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+        archObject = FreeCADGui.Selection.getSelectionEx()[0]
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Cutting")))
+        FreeCADGui.addModule("Arch")
+        FreeCADGui.doCommand("Arch.cutComponent(face,archObject")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+
+
 class _CommandSplitMesh:
     "the Arch SplitMesh command definition"
     def GetResources(self):
@@ -942,7 +971,7 @@ class _CommandSplitMesh:
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())
-        
+
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
             sel = FreeCADGui.Selection.getSelection()
@@ -957,7 +986,7 @@ class _CommandSplitMesh:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
-            
+
 class _CommandMeshToShape:
     "the Arch MeshToShape command definition"
     def GetResources(self):
@@ -967,7 +996,7 @@ class _CommandMeshToShape:
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())
-        
+
     def Activated(self):
         if FreeCADGui.Selection.getSelection():
             f = FreeCADGui.Selection.getSelection()[0]
@@ -1002,7 +1031,7 @@ class _CommandSelectNonSolidMeshes:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
+
     def Activated(self):
         msel = []
         if FreeCADGui.Selection.getSelection():
@@ -1030,7 +1059,7 @@ class _CommandRemoveShape:
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())
-        
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         removeShape(sel)
@@ -1044,7 +1073,7 @@ class _CommandCloseHoles:
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())
-        
+
     def Activated(self):
         for o in FreeCADGui.Selection.getSelection():
             s = closeHole(o.Shape)
@@ -1060,7 +1089,7 @@ class _CommandCheck:
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())
-        
+
     def Activated(self):
         result = check(FreeCADGui.Selection.getSelection())
         if not result:
@@ -1095,7 +1124,7 @@ class _CommandSurvey:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
+
     def Activated(self):
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommandGui("Arch.survey()")
@@ -1110,7 +1139,7 @@ class _ToggleIfcBrepFlag:
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())
-        
+
     def Activated(self):
         for o in FreeCADGui.Selection.getSelection():
             toggleIfcBrepFlag(o)
