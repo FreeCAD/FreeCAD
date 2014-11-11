@@ -751,7 +751,8 @@ def survey(callback=False):
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Area: "+ t.decode("utf8")  + "\n")
                                     elif "Edge" in el:
                                         t = FreeCAD.Units.Quantity(e.Length,FreeCAD.Units.Length)
-                                        t = t.encode("utf8").getUserPreferred()[0]
+                                        t = t.getUserPreferred()[0]
+                                        t = t.encode("utf8")
                                         anno.LabelText = "l " + t
                                         FreeCAD.Console.PrintMessage("Object: " + n + ", Element: " + el + ", Length: " + t + "\n")
                                     elif "Vertex" in el:
