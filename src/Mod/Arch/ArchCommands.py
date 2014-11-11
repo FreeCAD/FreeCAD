@@ -394,14 +394,14 @@ def getCutVolume(cutplane,shapes):
         return cutface,cutvolume,invcutvolume
 
 def cutComponent(cutPlane, archObject):
-	"""cut object from a plan"""
-    cutVolume = Arch.getCutVolume(cutPlane, archObject.Object.Shape)
+    """cut object from a plan"""
+    cutVolume = getCutVolume(cutPlane, archObject.Object.Shape)
     cutVolume = cutVolume[2]
     if cutVolume:
-        obj = App.activeDocument().addObject("Part::Feature", "CutVolume")
+        obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "CutVolume")
         obj.Shape = cutVolume
         # add substraction component to Arch object
-        return Arch.removeComponents(obj,archObject.Object)
+        return removeComponents(obj,archObject.Object)
 
 def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
     import Part, MeshPart, DraftGeomUtils
@@ -957,7 +957,7 @@ class _CommandCutPlane:
         archObject = FreeCADGui.Selection.getSelectionEx()[0]
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Cutting")))
         FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand("Arch.cutComponent(face,archObject")
+        FreeCADGui.doCommand("Arch.cutComponent(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0],FreeCADGui.Selection.getSelectionEx()[0])")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -1148,6 +1148,7 @@ class _ToggleIfcBrepFlag:
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Add',_CommandAdd())
     FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
+    FreeCADGui.addCommand('Arch_CutPlane',_CommandCutPlane())
     FreeCADGui.addCommand('Arch_SplitMesh',_CommandSplitMesh())
     FreeCADGui.addCommand('Arch_MeshToShape',_CommandMeshToShape())
     FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes())
