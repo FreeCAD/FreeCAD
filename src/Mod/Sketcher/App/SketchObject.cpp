@@ -257,8 +257,20 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
         const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle*>(geo);
         if (PosId == mid)
             return circle->getCenter();
+    } else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse*>(geo);
+        if (PosId == mid)
+            return ellipse->getCenter();
     } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
         const Part::GeomArcOfCircle *aoc = dynamic_cast<const Part::GeomArcOfCircle*>(geo);
+        if (PosId == start)
+            return aoc->getStartPoint();
+        else if (PosId == end)
+            return aoc->getEndPoint();
+        else if (PosId == mid)
+            return aoc->getCenter();
+    } else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+        const Part::GeomArcOfEllipse *aoc = dynamic_cast<const Part::GeomArcOfEllipse*>(geo);
         if (PosId == start)
             return aoc->getStartPoint();
         else if (PosId == end)
@@ -944,7 +956,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
             return 0;
         }
-
+    } else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+            // TODO: Ellipse Trim support
+            return 0;
     } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
         const Part::GeomArcOfCircle *aoc = dynamic_cast<const Part::GeomArcOfCircle*>(geo);
         Base::Vector3d center = aoc->getCenter();
@@ -1490,7 +1504,17 @@ void SketchObject::rebuildVertexIndex(void)
         } else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(mid);
+        } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(mid);
         } else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(start);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(end);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(mid);
+        } else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(start);
             VertexId2GeoId.push_back(i);

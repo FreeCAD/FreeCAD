@@ -151,6 +151,38 @@ void EllipsePy::setMinorRadius(Py::Float arg)
     ellipse->SetMinorRadius((double)arg);
 }
 
+Py::Float EllipsePy::getAngleXU(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+    
+    gp_Pnt center = ellipse->Axis().Location();
+    gp_Dir normal = ellipse->Axis().Direction();
+    gp_Dir xdir = ellipse->XAxis().Direction();
+        
+    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
+    
+    return Py::Float(-xdir.AngleWithRef(xdirref.XDirection(),normal));
+
+}
+
+void EllipsePy::setAngleXU(Py::Float arg)
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+
+
+    gp_Pnt center = ellipse->Axis().Location();
+    gp_Dir normal = ellipse->Axis().Direction();
+    
+    gp_Ax1 normaxis(center, normal);
+    
+    gp_Ax2 xdirref(center, normal);
+    
+    xdirref.Rotate(normaxis,arg);
+    
+    ellipse->SetPosition(xdirref);
+
+}
+
 Py::Float EllipsePy::getEccentricity(void) const
 {
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());

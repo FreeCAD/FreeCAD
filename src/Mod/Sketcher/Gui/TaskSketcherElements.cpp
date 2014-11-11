@@ -148,7 +148,7 @@ void ElementView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Constraint_Length","Length Constraint","Sketcher_ConstrainDistance",doLengthConstraint,true)
     CONTEXT_ITEM("Constraint_Radius","Radius Constraint","Sketcher_ConstrainRadius",doRadiusConstraint,true)
     CONTEXT_ITEM("Constraint_InternalAngle","Angle Constraint","Sketcher_ConstrainAngle",doAngleConstraint,true)
-    
+  
     menu.addSeparator();
     
     CONTEXT_ITEM("Sketcher_AlterConstruction","Toggle construction line","Sketcher_ToggleConstruction",doToggleConstruction,true)
@@ -638,7 +638,12 @@ void TaskSketcherElements::slotElementsChanged(void)
     QIcon Sketcher_Element_Line_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_EndPoint") );
     QIcon Sketcher_Element_Line_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_StartingPoint") );
     QIcon Sketcher_Element_Point_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Point_StartingPoint") );
-
+    QIcon Sketcher_Element_Ellipse_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_Edge_2") );
+    QIcon Sketcher_Element_Ellipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_CentrePoint") );
+    QIcon Sketcher_Element_ArcOfEllipse_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfEllipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfEllipse_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfEllipse_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_End_Point") );
     QIcon none( Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid") );
 
     assert(sketchView);
@@ -654,29 +659,41 @@ void TaskSketcherElements::slotElementsChanged(void)
       Base::Type type = (*it)->getTypeId();      
       
       ui->listWidgetElements->addItem(new ElementItem(
-        (type == Part::GeomPoint::getClassTypeId()         && element==1) ? Sketcher_Element_Point_StartingPoint :
-        (type == Part::GeomLineSegment::getClassTypeId()  && element==0) ? Sketcher_Element_Line_Edge :
-        (type == Part::GeomLineSegment::getClassTypeId()  && element==1) ? Sketcher_Element_Line_StartingPoint :
-        (type == Part::GeomLineSegment::getClassTypeId()  && element==2) ? Sketcher_Element_Line_EndPoint :
-        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Arc_Edge :
-        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==1) ? Sketcher_Element_Arc_StartingPoint :
-        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==2) ? Sketcher_Element_Arc_EndPoint :
-        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Arc_MidPoint :
-        (type == Part::GeomCircle::getClassTypeId()        && element==0) ? Sketcher_Element_Circle_Edge :
-        (type == Part::GeomCircle::getClassTypeId()        && element==3) ? Sketcher_Element_Circle_MidPoint :
+        (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? Sketcher_Element_Line_Edge :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==1) ? Sketcher_Element_Line_StartingPoint :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==2) ? Sketcher_Element_Line_EndPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==0) ? Sketcher_Element_Arc_Edge :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==1) ? Sketcher_Element_Arc_StartingPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==2) ? Sketcher_Element_Arc_EndPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==3) ? Sketcher_Element_Arc_MidPoint :
+        (type == Part::GeomCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Circle_Edge :
+        (type == Part::GeomCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Circle_MidPoint :
+        (type == Part::GeomEllipse::getClassTypeId()        && element==0) ? Sketcher_Element_Ellipse_Edge :
+        (type == Part::GeomEllipse::getClassTypeId()        && element==3) ? Sketcher_Element_Ellipse_MidPoint :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfEllipse_Edge :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfEllipse_StartingPoint :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfEllipse_EndPoint :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfEllipse_MidPoint :
         none,
-        type == Part::GeomPoint::getClassTypeId()         ? ( isNamingBoxChecked ?
-                                                            (tr("Point") + QString::fromLatin1("(Edge%1)").arg(i)):
-                                                            (QString::fromLatin1("%1-").arg(i)+tr("Point")))         :
-        type == Part::GeomLineSegment::getClassTypeId()        ? ( isNamingBoxChecked ?
-                                                            (tr("Line") + QString::fromLatin1("(Edge%1)").arg(i)):
-                                                            (QString::fromLatin1("%1-").arg(i)+tr("Line")))         :
-        type == Part::GeomArcOfCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
-                                                            (tr("Arc") + QString::fromLatin1("(Edge%1)").arg(i)):
-                                                            (QString::fromLatin1("%1-").arg(i)+tr("Arc")))         :
-        type == Part::GeomCircle::getClassTypeId()        ? ( isNamingBoxChecked ?
-                                                            (tr("Circle") + QString::fromLatin1("(Edge%1)").arg(i)):
-                                                            (QString::fromLatin1("%1-").arg(i)+tr("Circle")))         :
+        type == Part::GeomPoint::getClassTypeId()           ? ( isNamingBoxChecked ?
+                                                                (tr("Point") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Point")))         :
+        type == Part::GeomLineSegment::getClassTypeId()     ? ( isNamingBoxChecked ?
+                                                                (tr("Line") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Line")))         :
+        type == Part::GeomArcOfCircle::getClassTypeId()     ? ( isNamingBoxChecked ?
+                                                                (tr("Arc") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Arc")))         :
+        type == Part::GeomCircle::getClassTypeId()          ? ( isNamingBoxChecked ?
+                                                                (tr("Circle") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Circle")))         :
+        type == Part::GeomEllipse::getClassTypeId()         ? ( isNamingBoxChecked ? 
+                                                                (tr("Ellipse") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Ellipse")))   :
+        type == Part::GeomArcOfEllipse::getClassTypeId()    ? ( isNamingBoxChecked ? 
+                                                                (tr("Elliptical Arc") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Elliptical Arc")))   :                                                                         
         ( isNamingBoxChecked ?
           (tr("Other") + QString::fromLatin1("(Edge%1)").arg(i)):
           (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
@@ -749,16 +766,17 @@ void TaskSketcherElements::on_listWidgetElements_filterShortcutPressed()
       
       switch(element)
       {
+
         case 0: // Edge
-          element =        ( type == Part::GeomCircle::getClassTypeId() ) ? 3 : 1;
+          element =        ( type == Part::GeomCircle::getClassTypeId() || type == Part::GeomEllipse::getClassTypeId() ) ? 3 : 1;
           break;
         case 1: // StartingPoint
-          element =        ( type == Part::GeomCircle::getClassTypeId() ) ? 3 :
-                        ( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 2;
+          element =        ( type == Part::GeomCircle::getClassTypeId() || type == Part::GeomEllipse::getClassTypeId() ) ? 3 :
+                            ( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 2;
           break;
         case 2: // EndPoint
           element =        ( type == Part::GeomLineSegment::getClassTypeId() ) ? 0 :
-                        ( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 3;
+                            ( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 3;
           break;
         case 3: // MidPoint
           element =        ( type == Part::GeomPoint::getClassTypeId()  ) ? 1 : 0;
@@ -850,22 +868,34 @@ void TaskSketcherElements::updateIcons(int element)
     QIcon Sketcher_Element_Line_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_EndPoint") );
     QIcon Sketcher_Element_Line_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Line_StartingPoint") );
     QIcon Sketcher_Element_Point_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Point_StartingPoint") );
+    QIcon Sketcher_Element_Ellipse_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_Edge_2") );
+    QIcon Sketcher_Element_Ellipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Ellipse_CentrePoint") );
+    QIcon Sketcher_Element_ArcOfEllipse_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfEllipse_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfEllipse_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfEllipse_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Elliptical_Arc_End_Point") );
     QIcon none( Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid") );
     
     for (int i=0;i<ui->listWidgetElements->count(); i++) {
       Base::Type type = static_cast<ElementItem *>(ui->listWidgetElements->item(i))->GeometryType;
 
       ui->listWidgetElements->item(i)->setIcon(
-        (type == Part::GeomPoint::getClassTypeId()         && element==1) ? Sketcher_Element_Point_StartingPoint :
-        (type == Part::GeomLineSegment::getClassTypeId()  && element==0) ? Sketcher_Element_Line_Edge :
-        (type == Part::GeomLineSegment::getClassTypeId()  && element==1) ? Sketcher_Element_Line_StartingPoint :
-        (type == Part::GeomLineSegment::getClassTypeId()  && element==2) ? Sketcher_Element_Line_EndPoint :
-        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Arc_Edge :
-        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==1) ? Sketcher_Element_Arc_StartingPoint :
-        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==2) ? Sketcher_Element_Arc_EndPoint :
-        (type == Part::GeomArcOfCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Arc_MidPoint :
-        (type == Part::GeomCircle::getClassTypeId()        && element==0) ? Sketcher_Element_Circle_Edge :
-        (type == Part::GeomCircle::getClassTypeId()        && element==3) ? Sketcher_Element_Circle_MidPoint :
+        (type == Part::GeomPoint::getClassTypeId()          && element==1) ? Sketcher_Element_Point_StartingPoint :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==0) ? Sketcher_Element_Line_Edge :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==1) ? Sketcher_Element_Line_StartingPoint :
+        (type == Part::GeomLineSegment::getClassTypeId()    && element==2) ? Sketcher_Element_Line_EndPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==0) ? Sketcher_Element_Arc_Edge :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==1) ? Sketcher_Element_Arc_StartingPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==2) ? Sketcher_Element_Arc_EndPoint :
+        (type == Part::GeomArcOfCircle::getClassTypeId()    && element==3) ? Sketcher_Element_Arc_MidPoint :
+        (type == Part::GeomCircle::getClassTypeId()         && element==0) ? Sketcher_Element_Circle_Edge :
+        (type == Part::GeomCircle::getClassTypeId()         && element==3) ? Sketcher_Element_Circle_MidPoint :
+        (type == Part::GeomEllipse::getClassTypeId()        && element==0) ? Sketcher_Element_Ellipse_Edge :
+        (type == Part::GeomEllipse::getClassTypeId()        && element==3) ? Sketcher_Element_Ellipse_MidPoint :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfEllipse_Edge :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfEllipse_StartingPoint :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfEllipse_EndPoint :
+        (type == Part::GeomArcOfEllipse::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfEllipse_MidPoint :
         none);
     }
 }
