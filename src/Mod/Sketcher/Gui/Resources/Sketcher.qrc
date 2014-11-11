@@ -34,6 +34,9 @@
         <file>icons/Sketcher_AlterConstruction.svg</file>
         <file>icons/Sketcher_AlterFillet.svg</file>
         <file>icons/Sketcher_CloseShape.svg</file>
+        <file>icons/Sketcher_Conics.svg</file>
+        <file>icons/Sketcher_Conics_Ellipse_3points.svg</file>
+        <file>icons/Sketcher_Conics_Ellipse_Center.svg</file>
         <file>icons/Sketcher_ConnectLines.svg</file>
         <file>icons/Sketcher_ConstrainCoincident.svg</file>
         <file>icons/Sketcher_ConstrainDistance.svg</file>
