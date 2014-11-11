@@ -145,8 +145,7 @@ template <>
 inline void SketcherAddWorkspaceArcs<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
     geom    << "Sketcher_CompCreateArc"
             << "Sketcher_CompCreateCircle"
-            << "Sketcher_CompCreateEllipse"
-            << "Sketcher_CreateArcOfEllipse";
+            << "Sketcher_CompCreateConic";
 }
 template <typename T>
 void SketcherAddWorkspaceRegularPolygon(T& geom);

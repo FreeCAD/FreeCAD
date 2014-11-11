@@ -1943,11 +1943,8 @@ public:
                 setPositionText(onSketchPos, text);
 
                 sketchgui->drawEdit(editCurve);
-                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstr2);
-                    return;
-                }
+                // Suggestions for ellipse and curves are disabled because many tangent constraints
+                // need an intermediate point or line.
             } else if (mode == STATUS_SEEK_B) {
                 solveEllipse(onSketchPos);
                 approximateEllipse();
@@ -1958,11 +1955,6 @@ public:
                 setPositionText(onSketchPos, text);
 
                 sketchgui->drawEdit(editCurve);
-                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstr2);
-                    return;
-                }
             }
         } else { // method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
@@ -1982,11 +1974,6 @@ public:
                 setPositionText(onSketchPos, text);
 
                 sketchgui->drawEdit(editCurve);
-                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstr2);
-                    return;
-                }
             } else if ((mode == STATUS_SEEK_A) || (mode == STATUS_SEEK_B)) {
                 solveEllipse(onSketchPos);
                 approximateEllipse();
@@ -1997,11 +1984,6 @@ public:
                 setPositionText(onSketchPos, text);
 
                 sketchgui->drawEdit(editCurve);
-                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstr2);
-                    return;
-                }
             }
         }
         applyCursor();
@@ -2055,7 +2037,7 @@ public:
         return true;
     }
 protected:
-    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+    std::vector<AutoConstraint> sugConstr1;
 private:
     SelectMode mode;
     /// the method of constructing the ellipse
@@ -2532,14 +2514,8 @@ private:
 
         // add auto constraints for the center point
         if (sugConstr1.size() > 0) {
-            createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
+            createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
             sugConstr1.clear();
-        }
-
-        // add suggested constraints for circumference
-        if (sugConstr2.size() > 0) {
-            //createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::none);
-            sugConstr2.clear();
         }
 
         // delete the temp construction curve from the sketch
@@ -2564,7 +2540,7 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
     sToolTipText    = QT_TR_NOOP("Create an ellipse by center in the sketch");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_CreateEllipse";
+    sPixmap         = "Sketcher_Conics_Ellipse_Center";
     eType           = ForEdit;
 }
 
@@ -2593,7 +2569,7 @@ CmdSketcherCreateEllipseBy3Points::CmdSketcherCreateEllipseBy3Points()
     sToolTipText    = QT_TR_NOOP("Create an ellipse by 3 points in the sketch");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_CreateEllipse"; /// @todo need ellipse icon with periapsis, apoapsis, and b point
+    sPixmap         = "Sketcher_Conics_Ellipse_3points";
     eType           = ForEdit;
 }
 
@@ -2606,96 +2582,6 @@ bool CmdSketcherCreateEllipseBy3Points::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
-
-/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateEllipse'
-DEF_STD_CMD_ACL(CmdSketcherCompCreateEllipse);
-
-/**
- * @brief ctor
- */
-CmdSketcherCompCreateEllipse::CmdSketcherCompCreateEllipse()
-  : Command("Sketcher_CompCreateEllipse")
-{
-    sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Create ellipse");
-    sToolTipText    = QT_TR_NOOP("Create an ellipse in the sketch");
-    sWhatsThis      = sToolTipText;
-    sStatusTip      = sToolTipText;
-    eType           = ForEdit;
-}
-
-/**
- * @brief Instantiates the ellipse handler when the ellipse command activated
- * @param int iMsg
- */
-void CmdSketcherCompCreateEllipse::activated(int iMsg)
-{
-    if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(iMsg));
-    } else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(iMsg));
-    } else {
-        return;
-    }
-
-    // Since the default icon is reset when enabing/disabling the command we have
-    // to explicitly set the icon of the used command.
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    assert(iMsg < a.size());
-    pcAction->setIcon(a[iMsg]->icon());
-}
-
-Gui::Action * CmdSketcherCompCreateEllipse::createAction(void)
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* ellipseByCenter = pcAction->addAction(QString());
-    ellipseByCenter->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateEllipse", QSize(24,24)));
-     /// @todo replace with correct icon
-    QAction* ellipseBy3Points = pcAction->addAction(QString());
-    ellipseBy3Points->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateEllipse", QSize(24,24)));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    // set ellipse by center, a, b as default method
-    pcAction->setIcon(ellipseByCenter->icon());
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdSketcherCompCreateEllipse::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction)
-        return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* ellipseByCenter = a[0];
-    ellipseByCenter->setText(QApplication::translate("CmdSketcherCompCreateEllipse","Center and radii"));
-    ellipseByCenter->setToolTip(QApplication::translate("Sketcher_CreateEllipse","Create an ellipse by its center and two radii"));
-    ellipseByCenter->setStatusTip(QApplication::translate("Sketcher_CreateEllipse","Create an ellipse by its center and two radii"));
-    QAction* ellipseBy3Points = a[1];
-    ellipseBy3Points->setText(QApplication::translate("CmdSketcherCompCreateEllipse","Periapsis, apoapsis, minor radius"));
-    ellipseBy3Points->setToolTip(QApplication::translate("Sketcher_CreateEllipse","Create a ellipse by periapsis, apoapsis, and minor radius"));
-    ellipseBy3Points->setStatusTip(QApplication::translate("Sketcher_CreateEllipse","Create a ellipse by periapsis, apoapsis, and minor radius"));
-}
-
-bool CmdSketcherCompCreateEllipse::isActive(void)
-{
-    return isCreateGeoActive(getActiveGuiDocument());
-}
-
-// ======================================================================================
 
 /* XPM */
 static const char *cursor_createarcofellipse[]={
@@ -2822,7 +2708,6 @@ public:
             }
         }
         else if (Mode==STATUS_SEEK_Fourth) { // here we differ from ellipse creation
-            
             // angle between the major axis of the ellipse and the X axis
             double a = (axisPoint-centerPoint).Length();
             double phi = atan2(axisPoint.fY-centerPoint.fY,axisPoint.fX-centerPoint.fX);
@@ -2900,7 +2785,7 @@ public:
             unsetCursor();
             resetPositionText();
             
-            // angle between the major axis of the ellipse and the X axis
+            // angle between the major axis of the ellipse and the X axisEllipse
             double a = (axisPoint-centerPoint).Length();
             double phi = atan2(axisPoint.fY-centerPoint.fY,axisPoint.fX-centerPoint.fX);
             
@@ -3071,6 +2956,103 @@ void CmdSketcherCreateArcOfEllipse::activated(int iMsg)
 }
 
 bool CmdSketcherCreateArcOfEllipse::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateEllipse'
+DEF_STD_CMD_ACL(CmdSketcherCompCreateConic);
+
+/**
+ * @brief ctor
+ */
+CmdSketcherCompCreateConic::CmdSketcherCompCreateConic()
+  : Command("Sketcher_CompCreateConic")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create a conic");
+    sToolTipText    = QT_TR_NOOP("Create a conic in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+/**
+ * @brief Instantiates the conic handler when the conic command activated
+ * @param int iMsg
+ */
+void CmdSketcherCompCreateConic::activated(int iMsg)
+{
+    if (iMsg == 0) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(iMsg));
+    } else if (iMsg == 1) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(iMsg));
+    } else if (iMsg == 2) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfEllipse());
+    } else {
+        return;        
+    }
+
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompCreateConic::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* ellipseByCenter = pcAction->addAction(QString());
+    ellipseByCenter->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateEllipse", QSize(32,32)));
+     /// @todo replace with correct icon
+    QAction* ellipseBy3Points = pcAction->addAction(QString());
+    ellipseBy3Points->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_Conics_Ellipse_3points", QSize(32,32)));
+    
+    QAction* arcofellipse = pcAction->addAction(QString());
+    arcofellipse->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_Elliptical_Arc", QSize(32,32)));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    // set ellipse by center, a, b as default method
+    pcAction->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_Conics", QSize(32,32)));
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateConic::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* ellipseByCenter = a[0];
+    ellipseByCenter->setText(QApplication::translate("CmdSketcherCompCreateConic","Ellipse by center, major radius, point"));
+    ellipseByCenter->setToolTip(QApplication::translate("Sketcher_CreateEllipseByCenter","Create an ellipse by center, major radius and point"));
+    ellipseByCenter->setStatusTip(QApplication::translate("Sketcher_CreateEllipseByCenter","Create an ellipse by center, major radius and point"));
+    QAction* ellipseBy3Points = a[1];
+    ellipseBy3Points->setText(QApplication::translate("CmdSketcherCompCreateConic","Ellipse by Periapsis, apoapsis, minor radius"));
+    ellipseBy3Points->setToolTip(QApplication::translate("Sketcher_CreateEllipseBy3Points","Create a ellipse by periapsis, apoapsis, and minor radius"));
+    ellipseBy3Points->setStatusTip(QApplication::translate("Sketcher_CreateEllipseBy3Points","Create a ellipse by periapsis, apoapsis, and minor radius"));
+    QAction* arcofellipse = a[2];
+    arcofellipse->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of ellipse by center, major radius, endpoints"));
+    arcofellipse->setToolTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, endpoints"));
+    arcofellipse->setStatusTip(QApplication::translate("Sketcher_CreateArcOfEllipse","Create an arc of ellipse by its center, major radius, endpoints"));
+}
+
+bool CmdSketcherCompCreateConic::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
@@ -4834,7 +4816,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCompCreateCircle());
     rcCmdMgr.addCommand(new CmdSketcherCreateEllipseByCenter());
     rcCmdMgr.addCommand(new CmdSketcherCreateEllipseBy3Points());
-    rcCmdMgr.addCommand(new CmdSketcherCompCreateEllipse());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateConic());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfEllipse());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
