@@ -27,6 +27,16 @@
 #include "qp_eq.h"
 #include <Eigen/QR>
 
+#define _GCS_DEBUG 1
+
+#ifdef _GCS_DEBUG
+#include <Base/Writer.h>
+#include <Base/Reader.h>
+#include <Base/Exception.h>
+#include <Base/TimeInfo.h>
+#include <Base/Console.h>
+#endif // _GCS_DEBUG
+
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/connected_components.hpp>
 
@@ -481,6 +491,42 @@ int System::addConstraintPointOnCircle(Point &p, Circle &c, int tagId)
     return addConstraintP2PDistance(p, c.center, c.rad, tagId);
 }
 
+int System::addConstraintPointOnEllipse(Point &p, Ellipse &e, int tagId)
+{
+    // TODO: Implement real constraint => Done
+    
+    Constraint *constr = new ConstraintPointOnEllipse(p, e);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
+int System::addConstraintEllipticalArcRangeToEndPoints(Point &p, ArcOfEllipse &a, double *angle, int tagId)
+{
+    Constraint *constr = new ConstraintEllipticalArcRangeToEndPoints(p,a,angle);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
+
+int System::addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId)
+{    
+    /*       addConstraintP2PAngle(a.center, a.start, a.startAngle, tagId);
+    return       addConstraintP2PAngle(a.center, a.end, a.endAngle, tagId);*/
+    
+            addConstraintEllipticalArcRangeToEndPoints(a.start,a,a.startAngle, tagId);
+            addConstraintEllipticalArcRangeToEndPoints(a.end,a,a.endAngle, tagId);
+    
+           addConstraintPointOnArcOfEllipse(a.start, a, tagId);
+    return addConstraintPointOnArcOfEllipse(a.end, a, tagId);
+}
+
+int System::addConstraintPointOnArcOfEllipse(Point &p, ArcOfEllipse &a, int tagId)
+{
+    Constraint *constr = new ConstraintPointOnEllipse(p, a);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
 int System::addConstraintPointOnArc(Point &p, Arc &a, int tagId)
 {
     return addConstraintP2PDistance(p, a.center, a.rad, tagId);
@@ -552,6 +598,39 @@ int System::addConstraintTangent(Line &l, Circle &c, int tagId)
     return addConstraintP2LDistance(c.center, l, c.rad, tagId);
 }
 
+int System::addConstraintTangent(Line &l, Ellipse &e, int tagId)
+{
+    // TODO: real ellipse implementation => Done
+    Constraint *constr = new ConstraintEllipseTangentLine(l, e);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
+int System::addConstraintTangent(Line &l, ArcOfEllipse &a, int tagId)
+{
+    // TODO: real ellipse implementation => Done
+    Constraint *constr = new ConstraintEllipseTangentLine(l, a);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
+int System::addConstraintTangent(Ellipse &e, Circle &c, int tagId)
+{
+    // TODO: elipse
+    /*double dx = *(c.center.x) - *(e.center.x);
+    double dy = *(c.center.y) - *(e.center.y);
+    double d = sqrt(dx*dx + dy*dy);*/
+    
+    /*Constraint *constr = new ConstraintPoint2EllipseDistance(c.center,e,c.rad);
+    constr->setTag(tagId);
+    return addConstraint(constr);   */ 
+    
+    
+    //return addConstraintTangentCircumf(e.center, c.center, e.radmaj, c.rad,
+    //                                   (d < *e.radmaj || d < *c.rad), tagId);    
+    return 0;
+}
+
 int System::addConstraintTangent(Line &l, Arc &a, int tagId)
 {
     return addConstraintP2LDistance(a.center, l, a.rad, tagId);
@@ -584,6 +663,19 @@ int System::addConstraintTangent(Circle &c, Arc &a, int tagId)
                                        (d < *c.rad || d < *a.rad), tagId);
 }
 
+int System::addConstraintTangent(Ellipse &e, Arc &a, int tagId)
+{
+    // TODO: elipse
+    /*double dx = *(a.center.x) - *(e.center.x);
+    double dy = *(a.center.y) - *(e.center.y);
+    double d = sqrt(dx*dx + dy*dy);Constraint *constr = new ConstraintEllipseTangentLine(l, e);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+    return addConstraintTangentCircumf(e.center, a.center, e.radmaj, a.rad,
+                                       (d < *e.radmaj || d < *a.rad), tagId);*/
+    return 0;
+}
+
 int System::addConstraintTangentLine2Arc(Point &p1, Point &p2, Arc &a, int tagId)
 {
     addConstraintP2PCoincident(p2, a.start, tagId);
@@ -598,6 +690,18 @@ int System::addConstraintTangentArc2Line(Arc &a, Point &p1, Point &p2, int tagId
     return addConstraintP2PAngle(p1, p2, a.endAngle, incrAngle, tagId);
 }
 
+int System::addConstraintTangentLine2ArcOfEllipse(Point &p1, Point &p2, Line &l, ArcOfEllipse &a, int tagId)
+{
+    addConstraintP2PCoincident(p2, a.start, tagId);
+    return addConstraintTangent(l, a, tagId);
+}
+
+int System::addConstraintTangentArcOfEllipse2Line(ArcOfEllipse &a, Line &l, Point &p1, Point &p2, int tagId)
+{
+    addConstraintP2PCoincident(p1, a.end, tagId);
+    return addConstraintTangent(l, a, tagId);
+}
+
 int System::addConstraintTangentCircle2Arc(Circle &c, Arc &a, int tagId)
 {
     addConstraintPointOnCircle(a.start, c, tagId);
@@ -609,6 +713,19 @@ int System::addConstraintTangentCircle2Arc(Circle &c, Arc &a, int tagId)
         return addConstraintP2PAngle(c.center, a.start, a.startAngle, M_PI, tagId);
 }
 
+int System::addConstraintTangentEllipse2Arc(Ellipse &e, Arc &a, int tagId)
+{
+    // TODO: Ellipse
+    /*addConstraintPointOnEllipse(a.start, e, tagId);
+    double dx = *(a.start.x) - *(e.center.x);
+    double dy = *(a.start.y) - *(e.center.y);
+    if (dx * cos(*(a.startAngle)) + dy * sin(*(a.startAngle)) > 0)
+        return addConstraintP2PAngle(e.center, a.start, a.startAngle, 0, tagId);
+    else
+        return addConstraintP2PAngle(e.center, a.start, a.startAngle, M_PI, tagId);*/
+    return 0;
+}
+
 int System::addConstraintTangentArc2Circle(Arc &a, Circle &c, int tagId)
 {
     addConstraintPointOnCircle(a.end, c, tagId);
@@ -618,6 +735,19 @@ int System::addConstraintTangentArc2Circle(Arc &a, Circle &c, int tagId)
         return addConstraintP2PAngle(c.center, a.end, a.endAngle, 0, tagId);
     else
         return addConstraintP2PAngle(c.center, a.end, a.endAngle, M_PI, tagId);
+}
+
+int System::addConstraintTangentArc2Ellipse(Arc &a, Ellipse &e, int tagId)
+{
+    // TODO: Ellipse
+    /*addConstraintPointOnEllipse(a.end, e, tagId);
+    double dx = *(a.end.x) - *(e.center.x);
+    double dy = *(a.end.y) - *(e.center.y);
+    if (dx * cos(*(a.endAngle)) + dy * sin(*(a.endAngle)) > 0)
+        return addConstraintP2PAngle(e.center, a.end, a.endAngle, 0, tagId);
+    else
+        return addConstraintP2PAngle(e.center, a.end, a.endAngle, M_PI, tagId);*/
+    return 0;
 }
 
 int System::addConstraintTangentArc2Arc(Arc &a1, bool reverse1, Arc &a2, bool reverse2,
@@ -656,6 +786,17 @@ int System::addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId)
     return addConstraintEqual(c1.rad, c2.rad, tagId);
 }
 
+int System::addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId)
+{
+    // TODO: Ellipse
+    //addConstraintEqual(e1.radmaj, e2.radmaj, tagId);
+    addConstraintEqual(e1.radmin, e2.radmin, tagId);
+    
+    Constraint *constr = new ConstraintEqualMajorAxesEllipse(e1,e2);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
 int System::addConstraintEqualRadius(Circle &c1, Arc &a2, int tagId)
 {
     return addConstraintEqual(c1.rad, a2.rad, tagId);
@@ -676,6 +817,74 @@ int System::addConstraintP2PSymmetric(Point &p1, Point &p2, Point &p, int tagId)
 {
     addConstraintPointOnPerpBisector(p, p1, p2, tagId);
     return addConstraintPointOnLine(p, p1, p2, tagId);
+}
+
+int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId)
+{
+    Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);
+    constr->setTag(tagId);
+    return addConstraint(constr);   
+}
+
+int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId)
+{
+    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMajorX,tagId);
+    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMajorY,tagId);
+    addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMajorX,tagId);
+    return addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMajorY,tagId);    
+}
+
+int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse &e, Point &p1, Point &p2, int tagId)
+{
+    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMinorX,tagId);
+    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipsePositiveMinorY,tagId);
+    addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMinorX,tagId);
+    return addConstraintInternalAlignmentPoint2Ellipse(e,p2,EllipseNegativeMinorY,tagId);    
+}
+
+int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse &e, Point &p1, int tagId)
+{
+    return addConstraintP2PCoincident(e.focus1,p1);
+}
+
+int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse &e, Point &p1, int tagId)
+{
+    addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseFocus2X,tagId);
+    return addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseFocus2Y,tagId);
+}
+
+int System::addConstraintInternalAlignmentPoint2Ellipse(ArcOfEllipse &a, Point &p1, InternalAlignmentType alignmentType, int tagId)
+{
+    Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(a, p1, alignmentType);
+    constr->setTag(tagId);
+    return addConstraint(constr);   
+}
+
+int System::addConstraintInternalAlignmentEllipseMajorDiameter(ArcOfEllipse &a, Point &p1, Point &p2, int tagId)
+{
+    addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipsePositiveMajorX,tagId);
+    addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipsePositiveMajorY,tagId);
+    addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipseNegativeMajorX,tagId);
+    return addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipseNegativeMajorY,tagId);    
+}
+
+int System::addConstraintInternalAlignmentEllipseMinorDiameter(ArcOfEllipse &a, Point &p1, Point &p2, int tagId)
+{
+    addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipsePositiveMinorX,tagId);
+    addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipsePositiveMinorY,tagId);
+    addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipseNegativeMinorX,tagId);
+    return addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipseNegativeMinorY,tagId);    
+}
+
+int System::addConstraintInternalAlignmentEllipseFocus1(ArcOfEllipse &a, Point &p1, int tagId)
+{
+    return addConstraintP2PCoincident(a.focus1,p1);
+}
+
+int System::addConstraintInternalAlignmentEllipseFocus2(ArcOfEllipse &a, Point &p1, int tagId)
+{
+    addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipseFocus2X,tagId);
+    return addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipseFocus2Y,tagId);
 }
 
 void System::rescaleConstraint(int id, double coeff)
@@ -1465,12 +1674,27 @@ int System::diagnose()
                 J(count-1,j) = (*constr)->grad(plist[j]);
         }
     }
-
+    
+    #ifdef _GCS_DEBUG
+    // Debug code starts
+    std::stringstream stream;
+    
+    stream << "[";
+    stream << J ;
+    stream << "]";
+    
+    const std::string tmp = stream.str();
+    
+    Base::Console().Warning(tmp.c_str());
+    // Debug code ends
+    #endif
+    
     if (J.rows() > 0) {
         Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT(J.topRows(count).transpose());
         Eigen::MatrixXd Q = qrJT.matrixQ ();
         int paramsNum = qrJT.rows();
         int constrNum = qrJT.cols();
+        //qrJT.setThreshold(0);
         int rank = qrJT.rank();
 
         Eigen::MatrixXd R;

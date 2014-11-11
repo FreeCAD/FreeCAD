@@ -241,6 +241,27 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
                 tangDeviation = projDist;
             }
 
+        } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+            // TODO: Ellipse
+            const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>((*it));
+
+            Base::Vector3d center = ellipse->getCenter();
+            Base::Vector3d tmpPos(Pos.fX, Pos.fY, 0.f);
+
+            double radius = ellipse->getMajorRadius();
+
+            Base::Vector3d projPnt(0.f, 0.f, 0.f);
+            projPnt = projPnt.ProjToLine(center - tmpPos, Base::Vector3d(Dir.fX, Dir.fY));
+            double projDist = projPnt.Length();
+
+            if ( (projDist < radius + tangDeviation ) && (projDist > radius - tangDeviation)) {
+                //Find if nearest
+                if (projDist < tangDeviation) {
+                    tangId = i;
+                    tangDeviation = projDist;
+                }
+            }
+
         } else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>((*it));
 

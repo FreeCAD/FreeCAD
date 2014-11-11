@@ -73,7 +73,7 @@ void PropertyConstraintListItem::initialize()
             (*it)->Type == Sketcher::DistanceX ||
             (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Angle) {
+            (*it)->Type == Sketcher::Angle ) {
 
             PropertyUnitItem* item = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
 
@@ -146,10 +146,10 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             (*it)->Type == Sketcher::DistanceX ||
             (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Angle) {
+            (*it)->Type == Sketcher::Angle ) {
 
             Base::Quantity quant;
-            if ((*it)->Type == Sketcher::Angle) {
+            if ((*it)->Type == Sketcher::Angle ) {
                 double datum = Base::toDegrees<double>((*it)->Value);
                 quant.setUnit(Base::Unit::Angle);
                 quant.setValue(datum);
@@ -220,7 +220,7 @@ bool PropertyConstraintListItem::event (QEvent* ev)
                     (*it)->Type == Sketcher::DistanceX ||
                     (*it)->Type == Sketcher::DistanceY ||
                     (*it)->Type == Sketcher::Radius ||
-                    (*it)->Type == Sketcher::Angle) {
+                    (*it)->Type == Sketcher::Angle ) {
 
                     // Get the internal name
                     QString internalName = QString::fromLatin1("Constraint%1").arg(id+1);
