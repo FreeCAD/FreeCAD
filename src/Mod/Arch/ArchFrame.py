@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2013                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -37,7 +37,7 @@ __url__ = "http://www.freecadweb.org"
 
 # Possible roles for frames
 Roles = ['Covering','Member','Railing','Shading Device','Tendon']
-    
+
 def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
     """makeFrame(baseobj,profile,[name]): creates a frame object from a base sketch (or any other object
     containing wires) and a profile object (an extrudable 2D object containing faces or closed wires)"""
@@ -55,7 +55,7 @@ def makeFrame(baseobj,profile,name=translate("Arch","Frame")):
 
 class _CommandFrame:
     "the Arch Frame command definition"
-    
+
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Frame',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Frame","Frame"),
@@ -77,7 +77,7 @@ class _CommandFrame:
 
 class _Frame(ArchComponent.Component):
     "A parametric frame object"
-    
+
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLink","Profile","Arch","The profile used to build this frame")
@@ -133,14 +133,16 @@ class _Frame(ArchComponent.Component):
                 bpoint = e.Vertexes[0].Point
                 profile = baseprofile.copy()
                 #basepoint = profile.Placement.Base
-                #basepoint = profile.CenterOfMass
-                #profile.translate(bpoint.sub(basepoint))
-                if obj.BasePoint == 0 :
-                    basepoint = profile.CenterOfMass
-                    profile.translate(bpoint.sub(basepoint))
+                if hasattr(obj,"BasePoint"):
+                    if obj.BasePoint == 0 :
+                        basepoint = profile.CenterOfMass
+                        profile.translate(bpoint.sub(basepoint))
+                    else :
+                        # TODO add mid point of edges and make an ordered list point, mid point , ...
+                        basepoint = profile.Vertexes[obj.BasePoint - 1].Point
+                        profile.translate(bpoint.sub(basepoint))
                 else :
-                    # TODO add mid point of edges and make an ordered list point, mid point , ...
-                    basepoint = profile.Vertexes[obj.BasePoint - 1].Point
+                    basepoint = profile.CenterOfMass
                     profile.translate(bpoint.sub(basepoint))
                 if obj.Align:
                     axis = profile.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
@@ -161,7 +163,7 @@ class _Frame(ArchComponent.Component):
                 obj.Shape = Part.makeCompound(shapes)
                 obj.Placement = pl
 
-        
+
 class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
     "A View Provider for the Frame object"
 
@@ -171,7 +173,7 @@ class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Frame_Tree.svg"
-        
+
     def claimChildren(self):
         p = []
         if hasattr(self,"Object"):
