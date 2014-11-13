@@ -136,14 +136,12 @@ class _Frame(ArchComponent.Component):
                 if hasattr(obj,"BasePoint"):
                     if obj.BasePoint == 0 :
                         basepoint = profile.CenterOfMass
-                        profile.translate(bpoint.sub(basepoint))
                     else :
                         # TODO add mid point of edges and make an ordered list point, mid point , ...
                         basepoint = profile.Vertexes[obj.BasePoint - 1].Point
-                        profile.translate(bpoint.sub(basepoint))
                 else :
                     basepoint = profile.CenterOfMass
-                    profile.translate(bpoint.sub(basepoint))
+                profile.translate(bpoint.sub(basepoint))
                 if obj.Align:
                     axis = profile.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))
                     angle = bvec.getAngle(axis)
