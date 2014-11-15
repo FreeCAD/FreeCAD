@@ -114,7 +114,7 @@ istream & StdMeshers_MaxElementArea::LoadFrom(istream & load)
 {
   bool isOK = true;
   double a;
-  isOK = (load >> a);
+  isOK = !(load >> a).bad();
   if (isOK) 
     this->_maxArea = a;
   else 
