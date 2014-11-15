@@ -14,7 +14,6 @@ cmake_install.cmake
 *~
 CMakeFiles/
 *qrc.depends
-qrc_*.cpp
 ui_*.h
 moc_*.cpp
 Makefile
@@ -27,3 +26,4 @@ install_manifest.txt
 /lib/
 /Mod/
 /ZERO_CHECK.dir/
+/build/
