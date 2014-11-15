@@ -120,10 +120,10 @@ ostream & StdMeshers_Arithmetic1D::SaveTo(ostream & save)
 istream & StdMeshers_Arithmetic1D::LoadFrom(istream & load)
 {
   bool isOK = true;
-  isOK = (load >> _begLength);
+  isOK = !(load >> _begLength).bad();
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
-  isOK = (load >> _endLength);
+  isOK = !(load >> _endLength).bad();
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
   return load;

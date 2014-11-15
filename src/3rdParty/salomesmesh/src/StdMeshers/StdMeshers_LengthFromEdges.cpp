@@ -106,7 +106,7 @@ istream & StdMeshers_LengthFromEdges::LoadFrom(istream & load)
 {
   bool isOK = true;
   int a;
-  isOK = (load >> a);
+  isOK = !(load >> a).bad();
   if (isOK) 
     this->_mode = a;
   else 
