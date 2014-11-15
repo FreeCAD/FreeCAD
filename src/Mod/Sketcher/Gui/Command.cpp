@@ -48,6 +48,7 @@
 #include "SketchOrientationDialog.h"
 #include "ViewProviderSketch.h"
 #include "TaskSketcherValidation.h"
+#include "../App/Constraint.h"
 
 using namespace std;
 using namespace SketcherGui;
@@ -496,7 +497,74 @@ bool CmdSketcherValidateSketch::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
+DEF_STD_CMD_A(CmdSketcherMergeSketchs);
 
+CmdSketcherMergeSketchs::CmdSketcherMergeSketchs()
+  : Command("Sketcher_MergeSketchs")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Merge sketches");
+    sToolTipText    = QT_TR_NOOP("Merge sketches");
+    sWhatsThis      = "Sketcher_MergeSketches";
+    sStatusTip      = sToolTipText;
+    eType           = 0;
+}
+
+void CmdSketcherMergeSketchs::activated(int iMsg)
+{
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+    if (selection.size() < 2) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdSketcherMergeSketchs", "Wrong selection"),
+            qApp->translate("CmdSketcherMergeSketchs", "Select at least two sketches, please."));
+        return;
+    }
+
+    Sketcher::SketchObject* Obj1 = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    
+    App::Document* doc = App::GetApplication().getActiveDocument();
+       
+    // create Sketch 
+    std::string FeatName = getUniqueObjectName("Sketch");
+
+    openCommand("Create a merge Sketch");
+    doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
+    
+    Sketcher::SketchObject* mergesketch = static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
+    
+    int baseGeometry=0;
+    int baseConstraints=0;
+    
+    for (std::vector<Gui::SelectionObject>::const_iterator it=selection.begin(); it != selection.end(); ++it) {
+        const Sketcher::SketchObject* Obj = static_cast<const Sketcher::SketchObject*>((*it).getObject());
+        int addedGeometries=mergesketch->addGeometry(Obj->getInternalGeometry());
+        
+        int addedConstraints=mergesketch->addConstraints(Obj->Constraints.getValues());
+        
+        for(int i=0; i<=(addedConstraints-baseConstraints); i++){
+                Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
+                
+                if(constraint->First!=Sketcher::Constraint::GeoUndef || constraint->First==-1 || constraint->First==-2) // not x, y axes or origin
+                    constraint->First+=baseGeometry;
+                if(constraint->Second!=Sketcher::Constraint::GeoUndef || constraint->Second==-1 || constraint->Second==-2) // not x, y axes or origin
+                    constraint->Second+=baseGeometry;
+                if(constraint->Third!=Sketcher::Constraint::GeoUndef || constraint->Third==-1 || constraint->Third==-2) // not x, y axes or origin
+                    constraint->Third+=baseGeometry;
+        }
+            
+        baseGeometry=addedGeometries+1;
+        baseConstraints=addedConstraints+1;
+    }
+    
+    doCommand(Gui,"App.activeDocument().recompute()");
+    
+}
+
+bool CmdSketcherMergeSketchs::isActive(void)
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
 
 
 
@@ -511,4 +579,5 @@ void CreateSketcherCommands(void)
     rcCmdMgr.addCommand(new CmdSketcherMapSketch());
     rcCmdMgr.addCommand(new CmdSketcherViewSketch());
     rcCmdMgr.addCommand(new CmdSketcherValidateSketch());
+    rcCmdMgr.addCommand(new CmdSketcherMergeSketchs());
 }
