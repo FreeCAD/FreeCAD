@@ -582,7 +582,7 @@ bool Document::saveAs(void)
 
         // save as new file name
         Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs('%s')"
+        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(\"%s\")"
                                        , DocName, (const char*)fn.toUtf8());
         setModified(false);
 
