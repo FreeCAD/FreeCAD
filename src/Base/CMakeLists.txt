@@ -26,7 +26,6 @@ if(MSVC)
         debug ${XERCESC_DEBUG_LIBRARIES}
         optimized ${XERCESC_LIBRARIES}
         ${QT_QTCORE_LIBRARY}
-        ${QT_QTCORE_LIBRARY_DEBUG}
         ${ZLIB_LIBRARIES}
         debug MSVCRTD.LIB
         debug MSVCPRTD.LIB

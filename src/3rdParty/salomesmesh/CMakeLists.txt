@@ -9,6 +9,13 @@ SET(SMESH_VERSION_TWEAK 2)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
 include_directories(
+    inc
+    src/SMDS
+    src/Driver
+    src/DriverUNV
+    src/DriverDAT
+    src/DriverSTL
+    src/StdMeshers
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -16,13 +23,6 @@ include_directories(
     ${OCC_INCLUDE_DIR}
     ${NGLIB_INCLUDE_DIR}
     ${NETGEN_INCLUDE_DIRS}
-    src/SMDS
-    src/Driver
-    src/DriverUNV
-    src/DriverDAT
-    src/DriverSTL
-    src/StdMeshers
-    inc
 )
 link_directories(${OCC_LIBRARY_DIR})
 
