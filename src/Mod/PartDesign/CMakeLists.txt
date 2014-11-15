@@ -63,7 +63,7 @@ ADD_CUSTOM_TARGET(WizardShaft ALL
 
 SET(all_files ${all_wizardshaft_files})
 
-fc_copy_sources(Mod/PartDesign "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
+fc_copy_sources(WizardShaft "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
 
 INSTALL(
     FILES
