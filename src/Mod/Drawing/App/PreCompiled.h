@@ -114,7 +114,7 @@
 #include <Standard_Underflow.hxx>
 #include <Standard_UUID.hxx>
 #include <Standard_WayOfLife.hxx>
-#if OCC_VERSION_HEX < 0x060800
+#if OCC_VERSION_HEX < 0x060700
 #include <Standard_ctype.hxx>
 #include <Standard_OId.hxx>
 #endif
