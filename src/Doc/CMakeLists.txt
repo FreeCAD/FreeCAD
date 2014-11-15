@@ -4,7 +4,7 @@ if(DOXYGEN_FOUND)
     IF (DOXYGEN_DOT_EXECUTABLE)
         SET(HAVE_DOT YES)
     ELSE (DOXYGEN_DOT_EXECUTABLE)
-        message("Note: Doxygen docs will look better with graphviz's dot installed.")
+        message(STATUS "Note: Doxygen docs will look better with graphviz's dot installed.")
         SET(HAVE_DOT NO)
     ENDIF (DOXYGEN_DOT_EXECUTABLE)
 

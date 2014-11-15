@@ -356,10 +356,10 @@ if(FREECAD_LIBPACK_USE)
     ELSEIF(FREECAD_LIBPACK_CHECKCUSTOM)
         set(FREECAD_LIBPACK_VERSION "Custom" CACHE STRING "Displays if the libpack has been found" FORCE)
         include(cMake/UseLibPackCustom.cmake)
-    ELSE(FREECAD_LIBPACK_CHECKFILE6X)
+    ELSE(FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         set(FREECAD_LIBPACK_VERSION "NOTFOUND" CACHE STRING "Displays if the libpack has been found" FORCE)
         message(SEND_ERROR  "Could not find libpack in specified location:" ${FREECAD_LIBPACK_DIR})
-    ENDIF(FREECAD_LIBPACK_CHECKFILE6X)
+    ENDIF(FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
 # -------------------------------- PyCXX --------------------------------
 
@@ -442,7 +442,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
     endif()
     find_package (OCE QUIET)
     if(${OCE_FOUND})
-        message("-- OpenCASCADE Community Edition has been found.")
+        message(STATUS "-- OpenCASCADE Community Edition has been found.")
         #lib list copied from FreeCAD's FindOpenCasCade.cmake
         set(OCC_LIBRARIES
             TKFillet
@@ -494,8 +494,8 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
         if(NOT OCC_FOUND)
             message("Neither OpenCASCADE Community Edition nor OpenCasCade were found: will not build CAD modules!")
         else()
-            message("-- OpenCASCADE include directory: ${OCC_INCLUDE_PATH}")
-            message("-- OpenCASCADE shared libraries directory: ${OCC_LIB_PATH}")
+            message(STATUS "-- OpenCASCADE include directory: ${OCC_INCLUDE_PATH}")
+            message(STATUS "-- OpenCASCADE shared libraries directory: ${OCC_LIB_PATH}")
         endif()
     endif()
 
@@ -649,7 +649,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
         find_package(Matplotlib)
         IF(MATPLOTLIB_FOUND)
-            message("-- matplotlib-${MATPLOTLIB_VERSION} has been found.")
+            message(STATUS "-- matplotlib-${MATPLOTLIB_VERSION} has been found.")
         ELSE(MATPLOTLIB_FOUND)
             message("-- matplotlib not found, Plot module won't be available!")
         ENDIF(MATPLOTLIB_FOUND)
