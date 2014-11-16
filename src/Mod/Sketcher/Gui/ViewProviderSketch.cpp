@@ -694,14 +694,15 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         int GeoId;
                         Sketcher::PointPos PosId;
                         getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
-                        Gui::Command::openCommand("Drag Point");
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                               ,getObject()->getNameInDocument()
-                                               ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
-                                               );
-                        Gui::Command::commitCommand();
-                        Gui::Command::updateActive();
-
+                        if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
+                            Gui::Command::openCommand("Drag Point");
+                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
+                                                   ,getObject()->getNameInDocument()
+                                                   ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
+                                                   );
+                            Gui::Command::commitCommand();
+                            Gui::Command::updateActive();
+                        }
                         setPreselectPoint(edit->DragPoint);
                         edit->DragPoint = -1;
                         //updateColor();
@@ -987,10 +988,12 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 int GeoId;
                 Sketcher::PointPos PosId;
                 getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
-                edit->ActSketch.initMove(GeoId, PosId, false);
-                relative = false;
-                xInit = 0;
-                yInit = 0;
+                if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
+                    edit->ActSketch.initMove(GeoId, PosId, false);
+                    relative = false;
+                    xInit = 0;
+                    yInit = 0;
+                }
             } else {
                 Mode = STATUS_NONE;
             }
@@ -1044,13 +1047,15 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 Sketcher::PointPos PosId;
                 getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
                 Base::Vector3d vec(x-xInit,y-yInit,0);
-                if (edit->ActSketch.movePoint(GeoId, PosId, vec, relative) == 0) {
-                    setPositionText(Base::Vector2D(x,y));
-                    draw(true);
-                    signalSolved(QString::fromLatin1("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
-                } else {
-                    signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
-                    //Base::Console().Log("Error solving:%d\n",ret);
+                if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
+                    if (edit->ActSketch.movePoint(GeoId, PosId, vec, relative) == 0) {
+                        setPositionText(Base::Vector2D(x,y));
+                        draw(true);
+                        signalSolved(QString::fromLatin1("Solved in %1 sec").arg(edit->ActSketch.SolveTime));
+                    } else {
+                        signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(edit->ActSketch.SolveTime));
+                        //Base::Console().Log("Error solving:%d\n",ret);
+                    }
                 }
             }
             return true;
