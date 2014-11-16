@@ -1,3 +1,25 @@
+/***************************************************************************
+ *   Copyright (c) Victor Titov (DeepSOIC)                                 *
+ *                                           (vv.titov@gmail.com) 2014     *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
 
 #define DEBUG_DERIVS 0
 #if DEBUG_DERIVS
@@ -72,24 +94,24 @@ Vector2D Circle::CalculateNormal(Point &p, double* derivparam)
     Vector2D ret(0.0, 0.0);
     if(derivparam){
         if (derivparam == center.x) {
-            ret.x += -1;
+            ret.x += 1;
             ret.y += 0;
         };
         if (derivparam == center.y) {
             ret.x += 0;
-            ret.y += -1;
+            ret.y += 1;
         };
         if (derivparam == p.x) {
-            ret.x += +1;
+            ret.x += -1;
             ret.y += 0;
         };
         if (derivparam == p.y) {
             ret.x += 0;
-            ret.y += +1;
+            ret.y += -1;
         };
     } else {
-        ret.x = pv.x - cv.x;
-        ret.y = pv.y - cv.y;
+        ret.x = cv.x - pv.x;
+        ret.y = cv.y - pv.y;
     };
 
     return ret;
@@ -186,8 +208,8 @@ Vector2D Ellipse::CalculateNormal(Point &p, double* derivparam)
         dpf2e.x += -pf2.x/pow(pf2.length(),2)*(dpf2.x*pf2e.x + dpf2.y*pf2e.y);//second part of normalization dreivative
         dpf2e.y += -pf2.y/pow(pf2.length(),2)*(dpf2.x*pf2e.x + dpf2.y*pf2e.y);
 
-        ret.x = dpf1e.x + dpf2e.x;
-        ret.y = dpf1e.y + dpf2e.y;//DeepSOIC: derivative calculated manually... error-prone =) Tested, fixed, looks good.
+        ret.x = -(dpf1e.x + dpf2e.x);
+        ret.y = -(dpf1e.y + dpf2e.y);//DeepSOIC: derivative calculated manually... error-prone =) Tested, fixed, looks good.
 
 //numeric derivatives for testing
 #if 0 //make sure to enable DEBUG_DERIVS when enabling
@@ -213,8 +235,8 @@ Vector2D Ellipse::CalculateNormal(Point &p, double* derivparam)
         Vector2D pf2 = Vector2D(pv.x - f2v.x, pv.y - f2v.y);
         Vector2D pf1e = pf1.getNormalized();
         Vector2D pf2e = pf2.getNormalized();
-        ret.x = pf1e.x + pf2e.x;
-        ret.y = pf1e.y + pf2e.y;
+        ret.x = -(pf1e.x + pf2e.x);
+        ret.y = -(pf1e.y + pf2e.y);
     };
 
     return ret;

@@ -157,6 +157,23 @@
         </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="changeConstraintsLocking">
+      <Documentation>
+        <UserDocu>
+          changeConstraintsLocking(bLock) - locks or unlocks all tangent and
+          perpendicular constraints. (Constraint locking prevents it from
+          flipping to another valid configuration, when e.g. external geometry
+          is updated from outside.) The sketch solve is not triggered by the
+          function, but the SketchObject is touched (a recompute will be
+          necessary). The geometry should not be affected by the function.
+
+          The bLock argument specifies, what to do. If true, all constraints
+          are unlocked and locked again. If false, all tangent and perp.
+          constraints are unlocked.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+
     <Attribute Name="ConstraintCount" ReadOnly="true">
       <Documentation>
         <UserDocu>Number of Constraints in this sketch</UserDocu>

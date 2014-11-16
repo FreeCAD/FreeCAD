@@ -52,7 +52,7 @@ namespace GCS
         InternalAlignmentPoint2Ellipse = 15,
         EqualMajorAxesEllipse = 16,
         EllipticalArcRangeToEndPoints = 17,
-        AngleViaPoint = 19 //DeepSOIC: skipped 18 for the very unlikely case that tangency via point will be included
+        AngleViaPoint = 18
     };
     
     enum InternalAlignmentType {
@@ -75,7 +75,7 @@ namespace GCS
         VEC_pD pvec;
         double scale;
         int tag;
-        bool remapped;  //indicates that pvec has changed and saved pointers must be reconstructed (currently used only in AngleViaPoint)
+        bool pvecChangedFlag;  //indicates that pvec has changed and saved pointers must be reconstructed (currently used only in AngleViaPoint)
     public:
         Constraint();
         virtual ~Constraint(){}
@@ -436,9 +436,17 @@ namespace GCS
     private:
         inline double* angle() { return pvec[0]; };
         Curve* crv1;
-        Curve* crv2;//warning: need to be reconstructed if pvec was redirected (test remapped variable before use!)
-        Point poa;//pot=point of angle //warning: needs to be reconstructed if pvec was redirected (test remapped variable before use!)
-        void ReconstructEverything();
+        Curve* crv2;
+        //These two pointers hold copies of the curves that were passed on
+        // constraint creation. The curves must be deleted upon destruction of
+        // the constraint. It is necessary to have copies, since messing with
+        // original objects that were passed is a very bad idea (but messing is
+        // necessary, because we need to support redirectParams()/revertParams
+        // functions.
+        //The pointers in the curves need to be reconstructed if pvec was redirected
+        // (test pvecChangedFlag variable before use!)
+        Point poa;//poa=point of angle //needs to be reconstructed if pvec was redirected/reverted. The point is easily shallow-copied by C++, so no pointer type here and no delete is necessary.
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
     public:
         ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Point p, double* angle);
         ~ConstraintAngleViaPoint();

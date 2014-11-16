@@ -463,7 +463,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                         geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ||
                         geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ) {
                         // in all these cases an intermediate element is needed
-                        makeTangentToEllipseviaConstructionLine(Obj,geom1,geom2,geoId1,geoId2);
+                        makeTangentToEllipseviaNewPoint(Obj,geom1,geom2,geoId1,geoId2);
                         return;
                     }
                 }
@@ -486,7 +486,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                         // in all these cases an intermediate element is needed
                         // TODO: INSERT COMMON CODE HERE
                                // in all these cases an intermediate element is needed
-                        makeTangentToArcOfEllipseviaConstructionLine(Obj,geom1,geom2,geoId1,geoId2);
+                        makeTangentToArcOfEllipseviaNewPoint(Obj,geom1,geom2,geoId1,geoId2);
                         return;
                     }
                 }

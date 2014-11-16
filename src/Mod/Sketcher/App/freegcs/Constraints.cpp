@@ -37,7 +37,7 @@ namespace GCS
 ///////////////////////////////////////
 
 Constraint::Constraint()
-: origpvec(0), pvec(0), scale(1.), tag(0), remapped(true)
+: origpvec(0), pvec(0), scale(1.), tag(0), pvecChangedFlag(true)
 {
 }
 
@@ -50,13 +50,13 @@ void Constraint::redirectParams(MAP_pD_pD redirectionmap)
         if (it != redirectionmap.end())
             pvec[i] = it->second;
     }
-    remapped=true;
+    pvecChangedFlag=true;
 }
 
 void Constraint::revertParams()
 {
     pvec = origpvec;
-    remapped=true;
+    pvecChangedFlag=true;
 }
 
 ConstraintType Constraint::getTypeId()
@@ -2195,7 +2195,7 @@ ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Poi
     crv1 = acrv1.Copy();
     crv2 = acrv2.Copy();
     origpvec = pvec;
-    remapped=true;
+    pvecChangedFlag=true;
     rescale();
 }
 ConstraintAngleViaPoint::~ConstraintAngleViaPoint()
@@ -2204,7 +2204,7 @@ ConstraintAngleViaPoint::~ConstraintAngleViaPoint()
     delete crv2; crv2 = 0;
 }
 
-void ConstraintAngleViaPoint::ReconstructEverything()
+void ConstraintAngleViaPoint::ReconstructGeomPointers()
 {
     int cnt=0;
     cnt++;//skip angle - we have an inline function for that
@@ -2212,7 +2212,7 @@ void ConstraintAngleViaPoint::ReconstructEverything()
     poa.y = pvec[cnt]; cnt++;
     crv1->ReconstructOnNewPvec(pvec,cnt);
     crv2->ReconstructOnNewPvec(pvec,cnt);
-    remapped=false;
+    pvecChangedFlag=false;
 }
 
 ConstraintType ConstraintAngleViaPoint::getTypeId()
@@ -2227,7 +2227,7 @@ void ConstraintAngleViaPoint::rescale(double coef)
 
 double ConstraintAngleViaPoint::error()
 {
-    if (remapped) ReconstructEverything();
+    if (pvecChangedFlag) ReconstructGeomPointers();
     double ang=*angle();
     Vector2D n1 = crv1->CalculateNormal(poa);
     Vector2D n2 = crv2->CalculateNormal(poa);
@@ -2254,7 +2254,7 @@ double ConstraintAngleViaPoint::grad(double *param)
 
     double deriv=0.;
 
-    if (remapped) ReconstructEverything();
+    if (pvecChangedFlag) ReconstructGeomPointers();
 
     if (param == angle()) deriv += -1.0;
     Vector2D n1 = crv1->CalculateNormal(poa);

@@ -62,14 +62,13 @@ namespace GCS
     public:
 
         //returns normal vector. The vector should point to the left when one
-        //walks along the curve from start to end. Ellipses and circles are
-        //assumed to be walked counterclockwise, so the vector should point
-        //into the shape.
-
-        //derivparam is a pointer to a curve parameter to compute the
-        //derivative for. if derivparam is nullptr, the actual normal vector is
-        //returned, otherwise a derivative of normal vector by *derivparam is
-        //returned
+        // walks along the curve from start to end. Ellipses and circles are
+        // assumed to be walked counterclockwise, so the vector should point
+        // into the shape.
+        //derivparam is a pointer to a curve parameter (or point coordinate) to
+        // compute the derivative for. if derivparam is nullptr, the actual
+        // normal vector is returned, otherwise a derivative of normal vector by
+        // *derivparam is returned.
         virtual Vector2D CalculateNormal(Point &p, double* derivparam = 0) = 0;
 
         //adds curve's parameters to pvec (used by constraints)

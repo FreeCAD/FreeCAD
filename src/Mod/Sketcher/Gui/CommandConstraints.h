@@ -34,7 +34,7 @@ namespace SketcherGui {
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp    
-void makeTangentToEllipseviaConstructionLine(const Sketcher::SketchObject* Obj, 
+void makeTangentToEllipseviaNewPoint(const Sketcher::SketchObject* Obj,
                                              const Part::Geometry *geom1, 
                                              const Part::Geometry *geom2,
                                              int geoId1,
@@ -46,7 +46,7 @@ void makeTangentToEllipseviaConstructionLine(const Sketcher::SketchObject* Obj,
 /// NOTE: A command must be opened before calling this function, which this function
 /// commits or aborts as appropriate. The reason is for compatibility reasons with
 /// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp 
-void makeTangentToArcOfEllipseviaConstructionLine(const Sketcher::SketchObject* Obj, 
+void makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObject* Obj,
                                              const Part::Geometry *geom1, 
                                              const Part::Geometry *geom2,
                                              int geoId1,

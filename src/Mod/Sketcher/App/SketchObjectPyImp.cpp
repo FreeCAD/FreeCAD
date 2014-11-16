@@ -729,6 +729,19 @@ PyObject* SketchObjectPy::calculateConstraintError(PyObject *args)
     return Py::new_reference_to(Py::Float(err));
 }
 
+PyObject* SketchObjectPy::changeConstraintsLocking(PyObject *args)
+{
+    int bLock=0;
+    if (!PyArg_ParseTuple(args, "i", &bLock))
+        return 0;
+
+    SketchObject* obj = this->getSketchObjectPtr();
+
+    int naff = obj->changeConstraintsLocking((bool)bLock);
+
+    return Py::new_reference_to(Py::Int(naff));
+}
+
 PyObject* SketchObjectPy::ExposeInternalGeometry(PyObject *args)
 {
     int GeoId;
