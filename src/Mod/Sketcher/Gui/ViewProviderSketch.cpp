@@ -2415,7 +2415,7 @@ void ViewProviderSketch::drawConstraintIcons()
             break;
         case Perpendicular:
             // second icon is available only when there is no common point
-            if ((*it)->FirstPos == Sketcher::none)
+            if ((*it)->FirstPos == Sketcher::none && (*it)->Third == Constraint::GeoUndef)
                 multipleIcons = true;
             break;
         case Equal:
@@ -3132,8 +3132,37 @@ Restart:
 
                     Base::Vector3d midpos1, dir1, norm1;
                     Base::Vector3d midpos2, dir2, norm2;
+                    bool twoIcons = false;//a very local flag. It's set to true to indicate that the second dir+norm are valid and should be used
 
-                    if (Constr->FirstPos == Sketcher::none) {
+
+                    if (Constr->Third != Constraint::GeoUndef || //perpty via point
+                            Constr->FirstPos != Sketcher::none) { //endpoint-to-curve or endpoint-to-endpoint perpty
+
+                        int ptGeoId;
+                        Sketcher::PointPos ptPosId;
+                        do {//dummy loop to use break =) Maybe goto?
+                            ptGeoId = Constr->First;
+                            ptPosId = Constr->FirstPos;
+                            if (ptPosId != Sketcher::none) break;
+                            ptGeoId = Constr->Second;
+                            ptPosId = Constr->SecondPos;
+                            if (ptPosId != Sketcher::none) break;
+                            ptGeoId = Constr->Third;
+                            ptPosId = Constr->ThirdPos;
+                            if (ptPosId != Sketcher::none) break;
+                            assert(0);//no point found!
+                        } while (false);
+                        if (temp)
+                            midpos1 = edit->ActSketch.getPoint(ptGeoId, ptPosId);
+                        else
+                            midpos1 = getSketchObject()->getPoint(ptGeoId, ptPosId);
+
+                        norm1 = edit->ActSketch.calculateNormalAtPoint(Constr->Second, midpos1.x, midpos1.y);
+                        norm1.Normalize();
+                        dir1 = norm1; dir1.RotateZ(-M_PI/2.0);
+
+                    } else if (Constr->FirstPos == Sketcher::none) {
+
                         if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                             const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geo1);
                             midpos1 = ((lineSeg1->getEndPoint()+lineSeg1->getStartPoint())/2);
@@ -3147,7 +3176,7 @@ Restart:
                             norm1 = Base::Vector3d(cos(midangle),sin(midangle),0);
                             dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
                             midpos1 = arc->getCenter() + arc->getRadius() * norm1;
-                        } else if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
+                        } else if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo1);
                             norm1 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
                             dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
@@ -3168,28 +3197,22 @@ Restart:
                             norm2 = Base::Vector3d(cos(midangle),sin(midangle),0);
                             dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
                             midpos2 = arc->getCenter() + arc->getRadius() * norm2;
-                        } else if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
+                        } else if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo2);
                             norm2 = Base::Vector3d(cos(M_PI/4),sin(M_PI/4),0);
                             dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
                             midpos2 = circle->getCenter() + circle->getRadius() * norm2;
                         } else
                             break;
+                        twoIcons = true;
 
-                    } else {
-                        if (temp)
-                            midpos1 = edit->ActSketch.getPoint(Constr->First, Constr->FirstPos);
-                        else
-                            midpos1 = getSketchObject()->getPoint(Constr->First, Constr->FirstPos);
-                        norm1 = Base::Vector3d(0,1,0);
-                        dir1 = Base::Vector3d(1,0,0);
                     }
 
                     Base::Vector3d relpos1 = seekConstraintPosition(midpos1, norm1, dir1, 2.5, edit->constrGroup->getChild(i));
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->abPos = SbVec3f(midpos1.x, midpos1.y, zConstr);
                     dynamic_cast<SoZoomTranslation *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_FIRST_TRANSLATION))->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
-                    if (Constr->FirstPos == Sketcher::none) {
+                    if (twoIcons) {
                         Base::Vector3d relpos2 = seekConstraintPosition(midpos2, norm2, dir2, 2.5, edit->constrGroup->getChild(i));
 
                         Base::Vector3d secondPos = midpos2 - midpos1;

@@ -276,6 +276,17 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
                 return 0;
             }
+            else if (strcmp("PerpendicularViaPoint", ConstraintType) == 0) {
+                this->getConstraintPtr()->Type = Perpendicular;
+                //valid = true;//non-standard assignment
+                this->getConstraintPtr()->First     = intArg1;
+                this->getConstraintPtr()->FirstPos  = Sketcher::none;
+                this->getConstraintPtr()->Second    = intArg2;
+                this->getConstraintPtr()->SecondPos = Sketcher::none;
+                this->getConstraintPtr()->Third     = intArg3;
+                this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
+                return 0;
+            }
             if (valid) {
                 this->getConstraintPtr()->First     = intArg1;
                 this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;
@@ -411,6 +422,12 @@ std::string ConstraintPy::representation(void) const
                 result << "'Tangent'>";
             else
                 result << "'TangentViaPoint'>";
+        break;
+        case Perpendicular            :
+            if (this->getConstraintPtr()->Third == Constraint::GeoUndef)
+                result << "'Perpendicular'>";
+            else
+                result << "'PerpendicularViaPoint'>";
         break;
         case Distance           : result << "'Distance'>";break;
         case Angle              :
