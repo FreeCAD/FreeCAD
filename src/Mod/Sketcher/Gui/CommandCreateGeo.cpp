@@ -3009,32 +3009,20 @@ public:
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
                           sketchgui->getObject()->getNameInDocument(),
                           EditCurve[0].fX,EditCurve[0].fY,EditCurve[34].fX,EditCurve[34].fY);
-                //// add the tnagent constraints
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
-                         ,sketchgui->getObject()->getNameInDocument()
-                         ,firstCurve,firstCurve+2);
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
+
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,1,%i,1)) "
                          ,sketchgui->getObject()->getNameInDocument()
                          ,firstCurve,firstCurve+3);
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
-                         ,sketchgui->getObject()->getNameInDocument()
-                         ,firstCurve+1,firstCurve+2);
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,%i)) "
-                         ,sketchgui->getObject()->getNameInDocument()
-                         ,firstCurve+1,firstCurve+3);
-                // add the four coincidents to ty them together
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,1,%i,1)) "
-                         ,sketchgui->getObject()->getNameInDocument()
-                         ,firstCurve,firstCurve+3);
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,2,%i,1)) "
                          ,sketchgui->getObject()->getNameInDocument()
                          ,firstCurve,firstCurve+2);
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,1)) "
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,2,%i,1)) "
                          ,sketchgui->getObject()->getNameInDocument()
                          ,firstCurve+2,firstCurve+1);
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,2,%i,2)) "
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%i,2,%i,2)) "
                          ,sketchgui->getObject()->getNameInDocument()
                          ,firstCurve+3,firstCurve+1);
+
                 //// add the either horizontal or vertical constraints
                 if(fabs(lx)>fabs(ly))
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
