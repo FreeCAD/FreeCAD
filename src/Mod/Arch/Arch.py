@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -46,3 +46,4 @@ from ArchRebar import *
 from ArchFrame import *
 from ArchPanel import *
 from ArchEquipment import *
+from ArchCutPlane import *
