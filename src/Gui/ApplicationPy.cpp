@@ -242,7 +242,7 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args,PyObject * /*kw
         QString fileName = QString::fromUtf8(Utf8Name.c_str());
         QFileInfo fi;
         fi.setFile(fileName);
-        QString ext = fi.completeSuffix().toLower();
+        QString ext = fi.suffix().toLower();
         QList<EditorView*> views = getMainWindow()->findChildren<EditorView*>();
         for (QList<EditorView*>::Iterator it = views.begin(); it != views.end(); ++it) {
             if ((*it)->fileName() == fileName) {
@@ -286,6 +286,9 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args,PyObject * /*kw
             edit->resize(400, 300);
             getMainWindow()->addWindow( edit );
         }
+        else {
+            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+        }
     } PY_CATCH;
 
     Py_Return;
@@ -304,7 +307,7 @@ PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args,PyObject * /*
         QString fileName = QString::fromUtf8(Utf8Name.c_str());
         QFileInfo fi;
         fi.setFile(fileName);
-        QString ext = fi.completeSuffix().toLower();
+        QString ext = fi.suffix().toLower();
         if (ext == QLatin1String("iv")) {
             App::Document *doc = 0;
             if (DocName)
@@ -348,6 +351,9 @@ PyObject* Application::sInsert(PyObject * /*self*/, PyObject *args,PyObject * /*
             edit->resize(400, 300);
             getMainWindow()->addWindow( edit );
         }
+        else {
+            Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
+        }
     } PY_CATCH;
 
     Py_Return;
@@ -379,7 +385,7 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
             QString fileName = QString::fromUtf8(Utf8Name.c_str());
             QFileInfo fi;
             fi.setFile(fileName);
-            QString ext = fi.completeSuffix().toLower();
+            QString ext = fi.suffix().toLower();
             if (ext == QLatin1String("iv") || ext == QLatin1String("wrl") ||
                 ext == QLatin1String("vrml") || ext == QLatin1String("wrz") ||
                 ext == QLatin1String("svg") || ext == QLatin1String("idtf")) {
@@ -410,6 +416,9 @@ PyObject* Application::sExport(PyObject * /*self*/, PyObject *args,PyObject * /*
                         view->print(&printer);
                     }
                 }
+            }
+            else {
+                Base::Console().Error("File type '%s' not supported\n", ext.toLatin1().constData());
             }
         }
     } PY_CATCH;
