@@ -1,0 +1,9 @@
+<!DOCTYPE RCC><RCC version="1.0">
+    <qresource> 
+        <file>icons/BezSurf.svg</file>
+        <file>icons/BSplineSurf.svg</file>
+        <file>icons/Cut.svg</file>
+        <file>icons/Filling.svg</file>
+        <file>icons/Sewing.svg</file>
+    </qresource>
+</RCC> 
