@@ -509,6 +509,7 @@ CmdSketcherMergeSketchs::CmdSketcherMergeSketchs()
     sWhatsThis      = "Sketcher_MergeSketches";
     sStatusTip      = sToolTipText;
     eType           = 0;
+    sPixmap         = "Sketcher_Merge_Sketch";
 }
 
 void CmdSketcherMergeSketchs::activated(int iMsg)
