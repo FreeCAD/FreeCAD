@@ -46,8 +46,16 @@ def cutComponentwithPlane(archObject, cutPlane, sideFace):
     if cutVolume:
         obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "CutVolume")
         obj.Shape = cutVolume
+        obj.ViewObject.ShapeColor = (1.00,0.00,0.00)
+        obj.ViewObject.Transparency = 75
         # add substraction component to Arch object
-        return ArchCommands.removeComponents(obj,archObject.Object)
+        if "Additions" in archObject.Object.PropertiesList:
+            return ArchCommands.removeComponents(obj,archObject.Object)
+        else:
+            cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut", "CutPlane")
+            cutObj.Base = archObject.Object
+            cutObj.Tool = obj
+            return cutObj
 
 class _CommandCutPlane:
     "the Arch CutPlane command definition"
