@@ -86,8 +86,16 @@ class _CutPlaneTaskPanel:
        groupBox = QtGui.QGroupBox()
        groupBox.setLayout(self.grid)
        self.form = groupBox
+       # Connecter la combobox a la fonction preveiwCutVolume
+       QtCore.QObject.connect(self.combobox,QtCore.SIGNAL("currentIndexChanged(int)"),self.previewCutVolume)
+       # Ajouter un objet PreveiwCutVolume vide
+       self.obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "PreviewCutVolume")
+       # Afficher la preview CutVolume en fonction du choix par defaut de la combobox
+       self.previewCutVolume(self.combobox.currentIndex())
 
     def accept(self):
+        # Suppression objet PreviewCutVolume
+        FreeCAD.ActiveDocument.removeObject(self.obj.Name)
         val = self.combobox.currentIndex()
         FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Cutting")))
         FreeCADGui.addModule("Arch")
@@ -97,11 +105,27 @@ class _CutPlaneTaskPanel:
         return True
 
     def reject(self):
+        # Suppression objet PreviewCutVolume
+        FreeCAD.ActiveDocument.removeObject(self.obj.Name)
         FreeCAD.Console.PrintMessage("Cancel Cut Plane\n")
         return True
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
+
+    def previewCutVolume(self, i):
+        cutVolume = ArchCommands.getCutVolume(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0], FreeCADGui.Selection.getSelectionEx()[0].Object.Shape)
+        FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+        self.obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "PreviewCutVolume")
+        #self.obj.Shape = cutVolume
+        self.obj.ViewObject.ShapeColor = (1.00,0.00,0.00)
+        self.obj.ViewObject.Transparency = 75
+        if i == 1:
+            cutVolume = cutVolume[1]
+        else:
+            cutVolume = cutVolume[2]
+        if cutVolume:
+            self.obj.Shape = cutVolume
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_CutPlane',_CommandCutPlane())
