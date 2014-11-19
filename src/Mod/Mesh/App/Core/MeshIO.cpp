@@ -312,7 +312,7 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
         bool ok = true;
         for (int i=0;i<3;i++) {
             if (it->_aulPoints[i] >= ct) {
-                Base::Console().Warning("Face index %ld out of range\n", it->_aulPoints[i]);
+                Base::Console().Warning("Face index %lu out of range\n", it->_aulPoints[i]);
                 ok = false;
             }
         }
@@ -435,7 +435,7 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
         bool ok = true;
         for (int i=0;i<3;i++) {
             if (it->_aulPoints[i] >= ct) {
-                Base::Console().Warning("Face index %ld out of range\n", it->_aulPoints[i]);
+                Base::Console().Warning("Face index %lu out of range\n", it->_aulPoints[i]);
                 ok = false;
             }
         }

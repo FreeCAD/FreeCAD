@@ -809,6 +809,7 @@ void MeshKernel::Read (std::istream &rclIn)
     str >> magic >> version;
     swap_magic = magic; Base::SwapEndian(swap_magic);
     swap_version = version; Base::SwapEndian(swap_version);
+    uint32_t open_edge = 0xffffffff; // value to mark an open edge
 
     // is it the new or old format?
     bool new_format = false;
@@ -846,10 +847,25 @@ void MeshKernel::Read (std::istream &rclIn)
                 it->_aulPoints[1] = v2;
                 it->_aulPoints[2] = v3;
 
+                // On systems where an 'unsigned long' is a 64-bit value
+                // the empty neighbour must be explicitly set to 'ULONG_MAX'
+                // because in algorithms this value is always used to check
+                // for open edges.
                 str >> v1 >> v2 >> v3;
-                it->_aulNeighbours[0] = v1;
-                it->_aulNeighbours[1] = v2;
-                it->_aulNeighbours[2] = v3;
+                if (v1 < open_edge)
+                    it->_aulNeighbours[0] = v1;
+                else
+                    it->_aulNeighbours[0] = ULONG_MAX;
+
+                if (v2 < open_edge)
+                    it->_aulNeighbours[1] = v2;
+                else
+                    it->_aulNeighbours[1] = ULONG_MAX;
+
+                if (v3 < open_edge)
+                    it->_aulNeighbours[2] = v3;
+                else
+                    it->_aulNeighbours[2] = ULONG_MAX;
             }
 
             str >> _clBoundBox.MinX >> _clBoundBox.MaxX;
