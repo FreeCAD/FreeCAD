@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
+ *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com>,*
+ *                      Balázs Bámer                                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,9 +54,10 @@ void PartGuiExport initSurfaceGui()
         return;
     }
 
+    SurfaceGui::Workbench::init();
+    
     // instanciating the commands
     CreateSurfaceCommands();
-    SurfaceGui::Workbench::init();
 
 //    SurfaceGui::ViewProviderCut::init();
 
