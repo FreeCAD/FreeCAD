@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
+ *                      Balázs Bámer                                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,15 +50,12 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* root = StdWorkbench::setupMenuBar();
     Gui::MenuItem* item = root->findItem( "&Windows" );
 
-    Gui::MenuItem* make = new Gui::MenuItem;
-    root->insertItem( item, make );
-    make->setCommand("MakeSurface");
-    *make << "Surface_Filling";
-
-    Gui::MenuItem* mod = new Gui::MenuItem;
-    root->insertItem( item, mod );
-    mod->setCommand("ModSurface");
-    *mod << "Surface_Cut";
+    Gui::MenuItem* surface = new Gui::MenuItem;
+    root->insertItem( item, surface );
+    surface->setCommand("Surface");
+    *surface << "Surface_Bezier";
+    *surface << "Surface_Filling";
+    *surface << "Surface_Cut";
 
     return root;
 }
@@ -66,13 +64,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 {
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
 
-    Gui::ToolBarItem* make = new Gui::ToolBarItem(root);
-    make->setCommand( "MakeSurface" );
-    *make << "Surface_Filling"; 
-
-    Gui::ToolBarItem* mod = new Gui::ToolBarItem(root);
-    mod->setCommand( "ModSurface" );
-    *mod << "Surface_Cut"; 
+    Gui::ToolBarItem* surface = new Gui::ToolBarItem(root);
+    surface->setCommand( "Surface" );
+    *surface << "Surface_Bezier";
+    *surface << "Surface_Filling"; 
+    *surface << "Surface_Cut"; 
 
     return root;
 }

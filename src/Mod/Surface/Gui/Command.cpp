@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
+ *                      Balázs Bámer                                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -56,7 +57,7 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 
-
+// Nate's stuff
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -142,9 +143,78 @@ void CmdSurfaceCut::activated(int iMsg)
     commitCommand();*/
 }
 
+// my stuff
+
+//===========================================================================
+// Surface_Bezier
+//===========================================================================
+DEF_STD_CMD_A(CmdSurfaceBezier);
+
+CmdSurfaceBezier::CmdSurfaceBezier()
+  :Command("Surface_Bezier")
+{
+    sAppModule    = "Surface";
+    sGroup        = QT_TR_NOOP("Surface");
+    sMenuText     = QT_TR_NOOP("Bezier");
+    sToolTipText  = QT_TR_NOOP("Creates a surface from 2, 3 or 4 Bezier curves");
+    sWhatsThis    = "Surface_Bezier";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "BezSurf";
+}
+
+void CmdSurfaceBezier::activated(int iMsg)
+{
+    // TODO filter class type
+    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0/*, Part::Feature::getClassTypeId()*/);
+    
+    // TODO check if input feature count is between 2 and 4
+    /*if (Sel.size() < 2) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select two shapes or more, please."));
+        return;
+    }*/
+
+    bool askUser = false;
+    std::string FeatName = getUniqueObjectName("BezierSurface");
+    std::stringstream bezListCmd;
+    // std::vector<std::string> tempSelNames;
+    bezListCmd << "FreeCAD.ActiveDocument.ActiveObject.aBezList = [";
+    for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
+        App::DocumentObject* obj = it->getObject();
+	// TODO check object types
+        /*if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
+            if (!PartGui::checkForSolids(shape) && !askUser) {
+                int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
+                    QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
+                                "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
+                if (ret == QMessageBox::No)
+                    return;
+                askUser = true;
+            }*/
+            bezListCmd << "FreeCAD.ActiveDocument." << it->getFeatName() << ", ";
+         //   tempSelNames.push_back(it->getFeatName());
+        //}
+    }
+    bezListCmd << "]";
+
+    openCommand("Create Bezier surface");
+    doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=1"); // TODO ask filltype from user and check it
+    runCommand(Doc, bezListCmd.str().c_str());
+    updateActive();
+    commitCommand();
+}
+
+bool CmdSurfaceBezier::isActive(void)
+{
+    return true; //TODO check availability getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=2;
+}
+
 void CreateSurfaceCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceCut());
+    rcCmdMgr.addCommand(new CmdSurfaceBezier());
 }

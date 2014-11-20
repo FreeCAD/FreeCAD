@@ -1,5 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
+ *                      Balázs Bámer                                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,6 +33,7 @@
 #endif
 
 #include "FeatureBezSurf.h"
+#include "FillType.h"
 #include <GeomFill.hxx>
 #include <GeomFill_BezierCurves.hxx>
 #include <ShapeFix_Wire.hxx>
@@ -96,10 +98,10 @@ App::DocumentObjectExecReturn *BezSurf::execute(void)
 
         GeomFill_FillingStyle fstyle;
 
-        if(ftype==1){fstyle = GeomFill_StretchStyle;}
-        else if(ftype==2){fstyle = GeomFill_CoonsStyle;}
-        else if(ftype==3){fstyle = GeomFill_CurvedStyle;}
-        else{return new App::DocumentObjectExecReturn("Filling style must be 1 (Stretch), 2 (Coons), or 3 (Curved).");}
+        if(ftype==StretchStyle) {fstyle = GeomFill_StretchStyle;}
+        else if(ftype==CoonsStyle) {fstyle = GeomFill_CoonsStyle;}
+        else if(ftype==CurvedStyle) {fstyle = GeomFill_CurvedStyle;}
+        else {return new App::DocumentObjectExecReturn("Filling style must be 1 (Stretch), 2 (Coons), or 3 (Curved).");}
 
         //Create Bezier Surface
 
