@@ -440,74 +440,7 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
 # -------------------------------- OpenCasCade --------------------------------
 
-#first, look for OpenCASCADE Community Edition (OCE)
-#if OCE is installed in a nonstandard location, add -DOCE_DIR=/path/to/dir/containing/OCEConfig.cmake
-# when configuring with cmake, i.e. cmake .. -DOCE_DIR=/usr/share/cmake
-    if(NOT DEFINED OCE_DIR)
-        if(UNIX)
-            set(OCE_DIR "/usr/local/share/cmake/")
-        elseif(WIN32)
-            set(OCE_DIR "c:/OCE-0.4.0/share/cmake")
-        endif()
-    endif()
-    find_package (OCE QUIET)
-    if(${OCE_FOUND})
-        message(STATUS "-- OpenCASCADE Community Edition has been found.")
-        #lib list copied from FreeCAD's FindOpenCasCade.cmake
-        set(OCC_LIBRARIES
-            TKFillet
-            TKMesh
-            TKernel
-            TKG2d
-            TKG3d
-            TKMath
-            TKIGES
-            TKSTL
-            TKShHealing
-            TKXSBase
-            TKBool
-            TKBO
-            TKBRep
-            TKTopAlgo
-            TKGeomAlgo
-            TKGeomBase
-            TKOffset
-            TKPrim
-            TKSTEP
-            TKSTEPBase
-            TKSTEPAttr
-            TKHLR
-            TKFeat
-        )
-        #lib list copied from FreeCAD's FindOpenCasCade.cmake
-        set(OCC_OCAF_LIBRARIES
-            TKCAF
-            TKXCAF
-            TKLCAF
-            TKXDESTEP
-            TKXDEIGES
-            TKMeshVS
-        )
-        set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
-        
-        CHECK_MINIMUM_OCC_VERSION_HEX(0x060703)
-        if (NOT OCC_MIN_VERSION)
-            set(OCC_OCAF_LIBRARIES
-                ${OCC_OCAF_LIBRARIES}
-                TKAdvTools
-            )
-        endif()
-        
-        set(OCC_FOUND ${OCE_FOUND})
-    else() #look for OpenCASCADE
-        find_package(OpenCasCade)
-        if(NOT OCC_FOUND)
-            message("Neither OpenCASCADE Community Edition nor OpenCasCade were found: will not build CAD modules!")
-        else()
-            message(STATUS "-- OpenCASCADE include directory: ${OCC_INCLUDE_PATH}")
-            message(STATUS "-- OpenCASCADE shared libraries directory: ${OCC_LIB_PATH}")
-        endif()
-    endif()
+    find_package(OpenCasCade)
 
 # -------------------------------- Salome SMESH --------------------------
 
