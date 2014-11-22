@@ -912,7 +912,7 @@ void Application::destructObserver(void)
     if ( _pConsoleObserverStd ) {
         Console().DetachObserver(_pConsoleObserverStd);
         delete _pConsoleObserverStd;
-        _pConsoleObserverFile = 0;
+		_pConsoleObserverStd = 0;
     }
 }
 
