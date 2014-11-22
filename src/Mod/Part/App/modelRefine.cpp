@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include <Base/Tools.h>
 #include <algorithm>
 #include <iterator>
 #include <Geom_Surface.hxx>
@@ -63,6 +64,8 @@
 #include "modelRefine.h"
 
 using namespace ModelRefine;
+
+
 
 void ModelRefine::getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges)
 {
