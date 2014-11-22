@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <boost/bind.hpp>
 #endif
 
 #include "TaskDlgEditSketch.h"
@@ -46,16 +47,33 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     Elements = new TaskSketcherElements(sketchView);
     General  = new TaskSketcherGeneral(sketchView);
     Messages  = new TaskSketcherMessages(sketchView);
-    
+
     Content.push_back(Messages);
     Content.push_back(General);
     Content.push_back(Constraints);
     Content.push_back(Elements);
+
+    App::Document* document = sketchView->getObject()->getDocument();
+    connectUndoDocument =
+        document->signalUndo.connect(boost::bind(&TaskDlgEditSketch::slotUndoDocument, this, _1));
+    connectRedoDocument =
+        document->signalRedo.connect(boost::bind(&TaskDlgEditSketch::slotRedoDocument, this, _1));
 }
 
 TaskDlgEditSketch::~TaskDlgEditSketch()
 {
+    connectUndoDocument.disconnect();
+    connectRedoDocument.disconnect();
+}
 
+void TaskDlgEditSketch::slotUndoDocument(const App::Document& doc)
+{
+    const_cast<App::Document&>(doc).recomputeFeature(sketchView->getObject());
+}
+
+void TaskDlgEditSketch::slotRedoDocument(const App::Document& doc)
+{
+    const_cast<App::Document&>(doc).recomputeFeature(sketchView->getObject());
 }
 
 //==== calls from the TaskView ===============================================================

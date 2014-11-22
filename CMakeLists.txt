@@ -10,16 +10,20 @@ set(PACKAGE_STRING "${PACKAGE_NAME} ${PACKAGE_VERSION}")
 
 cmake_minimum_required(VERSION 2.6.0 FATAL_ERROR)
 
+if(COMMAND cmake_policy)
+    cmake_policy(SET CMP0003 NEW)
+    # added in cmake 3.0
+    if(POLICY CMP0050)
+        cmake_policy(SET CMP0050 OLD)
+    endif(POLICY CMP0050)
+endif(COMMAND cmake_policy)
+
 # include local  modules
 include(AddFileDependencies)
 include(cMake/FreeCadMacros.cmake)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
 
-
-if(COMMAND cmake_policy)
-     cmake_policy(SET CMP0003 NEW)
-endif(COMMAND cmake_policy)
 
 #if(CMAKE_CFG_INTDIR STREQUAL .)
     # No Debug/Release output paths

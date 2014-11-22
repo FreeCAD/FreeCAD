@@ -134,6 +134,16 @@ PythonWrapper::PythonWrapper()
 
 bool PythonWrapper::toCString(const Py::Object& pyobject, std::string& str)
 {
+    if (PyUnicode_Check(pyobject.ptr())) {
+        PyObject* unicode = PyUnicode_AsUTF8String(pyobject.ptr());
+        str = PyString_AsString(unicode);
+        Py_DECREF(unicode);
+        return true;
+    }
+    else if (PyString_Check(pyobject.ptr())) {
+        str = PyString_AsString(pyobject.ptr());
+        return true;
+    }
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     if (Shiboken::String::check(pyobject.ptr())) {
         const char* s = Shiboken::String::toCString(pyobject.ptr());

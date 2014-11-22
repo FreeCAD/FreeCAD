@@ -771,10 +771,14 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
         Standard_Boolean myStyle = Style.getValue() ? Standard_True : Standard_False;
         TopoShape helix;
-        if (myHeight / myPitch > 50.0)
-            this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
-        else
-            this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS, myStyle));
+        // work around for OCC bug #23314 (FC #0954)
+        // the exact conditions for failure are unknown.  building the helix 1 turn at a time
+        // seems to always work. 
+        this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
+//        if (myHeight / myPitch > 50.0)
+//            this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
+//        else
+//            this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS, myStyle));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

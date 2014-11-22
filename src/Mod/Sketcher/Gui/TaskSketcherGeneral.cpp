@@ -66,8 +66,8 @@ void SketcherGeneralWidget::saveSettings()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
     hGrp->SetBool("ShowGrid", ui->checkBoxShowGrid->isChecked());
-	
-	ui->gridSize->pushToHistory();
+
+    ui->gridSize->pushToHistory();
 
     hGrp->SetBool("GridSnap", ui->checkBoxGridSnap->isChecked());
     hGrp->SetBool("AutoConstraints", ui->checkBoxAutoconstraints->isChecked());
@@ -78,13 +78,11 @@ void SketcherGeneralWidget::loadSettings()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Sketcher/General");
     ui->checkBoxShowGrid->setChecked(hGrp->GetBool("ShowGrid", true));
-	ui->gridSize->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketchGridSize"));
-	//ui->gridSize->setToLastUsedValue();
+    ui->gridSize->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketchGridSize"));
+    //ui->gridSize->setToLastUsedValue();
     ui->checkBoxGridSnap->setChecked(hGrp->GetBool("GridSnap", ui->checkBoxGridSnap->isChecked()));
     ui->checkBoxAutoconstraints->setChecked(hGrp->GetBool("AutoConstraints", ui->checkBoxAutoconstraints->isChecked()));
 }
-
-
 
 void SketcherGeneralWidget::toggleGridView(bool on)
 {
@@ -101,7 +99,7 @@ void SketcherGeneralWidget::setGridSize(double val)
 
 void SketcherGeneralWidget::setInitGridSize(double val)
 {
-	ui->gridSize->setValue(Base::Quantity(val,Base::Unit::Length));
+    ui->gridSize->setValue(Base::Quantity(val,Base::Unit::Length));
 }
 
 void SketcherGeneralWidget::toggleGridSnap(int state)
@@ -150,7 +148,7 @@ TaskSketcherGeneral::TaskSketcherGeneral(ViewProviderSketch *sketchView)
 
     Gui::Selection().Attach(this);
     widget->loadSettings();
-	widget->setInitGridSize(sketchView->GridSize.getValue() );
+    widget->setInitGridSize(sketchView->GridSize.getValue() );
 }
 
 TaskSketcherGeneral::~TaskSketcherGeneral()
@@ -182,7 +180,7 @@ void TaskSketcherGeneral::toggleAutoconstraints(int state)
 
 /// @cond DOXERR
 void TaskSketcherGeneral::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                              Gui::SelectionSingleton::MessageType Reason)
+                                   Gui::SelectionSingleton::MessageType Reason)
 {
     //if (Reason.Type == SelectionChanges::AddSelection ||
     //    Reason.Type == SelectionChanges::RmvSelection ||
