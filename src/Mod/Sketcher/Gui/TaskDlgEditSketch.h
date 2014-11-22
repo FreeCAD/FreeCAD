@@ -31,6 +31,9 @@
 #include "TaskSketcherElements.h"
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
+#include <boost/signals.hpp>
+
+typedef boost::signals::connection Connection;
 
 namespace SketcherGui {
 
@@ -65,11 +68,17 @@ public:
     { return QDialogButtonBox::Close|QDialogButtonBox::Help; }
 
 protected:
-    ViewProviderSketch   *sketchView;
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
+
+protected:
+    ViewProviderSketch      *sketchView;
     TaskSketcherConstrains  *Constraints;
-    TaskSketcherElements *Elements;
+    TaskSketcherElements    *Elements;
     TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;
+    Connection connectUndoDocument;
+    Connection connectRedoDocument;
 };
 
 

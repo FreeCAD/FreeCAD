@@ -1330,6 +1330,44 @@ void SketchObject::rebuildExternalGeometry(void)
                         ExternalGeo.push_back(line);
                     }
                 }
+                else if (curve.GetType() == GeomAbs_Circle) {
+                    gp_Dir vec1 = sketchPlane.Axis().Direction();
+                    gp_Dir vec2 = curve.Circle().Axis().Direction();
+                    if (vec1.IsParallel(vec2, Precision::Confusion())) {
+                        gp_Circ circle = curve.Circle();
+                        gp_Pnt cnt = circle.Location();
+                        gp_Pnt beg = curve.Value(curve.FirstParameter());
+                        gp_Pnt end = curve.Value(curve.LastParameter());
+
+                        GeomAPI_ProjectPointOnSurf proj(cnt,gPlane);
+                        cnt = proj.NearestPoint();
+                        circle.SetLocation(cnt);
+                        cnt.Transform(mov);
+                        circle.Transform(mov);
+
+                        if (beg.SquareDistance(end) < Precision::Confusion()) {
+                            Part::GeomCircle* gCircle = new Part::GeomCircle();
+                            gCircle->setRadius(circle.Radius());
+                            gCircle->setCenter(Base::Vector3d(cnt.X(),cnt.Y(),cnt.Z()));
+
+                            gCircle->Construction = true;
+                            ExternalGeo.push_back(gCircle);
+                        }
+                        else {
+                            Part::GeomArcOfCircle* gArc = new Part::GeomArcOfCircle();
+                            Handle_Geom_Curve hCircle = new Geom_Circle(circle);
+                            Handle_Geom_TrimmedCurve tCurve = new Geom_TrimmedCurve(hCircle, curve.FirstParameter(),
+                                                                                    curve.LastParameter());
+                            gArc->setHandle(tCurve);
+                            gArc->Construction = true;
+                            ExternalGeo.push_back(gArc);
+                        }
+                    }
+                    else {
+                        // creates an ellipse
+                        throw Base::Exception("Not yet supported geometry for external geometry");
+                    }
+                }
                 else {
                     try {
                         BRepOffsetAPI_NormalProjection mkProj(aProjFace);

@@ -645,7 +645,7 @@ void DlgPrimitives::createPrimitive(const QString& placement)
         // Execute the Python block
         QString prim = tr("Create %1").arg(ui.comboBox1->currentText());
         Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());
-        Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toAscii());
+        Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toUtf8());
         Gui::Application::Instance->activeDocument()->commitCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");

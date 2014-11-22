@@ -393,16 +393,6 @@ def getCutVolume(cutplane,shapes):
         invcutvolume = cutface.extrude(cutnormal)
         return cutface,cutvolume,invcutvolume
 
-def cutComponent(cutPlane, archObject):
-    """cut object from a plan"""
-    cutVolume = getCutVolume(cutPlane, archObject.Object.Shape)
-    cutVolume = cutVolume[2]
-    if cutVolume:
-        obj = FreeCAD.ActiveDocument.addObject("Part::Feature", "CutVolume")
-        obj.Shape = cutVolume
-        # add substraction component to Arch object
-        return removeComponents(obj,archObject.Object)
-
 def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
     import Part, MeshPart, DraftGeomUtils
     if mesh.isSolid() and (mesh.countComponents() == 1) and fast:
@@ -942,26 +932,6 @@ class _CommandRemove:
         FreeCAD.ActiveDocument.recompute()
 
 
-class _CommandCutPlane:
-    "the Arch CutPlane command definition"
-    def GetResources(self):
-       return {'Pixmap'  : 'Arch_CutPlane',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut object"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut the object with plane")}
-
-    def IsActive(self):
-        return len(FreeCADGui.Selection.getSelection()) > 1
-
-    def Activated(self):
-        face = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-        archObject = FreeCADGui.Selection.getSelectionEx()[0]
-        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Cutting")))
-        FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand("Arch.cutComponent(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0],FreeCADGui.Selection.getSelectionEx()[0])")
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
-
-
 class _CommandSplitMesh:
     "the Arch SplitMesh command definition"
     def GetResources(self):
@@ -1148,7 +1118,6 @@ class _ToggleIfcBrepFlag:
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Add',_CommandAdd())
     FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
-    FreeCADGui.addCommand('Arch_CutPlane',_CommandCutPlane())
     FreeCADGui.addCommand('Arch_SplitMesh',_CommandSplitMesh())
     FreeCADGui.addCommand('Arch_MeshToShape',_CommandMeshToShape())
     FreeCADGui.addCommand('Arch_SelectNonSolidMeshes',_CommandSelectNonSolidMeshes())

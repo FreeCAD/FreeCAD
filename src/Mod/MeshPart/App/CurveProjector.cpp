@@ -184,7 +184,7 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
         // more the one intersection (@ToDo)
         }else if(Alg.NbPoints() > 1){
           PointOnEdge[i] = Base::Vector3f(FLOAT_MAX,0,0);
-          Base::Console().Log("MeshAlgos::projectCurve(): More then one intersection in Facet %ld, Edge %d\n",uCurFacetIdx,i);
+          Base::Console().Log("MeshAlgos::projectCurve(): More then one intersection in Facet %lu, Edge %d\n",uCurFacetIdx,i);
         }
       }
     }
@@ -202,7 +202,7 @@ void CurveProjectorShape::projectCurve( const TopoDS_Edge& aEdge,
       cResultPoint = cSplitPoint;
       GoOn = true;
     }else{
-      Base::Console().Log("MeshAlgos::projectCurve(): Posibel reentry in Facet %ld\n", uCurFacetIdx);
+      Base::Console().Log("MeshAlgos::projectCurve(): Possible reentry in Facet %lu\n", uCurFacetIdx);
     }
 
     if( uCurFacetIdx == uStartFacetIdx )
