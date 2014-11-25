@@ -192,7 +192,7 @@ void CmdSurfaceBezier::activated(int iMsg)
                     return;
                 askUser = true;
             }*/
-            bezListCmd << "FreeCAD.ActiveDocument." << it->getFeatName() << ", ";
+            bezListCmd << "(App.activeDocument()." << it->getFeatName() << ", \'Edge1\'),";
          //   tempSelNames.push_back(it->getFeatName());
         //}
     }
