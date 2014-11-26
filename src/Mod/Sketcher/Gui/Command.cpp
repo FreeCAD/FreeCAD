@@ -497,10 +497,10 @@ bool CmdSketcherValidateSketch::isActive(void)
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
 
-DEF_STD_CMD_A(CmdSketcherMergeSketchs);
+DEF_STD_CMD_A(CmdSketcherMergeSketches);
 
-CmdSketcherMergeSketchs::CmdSketcherMergeSketchs()
-  : Command("Sketcher_MergeSketchs")
+CmdSketcherMergeSketches::CmdSketcherMergeSketches()
+  : Command("Sketcher_MergeSketches")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -509,16 +509,16 @@ CmdSketcherMergeSketchs::CmdSketcherMergeSketchs()
     sWhatsThis      = "Sketcher_MergeSketches";
     sStatusTip      = sToolTipText;
     eType           = 0;
-    sPixmap         = "Sketcher_Merge_Sketch";
+    sPixmap         = "Sketcher_MergeSketch";
 }
 
-void CmdSketcherMergeSketchs::activated(int iMsg)
+void CmdSketcherMergeSketches::activated(int iMsg)
 {
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(),
-            qApp->translate("CmdSketcherMergeSketchs", "Wrong selection"),
-            qApp->translate("CmdSketcherMergeSketchs", "Select at least two sketches, please."));
+            qApp->translate("CmdSketcherMergeSketches", "Wrong selection"),
+            qApp->translate("CmdSketcherMergeSketches", "Select at least two sketches, please."));
         return;
     }
 
@@ -562,7 +562,7 @@ void CmdSketcherMergeSketchs::activated(int iMsg)
     
 }
 
-bool CmdSketcherMergeSketchs::isActive(void)
+bool CmdSketcherMergeSketches::isActive(void)
 {
     return (hasActiveDocument() && !Gui::Control().activeDialog());
 }
@@ -580,5 +580,5 @@ void CreateSketcherCommands(void)
     rcCmdMgr.addCommand(new CmdSketcherMapSketch());
     rcCmdMgr.addCommand(new CmdSketcherViewSketch());
     rcCmdMgr.addCommand(new CmdSketcherValidateSketch());
-    rcCmdMgr.addCommand(new CmdSketcherMergeSketchs());
+    rcCmdMgr.addCommand(new CmdSketcherMergeSketches());
 }
