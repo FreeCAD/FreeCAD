@@ -969,19 +969,16 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     } else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
         const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse*>(geo);
         Base::Vector3d center = ellipse->getCenter();
-        double theta0 = Base::fmod(
-                atan2(-ellipse->getMajorRadius()*((point.x-center.x)*sin(ellipse->getAngleXU())-(point.y-center.y)*cos(ellipse->getAngleXU())),
-                     ellipse->getMinorRadius()*((point.x-center.x)*cos(ellipse->getAngleXU())+(point.y-center.y)*sin(ellipse->getAngleXU()))
-                                  ), 2.f*M_PI);
+        double theta0;
+        ellipse->closestParameter(point,theta0);
+        theta0 = Base::fmod(theta0, 2.f*M_PI);
         if (GeoId1 >= 0 && GeoId2 >= 0) {
-            double theta1 = Base::fmod(
-                atan2(-ellipse->getMajorRadius()*((point1.x-center.x)*sin(ellipse->getAngleXU())-(point1.y-center.y)*cos(ellipse->getAngleXU())),
-                     ellipse->getMinorRadius()*((point1.x-center.x)*cos(ellipse->getAngleXU())+(point1.y-center.y)*sin(ellipse->getAngleXU()))
-                                       ), 2.f*M_PI);
-            double theta2 = Base::fmod(
-                atan2(-ellipse->getMajorRadius()*((point2.x-center.x)*sin(ellipse->getAngleXU())-(point2.y-center.y)*cos(ellipse->getAngleXU())),
-                     ellipse->getMinorRadius()*((point2.x-center.x)*cos(ellipse->getAngleXU())+(point2.y-center.y)*sin(ellipse->getAngleXU()))
-                                       ), 2.f*M_PI);
+            double theta1;
+            ellipse->closestParameter(point1,theta1);
+            theta1 = Base::fmod(theta1, 2.f*M_PI);
+            double theta2;
+            ellipse->closestParameter(point2,theta2);
+            theta2 = Base::fmod(theta2, 2.f*M_PI);
             if (Base::fmod(theta1 - theta0, 2.f*M_PI) > Base::fmod(theta2 - theta0, 2.f*M_PI)) {
                 std::swap(GeoId1,GeoId2);
                 std::swap(point1,point2);
