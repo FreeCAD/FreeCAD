@@ -20,20 +20,11 @@ include_directories(
 )
 link_directories(${OCC_LIBRARY_DIR})
 
-if(MSVC)
-    set(Robot_LIBS
-        Part
-        ${QT_QTCORE_LIBRARY}
-        ${QT_QTCORE_LIBRARY_DEBUG}
-        FreeCADApp
-    )
-else(MSVC)
-    set(Robot_LIBS
-        Part
-        ${QT_QTCORE_LIBRARY}
-        FreeCADApp
-    )
-endif(MSVC)
+set(Robot_LIBS
+    Part
+    ${QT_QTCORE_LIBRARY}
+    FreeCADApp
+)
 
 FILE( GLOB KDL_SRCS kdl_cp/[^.]*.cpp )
 FILE( GLOB KDL_HPPS kdl_cp/[^.]*.hpp kdl_cp/[^.]*.inl)
