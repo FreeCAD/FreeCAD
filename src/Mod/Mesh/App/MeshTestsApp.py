@@ -88,8 +88,7 @@ class PivyTestCases(unittest.TestCase):
 		self.planarMesh.append( [-16.064457,-29.904951,16.090832] )
 		planarMeshObject = Mesh.Mesh(self.planarMesh)
 
-		from pivy import coin, sogui; import FreeCADGui
-		if not sys.modules.has_key("pivy.gui.soqt"): from pivy.gui import soqt
+		from pivy import coin; import FreeCADGui
 		Mesh.show(planarMeshObject)
 		view=FreeCADGui.ActiveDocument.ActiveView.getViewer()
 		rp=coin.SoRayPickAction(view.getSoRenderManager().getViewportRegion())
@@ -113,8 +112,7 @@ class PivyTestCases(unittest.TestCase):
 		self.planarMesh.append( [-16.064457,-29.904951,16.090832] )
 		planarMeshObject = Mesh.Mesh(self.planarMesh)
 
-		from pivy import coin, sogui; import FreeCADGui
-		if not sys.modules.has_key("pivy.gui.soqt"): from pivy.gui import soqt
+		from pivy import coin; import FreeCADGui
 		Mesh.show(planarMeshObject)
 		view=FreeCADGui.ActiveDocument.ActiveView
 		pc=coin.SoGetPrimitiveCountAction()
