@@ -57,7 +57,6 @@ reserved = (
     'projection',
     'import',
     'color',
-    'cut',
     'offset',
     'resize',
     )
