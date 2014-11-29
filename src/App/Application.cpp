@@ -45,10 +45,6 @@
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
-// Doesn't seem to work with VS2010
-# if (defined(_MSC_VER) && (_MSC_VER < 1600))
-# include <Shfolder.h>
-# endif
 #endif
 
 
@@ -916,7 +912,7 @@ void Application::destructObserver(void)
     if ( _pConsoleObserverStd ) {
         Console().DetachObserver(_pConsoleObserverStd);
         delete _pConsoleObserverStd;
-        _pConsoleObserverFile = 0;
+		_pConsoleObserverStd = 0;
     }
 }
 

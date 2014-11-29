@@ -108,7 +108,7 @@ istream & NETGENPlugin_SimpleHypothesis_3D::LoadFrom(istream & load)
   bool isOK = true;
   double val;
 
-  isOK = (load >> val);
+  isOK = !(load >> val).bad();
   if (isOK)
     _volume = val;
   else

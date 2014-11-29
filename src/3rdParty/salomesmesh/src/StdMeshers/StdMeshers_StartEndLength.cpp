@@ -121,10 +121,10 @@ ostream & StdMeshers_StartEndLength::SaveTo(ostream & save)
 istream & StdMeshers_StartEndLength::LoadFrom(istream & load)
 {
   bool isOK = true;
-  isOK = (load >> _begLength);
+  isOK = !(load >> _begLength).bad();
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
-  isOK = (load >> _endLength);
+  isOK = !(load >> _endLength).bad();
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
   return load;

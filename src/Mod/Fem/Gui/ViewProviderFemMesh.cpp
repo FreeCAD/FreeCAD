@@ -415,10 +415,14 @@ std::string ViewProviderFemMesh::getElement(const SoDetail* detail) const
         //    int edge = line_detail->getLineIndex() + 1;
         //    str << "Edge" << edge;
         //}
-        else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
-            const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
-            int vertex = vNodeElementIdx[point_detail->getCoordinateIndex()];
-            str << "Node" << vertex;
+		else if (detail->getTypeId() == SoPointDetail::getClassTypeId()) {
+			const SoPointDetail* point_detail = static_cast<const SoPointDetail*>(detail);
+			int idx = point_detail->getCoordinateIndex();
+			if (idx < vNodeElementIdx.size()) {
+				int vertex = vNodeElementIdx[point_detail->getCoordinateIndex()];
+				str << "Node" << vertex;
+			}else
+				return "";
         }
     }
 

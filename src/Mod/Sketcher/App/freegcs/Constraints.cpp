@@ -22,6 +22,7 @@
 
 #include <cmath>
 #include "Constraints.h"
+#include <algorithm>
 
 namespace GCS
 {

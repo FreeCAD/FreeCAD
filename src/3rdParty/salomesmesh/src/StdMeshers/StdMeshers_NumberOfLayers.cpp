@@ -118,7 +118,7 @@ ostream & StdMeshers_NumberOfLayers::SaveTo(ostream & save)
 istream & StdMeshers_NumberOfLayers::LoadFrom(istream & load)
 {
   bool isOK = true;
-  isOK = (load >> _nbLayers);
+  isOK = !(load >> _nbLayers).bad();
   if (!isOK)
     load.clear(ios::badbit | load.rdstate());
   return load;
