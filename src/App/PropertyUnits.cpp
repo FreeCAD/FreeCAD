@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <boost/version.hpp>
 # include <boost/filesystem/path.hpp>
+# include <cfloat>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -45,7 +46,7 @@ using namespace Base;
 using namespace std;
 
 
-const PropertyQuantityConstraint::Constraints LengthStandard = {0.0,(double)INT_MAX,1.0};
+const PropertyQuantityConstraint::Constraints LengthStandard = {0.0,DBL_MAX,1.0};
 const PropertyQuantityConstraint::Constraints AngleStandard = {-360,360,1.0};
 
 //**************************************************************************

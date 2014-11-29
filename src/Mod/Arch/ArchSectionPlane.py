@@ -107,8 +107,12 @@ class _SectionPlane:
         
     def execute(self,obj):
         import Part
-        l = obj.ViewObject.DisplayLength.Value
-        h = obj.ViewObject.DisplayHeight.Value
+        if hasattr(obj.ViewObject,"DisplayLength"):
+            l = obj.ViewObject.DisplayLength.Value
+            h = obj.ViewObject.DisplayHeight.Value
+        else:
+            l = 1
+            h = 1
         p = Part.makePlane(l,l,Vector(l/2,-l/2,0),Vector(0,0,-1))
         # make sure the normal direction is pointing outwards, you never know what OCC will decide...
         if p.normalAt(0,0).getAngle(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1))) > 1:
@@ -206,12 +210,19 @@ class _ViewProviderSectionPlane:
             if hasattr(vobj,"Transparency"):
                 self.mat2.transparency.setValue(vobj.Transparency/100.0)
         elif prop in ["DisplayLength","DisplayHeight","ArrowSize"]:
-            ld = vobj.DisplayLength.Value/2
-            hd = vobj.DisplayHeight.Value/2
+            if hasattr(vobj,"DisplayLength"):
+                ld = vobj.DisplayLength.Value/2
+                hd = vobj.DisplayHeight.Value/2
+            else:
+                ld = 1
+                hd = 1
             verts = []
             fverts = []
             for v in [[-ld,-hd],[ld,-hd],[ld,hd],[-ld,hd]]:
-                l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
+                if hasattr(vobj,"ArrowSize"):
+                    l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
+                else:
+                    l1 = 0.1
                 l2 = l1/3
                 pl = FreeCAD.Placement(vobj.Object.Placement)
                 p1 = pl.multVec(Vector(v[0],v[1],0))

@@ -32,21 +32,24 @@ if open.__module__ == '__builtin__':
 # Part:: Wedge, Helix, Spiral, Elipsoid
 # Draft: Rectangle, BSpline, BezCurve
 
-def f2s(n,angle=False):
+def f2s(n,angle=False,axis=False):
     '''convert to numerical value to string
     try to remove no significant digits, by guessing a former rounding
-    if it fail use 18 decimal place in fixed point notation
     '''
     if abs(n) < 1e-14: return '0'
-    elif len(('%0.13e' % n).split('e')[0].rstrip('0') ) < 6:
-        return ('%0.10f' % n).rstrip('0').rstrip('.')
-    elif not angle and len(('%0.15e' % n).split('e')[0].rstrip('0') ) < 15:
-        return ('%0.15f' % n).rstrip('0').rstrip('.')
-    elif angle and len(('%0.6e' % n).split('e')[0].rstrip('0') ) < 3:
+    if angle and len(('%0.6e' % n).split('e')[0].rstrip('0') ) < 3:
         return ('%0.5f' % n).rstrip('0').rstrip('.')
+    elif axis and len(('%0.13e' % n).split('e')[0].rstrip('0') ) < 6:
+        return ('%0.10f' % n).rstrip('0').rstrip('.')
     else:
-        return ('%0.18f' % n).rstrip('0').rstrip('.')
-    #return str(float(n))
+        for i in range(20):
+            s = ('%%1.%df'% i) % n
+            if float(s) == n:
+                return s
+        for i in range(20):
+            s = ('%%0.%de'% i) % n
+            if float(s) == n:
+                return s
 
 def polygonstr(r,pcount):
     import math
@@ -80,7 +83,8 @@ def placement2draw(placement,name='object'):
         dx,dy,dz=placement.Rotation.Axis
         an=math.degrees(placement.Rotation.Angle)
         drawcommand += "trotate %s 0 0 0 %s %s %s %s\n" % \
-            (name,f2s(dx),f2s(dy),f2s(dz),f2s(an,angle=True))
+            (name,f2s(dx,axis=True),f2s(dy,axis=True),f2s(dz,axis=True),\
+            f2s(an,angle=True))
     if placement.Base.Length > 1e-8:
         x,y,z=placement.Base
         drawcommand += "ttranslate %s %s %s %s\n" % \
@@ -136,6 +140,11 @@ def isDraftCircle(ob):
     if isDraftFeature(ob):
         import Draft
         return isinstance(ob.Proxy,Draft._Circle)
+
+def isDraftEllipse(ob):
+    if isDraftFeature(ob):
+        import Draft
+        return isinstance(ob.Proxy,Draft._Ellipse)
 
 def isDraftPolygon(ob):
     if isDraftFeature(ob):
@@ -316,7 +325,8 @@ class Drawexporter(object):
             hasplacement = not ob.Placement.isNull()
         else:
             hasplacement = False
-        if ob.TypeId in ["Part::Cut","Part::Fuse","Part::Common","Part::Section"]:
+        if ob.TypeId in ["Part::Cut","Part::Fuse","Part::Common",\
+                "Part::Section"]:
             if checksupported: return True # The object is supported
             d1.update({'part':ob.Base.Name,'tool':ob.Tool.Name,\
                 'command':'b%s' % ob.TypeId[6:].lower()})
@@ -472,6 +482,22 @@ class Drawexporter(object):
             self.csg.write('blend %s %s %s\n' % (d1['name'],ob.Base.Name,\
                 ' '.join(('%s %s'%(f2s(e[1]),'%s_%d' % (ob.Base.Name,e[0])) \
                 for e in ob.Edges))))
+        elif ob.TypeId == "Part::Thickness" and not ob.SelfIntersection and \
+                ob.Mode == 'Skin':
+            if checksupported: return True # The object is supported
+            jointype = {'Arc':'a','Intersection':'i','Tangent':'t'} #Join
+            inter = {False: 'p', True: 'c'} #Intersection
+            baseobj, facelist = ob.Faces
+            self.process_object(baseobj)
+            faces = ' '.join([('%s_%s' %(baseobj.Name,f[4:])) \
+                for f in facelist])
+            value = f2s(ob.Value)
+            self.csg.write('explode %s F\n' % baseobj.Name )
+            self.csg.write('offsetparameter 1e-7 %s %s\n' % \
+                    (inter[ob.Intersection],jointype[ob.Join]))
+            self.csg.write('offsetload %s %s %s\n'%(baseobj.Name,value,faces))
+            self.csg.write('offsetperform %s\n' % d1['name'] )
+
         elif ob.TypeId == "Part::Sweep" and True:
             if checksupported: return True # The object is supported
             self.saveSweep(ob)
@@ -552,9 +578,11 @@ class Drawexporter(object):
             d1['y']=f2s(ob.Y)
             d1['z']=f2s(ob.Z)
             self.csg.write('vertex %(name)s %(x)s %(y)s %(z)s\n' % d1)
-
-        elif isDraftCircle(ob) or ob.TypeId == "Part::Circle":
+        elif isDraftCircle(ob) or ob.TypeId == "Part::Circle" or \
+                isDraftEllipse(ob):
             if checksupported: return True # The object is supported
+            isdraftcircle=isDraftCircle(ob)
+            isdraftellipse=isDraftCircle(ob)
             "circle name x y [z [dx dy dz]] [ux uy [uz]] radius"
             curvename = '%s-curve' % d1['name']
             if ob.TypeId == "Part::Circle":
@@ -564,17 +592,26 @@ class Drawexporter(object):
                 self.csg.write('circle %s 0 0 0 %s\n' % (curvename,radius))
                 self.csg.write('mkedge %s %s %s %s\n' % \
                     (d1['name'],curvename,pfirst,plast))
-            else:
-                radius=f2s(ob.Radius.Value)
-                pfirst=f2s(ob.FirstAngle.getValueAs('rad').Value)
-                plast=f2s(ob.LastAngle.getValueAs('rad').Value)
+            else: #draft
                 makeface = ob.MakeFace and \
                     (ob.Shape.isNull() or ob.Shape.ShapeType == 'Face')
-                #FreeCAD ignore a failed mkplane but it may
-                #brake the model in DRAWEXE
-
+                #FreeCAD ignores a failed mkplane but it may
+                #break the model in DRAWEXE
                 edgename  = '%s-edge' % d1['name']
-                self.csg.write('circle %s 0 0 0 %s\n' % (curvename,radius))
+
+                if isdraftcircle:
+                    pfirst=f2s(ob.FirstAngle.getValueAs('rad').Value)
+                    plast=f2s(ob.LastAngle.getValueAs('rad').Value)
+                    radius=f2s(ob.Radius.Value)
+                    self.csg.write('circle %s 0 0 0 %s\n' % (curvename,radius))
+                else: #draft ellipse
+                    import math
+                    majr=f2s(float(ob.MajorRadius))
+                    minr=f2s(float(ob.MinorRadius))
+                    pfirst=0
+                    plast=2*math.pi
+                    self.csg.write('ellipse %s 0 0 0 %s %s\n' % \
+                            (curvename,majr,minr))
                 self.csg.write('mkedge %s %s %s %s\n' % \
                         (edgename,curvename,pfirst,plast))
                 if makeface:
@@ -583,7 +620,6 @@ class Drawexporter(object):
                     self.csg.write('mkplane %s %s\n' % (d1['name'],wirename))
                 else:
                     self.csg.write('wire %s %s\n' %(d1['name'],edgename))
-
         elif ob.TypeId == "Part::Line":
             if checksupported: return True # The object is supported
             self.csg.write('polyline %s %s %s %s %s %s %s\n' % \
@@ -651,6 +687,9 @@ class Drawexporter(object):
                     formatobjtype(ob))
             hasplacement = saveShape(self.csg,self.filename,ob.Shape,ob.Name,\
                     hasplacement,self.cleanshape)
+        elif ob.isDerivedFrom('App::Annotation') :
+            return False # ignored here
+            #anntotations needs to be drawn after erase/donly
         else: # not derived from Part::Feature
             if not toplevel:
                 raise ValueError('Can not export child object')
@@ -671,12 +710,27 @@ class Drawexporter(object):
             self.csg.write('#Object Label: %s\n' % ob.Label.encode('unicode-escape'))
         return ob.Name #The object is present and can be referenced
 
+    def export_annotations(self,objlst):
+        for ob in objlst:
+            if ob.isDerivedFrom('App::Annotation') :
+                if ob.Name != ob.Label:
+                    self.csg.write('#Annotation Name %s Label %s"\n' % \
+                            (ob.Name,ob.Label.encode('unicode-escape')))
+                else:
+                    self.csg.write('#Annotation %s\n' % (ob.Name))
+                v=ob.Position
+                self.csg.write('dtext %s %s %s "%s"\n' % \
+                        (f2s(v.x),f2s(v.y),f2s(v.z), '\\n'.join(\
+                        ob.LabelText).encode(\
+                        'ascii', errors='xmlcharrefreplace')))
+
     def export_objects(self,objlst,toplevel=True):
         self.write_header()
         toplevelobjs = [self.process_object(ob, toplevel=toplevel)\
                 for ob in objlst]
         names = [name for name in toplevelobjs if name is not False]
         self.csg.write('donly %s\n'%(' '.join(names)))
+        self.export_annotations(objlst)
         #for ob in objlst:
         #    self.process_object(ob,toplevel=toplevel)
         #self.write_displayonly(objlst)

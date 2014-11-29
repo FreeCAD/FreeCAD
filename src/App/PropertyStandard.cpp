@@ -283,7 +283,7 @@ void PropertyEnumeration::setEnums(const char** plEnums)
         // check for NULL termination
         const char* p = *_EnumArray;
         unsigned int i=0;
-        while(*(p++) != NULL)i++;
+        while(*(p++) != 0)i++;
             // very unlikely to have enums with more then 5000 entries!
             assert(i<5000);
     }
