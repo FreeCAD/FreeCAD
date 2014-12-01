@@ -504,7 +504,10 @@ class _RoofTaskPanel:
             a.append(float(it.text(1)))
             run.append(float(it.text(2)))
             rel.append(int(it.text(3)))
-            thick.append(float(it.text(4)))
+            if float(it.text(4)) == 0.:
+                thick.append(1.)
+            else:
+                thick.append(float(it.text(4)))
             over.append(float(it.text(5)))
         self.obj.Runs = run
         self.obj.Angles = a
