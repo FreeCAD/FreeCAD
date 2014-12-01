@@ -76,6 +76,39 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
     return DocumentObject::StdReturn;
 }
 
+void FeaturePythonImp::onBeforeChange(const Property* prop)
+{
+    // Run the execute method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("onBeforeChange"))) {
+                if (feature.hasAttr("__object__")) {
+                    Py::Callable method(feature.getAttr(std::string("onBeforeChange")));
+                    Py::Tuple args(1);
+                    std::string prop_name = object->getPropertyName(prop);
+                    args.setItem(0, Py::String(prop_name));
+                    method.apply(args);
+                }
+                else {
+                    Py::Callable method(feature.getAttr(std::string("onBeforeChange")));
+                    Py::Tuple args(2);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                    std::string prop_name = object->getPropertyName(prop);
+                    args.setItem(1, Py::String(prop_name));
+                    method.apply(args);
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
 void FeaturePythonImp::onChanged(const Property* prop)
 {
     // Run the execute method of the proxy object.
