@@ -45,6 +45,7 @@ public:
     ~FeaturePythonImp();
 
     DocumentObjectExecReturn *execute();
+    void onBeforeChange(const Property* prop);
     void onChanged(const Property* prop);
     PyObject *getPyObject(void);
 
@@ -199,6 +200,10 @@ public:
     }
 
 protected:
+    virtual void onBeforeChange(const Property* prop) {
+        FeatureT::onBeforeChange(prop);
+        imp->onBeforeChange(prop);
+    }
     virtual void onChanged(const Property* prop) {
         imp->onChanged(prop);
         FeatureT::onChanged(prop);
