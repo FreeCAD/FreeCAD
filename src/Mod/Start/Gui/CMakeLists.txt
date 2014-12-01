@@ -26,52 +26,22 @@ SET(StartGui_SRCS
     Workbench.h
 )
 
-SET(StartPage_Scripts
-    InitGui.py
-    StartPage/StartPage.py
-    StartPage/__init__.py
-)
-
-SET(StartPage_Resources
-    StartPage/PartDesign.py
-    StartPage/ArchDesign.py
-    StartPage/DefaultWorkbench.py
-    StartPage/Mesh.py
-    StartPage/LoadSchenkel.py
-    StartPage/LoadPartDesignExample.py
-    StartPage/LoadDrawingExample.py
-    StartPage/LoadRobotExample.py
-    StartPage/LoadArchExample.py
-    StartPage/Background.jpg
-    StartPage/FreeCAD.png
-    StartPage/ArchDesign.png
-    StartPage/PartDesign.png
-    StartPage/Mesh.png
-    StartPage/Complete.png
-    StartPage/LoadMRU0.py
-    StartPage/LoadMRU1.py
-    StartPage/LoadMRU2.py
-    StartPage/PartDesignExample.png
-    StartPage/ArchExample.png
-    StartPage/web.png
-    StartPage/blank.png
-    StartPage/complete.jpg
-    StartPage/Ship.py
-    StartPage/Ship.png
-    StartPage/ShipExample.png
-)
-
 add_library(StartGui SHARED ${StartGui_SRCS})
 target_link_libraries(StartGui ${StartGui_LIBS})
 
 fc_target_copy_resource(StartGui 
     ${CMAKE_SOURCE_DIR}/src/Mod/Start
     ${CMAKE_BINARY_DIR}/Mod/Start
+    InitGui.py)
+
+fc_target_copy_resource(StartGui 
+    ${CMAKE_SOURCE_DIR}/src/Mod/Start/StartPage
+    ${CMAKE_BINARY_DIR}/Mod/Start/StartPage
     ${StartPage_Scripts})
 
 fc_target_copy_resource(StartGui 
-    ${CMAKE_SOURCE_DIR}/src/Mod/Start
-    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start
+    ${CMAKE_SOURCE_DIR}/src/Mod/Start/StartPage
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Start/StartPage
     ${StartPage_Resources})
 
 SET_BIN_DIR(StartGui StartGui /Mod/Start)
