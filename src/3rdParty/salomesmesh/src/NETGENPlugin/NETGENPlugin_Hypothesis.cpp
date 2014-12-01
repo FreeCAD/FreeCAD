@@ -225,19 +225,19 @@ istream & NETGENPlugin_Hypothesis::LoadFrom(istream & load)
 
   if (_fineness == UserDefined)
   {
-	  isOK = !(load >> val).bad();
+    isOK = !(load >> val).bad();
     if (isOK)
       _growthRate = val;
     else
       load.clear(ios::badbit | load.rdstate());
 
-	isOK = !(load >> val).bad();
+    isOK = !(load >> val).bad();
     if (isOK)
       _nbSegPerEdge = val;
     else
       load.clear(ios::badbit | load.rdstate());
 
-	isOK = !(load >> val).bad();
+    isOK = !(load >> val).bad();
     if (isOK)
       _nbSegPerRadius = val;
     else

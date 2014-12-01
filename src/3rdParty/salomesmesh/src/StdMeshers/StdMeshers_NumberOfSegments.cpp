@@ -554,7 +554,7 @@ istream & StdMeshers_NumberOfSegments::LoadFrom(istream & load)
   {
   case DT_Scale:
     {
-	  isOK = !(load >> b).bad();
+      isOK = !(load >> b).bad();
       if (isOK)
         _scaleFactor = b;
       else
@@ -568,14 +568,14 @@ istream & StdMeshers_NumberOfSegments::LoadFrom(istream & load)
     break;
   case DT_TabFunc:
     {
-	  isOK = !(load >> a).bad();
+      isOK = !(load >> a).bad();
       if (isOK)
       {
         _table.resize(a, 0.);
         int i;
         for (i=0; i < _table.size(); i++)
         {
-			isOK = !(load >> b).bad();
+          isOK = !(load >> b).bad();
           if (isOK)
             _table[i] = b;
           else
@@ -594,7 +594,7 @@ istream & StdMeshers_NumberOfSegments::LoadFrom(istream & load)
   case DT_ExprFunc:
     {
       string str;
-	  isOK = !(load >> str).bad();
+      isOK = !(load >> str).bad();
       if (isOK)
         _func = str;
       else
@@ -613,7 +613,7 @@ istream & StdMeshers_NumberOfSegments::LoadFrom(istream & load)
 
   if (_distrType == DT_TabFunc || _distrType == DT_ExprFunc)
   {
-	  isOK = !(load >> a).bad();
+    isOK = !(load >> a).bad();
     if (isOK)
       _convMode = a;
     else
