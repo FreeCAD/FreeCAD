@@ -197,11 +197,27 @@ Py::Object RotationPy::getAxis(void) const
     return Py::Vector(axis);
 }
 
+void RotationPy::setAxis(Py::Object arg)
+{
+    Base::Vector3d axis; double angle;
+    this->getRotationPtr()->getValue(axis, angle);
+    axis = Py::Vector(arg).toVector();
+    this->getRotationPtr()->setValue(axis, angle);
+}
+
 Py::Float RotationPy::getAngle(void) const
 {
     Base::Vector3d axis; double angle;
     this->getRotationPtr()->getValue(axis, angle);
     return Py::Float(angle);
+}
+
+void RotationPy::setAngle(Py::Float arg)
+{
+    Base::Vector3d axis; double angle;
+    this->getRotationPtr()->getValue(axis, angle);
+    angle = static_cast<double>(arg);
+    this->getRotationPtr()->setValue(axis, angle);
 }
 
 PyObject *RotationPy::getCustomAttributes(const char* /*attr*/) const
