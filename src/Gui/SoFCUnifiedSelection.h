@@ -177,6 +177,24 @@ private:
     const SoDetail* _det;
 };
 
+/**
+ * @author Werner Mayer
+ */
+class GuiExport SoVRMLAction : public SoAction
+{
+    SO_ACTION_HEADER(SoVRMLAction);
+
+public:
+    SoVRMLAction();
+    ~SoVRMLAction();
+
+    static void initClass();
+
+private:
+    static void callDoAction(SoAction *action,SoNode *node);
+
+};
+
 
 } // namespace Gui
 

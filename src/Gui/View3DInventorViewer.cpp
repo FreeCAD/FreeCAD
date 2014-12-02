@@ -1041,6 +1041,8 @@ bool View3DInventorViewer::dumpToFile(const char* filename, bool binary) const
         if (fi.hasExtension("wrz"))
             binary = true;
 
+        SoVRMLAction vrml2;
+        vrml2.apply(pcViewProviderRoot);
         SoToVRML2Action tovrml2;
         tovrml2.apply(pcViewProviderRoot);
         SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();

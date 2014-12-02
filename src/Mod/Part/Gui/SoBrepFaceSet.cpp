@@ -44,6 +44,7 @@
 # include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/bundles/SoTextureCoordinateBundle.h>
+# include <Inventor/elements/SoLazyElement.h>
 # include <Inventor/elements/SoOverrideElement.h>
 # include <Inventor/elements/SoCoordinateElement.h>
 # include <Inventor/elements/SoGLCoordinateElement.h>
@@ -145,6 +146,35 @@ void SoBrepFaceSet::doAction(SoAction* action)
                 break;
             default:
                 break;
+            }
+        }
+    }
+    else if (action->getTypeId() == Gui::SoVRMLAction::getClassTypeId()) {
+        // update the materialIndex field to match with the number of triangles if needed
+        SoState * state = action->getState();
+        Binding mbind = this->findMaterialBinding(state);
+        if (mbind == PER_PART) {
+            const SoLazyElement* mat = SoLazyElement::getInstance(state);
+            int numColor = 1;
+            int numParts = partIndex.getNum();
+            if (mat) {
+                numColor = mat->getNumDiffuse();
+                if (numColor == numParts) {
+                    int count = 0;
+                    const int32_t * indices = this->partIndex.getValues(0);
+                    for (int i=0; i<numParts; i++) {
+                        count += indices[i];
+                    }
+                    this->materialIndex.setNum(count);
+                    int32_t * matind = this->materialIndex.startEditing();
+                    int32_t k = 0;
+                    for (int i=0; i<numParts; i++) {
+                        for (int j=0; j<indices[i]; j++) {
+                            matind[k++] = i;
+                        }
+                    }
+                    this->materialIndex.finishEditing();
+                }
             }
         }
     }
