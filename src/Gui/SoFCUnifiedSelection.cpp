@@ -46,6 +46,7 @@
 #include <Inventor/elements/SoElements.h>
 #include <Inventor/elements/SoFontNameElement.h>
 #include <Inventor/elements/SoFontSizeElement.h>
+#include <Inventor/elements/SoMaterialBindingElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoShapeStyleElement.h>
 #include <Inventor/elements/SoProfileCoordinateElement.h>
@@ -58,6 +59,8 @@
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/misc/SoChildList.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/events/SoLocation2Event.h>
 #include <Inventor/SoPickedPoint.h>
 
@@ -681,4 +684,44 @@ void SoSelectionElementAction::setElement(const SoDetail* det)
 const SoDetail* SoSelectionElementAction::getElement() const
 {
     return this->_det;
+}
+
+// ---------------------------------------------------------------
+
+SO_ACTION_SOURCE(SoVRMLAction);
+
+void SoVRMLAction::initClass()
+{
+    SO_ACTION_INIT_CLASS(SoVRMLAction,SoAction);
+
+    SO_ENABLE(SoVRMLAction, SoSwitchElement);
+
+    SO_ACTION_ADD_METHOD(SoNode,nullAction);
+
+    SO_ENABLE(SoVRMLAction, SoCoordinateElement);
+    SO_ENABLE(SoVRMLAction, SoMaterialBindingElement);
+    SO_ENABLE(SoVRMLAction, SoLazyElement);
+    SO_ENABLE(SoVRMLAction, SoShapeStyleElement);
+
+    SO_ACTION_ADD_METHOD(SoCoordinate3,callDoAction);
+    SO_ACTION_ADD_METHOD(SoMaterialBinding,callDoAction);
+    SO_ACTION_ADD_METHOD(SoMaterial,callDoAction);
+    SO_ACTION_ADD_METHOD(SoGroup,callDoAction);
+    SO_ACTION_ADD_METHOD(SoIndexedLineSet,callDoAction);
+    SO_ACTION_ADD_METHOD(SoIndexedFaceSet,callDoAction);
+    SO_ACTION_ADD_METHOD(SoPointSet,callDoAction);
+}
+
+SoVRMLAction::SoVRMLAction()
+{
+    SO_ACTION_CONSTRUCTOR(SoVRMLAction);
+}
+
+SoVRMLAction::~SoVRMLAction()
+{
+}
+
+void SoVRMLAction::callDoAction(SoAction *action,SoNode *node)
+{
+    node->doAction(action);
 }
