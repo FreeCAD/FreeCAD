@@ -72,13 +72,13 @@
 			</Documentation>
 			<Parameter Name="Q" Type="Tuple" />
 		</Attribute>
-		<Attribute Name="Axis" ReadOnly="true">
+		<Attribute Name="Axis" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation axis of the quaternion</UserDocu>
 			</Documentation>
 			<Parameter Name="Axis" Type="Object" />
 		</Attribute>
-		<Attribute Name="Angle" ReadOnly="true">
+		<Attribute Name="Angle" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation angle of the quaternion</UserDocu>
 			</Documentation>
