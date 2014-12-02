@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #include <climits>
+#include <zlib.h>
 
 #include "DlgSettingsDocumentImp.h"
 #include "PrefWidgets.h"
@@ -40,6 +41,8 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
 {
     this->setupUi(this);
     prefCountBackupFiles->setMaximum(INT_MAX);
+    prefCompression->setMinimum(Z_NO_COMPRESSION);
+    prefCompression->setMaximum(Z_BEST_COMPRESSION);
 }
 
 /** 
