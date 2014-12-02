@@ -945,6 +945,7 @@ bool Document::save (void)
 {
     int compression = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetInt("CompressionLevel",3);
+    compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     if (*(FileName.getValue()) != '\0') {
         LastModifiedDate.setValue(Base::TimeInfo::currentDateTimeString());
