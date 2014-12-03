@@ -160,7 +160,7 @@ void TaskRobot6Axis::viewTool(const Base::Placement pos)
 void TaskRobot6Axis::changeSliderA1(int value){
     pcRobot->Axis1.setValue(float (value));
     viewTcp(pcRobot->Tcp.getValue());
-    ui->lineEdit_Axis1->setText(QString::fromLatin1("%1°").arg((float)value,0,'f',1));
+    ui->lineEdit_Axis1->setText(QString::fromUtf8("%1\xc2\xb0").arg((float)value,0,'f',1));
     setColor(0,float (value),*(ui->lineEdit_Axis1));
 }
 
@@ -168,7 +168,7 @@ void TaskRobot6Axis::changeSliderA2(int value)
 {
     pcRobot->Axis2.setValue(float (value));
     viewTcp(pcRobot->Tcp.getValue());
-    ui->lineEdit_Axis2->setText(QString::fromLatin1("%1°").arg((float)value,0,'f',1));
+    ui->lineEdit_Axis2->setText(QString::fromUtf8("%1\xc2\xb0").arg((float)value,0,'f',1));
     setColor(1,float (value),*(ui->lineEdit_Axis2));
 
 }
@@ -177,7 +177,7 @@ void TaskRobot6Axis::changeSliderA3(int value)
 {
     pcRobot->Axis3.setValue(float (value));
     viewTcp(pcRobot->Tcp.getValue());
-    ui->lineEdit_Axis3->setText(QString::fromLatin1("%1°").arg((float)value,0,'f',1));
+    ui->lineEdit_Axis3->setText(QString::fromUtf8("%1\xc2\xb0").arg((float)value,0,'f',1));
     setColor(2,float (value),*(ui->lineEdit_Axis3));
 
 }
