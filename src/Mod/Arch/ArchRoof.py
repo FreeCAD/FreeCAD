@@ -35,7 +35,7 @@ __title__="FreeCAD Roof"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeRoof2(baseobj=None,facenr=1, angles=[45.,], run = [], idrel = [0,],thickness = [1.,], overhang=[0.,], name=translate("Arch","Roof")):
+def makeRoof2(baseobj=None,facenr=1, angles=[45.,], run = [], idrel = [0,],thickness = [1.,], overhang=[2.,], name=translate("Arch","Roof")):
     '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a
     face from an existing object. You can provide the number of the face
     to build the roof on (default = 1), the angle (default=45) and a name (default
@@ -83,7 +83,7 @@ def makeRoof2(baseobj=None,facenr=1, angles=[45.,], run = [], idrel = [0,],thick
             lover = len(overhang)
             olist = overhang
             for i in range(l-lover):
-                olist.append(2.)
+                olist.append(overhang[0])
             obj.Overhang = olist
 
     obj.Face = facenr
@@ -155,7 +155,7 @@ class _Roof(ArchComponent.Component):
         obj.addProperty("App::PropertyFloatList","Runs","Arch", translate("Arch","The horizontal lenght projection of each crawling."))
         obj.addProperty("App::PropertyIntegerList","IdRel","Arch", translate("Arch","The pane Id of relative profil."))
         obj.addProperty("App::PropertyFloatList","Thickness","Arch", translate("Arch","The thickness of the roof pane."))
-        obj.addProperty("App::PropertyFloatList","Overhang","Arch", translate("Arch","TODO:The Overhang of the roof pane."))
+        obj.addProperty("App::PropertyFloatList","Overhang","Arch", translate("Arch","The Overhang of the roof pane."))
         obj.addProperty("App::PropertyFloatList","Heights","Arch", translate("Arch","The calculated height of the roof pane list."))
         obj.addProperty("App::PropertyInteger","Face","Base",translate("Arch","The face number of the base object used to build this roof"))
         self.Type = "Roof"
@@ -166,26 +166,26 @@ class _Roof(ArchComponent.Component):
         return htRel
 
     def calcRun(self, id):
-        lgRel = self.profilsDico[id]["height"]/(math.tan(math.radians(self.profilsDico[id]["angle"])))
-        return lgRel
+        runRel = self.profilsDico[id]["height"]/(math.tan(math.radians(self.profilsDico[id]["angle"])))
+        return runRel
 
     def calcAngle(self, id):
         a = math.degrees(math.atan(self.profilsDico[id]["height"]/self.profilsDico[id]["run"]))
         return a
 
-    def getPerpendicular(self, vec, angleEdge, l):
+    def getPerpendicular(self, vec, rotEdge, l):
         norm = FreeCAD.Vector(0,0,1)
         perpendicular = vec.cross(norm)
-        if  -180. <= angleEdge < -90.:
+        if  -180. <= rotEdge < -90.:
             perpendicular[0] = abs(perpendicular[0])*-1
             perpendicular[1] = abs(perpendicular[1])*-1
-        elif   -90. <= angleEdge <= 0.:
+        elif   -90. <= rotEdge <= 0.:
             perpendicular[0] = abs(perpendicular[0])*-1
             perpendicular[1] = abs(perpendicular[1])
-        elif 0. < angleEdge <= 90.:
+        elif 0. < rotEdge <= 90.:
             perpendicular[0] = abs(perpendicular[0])
             perpendicular[1] = abs(perpendicular[1])
-        elif 90. < angleEdge <= 180.:
+        elif 90. < rotEdge <= 180.:
             perpendicular[0] = abs(perpendicular[0])
             perpendicular[1] = abs(perpendicular[1])*-1
         else:
@@ -214,13 +214,13 @@ class _Roof(ArchComponent.Component):
 
     def calcMissingData(self, i):
         a = self.profilsDico[i]["angle"]
-        lg = self.profilsDico[i]["run"]
+        run = self.profilsDico[i]["run"]
         rel = self.profilsDico[i]["idrel"]
-        if a == 0.0 and lg == 0.0 :
+        if a == 0.0 and run == 0.0 :
             self.profilsDico[i]["run"] = self.profilsDico[rel]["run"]
             self.profilsDico[i]["angle"] = self.profilsDico[rel]["angle"]
             self.profilsDico[i]["height"] = self.calcHeight(i)
-        elif lg == 0:
+        elif run == 0:
             if a == 90. :
                 htRel = self.calcHeight(rel)
                 self.profilsDico[i]["height"] = htRel
@@ -258,6 +258,7 @@ class _Roof(ArchComponent.Component):
                     heights = []
                     edges = DraftGeomUtils.sortEdges(w.Edges)
                     l = len(edges)
+                    print("le contour contient "+str(l)+" aretes")
                     for i in range(l):
                         self.makeRoofProfilsDic(i, obj.Angles[i], obj.Runs[i], obj.IdRel[i], obj.Overhang[i], obj.Thickness[i])
                     for i in range(l):
@@ -265,23 +266,10 @@ class _Roof(ArchComponent.Component):
                     for p in self.profilsDico:
                         heights.append(p["height"])
                     obj.Heights = heights
-                    """
-                    for p in self.profilsDico:
-                        print p
-
-                    print obj.Angles
-                    print obj.Runs
-                    print obj.IdRel
-                    print obj.Overhang
-                    print obj.Thickness
-                    print obj.Heights
-                    """
                     for i in range(l):
                         edgesForward = edges[:]
                         edgesForward.append(edges[0])
-                        edgesBack = edges[:]
-                        edgesBack.insert(0,edges[-1])
-                        points=[]
+                        ptsPaneProject=[]
                         profil0 =self.profilsDico[i-1]
                         profil1 =self.profilsDico[i]
                         if i == l-1:
@@ -291,67 +279,140 @@ class _Roof(ArchComponent.Component):
                         vec0 = edges[i-1].Vertexes[-1].Point.sub(edges[i-1].Vertexes[0].Point)
                         vec1 = edges[i].Vertexes[-1].Point.sub(edges[i].Vertexes[0].Point)
                         vec2 = edgesForward[i+1].Vertexes[-1].Point.sub(edgesForward[i+1].Vertexes[0].Point)
-                        angleEdge0 = math.degrees(DraftVecUtils.angle(vec0))
-                        angleEdge1 = math.degrees(DraftVecUtils.angle(vec1))
-                        angleEdge2 = math.degrees(DraftVecUtils.angle(vec2))
-                        points=[edges[i].Vertexes[0].Point,edges[i].Vertexes[-1].Point]
+                        rotEdge0 = math.degrees(DraftVecUtils.angle(vec0))
+                        rotEdge1 = math.degrees(DraftVecUtils.angle(vec1))
+                        rotEdge2 = math.degrees(DraftVecUtils.angle(vec2))
+                        edgeEave0 = DraftGeomUtils.offset(edges[i-1],self.getPerpendicular(vec0,rotEdge0,profil0["overhang"]).negative())
+                        edgeEave1 = DraftGeomUtils.offset(edges[i],self.getPerpendicular(vec1,rotEdge1,profil1["overhang"]).negative())
+                        edgeEave2 = DraftGeomUtils.offset(edgesForward[i+1],self.getPerpendicular(vec2,rotEdge2,profil2["overhang"]).negative())
+                        pt0Eave1 = DraftGeomUtils.findIntersection(edgeEave0,edgeEave1,infinite1=True,infinite2=True,)
+                        pt1Eave1 = DraftGeomUtils.findIntersection(edgeEave1,edgeEave2,infinite1=True,infinite2=True,)
+                        edgeEave1 = DraftGeomUtils.edg(FreeCAD.Vector(pt0Eave1[0]),FreeCAD.Vector(pt1Eave1[0]))
+                        edgeRidge0 = DraftGeomUtils.offset(edges[i-1],self.getPerpendicular(vec0,rotEdge0,profil0["run"]))
+                        edgeRidge1 = DraftGeomUtils.offset(edges[i],self.getPerpendicular(vec1,rotEdge1,profil1["run"]))
+                        edgeRidge2 = DraftGeomUtils.offset(edgesForward[i+1],self.getPerpendicular(vec2,rotEdge2,profil2["run"]))
+                        midpoint = DraftGeomUtils.findMidpoint(edges[i])
+                        pt0Edge1 = edges[i].Vertexes[0].Point
+                        pt1Edge1 = edges[i].Vertexes[-1].Point
+                        print("Analyse profil " + str(i))
+                        print "edge1",edges[i].Vertexes[0].Point,edges[i].Vertexes[-1].Point
+                        print "edgeEave1",edgeEave1.Vertexes[0].Point,edgeEave1.Vertexes[-1].Point
+                        print "edgeRidge1",edgeRidge1.Vertexes[0].Point,edgeRidge1.Vertexes[-1].Point
                         if profil1["angle"] != 90.:
-                            lg = profil1["run"]
-                            faitage = DraftGeomUtils.offset(edges[i],self.getPerpendicular(vec1,angleEdge1,lg))
-                            midpoint = DraftGeomUtils.findMidpoint(edges[i])
                             if profil2["angle"] == 90. :
-                                edge = DraftGeomUtils.offset(edgesForward[i+1],FreeCAD.Vector(0,0,0))
-                                point = DraftGeomUtils.findIntersection(faitage,edge,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(point[0]))
-                            elif profil2["height"] == profil1["height"]:
-                                edge = DraftGeomUtils.offset(edgesForward[i+1],self.getPerpendicular(vec2,angleEdge2,profil2["run"]))
-                                point = DraftGeomUtils.findIntersection(faitage,edge,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(point[0]))
+                                print("situation a droite : pignon")
+                                ptsPaneProject.append(FreeCAD.Vector(pt1Eave1[0]))
+                                point = DraftGeomUtils.findIntersection(edgeRidge1,edgeEave2,infinite1=True,infinite2=True,)
+                                ptsPaneProject.append(FreeCAD.Vector(point[0]))
+                            elif profil1["height"] == profil2["height"] :
+                                print("situation a droite : ht1 = ht2")
+                                ptInterRidges = DraftGeomUtils.findIntersection(edgeRidge1,edgeRidge2,infinite1=True,infinite2=True,)
+                                edgeHip = DraftGeomUtils.edg(FreeCAD.Vector(ptInterRidges[0]),pt1Edge1)
+                                ptInterHipEave1 = DraftGeomUtils.findIntersection(edgeHip,edgeEave1,infinite1=True,infinite2=False,)
+                                if ptInterHipEave1:
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave1[0]))
+                                else:
+                                    ptInterHipEave2 = DraftGeomUtils.findIntersection(edgeHip,edgeEave2,infinite1=True,infinite2=True,)
+                                    ptsPaneProject.append(FreeCAD.Vector(pt1Eave1[0]))
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave2[0]))
+                                ptsPaneProject.append(FreeCAD.Vector(ptInterRidges[0]))
                             elif profil1["height"] > profil2["height"]:
-                                edge = DraftGeomUtils.offset(edgesForward[i+1],self.getPerpendicular(vec2,angleEdge2,profil2["run"]))
+                                print("situation a droite : ht1 > ht2")
                                 dec = profil2["height"]/math.tan(math.radians(profil1["angle"]))
-                                edge1 = DraftGeomUtils.offset(edges[i],self.getPerpendicular(vec1,angleEdge1,dec))
-                                pointR = DraftGeomUtils.findIntersection(edge,edge1,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(pointR[0]))
-                                point = DraftGeomUtils.findIntersection(faitage,edge,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(point[0]))
+                                edgeRidge2OnPane = DraftGeomUtils.offset(edges[i],self.getPerpendicular(vec1,rotEdge1,dec))
+                                ptInter1 = DraftGeomUtils.findIntersection(edgeRidge2,edgeRidge2OnPane,infinite1=True,infinite2=True,)
+                                edgeHip = DraftGeomUtils.edg(FreeCAD.Vector(ptInter1[0]),pt1Edge1)
+                                ptInterHipEave1 = DraftGeomUtils.findIntersection(edgeHip,edgeEave1,infinite1=True,infinite2=False,)
+                                if ptInterHipEave1:
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave1[0]))
+                                else:
+                                    ptInterHipEave2 = DraftGeomUtils.findIntersection(edgeHip,edgeEave2,infinite1=True,infinite2=True,)
+                                    ptsPaneProject.append(FreeCAD.Vector(pt1Eave1[0]))
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave2[0]))
+                                ptsPaneProject.append(FreeCAD.Vector(ptInter1[0]))
+                                ptInter2 = edgeHip.Vertexes[0].Point
+                                vecInterRidges = DraftGeomUtils.findPerpendicular(ptInter2, [edgeRidge1.Edges[0],], force=0)
+                                ptInterRidges = ptInter2.add(vecInterRidges[0])
+                                ptsPaneProject.append(FreeCAD.Vector(ptInterRidges))
                             elif profil1["height"] < profil2["height"]:
+                                print("situation a droite : ht1 < ht2")
                                 dec = profil1["height"]/math.tan(math.radians(profil2["angle"]))
-                                edge1 = DraftGeomUtils.offset(edgesForward[i+1],self.getPerpendicular(vec2,angleEdge2,dec))
-                                point = DraftGeomUtils.findIntersection(faitage,edge1,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(point[0]))
+                                edgeRidge2OnPane = DraftGeomUtils.offset(edgesForward[i+1],self.getPerpendicular(vec2,rotEdge2,dec))
+                                ptInter1 = DraftGeomUtils.findIntersection(edgeRidge1,edgeRidge2OnPane,infinite1=True,infinite2=True,)
+                                edgeHip = DraftGeomUtils.edg(FreeCAD.Vector(ptInter1[0]),pt1Edge1)
+                                ptInterHipEave1 = DraftGeomUtils.findIntersection(edgeHip,edgeEave1,infinite1=True,infinite2=False,)
+                                if ptInterHipEave1:
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave1[0]))
+                                else:
+                                    ptInterHipEave2 = DraftGeomUtils.findIntersection(edgeHip,edgeEave2,infinite1=True,infinite2=True,)
+                                    ptsPaneProject.append(FreeCAD.Vector(pt1Eave1[0]))
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave2[0]))
+                                ptsPaneProject.append(FreeCAD.Vector(ptInter1[0]))
+                                ptInterRidges = DraftGeomUtils.findIntersection(edgeRidge1,edgeRidge2,infinite1=True,infinite2=True,)
+                                ptsPaneProject.append(FreeCAD.Vector(ptInterRidges[0]))
                             else:
                                 print("Cas de figure non pris en charge")
                             if profil0["angle"] == 90. :
-                                edge = edgesBack[i]
-                                point = DraftGeomUtils.findIntersection(faitage,edge,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(point[0]))
+                                print("situation a gauche : pignon")
+                                point = DraftGeomUtils.findIntersection(edgeRidge1,edgeEave0,infinite1=True,infinite2=True,)
+                                ptsPaneProject.append(FreeCAD.Vector(point[0]))
+                                ptsPaneProject.append(FreeCAD.Vector(pt0Eave1[0]))
                             elif profil0["height"] == profil1["height"]:
-                                edge = DraftGeomUtils.offset(edgesBack[i],self.getPerpendicular(vec0,angleEdge0,profil0["run"]))
-                                point = DraftGeomUtils.findIntersection(faitage,edge,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(point[0]))
+                                print("situation a gauche : ht1 = ht0")
+                                edgeRidge0 = DraftGeomUtils.offset(edges[i-1],self.getPerpendicular(vec0,rotEdge0,profil0["run"]))
+                                ptInterRidges = DraftGeomUtils.findIntersection(edgeRidge1,edgeRidge0,infinite1=True,infinite2=True,)
+                                ptsPaneProject.append(FreeCAD.Vector(ptInterRidges[0]))
+                                edgeHip = DraftGeomUtils.edg(FreeCAD.Vector(ptInterRidges[0]),pt0Edge1)
+                                ptInterHipEave3 = DraftGeomUtils.findIntersection(edgeHip,edgeEave1,infinite1=True,infinite2=False,)
+                                if ptInterHipEave3:
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave3[0]))
+                                else:
+                                    ptInterHipEave4 = DraftGeomUtils.findIntersection(edgeHip,edgeEave0,infinite1=True,infinite2=True,)
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave4[0]))
+                                    ptsPaneProject.append(FreeCAD.Vector(pt0Eave1[0]))
                             elif profil1["height"] > profil0["height"]:
+                                print("situation a gauche : ht1 > ht0")
                                 dec = profil0["height"]/math.tan(math.radians(profil1["angle"]))
-                                edge1 = DraftGeomUtils.offset(edges[i],self.getPerpendicular(vec1,angleEdge1,dec))
-                                edge = DraftGeomUtils.offset(edges[i-1],self.getPerpendicular(vec0,angleEdge0,profil0["run"]))
-                                point = DraftGeomUtils.findIntersection(edge,faitage,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(point[0]))
-                                point = DraftGeomUtils.findIntersection(edge1,edge,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(point[0]))
+                                edgeRidge0OnPane = DraftGeomUtils.offset(edges[i],self.getPerpendicular(vec1,rotEdge1,dec))
+                                ptInter1 = DraftGeomUtils.findIntersection(edgeRidge0OnPane,edgeRidge0,infinite1=True,infinite2=True,)
+                                edgeHip = DraftGeomUtils.edg(FreeCAD.Vector(ptInter1[0]),pt0Edge1)
+                                ptInter2 = edgeHip.Vertexes[0].Point
+                                vecInterRidges = DraftGeomUtils.findPerpendicular(ptInter2, [edgeRidge1.Edges[0],], force=0)
+                                ptInterRidges = ptInter2.add(vecInterRidges[0])
+                                ptsPaneProject.append(FreeCAD.Vector(ptInterRidges))
+                                ptsPaneProject.append(FreeCAD.Vector(ptInter1[0]))
+                                ptInterHipEave3 = DraftGeomUtils.findIntersection(edgeHip,edgeEave1,infinite1=True,infinite2=False,)
+                                if ptInterHipEave3:
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave3[0]))
+                                else:
+                                    ptInterHipEave4 = DraftGeomUtils.findIntersection(edgeHip,edgeEave0,infinite1=True,infinite2=True,)
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave4[0]))
+                                    ptsPaneProject.append(FreeCAD.Vector(pt0Eave1[0]))
                             elif profil1["height"] < profil0["height"]:
+                                print("situation a gauche : ht1 < ht0")
                                 dec = profil1["height"]/math.tan(math.radians(profil0["angle"]))
-                                edge1 = DraftGeomUtils.offset(edges[i-1],self.getPerpendicular(vec0,angleEdge0,dec))
-                                point = DraftGeomUtils.findIntersection(faitage,edge1,infinite1=True,infinite2=True,)
-                                points.append(FreeCAD.Vector(point[0]))
+                                edgeRidge0OnPane = DraftGeomUtils.offset(edges[i-1],self.getPerpendicular(vec0,rotEdge0,dec))
+                                ptInterRidges = DraftGeomUtils.findIntersection(edgeRidge0OnPane,edgeRidge1,infinite1=True,infinite2=True,)
+                                ptsPaneProject.append(FreeCAD.Vector(ptInterRidges[0]))
+                                edgeHip = DraftGeomUtils.edg(FreeCAD.Vector(ptInterRidges[0]),pt0Edge1)
+                                ptInterHipEave3 = DraftGeomUtils.findIntersection(edgeHip,edgeEave1,infinite1=True,infinite2=False,)
+                                if ptInterHipEave3:
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave3[0]))
+                                else:
+                                    ptInterHipEave4 = DraftGeomUtils.findIntersection(edgeHip,edgeEave0,infinite1=True,infinite2=True,)
+                                    ptsPaneProject.append(FreeCAD.Vector(ptInterHipEave4[0]))
+                                    ptsPaneProject.append(FreeCAD.Vector(pt0Eave1[0]))
                             else:
                                 print("Cas de figure non pris en charge")
-                            points = DraftVecUtils.removeDoubles(points)
-                            self.profilsDico[i]["points"] = points
-                            lp = len(points)
-                            points.append(points[0])
+                            ptsPaneProject = DraftVecUtils.removeDoubles(ptsPaneProject)
+                            print("ptsPaneProject",ptsPaneProject)
+                            print("Fin Analyse profil " + str(i))
+                            self.profilsDico[i]["points"] = ptsPaneProject
+                            lp = len(ptsPaneProject)
+                            ptsPaneProject.append(ptsPaneProject[0])
                             edgesWire = []
                             for i in range(lp):
-                                edge = Part.makeLine(points[i],points[i+1])
+                                edge = Part.makeLine(ptsPaneProject[i],ptsPaneProject[i+1])
                                 edgesWire.append(edge)
                             wire = Part.Wire(edgesWire)
                             d = wire.BoundBox.DiagonalLength
@@ -359,18 +420,19 @@ class _Roof(ArchComponent.Component):
                             overhangV = profil1["overhang"]*math.tan(math.radians(profil1["angle"]))
                             if wire.isClosed():
                                 f = Part.Face(wire)
-                                f = f.extrude(FreeCAD.Vector(0,0,profil1["height"]+2*thicknessV))
-                            points=[FreeCAD.Vector(-profil1["overhang"],-overhangV,0.0),FreeCAD.Vector(profil1["run"],profil1["height"],0.0),FreeCAD.Vector(profil1["run"],profil1["height"]+thicknessV,0.0),FreeCAD.Vector(-profil1["overhang"],-overhangV+thicknessV,0.0)]
-                            lp = len(points)
-                            points.append(points[0])
+                                f = f.extrude(FreeCAD.Vector(0,0,profil1["height"]+2*thicknessV+2*overhangV))
+                                f.translate(FreeCAD.Vector(0.0,0.0,-2*overhangV))
+                            ptsPaneProfil=[FreeCAD.Vector(-profil1["overhang"],-overhangV,0.0),FreeCAD.Vector(profil1["run"],profil1["height"],0.0),FreeCAD.Vector(profil1["run"],profil1["height"]+thicknessV,0.0),FreeCAD.Vector(-profil1["overhang"],-overhangV+thicknessV,0.0)]
+                            lp = len(ptsPaneProfil)
+                            ptsPaneProfil.append(ptsPaneProfil[0])
                             edgesWire = []
                             for i in range(lp):
-                                edge = Part.makeLine(points[i],points[i+1])
+                                edge = Part.makeLine(ptsPaneProfil[i],ptsPaneProfil[i+1])
                                 edgesWire.append(edge)
                             profilCouv = Part.Wire(edgesWire)
                             profilCouv.translate(midpoint)
-                            profilCouv.rotate(midpoint,FreeCAD.Vector(0,0,1), 90. + angleEdge1 * -1)
-                            perp = self.getPerpendicular(vec1,angleEdge1,profil1["run"])
+                            profilCouv.rotate(midpoint,FreeCAD.Vector(0,0,1), 90. + rotEdge1 * -1)
+                            perp = self.getPerpendicular(vec1,rotEdge1,profil1["run"])
                             profilCouv.rotate(midpoint,perp,90.)
                             vecT = vec1.normalize()
                             vecT.multiply(d)
@@ -385,14 +447,14 @@ class _Roof(ArchComponent.Component):
                         else:
                             #TODO PIGNON
                             pass
-                    base = shps.pop()
-                    for s in shps:
-                        base = base.fuse(s)
-                    base = base.removeSplitter()
+                    #base = shps.pop()
+                    base = Part.makeCompound(shps)
+                    #for s in shps:
+                    #    base = base.fuse(s)
+                    #base = base.removeSplitter()
                     if not base.isNull():
                         if not DraftGeomUtils.isNull(pl):
                             base.Placement = pl
-
         base = self.processSubShapes(obj,base)
         if base:
             if not base.isNull():
@@ -504,10 +566,7 @@ class _RoofTaskPanel:
             a.append(float(it.text(1)))
             run.append(float(it.text(2)))
             rel.append(int(it.text(3)))
-            if float(it.text(4)) == 0.:
-                thick.append(1.)
-            else:
-                thick.append(float(it.text(4)))
+            thick.append(float(it.text(4)))
             over.append(float(it.text(5)))
         self.obj.Runs = run
         self.obj.Angles = a
@@ -525,7 +584,7 @@ class _RoofTaskPanel:
 
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Roof", None, QtGui.QApplication.UnicodeUTF8))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the profiles of the roof:\n* Angle : slope in degrees compared to the horizontal one.\n* Run : outdistance between the wall and the ridge sheathing.\n* Thickness : thickness of the side of roof.\n* Overhang : outdistance between the sewer and the wall.\n* Height : height of the ridge sheathing (calculated automatically)\n* IdRel : Relative Id for calculations automatic.\n---\nIf Angle = 0 and Run = the 0 then profile is identical to the relative profile.\nIf Angle = the 0 then angle is calculated so that the height is the same one as the relative profile.\nIf Run = 0 then Run is calculated so that the height is the same one as the relative profile.", None, QtGui.QApplication.UnicodeUTF8))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the profiles of the roof:\n* Angle : slope in degrees compared to the horizontal one.\n* Run : outdistance between the wall and the ridge sheathing.\n* Thickness : thickness of the side of roof.\n* Overhang : outdistance between the sewer and the wall.\n* Height : height of the ridge sheathing (calculated automatically)\n* IdRel : Relative Id for calculations automatic.\n---\nIf Angle = 0 and Run = 0 then profile is identical to the relative profile.\nIf Angle = 0 then angle is calculated so that the height is the same one as the relative profile.\nIf Run = 0 then Run is calculated so that the height is the same one as the relative profile.", None, QtGui.QApplication.UnicodeUTF8))
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Id", None, QtGui.QApplication.UnicodeUTF8),
                                     QtGui.QApplication.translate("Arch", "Angle", None, QtGui.QApplication.UnicodeUTF8),
                                     QtGui.QApplication.translate("Arch", "Run", None, QtGui.QApplication.UnicodeUTF8),
