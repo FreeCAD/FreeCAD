@@ -292,7 +292,9 @@ class Snapper:
                         snaps.append([b,'endpoint',self.toWP(b)])
 
                 elif obj.isDerivedFrom("Part::Feature"):
+                    
                     if Draft.getType(obj) == "Polygon":
+                        # special snapping for polygons: add the center
                         snaps.extend(self.snapToPolygon(obj))
                         
                     if (not self.maxEdges) or (len(obj.Edges) <= self.maxEdges):
@@ -768,14 +770,15 @@ class Snapper:
     def snapToPolygon(self,obj):
         "returns a list of polygon center snap locations"
         snaps = []
-        c = obj.Placement.Base
-        for edge in obj.Shape.Edges:
-            p1 = edge.Vertexes[0].Point
-            p2 = edge.Vertexes[-1].Point
-            v1 = p1.add((p2-p1).scale(.25,.25,.25))
-            v2 = p1.add((p2-p1).scale(.75,.75,.75))
-            snaps.append([v1,'center',self.toWP(c)])
-            snaps.append([v2,'center',self.toWP(c)])
+        if self.isEnabled("center"):
+            c = obj.Placement.Base
+            for edge in obj.Shape.Edges:
+                p1 = edge.Vertexes[0].Point
+                p2 = edge.Vertexes[-1].Point
+                v1 = p1.add((p2-p1).scale(.25,.25,.25))
+                v2 = p1.add((p2-p1).scale(.75,.75,.75))
+                snaps.append([v1,'center',self.toWP(c)])
+                snaps.append([v2,'center',self.toWP(c)])
         return snaps
 
     def snapToVertex(self,info,active=False):
