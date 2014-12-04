@@ -328,8 +328,11 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else {
         // if the object was invisible and has been changed, recreate the visual
-        if (prop == &Visibility && Visibility.getValue() && VisualTouched) 
+        if (prop == &Visibility && Visibility.getValue() && VisualTouched) {
             updateVisual(dynamic_cast<Part::Feature*>(pcObject)->Shape.getValue());
+            // The material has to be checked again (#0001736)
+            onChanged(&DiffuseColor);
+        }
 
         ViewProviderGeometryObject::onChanged(prop);
     }
