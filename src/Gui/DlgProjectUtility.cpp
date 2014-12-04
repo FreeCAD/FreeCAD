@@ -80,6 +80,10 @@ const char* doctools =
 "\n"
 "def createDocument(filename, outpath):\n"
 "	files=getFilesList(filename)\n"
+"	dirname=os.path.dirname(filename)\n"
+"	guixml=os.path.join(dirname,\"GuiDocument.xml\")\n"
+"	if os.path.exists(guixml):\n"
+"		files.extend(getFilesList(guixml))\n"
 "	compress=zipfile.ZipFile(outpath,\'w\',zipfile.ZIP_DEFLATED)\n"
 "	for i in files:\n"
 "		dirs=os.path.split(i)\n"
@@ -97,9 +101,6 @@ const char* doctools =
 "	files=[]\n"
 "	files.append(filename)\n"
 "	files.extend(iter(handler.files))\n"
-"	dirname=os.path.join(dirname,\"GuiDocument.xml\")\n"
-"	if os.path.exists(dirname):\n"
-"		files.append(dirname)\n"
 "	return files\n"
 ;
 
