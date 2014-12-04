@@ -325,7 +325,7 @@ bool FileInfo::isFile () const
         std::wstring wstr = toStdWString();
         FILE* fd = _wfopen(wstr.c_str(), L"rb");
         bool ok = (fd != 0);
-        fclose(fd);
+        if (fd) fclose(fd);
         return ok;
     }
 #else
