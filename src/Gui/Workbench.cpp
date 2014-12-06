@@ -43,7 +43,6 @@
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
-#include <Base/Parameter.h>
 #include <Base/Interpreter.h>
 
 using namespace Gui;
@@ -224,8 +223,34 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
 {
     std::string name = this->name();
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-        ->GetGroup("Workbench")->GetGroup(name.c_str())->GetGroup(toolbar);
-  
+        ->GetGroup("Workbench");
+    // workbench specific custom toolbars
+    if (hGrp->HasGroup(name.c_str())) {
+        hGrp = hGrp->GetGroup(name.c_str());
+        if (hGrp->HasGroup(toolbar)) {
+            hGrp = hGrp->GetGroup(toolbar);
+            setupCustomToolbars(root, hGrp);
+        }
+    }
+
+    // for this workbench global toolbars are not allowed
+    if (getTypeId() == NoneWorkbench::getClassTypeId())
+        return;
+
+    // application-wide custom toolbars
+    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
+        ->GetGroup("Workbench");
+    if (hGrp->HasGroup("Global")) {
+        hGrp = hGrp->GetGroup("Global");
+        if (hGrp->HasGroup(toolbar)) {
+            hGrp = hGrp->GetGroup(toolbar);
+            setupCustomToolbars(root, hGrp);
+        }
+    }
+}
+
+void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<ParameterGrp>& hGrp) const
+{
     std::vector<Base::Reference<ParameterGrp> > hGrps = hGrp->GetGroups();
     CommandManager& rMgr = Application::Instance->commandManager();
     for (std::vector<Base::Reference<ParameterGrp> >::iterator it = hGrps.begin(); it != hGrps.end(); ++it) {
@@ -240,9 +265,11 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
         for (std::vector<std::pair<std::string,std::string> >::iterator it2 = items.begin(); it2 != items.end(); ++it2) {
             if (it2->first == "Separator") {
                 *bar << "Separator";
-            } else if (it2->first == "Name") {
+            }
+            else if (it2->first == "Name") {
                 bar->setCommand(it2->second);
-            } else {
+            }
+            else {
                 Command* pCmd = rMgr.getCommandByName(it2->first.c_str());
                 if (!pCmd) { // unknown command
                     // try to find out the appropriate module name
@@ -269,16 +296,14 @@ void Workbench::setupCustomShortcuts() const
 {
     // Assigns user defined accelerators
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter();
-    if ( hGrp->HasGroup("Shortcut") ) {
+    if (hGrp->HasGroup("Shortcut")) {
         hGrp = hGrp->GetGroup("Shortcut");
         // Get all user defined shortcuts
         const CommandManager& cCmdMgr = Application::Instance->commandManager();
         std::vector<std::pair<std::string,std::string> > items = hGrp->GetASCIIMap();
-        for ( std::vector<std::pair<std::string,std::string> >::iterator it = items.begin(); it != items.end(); ++it )
-        {
+        for (std::vector<std::pair<std::string,std::string> >::iterator it = items.begin(); it != items.end(); ++it) {
             Command* cmd = cCmdMgr.getCommandByName(it->first.c_str());
-            if (cmd && cmd->getAction())
-            {
+            if (cmd && cmd->getAction()) {
                 // may be UTF-8 encoded
                 QString str = QString::fromUtf8(it->second.c_str());
                 QKeySequence shortcut = str;
@@ -311,10 +336,10 @@ bool Workbench::activate()
     ToolBarManager::getInstance()->setup( tb );
     delete tb;
 
-    ToolBarItem* cb = setupCommandBars();
-    setupCustomToolbars(cb, "Toolboxbar");
+    //ToolBarItem* cb = setupCommandBars();
+    //setupCustomToolbars(cb, "Toolboxbar");
     //ToolBoxManager::getInstance()->setup( cb );
-    delete cb;
+    //delete cb;
 
     DockWindowItems* dw = setupDockWindows();
     DockWindowManager::instance()->setup( dw );
@@ -489,9 +514,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Std_ViewDockUndockFullscreen" << "Std_AxisCross" << "Std_ToggleClipPlane"
           << "Std_TextureMapping" 
 #ifdef BUILD_VR
-		  << "Std_ViewVR"
+          << "Std_ViewVR"
 #endif 
-		  << "Separator" << visu
+          << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
           << "Std_MeasureDistance" << "Separator" 
