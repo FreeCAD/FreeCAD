@@ -81,7 +81,7 @@ void TaskChamferParameters::onLengthChanged(double len)
 
 double TaskChamferParameters::getLength(void) const
 {
-    return ui->chamferDistance->getQuantity().getValue();
+    return ui->chamferDistance->value().getValue();
 }
 
 TaskChamferParameters::~TaskChamferParameters()

@@ -81,7 +81,7 @@ void TaskFilletParameters::onLengthChanged(double len)
 
 double TaskFilletParameters::getLength(void) const
 {
-    return ui->filletRadius->getQuantity().getValue();
+    return ui->filletRadius->value().getValue();
 }
 
 TaskFilletParameters::~TaskFilletParameters()
