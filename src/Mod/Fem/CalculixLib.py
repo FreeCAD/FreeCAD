@@ -45,6 +45,8 @@ def readResult(frd_input) :
     stress_found = False
     elements_found = False
     elem = -1 
+    elemType = 0
+    
     while True:
         line=input.readline()
         if not line: break
@@ -64,8 +66,9 @@ def readResult(frd_input) :
         #first lets extract element number
         if elements_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
+            elemType = int(line[14:18])
         #then the 10 id's for the Tet10 element
-        if elements_found and (line[1:3] == "-2"):
+        if elements_found and (line[1:3] == "-2") and elemType == 6 :
             node_id_2 = int(line[3:13])
             node_id_1 = int(line[13:23])
             node_id_3 = int(line[23:33])
