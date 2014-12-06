@@ -164,44 +164,7 @@ void MergeDocuments::SaveDocFile (Base::Writer & w) const
     document->exportObjects(objects, w);
 }
 
-void MergeDocuments::RestoreDocFile(Base::Reader & reader)
+void MergeDocuments::RestoreDocFile(Base::Reader & r)
 {
-    std::vector<App::DocumentObject*> obj = objects;
-    // We must create an XML parser to read from the input stream
-    Base::XMLReader xmlReader("GuiDocument.xml", reader);
-    xmlReader.readElement("Document");
-    long scheme = xmlReader.getAttributeAsInteger("SchemaVersion");
-
-    // At this stage all the document objects and their associated view providers exist.
-    // Now we must restore the properties of the view providers only.
-    //
-    // SchemeVersion "1"
-    if (scheme == 1) {
-        // read the viewproviders itself
-        xmlReader.readElement("ViewProviderData");
-        int Cnt = xmlReader.getAttributeAsInteger("Count");
-        std::vector<App::DocumentObject*>::const_iterator it = obj.begin();
-        for (int i=0;i<Cnt&&it!=obj.end();++i,++it) {
-            // The stored name usually doesn't match with the current name anymore
-            // thus we try to match by type. This should work because the order of
-            // objects should not have changed
-            xmlReader.readElement("ViewProvider");
-            std::string name = xmlReader.getAttribute("name");
-            name = nameMap[name];
-            Gui::ViewProvider* pObj = document->getViewProviderByName(name.c_str());
-            //Gui::ViewProvider* pObj = document->getViewProvider(*it);
-            if (pObj)
-                pObj->Restore(xmlReader);
-            xmlReader.readEndElement("ViewProvider");
-            if (it == obj.end())
-                break;
-        }
-        xmlReader.readEndElement("ViewProviderData");
-    }
-
-    xmlReader.readEndElement("Document");
-
-    // In the file GuiDocument.xml new data files might be added
-    if (!xmlReader.getFilenames().empty())
-        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
+    document->importObjects(objects, r, nameMap);
 }

@@ -124,7 +124,8 @@ public:
     /// This method is used to restore large amounts of data from a binary file.
     virtual void RestoreDocFile(Base::Reader &reader);
     void exportObjects(const std::vector<App::DocumentObject*>&, Base::Writer&);
-    void importObjects(const std::vector<App::DocumentObject*>&, Base::Reader&);
+    void importObjects(const std::vector<App::DocumentObject*>&, Base::Reader&,
+                       const std::map<std::string, std::string>& nameMapping);
     /// Add all root objects of the given array to a group
     void addRootObjectsToGroup(const std::vector<App::DocumentObject*>&, App::DocumentObjectGroup*);
     //@}
