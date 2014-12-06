@@ -33,6 +33,11 @@
         <UserDocu>Restore the document from disk</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="mergeProject">
+      <Documentation>
+        <UserDocu>Merges this document with another project file</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="exportGraphviz">
       <Documentation>
         <UserDocu>Export the dependencies of the objects as graph</UserDocu>

@@ -853,7 +853,8 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
     writer.Stream() << "</Document>" << std::endl;
 }
 
-void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base::Reader& reader)
+void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base::Reader& reader,
+                             const std::map<std::string, std::string>& nameMapping)
 {
     // We must create an XML parser to read from the input stream
     Base::XMLReader xmlReader("GuiDocument.xml", reader);
@@ -874,15 +875,12 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
             // thus we try to match by type. This should work because the order of
             // objects should not have changed
             xmlReader.readElement("ViewProvider");
-            std::string type = xmlReader.getAttribute("type");
-            ViewProvider* pObj = getViewProvider(*it);
-            while (pObj && type != pObj->getTypeId().getName()) {
-                if (it != obj.end()) {
-                    ++it;
-                    pObj = getViewProvider(*it);
-                }
-            }
-            if (pObj && type == pObj->getTypeId().getName())
+            std::string name = xmlReader.getAttribute("name");
+            std::map<std::string, std::string>::const_iterator jt = nameMapping.find(name);
+            if (jt != nameMapping.end())
+                name = jt->second;
+            Gui::ViewProvider* pObj = this->getViewProviderByName(name.c_str());
+            if (pObj)
                 pObj->Restore(xmlReader);
             xmlReader.readEndElement("ViewProvider");
             if (it == obj.end())
@@ -892,6 +890,10 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     }
 
     xmlReader.readEndElement("Document");
+
+    // In the file GuiDocument.xml new data files might be added
+    if (!xmlReader.getFilenames().empty())
+        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
 }
 
 void Document::addRootObjectsToGroup(const std::vector<App::DocumentObject*>& obj, App::DocumentObjectGroup* grp)
