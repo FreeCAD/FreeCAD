@@ -224,7 +224,12 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Workbench");
     const char* subgroup = (type == Toolbar ? "Toolbar" : "Toolboxbar");
-    hGrp = hGrp->GetGroup(name.constData())->GetGroup(subgroup);
+    if (!hGrp->HasGroup(name.constData()))
+        return;
+    hGrp = hGrp->GetGroup(name.constData());
+    if (!hGrp->HasGroup(subgroup))
+        return;
+    hGrp = hGrp->GetGroup(subgroup);
 
     std::vector<Base::Reference<ParameterGrp> > hGrps = hGrp->GetGroups();
     CommandManager& rMgr = Application::Instance->commandManager();
