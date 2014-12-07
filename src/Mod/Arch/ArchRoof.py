@@ -32,14 +32,14 @@ else:
         return txt
 
 __title__="FreeCAD Roof"
-__author__ = "Yorik van Havre"
+__author__ = "Yorik van Havre", "Jonathan Wiedemann"
 __url__ = "http://www.freecadweb.org"
 
-def makeRoof2(baseobj=None,facenr=1, angles=[45.,], run = [], idrel = [0,],thickness = [1.,], overhang=[2.,], name=translate("Arch","Roof")):
-    '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a
-    face from an existing object. You can provide the number of the face
-    to build the roof on (default = 1), the angle (default=45) and a name (default
-    = roof).'''
+def makeRoof(baseobj=None,facenr=1, angles=[45.,], run = [], idrel = [0,],thickness = [1.,], overhang=[2.,], name=translate("Arch","Roof")):
+    '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a closed wire.
+    face from an existing object. You can provide a list of angles, run, idrel, thickness,
+    overhang for each edges in the wire to define the roof shape. The default for angle is 45
+    and the list is automatically complete to match with number of edges in the wire.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     _Roof(obj)
     if FreeCAD.GuiUp:
@@ -85,23 +85,7 @@ def makeRoof2(baseobj=None,facenr=1, angles=[45.,], run = [], idrel = [0,],thick
             for i in range(l-lover):
                 olist.append(overhang[0])
             obj.Overhang = olist
-
     obj.Face = facenr
-    return obj
-
-def makeRoof(baseobj=None,facenr=1,angle=45,name=translate("Arch","Roof")):
-    '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a
-    face from an existing object. You can provide the number of the face
-    to build the roof on (default = 1), the angle (default=45) and a name (default
-    = roof).'''
-    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    _Roof(obj)
-    if FreeCAD.GuiUp:
-        _ViewProviderRoof(obj.ViewObject)
-    if baseobj:
-        obj.Base = baseobj
-    obj.Face = facenr
-    obj.Angle = angle
     return obj
 
 class _CommandRoof:
@@ -110,7 +94,7 @@ class _CommandRoof:
         return {'Pixmap'  : 'Arch_Roof',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Roof","Roof"),
                 'Accel': "R, F",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Roof","Creates a roof object from the selected face of an object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Roof","Creates a roof object from the selected wire.")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -126,7 +110,7 @@ class _CommandRoof:
                     idx = int(sel.SubElementNames[0][4:])
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Roof"))
                     FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("Arch.makeRoof2(FreeCAD.ActiveDocument."+obj.Name+","+str(idx)+")")
+                    FreeCADGui.doCommand("Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+","+str(idx)+")")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
                     return
@@ -134,7 +118,7 @@ class _CommandRoof:
                 if obj.Shape.Wires:
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Roof"))
                     FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("Arch.makeRoof2(FreeCAD.ActiveDocument."+obj.Name+")")
+                    FreeCADGui.doCommand("Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+")")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
                     return
@@ -238,6 +222,30 @@ class _Roof(ArchComponent.Component):
             ht = self.calcHeight(i)
             self.profilsDico[i]["height"] = ht
 
+    def createProfilShape (self, points, midpoint, rotEdge1, vec1, run, d, shapesList, f):
+        import Part
+        lp = len(points)
+        points.append(points[0])
+        edgesWire = []
+        for i in range(lp):
+            edge = Part.makeLine(points[i],points[i+1])
+            edgesWire.append(edge)
+        profil = Part.Wire(edgesWire)
+        profil.translate(midpoint)
+        profil.rotate(midpoint,FreeCAD.Vector(0,0,1), 90. + rotEdge1 * -1)
+        perp = self.getPerpendicular(vec1,rotEdge1,run)
+        profil.rotate(midpoint,perp,90.)
+        vecT = vec1.normalize()
+        vecT.multiply(d)
+        profil.translate(vecT)
+        vecE = vecT.multiply(-2.)
+        profilFace = Part.Face(profil)
+        profilShp = profilFace.extrude(vecE)
+        #Part.show(profilVol)
+        profilShp = f.common(profilShp)
+        #Part.show(panVol)
+        shapesList.append(profilShp)
+
     def execute(self,obj):
         import Part, math, DraftGeomUtils
         pl = obj.Placement
@@ -254,7 +262,8 @@ class _Roof(ArchComponent.Component):
             if w:
                 if w.isClosed():
                     self.profilsDico = []
-                    shps = []
+                    self.shps = []
+                    self.subVolshps = []
                     heights = []
                     edges = DraftGeomUtils.sortEdges(w.Edges)
                     l = len(edges)
@@ -295,9 +304,6 @@ class _Roof(ArchComponent.Component):
                         pt0Edge1 = edges[i].Vertexes[0].Point
                         pt1Edge1 = edges[i].Vertexes[-1].Point
                         print("Analyse profil " + str(i))
-                        print "edge1",edges[i].Vertexes[0].Point,edges[i].Vertexes[-1].Point
-                        print "edgeEave1",edgeEave1.Vertexes[0].Point,edgeEave1.Vertexes[-1].Point
-                        print "edgeRidge1",edgeRidge1.Vertexes[0].Point,edgeRidge1.Vertexes[-1].Point
                         if profil1["angle"] != 90.:
                             if profil2["angle"] == 90. :
                                 print("situation a droite : pignon")
@@ -423,35 +429,24 @@ class _Roof(ArchComponent.Component):
                                 f = f.extrude(FreeCAD.Vector(0,0,profil1["height"]+2*thicknessV+2*overhangV))
                                 f.translate(FreeCAD.Vector(0.0,0.0,-2*overhangV))
                             ptsPaneProfil=[FreeCAD.Vector(-profil1["overhang"],-overhangV,0.0),FreeCAD.Vector(profil1["run"],profil1["height"],0.0),FreeCAD.Vector(profil1["run"],profil1["height"]+thicknessV,0.0),FreeCAD.Vector(-profil1["overhang"],-overhangV+thicknessV,0.0)]
-                            lp = len(ptsPaneProfil)
-                            ptsPaneProfil.append(ptsPaneProfil[0])
-                            edgesWire = []
-                            for i in range(lp):
-                                edge = Part.makeLine(ptsPaneProfil[i],ptsPaneProfil[i+1])
-                                edgesWire.append(edge)
-                            profilCouv = Part.Wire(edgesWire)
-                            profilCouv.translate(midpoint)
-                            profilCouv.rotate(midpoint,FreeCAD.Vector(0,0,1), 90. + rotEdge1 * -1)
-                            perp = self.getPerpendicular(vec1,rotEdge1,profil1["run"])
-                            profilCouv.rotate(midpoint,perp,90.)
-                            vecT = vec1.normalize()
-                            vecT.multiply(d)
-                            profilCouv.translate(vecT)
-                            vecE = vecT.multiply(-2.)
-                            pC = Part.Face(profilCouv)
-                            profilVol = pC.extrude(vecE)
-                            #Part.show(profilVol)
-                            panVol = f.common(profilVol)
-                            #Part.show(panVol)
-                            shps.append(panVol)
+                            self.createProfilShape (ptsPaneProfil, midpoint, rotEdge1, vec1, profil1["run"], d, self.shps, f)
+                            ## subVolume shape
+                            ptsSubVolumeProfil=[FreeCAD.Vector(-profil1["overhang"],-overhangV,0.0),FreeCAD.Vector(profil1["run"],profil1["height"],0.0),FreeCAD.Vector(profil1["run"],profil1["height"]+10000,0.0),FreeCAD.Vector(0.0,profil1["height"]+10000,0.0)]
+                            self.createProfilShape (ptsSubVolumeProfil, midpoint, rotEdge1, vec1, profil1["run"], d, self.subVolshps, f)
                         else:
                             #TODO PIGNON
                             pass
-                    #base = shps.pop()
-                    base = Part.makeCompound(shps)
-                    #for s in shps:
-                    #    base = base.fuse(s)
-                    #base = base.removeSplitter()
+
+                    ## SubVolume
+                    self.sub = self.subVolshps.pop()
+                    for s in self.subVolshps:
+                        self.sub = self.sub.fuse(s)
+                    self.sub = self.sub.removeSplitter()
+                    if not self.sub.isNull():
+                        if not DraftGeomUtils.isNull(pl):
+                            self.sub.Placement = pl
+                    ## BaseVolume
+                    base = Part.makeCompound(self.shps)
                     if not base.isNull():
                         if not DraftGeomUtils.isNull(pl):
                             base.Placement = pl
@@ -460,13 +455,13 @@ class _Roof(ArchComponent.Component):
             if not base.isNull():
                 obj.Shape = base
 
-    def getSubVolume(self,obj,extension=10000):
+    def getSubVolume(self,obj):
         "returns a volume to be subtracted"
-        if hasattr(self,"baseface"):
-            if self.baseface:
-                norm = self.baseface.normalAt(0,0)
-                norm = DraftVecUtils.scaleTo(norm,extension)
-                return self.baseface.extrude(norm)
+        if self.sub:
+            return self.sub
+        else :
+            self.execute(obj)
+            return self.sub
         return None
 
 class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
