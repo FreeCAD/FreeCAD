@@ -159,7 +159,8 @@ def removeComponents(objectsList,host=None):
                                         break
                     else:
                         if FreeCAD.GuiUp:
-                            o.ViewObject.hide()
+                            if not Draft.getType(o) == "Roof":
+                                o.ViewObject.hide()
             host.Subtractions = s
     else:
         for o in objectsList:
