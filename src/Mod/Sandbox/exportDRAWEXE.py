@@ -533,6 +533,8 @@ class Drawexporter(object):
                         sectionname = tempname
                     except NotImplementedError:
                         explodeshape = False # fallback
+                else:
+                    explodeshape = False # fallback if we hit the False before
                 if not explodeshape: # extract only the used subshape
                     sh = subobj.Shape
                     if not sh.isNull():
