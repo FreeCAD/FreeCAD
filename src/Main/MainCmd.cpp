@@ -67,12 +67,8 @@ const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2
 int main( int argc, char ** argv )
 {
     // Make sure that we use '.' as decimal point
-#if defined(FC_OS_LINUX)
-    putenv("LANG=C");
-    putenv("LC_ALL=C");
-#else
+    setlocale(LC_ALL, "");
     setlocale(LC_NUMERIC, "C");
-#endif
 
     // Name and Version of the Application
     App::Application::Config()["ExeName"] = "FreeCAD";
