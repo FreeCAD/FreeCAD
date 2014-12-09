@@ -68,16 +68,16 @@ void TimeInfo::setTime_t (uint64_t seconds)
     timebuffer.time = seconds;
 }
 
-const char* TimeInfo::currentDateTimeString()
+std::string TimeInfo::currentDateTimeString()
 {
+    char timebuff[30]= {0};
     struct tm* systime;
     time_t sec;
 
     time(&sec);
     systime = localtime(&sec);
-
-    const char* dt = asctime(systime);
-    return dt;
+    strftime(timebuff,30,"%Y-%m-%dT%H:%M:%S%z",systime);
+    return std::string(timebuff);
 }
 
 std::string TimeInfo::diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd )

@@ -593,11 +593,11 @@ Document::Document(void)
 #ifdef FC_LOGUPDATECHAIN
     Console().Log("+App::Document: %p\n",this);
 #endif
-
+    std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
     ADD_PROPERTY_TYPE(Label,("Unnamed"),0,Prop_None,"The name of the document");
     ADD_PROPERTY_TYPE(FileName,(""),0,Prop_ReadOnly,"The path to the file where the document is saved to");
     ADD_PROPERTY_TYPE(CreatedBy,(""),0,Prop_None,"The creator of the document");
-    ADD_PROPERTY_TYPE(CreationDate,(Base::TimeInfo::currentDateTimeString()),0,Prop_ReadOnly,"Date of creation");
+    ADD_PROPERTY_TYPE(CreationDate,(CreationDateString.c_str()),0,Prop_ReadOnly,"Date of creation");
     ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,Prop_None,0);
     ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,Prop_ReadOnly,"Date of last modification");
     ADD_PROPERTY_TYPE(Company,(""),0,Prop_None,"Additional tag to save the the name of the company");
@@ -948,7 +948,8 @@ bool Document::save (void)
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     if (*(FileName.getValue()) != '\0') {
-        LastModifiedDate.setValue(Base::TimeInfo::currentDateTimeString());
+        std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
+        LastModifiedDate.setValue(LastModifiedDateString.c_str());
         // make a tmp. file where to save the project data first and then rename to
         // the actual file name. This may be useful if overwriting an existing file
         // fails so that the data of the work up to now isn't lost.
