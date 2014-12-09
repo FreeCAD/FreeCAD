@@ -40,8 +40,7 @@ namespace Gui
             explicit DlgCustomizeSpNavSettings(QWidget *parent = 0);
             ~DlgCustomizeSpNavSettings();
 
-         
-        protected Q_SLOTS:   
+        protected Q_SLOTS:
             void onAddMacroAction(const QByteArray&);
             void onRemoveMacroAction(const QByteArray&);
             void onModifyMacroAction(const QByteArray&);
@@ -50,23 +49,23 @@ namespace Gui
             void on_CBRotations_clicked();
             void on_CBTranslations_clicked();
             void on_SliderGlobal_sliderReleased();
-            void on_CBEnablePanLR_clicked();            
-            void on_CBReversePanLR_clicked();            
-            void on_SliderPanLR_sliderReleased();            
-            void on_CBEnablePanUD_clicked();            
-            void on_CBReversePanUD_clicked();            
-            void on_SliderPanUD_sliderReleased();            
-            void on_CBEnableZoom_clicked();            
-            void on_CBReverseZoom_clicked();            
-            void on_SliderZoom_sliderReleased();            
-            void on_CBEnableTilt_clicked();            
-            void on_CBReverseTilt_clicked();            
-            void on_SliderTilt_sliderReleased();            
-            void on_CBEnableRoll_clicked();            
-            void on_CBReverseRoll_clicked();            
-            void on_SliderRoll_sliderReleased();            
-            void on_CBEnableSpin_clicked();            
-            void on_CBReverseSpin_clicked();            
+            void on_CBEnablePanLR_clicked();
+            void on_CBReversePanLR_clicked();
+            void on_SliderPanLR_sliderReleased();
+            void on_CBEnablePanUD_clicked();
+            void on_CBReversePanUD_clicked();
+            void on_SliderPanUD_sliderReleased();
+            void on_CBEnableZoom_clicked();
+            void on_CBReverseZoom_clicked();
+            void on_SliderZoom_sliderReleased();
+            void on_CBEnableTilt_clicked();
+            void on_CBReverseTilt_clicked();
+            void on_SliderTilt_sliderReleased();
+            void on_CBEnableRoll_clicked();
+            void on_CBReverseRoll_clicked();
+            void on_SliderRoll_sliderReleased();
+            void on_CBEnableSpin_clicked();
+            void on_CBReverseSpin_clicked();
             void on_SliderSpin_sliderReleased();
             void on_ButtonDefaultSpNavMotions_clicked();
             void on_ButtonCalibrate_clicked();
@@ -74,10 +73,13 @@ namespace Gui
         protected:
             void changeEvent(QEvent *e);
 
-        private:      
-            ParameterGrp::handle spaceballMotionGroup() const;      
+        private:
+            ParameterGrp::handle spaceballMotionGroup() const;
             void setMessage(const QString& message);
-            void initialize(); 
+            void initialize();
+
+        private:
+            bool init;
         };
     }
 }
