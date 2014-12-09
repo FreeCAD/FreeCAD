@@ -191,13 +191,11 @@ int main( int argc, char ** argv )
     QFile::setDecodingFunction(myDecoderFunc);
     // Make sure that we use '.' as decimal point. See also
     // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
-    putenv("LANG=C");
-    putenv("LC_ALL=C");
+    putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
 #elif defined(FC_OS_MACOSX)
     (void)QLocale::system();
-    putenv("LANG=C");
-    putenv("LC_ALL=C");
+    putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
 #else
     setlocale(LC_NUMERIC, "C");
