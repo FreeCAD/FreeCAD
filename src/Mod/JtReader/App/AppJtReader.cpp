@@ -28,7 +28,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
-#include <JtTk/JtkEntityFactory.h>
+//#include <JtTk/JtkEntityFactory.h>
 
 
 extern struct PyMethodDef JtReader_methods[];
@@ -43,13 +43,13 @@ void AppJtReaderExport initJtReader() {
    Base::Interpreter().loadModule("Mesh");
 
     // Initialize JtTk
-   JtkEntityFactory::init();
+   //JtkEntityFactory::init();
 
    // Note, non-evaluation JT Open Toolkit licensees must uncomment the
    // following line, inserting their "Sold_To_ID". Each licensee has a
    // unique Sold_To_ID issued by UGS Corp.
    //
-   JtkEntityFactory::registerCustomer( 1103193 );
+   //JtkEntityFactory::registerCustomer( 1103193 );
    //JtkEntityFactory::registerCustomer(1103103);
 
   Base::Console().Log("Loading JtReader module... done\n");
