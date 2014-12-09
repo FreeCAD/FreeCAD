@@ -29,6 +29,7 @@
 # include <QColor>
 # include <QImage>
 # include <QGLFramebufferObject>
+# include <QGLPixelBuffer>
 # include <Inventor/SbViewVolume.h>
 # include <Inventor/nodes/SoCamera.h>
 #endif
@@ -696,8 +697,9 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
+    bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
     if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",false)) {
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
         createImageFromFramebuffer(w, h, bg, img);
     }
     else {

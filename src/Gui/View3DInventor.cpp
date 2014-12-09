@@ -35,6 +35,7 @@
 # include <QFileDialog>
 # include <QGLFormat>
 # include <QGLWidget>
+# include <QGLPixelBuffer>
 # include <QPainter>
 # include <QPrinter>
 # include <QPrintDialog>
@@ -532,8 +533,9 @@ void View3DInventor::print(QPrinter* printer)
     QPainter p(printer);
     QRect rect = printer->pageRect();
 
+    bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
     if (App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",false)) {
+        ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
         previewFromFramebuffer(rect, img);
     }
     else {
