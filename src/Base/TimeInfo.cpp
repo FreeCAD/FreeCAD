@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QDateTime>
 #endif
 
 #include "TimeInfo.h"
@@ -70,14 +71,13 @@ void TimeInfo::setTime_t (uint64_t seconds)
 
 std::string TimeInfo::currentDateTimeString()
 {
-    char timebuff[30]= {0};
-    struct tm* systime;
-    time_t sec;
-
-    time(&sec);
-    systime = localtime(&sec);
-    strftime(timebuff,30,"%Y-%m-%dT%H:%M:%S%z",systime);
-    return std::string(timebuff);
+    QDateTime local = QDateTime::currentDateTime();
+    QDateTime utc = local.toUTC();
+    utc.setTimeSpec(Qt::LocalTime);
+    int utcOffset = utc.secsTo(local);
+    local.setUtcOffset(utcOffset);
+    QString dm = local.toString(Qt::ISODate);
+    return dm.toStdString();
 }
 
 std::string TimeInfo::diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd )
@@ -89,10 +89,10 @@ std::string TimeInfo::diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd
 
 float TimeInfo::diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd )
 {
-	int64_t ds = int64_t(timeEnd.getSeconds() - timeStart.getSeconds());
-	int dms = int(timeEnd.getMiliseconds()) - int(timeStart.getMiliseconds());
+    int64_t ds = int64_t(timeEnd.getSeconds() - timeStart.getSeconds());
+    int dms = int(timeEnd.getMiliseconds()) - int(timeStart.getMiliseconds());
 
-	return float(ds) + float(dms) * 0.001;
+    return float(ds) + float(dms) * 0.001;
 }
 
 TimeInfo TimeInfo::null()
