@@ -110,6 +110,7 @@
 #include <QEvent>
 #include <QIODevice>
 #include <QDataStream>
+#include <QDateTime>
 #include <QWriteLocker>
 #include <QReadLocker>
 #include <QReadWriteLock>
