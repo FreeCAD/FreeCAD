@@ -163,19 +163,25 @@ const std::vector<std::string>& Writer::getFilenames() const
 
 void Writer::incInd(void)
 {
-    if (indent < 255) {
-        indBuf[indent] = '\t';
-        indBuf[indent+1] = '\0';
-        indent++;
+    if (indent < 1020) {
+        indBuf[indent  ] = ' ';
+        indBuf[indent+1] = ' ';
+        indBuf[indent+2] = ' ';
+        indBuf[indent+3] = ' ';
+        indBuf[indent+4] = '\0';
+        indent += 4;
     }
 }
 
 void Writer::decInd(void)
 {
-    if (indent > 0) {
-        indent--;
-        indBuf[indent] = '\0';
+    if (indent >= 4) {
+        indent -= 4;
     }
+    else {
+        indent = 0;
+    }
+    indBuf[indent] = '\0';
 }
 
 ZipWriter::ZipWriter(const char* FileName) 

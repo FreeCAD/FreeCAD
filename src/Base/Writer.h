@@ -105,7 +105,7 @@ protected:
     std::vector<std::string> FileNames;
 
     short indent;
-    char indBuf[256];
+    char indBuf[1024];
 
     bool forceXML;
     int fileVersion;
