@@ -34,7 +34,7 @@
       </widget>
      </item>
      <item>
-       <widget class="Gui::InputField" name="gridSize">
+       <widget class="Gui::PrefQuantitySpinBox" name="gridSize">
          <property name="unit" stdset="0">
            <string notr="true">mm</string>
          </property>
@@ -85,9 +85,9 @@
  <resources/>
   <customwidgets>
     <customwidget>
-      <class>Gui::InputField</class>
-      <extends>QLineEdit</extends>
-      <header>Gui/InputField.h</header>
+      <class>Gui::PrefQuantitySpinBox</class>
+      <extends>QWidget</extends>
+      <header>Gui/PrefWidgets.h</header>
     </customwidget>
   </customwidgets>
 
