@@ -29,36 +29,69 @@
 #include "Geo.h"
 namespace GCS{
 
-
-Vector2D Line::CalculateNormal(Point &p, double* derivparam)
+DeriVector2::DeriVector2(const Point &p, double *derivparam)
 {
-    Vector2D p1v(*p1.x, *p1.y);
-    Vector2D p2v(*p2.x, *p2.y);
+    x=*p.x; y=*p.y;
+    dx=0.0; dy=0.0;
+    if (derivparam == p.x)
+        dx = 1.0;
+    if (derivparam == p.y)
+        dy = 1.0;
+}
 
-    Vector2D ret(0.0, 0.0);
-    if(derivparam){
-        if(derivparam==this->p1.x){
-            ret.y += -1.0;
-            //ret.x += 0;
-        };
-        if(derivparam==this->p1.y){
-            //ret.y += 0;
-            ret.x += 1.0;
-        };
-        if(derivparam==this->p2.x){
-            ret.y += 1.0;
-            //ret.x += 0;
-        };
-        if(derivparam==this->p2.y){
-            //ret.y += 0;
-            ret.x += -1.0;
-        };
+double DeriVector2::length(double &dlength)
+{
+    double l = length();
+    if(l==0){
+        dlength = 1.0;
+        return l;
     } else {
-        ret.x = -(p2v.y - p1v.y);
-        ret.y = (p2v.x - p1v.x);
-    };
+        dlength = (x*dx + y*dy)/l;
+        return l;
+    }
+}
 
-    return ret;
+DeriVector2 DeriVector2::getNormalized()
+{
+    double l=length();
+    if(l==0.0) {
+        return DeriVector2(0, 0, dx/0.0, dy/0.0);
+    } else {
+        DeriVector2 rtn;
+        rtn.x = x/l;
+        rtn.y = y/l;
+        //first, simply scale the derivative accordingly.
+        rtn.dx = dx/l;
+        rtn.dy = dy/l;
+        //next, remove the collinear part of dx,dy (make a projection onto a normal)
+        double dsc = rtn.dx*rtn.x + rtn.dy*rtn.y;//scalar product d*v
+        rtn.dx -= dsc*rtn.x;//subtract the projection
+        rtn.dy -= dsc*rtn.y;
+        return rtn;
+    }
+}
+
+double DeriVector2::scalarProd(const DeriVector2 &v2, double *dprd)
+{
+    if (dprd) {
+        *dprd = dx*v2.x + x*v2.dx + dy*v2.y + y*v2.dy;
+    };
+    return x*v2.x + y*v2.y;
+}
+
+DeriVector2 DeriVector2::divD(double val, double dval){
+    return DeriVector2(x/val,y/val,
+                       dx/val - x*dval/(val*val),
+                       dy/val - y*dval/(val*val)
+                       );
+}
+
+DeriVector2 Line::CalculateNormal(Point &p, double* derivparam)
+{
+    DeriVector2 p1v(p1, derivparam);
+    DeriVector2 p2v(p2, derivparam);
+
+    return p2v.subtr(p1v).rotate90ccw();
 }
 
 int Line::PushOwnParams(VEC_pD &pvec)
@@ -86,35 +119,12 @@ Line* Line::Copy()
 
 //---------------circle
 
-Vector2D Circle::CalculateNormal(Point &p, double* derivparam)
+DeriVector2 Circle::CalculateNormal(Point &p, double* derivparam)
 {
-    Vector2D cv (*center.x, *center.y);
-    Vector2D pv (*p.x, *p.y);
+    DeriVector2 cv (center, derivparam);
+    DeriVector2 pv (p, derivparam);
 
-    Vector2D ret(0.0, 0.0);
-    if(derivparam){
-        if (derivparam == center.x) {
-            ret.x += 1;
-            ret.y += 0;
-        };
-        if (derivparam == center.y) {
-            ret.x += 0;
-            ret.y += 1;
-        };
-        if (derivparam == p.x) {
-            ret.x += -1;
-            ret.y += 0;
-        };
-        if (derivparam == p.y) {
-            ret.x += 0;
-            ret.y += -1;
-        };
-    } else {
-        ret.x = cv.x - pv.x;
-        ret.y = cv.y - pv.y;
-    };
-
-    return ret;
+    return cv.subtr(pv);
 }
 
 int Circle::PushOwnParams(VEC_pD &pvec)
@@ -168,76 +178,43 @@ Arc* Arc::Copy()
 
 
 //--------------ellipse
-Vector2D Ellipse::CalculateNormal(Point &p, double* derivparam)
+DeriVector2 Ellipse::CalculateNormal(Point &p, double* derivparam)
 {
-    Vector2D cv (*center.x, *center.y);
-    Vector2D f1v (*focus1X, *focus1Y);
-    Vector2D pv (*p.x, *p.y);
+    //fill some vectors in
+    DeriVector2 cv (center, derivparam);
+    DeriVector2 f1v (focus1, derivparam);
+    DeriVector2 pv (p, derivparam);
 
-    Vector2D ret(0.0, 0.0);
+    //calculation.
+    //focus2:
+    DeriVector2 f2v = cv.linCombi(2.0, f1v, -1.0); // 2*cv - f1v
 
-    Vector2D f2v ( 2*cv.x - f1v.x, 2*cv.y - f1v.y ); //position of focus2
-    if(derivparam){
+    //pf1, pf2 = vectors from p to focus1,focus2
+    DeriVector2 pf1 = f1v.subtr(pv);
+    DeriVector2 pf2 = f2v.subtr(pv);
+    //return sum of normalized pf2, pf2
+    DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
 
-        Vector2D dc;
-        Vector2D df1;
-        Vector2D dp;
-
-        if (derivparam == center.x) dc.x = 1.0;
-        if (derivparam == center.y) dc.y = 1.0;
-        if (derivparam == focus1X) df1.x = 1.0;
-        if (derivparam == focus1Y) df1.y = 1.0;
-        if (derivparam == p.x) dp.x = 1.0;
-        if (derivparam == p.y) dp.y = 1.0;
-        //todo: exit if all are zero
-
-        Vector2D pf1 = Vector2D(pv.x - f1v.x, pv.y - f1v.y);//same as during error function calculation. I reuse the values during derivative calculation
-        Vector2D pf2 = Vector2D(pv.x - f2v.x, pv.y - f2v.y);
-        Vector2D pf1e = pf1.getNormalized();
-        Vector2D pf2e = pf2.getNormalized();
-
-        Vector2D df2 (2*dc.x - df1.x, 2*dc.y - df1.y );
-
-        Vector2D dpf1 (dp.x - df1.x, dp.y - df1.y);//derivative before normalization
-        Vector2D dpf1e (dpf1.x/pf1.length(), dpf1.y/pf1.length());//first portion of normalization derivative (normalized' = unnormalized'/len + unnormalized*(1/len)')
-        dpf1e.x += -pf1.x/pow(pf1.length(),2)*(dpf1.x*pf1e.x + dpf1.y*pf1e.y);//second part of normalization dreivative
-        dpf1e.y += -pf1.y/pow(pf1.length(),2)*(dpf1.x*pf1e.x + dpf1.y*pf1e.y);
-
-        Vector2D dpf2 (dp.x - df2.x, dp.y - df2.y);//same stuff for pf2
-        Vector2D dpf2e (dpf2.x/pf2.length(), dpf2.y/pf2.length());//first portion of normalization derivative (normalized' = unnormalized'/len + unnormalized*(1/len)')
-        dpf2e.x += -pf2.x/pow(pf2.length(),2)*(dpf2.x*pf2e.x + dpf2.y*pf2e.y);//second part of normalization dreivative
-        dpf2e.y += -pf2.y/pow(pf2.length(),2)*(dpf2.x*pf2e.x + dpf2.y*pf2e.y);
-
-        ret.x = -(dpf1e.x + dpf2e.x);
-        ret.y = -(dpf1e.y + dpf2e.y);//DeepSOIC: derivative calculated manually... error-prone =) Tested, fixed, looks good.
-
-//numeric derivatives for testing
-#if 0 //make sure to enable DEBUG_DERIVS when enabling
-        double const eps = 0.00001;
-        double oldparam = *derivparam;
-        Vector2D v0 = this->CalculateNormal(p);
-        *derivparam += eps;
-        Vector2D vr = this->CalculateNormal(p);
-        *derivparam = oldparam - eps;
-        Vector2D vl = this->CalculateNormal(p);
-        *derivparam = oldparam;
-        //If not nasty, real derivative should be between left one and right one
-        Vector2D numretl ((v0.x-vl.x)/eps, (v0.y-vl.y)/eps);
-        Vector2D numretr ((vr.x-v0.x)/eps, (vr.y-v0.y)/eps);
-        assert(ret.x <= std::max(numretl.x,numretr.x) );
-        assert(ret.x >= std::min(numretl.x,numretr.x) );
-        assert(ret.y <= std::max(numretl.y,numretr.y) );
-        assert(ret.y >= std::min(numretl.y,numretr.y) );
-#endif
-
-    } else {
-        Vector2D pf1 = Vector2D(pv.x - f1v.x, pv.y - f1v.y);
-        Vector2D pf2 = Vector2D(pv.x - f2v.x, pv.y - f2v.y);
-        Vector2D pf1e = pf1.getNormalized();
-        Vector2D pf2e = pf2.getNormalized();
-        ret.x = -(pf1e.x + pf2e.x);
-        ret.y = -(pf1e.y + pf2e.y);
-    };
+    //numeric derivatives for testing
+    #if 0 //make sure to enable DEBUG_DERIVS when enabling
+        if(derivparam) {
+            double const eps = 0.00001;
+            double oldparam = *derivparam;
+            DeriVector2 v0 = this->CalculateNormal(p);
+            *derivparam += eps;
+            DeriVector2 vr = this->CalculateNormal(p);
+            *derivparam = oldparam - eps;
+            DeriVector2 vl = this->CalculateNormal(p);
+            *derivparam = oldparam;
+            //If not nasty, real derivative should be between left one and right one
+            DeriVector2 numretl ((v0.x-vl.x)/eps, (v0.y-vl.y)/eps);
+            DeriVector2 numretr ((vr.x-v0.x)/eps, (vr.y-v0.y)/eps);
+            assert(ret.dx <= std::max(numretl.x,numretr.x) );
+            assert(ret.dx >= std::min(numretl.x,numretr.x) );
+            assert(ret.dy <= std::max(numretl.y,numretr.y) );
+            assert(ret.dy >= std::min(numretl.y,numretr.y) );
+        }
+    #endif
 
     return ret;
 }
@@ -247,8 +224,8 @@ int Ellipse::PushOwnParams(VEC_pD &pvec)
     int cnt=0;
     pvec.push_back(center.x); cnt++;
     pvec.push_back(center.y); cnt++;
-    pvec.push_back(focus1X); cnt++;
-    pvec.push_back(focus1Y); cnt++;
+    pvec.push_back(focus1.x); cnt++;
+    pvec.push_back(focus1.y); cnt++;
     pvec.push_back(radmin); cnt++;
     return cnt;
 }
@@ -256,8 +233,8 @@ void Ellipse::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
 {
     center.x=pvec[cnt]; cnt++;
     center.y=pvec[cnt]; cnt++;
-    focus1X=pvec[cnt]; cnt++;
-    focus1Y=pvec[cnt]; cnt++;
+    focus1.x=pvec[cnt]; cnt++;
+    focus1.y=pvec[cnt]; cnt++;
     radmin=pvec[cnt]; cnt++;
 }
 Ellipse* Ellipse::Copy()
