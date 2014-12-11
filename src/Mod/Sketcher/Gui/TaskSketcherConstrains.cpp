@@ -297,7 +297,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
         it->Type == Sketcher::DistanceX ||
         it->Type == Sketcher::DistanceY ||
         it->Type == Sketcher::Radius ||
-        it->Type == Sketcher::Angle) {
+        it->Type == Sketcher::Angle ||
+        it->Type == Sketcher::SnellsLaw) {
 
         EditDatumDialog *editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
         editDatumDialog->exec(false);
@@ -327,6 +328,18 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
         break;
     case Sketcher::Angle:
         unitStr = Base::Quantity(Base::toDegrees<double>(std::abs(v->Value)),Base::Unit::Angle).getUserString();
+        break;
+    case Sketcher::SnellsLaw:
+        {
+            double n1 = 1.0;
+            double n2 = 1.0;
+            if(abs(v->Value)>=1) {
+                n2 = v->Value;
+            } else {
+                n1 = 1/v->Value;
+            }
+            unitStr = QString::fromLatin1("%1/%2").arg(n2).arg(n1);
+        }
         break;
     default:
         break;
@@ -362,6 +375,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
     QIcon equal( Gui::BitmapFactory().pixmap("Constraint_EqualLength") );
     QIcon pntoo( Gui::BitmapFactory().pixmap("Constraint_PointOnObject") );
     QIcon symm ( Gui::BitmapFactory().pixmap("Constraint_Symmetric") );
+    QIcon snell ( Gui::BitmapFactory().pixmap("Constraint_SnellsLaw") );
     QIcon iaellipseminoraxis ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment_Ellipse_MinorAxis") );
     QIcon iaellipsemajoraxis ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment_Ellipse_MajorAxis") );
     QIcon iaellipsefocus1 ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment_Ellipse_Focus1") );
@@ -463,6 +477,23 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
                 if (Filter<3 || !(*it)->Name.empty()) {
                     ConstraintItem* item = new ConstraintItem(angl,name,i-1,(*it)->Type);
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(Base::toDegrees<double>(std::abs((*it)->Value)),Base::Unit::Angle).getUserString());
+                    item->setData(Qt::UserRole, name);
+                    ui->listWidgetConstraints->addItem(item);
+                }
+                break;
+            case Sketcher::SnellsLaw:
+                if (Filter<3 || !(*it)->Name.empty()) {
+                    ConstraintItem* item = new ConstraintItem(snell,name,i-1,(*it)->Type);
+
+                    double v = (*it)->Value;
+                    double n1 = 1.0;
+                    double n2 = 1.0;
+                    if(abs(v)>=1) {
+                        n2 = v;
+                    } else {
+                        n1 = 1/v;
+                    }
+                    name = QString::fromLatin1("%1 (%2/%3)").arg(name).arg(n2).arg(n1);
                     item->setData(Qt::UserRole, name);
                     ui->listWidgetConstraints->addItem(item);
                 }

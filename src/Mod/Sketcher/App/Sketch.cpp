@@ -766,6 +766,13 @@ int Sketch::addConstraint(const Constraint *constraint)
                 break;
         }
         break;
+    case SnellsLaw:
+        assert(constraint->ThirdPos==none);
+        rtn = addSnellsLawConstraint(constraint->First, constraint->FirstPos,
+                                     constraint->Second, constraint->SecondPos,
+                                     constraint->Third,
+                                     constraint->Value);
+        break;
     case None:
         break;
     }
@@ -1641,6 +1648,69 @@ int Sketch::addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointP
     }
     return -1;
 }
+
+int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
+                                   int geoIdRay2, PointPos posRay2,
+                                   int geoIdBnd,
+                                   double n2divn1)
+{
+
+    geoIdRay1 = checkGeoId(geoIdRay1);
+    geoIdRay2 = checkGeoId(geoIdRay2);
+    geoIdBnd = checkGeoId(geoIdBnd);
+
+    if (Geoms[geoIdRay1].type == Point ||
+        Geoms[geoIdRay2].type == Point){
+        assert(0);//point is not a curve. Not applicable!
+        return -1;
+    }
+
+    GCS::Curve* ray1 =getGCSCurveByGeoId(geoIdRay1);
+    GCS::Curve* ray2 =getGCSCurveByGeoId(geoIdRay2);
+    GCS::Curve* boundary =getGCSCurveByGeoId(geoIdBnd);
+    if (!ray1 || !ray2 || !boundary) {
+        assert(0);
+        Base::Console().Error("addSnellsLawConstraint: getGCSCurveByGeoId returned NULL!\n");
+        return -1;
+    }
+
+    int pointId1 = getPointId(geoIdRay1, posRay1);
+    int pointId2 = getPointId(geoIdRay2, posRay2);
+    if ( pointId1 < 0 || pointId1 >= int(Points.size()) ||
+         pointId2 < 0 || pointId2 >= int(Points.size()) ){
+        assert(0);
+        Base::Console().Error("addSnellsLawConstraint: point index out of range.\n");
+        return -1;
+    }
+    GCS::Point &p1 = Points[pointId1];
+    GCS::Point &p2 = Points[pointId2];
+
+    // add the parameters (refractive indexes)
+    FixParameters.push_back(new double(0.0));
+    double *n1 = FixParameters[FixParameters.size()-1];
+    FixParameters.push_back(new double(0.0));
+    double *n2 = FixParameters[FixParameters.size()-1];
+
+    if ( abs(n2divn1) >= 1.0 ){
+        *n2 = n2divn1;
+        *n1 = 1.0;
+    } else {
+        *n2 = 1.0;
+        *n1 = 1/n2divn1;
+    }
+
+    int tag = -1;
+    //tag = Sketch::addPointOnObjectConstraint(geoIdRay1, posRay1, geoIdBnd);//increases ConstraintsCounter
+    tag = ++ConstraintsCounter;
+    //GCSsys.addConstraintP2PCoincident(p1, p2, tag);
+    GCSsys.addConstraintSnellsLaw(*ray1, *ray2,
+                                  *boundary, p1,
+                                  n1, n2,
+                                  posRay1==start, posRay2 == end,
+                                  tag);
+    return ConstraintsCounter;
+}
+
 
 int Sketch::addInternalAlignmentEllipseMajorDiameter(int geoId1, int geoId2)
 {

@@ -52,7 +52,8 @@ namespace GCS
         InternalAlignmentPoint2Ellipse = 15,
         EqualMajorAxesEllipse = 16,
         EllipticalArcRangeToEndPoints = 17,
-        AngleViaPoint = 18
+        AngleViaPoint = 18,
+        Snell = 19
     };
     
     enum InternalAlignmentType {
@@ -450,6 +451,36 @@ namespace GCS
     public:
         ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Point p, double* angle);
         ~ConstraintAngleViaPoint();
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+    };
+
+    class ConstraintSnell : public Constraint //snell's law angles constrainer. Point needs to lie on all three curves to be constraied.
+    {
+    private:
+        inline double* n1() { return pvec[0]; };
+        inline double* n2() { return pvec[1]; };
+        Curve* ray1;
+        Curve* ray2;
+        Curve* boundary;
+        //These pointers hold copies of the curves that were passed on
+        // constraint creation. The curves must be deleted upon destruction of
+        // the constraint. It is necessary to have copies, since messing with
+        // original objects that were passed is a very bad idea (but messing is
+        // necessary, because we need to support redirectParams()/revertParams
+        // functions.
+        //The pointers in the curves need to be reconstructed if pvec was redirected
+        // (test pvecChangedFlag variable before use!)
+        Point poa;//poa=point of refraction //needs to be reconstructed if pvec was redirected/reverted. The point is easily shallow-copied by C++, so no pointer type here and no delete is necessary.
+        bool flipn1, flipn2;
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+    public:
+        //n1dn2 = n1 divided by n2. from n1 to n2. flipn1 = true instructs to flip ray1's tangent
+        ConstraintSnell(Curve &ray1, Curve &ray2, Curve &boundary, Point p, double* n1, double* n2, bool flipn1, bool flipn2);
+        ~ConstraintSnell();
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();

@@ -926,8 +926,8 @@ ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point &p, Ellipse &e)
     pvec.push_back(p.y);
     pvec.push_back(e.center.x);
     pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1X);
-    pvec.push_back(e.focus1Y);
+    pvec.push_back(e.focus1.x);
+    pvec.push_back(e.focus1.y);
     pvec.push_back(e.radmin);
     origpvec = pvec;
     rescale();
@@ -939,8 +939,8 @@ ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point &p, ArcOfEllipse &a)
     pvec.push_back(p.y);
     pvec.push_back(a.center.x);
     pvec.push_back(a.center.y);
-    pvec.push_back(a.focus1X);
-    pvec.push_back(a.focus1Y);
+    pvec.push_back(a.focus1.x);
+    pvec.push_back(a.focus1.y);
     pvec.push_back(a.radmin);
     origpvec = pvec;
     rescale();
@@ -1030,8 +1030,8 @@ ConstraintEllipseTangentLine::ConstraintEllipseTangentLine(Line &l, Ellipse &e)
     pvec.push_back(l.p2.y);
     pvec.push_back(e.center.x);
     pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1X);
-    pvec.push_back(e.focus1Y);
+    pvec.push_back(e.focus1.x);
+    pvec.push_back(e.focus1.y);
     pvec.push_back(e.radmin);
     origpvec = pvec;
     rescale();
@@ -1045,8 +1045,8 @@ ConstraintEllipseTangentLine::ConstraintEllipseTangentLine(Line &l, ArcOfEllipse
     pvec.push_back(l.p2.y);
     pvec.push_back(a.center.x);
     pvec.push_back(a.center.y);
-    pvec.push_back(a.focus1X);
-    pvec.push_back(a.focus1Y);
+    pvec.push_back(a.focus1.x);
+    pvec.push_back(a.focus1.y);
     pvec.push_back(a.radmin);
     origpvec = pvec;
     rescale();    
@@ -1354,8 +1354,8 @@ ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellip
     pvec.push_back(p1.y);
     pvec.push_back(e.center.x);
     pvec.push_back(e.center.y);
-    pvec.push_back(e.focus1X);
-    pvec.push_back(e.focus1Y);
+    pvec.push_back(e.focus1.x);
+    pvec.push_back(e.focus1.y);
     pvec.push_back(e.radmin);
     origpvec = pvec;
     rescale();
@@ -1368,8 +1368,8 @@ ConstraintInternalAlignmentPoint2Ellipse::ConstraintInternalAlignmentPoint2Ellip
     pvec.push_back(p1.y);
     pvec.push_back(a.center.x);
     pvec.push_back(a.center.y);
-    pvec.push_back(a.focus1X);
-    pvec.push_back(a.focus1Y);
+    pvec.push_back(a.focus1.x);
+    pvec.push_back(a.focus1.y);
     pvec.push_back(a.radmin);
     origpvec = pvec;
     rescale();
@@ -1803,13 +1803,13 @@ ConstraintEqualMajorAxesEllipse:: ConstraintEqualMajorAxesEllipse(Ellipse &e1, E
 {
     pvec.push_back(e1.center.x);
     pvec.push_back(e1.center.y);
-    pvec.push_back(e1.focus1X);
-    pvec.push_back(e1.focus1Y);
+    pvec.push_back(e1.focus1.x);
+    pvec.push_back(e1.focus1.y);
     pvec.push_back(e1.radmin);
     pvec.push_back(e2.center.x);
     pvec.push_back(e2.center.y);
-    pvec.push_back(e2.focus1X);
-    pvec.push_back(e2.focus1Y);
+    pvec.push_back(e2.focus1.x);
+    pvec.push_back(e2.focus1.y);
     pvec.push_back(e2.radmin);
     origpvec = pvec;
     rescale();
@@ -1819,13 +1819,13 @@ ConstraintEqualMajorAxesEllipse:: ConstraintEqualMajorAxesEllipse(ArcOfEllipse &
 {
     pvec.push_back(a1.center.x);
     pvec.push_back(a1.center.y);
-    pvec.push_back(a1.focus1X);
-    pvec.push_back(a1.focus1Y);
+    pvec.push_back(a1.focus1.x);
+    pvec.push_back(a1.focus1.y);
     pvec.push_back(a1.radmin);
     pvec.push_back(e2.center.x);
     pvec.push_back(e2.center.y);
-    pvec.push_back(e2.focus1X);
-    pvec.push_back(e2.focus1Y);
+    pvec.push_back(e2.focus1.x);
+    pvec.push_back(e2.focus1.y);
     pvec.push_back(e2.radmin);
     origpvec = pvec;
     rescale();
@@ -1835,13 +1835,13 @@ ConstraintEqualMajorAxesEllipse:: ConstraintEqualMajorAxesEllipse(ArcOfEllipse &
 {
     pvec.push_back(a1.center.x);
     pvec.push_back(a1.center.y);
-    pvec.push_back(a1.focus1X);
-    pvec.push_back(a1.focus1Y);
+    pvec.push_back(a1.focus1.x);
+    pvec.push_back(a1.focus1.y);
     pvec.push_back(a1.radmin);
     pvec.push_back(a2.center.x);
     pvec.push_back(a2.center.y);
-    pvec.push_back(a2.focus1X);
-    pvec.push_back(a2.focus1Y);
+    pvec.push_back(a2.focus1.x);
+    pvec.push_back(a2.focus1.y);
     pvec.push_back(a2.radmin);
     origpvec = pvec;
     rescale();
@@ -1948,8 +1948,8 @@ ConstraintEllipticalArcRangeToEndPoints::ConstraintEllipticalArcRangeToEndPoints
     pvec.push_back(angle_t);
     pvec.push_back(a.center.x);
     pvec.push_back(a.center.y);
-    pvec.push_back(a.focus1X);
-    pvec.push_back(a.focus1Y);
+    pvec.push_back(a.focus1.x);
+    pvec.push_back(a.focus1.y);
     pvec.push_back(a.radmin);
     origpvec = pvec;
     rescale();
@@ -2184,7 +2184,7 @@ double ConstraintEllipticalArcRangeToEndPoints::maxStep(MAP_pD_D &dir, double li
     return lim;
 }
 
-// L2LAngle
+// ConstraintAngleViaPoint
 ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Point p, double* angle)
 {
     pvec.push_back(angle);
@@ -2229,11 +2229,11 @@ double ConstraintAngleViaPoint::error()
 {
     if (pvecChangedFlag) ReconstructGeomPointers();
     double ang=*angle();
-    Vector2D n1 = crv1->CalculateNormal(poa);
-    Vector2D n2 = crv2->CalculateNormal(poa);
+    DeriVector2 n1 = crv1->CalculateNormal(poa);
+    DeriVector2 n2 = crv2->CalculateNormal(poa);
 
     //rotate n1 by angle
-    Vector2D n1r (n1.x*cos(ang) - n1.y*sin(ang), n1.x*sin(ang) + n1.y*cos(ang) );
+    DeriVector2 n1r (n1.x*cos(ang) - n1.y*sin(ang), n1.x*sin(ang) + n1.y*cos(ang) );
 
     //calculate angle between n1r and n2. Since we have rotated the n1, the angle is the error function.
     //for our atan2, y is a dot product (n2) * (n1r rotated ccw by 90 degrees).
@@ -2257,13 +2257,123 @@ double ConstraintAngleViaPoint::grad(double *param)
     if (pvecChangedFlag) ReconstructGeomPointers();
 
     if (param == angle()) deriv += -1.0;
-    Vector2D n1 = crv1->CalculateNormal(poa);
-    Vector2D n2 = crv2->CalculateNormal(poa);
+    DeriVector2 n1 = crv1->CalculateNormal(poa, param);
+    DeriVector2 n2 = crv2->CalculateNormal(poa, param);
+    deriv -= ( (-n1.dx)*n1.y / pow(n1.length(),2)  +  n1.dy*n1.x / pow(n1.length(),2) );
+    deriv += ( (-n2.dx)*n2.y / pow(n2.length(),2)  +  n2.dy*n2.x / pow(n2.length(),2) );
 
-    Vector2D dn1 = crv1->CalculateNormal(poa, param);
-    Vector2D dn2 = crv2->CalculateNormal(poa, param);
-    deriv -= ( (-dn1.x)*n1.y / pow(n1.length(),2)  +  dn1.y*n1.x / pow(n1.length(),2) );
-    deriv += ( (-dn2.x)*n2.y / pow(n2.length(),2)  +  dn2.y*n2.x / pow(n2.length(),2) );
+
+//use numeric for testing
+#if 0
+    double const eps = 0.00001;
+    double oldparam = *param;
+    double v0 = this->error();
+    *param += eps;
+    double vr = this->error();
+    *param = oldparam - eps;
+    double vl = this->error();
+    *param = oldparam;
+    //If not nasty, real derivative should be between left one and right one
+    double numretl = (v0-vl)/eps;
+    double numretr = (vr-v0)/eps;
+    assert(deriv <= std::max(numretl,numretr) );
+    assert(deriv >= std::min(numretl,numretr) );
+#endif
+
+    return scale * deriv;
+}
+
+//ConstraintSnell
+
+ConstraintSnell::ConstraintSnell(Curve &ray1, Curve &ray2, Curve &boundary, Point p, double* n1, double* n2, bool flipn1, bool flipn2)
+{
+    pvec.push_back(n1);
+    pvec.push_back(n2);
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    ray1.PushOwnParams(pvec);
+    ray2.PushOwnParams(pvec);
+    boundary.PushOwnParams(pvec);
+    this->ray1 = ray1.Copy();
+    this->ray2 = ray2.Copy();
+    this->boundary = boundary.Copy();
+    origpvec = pvec;
+    pvecChangedFlag=true;
+
+    this->flipn1 = flipn1;
+    this->flipn2 = flipn2;
+
+    rescale();
+}
+ConstraintSnell::~ConstraintSnell()
+{
+    delete ray1; ray1 = 0;
+    delete ray2; ray2 = 0;
+    delete boundary; boundary = 0;
+}
+
+void ConstraintSnell::ReconstructGeomPointers()
+{
+    int cnt=0;
+    cnt++; cnt++;//skip n1, n2 - we have an inline function for that
+    poa.x = pvec[cnt]; cnt++;
+    poa.y = pvec[cnt]; cnt++;
+    ray1->ReconstructOnNewPvec(pvec,cnt);
+    ray2->ReconstructOnNewPvec(pvec,cnt);
+    boundary->ReconstructOnNewPvec(pvec,cnt);
+    pvecChangedFlag=false;
+}
+
+ConstraintType ConstraintSnell::getTypeId()
+{
+    return Snell;
+}
+
+void ConstraintSnell::rescale(double coef)
+{
+    scale = coef * 1.;
+}
+
+//error and gradient combined. Values are returned through pointers.
+void ConstraintSnell::errorgrad(double *err, double *grad, double* param)
+{
+    if (pvecChangedFlag) ReconstructGeomPointers();
+    DeriVector2 tang1 = ray1->CalculateNormal(poa, param).rotate90cw().getNormalized();
+    DeriVector2 tang2 = ray2->CalculateNormal(poa, param).rotate90cw().getNormalized();
+    DeriVector2 tangB = boundary->CalculateNormal(poa, param).rotate90cw().getNormalized();
+    double sin1, dsin1, sin2, dsin2;
+    sin1 = tang1.scalarProd(tangB, &dsin1);//sinus of angle of incidence
+    sin2 = tang2.scalarProd(tangB, &dsin2);
+    if (flipn1) {sin1 = -sin1; dsin1 = -dsin1;}
+    if (flipn2) {sin2 = -sin2; dsin2 = -dsin2;}
+
+    double dn1 = (param == n1()) ? 1.0 : 0.0;
+    double dn2 = (param == n2()) ? 1.0 : 0.0;
+    if (err)
+        *err = *n1()*sin1 - *n2()*sin2;
+    if (grad)
+        *grad = dn1*sin1 + *n1()*dsin1 - dn2*sin2 - *n2()*dsin2;
+}
+
+double ConstraintSnell::error()
+{
+    double err;
+    errorgrad(&err, 0, 0);
+    return scale * err;
+}
+
+double ConstraintSnell::grad(double *param)
+{
+
+    //first of all, check that we need to compute anything.
+    int i;
+    for( i=0 ; i<pvec.size() ; i++ ){
+        if ( param == pvec[i] ) break;
+    };
+    if ( i == pvec.size() ) return 0.0;
+
+    double deriv;
+    errorgrad(0, &deriv, param);
 
 
 //use numeric for testing

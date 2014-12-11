@@ -754,6 +754,17 @@ int System::addConstraintP2PSymmetric(Point &p1, Point &p2, Point &p, int tagId)
     return addConstraintPointOnLine(p, p1, p2, tagId);
 }
 
+int System::addConstraintSnellsLaw(Curve &ray1, Curve &ray2,
+                                   Curve &boundary, Point p,
+                                   double *n1, double *n2,
+                                   bool flipn1, bool flipn2,
+                                   int tagId)
+{
+    Constraint *constr = new ConstraintSnell(ray1,ray2,boundary,p,n1,n2,flipn1,flipn2);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
 int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId)
 {
     Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);

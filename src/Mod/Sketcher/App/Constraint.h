@@ -46,7 +46,8 @@ enum ConstraintType {
     Equal = 12,
     PointOnObject = 13,
     Symmetric = 14,
-    InternalAlignment = 15
+    InternalAlignment = 15,
+    SnellsLaw = 16
 };
 
 enum InternalAlignmentType {
