@@ -769,8 +769,8 @@ int System::addConstraintInternalAlignmentEllipseMajorDiameter(Ellipse &e, Point
     double Y_2=*p2.y;
     double X_c=*e.center.x;
     double Y_c=*e.center.y;
-    double X_F1=*e.focus1X;
-    double Y_F1=*e.focus1Y;
+    double X_F1=*e.focus1.x;
+    double Y_F1=*e.focus1.y;
     double b=*e.radmin;
     
     // P1=vector([X_1,Y_1])
@@ -814,8 +814,8 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse &e, Point
     double Y_2=*p2.y;
     double X_c=*e.center.x;
     double Y_c=*e.center.y;
-    double X_F1=*e.focus1X;
-    double Y_F1=*e.focus1Y;
+    double X_F1=*e.focus1.x;
+    double Y_F1=*e.focus1.y;
     double b=*e.radmin;
     
     // Same idea as for major above, but for minor
@@ -841,8 +841,8 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(Ellipse &e, Point
 
 int System::addConstraintInternalAlignmentEllipseFocus1(Ellipse &e, Point &p1, int tagId)
 {
-           addConstraintEqual(e.focus1X, p1.x, tagId);
-    return addConstraintEqual(e.focus1Y, p1.y, tagId);
+           addConstraintEqual(e.focus1.x, p1.x, tagId);
+    return addConstraintEqual(e.focus1.y, p1.y, tagId);
 }
 
 int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse &e, Point &p1, int tagId)
@@ -866,8 +866,8 @@ int System::addConstraintInternalAlignmentEllipseMajorDiameter(ArcOfEllipse &a, 
     double Y_2=*p2.y;
     double X_c=*a.center.x;
     double Y_c=*a.center.y;
-    double X_F1=*a.focus1X;
-    double Y_F1=*a.focus1Y;
+    double X_F1=*a.focus1.x;
+    double Y_F1=*a.focus1.y;
     double b=*a.radmin;
     
     // P1=vector([X_1,Y_1])
@@ -911,8 +911,8 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(ArcOfEllipse &a, 
     double Y_2=*p2.y;
     double X_c=*a.center.x;
     double Y_c=*a.center.y;
-    double X_F1=*a.focus1X;
-    double Y_F1=*a.focus1Y;
+    double X_F1=*a.focus1.x;
+    double Y_F1=*a.focus1.y;
     double b=*a.radmin;
     
     // Same idea as for major above, but for minor
@@ -938,8 +938,8 @@ int System::addConstraintInternalAlignmentEllipseMinorDiameter(ArcOfEllipse &a, 
 
 int System::addConstraintInternalAlignmentEllipseFocus1(ArcOfEllipse &a, Point &p1, int tagId)
 {
-           addConstraintEqual(a.focus1X, p1.x, tagId);
-    return addConstraintEqual(a.focus1Y, p1.y, tagId);
+           addConstraintEqual(a.focus1.x, p1.x, tagId);
+    return addConstraintEqual(a.focus1.y, p1.y, tagId);
 }
 
 int System::addConstraintInternalAlignmentEllipseFocus2(ArcOfEllipse &a, Point &p1, int tagId)
@@ -956,14 +956,14 @@ double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p)
     {return calculateAngleViaPoint(crv1, crv2, p, p);}
 double System::calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2)
 {
-    GCS::Vector2D n1 = crv1.CalculateNormal(p1);
-    GCS::Vector2D n2 = crv2.CalculateNormal(p2);
+    GCS::DeriVector2 n1 = crv1.CalculateNormal(p1);
+    GCS::DeriVector2 n2 = crv2.CalculateNormal(p2);
     return atan2(-n2.x*n1.y+n2.y*n1.x, n2.x*n1.x + n2.y*n1.y);
 }
 
 void System::calculateNormalAtPoint(Curve &crv, Point &p, double &rtnX, double &rtnY)
 {
-    GCS::Vector2D n1 = crv.CalculateNormal(p);
+    GCS::DeriVector2 n1 = crv.CalculateNormal(p);
     rtnX = n1.x;
     rtnY = n1.y;
 }

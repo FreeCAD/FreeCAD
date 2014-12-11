@@ -28,27 +28,9 @@
 
 namespace GCS
 {
-    class Vector2D /* DeepSOIC: I tried to reuse Base::Vector2D by #include <Base/Tools2D.h>,
-                    * but I failed to resolve bullshit compilation errors that arose in the process, so...
-                    * Anyway, the benefit is that solver has less dependencies on FreeCAD and can be
-                    * stripped off easier.
-                    * I could have used Eigen's Vector2f, but I found it overblown and too complex to use.
-                    */
-    {
-    public:
-        Vector2D(){x=0; y=0;}
-        Vector2D(double x, double y) {this->x = x; this->y = y;}
-        double x;
-        double y;
-        double length() {return sqrt(x*x + y*y);}
+    const double NAN = std::numeric_limits<double>::quiet_NaN();
+    const double INF = std::numeric_limits<double>::infinity();
 
-        //unlike other vectors in FreeCAD, this normalization creates a new vector instead of modifying existing one.
-        Vector2D getNormalized(){double l=length(); if(l==0.0) l=1.0; return Vector2D(x/l,y/l);} //returns zero vector if the original is zero.
-    };
-
-    ///////////////////////////////////////
-    // Geometries
-    ///////////////////////////////////////
     class Point
     {
     public:
@@ -56,6 +38,56 @@ namespace GCS
         double *x;
         double *y;
     };
+
+    ///Class DeriVector2 holds a vector value and its derivative on the
+    ///parameter that the derivatives are being calculated for now. x,y is the
+    ///actual vector (v). dx,dy is a derivative of the vector by a parameter
+    ///(dv/dp). The easiest way to fill the vector in is by passing a point and
+    ///a derivative parameter pointer to its constructor. x,y are read from the
+    ///pointers in Point, and dx,dy are set to either 0 or 1 depending on what
+    ///pointers of Point match the supplied pointer. The derivatives can be set
+    ///manually as well. The class also provides a bunch of methods to do math
+    ///on it (and derivatives are calculated implicitly).
+    ///
+    class DeriVector2
+    {
+    public:
+        DeriVector2(){x=0; y=0; dx=0; dy=0;}
+        DeriVector2(double x, double y) {this->x = x; this->y = y; this->dx = 0; this->dy = 0;}
+        DeriVector2(double x, double y, double dx, double dy) {this->x = x; this->y = y; this->dx = dx; this->dy = dy;}
+        DeriVector2(const Point &p, double* derivparam);
+        double x, dx;
+        double y, dy;
+
+        double length() {return sqrt(x*x + y*y);}
+        double length(double &dlength); //returns length and writes length deriv into the dlength argument.
+
+
+        //unlike other vectors in FreeCAD, this normalization creates a new vector instead of modifying existing one.
+        DeriVector2 getNormalized(); //returns zero vector if the original is zero.
+        double scalarProd(const DeriVector2 &v2, double* dprd=0);//calculates scalar product of two vectors and returns the result. The derivative of the result is written into argument dprd.
+        DeriVector2 sum(const DeriVector2 &v2){//adds two vectors and returns result
+            return DeriVector2(x + v2.x, y + v2.y,
+                               dx + v2.dx, dy + v2.dy);}
+        DeriVector2 subtr(const DeriVector2 &v2){//subtracts two vectors and returns result
+            return DeriVector2(x - v2.x, y - v2.y,
+                               dx - v2.dx, dy - v2.dy);}
+        DeriVector2 mult(double val){
+            return DeriVector2(x*val, y*val, dx*val, dy*val);}//multiplies the vector by a number. Derivatives are scaled.
+        DeriVector2 multD(double val, double dval){//multiply vector by a variable with a derivative.
+            return DeriVector2(x*val, y*val, dx*val+x*dval, dy*val+y*dval);}
+        DeriVector2 divD(double val, double dval);//divide vector by a variable with a derivative
+        DeriVector2 rotate90ccw(){return DeriVector2(-y,x,-dy,dx);}
+        DeriVector2 rotate90cw(){return DeriVector2(y,-x,dy,-dx);}
+        DeriVector2 linCombi(double m1, const DeriVector2 &v2, double m2){//linear combination of two vectors
+            return DeriVector2(x*m1 + v2.x*m2, y*m1 + v2.y*m2,
+                               dx*m1 + v2.dx*m2, dy*m1 + v2.dy*m2);}
+
+    };
+
+    ///////////////////////////////////////
+    // Geometries
+    ///////////////////////////////////////
 
     class Curve //a base class for all curve-based objects (line, circle/arc, ellipse/arc)
     {
@@ -66,10 +98,9 @@ namespace GCS
         // assumed to be walked counterclockwise, so the vector should point
         // into the shape.
         //derivparam is a pointer to a curve parameter (or point coordinate) to
-        // compute the derivative for. if derivparam is nullptr, the actual
-        // normal vector is returned, otherwise a derivative of normal vector by
-        // *derivparam is returned.
-        virtual Vector2D CalculateNormal(Point &p, double* derivparam = 0) = 0;
+        // compute the derivative for. The derivative is returned through dx,dy
+        // fields of DeriVector2.
+        virtual DeriVector2 CalculateNormal(Point &p, double* derivparam = 0) = 0;
 
         //adds curve's parameters to pvec (used by constraints)
         virtual int PushOwnParams(VEC_pD &pvec) = 0;
@@ -85,7 +116,7 @@ namespace GCS
         Line(){}
         Point p1;
         Point p2;
-        Vector2D CalculateNormal(Point &p, double* derivparam = 0);
+        DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Line* Copy();
@@ -97,7 +128,7 @@ namespace GCS
         Circle(){rad = 0;}
         Point center;
         double *rad;
-        Vector2D CalculateNormal(Point &p, double* derivparam = 0);
+        DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Circle* Copy();
@@ -123,10 +154,9 @@ namespace GCS
     public:
         Ellipse(){ radmin = 0;}
         Point center; 
-        double *focus1X;
-        double *focus1Y;
+        Point focus1;
         double *radmin;
-        Vector2D CalculateNormal(Point &p, double* derivparam = 0);
+        DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Ellipse* Copy();
@@ -142,8 +172,8 @@ namespace GCS
         Point start;
         Point end;
         //Point center;  //inherited
-        //double *focus1X; //inherited
-        //double *focus1Y; //inherited
+        //double *focus1.x; //inherited
+        //double *focus1.y; //inherited
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual ArcOfEllipse* Copy();
