@@ -519,13 +519,15 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 
     // look what the user has choosen
     if (saveAction == saveValueAction) {
-        pushToSavedValues();
+        pushToSavedValues(this->text());
     }
     else {
         int i=0;
         for (std::vector<QAction *>::const_iterator it = actions.begin();it!=actions.end();++it,i++) {
-            if (*it == saveAction)
+            if (*it == saveAction) {
                 lineEdit()->setText(values[i]);
+                break;
+            }
         }
     }
 
@@ -595,10 +597,7 @@ void PrefQuantitySpinBox::pushToSavedValues(const QString &valueq)
 {
     Q_D(PrefQuantitySpinBox);
     std::string value;
-    if (valueq.isEmpty())
-        value = this->text().toUtf8().constData();
-    else
-        value = valueq.toUtf8().constData();
+    value = valueq.toUtf8().constData();
 
     if (d->handle.isValid()) {
         for (int i = d->saveSize -1 ; i>=0 ;i--) {

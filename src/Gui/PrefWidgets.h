@@ -304,11 +304,11 @@ public:
     /// set the param group path where the widget writes and reads the default values
     void  setParamGrpPath(const QByteArray& name);
     /// push a new value to the history, if no string given the actual text of the input field is used.
-    void pushToHistory(const QString &value = QString());
+    void pushToHistory(const QString& value = QString());
     /// get the history of the field, newest first
     std::vector<QString> getHistory() const;
     /// push a new value to the history, if no string given the actual text of the input field is used.
-    void pushToSavedValues(const QString &value = QString());
+    void pushToSavedValues(const QString& value);
     /// get the history of the field, newest first
     std::vector<QString> getSavedValues() const;
     //@}
@@ -317,7 +317,7 @@ protected:
     virtual void contextMenuEvent(QContextMenuEvent * event);
 
 private:
-    PrefQuantitySpinBoxPrivate * const d_ptr;
+    QScopedPointer<PrefQuantitySpinBoxPrivate> d_ptr;
     Q_DISABLE_COPY(PrefQuantitySpinBox)
     Q_DECLARE_PRIVATE(PrefQuantitySpinBox)
 };

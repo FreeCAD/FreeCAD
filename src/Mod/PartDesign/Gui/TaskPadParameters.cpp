@@ -287,7 +287,7 @@ void TaskPadParameters::onModeChanged(int index)
         case 0:
             pcPad->Type.setValue("Length");
             // Avoid error message
-            if (ui->lengthEdit->getQuantity().getValue() < Precision::Confusion())
+            if (ui->lengthEdit->value().getValue() < Precision::Confusion())
                 ui->lengthEdit->setValue(5.0);
             break;
         case 1: pcPad->Type.setValue("UpToLast"); break;
@@ -371,7 +371,7 @@ void TaskPadParameters::onUpdateView(bool on)
 
 double TaskPadParameters::getLength(void) const
 {
-    return ui->lengthEdit->getQuantity().getValue();
+    return ui->lengthEdit->value().getValue();
 }
 
 bool   TaskPadParameters::getReversed(void) const
@@ -386,7 +386,7 @@ bool   TaskPadParameters::getMidplane(void) const
 
 double TaskPadParameters::getLength2(void) const
 {
-    return ui->lengthEdit2->getQuantity().getValue();
+    return ui->lengthEdit2->value().getValue();
 }
 
 int TaskPadParameters::getMode(void) const

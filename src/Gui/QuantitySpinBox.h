@@ -128,7 +128,7 @@ Q_SIGNALS:
     void parseError(const QString& errorText);
 
 private:
-    QuantitySpinBoxPrivate * const d_ptr;
+    QScopedPointer<QuantitySpinBoxPrivate> d_ptr;
     Q_DISABLE_COPY(QuantitySpinBox)
     Q_DECLARE_PRIVATE(QuantitySpinBox)
 };
