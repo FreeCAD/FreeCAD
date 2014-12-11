@@ -378,17 +378,34 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siiiiii", &ConstraintType, &FirstIndex, &FirstPos, &SecondIndex, &SecondPos, &ThirdIndex, &ThirdPos)) {
-        // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3, PosIndex3
-        if (strcmp("Symmetric",ConstraintType) == 0 ) {
-            this->getConstraintPtr()->Type = Symmetric;
-            this->getConstraintPtr()->First     = FirstIndex;
-            this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) FirstPos;
-            this->getConstraintPtr()->Second    = SecondIndex;
-            this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) SecondPos;
-            this->getConstraintPtr()->Third     = ThirdIndex;
-            this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) ThirdPos;
-            return 0;
+    if (PyArg_ParseTuple(args, "siiiiiO", &ConstraintType, &FirstIndex, &FirstPos, &SecondIndex, &SecondPos, &ThirdIndex, &index_or_value)) {
+        if (PyInt_Check(index_or_value)) {
+            ThirdPos = PyInt_AsLong(index_or_value);
+            // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3, PosIndex3
+            if (strcmp("Symmetric",ConstraintType) == 0 ) {
+                this->getConstraintPtr()->Type = Symmetric;
+                this->getConstraintPtr()->First     = FirstIndex;
+                this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) FirstPos;
+                this->getConstraintPtr()->Second    = SecondIndex;
+                this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) SecondPos;
+                this->getConstraintPtr()->Third     = ThirdIndex;
+                this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) ThirdPos;
+                return 0;
+            }
+        }
+        if (PyNumber_Check(index_or_value)) { // can be float or int
+            Value = PyFloat_AsDouble(index_or_value);
+            if (strcmp("SnellsLaw",ConstraintType) == 0 ) {
+                this->getConstraintPtr()->Type = SnellsLaw;
+                this->getConstraintPtr()->First     = FirstIndex;
+                this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) FirstPos;
+                this->getConstraintPtr()->Second    = SecondIndex;
+                this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) SecondPos;
+                this->getConstraintPtr()->Third     = ThirdIndex;
+                this->getConstraintPtr()->ThirdPos  = none;
+                this->getConstraintPtr()->Value = Value;
+                return 0;
+            }
         }
     }
 
@@ -436,6 +453,7 @@ std::string ConstraintPy::representation(void) const
             else
                 result << "'AngleViaPoint'>";
         break;
+        case SnellsLaw          : result << "'SnellsLaw'>"; break;
         case InternalAlignment  : 
             switch(this->getConstraintPtr()->AlignmentType) {
                 case Undef                  : result << "'InternalAlignment:Undef'>";break;

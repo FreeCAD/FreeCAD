@@ -187,6 +187,11 @@ public:
     int addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3);
     /// add a symmetric constraint between three points, the last point is in the middle of the first two
     int addSymmetricConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3, PointPos pos3);
+    /// add a snell's law constraint
+    int addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
+                               int geoIdRay2, PointPos posRay2,
+                               int geoIdBnd,
+                               double n2divn1);
     //@}
     
     /// Internal Alignment constraints

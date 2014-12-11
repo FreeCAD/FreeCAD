@@ -123,6 +123,7 @@
         <file>icons/small/Constraint_PointOnStart_sm.xpm</file>
         <file>icons/small/Constraint_PointToObject_sm.xpm</file>
         <file>icons/small/Constraint_Radius_sm.xpm</file>
+        <file>icons/small/Constraint_SnellsLaw_sm.xpm</file>
         <file>icons/small/Constraint_Symmetric_sm.xpm</file>
         <file>icons/small/Constraint_TangentToEnd_sm.xpm</file>
         <file>icons/small/Constraint_TangentToStart_sm.xpm</file>

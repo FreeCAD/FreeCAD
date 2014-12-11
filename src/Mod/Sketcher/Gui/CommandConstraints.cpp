@@ -2476,6 +2476,138 @@ bool CmdSketcherConstrainSymmetric::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+DEF_STD_CMD_A(CmdSketcherConstrainSnellsLaw);
+
+CmdSketcherConstrainSnellsLaw::CmdSketcherConstrainSnellsLaw()
+    :Command("Sketcher_ConstrainSnellsLaw")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Constrain refraction (Snell's law')");
+    sToolTipText    = QT_TR_NOOP("Create a refraction law (Snell's law) constraint between two endpoints of rays and an edge as an interface.");
+    sWhatsThis      = "Sketcher_ConstrainSnellsLaw";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Constraint_SnellsLaw";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
+{
+    QString strHelp = QObject::tr("Select two endpoints of lines to act as rays, and"
+                                  " an edge representing a boundary. The first"
+                                  " selected point corresponds to index n1, second"
+                                  " - to n2, and datum value sets the ratio n2/n1.",
+                                  "Constraint_SnellsLaw");
+    QString strError;
+
+    const char dmbg[] = "Constraint_SnellsLaw";
+
+    try{
+        // get the selection
+        std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+        Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+
+        // only one sketch with its subelements are allowed to be selected
+        if (selection.size() != 1) {
+            strError = QObject::tr("Selected objects are not just geometry from one sketch.", dmbg);
+            throw(Base::Exception(""));
+        }
+
+        // get the needed lists and objects
+        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+
+        if (SubNames.size() != 3) {
+            strError = QObject::tr("Number of selected objects is not 3 (is %1).", dmbg).arg(SubNames.size());
+            throw(Base::Exception(""));
+        }
+
+        int GeoId1, GeoId2, GeoId3;
+        Sketcher::PointPos PosId1, PosId2, PosId3;
+        getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
+        getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
+        getIdsFromName(SubNames[2], Obj, GeoId3, PosId3);
+
+        //sink the egde to be the last item
+        if (isEdge(GeoId1,PosId1) ) {
+            std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
+        }
+        if (isEdge(GeoId2,PosId2) ) {
+            std::swap(GeoId2,GeoId3);
+            std::swap(PosId2,PosId3);
+        }
+
+        //a bunch of validity checks
+        if ((GeoId1 < 0 && GeoId2 < 0 && GeoId3 < 0)) {
+            strError = QObject::tr("Cannot add a constraint between external geometries!", dmbg);
+            throw(Base::Exception(""));
+        }
+
+        if (!(isVertex(GeoId1,PosId1) && !isSimpleVertex(Obj, GeoId1, PosId1) &&
+              isVertex(GeoId2,PosId2) && !isSimpleVertex(Obj, GeoId2, PosId2) &&
+              isEdge(GeoId3,PosId3)   )) {
+            strError = QObject::tr("Incompatible geometry is selected!", dmbg);
+            throw(Base::Exception(""));
+        };
+
+        //the essence.
+        //Unlike other constraints, we'll ask for a value immediately.
+        QDialog dlg(Gui::getMainWindow());
+        Ui::InsertDatum ui_Datum;
+        ui_Datum.setupUi(&dlg);
+        dlg.setWindowTitle(EditDatumDialog::tr("Refractive index ratio", dmbg));
+        ui_Datum.label->setText(EditDatumDialog::tr("Ratio n2/n1:", dmbg));
+        Base::Quantity init_val;
+        init_val.setUnit(Base::Unit());
+        init_val.setValue(0.0);
+
+        ui_Datum.labelEdit->setValue(init_val);
+        ui_Datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+        ui_Datum.labelEdit->setToLastUsedValue();
+        ui_Datum.labelEdit->selectNumber();
+
+        if (dlg.exec() != QDialog::Accepted) return;
+        ui_Datum.labelEdit->pushToHistory();
+
+        Base::Quantity newQuant = ui_Datum.labelEdit->value();
+        double n2divn1 = newQuant.getValue();
+
+        //add constraint
+        openCommand("add Snell's law constraint");
+
+        if (! IsPointAlreadyOnCurve(GeoId2,GeoId1,PosId1,Obj))
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+
+        if (! IsPointAlreadyOnCurve(GeoId3,GeoId1,PosId1,Obj))
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                selection[0].getFeatName(),GeoId1,PosId1,GeoId3);
+
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('SnellsLaw',%d,%d,%d,%d,%d,%.12f)) ",
+            selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,n2divn1);
+
+        commitCommand();
+        updateActive();
+
+        // clear the selection (convenience)
+        getSelection().clearSelection();
+    } catch (Base::Exception &e) {
+        if (strError.isEmpty()) strError = QString::fromLatin1(e.what());
+        if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"), strError + strHelp);
+    }
+}
+
+bool CmdSketcherConstrainSnellsLaw::isActive(void)
+{
+    return isCreateConstraintActive( getActiveGuiDocument() );
+}
+
+
 DEF_STD_CMD_A(CmdSketcherConstrainInternalAlignment);
 
 CmdSketcherConstrainInternalAlignment::CmdSketcherConstrainInternalAlignment()
@@ -2902,5 +3034,7 @@ void CreateSketcherCommandsConstraints(void)
     rcCmdMgr.addCommand(new CmdSketcherConstrainEqual());
     rcCmdMgr.addCommand(new CmdSketcherConstrainPointOnObject());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSymmetric());
+    rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
     rcCmdMgr.addCommand(new CmdSketcherConstrainInternalAlignment());
+
 }

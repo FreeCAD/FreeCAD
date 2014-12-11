@@ -172,6 +172,11 @@ namespace GCS
         int addConstraintEqualRadius(Arc &a1, Arc &a2, int tagId=0);
         int addConstraintP2PSymmetric(Point &p1, Point &p2, Line &l, int tagId=0);
         int addConstraintP2PSymmetric(Point &p1, Point &p2, Point &p, int tagId=0);
+        int addConstraintSnellsLaw(Curve &ray1, Curve &ray2,
+                                   Curve &boundary, Point p,
+                                   double* n1, double* n2,
+                                   bool flipn1, bool flipn2,
+                                   int tagId);
         
         // internal alignment constraints
         int addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId=0);
