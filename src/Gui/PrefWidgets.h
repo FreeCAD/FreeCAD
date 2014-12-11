@@ -32,6 +32,7 @@
 #include "Window.h"
 #include "SpinBox.h"
 #include "FileDialog.h"
+#include "QuantitySpinBox.h"
 
 namespace Gui {
 class CommandManager;
@@ -54,11 +55,11 @@ class WidgetFactoryInst;
 class GuiExport PrefWidget : public WindowParameter
 {
 public:
-  virtual void setEntryName( const QByteArray& name );
-  virtual QByteArray entryName() const;
+  void setEntryName( const QByteArray& name );
+  QByteArray entryName() const;
 
-  virtual void setParamGrpPath( const QByteArray& path );
-  virtual QByteArray paramGrpPath() const;
+  void setParamGrpPath( const QByteArray& path );
+  QByteArray paramGrpPath() const;
 
   virtual void OnChange(Base::Subject<const char*> &rCaller, const char * sReason);
   void onSave();
@@ -99,14 +100,6 @@ public:
   PrefSpinBox ( QWidget * parent = 0 );
   virtual ~PrefSpinBox();
 
-  // PROPERTIES
-  // getters
-  QByteArray entryName    () const;
-  QByteArray paramGrpPath () const;
-  // setters
-  void  setEntryName     ( const QByteArray& name );
-  void  setParamGrpPath  ( const QByteArray& name );
-
 protected:
   // restore from/save to parameters
   void restorePreferences();
@@ -126,14 +119,6 @@ class GuiExport PrefDoubleSpinBox : public QDoubleSpinBox, public PrefWidget
 public:
   PrefDoubleSpinBox ( QWidget * parent = 0 );
   virtual ~PrefDoubleSpinBox();
-
-  // PROPERTIES
-  // getters
-  QByteArray entryName    () const;
-  QByteArray paramGrpPath () const;
-  // setters
-  void  setEntryName     ( const QByteArray& name );
-  void  setParamGrpPath  ( const QByteArray& name );
 
 protected:
   // restore from/save to parameters
@@ -156,14 +141,6 @@ public:
   PrefLineEdit ( QWidget * parent = 0 );
   virtual ~PrefLineEdit();
 
-  // PROPERTIES
-  // getters
-  QByteArray entryName    () const;
-  QByteArray paramGrpPath () const;
-  // setters
-  void  setEntryName     ( const QByteArray& name );
-  void  setParamGrpPath  ( const QByteArray& name );
-
 protected:
   // restore from/save to parameters
   void restorePreferences();
@@ -184,14 +161,6 @@ class GuiExport PrefFileChooser : public FileChooser, public PrefWidget
 public:
   PrefFileChooser ( QWidget * parent = 0 );
   virtual ~PrefFileChooser();
-
-  // PROPERTIES
-  // getters
-  QByteArray entryName    () const;
-  QByteArray paramGrpPath () const;
-  // setters
-  void  setEntryName     ( const QByteArray& name );
-  void  setParamGrpPath  ( const QByteArray& name );
 
 protected:
   // restore from/save to parameters
@@ -214,14 +183,6 @@ public:
   PrefComboBox ( QWidget * parent = 0 );
   virtual ~PrefComboBox();
 
-  // PROPERTIES
-  // getters
-  QByteArray entryName    () const;
-  QByteArray paramGrpPath () const;
-  // setters
-  void  setEntryName     ( const QByteArray& name );
-  void  setParamGrpPath  ( const QByteArray& name );
-
 protected:
   // restore from/save to parameters
   void restorePreferences();
@@ -242,14 +203,6 @@ class GuiExport PrefCheckBox : public QCheckBox, public PrefWidget
 public:
   PrefCheckBox ( QWidget * parent = 0 );
   virtual ~PrefCheckBox();
-
-  // PROPERTIES
-  // getters
-  QByteArray entryName    () const;
-  QByteArray paramGrpPath () const;
-  // setters
-  void  setEntryName     ( const QByteArray& name );
-  void  setParamGrpPath  ( const QByteArray& name );
 
 protected:
   // restore from/save to parameters
@@ -272,14 +225,6 @@ public:
   PrefRadioButton ( QWidget * parent = 0 );
   virtual ~PrefRadioButton();
 
-  // PROPERTIES
-  // getters
-  QByteArray entryName    () const;
-  QByteArray paramGrpPath () const;
-  // setters
-  void  setEntryName     ( const QByteArray& name );
-  void  setParamGrpPath  ( const QByteArray& name );
-
 protected:
   // restore from/save to parameters
   void restorePreferences();
@@ -300,14 +245,6 @@ class GuiExport PrefSlider : public QSlider, public PrefWidget
 public:
   PrefSlider ( QWidget * parent = 0 );
   virtual ~PrefSlider();
-
-  // PROPERTIES
-  // getters
-  QByteArray entryName    () const;
-  QByteArray paramGrpPath () const;
-  // setters
-  void  setEntryName     ( const QByteArray& name );
-  void  setParamGrpPath  ( const QByteArray& name );
 
 protected:
   // restore from/save to parameters
@@ -330,18 +267,59 @@ public:
   PrefColorButton ( QWidget * parent = 0 );
   virtual ~PrefColorButton();
 
-  // PROPERTIES
-  // getters
-  QByteArray entryName    () const;
-  QByteArray paramGrpPath () const;
-  // setters
-  void  setEntryName     ( const QByteArray& name );
-  void  setParamGrpPath  ( const QByteArray& name );
-
 protected:
   // restore from/save to parameters
   void restorePreferences();
   void savePreferences();
+};
+
+class PrefQuantitySpinBoxPrivate;
+
+/**
+ * The PrefQuantitySpinBox class.
+ * \author Werner Mayer
+ */
+class GuiExport PrefQuantitySpinBox : public QuantitySpinBox
+{
+    Q_OBJECT
+
+    Q_PROPERTY(QByteArray prefPath  READ paramGrpPath  WRITE setParamGrpPath)
+    Q_PROPERTY(int historySize READ historySize WRITE setHistorySize)
+
+public:
+    PrefQuantitySpinBox (QWidget * parent = 0);
+    virtual ~PrefQuantitySpinBox();
+
+    /// set the input field to the last used value (works only if the setParamGrpPath() was called)
+    void setToLastUsedValue();
+    /// get the value of the history size property
+    int historySize() const;
+    /// set the value of the history size property 
+    void setHistorySize(int);
+
+    /** @name history and default management */
+    //@{
+    /// the param group path where the widget writes and reads the default values
+    QByteArray paramGrpPath() const;
+    /// set the param group path where the widget writes and reads the default values
+    void  setParamGrpPath(const QByteArray& name);
+    /// push a new value to the history, if no string given the actual text of the input field is used.
+    void pushToHistory(const QString &value = QString());
+    /// get the history of the field, newest first
+    std::vector<QString> getHistory() const;
+    /// push a new value to the history, if no string given the actual text of the input field is used.
+    void pushToSavedValues(const QString &value = QString());
+    /// get the history of the field, newest first
+    std::vector<QString> getSavedValues() const;
+    //@}
+
+protected:
+    virtual void contextMenuEvent(QContextMenuEvent * event);
+
+private:
+    PrefQuantitySpinBoxPrivate * const d_ptr;
+    Q_DISABLE_COPY(PrefQuantitySpinBox)
+    Q_DECLARE_PRIVATE(PrefQuantitySpinBox)
 };
 
 } // namespace Gui
