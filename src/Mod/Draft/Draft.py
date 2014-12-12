@@ -227,12 +227,14 @@ def getObjectsOfType(objectslist,typ):
 
 def get3DView():
     "get3DView(): returns the current view if it is 3D, or the first 3D view found, or None"
-    v = FreeCADGui.ActiveDocument.ActiveView
-    if str(type(v)) == "<type 'View3DInventorPy'>":
-        return v
-    v = FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
-    if v:
-        return v[0]
+    if FreeCAD.GuiUp:
+        import FreeCADGui
+        v = FreeCADGui.ActiveDocument.ActiveView
+        if str(type(v)) == "<type 'View3DInventorPy'>":
+            return v
+        v = FreeCADGui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
+        if v:
+            return v[0]
     return None
 
 def isClone(obj,objtype):
