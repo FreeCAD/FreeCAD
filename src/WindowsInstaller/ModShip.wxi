@@ -39,11 +39,6 @@
 					<File Id="ShipExampleWigleyKatamaran" Name="wigley_katamaran.fcstd"   />
 				</Component>
 			</Directory>
-			<Directory Id="ModShipIcons" Name="icons" FileSource="../../Mod/Ship/resources/icons" >
-				<Component Id="CompModShipIcons"  Guid="ebdaaf8f-b975-4097-9ef8-4ed51ce24adf" Win64='$(var.Win_64)' KeyPath="yes">
-					<File Id="ShipIcons01" Name="Ico.xpm"   />
-				</Component>
-			</Directory>
 		</Directory>
 		<Directory Id="ModshipAreasCurve" Name="shipAreasCurve" FileSource="../../Mod/Ship/shipAreasCurve" >
 			<Component Id="CompModshipAreasCurve"  Guid="49b32e4c-d861-4968-9c5c-8191ce6fa6c4" Win64='$(var.Win_64)' KeyPath="yes">

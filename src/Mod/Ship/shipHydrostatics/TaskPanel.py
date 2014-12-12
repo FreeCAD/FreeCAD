@@ -33,6 +33,7 @@ import PlotAux
 import Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
+import shipUtils.Locale as Locale
 import Tools
 
 
@@ -239,28 +240,28 @@ class TaskPanel:
 
         try:
             props.index("HydrostaticsTrim")
-            form.trim.setText(angle_format.format(
+            form.trim.setText(Locale.toString(angle_format.format(
                 self.ship.HydrostaticsTrim.getValueAs(
-                    USys.getLengthUnits()).Value))
+                    USys.getLengthUnits()).Value)))
         except ValueError:
-            form.trim.setText(angle_format.format(0.0))
+            form.trim.setText(Locale.toString(angle_format.format(0.0)))
 
         try:
             props.index("HydrostaticsMinDraft")
-            form.minDraft.setText(length_format.format(
+            form.minDraft.setText(Locale.toString(length_format.format(
                 self.ship.HydrostaticsMinDraft.getValueAs(
-                    USys.getLengthUnits()).Value))
+                    USys.getLengthUnits()).Value)))
         except ValueError:
-            form.minDraft.setText(length_format.format(
-                0.9 * self.ship.Draft.getValueAs('m').Value))
+            form.minDraft.setText(Locale.toString(length_format.format(
+                0.9 * self.ship.Draft.getValueAs('m').Value)))
         try:
             props.index("HydrostaticsMaxDraft")
-            form.maxDraft.setText(length_format.format(
+            form.maxDraft.setText(Locale.toString(length_format.format(
                 self.ship.HydrostaticsMaxDraft.getValueAs(
-                    USys.getLengthUnits()).Value))
+                    USys.getLengthUnits()).Value)))
         except ValueError:
-            form.maxDraft.setText(length_format.format(
-                1.1 * self.ship.Draft.getValueAs('m').Value))
+            form.maxDraft.setText(Locale.toString(length_format.format(
+                1.1 * self.ship.Draft.getValueAs('m').Value)))
 
         try:
             props.index("HydrostaticsNDraft")
@@ -311,8 +312,8 @@ class TaskPanel:
         input_format = USys.getLengthFormat()
         val = min(val_max, max(val_min, val))
         qty = Units.Quantity('{} m'.format(val))
-        widget.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        widget.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         return val
 
     def clampAngle(self, widget, val_min, val_max, val):
@@ -321,8 +322,8 @@ class TaskPanel:
         input_format = USys.getAngleFormat()
         val = min(val_max, max(val_min, val))
         qty = Units.Quantity('{} deg'.format(val))
-        widget.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        widget.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         return val
 
     def onData(self, value):
@@ -344,8 +345,8 @@ class TaskPanel:
             trim = 0.0
             input_format = USys.getAngleFormat()
             qty = Units.Quantity('{} deg'.format(trim))
-            form.trim.setText(input_format.format(
-                qty.getValueAs(USys.getLengthUnits()).Value))
+            form.trim.setText(Locale.toString(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value)))
         try:
             min_draft = Units.Quantity(
                 form.minDraft.text()).getValueAs('m').Value
@@ -353,8 +354,8 @@ class TaskPanel:
             min_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
             input_format = USys.getLengthFormat()
             qty = Units.Quantity('{} m'.format(min_draft))
-            form.minDraft.setText(input_format.format(
-                qty.getValueAs(USys.getLengthUnits()).Value))
+            form.minDraft.setText(Locale.toString(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value)))
         try:
             max_draft = Units.Quantity(
                 form.minDraft.text()).getValueAs('m').Value
@@ -362,8 +363,8 @@ class TaskPanel:
             max_draft = 0.9 * self.ship.Draft.getValueAs('m').Value
             input_format = USys.getLengthFormat()
             qty = Units.Quantity('{} m'.format(max_draft))
-            form.maxDraft.setText(input_format.format(
-                qty.getValueAs(USys.getLengthUnits()).Value))
+            form.maxDraft.setText(Locale.toString(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value)))
 
         # Clamp the values to the bounds
         bbox = self.ship.Shape.BoundBox

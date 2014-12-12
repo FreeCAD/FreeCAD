@@ -21,37 +21,11 @@
 #*                                                                         *
 #***************************************************************************
 
-def isAprox(a,b,tol=0.000001):
-    """returns if a value is into (b-tol,b+tol)
-    @param a Value to compare.
-    @param b Center of valid interval
-    @param tol Radius of valid interval
-    @return True if a is into (b-tol,b+tol), False otherwise
-    """
-    if (a < b+abs(tol)) and (a > b-abs(tol)):
-        return True
-    return False
+from PySide import QtCore
 
-def isSamePoint(a,b,tol=0.000001):
-    """returns if two points are the same with a provided tolerance
-    @param a Point to compare.
-    @param b Reference point.
-    @param tol Radius of valid interval
-    @return True if twice point are the same, False otherwise
-    @note FreeCAD::Base::Vector types must be provided
-    """
-    if isAprox(a.x,b.x,tol) and isAprox(a.y,b.y,tol) and isAprox(a.z,b.z,tol):
-        return True
-    return False
 
-def isSameVertex(a,b,tol=0.0001):
-    """returns if two points are the same with a provided tolerance
-    @param a Point to compare.
-    @param b Reference point.
-    @param tol Radius of valid interval
-    @return True if twice point are the same, False otherwise
-    @note FreeCAD::Part::Vertex types must be provided
-    """
-    if isAprox(a.X,b.X,tol) and isAprox(a.Y,b.Y,tol) and isAprox(a.Z,b.Z,tol):
-        return True
-    return False
+def toString(valueStr):
+    """Natural extension of QtCore.QLocale.toString method, in this case
+    conveniently transforming a value string"""
+    dec_sep = QtCore.QLocale.system().decimalPoint()
+    return valueStr.replace(".", dec_sep)

@@ -116,11 +116,8 @@ class Plot(object):
         @param ship Active ship instance.
         """
         # Create the spreadsheet
-        obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Spreadsheet")
-        s = Spreadsheet.Spreadsheet(obj)
-        if FreeCAD.GuiUp:
-            Spreadsheet.ViewProviderSpreadsheet(obj.ViewObject)
-        FreeCAD.ActiveDocument.recompute()
+        obj = Spreadsheet.makeSpreadsheet()
+        s = obj.Proxy
         obj.Label = 'Areas curve'
 
         # Print the header

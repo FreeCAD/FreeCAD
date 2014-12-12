@@ -30,85 +30,54 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Base, Vector
 import Part
+import Units
 from shipUtils import Paths, Math
 
 
-class Ship:
-    def __init__(self, obj, solids):
+class Tank:
+    def __init__(self, obj, shapes, ship):
         """ Transform a generic object to a ship instance.
 
         Keyword arguments:
         obj -- Part::FeaturePython created object which should be transformed
-        in a ship instance.
-        solids -- Set of solids which will compound the ship hull.
+        in a weight instance.
+        shapes -- Set of solid shapes which will compound the tank.
+        ship -- Ship where the tank is allocated.
         """
-        # Add an unique property to identify the Ship instances
+        # Add an unique property to identify the Weight instances
         tooltip = str(QtGui.QApplication.translate(
-            "Ship",
-            "True if it is a valid ship instance, False otherwise",
+            "ship_tank",
+            "True if it is a valid tank instance, False otherwise",
             None,
             QtGui.QApplication.UnicodeUTF8))
         obj.addProperty("App::PropertyBool",
-                        "IsShip",
-                        "Ship",
-                        tooltip).IsShip = True
-        # Add the main dimensions
+                        "IsTank",
+                        "Tank",
+                        tooltip).IsTank = True
+        # Add the volume property (The volume of fluid will be set by each
+        # loading condition)
         tooltip = str(QtGui.QApplication.translate(
-            "Ship",
-            "Ship length [m]",
+            "ship_tank",
+            "Volume of fluid [m^3]",
             None,
             QtGui.QApplication.UnicodeUTF8))
-        obj.addProperty("App::PropertyLength",
-                        "Length",
-                        "Ship",
-                        tooltip).Length = 0.0
+        obj.addProperty("App::PropertyFloat",
+                        "Vol",
+                        "Tank",
+                        tooltip).Vol = 0.0
+        # Add the density property (The volume of fluid will be set by each
+        # loading condition)
         tooltip = str(QtGui.QApplication.translate(
-            "Ship",
-            "Ship breadth [m]",
+            "ship_tank",
+            "Density [kg / m^3]",
             None,
             QtGui.QApplication.UnicodeUTF8))
-        obj.addProperty("App::PropertyLength",
-                        "Breadth",
-                        "Ship",
-                        tooltip).Breadth = 0.0
-        tooltip = str(QtGui.QApplication.translate(
-            "Ship",
-            "Ship draft [m]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
-        obj.addProperty("App::PropertyLength",
-                        "Draft",
-                        "Ship",
-                        tooltip).Draft = 0.0
-        # Add the subshapes
-        obj.Shape = Part.makeCompound(solids)
-        tooltip = str(QtGui.QApplication.translate(
-            "Ship",
-            "Set of external faces of the ship hull",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
-        obj.addProperty("Part::PropertyPartShape",
-                        "ExternalFaces",
-                        "Ship",
-                        tooltip)
-        tooltip = str(QtGui.QApplication.translate(
-            "Ship",
-            "Set of weight instances",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
-        obj.addProperty("App::PropertyStringList",
-                        "Weights",
-                        "Ship",
-                        tooltip).Weights = []
-        tooltip = str(QtGui.QApplication.translate(
-            "Ship",
-            "Set of tank instances",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
-        obj.addProperty("App::PropertyStringList",
-                        "Tanks",
-                        "Ship",
-                        tooltip).Tanks = []
+        obj.addProperty("App::PropertyFloat",
+                        "Dens",
+                        "Tank",
+                        tooltip).Dens = 0.0
+        # Set the subshapes
+        obj.Shape = Part.makeCompound(shapes)
 
         obj.Proxy = self
 
@@ -119,7 +88,7 @@ class Ship:
         fp -- Part::FeaturePython object affected.
         prop -- Modified property name.
         """
-        if prop == "Length" or prop == "Breadth" or prop == "Draft":
+        if prop == "Vol":
             pass
 
     def execute(self, fp):
@@ -128,10 +97,57 @@ class Ship:
         Keyword arguments:
         fp -- Part::FeaturePython object affected.
         """
-        fp.Shape = Part.makeCompound(fp.Shape.Solids)
+        pass
+
+    def setFillingLevel(self, fp, level):
+        """Compute the mass of the object, already taking into account the
+        type of subentities.
+
+        Keyword arguments:
+        fp -- Part::FeaturePython object affected.
+        level -- Percentage of filling level (from 0 to 100).
+        """
+        shape = fp.Shape
+        solids = shape.Solids
+
+        # Get the cutting box
+        bbox = shape.BoundBox
+        z_min = bbox.ZMin
+        z_max = bbox.ZMax
+        dx = bbox.XMax - bbox.XMin
+        dy = bbox.YMax - bbox.YMin
+        dz = level / 100.0 * (z_max - z_min)
+        z = z_min + dz
+        try:
+            box = Part.makeBox(3.0 * dx,
+                               3.0 * dy,
+                               (z_max - z_min) + dz,
+                               Vector(bbox.XMin - dx,
+                                      bbox.YMin - dy,
+                                      bbox.ZMin - (z_max - z_min)))
+        except:
+            fp.Vol = 0.0
+            return Units.parseQuantity('0 m^3')
+
+        # Start computing the common part of each solid component with the
+        # cutting box, adding the volume
+        vol = 0.0
+        for s in solids:
+            try:
+                fluid = s.common(box)
+                v = fluid.Volume        
+            except:
+                v = 0.0
+            vol += v
+
+        # Get the volume quantity and store it with the right units
+        vol = Units.Quantity(vol, Units.Volume)
+        fp.Vol = vol.getValueAs("m^3").Value
+
+        return vol
 
 
-class ViewProviderShip:
+class ViewProviderTank:
     def __init__(self, obj):
         """Add this view provider to the selected object.
 
@@ -204,46 +220,6 @@ class ViewProviderShip:
         """
         return None
 
-    def claimChildren(self):
-        objs = []
-        # Locate the owner ship object
-        doc_objs = FreeCAD.ActiveDocument.Objects
-        obj = None
-        for doc_obj in doc_objs:
-            try:
-                v_provider = doc_obj.ViewObject.Proxy
-                if v_provider == self:
-                    obj = doc_obj
-            except:
-                continue
-        if obj is None:
-            FreeCAD.Console.PrintError("Orphan view provider found...\n")
-            FreeCAD.Console.PrintError(self)
-            FreeCAD.Console.PrintError('\n')
-            return objs
-
-        # Claim the weights
-        bad_linked = 0
-        for i, w in enumerate(obj.Weights):
-            try:
-                w_obj = FreeCAD.ActiveDocument.getObject(w)
-                objs.append(w_obj)
-            except:
-                del obj.Weights[i - bad_linked]
-                bad_linked += 1
-
-        # Claim the tanks
-        bad_linked = 0
-        for i, t in enumerate(obj.Tanks):
-            try:
-                t_obj = FreeCAD.ActiveDocument.getObject(t)
-                objs.append(t_obj)
-            except:
-                del obj.Tanks[i - bad_linked]
-                bad_linked += 1
-
-        return objs
-
     def getIcon(self):
         """Returns the icon for this kind of objects."""
-        return ":/icons/Ship_Instance.svg"
+        return ":/icons/Ship_Tank.svg"
