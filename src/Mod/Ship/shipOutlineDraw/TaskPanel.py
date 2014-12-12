@@ -30,6 +30,7 @@ from PySide import QtGui, QtCore
 import Preview
 import Instance
 from shipUtils import Paths
+import shipUtils.Locale as Locale
 
 
 class TaskPanel:
@@ -365,7 +366,7 @@ class TaskPanel:
             number = 0.0
 
         string = '{} m'.format(number)
-        item.setText(string)
+        item.setText(Locale.toString(string))
         # Regenerate the list
         del SectionList[:]
         for i in range(0, nRow):

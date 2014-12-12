@@ -29,6 +29,7 @@ import Preview
 import Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
+import shipUtils.Locale as Locale
 
 class TaskPanel:
     def __init__(self):
@@ -203,16 +204,16 @@ class TaskPanel:
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
         qty = Units.Quantity(self.bounds[0], Units.Length)
-        form.length.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        form.length.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         self.L = self.bounds[0] / Units.Metre.Value
         qty = Units.Quantity(self.bounds[1], Units.Length)
-        form.breadth.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        form.breadth.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         self.B = self.bounds[1] / Units.Metre.Value
         qty = Units.Quantity(self.bounds[2], Units.Length)
-        form.draft.setText(input_format.format(
-            0.5 * qty.getValueAs(USys.getLengthUnits()).Value))
+        form.draft.setText(Locale.toString(input_format.format(
+            0.5 * qty.getValueAs(USys.getLengthUnits()).Value)))
         self.T = 0.5 * self.bounds[2] / Units.Metre.Value
         return False
 
@@ -248,8 +249,8 @@ class TaskPanel:
         input_format = USys.getLengthFormat()
         val = min(val_max, max(val_min, val))
         qty = Units.Quantity('{} m'.format(val))
-        widget.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        widget.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         return val
 
     def onData(self, value):

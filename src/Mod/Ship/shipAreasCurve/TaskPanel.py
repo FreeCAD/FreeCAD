@@ -31,6 +31,7 @@ import PlotAux
 import Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
+import shipUtils.Locale as Locale
 from shipHydrostatics import Tools as Hydrostatics
 
 
@@ -180,23 +181,23 @@ class TaskPanel:
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
         form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        form.draft.setText(length_format.format(
-            self.ship.Draft.getValueAs(USys.getLengthUnits()).Value))
-        form.trim.setText(angle_format.format(0.0))
+        form.draft.setText(Locale.toString(length_format.format(
+            self.ship.Draft.getValueAs(USys.getLengthUnits()).Value)))
+        form.trim.setText(Locale.toString(angle_format.format(0.0)))
         # Try to use saved values
         props = self.ship.PropertiesList
         try:
             props.index("AreaCurveDraft")
-            form.draft.setText(length_format.format(
+            form.draft.setText(Locale.toString(length_format.format(
                 self.ship.AreaCurveDraft.getValueAs(
-                    USys.getLengthUnits()).Value))
+                    USys.getLengthUnits()).Value)))
         except:
             pass
         try:
             props.index("AreaCurveTrim")
-            form.trim.setText(angle_format.format(
+            form.trim.setText(Locale.toString(angle_format.format(
                 self.ship.AreaCurveTrim.getValueAs(
-                    USys.getAngleUnits()).Value))
+                    USys.getAngleUnits()).Value)))
         except ValueError:
             pass
         # Update GUI
@@ -234,8 +235,8 @@ class TaskPanel:
         input_format = USys.getLengthFormat()
         val = min(val_max, max(val_min, val))
         qty = Units.Quantity('{} m'.format(val))
-        widget.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        widget.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         return val
 
     def clampAngle(self, widget, val_min, val_max, val):
@@ -244,8 +245,8 @@ class TaskPanel:
         input_format = USys.getAngleFormat()
         val = min(val_max, max(val_min, val))
         qty = Units.Quantity('{} deg'.format(val))
-        widget.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        widget.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         return val
 
     def onData(self, value):
@@ -267,16 +268,16 @@ class TaskPanel:
             draft = self.ship.Draft.getValueAs(USys.getLengthUnits()).Value
             input_format = USys.getLengthFormat()
             qty = Units.Quantity('{} m'.format(draft))
-            widget.setText(input_format.format(
-                qty.getValueAs(USys.getLengthUnits()).Value))
+            widget.setText(Locale.toString(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value)))
         try:
             trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
         except:
             trim = 0.0
             input_format = USys.getAngleFormat()
             qty = Units.Quantity('{} deg'.format(trim))
-            widget.setText(input_format.format(
-                qty.getValueAs(USys.getLengthUnits()).Value))
+            widget.setText(Locale.toString(input_format.format(
+                qty.getValueAs(USys.getLengthUnits()).Value)))
 
         bbox = self.ship.Shape.BoundBox
         draft_min = bbox.ZMin / Units.Metre.Value

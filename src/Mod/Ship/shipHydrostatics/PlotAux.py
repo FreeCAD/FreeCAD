@@ -304,13 +304,9 @@ class Plot(object):
         @return True if error happens.
         """
         # Create the spreadsheet
-        obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Spreadsheet")
-        s = Spreadsheet.Spreadsheet(obj)
-        if FreeCAD.GuiUp:
-            Spreadsheet.ViewProviderSpreadsheet(obj.ViewObject)
-        FreeCAD.ActiveDocument.recompute()
+        obj = Spreadsheet.makeSpreadsheet()
+        s = obj.Proxy
         obj.Label = 'Hydrostatics'
-
 
         # Print the header
         s.a1 = "displacement [ton]"

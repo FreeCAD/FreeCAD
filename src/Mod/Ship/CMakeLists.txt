@@ -3,6 +3,8 @@ SET(ShipMain_SRCS
 	ShipGui.py
     Instance.py
 	Ship_rc.py
+    TankInstance.py
+    WeightInstance.py
 )
 SOURCE_GROUP("" FILES ${ShipMain_SRCS})
 
@@ -55,21 +57,44 @@ SET(ShipHydrostatics_SRCS
 )
 SOURCE_GROUP("shiphydrostatics" FILES ${ShipHydrostatics_SRCS})
 
+SET(ShipCreateWeight_SRCS
+	shipCreateWeight/__init__.py
+	shipCreateWeight/TaskPanel.py
+	shipCreateWeight/TaskPanel.ui
+)
+SOURCE_GROUP("shipcreateweight" FILES ${ShipCreateWeight_SRCS})
+
+SET(ShipCreateTank_SRCS
+	shipCreateTank/__init__.py
+	shipCreateTank/TaskPanel.py
+	shipCreateTank/TaskPanel.ui
+)
+SOURCE_GROUP("shipcreatetank" FILES ${ShipCreateTank_SRCS})
+
+SET(ShipCapacityCurve_SRCS
+	shipCapacityCurve/__init__.py
+	shipCapacityCurve/PlotAux.py
+	shipCapacityCurve/TaskPanel.py
+	shipCapacityCurve/TaskPanel.ui
+)
+SOURCE_GROUP("shipcapacitycurve" FILES ${ShipCapacityCurve_SRCS})
+
 SET(ShipUtils_SRCS
 	shipUtils/__init__.py
+	shipUtils/Locale.py
 	shipUtils/Math.py
 	shipUtils/Paths.py
 	shipUtils/Units.py
 )
 SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 
-SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipUtils_SRCS})
+SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipCreateWeight_SRCS} ${ShipCreateTank_SRCS} ${ShipCapacityCurve_SRCS} ${ShipUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
     SOURCES ${all_files}
 )
 
-fc_copy_sources(Ship "${CMAKE_BINARY_DIR}/Mod/Ship" ${all_files})
+fc_copy_sources(Mod/Ship "${CMAKE_BINARY_DIR}/Mod/Ship" ${all_files})
 
 INSTALL(
     FILES
@@ -106,6 +131,24 @@ INSTALL(
         ${ShipHydrostatics_SRCS}
     DESTINATION
         Mod/Ship/shipHydrostatics
+)
+INSTALL(
+    FILES
+        ${ShipCreateWeight_SRCS}
+    DESTINATION
+        Mod/Ship/shipCreateWeight
+)
+INSTALL(
+    FILES
+        ${ShipCreateTank_SRCS}
+    DESTINATION
+        Mod/Ship/shipCreateTank
+)
+INSTALL(
+    FILES
+        ${ShipCapacityCurve_SRCS}
+    DESTINATION
+        Mod/Ship/shipCapacityCurve
 )
 INSTALL(
     FILES
