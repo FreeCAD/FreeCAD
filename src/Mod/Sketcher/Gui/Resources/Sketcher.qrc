@@ -25,6 +25,7 @@
         <file>icons/Constraint_PointOnStart.svg</file>
         <file>icons/Constraint_PointToObject.svg</file>
         <file>icons/Constraint_Radius.svg</file>
+        <file>icons/Constraint_SnellsLaw.svg</file>
         <file>icons/Constraint_Symmetric.svg</file>
         <file>icons/Constraint_Tangent.svg</file>
         <file>icons/Constraint_TangentToEnd.svg</file>
