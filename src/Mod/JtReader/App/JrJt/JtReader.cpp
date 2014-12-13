@@ -30,7 +30,7 @@ void JtReader::setFile(const std::string fileName)
 	this->_fileName = fileName;
 }
 
-void JtReader::readToc()
+const std::vector<TOC_Entry>& JtReader::readToc()
 {
 	ifstream strm;
 
@@ -56,11 +56,11 @@ void JtReader::readToc()
 	
 	I32 Entry_Count(cont);
 	
-	vector<TOC_Entry> TocEntries(Entry_Count);
+    TocEntries.resize(Entry_Count);
 
+	for (std::vector<TOC_Entry>::iterator i = TocEntries.begin(); i != TocEntries.end(); ++i)
+		i->read(cont);
 
-
-
-
+	return TocEntries;
 
 }

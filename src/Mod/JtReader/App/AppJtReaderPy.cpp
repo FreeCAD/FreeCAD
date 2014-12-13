@@ -109,7 +109,7 @@ open(PyObject *self, PyObject *args)
 
 		reader.setFile(EncodedName.c_str());
 
-		reader.readToc();
+		reader.read();
 
 
         // create new document and add Import feature

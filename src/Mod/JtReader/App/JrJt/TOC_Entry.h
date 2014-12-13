@@ -54,6 +54,18 @@ struct TOC_Entry
 		Segment_Attributes.read(cont);
 	};
 
+	uint8_t getSegmentType()const
+	{
+		return Segment_Attributes << 24;
+	}
+
+	std::string toString()const{
+		stringstream strm;
+		strm << getSegmentType() << ":" << Segment_Offset << ":" << Segment_Length << ":" << Segment_ID.toString();
+			
+		return strm.str();
+	}
+
 	GUID Segment_ID;
 	I32  Segment_Offset;
 	I32  Segment_Length;
