@@ -25,6 +25,9 @@
 # include <stack>
 # include <boost/bind.hpp>
 #endif
+
+#include <QCoreApplication>
+
 #include "MergeDocuments.h"
 #include <Base/Console.h>
 #include <Base/Reader.h>
@@ -94,12 +97,17 @@ private:
 };
 }
 
-MergeDocuments::MergeDocuments(App::Document* doc) : appdoc(doc)
+MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
         (boost::bind(&MergeDocuments::exportObject, this, _1, _2));
     connectImport = doc->signalImportObjects.connect
         (boost::bind(&MergeDocuments::importObject, this, _1, _2));
+
+    QCoreApplication* app = QCoreApplication::instance();
+    if (app && app->inherits("QApplication")) {
+        guiup = true;
+    }
 }
 
 MergeDocuments::~MergeDocuments()
@@ -143,19 +151,27 @@ void MergeDocuments::exportObject(const std::vector<App::DocumentObject*>& o, Ba
 void MergeDocuments::Save (Base::Writer & w) const
 {
     // Save view provider stuff
+    if (guiup) {
+        w.addFile("GuiDocument.xml", this);
+    }
 }
 
 void MergeDocuments::Restore(Base::XMLReader &r)
 {
     // Restore view provider stuff
+    if (guiup) {
+        r.addFile("GuiDocument.xml", this);
+    }
 }
 
 void MergeDocuments::SaveDocFile (Base::Writer & w) const
 {
     // Save view provider stuff
+    appdoc->signalExportViewObjects(this->objects, w);
 }
 
 void MergeDocuments::RestoreDocFile(Base::Reader & r)
 {
     // Restore view provider stuff
+    appdoc->signalImportViewObjects(this->objects, r, this->nameMap);
 }
