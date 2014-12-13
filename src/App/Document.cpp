@@ -75,6 +75,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "Application.h"
 #include "DocumentObject.h"
 #include "PropertyLinks.h"
+#include "MergeDocuments.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -1656,92 +1657,34 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
     }
 }
 
-DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObject*, 
-                                      DocumentObject*>& copy_map, bool recursive,
-                                      bool keepdigitsatend)
+DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive,  bool /*keepdigitsatend*/)
 {
-    if (!obj) return 0;
-    // remove number from end to avoid lengthy names
-    std::string objname = obj->getNameInDocument();
-    if (!keepdigitsatend) {
-        size_t lastpos = objname.length()-1;
-        while (objname[lastpos] >= 48 && objname[lastpos] <= 57)
-            lastpos--;
-        objname = objname.substr(0, lastpos+1);
-    }
-    DocumentObject* copy = addObject(obj->getTypeId().getName(),objname.c_str());
-    if (!copy) return 0;
-    copy->addDynamicProperties(obj);
+    std::vector<DocumentObject*> objs;
+    objs.push_back(obj);
 
-    copy_map[obj] = copy;
-
-    std::map<std::string,App::Property*> props;
-    copy->getPropertyMap(props);
-    for (std::map<std::string,App::Property*>::iterator it = props.begin(); it != props.end(); ++it) {
-        App::Property* prop = obj->getPropertyByName(it->first.c_str());
-        if (prop && prop->getTypeId() == it->second->getTypeId()) {
-            if (prop->getTypeId() == PropertyLink::getClassTypeId()) {
-                DocumentObject* link = static_cast<PropertyLink*>(prop)->getValue();
-                std::map<DocumentObject*, DocumentObject*>::iterator pt = copy_map.find(link);
-                if (pt != copy_map.end()) {
-                    // the object has already been copied
-                    static_cast<PropertyLink*>(it->second)->setValue(pt->second);
-                }
-                else if (recursive) {
-                    DocumentObject* link_copy = _copyObject(link, copy_map, recursive, keepdigitsatend);
-                    copy_map[link] = link_copy;
-                    static_cast<PropertyLink*>(it->second)->setValue(link_copy);
-                }
-                else if (link && link->getDocument() == this) {
-                    //static_cast<PropertyLink*>(it->second)->setValue(link);
-                }
-            }
-            else if (prop->getTypeId() == PropertyLinkList::getClassTypeId()) {
-                std::vector<DocumentObject*> links = static_cast<PropertyLinkList*>(prop)->getValues();
-                if (recursive) {
-                    std::vector<DocumentObject*> links_copy;
-                    for (std::vector<DocumentObject*>::iterator jt = links.begin(); jt != links.end(); ++jt) {
-                        std::map<DocumentObject*, DocumentObject*>::iterator pt = copy_map.find(*jt);
-                        if (pt != copy_map.end()) {
-                            // the object has already been copied
-                            links_copy.push_back(pt->second);
-                        }
-                        else {
-                            links_copy.push_back(_copyObject(*jt, copy_map, recursive, keepdigitsatend));
-                            copy_map[*jt] = links_copy.back();
-                        }
-                    }
-                    static_cast<PropertyLinkList*>(it->second)->setValues(links_copy);
-                }
-                else {
-                    std::vector<DocumentObject*> links_ref;
-                    //for (std::vector<DocumentObject*>::iterator jt = links.begin(); jt != links.end(); ++jt) {
-                    //    if ((*jt)->getDocument() == this)
-                    //        links_ref.push_back(*jt);
-                    //}
-                    static_cast<PropertyLinkList*>(it->second)->setValues(links_ref);
-                }
-            }
-            else {
-                std::auto_ptr<Property> data(prop->Copy());
-                if (data.get()) {
-                    it->second->Paste(*data);
-                }
-            }
-        }
+    MergeDocuments md(this);
+    if (recursive) {
+        objs = getDependencyList(objs);
     }
 
-     // unmark to be not re-computed later
-    copy->onFinishDuplicating();
-    copy->purgeTouched();
-    return copy;
-}
+    unsigned int memsize=1000; // ~ for the meta-information
+    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it)
+        memsize += (*it)->getMemSize();
 
-DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive,  bool keepdigitsatend)
-{
-    std::map<DocumentObject*, DocumentObject*> copy_map;
-    DocumentObject* copy = _copyObject(obj, copy_map, recursive, keepdigitsatend);
-    return copy;
+    QByteArray res;
+    res.reserve(memsize);
+    Base::ByteArrayOStreambuf obuf(res);
+    std::ostream ostr(&obuf);
+    this->exportObjects(objs, ostr);
+
+    Base::ByteArrayIStreambuf ibuf(res);
+    std::istream istr(0);
+    istr.rdbuf(&ibuf);
+    std::vector<App::DocumentObject*> newObj = md.importObjects(istr);
+    if (newObj.empty())
+        return 0;
+    else
+        return newObj.back();
 }
 
 DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)

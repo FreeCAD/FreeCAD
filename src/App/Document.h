@@ -294,8 +294,6 @@ protected:
 
     void _remObject(DocumentObject* pcObject);
     void _addObject(DocumentObject* pcObject, const char* pObjectName);
-    DocumentObject* _copyObject(DocumentObject* obj, std::map<DocumentObject*, 
-        DocumentObject*>&, bool recursive=false, bool keepdigitsatend=false);
     /// checks if a valid transaction is open
     void _checkTransaction(DocumentObject* pcObject);
     void breakDependency(DocumentObject* pcObject, bool clear);
