@@ -124,7 +124,11 @@ public:
     boost::signal<void (const std::vector<App::DocumentObject*>&,
                         Base::Writer   &)> signalExportObjects;
     boost::signal<void (const std::vector<App::DocumentObject*>&,
+                        Base::Writer   &)> signalExportViewObjects;
+    boost::signal<void (const std::vector<App::DocumentObject*>&,
                         Base::XMLReader&)> signalImportObjects;
+    boost::signal<void (const std::vector<App::DocumentObject*>&, Base::Reader&,
+                        const std::map<std::string, std::string>&)> signalImportViewObjects;
     //@}
 
     /** @name File handling of the document */
