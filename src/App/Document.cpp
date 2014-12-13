@@ -1175,6 +1175,20 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
     return result;
 }
 
+namespace boost {
+// recursive helper function to get all dependencies
+void out_edges_recursive(const Vertex& v, const DependencyList& g, std::set<Vertex>& out)
+{
+    DependencyList::out_edge_iterator j, jend;
+    for (boost::tie(j, jend) = boost::out_edges(v, g); j != jend; ++j) {
+        Vertex n = boost::target(*j, g);
+        std::pair<std::set<Vertex>::iterator, bool> i = out.insert(n);
+        if (i.second)
+            out_edges_recursive(n, g, out);
+    }
+}
+}
+
 std::vector<App::DocumentObject*>
 Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
 {
@@ -1183,18 +1197,20 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
     std::map<Vertex,DocumentObject*> VertexMap;
 
     // Filling up the adjacency List
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
         // add the object as Vertex and remember the index
         Vertex v = add_vertex(DepList);
-        ObjectMap[It->second] = v;
-        VertexMap[v] = It->second;
+        ObjectMap[*it] = v;
+        VertexMap[v] = *it;
     }
+
     // add the edges
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-            if (*It2)
-                add_edge(ObjectMap[It->second],ObjectMap[*It2],DepList);
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
+        std::vector<DocumentObject*> outList = (*it)->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator jt = outList.begin(); jt != outList.end();++jt) {
+            if (*jt) {
+                add_edge(ObjectMap[*it],ObjectMap[*jt],DepList);
+            }
         }
     }
 
@@ -1209,21 +1225,20 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         return std::vector<App::DocumentObject*>();
     }
 
-    //std::vector<App::DocumentObject*> out;
-    boost::unordered_set<App::DocumentObject*> out;
+    std::set<Vertex> out;
     for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
         std::map<DocumentObject*,Vertex>::iterator jt = ObjectMap.find(*it);
         // ok, object is part of this graph
         if (jt != ObjectMap.end()) {
-            for (boost::tie(j, jend) = boost::out_edges(jt->second, DepList); j != jend; ++j) {
-                out.insert(VertexMap[boost::target(*j, DepList)]);
-            }
-            out.insert(*it);
+            out.insert(jt->second);
+            out_edges_recursive(jt->second, DepList, out);
         }
     }
 
     std::vector<App::DocumentObject*> ary;
-    ary.insert(ary.end(), out.begin(), out.end());
+    ary.reserve(out.size());
+    for (std::set<Vertex>::iterator it = out.begin(); it != out.end(); ++it)
+        ary.push_back(VertexMap[*it]);
     return ary;
 }
 
