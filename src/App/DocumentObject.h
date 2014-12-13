@@ -196,8 +196,6 @@ protected:
     virtual void onChanged(const Property* prop);
     /// get called after a document has been fully restored
     virtual void onDocumentRestored() {}
-    /// get called after duplicating an object
-    virtual void onFinishDuplicating() {}
     /// get called after setting the document
     virtual void onSettingDocument() {}
 
