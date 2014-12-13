@@ -1,4 +1,4 @@
-#pragma once
+
 #include "JrJt/JtReader.h"
 
 

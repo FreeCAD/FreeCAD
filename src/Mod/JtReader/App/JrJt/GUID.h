@@ -23,7 +23,8 @@
 #ifndef GUID_HEADER
 #define GUID_HEADER
 
-#include <istream>
+#include <iostream>
+#include <sstream>
 #include <stdint.h>
 
 #include "U8.h"
@@ -60,6 +61,12 @@ struct GUID
 		_C6.read(cont);
 		_C7.read(cont);
 		_C8.read(cont);
+	}
+
+	std::string toString()const{
+		std::stringstream strm;
+		strm << "{" << std::hex << _A1 << "-" << _B1 << _B2 << "-" << _C1 << _C2 << _C3 << _C4 << _C5 << _C6 << _C7 << _C8 << "}";
+		return strm.str();
 	}
 
 	U32 _A1;
