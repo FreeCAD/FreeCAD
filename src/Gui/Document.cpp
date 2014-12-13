@@ -94,6 +94,8 @@ struct DocumentP
     Connection connectRestDocument;
     Connection connectStartLoadDocument;
     Connection connectFinishLoadDocument;
+    Connection connectExportObjects;
+    Connection connectImportObjects;
 };
 
 } // namespace Gui
@@ -136,6 +138,11 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->connectFinishLoadDocument = App::GetApplication().signalFinishRestoreDocument.connect
         (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, _1));
 
+    d->connectExportObjects = pcDocument->signalExportViewObjects.connect
+        (boost::bind(&Gui::Document::exportObjects, this, _1, _2));
+    d->connectImportObjects = pcDocument->signalImportViewObjects.connect
+        (boost::bind(&Gui::Document::importObjects, this, _1, _2, _3));
+
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
     // mustn't increment it (Werner Jan-12-2006)
@@ -162,6 +169,8 @@ Document::~Document()
     d->connectRestDocument.disconnect();
     d->connectStartLoadDocument.disconnect();
     d->connectFinishLoadDocument.disconnect();
+    d->connectExportObjects.disconnect();
+    d->connectImportObjects.disconnect();
 
     // e.g. if document gets closed from within a Python command
     d->_isClosing = true;

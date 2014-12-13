@@ -49,6 +49,7 @@ public:
     void RestoreDocFile(Base::Reader & r);
 
 private:
+    bool guiup;
     zipios::ZipInputStream* stream;
     App::Document* appdoc;
     std::vector<App::DocumentObject*> objects;
