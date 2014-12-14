@@ -3,18 +3,24 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-
+#include <assert.h>
 #include <stdint.h>
+
 
 #include "TOC_Entry.h"
 #include "GUID.h"
 #include "UChar.h"
 #include "I32.h"
 #include "TOC_Entry.h"
+#include "LodHandler.h"
+#include "Segment_Header.h"
+#include "Element_Header.h"
 
 
 using namespace std;
 
+
+const GUID JtReader::TriStripSetShapeLODElement_ID(0x10dd10ab, 0x2ac8, 0x11d1, 0x9b, 0x6b, 0x0, 0x80, 0xc7, 0xbb, 0x59, 0x97);
 
 JtReader::JtReader()
 {
@@ -63,4 +69,32 @@ const std::vector<TOC_Entry>& JtReader::readToc()
 
 	return TocEntries;
 
+
+}
+
+void JtReader::readLodSegment(const TOC_Entry& toc, LodHandler& handler)
+{
+	std::ifstream strm;
+	strm.open(_fileName, ios::binary);
+
+	if (!strm) throw "cannot open file";
+
+	strm.seekg((int32_t)toc.Segment_Offset);
+
+	Context cont(strm);
+
+	
+	// check if called with the right Toc
+	assert(toc.getSegmentType() == 7);
+
+	// read the segment header
+	Segment_Header header(cont);
+
+	// read the non zip Element header
+	Element_Header eHeader(cont, false);
+
+	if ( eHeader.Object_Type_ID != TriStripSetShapeLODElement_ID)
+		return;
+
+	
 }

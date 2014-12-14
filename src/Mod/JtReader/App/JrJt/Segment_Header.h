@@ -20,8 +20,8 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef TOC_Entry_HEADER
-#define TOC_Entry_HEADER
+#ifndef Segment_Header_HEADER
+#define Segment_Header_HEADER
 
 #include <istream>
 #include <stdint.h>
@@ -37,11 +37,11 @@
 using namespace std;
 
 
-struct TOC_Entry
+struct Segment_Header
 {
-	TOC_Entry(){};
+	Segment_Header(){};
 
-	TOC_Entry(Context& cont)
+	Segment_Header(Context& cont)
 	{
 		read(cont);
 	};
@@ -49,27 +49,13 @@ struct TOC_Entry
 	inline void read(Context& cont)
 	{
 		Segment_ID.read(cont);
-		Segment_Offset.read(cont);
+		Segment_Type.read(cont);
 		Segment_Length.read(cont);
-		Segment_Attributes.read(cont);
 	};
 
-	uint8_t getSegmentType()const
-	{
-		return Segment_Attributes >> 24;
-	}
-
-	std::string toString()const{
-		stringstream strm;
-		strm << getSegmentType() << ":" << Segment_Offset << ":" << Segment_Length << ":" << Segment_ID.toString();
-			
-		return strm.str();
-	}
-
 	GUID Segment_ID;
-	I32  Segment_Offset;
+	I32  Segment_Type;
 	I32  Segment_Length;
-	U32  Segment_Attributes;
 
 
 };
@@ -77,3 +63,6 @@ struct TOC_Entry
 
 
 #endif
+
+
+

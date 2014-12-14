@@ -33,6 +33,8 @@ struct U8
 {
 	U8(){};
 
+	U8(uint8_t ui) :_U8(ui){}
+
 	U8(Context& cont)
 	{
 		read(cont);

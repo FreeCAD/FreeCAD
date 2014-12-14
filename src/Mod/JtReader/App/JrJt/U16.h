@@ -32,6 +32,8 @@ struct U16
 {
 	U16(){};
 
+	U16(uint16_t ui) :_U16(ui){}
+
 	U16(Context& cont)
 	{
 		read(cont);
