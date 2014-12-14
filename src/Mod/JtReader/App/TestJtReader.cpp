@@ -25,12 +25,14 @@
 #endif
 
 
-#include <Python.h>
+#include <iostream>
+#include <fstream>
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 
 #include "TestJtReader.h"
+#include "FcLodHandler.h"
 
 
 TestJtReader::TestJtReader()
@@ -48,6 +50,15 @@ void TestJtReader::read(void)
 
 	for (std::vector<TOC_Entry>::const_iterator i = TocEntries.begin(); i != TocEntries.end(); ++i){
 		int segType = i->getSegmentType();
+
+		if (segType == 7){
+			FcLodHandler handler;
+
+			readLodSegment(*i, handler);
+
+
+		}
+			
 
 		Base::Console().Log(i->toString().c_str());
 	}

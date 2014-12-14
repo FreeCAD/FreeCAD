@@ -20,16 +20,16 @@
 *                                                                         *
 ***************************************************************************/
 
-#ifndef TOC_Entry_HEADER
-#define TOC_Entry_HEADER
+#ifndef Element_Header_HEADER
+#define Element_Header_HEADER
 
 #include <istream>
 #include <stdint.h>
+#include <assert.h>
 
 #include "Context.h"
 #include "GUID.h"
-#include "U16.h"
-#include "U32.h"
+#include "UChar.h"
 #include "I32.h"
 
 
@@ -37,39 +37,28 @@
 using namespace std;
 
 
-struct TOC_Entry
+struct Element_Header
 {
-	TOC_Entry(){};
+	Element_Header(){};
 
-	TOC_Entry(Context& cont)
+	Element_Header(Context& cont, bool zLib=false)
 	{
-		read(cont);
+		read(cont, zLib);
 	};
 
-	inline void read(Context& cont)
+	inline void read(Context& cont ,bool zLib=false)
 	{
-		Segment_ID.read(cont);
-		Segment_Offset.read(cont);
-		Segment_Length.read(cont);
-		Segment_Attributes.read(cont);
+		// only zip less implemented so far...
+		assert(zLib == false);
+
+		Element_Lenght.read(cont);
+		Object_Type_ID.read(cont);
+		Object_Base_Type.read(cont);
 	};
 
-	uint8_t getSegmentType()const
-	{
-		return Segment_Attributes >> 24;
-	}
-
-	std::string toString()const{
-		stringstream strm;
-		strm << getSegmentType() << ":" << Segment_Offset << ":" << Segment_Length << ":" << Segment_ID.toString();
-			
-		return strm.str();
-	}
-
-	GUID Segment_ID;
-	I32  Segment_Offset;
-	I32  Segment_Length;
-	U32  Segment_Attributes;
+	I32  Element_Lenght;
+	GUID Object_Type_ID;
+	UChar Object_Base_Type;
 
 
 };
@@ -77,3 +66,10 @@ struct TOC_Entry
 
 
 #endif
+
+
+
+
+
+
+

@@ -32,6 +32,8 @@ struct U32
 {
 	U32(){};
 
+	U32(uint32_t ui) :_U32(ui){}
+
 	U32(Context& cont)
 	{
 		read(cont);

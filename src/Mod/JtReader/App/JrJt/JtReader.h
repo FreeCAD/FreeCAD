@@ -4,6 +4,9 @@
 #include <vector>
 #include "TOC_Entry.h"
 
+class LodHandler;
+
+
 
 class JtReader
 {
@@ -17,7 +20,9 @@ public:
 
 	void readSegment(int tocIndex);
 
-	
+	void readLodSegment(const TOC_Entry&, LodHandler&);
+
+	static const GUID TriStripSetShapeLODElement_ID;
 
 
 protected:

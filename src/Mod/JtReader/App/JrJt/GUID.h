@@ -41,9 +41,32 @@ struct GUID
 {
 	GUID(){};
 
+	GUID(uint32_t a1, uint16_t b1, uint16_t b2, uint8_t c1, uint8_t c2, uint8_t c3, uint8_t c4, uint8_t c5, uint8_t c6, uint8_t c7, uint8_t c8)
+		:_A1(a1), _B1(b1), _B2(b2), _C1(c1), _C2(c2), _C3(c3), _C4(c4), _C5(c5), _C6(c6), _C7(c7), _C8(c8)
+	{}
+
 	GUID(Context& cont)
 	{
 		read(cont);
+	}
+
+	bool operator!=(const GUID& other) const {
+		return !operator == (other);
+	}
+	
+	bool operator==(const GUID& other) const {
+			return
+			_A1 == other._A1
+			&& _B1 == other._B1
+			&& _B2 == other._B2
+			&& _C1 == other._C1
+			&& _C2 == other._C2
+			&& _C3 == other._C3
+			&& _C4 == other._C4
+			&& _C5 == other._C5
+			&& _C6 == other._C6
+			&& _C7 == other._C7
+			&& _C8 == other._C8;
 	}
 
 	inline void read(Context& cont)
