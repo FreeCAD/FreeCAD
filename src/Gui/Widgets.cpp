@@ -1021,7 +1021,7 @@ void LabelEditor::changeText()
     QDialog dlg(this);
     QVBoxLayout* hboxLayout = new QVBoxLayout(&dlg);
     QDialogButtonBox* buttonBox = new QDialogButtonBox(&dlg);
-    buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Close);
+    buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
     QPlainTextEdit *edit = new QPlainTextEdit(&dlg);
     edit->setPlainText(this->lineEdit->text());

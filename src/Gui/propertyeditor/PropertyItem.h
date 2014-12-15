@@ -559,7 +559,7 @@ protected:
 };
 
 /**
- * Edit properties of enum type. 
+ * Edit properties of string list type.
  * \author Werner Mayer
  */
 class GuiExport PropertyStringListItem: public PropertyItem
@@ -577,6 +577,48 @@ protected:
 
 protected:
     PropertyStringListItem();
+};
+
+/**
+ * Edit properties of float list type.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyFloatListItem: public PropertyItem
+{
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+protected:
+    QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+protected:
+    PropertyFloatListItem();
+};
+
+/**
+ * Edit properties of float list type.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyIntegerListItem: public PropertyItem
+{
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+protected:
+    QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+protected:
+    PropertyIntegerListItem();
 };
 
 /**

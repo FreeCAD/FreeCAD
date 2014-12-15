@@ -287,6 +287,8 @@ public:
     void setValues (const std::vector<long>& values);
 
     const std::vector<long> &getValues(void) const{return _lValueList;}
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyIntegerListItem"; }
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -535,7 +537,10 @@ public:
     void setValues (const std::vector<double>& values);
     
     const std::vector<double> &getValues(void) const{return _lValueList;}
-    
+
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyFloatListItem"; }
+
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
     
@@ -688,7 +693,8 @@ public:
     
     const std::vector<std::string> &getValues(void) const{return _lValueList;}
     
-    virtual const char* getEditorName(void) const { return "Gui::PropertyEditor::PropertyStringListItem"; }
+    virtual const char* getEditorName(void) const
+    { return "Gui::PropertyEditor::PropertyStringListItem"; }
     
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
