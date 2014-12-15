@@ -30,6 +30,7 @@
 #include <TopoDS_Wire.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <Precision.hxx>
+#include <gp_Trsf.hxx>
 #endif
 
 #include "FeatureBezSurf.h"
@@ -147,8 +148,8 @@ void getCurves(GeomFill_BezierCurves& aBuilder,TopoDS_Wire& aWire, const App::Pr
 
     crvs bcrv;
 
-    Standard_Real u0 = 0.;
-    Standard_Real u1 = 1.;
+    Standard_Real u0;// contains output
+    Standard_Real u1;// contains output
 
     Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
@@ -173,8 +174,13 @@ void getCurves(GeomFill_BezierCurves& aBuilder,TopoDS_Wire& aWire, const App::Pr
             //we want only the subshape which is linked
             sub = ts.getSubShape(set.sub);
             
-            if(sub.ShapeType() == TopAbs_EDGE) {etmp = TopoDS::Edge(sub);} //Check Shape type and assign edge
-            else{Standard_Failure::Raise("Curves must be type TopoDS_Edge");return;} //Raise exception
+            if(sub.ShapeType() == TopAbs_EDGE) {  //Check Shape type and assign edge
+                etmp = TopoDS::Edge(sub);
+            }
+            else {
+                Standard_Failure::Raise("Curves must be type TopoDS_Edge");
+                return; //Raise exception
+            }
 
             aWD->Add(etmp);         
 
@@ -204,11 +210,13 @@ void getCurves(GeomFill_BezierCurves& aBuilder,TopoDS_Wire& aWire, const App::Pr
     for (; anExp.More(); anExp.Next()) {
         printf("it: %i",it);
         const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
-        TopLoc_Location heloc = hedge.Location();
+        TopLoc_Location heloc; // this will be output
         Handle_Geom_Curve c_geom = BRep_Tool::Curve(hedge,heloc,u0,u1); //The geometric curve
         Handle_Geom_BezierCurve b_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
         
         if (!b_geom.IsNull()) {
+            gp_Trsf transf = heloc.Transformation();
+            b_geom->Transform(transf); // apply original transformation to control points
             //Store Underlying Geometry
             if(it==0){bcrv.C1 = b_geom;}
             else if(it==1){bcrv.C2 = b_geom;}
