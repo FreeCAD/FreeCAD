@@ -120,6 +120,8 @@ void Gui::SoFCDB::init()
     PropertyPlacementItem           ::init();
     PropertyEnumItem                ::init();
     PropertyStringListItem          ::init();
+    PropertyFloatListItem           ::init();
+    PropertyIntegerListItem         ::init();
     PropertyColorItem               ::init();
     PropertyFileItem                ::init();
     PropertyPathItem                ::init();

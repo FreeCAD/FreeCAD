@@ -1841,6 +1841,140 @@ void PropertyStringListItem::setValue(const QVariant& value)
     setPropertyValue(data);
 }
 
+// ---------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyFloatListItem, Gui::PropertyEditor::PropertyItem);
+
+PropertyFloatListItem::PropertyFloatListItem()
+{
+}
+
+QWidget* PropertyFloatListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+{
+    Gui::LabelEditor* le = new Gui::LabelEditor(parent);
+    le->setAutoFillBackground(true);
+    QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
+    return le;
+}
+
+void PropertyFloatListItem::setEditorData(QWidget *editor, const QVariant& data) const
+{
+    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    QStringList list = data.toStringList();
+    le->setText(list.join(QChar::fromAscii('\n')));
+}
+
+QVariant PropertyFloatListItem::editorData(QWidget *editor) const
+{
+    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    QString complete = le->text();
+    QStringList list = complete.split(QChar::fromAscii('\n'));
+    return QVariant(list);
+}
+
+QVariant PropertyFloatListItem::toString(const QVariant& prop) const
+{
+    QStringList list = prop.toStringList();
+    QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
+
+    return QVariant(text);
+}
+
+QVariant PropertyFloatListItem::value(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFloatList::getClassTypeId()));
+
+    QStringList list;
+    const std::vector<double>& value = static_cast<const App::PropertyFloatList*>(prop)->getValues();
+    for (std::vector<double>::const_iterator jt = value.begin(); jt != value.end(); ++jt) {
+        list << QString::number(*jt);
+    }
+
+    return QVariant(list);
+}
+
+void PropertyFloatListItem::setValue(const QVariant& value)
+{
+    if (!value.canConvert(QVariant::StringList))
+        return;
+    QStringList values = value.toStringList();
+    QString data;
+    QTextStream str(&data);
+    str << "[";
+    for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
+        str << *it << ",";
+    }
+    str << "]";
+    setPropertyValue(data);
+}
+
+// ---------------------------------------------------------------
+
+TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyIntegerListItem, Gui::PropertyEditor::PropertyItem);
+
+PropertyIntegerListItem::PropertyIntegerListItem()
+{
+}
+
+QWidget* PropertyIntegerListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+{
+    Gui::LabelEditor* le = new Gui::LabelEditor(parent);
+    le->setAutoFillBackground(true);
+    QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
+    return le;
+}
+
+void PropertyIntegerListItem::setEditorData(QWidget *editor, const QVariant& data) const
+{
+    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    QStringList list = data.toStringList();
+    le->setText(list.join(QChar::fromAscii('\n')));
+}
+
+QVariant PropertyIntegerListItem::editorData(QWidget *editor) const
+{
+    Gui::LabelEditor *le = qobject_cast<Gui::LabelEditor*>(editor);
+    QString complete = le->text();
+    QStringList list = complete.split(QChar::fromAscii('\n'));
+    return QVariant(list);
+}
+
+QVariant PropertyIntegerListItem::toString(const QVariant& prop) const
+{
+    QStringList list = prop.toStringList();
+    QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
+
+    return QVariant(text);
+}
+
+QVariant PropertyIntegerListItem::value(const App::Property* prop) const
+{
+    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyIntegerList::getClassTypeId()));
+
+    QStringList list;
+    const std::vector<long>& value = static_cast<const App::PropertyIntegerList*>(prop)->getValues();
+    for (std::vector<long>::const_iterator jt = value.begin(); jt != value.end(); ++jt) {
+        list << QString::number(*jt);
+    }
+
+    return QVariant(list);
+}
+
+void PropertyIntegerListItem::setValue(const QVariant& value)
+{
+    if (!value.canConvert(QVariant::StringList))
+        return;
+    QStringList values = value.toStringList();
+    QString data;
+    QTextStream str(&data);
+    str << "[";
+    for (QStringList::Iterator it = values.begin(); it != values.end(); ++it) {
+        str << *it << ",";
+    }
+    str << "]";
+    setPropertyValue(data);
+}
+
 // --------------------------------------------------------------------
 
 TYPESYSTEM_SOURCE(Gui::PropertyEditor::PropertyColorItem, Gui::PropertyEditor::PropertyItem);
