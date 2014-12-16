@@ -980,9 +980,173 @@ void StatusWidget::adjustPosition(QWidget* w)
 
 // --------------------------------------------------------------------
 
+class LineNumberArea : public QWidget
+{
+public:
+    LineNumberArea(PropertyListEditor *editor) : QWidget(editor) {
+        codeEditor = editor;
+    }
+
+    QSize sizeHint() const {
+        return QSize(codeEditor->lineNumberAreaWidth(), 0);
+    }
+
+protected:
+    void paintEvent(QPaintEvent *event) {
+        codeEditor->lineNumberAreaPaintEvent(event);
+    }
+
+private:
+    PropertyListEditor *codeEditor;
+};
+
+PropertyListEditor::PropertyListEditor(QWidget *parent) : QPlainTextEdit(parent)
+{
+    lineNumberArea = new LineNumberArea(this);
+
+    connect(this, SIGNAL(blockCountChanged(int)),
+            this, SLOT(updateLineNumberAreaWidth(int)));
+    connect(this, SIGNAL(updateRequest(QRect,int)),
+            this, SLOT(updateLineNumberArea(QRect,int)));
+    connect(this, SIGNAL(cursorPositionChanged()),
+            this, SLOT(highlightCurrentLine()));
+
+    updateLineNumberAreaWidth(0);
+    highlightCurrentLine();
+}
+
+int PropertyListEditor::lineNumberAreaWidth()
+{
+    int digits = 1;
+    int max = qMax(1, blockCount());
+    while (max >= 10) {
+        max /= 10;
+        ++digits;
+    }
+
+    int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+
+    return space;
+}
+
+void PropertyListEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
+{
+    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+}
+
+void PropertyListEditor::updateLineNumberArea(const QRect &rect, int dy)
+{
+    if (dy)
+        lineNumberArea->scroll(0, dy);
+    else
+        lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+
+    if (rect.contains(viewport()->rect()))
+        updateLineNumberAreaWidth(0);
+}
+
+void PropertyListEditor::resizeEvent(QResizeEvent *e)
+{
+    QPlainTextEdit::resizeEvent(e);
+
+    QRect cr = contentsRect();
+    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+}
+
+void PropertyListEditor::highlightCurrentLine()
+{
+    QList<QTextEdit::ExtraSelection> extraSelections;
+    if (!isReadOnly()) {
+        QTextEdit::ExtraSelection selection;
+
+        QColor lineColor = QColor(Qt::yellow).lighter(160);
+
+        selection.format.setBackground(lineColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = textCursor();
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
+    }
+
+    setExtraSelections(extraSelections);
+}
+
+void PropertyListEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
+{
+    QPainter painter(lineNumberArea);
+    painter.fillRect(event->rect(), Qt::lightGray);
+
+    QTextBlock block = firstVisibleBlock();
+    int blockNumber = block.blockNumber();
+    int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
+    int bottom = top + (int) blockBoundingRect(block).height();
+
+    while (block.isValid() && top <= event->rect().bottom()) {
+        if (block.isVisible() && bottom >= event->rect().top()) {
+            QString number = QString::number(blockNumber + 1);
+            painter.setPen(Qt::black);
+            painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
+                             Qt::AlignRight, number);
+        }
+
+        block = block.next();
+        top = bottom;
+        bottom = top + (int) blockBoundingRect(block).height();
+        ++blockNumber;
+    }
+}
+
+class PropertyListDialog : public QDialog
+{
+    int type;
+
+public:
+    PropertyListDialog(int type, QWidget* parent) : QDialog(parent),type(type)
+    {
+    }
+
+    void accept()
+    {
+        PropertyListEditor* edit = this->findChild<PropertyListEditor*>();
+        QStringList lines;
+        if (edit) {
+            QString inputText = edit->toPlainText();
+            lines = inputText.split(QString::fromLatin1("\n"));
+        }
+
+        if (type == 1) { // floats
+            bool ok;
+            int line=1;
+            for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
+                it->toDouble(&ok);
+                if (!ok) {
+                    QMessageBox::critical(this, tr("Invalid input"), tr("Input in line %1 is not a number").arg(line));
+                    return;
+                }
+            }
+        }
+        else if (type == 2) { // integers
+            bool ok;
+            int line=1;
+            for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
+                it->toInt(&ok);
+                if (!ok) {
+                    QMessageBox::critical(this, tr("Invalid input"), tr("Input in line %1 is not a number").arg(line));
+                    return;
+                }
+            }
+        }
+
+        QDialog::accept();
+    }
+};
+
+// --------------------------------------------------------------------
+
 LabelEditor::LabelEditor (QWidget * parent)
   : QWidget(parent)
 {
+    type = String;
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(2);
@@ -1008,30 +1172,40 @@ LabelEditor::~LabelEditor()
 
 QString LabelEditor::text() const
 {
-    return lineEdit->text();
+    return this->plainText;
 }
 
 void LabelEditor::setText(const QString& s)
 {
-    lineEdit->setText(s);
+    this->plainText = s;
+
+    QStringList list = this->plainText.split(QString::fromLatin1("\n"));
+    QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
+    lineEdit->setText(text);
 }
 
 void LabelEditor::changeText()
 {
-    QDialog dlg(this);
+    PropertyListDialog dlg(static_cast<int>(type), this);
+    dlg.setWindowTitle(tr("List"));
     QVBoxLayout* hboxLayout = new QVBoxLayout(&dlg);
     QDialogButtonBox* buttonBox = new QDialogButtonBox(&dlg);
     buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
-    QPlainTextEdit *edit = new QPlainTextEdit(&dlg);
-    edit->setPlainText(this->lineEdit->text());
-    
+    PropertyListEditor *edit = new PropertyListEditor(&dlg);
+    edit->setPlainText(this->plainText);
+
     hboxLayout->addWidget(edit);
     hboxLayout->addWidget(buttonBox);
     connect(buttonBox, SIGNAL(accepted()), &dlg, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), &dlg, SLOT(reject()));
     if (dlg.exec() == QDialog::Accepted) {
-        this->lineEdit->setText(edit->toPlainText());
+        QString inputText = edit->toPlainText();
+        this->plainText = inputText;
+
+        QStringList list = this->plainText.split(QString::fromLatin1("\n"));
+        QString text = QString::fromUtf8("[%1]").arg(list.join(QLatin1String(",")));
+        lineEdit->setText(text);
     }
 }
 
@@ -1052,6 +1226,11 @@ void LabelEditor::setButtonText(const QString& txt)
 QString LabelEditor::buttonText() const
 {
     return button->text();
+}
+
+void LabelEditor::setInputType(InputType t)
+{
+    this->type = t;
 }
 
 #include "moc_Widgets.cpp"
