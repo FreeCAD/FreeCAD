@@ -458,11 +458,17 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     if (viewProvider) {
         try {
             viewProvider->update(&Prop);
-        } catch(const Base::MemoryException& e) {
+        }
+        catch(const Base::MemoryException& e) {
             Base::Console().Error("Memory exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
-        } catch(Base::Exception &e){
+        }
+        catch(Base::Exception& e){
             e.ReportException();
-        } catch (...) {
+        }
+        catch(const std::exception& e){
+            Base::Console().Error("C++ exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
+        }
+        catch (...) {
             Base::Console().Error("Cannot update representation for '%s'.\n", Obj.getNameInDocument());
         }
 
