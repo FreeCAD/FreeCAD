@@ -837,7 +837,7 @@ class DraftToolBar:
         self.hideXYZ()
         self.labelRadius.setText(translate("draft", "Radius"))
         self.labelRadius.show()
-        self.radiusValue.setText(self.AFORMAT % 0)
+        self.radiusValue.setText(self.FORMAT % 0)
         self.radiusValue.show()
 
     def textUi(self):
