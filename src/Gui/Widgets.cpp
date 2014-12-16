@@ -29,10 +29,12 @@
 # include <QDrag>
 # include <QEventLoop>
 # include <QKeyEvent>
+# include <QMessageBox>
 # include <QMimeData>
 # include <QPainter>
 # include <QPlainTextEdit>
 # include <QStylePainter>
+# include <QTextBlock>
 # include <QTimer>
 # include <QToolTip>
 #endif
