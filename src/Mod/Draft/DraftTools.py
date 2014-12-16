@@ -1127,6 +1127,7 @@ class Arc(Creator):
                             self.drawArc()
                         else: 
                             self.ui.labelRadius.setText("Start angle")
+                            self.ui.radiusValue.setText(self.ui.AFORMAT % 0)
                             self.linetrack.p1(self.center)
                             self.linetrack.on()
                             self.step = 2
