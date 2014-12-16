@@ -1853,6 +1853,7 @@ QWidget* PropertyFloatListItem::createEditor(QWidget* parent, const QObject* rec
 {
     Gui::LabelEditor* le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
+    le->setInputType(Gui::LabelEditor::Float);
     QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
     return le;
 }
@@ -1920,6 +1921,7 @@ QWidget* PropertyIntegerListItem::createEditor(QWidget* parent, const QObject* r
 {
     Gui::LabelEditor* le = new Gui::LabelEditor(parent);
     le->setAutoFillBackground(true);
+    le->setInputType(Gui::LabelEditor::Integer);
     QObject::connect(le, SIGNAL(textChanged(const QString&)), receiver, method);
     return le;
 }
