@@ -86,7 +86,7 @@
     <message>
       <location filename="StartPage.py" line="69"/>
       <source>The &lt;b&gt;Part Design&lt;/b&gt; workbench is designed to create complex pieces based on constrained 2D sketches. Use it to draw 2D shapes, constrain some of their elements and extrude them to form 3D pieces.</source>
-      <translation type="unfinished">Робочий простір &lt;b&gt;Розробка деталі&lt;/b&gt; призначений для створення комплексної деталі, що базується на простих 2D-ескізах. Використовуйте його для малювання 2D-форм, обмежуючи деякі їхні елементи та "видавлюйте" їх у тривимірні деталі.</translation>
+      <translation type="unfinished">Робочий простір &lt;b&gt;Розробка деталі&lt;/b&gt; призначений для створення комплексної деталі, що базується на простих 2D-ескізах. Використовуйте його для малювання 2D-форм, обмежуючи деякі їхні елементи та видавлюйте їх у тривимірні деталі.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="70"/>
