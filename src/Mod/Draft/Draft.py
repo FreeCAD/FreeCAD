@@ -2154,7 +2154,7 @@ def getrgb(color,testbw=True):
                 col = "#000000"
     return col
 
-def makeDrawingView(obj,page,lwmod=None,tmod=None):
+def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
     '''
     makeDrawingView(object,page,[lwmod,tmod]) - adds a View of the given object to the
     given page. lwmod modifies lineweights (in percent), tmod modifies text heights
@@ -2174,12 +2174,27 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None):
         viewobj = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython","View"+obj.Name)
         _DrawingView(viewobj)
         page.addObject(viewobj)
-        if hasattr(page.ViewObject,"HintScale"):
-            viewobj.Scale = page.ViewObject.HintScale
-        if hasattr(page.ViewObject,"HintOffsetX"):
-            viewobj.X = page.ViewObject.HintOffsetX
-        if hasattr(page.ViewObject,"HintOffsetY"):
-            viewobj.Y = page.ViewObject.HintOffsetY
+        if (otherProjection):
+            FreeCAD.Console.PrintWarning("using otherProjection")
+            if hasattr(otherProjection,"Scale"):
+                FreeCAD.Console.PrintWarning(otherProjection.Scale)
+                viewobj.Scale = otherProjection.Scale
+            if hasattr(otherProjection,"X"):
+                viewobj.X = otherProjection.X
+            if hasattr(otherProjection,"Y"):
+                viewobj.Y = otherProjection.Y
+            if hasattr(otherProjection,"Rotation"):
+                viewobj.Rotation = otherProjection.Rotation
+            if hasattr(otherProjection,"Direction"):
+                FreeCAD.Console.PrintWarning(otherProjection.Direction)
+                viewobj.Direction = otherProjection.Direction
+        else:
+            if hasattr(page.ViewObject,"HintScale"):
+                viewobj.Scale = page.ViewObject.HintScale
+            if hasattr(page.ViewObject,"HintOffsetX"):
+                viewobj.X = page.ViewObject.HintOffsetX
+            if hasattr(page.ViewObject,"HintOffsetY"):
+                viewobj.Y = page.ViewObject.HintOffsetY
         viewobj.Source = obj
         if lwmod: viewobj.LineweightModifier = lwmod
         if tmod: viewobj.TextModifier = tmod
