@@ -59,27 +59,27 @@ namespace GCS
         double x, dx;
         double y, dy;
 
-        double length() {return sqrt(x*x + y*y);}
-        double length(double &dlength); //returns length and writes length deriv into the dlength argument.
+        double length() const {return sqrt(x*x + y*y);}
+        double length(double &dlength) const; //returns length and writes length deriv into the dlength argument.
 
 
         //unlike other vectors in FreeCAD, this normalization creates a new vector instead of modifying existing one.
-        DeriVector2 getNormalized(); //returns zero vector if the original is zero.
-        double scalarProd(const DeriVector2 &v2, double* dprd=0);//calculates scalar product of two vectors and returns the result. The derivative of the result is written into argument dprd.
-        DeriVector2 sum(const DeriVector2 &v2){//adds two vectors and returns result
+        DeriVector2 getNormalized() const; //returns zero vector if the original is zero.
+        double scalarProd(const DeriVector2 &v2, double* dprd=0) const;//calculates scalar product of two vectors and returns the result. The derivative of the result is written into argument dprd.
+        DeriVector2 sum(const DeriVector2 &v2) const {//adds two vectors and returns result
             return DeriVector2(x + v2.x, y + v2.y,
                                dx + v2.dx, dy + v2.dy);}
-        DeriVector2 subtr(const DeriVector2 &v2){//subtracts two vectors and returns result
+        DeriVector2 subtr(const DeriVector2 &v2) const {//subtracts two vectors and returns result
             return DeriVector2(x - v2.x, y - v2.y,
                                dx - v2.dx, dy - v2.dy);}
-        DeriVector2 mult(double val){
+        DeriVector2 mult(double val) const {
             return DeriVector2(x*val, y*val, dx*val, dy*val);}//multiplies the vector by a number. Derivatives are scaled.
-        DeriVector2 multD(double val, double dval){//multiply vector by a variable with a derivative.
+        DeriVector2 multD(double val, double dval) const {//multiply vector by a variable with a derivative.
             return DeriVector2(x*val, y*val, dx*val+x*dval, dy*val+y*dval);}
-        DeriVector2 divD(double val, double dval);//divide vector by a variable with a derivative
-        DeriVector2 rotate90ccw(){return DeriVector2(-y,x,-dy,dx);}
-        DeriVector2 rotate90cw(){return DeriVector2(y,-x,dy,-dx);}
-        DeriVector2 linCombi(double m1, const DeriVector2 &v2, double m2){//linear combination of two vectors
+        DeriVector2 divD(double val, double dval) const;//divide vector by a variable with a derivative
+        DeriVector2 rotate90ccw() const {return DeriVector2(-y,x,-dy,dx);}
+        DeriVector2 rotate90cw() const {return DeriVector2(y,-x,dy,-dx);}
+        DeriVector2 linCombi(double m1, const DeriVector2 &v2, double m2) const {//linear combination of two vectors
             return DeriVector2(x*m1 + v2.x*m2, y*m1 + v2.y*m2,
                                dx*m1 + v2.dx*m2, dy*m1 + v2.dy*m2);}
 
@@ -156,6 +156,9 @@ namespace GCS
         Point center; 
         Point focus1;
         double *radmin;
+        double getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj);
+        double getRadMaj(double* derivparam, double &ret_dRadMaj);
+        double getRadMaj();
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
