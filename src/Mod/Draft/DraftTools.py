@@ -3150,6 +3150,12 @@ class Drawing(Modifier):
                         self.page = obj
             if not self.page:
                 self.page = self.createDefaultPage()
+            otherProjection = None
+            for obj in sel:
+                FreeCAD.Console.PrintWarning(obj)
+                if obj.isDerivedFrom("Drawing::FeatureView"):
+                    otherProjection = obj
+            FreeCAD.Console.PrintWarning(otherProjection)
             sel.reverse() 
             for obj in sel:
                 if obj.ViewObject.isVisible():
@@ -3158,7 +3164,7 @@ class Drawing(Modifier):
                     #oldobj = self.page.getObject(name)
                     #if oldobj: 
                     #    self.doc.removeObject(oldobj.Name)
-                    Draft.makeDrawingView(obj,self.page)
+                    Draft.makeDrawingView(obj,self.page,None,None,otherProjection)
             self.doc.recompute()
 
     def createDefaultPage(self):
