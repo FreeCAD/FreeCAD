@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FREEGCS_SUBSYSTEM_H
-#define FREEGCS_SUBSYSTEM_H
+#ifndef PLANEGCS_SUBSYSTEM_H
+#define PLANEGCS_SUBSYSTEM_H
 
 #undef min
 #undef max
@@ -86,4 +86,4 @@ void printResidual();
 
 } //namespace GCS
 
-#endif // FREEGCS_SUBSYSTEM_H
+#endif // PLANEGCS_SUBSYSTEM_H

@@ -20,17 +20,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FREEGCS_GEO_H
-#define FREEGCS_GEO_H
+#ifndef PLANEGCS_GEO_H
+#define PLANEGCS_GEO_H
 
 #include <cmath>
 #include "Util.h"
 
 namespace GCS
 {
-    const double NAN = std::numeric_limits<double>::quiet_NaN();
-    const double INF = std::numeric_limits<double>::infinity();
-
     class Point
     {
     public:
@@ -184,4 +181,4 @@ namespace GCS
 
 } //namespace GCS
 
-#endif // FREEGCS_GEO_H
+#endif // PLANEGCS_GEO_H
