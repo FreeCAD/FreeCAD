@@ -349,7 +349,8 @@ namespace GCS
     class ConstraintEllipseTangentLine : public Constraint
     {
     private:
-        inline double* p1x() { return pvec[0]; }
+        /*tbd
+         * inline double* p1x() { return pvec[0]; }
         inline double* p1y() { return pvec[1]; }
         inline double* p2x() { return pvec[2]; }
         inline double* p2y() { return pvec[3]; }        
@@ -357,10 +358,13 @@ namespace GCS
         inline double* cy() { return pvec[5]; }
         inline double* f1x() { return pvec[6]; }
         inline double* f1y() { return pvec[7]; }
-        inline double* rmin() { return pvec[8]; }
+        inline double* rmin() { return pvec[8]; }*/
+        Line l;
+        Ellipse e;
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
     public:
         ConstraintEllipseTangentLine(Line &l, Ellipse &e);
-        ConstraintEllipseTangentLine(Line &l, ArcOfEllipse &a);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -369,42 +373,28 @@ namespace GCS
         
     class ConstraintInternalAlignmentPoint2Ellipse : public Constraint
     {
-    private:
-        inline double* p1x() { return pvec[0]; }
-        inline double* p1y() { return pvec[1]; }      
-        inline double* cx() { return pvec[2]; }
-        inline double* cy() { return pvec[3]; }
-        inline double* f1x() { return pvec[4]; }
-        inline double* f1y() { return pvec[5]; }
-        inline double* rmin() { return pvec[6]; }
     public:
         ConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType);
-        ConstraintInternalAlignmentPoint2Ellipse(ArcOfEllipse &e, Point &p1, InternalAlignmentType alignmentType);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
         virtual double grad(double *);
     private:
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        Ellipse e;
+        Point p;
         InternalAlignmentType AlignmentType;
     };
     
     class ConstraintEqualMajorAxesEllipse : public Constraint
     {
-    private:     
-        inline double* e1cx() { return pvec[0]; }
-        inline double* e1cy() { return pvec[1]; }
-        inline double* e1f1x() { return pvec[2]; }
-        inline double* e1f1y() { return pvec[3]; }
-        inline double* e1rmin() { return pvec[4]; }
-        inline double* e2cx() { return pvec[5]; }
-        inline double* e2cy() { return pvec[6]; }
-        inline double* e2f1x() { return pvec[7]; }
-        inline double* e2f1y() { return pvec[8]; }
-        inline double* e2rmin() { return pvec[9]; }
+    private:
+        Ellipse e1, e2;
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
     public:
         ConstraintEqualMajorAxesEllipse(Ellipse &e1, Ellipse &e2);
-        ConstraintEqualMajorAxesEllipse(ArcOfEllipse &a1, Ellipse &e2);
-        ConstraintEqualMajorAxesEllipse(ArcOfEllipse &a1, ArcOfEllipse &a2);
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
         virtual double error();
@@ -415,14 +405,11 @@ namespace GCS
     class ConstraintEllipticalArcRangeToEndPoints : public Constraint
     {
     private:
-        inline double* p1x() { return pvec[0]; }
-        inline double* p1y() { return pvec[1]; }
         inline double* angle() { return pvec[2]; }
-        inline double* cx() { return pvec[3]; }
-        inline double* cy() { return pvec[4]; }
-        inline double* f1x() { return pvec[5]; }
-        inline double* f1y() { return pvec[6]; }
-        inline double* rmin() { return pvec[7]; }
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        Ellipse e;
+        Point p;
     public:
         ConstraintEllipticalArcRangeToEndPoints(Point &p, ArcOfEllipse &a, double *angle_t);
         virtual ConstraintType getTypeId();

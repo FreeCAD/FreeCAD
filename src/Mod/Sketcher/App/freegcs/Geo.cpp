@@ -39,7 +39,7 @@ DeriVector2::DeriVector2(const Point &p, double *derivparam)
         dy = 1.0;
 }
 
-double DeriVector2::length(double &dlength)
+double DeriVector2::length(double &dlength) const
 {
     double l = length();
     if(l==0){
@@ -51,7 +51,7 @@ double DeriVector2::length(double &dlength)
     }
 }
 
-DeriVector2 DeriVector2::getNormalized()
+DeriVector2 DeriVector2::getNormalized() const
 {
     double l=length();
     if(l==0.0) {
@@ -71,7 +71,7 @@ DeriVector2 DeriVector2::getNormalized()
     }
 }
 
-double DeriVector2::scalarProd(const DeriVector2 &v2, double *dprd)
+double DeriVector2::scalarProd(const DeriVector2 &v2, double *dprd) const
 {
     if (dprd) {
         *dprd = dx*v2.x + x*v2.dx + dy*v2.y + y*v2.dy;
@@ -79,7 +79,8 @@ double DeriVector2::scalarProd(const DeriVector2 &v2, double *dprd)
     return x*v2.x + y*v2.y;
 }
 
-DeriVector2 DeriVector2::divD(double val, double dval){
+DeriVector2 DeriVector2::divD(double val, double dval) const
+{
     return DeriVector2(x/val,y/val,
                        dx/val - x*dval/(val*val),
                        dy/val - y*dval/(val*val)
@@ -178,6 +179,32 @@ Arc* Arc::Copy()
 
 
 //--------------ellipse
+
+//this function is exposed to allow reusing pre-filled derivectors in constraints code
+double Ellipse::getRadMaj(const DeriVector2 &center, const DeriVector2 &f1, double b, double db, double &ret_dRadMaj)
+{
+    double cf, dcf;
+    cf = f1.subtr(center).length(dcf);
+    DeriVector2 hack (b, cf,
+                      db, dcf);//hack = a nonsense vector to calculate major radius with derivatives, useful just because the calculation formula is the same as  vector length formula
+    return hack.length(ret_dRadMaj);
+}
+
+//returns major radius. The derivative by derivparam is returned into ret_dRadMaj argument.
+double Ellipse::getRadMaj(double *derivparam, double &ret_dRadMaj)
+{
+    DeriVector2 c(center, derivparam);
+    DeriVector2 f1(focus1, derivparam);
+    return getRadMaj(c, f1, *radmin, radmin==derivparam ? 1.0 : 0.0, ret_dRadMaj);
+}
+
+//returns the major radius (plain value, no derivatives)
+double Ellipse::getRadMaj()
+{
+    double dradmaj;//dummy
+    return getRadMaj(0,dradmaj);
+}
+
 DeriVector2 Ellipse::CalculateNormal(Point &p, double* derivparam)
 {
     //fill some vectors in
