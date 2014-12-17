@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FREEGCS_UTIL_H
-#define FREEGCS_UTIL_H
+#ifndef PLANEGCS_UTIL_H
+#define PLANEGCS_UTIL_H
 
 #include <vector>
 #include <map>
@@ -44,4 +44,4 @@ namespace GCS
 
 } //namespace GCS
 
-#endif // FREEGCS_UTIL_H
+#endif // PLANEGCS_UTIL_H

@@ -68,21 +68,21 @@ SET(Python_SRCS
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
-SET(FreeGCS_SRCS
-    freegcs/qp_eq.h
-    freegcs/GCS.cpp
-    freegcs/GCS.h
-    freegcs/Util.h
-    freegcs/Geo.cpp
-    freegcs/Geo.h
-    freegcs/Constraints.cpp
-    freegcs/Constraints.h
-    freegcs/SubSystem.cpp
-    freegcs/SubSystem.h
-    freegcs/qp_eq.cpp
-    freegcs/qp_eq.h
+SET(PlaneGCS_SRCS
+    planegcs/qp_eq.h
+    planegcs/GCS.cpp
+    planegcs/GCS.h
+    planegcs/Util.h
+    planegcs/Geo.cpp
+    planegcs/Geo.h
+    planegcs/Constraints.cpp
+    planegcs/Constraints.h
+    planegcs/SubSystem.cpp
+    planegcs/SubSystem.h
+    planegcs/qp_eq.cpp
+    planegcs/qp_eq.h
 )
-SOURCE_GROUP("FreeGCS" FILES ${FreeGCS_SRCS})
+SOURCE_GROUP("PlaneGCS" FILES ${PlaneGCS_SRCS})
 
 SET(SketchModule_SRCS
     AppSketcher.cpp
@@ -94,7 +94,7 @@ SOURCE_GROUP("Module" FILES ${SketchModule_SRCS})
 
 SET(Sketcher_SRCS
     ${Features_SRCS}
-    ${FreeGCS_SRCS}
+    ${PlaneGCS_SRCS}
     ${SketchModule_SRCS}
     ${Python_SRCS}
     ${Properties_SRCS}
