@@ -88,6 +88,14 @@ Py::List DocumentObjectPy::getState(void) const
         uptodate = false;
         list.append(Py::String("Invalid"));
     }
+    if (object->isRecomputing()) {
+        uptodate = false;
+        list.append(Py::String("Recompute"));
+    }
+    if (object->isRestoring()) {
+        uptodate = false;
+        list.append(Py::String("Restore"));
+    }
     if (uptodate) {
         list.append(Py::String("Up-to-date"));
     }
