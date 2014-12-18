@@ -14,7 +14,6 @@ endif(BUILD_FEM_NETGEN)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
@@ -34,6 +33,7 @@ if(BUILD_FEM_NETGEN)
         StdMeshers
         NETGENPlugin
         SMESH
+        SMDS
     )
 else(BUILD_FEM_NETGEN)
     set(MeshPart_LIBS
@@ -41,6 +41,7 @@ else(BUILD_FEM_NETGEN)
         Mesh
         StdMeshers
         SMESH
+        SMDS
     )
 endif(BUILD_FEM_NETGEN)
 

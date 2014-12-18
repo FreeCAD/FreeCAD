@@ -21,7 +21,7 @@ include_directories(
     ${PYTHON_INCLUDE_PATH}
     ${ZLIB_INCLUDE_DIR}
     ${XERCESC_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc 
+    ${SMESH_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -34,6 +34,8 @@ if(BUILD_FEM_NETGEN)
         StdMeshers
         NETGENPlugin
         SMESH
+        SMDS
+        SMESHDS
     )
 else(BUILD_FEM_NETGEN)
     set(Fem_LIBS
@@ -41,6 +43,8 @@ else(BUILD_FEM_NETGEN)
         FreeCADApp
         StdMeshers
         SMESH
+        SMDS
+        SMESHDS
     )
 endif(BUILD_FEM_NETGEN)
 

@@ -119,6 +119,7 @@ OPTION(BUILD_GUI "Build FreeCAD Gui. Otherwise you have only the command line an
 OPTION(FREECAD_MAINTAINERS_BUILD "Build FreeCAD for Maintainers, with Docu and 3rd party libs. On Windows the Installer is build." OFF)
 OPTION(FREECAD_USE_EXTERNAL_ZIPIOS "Use system installed zipios++ instead of the bundled." OFF)
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." OFF)
+OPTION(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bundled." OFF)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 
 OPTION(BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
@@ -169,6 +170,7 @@ endif(MSVC)
 if (FREECAD_BUILD_DEBIAN)
     set(FREECAD_USE_EXTERNAL_ZIPIOS ON)
     set(FREECAD_USE_EXTERNAL_PIVY ON)
+    set(FREECAD_USE_EXTERNAL_SMESH ON)
 endif (FREECAD_BUILD_DEBIAN)
 
 # ==============================================================================
@@ -362,10 +364,6 @@ if(FREECAD_LIBPACK_USE)
         message(SEND_ERROR  "Could not find libpack in specified location:" ${FREECAD_LIBPACK_DIR})
     ENDIF(FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
-# -------------------------------- PyCXX --------------------------------
-
-    find_package(PyCXX REQUIRED)
-
 # -------------------------------- Swig ----------------------------------
 
     find_package(SWIG)
@@ -504,24 +502,17 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
     # Salome SMESH sources are under src/3rdParty now
     IF(OCC_FOUND)
-    set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
-    set(SMESH_LIBRARIES
-        StdMeshers
-        #MEFISTO2
-        SMESH
-        DriverUNV
-        SMESHDS
-        DriverSTL
-        DriverDAT
-        Driver
-        SMDS
-    )
+    if(NOT FREECAD_USE_EXTERNAL_SMESH)
+        set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
+    else()
+        find_package(SMESH)
+        if(NOT SMESH_FOUND)
+            message(ERROR "SMESH was not found.")
+        endif()
+        include_directories(${SMESH_INCLUDE_DIR})
+    endif()
     set(SMESH_FOUND TRUE)
     ENDIF(OCC_FOUND)
-    #find_package(SMESH)
-    #IF(NOT SMESH_FOUND)
-    #    MESSAGE("Salome SMESH was not found!")
-    #ENDIF(NOT SMESH_FOUND)
 
 # -------------------------------- Netgen --------------------------------
 
