@@ -27,8 +27,7 @@ if(MSVC)
         Rpcrt4.lib
         debug ${COIN3D_LIBRARY_DEBUG}
         optimized ${COIN3D_LIBRARY_RELEASE}
-        debug ${PYTHON_DEBUG_LIBRARY}
-        optimized ${PYTHON_LIBRARY})
+        ${PYTHON_LIBRARY})
 else(MSVC)
     set(CoinPy_LIBS
         ${COIN3D_LIBRARY}
