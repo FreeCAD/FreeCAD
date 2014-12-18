@@ -94,6 +94,7 @@ namespace GCS
         virtual double grad(double *);
         // virtual void grad(MAP_pD_D &deriv);  --> TODO: vectorized grad version
         virtual double maxStep(MAP_pD_D &dir, double lim=1.);
+        int findParamInPvec(double* param);//finds first occurence of param in pvec. This is useful to test if a constraint depends on the parameter (it may not actually depend on it, e.g. angle-via-point doesn't depend on ellipse's b (radmin), but b will be included within the constraint anyway. Returns -1 if not found.
     };
 
     // Equal

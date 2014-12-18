@@ -84,6 +84,18 @@ double Constraint::maxStep(MAP_pD_D &dir, double lim)
     return lim;
 }
 
+int Constraint::findParamInPvec(double *param)
+{
+    int ret = -1;
+    for( int i=0 ; i<pvec.size() ; i++ ){
+        if ( param == pvec[i] ) {
+            ret = i;
+            break;
+        };
+    };
+    return ret;
+}
+
 // Equal
 ConstraintEqual::ConstraintEqual(double *p1, double *p2)
 {
@@ -1095,11 +1107,7 @@ double ConstraintEllipseTangentLine::error()
 double ConstraintEllipseTangentLine::grad(double *param)
 {      
     //first of all, check that we need to compute anything.
-    int i;
-    for( i=0 ; i<pvec.size() ; i++ ){
-        if ( param == pvec[i] ) break;
-    };
-    if ( i == pvec.size() ) return 0.0;
+    if ( findParamInPvec(param) == -1 ) return 0.0;
 
     double deriv;
     errorgrad(0, &deriv, param);
@@ -1225,11 +1233,7 @@ double ConstraintInternalAlignmentPoint2Ellipse::error()
 double ConstraintInternalAlignmentPoint2Ellipse::grad(double *param)
 {      
     //first of all, check that we need to compute anything.
-    int i;
-    for( i=0 ; i<pvec.size() ; i++ ){
-        if ( param == pvec[i] ) break;
-    };
-    if ( i == pvec.size() ) return 0.0;
+    if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
     errorgrad(0, &deriv, param);
@@ -1308,11 +1312,7 @@ double ConstraintEqualMajorAxesEllipse::error()
 double ConstraintEqualMajorAxesEllipse::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    int i;
-    for( i=0 ; i<pvec.size() ; i++ ){
-        if ( param == pvec[i] ) break;
-    };
-    if ( i == pvec.size() ) return 0.0;
+    if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
     errorgrad(0, &deriv, param);
@@ -1398,11 +1398,7 @@ double ConstraintEllipticalArcRangeToEndPoints::error()
 double ConstraintEllipticalArcRangeToEndPoints::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    int i;
-    for( i=0 ; i<pvec.size() ; i++ ){
-        if ( param == pvec[i] ) break;
-    };
-    if ( i == pvec.size() ) return 0.0;
+    if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv;
     errorgrad(0, &deriv, param);
@@ -1502,11 +1498,7 @@ double ConstraintAngleViaPoint::error()
 double ConstraintAngleViaPoint::grad(double *param)
 {
     //first of all, check that we need to compute anything.
-    int i;
-    for( i=0 ; i<pvec.size() ; i++ ){
-        if ( param == pvec[i] ) break;
-    };
-    if ( i == pvec.size() ) return 0.0;
+    if ( findParamInPvec(param) == -1  ) return 0.0;
 
     double deriv=0.;
 
@@ -1622,11 +1614,7 @@ double ConstraintSnell::grad(double *param)
 {
 
     //first of all, check that we need to compute anything.
-    int i;
-    for( i=0 ; i<pvec.size() ; i++ ){
-        if ( param == pvec[i] ) break;
-    };
-    if ( i == pvec.size() ) return 0.0;
+    if ( findParamInPvec(param) == -1 ) return 0.0;
 
     double deriv;
     errorgrad(0, &deriv, param);
