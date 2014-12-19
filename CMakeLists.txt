@@ -364,6 +364,10 @@ if(FREECAD_LIBPACK_USE)
         message(SEND_ERROR  "Could not find libpack in specified location:" ${FREECAD_LIBPACK_DIR})
     ENDIF(FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
 
+# -------------------------------- PyCXX --------------------------------
+
+    find_package(PyCXX REQUIRED)
+
 # -------------------------------- Swig ----------------------------------
 
     find_package(SWIG)
