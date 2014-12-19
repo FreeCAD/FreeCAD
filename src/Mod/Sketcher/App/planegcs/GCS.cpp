@@ -157,6 +157,7 @@ System::System()
 {
 }
 
+/*DeepSOIC: seriously outdated, needs redesign
 System::System(std::vector<Constraint *> clist_)
 : plist(0),
   c2p(), p2c(),
@@ -226,6 +227,7 @@ System::System(std::vector<Constraint *> clist_)
             addConstraint(newconstr);
     }
 }
+*/
 
 System::~System()
 {
@@ -499,8 +501,6 @@ int System::addConstraintPointOnCircle(Point &p, Circle &c, int tagId)
 
 int System::addConstraintPointOnEllipse(Point &p, Ellipse &e, int tagId)
 {
-    // TODO: Implement real constraint => Done
-    
     Constraint *constr = new ConstraintPointOnEllipse(p, e);
     constr->setTag(tagId);
     return addConstraint(constr);
@@ -516,21 +516,11 @@ int System::addConstraintEllipticalArcRangeToEndPoints(Point &p, ArcOfEllipse &a
 
 int System::addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId)
 {    
-    /*       addConstraintP2PAngle(a.center, a.start, a.startAngle, tagId);
-    return       addConstraintP2PAngle(a.center, a.end, a.endAngle, tagId);*/
-    
             addConstraintEllipticalArcRangeToEndPoints(a.start,a,a.startAngle, tagId);
             addConstraintEllipticalArcRangeToEndPoints(a.end,a,a.endAngle, tagId);
     
-           addConstraintPointOnArcOfEllipse(a.start, a, tagId);
-    return addConstraintPointOnArcOfEllipse(a.end, a, tagId);
-}
-
-int System::addConstraintPointOnArcOfEllipse(Point &p, ArcOfEllipse &a, int tagId)
-{
-    Constraint *constr = new ConstraintPointOnEllipse(p, a);
-    constr->setTag(tagId);
-    return addConstraint(constr);
+           addConstraintPointOnEllipse(a.start, a, tagId);
+    return addConstraintPointOnEllipse(a.end, a, tagId);
 }
 
 int System::addConstraintPointOnArc(Point &p, Arc &a, int tagId)
@@ -606,35 +596,9 @@ int System::addConstraintTangent(Line &l, Circle &c, int tagId)
 
 int System::addConstraintTangent(Line &l, Ellipse &e, int tagId)
 {
-    // TODO: real ellipse implementation => Done
     Constraint *constr = new ConstraintEllipseTangentLine(l, e);
     constr->setTag(tagId);
     return addConstraint(constr);
-}
-
-int System::addConstraintTangent(Line &l, ArcOfEllipse &a, int tagId)
-{
-    // TODO: real ellipse implementation => Done
-    Constraint *constr = new ConstraintEllipseTangentLine(l, a);
-    constr->setTag(tagId);
-    return addConstraint(constr);
-}
-
-int System::addConstraintTangent(Ellipse &e, Circle &c, int tagId)
-{
-    // TODO: elipse
-    /*double dx = *(c.center.x) - *(e.center.x);
-    double dy = *(c.center.y) - *(e.center.y);
-    double d = sqrt(dx*dx + dy*dy);*/
-    
-    /*Constraint *constr = new ConstraintPoint2EllipseDistance(c.center,e,c.rad);
-    constr->setTag(tagId);
-    return addConstraint(constr);   */ 
-    
-    
-    //return addConstraintTangentCircumf(e.center, c.center, e.radmaj, c.rad,
-    //                                   (d < *e.radmaj || d < *c.rad), tagId);    
-    return 0;
 }
 
 int System::addConstraintTangent(Line &l, Arc &a, int tagId)
@@ -669,19 +633,6 @@ int System::addConstraintTangent(Circle &c, Arc &a, int tagId)
                                        (d < *c.rad || d < *a.rad), tagId);
 }
 
-int System::addConstraintTangent(Ellipse &e, Arc &a, int tagId)
-{
-    // TODO: elipse
-    /*double dx = *(a.center.x) - *(e.center.x);
-    double dy = *(a.center.y) - *(e.center.y);
-    double d = sqrt(dx*dx + dy*dy);Constraint *constr = new ConstraintEllipseTangentLine(l, e);
-    constr->setTag(tagId);
-    return addConstraint(constr);
-    return addConstraintTangentCircumf(e.center, a.center, e.radmaj, a.rad,
-                                       (d < *e.radmaj || d < *a.rad), tagId);*/
-    return 0;
-}
-
 int System::addConstraintCircleRadius(Circle &c, double *radius, int tagId)
 {
     return addConstraintEqual(c.rad, radius, tagId);
@@ -710,24 +661,6 @@ int System::addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId)
     addConstraintEqual(e1.radmin, e2.radmin, tagId);
     
     Constraint *constr = new ConstraintEqualMajorAxesEllipse(e1,e2);
-    constr->setTag(tagId);
-    return addConstraint(constr);
-}
-
-int System::addConstraintEqualRadii(ArcOfEllipse &a1, ArcOfEllipse &a2, int tagId)
-{
-    addConstraintEqual(a1.radmin, a2.radmin, tagId);
-    
-    Constraint *constr = new ConstraintEqualMajorAxesEllipse(a1,a2);
-    constr->setTag(tagId);
-    return addConstraint(constr);
-}
-
-int System::addConstraintEqualRadii(ArcOfEllipse &a1, Ellipse &e2, int tagId)
-{
-    addConstraintEqual(a1.radmin, e2.radmin, tagId);
-    
-    Constraint *constr = new ConstraintEqualMajorAxesEllipse(a1,e2);
     constr->setTag(tagId);
     return addConstraint(constr);
 }
@@ -862,102 +795,6 @@ int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse &e, Point &p1, i
     return addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseFocus2Y,tagId);
 }
 
-int System::addConstraintInternalAlignmentPoint2Ellipse(ArcOfEllipse &a, Point &p1, InternalAlignmentType alignmentType, int tagId)
-{
-    Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(a, p1, alignmentType);
-    constr->setTag(tagId);
-    return addConstraint(constr);   
-}
-
-int System::addConstraintInternalAlignmentEllipseMajorDiameter(ArcOfEllipse &a, Point &p1, Point &p2, int tagId)
-{
-    double X_1=*p1.x;
-    double Y_1=*p1.y;
-    double X_2=*p2.x;
-    double Y_2=*p2.y;
-    double X_c=*a.center.x;
-    double Y_c=*a.center.y;
-    double X_F1=*a.focus1.x;
-    double Y_F1=*a.focus1.y;
-    double b=*a.radmin;
-    
-    // P1=vector([X_1,Y_1])
-    // P2=vector([X_2,Y_2])
-    // dF1= (F1-C)/sqrt((F1-C)*(F1-C))
-    // print "these are the extreme points of the major axis"
-    // PA = C + a * dF1
-    // PN = C - a * dF1
-    // print "this is a simple function to know which point is closer to the positive edge of the ellipse"
-    // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
-    double closertopositivemajor=pow(X_1 - X_c - (X_F1 - X_c)*sqrt(pow(b, 2) + pow(X_F1 - X_c,
-        2) + pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)),
-        2) - pow(X_2 - X_c - (X_F1 - X_c)*sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) +
-        pow(Y_1 - Y_c - (Y_F1 - Y_c)*sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) -
-        pow(Y_2 - Y_c - (Y_F1 - Y_c)*sqrt(pow(b, 2) + pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
-    
-    if(closertopositivemajor>0){
-        //p2 is closer to  positivemajor. Assign constraints back-to-front.
-        addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipsePositiveMajorX,tagId);
-        addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipsePositiveMajorY,tagId);
-        addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipseNegativeMajorX,tagId);
-        return addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipseNegativeMajorY,tagId);         
-    }
-    else{
-        //p1 is closer to  positivemajor
-        addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipsePositiveMajorX,tagId);
-        addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipsePositiveMajorY,tagId);
-        addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipseNegativeMajorX,tagId);
-        return addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipseNegativeMajorY,tagId);
-    }
-}
-
-int System::addConstraintInternalAlignmentEllipseMinorDiameter(ArcOfEllipse &a, Point &p1, Point &p2, int tagId)
-{
-    double X_1=*p1.x;
-    double Y_1=*p1.y;
-    double X_2=*p2.x;
-    double Y_2=*p2.y;
-    double X_c=*a.center.x;
-    double Y_c=*a.center.y;
-    double X_F1=*a.focus1.x;
-    double Y_F1=*a.focus1.y;
-    double b=*a.radmin;
-    
-    // Same idea as for major above, but for minor
-    // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
-    double closertopositiveminor= pow(X_1 - X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 - X_c, 2) +
-        pow(Y_F1 - Y_c, 2)), 2) - pow(X_2 - X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 -
-        X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) + pow(-Y_1 + Y_c + b*(X_F1 -
-        X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) - pow(-Y_2 + Y_c
-        + b*(X_F1 - X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
-        
-    if(closertopositiveminor>0){
-        addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipsePositiveMinorX,tagId);
-        addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipsePositiveMinorY,tagId);
-        addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipseNegativeMinorX,tagId);
-        return addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipseNegativeMinorY,tagId); 
-    } else {
-        addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipsePositiveMinorX,tagId);
-        addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipsePositiveMinorY,tagId);
-        addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipseNegativeMinorX,tagId);
-        return addConstraintInternalAlignmentPoint2Ellipse(a,p2,EllipseNegativeMinorY,tagId);
-    }  
-}
-
-int System::addConstraintInternalAlignmentEllipseFocus1(ArcOfEllipse &a, Point &p1, int tagId)
-{
-           addConstraintEqual(a.focus1.x, p1.x, tagId);
-    return addConstraintEqual(a.focus1.y, p1.y, tagId);
-}
-
-int System::addConstraintInternalAlignmentEllipseFocus2(ArcOfEllipse &a, Point &p1, int tagId)
-{
-    addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipseFocus2X,tagId);
-    return addConstraintInternalAlignmentPoint2Ellipse(a,p1,EllipseFocus2Y,tagId);
-}
 
 //calculates angle between two curves at point of their intersection p. If two
 //points are supplied, p is used for first curve and p2 for second, yielding a
