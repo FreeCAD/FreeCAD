@@ -2175,9 +2175,7 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
         _DrawingView(viewobj)
         page.addObject(viewobj)
         if (otherProjection):
-            FreeCAD.Console.PrintWarning("using otherProjection")
             if hasattr(otherProjection,"Scale"):
-                FreeCAD.Console.PrintWarning(otherProjection.Scale)
                 viewobj.Scale = otherProjection.Scale
             if hasattr(otherProjection,"X"):
                 viewobj.X = otherProjection.X
@@ -2186,7 +2184,6 @@ def makeDrawingView(obj,page,lwmod=None,tmod=None,otherProjection=None):
             if hasattr(otherProjection,"Rotation"):
                 viewobj.Rotation = otherProjection.Rotation
             if hasattr(otherProjection,"Direction"):
-                FreeCAD.Console.PrintWarning(otherProjection.Direction)
                 viewobj.Direction = otherProjection.Direction
         else:
             if hasattr(page.ViewObject,"HintScale"):
