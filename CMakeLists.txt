@@ -380,6 +380,12 @@ if(FREECAD_LIBPACK_USE)
 
     find_package(PySideTools REQUIRED) # Pyside utilities (pyside-uic & pyside-rcc)
 
+# -------------------------------- Salome SMESH --------------------------
+
+    if(NOT FREECAD_USE_EXTERNAL_SMESH)
+        set(SMESH_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc)
+    endif()
+
 endif(FREECAD_LIBPACK_USE)
 
 if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER)
