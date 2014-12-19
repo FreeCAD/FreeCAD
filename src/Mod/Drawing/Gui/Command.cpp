@@ -293,22 +293,14 @@ void CmdDrawingNewView::activated(int iMsg)
     if (!selectedProjections.empty()) {
         const Drawing::FeatureView* const myView = dynamic_cast<Drawing::FeatureView*>(selectedProjections.front());
 
-        const App::PropertyFloat* const propX = dynamic_cast<App::PropertyFloat*>(myView->getPropertyByName("X"));
-        if (propX) {
-            newX = propX->getValue();
-        }
-        const App::PropertyFloat* const propY = dynamic_cast<App::PropertyFloat*>(myView->getPropertyByName("Y"));
-        if (propY) {
-            newY = propY->getValue();
-        }
-        const App::PropertyFloat* const propScale = dynamic_cast<App::PropertyFloat*>(myView->getPropertyByName("Scale"));
-        if (propScale) {
-            newScale = propScale->getValue();
-        }
-        const App::PropertyFloat* const propRotation = dynamic_cast<App::PropertyFloat*>(myView->getPropertyByName("Rotation"));
-        if (propRotation) {
-            newRotation = propRotation->getValue();
-        }
+        newX = myView->X.getValue();
+        newY = myView->Y.getValue();
+        newScale = myView->Scale.getValue();
+        newRotation = myView->Rotation.getValue();
+
+        // The "Direction" property does not belong to Drawing::FeatureView, but to one of the
+        // many child classes that are projecting objects into the drawing. Therefore, we get the
+        // property by name.
         const App::PropertyVector* const propDirection = dynamic_cast<App::PropertyVector*>(myView->getPropertyByName("Direction"));
         if (propDirection) {
             newDirection = propDirection->getValue();
