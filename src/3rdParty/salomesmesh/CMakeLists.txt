@@ -87,10 +87,6 @@ SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 #INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 #MESSAGE("Popo: ${Boost_INCLUDE_DIR}")
 
-################
-# Check Fortran#
-################
-INCLUDE(CMakeDetermineFortranCompiler)
 
 ########################################
 # OpenCASCADE include and lib location #

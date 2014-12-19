@@ -50,9 +50,6 @@ if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 endif ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
-    # Needed for salomesmesh
-    ENABLE_LANGUAGE(Fortran)
-
     include(cMake/ConfigureChecks.cmake)
     configure_file(config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
     add_definitions(-DHAVE_CONFIG_H)
