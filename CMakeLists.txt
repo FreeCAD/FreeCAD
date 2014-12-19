@@ -170,7 +170,8 @@ endif(MSVC)
 if (FREECAD_BUILD_DEBIAN)
     set(FREECAD_USE_EXTERNAL_ZIPIOS ON)
     set(FREECAD_USE_EXTERNAL_PIVY ON)
-    set(FREECAD_USE_EXTERNAL_SMESH ON)
+    # A Debian package for SMESH doesn't exist
+    #set(FREECAD_USE_EXTERNAL_SMESH ON)
 endif (FREECAD_BUILD_DEBIAN)
 
 # ==============================================================================
