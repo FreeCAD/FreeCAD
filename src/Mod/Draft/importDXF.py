@@ -1353,46 +1353,12 @@ def getArcData(edge):
         # closed circle
         return DraftVecUtils.tup(ce), radius, 0, 0
     else:
-        # method 1 - find direction of arc from tangents - not reliable
-        #tang1 = edge.Curve.tangent(edge.ParameterRange[0])
-        #tang2 = edge.Curve.tangent(edge.ParameterRange[1])
-        # following code doesn't seem to give right result?
-        # cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
-        # if cross1[2] > 0: # >0 ccw <0 cw
-        #    ve1 = edge.Vertexes[0].Point
-        #    ve2 = edge.Vertexes[-1].Point
-        # else:
-        #    ve1 = edge.Vertexes[-1].Point
-        #    ve2 = edge.Vertexes[0].Point
-
-        # method 3 - recreate an arc and check if the length is the same
-        ve1 = edge.Vertexes[0].Point
-        ve2 = edge.Vertexes[-1].Point
-        ang1 = -math.degrees(DraftVecUtils.angle(ve1.sub(ce)))
-        ang2 = -math.degrees(DraftVecUtils.angle(ve2.sub(ce)))
-
-        if round(ang1,Draft.precision()) == round(ang2,Draft.precision()):
-            return None,None, None, None
-        if edge.Curve.Axis.z < 0.0:
-            ang1, ang2 = ang2, ang1
-        pseudoarc = Part.ArcOfCircle(edge.Curve,math.radians(ang1),math.radians(ang2)).toShape()
-        if round(pseudoarc.Length,Draft.precision()) != round(edge.Length,Draft.precision()):
-            ang1, ang2 = ang2, ang1
-        
-        # method 2 - check the midpoint - not reliable either
-        #ve3 = DraftGeomUtils.findMidpoint(edge)
-        #ang3 = -math.degrees(DraftVecUtils.angle(ve3.sub(ce)))
-        #print ("edge ",edge.hashCode()," data ",ang1, " , ",ang2," , ", ang3)
-        #if (ang3 < ang1) and (ang2 < ang3):
-        #    print ("inverting, case1")
-        #    ang1, ang2 = ang2, ang1
-        #elif (ang3 > ang1) and (ang3 > ang2):
-        #    print ("inverting, case2")
-        #    ang1, ang2 = ang2, ang1
-        #elif (ang3 < ang1) and (ang3 < ang2):
-        #    print ("inverting, case3")
-        #    ang1, ang2 = ang2, ang1
-        return DraftVecUtils.tup(ce), radius, ang1, ang2
+        if round(edge.Curve.Axis.dot(FreeCAD.Vector(0,0,1))) == 1:
+            ang1,ang2=edge.ParameterRange
+        else:
+            ang2,ang1=edge.ParameterRange
+        return DraftVecUtils.tup(ce), radius, math.degrees(ang1),\
+                math.degrees(ang2)
 
 def getSplineSegs(edge):
     "returns an array of vectors from a Spline or Bezier edge"
@@ -1429,34 +1395,13 @@ def getWire(wire,nospline=False,lw=True):
     for edge in edges:
         v1 = edge.Vertexes[0].Point
         if DraftGeomUtils.geomType(edge) == "Circle":
-            mp = DraftGeomUtils.findMidpoint(edge)
-            v2 = edge.Vertexes[-1].Point
-            c = edge.Curve.Center
-            angle = abs(DraftVecUtils.angle(v1.sub(c),v2.sub(c)))
-            if DraftGeomUtils.isWideAngle(edge):
-                if angle < math.pi:
-                    angle = math.pi*2 - angle
-            # if (DraftVecUtils.angle(v2.sub(c)) < DraftVecUtils.angle(v1.sub(c))):
-            #    angle = -angle
             # polyline bulge -> negative makes the arc go clockwise
+            angle = edge.LastParameter-edge.FirstParameter
             bul = math.tan(angle/4)
-            
-            # OBSOLETE because arcs can have wrong normal
-            # the next bit of code is for finding the direction of the arc
-            # a negative cross product means the arc is clockwise
-            #tang1 = edge.Curve.tangent(edge.ParameterRange[0])
-            #tang2 = edge.Curve.tangent(edge.ParameterRange[1])
-            #cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
-            #if DraftVecUtils.isNull(cross1):
-                # special case, both tangents are opposite, unable to take their cross vector
-                # we try again with an arbitrary point at a third of the arc length
-                #tang2 = edge.Curve.tangent(edge.ParameterRange[0]+(edge.ParameterRange[1]-edge.ParameterRange[0]/3))
-                #cross1 = Vector.cross(Vector(tang1[0][0],tang1[0][1],tang1[0][2]),Vector(tang2[0][0],tang2[0][1],tang2[0][2]))
             #if cross1[2] < 0:
                 # polyline bulge -> negative makes the arc go clockwise 
                 #bul = -bul
-                
-            if not DraftGeomUtils.isClockwise(edge):
+            if edge.Curve.Axis.dot(FreeCAD.Vector(0,0,1)) < 0:
                 bul = -bul
             points.append(fmt(v1,bul))
         elif (DraftGeomUtils.geomType(edge) in ["BSplineCurve","BezierCurve","Ellipse"]) and (not nospline):
