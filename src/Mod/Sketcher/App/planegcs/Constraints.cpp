@@ -945,19 +945,6 @@ ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point &p, Ellipse &e)
     rescale();
 }
 
-ConstraintPointOnEllipse::ConstraintPointOnEllipse(Point &p, ArcOfEllipse &a)
-{
-    pvec.push_back(p.x);
-    pvec.push_back(p.y);
-    pvec.push_back(a.center.x);
-    pvec.push_back(a.center.y);
-    pvec.push_back(a.focus1.x);
-    pvec.push_back(a.focus1.y);
-    pvec.push_back(a.radmin);
-    origpvec = pvec;
-    rescale();
-}
-
 ConstraintType ConstraintPointOnEllipse::getTypeId()
 {
     return PointOnEllipse;

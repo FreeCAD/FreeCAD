@@ -1084,13 +1084,11 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             GCSsys.addConstraintTangent(l, c, tag);
             return ConstraintsCounter;
         } else if (Geoms[geoId2].type == Ellipse) {
-            // TODO: real implementation
             GCS::Ellipse &e = Ellipses[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(l, e, tag);
             return ConstraintsCounter;
         } else if (Geoms[geoId2].type == ArcOfEllipse) {
-            // TODO: real implementation
             GCS::ArcOfEllipse &a = ArcsOfEllipse[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintTangent(l, a, tag);
@@ -1104,11 +1102,8 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             GCSsys.addConstraintTangent(c, c2, tag);
             return ConstraintsCounter;
         } else if (Geoms[geoId2].type == Ellipse) {
-            // TODO: real implementation
-            GCS::Ellipse &e = Ellipses[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(e, c, tag);
-            return ConstraintsCounter;
+            Base::Console().Error("Direct tangency constraint between circle and ellipse is not supported. Use tangent-via-point instead.");
+            return -1;
         }
         else if (Geoms[geoId2].type == Arc) {
             GCS::Arc &a = Arcs[Geoms[geoId2].index];
@@ -1120,16 +1115,12 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
         GCS::Ellipse &e = Ellipses[Geoms[geoId1].index];
         
         if (Geoms[geoId2].type == Circle) {
-            GCS::Circle &c = Circles[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(e, c, tag);
-            return ConstraintsCounter;
+            Base::Console().Error("Direct tangency constraint between circle and ellipse is not supported. Use tangent-via-point instead.");
+            return -1;
         } else if (Geoms[geoId2].type == Arc) {
-            GCS::Arc &a = Arcs[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(e, a, tag);
-            return ConstraintsCounter;
-        }    
+            Base::Console().Error("Direct tangency constraint between arc and ellipse is not supported. Use tangent-via-point instead.");
+            return -1;
+        }
     } else if (Geoms[geoId1].type == Arc) {
         GCS::Arc &a = Arcs[Geoms[geoId1].index];
         if (Geoms[geoId2].type == Circle) {
@@ -1138,11 +1129,8 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2)
             GCSsys.addConstraintTangent(c, a, tag);
             return ConstraintsCounter;
         } else if (Geoms[geoId2].type == Ellipse) {
-            
-            GCS::Ellipse &e = Ellipses[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(e, a, tag);
-            return ConstraintsCounter;
+            Base::Console().Error("Direct tangency constraint between arc and ellipse is not supported. Use tangent-via-point instead.");
+            return -1;
         } else if (Geoms[geoId2].type == Arc) {
             GCS::Arc &a2 = Arcs[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
@@ -1593,7 +1581,7 @@ int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2)
         else if (Geoms[geoId2].type == ArcOfEllipse) {
             GCS::ArcOfEllipse &a = ArcsOfEllipse[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintPointOnArcOfEllipse(p1, a, tag);
+            GCSsys.addConstraintPointOnEllipse(p1, a, tag);
             return ConstraintsCounter;
         }
     }
