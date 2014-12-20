@@ -31,10 +31,7 @@
 #undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX 
 
 #if defined(_GCS_DEBUG) || defined(_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX)
-#include <Base/Writer.h>
-#include <Base/Reader.h>
-#include <Base/Exception.h>
-#include <Base/TimeInfo.h>
+#include <FCConfig.h>
 #include <Base/Console.h>
 #endif // _GCS_DEBUG
 

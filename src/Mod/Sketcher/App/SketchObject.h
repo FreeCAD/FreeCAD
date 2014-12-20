@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) J�rgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2008    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -47,7 +47,6 @@ public:
     Part    ::PropertyGeometryList   Geometry;
     Sketcher::PropertyConstraintList Constraints;
     App     ::PropertyLinkSubList    ExternalGeometry;
-    const char* ss;
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
@@ -163,7 +162,6 @@ public:
     virtual int getAxisCount(void) const;
     /// retrieves an axis iterating through the construction lines of the sketch (indices start at 0)
     virtual Base::Axis getAxis(int axId) const;
-    const char*& it(int arg1, int arg2);
 
 protected:
     /// get called by the container when a property has changed
