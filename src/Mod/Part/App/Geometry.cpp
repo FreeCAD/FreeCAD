@@ -97,6 +97,7 @@
 #include "ArcPy.h"
 #include "ArcOfCirclePy.h"
 #include "ArcOfEllipsePy.h"
+#include "ArcOfParabolaPy.h"
 #include "BezierCurvePy.h"
 #include "BSplineCurvePy.h"
 #include "HyperbolaPy.h"
@@ -2171,7 +2172,7 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
 
 PyObject *GeomArcOfParabola::getPyObject(void)
 {
-    //return new ArcOfParabolaPy(static_cast<GeomArcOfParabola*>(this->clone()));
+    return new ArcOfParabolaPy(static_cast<GeomArcOfParabola*>(this->clone()));
 }
 
 // -------------------------------------------------
