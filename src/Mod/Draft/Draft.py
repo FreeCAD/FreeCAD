@@ -1747,14 +1747,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 egroups.append(w.Edges)
         for g in egroups:
             edges = DraftGeomUtils.sortEdges(g)
-	    e0=edges[0]
+            e0=edges[0]
             v = getProj(e0.Vertexes[-1*(e0.Orientation=="Reversed")].Point)
             svg += 'M '+ str(v.x) +' '+ str(v.y) + ' '
             for e in edges:
-	        if e.Orientation == "Forward":
-		    vs = e.Vertexes
-		else:
-		    vs = e.Vertexes[::-1]
+                if e.Orientation == "Forward":
+                    vs = e.Vertexes
+                else:
+                    vs = e.Vertexes[::-1]
                 iscircle = DraftGeomUtils.geomType(e) == "Circle"
                 isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
                 if iscircle or isellipse:
@@ -1789,7 +1789,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     flag_large_arc = (((e.ParameterRange[1] - \
                             e.ParameterRange[0]) / math.pi) % 2) > 1
                     flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
-		            == (e.Orientation == "Forward")
+                            == (e.Orientation == "Forward")
                     for v in endpoints:
                         svg += 'A %s %s %s %s %s %s %s ' % \
                                 (str(rx),str(ry),str(rot),\
