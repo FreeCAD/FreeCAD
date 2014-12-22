@@ -46,7 +46,7 @@ except ImportError:
 
 def getMainWindow():
     """ Return the FreeCAD main window. """
-    toplevel = PySide.QtGui.qApp.topLevelWidgets()
+    toplevel = PySide.QtGui.QApplication.topLevelWidgets()
     for i in toplevel:
         if i.metaObject().className() == "Gui::MainWindow":
             return i
