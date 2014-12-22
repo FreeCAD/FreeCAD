@@ -19,7 +19,8 @@ endif()
 find_package(OCE QUIET)
 if(OCE_FOUND)
   message(STATUS "-- OpenCASCADE Community Edition has been found.")
-  add_definitions (-DHAVE_CONFIG_H)
+  # Disable this define. For more details see bug #0001872
+  #add_definitions (-DHAVE_CONFIG_H)
   set(OCC_INCLUDE_DIR ${OCE_INCLUDE_DIRS})
   #set(OCC_LIBRARY_DIR ${OCE_LIBRARY_DIR})
 else(OCE_FOUND) #look for OpenCASCADE
