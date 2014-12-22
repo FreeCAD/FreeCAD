@@ -27,6 +27,8 @@
 #include "ui_DlgActions.h"
 #include "PropertyPage.h"
 #include <QDialog>
+#include <QList>
+#include <QPair>
 
 
 namespace Gui {
@@ -100,6 +102,28 @@ private Q_SLOTS:
 
 private:
     Ui_DlgChooseIcon *ui;
+};
+
+class IconFolders : public QDialog
+{
+    Q_OBJECT
+
+public:
+    IconFolders(const QStringList&, QWidget* parent);
+    ~IconFolders();
+    QStringList getPaths() const;
+
+private Q_SLOTS:
+    void addFolder();
+    void removeFolder();
+
+private:
+    bool restart;
+    int maxLines;
+    QGridLayout* gridLayout;
+    QLabel* textLabel;
+    QPushButton* addButton;
+    QList< QPair<QLineEdit*, QPushButton*> > buttonMap;
 };
 
 } // namespace Dialog
