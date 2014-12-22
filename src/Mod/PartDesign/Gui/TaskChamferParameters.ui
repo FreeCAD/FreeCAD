@@ -42,7 +42,7 @@
     <widget class="QListWidget" name="listWidgetReferences"/>
    </item>
    <item>
-    <widget class="Gui::QuantitySpinBox" name="chamferDistance"/>
+      <widget class="Gui::QuantitySpinBox" name="chamferDistance"/>
    </item>
    <item>
     <widget class="QLabel" name="label">

@@ -107,6 +107,7 @@ PartDesign::Body *Workbench::setUpPart(const App::Part *part)
 
 void Workbench::_doMigration(const App::Document* doc)
 {
+	bool groupCreated = false;
 
     if(doc->countObjects() != 0) {
          // show a warning about the convertion
@@ -165,7 +166,7 @@ void Workbench::_doMigration(const App::Document* doc)
     // Always create at least the first body, even if the document is empty
     // This adds both the base planes and the body
     Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
-    activeBody = PartDesignGui::ActivePartObject;
+    PartDesign::Body *activeBody = PartDesignGui::ActivePartObject;
 
 
     // Create one Body for every root and put the appropriate features into it
@@ -391,17 +392,17 @@ void Workbench::_switchToDocument(const App::Document* doc)
 
 void Workbench::slotActiveDocument(const Gui::Document& Doc)
 {
-    switchToDocument(Doc.getDocument());
+    _switchToDocument(Doc.getDocument());
 }
 
 void Workbench::slotNewDocument(const App::Document& Doc)
 {
-    switchToDocument(&Doc);
+    _switchToDocument(&Doc);
 }
 
 void Workbench::slotFinishRestoreDocument(const App::Document& Doc)
 {    
-    switchToDocument(&Doc);
+    _switchToDocument(&Doc);
 }
 
 void Workbench::slotDeleteDocument(const App::Document&)
@@ -616,7 +617,7 @@ void Workbench::activated()
 
     // make the previously used active Body active again
     PartDesignGui::ActivePartObject = NULL;
-    switchToDocument(App::GetApplication().getActiveDocument());
+    _switchToDocument(App::GetApplication().getActiveDocument());
 
     addTaskWatcher(Watcher);
     Gui::Control().showTaskView();
