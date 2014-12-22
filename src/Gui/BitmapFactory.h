@@ -54,12 +54,12 @@ public:
     static BitmapFactoryInst& instance(void);
     static void destruct (void);
 
-    void addCustomPath(const QString&);
-
     /// Adds a path where pixmaps can be found
     void addPath(const QString& path);
     /// Removes a path from the list of pixmap paths
     void removePath(const QString& path);
+    /// Returns the list of search paths
+    QStringList getPaths() const;
     /// Returns the absolute file names of icons found in the given search paths
     QStringList findIconFiles() const;
     /// Adds a build in XPM pixmap under a given name

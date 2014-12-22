@@ -114,16 +114,6 @@ BitmapFactoryInst::~BitmapFactoryInst()
     delete d;
 }
 
-void BitmapFactoryInst::addCustomPath(const QString& path)
-{
-    Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/Bitmaps");
-    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
-    std::stringstream str;
-    str << "CustomPath" << paths.size();
-    group->SetASCII(str.str().c_str(), (const char*)path.toUtf8());
-}
-
 void BitmapFactoryInst::restoreCustomPaths()
 {
     Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
@@ -143,6 +133,11 @@ void BitmapFactoryInst::removePath(const QString& path)
 {
     int pos = d->paths.indexOf(path);
     if (pos != -1) d->paths.removeAt(pos);
+}
+
+QStringList BitmapFactoryInst::getPaths() const
+{
+    return d->paths;
 }
 
 QStringList BitmapFactoryInst::findIconFiles() const
