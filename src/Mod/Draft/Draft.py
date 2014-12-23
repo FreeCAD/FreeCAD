@@ -1735,29 +1735,38 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             return svgpatterns()[pat][0]
         return ''
 
-    def getPath(edges=[],wires=[]):
+    def getPath(edges=[],wires=[],pathname=None):
         import DraftGeomUtils
-        svg ='<path id="' + obj.Name + '" '
-        svg += 'd="'
+        if pathname is None:
+            pathname = obj.Name
+        svg ='<path id="%s" d="' % pathname
         if not wires:
-            egroups = [edges]
+            egroups = (DraftGeomUtils.sortEdges(edges),)
         else:
             egroups = []
             for w in wires:
-                egroups.append(w.Edges)
-        for g in egroups:
-            edges = DraftGeomUtils.sortEdges(g)
-            e0=edges[0]
-            v = getProj(e0.Vertexes[-1*(e0.Orientation=="Reversed")].Point)
-            svg += 'M '+ str(v.x) +' '+ str(v.y) + ' '
-            for e in edges:
+                w1=w.copy()
+                w1.fixWire()
+                egroups.append(w1.Edges)
+        for egroupindex, edges in enumerate(egroups):
+            vs=() #skipped for the first edge
+            for edgeindex,e in enumerate(edges):
+                previousvs = vs
+                # vertexes of an edge (corrected for the orientation)
                 if e.Orientation == "Forward":
                     vs = e.Vertexes
                 else:
                     vs = e.Vertexes[::-1]
+                if edgeindex == 0:
+                    v = getProj(vs[0].Point)
+                    svg += 'M '+ str(v.x) +' '+ str(v.y) + ' '
+                else:
+                    if (vs[0].Point-previousvs[-1].Point).Length > 1e-6:
+                        raise ValueError('edges not ordered')
                 iscircle = DraftGeomUtils.geomType(e) == "Circle"
                 isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
                 if iscircle or isellipse:
+                    import math
                     c = e.Curve
                     if len(e.Vertexes) == 1 and iscircle: #complete curve
                         svg = getCircle(e)
@@ -1774,7 +1783,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         rx = ry = c.Radius
                         rot = 0
                     else: #ellipse
-                        import math
                         rx = c.MajorRadius
                         ry = c.MinorRadius
                         rot = math.degrees(c.AngleXU * (c.Axis * \
@@ -1819,7 +1827,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 v = getProj(pole)
                                 svg += str(v.x) +' '+ str(v.y) + ' '
                     else: 
-                        print("Debug: one edge (hash ",e.hashCode(),") has been discretized with parameter 0.1")
+                        print("Debug: one edge (hash ",e.hashCode(),\
+                                ") has been discretized with parameter 0.1")
                         for linepoint in bspline.discretize(0.1)[1:]:
                             v = getProj(linepoint)
                             svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
@@ -1849,7 +1858,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg += ';fill:' + fill + '"'
         svg += '/>\n'
         return svg
-        
+
     def getArrow(arrowtype,point,arrowsize,color,linewidth,angle=0):
         svg = ""
         if obj.ViewObject.ArrowType == "Circle":
@@ -2121,17 +2130,20 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if len(obj.Shape.Vertexes) > 1:
             wiredEdges = []
             if obj.Shape.Faces:
-                for f in obj.Shape.Faces:
-                    svg += getPath(wires=f.Wires)
+                for i,f in enumerate(obj.Shape.Faces):
+                    svg += getPath(wires=f.Wires,pathname='%s_f%04d' % \
+                            (obj.Name,i))
                     wiredEdges.extend(f.Edges)
             else:
-                for w in obj.Shape.Wires:
-                    svg += getPath(w.Edges)
+                for i,w in enumerate(obj.Shape.Wires):
+                    svg += getPath(w.Edges,pathname='%s_w%04d' % \
+                            (obj.Name,i))
                     wiredEdges.extend(w.Edges)
             if len(wiredEdges) != len(obj.Shape.Edges):
-                for e in obj.Shape.Edges:
+                for i,e in enumerate(obj.Shape.Edges):
                     if (DraftGeomUtils.findEdge(e,wiredEdges) == None):
-                        svg += getPath([e])
+                        svg += getPath([e],pathname='%s_nwe%04d' % \
+                                (obj.Name,i))
         else:
             # closed circle or spline
             if isinstance(obj.Shape.Edges[0].Curve,Part.Circle):
