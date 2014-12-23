@@ -80,7 +80,7 @@ public:
     virtual void Save(Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
 
-    virtual Property *Copy(void) const;
+    virtual App::Property *Copy(void) const;
     virtual void Paste(const App::Property &from);
 
     virtual unsigned int getMemSize(void) const;
