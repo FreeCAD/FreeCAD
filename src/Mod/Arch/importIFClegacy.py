@@ -1407,8 +1407,12 @@ class IfcSchema:
     def __init__(self, filename):
         self.filename = filename
         if not os.path.exists(filename):
-            raise ImportError("no IFCSchema file found!")
-        else:
+            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
+            p = p.GetString("MacroPath","")
+            filename = p + os.sep + filename
+            if not os.path.exists(filename):
+                raise ImportError("no IFCSchema file found!")
+
             self.file = open(self.filename)
             self.data = self.file.read()
             self.types = self.readTypes()
@@ -1861,6 +1865,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
                                 t = "        " + str(t)
                                 item = QtGui.QTreeWidgetItem(tree)
                                 item.setText(2,str(t))
+
     d = QtGui.QDialog()
     d.setObjectName("IfcExplorer")
     d.setWindowTitle("Ifc Explorer")
