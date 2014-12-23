@@ -34,8 +34,6 @@
 namespace Part
 {
 
-class Property;
-
 /** The part shape property class.
  * @author Werner Mayer
  */

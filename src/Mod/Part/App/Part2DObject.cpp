@@ -306,6 +306,11 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
    return true;
 }
 
+void Part2DObject::acceptGeometry()
+{
+    // implemented in sub-classes
+}
+
 // Python Drawing feature ---------------------------------------------------------
 
 namespace App {

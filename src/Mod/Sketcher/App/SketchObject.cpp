@@ -321,6 +321,12 @@ Base::Axis SketchObject::getAxis(int axId) const
     return Base::Axis();
 }
 
+void SketchObject::acceptGeometry()
+{
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+}
+
 int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
