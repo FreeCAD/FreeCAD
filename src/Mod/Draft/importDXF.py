@@ -1511,7 +1511,7 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
         # print("lone edges ",loneedges)
         for edge in loneedges:
             if (DraftGeomUtils.geomType(edge) in ["BSplineCurve","BezierCurve"]): # splines
-                if (len(edge.Vertexes) == 1) and (edge.Curve.isClosed()):
+                if (len(edge.Vertexes) == 1) and (edge.Curve.isClosed()) and (edge.Area > 0):
                     # special case: 1-vert closed spline, approximate as a circle
                     c = DraftGeomUtils.getCircleFromSpline(edge)
                     if c:
