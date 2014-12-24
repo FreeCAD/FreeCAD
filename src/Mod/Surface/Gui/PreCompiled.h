@@ -24,26 +24,19 @@
 #ifndef GUI_PRECOMPILED_H
 #define GUI_PRECOMPILED_H
 
-/*#include <FCConfig.h>
-
-// Importing of App classes
-#ifdef FC_OS_WIN32
-# define SurfaceAppExport __declspec(dllimport)
-# define SurfaceGuiExport __declspec(dllexport)
-#else // for Linux
-# define SurfaceAppExport
-# define SurfaceGuiExport
-#endif*/
-
 #include <FCConfig.h>
 
 // Importing of App classes
 #ifdef FC_OS_WIN32
 # define PartExport           __declspec(dllimport)
 # define PartGuiExport        __declspec(dllimport)
+# define SurfaceAppExport     __declspec(dllimport)
+# define SurfaceGuiExport     __declspec(dllexport)
 #else // for Linux
-# define PartExport     
-# define PartGuiExport     
+# define PartExport
+# define PartGuiExport
+# define SurfaceAppExport
+# define SurfaceGuiExport
 #endif
 
 #ifdef _PreComp_
