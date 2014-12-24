@@ -47,7 +47,7 @@ PyDoc_STRVAR(module_SurfaceGui_doc,
 
 /* Python entry */
 extern "C" {
-void PartGuiExport initSurfaceGui()
+void SurfaceGuiExport initSurfaceGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
