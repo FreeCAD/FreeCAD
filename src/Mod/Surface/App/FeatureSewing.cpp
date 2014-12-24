@@ -91,8 +91,6 @@ App::DocumentObjectExecReturn *Sewing::execute(void)
     //Perform error checking
 
 
-    bool res;
-
     //Begin Construction
     try{
 
@@ -113,8 +111,7 @@ App::DocumentObjectExecReturn *Sewing::execute(void)
         if (aShape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         this->Shape.setValue(aShape);
-
-
+        return 0;
     } //End Try
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

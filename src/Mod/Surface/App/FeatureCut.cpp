@@ -63,8 +63,6 @@ App::DocumentObjectExecReturn *Cut::execute(void)
 
     //Perform error checking
 
-    bool res;
-
     //Begin Construction
     try{
 
@@ -109,7 +107,7 @@ App::DocumentObjectExecReturn *Cut::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         }
         this->Shape.setValue(aCutShape);
-
+        return 0;
     } //End Try
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

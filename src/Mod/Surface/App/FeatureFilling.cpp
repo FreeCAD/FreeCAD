@@ -122,8 +122,6 @@ App::DocumentObjectExecReturn *Filling::execute(void)
     unsigned int Mdeg = MaxDeg.getValue();
     unsigned int Mseg = MaxSegments.getValue();
 
-    bool res;
-
     //Perform error checking
 
 
@@ -426,8 +424,6 @@ void appconstr_pt(BRepFill_Filling& builder,const App::PropertyLinkSubList& aVer
 }
 
 void appinitface(BRepFill_Filling& builder,const App::PropertyLinkSubList& aFace){
-
-    int res;
 
     if(aFace.getSize()>1){Standard_Failure::Raise("Only one face may be used for the initial face");return;}
 
