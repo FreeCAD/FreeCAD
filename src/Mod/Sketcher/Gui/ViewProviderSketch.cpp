@@ -4497,10 +4497,7 @@ Sketcher::SketchObject *ViewProviderSketch::getSketchObject(void) const
 bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
 {
     if (edit) {
-        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-        if (selection.empty())
-            return false;
-        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        std::vector<std::string> SubNames = subList;
 
         Gui::Selection().clearSelection();
         resetPreselectPoint();
