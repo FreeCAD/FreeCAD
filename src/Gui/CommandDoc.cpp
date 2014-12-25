@@ -1017,54 +1017,77 @@ void StdCmdDelete::activated(int iMsg)
         Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(*it);
         std::vector<Gui::SelectionObject> sel = rSel.getSelectionEx((*it)->getName());
         if (!sel.empty()) {
-            bool doDeletion = true;
-            // check if we can delete the object
-            for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                App::DocumentObject* obj = ft->getObject();
-                Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
-                // if the object is in edit mode we allow to continue because only sub-elements will be removed
-                if (!vp || !vp->isEditing()) {
+            bool autoDeletion = true;
+
+            // if an object is in edit mode handle only this object even if unselected (#0001838)
+            Gui::ViewProvider* vpedit = pGuiDoc->getInEdit();
+            if (vpedit) {
+                // check if the edited view provider is selected
+                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
+                    App::DocumentObject* obj = ft->getObject();
+                    Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
+                    if (vp == vpedit) {
+                        if (!ft->getSubNames().empty()) {
+                            // handle the view provider
+                            Gui::getMainWindow()->setUpdatesEnabled(false);
+
+                            (*it)->openTransaction("Delete");
+                            vpedit->onDelete(ft->getSubNames());
+                            (*it)->commitTransaction();
+
+                            Gui::getMainWindow()->setUpdatesEnabled(true);
+                            Gui::getMainWindow()->update();
+                        }
+                        break;
+                    }
+                }
+            }
+            else {
+                // check if we can delete the object
+                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
+                    App::DocumentObject* obj = ft->getObject();
+                    Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
                     std::vector<App::DocumentObject*> links = obj->getInList();
                     if (!links.empty()) {
                         // check if the referenced objects are groups or are selected too
                         for (std::vector<App::DocumentObject*>::iterator lt = links.begin(); lt != links.end(); ++lt) {
                             if (!(*lt)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) && !rSel.isSelected(*lt)) {
-                                doDeletion = false;
+                                autoDeletion = false;
                                 break;
                             }
                         }
 
-                        if (!doDeletion) {
+                        if (!autoDeletion) {
                             break;
                         }
                     }
                 }
-            }
 
-            if (!doDeletion) {
-                int ret = QMessageBox::question(Gui::getMainWindow(),
-                    qApp->translate("Std_Delete", "Object dependencies"),
-                    qApp->translate("Std_Delete", "This object is referenced by other objects and thus these objects might get broken.\n"
-                                                  "Are you sure to continue?"),
-                    QMessageBox::Yes, QMessageBox::No);
-                if (ret == QMessageBox::Yes)
-                    doDeletion = true;
-            }
-            if (doDeletion) {
-                Gui::getMainWindow()->setUpdatesEnabled(false);
-                (*it)->openTransaction("Delete");
-                for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
-                    Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
-                    if (vp) {
-                        // ask the ViewProvider if it wants to do some clean up
-                        if (vp->onDelete(ft->getSubNames()))
-                            doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
-                                     ,(*it)->getName(), ft->getFeatName());
-                    }
+                if (!autoDeletion) {
+                    int ret = QMessageBox::question(Gui::getMainWindow(),
+                        qApp->translate("Std_Delete", "Object dependencies"),
+                        qApp->translate("Std_Delete", "This object is referenced by other objects and thus these objects might get broken.\n"
+                                                      "Are you sure to continue?"),
+                        QMessageBox::Yes, QMessageBox::No);
+                    if (ret == QMessageBox::Yes)
+                        autoDeletion = true;
                 }
-                (*it)->commitTransaction();
-                Gui::getMainWindow()->setUpdatesEnabled(true);
-                Gui::getMainWindow()->update();
+                if (autoDeletion) {
+                    Gui::getMainWindow()->setUpdatesEnabled(false);
+                    (*it)->openTransaction("Delete");
+                    for (std::vector<Gui::SelectionObject>::iterator ft = sel.begin(); ft != sel.end(); ++ft) {
+                        Gui::ViewProvider* vp = pGuiDoc->getViewProvider(ft->getObject());
+                        if (vp) {
+                            // ask the ViewProvider if it wants to do some clean up
+                            if (vp->onDelete(ft->getSubNames()))
+                                doCommand(Doc,"App.getDocument(\"%s\").removeObject(\"%s\")"
+                                         ,(*it)->getName(), ft->getFeatName());
+                        }
+                    }
+                    (*it)->commitTransaction();
+                    Gui::getMainWindow()->setUpdatesEnabled(true);
+                    Gui::getMainWindow()->update();
+                }
             }
         }
     }
