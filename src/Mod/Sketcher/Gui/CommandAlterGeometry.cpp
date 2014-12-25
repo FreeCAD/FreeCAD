@@ -44,13 +44,14 @@ using namespace Sketcher;
 
 bool isAlterGeoActive(Gui::Document *doc)
 {
-    if (doc)
+    if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId()))
-            if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
-                ->getSketchMode() == ViewProviderSketch::STATUS_NONE)
-                if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
-                    return true;
+        SketcherGui::ViewProviderSketch* edit = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (edit && edit->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
+            return Gui::Selection().isSelected(edit->getObject());
+        }
+    }
+
     return false;
 }
 
@@ -88,12 +89,22 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select edge(s) from the sketch."));
+        return;
+    }
+
+    // make sure the selected object is the sketch in edit mode
+    const App::DocumentObject* obj = selection[0].getObject();
+    ViewProviderSketch* sketchView = static_cast<ViewProviderSketch*>
+        (Gui::Application::Instance->getViewProvider(obj));
 
     // undo command open
-    openCommand("toggle draft from/to draft");
+    openCommand("Toggle draft from/to draft");
 
     // go through the selected subelements
-    for(std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+    for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
         // only handle edges
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
             int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
