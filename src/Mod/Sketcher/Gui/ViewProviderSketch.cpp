@@ -1556,7 +1556,6 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
     assert(edit);
 
     int PtIndex = -1;
-    int EdgeIndex = -1;
     int GeoIndex = -1; // valid values are 0,1,2,... for normal geometry and -3,-4,-5,... for external geometry
     int CrossIndex = -1;
     std::set<int> constrIndices;
@@ -1585,7 +1584,6 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
                     // get the index
                     int curveIndex = static_cast<const SoLineDetail *>(curve_detail)->getLineIndex();
                     GeoIndex = edit->CurvIdToGeoId[curveIndex];
-                    EdgeIndex = curveIndex;
                 }
             // checking for a hit in the cross
             } else if (tail == edit->RootCrossSet) {
@@ -1624,7 +1622,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
         } else if (GeoIndex != -1 && GeoIndex != edit->PreselectCurve) {  // if a new curve is hit
             std::stringstream ss;
             if (GeoIndex >= 0)
-                ss << "Edge" << EdgeIndex + 1;
+                ss << "Edge" << GeoIndex + 1;
             else // external geometry
                 ss << "ExternalEdge" << -GeoIndex - 2; // convert index start from -3 to 1
             bool accepted =
