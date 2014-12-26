@@ -62,7 +62,11 @@ public:
     virtual std::vector<std::string> getEditableTextsFromTemplate(void) const;
 
 protected:
+    void onBeforeChange(const App::Property* prop);
     void onChanged(const App::Property* prop);
+
+private:
+    int numChildren;
 };
 
 
