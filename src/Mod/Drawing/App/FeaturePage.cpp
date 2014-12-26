@@ -52,7 +52,7 @@ PROPERTY_SOURCE(Drawing::FeaturePage, App::DocumentObjectGroup)
 
 const char *group = "Drawing view";
 
-FeaturePage::FeaturePage(void) 
+FeaturePage::FeaturePage(void) : numChildren(0)
 {
     static const char *group = "Drawing view";
 
@@ -63,6 +63,15 @@ FeaturePage::FeaturePage(void)
 
 FeaturePage::~FeaturePage()
 {
+}
+
+void FeaturePage::onBeforeChange(const App::Property* prop)
+{
+    if (prop == &Group) {
+        numChildren = Group.getSize();
+    }
+
+    App::DocumentObjectGroup::onBeforeChange(prop);
 }
 
 /// get called by the container when a Property was changed
@@ -85,7 +94,13 @@ void FeaturePage::onChanged(const App::Property* prop)
         if (!this->isRestoring()) {
             EditableTexts.setValues(getEditableTextsFromTemplate());
         }
+    } else if (prop == &Group) {
+        if (Group.getSize() != numChildren) {
+            numChildren = Group.getSize();
+            touch();
+        }
     }
+
     App::DocumentObjectGroup::onChanged(prop);
 }
 
