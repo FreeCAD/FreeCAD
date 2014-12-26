@@ -62,7 +62,7 @@ public:
                   Gui::SelectionSingleton::MessageType Reason);
 
 private Q_SLOTS:
-    void on_changeMaterial_activated(const QString&);
+    void on_changeMaterial_activated(int);
     void on_changeMode_activated(const QString&);
     void on_changePlot_activated(const QString&);
     void on_buttonColor_changed();
@@ -91,7 +91,6 @@ private:
     void setTransparency(const std::vector<ViewProvider*>&);
     void setLineTransparency(const std::vector<ViewProvider*>&);
     std::vector<ViewProvider*> getSelection() const;
-    QMap<QString, App::Material::MaterialType> Materials;
 
     DlgDisplayPropertiesImp_Connection connectChangedObject;
 };
