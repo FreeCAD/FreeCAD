@@ -440,6 +440,7 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToC
             // due to possible round-off errors make sure that the
             // exact orientation is set
             cam->orientation.setValue(rot);
+            cam->position = PRIVATE(this)->focal2 - cam->focalDistance.getValue() * direction;
         }
     }
     else {
