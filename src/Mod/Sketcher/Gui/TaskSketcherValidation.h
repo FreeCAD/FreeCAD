@@ -49,6 +49,8 @@ protected:
 private Q_SLOTS:
     void on_findButton_clicked();
     void on_fixButton_clicked();
+    void on_findConstraint_clicked();
+    void on_fixConstraint_clicked();
 
 private:
     void showPoints(const std::vector<Base::Vector3d>&);

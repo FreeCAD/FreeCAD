@@ -61,6 +61,7 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
 {
     ui->setupUi(this);
     ui->fixButton->setEnabled(false);
+    ui->fixConstraint->setEnabled(false);
     double tolerances[8] = {
         Precision::Confusion() / 100,
         Precision::Confusion() / 10,
@@ -314,6 +315,26 @@ void SketcherValidation::on_fixButton_clicked()
     Gui::WaitCursor wc;
     doc->commitTransaction();
     doc->recompute();
+}
+
+void SketcherValidation::on_findConstraint_clicked()
+{
+    if (sketch->evaluateConstraints()) {
+        QMessageBox::information(this, tr("No invalid constraints"),
+            tr("No invalid constraints found"));
+        ui->fixConstraint->setEnabled(false);
+    }
+    else {
+        QMessageBox::warning(this, tr("Invalid constraints"),
+            tr("Invalid constraints found"));
+        ui->fixConstraint->setEnabled(true);
+    }
+}
+
+void SketcherValidation::on_fixConstraint_clicked()
+{
+    sketch->validateConstraints();
+    ui->fixConstraint->setEnabled(false);
 }
 
 void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)
