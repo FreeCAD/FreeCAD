@@ -542,7 +542,25 @@ void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
     size[1] = p.height();
 
     int buffersize = p.numBytes();
-    int numcomponents = buffersize / ( size[0] * size[1] );
+    int numcomponents = 0;
+    QVector<QRgb> table = p.colorTable();
+    if (!table.isEmpty()) {
+        if (p.hasAlphaChannel()) {
+            if (p.allGray())
+                numcomponents = 2;
+            else
+                numcomponents = 4;
+        }
+        else {
+            if (p.allGray())
+                numcomponents = 1;
+            else
+                numcomponents = 3;
+        }
+    }
+    else {
+        numcomponents = buffersize / (size[0] * size[1]);
+    }
 
     // allocate image data
     img.setValue(size, numcomponents, NULL);
