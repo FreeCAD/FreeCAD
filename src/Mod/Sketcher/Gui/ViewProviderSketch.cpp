@@ -4339,6 +4339,27 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     Base::Rotation tmp(plm.getRotation());
 
     SbRotation rot((float)tmp[0],(float)tmp[1],(float)tmp[2],(float)tmp[3]);
+
+    // Will the sketch be visible from the new position (#0000957)?
+    //
+    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+    SbVec3f curdir; // current view direction
+    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), curdir);
+    SbVec3f focal = camera->position.getValue() +
+                    camera->focalDistance.getValue() * curdir;
+
+    SbVec3f newdir; // future view direction
+    rot.multVec(SbVec3f(0, 0, -1), newdir);
+    SbVec3f newpos = focal - camera->focalDistance.getValue() * newdir;
+
+    SbVec3f plnpos = Base::convertTo<SbVec3f>(plm.getPosition());
+    double dist = (plnpos - newpos).dot(newdir);
+    if (dist < 0) {
+        float focalLength = camera->focalDistance.getValue() - dist + 5;
+        camera->position = focal - focalLength * curdir;
+        camera->focalDistance.setValue(focalLength);
+    }
+
     viewer->setCameraOrientation(rot);
 
     viewer->setEditing(TRUE);
