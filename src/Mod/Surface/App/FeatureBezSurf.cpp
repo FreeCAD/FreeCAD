@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
@@ -173,6 +174,9 @@ void getCurves(GeomFill_BezierCurves& aBuilder,TopoDS_Wire& aWire, const App::Pr
                
             //we want only the subshape which is linked
             sub = ts.getSubShape(set.sub);
+            // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
+            BRepBuilderAPI_Copy copy(sub);
+            sub = copy.Shape();
             
             if(sub.ShapeType() == TopAbs_EDGE) {  //Check Shape type and assign edge
                 etmp = TopoDS::Edge(sub);
