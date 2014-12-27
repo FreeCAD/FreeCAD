@@ -2160,6 +2160,110 @@ void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::st
     msg = ss.str();
 }
 
+bool SketchObject::evaluateConstraints() const
+{
+    int intGeoCount = getHighestCurveIndex() + 1;
+    int extGeoCount = getExternalGeometryCount();
+
+    std::vector<Part::Geometry *> geometry = getCompleteGeometry();
+    const std::vector<Sketcher::Constraint *>& constraints = Constraints.getValues();
+    if (static_cast<int>(geometry.size()) != extGeoCount + intGeoCount)
+        return false;
+    if (geometry.size() < 2)
+        return false;
+
+    std::vector<Sketcher::Constraint *>::const_iterator it;
+    for (it = constraints.begin(); it != constraints.end(); ++it) {
+        switch ((*it)->Type) {
+            case Horizontal:
+            case Vertical:
+            case Radius:
+            case Distance:
+            case DistanceX:
+            case DistanceY:
+                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
+                    return false;
+                break;
+            case Perpendicular:
+            case Parallel:
+            case Equal:
+            case PointOnObject:
+            case Tangent:
+            case Symmetric:
+                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
+                    return false;
+                if ((*it)->Second < -extGeoCount || (*it)->Second >= intGeoCount)
+                    return false;
+                break;
+            case Angle:
+                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
+                    return false;
+                if (((*it)->Second < -extGeoCount || (*it)->Second >= intGeoCount) &&
+                     (*it)->Second != Constraint::GeoUndef)
+                     return false;
+                break;
+            default:
+                break;
+        }
+    }
+
+    return true;
+}
+
+void SketchObject::validateConstraints()
+{
+    int intGeoCount = getHighestCurveIndex() + 1;
+    int extGeoCount = getExternalGeometryCount();
+
+    std::vector<Part::Geometry *> geometry = getCompleteGeometry();
+    const std::vector<Sketcher::Constraint *>& constraints = Constraints.getValues();
+
+    std::vector<Sketcher::Constraint *> newConstraints;
+    std::vector<Sketcher::Constraint *>::const_iterator it;
+    for (it = constraints.begin(); it != constraints.end(); ++it) {
+        bool valid = true;
+        switch ((*it)->Type) {
+            case Horizontal:
+            case Vertical:
+            case Radius:
+            case Distance:
+            case DistanceX:
+            case DistanceY:
+                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
+                    valid = false;
+                break;
+            case Perpendicular:
+            case Parallel:
+            case Equal:
+            case PointOnObject:
+            case Tangent:
+            case Symmetric:
+                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
+                    valid = false;
+                if ((*it)->Second < -extGeoCount || (*it)->Second >= intGeoCount)
+                    valid = false;
+                break;
+            case Angle:
+                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
+                    valid = false;
+                if (((*it)->Second < -extGeoCount || (*it)->Second >= intGeoCount) &&
+                     (*it)->Second != Constraint::GeoUndef)
+                     valid = false;
+                break;
+            default:
+                break;
+        }
+
+        if (valid)
+            newConstraints.push_back(*it);
+    }
+
+    if (newConstraints.size() != constraints.size()) {
+        Constraints.setValues(newConstraints);
+        acceptGeometry();
+    }
+}
+
 PyObject *SketchObject::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {

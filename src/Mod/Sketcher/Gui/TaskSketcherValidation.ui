@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>242</width>
-    <height>137</height>
+    <height>192</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Sketcher validation</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -39,6 +39,29 @@
       </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="fixButton">
+        <property name="text">
+         <string>Fix</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Invalid constraints</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="findConstraint">
+        <property name="text">
+         <string>Find</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="fixConstraint">
         <property name="text">
          <string>Fix</string>
         </property>

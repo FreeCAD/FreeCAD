@@ -164,6 +164,10 @@ public:
     virtual Base::Axis getAxis(int axId) const;
     /// verify and accept the assigned geometry
     virtual void acceptGeometry();
+    /// Check for constraints with invalid indexes
+    bool evaluateConstraints() const;
+    /// Remove constraints with invalid indexes
+    void validateConstraints();
 
 protected:
     /// get called by the container when a property has changed

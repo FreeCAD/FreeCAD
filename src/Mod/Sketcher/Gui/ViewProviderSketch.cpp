@@ -3967,6 +3967,13 @@ bool ViewProviderSketch::setEdit(int ModNum)
             return false;
     }
 
+    Sketcher::SketchObject* sketch = getSketchObject();
+    if (!sketch->evaluateConstraints()) {
+        QMessageBox::critical(Gui::getMainWindow(), tr("Invalid sketch"),
+            tr("The sketch is invalid and cannot be edited.\nUse the sketch validation tool."));
+        return false;
+    }
+
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
 
