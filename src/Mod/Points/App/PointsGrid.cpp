@@ -130,7 +130,7 @@ void PointsGrid::InitGrid (void)
 
   // Grid Laengen berechnen wenn nicht initialisiert
   //
-  if ((_ulCtGridsX == 0) || (_ulCtGridsX == 0) || (_ulCtGridsX == 0))
+  if ((_ulCtGridsX == 0) || (_ulCtGridsY == 0) || (_ulCtGridsZ == 0))
     CalculateGridLength(POINTS_CT_GRID, POINTS_MAX_GRIDS);
 
   // Grid Laengen und Offset bestimmen
