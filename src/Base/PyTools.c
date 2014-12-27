@@ -46,7 +46,8 @@ PP_Run_Method(PyObject *pobject,  const char *method,
 //	if(resfmt == 0 || strcmp(resfmt,"") == 0)
 //		pargs = Py_BuildValue("()");
 //	else
-		pargs = Py_VaBuildValue(argfmt, argslist);     /* args: c->python */
+    pargs = Py_VaBuildValue(argfmt, argslist);     /* args: c->python */
+    va_end(argslist);
 
     if (pargs == NULL) {
         Py_DECREF(pmeth);
@@ -87,7 +88,8 @@ PP_Set_Member(PyObject *pobject, const char *attrname,
     va_start(argslist, argfmt);
     Py_Initialize();                              /* init if first time */
     pval = Py_VaBuildValue(argfmt, argslist);     /* input: C->Python */
-    if (pval == NULL) 
+    va_end(argslist);
+    if (pval == NULL)
         return -1;
     result = PyObject_SetAttrString(pobject, attrname, pval);     /* setattr */
     Py_DECREF(pval); 
@@ -116,9 +118,12 @@ PP_Run_Function(const char *modname, const char *funcname,          /* load from
     va_start(argslist, argfmt);                   /* "modname.funcname(args)" */
 
     func = PP_Load_Attribute(modname, funcname);  /* may reload; incref'd */
-    if (func == NULL)                             /* func or class or C type */
+    if (func == NULL) {                           /* func or class or C type */
+        va_end(argslist);
         return -1;
+    }
     args = Py_VaBuildValue(argfmt, argslist);     /* convert args to python */
+    va_end(argslist);
     if (args == NULL) {                           /* args incref'd */
         Py_DECREF(func);
         return -1;
@@ -172,6 +177,7 @@ PP_Run_Known_Callable(PyObject *object,               /* func|class|method */
 
     Py_Initialize(); 
     args = Py_VaBuildValue(argfmt, argslist);       /* convert args to python */
+    va_end(argslist);
     if (args == NULL)                               /* args incref'd */
         return -1;
     if (PP_DEBUG)                                   /* debug this call? */
@@ -345,8 +351,10 @@ PP_Set_Global(const char *modname, const char *varname, const char *valfmt, ... 
     va_start(cvals, valfmt);                    /* C args after valfmt */
 
     module = PP_Load_Module(modname);           /* get/load module */
-    if (module == NULL) 
+    if (module == NULL) {
+        va_end(cvals);
         return -1;
+    }
     val = Py_VaBuildValue(valfmt, cvals);       /* convert input to Python */
     va_end(cvals);
     if (val == NULL) 
