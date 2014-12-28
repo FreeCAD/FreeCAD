@@ -519,11 +519,13 @@ bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSur
                     gp_Vec dv = gp_Vec(pend.X(), pend.Y(), pend.Z()) - bv;
                     double dist = dv.Magnitude();
 
-                    // Check orientation of this piece in relation to cylinder axis
-                    if ((bv - cv).Crossed(dv).IsOpposite(av, Precision::Confusion()))
-                        dist = -dist;
+                    if (dist > 0) {
+                        // Check orientation of this piece in relation to cylinder axis
+                        if ((bv - cv).Crossed(dv).IsOpposite(av, Precision::Confusion()))
+                            dist = -dist;
 
-                    length += dist;
+                        length += dist;
+                    }
                 }
 
                 begin = pend;
