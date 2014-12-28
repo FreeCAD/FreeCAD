@@ -236,6 +236,10 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
 
     if (PyObject_TypeCheck(pcObj, &(Sketcher::ConstraintPy::Type))) {
         Sketcher::Constraint *constr = static_cast<Sketcher::ConstraintPy*>(pcObj)->getConstraintPtr();
+        if (!this->getSketchObjectPtr()->evaluateConstraint(constr)) {
+            PyErr_SetString(PyExc_IndexError, "Constraint has invalid indexes");
+            return 0;
+        }
         int ret = this->getSketchObjectPtr()->addConstraint(constr);
         this->getSketchObjectPtr()->solve();
         return Py::new_reference_to(Py::Int(ret));
@@ -251,6 +255,12 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
             }
         }
 
+        for (std::vector<Constraint*>::iterator it = values.begin(); it != values.end(); ++it) {
+            if (!this->getSketchObjectPtr()->evaluateConstraint(*it)) {
+                PyErr_SetString(PyExc_IndexError, "Constraint has invalid indexes");
+                return 0;
+            }
+        }
         int ret = getSketchObjectPtr()->addConstraints(values) + 1;
         std::size_t numCon = values.size();
         Py::Tuple tuple(numCon);

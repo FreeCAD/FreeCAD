@@ -2160,6 +2160,47 @@ void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::st
     msg = ss.str();
 }
 
+bool SketchObject::evaluateConstraint(const Constraint *constraint) const
+{
+    int intGeoCount = getHighestCurveIndex() + 1;
+    int extGeoCount = getExternalGeometryCount();
+
+    switch (constraint->Type) {
+        case Horizontal:
+        case Vertical:
+        case Radius:
+        case Distance:
+        case DistanceX:
+        case DistanceY:
+            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
+                return false;
+            break;
+        case Coincident:
+        case Perpendicular:
+        case Parallel:
+        case Equal:
+        case PointOnObject:
+        case Tangent:
+        case Symmetric:
+            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
+                return false;
+            if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
+                return false;
+            break;
+        case Angle:
+            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
+                return false;
+            if ((constraint->Second < -extGeoCount || constraint->Second >= intGeoCount) &&
+                 constraint->Second != Constraint::GeoUndef)
+                 return false;
+            break;
+        default:
+            break;
+    }
+
+    return true;
+}
+
 bool SketchObject::evaluateConstraints() const
 {
     int intGeoCount = getHighestCurveIndex() + 1;
@@ -2174,37 +2215,8 @@ bool SketchObject::evaluateConstraints() const
 
     std::vector<Sketcher::Constraint *>::const_iterator it;
     for (it = constraints.begin(); it != constraints.end(); ++it) {
-        switch ((*it)->Type) {
-            case Horizontal:
-            case Vertical:
-            case Radius:
-            case Distance:
-            case DistanceX:
-            case DistanceY:
-                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
-                    return false;
-                break;
-            case Perpendicular:
-            case Parallel:
-            case Equal:
-            case PointOnObject:
-            case Tangent:
-            case Symmetric:
-                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
-                    return false;
-                if ((*it)->Second < -extGeoCount || (*it)->Second >= intGeoCount)
-                    return false;
-                break;
-            case Angle:
-                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
-                    return false;
-                if (((*it)->Second < -extGeoCount || (*it)->Second >= intGeoCount) &&
-                     (*it)->Second != Constraint::GeoUndef)
-                     return false;
-                break;
-            default:
-                break;
-        }
+        if (!evaluateConstraint(*it))
+            return false;
     }
 
     return true;
