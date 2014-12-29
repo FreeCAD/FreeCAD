@@ -494,6 +494,80 @@ PyObject* SketchObjectPy::setDatum(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::getDatum(PyObject *args)
+{
+    const std::vector<Constraint*>& vals = this->getSketchObjectPtr()->Constraints.getValues();
+    Constraint* constr = 0;
+
+    do {
+        int index = 0;
+        if (PyArg_ParseTuple(args,"i", &index)) {
+            if (index < 0 || index >= static_cast<int>(vals.size())) {
+                PyErr_SetString(PyExc_IndexError, "index out of range");
+                return 0;
+            }
+
+            constr = vals[index];
+            break;
+        }
+
+        PyErr_Clear();
+        char* name;
+        if (PyArg_ParseTuple(args,"s", &name)) {
+            int id = 1;
+            for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it, ++id) {
+                std::string constrName = (*it)->Name;
+                if (constrName.empty()) {
+                    std::stringstream str;
+                    str << "Constraint" << id;
+                    constrName = str.str();
+                }
+                if (constrName == name) {
+                    constr = *it;
+                    break;
+                }
+            }
+
+            if (!constr) {
+                std::stringstream str;
+                str << "Invalid constraint name: '" << name << "'";
+                PyErr_SetString(PyExc_NameError, str.str().c_str());
+                return 0;
+            }
+            else {
+                break;
+            }
+        }
+
+        // error handling
+        PyErr_SetString(PyExc_TypeError, "Wrong arguments");
+        return 0;
+    }
+    while (false);
+
+    ConstraintType type = constr->Type;
+    if (type != Distance &&
+        type != DistanceX &&
+        type != DistanceY &&
+        type != Radius &&
+        type != Angle) {
+        PyErr_SetString(PyExc_TypeError, "Constraint is not a datum");
+        return 0;
+    }
+
+    Base::Quantity datum;
+    datum.setValue(constr->Value);
+    if (type == Angle) {
+        datum.setValue(Base::toDegrees<double>(datum.getValue()));
+        datum.setUnit(Base::Unit::Angle);
+    }
+    else {
+        datum.setUnit(Base::Unit::Length);
+    }
+
+    return new Base::QuantityPy(new Base::Quantity(datum));
+}
+
 PyObject* SketchObjectPy::movePoint(PyObject *args)
 {
     PyObject *pcObj;
