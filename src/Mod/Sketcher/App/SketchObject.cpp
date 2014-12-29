@@ -2174,7 +2174,7 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
         case Vertical:
             if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
                 return false;
-            if (constraint->SecondPos != Constraint::GeoUndef) {
+            if (constraint->Second != Constraint::GeoUndef) {
                 if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
                     return false;
             }
@@ -2184,7 +2184,7 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
         case DistanceY:
             if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
                 return false;
-            if (constraint->SecondPos != none || constraint->Second != Constraint::GeoUndef) {
+            if (constraint->Second != Constraint::GeoUndef) {
                 if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
                     return false;
             }
@@ -2211,7 +2211,7 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
         case Angle:
             if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
                 return false;
-            if (constraint->SecondPos != none || constraint->Second != Constraint::GeoUndef) {
+            if (constraint->Second != Constraint::GeoUndef) {
                 if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
                     return false;
             }
