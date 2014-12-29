@@ -73,6 +73,11 @@
         <UserDocu>set the Datum of a Distance or Angle constraint</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getDatum">
+      <Documentation>
+        <UserDocu>Get the value of a datum constraint</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="movePoint">
       <Documentation>
         <UserDocu>
