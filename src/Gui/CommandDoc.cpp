@@ -133,10 +133,20 @@ void StdCmdOpen::activated(int iMsg)
     QString selectedFilter;
     QStringList fileList = FileDialog::getOpenFileNames(getMainWindow(),
         QObject::tr("Open document"), QString(), formatList, &selectedFilter);
+    if (fileList.isEmpty())
+        return;
+
     // load the files with the associated modules
     SelectModule::Dict dict = SelectModule::importHandler(fileList, selectedFilter);
-    for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-        getGuiApplication()->open(it.key().toUtf8(), it.value().toAscii());
+    if (dict.isEmpty()) {
+        QMessageBox::critical(getMainWindow(),
+            qApp->translate("StdCmdOpen", "Cannot open file"),
+            qApp->translate("StdCmdOpen", "Loading the file %1 is not supported").arg(fileList.front()));
+    }
+    else {
+        for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
+            getGuiApplication()->open(it.key().toUtf8(), it.value().toAscii());
+        }
     }
 }
 
