@@ -521,7 +521,7 @@ class DraftToolBar:
         elif defaultWP == 3:
             self.wplabel.setText("Side")
         else:
-            self.wplabel.setText("None")
+            self.wplabel.setText("Auto")
         self.constrButton = self._pushbutton("constrButton", self.toptray, hide=False, icon='Draft_Construction',width=22, checkable=True)
         self.constrColor = QtGui.QColor(self.paramconstr)
         self.colorButton = self._pushbutton("colorButton",self.bottomtray, hide=False,width=22)
@@ -607,7 +607,7 @@ class DraftToolBar:
         self.yzButton.setToolTip(translate("draft", "Select YZ plane"))
         self.currentViewButton.setText(translate("draft", "View"))
         self.currentViewButton.setToolTip(translate("draft", "Select plane perpendicular to the current view"))
-        self.resetPlaneButton.setText(translate("draft", "None"))
+        self.resetPlaneButton.setText(translate("draft", "Auto"))
         self.resetPlaneButton.setToolTip(translate("draft", "Do not project points to a drawing plane"))
         self.isCopy.setText(translate("draft", "&Copy"))
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved (C)"))
