@@ -71,6 +71,22 @@ void FileDialog::onSelectedFilter(const QString& filter)
 
 void FileDialog::accept()
 {
+    // When saving to a file make sure that the entered filename ends with the selected
+    // file filter
+    if (acceptMode() == QFileDialog::AcceptSave) {
+        QStringList files = selectedFiles();
+        if (!files.isEmpty()) {
+            QString ext = this->defaultSuffix();
+            QString file = files.front();
+            if (!ext.isEmpty() && !file.endsWith(ext, Qt::CaseInsensitive)) {
+                file = QString::fromLatin1("%1.%2").arg(file).arg(ext);
+                // That's the built-in line edit
+                QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
+                if (fileNameEdit)
+                    fileNameEdit->setText(file);
+            }
+        }
+    }
     QFileDialog::accept();
 }
 
