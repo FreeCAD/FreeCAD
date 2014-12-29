@@ -369,15 +369,15 @@ class SelectPlane(DraftTool):
             self.offset = 0
         if arg == "XY":
             FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), "+str(self.offset)+")")
-            self.display('top')
+            self.display('Top')
             self.finish()
         elif arg == "XZ":
             FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,-1,0), "+str(self.offset)+")")
-            self.display('front')
+            self.display('Front')
             self.finish()
         elif arg == "YZ":
             FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.alignToPointAndAxis(FreeCAD.Vector(0,0,0), FreeCAD.Vector(1,0,0), "+str(self.offset)+")")
-            self.display('side')
+            self.display('Side')
             self.finish()
         elif arg == "currentView":
             d = self.view.getViewDirection().negative()
@@ -386,7 +386,7 @@ class SelectPlane(DraftTool):
             self.finish()
         elif arg == "reset":
             FreeCADGui.doCommandGui("FreeCAD.DraftWorkingPlane.reset()")
-            self.display('None')
+            self.display('Auto')
             self.finish()
 
     def offsetHandler(self, arg):
