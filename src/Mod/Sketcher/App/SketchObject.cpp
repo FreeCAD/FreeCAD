@@ -2166,14 +2166,28 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
     int extGeoCount = getExternalGeometryCount();
 
     switch (constraint->Type) {
+        case Radius:
+            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
+                return false;
+            break;
         case Horizontal:
         case Vertical:
-        case Radius:
+            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
+                return false;
+            if (constraint->SecondPos != Constraint::GeoUndef) {
+                if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
+                    return false;
+            }
+            break;
         case Distance:
         case DistanceX:
         case DistanceY:
             if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
                 return false;
+            if (constraint->SecondPos != none || constraint->Second != Constraint::GeoUndef) {
+                if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
+                    return false;
+            }
             break;
         case Coincident:
         case Perpendicular:
@@ -2181,18 +2195,26 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
         case Equal:
         case PointOnObject:
         case Tangent:
-        case Symmetric:
             if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
                 return false;
             if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
                 return false;
             break;
+        case Symmetric:
+            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
+                return false;
+            if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
+                return false;
+            if (constraint->Third < -extGeoCount || constraint->Third >= intGeoCount)
+                return false;
+            break;
         case Angle:
             if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
                 return false;
-            if ((constraint->Second < -extGeoCount || constraint->Second >= intGeoCount) &&
-                 constraint->Second != Constraint::GeoUndef)
-                 return false;
+            if (constraint->SecondPos != none || constraint->Second != Constraint::GeoUndef) {
+                if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
+                    return false;
+            }
             break;
         default:
             break;
@@ -2233,39 +2255,7 @@ void SketchObject::validateConstraints()
     std::vector<Sketcher::Constraint *> newConstraints;
     std::vector<Sketcher::Constraint *>::const_iterator it;
     for (it = constraints.begin(); it != constraints.end(); ++it) {
-        bool valid = true;
-        switch ((*it)->Type) {
-            case Horizontal:
-            case Vertical:
-            case Radius:
-            case Distance:
-            case DistanceX:
-            case DistanceY:
-                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
-                    valid = false;
-                break;
-            case Perpendicular:
-            case Parallel:
-            case Equal:
-            case PointOnObject:
-            case Tangent:
-            case Symmetric:
-                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
-                    valid = false;
-                if ((*it)->Second < -extGeoCount || (*it)->Second >= intGeoCount)
-                    valid = false;
-                break;
-            case Angle:
-                if ((*it)->First < -extGeoCount || (*it)->First >= intGeoCount)
-                    valid = false;
-                if (((*it)->Second < -extGeoCount || (*it)->Second >= intGeoCount) &&
-                     (*it)->Second != Constraint::GeoUndef)
-                     valid = false;
-                break;
-            default:
-                break;
-        }
-
+        bool valid = evaluateConstraint(*it);
         if (valid)
             newConstraints.push_back(*it);
     }
