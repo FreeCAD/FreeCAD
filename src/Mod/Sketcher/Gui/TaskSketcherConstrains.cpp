@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <cmath>
 # include <QRegExp>
 # include <QString>
 #endif
@@ -437,7 +438,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
             case Sketcher::DistanceX:
                 if (Filter<3 || !(*it)->Name.empty()) {
                     ConstraintItem* item = new ConstraintItem(hdist,name,i-1,(*it)->Type);
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(std::abs((*it)->Value),Base::Unit::Length).getUserString());
                     item->setData(Qt::UserRole, name);
                     ui->listWidgetConstraints->addItem(item);
                 }
@@ -445,7 +446,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
             case Sketcher::DistanceY:
                 if (Filter<3 || !(*it)->Name.empty()) {
                     ConstraintItem* item = new ConstraintItem(vdist,name,i-1,(*it)->Type);
-                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
+                    name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(std::abs((*it)->Value),Base::Unit::Length).getUserString());
                     item->setData(Qt::UserRole, name);
                     ui->listWidgetConstraints->addItem(item);
                 }

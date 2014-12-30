@@ -116,9 +116,10 @@ void EditDatumDialog::exec(bool atCursor)
 
         //ui_ins_datum.lineEdit->setParamGrpPath("User parameter:History/Sketcher/SetDatum");
 
+        // e.g. an angle or a distance X or Y applied on a line or two vertexes
         if (Constr->Type == Sketcher::Angle ||
             ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-             Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))
+             (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)))
             // hide negative sign
             init_val.setValue(std::abs(datum));
 
