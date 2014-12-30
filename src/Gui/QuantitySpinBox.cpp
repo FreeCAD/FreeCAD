@@ -51,6 +51,11 @@ public:
     Base::Quantity validateAndInterpret(QString& input, int& pos, QValidator::State& state) const
     {
         Base::Quantity res;
+        if (input.isEmpty()) {
+            state = QValidator::Intermediate;
+            return res;
+        }
+
         try {
             res = Base::Quantity::parse(input);
 
@@ -143,6 +148,13 @@ bool QuantitySpinBox::hasValidInput() const
 void QuantitySpinBox::userInput(const QString & text)
 {
     Q_D(QuantitySpinBox);
+
+    if (text.isEmpty()) {
+        d->errorText.clear();
+        d->validInput = true;
+        return;
+    }
+
     Base::Quantity res;
     try {
         QString input = text;
