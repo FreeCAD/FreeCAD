@@ -36,6 +36,7 @@
 # include <QMenu>
 # include <QPixmap>
 # include <QTimer>
+# include <QToolTip>
 # include <QHeaderView>
 #endif
 
@@ -1313,7 +1314,12 @@ void DocumentObjectItem::displayStatusInfo()
     if ( Obj->mustExecute() == 1 )
         info += QString::fromAscii(" (but must be executed)");
     getMainWindow()->showMessage( info );
-   
+
+    if (Obj->isError()) {
+        QTreeWidget* tree = this->treeWidget();
+        QPoint pos = tree->visualItemRect(this).topRight();
+        QToolTip::showText(tree->mapToGlobal(pos), info);
+    }
 }
 
 void DocumentObjectItem::setExpandedStatus(bool on)
