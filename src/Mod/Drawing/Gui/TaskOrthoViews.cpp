@@ -1140,6 +1140,7 @@ void TaskOrthoViews::toggle_auto(int i)
 
         for (int j = 0; j < 5; j++)
             inputs[j]->setEnabled(true);        //enable user input boxes
+        set_configs();
     }
 }
 
