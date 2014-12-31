@@ -110,6 +110,10 @@ class _SectionPlane:
         if hasattr(obj.ViewObject,"DisplayLength"):
             l = obj.ViewObject.DisplayLength.Value
             h = obj.ViewObject.DisplayHeight.Value
+        elif hasattr(obj.ViewObject,"DisplaySize"):
+            # old objects
+            l = obj.ViewObject.DisplaySize.Value
+            h = obj.ViewObject.DisplaySize.Value
         else:
             l = 1
             h = 1
@@ -213,6 +217,10 @@ class _ViewProviderSectionPlane:
             if hasattr(vobj,"DisplayLength"):
                 ld = vobj.DisplayLength.Value/2
                 hd = vobj.DisplayHeight.Value/2
+            elif hasattr(vobj,"DisplaySize"):
+                # old objects
+                ld = vobj.DisplaySize.Value/2
+                hd = vobj.DisplaySize.Value/2
             else:
                 ld = 1
                 hd = 1
@@ -273,6 +281,9 @@ class _ArchDrawingView:
                         self.onChanged(obj,"Source")
                 if not hasattr(self,"svg"):
                     return ''
+                if not hasattr(self,"direction"):
+                    p = FreeCAD.Placement(obj.Source.Placement)
+                    self.direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
                 linewidth = obj.LineWidth/obj.Scale
                 st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness",2)
                 da = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("archHiddenPattern","30,10")
