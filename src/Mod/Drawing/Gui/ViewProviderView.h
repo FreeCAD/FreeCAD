@@ -25,6 +25,7 @@
 #define DRAWINGGUI_VIEWPROVIDERVIEW_H
 
 #include <Gui/ViewProviderFeature.h>
+#include <Gui/ViewProviderDocumentObjectGroup.h>
 
 
 namespace DrawingGui {
@@ -32,13 +33,33 @@ namespace DrawingGui {
 
 class DrawingGuiExport ViewProviderDrawingView : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(DrawingGui::ViewProviderDrawing);
+    PROPERTY_HEADER(DrawingGui::ViewProviderDrawingView);
 
 public:
     /// constructor
     ViewProviderDrawingView();
     /// destructor
     virtual ~ViewProviderDrawingView();
+
+
+    virtual void attach(App::DocumentObject *);
+    virtual void setDisplayMode(const char* ModeName);
+    virtual bool useNewSelectionModel(void) const {return false;}
+    /// returns a list of all possible modes
+    virtual std::vector<std::string> getDisplayModes(void) const;
+    virtual void updateData(const App::Property*);
+
+};
+
+class DrawingGuiExport ViewProviderDrawingClip : public Gui::ViewProviderDocumentObjectGroup
+{
+    PROPERTY_HEADER(DrawingGui::ViewProviderDrawingClip);
+
+public:
+    /// constructor
+    ViewProviderDrawingClip();
+    /// destructor
+    virtual ~ViewProviderDrawingClip();
 
 
     virtual void attach(App::DocumentObject *);
