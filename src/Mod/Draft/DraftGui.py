@@ -276,14 +276,17 @@ class DraftToolBar:
 #---------------------------------------------------------------------------
 
     def _pushbutton (self,name, layout, hide=True, icon=None, width=66, checkable=False):
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+        bsize = p.GetInt("ToolbarIconSize",24)+2
+        isize = p.GetInt("ToolbarIconSize",24)/3*2
         button = QtGui.QPushButton(self.baseWidget)
         button.setObjectName(name)
-        button.setMaximumSize(QtCore.QSize(width,26))
+        button.setMaximumSize(QtCore.QSize(width,bsize))
         if hide:
             button.hide()
         if icon:
             button.setIcon(QtGui.QIcon(':/icons/'+icon+'.svg'))
-            button.setIconSize(QtCore.QSize(16, 16))
+            button.setIconSize(QtCore.QSize(isize, isize))
         if checkable:
             button.setCheckable(True)
             button.setChecked(False)
@@ -298,20 +301,24 @@ class DraftToolBar:
         return label
 
     def _lineedit (self,name, layout, hide=True, width=None):
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+        bsize = p.GetInt("ToolbarIconSize",24)-2
         lineedit = DraftLineEdit(self.baseWidget)
         lineedit.setObjectName(name)
         if hide: lineedit.hide()
         if not width: width = 800
-        lineedit.setMaximumSize(QtCore.QSize(width,22))
+        lineedit.setMaximumSize(QtCore.QSize(width,bsize))
         layout.addWidget(lineedit)
         return lineedit
 
     def _inputfield (self,name, layout, hide=True, width=None):
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+        bsize = p.GetInt("ToolbarIconSize",24)-2
         inputfield = self.uiloader.createWidget("Gui::InputField")
         inputfield.setObjectName(name)
         if hide: inputfield.hide()
         if not width: width = 800
-        inputfield.setMaximumSize(QtCore.QSize(width,22))
+        inputfield.setMaximumSize(QtCore.QSize(width,bsize))
         layout.addWidget(inputfield)
         return inputfield
 
