@@ -26,6 +26,7 @@
 
 #include "View.h"
 #include <QMainWindow>
+#include "ActiveObjectList.h"
 
 QT_BEGIN_NAMESPACE
 class QPrinter;
@@ -107,6 +108,8 @@ public:
      */
     virtual void setCurrentViewMode(ViewMode mode);
     ViewMode currentViewMode() const { return currentMode; }
+
+	ActiveObjectList ActiveObjects;
 
 public Q_SLOTS:
     virtual void setOverrideCursor(const QCursor&);
