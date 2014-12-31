@@ -1981,7 +1981,8 @@ void SketchObject::rebuildExternalGeometry(void)
                                     gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
                                     gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
                                     
-                                    gp_Dir normal = e.Axis().Direction();
+                                    //gp_Dir normal = e.Axis().Direction();
+				   gp_Dir normal = gp_Dir(0,0,1); 
                                     gp_Dir xdir = e.XAxis().Direction();
                                     gp_Ax2 xdirref(p, normal);
 
