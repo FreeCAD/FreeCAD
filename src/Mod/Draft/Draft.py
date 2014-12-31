@@ -2245,10 +2245,12 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
     creating a new one. If delete is True, the original object will be deleted'''
     import Part, DraftGeomUtils
     from Sketcher import Constraint
+    from DraftTools import translate
 
     StartPoint = 1
     EndPoint = 2
     MiddlePoint = 3
+    deletable = None
     
     if not isinstance(objectslist,list):
         objectslist = [objectslist]
@@ -2256,12 +2258,15 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
         nobj = addTo
     else:
         nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject",name)
+        deletable = nobj
         nobj.ViewObject.Autoconstraints = False
     for obj in objectslist:
         ok = False
         tp = getType(obj)
-        if tp == "BSpline":
-            print("makeSketch: BSplines not supported")
+        if tp in ["BSpline","BezCurve"]:
+            FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
+            if deletable: FreeCAD.ActiveDocument.removeObject(deletable.Name)
+            return None
         elif tp == "Circle":
             g = (DraftGeomUtils.geom(obj.Shape.Edges[0],nobj.Placement))
             nobj.addGeometry(g)
@@ -2307,11 +2312,11 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                 ok = True
         if (not ok) and obj.isDerivedFrom("Part::Feature"):
             if not DraftGeomUtils.isPlanar(obj.Shape):
-                print("Error: The given object is not planar and cannot be converted into a sketch.")
+                FreeCAD.Console.PrintError(translate("draft","The given object is not planar and cannot be converted into a sketch."))
                 return None
             for e in obj.Shape.Edges:
-                if DraftGeomUtils.geomType(e) == "BSplineCurve":
-                    print("Error: One of the selected object contains BSplines, unable to convert")
+                if DraftGeomUtils.geomType(e) in ["BSplineCurve","BezierCurve"]:
+                    FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
                     return None
             if not addTo:
                 nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
