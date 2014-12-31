@@ -619,6 +619,7 @@ class _Window(ArchComponent.Component):
         self.Type = "Window"
         obj.Role = Roles
         obj.Proxy = self
+        obj.MoveWithHost = True
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
