@@ -933,10 +933,12 @@ SOURCE_GROUP("Widget" FILES ${Widget_SRCS})
 SET(View_CPP_SRCS
     MDIView.cpp
     GraphvizView.cpp
+	ActiveObjectList.cpp
 )
 SET(View_HPP_SRCS
     MDIView.h
     GraphvizView.h
+	ActiveObjectList.h
 )
 SET(View_SRCS
     ${View_CPP_SRCS}
