@@ -66,6 +66,7 @@ void DrawingGuiExport initDrawingGui()
 
     DrawingGui::ViewProviderDrawingPage::init();
     DrawingGui::ViewProviderDrawingView::init();
+    DrawingGui::ViewProviderDrawingClip::init();
 
     // add resources and reloads the translators
     loadDrawingResource();

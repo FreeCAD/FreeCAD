@@ -48,11 +48,6 @@ using namespace DrawingGui;
 
 PROPERTY_SOURCE(DrawingGui::ViewProviderDrawingView, Gui::ViewProviderDocumentObject)
 
-
-//**************************************************************************
-// Construction/Destruction
-
-
 ViewProviderDrawingView::ViewProviderDrawingView()
 {
     sPixmap = "Page";
@@ -82,5 +77,40 @@ std::vector<std::string> ViewProviderDrawingView::getDisplayModes(void) const
 }
 
 void ViewProviderDrawingView::updateData(const App::Property*)
+{
+}
+
+// ----------------------------------------------------------------------------
+
+PROPERTY_SOURCE(DrawingGui::ViewProviderDrawingClip, Gui::ViewProviderDocumentObjectGroup)
+
+ViewProviderDrawingClip::ViewProviderDrawingClip()
+{
+    sPixmap = "Page";
+}
+
+ViewProviderDrawingClip::~ViewProviderDrawingClip()
+{
+}
+
+void ViewProviderDrawingClip::attach(App::DocumentObject *pcFeat)
+{
+    // call parent attach method
+    ViewProviderDocumentObject::attach(pcFeat);
+}
+
+void ViewProviderDrawingClip::setDisplayMode(const char* ModeName)
+{
+    ViewProviderDocumentObject::setDisplayMode(ModeName);
+}
+
+std::vector<std::string> ViewProviderDrawingClip::getDisplayModes(void) const
+{
+    // get the modes of the father
+    std::vector<std::string> StrList;
+    return StrList;
+}
+
+void ViewProviderDrawingClip::updateData(const App::Property*)
 {
 }
