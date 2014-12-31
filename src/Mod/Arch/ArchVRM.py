@@ -274,6 +274,9 @@ class Renderer:
 
     def isInside(self,vert,face):
         "Returns True if the vert is inside the face in Z projection"
+        
+        if not face:
+            return False
     
         # http://paulbourke.net/geometry/insidepoly/
         count = 0
@@ -297,6 +300,9 @@ class Renderer:
         "Checks if face1 overlaps face2 in Z direction"
         face1 = self.flattenFace(face1)
         face2 = self.flattenFace(face2)
+        
+        if (not face1) or (not face2):
+            return False
         
         # first we check if one of the verts is inside the other face
         for v in face1[0].Vertexes:
