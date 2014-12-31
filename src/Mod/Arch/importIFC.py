@@ -216,19 +216,19 @@ def open(filename,skip=[]):
 def insert(filename,docname,skip=[]):
     "imports the contents of an IFC file"
     
-    try:
-        import ifcopenshell
-    except:
-        if DEBUG: print "using legacy importer"
-        import importIFClegacy
-        return importIFClegacy.insert(filename,docname,skip)
-
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     DEBUG = p.GetBool("ifcDebug",False)
     PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
     SKIP = p.GetString("ifcSkip","")
     SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
     SCALE = p.GetFloat("IfcScalingFactor",1.0)
+    
+    try:
+        import ifcopenshell
+    except:
+        if DEBUG: print "using legacy importer"
+        import importIFClegacy
+        return importIFClegacy.insert(filename,docname,skip)
 
     if DEBUG: print "opening ",filename,"..."
     try:
@@ -343,6 +343,10 @@ def insert(filename,docname,skip=[]):
 def export(exportList,filename):
     "exports FreeCAD contents to an IFC file"
     
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    FORCEBREP = p.GetBool("ifcExportAsBrep",False)
+    DEBUG = p.GetBool("ifcDebug",False)    
+
     try:
         global ifcopenshell
         import ifcopenshell
@@ -351,9 +355,6 @@ def export(exportList,filename):
         import importIFClegacy
         return importIFClegacy.export(exportList,filename)
 
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    FORCEBREP = p.GetBool("ifcExportAsBrep",False)
-    DEBUG = p.GetBool("ifcDebug",False)
     version = FreeCAD.Version()
     owner = FreeCAD.ActiveDocument.CreatedBy
     email = ''
