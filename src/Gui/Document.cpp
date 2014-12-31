@@ -205,6 +205,13 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
         return false;
 
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
+    // if the currently active view is not te 3d view search for it and activate it
+    if (!activeView) {
+        activeView = dynamic_cast<View3DInventor *>(getViewOfViewProvider(p));
+        if (activeView)
+            getMainWindow()->setActiveWindow(activeView);
+    }
+
     if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
         d->_pcInEdit = p;
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
@@ -213,8 +220,10 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
         if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
             signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
     }
-    else
+    else {
         return false;
+    }
+
     return true;
 }
 
