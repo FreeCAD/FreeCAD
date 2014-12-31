@@ -574,6 +574,25 @@ def loadTexture(filename,size=None):
         else:
             return img
     return None
+    
+def getMovableChildren(objectslist,recursive=False):
+    '''getMovableChildren(objectslist,[recursive]): extends the given list of objects
+    with all child objects that have a "MoveWithHost" property set to True. If
+    recursive is True, all descendents are considered, otherwise only direct children.'''
+    added = []
+    for obj in objectslist:
+        children = obj.OutList
+        if  hasattr(obj,"Proxy"):
+            if obj.Proxy:
+                if hasattr(obj.Proxy,"getSiblings"):
+                    children.extend(obj.Proxy.getSiblings(obj))
+        for child in children:
+            if hasattr(child,"MoveWithHost"):
+                if child.MoveWithHost:
+                    added.append(child)
+        if recursive:
+            added.extend(getMovableChildren(children))
+    return added
 
 def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None, support=None):
     '''makeCircle(radius,[placement,face,startangle,endangle])
@@ -1176,15 +1195,15 @@ def cut(object1,object2):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def move(objectslist,vector,copy=False,arch=True):
-    '''move(objects,vector,[copy,arch]): Moves the objects contained
+def move(objectslist,vector,copy=False):
+    '''move(objects,vector,[copy]): Moves the objects contained
     in objects (that can be an object or a list of objects)
     in the direction and distance indicated by the given
     vector. If copy is True, the actual objects are not moved, but copies
-    are created instead.he objects (or their copies) are returned. If arch
-    is True (default), included windows and siblings are moved too'''
+    are created instead.he objects (or their copies) are returned.'''
     typecheck([(vector,Vector), (copy,bool)], "move")
     if not isinstance(objectslist,list): objectslist = [objectslist]
+    objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
     for obj in objectslist:
         if hasattr(obj,"Placement"):
@@ -1209,14 +1228,6 @@ def move(objectslist,vector,copy=False,arch=True):
                 newobj = obj
             pla = newobj.Placement
             pla.move(vector)
-            if arch and hasattr(obj,"Proxy"):
-                if hasattr(obj,"Additions") and hasattr(obj,"Subtractions"):
-                    for o in obj.Additions+obj.Subtractions:
-                        if (getType(o) == "Window") or isClone(o,"Window"):
-                            o.Placement.move(vector)
-                if hasattr(obj.Proxy,"getSiblings"):
-                    for o in obj.Proxy.getSiblings(obj):
-                        o.Placement.move(vector)
         elif getType(obj) == "Annotation":
             if copy:
                 newobj = FreeCAD.ActiveDocument.addObject("App::Annotation",getRealName(obj.Name))
@@ -1286,17 +1297,17 @@ def array(objectslist,arg1,arg2,arg3,arg4=None):
     else:
         polarArray(objectslist,arg1,arg2,arg3)
                 
-def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False,arch=True):
+def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False):
     '''rotate(objects,angle,[center,axis,copy]): Rotates the objects contained
     in objects (that can be a list of objects or an object) of the given angle
     (in degrees) around the center, using axis as a rotation axis. If axis is
     omitted, the rotation will be around the vertical Z axis.
     If copy is True, the actual objects are not moved, but copies
-    are created instead. The objects (or their copies) are returned.
-    If arch is True, inserted windows and siblings are rotated too'''
+    are created instead. The objects (or their copies) are returned.'''
     import Part
     typecheck([(copy,bool)], "rotate")
     if not isinstance(objectslist,list): objectslist = [objectslist]
+    objectslist.extend(getMovableChildren(objectslist))
     newobjlist = []
     for obj in objectslist:
         if hasattr(obj,"Placement"):
@@ -1312,18 +1323,6 @@ def rotate(objectslist,angle,center=Vector(0,0,0),axis=Vector(0,0,1),copy=False,
             shape = obj.Shape.copy()
             shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
             newobj.Shape = shape
-            if arch and hasattr(obj,"Proxy"):
-                if hasattr(obj,"Additions") and hasattr(obj,"Subtractions"):
-                    for o in obj.Additions+obj.Subtractions:
-                        if (getType(o) == "Window") or isClone(o,"Window"):
-                            shape = o.Shape.copy()
-                            shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
-                            o.Shape = shape
-                if hasattr(obj.Proxy,"getSiblings"):
-                    for o in obj.Proxy.getSiblings(obj):
-                        shape = o.Shape.copy()
-                        shape.rotate(DraftVecUtils.tup(center), DraftVecUtils.tup(axis), angle)
-                        o.Shape = shape
         elif (obj.isDerivedFrom("App::Annotation")):
             if axis.normalize() == Vector(1,0,0):
                 newobj.ViewObject.RotationAxis = "X"
