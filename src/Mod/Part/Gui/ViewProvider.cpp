@@ -114,10 +114,16 @@ bool ViewProviderPart::doubleClicked(void)
 {
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
-    Gui::Command::openCommand(Msg.c_str());
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.setEdit('%s',0)",
-                            this->pcObject->getNameInDocument());
-    return true;
+    try {
+        Gui::Command::openCommand(Msg.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.setEdit('%s',0)",
+                                this->pcObject->getNameInDocument());
+        return true;
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        return false;
+    }
 }
 
 void ViewProviderPart::applyColor(const Part::ShapeHistory& hist,
