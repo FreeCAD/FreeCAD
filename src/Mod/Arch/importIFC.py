@@ -255,12 +255,16 @@ def insert(filename,docname,skip=[]):
     objects = {} # { id:object, ... }
     additions = {} # { host:[child,...], ... }
     subtractions = [] # [ [opening,host], ... ]
+    properties = {} # { host:[property, ...], ... }
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
     for r in ifcfile.by_type("IfcRelAggregates"):
         additions.setdefault(r.RelatingObject.id(),[]).extend([e.id() for e in r.RelatedObjects])
     for r in ifcfile.by_type("IfcRelVoidsElement"):
         subtractions.append([r.RelatedOpeningElement.id(), r.RelatingBuildingElement.id()])
+    for r in ifcfile.by_type("IfcRelDefinesByProperties"):
+        for obj in r.RelatedObjects:
+            properties.setdefault(obj.id(),[]).extend([e.id() for e in r.RelatingPropertyDefinition.HasProperties])
 
     # products
     for product in products:
@@ -311,6 +315,15 @@ def insert(filename,docname,skip=[]):
             sols = str(baseobj.Shape.Solids) if hasattr(baseobj,"Shape") else ""
             if DEBUG: print "creating object ",pid," : ",ptype, " with shape: ",sh," ",sols
             objects[pid] = obj
+            
+        # properties
+        if pid in properties:
+            if hasattr(obj,"IfcAttributes"):
+                a = obj.IfcAttributes
+                for p in properties[pid]:
+                    o = ifcfile[p]
+                    a[o.Name] = str(o.NominalValue)
+                obj.IfcAttributes = a
 
     # subtractions
     if SEPARATE_OPENINGS:
@@ -324,6 +337,7 @@ def insert(filename,docname,skip=[]):
             cobs = [objects[child] for child in children if child in objects.keys()]
             if cobs:
                 Arch.addComponents(cobs,objects[host])
+
 
     FreeCAD.ActiveDocument.recompute()
     
@@ -345,7 +359,7 @@ def export(exportList,filename):
     
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     FORCEBREP = p.GetBool("ifcExportAsBrep",False)
-    DEBUG = p.GetBool("ifcDebug",False)    
+    DEBUG = p.GetBool("ifcDebug",False) 
 
     try:
         global ifcopenshell
@@ -354,6 +368,10 @@ def export(exportList,filename):
         if DEBUG: print "using legacy exporter"
         import importIFClegacy
         return importIFClegacy.export(exportList,filename)
+        
+    if isinstance(filename,unicode): 
+        import sys #workaround since ifcopenshell currently can't handle unicode filenames
+        filename = filename.encode(sys.getfilesystemencoding())
 
     version = FreeCAD.Version()
     owner = FreeCAD.ActiveDocument.CreatedBy
@@ -470,7 +488,30 @@ def export(exportList,filename):
                 if DEBUG: print "      subtracting ",c2," : ",str(o.Label)
                 prod2 = ifcfile.createIfcOpeningElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,str(o.Label),None,None,p2,r2,None)
                 ifcfile.createIfcRelVoidsElement(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'Subtraction','',product,prod2)
-    
+                
+        # properties
+        if hasattr(obj,"IfcAttributes"):
+            props = []
+            for key in obj.IfcAttributes:
+                if not (key in ["IfcUID","FlagForceBrep"]):
+                    tp,val = obj.IfcAttributes[key].strip(")").split("(")
+                    val = val.strip("'")
+                    val = val.strip('"')
+                    if tp == "IfcLabel":
+                        val = str(val)
+                    elif tp == "IfcBoolean":
+                        if val == ".T.":
+                            val = True
+                        else:
+                            val = False
+                    else:
+                        val = float(val)
+                    if DEBUG: print "      property ",key," : ",str(val), " (", str(tp), ")"
+                    props.append(ifcfile.createIfcPropertySingleValue(str(key),None,ifcfile.create_entity(str(tp),val),None))
+            if props:
+                pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'PropertySet',None,props)
+                ifcfile.createIfcRelDefinesByProperties(ifcopenshell.guid.compress(uuid.uuid1().hex),history,None,None,[product],pset)
+                        
         count += 1
         
     # relationships
