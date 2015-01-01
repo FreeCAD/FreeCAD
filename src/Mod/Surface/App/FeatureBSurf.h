@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
+ *   Copyright (c) 2014 Balázs Bámer                                       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,23 +20,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATUREBEZSURF_H
-#define SURFACE_FEATUREBEZSURF_H
+#ifndef FEATUREBSURF_H
+#define FEATUREBSURF_H
 
-#include "FeatureBSurf.h"
+#include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
+#include <App/PropertyLinks.h>
+#include "Mod/Part/App/PartFeature.h"
 
 namespace Surface
 {
 
-class SurfaceExport BezSurf :  public BSurf
+enum filltype_t
 {
-    PROPERTY_HEADER(Surface::BezSurf);
-
-public:
-    BezSurf();
-
-    // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+StretchStyle = 1, CoonsStyle, CurvedStyle
 };
-}//Namespace Surface
-#endif
+
+class BSurf : public Part::Feature
+{
+public:
+    App::PropertyLinkSubList aBList; //curves to be turned into a face (2-4 curves allowed).
+    App::PropertyInteger filltype;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
+
+    short mustExecute() const;
+
+protected:
+    void getWire(TopoDS_Wire& aWire);
+};
+
+}
+
+#endif // FEATUREBSURF_H
