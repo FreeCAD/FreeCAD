@@ -2185,32 +2185,24 @@ void SketchObject::appendRedundantMsg(const std::vector<int> &redundant, std::st
 
 bool SketchObject::evaluateConstraint(const Constraint *constraint) const
 {
-    int intGeoCount = getHighestCurveIndex() + 1;
-    int extGeoCount = getExternalGeometryCount();
+    //if requireXXX,  GeoUndef is treated as an error. If not requireXXX,
+    //GeoUndef is accepted. Index range checking is done on everything regardless.
+    bool requireFirst = true;
+    bool requireSecond = false;
+    bool requireThird = false;
 
     switch (constraint->Type) {
         case Radius:
-            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
-                return false;
+            requireFirst = true;
             break;
         case Horizontal:
         case Vertical:
-            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
-                return false;
-            if (constraint->Second != Constraint::GeoUndef) {
-                if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
-                    return false;
-            }
+            requireFirst = true;
             break;
         case Distance:
         case DistanceX:
         case DistanceY:
-            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
-                return false;
-            if (constraint->Second != Constraint::GeoUndef) {
-                if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
-                    return false;
-            }
+            requireFirst = true;
             break;
         case Coincident:
         case Perpendicular:
@@ -2218,33 +2210,48 @@ bool SketchObject::evaluateConstraint(const Constraint *constraint) const
         case Equal:
         case PointOnObject:
         case Tangent:
-            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
-                return false;
-            if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
-                return false;
+            requireFirst = true;
+            requireSecond = true;
             break;
         case Symmetric:
-            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
-                return false;
-            if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
-                return false;
-            if (constraint->Third < -extGeoCount || constraint->Third >= intGeoCount)
-                return false;
+            requireFirst = true;
+            requireSecond = true;
+            requireThird = true;
             break;
         case Angle:
-            if (constraint->First < -extGeoCount || constraint->First >= intGeoCount)
-                return false;
-            if (constraint->Second != Constraint::GeoUndef) {
-                if (constraint->Second < -extGeoCount || constraint->Second >= intGeoCount)
-                    return false;
-            }
+            requireFirst = true;
             break;
-        //TODO: angle-via-point, tangent-via-point, perp-via-point, snell's law
+        case SnellsLaw:
+            requireFirst = true;
+            requireSecond = true;
+            requireThird = true;
+            break;
         default:
             break;
     }
 
-    return true;
+    int intGeoCount = getHighestCurveIndex() + 1;
+    int extGeoCount = getExternalGeometryCount();
+
+    //the actual checks
+    bool ret = true;
+    int geoId;
+    geoId = constraint->First;
+    ret = ret && ((geoId == Constraint::GeoUndef && !requireFirst)
+                  ||
+                  (geoId >= -extGeoCount && geoId < intGeoCount) );
+
+    geoId = constraint->Second;
+    ret = ret && ((geoId == Constraint::GeoUndef && !requireSecond)
+                  ||
+                  (geoId >= -extGeoCount && geoId < intGeoCount) );
+
+    geoId = constraint->Third;
+    ret = ret && ((geoId == Constraint::GeoUndef && !requireThird)
+                  ||
+                  (geoId >= -extGeoCount && geoId < intGeoCount) );
+
+    return ret;
 }
 
 bool SketchObject::evaluateConstraints() const
