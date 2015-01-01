@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
@@ -32,20 +31,18 @@
 #include <Geom_BezierCurve.hxx>
 #include <Precision.hxx>
 #include <gp_Trsf.hxx>
+#include <GeomFill.hxx>
+#include <GeomFill_BezierCurves.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRep_Tool.hxx>
+#include <TopExp_Explorer.hxx>
+#include <Standard_ConstructionError.hxx>
+#include <Base/Tools.h>
+#include <Base/Exception.h>
 #endif
 
 #include "FeatureBezSurf.h"
-#include "FillType.h"
-#include <GeomFill.hxx>
-#include <GeomFill_BezierCurves.hxx>
-#include <ShapeFix_Wire.hxx>
-#include <ShapeExtend_WireData.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
-#include <TopExp_Explorer.hxx>
+
 
 using namespace Surface;
 
@@ -55,7 +52,7 @@ PROPERTY_SOURCE(Surface::BezSurf, Part::Feature)
 
 BezSurf::BezSurf()
 {
-    ADD_PROPERTY(aBezList,(0,"Geom_BezierCurve"));
+    ADD_PROPERTY(aBList,(0,"Geom_BezierCurve"));
     ADD_PROPERTY(filltype,(1));
 
 }
@@ -73,19 +70,6 @@ struct crvs{
 
 //Functions
 
-void getCurves(GeomFill_BezierCurves& aBuilder,TopoDS_Wire& aWire, const App::PropertyLinkSubList& anEdge, GeomFill_FillingStyle fstyle);
-//bool orderCurves(crvs& Cs, int size);
-
-//Check if any components of the surface have been modified
-
-short BezSurf::mustExecute() const
-{
-    if (aBezList.isTouched() ||
-        filltype.isTouched())
-        return 1;
-    return 0;
-}
-
 App::DocumentObjectExecReturn *BezSurf::execute(void)
 {
 
@@ -99,7 +83,6 @@ App::DocumentObjectExecReturn *BezSurf::execute(void)
         //Identify filling style
 
         GeomFill_FillingStyle fstyle;
-
         if(ftype==StretchStyle) {fstyle = GeomFill_StretchStyle;}
         else if(ftype==CoonsStyle) {fstyle = GeomFill_CoonsStyle;}
         else if(ftype==CurvedStyle) {fstyle = GeomFill_CurvedStyle;}
@@ -108,20 +91,49 @@ App::DocumentObjectExecReturn *BezSurf::execute(void)
         //Create Bezier Surface
 
         GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
-//        BRepBuilderAPI_MakeWire aWireBuilder; //Create Wire Builder
         TopoDS_Wire aWire; //Create empty wire
 
-        //Get Bezier Curves from edges and initialize the builder
+        //Gets the healed wire
+        getWire(aWire);
 
-        getCurves(aSurfBuilder,aWire,aBezList,fstyle);
+        //Create Bezier Surface builder
+        crvs bcrv;
+        Standard_Real u0;// contains output
+        Standard_Real u1;// contains output
+        TopExp_Explorer anExp (aWire, TopAbs_EDGE);
+        int it = 0;
+        for (; anExp.More(); anExp.Next()) {
+            const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
+            TopLoc_Location heloc; // this will be output
+            Handle_Geom_Curve c_geom = BRep_Tool::Curve(hedge,heloc,u0,u1); //The geometric curve
+            Handle_Geom_BezierCurve b_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
+
+            if (!b_geom.IsNull()) {
+                gp_Trsf transf = heloc.Transformation();
+                b_geom->Transform(transf); // apply original transformation to control points
+                //Store Underlying Geometry
+                if(it==0){bcrv.C1 = b_geom;}
+                else if(it==1){bcrv.C2 = b_geom;}
+                else if(it==2){bcrv.C3 = b_geom;}
+                else if(it==3){bcrv.C4 = b_geom;}
+            }
+            else {
+                Standard_Failure::Raise("Curve not a Bezier Curve");
+            }
+            it++;
+        }
+
+        int ncrv = aBList.getSize();
+        if(ncrv==2){aSurfBuilder.Init(bcrv.C1,bcrv.C2,fstyle);}
+        else if(ncrv==3){aSurfBuilder.Init(bcrv.C1,bcrv.C2,bcrv.C3,fstyle);}
+        else if(ncrv==4){aSurfBuilder.Init(bcrv.C1,bcrv.C2,bcrv.C3,bcrv.C4,fstyle);}
 
         //Create the surface
-
         const Handle_Geom_BezierSurface aSurface = aSurfBuilder.Surface();
 
         BRepBuilderAPI_MakeFace aFaceBuilder;//(aSurface,aWire,Standard_True); //Create Face Builder
-        Standard_Real u0 = 0.;
-        Standard_Real u1 = 1.;
+        u0 = 0.;
+        u1 = 1.;
         Standard_Real v0 = 0.;
         Standard_Real v1 = 1.;
         aFaceBuilder.Init(aSurface,u0,u1,v0,v1,Precision::Confusion());
@@ -137,6 +149,10 @@ App::DocumentObjectExecReturn *BezSurf::execute(void)
         return App::DocumentObject::StdReturn;
 
     } //End Try
+    catch(Standard_ConstructionError) {
+        // message is in a Latin language, show a normal one
+        return new App::DocumentObjectExecReturn("Curves are disjoint.");
+    }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
@@ -144,103 +160,4 @@ App::DocumentObjectExecReturn *BezSurf::execute(void)
 
 } //End execute
 
-void getCurves(GeomFill_BezierCurves& aBuilder,TopoDS_Wire& aWire, const App::PropertyLinkSubList& anEdge, GeomFill_FillingStyle fstyle){
-//void getCurves(TopoDS_Wire& aWire, const App::PropertyLinkSubList& anEdge){
 
-    crvs bcrv;
-
-    Standard_Real u0;// contains output
-    Standard_Real u1;// contains output
-
-    Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
-    Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
-
-    if(anEdge.getSize()>4){Standard_Failure::Raise("Only 2-4 continuous Bezier Curves are allowed");return;}
-    if(anEdge.getSize()<2){Standard_Failure::Raise("Only 2-4 continuous Bezier Curves are allowed");return;}
-
-    for(int i=0; i<anEdge.getSize(); i++){
-        
-        Part::TopoShape ts; //Curve TopoShape
-        TopoDS_Shape sub;   //Curve TopoDS_Shape
-        TopoDS_Edge etmp;   //Curve TopoDS_Edge
-        
-
-        //Get Edge
-        App::PropertyLinkSubList::SubSet set = anEdge[i];
-
-        if(set.obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-       
-            ts = static_cast<Part::Feature*>(set.obj)->Shape.getShape();
-               
-            //we want only the subshape which is linked
-            sub = ts.getSubShape(set.sub);
-            // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
-            BRepBuilderAPI_Copy copy(sub);
-            sub = copy.Shape();
-            
-            if(sub.ShapeType() == TopAbs_EDGE) {  //Check Shape type and assign edge
-                etmp = TopoDS::Edge(sub);
-            }
-            else {
-                Standard_Failure::Raise("Curves must be type TopoDS_Edge");
-                return; //Raise exception
-            }
-
-            aWD->Add(etmp);         
-
-        }
-
-        else{Standard_Failure::Raise("Curve not from Part::Feature");return;}
-
-    }
-
-    //Reorder the curves and fix the wire if required
-
-    aShFW->Load(aWD); //Load in the wire
-    aShFW->FixReorder(); //Fix the order of the edges if required
-    aShFW->ClosedWireMode() = Standard_True; //Enables closed wire mode
-    aShFW->FixConnected(); //Fix connection between wires
-    aShFW->FixSelfIntersection(); //Fix Self Intersection
-    aShFW->Perform(); //Perform the fixes
-
-    aWire = aShFW->Wire(); //Healed Wire
-
-    if(aWire.IsNull()){Standard_Failure::Raise("Wire unable to be constructed");return;}
-
-    //Create Bezier Surface
-
-    TopExp_Explorer anExp (aWire, TopAbs_EDGE);
-    int it = 0;
-    for (; anExp.More(); anExp.Next()) {
-        printf("it: %i",it);
-        const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
-        TopLoc_Location heloc; // this will be output
-        Handle_Geom_Curve c_geom = BRep_Tool::Curve(hedge,heloc,u0,u1); //The geometric curve
-        Handle_Geom_BezierCurve b_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
-        
-        if (!b_geom.IsNull()) {
-            gp_Trsf transf = heloc.Transformation();
-            b_geom->Transform(transf); // apply original transformation to control points
-            //Store Underlying Geometry
-            if(it==0){bcrv.C1 = b_geom;}
-            else if(it==1){bcrv.C2 = b_geom;}
-            else if(it==2){bcrv.C3 = b_geom;}
-            else if(it==3){bcrv.C4 = b_geom;}
-
-        }
-        else {
-            Standard_Failure::Raise("Curve not a Bezier Curve");
-            return;
-        }      
-
-        it++;
-    }
-
-    int ncrv = anEdge.getSize();
-
-    if(ncrv==2){aBuilder.Init(bcrv.C1,bcrv.C2,fstyle);}
-    else if(ncrv==3){aBuilder.Init(bcrv.C1,bcrv.C2,bcrv.C3,fstyle);}
-    else if(ncrv==4){aBuilder.Init(bcrv.C1,bcrv.C2,bcrv.C3,bcrv.C4,fstyle);}
-
-    return;
-}

@@ -30,20 +30,20 @@
 #include <TopoDS_Wire.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Precision.hxx>
-#endif
-
-#include "FeatureBSplineSurf.h"
-#include "FillType.h"
 #include <GeomFill.hxx>
 #include <GeomFill_BSplineCurves.hxx>
 #include <ShapeFix_Wire.hxx>
 #include <ShapeExtend_WireData.hxx>
 #include <BRep_Tool.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <Base/Tools.h>
 #include <Base/Exception.h>
 #include <TopExp_Explorer.hxx>
+#endif
+
+#include "FeatureBSplineSurf.h"
+#include "FillType.h"
+
 
 using namespace Surface;
 

@@ -178,7 +178,7 @@ void CmdSurfaceBezier::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("BezierSurface");
     std::stringstream bezListCmd;
     // std::vector<std::string> tempSelNames;
-    bezListCmd << "FreeCAD.ActiveDocument.ActiveObject.aBezList = [";
+    bezListCmd << "FreeCAD.ActiveDocument.ActiveObject.aBList = [";
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
 	// TODO check object types
