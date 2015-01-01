@@ -23,6 +23,8 @@ SET(Surface_SRCS
     AppSurfacePy.cpp
     PreCompiled.cpp
     PreCompiled.h
+    FeatureBSurf.h
+    FeatureBSurf.cpp
     FeatureFilling.h
     FeatureFilling.cpp
     FeatureSewing.h
