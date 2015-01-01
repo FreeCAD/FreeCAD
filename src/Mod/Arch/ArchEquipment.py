@@ -181,6 +181,9 @@ class _CommandEquipment:
             FreeCADGui.doCommand("Arch.makeEquipment(FreeCAD.ActiveDocument." + base + ")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
+            # get diffuse color info from base object
+            if hasattr(s[0].ViewObject,"DiffuseColor"):
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument.Objects[-1].ViewObject.DiffuseColor = FreeCAD.ActiveDocument." + base + ".ViewObject.DiffuseColor")
         return
         
         
