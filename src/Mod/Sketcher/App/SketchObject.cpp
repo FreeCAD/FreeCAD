@@ -2302,6 +2302,20 @@ void SketchObject::validateConstraints()
 // lock down the type of tangency/perpendicularity.
 double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, double py)
 {
+    // Temporary sketch based calculation. Slow, but guaranteed consistency with constraints.
+    Sketcher::Sketch sk;
+    int i1 = sk.addGeometry(this->getGeometry(GeoId1));
+    int i2 = sk.addGeometry(this->getGeometry(GeoId2));
+
+    return sk.calculateAngleViaPoint(i1,i2,px,py);
+
+
+/*
+    // OCC-based calculation. It is faster, but it was removed due to problems
+    // with reversed geometry (clockwise arcs). More info in "Sketch: how to
+    // handle reversed external arcs?" forum thread
+    // http://forum.freecadweb.org/viewtopic.php?f=10&t=9130&sid=1b994fa1236db5ac2371eeb9a53de23f
+
     const Part::GeomCurve &g1 = *(dynamic_cast<const Part::GeomCurve*>(this->getGeometry(GeoId1)));
     const Part::GeomCurve &g2 = *(dynamic_cast<const Part::GeomCurve*>(this->getGeometry(GeoId2)));
     Base::Vector3d p(px, py, 0.0);
@@ -2320,6 +2334,7 @@ double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, d
 
     double ang = atan2(-tan2.X()*tan1.Y()+tan2.Y()*tan1.X(), tan2.X()*tan1.X() + tan2.Y()*tan1.Y());
     return ang;
+*/
 }
 
 //Tests if the provided point lies exactly in a curve (satisfies
