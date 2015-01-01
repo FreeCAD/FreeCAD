@@ -76,9 +76,13 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is null");
         ShapeHistory history = buildHistory(mkFillet, TopAbs_FACE, shape, base->Shape.getValue());
         this->Shape.setValue(shape);
+
+        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
         PropertyShapeHistory prop;
-        prop.setContainer(this);
         prop.setValue(history);
+        prop.setContainer(this);
+        prop.touch();
+
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {

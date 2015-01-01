@@ -86,9 +86,13 @@ App::DocumentObjectExecReturn *Compound::execute(void)
         }
 
         this->Shape.setValue(comp);
+
+        // make sure the 'PropertyShapeHistory' is not safed in undo/redo (#0001889)
         PropertyShapeHistory prop;
-        prop.setContainer(this);
         prop.setValues(history);
+        prop.setContainer(this);
+        prop.touch();
+
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
