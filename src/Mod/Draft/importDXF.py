@@ -404,7 +404,7 @@ def drawPolyline(polyline,forceShape=False,num=None):
                     ob.Closed = polyline.closed
                     return ob
                 else:
-                    if polyline.closed:
+                    if polyline.closed and dxfFillMode:
                         w = Part.Wire(edges)
                         return(Part.Face(w))
                     else:
@@ -603,7 +603,7 @@ def drawSpline(spline,forceShape=False):
                 # print(knots)
                 sp.interpolate(verts)
                 sh = Part.Wire(sp.toShape())
-            if closed:
+            if closed and dxfFillMode:
                 return Part.Face(sh)
             else:
                 return sh                          
@@ -1811,5 +1811,6 @@ dxfImportHatches = p.GetBool("importDxfHatches",False)
 dxfUseStandardSize = p.GetBool("dxfStdSize",False)
 dxfGetColors = p.GetBool("dxfGetOriginalColors",False)
 dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",False)
+dxfFillMode = p.GetBool("fillmode",True)
 dxfBrightBackground = isBrightBackground()
 dxfDefaultColor = getColor()
