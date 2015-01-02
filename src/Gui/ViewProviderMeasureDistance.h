@@ -90,6 +90,7 @@ public:
 
     void attach(App::DocumentObject *);
     void updateData(const App::Property*);
+    bool useNewSelectionModel(void) const {return true;}
     std::vector<std::string> getDisplayModes(void) const;
     void setDisplayMode(const char* ModeName);
 
