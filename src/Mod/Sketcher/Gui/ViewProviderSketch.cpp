@@ -1163,10 +1163,17 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
             } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                 const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
                 double radius = arc->getRadius();
-                double startangle, endangle;
-                arc->getRange(startangle, endangle);
-                double angle = (startangle + endangle)/2;
                 p1 = arc->getCenter();
+                double angle = Constr->LabelPosition;
+                if (angle == 10) {
+                    double startangle, endangle;
+                    arc->getRange(startangle, endangle);
+                    angle = (startangle + endangle)/2;
+                }
+                else {
+                    Base::Vector3d tmpDir =  Base::Vector3d(toPos.fX, toPos.fY, 0) - p1;
+                    angle = atan2(tmpDir.y, tmpDir.x);
+                }
                 p2 = p1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
             }
             else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
@@ -3742,9 +3749,12 @@ Restart:
                         if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
                             double radius = arc->getRadius();
-                            double startangle, endangle;
-                            arc->getRange(startangle, endangle);
-                            double angle = (startangle + endangle)/2;
+                            double angle = (double) Constr->LabelPosition;
+                            if (angle == 10) {
+                                double startangle, endangle;
+                                arc->getRange(startangle, endangle);
+                                angle = (startangle + endangle)/2;
+                            }
                             pnt1 = arc->getCenter();
                             pnt2 = pnt1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
                         }
@@ -3752,6 +3762,9 @@ Restart:
                             const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geo);
                             double radius = circle->getRadius();
                             double angle = (double) Constr->LabelPosition;
+                            if (angle == 10) {
+                                angle = 0;
+                            }
                             pnt1 = circle->getCenter();
                             pnt2 = pnt1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
                         }
