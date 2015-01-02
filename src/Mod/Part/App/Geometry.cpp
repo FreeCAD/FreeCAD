@@ -363,7 +363,7 @@ bool GeomCurve::normal(double u, gp_Dir& dir) const
     return false;
 }
 
-bool GeomCurve::closestParameter(Base::Vector3d point, double &u) const
+bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
     try {
@@ -383,7 +383,7 @@ bool GeomCurve::closestParameter(Base::Vector3d point, double &u) const
     return false;
 }
 
-bool GeomCurve::closestParameterToBasicCurve(Base::Vector3d point, double &u) const
+bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double &u) const
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
     
