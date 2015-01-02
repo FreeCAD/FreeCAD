@@ -1,8 +1,9 @@
+PYSIDE_WRAP_RC(Ship_QRC_SRCS resources/Ship.qrc)
+
 SET(ShipMain_SRCS
-	InitGui.py
-	ShipGui.py
+    InitGui.py
+    ShipGui.py
     Instance.py
-	Ship_rc.py
     TankInstance.py
     WeightInstance.py
 )
@@ -91,10 +92,15 @@ SOURCE_GROUP("shiputils" FILES ${ShipUtils_SRCS})
 SET(all_files ${ShipMain_SRCS} ${ShipExamples_SRCS} ${ShipLoadExample_SRCS} ${ShipCreateShip_SRCS} ${ShipOutlineDraw_SRCS} ${ShipAreasCurve_SRCS} ${ShipHydrostatics_SRCS} ${ShipCreateWeight_SRCS} ${ShipCreateTank_SRCS} ${ShipCapacityCurve_SRCS} ${ShipUtils_SRCS})
 
 ADD_CUSTOM_TARGET(Ship ALL
-    SOURCES ${all_files}
+    SOURCES ${all_files} ${Ship_QRC_SRCS}
 )
 
 fc_copy_sources(Ship "${CMAKE_BINARY_DIR}/Mod/Ship" ${all_files})
+
+fc_target_copy_resource(Ship
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Ship
+    Ship_rc.py)
 
 INSTALL(
     FILES
@@ -159,6 +165,7 @@ INSTALL(
 INSTALL(
     FILES
         ${ShipMain_SRCS}
+        ${Ship_QRC_SRCS}
     DESTINATION
         Mod/Ship
 )
