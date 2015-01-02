@@ -1,3 +1,4 @@
+PYSIDE_WRAP_RC(Material_QRC_SRCS Resources/Material.qrc)
 
 SET(Material_SRCS
     Init.py
@@ -21,13 +22,18 @@ SET (MaterialLib_Files
 SOURCE_GROUP("MatLib" FILES ${MaterialLib_Files})
 
 ADD_CUSTOM_TARGET(Material ALL
-    SOURCES ${Material_SRCS}
+    SOURCES ${Material_SRCS} ${Material_QRC_SRCS}
 )
 
 fc_target_copy_resource(Material 
     ${CMAKE_SOURCE_DIR}/src/Mod/Material
     ${CMAKE_BINARY_DIR}/Mod/Material
     ${Material_SRCS})
+
+fc_target_copy_resource(Material
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    Material_rc.py)
 
 ADD_CUSTOM_TARGET(MaterialLib ALL
     SOURCES ${MaterialLib_Files}
@@ -41,7 +47,7 @@ fc_target_copy_resource(MaterialLib
     ${MaterialLib_Files})
 
 INSTALL(
-    FILES ${Material_SRCS}
+    FILES ${Material_SRCS} ${Material_QRC_SRCS}
     DESTINATION Mod/Material
 )
 
