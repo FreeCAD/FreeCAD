@@ -119,8 +119,8 @@ public:
     Base::Vector3d firstDerivativeAtParameter(double u) const;
     Base::Vector3d secondDerivativeAtParameter(double u) const;
     bool normal(double u, gp_Dir& dir) const;
-    bool closestParameter(Base::Vector3d point, double &u) const;
-    bool closestParameterToBasicCurve(Base::Vector3d point, double &u) const;
+    bool closestParameter(const Base::Vector3d& point, double &u) const;
+    bool closestParameterToBasicCurve(const Base::Vector3d& point, double &u) const;
 };
 
 class PartExport GeomBezierCurve : public GeomCurve
