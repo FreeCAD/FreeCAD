@@ -610,7 +610,7 @@ def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None
         n = "Circle"
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",n)
     _Circle(obj)
-    obj.MakeFace = face
+    #obj.MakeFace = face
     if isinstance(radius,Part.Edge):
         edge = radius
         if DraftGeomUtils.geomType(edge) == "Circle":
@@ -653,7 +653,7 @@ def makeRectangle(length, height, placement=None, face=True, support=None):
     obj.Length = length
     obj.Height = height
     obj.Support = support
-    obj.MakeFace = face
+    #obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderRectangle(obj.ViewObject)
@@ -789,7 +789,7 @@ def makeWire(pointslist,closed=False,placement=None,face=True,support=None):
     obj.Points = pointslist
     obj.Closed = closed
     obj.Support = support
-    obj.MakeFace = face
+    #obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderWire(obj.ViewObject)
@@ -810,7 +810,7 @@ def makePolygon(nfaces,radius=1,inscribed=True,placement=None,face=True,support=
     _Polygon(obj)
     obj.FacesNumber = nfaces
     obj.Radius = radius
-    obj.MakeFace = face
+    #obj.MakeFace = face
     if inscribed:
         obj.DrawMode = "inscribed"
     else:
@@ -861,7 +861,7 @@ def makeBSpline(pointslist,closed=False,placement=None,face=True,support=None):
     obj.Closed = closed
     obj.Points = pointslist
     obj.Support = support
-    obj.MakeFace = face
+    #obj.MakeFace = face
     if placement: obj.Placement = placement
     if gui:
         _ViewProviderWire(obj.ViewObject)
@@ -892,7 +892,7 @@ def makeBezCurve(pointslist,closed=False,placement=None,face=True,support=None,D
             Part.BezierCurve().MaxDegree)
     obj.Closed = closed
     obj.Support = support
-    obj.MakeFace = face
+    #obj.MakeFace = face
     obj.Proxy.resetcontinuity(obj)
     if placement: obj.Placement = placement
     if gui:
@@ -3941,7 +3941,7 @@ class _Rectangle(_DraftObject):
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
-        obj.MakeFace = True
+        obj.MakeFace = getParam("fillmode",True) 
         obj.Length=1
         obj.Height=1
 
@@ -3987,7 +3987,7 @@ class _Circle(_DraftObject):
         obj.addProperty("App::PropertyAngle","LastAngle","Draft","End angle of the arc (for a full circle, give it same value as First Angle)")
         obj.addProperty("App::PropertyLength","Radius","Draft","Radius of the circle")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
-        obj.MakeFace = True
+        obj.MakeFace = getParam("fillmode",True)
 
     def execute(self, obj):
         import Part
@@ -4011,7 +4011,7 @@ class _Ellipse(_DraftObject):
         obj.addProperty("App::PropertyLength","MinorRadius","Draft","The minor radius of the ellipse")
         obj.addProperty("App::PropertyLength","MajorRadius","Draft","The major radius of the ellipse")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
-        obj.MakeFace = True
+        obj.MakeFace = getParam("fillmode",True)
 
     def execute(self, obj):
         import Part
@@ -4044,7 +4044,7 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this object is closed")
-        obj.MakeFace = True
+        obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
 
     def execute(self, obj):
@@ -4200,7 +4200,7 @@ class _Polygon(_DraftObject):
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
-        obj.MakeFace = True
+        obj.MakeFace = getParam("fillmode",True)
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 0
         obj.Radius = 1
@@ -4304,7 +4304,7 @@ class _BSpline(_DraftObject):
         obj.addProperty("App::PropertyVectorList","Points","Draft", "The points of the b-spline")
         obj.addProperty("App::PropertyBool","Closed","Draft","If the b-spline is closed or not")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this spline is closed")
-        obj.MakeFace = True
+        obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Points = []
 
@@ -4355,7 +4355,7 @@ class _BezCurve(_DraftObject):
         obj.addProperty("App::PropertyBool","Closed","Draft",
                         "If the Bezier curve should be closed or not")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this curve is closed")
-        obj.MakeFace = True
+        obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Degree = 3
         obj.Continuity = []
