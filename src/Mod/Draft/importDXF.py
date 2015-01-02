@@ -300,7 +300,7 @@ def getColor():
 
 def formatObject(obj,dxfobj=None):
     "applies color and linetype to objects"
-    if dxfGetColors and dxfobj:
+    if dxfGetColors and dxfobj and hasattr(dxfobj,"color_index"):
         if hasattr(obj.ViewObject,"TextColor"):
             if dxfobj.color_index == 256: 
                 cm = getGroupColor(dxfobj)[:3]
@@ -596,10 +596,13 @@ def drawSpline(spline,forceShape=False):
             ob.Closed = closed
             return ob
         else:
-            sp = Part.BSplineCurve()
-            # print(knots)
-            sp.interpolate(verts)
-            sh = Part.Wire(sp.toShape())
+            if dxfDiscretizeCurves:
+                sh = Part.makePolygon(verts+[verts[0]])
+            else:
+                sp = Part.BSplineCurve()
+                # print(knots)
+                sp.interpolate(verts)
+                sh = Part.Wire(sp.toShape())
             if closed:
                 return Part.Face(sh)
             else:
