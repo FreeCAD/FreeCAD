@@ -72,24 +72,9 @@ struct crvs{
 
 App::DocumentObjectExecReturn *BezSurf::execute(void)
 {
-
-    //Set Variables
-
-    int ftype = filltype.getValue();
-
     //Begin Construction
     try{
-
-        //Identify filling style
-
-        GeomFill_FillingStyle fstyle;
-        if(ftype==StretchStyle) {fstyle = GeomFill_StretchStyle;}
-        else if(ftype==CoonsStyle) {fstyle = GeomFill_CoonsStyle;}
-        else if(ftype==CurvedStyle) {fstyle = GeomFill_CurvedStyle;}
-        else {return new App::DocumentObjectExecReturn("Filling style must be 1 (Stretch), 2 (Coons), or 3 (Curved).");}
-
-        //Create Bezier Surface
-
+        GeomFill_FillingStyle fstyle = getFillingStyle();
         GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
         TopoDS_Wire aWire; //Create empty wire
 
