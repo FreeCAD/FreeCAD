@@ -143,6 +143,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             else if (strcmp("Radius",ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = Radius;
+                // set a value that is out of range of result of atan2
+                // this value is handled in ViewProviderSketch
+                this->getConstraintPtr()->LabelPosition = 10;
                 valid = true;
             }
             if (valid) {
