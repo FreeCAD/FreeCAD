@@ -28,7 +28,7 @@
 # include <QApplication>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
-# include <Inventor/nodes/SoSeparator.h>
+# include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoFontStyle.h>
 # include <Inventor/nodes/SoPickStyle.h>
@@ -50,6 +50,7 @@
 #include <App/PropertyStandard.h>
 #include <App/MeasureDistance.h>
 #include <Base/Console.h>
+#include <Base/Quantity.h>
 
 using namespace Gui;
 
@@ -58,7 +59,7 @@ PROPERTY_SOURCE(Gui::ViewProviderMeasureDistance, Gui::ViewProviderDocumentObjec
 
 ViewProviderMeasureDistance::ViewProviderMeasureDistance() 
 {
-    ADD_PROPERTY(TextColor,(0.0f,0.0f,0.0f));
+    ADD_PROPERTY(TextColor,(1.0f,1.0f,1.0f));
     ADD_PROPERTY(LineColor,(1.0f,1.0f,1.0f));
     ADD_PROPERTY(FontSize,(18));
     ADD_PROPERTY(DistFactor,(1.0));
@@ -172,20 +173,13 @@ void ViewProviderMeasureDistance::attach(App::DocumentObject* pcObject)
     points->numPoints=2;
     lineSep->addChild(points);
 
-    // Making the whole measurement object selectable by 3d view can
-    // become cumbersome since it has influence to any raypick action.
-    // Thus, it's only selectable by its text label
-    SoFCSelection* textsep = new SoFCSelection();
-    textsep->objectName = pcObject->getNameInDocument();
-    textsep->documentName = pcObject->getDocument()->getName();
-    textsep->subElementName = "Main";
-    //SoSeparator* textsep = new SoSeparator();
+    SoSeparator* textsep = new SoSeparator();
     textsep->addChild(pTranslation);
     textsep->addChild(pTextColor);
     textsep->addChild(pFont);
     textsep->addChild(pLabel);
 
-    SoSeparator* sep = new SoSeparator();
+    SoSeparator* sep = new SoAnnotation();
     sep->addChild(lineSep);
     sep->addChild(textsep);
     addDisplayMaskMode(sep, "Base");
@@ -233,11 +227,7 @@ void ViewProviderMeasureDistance::updateData(const App::Property* prop)
         SbVec3f pos = (pCoords->point[2]+pCoords->point[3])/2.0f;
         pTranslation->translation.setValue(pos);
 
-        std::stringstream s;
-        s.precision(3);
-        s.setf(std::ios::fixed | std::ios::showpoint);
-        s << dif.length();
-        pLabel->string.setValue(s.str().c_str());
+        pLabel->string.setValue((Base::Quantity(dif.length(), Base::Unit::Length)).getUserString().toUtf8().constData());
     }
 
     ViewProviderDocumentObject::updateData(prop);
@@ -323,7 +313,6 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
     
     if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::DOWN) {
         const SoPickedPoint * point = n->getPickedPoint();
-	// I think this is where we need to snap.  IR 20140630
         if (point == NULL) {
             Base::Console().Message("No point picked.\n");
             return;
@@ -339,7 +328,8 @@ void ViewProviderMeasureDistance::measureDistanceCallback(void * ud, SoEventCall
             view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), measureDistanceCallback, ud);
             pm->deleteLater();
         }
-    } else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
+    }
+    else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
         n->setHandled();
         view->setEditing(false);
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), measureDistanceCallback, ud);
