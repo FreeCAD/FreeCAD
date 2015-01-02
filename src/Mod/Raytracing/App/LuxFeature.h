@@ -49,6 +49,7 @@ public:
 
     App::PropertyLink       Source;
     App::PropertyColor      Color;
+    App::PropertyPercent    Transparency;
 
     /** @name methods overide Feature */
     //@{
