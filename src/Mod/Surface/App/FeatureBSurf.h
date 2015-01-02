@@ -26,6 +26,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
+#include <GeomFill_BezierCurves.hxx>
 #include "Mod/Part/App/PartFeature.h"
 
 namespace Surface
@@ -45,6 +46,7 @@ public:
     short mustExecute() const;
 
 protected:
+    GeomFill_FillingStyle getFillingStyle();
     void getWire(TopoDS_Wire& aWire);
 };
 

@@ -43,9 +43,22 @@ short BSurf::mustExecute() const
 {
     if (aBList.isTouched() ||
         filltype.isTouched())
+    {
         return 1;
+    }
     return 0;
 }
+
+GeomFill_FillingStyle BSurf::getFillingStyle()
+{
+    //Identify filling style
+    int ftype = filltype.getValue();
+    if(ftype==StretchStyle) {return GeomFill_StretchStyle;}
+    else if(ftype==CoonsStyle) {return GeomFill_CoonsStyle;}
+    else if(ftype==CurvedStyle) {return GeomFill_CurvedStyle;}
+    else {Standard_Failure::Raise("Filling style must be 1 (Stretch), 2 (Coons), or 3 (Curved).");}
+}
+
 
 void BSurf::getWire(TopoDS_Wire& aWire)
 {
