@@ -700,7 +700,10 @@ class _Window(ArchComponent.Component):
                         print "Arch: Bad formatting of window parts definitions"
 
         base = self.processSubShapes(obj,base)
-        self.applyShape(obj,base,pl)
+        if base:
+            if not base.isNull():
+                if base.Solids:
+                    self.applyShape(obj,base,pl)
 
     def getSubVolume(self,obj,plac=None):
         "returns a subvolume for cutting in a base object"
