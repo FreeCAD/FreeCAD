@@ -114,7 +114,7 @@ def removeFromComponent(compobject,subobject):
             l = compobject.Subtractions
             l.append(subobject)
             compobject.Subtractions = l
-            if Draft.getType(subobject) != "Window":
+            if (Draft.getType(subobject) != "Window") and (not Draft.isClone(subobject,"Window",True)):
                 subobject.ViewObject.hide()
                 
                 
@@ -511,7 +511,7 @@ class Component:
         if prop in ["Additions","Subtractions"]:
             if hasattr(obj,prop):
                 for o in getattr(obj,prop):
-                    if Draft.getType(o) != "Window":
+                    if (Draft.getType(o) != "Window") and (not Draft.isClone(o,"Window",True)):
                         if (Draft.getType(obj) == "Wall"):
                             if (Draft.getType(o) == "Roof"):
                                 continue
@@ -549,11 +549,11 @@ class Component:
                             add.Placement = add.Placement.multiply(placement)
                         base = base.fuse(add)
 
-                    elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
+                    elif (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window",True)):
                         f = o.Proxy.getSubVolume(o)
                         if f:
                             if base.Solids and f.Solids:
-                                if placemen:
+                                if placement:
                                     f.Placement = f.Placement.multiply(placement)
                                 base = base.cut(f)
                                 
@@ -581,7 +581,7 @@ class Component:
                     base = None
             
             if base:
-                if (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window")):
+                if (Draft.getType(o) == "Window") or (Draft.isClone(o,"Window",True)):
                         # windows can be additions or subtractions, treated the same way
                         f = o.Proxy.getSubVolume(o)
                         if f:
@@ -645,7 +645,7 @@ class ViewProviderComponent:
     def onChanged(self,vobj,prop):
         if prop == "Visibility":
             for obj in vobj.Object.Additions+vobj.Object.Subtractions:
-                if Draft.getType(obj) == "Window":
+                if (Draft.getType(obj) == "Window") or (Draft.isClone(obj,"Window",True)):
                     obj.ViewObject.Visibility = vobj.Visibility
         return
 

@@ -237,15 +237,18 @@ def get3DView():
             return v[0]
     return None
 
-def isClone(obj,objtype):
-    """isClone(obj,objtype): returns True if the given object is 
-    a clone of an object of the given type"""
+def isClone(obj,objtype,recursive=False):
+    """isClone(obj,objtype,[recursive]): returns True if the given object is 
+    a clone of an object of the given type. If recursive is True, also check if
+    the clone is a clone of clone (of clone...)  of the given type."""
     if getType(obj) == "Clone":
         if len(obj.Objects) == 1:
             if getType(obj.Objects[0]) == objtype:
                 return True
+            elif recursive and (getType(obj.Objects[0]) == "Clone"):
+                return isClone(obj.Objects[0],objtype,recursive)
     return False
-
+    
 def getGroupNames():
     "returns a list of existing groups in the document"
     glist = []
@@ -581,17 +584,19 @@ def getMovableChildren(objectslist,recursive=False):
     recursive is True, all descendents are considered, otherwise only direct children.'''
     added = []
     for obj in objectslist:
-        children = obj.OutList
-        if  hasattr(obj,"Proxy"):
-            if obj.Proxy:
-                if hasattr(obj.Proxy,"getSiblings"):
-                    children.extend(obj.Proxy.getSiblings(obj))
-        for child in children:
-            if hasattr(child,"MoveWithHost"):
-                if child.MoveWithHost:
-                    added.append(child)
-        if recursive:
-            added.extend(getMovableChildren(children))
+        if getType(obj) != "Clone":
+            # clones should never move their children
+            children = obj.OutList
+            if  hasattr(obj,"Proxy"):
+                if obj.Proxy:
+                    if hasattr(obj.Proxy,"getSiblings"):
+                        children.extend(obj.Proxy.getSiblings(obj))
+            for child in children:
+                if hasattr(child,"MoveWithHost"):
+                    if child.MoveWithHost:
+                        added.append(child)
+            if recursive:
+                added.extend(getMovableChildren(children))
     return added
 
 def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None, support=None):
@@ -4968,6 +4973,17 @@ class _Clone(_DraftObject):
                 obj.Shape = Part.makeCompound(shapes)
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
+            
+    def getSubVolume(self,obj,placement=None):
+        # this allows clones of arch windows to return a subvolume too
+        if obj.Objects:
+            if hasattr(obj.Objects[0],"Proxy"):
+                if hasattr(obj.Objects[0].Proxy,"getSubVolume"):
+                    if not placement:
+                        # clones must displace the original subvolume too
+                        placement = obj.Placement
+                    return obj.Objects[0].Proxy.getSubVolume(obj.Objects[0],placement)
+        return None
 
 class _ViewProviderClone(_ViewProviderDraftAlt):
     "a view provider that displays a Clone icon instead of a Draft icon"
