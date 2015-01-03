@@ -142,6 +142,15 @@ void ViewProviderDrawingPage::updateData(const App::Property* prop)
     }
 }
 
+bool ViewProviderDrawingPage::onDelete(const std::vector<std::string> & items)
+{
+    if (view) {
+        view->parentWidget()->deleteLater();
+    }
+
+    return ViewProviderDocumentObjectGroup::onDelete(items);
+}
+
 void ViewProviderDrawingPage::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     QAction* act;
