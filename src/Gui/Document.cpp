@@ -666,7 +666,6 @@ void Document::Restore(Base::XMLReader &reader)
     // RestoreDocFile then restores the visibility status again
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        it->second->hide();
         it->second->startRestoring();
     }
 }

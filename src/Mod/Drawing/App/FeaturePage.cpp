@@ -148,12 +148,16 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
                 if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
                     Drawing::FeatureView *View = dynamic_cast<Drawing::FeatureView *>(*It);
-                    ofile << View->ViewResult.getValue();
-                    ofile << tempendl << tempendl << tempendl;
+                    if (View->Visible.getValue()) {
+                        ofile << View->ViewResult.getValue();
+                        ofile << tempendl << tempendl << tempendl;
+                    }
                 } else if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId()) ) {
                     Drawing::FeatureClip *Clip = dynamic_cast<Drawing::FeatureClip *>(*It);
-                    ofile << Clip->ViewResult.getValue();
-                    ofile << tempendl << tempendl << tempendl;
+                    if (Clip->Visible.getValue()) {
+                        ofile << Clip->ViewResult.getValue();
+                        ofile << tempendl << tempendl << tempendl;
+                    }
                 } else if ( (*It)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) ) {
                     // getting children inside subgroups too
                     App::DocumentObjectGroup *SubGroup = dynamic_cast<App::DocumentObjectGroup *>(*It);
@@ -161,8 +165,10 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
                     for (std::vector<App::DocumentObject*>::const_iterator Grit= SubGrp.begin();Grit!=SubGrp.end();++Grit) {
                         if ( (*Grit)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
                             Drawing::FeatureView *SView = dynamic_cast<Drawing::FeatureView *>(*Grit);
-                            ofile << SView->ViewResult.getValue();
-                            ofile << tempendl << tempendl << tempendl;
+                            if (SView->Visible.getValue()) {
+                                ofile << SView->ViewResult.getValue();
+                                ofile << tempendl << tempendl << tempendl;
+                            }
                         }
                     }
                 }

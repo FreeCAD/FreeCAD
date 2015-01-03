@@ -48,6 +48,7 @@ public:
     App::PropertyFloat Height;
     App::PropertyBool ShowFrame;
     App::PropertyString ViewResult;
+    App::PropertyBool Visible;
 
     /** @name methods overide Feature */
     //@{

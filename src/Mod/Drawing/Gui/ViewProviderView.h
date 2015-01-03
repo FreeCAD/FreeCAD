@@ -48,7 +48,17 @@ public:
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
+    /// Hide the object in the view
+    virtual void hide(void);
+    /// Show the object in the view
+    virtual void show(void);
+    virtual bool isShow(void) const;
 
+    /** @name Restoring view provider from document load */
+    //@{
+    virtual void startRestoring();
+    virtual void finishRestoring();
+    //@}
 };
 
 class DrawingGuiExport ViewProviderDrawingClip : public Gui::ViewProviderDocumentObjectGroup
@@ -68,7 +78,17 @@ public:
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
+    /// Hide the object in the view
+    virtual void hide(void);
+    /// Show the object in the view
+    virtual void show(void);
+    virtual bool isShow(void) const;
 
+    /** @name Restoring view provider from document load */
+    //@{
+    virtual void startRestoring();
+    virtual void finishRestoring();
+    //@}
 };
 
 } // namespace DrawingGui

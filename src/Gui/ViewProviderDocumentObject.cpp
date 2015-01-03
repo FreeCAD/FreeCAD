@@ -71,6 +71,7 @@ void ViewProviderDocumentObject::getTaskViewContent(std::vector<Gui::TaskView::T
 
 void ViewProviderDocumentObject::startRestoring()
 {
+    hide();
 }
 
 void ViewProviderDocumentObject::finishRestoring()
