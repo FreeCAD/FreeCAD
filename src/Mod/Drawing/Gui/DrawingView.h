@@ -80,6 +80,7 @@ class DrawingGuiExport DrawingView : public Gui::MDIView
 
 public:
     DrawingView(Gui::Document* doc, QWidget* parent = 0);
+    virtual ~DrawingView();
 
 public Q_SLOTS:
     void load(const QString &path = QString());
@@ -94,10 +95,12 @@ public:
     void printPdf();
     void printPreview();
     void print(QPrinter* printer);
+    void setDocumentObject(const std::string&);
     PyObject* getPyObject();
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
+    void closeEvent(QCloseEvent*);
 
 private:
     QAction *m_nativeAction;
@@ -108,6 +111,7 @@ private:
     QAction *m_outlineAction;
 
     SvgView *m_view;
+    std::string m_objectName;
 
     QString m_currentPath;
 };

@@ -58,7 +58,9 @@
 #include <Base/Stream.h>
 #include <Base/gzstream.h>
 #include <Base/PyObjectBase.h>
+#include <App/Document.h>
 #include <Gui/Document.h>
+#include <Gui/ViewProvider.h>
 #include <Gui/FileDialog.h>
 #include <Gui/WaitCursor.h>
 
@@ -249,6 +251,10 @@ DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
     //setWindowTitle(tr("SVG Viewer"));
 }
 
+DrawingView::~DrawingView()
+{
+}
+
 void DrawingView::load (const QString & fileName)
 {
     if (!fileName.isEmpty()) {
@@ -271,6 +277,27 @@ void DrawingView::load (const QString & fileName)
 
         m_outlineAction->setEnabled(true);
         m_backgroundAction->setEnabled(true);
+    }
+}
+
+void DrawingView::setDocumentObject(const std::string& name)
+{
+    m_objectName = name;
+}
+
+void DrawingView::closeEvent(QCloseEvent* ev)
+{
+    ev->accept();
+
+    // when closing the view from GUI notify the view provider to mark it invisible
+    if (_pcDocument && !m_objectName.empty()) {
+        App::Document* doc = _pcDocument->getDocument();
+        if (doc) {
+            App::DocumentObject* obj = doc->getObject(m_objectName.c_str());
+            Gui::ViewProvider* vp = _pcDocument->getViewProvider(obj);
+            if (vp)
+                vp->hide();
+        }
     }
 }
 
