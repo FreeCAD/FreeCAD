@@ -50,6 +50,7 @@ public:
 
     App::PropertyFloat X,Y,Scale,Rotation;
     App::PropertyString ViewResult;
+    App::PropertyBool Visible;
 
 
     /** @name methods overide Feature */
