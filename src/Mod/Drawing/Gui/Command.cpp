@@ -103,10 +103,11 @@ void CmdDrawingNewPage::activated(int iMsg)
 
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
-        openCommand("Drawing create page");
+        openCommand("Create page");
         doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
         doCommand(Doc,"App.activeDocument().recompute()");
+        doCommand(Doc,"Gui.activeDocument().getObject('%s').show()",FeatName.c_str());
         commitCommand();
     }
     else {
@@ -231,7 +232,7 @@ void CmdDrawingNewA3Landscape::activated(int iMsg)
 {
     std::string FeatName = getUniqueObjectName("Page");
 
-    openCommand("Drawing create page");
+    openCommand("Create page");
     doCommand(Doc,"App.activeDocument().addObject('Drawing::FeaturePage','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Template = 'A3_Landscape.svg'",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().recompute()");
@@ -361,7 +362,9 @@ void CmdDrawingOrthoViews::activated(int iMsg)
         return;
     }
 
-    Gui::Control().showDialog(new TaskDlgOrthoViews());
+    TaskDlgOrthoViews* dlg = new TaskDlgOrthoViews();
+    dlg->setDocumentName(this->getDocument()->getName());
+    Gui::Control().showDialog(dlg);
 }
 
 bool CmdDrawingOrthoViews::isActive(void)

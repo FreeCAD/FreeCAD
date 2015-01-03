@@ -268,11 +268,13 @@ OrthoViews::OrthoViews(const char * pagename, const char * partname)
     part_name = partname;
 
     parent_doc = App::GetApplication().getActiveDocument();
+    parent_doc->openTransaction("Create view");
 
     part = parent_doc->getObject(partname);
     bbox.Add(static_cast<Part::Feature*>(part)->Shape.getBoundingBox());
 
     page = parent_doc->getObject(pagename);
+    Gui::Application::Instance->showViewProvider(page);
     load_page();
 
     min_space = 15;             // should be preferenced
@@ -1343,12 +1345,18 @@ void TaskDlgOrthoViews::clicked(int)
 bool TaskDlgOrthoViews::accept()
 {
     bool check = widget->user_input();
+    App::Document* doc = App::GetApplication().getDocument(this->getDocumentName().c_str());
+    if (doc)
+        doc->commitTransaction();
     return !check;
 }
 
 bool TaskDlgOrthoViews::reject()
 {
     widget->clean_up();
+    App::Document* doc = App::GetApplication().getDocument(this->getDocumentName().c_str());
+    if (doc)
+        doc->abortTransaction();
     return true;
 }
 
