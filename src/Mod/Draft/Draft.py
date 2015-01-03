@@ -4639,6 +4639,7 @@ class _Array(_DraftObject):
         obj.addProperty("App::PropertyVector","IntervalAxis","Draft","Distance and orientation of intervals in Axis direction")
         obj.addProperty("App::PropertyVector","Center","Draft","Center point")
         obj.addProperty("App::PropertyAngle","Angle","Draft","Angle to cover with copies")
+        obj.addProperty("App::PropertyBool","Fuse","Draft","Specifies if copies must be fused (slower)")
         obj.ArrayType = ['ortho','polar']
         obj.NumberX = 1
         obj.NumberY = 1
@@ -4650,22 +4651,27 @@ class _Array(_DraftObject):
         obj.IntervalZ = Vector(0,0,0)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
+        obj.Fuse = False
 
     def execute(self,obj):
         import DraftGeomUtils
+        if hasattr(obj,"Fuse"):
+            fuse = obj.Fuse
+        else:
+            fuse = False
         if obj.Base:
             pl = obj.Placement
             if obj.ArrayType == "ortho":
                 sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,
-                                    obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
+                                    obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ,fuse)
             else:
                 av = obj.IntervalAxis if hasattr(obj,"IntervalAxis") else None
-                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av)
+                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av,fuse)
             obj.Shape = sh
             if not DraftGeomUtils.isNull(pl):
                 obj.Placement = pl
 
-    def rectArray(self,shape,xvector,yvector,zvector,xnum,ynum,znum):
+    def rectArray(self,shape,xvector,yvector,zvector,xnum,ynum,znum,fuse=False):
         import Part
         base = [shape.copy()]
         for xcount in range(xnum):
@@ -4688,9 +4694,15 @@ class _Array(_DraftObject):
                         nshape = shape.copy()
                         nshape.translate(currentzvector)
                         base.append(nshape)
-        return Part.makeCompound(base)
+        if fuse:
+            fshape = base.pop()
+            for s in base:
+                fshape = fshape.fuse(s)
+            return fshape.removeSplitter()
+        else:
+            return Part.makeCompound(base)
 
-    def polarArray(self,shape,center,angle,num,axis,axisvector):
+    def polarArray(self,shape,center,angle,num,axis,axisvector,fuse=False):
         #print("angle ",angle," num ",num)
         import Part
         if angle == 360:
@@ -4708,7 +4720,14 @@ class _Array(_DraftObject):
                 if not DraftVecUtils.isNull(axisvector):
                     nshape.translate(FreeCAD.Vector(axisvector).multiply(i+1))
             base.append(nshape)
-        return Part.makeCompound(base)
+        if fuse:
+            fshape = base.pop()
+            for s in base:
+                fshape = fshape.fuse(s)
+            return fshape.removeSplitter()
+        else:
+            return Part.makeCompound(base)
+
 
 class _PathArray(_DraftObject):
     "The Draft Path Array object"
