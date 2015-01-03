@@ -237,15 +237,18 @@ def get3DView():
             return v[0]
     return None
 
-def isClone(obj,objtype):
-    """isClone(obj,objtype): returns True if the given object is 
-    a clone of an object of the given type"""
+def isClone(obj,objtype,recursive=False):
+    """isClone(obj,objtype,[recursive]): returns True if the given object is 
+    a clone of an object of the given type. If recursive is True, also check if
+    the clone is a clone of clone (of clone...)  of the given type."""
     if getType(obj) == "Clone":
         if len(obj.Objects) == 1:
             if getType(obj.Objects[0]) == objtype:
                 return True
+            elif recursive and (getType(obj.Objects[0]) == "Clone"):
+                return isClone(obj.Objects[0],objtype,recursive)
     return False
-
+    
 def getGroupNames():
     "returns a list of existing groups in the document"
     glist = []
@@ -581,17 +584,19 @@ def getMovableChildren(objectslist,recursive=False):
     recursive is True, all descendents are considered, otherwise only direct children.'''
     added = []
     for obj in objectslist:
-        children = obj.OutList
-        if  hasattr(obj,"Proxy"):
-            if obj.Proxy:
-                if hasattr(obj.Proxy,"getSiblings"):
-                    children.extend(obj.Proxy.getSiblings(obj))
-        for child in children:
-            if hasattr(child,"MoveWithHost"):
-                if child.MoveWithHost:
-                    added.append(child)
-        if recursive:
-            added.extend(getMovableChildren(children))
+        if getType(obj) != "Clone":
+            # clones should never move their children
+            children = obj.OutList
+            if  hasattr(obj,"Proxy"):
+                if obj.Proxy:
+                    if hasattr(obj.Proxy,"getSiblings"):
+                        children.extend(obj.Proxy.getSiblings(obj))
+            for child in children:
+                if hasattr(child,"MoveWithHost"):
+                    if child.MoveWithHost:
+                        added.append(child)
+            if recursive:
+                added.extend(getMovableChildren(children))
     return added
 
 def makeCircle(radius, placement=None, face=True, startangle=None, endangle=None, support=None):
@@ -4639,6 +4644,7 @@ class _Array(_DraftObject):
         obj.addProperty("App::PropertyVector","IntervalAxis","Draft","Distance and orientation of intervals in Axis direction")
         obj.addProperty("App::PropertyVector","Center","Draft","Center point")
         obj.addProperty("App::PropertyAngle","Angle","Draft","Angle to cover with copies")
+        obj.addProperty("App::PropertyBool","Fuse","Draft","Specifies if copies must be fused (slower)")
         obj.ArrayType = ['ortho','polar']
         obj.NumberX = 1
         obj.NumberY = 1
@@ -4650,22 +4656,27 @@ class _Array(_DraftObject):
         obj.IntervalZ = Vector(0,0,0)
         obj.Angle = 360
         obj.Axis = Vector(0,0,1)
+        obj.Fuse = False
 
     def execute(self,obj):
         import DraftGeomUtils
+        if hasattr(obj,"Fuse"):
+            fuse = obj.Fuse
+        else:
+            fuse = False
         if obj.Base:
             pl = obj.Placement
             if obj.ArrayType == "ortho":
                 sh = self.rectArray(obj.Base.Shape,obj.IntervalX,obj.IntervalY,
-                                    obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ)
+                                    obj.IntervalZ,obj.NumberX,obj.NumberY,obj.NumberZ,fuse)
             else:
                 av = obj.IntervalAxis if hasattr(obj,"IntervalAxis") else None
-                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av)
+                sh = self.polarArray(obj.Base.Shape,obj.Center,obj.Angle.Value,obj.NumberPolar,obj.Axis,av,fuse)
             obj.Shape = sh
             if not DraftGeomUtils.isNull(pl):
                 obj.Placement = pl
 
-    def rectArray(self,shape,xvector,yvector,zvector,xnum,ynum,znum):
+    def rectArray(self,shape,xvector,yvector,zvector,xnum,ynum,znum,fuse=False):
         import Part
         base = [shape.copy()]
         for xcount in range(xnum):
@@ -4688,9 +4699,15 @@ class _Array(_DraftObject):
                         nshape = shape.copy()
                         nshape.translate(currentzvector)
                         base.append(nshape)
-        return Part.makeCompound(base)
+        if fuse:
+            fshape = base.pop()
+            for s in base:
+                fshape = fshape.fuse(s)
+            return fshape.removeSplitter()
+        else:
+            return Part.makeCompound(base)
 
-    def polarArray(self,shape,center,angle,num,axis,axisvector):
+    def polarArray(self,shape,center,angle,num,axis,axisvector,fuse=False):
         #print("angle ",angle," num ",num)
         import Part
         if angle == 360:
@@ -4708,7 +4725,14 @@ class _Array(_DraftObject):
                 if not DraftVecUtils.isNull(axisvector):
                     nshape.translate(FreeCAD.Vector(axisvector).multiply(i+1))
             base.append(nshape)
-        return Part.makeCompound(base)
+        if fuse:
+            fshape = base.pop()
+            for s in base:
+                fshape = fshape.fuse(s)
+            return fshape.removeSplitter()
+        else:
+            return Part.makeCompound(base)
+
 
 class _PathArray(_DraftObject):
     "The Draft Path Array object"
@@ -4949,6 +4973,17 @@ class _Clone(_DraftObject):
                 obj.Shape = Part.makeCompound(shapes)
         if not DraftGeomUtils.isNull(pl):
             obj.Placement = pl
+            
+    def getSubVolume(self,obj,placement=None):
+        # this allows clones of arch windows to return a subvolume too
+        if obj.Objects:
+            if hasattr(obj.Objects[0],"Proxy"):
+                if hasattr(obj.Objects[0].Proxy,"getSubVolume"):
+                    if not placement:
+                        # clones must displace the original subvolume too
+                        placement = obj.Placement
+                    return obj.Objects[0].Proxy.getSubVolume(obj.Objects[0],placement)
+        return None
 
 class _ViewProviderClone(_ViewProviderDraftAlt):
     "a view provider that displays a Clone icon instead of a Draft icon"
