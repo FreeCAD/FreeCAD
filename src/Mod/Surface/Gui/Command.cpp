@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
- *                      Balázs Bámer                                       *
+ *   Copyright (c) 2014-2015 Nathan Miller    <Nathan.A.Mill[at]gmail.com> *
+ *                           Balázs Bámer                                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,23 +24,24 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
-# include <QString>
-# include <QDir>
-# include <QFileInfo>
-# include <QLineEdit>
-# include <QPointer>
-# include <Standard_math.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopExp_Explorer.hxx>
-# include <Inventor/events/SoMouseButtonEvent.h>
+#include <sstream>
+#include <QString>
+#include <QDir>
+#include <QFileInfo>
+#include <QLineEdit>
+#include <QPointer>
+#include <Standard_math.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <BRep_Tool.hxx>
+#include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
 #include <Base/Console.h>
 #include <App/Document.h>
-//#include <Gui/Application.h>
-//#include <Gui/Command.h>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -56,6 +57,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
+#include "Mod/Part/App/PartFeature.h"
 
 // Nate's stuff
 
@@ -143,7 +145,6 @@ void CmdSurfaceCut::activated(int iMsg)
     commitCommand();*/
 }
 
-// my stuff
 
 //===========================================================================
 // Surface_Bezier
@@ -164,37 +165,19 @@ CmdSurfaceBezier::CmdSurfaceBezier()
 
 void CmdSurfaceBezier::activated(int iMsg)
 {
-    // TODO filter class type
-    std::vector<Gui::SelectionObject> Sel = getSelection().getSelectionEx(0/*, Part::Feature::getClassTypeId()*/);
-    
-    // TODO check if input feature count is between 2 and 4
-    /*if (Sel.size() < 2) {
+    /*if (!isActive()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two shapes or more, please."));
+            QObject::tr("Select 2, 3 or 4 curves, please."));
         return;
     }*/
 
-    bool askUser = false;
+    // we take the whole selection and require that all of its members are of the required curve
+    std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
     std::string FeatName = getUniqueObjectName("BezierSurface");
     std::stringstream bezListCmd;
-    // std::vector<std::string> tempSelNames;
     bezListCmd << "FreeCAD.ActiveDocument.ActiveObject.aBList = [";
-    for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
-        App::DocumentObject* obj = it->getObject();
-	// TODO check object types
-        /*if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
-            if (!PartGui::checkForSolids(shape) && !askUser) {
-                int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids selected"),
-                    QObject::tr("The use of non-solids for boolean operations may lead to unexpected results.\n"
-                                "Do you want to continue?"), QMessageBox::Yes, QMessageBox::No);
-                if (ret == QMessageBox::No)
-                    return;
-                askUser = true;
-            }*/
-            bezListCmd << "(App.activeDocument()." << it->getFeatName() << ", \'Edge1\'),";
-         //   tempSelNames.push_back(it->getFeatName());
-        //}
+    for (std::vector<Gui::SelectionObject>::iterator it = Selo.begin(); it != Selo.end(); ++it) {
+        bezListCmd << "(App.activeDocument()." << it->getFeatName() << ", \'Edge1\'),";
     }
     bezListCmd << "]";
 
@@ -208,7 +191,35 @@ void CmdSurfaceBezier::activated(int iMsg)
 
 bool CmdSurfaceBezier::isActive(void)
 {
-    return true; //TODO check availability getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=2;
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    if (Sel.size() < 2 || Sel.size() > 4) {
+       return false;
+    }
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
+    {
+        if(!((*it).pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
+            return false;
+        }
+        Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
+        TopoDS_Shape shape = ts.getSubShape("Edge1");
+        if (shape.IsNull())
+        {
+            return false;
+        }
+        if(shape.ShapeType() != TopAbs_EDGE) {  //Check Shape type and assign edge
+            return false;
+        }
+        TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
+        TopLoc_Location heloc; // this will be output
+        Standard_Real u0;// contains output
+        Standard_Real u1;// contains output
+        Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
+        Handle_Geom_BezierCurve b_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
+        if (b_geom.IsNull()) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void CreateSurfaceCommands(void)

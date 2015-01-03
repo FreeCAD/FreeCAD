@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
- *                      Balázs Bámer                                       *
+ *   Copyright (c) 2014-2015 Nathan Miller    <Nathan.A.Mill[at]gmail.com> *
+ *                           Balázs Bámer                                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -54,7 +54,6 @@ BezSurf::BezSurf()
 {
     ADD_PROPERTY(aBList,(0,"Geom_BezierCurve"));
     ADD_PROPERTY(filltype,(1));
-
 }
 
 //Structures
