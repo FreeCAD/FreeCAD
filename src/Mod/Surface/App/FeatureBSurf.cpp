@@ -65,8 +65,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
     Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
 
-    if(aBList.getSize()>4){Standard_Failure::Raise("Only 2-4 continuous Bezier Curves are allowed");return;}
-    if(aBList.getSize()<2){Standard_Failure::Raise("Only 2-4 continuous Bezier Curves are allowed");return;}
+    if(aBList.getSize()>4 || aBList.getSize()<2){Standard_Failure::Raise("Only 2-4 curves are allowed");return;}
 
     for(int i=0; i<aBList.getSize(); i++){
 

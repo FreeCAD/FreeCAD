@@ -34,6 +34,7 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
 #include <Geom_BezierCurve.hxx>
+#include <Geom_BSplineCurve.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 #include <BRep_Tool.hxx>
@@ -58,8 +59,6 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include "Mod/Part/App/PartFeature.h"
-
-// Nate's stuff
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -222,10 +221,88 @@ bool CmdSurfaceBezier::isActive(void)
     return true;
 }
 
+//===========================================================================
+// Surface_BSpline
+//===========================================================================
+DEF_STD_CMD_A(CmdSurfaceBSpline);
+
+CmdSurfaceBSpline::CmdSurfaceBSpline()
+  :Command("Surface_BSpline")
+{
+    sAppModule    = "Surface";
+    sGroup        = QT_TR_NOOP("Surface");
+    sMenuText     = QT_TR_NOOP("BSpline");
+    sToolTipText  = QT_TR_NOOP("Creates a surface from 2, 3 or 4 BSpline curves");
+    sWhatsThis    = "Surface_BSpline";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "BSplineSurf";
+}
+
+void CmdSurfaceBSpline::activated(int iMsg)
+{
+    /*if (!isActive()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select 2, 3 or 4 curves, please."));
+        return;
+    }*/
+
+    // we take the whole selection and require that all of its members are of the required curve
+    std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
+    std::string FeatName = getUniqueObjectName("BSplineSurface");
+    std::stringstream bspListCmd;
+    bspListCmd << "FreeCAD.ActiveDocument.ActiveObject.aBList = [";
+    for (std::vector<Gui::SelectionObject>::iterator it = Selo.begin(); it != Selo.end(); ++it) {
+        bspListCmd << "(App.activeDocument()." << it->getFeatName() << ", \'Edge1\'),";
+    }
+    bspListCmd << "]";
+
+    openCommand("Create BSpline surface");
+    doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")", FeatName.c_str());
+    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=1"); // TODO ask filltype from user and check it
+    runCommand(Doc, bspListCmd.str().c_str());
+    updateActive();
+    commitCommand();
+}
+
+bool CmdSurfaceBSpline::isActive(void)
+{
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    if (Sel.size() < 2 || Sel.size() > 4) {
+       return false;
+    }
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
+    {
+        if(!((*it).pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
+            return false;
+        }
+        Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
+        TopoDS_Shape shape = ts.getSubShape("Edge1");
+        if (shape.IsNull())
+        {
+            return false;
+        }
+        if(shape.ShapeType() != TopAbs_EDGE) {  //Check Shape type and assign edge
+            return false;
+        }
+        TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
+        TopLoc_Location heloc; // this will be output
+        Standard_Real u0;// contains output
+        Standard_Real u1;// contains output
+        Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
+        Handle_Geom_BSplineCurve b_geom = Handle_Geom_BSplineCurve::DownCast(c_geom); //Try to get BSpline curve
+        if (b_geom.IsNull()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 void CreateSurfaceCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    rcCmdMgr.addCommand(new CmdSurfaceFilling());
-    rcCmdMgr.addCommand(new CmdSurfaceCut());
+/*    rcCmdMgr.addCommand(new CmdSurfaceFilling());
+    rcCmdMgr.addCommand(new CmdSurfaceCut());*/
     rcCmdMgr.addCommand(new CmdSurfaceBezier());
+    rcCmdMgr.addCommand(new CmdSurfaceBSpline());
 }
