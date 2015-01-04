@@ -2331,6 +2331,7 @@ class Rotate(Modifier):
                         self.center = self.point
                         self.node = [self.point]
                         self.ui.radiusUi()
+                        self.ui.radiusValue.setText(self.ui.AFORMAT % 0)
                         self.ui.hasFill.hide()
                         self.ui.labelRadius.setText("Base angle")
                         self.arctrack.setCenter(self.center)
