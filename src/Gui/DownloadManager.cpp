@@ -123,6 +123,15 @@ QUrl DownloadManager::redirectUrl(const QUrl& url) const
             }
         }
     }
+    else {
+        // When the url comes from drag and drop it may end with CR+LF. This may cause problems
+        // and thus should be removed.
+        QString str = redirectUrl.toString();
+        if (str.endsWith(QLatin1String("\r\n"))) {
+            str.chop(2);
+            redirectUrl.setUrl(str);
+        }
+    }
 
     return redirectUrl;
 }
