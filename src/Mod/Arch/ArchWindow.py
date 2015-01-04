@@ -453,7 +453,6 @@ class _CommandWindow:
     def getPoint(self,point=None,obj=None):
         "this function is called by the snapper when it has a 3D point"
         self.tracker.finalize()
-        FreeCADGui.Control.closeDialog()
         if point == None:
             return
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
