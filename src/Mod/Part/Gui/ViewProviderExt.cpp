@@ -373,7 +373,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     else if (prop == &PointColorArray) {
         const std::vector<App::Color>& c = PointColorArray.getValues();
-        int size = (int)c.size();
+        unsigned int size = (int)c.size();
         if (size > 1) {
             // FIXME: Check for size mismatch between number of points and number of colors
             pcShapeBind->value = SoMaterialBinding::PER_VERTEX;
@@ -418,7 +418,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     // For testing
     else if (prop == &DiffuseColor) {
         const std::vector<App::Color>& c = DiffuseColor.getValues();
-        int size = (int)c.size();
+        unsigned int size = (int)c.size();
         if (size > 1 && size == this->faceset->partIndex.getNum()) {
             pcShapeBind->value = SoMaterialBinding::PER_PART;
             pcShapeMaterial->diffuseColor.setNum(size);
