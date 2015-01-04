@@ -1585,7 +1585,8 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
             }
         }
         else if (it->scheme().toLower() == QLatin1String("http")) {
-            Gui::Dialog::DownloadManager::getInstance()->download(*it);
+            Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();
+            dm->download(dm->redirectUrl(*it));
         }
 //#ifndef QT_NO_OPENSSL
         else if (it->scheme().toLower() == QLatin1String("https")) {
@@ -1594,7 +1595,8 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
                 url.removeEncodedQueryItem(QByteArray("sid"));
                 url.setScheme(QLatin1String("http"));
             }
-            Gui::Dialog::DownloadManager::getInstance()->download(url);
+            Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();
+            dm->download(dm->redirectUrl(url));
         }
 //#endif
         else if (it->scheme().toLower() == QLatin1String("ftp")) {
