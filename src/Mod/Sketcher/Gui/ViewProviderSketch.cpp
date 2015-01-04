@@ -697,12 +697,18 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         getSketchObject()->getGeoVertexIndex(edit->DragPoint, GeoId, PosId);
                         if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
                             Gui::Command::openCommand("Drag Point");
-                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                                   ,getObject()->getNameInDocument()
-                                                   ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
-                                                   );
-                            Gui::Command::commitCommand();
-                            Gui::Command::updateActive();
+                            try {
+                                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
+                                                       ,getObject()->getNameInDocument()
+                                                       ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
+                                                       );
+                                Gui::Command::commitCommand();
+                                Gui::Command::updateActive();
+                            }
+                            catch (const Base::Exception& e) {
+                                Gui::Command::abortCommand();
+                                Base::Console().Error("Drag point: %s\n", e.what());
+                            }
                         }
                         setPreselectPoint(edit->DragPoint);
                         edit->DragPoint = -1;
@@ -720,12 +726,18 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomEllipse::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) { 
                             Gui::Command::openCommand("Drag Curve");
-                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
-                                                   ,getObject()->getNameInDocument()
-                                                   ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0
-                                                   );
-                            Gui::Command::commitCommand();
-                            Gui::Command::updateActive();
+                            try {
+                                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
+                                                       ,getObject()->getNameInDocument()
+                                                       ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0
+                                                       );
+                                Gui::Command::commitCommand();
+                                Gui::Command::updateActive();
+                            }
+                            catch (const Base::Exception& e) {
+                                Gui::Command::abortCommand();
+                                Base::Console().Error("Drag curve: %s\n", e.what());
+                            }
                         }
                         edit->PreselectCurve = edit->DragCurve;
                         edit->DragCurve = -1;
