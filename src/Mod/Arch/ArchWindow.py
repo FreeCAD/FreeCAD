@@ -515,18 +515,18 @@ class _CommandWindow:
         "sets up a taskbox widget"
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Window options"))
+        w.setWindowTitle(translate("Arch","Window options").decode("utf8"))
         grid = QtGui.QGridLayout(w)
 
         # sill height
-        labels = QtGui.QLabel(translate("Arch","Sill height"))
+        labels = QtGui.QLabel(translate("Arch","Sill height").decode("utf8"))
         values = ui.createWidget("Gui::InputField")
         grid.addWidget(labels,0,0,1,1)
         grid.addWidget(values,0,1,1,1)
         QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset"))
+        labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
         valuep = QtGui.QComboBox()
         valuep.addItems(["Create from scratch"]+WindowPresets)
         valuep.setCurrentIndex(self.Preset)
