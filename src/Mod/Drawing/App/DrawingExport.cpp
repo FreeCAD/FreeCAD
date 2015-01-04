@@ -391,16 +391,7 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     const gp_Pnt& p= ellp.Location();
     double r1 = ellp.MajorRadius();
     double r2 = ellp.MinorRadius();
-    double f = c.FirstParameter();
-    double l = c.LastParameter();
-    gp_Pnt s = c.Value(f);
-    gp_Pnt m = c.Value((l+f)/2.0);
-    gp_Pnt e = c.Value(l);
-
-    gp_Vec v1(m,s);
-    gp_Vec v2(m,e);
-    gp_Vec v3(0,0,1);
-    double a = v3.DotCross(v1,v2);
+    double dp = ellp.Axis().Direction().Dot(gp_Vec(0,0,1));
 
     // a full ellipse
    /* if (s.SquareDistance(e) < 0.001) {
@@ -421,26 +412,20 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
             << e.X() << " " << e.Y() << "\" />";
     }*/
         gp_Dir xaxis = ellp.XAxis().Direction();
-        double angle = xaxis.Angle(gp_Dir(1,0,0));
+        double angle = xaxis.AngleWithRef(gp_Dir(1,0,0),gp_Dir(0,0,-1));
         //double rotation = Base::toDegrees<double>(angle);
 
-
-	double ax = s.X() - p.X();
-	double ay = s.Y() - p.Y();
-	double bx = e.X() - p.X();
-	double by = e.Y() - p.Y();
-
-	double start_angle = atan2(ay, ax) * 180/D_PI;
-	double end_angle = atan2(by, bx) * 180/D_PI;
+	double start_angle = c.FirstParameter();
+	double end_angle = c.LastParameter();
 
 	double major_x;double major_y;
-	
-	major_x = r1 * sin(angle*90);
-	major_y = r1 * cos(angle*90);
+
+	major_x = r1 * cos(angle);
+	major_y = r1 * sin(angle);
 
 	double ratio = r2/r1;
 
-	if(a > 0){
+	if(dp < 0){
 		double temp = start_angle;
 		start_angle = end_angle;
 		end_angle = temp;
