@@ -1,5 +1,6 @@
 /***************************************************************************
- *   Copyright (c) 2014 Nathan Miller         <Nathan.A.Mill[at]gmail.com> *
+ *   Copyright (c) 2014-2015 Nathan Miller    <Nathan.A.Mill[at]gmail.com> *
+ *                           Balázs Bámer                                  *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,32 +24,20 @@
 #ifndef SURFACE_FEATUREBSPLINESURF_H
 #define SURFACE_FEATUREBSPLINESURF_H
 
-#include <App/PropertyStandard.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyLinks.h>
-#include "Mod/Part/App/PartFeature.h"
+#include "FeatureBSurf.h"
 
 namespace Surface
 {
 
-class SurfaceExport BSplineSurf :  public Part::Feature
+class SurfaceExport BSplineSurf :  public BSurf
 {
     PROPERTY_HEADER(Surface::BSplineSurf);
 
 public:
     BSplineSurf();
 
-    App::PropertyLinkSubList aBSplineList; //BSpline curves to be turned into a face (2-4 curves allowed).
-    App::PropertyInteger filltype;         //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
-
     // recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
-    /// returns the type name of the view provider
-//    const char* getViewProviderName(void) const {
-//        return "PartGui::ViewProviderCut";
-//    }
-
 };
 }//Namespace Surface
 #endif
