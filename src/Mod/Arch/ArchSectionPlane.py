@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -32,10 +32,11 @@ else:
     def translate(ctxt,txt):
         return txt
 
-def makeSectionPlane(objectslist=None,name=translate("Arch","Section")):
+def makeSectionPlane(objectslist=None,name="Section"):
     """makeSectionPlane([objectslist]) : Creates a Section plane objects including the
     given objects. If no object is given, the whole document will be considered."""
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _SectionPlane(obj)
     if FreeCAD.GuiUp:
         _ViewProviderSectionPlane(obj.ViewObject)
@@ -60,7 +61,7 @@ def makeSectionView(section,name="View"):
     if not page:
         page = FreeCAD.ActiveDocument.addObject("Drawing::FeaturePage",translate("Arch","Page"))
         page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
-        
+
     view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython",name)
     page.addObject(view)
     _ArchDrawingView(view)
@@ -104,7 +105,7 @@ class _SectionPlane:
         obj.addProperty("App::PropertyBool","OnlySolids","Arch",translate("Arch","If false, non-solids will be cut too, with possible wrong results."))
         obj.OnlySolids = True
         self.Type = "SectionPlane"
-        
+
     def execute(self,obj):
         import Part
         if hasattr(obj.ViewObject,"DisplayLength"):
@@ -126,7 +127,7 @@ class _SectionPlane:
 
     def onChanged(self,obj,prop):
         pass
-        
+
     def getNormal(self,obj):
         return obj.Shape.Faces[0].normalAt(0,0)
 
@@ -142,7 +143,7 @@ class _ViewProviderSectionPlane:
     def __init__(self,vobj):
         vobj.addProperty("App::PropertyLength","DisplayLength","Arch",translate("Arch","The display length of this section plane"))
         vobj.addProperty("App::PropertyLength","DisplayHeight","Arch",translate("Arch","The display height of this section plane"))
-        vobj.addProperty("App::PropertyLength","ArrowSize","Arch",translate("Arch","The size of the arrows of this section plane"))        
+        vobj.addProperty("App::PropertyLength","ArrowSize","Arch",translate("Arch","The size of the arrows of this section plane"))
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
@@ -190,7 +191,7 @@ class _ViewProviderSectionPlane:
         self.onChanged(vobj,"DisplayLength")
         self.onChanged(vobj,"LineColor")
         self.onChanged(vobj,"Transparency")
-        
+
     def getDisplayModes(self,vobj):
         return ["Default"]
 
@@ -294,7 +295,7 @@ class _ArchDrawingView:
                 if hasattr(self,"spaces"):
                     if round(self.direction.getAngle(FreeCAD.Vector(0,0,1)),Draft.precision()) in [0,round(math.pi,Draft.precision())]:
                         for s in self.spaces:
-                            svg += Draft.getSVG(s,scale=obj.Scale,fontsize=obj.FontSize.Value,direction=self.direction)              
+                            svg += Draft.getSVG(s,scale=obj.Scale,fontsize=obj.FontSize.Value,direction=self.direction)
                 result = ''
                 result += '<g id="' + obj.Name + '"'
                 result += ' transform="'
@@ -306,7 +307,7 @@ class _ArchDrawingView:
                 result += '</g>\n'
                 # print "complete node:",result
                 obj.ViewResult = result
-            
+
     def onChanged(self, obj, prop):
         if prop in ["Source","RenderingMode","ShowCut"]:
             import Part, DraftGeomUtils
@@ -325,10 +326,10 @@ class _ArchDrawingView:
                                 os.append(o)
                         objs = os
                         self.svg = ''
-    
+
                         # generating SVG
                         if obj.RenderingMode == "Solid":
-                            # render using the Arch Vector Renderer                        
+                            # render using the Arch Vector Renderer
                             import ArchVRM
                             render = ArchVRM.Renderer()
                             render.setWorkingPlane(obj.Source.Placement)
@@ -343,7 +344,7 @@ class _ArchDrawingView:
                                 if obj.ShowCut:
                                     self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
                             # print render.info()
-                            
+
                         else:
                             # render using the Drawing module
                             import Drawing, Part
@@ -405,7 +406,7 @@ class _ArchDrawingView:
                                     svgh = svgh.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
                                     svgh = svgh.replace('stroke-width="1"','stroke-width="LWPlaceholder"')
                                     svgh = svgh.replace('stroke-width:0.01','stroke-width:LWPlaceholder')
-                                    svgh = svgh.replace('fill="none"','fill="none"\nstroke-dasharray="DAPlaceholder"')                              
+                                    svgh = svgh.replace('fill="none"','fill="none"\nstroke-dasharray="DAPlaceholder"')
                                     self.svg += svgh
                             if sshapes:
                                 sshapes = Part.makeCompound(sshapes)
@@ -452,5 +453,5 @@ class _ArchDrawingView:
         return result
 
 
-if FreeCAD.GuiUp:                
+if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_SectionPlane',_CommandSectionPlane())

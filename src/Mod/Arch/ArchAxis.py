@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -36,10 +36,11 @@ __title__="FreeCAD Axis System"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeAxis(num=5,size=1000,name=translate("Arch","Axes")):
+def makeAxis(num=5,size=1000,name="Axes"):
     '''makeAxis(num,size): makes an Axis System
     based on the given number of axes and interval distances'''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Axis(obj)
     if FreeCAD.GuiUp:
         _ViewProviderAxis(obj.ViewObject)
@@ -61,7 +62,7 @@ class _CommandAxis:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
                 'Accel': "A, X",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Axis","Creates an axis system.")}
-        
+
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
         FreeCADGui.addModule("Arch")
@@ -76,7 +77,7 @@ class _CommandAxis:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-       
+
 class _Axis:
     "The Axis object"
     def __init__(self,obj):
@@ -88,7 +89,7 @@ class _Axis:
         self.Type = "Axis"
         obj.Length=3000
         obj.Proxy = self
-        
+
     def execute(self,obj):
         import Part
         geoms = []
@@ -109,7 +110,7 @@ class _Axis:
             sh = Part.Compound(geoms)
             sh.Placement = obj.Placement
             obj.Shape = sh
-        
+
     def onChanged(self,obj,prop):
         if prop in ["Angles","Distances","Placement"]:
             self.execute(obj)
@@ -120,7 +121,7 @@ class _Axis:
     def __setstate__(self,state):
         if state:
             self.Type = state
-        
+
 class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
@@ -138,7 +139,7 @@ class _ViewProviderAxis:
         vobj.LineColor = (0.13,0.15,0.37)
         vobj.DrawStyle = "Dashdot"
         vobj.NumberingStyle = "1,2,3"
-    
+
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Axis_Tree.svg"
@@ -162,7 +163,7 @@ class _ViewProviderAxis:
         sep.addChild(self.bubbleset)
         vobj.addDisplayMode(sep,"Default")
         self.onChanged(vobj,"BubbleSize")
-        
+
     def getDisplayModes(self,vobj):
         return ["Default"]
 
@@ -309,15 +310,15 @@ class _ViewProviderAxis:
                     elif vobj.NumberingStyle == "L0,L1,L2":
                         t.string = "L"+str(num)
                     num += 1
-            
-  
+
+
     def setEdit(self,vobj,mode=0):
         taskd = _AxisTaskPanel()
         taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
-    
+
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         return
@@ -338,9 +339,9 @@ class _AxisTaskPanel:
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
-        
+
         self.updating = False
-        
+
         self.obj = None
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
@@ -356,8 +357,8 @@ class _AxisTaskPanel:
         self.tree.header().resizeSection(0,50)
         self.tree.header().resizeSection(1,80)
         self.tree.header().resizeSection(2,60)
-        
-        # buttons       
+
+        # buttons
         self.addButton = QtGui.QPushButton(self.form)
         self.addButton.setObjectName("addButton")
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
@@ -383,7 +384,7 @@ class _AxisTaskPanel:
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
-    
+
     def update(self):
         'fills the treewidget'
         self.updating = True
@@ -398,7 +399,7 @@ class _AxisTaskPanel:
                 item.setTextAlignment(0,QtCore.Qt.AlignLeft)
         self.retranslateUi(self.form)
         self.updating = False
-                
+
     def addElement(self):
         item = QtGui.QTreeWidgetItem(self.tree)
         item.setText(0,str(self.tree.topLevelItemCount()))
@@ -413,7 +414,7 @@ class _AxisTaskPanel:
             nr = int(it.text(0))-1
             self.resetObject(remove=nr)
             self.update()
-            
+
     def edit(self,item,column):
         if not self.updating:
             self.resetObject()
@@ -431,12 +432,12 @@ class _AxisTaskPanel:
         self.obj.Angles = a
         self.obj.touch()
         FreeCAD.ActiveDocument.recompute()
-    
+
     def reject(self):
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
-                    
+
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
@@ -445,6 +446,6 @@ class _AxisTaskPanel:
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Axis", None, QtGui.QApplication.UnicodeUTF8),
                                    QtGui.QApplication.translate("Arch", "Distance", None, QtGui.QApplication.UnicodeUTF8),
                                    QtGui.QApplication.translate("Arch", "Angle", None, QtGui.QApplication.UnicodeUTF8)])
- 
-if FreeCAD.GuiUp:          
+
+if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Axis',_CommandAxis())
