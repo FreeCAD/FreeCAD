@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -38,13 +38,14 @@ __url__ = "http://www.freecadweb.org"
 # Possible roles for walls
 Roles = ['Wall','Wall Layer','Beam','Column','Curtain Wall']
 
-def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name=translate("Arch","Wall")):
+def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face=None,name="Wall"):
     '''makeWall([obj],[length],[width],[height],[align],[face],[name]): creates a wall based on the
     given object, which can be a sketch, a draft object, a face or a solid, or no object at
-    all, then you must provide length, width and height. Align can be "Center","Left" or "Right", 
+    all, then you must provide length, width and height. Align can be "Center","Left" or "Right",
     face can be an index number of a face in the base object to base the wall on.'''
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Wall(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWall(obj.ViewObject)
@@ -101,7 +102,7 @@ def joinWalls(walls,delete=False):
     FreeCAD.ActiveDocument.recompute()
     base.ViewObject.show()
     return base
-    
+
 def mergeShapes(w1,w2):
     "returns a Shape built on two walls that share same properties and have a coincident endpoint"
     if not areSameWallTypes([w1,w2]):
@@ -110,10 +111,10 @@ def mergeShapes(w1,w2):
         return None
     if w1.Base.Shape.Faces or w2.Base.Shape.Faces:
         return None
-        
+
     # TODO fix this
     return None
-    
+
     eds = w1.Base.Shape.Edges + w2.Base.Shape.Edges
     import DraftGeomUtils
     w = DraftGeomUtils.findWires(eds)
@@ -154,7 +155,7 @@ class _CommandWall:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
+
     def Activated(self):
         self.Align = "Center"
         self.Length = None
@@ -281,25 +282,25 @@ class _CommandWall:
         ui = FreeCADGui.UiLoader()
         w.setWindowTitle(translate("Arch","Wall options").decode("utf8"))
         grid = QtGui.QGridLayout(w)
-        
+
         label5 = QtGui.QLabel(translate("Arch","Length").decode("utf8"))
         self.Length = ui.createWidget("Gui::InputField")
         self.Length.setText("0.00 mm")
         grid.addWidget(label5,0,0,1,1)
         grid.addWidget(self.Length,0,1,1,1)
-        
+
         label1 = QtGui.QLabel(translate("Arch","Width").decode("utf8"))
         value1 = ui.createWidget("Gui::InputField")
         value1.setText(self.FORMAT % self.Width)
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(value1,1,1,1,1)
-        
+
         label2 = QtGui.QLabel(translate("Arch","Height").decode("utf8"))
         value2 = ui.createWidget("Gui::InputField")
         value2.setText(self.FORMAT % self.Height)
         grid.addWidget(label2,2,0,1,1)
         grid.addWidget(value2,2,1,1,1)
-        
+
         label3 = QtGui.QLabel(translate("Arch","Alignment").decode("utf8"))
         value3 = QtGui.QComboBox()
         items = ["Center","Left","Right"]
@@ -307,7 +308,7 @@ class _CommandWall:
         value3.setCurrentIndex(items.index(self.Align))
         grid.addWidget(label3,3,0,1,1)
         grid.addWidget(value3,3,1,1,1)
-        
+
         label4 = QtGui.QLabel(translate("Arch","Con&tinue").decode("utf8"))
         value4 = QtGui.QCheckBox()
         value4.setObjectName("ContinueCmd")
@@ -324,7 +325,7 @@ class _CommandWall:
         QtCore.QObject.connect(value3,QtCore.SIGNAL("currentIndexChanged(int)"),self.setAlign)
         QtCore.QObject.connect(value4,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
         return w
-        
+
     def setWidth(self,d):
         self.Width = d
         self.tracker.width(d)
@@ -354,7 +355,7 @@ class _CommandMergeWalls:
 
     def Activated(self):
         walls = FreeCADGui.Selection.getSelection()
-        if len(walls) == 1: 
+        if len(walls) == 1:
             if Draft.getType(walls[0]) == "Wall":
                 ostr = "FreeCAD.ActiveDocument."+ walls[0].Name
                 ok = False
@@ -382,7 +383,7 @@ class _CommandMergeWalls:
         FreeCADGui.addModule("Arch")
         FreeCADGui.doCommand("Arch.joinWalls(FreeCADGui.Selection.getSelection(),delete=True)")
         FreeCAD.ActiveDocument.commitTransaction()
- 
+
 
 class _Wall(ArchComponent.Component):
     "The Wall object"
@@ -398,10 +399,10 @@ class _Wall(ArchComponent.Component):
         obj.Align = ['Left','Right','Center']
         obj.Role = Roles
         self.Type = "Wall"
-        
+
     def execute(self,obj):
         "builds the wall shape"
-        
+
         import Part, DraftGeomUtils
         pl = obj.Placement
         normal,length,width,height = self.getDefaultValues(obj)
@@ -417,7 +418,7 @@ class _Wall(ArchComponent.Component):
                     if not obj.Base.Shape.Solids:
                         # let pass invalid objects if they have solids...
                         return
-                    
+
                 if hasattr(obj,"Face"):
                     if obj.Face > 0:
                         if len(obj.Base.Shape.Faces) >= obj.Face:
@@ -455,7 +456,7 @@ class _Wall(ArchComponent.Component):
                 else:
                     base = None
                     FreeCAD.Console.PrintError(str(translate("Arch","Error: Invalid base object")))
-                        
+
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
                     if obj.Base.Mesh.countComponents() == 1:
@@ -469,10 +470,10 @@ class _Wall(ArchComponent.Component):
             # computing a shape from scratch
             if length and width and height:
                 base = Part.makeBox(length,width,height)
-                        
+
         base = self.processSubShapes(obj,base,pl)
         self.applyShape(obj,base,pl)
-        
+
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)

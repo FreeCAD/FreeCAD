@@ -34,7 +34,7 @@ __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeBuilding(objectslist=None,baseobj=None,name=translate("Arch","Building")):
+def makeBuilding(objectslist=None,baseobj=None,name="Building"):
     '''makeBuilding(objectslist): creates a building including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
@@ -43,7 +43,7 @@ def makeBuilding(objectslist=None,baseobj=None,name=translate("Arch","Building")
         _ViewProviderBuilding(obj.ViewObject)
     if objectslist:
         obj.Group = objectslist
-    obj.Label = name
+    obj.Label = translate("Arch",name)
     return obj
 
 class _CommandBuilding:

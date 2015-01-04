@@ -43,7 +43,7 @@ WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
 Roles =           ["Window","Door"]
 
 
-def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Arch","Window")):
+def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
     given base 2D object (sketch or draft).'''
 
@@ -53,7 +53,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Ar
             return obj
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    obj.Label = name
+    obj.Label = translate("Arch",name)
     _Window(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
