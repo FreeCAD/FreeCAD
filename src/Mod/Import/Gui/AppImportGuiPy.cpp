@@ -157,10 +157,16 @@ static PyObject * importer(PyObject *self, PyObject *args)
             }
         }
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
+
             try {
                 IGESControl_Controller::Init();
                 Interface_Static::SetIVal("read.surfacecurve.mode",3);
                 IGESCAFControl_Reader aReader;
+                // http://www.opencascade.org/org/forum/thread_20603/?forum=3
+                aReader.SetReadVisible(hGrp->GetBool("SkipBlankEntities", true)
+                    ? Standard_True : Standard_False);
                 aReader.SetColorMode(true);
                 aReader.SetNameMode(true);
                 aReader.SetLayerMode(true);
@@ -509,9 +515,14 @@ static PyObject * ocaf(PyObject *self, PyObject *args)
             pi->EndScope();
         }
         else if (file.hasExtension("igs") || file.hasExtension("iges")) {
+            Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("IGES");
             IGESControl_Controller::Init();
             Interface_Static::SetIVal("read.surfacecurve.mode",3);
             IGESCAFControl_Reader aReader;
+            // http://www.opencascade.org/org/forum/thread_20603/?forum=3
+            aReader.SetReadVisible(hGrp->GetBool("SkipBlankEntities", true)
+                ? Standard_True : Standard_False);
             aReader.SetColorMode(true);
             aReader.SetNameMode(true);
             aReader.SetLayerMode(true);
