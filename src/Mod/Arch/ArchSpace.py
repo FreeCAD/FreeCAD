@@ -2,8 +2,8 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2013                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -38,11 +38,12 @@ else:
     def translate(ctxt,txt):
         return txt
 
-def makeSpace(objects=None,baseobj=None,name=translate("Arch","Space")):
+def makeSpace(objects=None,baseobj=None,name="Space"):
     """makeSpace([objects]): Creates a space object from the given objects. Objects can be one
     document object, in which case it becomes the base shape of the space object, or a list of
     selection objects as got from getSelectionEx(), or a list of tuples (object, subobjectname)"""
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Space(obj)
     if FreeCAD.GuiUp:
         _ViewProviderSpace(obj.ViewObject)
@@ -57,13 +58,13 @@ def makeSpace(objects=None,baseobj=None,name=translate("Arch","Space")):
         else:
             obj.Proxy.addSubobjects(obj,objects)
     return obj
-        
+
 def addSpaceBoundaries(space,subobjects):
     """addSpaceBoundaries(space,subobjects): adds the given subobjects to the given space"""
     import Draft
     if Draft.getType(space) == "Space":
         space.Proxy.addSubobjects(space,subobjects)
-        
+
 def removeSpaceBoundaries(space,objects):
     """removeSpaceBoundaries(space,objects): removes the given objects from the given spaces boundaries"""
     import Draft
@@ -128,7 +129,7 @@ class _Space(ArchComponent.Component):
             obj.Area = self.getArea(obj)
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
-            
+
     def addSubobjects(self,obj,subobjects):
         "adds subobjects to this space"
         objs = obj.Boundaries
@@ -148,10 +149,10 @@ class _Space(ArchComponent.Component):
         import Part
         shape = None
         faces = []
-        
+
         #print "starting compute"
         # 1: if we have a base shape, we use it
-        
+
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.Solids:
@@ -174,7 +175,7 @@ class _Space(ArchComponent.Component):
                 return
             shape = Part.makeBox(bb.XLength,bb.YLength,bb.ZLength,FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin))
             #print "created shape from boundbox"
-        
+
         # 3: identifing boundary faces
         goodfaces = []
         for b in obj.Boundaries:
@@ -185,7 +186,7 @@ class _Space(ArchComponent.Component):
                         #print "adding face ",fn," of object ",b[0].Name
 
         #print "total: ", len(faces), " faces"
-        
+
         # 4: get cutvolumes from faces
         cutvolumes = []
         for f in faces:
@@ -199,7 +200,7 @@ class _Space(ArchComponent.Component):
         for v in cutvolumes:
             #print "cutting"
             shape = shape.cut(v)
-            
+
         # 5: get the final shape
         if shape:
             if shape.Solids:
@@ -207,9 +208,9 @@ class _Space(ArchComponent.Component):
                 shape = shape.Solids[0]
                 obj.Shape = shape
                 return
-                
+
         print "Arch: error computing space boundary"
-        
+
     def getArea(self,obj):
         "returns the horizontal area at the center of the space"
         import Part,DraftGeomUtils
@@ -244,7 +245,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.addProperty("App::PropertyVector",     "TextPosition","Arch",translate("Arch","The position of the text. Leave (0,0,0) for automatic position"))
         vobj.addProperty("App::PropertyEnumeration","TextAlign",   "Arch",translate("Arch","The justification of the text"))
         vobj.addProperty("App::PropertyInteger",    "Decimals",    "Arch",translate("Arch","The number of decimals to use for calculated texts"))
-        vobj.addProperty("App::PropertyBool",       "ShowUnit",    "Arch",translate("Arch","Show the unit suffix")) 
+        vobj.addProperty("App::PropertyBool",       "ShowUnit",    "Arch",translate("Arch","Show the unit suffix"))
         vobj.TextColor = (0.0,0.0,0.0,1.0)
         vobj.Text = ["$label","$area"]
         vobj.TextAlign = ["Left","Center","Right"]
@@ -254,10 +255,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.Decimals = Draft.getParam("dimPrecision",2)
         vobj.ShowUnit = Draft.getParam("showUnit",True)
         vobj.LineSpacing = 1.0
-        
+
     def getDefaultDisplayMode(self):
         return "Wireframe"
-        
+
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Space_Tree.svg"
@@ -288,12 +289,12 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         self.onChanged(vobj,"FirstLine")
         self.onChanged(vobj,"LineSpacing")
         self.onChanged(vobj,"FontName")
-    
+
     def updateData(self,obj,prop):
         if prop in ["Shape","Label","Tag"]:
             self.onChanged(obj.ViewObject,"Text")
             self.onChanged(obj.ViewObject,"TextPosition")
-            
+
     def getTextPosition(self,vobj):
         pos = FreeCAD.Vector()
         if hasattr(vobj,"TextPosition"):
@@ -308,7 +309,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             else:
                 pos = vobj.TextPosition
         return pos
-                        
+
     def onChanged(self,vobj,prop):
         if prop in ["Text","Decimals","ShowUnit"]:
             if hasattr(self,"text1") and hasattr(self,"text2") and hasattr(vobj,"Text"):
@@ -353,38 +354,38 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     self.text1.string.setValues(text1)
                 if text2:
                     self.text2.string.setValues(text2)
-            
+
         elif prop == "FontName":
             if hasattr(self,"font") and hasattr(vobj,"FontName"):
                 self.font.name = str(vobj.FontName)
-                
+
         elif (prop == "FontSize"):
             if hasattr(self,"font") and hasattr(vobj,"FontSize"):
                 self.font.size = vobj.FontSize.Value
-                
+
         elif (prop == "FirstLine"):
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):
                 scale = vobj.FirstLine.Value/vobj.FontSize.Value
                 self.header.scaleFactor.setValue([scale,scale,scale])
-            
+
         elif prop == "TextColor":
             if hasattr(self,"color") and hasattr(vobj,"TextColor"):
                 c = vobj.TextColor
                 self.color.rgb.setValue(c[0],c[1],c[2])
-                
+
         elif prop == "TextPosition":
             if hasattr(self,"coords") and hasattr(self,"header") and hasattr(vobj,"TextPosition") and hasattr(vobj,"FirstLine"):
                 pos = self.getTextPosition(vobj)
                 self.coords.translation.setValue([pos.x,pos.y,pos.z])
                 up = vobj.FirstLine.Value * vobj.LineSpacing
                 self.header.translation.setValue([0,up,0])
-                    
+
         elif prop == "LineSpacing":
             if hasattr(self,"text1") and hasattr(self,"text2") and hasattr(vobj,"LineSpacing"):
                 self.text1.spacing = vobj.LineSpacing
                 self.text2.spacing = vobj.LineSpacing
                 self.onChanged(vobj,"TextPosition")
-                
+
         elif prop == "TextAlign":
             if hasattr(self,"text1") and hasattr(self,"text2") and hasattr(vobj,"TextAlign"):
                 from pivy import coin
@@ -397,7 +398,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 else:
                     self.text1.justification = coin.SoAsciiText.LEFT
                     self.text2.justification = coin.SoAsciiText.LEFT
-                    
+
 
 
 

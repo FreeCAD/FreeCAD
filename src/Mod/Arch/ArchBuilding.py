@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -34,7 +34,7 @@ __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeBuilding(objectslist=None,baseobj=None,name=translate("Arch","Building")):
+def makeBuilding(objectslist=None,baseobj=None,name="Building"):
     '''makeBuilding(objectslist): creates a building including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
@@ -43,6 +43,7 @@ def makeBuilding(objectslist=None,baseobj=None,name=translate("Arch","Building")
         _ViewProviderBuilding(obj.ViewObject)
     if objectslist:
         obj.Group = objectslist
+    obj.Label = translate("Arch",name)
     return obj
 
 class _CommandBuilding:
@@ -55,7 +56,7 @@ class _CommandBuilding:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
+
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         ok = False
@@ -81,18 +82,18 @@ class _CommandBuilding:
             FreeCADGui.doCommand("Arch.makeBuilding("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
-        
+
 class _Building(ArchFloor._Floor):
     "The Building object"
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
         self.Type = "Building"
         obj.setEditorMode('Height',2)
-                
+
 class _ViewProviderBuilding(ArchFloor._ViewProviderFloor):
     "A View Provider for the Building object"
     def __init__(self,vobj):
-        ArchFloor._ViewProviderFloor.__init__(self,vobj)        
+        ArchFloor._ViewProviderFloor.__init__(self,vobj)
 
     def getIcon(self):
         import Arch_rc

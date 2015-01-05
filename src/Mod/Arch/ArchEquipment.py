@@ -2,8 +2,8 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2014                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2014                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -41,7 +41,7 @@ else:
 Roles = ["Furniture", "Hydro Equipment", "Electric Equipment"]
 
 
-def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment"),type=None):
+def makeEquipment(baseobj=None,placement=None,name="Equipment",type=None):
     "makeEquipment([baseobj,placement,name,type]): creates an equipment object from the given base object"
     if type:
         if type == "Part":
@@ -62,7 +62,7 @@ def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment")
         else:
             obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
             _Equipment(obj)
-    obj.Label = name
+    obj.Label = translate("Arch",name)
     if placement:
         obj.Placement = placement
     if FreeCAD.GuiUp:
@@ -76,12 +76,12 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
     projection of the given mesh object in the given direction (default = on the XY plane). If
     outeronly is True, only the outer contour is taken into consideration, discarding the inner
     holes. If largestonly is True, only the largest segment of the given mesh will be used."""
-    
+
     import Mesh, math, Part, DraftGeomUtils
     if not obj.isDerivedFrom("Mesh::Feature"):
         return
     mesh = obj.Mesh
-    
+
     # 1. Flattening the mesh
     proj = []
     for f in mesh.Facets:
@@ -95,16 +95,16 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
             nf.append(p)
         proj.append(nf)
     flatmesh = Mesh.Mesh(proj)
-    
+
     # 2. Removing wrong faces
     facets = []
     for f in flatmesh.Facets:
         if f.Normal.getAngle(direction) < math.pi:
             facets.append(f)
     cleanmesh = Mesh.Mesh(facets)
-    
+
     #Mesh.show(cleanmesh)
-    
+
     # 3. Getting the bigger mesh from the planar segments
     if largestonly:
         c = cleanmesh.getSeparateComponents()
@@ -122,9 +122,9 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
                 a = m.Area
         #Mesh.show(boundarymesh)
         cleanmesh = boundarymesh
-    
+
     # 4. Creating a Part and getting the contour
-    
+
     shape = None
     for f in cleanmesh.Facets:
         p = Part.makePolygon(f.Points+[f.Points[0]])
@@ -140,7 +140,7 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
     shape = shape.removeSplitter()
 
     # 5. Extracting the largest wire
-    
+
     if outeronly:
         count = 0
         largest = None
@@ -155,10 +155,10 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
                 print "Unable to produce a face from the outer wire."
             else:
                 shape = f
-                
+
     return shape
 
-        
+
 class _CommandEquipment:
     "the Arch Equipment command definition"
     def GetResources(self):
@@ -169,8 +169,8 @@ class _CommandEquipment:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
-    def Activated(self): 
+
+    def Activated(self):
         s = FreeCADGui.Selection.getSelection()
         if not s:
             FreeCAD.Console.PrintError(translate("Arch","You must select a base object first!"))
@@ -185,8 +185,8 @@ class _CommandEquipment:
             if hasattr(s[0].ViewObject,"DiffuseColor"):
                 FreeCADGui.doCommand("FreeCAD.ActiveDocument.Objects[-1].ViewObject.DiffuseColor = FreeCAD.ActiveDocument." + base + ".ViewObject.DiffuseColor")
         return
-        
-        
+
+
 class _Command3Views:
     "the Arch 3Views command definition"
     def GetResources(self):
@@ -196,8 +196,8 @@ class _Command3Views:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
-    def Activated(self): 
+
+    def Activated(self):
         s = FreeCADGui.Selection.getSelection()
         if len(s) != 1:
             FreeCAD.Console.PrintError(translate("Arch","You must select exactly one base object"))
@@ -243,10 +243,10 @@ class _Equipment(ArchComponent.Component):
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self
-        
+
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        
+
     def execute(self,obj):
         pl = obj.Placement
         if obj.Base:
@@ -258,7 +258,7 @@ class _Equipment(ArchComponent.Component):
                     if base:
                         import Mesh
                         m = Mesh.Mesh(base.tessellate(1))
-                        
+
                 elif obj.Base.isDerivedFrom("Mesh::Feature"):
                     m = obj.Base.Mesh.copy()
                 if m:
@@ -288,7 +288,7 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Equipment_Tree.svg"
-        
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Equipment',_CommandEquipment())

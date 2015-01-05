@@ -43,7 +43,7 @@ WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
 Roles =           ["Window","Door"]
 
 
-def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Arch","Window")):
+def makeWindow(baseobj=None,width=None,height=None,parts=None,name="Window"):
     '''makeWindow(baseobj,[width,height,parts,name]): creates a window based on the
     given base 2D object (sketch or draft).'''
 
@@ -53,7 +53,7 @@ def makeWindow(baseobj=None,width=None,height=None,parts=None,name=translate("Ar
             return obj
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-    obj.Label = name
+    obj.Label = translate("Arch",name)
     _Window(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWindow(obj.ViewObject)
@@ -515,18 +515,18 @@ class _CommandWindow:
         "sets up a taskbox widget"
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch","Window options"))
+        w.setWindowTitle(translate("Arch","Window options").decode("utf8"))
         grid = QtGui.QGridLayout(w)
 
         # sill height
-        labels = QtGui.QLabel(translate("Arch","Sill height"))
+        labels = QtGui.QLabel(translate("Arch","Sill height").decode("utf8"))
         values = ui.createWidget("Gui::InputField")
         grid.addWidget(labels,0,0,1,1)
         grid.addWidget(values,0,1,1,1)
         QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
 
         # presets box
-        labelp = QtGui.QLabel(translate("Arch","Preset"))
+        labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
         valuep = QtGui.QComboBox()
         valuep.addItems(["Create from scratch"]+WindowPresets)
         valuep.setCurrentIndex(self.Preset)
