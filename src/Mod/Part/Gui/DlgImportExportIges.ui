@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>445</width>
-    <height>270</height>
+    <width>515</width>
+    <height>349</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>IGES</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
+  <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -70,6 +70,22 @@
     </widget>
    </item>
    <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Import</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="checkSkipBlank">
+        <property name="text">
+         <string>Skip blank entities</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <widget class="QGroupBox" name="groupBoxHeader">
      <property name="title">
       <string>Header</string>
@@ -108,7 +124,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -126,6 +142,7 @@
  <tabstops>
   <tabstop>comboBoxUnits</tabstop>
   <tabstop>checkBrepMode</tabstop>
+  <tabstop>checkSkipBlank</tabstop>
   <tabstop>lineEditCompany</tabstop>
   <tabstop>lineEditAuthor</tabstop>
   <tabstop>lineEditProduct</tabstop>

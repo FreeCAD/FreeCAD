@@ -120,6 +120,9 @@ void DlgImportExportIges::saveSettings()
     hGrp->SetBool("BrepMode", ui->checkBrepMode->isChecked());
     Interface_Static::SetIVal("write.iges.brep.mode",ui->checkBrepMode->isChecked() ? 1 : 0);
 
+    // Import
+    hGrp->SetBool("SkipBlankEntities", ui->checkSkipBlank->isChecked());
+
     // header info
     hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
     hGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
@@ -140,6 +143,9 @@ void DlgImportExportIges::loadSettings()
     int value = Interface_Static::IVal("write.iges.brep.mode");
     bool brep = hGrp->GetBool("BrepMode", value > 0);
     ui->checkBrepMode->setChecked(brep);
+
+    // Import
+    ui->checkSkipBlank->setChecked(hGrp->GetBool("SkipBlankEntities", true));
 
     // header info
     ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("Company",

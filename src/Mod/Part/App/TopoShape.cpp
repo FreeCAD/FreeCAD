@@ -573,6 +573,9 @@ void TopoShape::importIges(const char *FileName)
         IGESControl_Controller::Init();
         Interface_Static::SetIVal("read.surfacecurve.mode",3);
         IGESControl_Reader aReader;
+        // Ignore construction elements
+        // http://www.opencascade.org/org/forum/thread_20603/?forum=3
+        aReader.SetReadVisible(Standard_True);
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone)
             throw Base::Exception("Error in reading IGES");
 
