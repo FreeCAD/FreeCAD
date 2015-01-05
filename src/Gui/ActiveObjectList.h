@@ -47,7 +47,12 @@ namespace Gui
 	{
 
 	public:
-		template<class T> T* getObject(const char*);
+		template<typename _T>
+		inline _T getObject(const char* name)
+		{
+			std::map<std::string, App::DocumentObject*>::const_iterator pos = _ObjectMap.find(name);
+			return  pos == _ObjectMap.end() ? 0 : dynamic_cast<_T>(pos->second);
+		}
 		void setObject(App::DocumentObject*, const char*);
 		bool hasObject(const char*);
 	protected:
@@ -56,15 +61,6 @@ namespace Gui
 
 	};
 
-	template<class T>
-	T* Gui::ActiveObjectList::getObject(const char* name)
-	{
-		auto pos = _ObjectMap.find(name);
-		if (pos == _ObjectMap.end())
-			return 0;
-		else
-			return dynamic_cast<T*>(pos->second);
-	}
 
 
 } //namespace Gui

@@ -38,6 +38,7 @@
 #include "Document.h"
 #include "Application.h"
 #include "MainWindow.h"
+#include "ActiveObjectList.h"
 
 using namespace Gui;
 
@@ -48,6 +49,7 @@ MDIView::MDIView(Gui::Document* pcDocument,QWidget* parent, Qt::WindowFlags wfla
   : QMainWindow(parent, wflags), BaseView(pcDocument),currentMode(Child), wstate(Qt::WindowNoState)
 {
     setAttribute(Qt::WA_DeleteOnClose);
+	pcActiveObjects = new ActiveObjectList();
 }
 
 MDIView::~MDIView()
@@ -70,6 +72,8 @@ MDIView::~MDIView()
             }
         }
     }
+
+	delete pcActiveObjects;
 }
 
 void MDIView::deleteSelf()
