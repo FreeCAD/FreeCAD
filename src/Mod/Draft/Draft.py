@@ -1121,8 +1121,8 @@ def makeEllipse(majradius,minradius,placement=None,face=True,support=None):
         obj.Placement = placement
     if gui:
         _ViewProviderDraft(obj.ViewObject)
-        if not face: 
-            obj.ViewObject.DisplayMode = "Wireframe"
+        #if not face: 
+        #    obj.ViewObject.DisplayMode = "Wireframe"
         formatObject(obj)
         select(obj)
     FreeCAD.ActiveDocument.recompute()
@@ -1623,10 +1623,10 @@ def draftify(objectslist,makeblock=False,delete=True):
                         nobj.Shape = w
                 else:
                     nobj = makeWire(w)
-                if obj.Shape.Faces:
-                    nobj.ViewObject.DisplayMode = "Flat Lines"
-                else:
-                    nobj.ViewObject.DisplayMode = "Wireframe"
+                #if obj.Shape.Faces:
+                #    nobj.ViewObject.DisplayMode = "Flat Lines"
+                #else:
+                #    nobj.ViewObject.DisplayMode = "Wireframe"
                 newobjlist.append(nobj)
                 formatObject(nobj,obj)
             if delete:
@@ -1776,6 +1776,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         svg = getCircle(e)
                         return svg
                     elif len(e.Vertexes) == 1 and isellipse:
+                        #svg = getEllipse(e)
+                        #return svg
                         endpoints = (getProj(c.value((c.LastParameter-\
                                 c.FirstParameter)/2.0)), \
                                 getProj(vs[-1].Point))
@@ -1854,6 +1856,23 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         svg = '<circle cx="' + str(cen.x)
         svg += '" cy="' + str(cen.y)
         svg += '" r="' + str(rad)+'" '
+        svg += 'stroke="' + stroke + '" '
+        svg += 'stroke-width="' + str(linewidth) + ' px" '
+        svg += 'style="stroke-width:'+ str(linewidth)
+        svg += ';stroke-miterlimit:4'
+        svg += ';stroke-dasharray:' + lstyle
+        svg += ';fill:' + fill + '"'
+        svg += '/>\n'
+        return svg
+        
+    def getEllipse(edge):
+        cen = getProj(edge.Curve.Center)
+        mir = edge.Curve.MinorRadius
+        mar = edge.Curve.MajorRadius
+        svg = '<ellipse cx="' + str(cen.x)
+        svg += '" cy="' + str(cen.y)
+        svg += '" rx="' + str(mar)
+        svg += '" ry="' + str(mir)+'" '
         svg += 'stroke="' + stroke + '" '
         svg += 'stroke-width="' + str(linewidth) + ' px" '
         svg += 'style="stroke-width:'+ str(linewidth)
@@ -2271,7 +2290,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
             FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
             if deletable: FreeCAD.ActiveDocument.removeObject(deletable.Name)
             return None
-        elif tp == "Circle":
+        elif tp in ["Circle","Ellipse"]:
             g = (DraftGeomUtils.geom(obj.Shape.Edges[0],nobj.Placement))
             nobj.addGeometry(g)
             # TODO add Radius constraits
@@ -4013,6 +4032,8 @@ class _Ellipse(_DraftObject):
         
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Ellipse")
+        obj.addProperty("App::PropertyAngle","FirstAngle","Draft","Start angle of the arc")
+        obj.addProperty("App::PropertyAngle","LastAngle","Draft","End angle of the arc (for a full circle, give it same value as First Angle)")
         obj.addProperty("App::PropertyLength","MinorRadius","Draft","The minor radius of the ellipse")
         obj.addProperty("App::PropertyLength","MajorRadius","Draft","The major radius of the ellipse")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
@@ -4025,13 +4046,20 @@ class _Ellipse(_DraftObject):
             msg(translate("Error: Major radius is smaller than the minor radius"))
             return
         if obj.MajorRadius.Value and obj.MinorRadius.Value:
-            shape = Part.Ellipse(Vector(0,0,0),obj.MajorRadius.Value,obj.MinorRadius.Value).toShape()
+            ell = Part.Ellipse(Vector(0,0,0),obj.MajorRadius.Value,obj.MinorRadius.Value)
+            shape = ell.toShape()
+            if hasattr(obj,"FirstAngle"):
+                if obj.FirstAngle.Value != obj.LastAngle.Value:
+                    a1 = obj.FirstAngle.getValueAs(FreeCAD.Units.Radian)
+                    a2 = obj.LastAngle.getValueAs(FreeCAD.Units.Radian)
+                    shape = Part.ArcOfEllipse(ell,a1,a2).toShape()
             shape = Part.Wire(shape)
-            if hasattr(obj,"MakeFace"):
-                if obj.MakeFace:
+            if shape.isClosed():
+                if hasattr(obj,"MakeFace"):
+                    if obj.MakeFace:
+                        shape = Part.Face(shape)
+                else:
                     shape = Part.Face(shape)
-            else:
-                shape = Part.Face(shape)
             obj.Shape = shape
             obj.Placement = plm
 

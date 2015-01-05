@@ -534,6 +534,11 @@ def geom(edge,plac=FreeCAD.Placement()):
             
             p= Part.ArcOfCircle(cu,a1,a2)
             return p
+    elif geomType(edge) == "Ellipse":
+        if len(edge.Vertexes) == 1:
+            return edge.Curve
+        else:
+            return Part.ArcOfEllipse(edge.Curve,edge.FirstParameter,edge.LastParameter)
     else:
         return edge.Curve
 
