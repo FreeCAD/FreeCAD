@@ -187,178 +187,188 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Std_DemoMode" << "Separator" << "Std_DlgCustomize";
 
     // Mesh ****************************************************************************************************
-    Gui::MenuItem* mesh = new Gui::MenuItem( menuBar );
+    if (mods.contains(QSTRING("MeshGui"))) {
+        Gui::MenuItem* mesh = new Gui::MenuItem( menuBar );
 
-    // submenu analyze
-    Gui::MenuItem* analyze = new Gui::MenuItem();
-    analyze->setCommand("Analyze");
-    *analyze << "Mesh_Evaluation"
-             << "Mesh_EvaluateFacet"
-             << "Mesh_CurvatureInfo"
-             << "Separator"
-             << "Mesh_EvaluateSolid"
-             << "Mesh_BoundingBox";
+        // submenu analyze
+        Gui::MenuItem* analyze = new Gui::MenuItem();
+        analyze->setCommand("Analyze");
+        *analyze << "Mesh_Evaluation"
+                 << "Mesh_EvaluateFacet"
+                 << "Mesh_CurvatureInfo"
+                 << "Separator"
+                 << "Mesh_EvaluateSolid"
+                 << "Mesh_BoundingBox";
 
-    // submenu boolean
-    Gui::MenuItem* boolean = new Gui::MenuItem();
-    boolean->setCommand("Boolean");
-    *boolean << "Mesh_Union"
-             << "Mesh_Intersection"
-             << "Mesh_Difference";
+        // submenu boolean
+        Gui::MenuItem* boolean = new Gui::MenuItem();
+        boolean->setCommand("Boolean");
+        *boolean << "Mesh_Union"
+                 << "Mesh_Intersection"
+                 << "Mesh_Difference";
 
-    mesh->setCommand("&Meshes");
-    *mesh << "Mesh_Import"
-          << "Mesh_Export"
-          << "MeshPart_Mesher"
-          << "Separator"
-          << analyze
-          << "Mesh_HarmonizeNormals"
-          << "Mesh_FlipNormals"
-          << "Separator"
-          << "Mesh_FillupHoles"
-          << "Mesh_FillInteractiveHole"
-          << "Mesh_RemoveComponents"
-          << "Mesh_RemoveCompByHand"
-          << "Mesh_AddFacet"
-          << "Mesh_Smoothing"
-          << "Separator"
-          << "Mesh_BuildRegularSolid"
-          << boolean << "Separator"
-          << "Mesh_PolySelect"
-          << "Mesh_PolyCut"
-          << "Mesh_PolySplit"
-          << "Mesh_PolySegm"
-          << "Mesh_ToolMesh"
-          << "Mesh_Segmentation"
-          << "Mesh_VertexCurvature";
+        mesh->setCommand("&Meshes");
+        *mesh << "Mesh_Import"
+              << "Mesh_Export"
+              << "MeshPart_Mesher"
+              << "Separator"
+              << analyze
+              << "Mesh_HarmonizeNormals"
+              << "Mesh_FlipNormals"
+              << "Separator"
+              << "Mesh_FillupHoles"
+              << "Mesh_FillInteractiveHole"
+              << "Mesh_RemoveComponents"
+              << "Mesh_RemoveCompByHand"
+              << "Mesh_AddFacet"
+              << "Mesh_Smoothing"
+              << "Separator"
+              << "Mesh_BuildRegularSolid"
+              << boolean << "Separator"
+              << "Mesh_PolySelect"
+              << "Mesh_PolyCut"
+              << "Mesh_PolySplit"
+              << "Mesh_PolySegm"
+              << "Mesh_ToolMesh"
+              << "Mesh_Segmentation"
+              << "Mesh_VertexCurvature";
+    }
 
     // Sketch **************************************************************************************************
 
-    Gui::MenuItem* sketch = new Gui::MenuItem(menuBar);
-    sketch->setCommand("S&ketch");
+    if (mods.contains(QSTRING("SketcherGui"))) {
+        Gui::MenuItem* sketch = new Gui::MenuItem(menuBar);
+        sketch->setCommand("S&ketch");
 
-    Gui::MenuItem* geom = new Gui::MenuItem();
-    geom->setCommand("Sketcher geometries");
-    *geom << "Sketcher_CreatePoint"
-          << "Sketcher_CreateArc"
-          << "Sketcher_Create3PointArc"
-          << "Sketcher_CreateCircle"
-          << "Sketcher_Create3PointCircle"
-          << "Sketcher_CreateLine"
-          << "Sketcher_CreatePolyline"
-          << "Sketcher_CreateRectangle"
-          << "Separator"
-          << "Sketcher_CreateFillet"
-          << "Sketcher_Trimming"
-          << "Sketcher_External"
-          << "Sketcher_ToggleConstruction";
+        Gui::MenuItem* geom = new Gui::MenuItem();
+        geom->setCommand("Sketcher geometries");
+        *geom << "Sketcher_CreatePoint"
+              << "Sketcher_CreateArc"
+              << "Sketcher_Create3PointArc"
+              << "Sketcher_CreateCircle"
+              << "Sketcher_Create3PointCircle"
+              << "Sketcher_CreateLine"
+              << "Sketcher_CreatePolyline"
+              << "Sketcher_CreateRectangle"
+              << "Separator"
+              << "Sketcher_CreateFillet"
+              << "Sketcher_Trimming"
+              << "Sketcher_External"
+              << "Sketcher_ToggleConstruction";
 
-    Gui::MenuItem* cons = new Gui::MenuItem();
-    cons->setCommand("Sketcher constraints");
-    *cons << "Sketcher_ConstrainCoincident"
-          << "Sketcher_ConstrainPointOnObject"
-          << "Sketcher_ConstrainVertical"
-          << "Sketcher_ConstrainHorizontal"
-          << "Sketcher_ConstrainParallel"
-          << "Sketcher_ConstrainPerpendicular"
-          << "Sketcher_ConstrainTangent"
-          << "Sketcher_ConstrainEqual"
-          << "Sketcher_ConstrainSymmetric"
-          << "Separator"
-          << "Sketcher_ConstrainLock"
-          << "Sketcher_ConstrainDistanceX"
-          << "Sketcher_ConstrainDistanceY"
-          << "Sketcher_ConstrainDistance"
-          << "Sketcher_ConstrainRadius"
-          << "Sketcher_ConstrainAngle";
+        Gui::MenuItem* cons = new Gui::MenuItem();
+        cons->setCommand("Sketcher constraints");
+        *cons << "Sketcher_ConstrainCoincident"
+              << "Sketcher_ConstrainPointOnObject"
+              << "Sketcher_ConstrainVertical"
+              << "Sketcher_ConstrainHorizontal"
+              << "Sketcher_ConstrainParallel"
+              << "Sketcher_ConstrainPerpendicular"
+              << "Sketcher_ConstrainTangent"
+              << "Sketcher_ConstrainEqual"
+              << "Sketcher_ConstrainSymmetric"
+              << "Separator"
+              << "Sketcher_ConstrainLock"
+              << "Sketcher_ConstrainDistanceX"
+              << "Sketcher_ConstrainDistanceY"
+              << "Sketcher_ConstrainDistance"
+              << "Sketcher_ConstrainRadius"
+              << "Sketcher_ConstrainAngle";
 
-    *sketch
-        << "Sketcher_NewSketch"
-        << "Sketcher_EditSketch"
-        << "Sketcher_LeaveSketch"
-        << "Sketcher_ViewSketch"
-        << "Sketcher_MapSketch"
-        << geom
-        << cons
-    ;
+        *sketch
+            << "Sketcher_NewSketch"
+            << "Sketcher_EditSketch"
+            << "Sketcher_LeaveSketch"
+            << "Sketcher_ViewSketch"
+            << "Sketcher_MapSketch"
+            << geom
+            << cons;
+    }
 
     // Part ****************************************************************************************************
 
-    Gui::MenuItem* part = new Gui::MenuItem(menuBar);
-    part->setCommand("&Part");
+    if (mods.contains(QSTRING("PartGui"))) {
+        Gui::MenuItem* part = new Gui::MenuItem(menuBar);
+        part->setCommand("&Part");
 
-    // submenu boolean
-    Gui::MenuItem* para = new Gui::MenuItem();
-    para->setCommand("Primitives");
-    *para << "Part_Box"
-          << "Part_Cylinder"
-          << "Part_Sphere"
-          << "Part_Cone"
-          << "Part_Torus"
-          << "Part_Primitives";
+        // submenu boolean
+        Gui::MenuItem* para = new Gui::MenuItem();
+        para->setCommand("Primitives");
+        *para << "Part_Box"
+              << "Part_Cylinder"
+              << "Part_Sphere"
+              << "Part_Cone"
+              << "Part_Torus"
+              << "Part_Primitives";
 
-    Gui::MenuItem* PartDesign = new Gui::MenuItem();
-    PartDesign->setCommand("Part design");
+        *part << para;
 
-    *PartDesign   << "PartDesign_Pad"
-                  << "PartDesign_Pocket"
-                  << "PartDesign_Revolution"
-                  << "PartDesign_Groove"
-                  << "PartDesign_Fillet"
-                  << "PartDesign_Chamfer"
-                  << "PartDesign_Mirrored"
-                  << "PartDesign_LinearPattern"
-                  << "PartDesign_PolarPattern"
-                  << "PartDesign_MultiTransform";
+        if (mods.contains(QSTRING("PartDesignGui"))) {
+            Gui::MenuItem* PartDesign = new Gui::MenuItem();
+            PartDesign->setCommand("Part design");
 
-    *part << para
-          << PartDesign
-          << "Part_ShapeFromMesh"
-          << "Part_MakeSolid"
-          << "Part_ReverseShape"
-          << "Part_SimpleCopy"
-          << "Separator"
-          << "Part_Boolean"
-          << "Part_Extrude"
-          << "Part_Revolve"
-          << "Part_Mirror"
-          << "Part_Fillet"
-          << "Part_Chamfer";
+            *PartDesign   << "PartDesign_Pad"
+                          << "PartDesign_Pocket"
+                          << "PartDesign_Revolution"
+                          << "PartDesign_Groove"
+                          << "PartDesign_Fillet"
+                          << "PartDesign_Chamfer"
+                          << "PartDesign_Mirrored"
+                          << "PartDesign_LinearPattern"
+                          << "PartDesign_PolarPattern"
+                          << "PartDesign_MultiTransform";
 
+            *part << PartDesign;
+        }
+
+        *part << "Part_ShapeFromMesh"
+              << "Part_MakeSolid"
+              << "Part_ReverseShape"
+              << "Part_SimpleCopy"
+              << "Separator"
+              << "Part_Boolean"
+              << "Part_Extrude"
+              << "Part_Revolve"
+              << "Part_Mirror"
+              << "Part_Fillet"
+              << "Part_Chamfer";
+        }
 
     // Drawing ****************************************************************************************************
 
-    Gui::MenuItem* drawing = new Gui::MenuItem(menuBar);
+    if (mods.contains(QSTRING("DrawingGui"))) {
+        Gui::MenuItem* drawing = new Gui::MenuItem(menuBar);
 
-    drawing->setCommand("Dr&awing");
-    *drawing
-        << "Drawing_Open"
-        << "Separator"
-        << "Drawing_NewA3Landscape"
-        << "Drawing_NewView"
-        << "Drawing_ExportPage"
-        << "Separator"
-        << "Drawing_ProjectShape"
-    ;
+        drawing->setCommand("Dr&awing");
+        *drawing
+            << "Drawing_Open"
+            << "Separator"
+            << "Drawing_NewA3Landscape"
+            << "Drawing_NewView"
+            << "Drawing_ExportPage"
+            << "Separator"
+            << "Drawing_ProjectShape";
+    }
 
     // Raytracing ****************************************************************************************************
 
-    Gui::MenuItem* raytracing = new Gui::MenuItem(menuBar);
+    if (mods.contains(QSTRING("RaytracingGui"))) {
+        Gui::MenuItem* raytracing = new Gui::MenuItem(menuBar);
 
-    raytracing->setCommand("&Raytracing");
-    *raytracing
-        << "Raytracing_WriteView"
-        << "Raytracing_WriteCamera"
-        << "Raytracing_WritePart"
-        << "Separator"
-        << "Raytracing_NewPovrayProject"
-        << "Raytracing_NewPartSegment"
-        << "Raytracing_ExportProject";
-    ;
+        raytracing->setCommand("&Raytracing");
+        *raytracing
+            << "Raytracing_WriteView"
+            << "Raytracing_WriteCamera"
+            << "Raytracing_WritePart"
+            << "Separator"
+            << "Raytracing_NewPovrayProject"
+            << "Raytracing_NewPartSegment"
+            << "Raytracing_ExportProject";
+    }
 
     // Drafting ****************************************************************************************************
-#   ifdef COMPLETE_USE_DRAFTING
-    if (mgr.getCommandByName("Draft_Line")) {
+
+    if (mods.contains(QSTRING("DraftGui")) && mgr.getCommandByName("Draft_Line")) {
         Gui::MenuItem* Drafting = new Gui::MenuItem(menuBar);
         Drafting->setCommand("&Drafting");
 
@@ -394,10 +404,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
             << "Draft_Drawing"
             << "Draft_Shape2DView"
             << DraftWireTools
-            << DraftContext
-        ;
+            << DraftContext;
     }
-#   endif
 
     // xxx ****************************************************************************************************
 
@@ -426,10 +434,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *help << "Std_OnlineHelp"
           << "Std_PythonHelp"
           << helpWebsites
-          << "Separator"
-          << "Test_Test"
-          << "Separator"
-          << "Std_About"
+          << "Separator";
+
+    if (mods.contains(QSTRING("TestGui"))) {
+        *help << "Test_Test"
+              << "Separator";
+    }
+
+    *help << "Std_About"
           << "Std_AboutQt"
           << "Separator"
           << "Std_WhatsThis" ;
@@ -475,106 +487,114 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "Std_ViewTop" << "Std_ViewRight" << "Separator" << "Std_ViewRear" << "Std_ViewBottom"
           << "Std_ViewLeft" << "Separator" << "Std_MeasureDistance";
 
+    // Part
+    if (mods.contains(QSTRING("PartGui"))) {
+        Gui::ToolBarItem* part_design = new Gui::ToolBarItem( root );
+        part_design->setCommand("Part");
+        *part_design
+            << "Part_Box"
+            << "Part_Cylinder"
+            << "Part_Sphere"
+            << "Part_Cone"
+            << "Part_Torus"
+            //<< "Part_Primitives"
+            << "Separator"
+            << "Part_Boolean"
+            << "Part_Cut"
+            << "Part_Fuse"
+            << "Part_Common"
+            << "Part_Section"
+            << "Separator"
+            << "Part_Extrude"
+            << "Part_Revolve"
+            << "Part_Mirror"
+            << "Part_Fillet"
+            << "Part_Chamfer";
+    }
+
+    if (mods.contains(QSTRING("SketcherGui"))) {
+        Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
+        geom->setCommand("Sketcher geometries");
+        *geom << "Sketcher_NewSketch"
+              << "Sketcher_LeaveSketch"
+              << "Separator"
+              << "Sketcher_CreatePoint"
+              << "Sketcher_CompCreateArc"
+              << "Sketcher_CompCreateCircle"
+              << "Sketcher_CreateLine"
+              << "Sketcher_CreatePolyline"
+              << "Sketcher_CreateRectangle"
+              << "Separator"
+              << "Sketcher_CreateFillet"
+              << "Sketcher_Trimming"
+              << "Sketcher_External"
+              << "Sketcher_ToggleConstruction"
+              /*<< "Sketcher_CreateText"*/
+              /*<< "Sketcher_CreateDraftLine"*/;
+
+        Gui::ToolBarItem* cons = new Gui::ToolBarItem(root);
+        cons->setCommand("Sketcher constraints");
+        *cons << "Sketcher_ConstrainCoincident"
+              << "Sketcher_ConstrainPointOnObject"
+              << "Sketcher_ConstrainVertical"
+              << "Sketcher_ConstrainHorizontal"
+              << "Sketcher_ConstrainParallel"
+              << "Sketcher_ConstrainPerpendicular"
+              << "Sketcher_ConstrainTangent"
+              << "Sketcher_ConstrainEqual"
+              << "Sketcher_ConstrainSymmetric"
+              << "Separator"
+              << "Sketcher_ConstrainLock"
+              << "Sketcher_ConstrainDistanceX"
+              << "Sketcher_ConstrainDistanceY"
+              << "Sketcher_ConstrainDistance"
+              << "Sketcher_ConstrainRadius"
+              << "Sketcher_ConstrainAngle";
+    }
+
     // Part Design
-    Gui::ToolBarItem* part_design = new Gui::ToolBarItem( root );
-    part_design->setCommand("Part");
-    *part_design
-        << "Part_Box"
-        << "Part_Cylinder"
-        << "Part_Sphere"
-        << "Part_Cone"
-        << "Part_Torus"
-        //<< "Part_Primitives"
-        << "Separator"
-        << "Part_Boolean"
-        << "Part_Cut"
-        << "Part_Fuse"
-        << "Part_Common"
-        << "Part_Section"
-        << "Separator"
-        << "Part_Extrude"
-        << "Part_Revolve"
-        << "Part_Mirror"
-        << "Part_Fillet"
-        << "Part_Chamfer"
-    ;
-
-    Gui::ToolBarItem* geom = new Gui::ToolBarItem(root);
-    geom->setCommand("Sketcher geometries");
-    *geom << "Sketcher_NewSketch"
-          << "Sketcher_LeaveSketch"
-          << "Separator"
-          << "Sketcher_CreatePoint"
-          << "Sketcher_CompCreateArc"
-          << "Sketcher_CompCreateCircle"
-          << "Sketcher_CreateLine"
-          << "Sketcher_CreatePolyline"
-          << "Sketcher_CreateRectangle"
-          << "Separator"
-          << "Sketcher_CreateFillet"
-          << "Sketcher_Trimming"
-          << "Sketcher_External"
-          << "Sketcher_ToggleConstruction"
-          /*<< "Sketcher_CreateText"*/
-          /*<< "Sketcher_CreateDraftLine"*/;
-
-    Gui::ToolBarItem* cons = new Gui::ToolBarItem(root);
-    cons->setCommand("Sketcher constraints");
-    *cons << "Sketcher_ConstrainCoincident"
-          << "Sketcher_ConstrainPointOnObject"
-          << "Sketcher_ConstrainVertical"
-          << "Sketcher_ConstrainHorizontal"
-          << "Sketcher_ConstrainParallel"
-          << "Sketcher_ConstrainPerpendicular"
-          << "Sketcher_ConstrainTangent"
-          << "Sketcher_ConstrainEqual"
-          << "Sketcher_ConstrainSymmetric"
-          << "Separator"
-          << "Sketcher_ConstrainLock"
-          << "Sketcher_ConstrainDistanceX"
-          << "Sketcher_ConstrainDistanceY"
-          << "Sketcher_ConstrainDistance"
-          << "Sketcher_ConstrainRadius"
-          << "Sketcher_ConstrainAngle";
-
-    // Part Design
-    Gui::ToolBarItem* partdesign = new Gui::ToolBarItem(root);
-    partdesign->setCommand("Part Design");
-    *partdesign
-              << "PartDesign_Pad"
-              << "PartDesign_Pocket"
-              << "PartDesign_Revolution"
-              << "PartDesign_Groove"
-              << "PartDesign_Fillet"
-              << "PartDesign_Chamfer"
-              << "PartDesign_Mirrored"
-              << "PartDesign_LinearPattern"
-              << "PartDesign_PolarPattern"
-              << "PartDesign_MultiTransform";
+    if (mods.contains(QSTRING("PartDesignGui"))) {
+        Gui::ToolBarItem* partdesign = new Gui::ToolBarItem(root);
+        partdesign->setCommand("Part Design");
+        *partdesign
+                  << "PartDesign_Pad"
+                  << "PartDesign_Pocket"
+                  << "PartDesign_Revolution"
+                  << "PartDesign_Groove"
+                  << "PartDesign_Fillet"
+                  << "PartDesign_Chamfer"
+                  << "PartDesign_Mirrored"
+                  << "PartDesign_LinearPattern"
+                  << "PartDesign_PolarPattern"
+                  << "PartDesign_MultiTransform";
+    }
 
     // Drawing
-    Gui::ToolBarItem* drawing = new Gui::ToolBarItem( root );
-    drawing->setCommand("Drawings");
-    *drawing << "Drawing_Open"
-             << "Separator"
-             << "Drawing_NewA3Landscape"
-             << "Drawing_NewView"
-             << "Drawing_ExportPage" ;
+    if (mods.contains(QSTRING("DrawingGui"))) {
+        Gui::ToolBarItem* drawing = new Gui::ToolBarItem( root );
+        drawing->setCommand("Drawings");
+        *drawing << "Drawing_Open"
+                 << "Separator"
+                 << "Drawing_NewA3Landscape"
+                 << "Drawing_NewView"
+                 << "Drawing_ExportPage" ;
+    }
 
     // Raytracing
-    Gui::ToolBarItem* raytracing = new Gui::ToolBarItem( root );
-    raytracing->setCommand("Raytracing");
-    *raytracing << "Raytracing_WriteView"
-                << "Raytracing_WriteCamera"
-                << "Raytracing_WritePart"
-                << "Separator"
-                << "Raytracing_NewPovrayProject" 
-                << "Raytracing_NewPartSegment" 
-                << "Raytracing_ExportProject"; 
+    if (mods.contains(QSTRING("RaytracingGui"))) {
+        Gui::ToolBarItem* raytracing = new Gui::ToolBarItem( root );
+        raytracing->setCommand("Raytracing");
+        *raytracing << "Raytracing_WriteView"
+                    << "Raytracing_WriteCamera"
+                    << "Raytracing_WritePart"
+                    << "Separator"
+                    << "Raytracing_NewPovrayProject"
+                    << "Raytracing_NewPartSegment"
+                    << "Raytracing_ExportProject";
+    }
 
     // Drafting ****************************************************************************************************
-#   ifdef COMPLETE_USE_DRAFTING
-    if (mgr.getCommandByName("Draft_Line")) {
+    if (mods.contains(QSTRING("DraftGui")) && mgr.getCommandByName("Draft_Line")) {
         Gui::ToolBarItem* Drafting = new Gui::ToolBarItem( root );
         Drafting->setCommand("Drafting");
         *Drafting
@@ -600,10 +620,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Draft_WireToBSpline"
             << "Draft_AddPoint"
             << "Draft_DelPoint"
-            << "Draft_Shape2DView"
-        ;
+            << "Draft_Shape2DView";
     }
-#   endif
 
     return root;
 }
