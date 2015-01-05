@@ -52,6 +52,8 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "View3DViewerPy.h"
+#include "ActiveObjectList.h"
+
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -174,6 +176,7 @@ void View3DInventorPy::init_type()
         "Remove the DraggerCalback function from the coin node\n"
         "Possibles types :\n"
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
+	add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object)\nadd or set a new active object");
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -225,10 +228,12 @@ Py::Object View3DInventorPy::getattr(const char * attr)
         throw Py::RuntimeError(s_out.str());
     }
 	else {
-		App::DocumentObject *docObj = _view->ActiveObjects.getObject<App::DocumentObject>(attr);
+		// see if a active object has the same name
+		App::DocumentObject *docObj = _view->pcActiveObjects->getObject<App::DocumentObject*>(attr);
 		if (docObj){
-			return Py::Object(docObj->getPyObject());
+			return Py::Object(docObj->getPyObject(),true);
 		}else{
+			// else looking for a methode with the name and call it
 			Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
 			if (PyCFunction_Check(obj.ptr())) {
 				PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
@@ -2169,12 +2174,14 @@ Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
 {
-	App::DocumentObjectPy* docObject = 0;
+	PyObject* docObject = 0;
 	char* name;
 	if (!PyArg_ParseTuple(args.ptr(), "sO!", &name, &App::DocumentObjectPy::Type, &docObject))
 		throw Py::Exception();
 
 	if (docObject){
-		_view->ActiveObjects.setObject(docObject->getDocumentObjectPtr(), name);
+		App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+		_view->pcActiveObjects->setObject(obj, name);
 	}
+	return Py::None();
 }
