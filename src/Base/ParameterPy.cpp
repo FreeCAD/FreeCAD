@@ -35,6 +35,7 @@
 #   include <xercesc/sax/SAXParseException.hpp>
 #   endif
 #   include <stdio.h>
+#   include <sstream>
 #endif
 
 
@@ -84,6 +85,7 @@ public:
     // python exports  ++++++++++++++++++++++++++++++++++++++++++++++++++++	
     //---------------------------------------------------------------------
 
+    PyObject *_repr(void);
     PyObject *_getattr(char *attr);				// __getattr__ function
     // getter setter
     int _setattr(char *attr, PyObject *value);	// __setattr__ function
@@ -252,6 +254,14 @@ ParameterGrpPy::~ParameterGrpPy()						// Everything handled in parent
 //--------------------------------------------------------------------------
 // FCPyParametrGrp Attributes
 //--------------------------------------------------------------------------
+
+PyObject *ParameterGrpPy::_repr(void)
+{
+    std::stringstream a;
+    a << "<ParameterGrp at " << this << ">";
+    return Py_BuildValue("s", a.str().c_str());
+}
+
 PyObject *ParameterGrpPy::_getattr(char *attr)              // __getattr__ function: note only need to handle new state
 {
     _getattr_up(PyObjectBase);                              // send to parent
