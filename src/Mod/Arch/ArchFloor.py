@@ -38,6 +38,7 @@ def makeFloor(objectslist=None,baseobj=None,name=translate("Arch","Floor")):
     '''makeFloor(objectslist): creates a floor including the
     objects from the given list.'''
     obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython",name)
+    obj.Label = name
     _Floor(obj)
     if FreeCAD.GuiUp:
         _ViewProviderFloor(obj.ViewObject)
