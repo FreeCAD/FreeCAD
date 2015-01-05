@@ -549,14 +549,20 @@ void FileChooser::setFileName( const QString& s )
  */
 void FileChooser::chooseFile()
 {
+    QString prechosenDirectory = lineEdit->text();
+    if (prechosenDirectory.isEmpty()) {
+        prechosenDirectory = FileDialog::getWorkingDirectory();
+    }
+
     QString fn;
     if ( mode() == File )
-        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), lineEdit->text(), _filter );
+        fn = QFileDialog::getOpenFileName( this, tr( "Select a file" ), prechosenDirectory, _filter );
     else
-        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), lineEdit->text() );
+        fn = QFileDialog::getExistingDirectory( this, tr( "Select a directory" ), prechosenDirectory );
 
     if (!fn.isEmpty()) {
         lineEdit->setText(fn);
+        FileDialog::setWorkingDirectory(fn);
         fileNameSelected(fn);
     }
 }
