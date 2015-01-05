@@ -422,7 +422,16 @@ void View3DInventorViewer::init()
 
     // Set our own render action which show a bounding box if
     // the SoFCSelection::BOX style is set
+    //
+    // Important note:
+    // When creating a new GL render action we have to copy over the cache context id
+    // because otherwise we may get strange rendering behaviour. For more details see
+    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7486&start=120#p74398 and for
+    // the fix and some details what happens behind the scene have a look at this
+    // http://forum.freecadweb.org/viewtopic.php?f=10&t=7486&p=74777#p74736
+    uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
     this->getSoRenderManager()->setGLRenderAction(new SoBoxSelectionRenderAction);
+    this->getSoRenderManager()->getGLRenderAction()->setCacheContext(id);
 
     // set the transperency and antialiasing settings
 //  getGLRenderAction()->setTransparencyType(SoGLRenderAction::SORTED_OBJECT_BLEND);
