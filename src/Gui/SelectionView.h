@@ -29,23 +29,7 @@
 #include "DockWindow.h"
 #include "Selection.h"
 
-class QPixmap;
-class QTabWidget;
 class QListWidget;
-
-namespace App {
-  class PropertyContainer;
-}
-
-namespace Gui {
-namespace PropertyEditor {
-
-class EditableListView;
-class EditableItem;
-class PropertyEditor;
-
-} // namespace PropertyEditor
-} // namespace Gui
 
 namespace Gui {
 namespace DockWnd {
@@ -62,7 +46,7 @@ public:
      * A constructor.
      * A more elaborate description of the constructor.
      */
-    SelectionView(Gui::Document*  pcDocument, QWidget *parent=0);
+    SelectionView(Gui::Document* pcDocument, QWidget *parent=0);
 
     /**
      * A destructor.
@@ -86,9 +70,9 @@ public:
 
 public Q_SLOTS:
     /// get called when text is entered in the search box
-    void search(QString text);
+    void search(const QString& text);
     /// get called when the list is right-clicked
-    void onItemContextMenu(QPoint point);
+    void onItemContextMenu(const QPoint& point);
     /// different actions
     void select(QListWidgetItem* item=0);
     void deselect(void);
