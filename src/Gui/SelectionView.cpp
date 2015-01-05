@@ -96,24 +96,24 @@ SelectionView::~SelectionView()
 void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                              Gui::SelectionSingleton::MessageType Reason)
 {
-    std::string temp;
-
+    QString selObject;
+    QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
         // insert the selection as item
-        temp = Reason.pDocName;
-        temp += ".";
-        temp += Reason.pObjectName;
+        str << Reason.pDocName;
+        str << ".";
+        str << Reason.pObjectName;
         if (Reason.pSubName[0] != 0 ) {
-            temp += ".";
-            temp += Reason.pSubName;
+            str << ".";
+            str << Reason.pSubName;
         }
         App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
         App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
-        temp += " (";
-        temp += obj->Label.getValue();
-        temp += ")";
+        str << " (";
+        str << QString::fromUtf8(obj->Label.getValue());
+        str << ")";
         
-        new QListWidgetItem(QString::fromAscii(temp.c_str()), selectionView);
+        new QListWidgetItem(selObject, selectionView);
     }
     else if (Reason.Type == SelectionChanges::ClrSelection) {
         // remove all items
@@ -121,21 +121,21 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
     }
     else if (Reason.Type == SelectionChanges::RmvSelection) {
         // build name
-        temp = Reason.pDocName;
-        temp += ".";
-        temp += Reason.pObjectName;
+        str << Reason.pDocName;
+        str << ".";
+        str << Reason.pObjectName;
         if (Reason.pSubName[0] != 0) {
-            temp += ".";
-            temp += Reason.pSubName;
+            str << ".";
+            str << Reason.pSubName;
         }
         App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
         App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
-        temp += " (";
-        temp += obj->Label.getValue();
-        temp += ")";
+        str << " (";
+        str << QString::fromUtf8(obj->Label.getValue());
+        str << ")";
 
         // remove all items
-        QList<QListWidgetItem *> l = selectionView->findItems(QLatin1String(temp.c_str()),Qt::MatchExactly);
+        QList<QListWidgetItem *> l = selectionView->findItems(selObject,Qt::MatchExactly);
         if (l.size() == 1)
             delete l[0];
 
@@ -146,20 +146,20 @@ void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
         std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getSelection(Reason.pDocName);
         for (std::vector<SelectionSingleton::SelObj>::iterator it = objs.begin(); it != objs.end(); ++it) {
             // build name
-            temp = it->DocName;
-            temp += ".";
-            temp += it->FeatName;
+            str << it->DocName;
+            str << ".";
+            str << it->FeatName;
             if (it->SubName && it->SubName[0] != '\0') {
-                temp += ".";
-                temp += it->SubName;
+                str << ".";
+                str << it->SubName;
             }
             App::Document* doc = App::GetApplication().getDocument(it->DocName);
             App::DocumentObject* obj = doc->getObject(it->FeatName);
-            temp += " (";
-            temp += obj->Label.getValue();
-            temp += ")";
+            str << " (";
+            str << QString::fromUtf8(obj->Label.getValue());
+            str << ")";
             
-            new QListWidgetItem(QString::fromAscii(temp.c_str()), selectionView);
+            new QListWidgetItem(selObject, selectionView);
         }
     }
 }
