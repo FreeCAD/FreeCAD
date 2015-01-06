@@ -472,10 +472,13 @@ void InterpreterSingleton::runMethod(PyObject *pobject, const char *method,
 
     PyGILStateLocker locker;
     pmeth = PyObject_GetAttrString(pobject, method);
-    if (pmeth == NULL)                             /* get callable object */
+    if (pmeth == NULL) {                            /* get callable object */
+        va_end(argslist);
         throw Exception("Error running InterpreterSingleton::RunMethod() method not defined");                                 /* bound method? has self */
+    }
 
     pargs = Py_VaBuildValue(argfmt, argslist);     /* args: c->python */
+    va_end(argslist);
 
     if (pargs == NULL) {
         Py_DECREF(pmeth);
