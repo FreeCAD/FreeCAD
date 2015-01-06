@@ -288,7 +288,18 @@ void TaskDlgGrooveParameters::clicked(int)
 
 bool TaskDlgGrooveParameters::accept()
 {
-    std::string name = GrooveView->getObject()->getNameInDocument();
+    App::DocumentObject* groove = GrooveView->getObject();
+    std::string name = groove->getNameInDocument();
+
+    // retrieve sketch and its support object
+    App::DocumentObject* sketch = 0;
+    App::DocumentObject* support = 0;
+    if (groove->getTypeId().isDerivedFrom(PartDesign::Groove::getClassTypeId())) {
+        sketch = static_cast<PartDesign::Groove*>(groove)->Sketch.getValue<Sketcher::SketchObject*>();
+        if (sketch) {
+            support = static_cast<Sketcher::SketchObject*>(sketch)->Support.getValue();
+        }
+    }
 
     //Gui::Command::openCommand("Groove changed");
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
@@ -297,6 +308,12 @@ bool TaskDlgGrooveParameters::accept()
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    if (groove->isValid()) {
+        if (sketch)
+            Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
+        if (support)
+            Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
+    }
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
     Gui::Command::commitCommand();
 
