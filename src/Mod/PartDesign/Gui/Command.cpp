@@ -228,7 +228,9 @@ void CmdPartDesignPad::activated(int iMsg)
         if (support)
             doCommand(Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
     }
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s',1)",FeatName.c_str());
+    // #0001721: use '0' as edit value to avoid switching off selection in
+    // ViewProviderGeometryObject::setEditViewer
+    doCommand(Gui,"Gui.activeDocument().setEdit('%s',0)",FeatName.c_str());
 
     //commitCommand();
     adjustCameraPosition();
