@@ -97,7 +97,7 @@ void MeshGrid::InitGrid (void)
 
   // Grid Laengen berechnen wenn nicht initialisiert
   //
-  if ((_ulCtGridsX == 0) || (_ulCtGridsX == 0) || (_ulCtGridsX == 0))
+  if ((_ulCtGridsX == 0) || (_ulCtGridsY == 0) || (_ulCtGridsZ == 0))
     CalculateGridLength(MESH_CT_GRID, MESH_MAX_GRIDS);
 
   // Grid Laengen und Offset bestimmen
