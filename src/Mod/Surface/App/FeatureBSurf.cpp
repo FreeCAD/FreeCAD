@@ -32,6 +32,7 @@
 #include <BRepBuilderAPI_Copy.hxx>
 #include <Base/Tools.h>
 #include <Base/Exception.h>
+#include <BRepBuilderAPI_MakeFace.hxx>
 #endif
 
 #include "FeatureBSurf.h"
@@ -112,4 +113,19 @@ void BSurf::getWire(TopoDS_Wire& aWire)
     aWire = aShFW->Wire(); //Healed Wire
 
     if(aWire.IsNull()){Standard_Failure::Raise("Wire unable to be constructed");return;}
+}
+
+void BSurf::createFace(Handle_Geom_BoundedSurface aSurface)
+{
+    BRepBuilderAPI_MakeFace aFaceBuilder;
+    Standard_Real u1, u2, v1, v2;
+    // transfer surface bounds to face
+    aSurface->Bounds(u1, u2, v1, v2);
+    aFaceBuilder.Init(aSurface, u1, u2, v1, v2, Precision::Confusion());
+
+    TopoDS_Face aFace = aFaceBuilder.Face();
+
+    if(!aFaceBuilder.IsDone()) { Standard_Failure::Raise("Face unable to be constructed");}
+    if (aFace.IsNull()) { Standard_Failure::Raise("Resulting Face is null"); }
+    this->Shape.setValue(aFace);
 }
