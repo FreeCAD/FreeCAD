@@ -229,7 +229,7 @@ Py::Object View3DInventorPy::getattr(const char * attr)
     }
 	else {
 		// see if a active object has the same name
-		App::DocumentObject *docObj = _view->pcActiveObjects->getObject<App::DocumentObject*>(attr);
+		App::DocumentObject *docObj = _view->getActiveObject<App::DocumentObject*>(attr);
 		if (docObj){
 			return Py::Object(docObj->getPyObject(),true);
 		}else{
@@ -2181,7 +2181,7 @@ Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
 
 	if (docObject){
 		App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
-		_view->pcActiveObjects->setObject(obj, name);
+		_view->setActiveObject(obj, name);
 	}
 	return Py::None();
 }

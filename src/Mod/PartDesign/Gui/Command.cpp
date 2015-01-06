@@ -250,13 +250,13 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
             return;
     }
 
-    std::vector<App::DocumentObject*> beforeFeatures = PartDesignGui::ActiveAppDoc->getObjects();
+    std::vector<App::DocumentObject*> beforeFeatures = getDocument()->getObjects();
 
     openCommand("Duplicate a PartDesign object");
     doCommand(Doc,"FreeCADGui.runCommand('Std_DuplicateSelection')");
 
     // Find the features that were added
-    std::vector<App::DocumentObject*> afterFeatures = PartDesignGui::ActiveAppDoc->getObjects();
+    std::vector<App::DocumentObject*> afterFeatures = getDocument()->getObjects();
     std::vector<App::DocumentObject*> newFeatures;
     std::set_difference(afterFeatures.begin(), afterFeatures.end(), beforeFeatures.begin(), beforeFeatures.end(),
                         std::back_inserter(newFeatures));
@@ -1868,8 +1868,9 @@ void CmdPartDesignBoolean::activated(int iMsg)
 
     openCommand("Create Boolean");
 
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
     // Make sure we are working on the selected body
-    if (body != PartDesignGui::ActivePartObject) {
+	if (body != activeBody) {
         Gui::Selection().clearSelection();
         Gui::Selection().addSelection(body->getDocument()->getName(), body->Tip.getValue()->getNameInDocument());
         Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");

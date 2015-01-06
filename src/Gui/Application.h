@@ -147,7 +147,9 @@ public:
     * If no such document exists 0 is returned.
     */
     Gui::Document* getDocument(const App::Document* pDoc) const;
-    /// Shows the associated view provider of the given object
+	/// Getter for the active view of the active document or null
+	Gui::MDIView* activeView(void) const;
+	/// Shows the associated view provider of the given object
     void showViewProvider(const App::DocumentObject*);
     /// Hides the associated view provider of the given object
     void hideViewProvider(const App::DocumentObject*);

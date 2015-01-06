@@ -321,6 +321,15 @@ struct PyMethodDef FreeCADGui_methods[] = {
     {NULL, NULL}  /* sentinel */
 };
 
+
+Gui::MDIView* Application::activeView(void) const
+{
+	if (activeDocument())
+		return activeDocument()->getActiveView();
+	else
+		return NULL;
+}
+
 } // namespace Gui
 
 Application::Application(bool GUIenabled)

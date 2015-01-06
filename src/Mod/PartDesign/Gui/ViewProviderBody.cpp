@@ -104,8 +104,9 @@ bool ViewProviderBody::doubleClicked(void)
 {
     // assure the PartDesign workbench
     Gui::Command::assureWorkbench("PartDesignWorkbench");
-    Gui::Command::addModule(Gui::Command::Gui,"PartDesignGui");
-    Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActiveBody(App.activeDocument().%s)",this->getObject()->getNameInDocument());
+	//Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActiveBody(App.activeDocument().%s)",this->getObject()->getNameInDocument());
+	Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeView.setActiveBody(App.activeDocument().%s)",this->getObject()->getNameInDocument());
+
     return true;
 }
 
@@ -148,40 +149,40 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 
 }
 
-void ViewProviderBody::updateTree()
-{
-    if (ActiveGuiDoc == NULL) return;
-
-    // Highlight active body and all its features
-    //Base::Console().Error("ViewProviderBody::updateTree()\n");
-    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-    bool active = body->IsActive.getValue();
-    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");    
-    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
-    std::vector<App::DocumentObject*> features = body->Model.getValues();
-    bool highlight = true;
-    App::DocumentObject* tip = body->Tip.getValue();
-    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
-        //Base::Console().Error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ? "true" : "false");
-        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
-        if (vp != NULL)
-            ActiveGuiDoc->signalHighlightObject(*vp, Gui::LightBlue, active ? highlight : false);
-        if (highlight && (tip == *f))
-            highlight = false;
-    }
-}
+//void ViewProviderBody::updateTree()
+//{
+//    if (ActiveGuiDoc == NULL) return;
+//
+//    // Highlight active body and all its features
+//    //Base::Console().Error("ViewProviderBody::updateTree()\n");
+//    PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+//    bool active = body->IsActive.getValue();
+//    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");    
+//    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
+//    std::vector<App::DocumentObject*> features = body->Model.getValues();
+//    bool highlight = true;
+//    App::DocumentObject* tip = body->Tip.getValue();
+//    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
+//        //Base::Console().Error("Highlighting %s: %s\n", (*f)->getNameInDocument(), highlight ? "true" : "false");
+//        Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));
+//        if (vp != NULL)
+//            ActiveGuiDoc->signalHighlightObject(*vp, Gui::LightBlue, active ? highlight : false);
+//        if (highlight && (tip == *f))
+//            highlight = false;
+//    }
+//}
 
 void ViewProviderBody::updateData(const App::Property* prop)
 {
     //Base::Console().Error("ViewProviderBody::updateData for %s\n", getObject()->getNameInDocument());
-    if (ActiveGuiDoc == NULL)
-        // PartDesign workbench not active
-        return PartGui::ViewProviderPart::updateData(prop);
+    //if (ActiveGuiDoc == NULL)
+    //    // PartDesign workbench not active
+    //    return PartGui::ViewProviderPart::updateData(prop);
 
-    if ((prop->getTypeId() == App::PropertyBool::getClassTypeId() && strcmp(prop->getName(),"IsActive") == 0) ||
-        (prop->getTypeId() == App::PropertyLink::getClassTypeId() && strcmp(prop->getName(),"Tip") == 0) ||
-        (prop->getTypeId() == App::PropertyLinkList::getClassTypeId() && strcmp(prop->getName(),"Model") == 0))
-        updateTree();
+    //if ((/*prop->getTypeId() == App::PropertyBool::getClassTypeId() && strcmp(prop->getName(),"IsActive") == 0) ||*/
+    //    (prop->getTypeId() == App::PropertyLink::getClassTypeId() && strcmp(prop->getName(),"Tip") == 0) ||
+    //    (prop->getTypeId() == App::PropertyLinkList::getClassTypeId() && strcmp(prop->getName(),"Model") == 0))
+    //   // updateTree();
 
     // Update the visual size of datum lines and planes
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
