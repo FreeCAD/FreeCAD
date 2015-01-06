@@ -84,7 +84,7 @@ class _Frame(ArchComponent.Component):
         obj.addProperty("App::PropertyLink","Profile","Arch","The profile used to build this frame")
         obj.addProperty("App::PropertyBool","Align","Arch","Specifies if the profile must be aligned with the extrusion wires")
         obj.addProperty("App::PropertyVector","Offset","Arch","An offset vector between the base sketch and the frame")
-        obj.addProperty("App::PropertyInteger","BasePoint","Arch","The point of the profile by which the path passes.")
+        obj.addProperty("App::PropertyInteger","BasePoint","Arch","Crossing point of the path on the profile.")
         obj.addProperty("App::PropertyAngle","Rotation","Arch","The rotation of the profile around its extrusion axis")
         self.Type = "Frame"
         obj.Role = Roles
@@ -135,11 +135,16 @@ class _Frame(ArchComponent.Component):
                 profile = baseprofile.copy()
                 #basepoint = profile.Placement.Base
                 if hasattr(obj,"BasePoint"):
-                    if obj.BasePoint == 0 :
-                        basepoint = profile.CenterOfMass
-                    else :
-                        # TODO add mid point of edges and make an ordered list point, mid point , ...
-                        basepoint = profile.Vertexes[obj.BasePoint - 1].Point
+                    edges = DraftGeomUtils.sortEdges(profile.Edges)
+                    basepointliste = [profile.CenterOfMass]
+                    for edge in edges:
+                        basepointliste.append(DraftGeomUtils.findMidpoint(edge))
+                        basepointliste.append(edge.Vertexes[-1].Point)
+                    try:
+                        basepoint = basepointliste[obj.BasePoint]
+                    except IndexError:
+                        FreeCAD.Console.PrintMessage(translate("Arch","There is no more cross point.\n"))
+                        basepoint = basepointliste[0]
                 else :
                     basepoint = profile.CenterOfMass
                 profile.translate(bpoint.sub(basepoint))
