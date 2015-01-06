@@ -31,6 +31,7 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Part/App/PropertyTopoShape.h>
 #include <Gui/Command.h>
+#include <Gui/MDIView.h>
 #include <Gui/Control.h>
 #include <Gui/Application.h>
 #include <Base/Exception.h>
@@ -51,10 +52,11 @@ ViewProvider::~ViewProvider()
 
 bool ViewProvider::doubleClicked(void)
 {    
-    if (PartDesignGui::ActivePartObject != NULL) {
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	if (activeBody != NULL) {
         // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
         // Also, this way the user won't be tempted to use future geometry as external references for the sketch
-        oldTip = ActivePartObject->Tip.getValue();
+		oldTip = activeBody->Tip.getValue();
         if (oldTip != this->pcObject)
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
         else
@@ -83,8 +85,9 @@ void ViewProvider::unsetEdit(int ModNum)
 
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
+		PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
         Gui::Control().closeDialog();
-        if ((PartDesignGui::ActivePartObject != NULL) && (oldTip != NULL)) {
+		if ((activeBody != NULL) && (oldTip != NULL)) {
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
             Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");

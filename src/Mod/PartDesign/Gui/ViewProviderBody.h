@@ -67,7 +67,7 @@ private:
     SoGroup *pcBodyTip;
 
     /// Update the children's highlighting
-    void updateTree();
+    //void updateTree();
 
 
 };

@@ -53,7 +53,7 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body()
 {
-    ADD_PROPERTY(IsActive,(0));
+    //ADD_PROPERTY(IsActive,(0));
 }
 
 /*

@@ -43,17 +43,12 @@
 
 namespace PartDesignGui {
 
-// pointer to the active assembly object
-PartDesign::Body                *ActivePartObject =0;
-Gui::Document                   *ActiveGuiDoc     =0;
-App::Document                   *ActiveAppDoc     =0;
-Gui::ViewProviderDocumentObject *ActiveVp         =0;
-
 // The names of the base planes. Note: The user-visible label is different from this
 const char* BaseplaneNames[3] = {"BaseplaneXY", "BaseplaneXZ", "BaseplaneYZ"};
 
 }
 
+<<<<<<< 4db2e50e38d4a9c01764fa8dedb78231fc64faee:src/Mod/Assembly/App/AppAssemblyPy.cpp
 static PyObject * setActiveBody(PyObject *self, PyObject *args)
 {
     PyObject *object=0;
@@ -82,12 +77,7 @@ static PyObject * setActiveBody(PyObject *self, PyObject *args)
 
     Py_Return;
 }
-<<<<<<< 394f4c51924312cf9cfcce09be5c3ba696a82cf4:src/Mod/Assembly/App/AppAssemblyPy.cpp
-static PyObject * getActivePart(PyObject *, PyObject *)
-=======
-
 static PyObject * getActiveBody(PyObject *, PyObject *)
->>>>>>> Assembly: Rename to setActiveBody and make link indeipendant Part initialization:src/Mod/PartDesign/Gui/AppPartDesignGuiPy.cpp
 {
     if (PartDesignGui::ActivePartObject == NULL) {
         return Py::_None();
@@ -95,6 +85,45 @@ static PyObject * getActiveBody(PyObject *, PyObject *)
 
     return PartDesignGui::ActivePartObject->getPyObject();
 }
+=======
+//static PyObject * setActiveBody(PyObject *self, PyObject *args)
+//{
+//    PyObject *object=0;
+//    if (PyArg_ParseTuple(args,"|O!",&(PartDesign::BodyPy::Type), &object)&& object) {
+//        PartDesign::Body* Item = static_cast<PartDesign::BodyPy*>(object)->getBodyPtr();
+//        // Should be set!
+//        assert(Item);    
+//
+//        // Set old body inactive if we are activating another body in the same document
+//        if ((PartDesignGui::ActivePartObject != NULL) &&
+//            (PartDesignGui::ActivePartObject->getDocument() == Item->getDocument()))
+//            PartDesignGui::ActivePartObject->IsActive.setValue(false);
+//        PartDesignGui::ActivePartObject = Item;
+//        PartDesignGui::ActiveAppDoc = Item->getDocument();
+//        PartDesignGui::ActiveGuiDoc = Gui::Application::Instance->getDocument(PartDesignGui::ActiveAppDoc);
+//        PartDesignGui::ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (PartDesignGui::ActiveGuiDoc->getViewProvider(Item));
+//        PartDesignGui::ActiveVp->show();
+//        Item->IsActive.setValue(true);
+//    } else {
+//        // This handles the case of deactivating the workbench
+//        PartDesignGui::ActivePartObject=0;
+//        PartDesignGui::ActiveGuiDoc    =0;
+//        PartDesignGui::ActiveAppDoc    =0;
+//        PartDesignGui::ActiveVp        =0;
+//    }
+//
+//    Py_Return;
+//}
+//
+//static PyObject * getActiveBody(PyObject *, PyObject *)
+//{
+//    if (PartDesignGui::ActivePartObject == NULL) {
+//        return Py::_None();
+//    }
+//
+//    return PartDesignGui::ActivePartObject->getPyObject();
+//}
+>>>>>>> Changing active object handling in PartDesign:src/Mod/PartDesign/Gui/AppPartDesignGuiPy.cpp
 
 void setUpPart(App::Part *part);
 
@@ -116,18 +145,18 @@ static PyObject * setUpPart(PyObject *self, PyObject *args)
 
 
 /* registration table  */
-<<<<<<< 394f4c51924312cf9cfcce09be5c3ba696a82cf4:src/Mod/Assembly/App/AppAssemblyPy.cpp
+<<<<<<< 4db2e50e38d4a9c01764fa8dedb78231fc64faee:src/Mod/Assembly/App/AppAssemblyPy.cpp
 struct PyMethodDef Assembly_methods[] = {
-    {"setActivePart"       ,setActivePart      ,METH_VARARGS,
-     "setActivePart(BodyObject) -- Set the PartBody object in work."},
-=======
-struct PyMethodDef PartDesignGui_Import_methods[] = {
     {"setActiveBody"       ,setActiveBody      ,METH_VARARGS,
      "setActiveBody(BodyObject) -- Set the PartBody object in work."},
+=======
+struct PyMethodDef PartDesignGui_Import_methods[] = {
+    //{"setActiveBody"       ,setActiveBody      ,METH_VARARGS,
+    // "setActiveBody(BodyObject) -- Set the PartBody object in work."},
+>>>>>>> Changing active object handling in PartDesign:src/Mod/PartDesign/Gui/AppPartDesignGuiPy.cpp
 
-    {"setActiveBody"       ,getActiveBody      ,METH_NOARGS,
-     "setActiveBody() -- Get the PartBody object in work."},
->>>>>>> Assembly: Rename to setActiveBody and make link indeipendant Part initialization:src/Mod/PartDesign/Gui/AppPartDesignGuiPy.cpp
+    //{"getActiveBody"       ,getActiveBody      ,METH_NOARGS,
+    // "getActiveBody() -- Get the PartBody object in work."},
 
     {"setUpPart"       ,setUpPart      ,METH_VARARGS,
      "setUpPart(Part) -- Sets a empty part object up for usage in PartDesign."},

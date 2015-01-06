@@ -31,6 +31,9 @@
 #endif
 
 #include <App/Plane.h>
+#include <App/Part.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Feature.h>
@@ -48,6 +51,9 @@ using namespace Gui;
 
 bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
+	PartDesign::Body* ActivePartObject = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	App::Part*        activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("Part");
+
     // Don't allow selection in other document
     if ((support != NULL) && (pDoc != support->getDocument()))
         return false;

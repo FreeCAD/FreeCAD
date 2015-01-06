@@ -27,6 +27,7 @@
 #define GUI_ActiveObjectList_H
 
 #include <map>
+#include "Tree.h"
 namespace App {
 	class DocumentObject;
 }
@@ -48,13 +49,13 @@ namespace Gui
 
 	public:
 		template<typename _T>
-		inline _T getObject(const char* name)
+		inline _T getObject(const char* name) const
 		{
 			std::map<std::string, App::DocumentObject*>::const_iterator pos = _ObjectMap.find(name);
 			return  pos == _ObjectMap.end() ? 0 : dynamic_cast<_T>(pos->second);
 		}
-		void setObject(App::DocumentObject*, const char*);
-		bool hasObject(const char*);
+		void setObject(App::DocumentObject*, const char*, const Gui::HighlightMode& m = Gui::LightBlue);
+		bool hasObject(const char*)const;
 	protected:
 		std::map<std::string, App::DocumentObject*> _ObjectMap;
 

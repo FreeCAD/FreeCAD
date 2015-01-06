@@ -408,21 +408,20 @@ bool TaskDlgGrooveParameters::reject()
             Gui::Application::Instance->getViewProvider(pcSketch)->show();
     }
 
-    // Body housekeeping
-    if (ActivePartObject != NULL) {
-        // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
-        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
-        if (tip != NULL) {
-            Gui::Application::Instance->getViewProvider(tip)->show();
-            if ((tip != prev) && (prev != NULL))
-                Gui::Application::Instance->getViewProvider(prev)->show();
-        }
-    }
+//    // Body housekeeping
+//    if (ActivePartObject != NULL) {
+//        // Make the new Tip and the previous solid feature visible again
+//        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
+//        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
+//        if (tip != NULL) {
+//            Gui::Application::Instance->getViewProvider(tip)->show();
+//            if ((tip != prev) && (prev != NULL))
+//                Gui::Application::Instance->getViewProvider(prev)->show();
+//        }
+//    }
 
     return true;
 }
-
 
 
 #include "moc_TaskGrooveParameters.cpp"

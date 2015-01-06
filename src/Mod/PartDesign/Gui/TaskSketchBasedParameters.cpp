@@ -91,8 +91,9 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
 
 void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
-    App::DocumentObject* prevSolid = PartDesignGui::ActivePartObject->getPrevSolidFeature(vp->getObject(), false);
-    App::DocumentObject* curSolid = PartDesignGui::ActivePartObject->getPrevSolidFeature();
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	App::DocumentObject* prevSolid = activeBody->getPrevSolidFeature(vp->getObject(), false);
+	App::DocumentObject* curSolid = activeBody->getPrevSolidFeature();
 
     if (pressed) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -135,11 +136,12 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
     if (obj == NULL)
         return QByteArray();
 
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
         return QByteArray();
     } else if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        if (!PartDesignGui::ActivePartObject->hasFeature(obj))
+		if (!activeBody->hasFeature(obj))
             return QByteArray();
         return QByteArray();
     } else {
@@ -243,10 +245,11 @@ bool TaskDlgSketchBasedParameters::reject()
     }
 
     // Body housekeeping
-    if (ActivePartObject != NULL) {
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	if (activeBody != NULL) {
         // Make the new Tip and the previous solid feature visible again
-        App::DocumentObject* tip = ActivePartObject->Tip.getValue();
-        App::DocumentObject* prev = ActivePartObject->getPrevSolidFeature();
+		App::DocumentObject* tip = activeBody->Tip.getValue();
+		App::DocumentObject* prev = activeBody->getPrevSolidFeature();
         if (tip != NULL) {
             Gui::Application::Instance->getViewProvider(tip)->show();
             if ((tip != prev) && (prev != NULL))

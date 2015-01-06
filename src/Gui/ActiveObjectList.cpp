@@ -29,18 +29,28 @@
 #endif
 
 #include "ActiveObjectList.h"
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 
 
 using namespace Gui;
 
 
-void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name)
+void Gui::ActiveObjectList::setObject(App::DocumentObject* obj, const char* name, const Gui::HighlightMode& mode)
 {
-	_ObjectMap[name] = obj;
+	if (obj){
+		if (hasObject(name)){
+			Gui::Application::Instance->activeDocument()->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(getObject<App::DocumentObject*>(name))), mode, false);
+		}
+		_ObjectMap[name] = obj;
+
+		Gui::Application::Instance->activeDocument()->signalHighlightObject(*dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(obj)), mode, true);
+	}
 }
 
-bool Gui::ActiveObjectList::hasObject(const char*name)
+bool Gui::ActiveObjectList::hasObject(const char*name)const 
 {
 	return _ObjectMap.find(name) != _ObjectMap.end();
 }

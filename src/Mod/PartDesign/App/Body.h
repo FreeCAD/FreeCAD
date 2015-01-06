@@ -40,7 +40,7 @@ class PartDesignExport Body : public Part::BodyBase
 public:
 
     /// True if this body feature is active or was active when the document was last closed
-    App::PropertyBool IsActive;
+    //App::PropertyBool IsActive;
 
     Body();
 

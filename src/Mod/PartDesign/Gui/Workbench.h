@@ -45,10 +45,10 @@ namespace App {
 namespace PartDesignGui {
 
 // pointer to the active assembly object
-extern PartDesign::Body                *ActivePartObject;
-extern Gui::Document                   *ActiveGuiDoc;
-extern App::Document                   *ActiveAppDoc;
-extern Gui::ViewProviderDocumentObject *ActiveVp;
+//extern PartDesign::Body                *ActivePartObject;
+//extern Gui::Document                   *ActiveGuiDoc;
+//extern App::Document                   *ActiveAppDoc;
+//extern Gui::ViewProviderDocumentObject *ActiveVp;
 // The names of the base planes
 extern const char* BaseplaneNames[3];
 

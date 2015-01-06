@@ -26,6 +26,7 @@
 
 #include "View.h"
 #include <QMainWindow>
+#include "ActiveObjectList.h"
 
 QT_BEGIN_NAMESPACE
 class QPrinter;
@@ -34,7 +35,6 @@ QT_END_NAMESPACE
 namespace Gui 
 {
 class Document;
-class ActiveObjectList;
 
 /** Base class of all windows belonging to a document.
  * There are two ways of belonging to a document:
@@ -109,7 +109,21 @@ public:
     virtual void setCurrentViewMode(ViewMode mode);
     ViewMode currentViewMode() const { return currentMode; }
 
-	ActiveObjectList *pcActiveObjects;
+
+	/// access getter for the active object list
+	template<typename _T>
+	inline _T getActiveObject(const char* name) const
+	{
+		return ActiveObjects.getObject<_T>(name);
+	};
+	void setActiveObject(App::DocumentObject*o, const char*n)
+	{
+		ActiveObjects.setObject(o, n);
+	};
+	bool hasActiveObject(const char*n) const
+	{
+		return ActiveObjects.hasObject(n);
+	};
 
 public Q_SLOTS:
     virtual void setOverrideCursor(const QCursor&);
@@ -133,6 +147,8 @@ protected:
 private:
     ViewMode currentMode;
     Qt::WindowStates wstate;
+	// list of active objects of this view
+	ActiveObjectList ActiveObjects;
 };
 
 } // namespace Gui

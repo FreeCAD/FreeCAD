@@ -75,15 +75,17 @@ namespace PartDesignGui {
 
 PartDesign::Body *getBody(void)
 {
-    if(!PartDesignGui::ActivePartObject){
+	PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+
+	if (activeBody){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
             QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                        "Please make one active or create one. If you have a legacy document "
+			"Please make one active (double click) or create one. If you have a legacy document "
                         "with PartDesign objects without Body, use the transfer function in "
                         "PartDesign to put them into a Body."
                         ));
     }
-    return PartDesignGui::ActivePartObject;
+	return activeBody;
 
 }
 
@@ -182,14 +184,14 @@ void Workbench::_doMigration(const App::Document* doc)
     // Always create at least the first body, even if the document is empty
     // This adds both the base planes and the body
     Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
-    PartDesign::Body *activeBody = PartDesignGui::ActivePartObject;
+	PartDesign::Body *activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
 
 
     // Create one Body for every root and put the appropriate features into it
     for (std::vector<App::DocumentObject*>::iterator r = roots.begin(); r != roots.end(); r++) {
         if (r != roots.begin()) {
             Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
-            activeBody = PartDesignGui::ActivePartObject;
+			activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
         }
 
         std::set<App::DocumentObject*> inList;
@@ -352,7 +354,7 @@ void Workbench::_switchToDocument(const App::Document* doc)
 			Gui::Command::doCommand(Gui::Command::Doc, "PartDesignGui.setUpPart(App.activeDocument().%s)", PartName.c_str());
 			Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Part',App.activeDocument().%s)", PartName.c_str());
 
-			activeBody = Gui::Application::Instance->activeDocument()->getActiveView()->pcActiveObjects->getObject<PartDesign::Body*>("Body");
+			activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
 
 			// body have to be created
 			assert(activeBody);
@@ -363,8 +365,11 @@ void Workbench::_switchToDocument(const App::Document* doc)
     }
     else 
     {
-		activeBody = Gui::Application::Instance->activeDocument()->getActiveView()->pcActiveObjects->getObject<PartDesign::Body*>("Body");
-		activePart = Gui::Application::Instance->activeDocument()->getActiveView()->pcActiveObjects->getObject<App::Part*>("Part");
+		activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+		activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("Part");
+
+		// document change not implemented yet
+		assert(activePart->getDocument() == doc);
 
         //// Find active body
         //for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
@@ -441,10 +446,10 @@ void Workbench::slotFinishRestoreDocument(const App::Document& Doc)
 
 void Workbench::slotDeleteDocument(const App::Document&)
 {
-    ActivePartObject = 0;
-    ActiveGuiDoc = 0;
-    ActiveAppDoc = 0;
-    ActiveVp = 0;
+    //ActivePartObject = 0;
+    //ActiveGuiDoc = 0;
+    //ActiveAppDoc = 0;
+    //ActiveVp = 0;
 }
 /*
   This does not work for Std_DuplicateSelection:
@@ -650,7 +655,7 @@ void Workbench::activated()
     ));
 
     // make the previously used active Body active again
-    PartDesignGui::ActivePartObject = NULL;
+    //PartDesignGui::ActivePartObject = NULL;
     _switchToDocument(App::GetApplication().getActiveDocument());
 
     addTaskWatcher(Watcher);

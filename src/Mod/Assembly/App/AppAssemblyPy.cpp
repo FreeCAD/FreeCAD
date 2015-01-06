@@ -43,53 +43,48 @@
 
 namespace PartDesignGui {
 
-// pointer to the active assembly object
-PartDesign::Body                *ActivePartObject =0;
-Gui::Document                   *ActiveGuiDoc     =0;
-App::Document                   *ActiveAppDoc     =0;
-Gui::ViewProviderDocumentObject *ActiveVp         =0;
-
 // The names of the base planes. Note: The user-visible label is different from this
 const char* BaseplaneNames[3] = {"BaseplaneXY", "BaseplaneXZ", "BaseplaneYZ"};
 
 }
 
-static PyObject * setActiveBody(PyObject *self, PyObject *args)
-{
-    PyObject *object=0;
-    if (PyArg_ParseTuple(args,"|O!",&(PartDesign::BodyPy::Type), &object)&& object) {
-        PartDesign::Body* Item = static_cast<PartDesign::BodyPy*>(object)->getBodyPtr();
-        // Should be set!
-        assert(Item);    
-
-        // Set old body inactive if we are activating another body in the same document
-        if ((PartDesignGui::ActivePartObject != NULL) &&
-            (PartDesignGui::ActivePartObject->getDocument() == Item->getDocument()))
-            PartDesignGui::ActivePartObject->IsActive.setValue(false);
-        PartDesignGui::ActivePartObject = Item;
-        PartDesignGui::ActiveAppDoc = Item->getDocument();
-        PartDesignGui::ActiveGuiDoc = Gui::Application::Instance->getDocument(PartDesignGui::ActiveAppDoc);
-        PartDesignGui::ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (PartDesignGui::ActiveGuiDoc->getViewProvider(Item));
-        PartDesignGui::ActiveVp->show();
-        Item->IsActive.setValue(true);
-    } else {
-        // This handles the case of deactivating the workbench
-        PartDesignGui::ActivePartObject=0;
-        PartDesignGui::ActiveGuiDoc    =0;
-        PartDesignGui::ActiveAppDoc    =0;
-        PartDesignGui::ActiveVp        =0;
-    }
-
-    Py_Return;
-}
-static PyObject * getActiveBody(PyObject *, PyObject *)
-{
-    if (PartDesignGui::ActivePartObject == NULL) {
-        return Py::_None();
-    }
-
-    return PartDesignGui::ActivePartObject->getPyObject();
-}
+//static PyObject * setActiveBody(PyObject *self, PyObject *args)
+//{
+//    PyObject *object=0;
+//    if (PyArg_ParseTuple(args,"|O!",&(PartDesign::BodyPy::Type), &object)&& object) {
+//        PartDesign::Body* Item = static_cast<PartDesign::BodyPy*>(object)->getBodyPtr();
+//        // Should be set!
+//        assert(Item);    
+//
+//        // Set old body inactive if we are activating another body in the same document
+//        if ((PartDesignGui::ActivePartObject != NULL) &&
+//            (PartDesignGui::ActivePartObject->getDocument() == Item->getDocument()))
+//            PartDesignGui::ActivePartObject->IsActive.setValue(false);
+//        PartDesignGui::ActivePartObject = Item;
+//        PartDesignGui::ActiveAppDoc = Item->getDocument();
+//        PartDesignGui::ActiveGuiDoc = Gui::Application::Instance->getDocument(PartDesignGui::ActiveAppDoc);
+//        PartDesignGui::ActiveVp = dynamic_cast<Gui::ViewProviderDocumentObject*> (PartDesignGui::ActiveGuiDoc->getViewProvider(Item));
+//        PartDesignGui::ActiveVp->show();
+//        Item->IsActive.setValue(true);
+//    } else {
+//        // This handles the case of deactivating the workbench
+//        PartDesignGui::ActivePartObject=0;
+//        PartDesignGui::ActiveGuiDoc    =0;
+//        PartDesignGui::ActiveAppDoc    =0;
+//        PartDesignGui::ActiveVp        =0;
+//    }
+//
+//    Py_Return;
+//}
+//
+//static PyObject * getActiveBody(PyObject *, PyObject *)
+//{
+//    if (PartDesignGui::ActivePartObject == NULL) {
+//        return Py::_None();
+//    }
+//
+//    return PartDesignGui::ActivePartObject->getPyObject();
+//}
 
 void setUpPart(App::Part *part);
 
@@ -112,11 +107,11 @@ static PyObject * setUpPart(PyObject *self, PyObject *args)
 
 /* registration table  */
 struct PyMethodDef Assembly_methods[] = {
-    {"setActiveBody"       ,setActiveBody      ,METH_VARARGS,
-     "setActiveBody(BodyObject) -- Set the PartBody object in work."},
+    //{"setActiveBody"       ,setActiveBody      ,METH_VARARGS,
+    // "setActiveBody(BodyObject) -- Set the PartBody object in work."},
 
-    {"getActiveBody"       ,getActiveBody      ,METH_NOARGS,
-     "getActiveBody() -- Get the PartBody object in work."},
+    //{"getActiveBody"       ,getActiveBody      ,METH_NOARGS,
+    // "getActiveBody() -- Get the PartBody object in work."},
 
     {"setUpPart"       ,setUpPart      ,METH_VARARGS,
      "setUpPart(Part) -- Sets a empty part object up for usage in PartDesign."},
