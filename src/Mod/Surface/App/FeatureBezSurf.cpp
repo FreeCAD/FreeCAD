@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Edge.hxx>
@@ -31,14 +30,13 @@
 #include <Geom_BezierCurve.hxx>
 #include <Precision.hxx>
 #include <gp_Trsf.hxx>
-#include <GeomFill.hxx>
-#include <GeomFill_BezierCurves.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRep_Tool.hxx>
 #include <TopExp_Explorer.hxx>
 #include <Standard_ConstructionError.hxx>
 #include <Base/Tools.h>
 #include <Base/Exception.h>
+#include <GeomFill_BezierCurves.hxx>
+#include <GeomFill.hxx>
 #endif
 
 #include "FeatureBezSurf.h"
@@ -56,50 +54,32 @@ BezSurf::BezSurf()
     ADD_PROPERTY(filltype,(1));
 }
 
-//Structures
-
-struct crvs{
-
-    Handle_Geom_BezierCurve C1;
-    Handle_Geom_BezierCurve C2;
-    Handle_Geom_BezierCurve C3;
-    Handle_Geom_BezierCurve C4;
-
-};
-
 //Functions
 
 App::DocumentObjectExecReturn *BezSurf::execute(void)
 {
     //Begin Construction
     try{
-        GeomFill_FillingStyle fstyle = getFillingStyle();
-        GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
+        Handle_Geom_BezierCurve crvs[4];
         TopoDS_Wire aWire; //Create empty wire
 
         //Gets the healed wire
         getWire(aWire);
 
-        //Create Bezier Surface builder
-        crvs bcrv;
-        Standard_Real u0;// contains output
-        Standard_Real u1;// contains output
+        Standard_Real u1, u2; // contains output
         TopExp_Explorer anExp (aWire, TopAbs_EDGE);
         int it = 0;
         for (; anExp.More(); anExp.Next()) {
             const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
             TopLoc_Location heloc; // this will be output
-            Handle_Geom_Curve c_geom = BRep_Tool::Curve(hedge,heloc,u0,u1); //The geometric curve
+            Handle_Geom_Curve c_geom = BRep_Tool::Curve(hedge, heloc, u1, u2); //The geometric curve
             Handle_Geom_BezierCurve b_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
 
             if (!b_geom.IsNull()) {
                 gp_Trsf transf = heloc.Transformation();
                 b_geom->Transform(transf); // apply original transformation to control points
                 //Store Underlying Geometry
-                if(it==0){bcrv.C1 = b_geom;}
-                else if(it==1){bcrv.C2 = b_geom;}
-                else if(it==2){bcrv.C3 = b_geom;}
-                else if(it==3){bcrv.C4 = b_geom;}
+                crvs[it] = b_geom;
             }
             else {
                 Standard_Failure::Raise("Curve not a Bezier Curve");
@@ -107,28 +87,14 @@ App::DocumentObjectExecReturn *BezSurf::execute(void)
             it++;
         }
 
+        GeomFill_FillingStyle fstyle = getFillingStyle();
+        GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
         int ncrv = aBList.getSize();
-        if(ncrv==2){aSurfBuilder.Init(bcrv.C1,bcrv.C2,fstyle);}
-        else if(ncrv==3){aSurfBuilder.Init(bcrv.C1,bcrv.C2,bcrv.C3,fstyle);}
-        else if(ncrv==4){aSurfBuilder.Init(bcrv.C1,bcrv.C2,bcrv.C3,bcrv.C4,fstyle);}
+        if(ncrv==2) {aSurfBuilder.Init(crvs[0], crvs[1], fstyle);}
+        else if(ncrv==3) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);}
+        else if(ncrv==4) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);}
 
-        //Create the surface
-        const Handle_Geom_BezierSurface aSurface = aSurfBuilder.Surface();
-
-        BRepBuilderAPI_MakeFace aFaceBuilder;//(aSurface,aWire,Standard_True); //Create Face Builder
-        u0 = 0.;
-        u1 = 1.;
-        Standard_Real v0 = 0.;
-        Standard_Real v1 = 1.;
-        aFaceBuilder.Init(aSurface,u0,u1,v0,v1,Precision::Confusion());
-
-        TopoDS_Face aFace = aFaceBuilder.Face(); //Returned Face
-        if(!aFaceBuilder.IsDone()){return new App::DocumentObjectExecReturn("Face unable to be constructed");}
-
-        if (aFace.IsNull()){
-            return new App::DocumentObjectExecReturn("Resulting Face is null");
-        }
-        this->Shape.setValue(aFace);
+        createFace(aSurfBuilder.Surface());
 
         return App::DocumentObject::StdReturn;
 

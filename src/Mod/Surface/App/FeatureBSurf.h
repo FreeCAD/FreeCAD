@@ -28,6 +28,7 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include <GeomFill_BezierCurves.hxx>
+#include <Geom_BoundedSurface.hxx>
 #include "Mod/Part/App/PartFeature.h"
 
 namespace Surface
@@ -49,6 +50,7 @@ public:
 protected:
     GeomFill_FillingStyle getFillingStyle();
     void getWire(TopoDS_Wire& aWire);
+    void createFace(const Handle_Geom_BoundedSurface aSurface);
 };
 
 }
