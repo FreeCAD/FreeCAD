@@ -656,6 +656,7 @@ void PropertyUnitItem::setEditorData(QWidget *editor, const QVariant& data) cons
 
     Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     infield->setValue(value);
+    infield->selectAll();
 }
 
 QVariant PropertyUnitItem::editorData(QWidget *editor) const
@@ -681,6 +682,7 @@ void PropertyUnitConstraintItem::setEditorData(QWidget *editor, const QVariant& 
 
     Gui::QuantitySpinBox *infield = qobject_cast<Gui::QuantitySpinBox*>(editor);
     infield->setValue(value);
+    infield->selectAll();
 
     const App::PropertyQuantityConstraint* prop = static_cast
         <const App::PropertyQuantityConstraint*>(getFirstProperty());
