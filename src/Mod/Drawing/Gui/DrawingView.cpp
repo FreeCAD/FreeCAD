@@ -249,6 +249,9 @@ DrawingView::DrawingView(Gui::Document* doc, QWidget* parent)
 
     setCentralWidget(m_view);
     //setWindowTitle(tr("SVG Viewer"));
+
+    m_orientation = QPrinter::Landscape;
+    m_pageSize = QPrinter::A4;
 }
 
 DrawingView::~DrawingView()
@@ -277,6 +280,46 @@ void DrawingView::load (const QString & fileName)
 
         m_outlineAction->setEnabled(true);
         m_backgroundAction->setEnabled(true);
+
+        findPrinterSettings(QFileInfo(fileName).baseName());
+    }
+}
+
+void DrawingView::findPrinterSettings(const QString& fileName)
+{
+    if (fileName.indexOf(QLatin1String("Portrait"), Qt::CaseInsensitive) >= 0) {
+        m_orientation = QPrinter::Portrait;
+    }
+    else {
+        m_orientation = QPrinter::Landscape;
+    }
+
+    QMap<QPrinter::PageSize, QString> pageSizes;
+    pageSizes[QPrinter::A0] = QString::fromLatin1("A0");
+    pageSizes[QPrinter::A1] = QString::fromLatin1("A1");
+    pageSizes[QPrinter::A2] = QString::fromLatin1("A2");
+    pageSizes[QPrinter::A3] = QString::fromLatin1("A3");
+    pageSizes[QPrinter::A4] = QString::fromLatin1("A4");
+    pageSizes[QPrinter::A5] = QString::fromLatin1("A5");
+    pageSizes[QPrinter::A6] = QString::fromLatin1("A6");
+    pageSizes[QPrinter::A7] = QString::fromLatin1("A7");
+    pageSizes[QPrinter::A8] = QString::fromLatin1("A8");
+    pageSizes[QPrinter::A9] = QString::fromLatin1("A9");
+    pageSizes[QPrinter::B0] = QString::fromLatin1("B0");
+    pageSizes[QPrinter::B1] = QString::fromLatin1("B1");
+    pageSizes[QPrinter::B2] = QString::fromLatin1("B2");
+    pageSizes[QPrinter::B3] = QString::fromLatin1("B3");
+    pageSizes[QPrinter::B4] = QString::fromLatin1("B4");
+    pageSizes[QPrinter::B5] = QString::fromLatin1("B5");
+    pageSizes[QPrinter::B6] = QString::fromLatin1("B6");
+    pageSizes[QPrinter::B7] = QString::fromLatin1("B7");
+    pageSizes[QPrinter::B8] = QString::fromLatin1("B8");
+    pageSizes[QPrinter::B9] = QString::fromLatin1("B9");
+    for (QMap<QPrinter::PageSize, QString>::iterator it = pageSizes.begin(); it != pageSizes.end(); ++it) {
+        if (fileName.startsWith(it.value(), Qt::CaseInsensitive)) {
+            m_pageSize = it.key();
+            break;
+        }
     }
 }
 
@@ -464,7 +507,9 @@ void DrawingView::print()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageSize(m_pageSize);
+    printer.setOrientation(m_orientation);
+
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
         print(&printer);
@@ -475,7 +520,8 @@ void DrawingView::printPreview()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setOrientation(QPrinter::Landscape);
+    printer.setPageSize(m_pageSize);
+    printer.setOrientation(m_orientation);
 
     QPrintPreviewDialog dlg(&printer, this);
     connect(&dlg, SIGNAL(paintRequested (QPrinter *)),
@@ -486,6 +532,8 @@ void DrawingView::printPreview()
 void DrawingView::print(QPrinter* printer)
 {
 #if 1
+    int h = printer->heightMM();
+    int w = printer->widthMM();
     QPainter p(printer);
     QRect rect = printer->pageRect();
     this->m_view->scene()->render(&p, rect);
