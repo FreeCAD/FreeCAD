@@ -37,6 +37,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -454,6 +455,29 @@ void DlgBooleanOperation::accept()
             "Gui.activeDocument().hide(\"%s\")",shapeOne.c_str());
         Gui::Command::doCommand(Gui::Command::Gui,
             "Gui.activeDocument().hide(\"%s\")",shapeTwo.c_str());
+
+        // add/remove fromgroup if needed
+        App::DocumentObjectGroup* targetGroup = 0;
+
+        App::DocumentObjectGroup* group1 = obj1->getGroup();
+        if (group1) {
+            targetGroup = group1;
+            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
+                group1->getNameInDocument(), obj1->getNameInDocument());
+        }
+
+        App::DocumentObjectGroup* group2 = obj2->getGroup();
+        if (group2) {
+            targetGroup = group2;
+            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
+                group2->getNameInDocument(), obj2->getNameInDocument());
+        }
+
+        if (targetGroup) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                targetGroup->getNameInDocument(), objName.c_str());
+        }
+
         Gui::Command::copyVisual(objName.c_str(), "ShapeColor", shapeOne.c_str());
         Gui::Command::copyVisual(objName.c_str(), "DisplayMode", shapeOne.c_str());
         activeDoc->commitTransaction();

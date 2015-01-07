@@ -38,6 +38,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -291,17 +292,31 @@ void CmdPartCut::activated(int iMsg)
     }
 
     std::string FeatName = getUniqueObjectName("Cut");
-    std::string BaseName  = Sel[0].getFeatName();
-    std::string ToolName  = Sel[1].getFeatName();
 
     openCommand("Part Cut");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::Cut\",\"%s\")",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),ToolName.c_str());
-    doCommand(Gui,"Gui.activeDocument().hide('%s')",BaseName.c_str());
-    doCommand(Gui,"Gui.activeDocument().hide('%s')",ToolName.c_str());
-    copyVisual(FeatName.c_str(), "ShapeColor", BaseName.c_str());
-    copyVisual(FeatName.c_str(), "DisplayMode", BaseName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Base = App.activeDocument().%s",FeatName.c_str(),Sel[0].getFeatName());
+    doCommand(Doc,"App.activeDocument().%s.Tool = App.activeDocument().%s",FeatName.c_str(),Sel[1].getFeatName());
+
+    // hide the input objects and remove them from the parent group
+    App::DocumentObjectGroup* targetGroup = 0;
+    for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
+        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
+        App::DocumentObjectGroup* group = it->getObject()->getGroup();
+        if (group) {
+            targetGroup = group;
+            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
+                group->getNameInDocument(), it->getFeatName());
+        }
+    }
+
+    if (targetGroup) {
+        doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
+            targetGroup->getNameInDocument(), FeatName.c_str());
+    }
+
+    copyVisual(FeatName.c_str(), "ShapeColor", Sel[0].getFeatName());
+    copyVisual(FeatName.c_str(), "DisplayMode", Sel[0].getFeatName());
     updateActive();
     commitCommand();
 }
@@ -340,7 +355,8 @@ void CmdPartCommon::activated(int iMsg)
     bool askUser = false;
     std::string FeatName = getUniqueObjectName("Common");
     std::stringstream str;
-    std::vector<std::string> tempSelNames;
+    std::vector<Gui::SelectionObject> partObjects;
+
     str << "App.activeDocument()." << FeatName << ".Shapes = [";
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
@@ -355,7 +371,7 @@ void CmdPartCommon::activated(int iMsg)
                 askUser = true;
             }
             str << "App.activeDocument()." << it->getFeatName() << ",";
-            tempSelNames.push_back(it->getFeatName());
+            partObjects.push_back(*it);
         }
     }
     str << "]";
@@ -363,10 +379,26 @@ void CmdPartCommon::activated(int iMsg)
     openCommand("Common");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiCommon\",\"%s\")",FeatName.c_str());
     runCommand(Doc,str.str().c_str());
-    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
-        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
-    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
-    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+
+    // hide the input objects and remove them from the parent group
+    App::DocumentObjectGroup* targetGroup = 0;
+    for (std::vector<Gui::SelectionObject>::iterator it = partObjects.begin(); it != partObjects.end(); ++it) {
+        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
+        App::DocumentObjectGroup* group = it->getObject()->getGroup();
+        if (group) {
+            targetGroup = group;
+            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
+                group->getNameInDocument(), it->getFeatName());
+        }
+    }
+
+    if (targetGroup) {
+        doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
+            targetGroup->getNameInDocument(), FeatName.c_str());
+    }
+
+    copyVisual(FeatName.c_str(), "ShapeColor", partObjects.front().getFeatName());
+    copyVisual(FeatName.c_str(), "DisplayMode", partObjects.front().getFeatName());
     updateActive();
     commitCommand();
 }
@@ -405,7 +437,8 @@ void CmdPartFuse::activated(int iMsg)
     bool askUser = false;
     std::string FeatName = getUniqueObjectName("Fusion");
     std::stringstream str;
-    std::vector<std::string> tempSelNames;
+    std::vector<Gui::SelectionObject> partObjects;
+
     str << "App.activeDocument()." << FeatName << ".Shapes = [";
     for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
         App::DocumentObject* obj = it->getObject();
@@ -420,7 +453,7 @@ void CmdPartFuse::activated(int iMsg)
                 askUser = true;
             }
             str << "App.activeDocument()." << it->getFeatName() << ",";
-            tempSelNames.push_back(it->getFeatName());
+            partObjects.push_back(*it);
         }
     }
     str << "]";
@@ -428,10 +461,26 @@ void CmdPartFuse::activated(int iMsg)
     openCommand("Fusion");
     doCommand(Doc,"App.activeDocument().addObject(\"Part::MultiFuse\",\"%s\")",FeatName.c_str());
     runCommand(Doc,str.str().c_str());
-    for (std::vector<std::string>::iterator it = tempSelNames.begin(); it != tempSelNames.end(); ++it)
-        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->c_str());
-    copyVisual(FeatName.c_str(), "ShapeColor", tempSelNames.front().c_str());
-    copyVisual(FeatName.c_str(), "DisplayMode", tempSelNames.front().c_str());
+
+    // hide the input objects and remove them from the parent group
+    App::DocumentObjectGroup* targetGroup = 0;
+    for (std::vector<Gui::SelectionObject>::iterator it = partObjects.begin(); it != partObjects.end(); ++it) {
+        doCommand(Gui,"Gui.activeDocument().%s.Visibility=False",it->getFeatName());
+        App::DocumentObjectGroup* group = it->getObject()->getGroup();
+        if (group) {
+            targetGroup = group;
+            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
+                group->getNameInDocument(), it->getFeatName());
+        }
+    }
+
+    if (targetGroup) {
+        doCommand(Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
+            targetGroup->getNameInDocument(), FeatName.c_str());
+    }
+
+    copyVisual(FeatName.c_str(), "ShapeColor", partObjects.front().getFeatName());
+    copyVisual(FeatName.c_str(), "DisplayMode", partObjects.front().getFeatName());
     updateActive();
     commitCommand();
 }
