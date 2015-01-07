@@ -46,6 +46,7 @@ public:
     //@}
 
 protected:
+    void Restore(Base::XMLReader &reader);
     void onChanged (const App::Property* prop);
 };
 
@@ -57,9 +58,9 @@ public:
     Vertex();
     virtual ~Vertex();
 
-    App::PropertyFloat X;
-    App::PropertyFloat Y;
-    App::PropertyFloat Z;
+    App::PropertyDistance X;
+    App::PropertyDistance Y;
+    App::PropertyDistance Z;
 
     /** @name methods override feature */
     //@{
@@ -82,12 +83,12 @@ public:
     Line();
     virtual ~Line();
 
-    App::PropertyFloat X1;
-    App::PropertyFloat Y1;
-    App::PropertyFloat Z1;
-    App::PropertyFloat X2;
-    App::PropertyFloat Y2;
-    App::PropertyFloat Z2;
+    App::PropertyDistance X1;
+    App::PropertyDistance Y1;
+    App::PropertyDistance Z1;
+    App::PropertyDistance X2;
+    App::PropertyDistance Y2;
+    App::PropertyDistance Z2;
 
     /** @name methods override feature */
     //@{
@@ -131,10 +132,10 @@ class PartExport Sphere : public Primitive
 public:
     Sphere();
 
-    App::PropertyFloatConstraint Radius;
-    App::PropertyFloatConstraint Angle1;
-    App::PropertyFloatConstraint Angle2;
-    App::PropertyFloatConstraint Angle3;
+    App::PropertyLength Radius;
+    App::PropertyAngle Angle1;
+    App::PropertyAngle Angle2;
+    App::PropertyAngle Angle3;
 
     /** @name methods override feature */
     //@{
@@ -155,12 +156,12 @@ class PartExport Ellipsoid : public Primitive
 public:
     Ellipsoid();
 
-    App::PropertyFloatConstraint Radius1;
-    App::PropertyFloatConstraint Radius2;
-    App::PropertyFloatConstraint Radius3;
-    App::PropertyFloatConstraint Angle1;
-    App::PropertyFloatConstraint Angle2;
-    App::PropertyFloatConstraint Angle3;
+    App::PropertyLength Radius1;
+    App::PropertyLength Radius2;
+    App::PropertyLength Radius3;
+    App::PropertyAngle Angle1;
+    App::PropertyAngle Angle2;
+    App::PropertyAngle Angle3;
 
     /** @name methods override feature */
     //@{
@@ -182,7 +183,7 @@ public:
 
     App::PropertyLength Radius;
     App::PropertyLength Height;
-    App::PropertyFloatConstraint Angle;
+    App::PropertyAngle Angle;
 
     /** @name methods override feature */
     //@{
@@ -255,7 +256,7 @@ public:
     App::PropertyLength Radius1;
     App::PropertyLength Radius2;
     App::PropertyLength Height;
-    App::PropertyFloatConstraint Angle;
+    App::PropertyAngle Angle;
 
     /** @name methods override feature */
     //@{
@@ -276,11 +277,11 @@ class PartExport Torus : public Primitive
 public:
     Torus();
 
-    App::PropertyFloatConstraint Radius1;
-    App::PropertyFloatConstraint Radius2;
-    App::PropertyFloatConstraint Angle1;
-    App::PropertyFloatConstraint Angle2;
-    App::PropertyFloatConstraint Angle3;
+    App::PropertyLength Radius1;
+    App::PropertyLength Radius2;
+    App::PropertyAngle Angle1;
+    App::PropertyAngle Angle2;
+    App::PropertyAngle Angle3;
 
     /** @name methods override feature */
     //@{
@@ -301,10 +302,10 @@ class PartExport Helix : public Primitive
 public:
     Helix();
 
-    App::PropertyFloatConstraint Pitch;
-    App::PropertyFloatConstraint Height;
-    App::PropertyFloatConstraint Radius;
-    App::PropertyFloatConstraint Angle;
+    App::PropertyLength Pitch;
+    App::PropertyLength Height;
+    App::PropertyLength Radius;
+    App::PropertyAngle Angle;
     App::PropertyEnumeration     LocalCoord;
     App::PropertyEnumeration     Style;
 
@@ -334,9 +335,9 @@ class PartExport Spiral : public Primitive
 public:
     Spiral();
 
-    App::PropertyFloatConstraint Growth;
-    App::PropertyFloatConstraint Rotations;
-    App::PropertyFloatConstraint Radius;
+    App::PropertyLength Growth;
+    App::PropertyLength Rotations;
+    App::PropertyLength Radius;
 
     /** @name methods override feature */
     //@{
@@ -360,16 +361,16 @@ class PartExport Wedge : public Primitive
 public:
     Wedge();
 
-    App::PropertyFloat Xmin;
-    App::PropertyFloat Ymin;
-    App::PropertyFloat Zmin;
-    App::PropertyFloat Z2min;
-    App::PropertyFloat X2min;
-    App::PropertyFloat Xmax;
-    App::PropertyFloat Ymax;
-    App::PropertyFloat Zmax;
-    App::PropertyFloat Z2max;
-    App::PropertyFloat X2max;
+    App::PropertyDistance Xmin;
+    App::PropertyDistance Ymin;
+    App::PropertyDistance Zmin;
+    App::PropertyDistance Z2min;
+    App::PropertyDistance X2min;
+    App::PropertyDistance Xmax;
+    App::PropertyDistance Ymax;
+    App::PropertyDistance Zmax;
+    App::PropertyDistance Z2max;
+    App::PropertyDistance X2max;
 
     /** @name methods override feature */
     //@{
@@ -394,8 +395,8 @@ public:
     Ellipse();
     virtual ~Ellipse();
 
-    App::PropertyFloat MajorRadius;
-    App::PropertyFloat MinorRadius;
+    App::PropertyLength MajorRadius;
+    App::PropertyLength MinorRadius;
     App::PropertyAngle Angle0;
     App::PropertyAngle Angle1;
 

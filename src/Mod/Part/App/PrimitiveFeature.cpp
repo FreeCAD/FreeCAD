@@ -63,6 +63,9 @@
 
 
 #include "PrimitiveFeature.h"
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Reader.h>
 #include <Base/Tools.h>
 
 #ifndef M_PI
@@ -71,11 +74,11 @@
 
 
 namespace Part {
-    const App::PropertyFloatConstraint::Constraints floatRange  = {0.0,FLT_MAX,0.1};
-    const App::PropertyFloatConstraint::Constraints apexRange   = {0.0,90.0,0.1};
-    const App::PropertyFloatConstraint::Constraints angleRangeU = {0.0,360.0,1.0};
-    const App::PropertyFloatConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
-    const App::PropertyFloatConstraint::Constraints torusRangeV = {-180.0,180.0,1.0};
+    const App::PropertyQuantityConstraint::Constraints apexRange   = {0.0,90.0,0.1};
+    const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0,180.0,1.0};
+    const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0,360.0,1.0};
+    const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
+    const App::PropertyQuantityConstraint::Constraints quantityRange  = {0.0,FLT_MAX,0.1};
 }
 
 using namespace Part;
@@ -95,6 +98,60 @@ Primitive::~Primitive()
 short Primitive::mustExecute(void) const
 {
     return Feature::mustExecute();
+}
+
+void Primitive::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+        // For #0001652 the property types of many primitive features have changed
+        // from PropertyFloat or PropertyFloatConstraint to a more meaningful type.
+        // In order to load older project files there must be checked in case the
+        // types don't match if both inherit from PropertyFloat because all derived
+        // classes do not re-implement the Save/Restore methods.
+        try {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+                prop->Restore(reader);
+            }
+            else if (prop) {
+                Base::Type inputType = Base::Type::fromName(TypeName);
+                if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+                    inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+                    // Do not directly call the property's Restore method in case the implmentation
+                    // has changed. So, create a temporary PropertyFloat object and assign the value.
+                    App::PropertyFloat floatProp;
+                    floatProp.Restore(reader);
+                    static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
 }
 
 void Primitive::onChanged(const App::Property* prop)
@@ -307,7 +364,7 @@ PROPERTY_SOURCE(Part::Sphere, Part::Primitive)
 Sphere::Sphere(void)
 {
     ADD_PROPERTY_TYPE(Radius,(5.0),"Sphere",App::Prop_None,"The radius of the sphere");
-    Radius.setConstraints(&floatRange);
+    Radius.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle1,(-90.0f),"Sphere",App::Prop_None,"The angle of the sphere");
     Angle1.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle2,(90.0f),"Sphere",App::Prop_None,"The angle of the sphere");
@@ -355,11 +412,11 @@ PROPERTY_SOURCE(Part::Ellipsoid, Part::Primitive)
 Ellipsoid::Ellipsoid(void)
 {
     ADD_PROPERTY_TYPE(Radius1,(2.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
-    Radius1.setConstraints(&floatRange);
+    Radius1.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius2,(4.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
-    Radius2.setConstraints(&floatRange);
+    Radius2.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius3,(0.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
-    Radius3.setConstraints(&floatRange);
+    Radius3.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle1,(-90.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
     Angle1.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle2,(90.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
@@ -640,9 +697,9 @@ PROPERTY_SOURCE(Part::Torus, Part::Primitive)
 Torus::Torus(void)
 {
     ADD_PROPERTY_TYPE(Radius1,(10.0),"Torus",App::Prop_None,"The radius of the torus");
-    Radius1.setConstraints(&floatRange);
+    Radius1.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius2,(2.0),"Torus",App::Prop_None,"The radius of the torus");
-    Radius2.setConstraints(&floatRange);
+    Radius2.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle1,(-180.0),"Torus",App::Prop_None,"The angle of the torus");
     Angle1.setConstraints(&torusRangeV);
     ADD_PROPERTY_TYPE(Angle2,(180.0),"Torus",App::Prop_None,"The angle of the torus");
@@ -715,11 +772,11 @@ const char* Part::Helix::StyleEnums  []= {"Old style","New style",NULL};
 Helix::Helix(void)
 {
     ADD_PROPERTY_TYPE(Pitch, (1.0),"Helix",App::Prop_None,"The pitch of the helix");
-    Pitch.setConstraints(&floatRange);
+    Pitch.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Height,(2.0),"Helix",App::Prop_None,"The height of the helix");
-    Height.setConstraints(&floatRange);
+    Height.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius,(1.0),"Helix",App::Prop_None,"The radius of the helix");
-    Radius.setConstraints(&floatRange);
+    Radius.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is > 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
     ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
@@ -793,11 +850,11 @@ PROPERTY_SOURCE(Part::Spiral, Part::Primitive)
 Spiral::Spiral(void)
 {
     ADD_PROPERTY_TYPE(Growth, (1.0),"Spiral",App::Prop_None,"The growth of the spiral per rotation");
-    Growth.setConstraints(&floatRange);
+    Growth.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius,(1.0),"Spiral",App::Prop_None,"The radius of the spiral");
-    Radius.setConstraints(&floatRange);
+    Radius.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Rotations,(2.0),"Spiral",App::Prop_None,"The number of rotations");
-    Rotations.setConstraints(&floatRange);
+    Rotations.setConstraints(&quantityRange);
 }
 
 void Spiral::onChanged(const App::Property* prop)
