@@ -739,7 +739,7 @@ FaceTypedCylinder& ModelRefine::getCylinderObject()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO: change this version after occ fix. Freecad Mantis 1450
-#if OCC_VERSION_HEX <= 0x070000
+#if OCC_VERSION_HEX <= 0x7fffff
 void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &map)
 {
   TopTools_IndexedMapOfShape edges;
@@ -1026,7 +1026,7 @@ bool FaceUniter::process()
         
         BRepLib_FuseEdges edgeFuse(workShell);
 // TODO: change this version after occ fix. Freecad Mantis 1450
-#if OCC_VERSION_HEX <= 0x070000
+#if OCC_VERSION_HEX <= 0x7fffff
         TopTools_IndexedMapOfShape map;
         collectConicEdges(workShell, map);
         edgeFuse.AvoidEdges(map);
