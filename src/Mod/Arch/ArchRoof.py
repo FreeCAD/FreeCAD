@@ -242,9 +242,7 @@ class _Roof(ArchComponent.Component):
         vecE = vecT.multiply(-2.)
         profilFace = Part.Face(profil)
         profilShp = profilFace.extrude(vecE)
-        #Part.show(profilVol)
         profilShp = f.common(profilShp)
-        #Part.show(panVol)
         shapesList.append(profilShp)
 
     def execute(self,obj):
@@ -427,6 +425,7 @@ class _Roof(ArchComponent.Component):
                             overhangV = profil1["overhang"]*math.tan(math.radians(profil1["angle"]))
                             if wire.isClosed():
                                 f = Part.Face(wire)
+                                #Part.show(f)
                                 f = f.extrude(FreeCAD.Vector(0,0,profil1["height"]+2*thicknessV+2*overhangV))
                                 f.translate(FreeCAD.Vector(0.0,0.0,-2*overhangV))
                             ptsPaneProfil=[FreeCAD.Vector(-profil1["overhang"],-overhangV,0.0),FreeCAD.Vector(profil1["run"],profil1["height"],0.0),FreeCAD.Vector(profil1["run"],profil1["height"]+thicknessV,0.0),FreeCAD.Vector(-profil1["overhang"],-overhangV+thicknessV,0.0)]
@@ -582,12 +581,12 @@ class _RoofTaskPanel:
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Roof", None, QtGui.QApplication.UnicodeUTF8))
         self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the profiles of the roof:\n* Angle : slope in degrees compared to the horizontal one.\n* Run : outdistance between the wall and the ridge sheathing.\n* Thickness : thickness of the side of roof.\n* Overhang : outdistance between the sewer and the wall.\n* Height : height of the ridge sheathing (calculated automatically)\n* IdRel : Relative Id for calculations automatic.\n---\nIf Angle = 0 and Run = 0 then profile is identical to the relative profile.\nIf Angle = 0 then angle is calculated so that the height is the same one as the relative profile.\nIf Run = 0 then Run is calculated so that the height is the same one as the relative profile.", None, QtGui.QApplication.UnicodeUTF8))
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Id", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Angle", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Run", None, QtGui.QApplication.UnicodeUTF8),
+                                    QtGui.QApplication.translate("Arch", "Angle (deg)", None, QtGui.QApplication.UnicodeUTF8),
+                                    QtGui.QApplication.translate("Arch", "Run (mm)", None, QtGui.QApplication.UnicodeUTF8),
                                     QtGui.QApplication.translate("Arch", "IdRel", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Thickness", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Overhang", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Height", None, QtGui.QApplication.UnicodeUTF8)])
+                                    QtGui.QApplication.translate("Arch", "Thickness (mm)", None, QtGui.QApplication.UnicodeUTF8),
+                                    QtGui.QApplication.translate("Arch", "Overhang (mm)", None, QtGui.QApplication.UnicodeUTF8),
+                                    QtGui.QApplication.translate("Arch", "Height (mm)", None, QtGui.QApplication.UnicodeUTF8)])
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Roof',_CommandRoof())
