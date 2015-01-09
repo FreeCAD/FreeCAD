@@ -549,14 +549,110 @@ void DrawingView::print(QPrinter* printer)
     // DIN A5 instead of DIN A4) then the output is scaled.
     //
     // When creating a PDF file there seems to be no difference between pageRect() and
-    // paperRect(). And even if another page size is used the drawing is not scaled.
+    // paperRect().
     //
     // When showing the preview of a print paperRect() must be used because with pageRect()
     // a certain scaling effect can be observed and the content becomes smaller.
+    QPaintEngine::Type paintType = printer->paintEngine()->type();
+    if (printer->outputFormat() == QPrinter::NativeFormat) {
+        int w = printer->widthMM();
+        int h = printer->heightMM();
+        QPrinter::PaperSize realPaperSize = getPageSize(w, h);
+        QPrinter::PaperSize curPaperSize = printer->paperSize();
+
+        // for the preview a 'Picture' paint engine is used which we don't
+        // care if it uses wrong printer settings
+        bool doPrint = paintType != QPaintEngine::Picture;
+
+        if (doPrint && printer->orientation() != this->m_orientation) {
+            int ret = QMessageBox::warning(this, tr("Different orientation"),
+                tr("The printer uses a different orientation  than the drawing.\n"
+                   "Do you want to continue?"),
+                   QMessageBox::Yes | QMessageBox::No);
+            if (ret != QMessageBox::Yes)
+                return;
+        }
+        else if (doPrint && realPaperSize != this->m_pageSize) {
+            int ret = QMessageBox::warning(this, tr("Different paper size"),
+                tr("The printer uses a different paper size than the drawing.\n"
+                   "Do you want to continue?"),
+                   QMessageBox::Yes | QMessageBox::No);
+            if (ret != QMessageBox::Yes)
+                return;
+        }
+        else if (doPrint && curPaperSize != this->m_pageSize) {
+            int ret = QMessageBox::warning(this, tr("Different paper size"),
+                tr("The printer uses a different paper size than the drawing.\n"
+                   "Do you want to continue?"),
+                   QMessageBox::Yes | QMessageBox::No);
+            if (ret != QMessageBox::Yes)
+                return;
+        }
+    }
+
     QPainter p(printer);
     QRect rect = printer->paperRect();
+#ifdef Q_OS_WIN32
+    // On Windows the preview looks broken when using paperRect as render area.
+    // Although the picture is scaled when using pageRect, it looks just fine.
+    if (paintType == QPaintEngine::Picture)
+        rect = printer->pageRect();
+#endif
     this->m_view->scene()->render(&p, rect);
     p.end();
+}
+
+QPrinter::PageSize DrawingView::getPageSize(int w, int h) const
+{
+    static const float paperSizes[][2] = {
+        {210, 297}, // A4
+        {176, 250}, // B5
+        {215.9f, 279.4f}, // Letter
+        {215.9f, 355.6f}, // Legal
+        {190.5f, 254}, // Executive
+        {841, 1189}, // A0
+        {594, 841}, // A1
+        {420, 594}, // A2
+        {297, 420}, // A3
+        {148, 210}, // A5
+        {105, 148}, // A6
+        {74, 105}, // A7
+        {52, 74}, // A8
+        {37, 52}, // A8
+        {1000, 1414}, // B0
+        {707, 1000}, // B1
+        {31, 44}, // B10
+        {500, 707}, // B2
+        {353, 500}, // B3
+        {250, 353}, // B4
+        {125, 176}, // B6
+        {88, 125}, // B7
+        {62, 88}, // B8
+        {33, 62}, // B9
+        {163, 229}, // C5E
+        {105, 241}, // US Common
+        {110, 220}, // DLE
+        {210, 330}, // Folio
+        {431.8f, 279.4f}, // Ledger
+        {279.4f, 431.8f} // Tabloid
+    };
+
+    QPrinter::PageSize ps = QPrinter::Custom;
+    for (int i=0; i<30; i++) {
+        if (std::abs(paperSizes[i][0]-w) <= 1 &&
+            std::abs(paperSizes[i][1]-h) <= 1) {
+            ps = static_cast<QPrinter::PageSize>(i);
+            break;
+        }
+        else
+        if (std::abs(paperSizes[i][0]-h) <= 1 &&
+            std::abs(paperSizes[i][1]-w) <= 1) {
+            ps = static_cast<QPrinter::PageSize>(i);
+            break;
+        }
+    }
+
+    return ps;
 }
 
 void DrawingView::viewAll()

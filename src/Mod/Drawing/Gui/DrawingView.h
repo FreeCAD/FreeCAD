@@ -103,6 +103,7 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
     void findPrinterSettings(const QString&);
+    QPrinter::PageSize getPageSize(int w, int h) const;
 
 private:
     QAction *m_nativeAction;
