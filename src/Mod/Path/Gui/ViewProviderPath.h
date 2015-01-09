@@ -27,10 +27,10 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderPythonFeature.h>
+#include <Mod/Part/Gui/SoBrepEdgeSet.h>
 
 class SoCoordinate3;
 class SoDrawStyle;  
-class SoIndexedLineSet;
 class SoMaterial;
 class SoBaseColor;
 class SoMaterialBinding;
@@ -73,7 +73,7 @@ protected:
     SoCoordinate3         * pcLineCoords;
     SoCoordinate3         * pcMarkerCoords;
     SoDrawStyle           * pcDrawStyle;
-    SoIndexedLineSet      * pcLines;
+    PartGui::SoBrepEdgeSet         * pcLines;
     SoMaterial            * pcLineColor;
     SoBaseColor           * pcMarkerColor;
     SoMaterialBinding     * pcMatBind;
