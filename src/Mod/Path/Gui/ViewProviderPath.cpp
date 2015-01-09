@@ -64,6 +64,7 @@
 using namespace Gui;
 using namespace PathGui;
 using namespace Path;
+using namespace PartGui;
 
 PROPERTY_SOURCE(PathGui::ViewProviderPath, Gui::ViewProviderGeometryObject)
 
@@ -104,7 +105,7 @@ ViewProviderPath::ViewProviderPath()
     pcDrawStyle->style = SoDrawStyle::LINES;
     pcDrawStyle->lineWidth = LineWidth.getValue();
 
-    pcLines = new SoIndexedLineSet;
+    pcLines = new PartGui::SoBrepEdgeSet();
     pcLines->ref();
     
     pcLineColor = new SoMaterial;
