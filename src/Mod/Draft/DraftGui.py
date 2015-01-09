@@ -1296,28 +1296,38 @@ class DraftToolBar:
             spec = True
         elif txt.endswith("t"):
             self.toggleContinue()
+            spec = True
         elif txt.endswith("w"):
             self.wipeLine()
+            spec = True
         elif txt.endswith("e"):
             self.selectEdge()
+            spec = True
         elif txt.endswith("s"):
             self.togglesnap()
+            spec = True
         elif txt.endswith("["):
             self.toggleradius(1)
+            spec = True
         elif txt.endswith("]"):
             self.toggleradius(-1)
+            spec = True
         elif txt.endswith("x"):
             self.constrain("x")
             self.displayPoint()
+            spec = True
         elif txt.endswith("y"):
             self.constrain("y")
             self.displayPoint()
+            spec = True
         elif txt.endswith("z"):
             self.constrain("z")
             self.displayPoint()
+            spec = True
         elif txt.endswith("l"):
             self.constrain("angle")
             self.displayPoint()
+            spec = True
         elif txt.endswith("c"):
             if self.closeButton.isVisible():
                 self.closeLine()
@@ -1326,9 +1336,10 @@ class DraftToolBar:
             elif self.continueCmd.isVisible():
                 self.continueCmd.setChecked(not self.continueCmd.isChecked())
             spec = True
-        if spec and (not self.taskmode):
+        if spec:
             for i in [self.xValue,self.yValue,self.zValue]:
-                if (i.text() == txt): i.setText("")
+                if (i.property("text") == txt):
+                    i.setProperty("text",txt[:-1])
 
     def storeCurrentText(self,qstr):
         self.currEditText = self.textValue.text()
