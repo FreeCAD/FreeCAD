@@ -133,7 +133,9 @@ void SvgView::openFile(const QFile &file)
     s->addItem(m_svgItem);
     s->addItem(m_outlineItem);
 
-    s->setSceneRect(m_outlineItem->boundingRect().adjusted(-10, -10, 10, 10));
+    // use the actual bounding box of the SVG template to avoid any scaling effect
+    // when printing the drawing (#0000932)
+    s->setSceneRect(m_outlineItem->boundingRect());
 }
 
 void SvgView::setRenderer(RendererType type)
@@ -484,21 +486,30 @@ void DrawingView::printPdf()
     item->setData(Qt::UserRole, QVariant(QPrinter::A4));
     item = new QListWidgetItem(tr("A5"), listWidget);
     item->setData(Qt::UserRole, QVariant(QPrinter::A5));
-    listWidget->item(4)->setSelected(true); // by default A4
+    int index = 4; // by default A4
+    for (int i=0; i<listWidget->count(); i++) {
+        if (listWidget->item(i)->data(Qt::UserRole).toInt() == m_pageSize) {
+            index = i;
+            break;
+        }
+    }
+    listWidget->item(index)->setSelected(true);
     dlg.setOptionsWidget(Gui::FileOptionsDialog::ExtensionRight, form, false);
 
     if (dlg.exec() == QDialog::Accepted) {
         Gui::WaitCursor wc;
         QString filename = dlg.selectedFiles().front();
         QPrinter printer(QPrinter::HighResolution);
+        printer.setFullPage(true);
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
-        printer.setOrientation(QPrinter::Landscape);
+        printer.setOrientation(m_orientation);
         QList<QListWidgetItem*> items = listWidget->selectedItems();
         if (items.size() == 1) {
             int AX = items.front()->data(Qt::UserRole).toInt();
             printer.setPaperSize(QPrinter::PageSize(AX));
         }
+
         print(&printer);
     }
 }
@@ -531,29 +542,21 @@ void DrawingView::printPreview()
 
 void DrawingView::print(QPrinter* printer)
 {
-#if 1
-    int h = printer->heightMM();
-    int w = printer->widthMM();
+    // As size of the render area paperRect() should be used. When performing a real
+    // print pageRect() may also work but the output is cropped at the bottom part.
+    // So, independent whether pageRect() or paperRect() is used there is no scaling effect.
+    // However, when using a different paper size as set in the drawing template (e.g.
+    // DIN A5 instead of DIN A4) then the output is scaled.
+    //
+    // When creating a PDF file there seems to be no difference between pageRect() and
+    // paperRect(). And even if another page size is used the drawing is not scaled.
+    //
+    // When showing the preview of a print paperRect() must be used because with pageRect()
+    // a certain scaling effect can be observed and the content becomes smaller.
     QPainter p(printer);
-    QRect rect = printer->pageRect();
+    QRect rect = printer->paperRect();
     this->m_view->scene()->render(&p, rect);
     p.end();
-#else
-    printer->setResolution(QPrinter::HighResolution);
-    printer->setPageSize(QPrinter::A4);
-    QPainter painter(printer);
-
-    // print, fitting the viewport contents into a full page
-    m_view->render(&painter);
-
-    // print the upper half of the viewport into the lower.
-    // half of the page.
-    QRect viewport = m_view->viewport()->rect();
-    m_view->render(&painter,
-                   QRectF(0, printer->height() / 2,
-                             printer->width(), printer->height() / 2),
-                   viewport.adjusted(0, 0, 0, -viewport.height() / 2));
-#endif
 }
 
 void DrawingView::viewAll()
