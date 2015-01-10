@@ -43,10 +43,10 @@ public:
 
     App::PropertyFloat          MaxSize;
     App::PropertyBool           SecondOrder;
-    App::PropertyEnumeration    Fininess;
+    App::PropertyEnumeration    Fineness;
     App::PropertyFloat          GrowthRate;
     App::PropertyInteger        NbSegsPerEdge;
-    App::PropertyInteger        NbSegsPerRadius;    
+    App::PropertyInteger        NbSegsPerRadius;
     App::PropertyBool           Optimize;
 
     /// returns the type name of the ViewProvider

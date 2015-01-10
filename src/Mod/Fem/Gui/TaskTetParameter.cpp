@@ -50,7 +50,7 @@ using namespace Gui;
 TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("Fem_FemMesh_createnodebypoly"),
       tr("Tet Parameter"),
-      true, 
+      true,
       parent),
       pcObject(pcObject)
 {
@@ -63,7 +63,7 @@ TaskTetParameter::TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidg
     this->groupLayout()->addWidget(proxy);
 
     ui->doubleSpinBox_MaxSize->setValue(pcObject->MaxSize.getValue());
-    ui->comboBox_Fineness->setCurrentIndex(pcObject->Fininess.getValue());
+    ui->comboBox_Fineness->setCurrentIndex(pcObject->Fineness.getValue());
     ui->checkBox_SecondOrder->setChecked(pcObject->SecondOrder.getValue());
     ui->doubleSpinBox_GrowthRate->setValue(pcObject->GrowthRate.getValue());
     ui->spinBox_SegsPerEdge->setValue(pcObject->NbSegsPerEdge.getValue());
@@ -103,7 +103,7 @@ void TaskTetParameter::SwitchMethod(int Value)
         ui->spinBox_SegsPerRadius->setEnabled(false);
     }
 
-    pcObject->Fininess.setValue(Value);
+    pcObject->Fineness.setValue(Value);
     touched = true;
 }
 
