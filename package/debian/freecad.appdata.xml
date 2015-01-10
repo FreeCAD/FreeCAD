@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <application>
  <id type="desktop">freecad.desktop</id>
- <licence>LGPL</licence>
+ <metadata_licence>CC-BY-3.0</metadata_licence>
+ <project_license>LGPL-2.1+</project_license>
  <name>FreeCAD</name>
  <summary>An open source parametric 3D CAD modeler</summary>
  <description>

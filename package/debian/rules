@@ -70,6 +70,8 @@ install-stamp:
 	dh_install debian/freecad.desktop usr/share/applications
 	dh_installman debian/freecad.1 debian/mime/freecad-thumbnailer.1
 	dh_installchangelogs ChangeLog.txt
+	# install the gnome app file
+	df_install debian/freecad.appdata.xml debian/freecad/usr/share/appdata
 	# install the headers
 	#dh_install -pfreecad-dev debian/tmp/freecad/usr/include/* usr/include
 	# install the help system
