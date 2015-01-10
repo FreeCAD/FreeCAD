@@ -116,42 +116,6 @@
         </item>
        </layout>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="toolTip">
-           <string>A scaling factor to apply to imported IFC objects</string>
-          </property>
-          <property name="text">
-           <string>Scaling factor</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox">
-          <property name="toolTip">
-           <string>IFC files are typically written in millimeters. If you are working in a different unit, this allow you to scale all your units to be expressed in millimeters.</string>
-          </property>
-          <property name="decimals">
-           <number>4</number>
-          </property>
-          <property name="maximum">
-           <double>99999.000000000000000</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>IfcScalingFactor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
      </layout>
     </widget>
    </item>

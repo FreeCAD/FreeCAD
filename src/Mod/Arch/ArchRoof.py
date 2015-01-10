@@ -47,45 +47,45 @@ def makeRoof(baseobj=None,facenr=1, angles=[45.,], run = [], idrel = [0,],thickn
         _ViewProviderRoof(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
-    if obj.Base.isDerivedFrom("Part::Feature"):
-        if (obj.Base.Shape.Faces and obj.Face):
-            w = obj.Base.Shape.Faces[obj.Face-1].Wires[0]
-        elif obj.Base.Shape.Wires:
-            w = obj.Base.Shape.Wires[0]
-    if w:
-        if w.isClosed():
-            edges = DraftGeomUtils.sortEdges(w.Edges)
-            l = len(edges)
-
-            la = len(angles)
-            alist = angles
-            for i in range(l-la):
-                alist.append(angles[0])
-            obj.Angles=alist
-
-            lr = len(run)
-            rlist = run
-            for i in range(l-lr):
-                rlist.append(w.Edges[i].Length/2.)
-            obj.Runs = rlist
-
-            lidrel = len(idrel)
-            rellist = idrel
-            for i in range(l-lidrel):
-                rellist.append(0)
-            obj.IdRel = rellist
-
-            lthick = len(thickness)
-            tlist = thickness
-            for i in range(l-lthick):
-                tlist.append(thickness[0])
-            obj.Thickness = tlist
-
-            lover = len(overhang)
-            olist = overhang
-            for i in range(l-lover):
-                olist.append(overhang[0])
-            obj.Overhang = olist
+        if obj.Base.isDerivedFrom("Part::Feature"):
+            if (obj.Base.Shape.Faces and obj.Face):
+                w = obj.Base.Shape.Faces[obj.Face-1].Wires[0]
+            elif obj.Base.Shape.Wires:
+                w = obj.Base.Shape.Wires[0]
+        if w:
+            if w.isClosed():
+                edges = DraftGeomUtils.sortEdges(w.Edges)
+                l = len(edges)
+    
+                la = len(angles)
+                alist = angles
+                for i in range(l-la):
+                    alist.append(angles[0])
+                obj.Angles=alist
+    
+                lr = len(run)
+                rlist = run
+                for i in range(l-lr):
+                    rlist.append(w.Edges[i].Length/2.)
+                obj.Runs = rlist
+    
+                lidrel = len(idrel)
+                rellist = idrel
+                for i in range(l-lidrel):
+                    rellist.append(0)
+                obj.IdRel = rellist
+    
+                lthick = len(thickness)
+                tlist = thickness
+                for i in range(l-lthick):
+                    tlist.append(thickness[0])
+                obj.Thickness = tlist
+    
+                lover = len(overhang)
+                olist = overhang
+                for i in range(l-lover):
+                    olist.append(overhang[0])
+                obj.Overhang = olist
     obj.Face = facenr
     return obj
 

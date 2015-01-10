@@ -214,6 +214,8 @@ class _Space(ArchComponent.Component):
     def getArea(self,obj):
         "returns the horizontal area at the center of the space"
         import Part,DraftGeomUtils
+        if not hasattr(obj.Shape,"CenterOfMass"):
+            return 0
         try:
             pl = Part.makePlane(1,1)
             pl.translate(obj.Shape.CenterOfMass)
