@@ -1357,6 +1357,9 @@ def getArcData(edge):
             ang1,ang2=edge.ParameterRange
         else:
             ang2,ang1=edge.ParameterRange
+        if edge.Curve.XAxis != FreeCAD.Vector(1,0,0):
+            ang1 -= DraftVecUtils.angle(edge.Curve.XAxis)
+            ang2 -= DraftVecUtils.angle(edge.Curve.XAxis)
         return DraftVecUtils.tup(ce), radius, math.degrees(ang1),\
                 math.degrees(ang2)
 
