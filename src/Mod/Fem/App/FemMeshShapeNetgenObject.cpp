@@ -42,7 +42,7 @@
     #include <NETGENPlugin_SimpleHypothesis_3D.hxx>
     #include <NETGENPlugin_Hypothesis.hxx>
     #include <NETGENPlugin_Mesher.hxx>
-#endif 
+#endif
 
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepTools.hxx>
@@ -52,14 +52,14 @@ using namespace App;
 
 PROPERTY_SOURCE(Fem::FemMeshShapeNetgenObject, Fem::FemMeshShapeObject)
 
-const char* FininessEnums[]= {"VeryCoarse","Coarse","Moderate","Fine","VeryFine","UserDefined",NULL};
+const char* FinenessEnums[]= {"VeryCoarse","Coarse","Moderate","Fine","VeryFine","UserDefined",NULL};
 
 FemMeshShapeNetgenObject::FemMeshShapeNetgenObject()
 {
     ADD_PROPERTY_TYPE(MaxSize,(1000),       "MeshParams",Prop_None,"Maximum element size");
     ADD_PROPERTY_TYPE(SecondOrder,(true),   "MeshParams",Prop_None,"Create quadric elements");
-    ADD_PROPERTY_TYPE(Fininess,(2),         "MeshParams",Prop_None,"Fininess level of the mesh");
-    Fininess.setEnums(FininessEnums);
+    ADD_PROPERTY_TYPE(Fineness,(2),         "MeshParams",Prop_None,"Fineness level of the mesh");
+    Fineness.setEnums(FinenessEnums);
     ADD_PROPERTY_TYPE(GrowthRate,(0.3),     "MeshParams",Prop_None," allows to define how much the linear dimensions of two adjacent cells can differ");
     ADD_PROPERTY_TYPE(NbSegsPerEdge,(1),    "MeshParams",Prop_None,"allows to define the minimum number of mesh segments in which edges will be split");
     ADD_PROPERTY_TYPE(NbSegsPerRadius,(2),  "MeshParams",Prop_None,"allows to define the minimum number of mesh segments in which radiuses will be split");
@@ -71,10 +71,10 @@ FemMeshShapeNetgenObject::~FemMeshShapeNetgenObject()
 {
 }
 
-App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void) 
+App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 {
 #ifdef FCWithNetgen
-    
+
     Fem::FemMesh newMesh;
 
     Part::Feature *feat = Shape.getValue<Part::Feature*>();
@@ -82,7 +82,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 
     TopoDS_Shape shape = feat->Shape.getValue();
 
-    
+
     newMesh.getSMesh()->ShapeToMesh(shape);
     SMESH_Gen *myGen = newMesh.getGenerator();
 
@@ -91,26 +91,26 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
 
     //NETGENPlugin_SimpleHypothesis_2D * tet2 = new NETGENPlugin_SimpleHypothesis_2D(hyp++,1,myGen);
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetNumberOfSegments(5);    
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetLocalLength(0.1);    
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->LengthFromEdges();    
+    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetNumberOfSegments(5);
+    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetLocalLength(0.1);
+    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->LengthFromEdges();
     //myNetGenMesher.SetParameters(tet2);
 
     //NETGENPlugin_SimpleHypothesis_3D* tet= new NETGENPlugin_SimpleHypothesis_3D(hyp++,1,myGen);
-    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->LengthFromFaces();    
-    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->SetMaxElementVolume(0.1);    
+    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->LengthFromFaces();
+    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->SetMaxElementVolume(0.1);
     //myNetGenMesher.SetParameters( tet);
 
     NETGENPlugin_Hypothesis* tet= new NETGENPlugin_Hypothesis(hyp++,1,myGen);
-    tet->SetMaxSize(MaxSize.getValue());    
-    tet->SetSecondOrder(SecondOrder.getValue());    
-    tet->SetOptimize(Optimize.getValue());   
-    int iFininess = Fininess.getValue();
-    tet->SetFineness((NETGENPlugin_Hypothesis::Fineness)iFininess); 
-    if(iFininess == 5){
-        tet->SetGrowthRate(GrowthRate.getValue());    
-        tet->SetNbSegPerEdge(NbSegsPerEdge.getValue());    
-        tet->SetNbSegPerRadius(NbSegsPerRadius.getValue());    
+    tet->SetMaxSize(MaxSize.getValue());
+    tet->SetSecondOrder(SecondOrder.getValue());
+    tet->SetOptimize(Optimize.getValue());
+    int iFineness = Fineness.getValue();
+    tet->SetFineness((NETGENPlugin_Hypothesis::Fineness)iFineness);
+    if(iFineness == 5){
+        tet->SetGrowthRate(GrowthRate.getValue());
+        tet->SetNbSegPerEdge(NbSegsPerEdge.getValue());
+        tet->SetNbSegPerRadius(NbSegsPerRadius.getValue());
     }
     myNetGenMesher.SetParameters( tet);
 
@@ -135,8 +135,8 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 
     // set the value to the object
     FemMesh.setValue(newMesh);
-#endif 
-    
+#endif
+
     return App::DocumentObject::StdReturn;
 }
 
@@ -151,7 +151,7 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 //        // ref counter is set to 1
 //        PythonObject = Py::Object(new DocumentObjectPy(this),true);
 //    }
-//    return Py::new_reference_to(PythonObject); 
+//    return Py::new_reference_to(PythonObject);
 //}
 
 //void FemMeshShapeNetgenObject::onChanged(const Property* prop)
