@@ -1376,18 +1376,29 @@ int Sketch::addAngleConstraint(int geoId, double value)
 {
     geoId = checkGeoId(geoId);
 
-    if (Geoms[geoId].type != Line)
-        return -1;
+    if (Geoms[geoId].type == Line) {
+        GCS::Line &l = Lines[Geoms[geoId].index];
 
-    GCS::Line &l = Lines[Geoms[geoId].index];
+        // add the parameter for the angle
+        FixParameters.push_back(new double(value));
+        double *angle = FixParameters[FixParameters.size()-1];
 
-    // add the parameter for the angle
-    FixParameters.push_back(new double(value));
-    double *angle = FixParameters[FixParameters.size()-1];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintP2PAngle(l.p1, l.p2, angle, tag);
+        return ConstraintsCounter;
+    }
+    else if (Geoms[geoId].type == Arc) {
+        GCS::Arc &a = Arcs[Geoms[geoId].index];
 
-    int tag = ++ConstraintsCounter;
-    GCSsys.addConstraintP2PAngle(l.p1, l.p2, angle, tag);
-    return ConstraintsCounter;
+        // add the parameter for the angle
+        FixParameters.push_back(new double(value));
+        double *angle = FixParameters[FixParameters.size()-1];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintL2LAngle(a.center, a.start, a.center, a.end, angle, tag);
+        return ConstraintsCounter;
+    }
+    return -1;
 }
 
 // line to line angle constraint
