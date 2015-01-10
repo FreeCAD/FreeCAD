@@ -343,7 +343,7 @@ float PlaneFit::GetSignedStdDeviation() const
     float ulPtCt = (float)CountPoints();
     Base::Vector3f clGravity, clPt;
     std::list<Base::Vector3f>::const_iterator cIt;
-    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); cIt++)
+    for (cIt = _vPoints.begin(); cIt != _vPoints.end(); ++cIt)
         clGravity += *cIt;
     clGravity *= (1.0f / ulPtCt);
 
@@ -623,7 +623,7 @@ double SurfaceFit::PolynomFit()
     Eigen::Matrix<double,6,1> x = Eigen::Matrix<double,6,1>::Zero();
 #endif
 
-    for (std::list<Base::Vector3f>::const_iterator it = _vPoints.begin(); it != _vPoints.end(); it++) {
+    for (std::list<Base::Vector3f>::const_iterator it = _vPoints.begin(); it != _vPoints.end(); ++it) {
         Base::Vector3d clPoint(it->x,it->y,it->z);
         clPoint.TransformToCoordinateSystem(bs, ex, ey);
         double dU = clPoint.x;

@@ -1503,13 +1503,13 @@ Newtry: // Falls die generierten Weglängen nicht ausreichen, dann wird ein neuer
 	// Setze Iterator und Startparameter wieder zurück
 	if (!tool)
 	{ 
-		for(int i=0; i<num; i++){m_it1--;}
+		for(int i=0; i<num; ++i){--m_it1;}
 		m_StartParam[tool] = (*m_it1)->FirstParameter();
 		
 	}
 	else
 	{ 
-		for(int i=0; i<num; i++){m_it2--;}
+		for(int i=0; i<num; ++i){--m_it2;}
 		m_StartParam[tool] = (*m_it2)->FirstParameter();
 	}
 

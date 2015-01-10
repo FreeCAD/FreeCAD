@@ -398,7 +398,7 @@ void Polygon2D::Intersect (const Polygon2D &rclPolygon, std::list<Polygon2D> &rc
 
     if (afIntersections.size() > 0)  // intersections founded
     {
-      for (std::set<double>::iterator pF = afIntersections.begin(); pF != afIntersections.end(); pF++)
+      for (std::set<double>::iterator pF = afIntersections.begin(); pF != afIntersections.end(); ++pF)
       {
         // intersection point
         Vector2D clPtIS = clLine.FromPos(*pF);

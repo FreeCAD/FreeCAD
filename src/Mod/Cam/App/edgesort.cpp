@@ -194,7 +194,7 @@ Base::BoundBox3f Edgesort::getBoundingBox(std::vector<TopoDS_Edge>& aList)
     //Therefore we have to evaluate some points on our wire and feed the BBox Algorithm
     Base::BoundBox3f currentBox;
     currentBox.Flush();
-    for (aListIt = aList.begin();aListIt!=aList.end();aListIt++)
+    for (aListIt = aList.begin();aListIt!=aList.end();++aListIt)
     {
         BRepAdaptor_Curve curveAdaptor(*aListIt);
         GCPnts_QuasiUniformDeflection aProp(curveAdaptor,0.1);

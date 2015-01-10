@@ -704,7 +704,7 @@ bool System::RemoveDirectory (const char* acDirectory)
 
     std::string kDirectory = std::string(acDirectory) + std::string("/");
     std::vector<std::string>::iterator pkIter = ms_pkDirectories->begin();
-    for (/**/; pkIter != ms_pkDirectories->end(); pkIter++)
+    for (/**/; pkIter != ms_pkDirectories->end(); ++pkIter)
     {
         if (kDirectory == *pkIter)
         {

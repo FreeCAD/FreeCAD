@@ -28,13 +28,13 @@ ETManifoldMesh::ETManifoldMesh (ECreator oECreator, TCreator oTCreator)
 ETManifoldMesh::~ETManifoldMesh ()
 {
     EMap::iterator pkEIter;
-    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); pkEIter++)
+    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); ++pkEIter)
     {
         WM4_DELETE pkEIter->second;
     }
 
     TMap::iterator pkTIter;
-    for (pkTIter = m_kTMap.begin(); pkTIter != m_kTMap.end(); pkTIter++)
+    for (pkTIter = m_kTMap.begin(); pkTIter != m_kTMap.end(); ++pkTIter)
     {
         WM4_DELETE pkTIter->second;
     }
@@ -180,7 +180,7 @@ bool ETManifoldMesh::RemoveTriangle (int iV0, int iV1, int iV2)
 bool ETManifoldMesh::IsClosed () const
 {
     EMapCIterator pkEIter;
-    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); pkEIter++)
+    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); ++pkEIter)
     {
         const Edge* pkEdge = pkEIter->second;
         if (!pkEdge->T[0] || !pkEdge->T[1])
@@ -204,7 +204,7 @@ void ETManifoldMesh::Print (const char* acFilename)
     kEIndex[0] = 0;
     int i = 1;
     EMapIterator pkEIter;
-    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); pkEIter++)
+    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); ++pkEIter)
     {
         if (pkEIter->second)
         {
@@ -217,7 +217,7 @@ void ETManifoldMesh::Print (const char* acFilename)
     kTIndex[0] = 0;
     i = 1;
     TMapIterator pkTIter;
-    for (pkTIter = m_kTMap.begin(); pkTIter != m_kTMap.end(); pkTIter++)
+    for (pkTIter = m_kTMap.begin(); pkTIter != m_kTMap.end(); ++pkTIter)
     {
         if (pkTIter->second)
         {
@@ -227,7 +227,7 @@ void ETManifoldMesh::Print (const char* acFilename)
 
     // print edges
     kOStr << "edge quantity = " << (int)m_kEMap.size() << std::endl;
-    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); pkEIter++)
+    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); ++pkEIter)
     {
         const Edge& rkEdge = *pkEIter->second;
         kOStr << 'e' << kEIndex[pkEIter->second] << " <"
@@ -255,7 +255,7 @@ void ETManifoldMesh::Print (const char* acFilename)
 
     // print triangles
     kOStr << "triangle quantity = " << (int)m_kTMap.size() << std::endl;
-    for (pkTIter = m_kTMap.begin(); pkTIter != m_kTMap.end(); pkTIter++)
+    for (pkTIter = m_kTMap.begin(); pkTIter != m_kTMap.end(); ++pkTIter)
     {
         const Triangle& rkTriangle = *pkTIter->second;
         kOStr << 't' << kTIndex[pkTIter->second] << " <"

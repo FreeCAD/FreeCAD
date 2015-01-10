@@ -183,7 +183,7 @@ void PropertyPointKernel::removeIndices( const std::vector<unsigned long>& uIndi
         else if (index != *pos)
             kernel.push_back( *it );
         else 
-            pos++;
+            ++pos;
     }
 
     setValue(kernel);

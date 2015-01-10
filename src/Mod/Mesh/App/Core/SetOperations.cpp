@@ -146,7 +146,7 @@ void SetOperations::Do ()
   std::vector<MeshGeomFacet> facets;
 
   std::vector<MeshGeomFacet>::iterator itf;
-  for (itf = _facetsOf[0].begin(); itf != _facetsOf[0].end(); itf++)
+  for (itf = _facetsOf[0].begin(); itf != _facetsOf[0].end(); ++itf)
   {
     if (_operationType == Difference)
     { // toggle normal
@@ -157,7 +157,7 @@ void SetOperations::Do ()
     facets.push_back(*itf);
   }
 
-  for (itf = _facetsOf[1].begin(); itf != _facetsOf[1].end(); itf++)
+  for (itf = _facetsOf[1].begin(); itf != _facetsOf[1].end(); ++itf)
   {
     facets.push_back(*itf);
   }
@@ -346,7 +346,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
     // project points to 2D plane
     std::vector<Vector3f>::iterator it;
     std::vector<Vector3f> vertices;
-    for (it = points.begin(); it != points.end(); it++)
+    for (it = points.begin(); it != points.end(); ++it)
     {
       Vector3f pv = *it;
       pv.TransformToCoordinateSystem(base, dirX, dirY);
@@ -447,7 +447,7 @@ void SetOperations::CollectFacets (int side, float mult)
   MeshBuilder mb(mesh);
   mb.Initialize(_newMeshFacets[side].size());
   std::vector<MeshGeomFacet>::iterator it;
-  for (it = _newMeshFacets[side].begin(); it != _newMeshFacets[side].end(); it++)
+  for (it = _newMeshFacets[side].begin(); it != _newMeshFacets[side].end(); ++it)
   {
     //if (it->IsFlag(MeshFacet::MARKED))
     //{

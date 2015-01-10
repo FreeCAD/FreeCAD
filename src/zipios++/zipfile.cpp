@@ -160,7 +160,7 @@ bool ZipFile::confirmLocalHeaders( istream &_zipfile ) {
   ZipCDirEntry *ent ;
   int inconsistencies = 0 ;
   ZipLocalEntry zlh ;
-  for ( it = _entries.begin() ; it != _entries.end() ; it++ ) {
+  for ( it = _entries.begin() ; it != _entries.end() ; ++it ) {
     ent = static_cast< ZipCDirEntry * >( (*it).get()  ) ;
     _vs.vseekg( _zipfile, ent->getLocalHeaderOffset(), ios::beg ) ;
     _zipfile >> zlh ;

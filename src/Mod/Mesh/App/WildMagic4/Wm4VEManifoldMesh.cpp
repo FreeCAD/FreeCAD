@@ -28,13 +28,13 @@ VEManifoldMesh::VEManifoldMesh (VCreator oVCreator, ECreator oECreator)
 VEManifoldMesh::~VEManifoldMesh ()
 {
     VMap::iterator pkVIter;
-    for (pkVIter = m_kVMap.begin(); pkVIter != m_kVMap.end(); pkVIter++)
+    for (pkVIter = m_kVMap.begin(); pkVIter != m_kVMap.end(); ++pkVIter)
     {
         WM4_DELETE pkVIter->second;
     }
 
     EMap::iterator pkEIter;
-    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); pkEIter++)
+    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); ++pkEIter)
     {
         WM4_DELETE pkEIter->second;
     }
@@ -177,7 +177,7 @@ bool VEManifoldMesh::RemoveEdge (int iV0, int iV1)
 bool VEManifoldMesh::IsClosed () const
 {
     VMapCIterator pkVIter;
-    for (pkVIter = m_kVMap.begin(); pkVIter != m_kVMap.end(); pkVIter++)
+    for (pkVIter = m_kVMap.begin(); pkVIter != m_kVMap.end(); ++pkVIter)
     {
         const Vertex* pkVertex = pkVIter->second;
         if (!pkVertex->E[0] || !pkVertex->E[1])
@@ -201,7 +201,7 @@ void VEManifoldMesh::Print (const char* acFilename)
     kEIndex[0] = 0;
     int i = 1;
     EMapIterator pkEIter;
-    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); pkEIter++)
+    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); ++pkEIter)
     {
         if (pkEIter->second)
         {
@@ -212,7 +212,7 @@ void VEManifoldMesh::Print (const char* acFilename)
     // print vertices
     kOStr << "vertex quantity = " << (int)m_kVMap.size() << std::endl;
     VMapIterator pkVIter;
-    for (pkVIter = m_kVMap.begin(); pkVIter != m_kVMap.end(); pkVIter++)
+    for (pkVIter = m_kVMap.begin(); pkVIter != m_kVMap.end(); ++pkVIter)
     {
         const Vertex& rkVertex = *pkVIter->second;
         kOStr << 'v' << rkVertex.V << " <";
@@ -238,7 +238,7 @@ void VEManifoldMesh::Print (const char* acFilename)
 
     // print edges
     kOStr << "edge quantity = " << (int)m_kEMap.size() << std::endl;
-    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); pkEIter++)
+    for (pkEIter = m_kEMap.begin(); pkEIter != m_kEMap.end(); ++pkEIter)
     {
         const Edge& rkEdge = *pkEIter->second;
         kOStr << 'e' << kEIndex[pkEIter->second] << " <"

@@ -1037,7 +1037,7 @@ int System::solve(bool isFine, Algorithm alg)
     }
     if (res == Success) {
         for (std::set<Constraint *>::const_iterator constr=redundant.begin();
-             constr != redundant.end(); constr++){
+             constr != redundant.end(); ++constr){
             //DeepSOIC: there used to be a comparison of signed error value to
             //convergence, which makes no sense. Potentially I fixed bug, and
             //chances are low I've broken anything.
@@ -1726,7 +1726,7 @@ int System::diagnose()
                 int maxPopularity = 0;
                 Constraint *mostPopular = NULL;
                 for (std::map< Constraint *, SET_I >::const_iterator it=conflictingMap.begin();
-                     it != conflictingMap.end(); it++) {
+                     it != conflictingMap.end(); ++it) {
                     if (it->second.size() > maxPopularity ||
                         (it->second.size() == maxPopularity && mostPopular &&
                          it->first->getTag() > mostPopular->getTag())) {
@@ -1737,7 +1737,7 @@ int System::diagnose()
                 if (maxPopularity > 0) {
                     skipped.insert(mostPopular);
                     for (SET_I::const_iterator it=conflictingMap[mostPopular].begin();
-                         it != conflictingMap[mostPopular].end(); it++)
+                         it != conflictingMap[mostPopular].end(); ++it)
                         satisfiedGroups.insert(*it);
                 }
             }
@@ -1754,7 +1754,7 @@ int System::diagnose()
             if (res == Success) {
                 subSysTmp->applySolution();
                 for (std::set<Constraint *>::const_iterator constr=skipped.begin();
-                     constr != skipped.end(); constr++) {
+                     constr != skipped.end(); ++constr) {
                     double err = (*constr)->error();
                     if (err * err < XconvergenceFine)
                         redundant.insert(*constr);

@@ -49,7 +49,7 @@ ConstEntries CollectionCollection::entries() const {
 
   ConstEntries all_entries ;
   std::vector< FileCollection * >::const_iterator it ;
-  for ( it = _collections.begin() ; it != _collections.end() ; it++ )
+  for ( it = _collections.begin() ; it != _collections.end() ; ++it )
     all_entries += (*it)->entries() ;
   return all_entries ;
 }
@@ -100,7 +100,7 @@ int CollectionCollection::size() const {
     throw InvalidStateException( "Attempt to get the size of an invalid CollectionCollection" ) ;
   int sz = 0 ;
   std::vector< FileCollection * >::const_iterator it ;
-  for ( it = _collections.begin() ; it != _collections.end() ; it++ )
+  for ( it = _collections.begin() ; it != _collections.end() ; ++it )
     sz += (*it)->size() ;
   return sz ;
 }

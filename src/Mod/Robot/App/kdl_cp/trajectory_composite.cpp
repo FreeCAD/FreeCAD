@@ -98,7 +98,7 @@ namespace KDL {
 
     void Trajectory_Composite::Destroy() {
         VectorTraj::iterator it;
-        for (it=vt.begin();it!=vt.end();it++) {
+        for (it=vt.begin();it!=vt.end();++it) {
             delete *it;
         }
         vt.erase(vt.begin(),vt.end());

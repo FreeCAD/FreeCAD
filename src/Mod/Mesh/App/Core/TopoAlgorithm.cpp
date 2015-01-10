@@ -1427,7 +1427,7 @@ void MeshComponents::SearchForComponents(TMode tMode, std::vector<std::vector<un
   // all facets
   std::vector<unsigned long> aulAllFacets(_rclMesh.CountFacets());
   unsigned long k = 0;
-  for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); pI++)
+  for (std::vector<unsigned long>::iterator pI = aulAllFacets.begin(); pI != aulAllFacets.end(); ++pI)
     *pI = k++;
 
   SearchForComponents( tMode, aulAllFacets, aclT );

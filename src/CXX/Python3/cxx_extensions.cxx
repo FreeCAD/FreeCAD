@@ -136,7 +136,7 @@ PyMethodDef *MethodTable::table()
         Py_ssize_t t1size = t.size();
         mt = new PyMethodDef[ t1size ];
         int j = 0;
-        for( std::vector<PyMethodDef>::iterator i = t.begin(); i != t.end(); i++ )
+        for( std::vector<PyMethodDef>::iterator i = t.begin(); i != t.end(); ++i )
         {
             mt[ j++ ] = *i;
         }
