@@ -2433,6 +2433,9 @@ void SketchObject::onChanged(const App::Property* prop)
             }
         }
     }
+#if 0
+    // For now do not delete anything (#0001791). When changing the support
+    // face it might be better to check which external geometries can be kept.
     else if (prop == &Support) {
         // make sure not to change anything while restoring this object
         if (!isRestoring()) {
@@ -2443,6 +2446,7 @@ void SketchObject::onChanged(const App::Property* prop)
             }
         }
     }
+#endif
     Part::Part2DObject::onChanged(prop);
 }
 
