@@ -877,15 +877,38 @@ void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj)
     }
 }
 
-void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& obj)
+void DocumentItem::slotDeleteObject(const Gui::ViewProviderDocumentObject& view)
 {
-    std::string objectName = obj.getObject()->getNameInDocument();
+    App::DocumentObject* obj = view.getObject();
+    std::string objectName = obj->getNameInDocument();
     std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
     if (it != ObjectMap.end()) {
         QTreeWidgetItem* parent = it->second->parent();
         if (it->second->childCount() > 0) {
+            // When removing an object check if there are multiple parents of its children
+            //
+            // this removes the children from their parent
             QList<QTreeWidgetItem*> children = it->second->takeChildren();
-            parent->addChildren(children);
+            for (QList<QTreeWidgetItem*>::iterator jt = children.begin(); jt != children.end(); ++jt) {
+                std::vector<DocumentObjectItem*> parents = getAllParents(static_cast<DocumentObjectItem*>(*jt));
+                for (std::vector<DocumentObjectItem*>::iterator kt = parents.begin(); kt != parents.end(); ++kt) {
+                    if (*kt != it->second) {
+                        // there is another parent object of this child
+                        (*kt)->addChild(*jt);
+                        break;
+                    }
+                }
+            }
+
+            // if there are still children, move them to the document item (#0001905)
+            QList<QTreeWidgetItem*> freeChildren;
+            for (QList<QTreeWidgetItem*>::iterator jt = children.begin(); jt != children.end(); ++jt) {
+                if (!(*jt)->parent())
+                    freeChildren << *jt;
+            }
+
+            if (!freeChildren.isEmpty())
+                this->addChildren(freeChildren);
         }
 
         parent->takeChild(parent->indexOfChild(it->second));
@@ -1181,6 +1204,30 @@ void DocumentItem::selectItems(void)
     for (std::vector<DocumentObjectItem*>::iterator it = diff.begin(); it != diff.end(); ++it)
         deselitems.append(*it);
     static_cast<TreeWidget*>(treeWidget())->setItemsSelected(deselitems, false);
+}
+
+std::vector<DocumentObjectItem*> DocumentItem::getAllParents(DocumentObjectItem* item) const
+{
+    std::vector<DocumentObjectItem*> parents;
+    App::DocumentObject* obj = item->object()->getObject();
+    std::vector<App::DocumentObject*> inlist = obj->getInList();
+
+    for (std::vector<App::DocumentObject*>::iterator it = inlist.begin(); it != inlist.end(); ++it) {
+        Gui::ViewProvider* vp = pDocument->getViewProvider(*it);
+        std::vector<App::DocumentObject*> child = vp->claimChildren();
+        for (std::vector<App::DocumentObject*>::iterator jt = child.begin(); jt != child.end(); ++jt) {
+            if (*jt == obj) {
+                std::map<std::string, DocumentObjectItem*>::const_iterator kt;
+                kt = ObjectMap.find((*it)->getNameInDocument());
+                if (kt != ObjectMap.end()) {
+                    parents.push_back(kt->second);
+                }
+                break;
+            }
+        }
+    }
+
+    return parents;
 }
 
 // ----------------------------------------------------------------------------

@@ -166,6 +166,7 @@ protected:
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
+    std::vector<DocumentObjectItem*> getAllParents(DocumentObjectItem*) const;
 
 private:
     const Gui::Document* pDocument;
