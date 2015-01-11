@@ -145,6 +145,23 @@ TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
     return TopoDS_Edge();
 }
 
+TopoDS_Edge DrawingOutput::asBSpline(const BRepAdaptor_Curve& c, int maxDegree) const
+{
+    Standard_Real tol3D = 0.001;
+    Standard_Integer maxSegment = 10;
+    Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
+    // approximate the curve using a tolerance
+    Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
+    if (approx.IsDone() && approx.HasResult()) {
+        // have the result
+        Handle_Geom_BSplineCurve spline = approx.Curve();
+        BRepBuilderAPI_MakeEdge mkEdge(spline, spline->FirstParameter(), spline->LastParameter());
+        return mkEdge.Edge();
+    }
+
+    return TopoDS_Edge();
+}
+
 SVGOutput::SVGOutput()
 {
 }
@@ -172,6 +189,9 @@ std::string SVGOutput::exportEdges(const TopoDS_Shape& input)
                 BRepAdaptor_Curve adapt_circle(circle);
                 printCircle(adapt_circle, result);
             }
+        }
+        else if (adapt.GetType() == GeomAbs_BezierCurve) {
+            printBezier(adapt, i, result);
         }
         // fallback
         else {
@@ -252,6 +272,70 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
             << " A" << r1 << " " << r2 << " "
             << angle << " " << las << " " << swp << " "
             << e.X() << " " << e.Y() << "\" />" << std::endl;
+    }
+}
+
+void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+{
+    try {
+        std::stringstream str;
+        str << "<path d=\"M";
+
+        Handle_Geom_BezierCurve bezier = c.Bezier();
+        Standard_Integer poles = bezier->NbPoles();
+
+        // if it's a bezier with degree higher than 3 convert it into a B-spline
+        if (bezier->Degree() > 3 || bezier->IsRational()) {
+            TopoDS_Edge edge = asBSpline(c, 3);
+            if (!edge.IsNull()) {
+                BRepAdaptor_Curve spline(edge);
+                printBSpline(spline, id, out);
+            }
+            else {
+                Standard_Failure::Raise("do it the generic way");
+            }
+
+            return;
+        }
+
+
+        gp_Pnt p1 = bezier->Pole(1);
+        str << p1.X() << "," << p1.Y();
+        if (bezier->Degree() == 3) {
+            if (poles != 4)
+                Standard_Failure::Raise("do it the generic way");
+            gp_Pnt p2 = bezier->Pole(2);
+            gp_Pnt p3 = bezier->Pole(3);
+            gp_Pnt p4 = bezier->Pole(4);
+            str << " C"
+                << p2.X() << "," << p2.Y() << " "
+                << p3.X() << "," << p3.Y() << " "
+                << p4.X() << "," << p4.Y() << " ";
+        }
+        else if (bezier->Degree() == 2) {
+            if (poles != 3)
+                Standard_Failure::Raise("do it the generic way");
+            gp_Pnt p2 = bezier->Pole(2);
+            gp_Pnt p3 = bezier->Pole(3);
+            str << " Q"
+                << p2.X() << "," << p2.Y() << " "
+                << p3.X() << "," << p3.Y() << " ";
+        }
+        else if (bezier->Degree() == 1) {
+            if (poles != 2)
+                Standard_Failure::Raise("do it the generic way");
+            gp_Pnt p2 = bezier->Pole(2);
+            str << " L" << p2.X() << "," << p2.Y() << " ";
+        }
+        else {
+            Standard_Failure::Raise("do it the generic way");
+        }
+
+        str << "\" />";
+        out << str.str();
+    }
+    catch (Standard_Failure) {
+        printGeneric(c, id, out);
     }
 }
 
