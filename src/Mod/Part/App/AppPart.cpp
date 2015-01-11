@@ -297,6 +297,32 @@ void PartExport initPart()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
 
+    // General
+    Base::Reference<ParameterGrp> hGenGrp = hGrp->GetGroup("General");
+    // http://www.opencascade.org/org/forum/thread_20801/
+    // read.surfacecurve.mode:
+    // A preference for the computation of curves in an entity which has both 2D and 3D representation.
+    // Each TopoDS_Edge in TopoDS_Face must have a 3D and 2D curve that references the surface.
+    // If both 2D and 3D representation of the entity are present, the computation of these curves depends on
+    // the following values of parameter:
+    // 0: "Default" - no preference, both curves are taken
+    // 3: "3DUse_Preferred" - 3D curves are used to rebuild 2D ones
+    // Additional modes for IGES
+    //  2: "2DUse_Preferred" - the 2D is used to rebuild the 3D in case of their inconsistency
+    // -2: "2DUse_Forced" - the 2D is always used to rebuild the 3D (even if 2D is present in the file)
+    // -3: "3DUse_Forced" - the 3D is always used to rebuild the 2D (even if 2D is present in the file)
+    int readsurfacecurve = hGenGrp->GetInt("ReadSurfaceCurveMode", 0);
+    Interface_Static::SetIVal("read.surfacecurve.mode", readsurfacecurve);
+
+    // write.surfacecurve.mode (STEP-only):
+    // This parameter indicates whether parametric curves (curves in parametric space of surface) should be
+    // written into the STEP file. This parameter can be set to Off in order to minimize the size of the resulting
+    // STEP file.
+    // Off (0) : writes STEP files without pcurves. This mode decreases the size of the resulting file.
+    // On (1) : (default) writes pcurves to STEP file
+    int writesurfacecurve = hGenGrp->GetInt("WriteSurfaceCurveMode", 1);
+    Interface_Static::SetIVal("write.surfacecurve.mode", writesurfacecurve);
+
     //IGES handling
     Base::Reference<ParameterGrp> hIgesGrp = hGrp->GetGroup("IGES");
     int value = Interface_Static::IVal("write.iges.brep.mode");

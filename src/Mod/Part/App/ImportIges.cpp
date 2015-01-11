@@ -69,9 +69,7 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
     try {
         Base::FileInfo fi(FileName);
         // read iges file
-        // http://www.opencascade.org/org/forum/thread_20801/
         IGESControl_Controller::Init();
-        Interface_Static::SetIVal("read.surfacecurve.mode",3);
 
         // load data exchange message files
         Message_MsgFile::LoadFromEnv("CSF_XSMessage","IGES");
