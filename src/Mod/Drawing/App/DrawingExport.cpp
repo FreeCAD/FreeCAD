@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <cmath>
 # include <BRepAdaptor_Curve.hxx>
 # include <Geom_Circle.hxx>
 # include <gp_Circ.hxx>
@@ -33,6 +34,7 @@
 
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
@@ -71,12 +73,94 @@
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <Geom2d_BSplineCurve.hxx>
+#include <BRepLProp_CLProps.hxx>
 
 #include "DrawingExport.h"
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 
 using namespace Drawing;
+
+TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
+{
+    double curv=0;
+    gp_Pnt pnt, center;
+
+    // approximate the circle center from three positions
+    BRepLProp_CLProps prop(c,c.FirstParameter(),2,Precision::Confusion());
+    curv += prop.Curvature();
+    prop.CentreOfCurvature(pnt);
+    center.ChangeCoord().Add(pnt.Coord());
+
+    prop.SetParameter(0.5*(c.FirstParameter()+c.LastParameter()));
+    curv += prop.Curvature();
+    prop.CentreOfCurvature(pnt);
+    center.ChangeCoord().Add(pnt.Coord());
+
+    prop.SetParameter(c.LastParameter());
+    curv += prop.Curvature();
+    prop.CentreOfCurvature(pnt);
+    center.ChangeCoord().Add(pnt.Coord());
+
+    center.ChangeCoord().Divide(3);
+    curv /= 3;
+
+    // get circle from curvature information
+    double radius = 1 / curv;
+
+    TopLoc_Location location;
+    Handle(Poly_Polygon3D) polygon = BRep_Tool::Polygon3D(c.Edge(), location);
+    if (!polygon.IsNull()) {
+        const TColgp_Array1OfPnt& nodes = polygon->Nodes();
+        for (int i = nodes.Lower(); i <= nodes.Upper(); i++) {
+            gp_Pnt p = nodes(i);
+            double dist = p.Distance(center);
+            if (std::abs(dist - radius) > 0.001)
+                return TopoDS_Edge();
+        }
+
+        gp_Circ circ;
+        circ.SetLocation(center);
+        circ.SetRadius(radius);
+        gp_Pnt p1 = nodes(nodes.Lower());
+        gp_Pnt p2 = nodes(nodes.Upper());
+        double dist = p1.Distance(p2);
+
+        if (dist < Precision::Confusion()) {
+            BRepBuilderAPI_MakeEdge mkEdge(circ);
+            return mkEdge.Edge();
+        }
+        else {
+            gp_Vec dir1(center, p1);
+            dir1.Normalize();
+            gp_Vec dir2(center, p2);
+            dir2.Normalize();
+            p1 = gp_Pnt(center.XYZ() + radius * dir1.XYZ());
+            p2 = gp_Pnt(center.XYZ() + radius * dir2.XYZ());
+            BRepBuilderAPI_MakeEdge mkEdge(circ, p1, p2);
+            return mkEdge.Edge();
+        }
+    }
+
+    return TopoDS_Edge();
+}
+
+TopoDS_Edge DrawingOutput::asBSpline(const BRepAdaptor_Curve& c, int maxDegree) const
+{
+    Standard_Real tol3D = 0.001;
+    Standard_Integer maxSegment = 10;
+    Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
+    // approximate the curve using a tolerance
+    Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
+    if (approx.IsDone() && approx.HasResult()) {
+        // have the result
+        Handle_Geom_BSplineCurve spline = approx.Curve();
+        BRepBuilderAPI_MakeEdge mkEdge(spline, spline->FirstParameter(), spline->LastParameter());
+        return mkEdge.Edge();
+    }
+
+    return TopoDS_Edge();
+}
 
 SVGOutput::SVGOutput()
 {
@@ -97,7 +181,17 @@ std::string SVGOutput::exportEdges(const TopoDS_Shape& input)
             printEllipse(adapt, i, result);
         }
         else if (adapt.GetType() == GeomAbs_BSplineCurve) {
-            printBSpline(adapt, i, result);
+            TopoDS_Edge circle = asCircle(adapt);
+            if (circle.IsNull()) {
+                printBSpline(adapt, i, result);
+            }
+            else {
+                BRepAdaptor_Curve adapt_circle(circle);
+                printCircle(adapt_circle, result);
+            }
+        }
+        else if (adapt.GetType() == GeomAbs_BezierCurve) {
+            printBezier(adapt, i, result);
         }
         // fallback
         else {
@@ -178,6 +272,70 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
             << " A" << r1 << " " << r2 << " "
             << angle << " " << las << " " << swp << " "
             << e.X() << " " << e.Y() << "\" />" << std::endl;
+    }
+}
+
+void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+{
+    try {
+        std::stringstream str;
+        str << "<path d=\"M";
+
+        Handle_Geom_BezierCurve bezier = c.Bezier();
+        Standard_Integer poles = bezier->NbPoles();
+
+        // if it's a bezier with degree higher than 3 convert it into a B-spline
+        if (bezier->Degree() > 3 || bezier->IsRational()) {
+            TopoDS_Edge edge = asBSpline(c, 3);
+            if (!edge.IsNull()) {
+                BRepAdaptor_Curve spline(edge);
+                printBSpline(spline, id, out);
+            }
+            else {
+                Standard_Failure::Raise("do it the generic way");
+            }
+
+            return;
+        }
+
+
+        gp_Pnt p1 = bezier->Pole(1);
+        str << p1.X() << "," << p1.Y();
+        if (bezier->Degree() == 3) {
+            if (poles != 4)
+                Standard_Failure::Raise("do it the generic way");
+            gp_Pnt p2 = bezier->Pole(2);
+            gp_Pnt p3 = bezier->Pole(3);
+            gp_Pnt p4 = bezier->Pole(4);
+            str << " C"
+                << p2.X() << "," << p2.Y() << " "
+                << p3.X() << "," << p3.Y() << " "
+                << p4.X() << "," << p4.Y() << " ";
+        }
+        else if (bezier->Degree() == 2) {
+            if (poles != 3)
+                Standard_Failure::Raise("do it the generic way");
+            gp_Pnt p2 = bezier->Pole(2);
+            gp_Pnt p3 = bezier->Pole(3);
+            str << " Q"
+                << p2.X() << "," << p2.Y() << " "
+                << p3.X() << "," << p3.Y() << " ";
+        }
+        else if (bezier->Degree() == 1) {
+            if (poles != 2)
+                Standard_Failure::Raise("do it the generic way");
+            gp_Pnt p2 = bezier->Pole(2);
+            str << " L" << p2.X() << "," << p2.Y() << " ";
+        }
+        else {
+            Standard_Failure::Raise("do it the generic way");
+        }
+
+        str << "\" />";
+        out << str.str();
+    }
+    catch (Standard_Failure) {
+        printGeneric(c, id, out);
     }
 }
 

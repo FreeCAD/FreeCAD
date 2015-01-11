@@ -57,8 +57,24 @@ SOURCE_GROUP("Features" FILES ${Features_SRCS})
 SOURCE_GROUP("Algorithms" FILES ${DrawingAlgos_SRCS})
 
 SET(Drawing_Templates
+    Templates/A0_Landscape_ISO7200.svg
+    Templates/A0_Landscape_plain.svg
+    Templates/A0_Portrait_plain.svg
+    Templates/A1_Landscape_ISO7200.svg
+    Templates/A1_Landscape_plain.svg
+    Templates/A1_Portrait_plain.svg
+    Templates/A2_Landscape_ISO7200.svg
+    Templates/A2_Landscape_plain.svg
+    Templates/A2_Portrait_plain.svg
     Templates/A3_Landscape.svg
+    Templates/A3_Landscape_ISO7200.svg
+    Templates/A3_Landscape_plain.svg
+    Templates/A3_Portrait_plain.svg
     Templates/A4_Landscape.svg
+    Templates/A4_Landscape_ISO7200.svg
+    Templates/A4_Landscape_plain.svg
+    Templates/A4_Portrait_ISO7200.svg
+    Templates/A4_Portrait_plain.svg
 )
 
 if(MSVC)

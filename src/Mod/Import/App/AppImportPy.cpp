@@ -121,7 +121,6 @@ static PyObject * importer(PyObject *self, PyObject *args)
 
             try {
                 IGESControl_Controller::Init();
-                Interface_Static::SetIVal("read.surfacecurve.mode",3);
                 IGESCAFControl_Reader aReader;
                 // http://www.opencascade.org/org/forum/thread_20603/?forum=3
                 aReader.SetReadVisible(hGrp->GetBool("SkipBlankEntities", true)

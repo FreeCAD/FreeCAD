@@ -170,7 +170,14 @@ int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
             throw Py::AttributeError(s.str());
         }
 
-        prop->setPyObject(obj);
+        try {
+            prop->setPyObject(obj);
+        }
+        catch (const Base::TypeError& e) {
+            std::stringstream s;
+            s << "Property '" << prop->getName() << "': " << e.what();
+            throw Py::TypeError(s.str());
+        }
         return 1;
     } 
 

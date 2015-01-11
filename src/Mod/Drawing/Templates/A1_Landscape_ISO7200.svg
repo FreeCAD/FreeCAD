@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<svg
+	xmlns="http://www.w3.org/2000/svg" version="1.1"
+	xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+	width="841mm"
+	height="594mm"
+	viewBox="0 0 841 594">
+	<!-- Working space 20 10 831 584 -->
+	<!-- Title block 651 524 831 584 -->
+	<g>
+		<rect
+			id="drawing-border"
+			style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:miter;stroke-miterlimit:4"
+			width="811"
+			height="574"
+			x="20"
+			y="10" />
+			<!-- width-30, height-20 -->
+		<g
+			transform="translate(631,297)">
+			<!-- A4 Portrait based for other formats width-210, height-297 -->
+			<!--        page       rect   translation
+			               w    h    rw   rh   tx   ty
+			        A4-P  210  297  180  277    0    0
+			        A3-L  420  297  390  277  210    0
+			        A2-L  594  420  564  400  384  123
+			        A1-L  841  594  811  574  631  297
+			        A0-L 1189  841 1159  821  979  544
+			-->
+			<g
+				id="titleblock-structure"
+				style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4">
+				<rect width="180" height="60" x="20" y="227" />
+				<path d="m 20,239 h 180" />
+				<path d="m 80,227 v 12" />
+				<path d="m 140,239 v 48" />
+				<path d="m 160,239 v 12" />
+				<path d="m 180,239 v 12" />
+				<path d="m 140,251 h 60" />
+				<path d="m 140,275 h 60" />
+				<path d="m 180,275 v 12" />
+			</g>
+			<g
+				id="titleblock-text-non-editable"
+				style="font-size:3px;text-anchor:start;fill:#000000;font-family:osifont"
+				xml:space="preserve">
+				<text x="21" y="230">Created by:</text>
+				<text x="81" y="230">Title:</text>
+				<text x="21" y="242">Supplementary information:</text>
+				<text x="141" y="242">Size:</text>
+				<text x="161" y="242">Sheet:</text>
+				<text x="181" y="242">Scale:</text>
+				<text x="141" y="254">Part number:</text>
+				<text x="141" y="266">Drawing number:</text>
+				<text x="141" y="278">Date:</text>
+				<text x="181" y="278">Revision:</text>
+			</g>
+			<g
+				id="titleblock-text-editable"
+				style="font-size:5px;text-anchor:middle;fill:#000000;font-family:osifont"
+				xml:space="preserve">
+				<text freecad:editable="Author" x="50" y="236"><tspan>AUTHOR NAME</tspan></text>
+				<text freecad:editable="Title" x="140" y="236"><tspan>DRAWING TITLE</tspan></text>
+				<text freecad:editable="SI-1:" x="80" y="248"><tspan></tspan></text>
+				<text freecad:editable="SI-2:" x="80" y="260"><tspan>FreeCAD DRAWING</tspan></text>
+				<text freecad:editable="SI-3:" x="80" y="272"><tspan></tspan></text>
+				<text freecad:editable="SI-4:" x="80" y="284"><tspan></tspan></text>
+				<text freecad:editable="Size" x="150" y="248"><tspan>A1</tspan></text>
+				<text freecad:editable="Sheet" x="170" y="248"><tspan>X / Y</tspan></text>
+				<text freecad:editable="Scale" x="190" y="248"><tspan>SCALE</tspan></text>
+				<text freecad:editable="PN" x="170" y="260"><tspan>PART NUMBER</tspan></text>
+				<text freecad:editable="DN" x="170" y="272"><tspan>DRAWING NUMBER</tspan></text>
+				<text freecad:editable="Date" x="160" y="284"><tspan>YYYY-MM-DD</tspan></text>
+				<text freecad:editable="Revision" x="190" y="284"><tspan>A</tspan></text>
+			</g>
+		</g>
+	</g>
+<!-- DrawingContent -->
+</svg>

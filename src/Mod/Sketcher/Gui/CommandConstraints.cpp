@@ -2070,7 +2070,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
             double ActAngle = 0.0;
 
-            openCommand("add angle constraint");
+            openCommand("Add angle constraint");
 
             //add missing point-on-object constraints
             if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
@@ -2163,7 +2163,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     std::swap(PosId1,PosId2);
                 }
 
-                openCommand("add angle constraint");
+                openCommand("Add angle constraint");
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActAngle);
@@ -2187,10 +2187,26 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 Base::Vector3d dir = lineSeg->getEndPoint()-lineSeg->getStartPoint();
                 double ActAngle = atan2(dir.y,dir.x);
 
-                openCommand("add angle constraint");
+                openCommand("Add angle constraint");
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,ActAngle);
+                commitCommand();
+
+                finishDistanceConstraint(this, Obj);
+                return;
+            }
+            else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                const Part::GeomArcOfCircle *arc;
+                arc = dynamic_cast<const Part::GeomArcOfCircle*>(geom);
+                double startangle, endangle;
+                arc->getRange(startangle, endangle);
+                double angle = endangle - startangle;
+
+                openCommand("Add angle constraint");
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
+                    selection[0].getFeatName(),GeoId1,angle);
                 commitCommand();
 
                 finishDistanceConstraint(this, Obj);
