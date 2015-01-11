@@ -1265,12 +1265,19 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                 dir2.RotateZ(-M_PI/2);
             }
 
-        } else if (Constr->First != Constraint::GeoUndef) { // line angle
+        } else if (Constr->First != Constraint::GeoUndef) { // line/arc angle
             const Part::Geometry *geo = GeoById(geomlist, Constr->First);
-            if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId())
+            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
+                p0 = (lineSeg->getEndPoint()+lineSeg->getStartPoint())/2;
+            }
+            else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
+                p0 = arc->getCenter();
+            }
+            else {
                 return;
-            const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
-            p0 = (lineSeg->getEndPoint()+lineSeg->getStartPoint())/2;
+            }
         } else
             return;
 
@@ -3721,16 +3728,26 @@ Restart:
 
                     } else if (Constr->First != Constraint::GeoUndef) {
                         const Part::Geometry *geo = GeoById(*geomlist, Constr->First);
-                        if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId())
+                        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                            const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
+                            p0 = Base::convertTo<SbVec3f>((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
+
+                            Base::Vector3d dir = lineSeg->getEndPoint()-lineSeg->getStartPoint();
+                            startangle = 0.;
+                            range = atan2(dir.y,dir.x);
+                            endangle = startangle + range;
+                        }
+                        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
+                            p0 = Base::convertTo<SbVec3f>(arc->getCenter());
+
+                            Base::Vector3d dir = arc->getEndPoint()-arc->getStartPoint();
+                            arc->getRange(startangle, endangle);
+                            range = endangle - startangle;
+                        }
+                        else {
                             break;
-                        const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geo);
-
-                        p0 = Base::convertTo<SbVec3f>((lineSeg->getEndPoint()+lineSeg->getStartPoint())/2);
-
-                        Base::Vector3d dir = lineSeg->getEndPoint()-lineSeg->getStartPoint();
-                        startangle = 0.;
-                        range = atan2(dir.y,dir.x);
-                        endangle = startangle + range;
+                        }
                     } else
                         break;
 
