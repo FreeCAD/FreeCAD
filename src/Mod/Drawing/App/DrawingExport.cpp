@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <cmath>
 # include <BRepAdaptor_Curve.hxx>
 # include <Geom_Circle.hxx>
 # include <gp_Circ.hxx>
@@ -33,6 +34,7 @@
 
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <HLRBRep_Algo.hxx>
 #include <TopoDS_Shape.hxx>
@@ -71,12 +73,77 @@
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <Geom2d_BSplineCurve.hxx>
+#include <BRepLProp_CLProps.hxx>
 
 #include "DrawingExport.h"
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
 
 using namespace Drawing;
+
+TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
+{
+    double curv=0;
+    gp_Pnt pnt, center;
+
+    // approximate the circle center from three positions
+    BRepLProp_CLProps prop(c,c.FirstParameter(),2,Precision::Confusion());
+    curv += prop.Curvature();
+    prop.CentreOfCurvature(pnt);
+    center.ChangeCoord().Add(pnt.Coord());
+
+    prop.SetParameter(0.5*(c.FirstParameter()+c.LastParameter()));
+    curv += prop.Curvature();
+    prop.CentreOfCurvature(pnt);
+    center.ChangeCoord().Add(pnt.Coord());
+
+    prop.SetParameter(c.LastParameter());
+    curv += prop.Curvature();
+    prop.CentreOfCurvature(pnt);
+    center.ChangeCoord().Add(pnt.Coord());
+
+    center.ChangeCoord().Divide(3);
+    curv /= 3;
+
+    // get circle from curvature information
+    double radius = 1 / curv;
+
+    TopLoc_Location location;
+    Handle(Poly_Polygon3D) polygon = BRep_Tool::Polygon3D(c.Edge(), location);
+    if (!polygon.IsNull()) {
+        const TColgp_Array1OfPnt& nodes = polygon->Nodes();
+        for (int i = nodes.Lower(); i <= nodes.Upper(); i++) {
+            gp_Pnt p = nodes(i);
+            double dist = p.Distance(center);
+            if (std::abs(dist - radius) > 0.001)
+                return TopoDS_Edge();
+        }
+
+        gp_Circ circ;
+        circ.SetLocation(center);
+        circ.SetRadius(radius);
+        gp_Pnt p1 = nodes(nodes.Lower());
+        gp_Pnt p2 = nodes(nodes.Upper());
+        double dist = p1.Distance(p2);
+
+        if (dist < Precision::Confusion()) {
+            BRepBuilderAPI_MakeEdge mkEdge(circ);
+            return mkEdge.Edge();
+        }
+        else {
+            gp_Vec dir1(center, p1);
+            dir1.Normalize();
+            gp_Vec dir2(center, p2);
+            dir2.Normalize();
+            p1 = gp_Pnt(center.XYZ() + radius * dir1.XYZ());
+            p2 = gp_Pnt(center.XYZ() + radius * dir2.XYZ());
+            BRepBuilderAPI_MakeEdge mkEdge(circ, p1, p2);
+            return mkEdge.Edge();
+        }
+    }
+
+    return TopoDS_Edge();
+}
 
 SVGOutput::SVGOutput()
 {
@@ -97,7 +164,14 @@ std::string SVGOutput::exportEdges(const TopoDS_Shape& input)
             printEllipse(adapt, i, result);
         }
         else if (adapt.GetType() == GeomAbs_BSplineCurve) {
-            printBSpline(adapt, i, result);
+            TopoDS_Edge circle = asCircle(adapt);
+            if (circle.IsNull()) {
+                printBSpline(adapt, i, result);
+            }
+            else {
+                BRepAdaptor_Curve adapt_circle(circle);
+                printCircle(adapt_circle, result);
+            }
         }
         // fallback
         else {
