@@ -3292,7 +3292,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyString","FontName","Draft","Font name")
         obj.addProperty("App::PropertyFloat","LineWidth","Draft","Line width")
         obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
-        obj.addProperty("App::PropertyLength","ExtLines","Draft","Length of the extension lines")
+        obj.addProperty("App::PropertyDistance","ExtLines","Draft","Length of the extension lines")
         obj.addProperty("App::PropertyBool","FlipArrows","Draft","Rotate the dimension arrows 180 degrees")
         obj.addProperty("App::PropertyBool","ShowUnit","Draft","Show the unit suffix")        
         obj.addProperty("App::PropertyVector","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
@@ -3406,8 +3406,13 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     if hasattr(obj.ViewObject,"ExtLines"):
                         dmax = obj.ViewObject.ExtLines.Value
                         if dmax and (proj.Length > dmax):
-                            self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
-                            self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
+                            if (dmax > 0):
+                                self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
+                                self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
+                            else:
+                                rest = proj.Length + dmax
+                                self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,rest))
+                                self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,rest))
                 else:
                     self.p2 = self.p1
                     self.p3 = self.p4
