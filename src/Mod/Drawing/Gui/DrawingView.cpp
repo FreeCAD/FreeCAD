@@ -332,7 +332,9 @@ void DrawingView::setDocumentObject(const std::string& name)
 
 void DrawingView::closeEvent(QCloseEvent* ev)
 {
-    ev->accept();
+    MDIView::closeEvent(ev);
+    if (!ev->isAccepted())
+        return;
 
     // when closing the view from GUI notify the view provider to mark it invisible
     if (_pcDocument && !m_objectName.empty()) {
