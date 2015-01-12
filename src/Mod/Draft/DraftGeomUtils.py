@@ -655,85 +655,73 @@ def isLine(bsp):
             return False
     return True
     
-def sortEdgesNew(edges):
+def sortEdges(edges):
     """Sort edges in path order, i.e., such that the end point of edge N
     equals the start point of edge N+1.
     """
-    
-    def vpoint(vertex):
-        """Turn a vertex into a triple of its point coordinates.  This is
-        so we can put it into a dictionary; vertexes hash on their identity
-        and compare equal on object identity rather than coordinates.
-        And vertex.Point compares on value, but is mutable so it doesn't
-        have a hash value.
-        """
-        p = vertex.Point
-        return (p.x, p.y, p.z)
-    
-    # Build a dictionary of vertexes according to their end points.
-    # Each entry is a set of vertexes that starts, or ends, at the
-    # given vertex position.
+    # Build a dictionary of edges according to their end points.
+    # Each entry is a set of edges that starts, or ends, at the
+    # given vertex hash.
     sdict = dict()
     edict = dict()
+    nedges = []
     for e in edges:
-        v1, v2 = e.Vertexes
-        v1 = vpoint(v1)
-        v2 = vpoint(v2)
-        try:
-            sdict[v1].add(e)
-        except KeyError:
-            sdict[v1] = set()
-            sdict[v1].add(e)            
-        try:
-            edict[v2].add(e)
-        except KeyError:
-            edict[v2] = set()
-            edict[v2].add(e)            
+        if e.Length != 0:
+            sdict.setdefault( e.Vertexes[0].hashCode(), [] ).append(e)
+            edict.setdefault( e.Vertexes[-1].hashCode(),[] ).append(e)
+            nedges.append(e)
     # Find the start of the path.  The start is the vertex that appears
     # in the sdict dictionary but not in the edict dictionary, and has
     # only one edge ending there.
     startedge = None
     for v, se in sdict.items():
-        if v not in edict and len (se) == 1:
+        if v not in edict and len(se) == 1:
             startedge = se
             break
     # The above may not find a start vertex; if the start edge is reversed, 
     # the start vertex will appear in edict (and not sdict).
     if not startedge:
-        for v, se in edict.xitems():
-            if v not in sdict and len (se) == 1:
+        for v, se in edict.items():
+            if v not in sdict and len(se) == 1:
                 startedge = se
                 break
     # If we still have no start vertex, it was a closed path.  If so, start
     # with the first edge in the supplied list
     if not startedge:
-        startedge = edges[0]
-        v = vpoint (startedge.Vertexes[0])
+        startedge = nedges[0]
+        v = startedge.Vertexes[0].hashCode()
     # Now build the return list by walking the edges starting at the start
     # vertex we found.  We're done when we've visited each edge, so the
     # end check is simply the count of input elements (that works for closed
     # as well as open paths).
     ret = list()
-    for i in range(len(edges)):
+    # store the hash code of the last edge, to avoid picking the same edge back
+    eh = None
+    for i in range(len(nedges)):
         try:
             eset = sdict[v]
             e = eset.pop()
             if not eset:
                 del sdict[v]
-            v = e.Vertexes[1]
+            if e.hashCode() == eh:
+                raise KeyError
+            v = e.Vertexes[-1].hashCode()
+            eh = e.hashCode()
         except KeyError:
             try:
                 eset = edict[v]
                 e = eset.pop()
                 if not eset:
                     del edict[v]
-                v = e.Vertexes[0]
-                e.reverse()
+                if e.hashCode() == eh:
+                    raise KeyError
+                v = e.Vertexes[0].hashCode()
+                eh = e.hashCode()
+                e = invert(e)
             except KeyError:
-                print("DraftGeomUtils.sortEdges failed")
+                print("DraftGeomUtils.sortEdges failed - running old version:")
                 return sortEdgesOld(edges)
         ret.append(e)
-        v = vpoint(v)
     # All done.
     return ret
 
@@ -821,10 +809,24 @@ def sortEdgesOld(lEdges, aVertex=None):
                     else:
                         olEdges += [result[3]] + next
                 else:
-                    olEdges += [result[3]] + next                                        
+                    olEdges += [result[3]] + next
             return olEdges
         else :
             return []
+
+
+def invert(edge):
+    '''invert(edge): returns an inverted copy of this edge'''
+    if geomType(edge) == "Line":
+        return Part.Line(edge.Vertexes[-1].Point,edge.Vertexes[0].Point).toShape()
+    elif geomType(edge) == "Circle":
+        mp = findMidpoint(edge)
+        return Part.Arc(edge.Vertexes[-1].Point,mp,edge.Vertexes[0].Point).toShape()
+    elif geomType(edge) in ["BSplineCurve","BezierCurve"]:
+        if isLine(edge.Curve):
+            return Part.Line(edge.Vertexes[-1].Point,edge.Vertexes[0].Point).toShape()
+    print "DraftGeomUtils.invert: unable to invert ",edge.Curve
+    return edge
 
 
 def flattenWire(wire):
@@ -843,11 +845,6 @@ def flattenWire(wire):
     verts.append(o)
     w = Part.makePolygon(verts)
     return w
-    
-def sortEdges(edges):
-    "define here which version to use"
-    #return sortEdgesNew(edges)
-    return sortEdgesOld(edges)
 
 
 def findWires(edgeslist):
@@ -1231,7 +1228,9 @@ def connect(edges,closed=False):
         try:
             return Part.Wire(nedges)
         except:
-            print("DraftGeomUtils.connect: unable to connect edges:",nedges)
+            print("DraftGeomUtils.connect: unable to connect edges")
+            for e in nedges:
+                print e.Curve, " ",e.Vertexes[0].Point, " ", e.Vertexes[-1].Point
             return None
 
 def findDistance(point,edge,strict=False):
@@ -1417,6 +1416,9 @@ def getTangent(edge,frompoint=None):
 def bind(w1,w2):
     '''bind(wire1,wire2): binds 2 wires by their endpoints and
     returns a face'''
+    if (not w1) or (not w2):
+        print("DraftGeomUtils: unable to bind wires")
+        return None
     if w1.isClosed() and w2.isClosed():
         d1 = w1.BoundBox.DiagonalLength
         d2 = w2.BoundBox.DiagonalLength
