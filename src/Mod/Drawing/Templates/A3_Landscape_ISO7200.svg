@@ -1,156 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
-   width="420mm"
-   height="297mm"
-   viewBox="0 0 420 297"
-   id="svg5211"
-   version="1.1"
-   inkscape:version="0.48.1 "
-   sodipodi:docname="iso7200-a3-landscape">
-  <defs
-     id="defs5213" />
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
-     showgrid="false"
-     fit-margin-top="10"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
-     inkscape:window-width="1280"
-     inkscape:window-height="962"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
-     inkscape:window-maximized="1" />
-<!-- Working space 20 10 410 287 -->
-<!-- Title block 230 251 410 287 -->
-  <metadata
-     id="metadata5216">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     inkscape:label="Ebene 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-      <rect id="zeichenrahmen" y="10" x="20"
-         height="277"
-         width="390"
-         style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4" />
-       <!-- width-30, height-20 -->
-    <g id="schriftfeld"
-       transform="translate(210,0)">
-       <!-- A4 Portrait based for other formats width-210, height-297 -->
-       <!--        page       rect   translation
-                   w    h    rw   rh   tx   ty
-            A4-P  210  297  180  277    0    0
-            A4-L  297  210  267  190   87  -87
-            A3-L  420  297  390  277  210    0
-            A2-L  594  420  564  400  384  123
-            A1-L  841  594  811  574  631  297
-            A0-L 1189  841 1159  821  979  544
-
- -->
-    <g id="schriftfeldrahmen"
-       style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4">
-      <rect id="schriftfeld-aussen"
-         width="180" height="36" x="20" y="251" />
-      <path id="schriftfeld-h1" d="M 20,260 H 200" />
-      <path d="M 89,269 H 200" id="schriftfeld-h2" />
-      <path id="schriftfeld-h3" d="m 149,278 h 51" />
-      <path id="schriftfeld-v1" d="m 89,251 v 36" />
-      <path d="m 45,251 v 9" id="schriftfeld-v2" />
-      <path id="schriftfeld-v3" d="m 132,251 v 9" />
-      <path d="m 175,251 v 9" id="schriftfeld-v4" />
-      <path id="schriftfeld-v5" d="m 89,251 v 36" />
-      <path d="m 149,260 v 27" id="schriftfeld-v6" />
-      <path id="schriftfeld-v7" d="m 156,278 v 9" />
-      <path d="m 181,278 v 9" id="schriftfeld-v8" />
-      <path id="schriftfeld-v9" d="m 191,278 v 9" />
-    </g>
-    <g id="schriftfeldtext2"
-        style="font-size:2;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:sans"
-       xml:space="preserve">
-    <text
-       xml:space="preserve"
-       x="20" y="251" id="textdesc"
-       sodipodi:linespacing="125%"><tspan
-         id="tspan5781" y="253" x="21">Responsible department</tspan><tspan
-         id="tspan5783" x="46" y="253">Technical reference</tspan><tspan
-         y="253" x="90" id="tspan5785">Created by</tspan><tspan
-         id="tspan5787" x="133" y="253">Approved by</tspan><tspan
-         y="253" x="176" id="tspan5789">Classification/key words</tspan><tspan
-         x="21" y="262" id="tspan5791">Legal owner</tspan><tspan
-         id="tspan5793" y="262" x="90">Document type</tspan><tspan
-         x="150" y="262" id="tspan5795">Document status</tspan><tspan
-         x="90" y="271" id="tspan5797">Title, Supplementary title</tspan><tspan
-         id="tspan5799" y="271" x="150">Identification number</tspan><tspan
-         x="150" y="280" id="tspan5801">Rev.</tspan><tspan
-         id="tspan5803" y="280" x="157">Date of issue</tspan><tspan
-         x="182" y="280" id="tspan5805">Language</tspan><tspan
-         id="tspan5807" y="280" x="192">Seg./Sh.</tspan></text>
-    </g>
-    <g id="schriftfeldtext4"
-       style="font-size:4;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:sans"
-       xml:space="preserve">
-    <text freecad:EditableText="Creator" x="90" y="258">
-       <tspan id="tspan5815" x="90" y="258">me</tspan> </text>
-    <text freecad:EditableText="ApprovalPerson" y="258" x="133">
-       <tspan y="258" x="133" id="tspan5817">myself</tspan> </text>
-    <text freecad:EditableText="LegalOwner" y="267" x="21">
-         <tspan id="tspan5821" y="267" x="21">my company</tspan> </text>
-    <text freecad:EditableText="DocumentType" x="90" y="267">
-         <tspan x="90" y="267" id="tspan5823">type</tspan></text>
-    <text freecad:EditableText="Title" y="276" x="90">
-         <tspan id="tspan5827" y="276" x="90">title</tspan></text>
-    <text freecad:EditableText="IdNumber" x="150" y="276">
-         <tspan x="150" y="276" id="tspan5829">0001</tspan></text>
-    <text freecad:EditableText="Date" x="157" y="285">
-         <tspan x="157" y="285" id="tspan5833">2000-00-00</tspan></text>
-    <text freecad:EditableText="OptResponsibleDept" y="258" x="21">
-         <tspan y="258" x="21"></tspan></text>
-    <text freecad:EditableText="OptTechnicalRef" x="46" y="258">
-         <tspan x="46" y="258"></tspan></text>
-    <text freecad:EditableText="Classification" y="258" x="176">
-         <tspan y="258" x="176"></tspan></text>
-    <text freecad:EditableText="OptDocumentStatus" x="150" y="267">
-         <tspan x="150" y="267"></tspan></text>
-    <text freecad:EditableText="OptRevison" x="150" y="285">
-         <tspan x="150" y="285"></tspan></text>
-    <text freecad:EditableText="OptLanguage" x="182" y="285">
-         <tspan x="182" y="285"></tspan></text>
-    <text freecad:EditableText="SegmentsOrSheets" y="285" x="192">
-         <tspan y="285" x="192"></tspan></text>
-    <text freecad:EditableText="OptSupTitle" y="281" x="90">
-         <tspan id="tspan5827" y="281" x="90"></tspan></text>
-    <text freecad:EditableText="OptSupTitle2" y="285" x="90">
-         <tspan id="tspan5827" y="285" x="90"></tspan></text>
-
-    </g>
-      </g>
+	xmlns="http://www.w3.org/2000/svg" version="1.1"
+	xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace"
+	width="420mm"
+	height="297mm"
+	viewBox="0 0 420 297">
+	<!-- Working space 20 10 410 287 -->
+	<!-- Title block 230 227 410 287 -->
+	<g>
+		<rect
+			id="drawing-border"
+			style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4"
+			width="390"
+			height="277"
+			x="20"
+			y="10" />
+			<!-- width-30, height-20 -->
+		<g
+			transform="translate(210,0)">
+			<!-- A4 Portrait based for other formats width-210, height-297 -->
+			<!--        page       rect   translation
+			               w    h    rw   rh   tx   ty
+			        A4-P  210  297  180  277    0    0
+			        A3-L  420  297  390  277  210    0
+			        A2-L  594  420  564  400  384  123
+			        A1-L  841  594  811  574  631  297
+			        A0-L 1189  841 1159  821  979  544
+			-->
+			<g
+				id="titleblock-structure"
+				style="fill:none;stroke:#000000;stroke-width:0.35;stroke-linecap:miter;stroke-miterlimit:4">
+				<rect width="180" height="60" x="20" y="227" />
+				<path d="m 20,239 h 180" />
+				<path d="m 80,227 v 12" />
+				<path d="m 140,239 v 48" />
+				<path d="m 160,239 v 12" />
+				<path d="m 180,239 v 12" />
+				<path d="m 140,251 h 60" />
+				<path d="m 140,275 h 60" />
+				<path d="m 180,275 v 12" />
+			</g>
+			<g
+				id="titleblock-text-non-editable"
+				style="font-size:3px;text-anchor:start;fill:#000000;font-family:osifont"
+				xml:space="preserve">
+				<text x="21" y="230">Created by:</text>
+				<text x="81" y="230">Title:</text>
+				<text x="21" y="242">Supplementary information:</text>
+				<text x="141" y="242">Size:</text>
+				<text x="161" y="242">Sheet:</text>
+				<text x="181" y="242">Scale:</text>
+				<text x="141" y="254">Part number:</text>
+				<text x="141" y="266">Drawing number:</text>
+				<text x="141" y="278">Date:</text>
+				<text x="181" y="278">Revision:</text>
+			</g>
+			<g
+				id="titleblock-text-editable"
+				style="font-size:5px;text-anchor:middle;fill:#000000;font-family:osifont"
+				xml:space="preserve">
+				<text freecad:editable="Author" x="50" y="236"><tspan>AUTHOR NAME</tspan></text>
+				<text freecad:editable="Title" x="140" y="236"><tspan>DRAWING TITLE</tspan></text>
+				<text freecad:editable="SI-1:" x="80" y="248"><tspan></tspan></text>
+				<text freecad:editable="SI-2:" x="80" y="260"><tspan>FreeCAD DRAWING</tspan></text>
+				<text freecad:editable="SI-3:" x="80" y="272"><tspan></tspan></text>
+				<text freecad:editable="SI-4:" x="80" y="284"><tspan></tspan></text>
+				<text freecad:editable="Size" x="150" y="248"><tspan>A3</tspan></text>
+				<text freecad:editable="Sheet" x="170" y="248"><tspan>X / Y</tspan></text>
+				<text freecad:editable="Scale" x="190" y="248"><tspan>SCALE</tspan></text>
+				<text freecad:editable="PN" x="170" y="260"><tspan>PART NUMBER</tspan></text>
+				<text freecad:editable="DN" x="170" y="272"><tspan>DRAWING NUMBER</tspan></text>
+				<text freecad:editable="Date" x="160" y="284"><tspan>YYYY-MM-DD</tspan></text>
+				<text freecad:editable="Revision" x="190" y="284"><tspan>A</tspan></text>
+			</g>
+		</g>
+	</g>
 <!-- DrawingContent -->
-  </g>
 </svg>
