@@ -205,7 +205,7 @@ public:
     void setVisible(bool);
     bool isVisible() const;
     /// Overrides the display mode with mode.
-    void setOverrideMode(const std::string &mode);
+    virtual void setOverrideMode(const std::string &mode);
     //@}
 
 
