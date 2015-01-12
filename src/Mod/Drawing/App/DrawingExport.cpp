@@ -74,6 +74,7 @@
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 #include <Geom2d_BSplineCurve.hxx>
 #include <BRepLProp_CLProps.hxx>
+#include <Standard_Failure.hxx>
 
 #include "DrawingExport.h"
 #include <Base/Tools.h>
@@ -86,24 +87,31 @@ TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
     double curv=0;
     gp_Pnt pnt, center;
 
-    // approximate the circle center from three positions
-    BRepLProp_CLProps prop(c,c.FirstParameter(),2,Precision::Confusion());
-    curv += prop.Curvature();
-    prop.CentreOfCurvature(pnt);
-    center.ChangeCoord().Add(pnt.Coord());
+    try {
+        // approximate the circle center from three positions
+        BRepLProp_CLProps prop(c,c.FirstParameter(),2,Precision::Confusion());
+        curv += prop.Curvature();
+        prop.CentreOfCurvature(pnt);
+        center.ChangeCoord().Add(pnt.Coord());
 
-    prop.SetParameter(0.5*(c.FirstParameter()+c.LastParameter()));
-    curv += prop.Curvature();
-    prop.CentreOfCurvature(pnt);
-    center.ChangeCoord().Add(pnt.Coord());
+        prop.SetParameter(0.5*(c.FirstParameter()+c.LastParameter()));
+        curv += prop.Curvature();
+        prop.CentreOfCurvature(pnt);
+        center.ChangeCoord().Add(pnt.Coord());
 
-    prop.SetParameter(c.LastParameter());
-    curv += prop.Curvature();
-    prop.CentreOfCurvature(pnt);
-    center.ChangeCoord().Add(pnt.Coord());
+        prop.SetParameter(c.LastParameter());
+        curv += prop.Curvature();
+        prop.CentreOfCurvature(pnt);
+        center.ChangeCoord().Add(pnt.Coord());
 
-    center.ChangeCoord().Divide(3);
-    curv /= 3;
+        center.ChangeCoord().Divide(3);
+        curv /= 3;
+    }
+    catch (Standard_Failure) {
+        // if getting center of curvature fails, e.g.
+        // for straight lines it raises LProp_NotDefined
+        return TopoDS_Edge();
+    }
 
     // get circle from curvature information
     double radius = 1 / curv;
