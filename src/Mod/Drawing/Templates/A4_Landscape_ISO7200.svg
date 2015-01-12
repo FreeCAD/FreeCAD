@@ -92,63 +92,42 @@
       <path id="schriftfeld-v9" d="m 191,278 v 9" />
     </g>
     <g id="schriftfeldtext2"
-        style="font-size:2;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:sans"
+        style="font-size:2px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:osifont"
        xml:space="preserve">
-    <text
-       xml:space="preserve"
-       x="20" y="251" id="textdesc"
-       sodipodi:linespacing="125%"><tspan
-         id="tspan5781" y="253" x="21">Responsible department</tspan><tspan
-         id="tspan5783" x="46" y="253">Technical reference</tspan><tspan
-         y="253" x="90" id="tspan5785">Created by</tspan><tspan
-         id="tspan5787" x="133" y="253">Approved by</tspan><tspan
-         y="253" x="176" id="tspan5789">Classification/key words</tspan><tspan
-         x="21" y="262" id="tspan5791">Legal owner</tspan><tspan
-         id="tspan5793" y="262" x="90">Document type</tspan><tspan
-         x="150" y="262" id="tspan5795">Document status</tspan><tspan
-         x="90" y="271" id="tspan5797">Title, Supplementary title</tspan><tspan
-         id="tspan5799" y="271" x="150">Identification number</tspan><tspan
-         x="150" y="280" id="tspan5801">Rev.</tspan><tspan
-         id="tspan5803" y="280" x="157">Date of issue</tspan><tspan
-         x="182" y="280" id="tspan5805">Language</tspan><tspan
-         id="tspan5807" y="280" x="192">Seg./Sh.</tspan></text>
+    <text y="253" x="21"><tspan id="tspan5781" y="253" x="21">Responsible department</tspan></text>
+    <text x="46" y="253"><tspan id="tspan5783" x="46" y="253">Technical reference</tspan></text>
+    <text y="253" x="90"><tspan y="253" x="90" id="tspan5785">Created by</tspan></text>
+    <text x="133" y="253"><tspan id="tspan5787" x="133" y="253">Approved by</tspan></text>
+    <text y="253" x="176"><tspan y="253" x="176" id="tspan5789">Classification/key words</tspan></text>
+    <text x="21" y="262"><tspan x="21" y="262" id="tspan5791">Legal owner</tspan></text>
+    <text y="262" x="90"><tspan id="tspan5793" y="262" x="90">Document type</tspan></text>
+    <text x="150" y="262"><tspan x="150" y="262" id="tspan5795">Document status</tspan></text>
+    <text x="90" y="271"><tspan x="90" y="271" id="tspan5797">Title, Supplementary title</tspan></text>
+    <text y="271" x="150"><tspan id="tspan5799" y="271" x="150">Identification number</tspan></text>
+    <text x="150" y="280"><tspan x="150" y="280" id="tspan5801">Rev.</tspan></text>
+    <text y="280" x="157"><tspan id="tspan5803" y="280" x="157">Date of issue</tspan></text>
+    <text x="182" y="280"><tspan x="182" y="280" id="tspan5805">Language</tspan></text>
+    <text y="280" x="192"><tspan id="tspan5807" y="280" x="192">Seg./Sh.</tspan></text>
     </g>
     <g id="schriftfeldtext4"
-       style="font-size:4;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:sans"
+       style="font-size:4px;font-style:normal;font-weight:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:osifont"
        xml:space="preserve">
-    <text freecad:EditableText="Creator" x="90" y="258">
-       <tspan id="tspan5815" x="90" y="258">me</tspan> </text>
-    <text freecad:EditableText="ApprovalPerson" y="258" x="133">
-       <tspan y="258" x="133" id="tspan5817">myself</tspan> </text>
-    <text freecad:EditableText="LegalOwner" y="267" x="21">
-         <tspan id="tspan5821" y="267" x="21">my company</tspan> </text>
-    <text freecad:EditableText="DocumentType" x="90" y="267">
-         <tspan x="90" y="267" id="tspan5823">type</tspan></text>
-    <text freecad:EditableText="Title" y="276" x="90">
-         <tspan id="tspan5827" y="276" x="90">title</tspan></text>
-    <text freecad:EditableText="IdNumber" x="150" y="276">
-         <tspan x="150" y="276" id="tspan5829">0001</tspan></text>
-    <text freecad:EditableText="Date" x="157" y="285">
-         <tspan x="157" y="285" id="tspan5833">2000-00-00</tspan></text>
-    <text freecad:EditableText="OptResponsibleDept" y="258" x="21">
-         <tspan y="258" x="21"></tspan></text>
-    <text freecad:EditableText="OptTechnicalRef" x="46" y="258">
-         <tspan x="46" y="258"></tspan></text>
-    <text freecad:EditableText="Classification" y="258" x="176">
-         <tspan y="258" x="176"></tspan></text>
-    <text freecad:EditableText="OptDocumentStatus" x="150" y="267">
-         <tspan x="150" y="267"></tspan></text>
-    <text freecad:EditableText="OptRevison" x="150" y="285">
-         <tspan x="150" y="285"></tspan></text>
-    <text freecad:EditableText="OptLanguage" x="182" y="285">
-         <tspan x="182" y="285"></tspan></text>
-    <text freecad:EditableText="SegmentsOrSheets" y="285" x="192">
-         <tspan y="285" x="192"></tspan></text>
-    <text freecad:EditableText="OptSupTitle" y="281" x="90">
-         <tspan id="tspan5827" y="281" x="90"></tspan></text>
-    <text freecad:EditableText="OptSupTitle2" y="285" x="90">
-         <tspan id="tspan5827" y="285" x="90"></tspan></text>
-
+    <text freecad:editable="Creator" x="90" y="258"><tspan id="tspan5815" x="90" y="258">me</tspan> </text>
+    <text freecad:editable="ApprovalPerson" y="258" x="133"><tspan y="258" x="133" id="tspan5817">myself</tspan> </text>
+    <text freecad:editable="LegalOwner" y="267" x="21"><tspan id="tspan5821" y="267" x="21">my company</tspan> </text>
+    <text freecad:editable="DocumentType" x="90" y="267"><tspan x="90" y="267" id="tspan5823">type</tspan></text>
+    <text freecad:editable="Title" y="276" x="90"><tspan id="tspan5827" y="276" x="90">title</tspan></text>
+    <text freecad:editable="IdNumber" x="150" y="276"><tspan x="150" y="276" id="tspan5829">0001</tspan></text>
+    <text freecad:editable="Date" x="157" y="285"><tspan x="157" y="285" id="tspan5833">2000-00-00</tspan></text>
+    <text freecad:editable="OptResponsibleDept" y="258" x="21"><tspan y="258" x="21"></tspan></text>
+    <text freecad:editable="OptTechnicalRef" x="46" y="258"><tspan x="46" y="258"></tspan></text>
+    <text freecad:editable="Classification" y="258" x="176"><tspan y="258" x="176"></tspan></text>
+    <text freecad:editable="OptDocumentStatus" x="150" y="267"><tspan x="150" y="267"></tspan></text>
+    <text freecad:editable="OptRevison" x="150" y="285"><tspan x="150" y="285"></tspan></text>
+    <text freecad:editable="OptLanguage" x="182" y="285"><tspan x="182" y="285"></tspan></text>
+    <text freecad:editable="SegmentsOrSheets" y="285" x="192"><tspan y="285" x="192"></tspan></text>
+    <text freecad:editable="OptSupTitle" y="281" x="90"><tspan id="tspan5827" y="281" x="90"></tspan></text>
+    <text freecad:editable="OptSupTitle2" y="285" x="90"><tspan id="tspan5827" y="285" x="90"></tspan></text>
     </g>
       </g>
 <!-- DrawingContent -->
