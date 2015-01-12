@@ -295,6 +295,7 @@ protected:
                     ViewProviderT::attach(ViewProviderT::pcObject);
                     // needed to load the right display mode after they're known now
                     ViewProviderT::DisplayMode.touch();
+                    ViewProviderT::setOverrideMode(viewerMode);
                 }
                 ViewProviderT::updateView();
             }
@@ -326,11 +327,17 @@ protected:
         else 
             return true;
     }
+    virtual void setOverrideMode(const std::string &mode)
+    {
+        ViewProviderT::setOverrideMode(mode);
+        viewerMode = mode;
+    }
 
 private:
     ViewProviderPythonFeatureImp* imp;
     App::DynamicProperty *props;
     App::PropertyPythonObject Proxy;
+    std::string viewerMode;
     bool _attached;
 };
 
