@@ -30,14 +30,12 @@
 #include <GeomFill_BezierCurves.hxx>
 #include <Geom_BoundedSurface.hxx>
 #include "Mod/Part/App/PartFeature.h"
+#include "../FillType.h"
 
 namespace Surface
 {
 
-enum filltype_t
-{
-StretchStyle = 1, CoonsStyle, CurvedStyle
-};
+
 
 class BSurf : public Part::Feature
 {
