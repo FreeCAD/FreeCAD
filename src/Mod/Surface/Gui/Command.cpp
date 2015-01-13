@@ -240,6 +240,8 @@ CmdSurfaceBSpline::CmdSurfaceBSpline()
 
 void CmdSurfaceBSpline::activated(int iMsg)
 {
+/*    Gui::Dialog::TaskPlacement* plm = new Gui::Dialog::TaskPlacement();
+    Gui::Control().showDialog(plm);*/
     /*if (!isActive()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select 2, 3 or 4 curves, please."));
@@ -259,6 +261,7 @@ void CmdSurfaceBSpline::activated(int iMsg)
     openCommand("Create BSpline surface");
     doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=1"); // TODO ask filltype from user and check it
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
     runCommand(Doc, bspListCmd.str().c_str());
     updateActive();
     commitCommand();
