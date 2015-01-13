@@ -60,7 +60,7 @@ using namespace std;
 // ---------------------------------------------------------------------------
 
 Base::XMLReader::XMLReader(const char* FileName, std::istream& str) 
-  : DocumentSchema(0), ProgramVersion(""), FileVersion(0), Level(0), _File(FileName)
+  : DocumentSchema(0), ProgramVersion(""), FileVersion(0), Level(0), _File(FileName), _verbose(true)
 {
 #ifdef _MSC_VER
     str.imbue(std::locale::empty());
