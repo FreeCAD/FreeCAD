@@ -939,30 +939,34 @@ void segmentation_fault_handler(int sig)
     switch (sig) {
         case SIGSEGV:
             std::cerr << "Illegal storage access..." << std::endl;
+#if !defined(_DEBUG)
             throw Base::Exception("Illegal storage access! Please save your work under a new file name and restart the application!");
+#endif
             break;
         case SIGABRT:
             std::cerr << "Abnormal program termination..." << std::endl;
+#if !defined(_DEBUG)
             throw Base::Exception("Break signal occoured");
+#endif
             break;
         default:
             std::cerr << "Unknown error occurred..." << std::endl;
             break;
     }
-
 }
 
 void my_terminate_handler()
 {
     std::cerr << "Terminating..." << std::endl;
-
 }
 
 void unexpection_error_handler()
 {
     std::cerr << "Unexpected error occurred..." << std::endl;
     // try to throw to give the user evantually a change to save 
+#if !defined(_DEBUG)
     throw Base::Exception("Unexpected error occurred! Please save your work under a new file name and restart the application!");
+#endif
 
     terminate();
 }

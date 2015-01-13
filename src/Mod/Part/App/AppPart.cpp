@@ -116,9 +116,9 @@ void PartExport initPart()
     // if we have mysterious crashes
     // The argument must be 'Standard_False' to avoid FPE caused by
     // Python's cmath module.
-//#if defined(FC_OS_LINUX)
+#if !defined(_DEBUG)
     OSD::SetSignal(Standard_False);
-//#endif
+#endif
 
     PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
     Base::Console().Log("Loading Part module... done\n");
