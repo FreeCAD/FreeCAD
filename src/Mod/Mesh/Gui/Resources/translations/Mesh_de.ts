@@ -1262,7 +1262,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Standford Polygon (*.ply)</source>
-        <translation>Standford Polygon (*.ply)</translation>
+        <translation type="obsolete">Standford Polygon (*.ply)</translation>
     </message>
     <message>
         <source>Delete selected faces</source>
@@ -1281,7 +1281,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
         <translation>Alle Netz-Dateien (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
+        <source>X3D Extensible 3D (*.x3d)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -331,8 +331,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Create a dress up object which overide some aspects of a trajectory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Create a dress up object which overide som aspects of a trajectory</source>
-        <translation>Erstelle Dress-Up-Objekt, das Teile der Trajektorie überschreibt</translation>
+        <translation type="obsolete">Erstelle Dress-Up-Objekt, das Teile der Trajektorie überschreibt</translation>
     </message>
 </context>
 <context>

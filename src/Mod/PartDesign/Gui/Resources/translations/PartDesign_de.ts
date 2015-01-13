@@ -12,7 +12,7 @@
         <translation type="obsolete">Abschrägung ...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+640"/>
+        <location filename="../../Command.cpp" line="+642"/>
         <source>PartDesign</source>
         <translation>Teile-Konstruktion</translation>
     </message>
@@ -138,7 +138,7 @@
 <context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1045"/>
+        <location line="-1047"/>
         <source>PartDesign</source>
         <translation>Teile-Konstruktion</translation>
     </message>
@@ -156,7 +156,7 @@
 <context>
     <name>CmdPartDesignPocket</name>
     <message>
-        <location line="+76"/>
+        <location line="+78"/>
         <source>PartDesign</source>
         <translation>Teile-Konstruktion</translation>
     </message>
@@ -228,7 +228,7 @@
 <context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+41"/>
+        <location filename="../../Workbench.cpp" line="+42"/>
         <source>Face tools</source>
         <translation>Oberflächenwerkzeuge</translation>
     </message>
@@ -261,33 +261,30 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>mm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>Pressure angle:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+22"/>
-        <source>deg</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>Number of Curves:</source>
+        <location line="+85"/>
+        <source>High precision:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+14"/>
-        <source>2x3</source>
+        <location line="+27"/>
+        <source>True</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>1x4</source>
+        <location line="-22"/>
+        <location line="+27"/>
+        <source>False</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-19"/>
+        <source>External gear:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-68"/>
+        <source>Pressure angle:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -408,17 +405,33 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
 </context>
 <context>
+    <name>PartDesignGui::TaskDlgChamferParameters</name>
+    <message>
+        <location line="+74"/>
+        <source>Edit chamfer</source>
+        <translation type="unfinished">Fase bearbeiten</translation>
+    </message>
+</context>
+<context>
     <name>PartDesignGui::TaskDlgDraftParameters</name>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="+397"/>
+        <location filename="../../TaskDraftParameters.cpp" line="+400"/>
         <source>Input error</source>
         <translation>Eingabefehler</translation>
     </message>
 </context>
 <context>
+    <name>PartDesignGui::TaskDlgFilletParameters</name>
+    <message>
+        <location filename="../../TaskFilletParameters.cpp" line="+126"/>
+        <source>Edit fillet</source>
+        <translation type="unfinished">Bearbeite Verrundung</translation>
+    </message>
+</context>
+<context>
     <name>PartDesignGui::TaskDlgLinearPatternParameters</name>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="+450"/>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="+452"/>
         <source>Input error</source>
         <translation>Eingabefehler</translation>
     </message>
@@ -442,7 +455,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+520"/>
+        <location filename="../../TaskPadParameters.cpp" line="+527"/>
         <source>Input error</source>
         <translation>Eingabefehler</translation>
     </message>
@@ -450,7 +463,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPocketParameters</name>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="+474"/>
+        <location filename="../../TaskPocketParameters.cpp" line="+441"/>
+        <source>Edit pocket</source>
+        <translation type="unfinished">Bearbeite Tasche</translation>
+    </message>
+    <message>
+        <location line="+35"/>
         <source>Input error</source>
         <translation>Eingabefehler</translation>
     </message>
@@ -458,7 +476,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
 <context>
     <name>PartDesignGui::TaskDlgPolarPatternParameters</name>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="+397"/>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="+396"/>
         <source>Input error</source>
         <translation>Eingabefehler</translation>
     </message>
@@ -474,7 +492,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
 <context>
     <name>PartDesignGui::TaskDlgTransformedParameters</name>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="+262"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="+264"/>
         <source>Input error</source>
         <translation>Eingabefehler</translation>
     </message>
@@ -502,7 +520,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Draft angle</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+30"/>
         <source>Neutral plane</source>
         <translation>Neutrale Ebene</translation>
     </message>
@@ -517,12 +535,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Reverse pull direction</translation>
     </message>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="-344"/>
+        <location filename="../../TaskDraftParameters.cpp" line="-347"/>
         <source>Draft parameters</source>
         <translation>Draft parameters</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+43"/>
         <source>Remove</source>
         <translation>Entfernen</translation>
     </message>
@@ -540,7 +558,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Radius:</translation>
     </message>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="+52"/>
+        <location filename="../../TaskFilletParameters.cpp" line="-74"/>
         <source>Fillet parameters</source>
         <translation>Rundungsparameter</translation>
     </message>
@@ -676,7 +694,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Länge</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+21"/>
         <source>Occurrences</source>
         <translation>Occurrences</translation>
     </message>
@@ -869,10 +887,10 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
     <message>
         <location line="+27"/>
-        <location filename="../../TaskPadParameters.cpp" line="-394"/>
+        <location filename="../../TaskPadParameters.cpp" line="-398"/>
         <location line="+109"/>
-        <location line="+105"/>
-        <location line="+97"/>
+        <location line="+106"/>
+        <location line="+100"/>
         <source>Face</source>
         <translation>Fläche</translation>
     </message>
@@ -887,8 +905,8 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
     <message>
         <location line="-102"/>
-        <location filename="../../TaskPadParameters.cpp" line="-307"/>
-        <location line="+293"/>
+        <location filename="../../TaskPadParameters.cpp" line="-311"/>
+        <location line="+294"/>
         <source>Dimension</source>
         <translation>Abmessung</translation>
     </message>
@@ -930,38 +948,37 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation type="obsolete">TaskPadParameters</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="-367"/>
+        <location filename="../../TaskPadParameters.cpp" line="-371"/>
         <source>Pad parameters</source>
         <translation>Seitenparameter</translation>
     </message>
     <message>
-        <location line="+71"/>
-        <location line="+116"/>
-        <location line="+195"/>
+        <location line="+70"/>
+        <location line="+315"/>
         <source>No face selected</source>
         <translation>Keine Fläche ausgewählt</translation>
     </message>
     <message>
         <location line="-307"/>
-        <location line="+293"/>
+        <location line="+294"/>
         <source>To last</source>
         <translation>Zur Letzten</translation>
     </message>
     <message>
-        <location line="-292"/>
-        <location line="+293"/>
+        <location line="-293"/>
+        <location line="+294"/>
         <source>To first</source>
         <translation>Zur Ersten</translation>
     </message>
     <message>
-        <location line="-292"/>
-        <location line="+293"/>
+        <location line="-293"/>
+        <location line="+294"/>
         <source>Up to face</source>
         <translation>Bis zu Oberfläche</translation>
     </message>
     <message>
-        <location line="-292"/>
-        <location line="+293"/>
+        <location line="-293"/>
+        <location line="+294"/>
         <source>Two dimensions</source>
         <translation>Zwei Maße</translation>
     </message>
@@ -1015,13 +1032,13 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-356"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-360"/>
         <location line="+278"/>
         <source>Dimension</source>
         <translation>Abmessung</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+34"/>
         <source>Symmetric to plane</source>
         <translation>Symmetrisch zur Ebene</translation>
     </message>
@@ -1045,12 +1062,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Ansicht aktualisieren</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-60"/>
         <source>Length</source>
         <translation>Länge</translation>
     </message>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="-352"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-350"/>
         <source>Pocket parameters</source>
         <translation>Taschenparameter</translation>
     </message>
@@ -1059,7 +1076,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation type="obsolete">Zur Letzten</translation>
     </message>
     <message>
-        <location line="+63"/>
+        <location line="+61"/>
         <location line="+278"/>
         <source>To first</source>
         <translation>Zur Ersten</translation>
@@ -1140,7 +1157,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Winkel</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+27"/>
         <source>Occurrences</source>
         <translation>Occurrences</translation>
     </message>
@@ -1216,7 +1233,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Drehparameter</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+56"/>
         <source>Undefined</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1290,16 +1307,16 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation type="obsolete">Wählen Sie eine Kante, eine Fläche oder einen Körper. Nur ein Körper ist erlaubt.</translation>
     </message>
     <message>
-        <location line="-649"/>
-        <location line="+78"/>
+        <location line="-651"/>
+        <location line="+80"/>
         <location line="+72"/>
         <location line="+80"/>
         <source>No valid sketches in this document</source>
         <translation>Keine passenden Skizzen in diesem Dokument</translation>
     </message>
     <message>
-        <location line="-229"/>
-        <location line="+150"/>
+        <location line="-231"/>
+        <location line="+152"/>
         <source>Please create a sketch or 2D object first</source>
         <translation>Please create a sketch or 2D object first</translation>
     </message>
@@ -1328,8 +1345,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Rundung funktioniert nur bei Teilen</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location line="+303"/>
+        <location line="+312"/>
         <source>Shape of selected Part is empty</source>
         <translation>Selektierter Körper ist leer</translation>
     </message>
@@ -1344,7 +1360,8 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <translation>Fase arbeitet nur auf Körpern</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-142"/>
+        <location line="+152"/>
         <source>Shape of selected part is empty</source>
         <translation>Ausgewählter Körper ist leer</translation>
     </message>
@@ -1379,6 +1396,10 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     </message>
     <message>
         <location line="-313"/>
+        <source>Please create a subtractive or additive feature first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+76"/>
         <location line="+83"/>
         <location line="+83"/>
@@ -1397,7 +1418,7 @@ Create the sketch on a face.</source>
 Erstelle die Skizze auf der Fläche.</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+52"/>
+        <location filename="../../TaskPadParameters.cpp" line="+55"/>
         <location filename="../../ViewProviderPad.cpp" line="+61"/>
         <source>Edit pad</source>
         <translation>Block bearbeiten</translation>
@@ -1416,10 +1437,10 @@ Erstelle die Skizze auf der Fläche.</translation>
         <location line="+17"/>
         <location filename="../../ViewProviderDraft.cpp" line="+72"/>
         <location filename="../../ViewProviderFillet.cpp" line="+72"/>
-        <location filename="../../ViewProviderGroove.cpp" line="+79"/>
+        <location filename="../../ViewProviderGroove.cpp" line="+89"/>
         <location filename="../../ViewProviderPad.cpp" line="+23"/>
         <location filename="../../ViewProviderPocket.cpp" line="+17"/>
-        <location filename="../../ViewProviderRevolution.cpp" line="+79"/>
+        <location filename="../../ViewProviderRevolution.cpp" line="+89"/>
         <location filename="../../ViewProviderTransformed.cpp" line="+175"/>
         <source>A dialog is already open in the task panel</source>
         <translation>Es ist bereits ein Dialog in der Aufgabenleiste geöffnet</translation>
@@ -1437,17 +1458,29 @@ Erstelle die Skizze auf der Fläche.</translation>
         <translation>Möchten Sie diesen Dialog zu schließen?</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderRevolution.cpp" line="-18"/>
+        <location filename="../../ViewProviderRevolution.cpp" line="-28"/>
         <source>Edit revolution</source>
         <translation>Drehung bearbeiten</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderGroove.cpp" line="-18"/>
+        <location filename="../../ViewProviderGroove.cpp" line="-28"/>
         <source>Edit Groove</source>
         <translation>Nuten bearbeiten</translation>
     </message>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="+280"/>
+        <location line="+12"/>
+        <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
+        <source>Lost link to base sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
+        <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskDraftParameters.cpp" line="+284"/>
         <source>Missing neutral plane</source>
         <translation>Missing neutral plane</translation>
     </message>
@@ -1457,6 +1490,7 @@ Erstelle die Skizze auf der Fläche.</translation>
         <translation>Please select a plane or an edge plus a pull direction</translation>
     </message>
     <message>
+        <location line="-17"/>
         <location filename="../../ViewProviderDraft.cpp" line="-18"/>
         <source>Edit draft</source>
         <translation>Entwurf bearbeiten</translation>
@@ -1480,6 +1514,16 @@ Erstelle die Skizze auf der Fläche.</translation>
         <location line="+9"/>
         <source>Transformation succeeded</source>
         <translation>Transformation erfolgreich</translation>
+    </message>
+    <message>
+        <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
+        <source>Edit groove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
+        <source>Edit revolve</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

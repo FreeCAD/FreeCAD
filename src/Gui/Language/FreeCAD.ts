@@ -487,7 +487,7 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Add icons...</source>
+        <source>Icon folders...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -812,6 +812,10 @@ Please define another shortcut.</source>
         <source></source>
         <translation></translation>
     </message>
+    <message>
+        <source>Global</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -922,6 +926,97 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Document window:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aluminium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Brass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bronze</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copper</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chrome</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emerald</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Jade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metalized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Neon GNC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Neon PHC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Obsidian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pewter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plaster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plastic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruby</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Satin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shiny plastic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Silver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Steel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stone</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1497,7 +1592,7 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
+        <source>Please select an object from the list</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1962,10 +2057,6 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transparent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2459,7 +2550,26 @@ Specify another directory, please.</source>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
+        <source>Icon folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add icon folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::IconFolders</name>
+    <message>
+        <source>Add or remove custom icon folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Removing a folder only takes effect after an application restart.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2712,6 +2822,14 @@ Specify another directory, please.</source>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Incorrect quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are input fields with incorrect input, please ensure valid placement values!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::PrintModel</name>
@@ -2946,6 +3064,50 @@ Specify another directory, please.</source>
     <name>Gui::DockWnd::SelectionView</name>
     <message>
         <source>Property View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Searches object labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clears the search field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selects only this object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deselect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deselects this object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zoom fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selects and fits this object in the 3D window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selects and locates this object in the tree view</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3194,6 +3356,13 @@ Do you want to save your changes?</source>
     </message>
 </context>
 <context>
+    <name>Gui::LabelEditor</name>
+    <message>
+        <source>List</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::LocationDialog</name>
     <message>
         <source>Wrong direction</source>
@@ -3373,6 +3542,17 @@ How do you want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>Gui::PrefQuantitySpinBox</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save value</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::ProgressBar</name>
     <message>
         <source>Remaining: %1</source>
@@ -3523,6 +3703,17 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Uncomment</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::QuantitySpinBox</name>
+    <message>
+        <source>Maximum reached</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimum reached</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3877,6 +4068,17 @@ Do you want to specify another directory?</source>
     </message>
 </context>
 <context>
+    <name>PropertyListDialog</name>
+    <message>
+        <source>Invalid input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input in line %1 is not a number</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QDockWidget</name>
     <message>
         <source>Tree view</source>
@@ -4115,10 +4317,6 @@ Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4266,6 +4464,14 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Do you want to close this dialog?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you don&apos;t save, your changes will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5042,6 +5248,14 @@ You either have to finish or cancel the editing in the task panel.</source>
         <source>All files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cannot open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading the file %1 is not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StdCmdPaste</name>
@@ -5796,11 +6010,11 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
+        <source>Stereo red/cyan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Switch stereo viewing to red/green</source>
+        <source>Switch stereo viewing to red/cyan</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5891,6 +6105,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Set to top view</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdViewVR</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD-VR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

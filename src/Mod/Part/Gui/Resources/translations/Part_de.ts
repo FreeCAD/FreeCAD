@@ -131,7 +131,7 @@
 <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="+1452"/>
+        <location filename="../../Command.cpp" line="+1501"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -297,7 +297,7 @@
 <context>
     <name>CmdPartBox2</name>
     <message>
-        <location filename="../../Command.cpp" line="-705"/>
+        <location filename="../../Command.cpp" line="-753"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -333,7 +333,7 @@
 <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location line="+864"/>
+        <location line="+912"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -369,7 +369,7 @@
 <context>
     <name>CmdPartCommon</name>
     <message>
-        <location line="-619"/>
+        <location line="-653"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -387,7 +387,7 @@
 <context>
     <name>CmdPartCompound</name>
     <message>
-        <location line="+128"/>
+        <location line="+162"/>
         <source>Part</source>
         <translation type="unfinished">Formteil</translation>
     </message>
@@ -443,7 +443,7 @@
 <context>
     <name>CmdPartCut</name>
     <message>
-        <location line="-736"/>
+        <location line="-784"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -481,7 +481,7 @@
 <context>
     <name>CmdPartExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+345"/>
+        <location filename="../../Command.cpp" line="+393"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -535,7 +535,7 @@
 <context>
     <name>CmdPartFuse</name>
     <message>
-        <location line="-527"/>
+        <location line="-544"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -553,7 +553,7 @@
 <context>
     <name>CmdPartImport</name>
     <message>
-        <location line="+158"/>
+        <location line="+175"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -665,7 +665,7 @@
 <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-        <location line="-1038"/>
+        <location line="-1086"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -719,7 +719,7 @@
 <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+567"/>
+        <location filename="../../Command.cpp" line="+615"/>
         <source>Part</source>
         <translation>Formteil</translation>
     </message>
@@ -1063,7 +1063,7 @@
         <translation>Schnitt</translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="+385"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="+386"/>
         <source>Cannot perform a boolean operation with the same shape</source>
         <translation>Kann eine boolesche Operation mit der gleichen Form nicht ausführen</translation>
     </message>
@@ -1135,7 +1135,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+951"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+964"/>
         <source>Chamfer Edges</source>
         <translation>Kanten abschrägen</translation>
     </message>
@@ -1218,7 +1218,7 @@
     </message>
     <message>
         <location line="+85"/>
-        <source>Suceeded</source>
+        <source>Succeeded</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1287,7 +1287,7 @@
         <translation>Keine Auswahl</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-715"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-728"/>
         <source>Length:</source>
         <translation type="unfinished">Länge:</translation>
     </message>
@@ -1308,12 +1308,12 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+507"/>
+        <location line="+520"/>
         <source>Start length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-506"/>
+        <location line="-519"/>
         <source>End length</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1324,17 +1324,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+504"/>
+        <location line="+517"/>
         <source>Start radius</source>
         <translation>Start-Radius</translation>
     </message>
     <message>
-        <location line="-503"/>
+        <location line="-516"/>
         <source>End radius</source>
         <translation>End-Radius</translation>
     </message>
     <message>
-        <location line="+493"/>
+        <location line="+506"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1382,6 +1382,132 @@ Bitte markieren Sie zuerst ein oder mehrere Kantengebilde.</translation>
 Please select a valid shape in the drop-down box first.</source>
         <translation>Keine gültige Form gewählt.
 Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
+    </message>
+</context>
+<context>
+    <name>PartGui::DlgImportExportIges</name>
+    <message>
+        <location filename="../../DlgImportExportIges.ui" line="+14"/>
+        <source>IGES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Export</source>
+        <translation type="unfinished">Exportieren</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Units for export of IGES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Millimeter</source>
+        <translation type="unfinished">Millimeter</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Meter</source>
+        <translation type="unfinished">Meter</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Inch</source>
+        <translation type="unfinished">Zoll</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Enable B-REP mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Import</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Skip blank entities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Header</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Company</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartGui::DlgImportExportStep</name>
+    <message>
+        <location filename="../../DlgImportExportStep.ui" line="+14"/>
+        <source>STEP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Export</source>
+        <translation type="unfinished">Exportieren</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Units for export of STEP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Millimeter</source>
+        <translation type="unfinished">Millimeter</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Meter</source>
+        <translation type="unfinished">Meter</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Inch</source>
+        <translation type="unfinished">Zoll</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Scheme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Header</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Company</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Product</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1654,7 +1780,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../../DlgPrimitives.cpp" line="+520"/>
+        <location filename="../../DlgPrimitives.cpp" line="+519"/>
         <source>Wedge</source>
         <translation>Keil</translation>
     </message>
@@ -1674,15 +1800,15 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation type="obsolete">Position</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.ui" line="+1619"/>
-        <location line="+51"/>
+        <location filename="../../DlgPrimitives.ui" line="+1567"/>
+        <location line="+81"/>
         <location line="+54"/>
         <source>Z:</source>
         <translation>Z:</translation>
     </message>
     <message>
-        <location line="-125"/>
-        <location line="+51"/>
+        <location line="-155"/>
+        <location line="+81"/>
         <location line="+54"/>
         <source>X:</source>
         <translation>X:</translation>
@@ -1692,15 +1818,15 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation type="obsolete">Richtung:</translation>
     </message>
     <message>
-        <location line="-95"/>
-        <location line="+51"/>
+        <location line="-125"/>
+        <location line="+81"/>
         <location line="+54"/>
         <source>Y:</source>
         <translation>Y:</translation>
     </message>
     <message>
-        <location line="-1813"/>
-        <location filename="../../DlgPrimitives.cpp" line="-241"/>
+        <location line="-1791"/>
+        <location filename="../../DlgPrimitives.cpp" line="-243"/>
         <source>Plane</source>
         <translation>Ebene</translation>
     </message>
@@ -1730,7 +1856,7 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../DlgPrimitives.cpp" line="+20"/>
+        <location filename="../../DlgPrimitives.cpp" line="+22"/>
         <source>Ellipsoid</source>
         <translation>Ellipsoid</translation>
     </message>
@@ -1781,109 +1907,130 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Parameter</translation>
     </message>
     <message>
-        <location line="+46"/>
-        <location line="+120"/>
+        <location line="+43"/>
+        <location line="+107"/>
         <source>Width:</source>
         <translation>Breite:</translation>
     </message>
     <message>
-        <location line="-113"/>
-        <location line="+96"/>
+        <location line="-100"/>
+        <location line="+93"/>
         <source>Length:</source>
         <translation>Länge:</translation>
     </message>
     <message>
-        <location line="-30"/>
-        <location line="+154"/>
-        <location line="+80"/>
-        <location line="+559"/>
-        <location line="+284"/>
+        <location line="-7"/>
+        <location line="+111"/>
+        <location line="+120"/>
+        <location line="+535"/>
+        <location line="+239"/>
         <source>Height:</source>
         <translation>Höhe:</translation>
     </message>
     <message>
-        <location line="-1003"/>
+        <location line="-954"/>
         <location line="+107"/>
-        <location line="+903"/>
+        <location line="+854"/>
         <source>Angle:</source>
         <translation>Winkel:</translation>
     </message>
     <message>
-        <location line="-957"/>
-        <location line="+280"/>
-        <location line="+626"/>
-        <location line="+128"/>
+        <location line="-908"/>
+        <location line="+274"/>
+        <location line="+613"/>
+        <location line="+122"/>
         <location line="+65"/>
         <source>Radius:</source>
         <translation>Radius:</translation>
     </message>
     <message>
-        <location line="-955"/>
-        <location line="+216"/>
-        <location line="+219"/>
+        <location line="-940"/>
+        <location line="+200"/>
+        <location line="+254"/>
         <source>Radius 1:</source>
         <translation>Radius 1:</translation>
     </message>
     <message>
-        <location line="-428"/>
-        <location line="+216"/>
-        <location line="+205"/>
+        <location line="-447"/>
+        <location line="+200"/>
+        <location line="+240"/>
         <source>Radius 2:</source>
         <translation>Radius 2:</translation>
     </message>
     <message>
-        <location line="-384"/>
-        <location line="+196"/>
-        <location line="+96"/>
+        <location line="-377"/>
+        <location line="+191"/>
+        <source>U parameter:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-184"/>
+        <source>V parameters:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+137"/>
+        <source>Radius 3:</source>
+        <translation type="unfinished">Radius 2: {3:?}</translation>
+    </message>
+    <message>
+        <location line="+70"/>
+        <location line="+90"/>
+        <source>V parameter:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-23"/>
+        <source>U Parameter:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>U parametric:</source>
-        <translation>U Parameter:</translation>
+        <translation type="obsolete">U Parameter:</translation>
     </message>
     <message>
-        <location line="-256"/>
-        <location line="+196"/>
-        <location line="+96"/>
         <source>V parametric:</source>
-        <translation>V Parameter:</translation>
+        <translation type="obsolete">V Parameter:</translation>
     </message>
     <message>
-        <location line="+110"/>
-        <location line="+892"/>
+        <location line="+150"/>
+        <location line="+882"/>
         <source>Polygon:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-872"/>
-        <location line="+892"/>
+        <location line="-862"/>
+        <location line="+882"/>
         <source>Circumradius:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-834"/>
+        <location line="-831"/>
         <source>X min/max:</source>
         <translation>X min/max:</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+7"/>
         <source>Y min/max:</source>
         <translation>Y min/max:</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+7"/>
         <source>Z min/max:</source>
         <translation>Z min/max:</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+7"/>
         <source>X2 min/max:</source>
         <translation>X2 min/max:</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+7"/>
         <source>Z2 min/max:</source>
         <translation>Z2 min/max:</translation>
     </message>
     <message>
-        <location line="+153"/>
+        <location line="+181"/>
         <source>Coordinate system:</source>
         <translation>Koordinatensystem:</translation>
     </message>
@@ -1898,29 +2045,29 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Linksdrehend</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+88"/>
         <source>Growth:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+7"/>
         <source>Number of rotations:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+38"/>
-        <location line="+119"/>
+        <location line="+58"/>
+        <location line="+103"/>
         <source>Angle 1:</source>
         <translation>Winkel 1:</translation>
     </message>
     <message>
-        <location line="-102"/>
-        <location line="+119"/>
+        <location line="-96"/>
+        <location line="+103"/>
         <source>Angle 2:</source>
         <translation>Winkel 2:</translation>
     </message>
     <message>
-        <location line="-79"/>
+        <location line="-49"/>
         <source>From three points</source>
         <translation>Aus drei Punkten</translation>
     </message>
@@ -1930,12 +2077,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Hauptradius:</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+7"/>
         <source>Minor radius:</source>
         <translation>Nebenradius:</translation>
     </message>
     <message>
-        <location line="+175"/>
+        <location line="+200"/>
         <source>End point</source>
         <translation>Endpunkt</translation>
     </message>
@@ -1962,25 +2109,25 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation type="obsolete">Alt+I</translation>
     </message>
     <message>
-        <location line="-486"/>
-        <location line="+297"/>
+        <location line="-488"/>
+        <location line="+299"/>
         <location line="+8"/>
         <source>Create %1</source>
         <translation>Erstelle %1</translation>
     </message>
     <message>
-        <location line="-304"/>
+        <location line="-306"/>
         <source>No active document</source>
         <translation>Kein aktives Dokument</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.ui" line="-490"/>
+        <location filename="../../DlgPrimitives.ui" line="-493"/>
         <source>Pitch:</source>
         <translation>Steigung:</translation>
     </message>
     <message>
-        <location line="-1225"/>
-        <location filename="../../DlgPrimitives.cpp" line="+190"/>
+        <location line="-1200"/>
+        <location filename="../../DlgPrimitives.cpp" line="+192"/>
         <source>Helix</source>
         <translation>Helix</translation>
     </message>
@@ -2138,32 +2285,27 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Allgemein</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>Export</source>
-        <translation>Exportieren</translation>
+        <translation type="obsolete">Exportieren</translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>Millimeter</source>
-        <translation>Millimeter</translation>
+        <translation type="obsolete">Millimeter</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Meter</source>
-        <translation>Meter</translation>
+        <translation type="obsolete">Meter</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Inch</source>
-        <translation>Zoll</translation>
+        <translation type="obsolete">Zoll</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Units for export of STEP/IGES</source>
-        <translation>Einheiten für den Export von STEP/IGES</translation>
+        <translation type="obsolete">Einheiten für den Export von STEP/IGES</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+6"/>
         <source>Model settings</source>
         <translation>Modelleinstellungen</translation>
     </message>
@@ -2302,14 +2444,14 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation type="obsolete">Knoten/Draht</translation>
     </message>
     <message>
-        <location filename="../../TaskLoft.cpp" line="+72"/>
-        <location line="+131"/>
+        <location filename="../../TaskLoft.cpp" line="+73"/>
+        <location line="+145"/>
         <source>Vertex/Edge/Wire/Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-130"/>
-        <location line="+131"/>
+        <location line="-144"/>
+        <location line="+145"/>
         <source>Loft</source>
         <translation>Freiformfläche</translation>
     </message>
@@ -2429,16 +2571,17 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
 <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="+166"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="+171"/>
         <location line="+19"/>
-        <location line="+22"/>
-        <location line="+46"/>
-        <location line="+47"/>
+        <location line="+28"/>
+        <location line="+52"/>
+        <location line="+52"/>
+        <location line="+53"/>
         <source>Wrong selection</source>
         <translation>Falsche Auswahl</translation>
     </message>
     <message>
-        <location line="-134"/>
+        <location line="-204"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Wähle zwei Knotenpunkte</translation>
@@ -2448,24 +2591,34 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation type="obsolete">Wähle drei oder mehr Kanten</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+28"/>
+        <source>Select three or more vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+52"/>
         <source>Select one or more edges</source>
         <translation>Eine oder mehrere Kanten auswählen</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+52"/>
         <source>Select two or more faces</source>
         <translation>Wähle zwei oder mehr Oberflächen aus</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+53"/>
         <source>Select only one part object</source>
         <translation>Wählen Sie nur ein Teileobjekt</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+40"/>
         <source>Select two vertices to create an edge</source>
         <translation>Wählen Sie zwei Knoten zum Erzeugen einer Kante aus</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Select a list of vertices</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2486,33 +2639,39 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
 <context>
     <name>PartGui::SweepWidget</name>
     <message>
-        <location filename="../../TaskSweep.cpp" line="+234"/>
+        <location filename="../../TaskSweep.cpp" line="+414"/>
         <source>Vertex/Wire</source>
         <translation>Knoten/Draht</translation>
     </message>
     <message>
-        <location line="-160"/>
-        <location line="+161"/>
+        <location line="-279"/>
+        <location line="+280"/>
         <source>Sweep</source>
         <translation>Sweep</translation>
     </message>
     <message>
-        <location line="-162"/>
+        <location line="-281"/>
         <source>Vertex/Edge/Wire/Face</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+129"/>
+        <location line="+131"/>
+        <location line="+8"/>
         <source>Sweep path</source>
         <translation>Sweep-Pfad</translation>
     </message>
     <message>
-        <location line="+0"/>
         <source>Select an edge or wire you want to sweep along.</source>
-        <translation>Wählen Sie eine Kante oder Draht entlang sweepen möchten.</translation>
+        <translation type="obsolete">Wählen Sie eine Kante oder Draht entlang sweepen möchten.</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="-139"/>
+        <source>Select one or more connected edges you want to sweep along.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
         <source>Too few elements</source>
         <translation>Zu wenig Elemente</translation>
     </message>
@@ -2532,9 +2691,25 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+37"/>
         <source>Input error</source>
         <translation type="unfinished">Eingabefehler</translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>Done</source>
+        <translation type="unfinished">Done</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <location line="+8"/>
+        <source>The selected sweep path is invalid.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2888,16 +3063,21 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
         <location line="+7"/>
+        <source>Face from vertices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Face from edges</source>
         <translation>Oberflächen aus Kanten</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+28"/>
         <source>Planar</source>
         <translation>Planar</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-21"/>
         <source>Shell from faces</source>
         <translation>Hülle aus Oberflächen</translation>
     </message>
@@ -2907,12 +3087,12 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
         <translation>Volumenkörper aus Hüllkörper</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+43"/>
         <source>Create</source>
         <translation>Erstellen</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="-22"/>
         <source>All faces</source>
         <translation>Alle Oberflächen</translation>
     </message>
@@ -2926,16 +3106,21 @@ Bitte wählen Sie eine gültige Form im Dropdown-Feld.</translation>
     </message>
     <message>
         <location line="+9"/>
+        <source>Sweep Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
         <source>Create solid</source>
         <translation>Erzeuge Volumenkörper</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+7"/>
         <source>Frenet</source>
         <translation>Frenet</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location filename="../../TaskSweep.cpp" line="+42"/>
         <source>Select one or more profiles and select an edge or wire
 in the 3D view for the sweep path.</source>
         <translation>Wählen Sie ein oder mehrere Profile und wählen Sie eine Kante oder Draht in der 3D Ansicht als Sweep-Pfad.</translation>
@@ -2969,38 +3154,38 @@ in the 3D view for the sweep path.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-926"/>
-        <location line="+63"/>
-        <location line="+65"/>
-        <location line="+64"/>
+        <location filename="../../Command.cpp" line="-974"/>
+        <location line="+77"/>
+        <location line="+82"/>
+        <location line="+81"/>
         <location line="+50"/>
         <location line="+908"/>
         <source>Wrong selection</source>
         <translation>Falsche Auswahl</translation>
     </message>
     <message>
-        <location line="-1149"/>
-        <location line="+242"/>
+        <location line="-1197"/>
+        <location line="+290"/>
         <source>Select two shapes please.</source>
         <translation>Wählen Sie bitte zwei Formen.</translation>
     </message>
     <message>
-        <location line="-232"/>
-        <location line="+67"/>
-        <location line="+65"/>
+        <location line="-280"/>
+        <location line="+82"/>
+        <location line="+82"/>
         <source>Non-solids selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-131"/>
-        <location line="+67"/>
-        <location line="+65"/>
+        <location line="-163"/>
+        <location line="+82"/>
+        <location line="+82"/>
         <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+248"/>
+        <location line="+264"/>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
         <translation>Alle CAD-Dateien (*.stp *.step *IGS .IGES *.brp *.brep)</translation>
     </message>
@@ -3040,7 +3225,7 @@ Do you want to continue?</source>
         <translation>Spiegelebene bearbeiten</translation>
     </message>
     <message>
-        <location line="+299"/>
+        <location line="+300"/>
         <source>Edit chamfer edges</source>
         <translation>Gefaste Kanten bearbeiten</translation>
     </message>
@@ -3066,13 +3251,19 @@ Do you want to continue?</source>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+1"/>
+        <source>Import-Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Display</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-332"/>
-        <location line="+65"/>
-        <location line="+64"/>
+        <location filename="../../Command.cpp" line="-366"/>
+        <location line="+82"/>
+        <location line="+81"/>
         <source>Select two shapes or more, please.</source>
         <translation>Wählen Sie bitte zwei oder mehrere Formen aus.</translation>
     </message>
@@ -3087,7 +3278,7 @@ Do you want to continue?</source>
         <translation>Abgerundete Kanten bearbeiten</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+587"/>
+        <location filename="../../ViewProviderExt.cpp" line="+591"/>
         <source>Set colors...</source>
         <translation>Legen sie Farben fest...</translation>
     </message>
