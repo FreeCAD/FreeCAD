@@ -31,7 +31,7 @@ This is the GUI part of the Draft module.
 Report to Draft.py for info
 '''
 
-import FreeCAD, FreeCADGui, os, Draft, sys
+import FreeCAD, FreeCADGui, os, Draft, sys, DraftVecUtils, math
 
 try:
     from PySide import QtCore,QtGui,QtSvg
@@ -230,6 +230,7 @@ class DraftToolBar:
         self.isTaskOn = False
         self.fillmode = Draft.getParam("fillmode",False)
         self.mask = None
+        self.alock = False
         self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
         self.FORMAT = makeFormatSpec(self.DECIMALS,'Length')
         self.AFORMAT = makeFormatSpec(self.DECIMALS,'Angle')
@@ -387,7 +388,24 @@ class DraftToolBar:
         self.labelz = self._label("labelz", zl)
         self.zValue = self._inputfield("zValue", zl)
         self.zValue.setText(self.FORMAT % 0)
+        
+        # text
+        
         self.textValue = self._lineedit("textValue", self.layout)
+        
+        # additional line controls
+
+        ll = QtGui.QHBoxLayout()
+        al = QtGui.QHBoxLayout()
+        self.layout.addLayout(ll)
+        self.layout.addLayout(al)
+        self.labellength = self._label("labellength", ll)
+        self.lengthValue = self._inputfield("lengthValue", ll)
+        self.lengthValue.setText(self.FORMAT % 0)
+        self.labelangle = self._label("labelangle", al)
+        self.angleLock = self._checkbox("angleLock",al,checked=self.alock)
+        self.angleValue = self._inputfield("angleValue", al)
+        self.angleValue.setText(self.AFORMAT % 0)
 
         # shapestring
         
@@ -408,6 +426,7 @@ class DraftToolBar:
         self.STrack = 0 
  
         # options
+        
         fl = QtGui.QHBoxLayout()
         self.layout.addLayout(fl) 
         self.numFacesLabel = self._label("numfaceslabel", fl)      
@@ -451,16 +470,21 @@ class DraftToolBar:
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("valueChanged(double)"),self.changeXValue)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("valueChanged(double)"),self.changeYValue)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("valueChanged(double)"),self.changeZValue)
+        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("valueChanged(double)"),self.changeLengthValue)
+        QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("valueChanged(double)"),self.changeAngleValue)
+        QtCore.QObject.connect(self.angleLock,QtCore.SIGNAL("stateChanged(int)"),self.toggleAngle) 
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("valueChanged(double)"),self.changeRadiusValue)
         QtCore.QObject.connect(self.offsetValue,QtCore.SIGNAL("valueChanged(double)"),self.changeOffsetValue)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("returnPressed()"),self.checkx)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("returnPressed()"),self.checky)
+        QtCore.QObject.connect(self.lengthValue,QtCore.SIGNAL("returnPressed()"),self.checkangle)
         QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
+        QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged(QString)"),self.storeCurrentText)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("returnPressed()"),self.sendText)
         #QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("escaped()"),self.escape)
@@ -512,9 +536,9 @@ class DraftToolBar:
         #QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("escaped()"),self.escape)
         #QtCore.QObject.connect(self.SStringValue,QtCore.SIGNAL("escaped()"),self.escape)
 
-# if Ui changed to have Size & Track visible at same time, use this
-#        QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("returnPressed()"),self.checkSSize)
-#        QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("returnPressed()"),self.checkSTrack)
+        # if Ui changed to have Size & Track visible at same time, use this
+        #QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("returnPressed()"),self.checkSSize)
+        #QtCore.QObject.connect(self.STrackValue,QtCore.SIGNAL("returnPressed()"),self.checkSTrack)
         
     def setupTray(self):
         "sets draft tray buttons up"
@@ -578,6 +602,12 @@ class DraftToolBar:
         self.labelz.setText(translate("draft", "Z"))
         self.yValue.setToolTip(translate("draft", "Y coordinate of next point"))
         self.zValue.setToolTip(translate("draft", "Z coordinate of next point"))
+        self.labellength.setText(translate("draft", "Length"))
+        self.labelangle.setText(translate("draft", "Angle"))
+        self.lengthValue.setToolTip(translate("draft", "Length of current segment"))
+        self.angleValue.setToolTip(translate("draft", "Angle of current segment"))
+        #self.angleLock.setText(translate("draft", "&Lock"))
+        self.angleLock.setToolTip(translate("draft", "Check this to lock the current angle (l)"))
         self.labelRadius.setText(translate("draft", "Radius"))
         self.radiusValue.setToolTip(translate("draft", "Radius of Circle"))
         self.isRelative.setText(translate("draft", "&Relative"))
@@ -705,21 +735,35 @@ class DraftToolBar:
         self.resetPlaneButton.show()
         self.offsetLabel.show()
         self.offsetValue.show()
+        
+    def extraLineUi(self):
+        '''shows length and angle controls'''
+        self.labellength.show()
+        self.lengthValue.show()
+        self.labelangle.show()
+        self.angleValue.show()
+        self.angleLock.show()
 
     def hideXYZ(self):
         ''' turn off all the point entry widgets '''
         self.labelx.hide()
         self.labely.hide()
         self.labelz.hide()
+        self.labellength.hide()
+        self.labelangle.hide()
         self.xValue.hide()
         self.yValue.hide()
         self.zValue.hide()
+        self.lengthValue.hide()
+        self.angleValue.hide()
+        self.angleLock.hide()
 
     def lineUi(self,title=None):
         if title:
             self.pointUi(title,icon="Draft_Line")
         else:
             self.pointUi(translate("draft", "Line"),icon="Draft_Line")
+        self.extraLineUi()
         self.xValue.setEnabled(True)
         self.yValue.setEnabled(True)
         self.isRelative.show()
@@ -1105,6 +1149,10 @@ class DraftToolBar:
             self.zValue.selectAll()
         else:
             self.validatePoint()
+            
+    def checkangle(self):
+        self.angleValue.setFocus()
+        self.angleValue.selectAll()
 
     def validatePoint(self):
         "function for checking and sending numbers entered manually"
@@ -1441,6 +1489,13 @@ class DraftToolBar:
                 self.zValue.setEnabled(True)
                 self.xValue.setFocus()
                 self.xValue.selectAll()
+                
+            # set length and angle
+            if last and dp and plane:
+                self.lengthValue.setText(displayExternal(dp.Length,self.DECIMALS,'Length'))
+                a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
+                self.angleValue.setText(displayExternal(a,self.DECIMALS,'Angle'))
+                
             
     def getDefaultColor(self,type,rgb=False):
         "gets color from the preferences or toolbar"
@@ -1606,7 +1661,8 @@ class DraftToolBar:
 
     def constrain(self,val):
         if val == "angle":
-            FreeCADGui.Snapper.setAngle()
+            self.alock = not(self.alock)
+            self.angleLock.setChecked(self.alock)
         elif self.mask == val:
             self.mask = None
             if hasattr(FreeCADGui,"Snapper"):
@@ -1636,6 +1692,29 @@ class DraftToolBar:
 
     def changeSTrackValue(self,d):
         self.STrack = d
+        
+    def changeLengthValue(self,d):
+        v = FreeCAD.Vector(self.x,self.y,self.z)
+        v = DraftVecUtils.scaleTo(v,d)
+        self.xValue.setText(displayExternal(v.x,self.DECIMALS,'Length'))
+        self.yValue.setText(displayExternal(v.y,self.DECIMALS,'Length'))
+        self.zValue.setText(displayExternal(v.z,self.DECIMALS,'Length'))
+        
+    def changeAngleValue(self,d):
+        print d
+        v = FreeCAD.Vector(self.x,self.y,self.z)
+        a = DraftVecUtils.angle(v,FreeCAD.DraftWorkingPlane.u,FreeCAD.DraftWorkingPlane.axis)
+        a = math.radians(d)+a
+        v=DraftVecUtils.rotate(v,a,FreeCAD.DraftWorkingPlane.axis)
+        self.xValue.setText(displayExternal(v.x,self.DECIMALS,'Length'))
+        self.yValue.setText(displayExternal(v.y,self.DECIMALS,'Length'))
+        self.zValue.setText(displayExternal(v.z,self.DECIMALS,'Length'))
+        
+    def toggleAngle(self,bool):
+        self.alock = self.angleLock.isChecked()
+        FreeCADGui.Snapper.setAngle()
+            
+            
 
 #---------------------------------------------------------------------------
 # TaskView operations

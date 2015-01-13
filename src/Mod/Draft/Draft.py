@@ -4079,6 +4079,7 @@ class _Wire(_DraftObject):
         obj.addProperty("App::PropertyLink","Tool","Draft","The tool object is the wire is formed from 2 objects")
         obj.addProperty("App::PropertyVector","Start","Draft","The start point of this line")
         obj.addProperty("App::PropertyVector","End","Draft","The end point of this line")
+        obj.addProperty("App::PropertyLength","Length","Draft","The length of this line")
         obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
         obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
         obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this object is closed")
@@ -4153,6 +4154,8 @@ class _Wire(_DraftObject):
                             shape = w
             if shape:
                 obj.Shape = shape
+                if hasattr(obj,"Length"):
+                    obj.Length = shape.Length
         obj.Placement = plm
         self.onChanged(obj,"Placement")
         
@@ -4173,6 +4176,14 @@ class _Wire(_DraftObject):
                 if pts[-1] != realfpend:
                     pts[-1] = realfpend
                     obj.Points = pts
+        elif prop == "Length":
+            if obj.Shape:
+                if obj.Length.Value != obj.Shape.Length:
+                    if len(obj.Points) == 2:
+                        v = obj.Points[-1].sub(obj.Points[0])
+                        v = DraftVecUtils.scaleTo(v,obj.Length.Value)
+                        obj.Points = [obj.Points[0],obj.Points[0].add(v)]
+
         elif prop == "Placement":
             pl = FreeCAD.Placement(obj.Placement)
             if len(obj.Points) >= 2:
@@ -4185,6 +4196,7 @@ class _Wire(_DraftObject):
             if len(obj.Points) > 2:
                 obj.setEditorMode('Start',2)
                 obj.setEditorMode('End',2)
+                obj.setEditorMode('Length',2)
                         
 
 class _ViewProviderWire(_ViewProviderDraft):
