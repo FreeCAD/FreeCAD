@@ -230,6 +230,18 @@ def getcolor(color):
         #for k,v in svgcolors.iteritems():
         #    if (k.lower() == color.lower()): pass
 
+def transformCopyShape(shape,matrix):
+    m=matrix
+    #factor=matrix.submatrix(2).isOrthogonal()
+    #if factor != 0.0:
+    if m.A11*m.A11+m.A12*m.A12 == m.A21*m.A21+m.A22*m.A22 and \
+            m.A11*m.A21+m.A12*m.A22 == 0:
+        newshape=shape.copy()
+        newshape.transformShape(matrix)
+        return newshape
+    else:
+        return shape.transformGeometry(matrix)
+
 def getsize(length,mode='discard',base=1):
         """parses length values containing number and unit
         with mode 'discard': extracts a number from the given string (removes unit suffixes)
@@ -989,10 +1001,12 @@ class svgHandler(xml.sax.ContentHandler):
                 if isinstance(sh,Part.Shape):
                         if self.transform:
                                 FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
-                                sh = sh.transformGeometry(self.transform)
+                                sh = transformCopyShape(sh,self.transform)
+                                #sh = sh.transformGeometry(self.transform)
                         for transform in self.grouptransform[::-1]:
                                 FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
-                                sh = sh.transformGeometry(transform)
+                                sh = transformCopyShape(sh,transform)
+                                #sh = sh.transformGeometry(transform)
                         return sh
                 elif Draft.getType(sh) == "Dimension":
                         pts = []
