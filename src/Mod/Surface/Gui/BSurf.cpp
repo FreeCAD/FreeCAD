@@ -39,6 +39,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Base/Sequencer.h>
+#include <Gui/Control.h>
 
 using namespace SurfaceGui;
 //#undef CS_FUTURE // multi-threading causes some problems
@@ -82,6 +83,31 @@ public:
         return std::vector<std::string>();
     }
 
+    virtual bool setEdit(int ModNum)
+    {
+        // When double-clicking on the item for this sketch the
+       // object unsets and sets its edit mode without closing
+       // the task panel
+       Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+       TaskBSurf* tDlg = qobject_cast<TaskBSurf*>(dlg);
+       // start the edit dialog
+       if(dlg)
+           Gui::Control().showDialog(tDlg);
+       else
+           Gui::Control().showDialog(new TaskBSurf(this));
+//       draw();
+       return true;
+    }
+
+    virtual void unsetEdit(int ModNum)
+    {
+        /*if(!Gui::Selection().isSelected(pcObject) || !Visibility.getValue()) {
+            internal_vp.switch_node(false);
+            pcModeSwitch->whichChild = -1;
+            m_selected = false;
+        } */
+    }
+
 /*    void setCoords(const std::vector<Base::Vector3f>& v)
     {
     }*/
@@ -89,8 +115,8 @@ public:
 private:
 };
 
-BSurf::BSurf(const Base::BoundBox3d& bb, QWidget* parent, Qt::WFlags fl)
-  : QDialog(parent, fl), bbox(bb)
+BSurf::BSurf(ViewProviderBSurf* vp)
+  //: QDialog(parent, fl), bbox(bb)
 {
     ui = new Ui_DlgBSurf();
     ui->setupUi(this);
@@ -155,14 +181,14 @@ void BSurf::on_fillType_curved_clicked()
 
 // ---------------------------------------
 
-TaskBSurf::TaskBSurf(const Base::BoundBox3d& bb)
+TaskBSurf::TaskBSurf(ViewProviderBSurf* vp)
 {
-    widget = new BSurf(bb);
-    taskbox = new Gui::TaskView::TaskBox(
+    widget = new BSurf(vp);
+/*    taskbox = new Gui::TaskView::TaskBox(
         NULL,
         widget->windowTitle(), true, 0);
-    taskbox->groupLayout()->addWidget(widget);
-    Content.push_back(taskbox);
+    taskbox->groupLayout()->addWidget(widget);*/
+    Content.push_back(widget);
 }
 
 TaskBSurf::~TaskBSurf()
