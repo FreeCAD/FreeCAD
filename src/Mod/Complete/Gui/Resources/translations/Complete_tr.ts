@@ -1,82 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
 <TS version="2.0" language="tr" sourcelanguage="en">
-  <context>
+<context>
     <name>CmdCompleteConstraintAxle</name>
     <message>
-      <location filename="../../Command.cpp" line="+42"/>
-      <source>Complete</source>
-      <translation>Tam</translation>
+        <location filename="../../Command.cpp" line="+42"/>
+        <source>Complete</source>
+        <translation>Tam</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Constraint Axle...</source>
-      <translation>Sınırlama Mili...</translation>
+        <location line="+1"/>
+        <source>Constraint Axle...</source>
+        <translation>Sınırlama Mili...</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>set a axle constraint between two objects</source>
-      <translation>İki nesne arasındaki sınırlama milini belirle</translation>
+        <location line="+1"/>
+        <source>set a axle constraint between two objects</source>
+        <translation>İki nesne arasındaki sınırlama milini belirle</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Test_Test</name>
     <message>
-      <location filename="../../Workbench.cpp" line="+57"/>
-      <source>Self-test...</source>
-      <translation>Otomatik test</translation>
+        <location filename="../../Workbench.cpp" line="+57"/>
+        <source>Self-test...</source>
+        <translation>Otomatik test</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Runs a self-test to check if the application works properly</source>
-      <translation>Uygulamanın düzgün çalışıp çalışmadığını denetlemek için bir sınama çalıştırır</translation>
+        <location line="+1"/>
+        <source>Runs a self-test to check if the application works properly</source>
+        <translation>Uygulamanın düzgün çalışıp çalışmadığını denetlemek için bir sınama çalıştırır</translation>
     </message>
-  </context>
-  <context>
+</context>
+<context>
     <name>Workbench</name>
     <message>
-      <location line="-9"/>
-      <source>Dr&amp;awing</source>
-      <translation>Çi&amp;zim</translation>
+        <location line="-9"/>
+        <source>Dr&amp;awing</source>
+        <translation>Çi&amp;zim</translation>
     </message>
     <message>
-      <location line="-1"/>
-      <source>S&amp;ketch</source>
-      <translation>&amp;Kroki</translation>
+        <location line="-1"/>
+        <source>S&amp;ketch</source>
+        <translation>&amp;Kroki</translation>
     </message>
     <message>
-      <location line="+2"/>
-      <source>&amp;Raytracing</source>
-      <translation>&amp;Işınizleme</translation>
+        <location line="+2"/>
+        <source>&amp;Raytracing</source>
+        <translation>&amp;Işınizleme</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>&amp;Drafting</source>
-      <translation>&amp;Çiziliyor</translation>
+        <location line="+1"/>
+        <source>&amp;Drafting</source>
+        <translation>&amp;Çiziliyor</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Sketch based</source>
-      <translation>Kroki temelli</translation>
+        <location line="+1"/>
+        <source>Sketch based</source>
+        <translation>Kroki temelli</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Primitives</source>
-      <translation>Temel öğeler</translation>
+        <location line="+1"/>
+        <source>Primitives</source>
+        <translation>Temel öğeler</translation>
     </message>
     <message>
-      <source>Parametric</source>
-      <translation type="obsolete">Değişken tabanlı (Parametrik)</translation>
+        <source>Parametric</source>
+        <translation type="obsolete">Değişken tabanlı (Parametrik)</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Object appearence</source>
-      <translation>Nesne görünümü</translation>
+        <location line="+1"/>
+        <source>Object appearence</source>
+        <translation>Nesne görünümü</translation>
     </message>
     <message>
-      <location line="+1"/>
-      <source>Wire Tools</source>
-      <translation>Tel Araçları</translation>
+        <location line="+1"/>
+        <source>Wire Tools</source>
+        <translation>Tel Araçları</translation>
     </message>
-  </context>
+</context>
 </TS>

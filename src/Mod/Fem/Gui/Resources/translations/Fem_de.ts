@@ -353,17 +353,17 @@
     </message>
     <message>
         <location line="+67"/>
-        <source>Force [N]</source>
+        <source>Point load [N]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Force [N/mm]</source>
+        <source>Line load [N/mm]</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
+    <message utf8="true">
         <location line="+2"/>
-        <source>Force [N/mmÂ²]</source>
+        <source>Area load [N/mm²]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -596,7 +596,7 @@
     <message>
         <location filename="../../ViewProviderFemConstraintBearing.cpp" line="+74"/>
         <location filename="../../ViewProviderFemConstraintFixed.cpp" line="+74"/>
-        <location filename="../../ViewProviderFemConstraintForce.cpp" line="+74"/>
+        <location filename="../../ViewProviderFemConstraintForce.cpp" line="+72"/>
         <location filename="../../ViewProviderFemConstraintGear.cpp" line="+73"/>
         <location filename="../../ViewProviderFemConstraintPulley.cpp" line="+72"/>
         <source>A dialog is already open in the task panel</source>

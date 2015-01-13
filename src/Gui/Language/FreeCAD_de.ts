@@ -528,7 +528,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Add icons...</source>
-        <translation>Symbole hinzufügen...</translation>
+        <translation type="obsolete">Symbole hinzufügen...</translation>
+    </message>
+    <message>
+        <source>Icon folders...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -853,6 +857,10 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
         <source></source>
         <translation>Text source</translation>
     </message>
+    <message>
+        <source>Global</source>
+        <translation type="unfinished">Global</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeImp</name>
@@ -968,6 +976,97 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
     <message>
         <source>Document window:</source>
         <translation>Dokumentfenster:</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgDisplayPropertiesImp</name>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished">Standard</translation>
+    </message>
+    <message>
+        <source>Aluminium</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Brass</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bronze</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copper</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Chrome</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Emerald</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Jade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Metalized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Neon GNC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Neon PHC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Obsidian</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pewter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plaster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plastic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ruby</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Satin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Shiny plastic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Silver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Steel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stone</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1593,7 +1692,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
         <translation type="unfinished">Keine Auswahl</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
+        <source>Please select an object from the list</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2075,7 +2174,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>Transparent</source>
-        <translation>Transparent</translation>
+        <translation type="obsolete">Transparent</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2638,7 +2737,30 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <name>Gui::Dialog::IconDialog</name>
     <message>
         <source>Add icon</source>
-        <translation>Symbol hinzufügen</translation>
+        <translation type="obsolete">Symbol hinzufügen</translation>
+    </message>
+    <message>
+        <source>Icon folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add icon folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::IconFolders</name>
+    <message>
+        <source>Add or remove custom icon folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Removing a folder only takes effect after an application restart.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2894,6 +3016,14 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
+    <message>
+        <source>Incorrect quantity</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are input fields with incorrect input, please ensure valid placement values!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::PrintModel</name>
@@ -3137,6 +3267,50 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
         <source>Property View</source>
         <translation>Eigenschaften-Ansicht</translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Searches object labels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clears the search field</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selects only this object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deselect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deselects this object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zoom fit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selects and fits this object in the 3D window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to selection</source>
+        <translation type="unfinished">Gehe zu Selektion</translation>
+    </message>
+    <message>
+        <source>Selects and locates this object in the tree view</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3387,6 +3561,13 @@ Sollen die Änderungen gespeichert werden?</translation>
     </message>
 </context>
 <context>
+    <name>Gui::LabelEditor</name>
+    <message>
+        <source>List</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::LocationDialog</name>
     <message>
         <source>Wrong direction</source>
@@ -3569,6 +3750,17 @@ How do you want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>Gui::PrefQuantitySpinBox</name>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">Bearbeiten</translation>
+    </message>
+    <message>
+        <source>Save value</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::ProgressBar</name>
     <message>
         <source>Remaining: %1</source>
@@ -3736,6 +3928,17 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
     <message>
         <source>Clear</source>
         <translation type="obsolete">Löschen</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::QuantitySpinBox</name>
+    <message>
+        <source>Maximum reached</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Minimum reached</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4105,6 +4308,17 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
 </context>
 <context>
+    <name>PropertyListDialog</name>
+    <message>
+        <source>Invalid input</source>
+        <translation type="unfinished">Ungültige Eingabe</translation>
+    </message>
+    <message>
+        <source>Input in line %1 is not a number</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QDockWidget</name>
     <message>
         <source>Tree view</source>
@@ -4345,7 +4559,7 @@ Wollen Sie fortfahren?</translation>
     </message>
     <message>
         <source>Save document before close?</source>
-        <translation>Soll das Dokument vorher gespeichert werden?</translation>
+        <translation type="obsolete">Soll das Dokument vorher gespeichert werden?</translation>
     </message>
     <message>
         <source>Save Macro</source>
@@ -4512,6 +4726,14 @@ Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufg
     <message>
         <source>Do you want to close this dialog?</source>
         <translation>Möchten Sie dieses Dialogfeld schließen?</translation>
+    </message>
+    <message>
+        <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you don&apos;t save, your changes will be lost.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5287,6 +5509,14 @@ Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufg
         <source>All files (*.*)</source>
         <translation>Alle Dateien (*.*)</translation>
     </message>
+    <message>
+        <source>Cannot open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Loading the file %1 is not supported</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StdCmdPaste</name>
@@ -6042,11 +6272,19 @@ Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufg
     </message>
     <message>
         <source>Stereo red/green</source>
-        <translation>Stereo rot/grün</translation>
+        <translation type="obsolete">Stereo rot/grün</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/green</source>
-        <translation>Wechsle in Stereo-Rot-Grün-Ansicht</translation>
+        <translation type="obsolete">Wechsle in Stereo-Rot-Grün-Ansicht</translation>
+    </message>
+    <message>
+        <source>Stereo red/cyan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch stereo viewing to red/cyan</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6137,6 +6375,21 @@ Sie müssen entweder den Bearbeitungsvorgang fertigstellen oder mittels des Aufg
     <message>
         <source>Set to top view</source>
         <translation>Oberansicht</translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdViewVR</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Standardansicht</translation>
+    </message>
+    <message>
+        <source>FreeCAD-VR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

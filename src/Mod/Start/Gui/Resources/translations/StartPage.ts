@@ -108,11 +108,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="StartPage.py" line="74"/>
-        <source>Architectual Design</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="StartPage.py" line="75"/>
         <source>Working with Meshes</source>
         <translation type="unfinished"></translation>
@@ -228,11 +223,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="StartPage.py" line="96"/>
-        <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="StartPage.py" line="97"/>
         <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
         <translation type="unfinished"></translation>
@@ -273,11 +263,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="StartPage.py" line="100"/>
-        <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="StartPage.py" line="105"/>
         <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
         <translation type="unfinished"></translation>
@@ -285,6 +270,31 @@
     <message>
         <location filename="StartPage.py" line="106"/>
         <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="StartPage.py" line="74"/>
+        <source>Architectural Design</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="StartPage.py" line="96"/>
+        <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="StartPage.py" line="100"/>
+        <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="StartPage.py" line="107"/>
+        <source>Your version of FreeCAD is up to date.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="StartPage.py" line="108"/>
+        <source>There is a new release of FreeCAD available.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -4,7 +4,7 @@
 <context>
     <name>CmdCreateImagePlane</name>
     <message>
-        <location filename="../../Command.cpp" line="+94"/>
+        <location filename="../../Command.cpp" line="+93"/>
         <source>Image</source>
         <translation>Grafik</translation>
     </message>
@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+326"/>
+        <location filename="../../GLImageBox.cpp" line="+327"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Undefinierter Farbraum-Typ für die Bildbetrachtung</translation>
     </message>
@@ -176,19 +176,17 @@
         <translation type="obsolete">Bildbetrachter</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+117"/>
         <source>Images (*.png *.xpm *.jpg *.bmp)</source>
-        <translation>Bilder (*.png *.xpm *.jpg *.bmp)</translation>
+        <translation type="obsolete">Bilder (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location filename="../../Command.cpp" line="+18"/>
         <location line="+41"/>
-        <location line="+57"/>
         <source>Choose an image file to open</source>
         <translation>Wählen Sie ein Bild zum Öffnen aus</translation>
     </message>
     <message>
-        <location line="-105"/>
+        <location line="-48"/>
         <location line="+41"/>
         <source>Images</source>
         <translation>Grafiken</translation>
