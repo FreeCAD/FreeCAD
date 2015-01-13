@@ -24,10 +24,25 @@ set(SurfaceGui_LIBS
     FreeCADGui
 )
 
-qt4_add_resources(Surface_QRC_SRCS Resources/Surface.qrc)
+set(SurfaceGui_MOC_HDRS
+    BSurf.h
+)
+fc_wrap_cpp(SurfaceGui_MOC_SRCS ${SurfaceGui_MOC_HDRS})
+SOURCE_GROUP("Moc" FILES ${SurfaceGui_MOC_SRCS})
+
+qt4_add_resources(SurfaceGui_QRC_SRCS Resources/Surface.qrc)
+
+SET(SurfaceGui_UIC_SRCS
+    BSurf.ui
+)
+qt4_wrap_ui(SurfaceGui_UIC_HDRS ${SurfaceGui_UIC_SRCS})
 
 SET(SurfaceGui_SRCS
-    ${Surface_QRC_SRCS}
+    ${SurfaceGui_QRC_SRCS}
+    ${SurfaceGui_UIC_HDRS}
+    BSurf.cpp
+    BSurf.h
+    ../FillType.h
     AppSurfaceGui.cpp
     AppSurfaceGuiPy.cpp
     Command.cpp
