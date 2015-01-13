@@ -24,11 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Test")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Test/Help/index.html")
-ParGrp.SetString("WorkBenchName",    "Test functions")
-

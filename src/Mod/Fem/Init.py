@@ -26,23 +26,6 @@
 #***************************************************************************/
 
 
-class FemDocument:
-	"Fem document"
-	def Info(self):
-		return "Fem document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Fem")
-
-# Set the needed information
-#ParGrp.SetString("HelpIndex",        "Fem/Help/index.html")
-#ParGrp.SetString("DocTemplateName",  "Fem")
-#ParGrp.SetString("DocTemplateScript","TemplFem.py")
-#ParGrp.SetString("WorkBenchName",    "Fem Design")
-#ParGrp.SetString("WorkBenchModule",  "FemWorkbench.py")
-
-
 FreeCAD.addExportType("TetGen file (*.poly)","convert2TetGen") 
 FreeCAD.addImportType("FEM formats (*.unv *.med *.dat *.bdf)","Fem")
 FreeCAD.addExportType("FEM formats (*.unv *.med *.dat *.inp)","Fem")

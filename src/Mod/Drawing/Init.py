@@ -24,16 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-
-
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Image")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Image/Help/index.html")
-ParGrp.SetString("WorkBenchName",    "Image")
-ParGrp.SetString("WorkBenchModule",  "ImageWorkbench.py")
-
-
-
