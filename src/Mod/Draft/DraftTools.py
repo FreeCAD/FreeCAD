@@ -1829,7 +1829,7 @@ class Dimension(Creator):
                             self.node[1] = Vector(self.node[1].x,self.node[0].y,self.node[0].z)
                 else:
                     self.force = None
-                    if self.point2:
+                    if self.point2 and (len(self.node) > 1):
                         self.node[1] = self.point2
                         self.point2 = None
                 # update the dimline
@@ -1905,7 +1905,8 @@ class Dimension(Creator):
                     elif (len(self.node) == 2) and self.cont:
                         self.node.append(self.cont)
                         self.createObject()
-                        if not self.cont: self.finish()
+                        if not self.cont: 
+                            self.finish()
                     elif (len(self.node) == 3):
                         # for unlinked arc mode:
                         # if self.arcmode:
@@ -1914,7 +1915,8 @@ class Dimension(Creator):
                         #        cen = self.node[0].add(v)
                         #        self.node = [self.node[0],self.node[1],cen]
                         self.createObject()
-                        if not self.cont: self.finish()
+                        if not self.cont: 
+                            self.finish()
                     elif self.angledata:
                         self.node.append(self.point)
                         self.createObject()
@@ -1929,7 +1931,8 @@ class Dimension(Creator):
             self.dimtrack.on()
         elif (len(self.node) == 3):
             self.createObject()
-            if not self.cont: self.finish()
+            if not self.cont: 
+                self.finish()
 
 class ShapeString(Creator):
     "This class creates a shapestring feature."

@@ -1701,7 +1701,6 @@ class DraftToolBar:
         self.zValue.setText(displayExternal(v.z,self.DECIMALS,'Length'))
         
     def changeAngleValue(self,d):
-        print d
         v = FreeCAD.Vector(self.x,self.y,self.z)
         a = DraftVecUtils.angle(v,FreeCAD.DraftWorkingPlane.u,FreeCAD.DraftWorkingPlane.axis)
         a = math.radians(d)+a
