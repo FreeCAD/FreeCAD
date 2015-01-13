@@ -44,7 +44,7 @@ namespace SurfaceGui
         filltype_t fillType;
 
     public:
-        BSurf(const Base::BoundBox3d& bb, QWidget* parent = 0, Qt::WFlags fl = 0);
+        BSurf(ViewProviderBSurf* vp);
         ~BSurf();
         void accept();
         void apply();
@@ -77,7 +77,7 @@ namespace SurfaceGui
         Q_OBJECT
 
     public:
-        TaskBSurf(const Base::BoundBox3d& bb);
+        TaskBSurf(ViewProviderBSurf* vp);
         ~TaskBSurf();
 
     public:
@@ -90,6 +90,7 @@ namespace SurfaceGui
     private:
         BSurf* widget;
         Gui::TaskView::TaskBox* taskbox;
+        ViewProviderBSurf* view;
     };
 
 } //namespace Surface
