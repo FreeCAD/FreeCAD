@@ -134,11 +134,15 @@ void PropertyLink::Restore(Base::XMLReader &reader)
         App::Document* document = parent->getDocument();
         DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
         if (!object) {
-            Base::Console().Warning("Lost link to '%s' while loading, maybe "
-                                    "an object was not loaded correctly\n",name.c_str());
+            if (reader.isVerbose()) {
+                Base::Console().Warning("Lost link to '%s' while loading, maybe "
+                                        "an object was not loaded correctly\n",name.c_str());
+            }
         }
         else if (parent == object) {
-            Base::Console().Warning("Object '%s' links to itself, nullify it\n",name.c_str());
+            if (reader.isVerbose()) {
+                Base::Console().Warning("Object '%s' links to itself, nullify it\n",name.c_str());
+            }
             object = 0;
         }
 
@@ -319,9 +323,12 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
     if (name != ""){
         App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
         pcObject = document ? document->getObject(name.c_str()) : 0;
-        if (!pcObject)
-            Base::Console().Warning("Lost link to '%s' while loading, maybe "
-                                    "an object was not loaded correctly\n",name.c_str());
+        if (!pcObject) {
+            if (reader.isVerbose()) {
+                Base::Console().Warning("Lost link to '%s' while loading, maybe "
+                                        "an object was not loaded correctly\n",name.c_str());
+            }
+        }
         setValue(pcObject,values);
     }
     else {
@@ -471,7 +478,7 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child)
             values.push_back(child);
-        else
+        else if (reader.isVerbose())
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
                                     "an object was not loaded correctly\n",name.c_str());
     }
@@ -663,7 +670,7 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
         DocumentObject* child = document ? document->getObject(name.c_str()) : 0;
         if (child)
             values.push_back(child);
-        else
+        else if (reader.isVerbose())
             Base::Console().Warning("Lost link to '%s' while loading, maybe "
                                     "an object was not loaded correctly\n",name.c_str());
         std::string subName = reader.getAttribute("sub");

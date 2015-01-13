@@ -120,6 +120,8 @@ public:
     ~XMLReader();
 
     bool isValid() const { return _valid; }
+    bool isVerbose() const { return _verbose; }
+    void setVerbose(bool on) { _verbose = on; }
 
     /** @name Parser handling */
     //@{
@@ -224,6 +226,7 @@ protected:
     XERCES_CPP_NAMESPACE_QUALIFIER SAX2XMLReader* parser;
     XERCES_CPP_NAMESPACE_QUALIFIER XMLPScanToken token;
     bool _valid;
+    bool _verbose;
 
     struct FileEntry {
         std::string FileName;
