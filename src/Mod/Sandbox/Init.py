@@ -25,14 +25,6 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Sandbox")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Sandbox/Help/index.html")
-ParGrp.SetString("WorkBenchName",    "Sandbox Design")
-ParGrp.SetString("WorkBenchModule",  "SandboxWorkbench.py")
 import FreeCAD
 FreeCAD.addExportType("DRAWEXE source (*.draw)","exportDRAWEXE")
 

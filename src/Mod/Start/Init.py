@@ -24,24 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-
-class StartDocument:
-	"Start document"
-	def Info(self):
-		return "Start document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Start")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Start/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "Start")
-ParGrp.SetString("DocTemplateScript","TemplStart.py")
-ParGrp.SetString("WorkBenchName",    "Start Design")
-ParGrp.SetString("WorkBenchModule",  "StartWorkbench.py")
-
-
-#FreeCAD.EndingAdd("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Start")
-

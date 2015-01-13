@@ -24,24 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-
-class WebDocument:
-	"Web document"
-	def Info(self):
-		return "Web document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Web")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Web/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "Web")
-ParGrp.SetString("DocTemplateScript","TemplWeb.py")
-ParGrp.SetString("WorkBenchName",    "Web Design")
-ParGrp.SetString("WorkBenchModule",  "WebWorkbench.py")
-
-
-#FreeCAD.EndingAdd("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Web")
-

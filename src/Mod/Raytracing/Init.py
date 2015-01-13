@@ -24,15 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Raytracing")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Raytracing/Help/index.html")
-ParGrp.SetString("WorkBenchName",    "Raytracing Design")
-ParGrp.SetString("WorkBenchModule",  "RaytracingWorkbench.py")
-
-
-
