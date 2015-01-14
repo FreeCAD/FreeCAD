@@ -205,6 +205,9 @@ void Extrusion::makeDraft(double distance, const gp_Vec& vec, bool makeSolid, co
 
     if (!wire_list.empty()) {
         BRepOffsetAPI_MakeOffset mkOffset;
+#if OCC_VERSION_HEX >= 0x060800
+        mkOffset.Init(GeomAbs_Arc);
+#endif
         mkOffset.AddWire(wire_list.front());
         mkOffset.Perform(distance);
 
