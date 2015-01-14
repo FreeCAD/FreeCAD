@@ -25,17 +25,26 @@
 #ifndef SURFACE_GUI_BSURF_H
 #define SURFACE_GUI_BSURF_H
 
+#include "PreCompiled.h"
+
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/BoundBox.h>
 #include <QDialog>
 #include <QPointer>
 #include "../FillType.h"
+#include <Mod/Part/Gui/ViewProvider.h>
 #include "ui_BSurf.h"
 
 namespace SurfaceGui
 {
-    class ViewProviderBSurf;
+
+    class SurfaceGuiExport ViewProviderBSurf : public PartGui::ViewProviderPart
+    {
+    public:
+        virtual bool setEdit(int ModNum);
+        virtual void unsetEdit(int ModNum);
+    };
 
     class BSurf : public QDialog
     {
