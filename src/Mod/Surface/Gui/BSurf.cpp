@@ -41,79 +41,36 @@
 #include <Base/Sequencer.h>
 #include <Gui/Control.h>
 
+
 using namespace SurfaceGui;
 //#undef CS_FUTURE // multi-threading causes some problems
 
 namespace SurfaceGui {
 
-class ViewProviderBSurf : public Gui::ViewProvider
+bool ViewProviderBSurf::setEdit(int ModNum)
 {
-public:
-    ViewProviderBSurf()
-    {
-    /*    coords = new SoCoordinate3();
-        coords->ref();
-        planes = new SoLineSet();
-        planes->ref();
-        SoBaseColor* color = new SoBaseColor();
-        color->rgb.setValue(1.0f, 0.447059f, 0.337255f);
-        SoDrawStyle* style = new SoDrawStyle();
-        style->lineWidth.setValue(2.0f);
-        this->pcRoot->addChild(color);
-        this->pcRoot->addChild(style);
-        this->pcRoot->addChild(coords);
-        this->pcRoot->addChild(planes);*/
-    }
-
-    ~ViewProviderBSurf()
-    {
-    }
-
-    void updateData(const App::Property*)
-    {
-    }
-
-    const char* getDefaultDisplayMode() const
-    {
-        return "";
-    }
-
-    std::vector<std::string> getDisplayModes(void) const
-    {
-        return std::vector<std::string>();
-    }
-
-    virtual bool setEdit(int ModNum)
-    {
-        // When double-clicking on the item for this sketch the
-       // object unsets and sets its edit mode without closing
-       // the task panel
-       Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-       TaskBSurf* tDlg = qobject_cast<TaskBSurf*>(dlg);
-       // start the edit dialog
-       if(dlg)
-           Gui::Control().showDialog(tDlg);
-       else
-           Gui::Control().showDialog(new TaskBSurf(this));
+// When double-clicking on the item for this sketch the
+// object unsets and sets its edit mode without closing
+// the task panel
+   Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+   TaskBSurf* tDlg = qobject_cast<TaskBSurf*>(dlg);
+// start the edit dialog
+    if(dlg)
+       Gui::Control().showDialog(tDlg);
+    else
+       Gui::Control().showDialog(new TaskBSurf(this));
 //       draw();
-       return true;
-    }
+    return true;
+}
 
-    virtual void unsetEdit(int ModNum)
-    {
-        /*if(!Gui::Selection().isSelected(pcObject) || !Visibility.getValue()) {
-            internal_vp.switch_node(false);
-            pcModeSwitch->whichChild = -1;
-            m_selected = false;
-        } */
-    }
-
-/*    void setCoords(const std::vector<Base::Vector3f>& v)
-    {
-    }*/
-
-private:
-};
+void ViewProviderBSurf::unsetEdit(int ModNum)
+{
+/*if(!Gui::Selection().isSelected(pcObject) || !Visibility.getValue()) {
+    internal_vp.switch_node(false);
+    pcModeSwitch->whichChild = -1;
+    m_selected = false;
+    } */
+}
 
 BSurf::BSurf(ViewProviderBSurf* vp)
   //: QDialog(parent, fl), bbox(bb)

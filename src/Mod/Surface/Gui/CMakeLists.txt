@@ -21,6 +21,7 @@ include_directories(
 
 set(SurfaceGui_LIBS
     Surface
+    PartGui
     FreeCADGui
 )
 
