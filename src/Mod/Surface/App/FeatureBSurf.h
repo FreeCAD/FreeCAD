@@ -45,6 +45,11 @@ public:
 
     short mustExecute() const;
 
+    /// returns the type name of the view provider
+   const char* getViewProviderName(void) const {
+       return "SurfaceGui::ViewProviderBSurf";
+   }
+
 protected:
     GeomFill_FillingStyle getFillingStyle();
     void getWire(TopoDS_Wire& aWire);

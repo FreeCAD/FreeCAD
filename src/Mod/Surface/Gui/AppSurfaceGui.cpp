@@ -32,7 +32,7 @@
 #include <Gui/Application.h>
 
 #include "Workbench.h"
-//#include "ViewProviderCut.h"
+#include "BSurf.h"
 
 // use a different name to CreateCommand()
 void CreateSurfaceCommands(void);
@@ -55,6 +55,7 @@ void SurfaceGuiExport initSurfaceGui()
     }
 
     SurfaceGui::Workbench::init();
+    SurfaceGui::ViewProviderBSurf::init();
     
     // instanciating the commands
     CreateSurfaceCommands();
