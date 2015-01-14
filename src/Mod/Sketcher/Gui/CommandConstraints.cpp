@@ -28,6 +28,7 @@
 # include <Precision.hxx>
 #endif
 
+#include <Base/Tools.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -61,6 +62,101 @@ bool isCreateConstraintActive(Gui::Document *doc)
     return false;
 }
 
+void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
+{
+    const std::vector<Sketcher::Constraint *> &Constraints = sketch->Constraints.getValues();
+    Sketcher::Constraint* Constr = Constraints[ConstrNbr];
+
+    // Return if constraint doesn't have editable value
+    if (Constr->Type == Sketcher::Distance ||
+        Constr->Type == Sketcher::DistanceX || 
+        Constr->Type == Sketcher::DistanceY ||
+        Constr->Type == Sketcher::Radius || 
+        Constr->Type == Sketcher::Angle ||
+        Constr->Type == Sketcher::SnellsLaw) {
+
+        QDialog dlg(Gui::getMainWindow());
+        Ui::InsertDatum ui_ins_datum;
+        ui_ins_datum.setupUi(&dlg);
+
+        double datum = Constr->Value;
+        Base::Quantity init_val;
+
+        if (Constr->Type == Sketcher::Angle) {
+            datum = Base::toDegrees<double>(datum);
+            dlg.setWindowTitle(EditDatumDialog::tr("Insert angle"));
+            init_val.setUnit(Base::Unit::Angle);
+            ui_ins_datum.label->setText(EditDatumDialog::tr("Angle:"));
+            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherAngle"));
+        }
+        else if (Constr->Type == Sketcher::Radius) {
+            dlg.setWindowTitle(EditDatumDialog::tr("Insert radius"));
+            init_val.setUnit(Base::Unit::Length);
+            ui_ins_datum.label->setText(EditDatumDialog::tr("Radius:"));
+            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
+        }
+        else if (Constr->Type == Sketcher::SnellsLaw) {
+            dlg.setWindowTitle(EditDatumDialog::tr("Refractive index ratio", "Constraint_SnellsLaw"));
+            ui_ins_datum.label->setText(EditDatumDialog::tr("Ratio n2/n1:", "Constraint_SnellsLaw"));
+            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+        }
+        else {
+            dlg.setWindowTitle(EditDatumDialog::tr("Insert length"));
+            init_val.setUnit(Base::Unit::Length);
+            ui_ins_datum.label->setText(EditDatumDialog::tr("Length:"));
+            ui_ins_datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherLength"));
+        }
+
+        // e.g. an angle or a distance X or Y applied on a line or two vertexes
+        if (Constr->Type == Sketcher::Angle ||
+            ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
+             (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)))
+            // hide negative sign
+            init_val.setValue(std::abs(datum));
+
+        else // show negative sign
+            init_val.setValue(datum);
+
+        ui_ins_datum.labelEdit->setValue(init_val);
+        ui_ins_datum.labelEdit->selectNumber();
+
+        if (dlg.exec()) {
+            Base::Quantity newQuant = ui_ins_datum.labelEdit->value();
+            if (newQuant.isQuantity() || (Constr->Type == Sketcher::SnellsLaw && newQuant.isDimensionless())) {
+                // save the value for the history 
+                ui_ins_datum.labelEdit->pushToHistory();
+
+                double newDatum = newQuant.getValue();
+                if (Constr->Type == Sketcher::Angle ||
+                    ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
+                     Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)) {
+                    // Permit negative values to flip the sign of the constraint
+                    if (newDatum >= 0) // keep the old sign
+                        newDatum = ((datum >= 0) ? 1 : -1) * std::abs(newDatum);
+                    else // flip sign
+                        newDatum = ((datum >= 0) ? -1 : 1) * std::abs(newDatum);
+                }
+
+                try {
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
+                                sketch->getNameInDocument(),
+                                ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
+                    Gui::Command::commitCommand();
+                    Gui::Command::updateActive();
+                }
+                catch (const Base::Exception& e) {
+                    QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
+                    Gui::Command::abortCommand();
+                }
+            }
+        }
+        else {
+            // command canceled
+            Gui::Command::abortCommand();
+        }
+    }
+}
+
 // Utility method to avoid repeating the same code over and over again
 void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch)
 {
@@ -84,9 +180,11 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch)
 
     // Ask for the value of the distance immediately
     if (show) {
-        EditDatumDialog *editDatumDialog = new EditDatumDialog(sketch, ConStr.size() - 1);
-        editDatumDialog->exec(false);
-        delete editDatumDialog;
+        openEditDatumDialog(sketch, ConStr.size() - 1);
+    }
+    else {
+        // now dialog was shown so commit the command
+        cmd->commitCommand();
     }
 
     //updateActive();
@@ -817,10 +915,8 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,(pnt2-pnt1).Length());
         }
-        commitCommand();
 
         finishDistanceConstraint(this, Obj);
-
         return;
     }
     else if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
@@ -843,7 +939,6 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,ActDist);
-            commitCommand();
 
             finishDistanceConstraint(this, Obj);
             return;
@@ -867,10 +962,8 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
-            commitCommand();
 
             finishDistanceConstraint(this, Obj);
-
             return;
         }
     }
@@ -1038,10 +1131,8 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         Gui::Command::doCommand(
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
-        commitCommand();
 
         finishDistanceConstraint(this, Obj);
-
         return;
     }
     else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // horizontal length of a line
@@ -1063,10 +1154,8 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
-            commitCommand();
 
             finishDistanceConstraint(this, Obj);
-
             return;
         }
     }
@@ -1086,10 +1175,8 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         Gui::Command::doCommand(
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,ActX);
-        commitCommand();
 
         finishDistanceConstraint(this, Obj);
-
         return;
     }
 
@@ -1170,10 +1257,8 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         Gui::Command::doCommand(
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
-        commitCommand();
 
         finishDistanceConstraint(this, Obj);
-
         return;
     }
     else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
@@ -1195,10 +1280,8 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
-            commitCommand();
 
             finishDistanceConstraint(this, Obj);
-
             return;
         }
     }
@@ -1218,10 +1301,8 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
         Gui::Command::doCommand(
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,ActY);
-        commitCommand();
 
         finishDistanceConstraint(this, Obj);
-
         return;
     }
 
@@ -1897,10 +1978,14 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         if (geoIdRadiusMap.size() > 1) {
             int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Constrain equal"),
                 QObject::tr("Do you want to share the same radius for all selected elements?"),
-                QMessageBox::Yes, QMessageBox::No);
+                QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
             // use an equality constraint
             if (ret == QMessageBox::Yes) {
                 constrainEqual = true;
+            }
+            else if (ret == QMessageBox::Cancel) {
+                // do nothing
+                return;
             }
         }
 
@@ -1912,16 +1997,13 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                 selection[0].getFeatName(),refGeoId,radius);
-            commitCommand();
 
             // Add the equality constraints
-            openCommand("Add equality constraint");
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin()+1; it != geoIdRadiusMap.end(); ++it) {
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
                     selection[0].getFeatName(),refGeoId,it->first);
             }
-            commitCommand();
         }
         else {
             // Create the radius constraints now
@@ -1931,7 +2013,6 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                     selection[0].getFeatName(),it->first,it->second);
             }
-            commitCommand();
         }
 
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
@@ -1972,7 +2053,6 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                 double newRadius = newQuant.getValue();
 
                 try {
-                    openCommand("Modify radius constraint");
                     if (constrainEqual) {
                         doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
                                     Obj->getNameInDocument(),
@@ -1993,6 +2073,14 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                     abortCommand();
                 }
             }
+            else {
+                // command canceled
+                abortCommand();
+            }
+        }
+        else {
+            // now dialog was shown so commit the command
+            commitCommand();
         }
 
         //updateActive();
@@ -2097,7 +2185,6 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
-            commitCommand();
 
             finishDistanceConstraint(this, Obj);
             return;
@@ -2167,7 +2254,6 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActAngle);
-                commitCommand();
 
                 finishDistanceConstraint(this, Obj);
                 return;
@@ -2191,7 +2277,6 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,ActAngle);
-                commitCommand();
 
                 finishDistanceConstraint(this, Obj);
                 return;
@@ -2207,7 +2292,6 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,angle);
-                commitCommand();
 
                 finishDistanceConstraint(this, Obj);
                 return;
@@ -2215,7 +2299,6 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         }
     };
 
-//ExitWithMessage: //gotos cause compilation fails on linux due to jumping over initializations.
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
         QObject::tr("Select one or two lines from the sketch. Or select two edges and a point."));
     return;
