@@ -31,13 +31,14 @@
 # include <TopoDS_Vertex.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
+# include <Geom_CartesianPoint.hxx>
 #endif
 
 #include <Mod/Part/App/TopoShape.h>
 #include <Base/VectorPy.h>
 #include <Base/Vector3D.h>
 
-#include "TopoShapeEdgePy.h"
+#include "PointPy.h"
 #include "TopoShapeVertexPy.h"
 #include "TopoShapeVertexPy.cpp"
 
@@ -92,6 +93,18 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             catch (const Py::Exception&) {
                 return -1;
             }
+        }
+    }
+    if (!success) {
+        PyErr_Clear(); // set by PyArg_ParseTuple()
+        if (PyArg_ParseTuple(args,"O!",&(PointPy::Type), &object)) {
+            Handle_Geom_CartesianPoint this_point = Handle_Geom_CartesianPoint::DownCast
+                (static_cast<PointPy*>(object)->getGeomPointPtr()->handle());
+            gp_Pnt pnt = this_point->Pnt();
+            x = pnt.X();
+            y = pnt.Y();
+            z = pnt.Z();
+            success = true;
         }
     }
     if (!success) {
