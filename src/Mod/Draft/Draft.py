@@ -2812,12 +2812,18 @@ def upgrade(objects,delete=False,force=None):
                 result = draftify(objects[0])
                 if result: msg(translate("draft", "Found 1 non-parametric objects: draftifying it\n"))
                 
-        # we have only one object that contains one edge: turn to Draft line
-        elif (not faces) and (len(objects) == 1) and (len(objects[0].Shape.Edges) == 1):
-            e = objects[0].Shape.Edges[0]
-            if isinstance(e.Curve,Part.Line):
-                result = turnToLine(objects[0])
-                if result: msg(translate("draft", "Found 1 linear object: converting to line\n"))
+        # we have only one object that contains one edge
+        elif (not faces) and (len(objects) == 1) and (len(edges) == 1):
+            # we have a closed sketch: Extract a face
+            if objects[0].isDerivedFrom("Sketcher::SketchObject") and (len(edges[0].Vertexes) == 1):
+                result = makeSketchFace(objects[0])
+                if result: msg(translate("draft", "Found 1 closed sketch object: creating a face from it\n"))
+            else:
+                # turn to Draft line
+                e = objects[0].Shape.Edges[0]
+                if isinstance(e.Curve,Part.Line):
+                    result = turnToLine(objects[0])
+                    if result: msg(translate("draft", "Found 1 linear object: converting to line\n"))
                 
         # we have only closed wires, no faces
         elif wires and (not faces) and (not openwires):
