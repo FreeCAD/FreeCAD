@@ -23,6 +23,11 @@ Part.Point(Point)
 Part.Point(Vector)
     Creates a line for the given coordinates</UserDocu>
     </Documentation>
+    <Methode Name="toShape" Const="true">
+      <Documentation>
+        <UserDocu>Create a vertex from this point.</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="X" ReadOnly="false">
       <Documentation>
         <UserDocu>X component of this point.</UserDocu>
