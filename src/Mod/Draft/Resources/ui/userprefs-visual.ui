@@ -759,6 +759,144 @@ such as &quot;Arial:Bold&quot;</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Drawing views</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>Dashed line definition</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_7">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit">
+          <property name="toolTip">
+           <string>A SVG linestyle definition</string>
+          </property>
+          <property name="text">
+           <string>0.09,0.05</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>svgDashedLine</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="QLabel" name="label_16">
+          <property name="text">
+           <string>Dashdot line definition</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_8">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit_2">
+          <property name="toolTip">
+           <string>A SVG linestyle definition</string>
+          </property>
+          <property name="text">
+           <string>0.09,0.05,0.02,0.05</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>svgDashdotLine</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="QLabel" name="label_22">
+          <property name="text">
+           <string>Dotted line definition</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_14">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit_3">
+          <property name="toolTip">
+           <string>A SVG linestyle definition</string>
+          </property>
+          <property name="text">
+           <string>0.02,0.02</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>svgDottedLine</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
