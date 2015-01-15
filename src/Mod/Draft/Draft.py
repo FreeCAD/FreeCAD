@@ -1716,12 +1716,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getLineStyle():
         "returns a linestyle"
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         if linestyle == "Dashed":
-            return "0.09,0.05"
+            return p.GetString("svgDashedLine","0.09,0.05")
         elif linestyle == "Dashdot":
-            return "0.09,0.05,0.02,0.05"
+            return p.GetString("svgDashdotLine","0.09,0.05,0.02,0.05")
         elif linestyle == "Dotted":
-            return "0.02,0.02"
+            return p.GetString("svgDottedLine","0.02,0.02")
         return "none"
 
     def getProj(vec):
