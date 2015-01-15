@@ -563,7 +563,28 @@ def drawSolid(solid):
             warn(solid)
     return None
 
-def drawSpline(spline,forceShape=False):
+def drawSplineIterpolation(verts,closed=False,forceShape=False):
+    if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
+        if dxfDiscretizeCurves:
+            ob = Draft.makeWire(verts)
+        else:
+            ob = Draft.makeBSpline(verts)
+        ob.Closed = closed
+        return ob
+    else:
+        if dxfDiscretizeCurves:
+            sh = Part.makePolygon(verts+[verts[0]])
+        else:
+            sp = Part.BSplineCurve()
+            # print(knots)
+            sp.interpolate(verts)
+            sh = Part.Wire(sp.toShape())
+        if closed and dxfFillMode:
+            return Part.Face(sh)
+        else:
+            return sh
+
+def drawSplineOld(spline,forceShape=False):
     "returns a Part Shape from a dxf spline"
     flag = rawValue(spline,70)
     if flag == 1:
@@ -588,29 +609,100 @@ def drawSpline(spline,forceShape=False):
         elif dline[0] == 40:
             knots.append(dline[1])
     try:
-        if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            if dxfDiscretizeCurves:
-                ob = Draft.makeWire(verts)
-            else:
-                ob = Draft.makeBSpline(verts)
-            ob.Closed = closed
-            return ob
-        else:
-            if dxfDiscretizeCurves:
-                sh = Part.makePolygon(verts+[verts[0]])
-            else:
-                sp = Part.BSplineCurve()
-                # print(knots)
-                sp.interpolate(verts)
-                sh = Part.Wire(sp.toShape())
-            if closed and dxfFillMode:
-                return Part.Face(sh)
-            else:
-                return sh                          
+        return drawSplineIterpolation(verts,closed,forceShape)
     except Part.OCCError:
         warn(spline)
     return None
-    
+
+def drawSpline(spline,forceShape=False):
+    """returns a Part Shape from a dxf spline
+as there is currently no Draft premitive to handle splines the result is a
+non-parametric curve"""
+    flags = rawValue(spline,70)
+    closed   = (flags &  1) != 0
+    periodic = (flags &  2) != 0
+    rational = (flags &  4) != 0
+    planar   = (flags &  8) != 0
+    linear   = (flags & 16) != 0
+    degree     = rawValue(spline,71)
+    nbknots    = rawValue(spline,72) or 0
+    nbcontrolp = rawValue(spline,73) or 0
+    nbfitp     = rawValue(spline,74) or 0
+    knots = []
+    weights = []
+    controlpoints = []
+    fitpoints = []
+    # parse the knots and points
+    dataremain = spline.data[:]
+    while len(dataremain) >0:
+        groupnumber = dataremain[0][0]
+        if groupnumber == 40: #knot
+            knots.append(dataremain[0][1])
+            dataremain = dataremain[1:]
+        elif groupnumber == 41: #weight
+            weights.append(dataremain[1][0])
+            dataremain = dataremain[1:]
+        elif groupnumber in (10,11): # control or fit point
+            x = dataremain[0][1]
+            if dataremain[1][0] in (20,21):
+                y=dataremain[1][1]
+                if dataremain[2][0] in (30,31):
+                    z=dataremain[2][1]
+                    dataremain = dataremain[3:]
+                else:
+                    z=0.0
+                    dataremain = dataremain[2:]
+            else:
+                y=0.0
+                dataremain = dataremain[1:]
+            vec = FreeCAD.Vector(x,y,z)
+            if groupnumber == 10:
+                controlpoints.append(vec)
+            elif groupnumber == 11:
+                fitpoints.append(vec)
+        else:
+            dataremain = dataremain[1:]
+            #print groupnumber #debug
+
+    if nbknots != len(knots):
+        raise ValueError('Wrong number of knots')
+    if nbcontrolp != len(controlpoints):
+        raise ValueError('Wrong number of control points')
+    if nbfitp != len(fitpoints):
+        raise ValueError('Wrong number of fit points')
+    if rational == all((w == 1.0 or w is None) for w in weights):
+        raise ValueError('inconsistant rational flag')
+    if len(weights) == 0:
+        weights = None
+    elif len(weights) != len(controlpoints):
+        raise ValueError('Wrong number of weights')
+
+    # build knotvector and multvector
+    # this means to remove duplicate knots
+    multvector=[]
+    knotvector=[]
+    mult=0
+    previousknot=None
+    for knotvalue in knots:
+        if knotvalue == previousknot:
+            mult += 1
+        else:
+            if mult > 0:
+                multvector.append(mult)
+            mult = 1
+            previousknot = knotvalue
+            knotvector.append(knotvalue)
+    multvector.append(mult)
+    try:
+        bspline=Part.BSplineCurve()
+        bspline.buildFromPolesMultsKnots(poles=controlpoints,mults=multvector,\
+                knots=knotvector,degree=degree,periodic=periodic,\
+                weights=weights)
+        return bspline.toShape()
+    except Part.OCCError:
+        warn(spline)
+    return None
+
 def drawBlock(blockref,num=None,createObject=False):
     "returns a shape from a dxf block reference"
     if not dxfStarBlocks:
