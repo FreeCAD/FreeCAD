@@ -447,9 +447,10 @@ class _CommandWindow:
         self.tracker.length(self.Width)
         self.tracker.width(self.Thickness)
         self.tracker.height(self.Height)
+        self.tracker.on()
         FreeCAD.Console.PrintMessage(translate("Arch","Pick a face on an existing object or select a preset\n"))
         FreeCADGui.Snapper.getPoint(callback=self.getPoint,movecallback=self.update,extradlg=self.taskbox())
-        FreeCADGui.Snapper.setSelectMode(True)
+        #FreeCADGui.Snapper.setSelectMode(True)
 
     def getPoint(self,point=None,obj=None):
         "this function is called by the snapper when it has a 3D point"
@@ -457,39 +458,28 @@ class _CommandWindow:
         if point == None:
             return
         point = point.add(FreeCAD.Vector(0,0,self.Sill))
-        if not self.Preset:
-            if obj and (self.baseFace != None):
-                if Draft.getType(obj) in AllowedHosts:
-                    # make sure only one face is selected
-                    FreeCADGui.Selection.clearSelection()
-                    FreeCADGui.Selection.addSelection(obj,"Face"+str(self.baseFace+1))
-                    FreeCADGui.activateWorkbench("SketcherWorkbench")
-                    FreeCADGui.runCommand("Sketcher_NewSketch")
-                    FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Window")
-                    FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
+        # preset
+        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
+        FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
+        if obj and (self.baseFace != None):
+            FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
         else:
-            # preset
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Window"))
-            FreeCADGui.doCommand("import math,FreeCAD,Arch,WorkingPlane")
-            if obj and (self.baseFace != None):
-                FreeCADGui.doCommand("pl = WorkingPlane.getPlacementFromFace(FreeCAD.ActiveDocument." + obj.Name + ".Shape.Faces[" + str(self.baseFace) + "])")
-            else:
-                FreeCADGui.doCommand("m = FreeCAD.Matrix()")
-                FreeCADGui.doCommand("m.rotateX(math.pi/2)")
-                FreeCADGui.doCommand("pl = FreeCAD.Placement(m)")
-            FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
-            wp = ""
-            for p in self.wparams:
-                wp += p.lower() + "=" + str(getattr(self,p)) + ","
-            FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset-1] + "\"," + wp + "placement=pl)")
-            if obj:
-                if Draft.getType(obj) in AllowedHosts:
-                    FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+obj.Name+")")
-                    siblings = obj.Proxy.getSiblings(obj)
-                    for sibling in siblings:
-                        FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
-            FreeCAD.ActiveDocument.commitTransaction()
-            FreeCAD.ActiveDocument.recompute()
+            FreeCADGui.doCommand("m = FreeCAD.Matrix()")
+            FreeCADGui.doCommand("m.rotateX(math.pi/2)")
+            FreeCADGui.doCommand("pl = FreeCAD.Placement(m)")
+        FreeCADGui.doCommand("pl.Base = FreeCAD.Vector(" + str(point.x) + "," + str(point.y) + ","+ str(point.z) + ")")
+        wp = ""
+        for p in self.wparams:
+            wp += p.lower() + "=" + str(getattr(self,p)) + ","
+        FreeCADGui.doCommand("win = Arch.makeWindowPreset(\"" + WindowPresets[self.Preset] + "\"," + wp + "placement=pl)")
+        if obj:
+            if Draft.getType(obj) in AllowedHosts:
+                FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+obj.Name+")")
+                siblings = obj.Proxy.getSiblings(obj)
+                for sibling in siblings:
+                    FreeCADGui.doCommand("Arch.removeComponents(win,host=FreeCAD.ActiveDocument."+sibling.Name+")")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
         return
 
     def update(self,point,info):
@@ -528,7 +518,7 @@ class _CommandWindow:
         # presets box
         labelp = QtGui.QLabel(translate("Arch","Preset").decode("utf8"))
         valuep = QtGui.QComboBox()
-        valuep.addItems(["Create from scratch"]+WindowPresets)
+        valuep.addItems(WindowPresets)
         valuep.setCurrentIndex(self.Preset)
         grid.addWidget(labelp,1,0,1,1)
         grid.addWidget(valuep,1,1,1,1)
@@ -539,7 +529,7 @@ class _CommandWindow:
         self.im.setMaximumWidth(200)
         self.im.setMinimumHeight(120)
         grid.addWidget(self.im,2,0,1,2)
-        self.im.hide()
+        #self.im.hide()
 
         # parameters
         i = 3
@@ -574,21 +564,21 @@ class _CommandWindow:
 
     def setPreset(self,i):
         self.Preset = i
-        if i > 0:
+        if i >= 0:
             FreeCADGui.Snapper.setSelectMode(False)
             self.tracker.length(self.Width)
             self.tracker.width(self.Thickness)
             self.tracker.height(self.Height)
             self.tracker.on()
-            if i == 1:
+            if i == 0:
                 self.im.load(":/ui/ParametersWindowFixed.svg")
-            elif i == 2:
+            elif i == 1:
                 self.im.load(":/ui/ParametersWindowSimple.svg")
-            elif i == 7:
-                self.im.load(":/ui/ParametersDoorGlass.svg")
-            elif i == 4:
-                self.im.load(":/ui/ParametersWindowStash.svg")
             elif i == 6:
+                self.im.load(":/ui/ParametersDoorGlass.svg")
+            elif i == 3:
+                self.im.load(":/ui/ParametersWindowStash.svg")
+            elif i == 5:
                 self.im.load(":/ui/ParametersDoorSimple.svg")
             else:
                 self.im.load(":/ui/ParametersWindowDouble.svg")
