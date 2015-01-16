@@ -59,6 +59,7 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include "Mod/Part/App/PartFeature.h"
+#include "BSurf.h"
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -240,16 +241,14 @@ CmdSurfaceBSpline::CmdSurfaceBSpline()
 
 void CmdSurfaceBSpline::activated(int iMsg)
 {
-/*    Gui::Dialog::TaskPlacement* plm = new Gui::Dialog::TaskPlacement();
-    Gui::Control().showDialog(plm);*/
-    /*if (!isActive()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select 2, 3 or 4 curves, please."));
-        return;
-    }*/
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (!dlg) {
+        dlg = new SurfaceGui::TaskBSurf(new SurfaceGui::ViewProviderBSurf());
+    }
+    Gui::Control().showDialog(dlg);
 
     // we take the whole selection and require that all of its members are of the required curve
-    std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
+/*    std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
     std::string FeatName = getUniqueObjectName("BSplineSurface");
     std::stringstream bspListCmd;
     bspListCmd << "FreeCAD.ActiveDocument.ActiveObject.aBList = [";
@@ -261,10 +260,10 @@ void CmdSurfaceBSpline::activated(int iMsg)
     openCommand("Create BSpline surface");
     doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=1"); // TODO ask filltype from user and check it
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
+  //  doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
     runCommand(Doc, bspListCmd.str().c_str());
     updateActive();
-    commitCommand();
+    commitCommand();*/
 }
 
 bool CmdSurfaceBSpline::isActive(void)

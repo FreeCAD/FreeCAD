@@ -41,6 +41,7 @@ namespace SurfaceGui
 
     class SurfaceGuiExport ViewProviderBSurf : public PartGui::ViewProviderPart
     {
+        PROPERTY_HEADER(SurfaceGui::ViewProviderBSurf);
     public:
         virtual bool setEdit(int ModNum);
         virtual void unsetEdit(int ModNum);
