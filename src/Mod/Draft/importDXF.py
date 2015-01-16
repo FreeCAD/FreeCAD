@@ -641,7 +641,7 @@ non-parametric curve"""
             knots.append(dataremain[0][1])
             dataremain = dataremain[1:]
         elif groupnumber == 41: #weight
-            weights.append(dataremain[1][0])
+            weights.append(dataremain[0][1])
             dataremain = dataremain[1:]
         elif groupnumber in (10,11): # control or fit point
             x = dataremain[0][1]
