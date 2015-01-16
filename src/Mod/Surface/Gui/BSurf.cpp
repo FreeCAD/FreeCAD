@@ -47,6 +47,8 @@ using namespace SurfaceGui;
 
 namespace SurfaceGui {
 
+PROPERTY_SOURCE(SurfaceGui::ViewProviderBSurf, PartGui::ViewProviderPart)
+
 bool ViewProviderBSurf::setEdit(int ModNum)
 {
 // When double-clicking on the item for this sketch the
