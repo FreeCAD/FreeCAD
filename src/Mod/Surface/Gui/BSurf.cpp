@@ -45,9 +45,9 @@
 using namespace SurfaceGui;
 //#undef CS_FUTURE // multi-threading causes some problems
 
-namespace SurfaceGui {
-
 PROPERTY_SOURCE(SurfaceGui::ViewProviderBSurf, PartGui::ViewProviderPart)
+
+namespace SurfaceGui {
 
 bool ViewProviderBSurf::setEdit(int ModNum)
 {
@@ -94,12 +94,15 @@ BSurf::~BSurf()
 
 filltype_t BSurf::getFillType() const
 {
+    filltype_t ret;
     if (ui->fillType_stretch->isChecked())
-        return StretchStyle;
+        ret = StretchStyle;
     else if (ui->fillType_coons->isChecked())
-        return CoonsStyle;
+        ret = CoonsStyle;
     else
-        return CurvedStyle;
+        ret = CurvedStyle;
+    printf("BSurf::getFillType: %d\n", ret);
+    return ret;
 }
 
 void BSurf::changeEvent(QEvent *e)
@@ -114,6 +117,7 @@ void BSurf::changeEvent(QEvent *e)
 
 void BSurf::accept()
 {
+    printf("accept ");
     apply();
     QDialog::accept();
 }
@@ -128,14 +132,17 @@ void BSurf::apply()
 
 void BSurf::on_fillType_stretch_clicked()
 {
+    printf("stretch\n");
 }
 
 void BSurf::on_fillType_coons_clicked()
 {
+    printf("coons\n");
 }
 
 void BSurf::on_fillType_curved_clicked()
 {
+    printf("curved\n");
 }
 
 // ---------------------------------------
