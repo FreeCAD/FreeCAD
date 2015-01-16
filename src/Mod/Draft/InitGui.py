@@ -110,7 +110,7 @@ class DraftWorkbench (Workbench):
                         "Draft_ShapeString","Draft_Facebinder","Draft_BezCurve"]
         self.modList = ["Draft_Move","Draft_Rotate","Draft_Offset",
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
-                        "Draft_Drawing","Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
+                        "Draft_Edit","Draft_WireToBSpline","Draft_AddPoint",
                         "Draft_DelPoint","Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
                         "Draft_PathArray","Draft_Clone"]
         self.treecmdList = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
