@@ -2604,6 +2604,7 @@ class Upgrade(Modifier):
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Upgrade"),
                         ['Draft.upgrade(FreeCADGui.Selection.getSelection(),delete=True)'])
+            FreeCAD.ActiveDocument.recompute()
         self.finish()
 
 
@@ -2633,6 +2634,7 @@ class Downgrade(Modifier):
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Downgrade"),
                         ['Draft.downgrade(FreeCADGui.Selection.getSelection(),delete=True)'])
+            FreeCAD.ActiveDocument.recompute()
         self.finish()
 
 
