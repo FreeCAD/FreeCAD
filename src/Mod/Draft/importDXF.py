@@ -563,16 +563,17 @@ def drawSolid(solid):
             warn(solid)
     return None
 
-def drawSplineIterpolation(verts,closed=False,forceShape=False):
+def drawSplineIterpolation(verts,closed=False,forceShape=False,\
+        alwaysDiscretize=False):
     if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-        if dxfDiscretizeCurves:
+        if dxfDiscretizeCurves or alwaysDiscretize:
             ob = Draft.makeWire(verts)
         else:
             ob = Draft.makeBSpline(verts)
         ob.Closed = closed
         return ob
     else:
-        if dxfDiscretizeCurves:
+        if dxfDiscretizeCurves or alwaysDiscretize:
             sh = Part.makePolygon(verts+[verts[0]])
         else:
             sp = Part.BSplineCurve()
@@ -693,6 +694,12 @@ non-parametric curve"""
             previousknot = knotvalue
             knotvector.append(knotvalue)
     multvector.append(mult)
+    innermults = multvector[:] if periodic else multvector[1:-1]
+    if any(m>degree for m in innermults):
+        #raise ValueError('Invalid multiplicities')
+        #warn('polygon fallback on %s' %spline)
+        return drawSplineIterpolation(controlpoints,closed=closed,\
+                forceShape=forceShape,alwaysDiscretize=True)
     try:
         bspline=Part.BSplineCurve()
         bspline.buildFromPolesMultsKnots(poles=controlpoints,mults=multvector,\
