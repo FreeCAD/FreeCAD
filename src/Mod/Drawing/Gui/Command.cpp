@@ -694,6 +694,36 @@ bool CmdDrawingProjectShape::isActive(void)
 
 
 
+//===========================================================================
+// Drawing_Draft_View
+//===========================================================================
+
+DEF_STD_CMD_A(CmdDrawingDraftView);
+
+CmdDrawingDraftView::CmdDrawingDraftView()
+  : Command("Drawing_DraftView")
+{
+    // seting the
+    sGroup        = QT_TR_NOOP("Drawing");
+    sMenuText     = QT_TR_NOOP("&Draft View");
+    sToolTipText  = QT_TR_NOOP("Inserts a Draft view of the selected object(s) in the active drawing");
+    sWhatsThis    = "Drawing_DraftView";
+    sStatusTip    = QT_TR_NOOP("Inserts a Draft view of the selected object(s) in the active drawing");
+    sPixmap       = "actions/drawing-draft-view";
+}
+
+void CmdDrawingDraftView::activated(int iMsg)
+{
+    doCommand(Gui,"Gui.runCommand(\"Draft_Drawing\")");
+}
+
+bool CmdDrawingDraftView::isActive(void)
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
+
+
 void CreateDrawingCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -709,4 +739,5 @@ void CreateDrawingCommands(void)
     rcCmdMgr.addCommand(new CmdDrawingSymbol());
     rcCmdMgr.addCommand(new CmdDrawingExportPage());
     rcCmdMgr.addCommand(new CmdDrawingProjectShape());
+    rcCmdMgr.addCommand(new CmdDrawingDraftView());
 }
