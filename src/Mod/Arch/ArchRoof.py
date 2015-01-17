@@ -137,7 +137,7 @@ class _Roof(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyFloatList","Angles","Arch", translate("Arch","The angles of each slope."))
-        obj.addProperty("App::PropertyFloatList","Runs","Arch", translate("Arch","The horizontal lenght projection of each crawling."))
+        obj.addProperty("App::PropertyFloatList","Runs","Arch", translate("Arch","The horizontal length projection of each crawling."))
         obj.addProperty("App::PropertyIntegerList","IdRel","Arch", translate("Arch","The pane Id of relative profil."))
         obj.addProperty("App::PropertyFloatList","Thickness","Arch", translate("Arch","The thickness of the roof pane."))
         obj.addProperty("App::PropertyFloatList","Overhang","Arch", translate("Arch","The Overhang of the roof pane."))
