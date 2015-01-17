@@ -1139,17 +1139,22 @@ def export(exportList,filename):
             svg_export_style = 0
 
         # finding sheet size
-        minx = 10000
-        miny = 10000
-        maxx = 0
-        maxy = 0
+        bb = None
         for ob in exportList:
                 if ob.isDerivedFrom("Part::Feature"):
-                        for v in ob.Shape.Vertexes:
-                                if v.Point.x < minx: minx = v.Point.x
-                                if v.Point.x > maxx: maxx = v.Point.x
-                                if v.Point.y < miny: miny = v.Point.y
-                                if v.Point.y > maxy: maxy = v.Point.y
+                    if bb:
+                        bb.add(ob.Shape.BoundBox)
+                    else:
+                        bb = ob.Shape.BoundBox
+        if bb:
+            minx = bb.XMin
+            maxx = bb.XMax
+            miny = bb.YMin
+            maxy = bb.YMax
+        else:
+            FreeCAD.Console.PrintError("The export list contains no shape\n")
+            return
+            
         if svg_export_style == 0:
             # translated-style exports get a bit of a margin
             margin = (maxx-minx)*.01
