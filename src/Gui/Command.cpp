@@ -292,7 +292,11 @@ void Command::invoke(int i)
     }
     catch (Base::PyException &e) {
         e.ReportException();
-        Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
+    }
+    catch (Py::Exception&) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        e.ReportException();
     }
     catch (Base::AbortException&) {
     }
