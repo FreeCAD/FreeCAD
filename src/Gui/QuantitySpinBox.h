@@ -108,6 +108,7 @@ protected:
     virtual StepEnabled stepEnabled() const;
     virtual void showEvent(QShowEvent * event);
     virtual void focusInEvent(QFocusEvent * event);
+    virtual void focusOutEvent(QFocusEvent * event);
 
 private:
     void updateText(const Base::Quantity&);
@@ -123,9 +124,6 @@ Q_SIGNALS:
      *  like: minimum, maximum and/or the right Unit (if specified).
      */
     void valueChanged(double);
-
-    /// Signal for an invalid user input
-    void parseError(const QString& errorText);
 
 private:
     QScopedPointer<QuantitySpinBoxPrivate> d_ptr;
