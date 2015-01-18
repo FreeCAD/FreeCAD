@@ -610,8 +610,8 @@ class Drawexporter(object):
                     import math
                     majr=f2s(float(ob.MajorRadius))
                     minr=f2s(float(ob.MinorRadius))
-                    pfirst=0
-                    plast=2*math.pi
+                    pfirst=f2s(math.radians(ob.FirstAngle))
+                    plast =f2s(math.radians(ob.LastAngle))
                     self.csg.write('ellipse %s 0 0 0 %s %s\n' % \
                             (curvename,majr,minr))
                 self.csg.write('mkedge %s %s %s %s\n' % \
