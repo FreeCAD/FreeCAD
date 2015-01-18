@@ -1457,10 +1457,10 @@ def getArcData(edge):
         p2 = edge.Vertexes[-1].Point
         v1 = p1.sub(ce)
         v2 = p2.sub(ce)
-        print v1.cross(v2)
-        print edge.Curve.Axis
-        print p1
-        print p2
+        #print v1.cross(v2)
+        #print edge.Curve.Axis
+        #print p1
+        #print p2
         # we can use Z check since arcs getting here will ALWAYS be in XY plane
         # Z can be 0 if the arc is 180 deg
         if (v1.cross(v2).z >= 0) or (edge.Curve.Axis.z > 0):
