@@ -653,7 +653,7 @@ class BSpline(Line):
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
         if self.ui:
-			self.bsplinetrack.finalize()
+            self.bsplinetrack.finalize()
         if not Draft.getParam("UiMode",1):
             FreeCADGui.Control.closeDialog()
         if self.obj:
@@ -756,7 +756,7 @@ class BezCurve(Line):
     def finish(self,closed=False,cont=False):
         "terminates the operation and closes the poly if asked"
         if self.ui:
-			self.bezcurvetrack.finalize()
+            self.bezcurvetrack.finalize()
         if not Draft.getParam("UiMode",1):
             FreeCADGui.Control.closeDialog()
         if self.obj:
@@ -1082,8 +1082,8 @@ class Arc(Creator):
                     angle = DraftVecUtils.angle(plane.u, self.point.sub(self.center), plane.axis)
                 else: angle = 0
                 self.linetrack.p2(DraftVecUtils.scaleTo(self.point.sub(self.center),self.rad).add(self.center))
-                self.ui.setRadiusValue(math.degrees(angle),unit="Angle")
                 self.updateAngle(angle)
+                self.ui.setRadiusValue(math.degrees(self.angle),unit="Angle")
                 self.arctrack.setApertureAngle(self.angle)
 
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -1171,6 +1171,13 @@ class Arc(Creator):
             sta = math.degrees(self.firstangle)
             end = math.degrees(self.firstangle+self.angle)
             if end < sta: sta,end = end,sta
+            while True:
+                if sta > 360:
+                    sta = sta - 360
+                elif end > 360:
+                    end = end - 360
+                else:
+                    break
             try:
                 if Draft.getParam("UsePartPrimitives",False):
                     # use primitive

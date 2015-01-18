@@ -1452,13 +1452,35 @@ def getArcData(edge):
         # closed circle
         return DraftVecUtils.tup(ce), radius, 0, 0
     else:
-        if round(edge.Curve.Axis.dot(FreeCAD.Vector(0,0,1))) == 1:
-            ang1,ang2=edge.ParameterRange
+        # new method: recalculate ourselves - cannot trust edge.Curve.Axis or XAxis
+        p1 = edge.Vertexes[0].Point
+        p2 = edge.Vertexes[-1].Point
+        v1 = p1.sub(ce)
+        v2 = p2.sub(ce)
+        print v1.cross(v2)
+        print edge.Curve.Axis
+        print p1
+        print p2
+        # we can use Z check since arcs getting here will ALWAYS be in XY plane
+        # Z can be 0 if the arc is 180 deg
+        if (v1.cross(v2).z >= 0) or (edge.Curve.Axis.z > 0):
+            #clockwise
+            ang1 = -DraftVecUtils.angle(v1)
+            ang2 = -DraftVecUtils.angle(v2)
         else:
-            ang2,ang1=edge.ParameterRange
-        if edge.Curve.XAxis != FreeCAD.Vector(1,0,0):
-            ang1 -= DraftVecUtils.angle(edge.Curve.XAxis)
-            ang2 -= DraftVecUtils.angle(edge.Curve.XAxis)
+            #counterclockwise
+            ang2 = -DraftVecUtils.angle(v1)
+            ang1 = -DraftVecUtils.angle(v2)
+        
+        # obsolete method - fails a lot
+        #if round(edge.Curve.Axis.dot(FreeCAD.Vector(0,0,1))) == 1:
+        #    ang1,ang2=edge.ParameterRange
+        #else:
+        #    ang2,ang1=edge.ParameterRange
+        #if edge.Curve.XAxis != FreeCAD.Vector(1,0,0):
+        #    ang1 -= DraftVecUtils.angle(edge.Curve.XAxis)
+        #    ang2 -= DraftVecUtils.angle(edge.Curve.XAxis)
+        
         return DraftVecUtils.tup(ce), radius, math.degrees(ang1),\
                 math.degrees(ang2)
 
@@ -1662,7 +1684,7 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
             # other cases, treat edges
             dxf = dxfLibrary.Drawing()
             for ob in exportList:
-                print("processing ",ob.Name)
+                print("processing "+str(ob.Name))
                 if ob.isDerivedFrom("Part::Feature"):
                     if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
                         sh = None
