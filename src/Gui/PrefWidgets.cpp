@@ -459,8 +459,7 @@ class PrefQuantitySpinBoxPrivate
 {
 public:
     PrefQuantitySpinBoxPrivate() :
-      historySize(5),
-      saveSize(5)
+      historySize(5)
     {
     }
     ~PrefQuantitySpinBoxPrivate()
@@ -470,7 +469,6 @@ public:
     QByteArray prefGrp;
     ParameterGrp::handle handle;
     int historySize;
-    int saveSize;
 };
 }
 
@@ -485,6 +483,8 @@ PrefQuantitySpinBox::~PrefQuantitySpinBox()
 
 void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 {
+    Q_D(PrefQuantitySpinBox);
+
     QMenu *editMenu = lineEdit()->createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
     QMenu* menu = new QMenu(QString::fromAscii("PrefQuantitySpinBox"));
@@ -497,9 +497,9 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
     std::vector<QAction *> actions;
 
     // add the history menu part...
-    std::vector<QString> history = getHistory();
+    QStringList history = getHistory();
 
-    for (std::vector<QString>::const_iterator it = history.begin();it!= history.end();++it) {
+    for (QStringList::const_iterator it = history.begin();it!= history.end();++it) {
         actions.push_back(menu->addAction(*it));
         values.push_back(*it);
     }
@@ -507,24 +507,23 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
     // add the save value portion of the menu
     menu->addSeparator();
     QAction *saveValueAction = menu->addAction(tr("Save value"));
-    std::vector<QString> savedValues = getSavedValues();
-
-    for (std::vector<QString>::const_iterator it = savedValues.begin();it!= savedValues.end();++it) {
-        actions.push_back(menu->addAction(*it));
-        values.push_back(*it);
-    }
+    QAction *clearListAction = menu->addAction(tr("Clear list"));
+    clearListAction->setDisabled(history.empty());
 
     // call the menu and wait until its back
-    QAction *saveAction = menu->exec(event->globalPos());
+    QAction *userAction = menu->exec(event->globalPos());
 
     // look what the user has choosen
-    if (saveAction == saveValueAction) {
-        pushToSavedValues(this->text());
+    if (userAction == saveValueAction) {
+        pushToHistory(this->text());
+    }
+    else if (userAction == clearListAction) {
+        d->handle->Clear();
     }
     else {
         int i=0;
         for (std::vector<QAction *>::const_iterator it = actions.begin();it!=actions.end();++it,i++) {
-            if (*it == saveAction) {
+            if (*it == userAction) {
                 lineEdit()->setText(values[i]);
                 break;
             }
@@ -544,32 +543,29 @@ void PrefQuantitySpinBox::pushToHistory(const QString &valueq)
     else
         val = valueq;
 
-    // check if already in:
-    std::vector<QString> hist = getHistory();
-    for (std::vector<QString>::const_iterator it = hist.begin();it!=hist.end();++it) {
-        if (*it == val)
-            return;
-    }
-
     std::string value(val.toUtf8());
     if (d->handle.isValid()) {
-        for (int i = d->historySize -1 ; i>=0 ;i--) {
-            QByteArray hist1 = "Hist";
-            QByteArray hist0 = "Hist";
-            hist1.append(QByteArray::number(i+1));
-            hist0.append(QByteArray::number(i));
-            std::string tHist = d->handle->GetASCII(hist0);
-            if (!tHist.empty())
-                d->handle->SetASCII(hist1,tHist.c_str());
+        // do nothing if the given value is on top of the history
+        std::string tHist = d->handle->GetASCII("Hist0");
+        if (tHist != val.toUtf8().constData()) {
+            for (int i = d->historySize -1 ; i>=0 ;i--) {
+                QByteArray hist1 = "Hist";
+                QByteArray hist0 = "Hist";
+                hist1.append(QByteArray::number(i+1));
+                hist0.append(QByteArray::number(i));
+                std::string tHist = d->handle->GetASCII(hist0);
+                if (!tHist.empty())
+                    d->handle->SetASCII(hist1,tHist.c_str());
+            }
+            d->handle->SetASCII("Hist0",value.c_str());
         }
-        d->handle->SetASCII("Hist0",value.c_str());
     }
 }
 
-std::vector<QString> PrefQuantitySpinBox::getHistory() const
+QStringList PrefQuantitySpinBox::getHistory() const
 {
     Q_D(const PrefQuantitySpinBox);
-    std::vector<QString> res;
+    QStringList res;
 
     if (d->handle.isValid()) {
         std::string tmp;
@@ -583,54 +579,15 @@ std::vector<QString> PrefQuantitySpinBox::getHistory() const
                 break; // end of history reached
         }
     }
+
     return res;
 }
 
 void PrefQuantitySpinBox::setToLastUsedValue()
 {
-    std::vector<QString> hist = getHistory();
+    QStringList hist = getHistory();
     if (!hist.empty())
         lineEdit()->setText(hist[0]);
-}
-
-void PrefQuantitySpinBox::pushToSavedValues(const QString &valueq)
-{
-    Q_D(PrefQuantitySpinBox);
-    std::string value;
-    value = valueq.toUtf8().constData();
-
-    if (d->handle.isValid()) {
-        for (int i = d->saveSize -1 ; i>=0 ;i--) {
-            QByteArray hist1 = "Save";
-            QByteArray hist0 = "Save";
-            hist1.append(QByteArray::number(i+1));
-            hist0.append(QByteArray::number(i));
-            std::string tHist = d->handle->GetASCII(hist0);
-            if (!tHist.empty())
-                d->handle->SetASCII(hist1,tHist.c_str());
-        }
-        d->handle->SetASCII("Save0",value.c_str());
-    }
-}
-
-std::vector<QString> PrefQuantitySpinBox::getSavedValues() const
-{
-    Q_D(const PrefQuantitySpinBox);
-    std::vector<QString> res;
-
-    if (d->handle.isValid()) {
-        std::string tmp;
-        for (int i = 0 ; i< d->saveSize ;i++) {
-            QByteArray hist = "Save";
-            hist.append(QByteArray::number(i));
-            tmp = d->handle->GetASCII(hist);
-            if (!tmp.empty())
-                res.push_back(QString::fromUtf8(tmp.c_str()));
-            else
-                break; // end of history reached
-        }
-    }
-    return res;
 }
 
 void PrefQuantitySpinBox::setParamGrpPath(const QByteArray& path)
