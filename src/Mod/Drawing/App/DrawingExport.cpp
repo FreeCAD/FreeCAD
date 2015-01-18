@@ -60,6 +60,7 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
+#include <TColStd_Array1OfReal.hxx>
 #include <BRep_Tool.hxx>
 
 #include <BRepAdaptor_CompCurve.hxx>
@@ -637,166 +638,52 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
             }
         }
 		
-        GeomConvert_BSplineCurveToBezierCurve crt(spline);
+        //GeomConvert_BSplineCurveToBezierCurve crt(spline);
 		//GeomConvert_BSplineCurveKnotSplitting crt(spline,0);
-        Standard_Integer arcs = crt.NbArcs();
+        //Standard_Integer arcs = crt.NbArcs();
 		//Standard_Integer arcs = crt.NbSplits()-1;
-        	str << 0 << endl
-				<< "SECTION" << endl
-				<< 2 << endl
-				<< "ENTITIES" << endl
-				<< 0 << endl
-				<< "SPLINE" << endl;
-				//<< 8 << endl
-				//<< 0 << endl
-				//<< 66 << endl
-				//<< 1 << endl
-				//<< 0 << endl;
+        Standard_Integer m = 0;
+        if (spline->IsPeriodic()) {
+            m = spline->NbPoles() + 2*spline->Degree() - spline->Multiplicity(1) + 2;
+        }
+        else {
+            for (int i=1; i<= spline->NbKnots(); i++)
+                m += spline->Multiplicity(i);
+        }
+        TColStd_Array1OfReal knotsequence(1,m);
+        spline->KnotSequence(knotsequence);
+        TColgp_Array1OfPnt poles(1,spline->NbPoles());
+        spline->Poles(poles);
 
-        for (Standard_Integer i=1; i<=arcs; i++) {
-            Handle_Geom_BezierCurve bezier = crt.Arc(i);
-            Standard_Integer poles = bezier->NbPoles();
-			//Standard_Integer poles = bspline->NbPoles();
-			//gp_Pnt p1 = bspline->Pole(1);
 
-            if (bezier->Degree() == 3) {
-                if (poles != 4)
-                    Standard_Failure::Raise("do it the generic way");
-                gp_Pnt p1 = bezier->Pole(1);
-                gp_Pnt p2 = bezier->Pole(2);
-                gp_Pnt p3 = bezier->Pole(3);
-                gp_Pnt p4 = bezier->Pole(4);
-                if (i == 1) {
-                    str 
-						<< 10 << endl
-						<< p1.X() << endl
-						<< 20 << endl
-						<< p1.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p2.X() << endl
-						<< 20 << endl
-						<< p2.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p3.X() << endl
-						<< 20 << endl
-						<< p3.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p4.X() << endl
-						<< 20 << endl
-						<< p4.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
+        str << 0 << endl
+            << "SECTION" << endl
+            << 2 << endl
+            << "ENTITIES" << endl
+            << 0 << endl
+            << "SPLINE" << endl;
+        //<< 8 << endl
+        //<< 0 << endl
+        //<< 66 << endl
+        //<< 1 << endl
+        //<< 0 << endl;
+        str << 70 << endl
+            << spline->IsRational()*4 << endl //flags
+            << 71 << endl << spline->Degree() << endl
+            << 72 << endl << knotsequence.Length() << endl
+            << 73 << endl << poles.Length() << endl
+            << 74 << endl << 0 << endl; //fitpoints
 
-						<< 12 << endl
-						<< p1.X() << endl
-						<< 22 << endl
-						<< p1.Y() << endl
-						<< 32 << endl
-						<< 0 << endl
-
-						<< 13 << endl
-						<< p4.X() << endl
-						<< 23 << endl
-						<< p4.Y() << endl
-						<< 33 << endl
-						<< 0 << endl;
-                }
-                else {
-                    str 
-						<< 10 << endl
-                        << p3.X() << endl
-						<< 20 << endl
-						<< p3.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p4.X() << endl
-						<< 20 << endl
-						<< p4.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-
-						<< 12 << endl
-						<< p3.X() << endl
-						<< 22 << endl
-						<< p3.Y() << endl
-						<< 32 << endl
-						<< 0 << endl
-
-						<< 13 << endl
-						<< p4.X() << endl
-						<< 23 << endl
-						<< p4.Y() << endl
-						<< 33 << endl
-						<< 0 << endl;
-
-                }
-            }
-            else if (bezier->Degree() == 2) {
-                if (poles != 3)
-                    Standard_Failure::Raise("do it the generic way");
-                gp_Pnt p1 = bezier->Pole(1);
-                gp_Pnt p2 = bezier->Pole(2);
-                gp_Pnt p3 = bezier->Pole(3);
-                if (i == 1) {
-                    str 
-						<< 10 << endl
-						<< p1.X() << endl
-						<< 20 << endl
-						<< p1.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p2.X() << endl
-						<< 20 << endl
-						<< p2.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-						
-						<< 10 << endl
-                        << p3.X() << endl
-						<< 20 << endl
-						<< p3.Y() << endl
-						<< 30 << endl
-						<< 0 << endl
-
-						<< 12 << endl
-						<< p1.X() << endl
-						<< 22 << endl
-						<< p1.Y() << endl
-						<< 32 << endl
-						<< 0 << endl
-
-						<< 13 << endl
-						<< p3.X() << endl
-						<< 23 << endl
-						<< p3.Y() << endl
-						<< 33 << endl
-						<< 0 << endl;
-                }
-                else {
-                    str 
-						<< 10 << endl
-                        << p3.X() << endl
-						<< 20 << endl
-						<< p3.Y() << endl
-						<< 30 << endl
-						<< 0 << endl;
-                }
-            }
-            else {
-                Standard_Failure::Raise("do it the generic way");
+        for (int i = knotsequence.Lower() ; i <= knotsequence.Upper(); i++) {
+            str << 40 << endl << knotsequence(i) << endl;
+        }
+        for (int i = poles.Lower(); i <= poles.Upper(); i++) {
+            gp_Pnt pole = poles(i);
+            str << 10 << endl << pole.X() << endl
+                << 20 << endl << pole.Y() << endl
+                << 30 << endl << pole.Z() << endl;
+            if (spline->IsRational()) {
+                str << 41 << endl << spline->Weight(i) << endl;
             }
         }
 
