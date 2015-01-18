@@ -591,12 +591,15 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
 
             str << "import " << Module << std::endl;
             str << Module << ".export(__objs__,u\"" << unicodepath << "\")" << std::endl;
-            str << "del __objs__" << std::endl;
+            //str << "del __objs__" << std::endl;
 
             std::string code = str.str();
             // the original file name is required
             if (runPythonCode(code.c_str(), false))
                 getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+                
+            // allow exporters to pass _objs__ to submodules before deleting it
+            runPythonCode("del __objs__", false);
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
