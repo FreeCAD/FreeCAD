@@ -230,17 +230,20 @@ def getcolor(color):
         #for k,v in svgcolors.iteritems():
         #    if (k.lower() == color.lower()): pass
 
-def transformCopyShape(shape,matrix):
-    m=matrix
-    #factor=matrix.submatrix(2).isOrthogonal()
-    #if factor != 0.0:
-    if m.A11*m.A11+m.A12*m.A12 == m.A21*m.A21+m.A22*m.A22 and \
-            m.A11*m.A21+m.A12*m.A22 == 0:
-        newshape=shape.copy()
-        newshape.transformShape(matrix)
-        return newshape
-    else:
-        return shape.transformGeometry(matrix)
+def transformCopyShape(shape,m):
+    """apply transformation matrix m on given shape
+since OCCT 6.8.0 transformShape can be used to apply certian non-orthogonal
+transformations on shapes. This way a conversion to BSplines in
+transformGeometry can be avoided."""
+    if abs(m.A11**2+m.A12**2 -m.A21**2-m.A22**2) < 1e-8 and \
+            abs(m.A11*m.A21+m.A12*m.A22) < 1e-8: #no shear
+        try:
+            newshape=shape.copy()
+            newshape.transformShape(m)
+            return newshape
+        except Part.OCCError: # older versions of OCCT will refuse to work on
+            pass              # non-orthogonal matrices
+    return shape.transformGeometry(m)
 
 def getsize(length,mode='discard',base=1):
         """parses length values containing number and unit
