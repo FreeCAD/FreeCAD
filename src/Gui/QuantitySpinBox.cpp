@@ -129,12 +129,12 @@ public:
                         state = QValidator::Invalid;
                         goto end;
                     }
-                }
-                for (int i=dec + 1; i<copy.size(); ++i) {
-                    // a group separator after the decimal point is not allowed
-                    if (copy.at(i) == locale.groupSeparator()) {
-                        state = QValidator::Invalid;
-                        goto end;
+                    for (int i=dec + 1; i<copy.size(); ++i) {
+                        // a group separator after the decimal point is not allowed
+                        if (copy.at(i) == locale.groupSeparator()) {
+                            state = QValidator::Invalid;
+                            goto end;
+                        }
                     }
                 }
             }
