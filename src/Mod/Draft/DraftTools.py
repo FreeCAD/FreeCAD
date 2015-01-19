@@ -2663,17 +2663,24 @@ class Trimex(Modifier):
         self.placement = None
         self.ghost = None
         self.linetrack = None
+        self.color = None
+        self.width = None
         if self.ui:
             if not FreeCADGui.Selection.getSelection():
                 self.ui.selectUi()
-                msg(translate("draft", "Select an object to trim/extend\n"))
+                msg(translate("draft", "Select object(s) to trim/extend\n"))
                 self.call = self.view.addEventCallback("SoEvent",selectObject)
             else:
                 self.proceed()
 
     def proceed(self):
         if self.call: self.view.removeEventCallback("SoEvent",self.call)
-        self.obj = FreeCADGui.Selection.getSelection()[0]
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 2:
+            self.trimObjects(sel)
+            self.finish()
+            return
+        self.obj = sel[0]
         self.ui.trimUi()
         self.linetrack = lineTracker()
 
@@ -2703,7 +2710,11 @@ class Trimex(Modifier):
                         self.ghost.append(lineTracker())
         else:
             # normal wire trimex mode
-            self.obj.ViewObject.Visibility = False
+            self.color = self.obj.ViewObject.LineColor
+            self.width = self.obj.ViewObject.LineWidth
+            #self.obj.ViewObject.Visibility = False
+            self.obj.ViewObject.LineColor = (.5,.5,.5)
+            self.obj.ViewObject.LineWidth = 1
             self.extrudeMode = False
             if self.obj.Shape.Wires:
                 self.edges = self.obj.Shape.Wires[0].Edges
@@ -2711,9 +2722,9 @@ class Trimex(Modifier):
             else:
                 self.edges = self.obj.Shape.Edges
             self.ghost = []
-            lc = self.obj.ViewObject.LineColor
+            lc = self.color
             sc = (lc[0],lc[1],lc[2])
-            sw = self.obj.ViewObject.LineWidth
+            sw = self.width
             for e in self.edges:
                 if DraftGeomUtils.geomType(e) == "Line":
                     self.ghost.append(lineTracker(scolor=sc,swidth=sw))
@@ -2738,8 +2749,11 @@ class Trimex(Modifier):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             self.shift = hasMod(arg,MODCONSTRAIN)
             self.alt = hasMod(arg,MODALT)
+            self.ctrl = hasMod(arg,MODSNAP)
             if self.extrudeMode:
                 arg["ShiftDown"] = False
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setSelectMode(not self.ctrl)
             wp = not(self.extrudeMode and self.shift)
             self.point,cp,info = getPoint(self,arg,workingplane=wp)
             if hasMod(arg,MODSNAP): self.snapped = None
@@ -2953,6 +2967,73 @@ class Trimex(Modifier):
             self.doc.commitTransaction()
         self.doc.recompute()
         for g in self.ghost: g.off()
+        
+    def trimObjects(self,objectslist):
+        "attempts to trim two objects together"
+        import Part
+        wires = []
+        for obj in objectslist:
+            if not Draft.getType(obj) in ["Wire","Circle"]:
+                msg(translate("draft","Unable to trim these objects, only Draft wires and arcs are supported\n"),"error")
+                return
+            if len (obj.Shape.Wires) > 1:
+                msg(translate("draft","Unable to trim these objects, too many wires\n"),"error")
+                return
+            if len(obj.Shape.Wires) == 1:
+                wires.append(obj.Shape.Wires[0])
+            else:
+                wires.append(Part.Wire(obj.Shape.Edges))
+        ints = []
+        edge1 = None
+        edge2 = None
+        for i1,e1 in enumerate(wires[0].Edges):
+            for i2,e2 in enumerate(wires[1].Edges):
+                i = DraftGeomUtils.findIntersection(e1,e2,dts=False)
+                if len(i) == 1:
+                    ints.append(i[0])
+                    edge1 = i1
+                    edge2 = i2
+        if not ints:
+            msg(translate("draft","These objects don't intersect\n"),"error")
+            return
+        if len(ints) != 1:
+            msg(translate("draft","Too many intersection points\n"),"error")
+            return
+        v11 = wires[0].Vertexes[0].Point
+        v12 = wires[0].Vertexes[-1].Point
+        v21 = wires[1].Vertexes[0].Point
+        v22 = wires[1].Vertexes[-1].Point
+        if DraftVecUtils.closest(ints[0],[v11,v12]) == 1:
+            last1 = True
+        else:
+            last1 = False
+        if DraftVecUtils.closest(ints[0],[v21,v22]) == 1:
+            last2 = True
+        else:
+            last2 = False
+        for i,obj in enumerate(objectslist):
+            if i == 0:
+                ed = edge1
+                la = last1
+            else:
+                ed = edge2
+                la = last2
+            if Draft.getType(obj) == "Wire":
+                if la:
+                    pts = obj.Points[:ed+1] + ints
+                else:
+                    pts = ints + obj.Points[ed+1:]
+                obj.Points = pts
+            else:
+                vec = ints[0].sub(obj.Placement.Base)
+                vec = obj.Placement.inverse().Rotation.multVec(vec)
+                ang = math.degrees(-DraftVecUtils.angle(vec,obj.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0)),obj.Shape.Edges[0].Curve.Axis))
+                if la:
+                    obj.LastAngle = ang
+                else:
+                    obj.FirstAngle = ang
+        self.doc.recompute()
+                    
 
     def finish(self,closed=False):
         Modifier.finish(self)
@@ -2963,7 +3044,12 @@ class Trimex(Modifier):
             if self.ghost:
                 for g in self.ghost:
                     g.finalize()
-            self.obj.ViewObject.Visibility = True
+            if self.obj:
+                self.obj.ViewObject.Visibility = True
+                if self.color:
+                    self.obj.ViewObject.LineColor = self.color
+                if self.width:
+                    self.obj.ViewObject.LineWidth = self.width
             Draft.select(self.obj)
 
     def numericRadius(self,dist):
