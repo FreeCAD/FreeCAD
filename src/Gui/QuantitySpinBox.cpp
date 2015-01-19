@@ -113,79 +113,81 @@ public:
         default: break;
         }
 
-        if (copy.at(0) == locale.groupSeparator()) {
-            state = QValidator::Invalid;
-            goto end;
-        }
-        else if (len > 1) {
-            const int dec = copy.indexOf(locale.decimalPoint());
-            if (dec != -1) {
-                if (dec + 1 < copy.size() && copy.at(dec + 1) == locale.decimalPoint() && pos == dec + 1) {
-                    copy.remove(dec + 1, 1);
+        {
+            if (copy.at(0) == locale.groupSeparator()) {
+                state = QValidator::Invalid;
+                goto end;
+            }
+            else if (len > 1) {
+                const int dec = copy.indexOf(locale.decimalPoint());
+                if (dec != -1) {
+                    if (dec + 1 < copy.size() && copy.at(dec + 1) == locale.decimalPoint() && pos == dec + 1) {
+                        copy.remove(dec + 1, 1);
+                    }
+                    else if (copy.indexOf(locale.decimalPoint(), dec + 1) != -1) {
+                        // trying to add a second decimal point is not allowed
+                        state = QValidator::Invalid;
+                        goto end;
+                    }
                 }
-                else if (copy.indexOf(locale.decimalPoint(), dec + 1) != -1) {
-                    // trying to add a second decimal point is not allowed
-                    state = QValidator::Invalid;
-                    goto end;
+                for (int i=dec + 1; i<copy.size(); ++i) {
+                    // a group separator after the decimal point is not allowed
+                    if (copy.at(i) == locale.groupSeparator()) {
+                        state = QValidator::Invalid;
+                        goto end;
+                    }
                 }
             }
-            for (int i=dec + 1; i<copy.size(); ++i) {
-                // a group separator after the decimal point is not allowed
-                if (copy.at(i) == locale.groupSeparator()) {
-                    state = QValidator::Invalid;
-                    goto end;
-                }
+
+            bool ok = false;
+            double value = min;
+
+            if (locale.negativeSign() != QLatin1Char('-'))
+                copy.replace(locale.negativeSign(), QLatin1Char('-'));
+            if (locale.positiveSign() != QLatin1Char('+'))
+                copy.replace(locale.positiveSign(), QLatin1Char('+'));
+
+            try {
+                QString copy2 = copy;
+                copy2.remove(locale.groupSeparator());
+
+                res = Base::Quantity::parse(copy2);
+                value = res.getValue();
+                ok = true;
             }
-        }
+            catch (Base::Exception&) {
+            }
 
-        bool ok = false;
-        double value = min;
-
-        if (locale.negativeSign() != QLatin1Char('-'))
-            copy.replace(locale.negativeSign(), QLatin1Char('-'));
-        if (locale.positiveSign() != QLatin1Char('+'))
-            copy.replace(locale.positiveSign(), QLatin1Char('+'));
-
-        try {
-            QString copy2 = copy;
-            copy2.remove(locale.groupSeparator());
-
-            res = Base::Quantity::parse(copy2);
-            value = res.getValue();
-            ok = true;
-        }
-        catch (Base::Exception&) {
-        }
-
-        if (!ok) {
-            // input may not be finished
-            state = QValidator::Intermediate;
-        }
-        else if (value >= min && value <= max) {
-            if (copy.endsWith(locale.decimalPoint())) {
-                // input shouldn't end with a decimal point
+            if (!ok) {
+                // input may not be finished
                 state = QValidator::Intermediate;
             }
-            else if (res.getUnit().isEmpty() && !this->unit.isEmpty()) {
-                // if not dimensionless the input should have a dimension
-                state = QValidator::Intermediate;
+            else if (value >= min && value <= max) {
+                if (copy.endsWith(locale.decimalPoint())) {
+                    // input shouldn't end with a decimal point
+                    state = QValidator::Intermediate;
+                }
+                else if (res.getUnit().isEmpty() && !this->unit.isEmpty()) {
+                    // if not dimensionless the input should have a dimension
+                    state = QValidator::Intermediate;
+                }
+                else if (res.getUnit() != this->unit) {
+                    state = QValidator::Invalid;
+                }
+                else {
+                    state = QValidator::Acceptable;
+                }
             }
-            else if (res.getUnit() != this->unit) {
+            else if (max == min) { // when max and min is the same the only non-Invalid input is max (or min)
                 state = QValidator::Invalid;
             }
             else {
-                state = QValidator::Acceptable;
-            }
-        }
-        else if (max == min) { // when max and min is the same the only non-Invalid input is max (or min)
-            state = QValidator::Invalid;
-        }
-        else {
-            if ((value >= 0 && value > max) || (value < 0 && value < min)) {
-                state = QValidator::Invalid;
-            }
-            else {
-                state = QValidator::Intermediate;
+                if ((value >= 0 && value > max) || (value < 0 && value < min)) {
+                    state = QValidator::Invalid;
+                }
+                else {
+                    state = QValidator::Intermediate;
+                }
             }
         }
 end:
