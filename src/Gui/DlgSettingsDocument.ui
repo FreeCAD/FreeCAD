@@ -6,14 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>470</width>
-    <height>423</height>
+    <width>500</width>
+    <height>593</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Document</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
+   <item row="4" column="0">
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>429</width>
+       <height>37</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="GroupBox5">
      <property name="title">
@@ -92,10 +105,10 @@
         <property name="text">
          <string>Create new document at start up</string>
         </property>
-         <property name="checked">
-           <bool>false</bool>
-         </property>
-         <property name="prefEntry" stdset="0">
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
          <cstring>CreateNewDoc</cstring>
         </property>
         <property name="prefPath" stdset="0">
@@ -134,10 +147,10 @@
         <property name="text">
          <string>Using Undo/Redo on documents</string>
         </property>
-         <property name="checked">
-           <bool>true</bool>
-         </property>
-         <property name="prefEntry" stdset="0">
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
          <cstring>UsingUndo</cstring>
         </property>
         <property name="prefPath" stdset="0">
@@ -293,30 +306,207 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <spacer>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>Authoring and License</string>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>429</width>
-       <height>37</height>
-      </size>
-     </property>
-    </spacer>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Author name</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="prefAuthor">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>prefAuthor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="prefSetAuthorOnSave">
+          <property name="toolTip">
+           <string>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</string>
+          </property>
+          <property name="text">
+           <string>Set on save</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>prefSetAuthorOnSave</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Company</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="prefCompany">
+          <property name="toolTip">
+           <string>The defautl company to use for new files</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>prefCompany</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Default license</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="prefLicenseType">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="toolTip">
+           <string>The default license for new documents</string>
+          </property>
+          <property name="editable">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>prefLicenseType</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>All rights reserved</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>CreativeCommons Attribution</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>CreativeCommons Attribution-ShareAlike</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>CreativeCommons Attribution-NoDerivatives</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>CreativeCommons Attribution-NonCommercial</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>CreativeCommons Attribution-NonCommercial-ShareAlike</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>CreativeCommons Attribution-NonCommercial-NoDerivatives</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Public Domain</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>FreeArt</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Other</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>License URL</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="prefLicenseUrl">
+          <property name="toolTip">
+           <string>An URL where the user can find more details about the license</string>
+          </property>
+          <property name="text">
+           <string>http://en.wikipedia.org/wiki/All_rights_reserved</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>prefLicenseUrl</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

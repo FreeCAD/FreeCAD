@@ -43,6 +43,7 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     prefCountBackupFiles->setMaximum(INT_MAX);
     prefCompression->setMinimum(Z_NO_COMPRESSION);
     prefCompression->setMaximum(Z_BEST_COMPRESSION);
+    connect( prefLicenseType, SIGNAL(currentIndexChanged(int)), this, SLOT(on_prefLicenseType_changed(int)) );
 }
 
 /** 
@@ -67,6 +68,11 @@ void DlgSettingsDocumentImp::saveSettings()
     prefSaveBackupFiles->onSave();
     prefCountBackupFiles->onSave();
     prefDuplicateLabel->onSave();
+    prefLicenseType->onSave();
+    prefLicenseUrl->onSave();
+    prefAuthor->onSave();
+    prefSetAuthorOnSave->onSave();
+    prefCompany->onSave();
 }
 
 void DlgSettingsDocumentImp::loadSettings()
@@ -82,6 +88,11 @@ void DlgSettingsDocumentImp::loadSettings()
     prefSaveBackupFiles->onRestore();
     prefCountBackupFiles->onRestore();
     prefDuplicateLabel->onRestore();
+    prefLicenseType->onRestore();
+    prefLicenseUrl->onRestore();
+    prefAuthor->onRestore();
+    prefSetAuthorOnSave->onRestore();
+    prefCompany->onRestore();
 }
 
 /**
@@ -94,6 +105,44 @@ void DlgSettingsDocumentImp::changeEvent(QEvent *e)
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+/** 
+ * Set the correct URL depending on the license type 
+ */
+void DlgSettingsDocumentImp::on_prefLicenseType_changed(int index)
+{
+    switch (index) {
+        case 0:
+            prefLicenseUrl->setText(QString::fromAscii("http://en.wikipedia.org/wiki/All_rights_reserved"));
+            break;
+        case 1:
+            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by/4.0/"));
+            break;
+        case 2:
+            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-sa/4.0/"));
+            break;
+        case 3:
+            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nd/4.0/"));
+            break;
+        case 4:
+            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nc/4.0/"));
+            break;
+        case 5:
+            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nc-sa/4.0/"));
+            break;
+        case 6:
+            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nc-nd/4.0/"));
+            break;
+        case 7:
+            prefLicenseUrl->setText(QString::fromAscii("http://en.wikipedia.org/wiki/Public_domain"));
+            break;
+        case 8:
+            prefLicenseUrl->setText(QString::fromAscii("http://artlibre.org/licence/lal"));
+            break;
+        default:
+            prefLicenseUrl->setText(QString::fromAscii(""));
     }
 }
 

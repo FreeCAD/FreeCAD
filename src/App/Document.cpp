@@ -595,13 +595,17 @@ Document::Document(void)
     Console().Log("+App::Document: %p\n",this);
 #endif
     std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
+    std::string Author = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
+    std::string AuthorComp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefCompany","");
     ADD_PROPERTY_TYPE(Label,("Unnamed"),0,Prop_None,"The name of the document");
     ADD_PROPERTY_TYPE(FileName,(""),0,Prop_ReadOnly,"The path to the file where the document is saved to");
-    ADD_PROPERTY_TYPE(CreatedBy,(""),0,Prop_None,"The creator of the document");
+    ADD_PROPERTY_TYPE(CreatedBy,(Author.c_str()),0,Prop_None,"The creator of the document");
     ADD_PROPERTY_TYPE(CreationDate,(CreationDateString.c_str()),0,Prop_ReadOnly,"Date of creation");
     ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,Prop_None,0);
     ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,Prop_ReadOnly,"Date of last modification");
-    ADD_PROPERTY_TYPE(Company,(""),0,Prop_None,"Additional tag to save the the name of the company");
+    ADD_PROPERTY_TYPE(Company,(AuthorComp.c_str()),0,Prop_None,"Additional tag to save the the name of the company");
     ADD_PROPERTY_TYPE(Comment,(""),0,Prop_None,"Additional tag to save a comment");
     ADD_PROPERTY_TYPE(Meta,(),0,Prop_None,"Map with additional meta information");
     ADD_PROPERTY_TYPE(Material,(),0,Prop_None,"Map with material properties");
@@ -611,8 +615,44 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(Uid,(id),0,Prop_ReadOnly,"UUID of the document");
 
     // license stuff
-    ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
-    ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
+    int licenseId = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType",0);
+    std::string license;
+    switch (licenseId) {
+        case 0:
+            license = "All rights reserved";
+            break;
+        case 1:
+            license = "CreativeCommons Attribution";
+            break;
+        case 2:
+            license = "CreativeCommons Attribution-ShareAlike";
+            break;
+        case 3:
+            license = "CreativeCommons Attribution-NoDerivatives";
+            break;
+        case 4:
+            license = "CreativeCommons Attribution-NonCommercial";
+            break;
+        case 5:
+            license = "CreativeCommons Attribution-NonCommercial-ShareAlike";
+            break;
+        case 6:
+            license = "CreativeCommons Attribution-NonCommercial-NoDerivatives";
+            break;
+        case 7:
+            license = "Public Domain";
+            break;
+        case 8:
+            license = "FreeArt";
+            break;
+        default:
+            license = "Other";
+    }
+    std::string licenseUrl = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl","http://en.wikipedia.org/wiki/All_rights_reserved");
+    ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
@@ -951,6 +991,14 @@ bool Document::save (void)
     if (*(FileName.getValue()) != '\0') {
         std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
         LastModifiedDate.setValue(LastModifiedDateString.c_str());
+        // set author if needed
+        bool saveAuthor = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("prefSetAuthorOnSave",false);
+        if (saveAuthor) {
+            std::string Author = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
+            LastModifiedBy.setValue(Author.c_str());
+        }
         // make a tmp. file where to save the project data first and then rename to
         // the actual file name. This may be useful if overwriting an existing file
         // fails so that the data of the work up to now isn't lost.
