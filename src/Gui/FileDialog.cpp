@@ -78,7 +78,8 @@ void FileDialog::accept()
         if (!files.isEmpty()) {
             QString ext = this->defaultSuffix();
             QString file = files.front();
-            if (!ext.isEmpty() && !file.endsWith(ext, Qt::CaseInsensitive)) {
+            QFileInfo fi(file);
+            if (!ext.isEmpty() && fi.suffix().isEmpty()) {
                 file = QString::fromLatin1("%1.%2").arg(file).arg(ext);
                 // That's the built-in line edit
                 QLineEdit* fileNameEdit = this->findChild<QLineEdit*>(QString::fromLatin1("fileNameEdit"));
