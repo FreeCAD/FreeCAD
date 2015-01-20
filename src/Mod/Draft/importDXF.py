@@ -621,7 +621,7 @@ as there is currently no Draft premitive to handle splines the result is a
 non-parametric curve"""
     flags = rawValue(spline,70)
     closed   = (flags &  1) != 0
-    periodic = (flags &  2) != 0
+    periodic = (flags &  2) != 0 and False # workaround
     rational = (flags &  4) != 0
     planar   = (flags &  8) != 0
     linear   = (flags & 16) != 0
@@ -694,11 +694,31 @@ non-parametric curve"""
             previousknot = knotvalue
             knotvector.append(knotvalue)
     multvector.append(mult)
+    # check if the multiplicities are valid
     innermults = multvector[:] if periodic else multvector[1:-1]
-    if any(m>degree for m in innermults):
-        #raise ValueError('Invalid multiplicities')
-        #warn('polygon fallback on %s' %spline)
-        return drawSplineIterpolation(controlpoints,closed=closed,\
+    if any(m>degree for m in innermults): #invalid
+        if all(m == degree+1 for m in multvector):
+            if not forceShape and weights is None:
+                points=controlpoints[:]
+                del points[degree+1::degree+1]
+                return Draft.makeBezCurve(points,Degree=degree)
+            else:
+                poles=controlpoints[:]
+                edges=[]
+                while len(poles) >= degree+1:
+                    #bezier segments
+                    bzseg=Part.BezierCurve()
+                    bzseg.increase(degree)
+                    bzseg.setPoles(poles[0:degree+1])
+                    poles=poles[degree+1:]
+                    if weights is not None:
+                        bzseg.setWeights(weights[0:degree+1])
+                        weights=weights[degree+1:]
+                    edges.append(bzseg.toShape())
+                return Part.Wire(edges)
+        else:
+            warn('polygon fallback on %s' %spline)
+            return drawSplineIterpolation(controlpoints,closed=closed,\
                 forceShape=forceShape,alwaysDiscretize=True)
     try:
         bspline=Part.BSplineCurve()
