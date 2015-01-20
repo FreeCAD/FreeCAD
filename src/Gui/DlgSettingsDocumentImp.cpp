@@ -43,7 +43,7 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp( QWidget* parent )
     prefCountBackupFiles->setMaximum(INT_MAX);
     prefCompression->setMinimum(Z_NO_COMPRESSION);
     prefCompression->setMaximum(Z_BEST_COMPRESSION);
-    connect( prefLicenseType, SIGNAL(currentIndexChanged(int)), this, SLOT(on_prefLicenseType_changed(int)) );
+    connect( prefLicenseType, SIGNAL(currentIndexChanged(int)), this, SLOT(onLicenseTypeChanged(int)) );
 }
 
 /** 
@@ -111,7 +111,7 @@ void DlgSettingsDocumentImp::changeEvent(QEvent *e)
 /** 
  * Set the correct URL depending on the license type 
  */
-void DlgSettingsDocumentImp::on_prefLicenseType_changed(int index)
+void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
 {
     switch (index) {
         case 0:
