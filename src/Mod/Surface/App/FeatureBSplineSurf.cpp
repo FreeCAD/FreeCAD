@@ -44,14 +44,12 @@
 
 using namespace Surface;
 
-PROPERTY_SOURCE(Surface::BSplineSurf, Part::Feature)
+PROPERTY_SOURCE(Surface::BSplineSurf, Surface::BSurf)
 
 //Initial values
 
-BSplineSurf::BSplineSurf()
+BSplineSurf::BSplineSurf() : BSurf()
 {
-    ADD_PROPERTY(aBList,(0,"Geom_BSplineCurve"));
-    ADD_PROPERTY(filltype,(1));
 }
 
 //Functions
