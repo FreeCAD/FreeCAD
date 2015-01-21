@@ -39,12 +39,13 @@ namespace Surface
 
 class BSurf : public Part::Feature
 {
+  PROPERTY_HEADER(Surface::BSurf);
 public:
+    BSurf();
     App::PropertyLinkSubList aBList; //curves to be turned into a face (2-4 curves allowed).
     App::PropertyInteger filltype;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
     short mustExecute() const;
-    virtual App::DocumentObjectExecReturn *execute(void) = 0;
 
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {

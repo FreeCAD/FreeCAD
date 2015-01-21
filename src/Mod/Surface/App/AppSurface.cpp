@@ -30,6 +30,7 @@
 #include "FeatureFilling.h"
 #include "FeatureSewing.h"
 #include "FeatureCut.h"
+#include "FeatureBSurf.h"
 #include "FeatureBezSurf.h"
 #include "FeatureBSplineSurf.h"
 
@@ -66,6 +67,7 @@ void SurfaceExport initSurface() {
     Surface::Filling        ::init();
     Surface::Sewing         ::init();
     Surface::Cut            ::init();
+    Surface::BSurf          ::init();
     Surface::BezSurf        ::init();
     Surface::BSplineSurf    ::init();
 }
