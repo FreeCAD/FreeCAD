@@ -35,6 +35,8 @@
 #endif
 
 #include "BSurf.h"
+#include "../App/FeatureBSurf.h"
+#include "../FillType.h"
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -54,32 +56,35 @@ bool ViewProviderBSurf::setEdit(int ModNum)
 // When double-clicking on the item for this sketch the
 // object unsets and sets its edit mode without closing
 // the task panel
-   Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-   TaskBSurf* tDlg = qobject_cast<TaskBSurf*>(dlg);
+
+    Surface::BSurf* obj =  static_cast<Surface::BSurf*>(this->getObject());
+
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    TaskBSurf* tDlg = qobject_cast<TaskBSurf*>(dlg);
 // start the edit dialog
     if(dlg)
-       Gui::Control().showDialog(tDlg);
+    {
+        tDlg->setEditedObject(obj);
+        Gui::Control().showDialog(tDlg);
+    }
     else
-       Gui::Control().showDialog(new TaskBSurf(this));
-//       draw();
+    {
+        Gui::Control().showDialog(new TaskBSurf(this, obj));
+    }
     return true;
 }
 
 void ViewProviderBSurf::unsetEdit(int ModNum)
 {
-/*if(!Gui::Selection().isSelected(pcObject) || !Visibility.getValue()) {
-    internal_vp.switch_node(false);
-    pcModeSwitch->whichChild = -1;
-    m_selected = false;
-    } */
+    // nothing to do
 }
 
-BSurf::BSurf(ViewProviderBSurf* vp)
-  //: QDialog(parent, fl), bbox(bb)
+BSurf::BSurf(ViewProviderBSurf* vp, Surface::BSurf* obj)
 {
     ui = new Ui_DlgBSurf();
     ui->setupUi(this);
-    vp = new ViewProviderBSurf();
+    this->vp = vp;
+    setEditedObject(obj);
 }
 
 /*
@@ -89,7 +94,31 @@ BSurf::~BSurf()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
-    delete vp;
+}
+
+// stores object pointer, its old fill type and adjusts radio buttons according to it.
+void BSurf::setEditedObject(Surface::BSurf* obj)
+{
+    editedObject = obj;
+    filltype_t ft = (filltype_t)(editedObject->filltype.getValue());
+    switch(ft)
+    {
+    case StretchStyle:
+        oldFillType = ft;
+        ui->fillType_stretch->setChecked(true);
+        break;
+    case CoonsStyle:
+        oldFillType = ft;
+        ui->fillType_coons->setChecked(true);
+        break;
+    case CurvedStyle:
+        oldFillType = ft;
+        ui->fillType_curved->setChecked(true);
+        break;
+    /*default:
+        printf("BSurf::setEditedObject: illegal fill type: %d\n", editedObject->filltype.getValue());
+        Standard_Failure::Raise("BSurf::setEditedObject: illegal fill type.");*/
+    }
 }
 
 filltype_t BSurf::getFillType() const
@@ -101,7 +130,6 @@ filltype_t BSurf::getFillType() const
         ret = CoonsStyle;
     else
         ret = CurvedStyle;
-    printf("BSurf::getFillType: %d\n", ret);
     return ret;
 }
 
@@ -117,43 +145,52 @@ void BSurf::changeEvent(QEvent *e)
 
 void BSurf::accept()
 {
-    printf("accept ");
+    // applies the changes
     apply();
     QDialog::accept();
 }
 
+void BSurf::reject()
+{
+    // if the object fill type was changed, reset the old one
+    if(editedObject->filltype.getValue() != oldFillType)
+    {
+        editedObject->filltype.setValue(oldFillType);
+        editedObject->execute();
+    }
+    QDialog::reject();
+}
+
 void BSurf::apply()
 {
-    printf("apply\n");
- //   std::vector<App::DocumentObject*> obj = Gui::Selection().
-   //     getObjectsOfType(Part::Feature::getClassTypeId());
-////////////////
+    // apply the change only if it is a real change
+    if(editedObject->filltype.getValue() != fillType)
+    {
+        editedObject->filltype.setValue(fillType);
+        editedObject->execute();
+    }
 }
 
 void BSurf::on_fillType_stretch_clicked()
 {
-    printf("stretch\n");
+    fillType = StretchStyle;
 }
 
 void BSurf::on_fillType_coons_clicked()
 {
-    printf("coons\n");
+    fillType = CoonsStyle;
 }
 
 void BSurf::on_fillType_curved_clicked()
 {
-    printf("curved\n");
+    fillType = CurvedStyle;
 }
 
 // ---------------------------------------
 
-TaskBSurf::TaskBSurf(ViewProviderBSurf* vp)
+TaskBSurf::TaskBSurf(ViewProviderBSurf* vp, Surface::BSurf* obj)
 {
-    widget = new BSurf(vp);
-/*    taskbox = new Gui::TaskView::TaskBox(
-        NULL,
-        widget->windowTitle(), true, 0);
-    taskbox->groupLayout()->addWidget(widget);*/
+    widget = new BSurf(vp, obj);
     Content.push_back(widget);
 }
 
@@ -162,12 +199,24 @@ TaskBSurf::~TaskBSurf()
     // automatically deleted in the sub-class
 }
 
+void TaskBSurf::setEditedObject(Surface::BSurf* obj)
+{
+    widget->setEditedObject(obj);
+}
+
 bool TaskBSurf::accept()
 {
     widget->accept();
     return (widget->result() == QDialog::Accepted);
 }
 
+bool TaskBSurf::reject()
+{
+    widget->reject();
+    return (widget->result() == QDialog::Rejected);
+}
+
+// Apply clicked
 void TaskBSurf::clicked(int id)
 {
     if (id == QDialogButtonBox::Apply) {

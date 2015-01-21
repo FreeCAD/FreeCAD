@@ -44,11 +44,12 @@ public:
     App::PropertyInteger filltype;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
     short mustExecute() const;
+    virtual App::DocumentObjectExecReturn *execute(void) = 0;
 
     /// returns the type name of the view provider
-   const char* getViewProviderName(void) const {
-       return "SurfaceGui::ViewProviderBSurf";
-   }
+    const char* getViewProviderName(void) const {
+        return "SurfaceGui::ViewProviderBSurf";
+    }
 
 protected:
     GeomFill_FillingStyle getFillingStyle();
