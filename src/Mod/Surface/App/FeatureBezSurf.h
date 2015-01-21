@@ -37,7 +37,7 @@ public:
     BezSurf();
 
     // recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
+    virtual App::DocumentObjectExecReturn *execute(void);
 };
 }//Namespace Surface
 #endif

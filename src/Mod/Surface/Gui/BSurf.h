@@ -35,6 +35,7 @@
 #include "../FillType.h"
 #include <Mod/Part/Gui/ViewProvider.h>
 #include "ui_BSurf.h"
+#include "../App/FeatureBSurf.h"
 
 namespace SurfaceGui
 {
@@ -51,13 +52,21 @@ namespace SurfaceGui
     {
         Q_OBJECT
     protected:
-        filltype_t fillType;
+        filltype_t fillType, oldFillType;
+        Surface::BSurf* editedObject;
+
+    private:
+        Ui_DlgBSurf* ui;
+        Base::BoundBox3d bbox;
+        ViewProviderBSurf* vp;
 
     public:
-        BSurf(ViewProviderBSurf* vp);
+        BSurf(ViewProviderBSurf* vp, Surface::BSurf* obj);
         ~BSurf();
         void accept();
+        void reject();
         void apply();
+        void setEditedObject(Surface::BSurf* obj);
 
     protected:
         void changeEvent(QEvent *e);
@@ -67,19 +76,6 @@ namespace SurfaceGui
         void on_fillType_coons_clicked();
         void on_fillType_curved_clicked();
         filltype_t getFillType() const;
-
-/*    private:
-        std::vector<double> getPlanes() const;
-        void calcPlane(Plane, double);
-        void calcPlanes(Plane);
-        void makePlanes(Plane, const std::vector<double>&, double[4]);
-        Plane plane() const;*/
-
-    private:
-        Ui_DlgBSurf* ui;
-        Base::BoundBox3d bbox;
-        ViewProviderBSurf* vp;
-//        QPointer<Gui::View3DInventor> view;
     };
 
     class TaskBSurf : public Gui::TaskView::TaskDialog
@@ -87,11 +83,13 @@ namespace SurfaceGui
         Q_OBJECT
 
     public:
-        TaskBSurf(ViewProviderBSurf* vp);
+        TaskBSurf(ViewProviderBSurf* vp, Surface::BSurf* obj);
         ~TaskBSurf();
+        void setEditedObject(Surface::BSurf* obj);
 
     public:
         bool accept();
+        bool reject();
         void clicked(int id);
 
         virtual QDialogButtonBox::StandardButtons getStandardButtons() const
