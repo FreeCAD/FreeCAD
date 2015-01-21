@@ -165,12 +165,6 @@ CmdSurfaceBezier::CmdSurfaceBezier()
 
 void CmdSurfaceBezier::activated(int iMsg)
 {
-    /*if (!isActive()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select 2, 3 or 4 curves, please."));
-        return;
-    }*/
-
     // we take the whole selection and require that all of its members are of the required curve
     std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
     std::string FeatName = getUniqueObjectName("BezierSurface");
@@ -184,6 +178,7 @@ void CmdSurfaceBezier::activated(int iMsg)
     openCommand("Create Bezier surface");
     doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=1"); // TODO ask filltype from user and check it
+    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
     runCommand(Doc, bezListCmd.str().c_str());
     updateActive();
     commitCommand();
@@ -241,12 +236,6 @@ CmdSurfaceBSpline::CmdSurfaceBSpline()
 
 void CmdSurfaceBSpline::activated(int iMsg)
 {
-    /*Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-    if (!dlg) {
-        dlg = new SurfaceGui::TaskBSurf(new SurfaceGui::ViewProviderBSurf());
-    }
-    Gui::Control().showDialog(dlg);*/
-
     // we take the whole selection and require that all of its members are of the required curve
     std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
     std::string FeatName = getUniqueObjectName("BSplineSurface");

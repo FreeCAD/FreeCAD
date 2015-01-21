@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Gui/Application.h>
 
 #include "Workbench.h"
@@ -54,12 +55,15 @@ void SurfaceGuiExport initSurfaceGui()
         return;
     }
 
-    SurfaceGui::Workbench::init();
-    SurfaceGui::ViewProviderBSurf::init();
-    
+//    Base::Interpreter().runString("import SurfaceGui"); infinite Python recursion comes
+    Base::Interpreter().runString("import PartGui");
+
     // instanciating the commands
     CreateSurfaceCommands();
 
+    SurfaceGui::Workbench::init();
+    SurfaceGui::ViewProviderBSurf::init();
+    
 //    SurfaceGui::ViewProviderCut::init();
 
     (void) Py_InitModule3("SurfaceGui", SurfaceGui_methods, module_SurfaceGui_doc);   /* mod name, table ptr */
