@@ -40,6 +40,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
+#include <Gui/Command.h>
 #include <Base/Sequencer.h>
 #include <Gui/Control.h>
 
@@ -119,6 +120,7 @@ void BSurf::setEditedObject(Surface::BSurf* obj)
         printf("BSurf::setEditedObject: illegal fill type: %d\n", editedObject->filltype.getValue());
         Standard_Failure::Raise("BSurf::setEditedObject: illegal fill type.");*/
     }
+    fillType = oldFillType;
 }
 
 filltype_t BSurf::getFillType() const
@@ -147,6 +149,8 @@ void BSurf::accept()
 {
     // applies the changes
     apply();
+    Gui::Command::commitCommand();
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     QDialog::accept();
 }
 
@@ -156,8 +160,10 @@ void BSurf::reject()
     if(editedObject->filltype.getValue() != oldFillType)
     {
         editedObject->filltype.setValue(oldFillType);
-        editedObject->execute();
     }
+    Gui::Command::commitCommand();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
     QDialog::reject();
 }
 
@@ -167,7 +173,8 @@ void BSurf::apply()
     if(editedObject->filltype.getValue() != fillType)
     {
         editedObject->filltype.setValue(fillType);
-        editedObject->execute();
+        oldFillType = fillType;
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     }
 }
 

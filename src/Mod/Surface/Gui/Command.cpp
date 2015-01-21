@@ -179,9 +179,8 @@ void CmdSurfaceBezier::activated(int iMsg)
     doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=1"); // TODO ask filltype from user and check it
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
-    runCommand(Doc, bezListCmd.str().c_str());
+    doCommand(Doc, bezListCmd.str().c_str());
     updateActive();
-    commitCommand();
 }
 
 bool CmdSurfaceBezier::isActive(void)
@@ -249,10 +248,9 @@ void CmdSurfaceBSpline::activated(int iMsg)
     openCommand("Create BSpline surface");
     doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=1");
+    doCommand(Doc, bspListCmd.str().c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
-    runCommand(Doc, bspListCmd.str().c_str());
     updateActive();
-    commitCommand();
 }
 
 bool CmdSurfaceBSpline::isActive(void)
