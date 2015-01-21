@@ -39,6 +39,15 @@
 
 using namespace Surface;
 
+PROPERTY_SOURCE(Surface::BSurf, Part::Feature)
+
+BSurf::BSurf(): Feature()
+{
+  ADD_PROPERTY(filltype,(1));
+  ADD_PROPERTY(aBList,(0,"Dummy"));
+}
+
+
 //Check if any components of the surface have been modified
 short BSurf::mustExecute() const
 {

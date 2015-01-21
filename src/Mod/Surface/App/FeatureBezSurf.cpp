@@ -44,14 +44,12 @@
 
 using namespace Surface;
 
-PROPERTY_SOURCE(Surface::BezSurf, Part::Feature)
+PROPERTY_SOURCE(Surface::BezSurf, Surface::BSurf)
 
 //Initial values
 
-BezSurf::BezSurf()
+BezSurf::BezSurf() : BSurf()
 {
-    ADD_PROPERTY(aBList,(0,"Geom_BezierCurve"));
-    ADD_PROPERTY(filltype,(1));
 }
 
 //Functions
