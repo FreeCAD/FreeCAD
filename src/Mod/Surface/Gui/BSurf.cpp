@@ -30,6 +30,7 @@
 #include <Gui/Command.h>
 #include <Base/Sequencer.h>
 #include <Gui/Control.h>
+#include <Gui/BitmapFactory.h>
 
 #include "BSurf.h"
 #include "ui_BSurf.h"
@@ -186,7 +187,12 @@ void BSurf::on_fillType_curved_clicked()
 TaskBSurf::TaskBSurf(ViewProviderBSurf* vp, Surface::BSurf* obj)
 {
     widget = new BSurf(vp, obj);
-    Content.push_back(widget);
+    widget->setWindowTitle(QObject::tr("Surface"));
+    taskbox = new Gui::TaskView::TaskBox(
+        Gui::BitmapFactory().pixmap("BezSurf"),
+        widget->windowTitle(), true, 0);
+    taskbox->groupLayout()->addWidget(widget);
+    Content.push_back(taskbox);
 }
 
 TaskBSurf::~TaskBSurf()
