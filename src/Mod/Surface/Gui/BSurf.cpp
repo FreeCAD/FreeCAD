@@ -44,6 +44,8 @@
 #include <Base/Sequencer.h>
 #include <Gui/Control.h>
 
+#include "ui_BSurf.h"
+
 
 using namespace SurfaceGui;
 //#undef CS_FUTURE // multi-threading causes some problems
@@ -141,7 +143,7 @@ void BSurf::changeEvent(QEvent *e)
         ui->retranslateUi(this);
     }
     else {
-        QDialog::changeEvent(e);
+        QWidget::changeEvent(e);
     }
 }
 
@@ -151,7 +153,6 @@ void BSurf::accept()
     apply();
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-    QDialog::accept();
 }
 
 void BSurf::reject()
@@ -164,7 +165,6 @@ void BSurf::reject()
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
-    QDialog::reject();
 }
 
 void BSurf::apply()
@@ -214,13 +214,13 @@ void TaskBSurf::setEditedObject(Surface::BSurf* obj)
 bool TaskBSurf::accept()
 {
     widget->accept();
-    return (widget->result() == QDialog::Accepted);
+    return true;
 }
 
 bool TaskBSurf::reject()
 {
     widget->reject();
-    return (widget->result() == QDialog::Rejected);
+    return true;
 }
 
 // Apply clicked

@@ -30,15 +30,16 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/BoundBox.h>
-#include <QDialog>
+#include <QWidget>
 #include <QPointer>
 #include "../FillType.h"
 #include <Mod/Part/Gui/ViewProvider.h>
-#include "ui_BSurf.h"
 #include "../App/FeatureBSurf.h"
 
 namespace SurfaceGui
 {
+  
+    class Ui_DlgBSurf;
 
     class SurfaceGuiExport ViewProviderBSurf : public PartGui::ViewProviderPart
     {
@@ -48,7 +49,7 @@ namespace SurfaceGui
         virtual void unsetEdit(int ModNum);
     };
 
-    class BSurf : public QDialog
+    class BSurf : public QWidget
     {
         Q_OBJECT
     protected:
