@@ -33,11 +33,12 @@
 #include <BRep_Tool.hxx>
 #include <TopExp_Explorer.hxx>
 #include <Standard_ConstructionError.hxx>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
 #include <GeomFill_BezierCurves.hxx>
 #include <GeomFill.hxx>
 #endif
+
+#include <Base/Tools.h>
+#include <Base/Exception.h>
 
 #include "FeatureBezSurf.h"
 

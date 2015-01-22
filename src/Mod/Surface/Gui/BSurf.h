@@ -30,11 +30,9 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Base/BoundBox.h>
-#include <QWidget>
-#include <QPointer>
-#include "../FillType.h"
+#include <Mod/Surface/FillType.h>
 #include <Mod/Part/Gui/ViewProvider.h>
-#include "../App/FeatureBSurf.h"
+#include <Mod/Surface/App/FeatureBSurf.h>
 
 namespace SurfaceGui
 {

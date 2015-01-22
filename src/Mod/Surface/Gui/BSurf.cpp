@@ -21,22 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#ifndef _PreComp_
-# include <Standard_math.hxx>
-# include <BRep_Builder.hxx>
-# include <TopoDS.hxx>
-# include <TopExp_Explorer.hxx>
-# include <gp_Pln.hxx>
-# include <cfloat>
-# include <QFuture>
-# include <QFutureWatcher>
-# include <QtConcurrentMap>
-# include <boost/bind.hpp>
-#endif
 
-#include "BSurf.h"
-#include "../App/FeatureBSurf.h"
-#include "../FillType.h"
+#include <Mod/Surface/App/FeatureBSurf.h>
+#include <Mod/Surface/FillType.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -44,6 +31,7 @@
 #include <Base/Sequencer.h>
 #include <Gui/Control.h>
 
+#include "BSurf.h"
 #include "ui_BSurf.h"
 
 

@@ -59,6 +59,9 @@
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
 
+//opencascade
+#include "OpenCascadeAll.h"
+
 #endif //_PreComp_
 
 #endif
