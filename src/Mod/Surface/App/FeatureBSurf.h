@@ -55,7 +55,7 @@ public:
 protected:
     GeomFill_FillingStyle getFillingStyle();
     void getWire(TopoDS_Wire& aWire);
-    void createFace(const Handle_Geom_BoundedSurface aSurface);
+    void createFace(const Handle_Geom_BoundedSurface &aSurface);
 };
 
 }
