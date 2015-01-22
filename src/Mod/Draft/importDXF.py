@@ -281,8 +281,11 @@ def getGroupColor(dxfobj,index=False):
                     else:
                         if (l.color == 7) and dxfBrightBackground: 
                             return [0.0,0.0,0.0]
-                        else: 
-                            return dxfColorMap.color_map[l.color]
+                        else:
+                            if isinstance(l.color,int): 
+                                if l.color > 0:
+                                    return dxfColorMap.color_map[l.color]
+    return [0.0,0.0,0.0]
 
 def getColor():
     if gui and draftui:
@@ -1085,6 +1088,18 @@ def processdxf(document,filename,getShapes=False):
         edges = []
         for s in shapes:
             edges.extend(s.Edges)
+        if len(edges) > (100):
+            FreeCAD.Console.PrintMessage(str(len(edges))+" edges to join\n")
+            from PySide import QtGui
+            d = QtGui.QMessageBox()
+            d.setText("Warning: High number of entities to join (>100)")
+            d.setInformativeText("This might take a long time or even freeze your computer. Are you sure? You can also disable the \"join geometry\" setting in DXF import preferences")
+            d.setStandardButtons(QtGui.QMessageBox.Ok | QtGui.QMessageBox.Cancel)
+            d.setDefaultButton(QtGui.QMessageBox.Cancel)
+            res = d.exec_()
+            if res == QtGui.QMessageBox.Cancel:
+                FreeCAD.Console.PrintMessage("Aborted\n")
+                return
         shapes = DraftGeomUtils.findWires(edges)
         for s in shapes:
             newob = addObject(s)
@@ -1420,6 +1435,7 @@ def warn(dxfobject,num=None):
 
 def open(filename):
     "called when freecad opens a file."
+    readPreferences()
     if dxfReader:
         docname = os.path.splitext(os.path.basename(filename))[0]
         doc = FreeCAD.newDocument(docname)
@@ -1429,6 +1445,7 @@ def open(filename):
 
 def insert(filename,docname):
     "called when freecad imports a file"
+    readPreferences()
     if dxfReader:
         groupname = os.path.splitext(os.path.basename(filename))[0]
         try:
@@ -1682,7 +1699,7 @@ def writeMesh(ob,dxfobject):
                                 
 def export(objectslist,filename,nospline=False,lwPoly=False):
     "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs lwPoly=True for OpenSCAD DXF"
-    
+    readPreferences()
     if dxfLibrary:
         global exportList
         exportList = objectslist
@@ -1882,24 +1899,29 @@ def exportPageLegacy(page,filename):
     export(tempobj,filename,nospline=True,lwPoly=False)
     FreeCAD.closeDocument(tempdoc.Name)
 
-
-# reading parameters
-p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-dxfCreatePart = p.GetBool("dxfCreatePart",True)
-dxfCreateDraft = p.GetBool("dxfCreateDraft",False)
-dxfCreateSketch = p.GetBool("dxfCreateSketch",False)
-dxfDiscretizeCurves = p.GetBool("DiscretizeEllipses",True)
-dxfStarBlocks = p.GetBool("dxfstarblocks",False)
-dxfMakeBlocks = p.GetBool("groupLayers",False)
-dxfJoin = p.GetBool("joingeometry",False)
-dxfRenderPolylineWidth = p.GetBool("renderPolylineWidth",False)
-dxfImportTexts = p.GetBool("dxftext",False)
-dxfImportLayouts = p.GetBool("dxflayouts",False)
-dxfImportPoints = p.GetBool("dxfImportPoints",False)
-dxfImportHatches = p.GetBool("importDxfHatches",False)
-dxfUseStandardSize = p.GetBool("dxfStdSize",False)
-dxfGetColors = p.GetBool("dxfGetOriginalColors",False)
-dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",False)
-dxfFillMode = p.GetBool("fillmode",True)
-dxfBrightBackground = isBrightBackground()
-dxfDefaultColor = getColor()
+def readPreferences():
+    # reading parameters
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    global dxfCreatePart, dxfCreateDraft, dxfCreateSketch, dxfDiscretizeCurves, dxfStarBlocks
+    global dxfMakeBlocks, dxfJoin, dxfRenderPolylineWidth, dxfImportTexts, dxfImportLayouts
+    global dxfImportPoints, dxfImportHatches, dxfUseStandardSize, dxfGetColors, dxfUseDraftVisGroups
+    global dxfFillMode, dxfBrightBackground, dxfDefaultColor
+    dxfCreatePart = p.GetBool("dxfCreatePart",True)
+    dxfCreateDraft = p.GetBool("dxfCreateDraft",False)
+    dxfCreateSketch = p.GetBool("dxfCreateSketch",False)
+    dxfDiscretizeCurves = p.GetBool("DiscretizeEllipses",True)
+    dxfStarBlocks = p.GetBool("dxfstarblocks",False)
+    dxfMakeBlocks = p.GetBool("groupLayers",False)
+    dxfJoin = p.GetBool("joingeometry",False)
+    dxfRenderPolylineWidth = p.GetBool("renderPolylineWidth",False)
+    dxfImportTexts = p.GetBool("dxftext",False)
+    dxfImportLayouts = p.GetBool("dxflayouts",False)
+    dxfImportPoints = p.GetBool("dxfImportPoints",False)
+    dxfImportHatches = p.GetBool("importDxfHatches",False)
+    dxfUseStandardSize = p.GetBool("dxfStdSize",False)
+    dxfGetColors = p.GetBool("dxfGetOriginalColors",False)
+    dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups",False)
+    dxfFillMode = p.GetBool("fillmode",True)
+    dxfBrightBackground = isBrightBackground()
+    dxfDefaultColor = getColor()
+    
