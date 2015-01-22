@@ -30,10 +30,13 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Wire.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
-#include <Base/Tools.h>
-#include <Base/Exception.h>
+#include <GeomFill_BezierCurves.hxx>
+#include <Geom_BoundedSurface.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #endif
+
+#include <Base/Exception.h>
+#include <Base/Tools.h>
 
 #include "FeatureBSurf.h"
 
