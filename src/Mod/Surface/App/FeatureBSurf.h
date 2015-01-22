@@ -24,19 +24,19 @@
 #ifndef FEATUREBSURF_H
 #define FEATUREBSURF_H
 
+#include <GeomFill_FillingStyle.hxx>
+
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
-#include <GeomFill_BezierCurves.hxx>
-#include <Geom_BoundedSurface.hxx>
 #include "Mod/Part/App/PartFeature.h"
-#include "../FillType.h"
+#include "Mod/Surface/FillType.h"
+
+class Handle_Geom_BoundedSurface;
 
 namespace Surface
 {
-
-
-
+  
 class BSurf : public Part::Feature
 {
   PROPERTY_HEADER(Surface::BSurf);
