@@ -124,7 +124,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
     if(aWire.IsNull()){Standard_Failure::Raise("Wire unable to be constructed");return;}
 }
 
-void BSurf::createFace(Handle_Geom_BoundedSurface aSurface)
+void BSurf::createFace(const Handle_Geom_BoundedSurface &aSurface)
 {
     BRepBuilderAPI_MakeFace aFaceBuilder;
     Standard_Real u1, u2, v1, v2;
