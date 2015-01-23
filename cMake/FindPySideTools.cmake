@@ -31,10 +31,20 @@ MACRO(PYSIDE_WRAP_UI outfiles)
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
-    ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-      COMMAND ${PYSIDEUIC4BINARY} ${infile} -o ${outfile}
-      MAIN_DEPENDENCY ${infile}
-    )
+    if(WIN32)
+        ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
+          COMMAND ${PYSIDEUIC4BINARY} ${infile} -o ${outfile}
+          MAIN_DEPENDENCY ${infile}
+        )
+    else(WIN32)
+        # Especially on Open Build Service we don't want changing date like
+        # pyside-uic generates in comments at beginning.
+        EXECUTE_PROCESS(
+          COMMAND ${PYSIDEUIC4BINARY} ${infile}
+          COMMAND sed "/^# /d"
+          OUTPUT_FILE ${outfile}
+        )
+    endif(WIN32)
     SET(${outfiles} ${${outfiles}} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_UI)
@@ -47,10 +57,20 @@ MACRO(PYSIDE_WRAP_RC outfiles)
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
-    ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
-      COMMAND ${PYSIDERCC4BINARY} ${infile} -o ${outfile}
-      MAIN_DEPENDENCY ${infile}
-    )
+    if(WIN32)
+        ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
+          COMMAND ${PYSIDERCC4BINARY} ${infile} -o ${outfile}
+          MAIN_DEPENDENCY ${infile}
+        )
+    else(WIN32)
+        # Especially on Open Build Service we don't want changing date like
+        # pyside-rcc generates in comments at beginning.
+        EXECUTE_PROCESS(
+          COMMAND ${PYSIDERCC4BINARY} ${infile}
+          COMMAND sed "/^# /d"
+          OUTPUT_FILE ${outfile}
+       )
+    endif(WIN32)
     SET(${outfiles} ${${outfiles}} ${outfile})
   ENDFOREACH(it)
 ENDMACRO (PYSIDE_WRAP_RC)
