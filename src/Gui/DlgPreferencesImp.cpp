@@ -36,7 +36,7 @@
 
 #include <Base/Exception.h>
 #include <Base/Console.h> 
-
+#include <App/Application.h>
 #include "DlgPreferencesImp.h"
 #include "ui_DlgPreferences.h"
 #include "PropertyPage.h"
@@ -241,6 +241,13 @@ void DlgPreferencesImp::applyChanges()
             if (page)
                 page->saveSettings();
         }
+    }
+
+    bool saveParameter = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
+                          GetBool("SaveUserParameter", true);
+    if (saveParameter) {
+        ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
+        parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
     }
 }
 
