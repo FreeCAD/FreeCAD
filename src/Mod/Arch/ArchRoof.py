@@ -136,12 +136,12 @@ class _Roof(ArchComponent.Component):
 
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyFloatList","Angles","Arch", translate("Arch","The angles of each slope."))
-        obj.addProperty("App::PropertyFloatList","Runs","Arch", translate("Arch","The horizontal length projection of each crawling."))
-        obj.addProperty("App::PropertyIntegerList","IdRel","Arch", translate("Arch","The pane Id of relative profil."))
-        obj.addProperty("App::PropertyFloatList","Thickness","Arch", translate("Arch","The thickness of the roof pane."))
-        obj.addProperty("App::PropertyFloatList","Overhang","Arch", translate("Arch","The Overhang of the roof pane."))
-        obj.addProperty("App::PropertyFloatList","Heights","Arch", translate("Arch","The calculated height of the roof pane list."))
+        obj.addProperty("App::PropertyFloatList","Angles","Arch", translate("Arch","A list of angles for each roof pane"))
+        obj.addProperty("App::PropertyFloatList","Runs","Arch", translate("Arch","A list of horizontal length projections for each roof pane"))
+        obj.addProperty("App::PropertyIntegerList","IdRel","Arch", translate("Arch","A list of IDs of relative profiles for each roof pane"))
+        obj.addProperty("App::PropertyFloatList","Thickness","Arch", translate("Arch","A list of thicknesses for each roof pane"))
+        obj.addProperty("App::PropertyFloatList","Overhang","Arch", translate("Arch","A list of overhangs for each roof pane"))
+        obj.addProperty("App::PropertyFloatList","Heights","Arch", translate("Arch","A list of calculated heights for each roof pane"))
         obj.addProperty("App::PropertyInteger","Face","Base",translate("Arch","The face number of the base object used to build this roof"))
         self.Type = "Roof"
         obj.Proxy = self
