@@ -636,7 +636,7 @@ void CmdDrawingExportPage::activated(int iMsg)
     }
 
     QStringList filter;
-    filter << QObject::tr("SVG(*.svg)");
+    filter << QObject::tr("SVG (*.svg)");
     filter << QObject::tr("All Files (*.*)");
 
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
