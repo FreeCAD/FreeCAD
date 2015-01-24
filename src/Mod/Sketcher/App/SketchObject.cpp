@@ -1720,7 +1720,7 @@ int SketchObject::delExternal(int ExtGeoId)
     int GeoId = -3 - ExtGeoId;
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
-        if ((*it)->First != GeoId && (*it)->Second != GeoId) {
+        if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
             Constraint *copiedConstr = (*it)->clone();
             if (copiedConstr->First < GeoId &&
                 copiedConstr->First != Constraint::GeoUndef)
@@ -1728,6 +1728,10 @@ int SketchObject::delExternal(int ExtGeoId)
             if (copiedConstr->Second < GeoId &&
                 copiedConstr->Second != Constraint::GeoUndef)
                 copiedConstr->Second += 1;
+            if (copiedConstr->Third < GeoId &&
+                copiedConstr->Third != Constraint::GeoUndef)
+                copiedConstr->Third += 1;
+
             newConstraints.push_back(copiedConstr);
         }
     }
