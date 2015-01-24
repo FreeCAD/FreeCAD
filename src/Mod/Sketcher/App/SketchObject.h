@@ -157,6 +157,9 @@ public:
     double calculateConstraintError(int ConstrId);
     int changeConstraintsLocking(bool bLock);
 
+    ///porting functions
+    int port_reversedExternalArcs(bool justAnalyze);
+
     // from base class
     virtual PyObject *getPyObject(void);
     virtual unsigned int getMemSize(void) const;

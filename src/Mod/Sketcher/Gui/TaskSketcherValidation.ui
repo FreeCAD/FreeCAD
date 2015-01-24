@@ -7,13 +7,43 @@
     <x>0</x>
     <y>0</y>
     <width>242</width>
-    <height>192</height>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Sketcher validation</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
+   <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Invalid constraints</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="1">
+       <widget class="QPushButton" name="fixConstraint">
+        <property name="text">
+         <string>Fix</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="findConstraint">
+        <property name="text">
+         <string>Find</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QPushButton" name="delConstrExtr">
+        <property name="text">
+         <string>Delete constraints to external geom.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -47,23 +77,46 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox_2">
+   <item row="4" column="0">
+    <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
-      <string>Invalid constraints</string>
+      <string>Reversed external geometry</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
+     <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
-       <widget class="QPushButton" name="findConstraint">
+       <widget class="QPushButton" name="findReversed">
         <property name="text">
          <string>Find</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="fixConstraint">
+      <item row="1" column="0">
+       <widget class="QPushButton" name="swapReversed">
         <property name="text">
-         <string>Fix</string>
+         <string>Swap endpoints in constraints</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Constraint orientation locking</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="orientLockEnable">
+        <property name="text">
+         <string>Enable/Update</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="orientLockDisable">
+        <property name="text">
+         <string>Disable</string>
         </property>
        </widget>
       </item>
