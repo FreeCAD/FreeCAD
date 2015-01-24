@@ -174,19 +174,19 @@ void ViewProviderMirror::unsetEdit(int ModNum)
 
 std::vector<App::DocumentObject*> ViewProviderMirror::claimChildren() const
 {
-    // Request not to list mirrored object as child (#0001482)
+    // Make the input object a child (see also #0001482)
     std::vector<App::DocumentObject*> temp;
-    //temp.push_back(static_cast<Part::Mirroring*>(getObject())->Source.getValue());
+    temp.push_back(static_cast<Part::Mirroring*>(getObject())->Source.getValue());
     return temp;
 }
 
 bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
 {
     // get the input shape
-    //Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject()); 
-    //App::DocumentObject *pSource = pMirroring->Source.getValue();
-    //if (pSource)
-    //    Gui::Application::Instance->showViewProvider(pSource);
+    Part::Mirroring* pMirroring = static_cast<Part::Mirroring*>(getObject()); 
+    App::DocumentObject *pSource = pMirroring->Source.getValue();
+    if (pSource)
+        Gui::Application::Instance->showViewProvider(pSource);
 
     return true;
 }
