@@ -62,6 +62,7 @@ SketcherValidation::SketcherValidation(Sketcher::SketchObject* Obj, QWidget* par
     ui->setupUi(this);
     ui->fixButton->setEnabled(false);
     ui->fixConstraint->setEnabled(false);
+    ui->swapReversed->setEnabled(false);
     double tolerances[8] = {
         Precision::Confusion() / 100,
         Precision::Confusion() / 10,
@@ -335,6 +336,112 @@ void SketcherValidation::on_fixConstraint_clicked()
 {
     sketch->validateConstraints();
     ui->fixConstraint->setEnabled(false);
+}
+
+void SketcherValidation::on_findReversed_clicked()
+{
+    std::vector<Base::Vector3d> points;
+    const std::vector<Part::Geometry *>& geom = sketch->getExternalGeometry();
+    for (std::size_t i=0; i<geom.size(); i++) {
+        Part::Geometry* g = geom[i];
+        //only arcs of circles need to be repaired. Arcs of ellipse were so broken there should be nothing to repair from.
+        if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            const Part::GeomArcOfCircle *segm = dynamic_cast<const Part::GeomArcOfCircle*>(g);
+            if(segm->isReversedInXY()){
+                points.push_back(segm->getStartPoint(/*emulateCCW=*/true));
+                points.push_back(segm->getEndPoint(/*emulateCCW=*/true));
+            }
+        }
+    }
+    hidePoints();
+    if(points.size()>0){
+        int nc = sketch->port_reversedExternalArcs(/*justAnalyze=*/true);
+        showPoints(points);
+        if(nc>0){
+            QMessageBox::warning(this, tr("Reversed external geometry"),
+                tr("%1 reversed external-geometry arcs were found. Their endpoints are"
+                   " encircled in 3d view.\n\n"
+                   "%2 constraints are linking to the endpoints. The constraints have"
+                   " been listed in Report view (menu View -> Views -> Report view).\n\n"
+                   "Click \"Swap endpoints in constraints\" button to reassign endpoints."
+                   " Do this only once to sketches created in FreeCAD older than v0.15.???"
+                   ).arg(points.size()/2).arg(nc)
+                                 );
+            ui->swapReversed->setEnabled(true);
+        } else {
+            QMessageBox::warning(this, tr("Reversed external geometry"),
+                tr("%1 reversed external-geometry arcs were found. Their endpoints are "
+                   "encircled in 3d view.\n\n"
+                   "However, no constraints linking to the endpoints were found.").arg(points.size()/2));
+            ui->swapReversed->setEnabled(false);
+        }
+    } else {
+        QMessageBox::warning(this, tr("Reversed external geometry"),
+            tr("No reversed external-geometry arcs were found."));
+    }
+}
+
+void SketcherValidation::on_swapReversed_clicked()
+{
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("Sketch porting");
+
+    int n = sketch->port_reversedExternalArcs(/*justAnalyze=*/false);
+    QMessageBox::warning(this, tr("Reversed external geometry"),
+        tr("%1 changes were made to constraints linking to endpoints of reversed arcs.").arg(n));
+    hidePoints();
+    ui->swapReversed->setEnabled(false);
+
+    doc->commitTransaction();
+}
+
+void SketcherValidation::on_orientLockEnable_clicked()
+{
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("Constraint orientation lock");
+
+    int n = sketch->changeConstraintsLocking(/*bLock=*/true);
+    QMessageBox::warning(this, tr("Constraint orientation locking"),
+        tr("Orientation locking was enabled and recomputed for %1 constraints. The"
+           " constraints have been listed in Report view (menu View -> Views ->"
+           " Report view).").arg(n));
+
+    doc->commitTransaction();
+}
+
+void SketcherValidation::on_orientLockDisable_clicked()
+{
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("Constraint orientation unlock");
+
+    int n = sketch->changeConstraintsLocking(/*bLock=*/false);
+    QMessageBox::warning(this, tr("Constraint orientation locking"),
+        tr("Orientation locking was disabled for %1 constraints. The"
+           " constraints have been listed in Report view (menu View -> Views ->"
+           " Report view). Note that for all future constraints, the locking still"
+           " defaults to ON.").arg(n));
+
+    doc->commitTransaction();
+}
+
+void SketcherValidation::on_delConstrExtr_clicked()
+{
+    int reply;
+    reply =  QMessageBox::question(this,
+                        tr("Delete constraints to external geom."),
+                        tr("You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?"),
+                        QMessageBox::No|QMessageBox::Yes,QMessageBox::No);
+    if(reply!=QMessageBox::Yes) return;
+
+    App::Document* doc = sketch->getDocument();
+    doc->openTransaction("Delete constraints");
+
+    sketch->delConstraintsToExternal();
+
+    doc->commitTransaction();
+
+    QMessageBox::warning(this, tr("Delete constraints to external geom."),
+                         tr("All constraints that deal with external geometry were deleted."));
 }
 
 void SketcherValidation::showPoints(const std::vector<Base::Vector3d>& pts)

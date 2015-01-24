@@ -1756,7 +1756,11 @@ int SketchObject::delConstraintsToExternal()
     int GeoId = -3, NullId = -2000;
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
-        if ((*it)->First > GeoId && ((*it)->Second > GeoId || (*it)->Second == NullId) && ((*it)->Third > GeoId || (*it)->Third == NullId)) {
+        if (    (*it)->First > GeoId
+                &&
+                ((*it)->Second > GeoId || (*it)->Second == NullId)
+                &&
+                ((*it)->Third > GeoId || (*it)->Third == NullId)) {
             newConstraints.push_back(*it);
         }
     }
@@ -2510,6 +2514,8 @@ int SketchObject::changeConstraintsLocking(bool bLock)
             if (ret) cntSuccess++;
             tbd.push_back(constNew);
             newVals[i] = constNew;
+            Base::Console().Log("Constraint%i will be affected\n",
+                                i+1);
         }
     }
 
@@ -2524,6 +2530,86 @@ int SketchObject::changeConstraintsLocking(bool bLock)
                         cntSuccess, cntToBeAffected);
 
     return cntSuccess;
+}
+
+
+/*!
+ * \brief SketchObject::port_reversedExternalArcs finds constraints that link to endpoints of external-geometry arcs, and swaps the endpoints in the constraints. This is needed after CCW emulation was introduced, to port old sketches.
+ * \param justAnalyze if true, nothing is actually done - only the number of constraints to be affected is returned.
+ * \return the number of constraints changed/to be changed.
+ */
+int SketchObject::port_reversedExternalArcs(bool justAnalyze)
+{
+    int cntSuccess = 0;
+    int cntToBeAffected = 0;//==cntSuccess+cntFail
+    const std::vector< Constraint * > &vals = this->Constraints.getValues();
+
+    std::vector< Constraint * > newVals(vals);//modifiable copy of pointers array
+
+    std::vector< Constraint * > tbd;//list of temporary Constraint copies that need to be deleted later
+
+    for(int ic = 0; ic<newVals.size(); ic++){//ic = index of constraint
+        bool affected=false;
+        Constraint *constNew = 0;
+        for(int ig=1; ig<=3; ig++){//cycle through constraint.first, second, third
+            int geoId;
+            Sketcher::PointPos posId;
+            switch (ig){
+                case 1: geoId=newVals[ic]->First; posId = newVals[ic]->FirstPos; break;
+                case 2: geoId=newVals[ic]->Second; posId = newVals[ic]->SecondPos; break;
+                case 3: geoId=newVals[ic]->Third; posId = newVals[ic]->ThirdPos; break;
+            }
+
+            if ( geoId <= -3 &&
+                 (posId==Sketcher::start || posId==Sketcher::end)){
+                //we are dealing with a link to an endpoint of external geom
+                Part::Geometry* g = this->ExternalGeo[-geoId-1];
+                if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()){
+                    const Part::GeomArcOfCircle *segm = dynamic_cast<const Part::GeomArcOfCircle*>(g);
+                    if(segm->isReversedInXY()){
+                        //Gotcha! a link to an endpoint of external arc that is reversed.
+                        //create a constraint copy, affect it, replace the pointer
+                        if (!affected)
+                            constNew = newVals[ic]->clone();
+                        affected=true;
+                        //Do the fix on temp vars
+                        if(posId == Sketcher::start)
+                            posId = Sketcher::end;
+                        else if (posId == Sketcher::end)
+                            posId = Sketcher::start;
+                    }
+                }
+            }
+            if (!affected) continue;
+            //Propagate the fix made on temp vars to the constraint
+            switch (ig){
+                case 1: constNew->First = geoId; constNew->FirstPos = posId; break;
+                case 2: constNew->Second = geoId; constNew->SecondPos = posId; break;
+                case 3: constNew->Third = geoId; constNew->ThirdPos = posId; break;
+            }
+        }
+        if (affected){
+            cntToBeAffected++;
+            tbd.push_back(constNew);
+            newVals[ic] = constNew;
+            Base::Console().Log("Constraint%i will be affected\n",
+                                ic+1);
+        };
+    }
+
+    if(!justAnalyze){
+        this->Constraints.setValues(newVals);
+        Base::Console().Log("Swapped start/end of reversed external arcs in %i constraints\n",
+                            cntToBeAffected);
+    }
+
+    //clean up - delete temporary copies of constraints that were made to affect the constraints
+    for(int i=0; i<tbd.size(); i++){
+        delete (tbd[i]);
+    }
+
+
+    return cntToBeAffected;
 }
 
 ///Locks tangency/perpendicularity type of such a constraint.
