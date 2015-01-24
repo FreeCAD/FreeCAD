@@ -235,7 +235,17 @@ void orthoview::set_projection(gp_Ax2 cs)
     Z_dir = cs.Direction();
 
     // coord system of created view - same code as used in projection algos
-    actual_cs = gp_Ax2(gp_Pnt(0,0,0), gp_Dir(Z_dir.X(),Z_dir.Y(),Z_dir.Z()));
+    // actual_cs = gp_Ax2(gp_Pnt(0,0,0), gp_Dir(Z_dir.X(),Z_dir.Y(),Z_dir.Z()));
+
+    // but as the file gets saved the projection direction gets rounded.
+    // this can lead to choosing a different normal x-direction when the file
+    // gets reloaded see issue #1909
+    // we anticipate the actual_cs after reloading by rounding the Z_dir now
+    const double x = round( Z_dir.X()  * 1e12 ) / 1e12;
+    const double y = round( Z_dir.Y()  * 1e12 ) / 1e12;
+    const double z = round( Z_dir.Z()  * 1e12 ) / 1e12;
+    actual_cs = gp_Ax2(gp_Pnt(0,0,0), gp_Dir(x,y,z));
+
     actual_X = actual_cs.XDirection();
 
     // angle between desired projection and actual projection
@@ -247,7 +257,8 @@ void orthoview::set_projection(gp_Ax2 cs)
 
     calcCentre();
 
-    this_view->Direction.setValue(Z_dir.X(), Z_dir.Y(), Z_dir.Z());
+    //this_view->Direction.setValue(Z_dir.X(), Z_dir.Y(), Z_dir.Z());
+    this_view->Direction.setValue(x,y,z);
     this_view->Rotation.setValue(180 * rotation / PI);
 }
 
