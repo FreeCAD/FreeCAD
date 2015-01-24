@@ -194,11 +194,11 @@ void SketcherValidation::on_findButton_clicked()
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
+            id.v = segm->getStartPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
             id.GeoId = (int)i;
             id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
+            id.v = segm->getEndPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
         }
         else if (g->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
@@ -206,11 +206,11 @@ void SketcherValidation::on_findButton_clicked()
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
-            id.v = segm->getStartPoint();
+            id.v = segm->getStartPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
             id.GeoId = (int)i;
             id.PosId = Sketcher::end;
-            id.v = segm->getEndPoint();
+            id.v = segm->getEndPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
         }
     }

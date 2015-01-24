@@ -853,7 +853,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                 Base::Vector3d center;
                 double majord;
                 double minord;
-                double phi;
+                Base::Vector3d majdir;
                 
                 if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId()){
                     const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo);
@@ -861,7 +861,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                     center=ellipse->getCenter();
                     majord=ellipse->getMajorRadius();
                     minord=ellipse->getMinorRadius();
-                    phi=ellipse->getAngleXU();
+                    majdir=ellipse->getMajorAxisDir();
                 }
                 else {
                     const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo);
@@ -869,19 +869,20 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                     center=aoe->getCenter();
                     majord=aoe->getMajorRadius();
                     minord=aoe->getMinorRadius();
-                    phi=aoe->getAngleXU();                    
+                    majdir=aoe->getMajorAxisDir();
                 }
 
+                Base::Vector3d mindir = Base::Vector3d(-majdir.y, majdir.x, 0.0);
                 
-                Base::Vector3d majorpositiveend = center + majord * Base::Vector3d(cos(phi),sin(phi),0);
-                Base::Vector3d majornegativeend = center - majord * Base::Vector3d(cos(phi),sin(phi),0);  
-                Base::Vector3d minorpositiveend = center + minord * Base::Vector3d(-sin(phi),cos(phi),0);
-                Base::Vector3d minornegativeend = center - minord * Base::Vector3d(-sin(phi),cos(phi),0);
+                Base::Vector3d majorpositiveend = center + majord * majdir;
+                Base::Vector3d majornegativeend = center - majord * majdir;
+                Base::Vector3d minorpositiveend = center + minord * mindir;
+                Base::Vector3d minornegativeend = center - minord * mindir;
                 
                 double df= sqrt(majord*majord-minord*minord);
                 
-                Base::Vector3d focus1P = center + df * Base::Vector3d(cos(phi),sin(phi),0);
-                Base::Vector3d focus2P = center - df * Base::Vector3d(cos(phi),sin(phi),0);
+                Base::Vector3d focus1P = center + df * majdir;
+                Base::Vector3d focus2P = center - df * majdir;
                 
                 try{
                     if(!major)

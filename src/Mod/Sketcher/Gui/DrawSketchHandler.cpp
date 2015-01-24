@@ -279,12 +279,12 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
             double a = ellipse->getMajorRadius();
             double b = ellipse->getMinorRadius();
-            double phi = ellipse->getAngleXU();
+            Base::Vector3d majdir = ellipse->getMajorAxisDir();
             
             double cf = sqrt(a*a - b*b);
                 
-            Base::Vector3d focus1P = center + cf * Base::Vector3d(cos(phi),sin(phi),0);
-            Base::Vector3d focus2P = center - cf * Base::Vector3d(cos(phi),sin(phi),0);
+            Base::Vector3d focus1P = center + cf * majdir;
+            Base::Vector3d focus2P = center - cf * majdir;
             
             Base::Vector3d norm = Base::Vector3d(Dir.fY,-Dir.fX).Normalize();
             
@@ -315,7 +315,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
             if (projDist < tangDeviation) {
                 double startAngle, endAngle;
-                arc->getRange(startAngle, endAngle);
+                arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
 
                 double angle = atan2(projPnt.y, projPnt.x);
                 while(angle < startAngle)
@@ -334,12 +334,12 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
             double a = aoe->getMajorRadius();
             double b = aoe->getMinorRadius();
-            double phi = aoe->getAngleXU();
+            Base::Vector3d majdir = aoe->getMajorAxisDir();
             
             double cf = sqrt(a*a - b*b);
                 
-            Base::Vector3d focus1P = center + cf * Base::Vector3d(cos(phi),sin(phi),0);
-            Base::Vector3d focus2P = center - cf * Base::Vector3d(cos(phi),sin(phi),0);
+            Base::Vector3d focus1P = center + cf * majdir;
+            Base::Vector3d focus2P = center - cf * majdir;
             
             Base::Vector3d norm = Base::Vector3d(Dir.fY,-Dir.fX).Normalize();
             
@@ -356,11 +356,11 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
             if (error < tangDeviation) {
                 double startAngle, endAngle;
-                aoe->getRange(startAngle, endAngle);
+                aoe->getRange(startAngle, endAngle, /*emulateCCW=*/true);
                 
                 double angle = Base::fmod(
-                    atan2(-aoe->getMajorRadius()*((tmpPos.x-center.x)*sin(aoe->getAngleXU())-(tmpPos.y-center.y)*cos(aoe->getAngleXU())),
-                                aoe->getMinorRadius()*((tmpPos.x-center.x)*cos(aoe->getAngleXU())+(tmpPos.y-center.y)*sin(aoe->getAngleXU()))
+                    atan2(-aoe->getMajorRadius()*((tmpPos.x-center.x)*majdir.y-(tmpPos.y-center.y)*majdir.x),
+                                aoe->getMinorRadius()*((tmpPos.x-center.x)*majdir.x+(tmpPos.y-center.y)*majdir.y)
                     )- startAngle, 2.f*M_PI); 
                 
                 while(angle < startAngle)

@@ -295,11 +295,11 @@ int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment, bool fixed)
     def.type = Arc;
 
     Base::Vector3d center   = aoc->getCenter();
-    Base::Vector3d startPnt = aoc->getStartPoint();
-    Base::Vector3d endPnt   = aoc->getEndPoint();
+    Base::Vector3d startPnt = aoc->getStartPoint(/*emulateCCW=*/true);
+    Base::Vector3d endPnt   = aoc->getEndPoint(/*emulateCCW=*/true);
     double radius           = aoc->getRadius();
     double startAngle, endAngle;
-    aoc->getRange(startAngle, endAngle);
+    aoc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
 
     GCS::Point p1, p2, p3;
 
@@ -368,18 +368,18 @@ int Sketch::addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool f
     def.type = ArcOfEllipse;
 
     Base::Vector3d center   = aoe->getCenter();
-    Base::Vector3d startPnt = aoe->getStartPoint();
-    Base::Vector3d endPnt   = aoe->getEndPoint();
+    Base::Vector3d startPnt = aoe->getStartPoint(/*emulateCCW=*/true);
+    Base::Vector3d endPnt   = aoe->getEndPoint(/*emulateCCW=*/true);
     double radmaj         = aoe->getMajorRadius();
     double radmin         = aoe->getMinorRadius();
-    double phi            = aoe->getAngleXU();
+    Base::Vector3d radmajdir = aoe->getMajorAxisDir();
     
     double dist_C_F = sqrt(radmaj*radmaj-radmin*radmin);
     // solver parameters
-    Base::Vector3d focus1 = center+dist_C_F*Vector3d(cos(phi), sin(phi),0); //+x
+    Base::Vector3d focus1 = center + dist_C_F*radmajdir;
     
     double startAngle, endAngle;
-    aoe->getRange(startAngle, endAngle);
+    aoe->getRange(startAngle, endAngle, /*emulateCCW=*/true);
 
     GCS::Point p1, p2, p3;
 
@@ -505,11 +505,11 @@ int Sketch::addEllipse(const Part::GeomEllipse &elip, bool fixed)
     Base::Vector3d center = elips->getCenter();
     double radmaj         = elips->getMajorRadius();
     double radmin         = elips->getMinorRadius();
-    double phi            = elips->getAngleXU();
+    Base::Vector3d radmajdir = elips->getMajorAxisDir();
     
     double dist_C_F = sqrt(radmaj*radmaj-radmin*radmin);
     // solver parameters
-    Base::Vector3d focus1 = center+dist_C_F*Vector3d(cos(phi), sin(phi),0); //+x
+    Base::Vector3d focus1 = center + dist_C_F*radmajdir; //+x
     //double *radmin;
 
     GCS::Point c;
@@ -1929,7 +1929,7 @@ bool Sketch::updateGeometry()
                                         0.0)
                               );
                 aoc->setRadius(*myArc.rad);
-                aoc->setRange(*myArc.startAngle, *myArc.endAngle);
+                aoc->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             } else if (it->type == ArcOfEllipse) {
                 GCS::ArcOfEllipse &myArc = ArcsOfEllipse[it->index];
 
@@ -1942,8 +1942,6 @@ bool Sketch::updateGeometry()
                 Base::Vector3d fd=f1-center;
                 double radmaj = sqrt(fd*fd+radmin*radmin);
                                 
-                double phi = atan2(fd.y,fd.x);
-                
                 aoe->setCenter(center);
                 if ( radmaj >= aoe->getMinorRadius() ){//ensure that ellipse's major radius is always larger than minor raduis... may still cause problems with degenerates.
                     aoe->setMajorRadius(radmaj);
@@ -1952,8 +1950,8 @@ bool Sketch::updateGeometry()
                     aoe->setMinorRadius(radmin);
                     aoe->setMajorRadius(radmaj);
                 }
-                aoe->setAngleXU(phi);
-                aoe->setRange(*myArc.startAngle, *myArc.endAngle);
+                aoe->setMajorAxisDir(fd);
+                aoe->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             } else if (it->type == Circle) {
                 GeomCircle *circ = dynamic_cast<GeomCircle*>(it->geo);
                 circ->setCenter(Vector3d(*Points[it->midPointId].x,
@@ -1972,8 +1970,6 @@ bool Sketch::updateGeometry()
                 Base::Vector3d fd=f1-center;
                 double radmaj = sqrt(fd*fd+radmin*radmin);
                                 
-                double phi = atan2(fd.y,fd.x);
-                
                 ellipse->setCenter(center);
                 if ( radmaj >= ellipse->getMinorRadius() ){//ensure that ellipse's major radius is always larger than minor raduis... may still cause problems with degenerates.
                     ellipse->setMajorRadius(radmaj);
@@ -1982,7 +1978,7 @@ bool Sketch::updateGeometry()
                     ellipse->setMinorRadius(radmin);
                     ellipse->setMajorRadius(radmaj);
                 }
-                ellipse->setAngleXU(phi);
+                ellipse->setMajorAxisDir(fd);
             }
         } catch (Base::Exception e) {
             Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",

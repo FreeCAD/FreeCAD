@@ -285,7 +285,7 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(const Sketcher::SketchObject* 
     Base::Vector3d center=ellipse->getCenter();
     double majord=ellipse->getMajorRadius();
     double minord=ellipse->getMinorRadius();
-    double phi=ellipse->getAngleXU();
+    double phi=atan2(ellipse->getMajorAxisDir().y, ellipse->getMajorAxisDir().x);
 
     Base::Vector3d center2;
     
@@ -349,7 +349,7 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObj
     Base::Vector3d center=aoe->getCenter();
     double majord=aoe->getMajorRadius();
     double minord=aoe->getMinorRadius();
-    double phi=aoe->getAngleXU();
+    double phi=atan2(aoe->getMajorAxisDir().y, aoe->getMajorAxisDir().x);
 
     Base::Vector3d center2;
     
@@ -1599,7 +1599,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     center=ellipse->getCenter();
                     majord=ellipse->getMajorRadius();
                     minord=ellipse->getMinorRadius();
-                    phi=ellipse->getAngleXU();
+                    phi=atan2(ellipse->getMajorAxisDir().y, ellipse->getMajorAxisDir().x);
                 } else
                   if( geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ){
                     const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo1);
@@ -1607,7 +1607,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     center=aoe->getCenter();
                     majord=aoe->getMajorRadius();
                     minord=aoe->getMinorRadius();
-                    phi=aoe->getAngleXU();
+                    phi=atan2(aoe->getMajorAxisDir().y, aoe->getMajorAxisDir().x);
                 }
 
                 const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geo2);
@@ -2285,7 +2285,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 const Part::GeomArcOfCircle *arc;
                 arc = dynamic_cast<const Part::GeomArcOfCircle*>(geom);
                 double startangle, endangle;
-                arc->getRange(startangle, endangle);
+                arc->getRange(startangle, endangle, /*EmulateCCWXY=*/true);
                 double angle = endangle - startangle;
 
                 openCommand("Add angle constraint");

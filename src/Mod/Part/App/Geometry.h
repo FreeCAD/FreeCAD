@@ -188,6 +188,7 @@ public:
     double getRadius(void) const;
     void setCenter(const Base::Vector3d& Center);
     void setRadius(double Radius);
+    bool isReversed() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -211,15 +212,16 @@ public:
     virtual ~GeomArcOfCircle();
     virtual Geometry *clone(void) const;
 
-    Base::Vector3d getStartPoint() const;
-    Base::Vector3d getEndPoint() const;
+    Base::Vector3d getStartPoint(bool emulateCCWXY) const;
+    Base::Vector3d getEndPoint(bool emulateCCWXY) const;
 
     Base::Vector3d getCenter(void) const;
     double getRadius(void) const;
     void setCenter(const Base::Vector3d& Center);
     void setRadius(double Radius);
-    void getRange(double& u, double& v) const;
-    void setRange(double u, double v);
+    void getRange(double& u, double& v, bool emulateCCWXY) const;
+    void setRange(double u, double v, bool emulateCCWXY);
+    bool isReversedInXY() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -252,6 +254,9 @@ public:
     void setMinorRadius(double Radius);
     double getAngleXU(void) const;
     void setAngleXU(double angle);
+    Base::Vector3d getMajorAxisDir() const;
+    void setMajorAxisDir(Base::Vector3d newdir);
+    bool isReversedInXY() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -260,6 +265,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_Ellipse &e);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -275,8 +281,8 @@ public:
     virtual ~GeomArcOfEllipse();
     virtual Geometry *clone(void) const;
 
-    Base::Vector3d getStartPoint() const;
-    Base::Vector3d getEndPoint() const;
+    Base::Vector3d getStartPoint(bool emulateCCWXY) const;
+    Base::Vector3d getEndPoint(bool emulateCCWXY) const;
 
     Base::Vector3d getCenter(void) const;
     void setCenter(const Base::Vector3d& Center);
@@ -286,9 +292,12 @@ public:
     void setMinorRadius(double Radius);
     double getAngleXU(void) const;
     void setAngleXU(double angle);
-    
-    void getRange(double& u, double& v) const;
-    void setRange(double u, double v);
+    Base::Vector3d getMajorAxisDir() const;
+    void setMajorAxisDir(Base::Vector3d newdir);
+    bool isReversedInXY() const;
+
+    void getRange(double& u, double& v, bool emulateCCWXY) const;
+    void setRange(double u, double v, bool emulateCCWXY);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;

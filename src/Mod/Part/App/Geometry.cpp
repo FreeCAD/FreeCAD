@@ -641,6 +641,13 @@ void GeomCircle::setRadius(double Radius)
     }
 }
 
+bool GeomCircle::isReversed() const
+{
+    Handle_Geom_Circle c =  myCurve;
+    assert(!c.IsNull());
+    return c->Axis().Direction().Z() < 0;
+}
+
 // Persistence implementer 
 unsigned int GeomCircle::getMemSize (void) const
 {
@@ -746,15 +753,33 @@ Geometry *GeomArcOfCircle::clone(void) const
     return copy;
 }
 
-Base::Vector3d GeomArcOfCircle::getStartPoint() const
+/*!
+ * \brief GeomArcOfCircle::getStartPoint
+ * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
+ * \return XYZ of the arc's starting point.
+ */
+Base::Vector3d GeomArcOfCircle::getStartPoint(bool emulateCCWXY) const
 {
     gp_Pnt pnt = this->myCurve->StartPoint();
+    if(emulateCCWXY)
+        if(isReversedInXY())
+            pnt = this->myCurve->EndPoint();
     return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
 }
 
-Base::Vector3d GeomArcOfCircle::getEndPoint() const
+/*!
+ * \brief GeomArcOfCircle::getEndPoint
+ * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
+ * \return
+ */
+Base::Vector3d GeomArcOfCircle::getEndPoint(bool emulateCCWXY) const
 {
     gp_Pnt pnt = this->myCurve->EndPoint();
+    if(emulateCCWXY)
+        if(isReversedInXY())
+            pnt = this->myCurve->StartPoint();
     return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
 }
 
@@ -801,21 +826,89 @@ void GeomArcOfCircle::setRadius(double Radius)
     }
 }
 
-void GeomArcOfCircle::getRange(double& u, double& v) const
+/*!
+ * \brief GeomArcOfCircle::getRange
+ * \param u [out] start angle of the arc, in radians.
+ * \param v [out] end angle of the arc, in radians.
+ * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
+ * Additionally, arc's rotation as a whole will be included in the returned u,v
+ * (ArcOfCircle specific).
+ */
+void GeomArcOfCircle::getRange(double& u, double& v, bool emulateCCWXY) const
 {
     u = myCurve->FirstParameter();
     v = myCurve->LastParameter();
+    if(emulateCCWXY){
+        Handle_Geom_Circle cir = Handle_Geom_Circle::DownCast(myCurve->BasisCurve());
+        double angleXU = -cir->Position().XDirection().AngleWithRef(gp_Dir(1.0,0.0,0.0), gp_Dir(0.0,0.0,1.0));
+        double u1 = u, v1 = v;//the true arc curve parameters, cached. u,v will contain the rotation-corrected and swapped angles.
+        if(cir->Axis().Direction().Z() > 0.0){
+            //normal CCW arc
+            u = u1 + angleXU;
+            v = v1 + angleXU;
+        } else {
+            //reversed (CW) arc
+            u = angleXU - v1;
+            v = angleXU - u1;
+        }
+
+        if (v < u)
+            v += 2*M_PI;
+        if (v-u > 2*M_PI)
+            v -= 2*M_PI;
+
+    }
+
 }
 
-void GeomArcOfCircle::setRange(double u, double v)
+/*!
+ * \brief GeomArcOfCircle::setRange
+ * \param u [in] start angle of the arc, in radians.
+ * \param v [in] end angle of the arc, in radians.
+ * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
+ * Additionally, arc's rotation as a whole will be subtracted from u,v
+ * (ArcOfCircle specific).
+ */
+void GeomArcOfCircle::setRange(double u, double v, bool emulateCCWXY)
 {
+
     try {
+        if(emulateCCWXY){
+            Handle_Geom_Circle cir = Handle_Geom_Circle::DownCast(myCurve->BasisCurve());
+            double angleXU = -cir->Position().XDirection().AngleWithRef(gp_Dir(1.0,0.0,0.0), gp_Dir(0.0,0.0,1.0));
+            double u1 = u, v1 = v;//the values that were passed, ccw angles from X axis. u,v will contain the rotation-corrected and swapped angles.
+            if(cir->Axis().Direction().Z() > 0.0){
+                //normal CCW arc
+                u = u1 - angleXU;
+                v = v1 - angleXU;
+            } else {
+                //reversed (CW) arc
+                u = angleXU - v1;
+                v = angleXU - u1;
+            }
+        }
+
         myCurve->SetTrim(u, v);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
+}
+
+/*!
+ * \brief GeomArcOfCircle::isReversedInXY
+ * \return tests if an arc that lies in XY plane is reversed (i.e. drawn from
+ * startpoint to endpoint in CW direction instead of CCW.). Returns True if the
+ * arc is CW and false if CCW.
+ */
+bool GeomArcOfCircle::isReversedInXY() const
+{
+    Handle_Geom_Circle c = Handle_Geom_Circle::DownCast( myCurve->BasisCurve() );
+    assert(!c.IsNull());
+    return c->Axis().Direction().Z() < 0;
 }
 
 // Persistence implementer 
@@ -988,21 +1081,35 @@ void GeomEllipse::setMinorRadius(double Radius)
     }
 }
 
+/*!
+ * \brief GeomEllipse::getAngleXU
+ * \return The angle between ellipse's major axis (in direction to focus1) and
+ * X axis of a default axis system in the plane of ellipse. The angle is
+ * counted CCW as seen when looking at the ellipse so that ellipse's axis is
+ * pointing at you. Note that this function may give unexpected results when
+ * the ellipse is in XY, but reversed, because the X axis of the default axis
+ * system is reversed compared to the global X axis. This angle, in conjunction
+ * with ellipse's axis, fully defines the orientation of the ellipse.
+ */
 double GeomEllipse::getAngleXU(void) const
 {
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
-    
+
     gp_Pnt center = this->myCurve->Axis().Location();
     gp_Dir normal = this->myCurve->Axis().Direction();
     gp_Dir xdir = this->myCurve->XAxis().Direction();
-    
-    
+
+
     gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
-    
+
     return -xdir.AngleWithRef(xdirref.XDirection(),normal);
 
 }
 
+/*!
+ * \brief GeomEllipse::setAngleXU complements getAngleXU.
+ * \param angle
+ */
 void GeomEllipse::setAngleXU(double angle)
 {
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(handle());
@@ -1010,13 +1117,13 @@ void GeomEllipse::setAngleXU(double angle)
     try {
         gp_Pnt center = this->myCurve->Axis().Location();
         gp_Dir normal = this->myCurve->Axis().Direction();
-        
+
         gp_Ax1 normaxis(center, normal);
-        
+
         gp_Ax2 xdirref(center, normal);
-        
+
         xdirref.Rotate(normaxis,angle);
-        
+
         this->myCurve->SetPosition(xdirref);
 
     }
@@ -1024,6 +1131,54 @@ void GeomEllipse::setAngleXU(double angle)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
+}
+
+/*!
+ * \brief GeomEllipse::getMajorAxisDir
+ * \return the direction vector (unit-length) of major axis of the ellipse. The
+ * direction also points to the first focus.
+ */
+Base::Vector3d GeomEllipse::getMajorAxisDir() const
+{
+    gp_Dir xdir = myCurve->XAxis().Direction();
+    return Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z());
+}
+
+/*!
+ * \brief GeomEllipse::setMajorAxisDir Rotates the ellipse in its plane, so
+ * that its major axis is as close as possible to the provided direction.
+ * \param newdir [in] is the new direction. If the vector is small, the
+ * orientation of the ellipse will be preserved. If the vector is not small,
+ * but its projection onto plane of the ellipse is small, an exception will be
+ * thrown.
+ */
+void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
+{
+    if (newdir.Sqr() < Precision::SquareConfusion())
+        return;//zero vector was passed. Keep the old orientation.
+    try {
+        gp_Ax2 pos = myCurve->Position();
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
+        myCurve->SetPosition(pos);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+
+/*!
+ * \brief GeomEllipse::isReversedInXY tests if an ellipse that lies in XY plane
+ * is reversed (i.e. drawn from startpoint to endpoint in CW direction instead
+ * of CCW.)
+ * \return Returns True if the arc is CW and false if CCW.
+ */
+bool GeomEllipse::isReversedInXY() const
+{
+    Handle_Geom_Ellipse c = myCurve;
+    assert(!c.IsNull());
+    return c->Axis().Direction().Z() < 0;
 }
 
 // Persistence implementer 
@@ -1113,6 +1268,11 @@ PyObject *GeomEllipse::getPyObject(void)
     return new EllipsePy((GeomEllipse*)this->clone());
 }
 
+void GeomEllipse::setHandle(const Handle_Geom_Ellipse &e)
+{
+    this->myCurve = Handle_Geom_Ellipse::DownCast(e->Copy());
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomArcOfEllipse,Part::GeomCurve);
@@ -1153,15 +1313,34 @@ Geometry *GeomArcOfEllipse::clone(void) const
     return copy;
 }
 
-Base::Vector3d GeomArcOfEllipse::getStartPoint() const
+/*!
+ * \brief GeomArcOfEllipse::getStartPoint
+ * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
+ * \return XYZ of the arc's starting point.
+ */
+Base::Vector3d GeomArcOfEllipse::getStartPoint(bool emulateCCWXY) const
 {
     gp_Pnt pnt = this->myCurve->StartPoint();
+    if(emulateCCWXY)
+        if(isReversedInXY())
+            pnt = this->myCurve->EndPoint();
     return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
 }
 
-Base::Vector3d GeomArcOfEllipse::getEndPoint() const
+/*!
+ * \brief GeomArcOfEllipse::getEndPoint
+ * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
+ * \return XYZ of the arc's starting point.
+ */
+Base::Vector3d GeomArcOfEllipse::getEndPoint(bool emulateCCWXY) const
 {
     gp_Pnt pnt = this->myCurve->EndPoint();
+    if(emulateCCWXY)
+        if(isReversedInXY())
+            pnt = this->myCurve->StartPoint();
+
     return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
 }
 
@@ -1225,20 +1404,33 @@ void GeomArcOfEllipse::setMinorRadius(double Radius)
     }
 }
 
+/*!
+ * \brief GeomArcOfEllipse::getAngleXU
+ * \return The angle between ellipse's major axis (in direction to focus1) and
+ * X axis of a default axis system in the plane of ellipse. The angle is
+ * counted CCW as seen when looking at the ellipse so that ellipse's axis is
+ * pointing at you. Note that this function may give unexpected results when
+ * the ellipse is in XY, but reversed, because the X axis of the default axis
+ * system is reversed compared to the global X axis. This angle, in conjunction
+ * with ellipse's axis, fully defines the orientation of the ellipse.
+ */
 double GeomArcOfEllipse::getAngleXU(void) const
 {
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
-    
+
     gp_Pnt center = ellipse->Axis().Location();
     gp_Dir normal = ellipse->Axis().Direction();
     gp_Dir xdir = ellipse->XAxis().Direction();
-    
+
     gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
-    
+
     return -xdir.AngleWithRef(xdirref.XDirection(),normal);
 
 }
 
+/*!
+ * \brief GeomArcOfEllipse::setAngleXU complements getAngleXU.
+ */
 void GeomArcOfEllipse::setAngleXU(double angle)
 {
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(myCurve->BasisCurve());
@@ -1246,13 +1438,13 @@ void GeomArcOfEllipse::setAngleXU(double angle)
     try {
         gp_Pnt center = ellipse->Axis().Location();
         gp_Dir normal = ellipse->Axis().Direction();
-        
+
         gp_Ax1 normaxis(center, normal);
-        
+
         gp_Ax2 xdirref(center, normal);
-        
+
         xdirref.Rotate(normaxis,angle);
-        
+
         ellipse->SetPosition(xdirref);
 
     }
@@ -1262,15 +1454,95 @@ void GeomArcOfEllipse::setAngleXU(double angle)
     }
 }
 
-void GeomArcOfEllipse::getRange(double& u, double& v) const
+/*!
+ * \brief GeomArcOfEllipse::getMajorAxisDir
+ * \return the direction vector (unit-length) of major axis of the ellipse. The
+ * direction also points to the first focus.
+ */
+Base::Vector3d GeomArcOfEllipse::getMajorAxisDir() const
+{
+    Handle_Geom_Ellipse c = Handle_Geom_Ellipse::DownCast( myCurve->BasisCurve() );
+    assert(!c.IsNull());
+    gp_Dir xdir = c->XAxis().Direction();
+    return Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z());
+}
+
+/*!
+ * \brief GeomArcOfEllipse::setMajorAxisDir Rotates the ellipse in its plane, so
+ * that its major axis is as close as possible to the provided direction.
+ * \param newdir [in] is the new direction. If the vector is small, the
+ * orientation of the ellipse will be preserved. If the vector is not small,
+ * but its projection onto plane of the ellipse is small, an exception will be
+ * thrown.
+ */
+void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
+{
+    Handle_Geom_Ellipse c = Handle_Geom_Ellipse::DownCast( myCurve->BasisCurve() );
+    assert(!c.IsNull());
+    if (newdir.Sqr() < Precision::SquareConfusion())
+        return;//zero vector was passed. Keep the old orientation.
+    try {
+        gp_Ax2 pos = c->Position();
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
+        c->SetPosition(pos);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+/*!
+ * \brief GeomArcOfEllipse::isReversedInXY tests if an arc that lies in XY plane is reversed
+ * (i.e. drawn from startpoint to endpoint in CW direction instead of CCW.)
+ * \return Returns True if the arc is CW and false if CCW.
+ */
+bool GeomArcOfEllipse::isReversedInXY() const
+{
+    Handle_Geom_Ellipse c = Handle_Geom_Ellipse::DownCast( myCurve->BasisCurve() );
+    assert(!c.IsNull());
+    return c->Axis().Direction().Z() < 0;
+}
+
+/*!
+ * \brief GeomArcOfEllipse::getRange
+ * \param u [out] start angle of the arc, in radians.
+ * \param v [out] end angle of the arc, in radians.
+ * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
+ */
+void GeomArcOfEllipse::getRange(double& u, double& v, bool emulateCCWXY) const
 {
     u = myCurve->FirstParameter();
     v = myCurve->LastParameter();
+    if(emulateCCWXY){
+        if(isReversedInXY()){
+            std::swap(u,v);
+            u = -u; v = -v;
+            if (v < u)
+                v += 2*M_PI;
+            if (v-u > 2*M_PI)
+                v -= 2*M_PI;
+        }
+    }
 }
 
-void GeomArcOfEllipse::setRange(double u, double v)
+/*!
+ * \brief GeomArcOfEllipse::setRange
+ * \param u [in] start angle of the arc, in radians.
+ * \param v [in] end angle of the arc, in radians.
+ * \param emulateCCWXY: if true, the arc will pretent to be a CCW arc in XY plane.
+ * For this to work, the arc must lie in XY plane (i.e. Axis is either +Z or -Z).
+ */
+void GeomArcOfEllipse::setRange(double u, double v, bool emulateCCWXY)
 {
     try {
+        if(emulateCCWXY){
+            if(isReversedInXY()){
+                std::swap(u,v);
+                u = -u; v = -v;
+            }
+        }
         myCurve->SetTrim(u, v);
     }
     catch (Standard_Failure) {
@@ -3291,7 +3563,7 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     GeomArcOfCircle *arc = new GeomArcOfCircle();
     arc->setRadius(radius);
     arc->setCenter(center);
-    arc->setRange(startAngle, endAngle);
+    arc->setRange(startAngle, endAngle, /*emulateCCWXY=*/true);
 
     return arc;
 }
