@@ -994,12 +994,12 @@ protected:
         else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arcSeg = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
             if (PosId == Sketcher::start) {
-                EditCurve[0] = Base::Vector2D(arcSeg->getStartPoint().x,arcSeg->getStartPoint().y);
-                dirVec = Base::Vector3d(0.f,0.f,-1.0) % (arcSeg->getStartPoint()-arcSeg->getCenter());
+                EditCurve[0] = Base::Vector2D(arcSeg->getStartPoint(/*emulateCCW=*/true).x,arcSeg->getStartPoint(/*emulateCCW=*/true).y);
+                dirVec = Base::Vector3d(0.f,0.f,-1.0) % (arcSeg->getStartPoint(/*emulateCCW=*/true)-arcSeg->getCenter());
             }
             else {
-                EditCurve[0] = Base::Vector2D(arcSeg->getEndPoint().x,arcSeg->getEndPoint().y);
-                dirVec = Base::Vector3d(0.f,0.f,1.0) % (arcSeg->getEndPoint()-arcSeg->getCenter());
+                EditCurve[0] = Base::Vector2D(arcSeg->getEndPoint(/*emulateCCW=*/true).x,arcSeg->getEndPoint(/*emulateCCW=*/true).y);
+                dirVec = Base::Vector3d(0.f,0.f,1.0) % (arcSeg->getEndPoint(/*emulateCCW=*/true)-arcSeg->getCenter());
             }
         }
         dirVec.Normalize();

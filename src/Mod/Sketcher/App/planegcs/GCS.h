@@ -157,7 +157,6 @@ namespace GCS
         int addConstraintTangent(Circle &c, Arc &a, int tagId=0);
 
         int addConstraintCircleRadius(Circle &c, double *radius, int tagId=0);
-        int addConstraintEllipseAngleXU(Ellipse &e, double *angle, int tagId=0);
         int addConstraintArcRadius(Arc &a, double *radius, int tagId=0);
         int addConstraintEqualLength(Line &l1, Line &l2, double *length, int tagId=0);
         int addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId=0);

@@ -1179,7 +1179,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                 double angle = Constr->LabelPosition;
                 if (angle == 10) {
                     double startangle, endangle;
-                    arc->getRange(startangle, endangle);
+                    arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                     angle = (startangle + endangle)/2;
                 }
                 else {
@@ -1919,20 +1919,19 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
 
                 int countSegments = 12;
-                float segment = float(2 * M_PI) / countSegments;
+                double segment = (2 * M_PI) / countSegments;
 
                 // circumscribed polygon radius
-                float a = float(ellipse->getMajorRadius()) / cos(segment/2);
-                float b = float(ellipse->getMinorRadius()) / cos(segment/2);
-                float phi = float(ellipse->getAngleXU());
+                double a = (ellipse->getMajorRadius()) / cos(segment/2);
+                double b = (ellipse->getMinorRadius()) / cos(segment/2);
+                Base::Vector3d majdir = ellipse->getMajorAxisDir();
+                Base::Vector3d mindir = Base::Vector3d(-majdir.y, majdir.x, 0.0);
 
                 bool bpolyInside = true;
                 pnt0 = ellipse->getCenter();
-                float angle = 0.f;
+                double angle = 0.;
                 for (int i = 0; i < countSegments; ++i, angle += segment) {
-                    pnt = Base::Vector3d(pnt0.x + a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi),
-                                         pnt0.y + a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi),
-                                         0.f);
+                    pnt = pnt0 + (cos(angle)*a)*majdir + sin(angle)*b*mindir;
                     Plm.multVec(pnt, pnt);
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
@@ -1953,8 +1952,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             // Check if arc lies inside box selection
             const Part::GeomArcOfCircle *aoc = dynamic_cast<const Part::GeomArcOfCircle *>(*it);
 
-            pnt0 = aoc->getStartPoint();
-            pnt1 = aoc->getEndPoint();
+            pnt0 = aoc->getStartPoint(/*emulateCCW=*/true);
+            pnt1 = aoc->getEndPoint(/*emulateCCW=*/true);
             pnt2 = aoc->getCenter();
             VertexId += 3;
 
@@ -1987,7 +1986,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
             if (pnt0Inside && pnt1Inside) {
                 double startangle, endangle;
-                aoc->getRange(startangle, endangle);
+                aoc->getRange(startangle, endangle, /*emulateCCW=*/true);
                 if (startangle > endangle) // if arc is reversed
                     std::swap(startangle, endangle);
 
@@ -2024,8 +2023,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             // Check if arc lies inside box selection
             const Part::GeomArcOfEllipse *aoe = dynamic_cast<const Part::GeomArcOfEllipse *>(*it);
 
-            pnt0 = aoe->getStartPoint();
-            pnt1 = aoe->getEndPoint();
+            pnt0 = aoe->getStartPoint(/*emulateCCW=*/true);
+            pnt1 = aoe->getEndPoint(/*emulateCCW=*/true);
             pnt2 = aoe->getCenter();
             VertexId += 3;
 
@@ -2058,26 +2057,25 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
             if (pnt0Inside && pnt1Inside) {
                 double startangle, endangle;
-                aoe->getRange(startangle, endangle);
+                aoe->getRange(startangle, endangle, /*emulateCCW=*/true);
                 if (startangle > endangle) // if arc is reversed
                     std::swap(startangle, endangle);
 
                 double range = endangle-startangle;
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
-                float segment = float(range) / countSegments;
+                double segment = (range) / countSegments;
 
                                                 // circumscribed polygon radius
-                float a = float(aoe->getMajorRadius()) / cos(segment/2);
-                float b = float(aoe->getMinorRadius()) / cos(segment/2);
-                float phi = float(aoe->getAngleXU());
- 
+                double a = (aoe->getMajorRadius()) / cos(segment/2);
+                double b = (aoe->getMinorRadius()) / cos(segment/2);
+                Base::Vector3d majdir = aoe->getMajorAxisDir();
+                Base::Vector3d mindir = Base::Vector3d(-majdir.y, majdir.x, 0.0);
+
                 bool bpolyInside = true;
                 pnt0 = aoe->getCenter();
-                float angle = float(startangle) + segment/2;
+                double angle = (startangle) + segment/2;
                 for (int i = 0; i < countSegments; ++i, angle += segment) {
-                    pnt = Base::Vector3d(pnt0.x + a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi),
-                                         pnt0.y + a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi),
-                                         0.f);
+                    pnt = pnt0 + cos(angle)*a*majdir + sin(angle)*b*mindir;
                     Plm.multVec(pnt, pnt);
                     pnt = proj(pnt);
                     if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
@@ -2953,7 +2951,7 @@ void ViewProviderSketch::draw(bool temp)
             Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(arc->handle());
 
             double startangle, endangle;
-            arc->getRange(startangle, endangle);
+            arc->getRange(startangle, endangle, /*emulateCCW=*/false);
             if (startangle > endangle) // if arc is reversed
                 std::swap(startangle, endangle);
 
@@ -2962,8 +2960,8 @@ void ViewProviderSketch::draw(bool temp)
             double segment = range / countSegments;
 
             Base::Vector3d center = arc->getCenter();
-            Base::Vector3d start  = arc->getStartPoint();
-            Base::Vector3d end    = arc->getEndPoint();
+            Base::Vector3d start  = arc->getStartPoint(/*emulateCCW=*/true);
+            Base::Vector3d end    = arc->getEndPoint(/*emulateCCW=*/true);
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
@@ -2986,7 +2984,7 @@ void ViewProviderSketch::draw(bool temp)
             Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(arc->handle());
 
             double startangle, endangle;
-            arc->getRange(startangle, endangle);
+            arc->getRange(startangle, endangle, /*emulateCCW=*/false);
             if (startangle > endangle) // if arc is reversed
                 std::swap(startangle, endangle);
 
@@ -2995,8 +2993,8 @@ void ViewProviderSketch::draw(bool temp)
             double segment = range / countSegments;
 
             Base::Vector3d center = arc->getCenter();
-            Base::Vector3d start  = arc->getStartPoint();
-            Base::Vector3d end    = arc->getEndPoint();
+            Base::Vector3d start  = arc->getStartPoint(/*emulateCCW=*/true);
+            Base::Vector3d end    = arc->getEndPoint(/*emulateCCW=*/true);
 
             for (int i=0; i < countSegments; i++) {
                 gp_Pnt pnt = curve->Value(startangle);
@@ -3200,7 +3198,7 @@ Restart:
                         } else if (geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo1);
                             double startangle, endangle, midangle;
-                            arc->getRange(startangle, endangle);
+                            arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                             midangle = (startangle + endangle)/2;
                             norm1 = Base::Vector3d(cos(midangle),sin(midangle),0);
                             dir1 = Base::Vector3d(-norm1.y,norm1.x,0);
@@ -3221,7 +3219,7 @@ Restart:
                         } else if (geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
                             double startangle, endangle, midangle;
-                            arc->getRange(startangle, endangle);
+                            arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                             midangle = (startangle + endangle)/2;
                             norm2 = Base::Vector3d(cos(midangle),sin(midangle),0);
                             dir2 = Base::Vector3d(-norm2.y,norm2.x,0);
@@ -3276,14 +3274,15 @@ Restart:
                                 const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo1);
                                 r1a = arc->getRadius();
                                 double startangle, endangle;
-                                arc->getRange(startangle, endangle);
+                                arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                                 angle1 = (startangle + endangle)/2;
                                 midpos1 = arc->getCenter();
                             } else if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
                                 const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>(geo1);
                                 r1a = ellipse->getMajorRadius();
                                 r1b = ellipse->getMinorRadius();
-                                angle1 = ellipse->getAngleXU();
+                                Base::Vector3d majdir = ellipse->getMajorAxisDir();
+                                angle1 = atan2(majdir.y, majdir.x);
                                 angle1plus = M_PI/4;
                                 midpos1 = ellipse->getCenter();
                             } else if (geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
@@ -3291,8 +3290,9 @@ Restart:
                                 r1a = aoe->getMajorRadius();
                                 r1b = aoe->getMinorRadius();
                                 double startangle, endangle;
-                                aoe->getRange(startangle, endangle);
-                                angle1 = aoe->getAngleXU();
+                                aoe->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                Base::Vector3d majdir = aoe->getMajorAxisDir();
+                                angle1 = atan2(majdir.y, majdir.x);
                                 angle1plus = (startangle + endangle)/2;
                                 midpos1 = aoe->getCenter();
                             } else
@@ -3307,14 +3307,15 @@ Restart:
                                 const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo2);
                                 r2a = arc->getRadius();
                                 double startangle, endangle;
-                                arc->getRange(startangle, endangle);
+                                arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                                 angle2 = (startangle + endangle)/2;
                                 midpos2 = arc->getCenter();
                             } else if (geo2->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
                                 const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>(geo2);
                                 r2a = ellipse->getMajorRadius();
                                 r2b = ellipse->getMinorRadius();
-                                angle2 = ellipse->getAngleXU();
+                                Base::Vector3d majdir = ellipse->getMajorAxisDir();
+                                angle2 = atan2(majdir.y, majdir.x);
                                 angle2plus = M_PI/4;
                                 midpos2 = ellipse->getCenter();
                             } else if (geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
@@ -3322,8 +3323,9 @@ Restart:
                                 r2a = aoe->getMajorRadius();
                                 r2b = aoe->getMinorRadius();
                                 double startangle, endangle;
-                                aoe->getRange(startangle, endangle);
-                                angle2 = aoe->getAngleXU();
+                                aoe->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                Base::Vector3d majdir = aoe->getMajorAxisDir();
+                                angle2 = atan2(majdir.y, majdir.x);
                                 angle2plus = (startangle + endangle)/2;
                                 midpos2 = aoe->getCenter();
                             } else
@@ -3741,8 +3743,8 @@ Restart:
                             const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geo);
                             p0 = Base::convertTo<SbVec3f>(arc->getCenter());
 
-                            Base::Vector3d dir = arc->getEndPoint()-arc->getStartPoint();
-                            arc->getRange(startangle, endangle);
+                            Base::Vector3d dir = arc->getEndPoint(/*emulateCCWXY=*/true)-arc->getStartPoint(/*emulateCCWXY=*/true);
+                            arc->getRange(startangle, endangle,/*emulateCCWXY=*/true);
                             range = endangle - startangle;
                         }
                         else {
@@ -3781,7 +3783,7 @@ Restart:
                             double angle = (double) Constr->LabelPosition;
                             if (angle == 10) {
                                 double startangle, endangle;
-                                arc->getRange(startangle, endangle);
+                                arc->getRange(startangle, endangle, /*emulateCCW=*/true);
                                 angle = (startangle + endangle)/2;
                             }
                             pnt1 = arc->getCenter();
