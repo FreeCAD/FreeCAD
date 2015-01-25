@@ -172,7 +172,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Std_TextureMapping" << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
-          << "Std_MeasureDistance" << "Separator"
           << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator"
           << "Std_ViewStatusBar";
 
@@ -183,7 +182,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Std_DlgMacroRecord" << "Std_MacroStopRecord"
           << "Std_DlgMacroExecute" << "Std_DlgMacroExecuteDirect"
           << "Separator" << "Std_ViewScreenShot" << "Std_SceneInspector"
-          << "Std_ExportGraphviz" << "Std_ProjectUtil"
+          << "Std_ExportGraphviz" << "Std_ProjectUtil" << "Separator"
+          << "Std_MeasureDistance" << "Separator"
           << "Std_DemoMode" << "Separator" << "Std_DlgCustomize";
 
     // Mesh ****************************************************************************************************

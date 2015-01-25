@@ -262,6 +262,7 @@ int PointMarker::countPoints() const
 void PointMarker::customEvent(QEvent* e)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    doc->openCommand("Measure distance");
     App::DocumentObject* obj = doc->getDocument()->addObject
         (App::MeasureDistance::getClassTypeId().getName(),"Distance");
 
@@ -275,6 +276,7 @@ void PointMarker::customEvent(QEvent* e)
     s.setf(std::ios::fixed | std::ios::showpoint);
     s << "Distance: " << md->Distance.getValue();
     md->Label.setValue(s.str());
+    doc->commitCommand();
 }
 
 PROPERTY_SOURCE(Gui::ViewProviderPointMarker, Gui::ViewProviderDocumentObject)

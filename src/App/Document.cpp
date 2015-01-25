@@ -1541,6 +1541,9 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
     }
     // send the signal
     signalNewObject(*pcObject);
+
+    d->activeObject = pcObject;
+    signalActivatedObject(*pcObject);
 }
 
 /// Remove an object out of the document
