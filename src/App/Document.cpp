@@ -1524,10 +1524,11 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
 {
-    d->objectMap[pObjectName] = pcObject;
+    std::string ObjectName = getUniqueObjectName(pObjectName);
+    d->objectMap[ObjectName] = pcObject;
     d->objectArray.push_back(pcObject);
     // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
-    pcObject->pcNameInDocument = &(d->objectMap.find(pObjectName)->first);
+    pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
 
     // do no transactions if we do a rollback!
     if(!d->rollback){
