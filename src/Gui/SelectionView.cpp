@@ -63,7 +63,7 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     searchBox->setPlaceholderText(tr("Search"));
 #endif
     searchBox->setToolTip(tr("Searches object labels"));
-    QHBoxLayout* hLayout = new QHBoxLayout(this);
+    QHBoxLayout* hLayout = new QHBoxLayout();
     QToolButton* clearButton = new QToolButton(this);
     clearButton->setFixedSize(18, 21);
     clearButton->setCursor(Qt::ArrowCursor);

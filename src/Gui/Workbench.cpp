@@ -519,7 +519,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
           << "Separator" << visu
           << "Std_ToggleVisibility" << "Std_ToggleNavigation"
           << "Std_SetAppearance" << "Std_RandomColor" << "Separator" 
-          << "Std_MeasureDistance" << "Separator" 
           << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Separator" 
           << "Std_ViewStatusBar";
 
@@ -528,7 +527,8 @@ MenuItem* StdWorkbench::setupMenuBar() const
     tool->setCommand("&Tools");
     *tool << "Std_DlgParameter" << "Separator"
           << "Std_ViewScreenShot" << "Std_SceneInspector" 
-          << "Std_ExportGraphviz" << "Std_ProjectUtil"
+          << "Std_ExportGraphviz" << "Std_ProjectUtil" << "Separator"
+          << "Std_MeasureDistance" << "Separator" 
           << "Std_DemoMode" << "Std_UnitsCalculator" << "Separator" << "Std_DlgCustomize";
 
     // Macro
