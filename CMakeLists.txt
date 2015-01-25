@@ -164,6 +164,7 @@ set(FREECAD_USE_3DCONNEXION OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
 OPTION(FREECAD_USE_PCL "Build the features that use PCL libs" OFF)
+OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." ON)
 endif(MSVC)
 
 # if this is set override some options
