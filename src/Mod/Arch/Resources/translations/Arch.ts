@@ -3,7 +3,7 @@
 <context>
     <name>Arch</name>
     <message>
-        <location filename="ArchWindow.py" line="1134"/>
+        <location filename="ArchWindow.py" line="1124"/>
         <source>Components</source>
         <translation type="unfinished"></translation>
     </message>
@@ -43,12 +43,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1128"/>
+        <location filename="ArchWindow.py" line="1118"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1129"/>
+        <location filename="ArchWindow.py" line="1119"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -63,7 +63,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="584"/>
+        <location filename="ArchAxis.py" line="449"/>
         <source>Angle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -168,7 +168,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="582"/>
+        <location filename="ArchRoof.py" line="715"/>
         <source>Roof</source>
         <translation type="unfinished"></translation>
     </message>
@@ -308,57 +308,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="473"/>
+        <location filename="ArchWindow.py" line="463"/>
         <source>Create Window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="612"/>
+        <location filename="ArchWindow.py" line="602"/>
         <source>the components of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1130"/>
+        <location filename="ArchWindow.py" line="1120"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1131"/>
+        <location filename="ArchWindow.py" line="1121"/>
         <source>Create/update component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1132"/>
+        <location filename="ArchWindow.py" line="1122"/>
         <source>Base 2D object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1138"/>
+        <location filename="ArchWindow.py" line="1128"/>
         <source>Wires</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1135"/>
+        <location filename="ArchWindow.py" line="1125"/>
         <source>Create new component</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1136"/>
+        <location filename="ArchWindow.py" line="1126"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1137"/>
+        <location filename="ArchWindow.py" line="1127"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1139"/>
+        <location filename="ArchWindow.py" line="1129"/>
         <source>Thickness</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1140"/>
+        <location filename="ArchWindow.py" line="1130"/>
         <source>Z offset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -598,7 +598,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="531"/>
+        <location filename="ArchWindow.py" line="521"/>
         <source>Preset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -678,38 +678,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="451"/>
+        <location filename="ArchWindow.py" line="452"/>
         <source>Pick a face on an existing object or select a preset
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="520"/>
+        <location filename="ArchWindow.py" line="510"/>
         <source>Window options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="613"/>
+        <location filename="ArchWindow.py" line="603"/>
         <source>The depth of the hole that this window makes in its host object. Keep 0 for automatic.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="616"/>
+        <location filename="ArchWindow.py" line="606"/>
         <source>The width of this window (for preset windows only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="617"/>
+        <location filename="ArchWindow.py" line="607"/>
         <source>The height of this window (for preset windows only)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="618"/>
+        <location filename="ArchWindow.py" line="608"/>
         <source>The normal direction of this window</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="1105"/>
+        <location filename="ArchWindow.py" line="1095"/>
         <source>Unable to create component
 </source>
         <translation type="unfinished"></translation>
@@ -847,7 +847,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCutPlane.py" line="100"/>
+        <location filename="ArchCutPlane.py" line="93"/>
         <source>Cutting</source>
         <translation type="unfinished"></translation>
     </message>
@@ -917,12 +917,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchFrame.py" line="146"/>
-        <source>There is no more cross point.
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="ArchPanel.py" line="138"/>
         <source>Create Panel</source>
         <translation type="unfinished"></translation>
@@ -948,37 +942,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="139"/>
-        <source>The angles of each slope.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchRoof.py" line="140"/>
-        <source>The horizontal lenght projection of each crawling.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchRoof.py" line="141"/>
-        <source>The pane Id of relative profil.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchRoof.py" line="142"/>
-        <source>The thickness of the roof pane.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchRoof.py" line="143"/>
-        <source>The Overhang of the roof pane.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchRoof.py" line="144"/>
-        <source>The calculated height of the roof pane list.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchRoof.py" line="583"/>
+        <location filename="ArchRoof.py" line="716"/>
         <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -993,23 +957,13 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="584"/>
+        <location filename="ArchRoof.py" line="717"/>
         <source>Id</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchRoof.py" line="584"/>
-        <source>Run</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchRoof.py" line="584"/>
+        <location filename="ArchRoof.py" line="717"/>
         <source>IdRel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ArchRoof.py" line="584"/>
-        <source>Overhang</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1113,8 +1067,109 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchWindow.py" line="524"/>
+        <location filename="ArchWindow.py" line="514"/>
         <source>Sill height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCutPlane.py" line="46"/>
+        <source>CutVolume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCutPlane.py" line="53"/>
+        <source>CutPlane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCutPlane.py" line="86"/>
+        <source>PreviewCutVolume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCutPlane.py" line="122"/>
+        <source>Cut Plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCutPlane.py" line="123"/>
+        <source>Cut Plane options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCutPlane.py" line="124"/>
+        <source>Wich side to cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCutPlane.py" line="125"/>
+        <source>Behind</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchCutPlane.py" line="125"/>
+        <source>Front</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchFrame.py" line="146"/>
+        <source>Crossing point not found in profile.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="139"/>
+        <source>A list of angles for each roof pane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="140"/>
+        <source>A list of horizontal length projections for each roof pane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="141"/>
+        <source>A list of IDs of relative profiles for each roof pane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="142"/>
+        <source>A list of thicknesses for each roof pane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="143"/>
+        <source>A list of overhangs for each roof pane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="144"/>
+        <source>A list of calculated heights for each roof pane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="717"/>
+        <source>Angle (deg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="717"/>
+        <source>Run (mm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="717"/>
+        <source>Thickness (mm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="717"/>
+        <source>Overhang (mm)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ArchRoof.py" line="717"/>
+        <source>Height (mm)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1204,13 +1259,13 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
 <context>
     <name>Arch_CutPlane</name>
     <message>
-        <location filename="ArchCutPlane.py" line="64"/>
-        <source>Cut object</source>
+        <location filename="ArchCutPlane.py" line="62"/>
+        <source>Cut with plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchCutPlane.py" line="65"/>
-        <source>Cut the object with plane</source>
+        <location filename="ArchCutPlane.py" line="63"/>
+        <source>Cut an object with a plane</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

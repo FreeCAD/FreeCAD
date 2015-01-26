@@ -40,9 +40,28 @@
     </message>
 </context>
 <context>
+    <name>CmdDrawingDraftView</name>
+    <message>
+        <location line="+183"/>
+        <source>Drawing</source>
+        <translation type="unfinished">工程圖</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Draft View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdDrawingExportPage</name>
     <message>
-        <location line="+97"/>
+        <location line="-90"/>
         <source>File</source>
         <translation>檔案</translation>
     </message>
@@ -769,8 +788,12 @@ Do you want to continue?</source>
     </message>
     <message>
         <location line="+5"/>
+        <source>SVG (*.svg)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>SVG(*.svg)</source>
-        <translation>SVG(*.svg)</translation>
+        <translation type="obsolete">SVG(*.svg)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -813,19 +836,19 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../../TaskOrthoViews.cpp" line="+45"/>
-        <location line="+912"/>
+        <location line="+929"/>
         <source>Make axonometric...</source>
         <translation type="unfinished">Make axonometric...</translation>
     </message>
     <message>
-        <location line="-911"/>
-        <location line="+912"/>
+        <location line="-928"/>
+        <location line="+929"/>
         <source>Edit axonometric settings...</source>
         <translation type="unfinished">編輯軸測設定</translation>
     </message>
     <message>
-        <location line="-911"/>
-        <location line="+912"/>
+        <location line="-928"/>
+        <location line="+929"/>
         <source>Make orthographic</source>
         <translation type="unfinished">建立正投影視角</translation>
     </message>
