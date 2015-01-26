@@ -1752,16 +1752,16 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             for w in wires:
                 w1=w.copy()
                 w1.fixWire()
-                egroups.append(w1.Edges)
+                egroups.append(DraftGeomUtils.sortEdges(w1.Edges))
         for egroupindex, edges in enumerate(egroups):
             vs=() #skipped for the first edge
             for edgeindex,e in enumerate(edges):
                 previousvs = vs
-                # vertexes of an edge (corrected for the orientation)
-                if e.Orientation == "Forward":
-                    vs = e.Vertexes
-                else:
-                    vs = e.Vertexes[::-1]
+                # vertexes of an edge (reversed if needed)
+                vs = e.Vertexes
+                if previousvs:
+                    if (vs[0].Point-previousvs[-1].Point).Length > 1e-6:
+                        vs.reverse()
                 if edgeindex == 0:
                     v = getProj(vs[0].Point)
                     svg += 'M '+ str(v.x) +' '+ str(v.y) + ' '
