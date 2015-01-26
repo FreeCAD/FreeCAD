@@ -3,12 +3,12 @@
 <context>
     <name>Draft_AddPoint</name>
     <message>
-        <location filename="DraftTools.py" line="3805"/>
+        <location filename="DraftTools.py" line="3900"/>
         <source>Add Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3806"/>
+        <location filename="DraftTools.py" line="3901"/>
         <source>Adds a point to an existing wire/bspline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16,12 +16,12 @@
 <context>
     <name>Draft_AddToGroup</name>
     <message>
-        <location filename="DraftTools.py" line="3758"/>
+        <location filename="DraftTools.py" line="3853"/>
         <source>Add to group...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3759"/>
+        <location filename="DraftTools.py" line="3854"/>
         <source>Adds the selected object(s) to an existing group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -29,12 +29,12 @@
 <context>
     <name>Draft_ApplyStyle</name>
     <message>
-        <location filename="DraftTools.py" line="2190"/>
+        <location filename="DraftTools.py" line="2197"/>
         <source>Apply Current Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2191"/>
+        <location filename="DraftTools.py" line="2198"/>
         <source>Applies current line width and color to selected objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -55,12 +55,12 @@
 <context>
     <name>Draft_Array</name>
     <message>
-        <location filename="DraftTools.py" line="4026"/>
+        <location filename="DraftTools.py" line="4121"/>
         <source>Array</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4027"/>
+        <location filename="DraftTools.py" line="4122"/>
         <source>Creates a polar or rectangular array from a selected object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -94,12 +94,12 @@
 <context>
     <name>Draft_Circle</name>
     <message>
-        <location filename="DraftTools.py" line="1265"/>
+        <location filename="DraftTools.py" line="1272"/>
         <source>Circle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1266"/>
+        <location filename="DraftTools.py" line="1273"/>
         <source>Creates a circle. CTRL to snap, ALT to select tangent objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -107,12 +107,12 @@
 <context>
     <name>Draft_Clone</name>
     <message>
-        <location filename="DraftTools.py" line="4180"/>
+        <location filename="DraftTools.py" line="4275"/>
         <source>Clone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4181"/>
+        <location filename="DraftTools.py" line="4276"/>
         <source>Clones the selected object(s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -133,12 +133,12 @@
 <context>
     <name>Draft_DelPoint</name>
     <message>
-        <location filename="DraftTools.py" line="3830"/>
+        <location filename="DraftTools.py" line="3925"/>
         <source>Remove Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3831"/>
+        <location filename="DraftTools.py" line="3926"/>
         <source>Removes a point from an existing wire or bspline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -146,12 +146,12 @@
 <context>
     <name>Draft_Dimension</name>
     <message>
-        <location filename="DraftTools.py" line="1648"/>
+        <location filename="DraftTools.py" line="1655"/>
         <source>Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1649"/>
+        <location filename="DraftTools.py" line="1656"/>
         <source>Creates a dimension. CTRL to snap, SHIFT to constrain, ALT to select a segment</source>
         <translation type="unfinished"></translation>
     </message>
@@ -159,12 +159,12 @@
 <context>
     <name>Draft_Downgrade</name>
     <message>
-        <location filename="DraftTools.py" line="2619"/>
+        <location filename="DraftTools.py" line="2627"/>
         <source>Downgrade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2620"/>
+        <location filename="DraftTools.py" line="2628"/>
         <source>Explodes the selected objects into simpler objects, or subtract faces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -172,7 +172,7 @@
 <context>
     <name>Draft_Draft2Sketch</name>
     <message>
-        <location filename="DraftTools.py" line="3968"/>
+        <location filename="DraftTools.py" line="4063"/>
         <source>Draft to Sketch</source>
         <translation type="unfinished"></translation>
     </message>
@@ -180,12 +180,12 @@
 <context>
     <name>Draft_Drawing</name>
     <message>
-        <location filename="DraftTools.py" line="3129"/>
+        <location filename="DraftTools.py" line="3224"/>
         <source>Drawing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3130"/>
+        <location filename="DraftTools.py" line="3225"/>
         <source>Puts the selected objects on a Drawing sheet.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -193,12 +193,12 @@
 <context>
     <name>Draft_Edit</name>
     <message>
-        <location filename="DraftTools.py" line="3229"/>
+        <location filename="DraftTools.py" line="3324"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3230"/>
+        <location filename="DraftTools.py" line="3325"/>
         <source>Edits the active object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -206,12 +206,12 @@
 <context>
     <name>Draft_Ellipse</name>
     <message>
-        <location filename="DraftTools.py" line="1456"/>
+        <location filename="DraftTools.py" line="1463"/>
         <source>Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1457"/>
+        <location filename="DraftTools.py" line="1464"/>
         <source>Creates an ellipse. CTRL to snap</source>
         <translation type="unfinished"></translation>
     </message>
@@ -219,12 +219,12 @@
 <context>
     <name>Draft_Facebinder</name>
     <message>
-        <location filename="DraftTools.py" line="4251"/>
+        <location filename="DraftTools.py" line="4346"/>
         <source>Facebinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4252"/>
+        <location filename="DraftTools.py" line="4347"/>
         <source>Creates a facebinder object from selected face(s)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -245,12 +245,12 @@
 <context>
     <name>Draft_FlipDimension</name>
     <message>
-        <location filename="DraftTools.py" line="4279"/>
+        <location filename="DraftTools.py" line="4374"/>
         <source>Flip Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4280"/>
+        <location filename="DraftTools.py" line="4375"/>
         <source>Flip the normal direction of a dimension</source>
         <translation type="unfinished"></translation>
     </message>
@@ -258,18 +258,15 @@
 <context>
     <name>Draft_Heal</name>
     <message>
-        <location filename="DraftTools.py" line="4232"/>
+        <location filename="DraftTools.py" line="4327"/>
         <source>Heal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4233"/>
+        <location filename="DraftTools.py" line="4328"/>
         <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>Draft_Layer</name>
 </context>
 <context>
     <name>Draft_Line</name>
@@ -287,12 +284,12 @@
 <context>
     <name>Draft_Move</name>
     <message>
-        <location filename="DraftTools.py" line="2066"/>
+        <location filename="DraftTools.py" line="2073"/>
         <source>Move</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2067"/>
+        <location filename="DraftTools.py" line="2074"/>
         <source>Moves the selected objects between 2 points. CTRL to snap, SHIFT to constrain, ALT to copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -300,12 +297,12 @@
 <context>
     <name>Draft_Offset</name>
     <message>
-        <location filename="DraftTools.py" line="2412"/>
+        <location filename="DraftTools.py" line="2419"/>
         <source>Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2413"/>
+        <location filename="DraftTools.py" line="2420"/>
         <source>Offsets the active object. CTRL to snap, SHIFT to constrain, ALT to copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -313,12 +310,12 @@
 <context>
     <name>Draft_PathArray</name>
     <message>
-        <location filename="DraftTools.py" line="4055"/>
+        <location filename="DraftTools.py" line="4150"/>
         <source>PathArray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4056"/>
+        <location filename="DraftTools.py" line="4151"/>
         <source>Creates copies of a selected object along a selected path.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -326,12 +323,12 @@
 <context>
     <name>Draft_Point</name>
     <message>
-        <location filename="DraftTools.py" line="4091"/>
+        <location filename="DraftTools.py" line="4186"/>
         <source>Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4092"/>
+        <location filename="DraftTools.py" line="4187"/>
         <source>Creates a point object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -339,12 +336,12 @@
 <context>
     <name>Draft_Polygon</name>
     <message>
-        <location filename="DraftTools.py" line="1275"/>
+        <location filename="DraftTools.py" line="1282"/>
         <source>Polygon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1276"/>
+        <location filename="DraftTools.py" line="1283"/>
         <source>Creates a regular polygon. CTRL to snap, SHIFT to constrain</source>
         <translation type="unfinished"></translation>
     </message>
@@ -365,12 +362,12 @@
 <context>
     <name>Draft_Rotate</name>
     <message>
-        <location filename="DraftTools.py" line="2228"/>
+        <location filename="DraftTools.py" line="2235"/>
         <source>Rotate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2229"/>
+        <location filename="DraftTools.py" line="2236"/>
         <source>Rotates the selected objects. CTRL to snap, SHIFT to constrain, ALT creates a copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -378,12 +375,12 @@
 <context>
     <name>Draft_Scale</name>
     <message>
-        <location filename="DraftTools.py" line="2977"/>
+        <location filename="DraftTools.py" line="3072"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2978"/>
+        <location filename="DraftTools.py" line="3073"/>
         <source>Scales the selected objects from a base point. CTRL to snap, SHIFT to constrain, ALT to copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -391,12 +388,12 @@
 <context>
     <name>Draft_SelectGroup</name>
     <message>
-        <location filename="DraftTools.py" line="3897"/>
+        <location filename="DraftTools.py" line="3992"/>
         <source>Select group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3898"/>
+        <location filename="DraftTools.py" line="3993"/>
         <source>Selects all objects with the same parents as this group</source>
         <translation type="unfinished"></translation>
     </message>
@@ -417,17 +414,17 @@
 <context>
     <name>Draft_Shape2DView</name>
     <message>
-        <location filename="DraftTools.py" line="3929"/>
+        <location filename="DraftTools.py" line="4024"/>
         <source>Shape 2D view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3930"/>
+        <location filename="DraftTools.py" line="4025"/>
         <source>Creates Shape 2D views of selected objects</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3969"/>
+        <location filename="DraftTools.py" line="4064"/>
         <source>Convert bidirectionally between Draft and Sketch objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -435,12 +432,12 @@
 <context>
     <name>Draft_ShapeString</name>
     <message>
-        <location filename="DraftTools.py" line="1945"/>
+        <location filename="DraftTools.py" line="1952"/>
         <source>Shape from text...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1946"/>
+        <location filename="DraftTools.py" line="1953"/>
         <source>Creates text string in shapes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -448,12 +445,12 @@
 <context>
     <name>Draft_ShowSnapBar</name>
     <message>
-        <location filename="DraftTools.py" line="4166"/>
+        <location filename="DraftTools.py" line="4261"/>
         <source>Show Snap Bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4167"/>
+        <location filename="DraftTools.py" line="4262"/>
         <source>Shows Draft snap toolbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -461,12 +458,12 @@
 <context>
     <name>Draft_Snap_Angle</name>
     <message>
-        <location filename="DraftTools.py" line="4402"/>
+        <location filename="DraftTools.py" line="4497"/>
         <source>Angles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4403"/>
+        <location filename="DraftTools.py" line="4498"/>
         <source>Snaps to 45 and 90 degrees points on arcs and circles</source>
         <translation type="unfinished"></translation>
     </message>
@@ -474,12 +471,12 @@
 <context>
     <name>Draft_Snap_Center</name>
     <message>
-        <location filename="DraftTools.py" line="4414"/>
+        <location filename="DraftTools.py" line="4509"/>
         <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4415"/>
+        <location filename="DraftTools.py" line="4510"/>
         <source>Snaps to center of circles and arcs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -487,12 +484,12 @@
 <context>
     <name>Draft_Snap_Dimensions</name>
     <message>
-        <location filename="DraftTools.py" line="4462"/>
+        <location filename="DraftTools.py" line="4557"/>
         <source>Dimensions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4463"/>
+        <location filename="DraftTools.py" line="4558"/>
         <source>Shows temporary dimensions when snapping to Arch objects</source>
         <translation type="unfinished"></translation>
     </message>
@@ -500,12 +497,12 @@
 <context>
     <name>Draft_Snap_Endpoint</name>
     <message>
-        <location filename="DraftTools.py" line="4390"/>
+        <location filename="DraftTools.py" line="4485"/>
         <source>Endpoint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4391"/>
+        <location filename="DraftTools.py" line="4486"/>
         <source>Snaps to endpoints of edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -513,12 +510,12 @@
 <context>
     <name>Draft_Snap_Extension</name>
     <message>
-        <location filename="DraftTools.py" line="4426"/>
+        <location filename="DraftTools.py" line="4521"/>
         <source>Extension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4427"/>
+        <location filename="DraftTools.py" line="4522"/>
         <source>Snaps to extension of edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -526,12 +523,12 @@
 <context>
     <name>Draft_Snap_Grid</name>
     <message>
-        <location filename="DraftTools.py" line="4354"/>
+        <location filename="DraftTools.py" line="4449"/>
         <source>Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4355"/>
+        <location filename="DraftTools.py" line="4450"/>
         <source>Snaps to grid points</source>
         <translation type="unfinished"></translation>
     </message>
@@ -539,12 +536,12 @@
 <context>
     <name>Draft_Snap_Intersection</name>
     <message>
-        <location filename="DraftTools.py" line="4366"/>
+        <location filename="DraftTools.py" line="4461"/>
         <source>Intersection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4367"/>
+        <location filename="DraftTools.py" line="4462"/>
         <source>Snaps to edges intersections</source>
         <translation type="unfinished"></translation>
     </message>
@@ -552,12 +549,12 @@
 <context>
     <name>Draft_Snap_Lock</name>
     <message>
-        <location filename="DraftTools.py" line="4320"/>
+        <location filename="DraftTools.py" line="4415"/>
         <source>Toggle On/Off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4321"/>
+        <location filename="DraftTools.py" line="4416"/>
         <source>Activates/deactivates all snap tools at once</source>
         <translation type="unfinished"></translation>
     </message>
@@ -565,12 +562,12 @@
 <context>
     <name>Draft_Snap_Midpoint</name>
     <message>
-        <location filename="DraftTools.py" line="4330"/>
+        <location filename="DraftTools.py" line="4425"/>
         <source>Midpoint</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4331"/>
+        <location filename="DraftTools.py" line="4426"/>
         <source>Snaps to midpoints of edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -578,12 +575,12 @@
 <context>
     <name>Draft_Snap_Near</name>
     <message>
-        <location filename="DraftTools.py" line="4438"/>
+        <location filename="DraftTools.py" line="4533"/>
         <source>Nearest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4439"/>
+        <location filename="DraftTools.py" line="4534"/>
         <source>Snaps to nearest point on edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -591,12 +588,12 @@
 <context>
     <name>Draft_Snap_Ortho</name>
     <message>
-        <location filename="DraftTools.py" line="4450"/>
+        <location filename="DraftTools.py" line="4545"/>
         <source>Ortho</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4451"/>
+        <location filename="DraftTools.py" line="4546"/>
         <source>Snaps to orthogonal and 45 degrees directions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -604,12 +601,12 @@
 <context>
     <name>Draft_Snap_Parallel</name>
     <message>
-        <location filename="DraftTools.py" line="4378"/>
+        <location filename="DraftTools.py" line="4473"/>
         <source>Parallel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4379"/>
+        <location filename="DraftTools.py" line="4474"/>
         <source>Snaps to parallel directions of edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -617,12 +614,12 @@
 <context>
     <name>Draft_Snap_Perpendicular</name>
     <message>
-        <location filename="DraftTools.py" line="4342"/>
+        <location filename="DraftTools.py" line="4437"/>
         <source>Perpendicular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4343"/>
+        <location filename="DraftTools.py" line="4438"/>
         <source>Snaps to perpendicular points on edges</source>
         <translation type="unfinished"></translation>
     </message>
@@ -630,12 +627,12 @@
 <context>
     <name>Draft_Snap_WorkingPlane</name>
     <message>
-        <location filename="DraftTools.py" line="4474"/>
+        <location filename="DraftTools.py" line="4569"/>
         <source>Working Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4475"/>
+        <location filename="DraftTools.py" line="4570"/>
         <source>Restricts the snapped point to the current working plane</source>
         <translation type="unfinished"></translation>
     </message>
@@ -643,12 +640,12 @@
 <context>
     <name>Draft_Text</name>
     <message>
-        <location filename="DraftTools.py" line="1570"/>
+        <location filename="DraftTools.py" line="1577"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1571"/>
+        <location filename="DraftTools.py" line="1578"/>
         <source>Creates an annotation. CTRL to snap</source>
         <translation type="unfinished"></translation>
     </message>
@@ -656,12 +653,12 @@
 <context>
     <name>Draft_ToggleConstructionMode</name>
     <message>
-        <location filename="DraftTools.py" line="3103"/>
+        <location filename="DraftTools.py" line="3198"/>
         <source>Toggle construcion Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3105"/>
+        <location filename="DraftTools.py" line="3200"/>
         <source>Toggles the Construction Mode for next objects.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -669,12 +666,12 @@
 <context>
     <name>Draft_ToggleContinueMode</name>
     <message>
-        <location filename="DraftTools.py" line="3116"/>
+        <location filename="DraftTools.py" line="3211"/>
         <source>Toggle Continue Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3117"/>
+        <location filename="DraftTools.py" line="3212"/>
         <source>Toggles the Continue Mode for next commands.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -682,12 +679,12 @@
 <context>
     <name>Draft_ToggleDisplayMode</name>
     <message>
-        <location filename="DraftTools.py" line="3200"/>
+        <location filename="DraftTools.py" line="3295"/>
         <source>Toggle display mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3201"/>
+        <location filename="DraftTools.py" line="3296"/>
         <source>Swaps display mode of selected objects between wireframe and flatlines</source>
         <translation type="unfinished"></translation>
     </message>
@@ -695,12 +692,12 @@
 <context>
     <name>Draft_ToggleGrid</name>
     <message>
-        <location filename="DraftTools.py" line="4211"/>
+        <location filename="DraftTools.py" line="4306"/>
         <source>Toggle Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4212"/>
+        <location filename="DraftTools.py" line="4307"/>
         <source>Toggles the Draft grid on/off</source>
         <translation type="unfinished"></translation>
     </message>
@@ -708,12 +705,12 @@
 <context>
     <name>Draft_Trimex</name>
     <message>
-        <location filename="DraftTools.py" line="2651"/>
+        <location filename="DraftTools.py" line="2660"/>
         <source>Trimex</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2652"/>
+        <location filename="DraftTools.py" line="2661"/>
         <source>Trims or extends the selected object, or extrudes single faces. CTRL snaps, SHIFT constrains to current segment or to normal, ALT inverts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -734,12 +731,12 @@
 <context>
     <name>Draft_Upgrade</name>
     <message>
-        <location filename="DraftTools.py" line="2590"/>
+        <location filename="DraftTools.py" line="2597"/>
         <source>Upgrade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2591"/>
+        <location filename="DraftTools.py" line="2598"/>
         <source>Joins the selected objects into one, or converts closed wires to filled faces, or unite faces</source>
         <translation type="unfinished"></translation>
     </message>
@@ -747,12 +744,12 @@
 <context>
     <name>Draft_VisGroup</name>
     <message>
-        <location filename="DraftTools.py" line="4294"/>
+        <location filename="DraftTools.py" line="4389"/>
         <source>VisGroup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4295"/>
+        <location filename="DraftTools.py" line="4390"/>
         <source>Adds a VisGroup</source>
         <translation type="unfinished"></translation>
     </message>
@@ -773,12 +770,12 @@
 <context>
     <name>Draft_WireToBSpline</name>
     <message>
-        <location filename="DraftTools.py" line="3855"/>
+        <location filename="DraftTools.py" line="3950"/>
         <source>Wire to BSpline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3856"/>
+        <location filename="DraftTools.py" line="3951"/>
         <source>Converts between Wire and BSpline</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1644,6 +1641,46 @@ Values with differences below this value will be treated as same.</source>
         <source>extension lines  size</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="userprefs-visual.ui" line="764"/>
+        <source>Drawing views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="userprefs-visual.ui" line="772"/>
+        <source>Dashed line definition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="userprefs-visual.ui" line="878"/>
+        <source>A SVG linestyle definition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="userprefs-visual.ui" line="795"/>
+        <source>0.09,0.05</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="userprefs-visual.ui" line="815"/>
+        <source>Dashdot line definition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="userprefs-visual.ui" line="838"/>
+        <source>0.09,0.05,0.02,0.05</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="userprefs-visual.ui" line="858"/>
+        <source>Dotted line definition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="userprefs-visual.ui" line="881"/>
+        <source>0.02,0.02</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Workbench</name>
@@ -1831,7 +1868,7 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2578"/>
+        <location filename="DraftTools.py" line="2585"/>
         <source>Offset</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2094,109 +2131,109 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2787"/>
+        <location filename="Draft.py" line="2788"/>
         <source>Found groups: closing each open object inside
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2792"/>
+        <location filename="Draft.py" line="2793"/>
         <source>Found mesh(es): turning into Part shapes
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2800"/>
+        <location filename="Draft.py" line="2801"/>
         <source>Found 1 solidificable object: solidifying it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2805"/>
+        <location filename="Draft.py" line="2806"/>
         <source>Found 2 objects: fusing them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2820"/>
+        <location filename="Draft.py" line="2821"/>
         <source>Found 1 non-parametric objects: draftifying it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2845"/>
+        <location filename="Draft.py" line="2852"/>
         <source>Found 1 open wire: closing it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2850"/>
+        <location filename="Draft.py" line="2857"/>
         <source>Found several open wires: joining them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2855"/>
+        <location filename="Draft.py" line="2862"/>
         <source>Found several edges: wiring them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2864"/>
+        <location filename="Draft.py" line="2871"/>
         <source>Unable to upgrade these objects.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3019"/>
+        <location filename="Draft.py" line="3026"/>
         <source>Found 1 block: exploding it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3031"/>
+        <location filename="Draft.py" line="3038"/>
         <source>Found 1 parametric object: breaking its dependencies
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3038"/>
+        <location filename="Draft.py" line="3045"/>
         <source>Found 2 objects: subtracting them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3045"/>
+        <location filename="Draft.py" line="3052"/>
         <source>Found several faces: splitting them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3050"/>
+        <location filename="Draft.py" line="3057"/>
         <source>Found several objects: subtracting them from the first one
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3055"/>
+        <location filename="Draft.py" line="3062"/>
         <source>Found 1 face: extracting its wires
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3060"/>
+        <location filename="Draft.py" line="3067"/>
         <source>Found only wires: extracting their edges
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3064"/>
+        <location filename="Draft.py" line="3071"/>
         <source>No more downgrade possible
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="4379"/>
+        <location filename="Draft.py" line="4386"/>
         <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
 </source>
         <translation type="unfinished"></translation>
@@ -2208,7 +2245,7 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1682"/>
+        <location filename="DraftTools.py" line="1689"/>
         <source>Pick first point:
 </source>
         <translation type="unfinished"></translation>
@@ -2295,25 +2332,25 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1556"/>
+        <location filename="DraftTools.py" line="1563"/>
         <source>Pick opposite point:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1295"/>
+        <location filename="DraftTools.py" line="1302"/>
         <source>Pick center point:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1430"/>
+        <location filename="DraftTools.py" line="1437"/>
         <source>Pick radius:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1236"/>
+        <location filename="DraftTools.py" line="1243"/>
         <source>Pick start angle:
 </source>
         <translation type="unfinished"></translation>
@@ -2330,292 +2367,286 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1190"/>
+        <location filename="DraftTools.py" line="1197"/>
         <source>Create Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1231"/>
+        <location filename="DraftTools.py" line="1238"/>
         <source>Start Angle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1238"/>
+        <location filename="DraftTools.py" line="1245"/>
         <source>Aperture</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1247"/>
+        <location filename="DraftTools.py" line="1254"/>
         <source>Aperture angle:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1279"/>
+        <location filename="DraftTools.py" line="1286"/>
         <source>Polygon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1413"/>
+        <location filename="DraftTools.py" line="1420"/>
         <source>Create Polygon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1460"/>
+        <location filename="DraftTools.py" line="1467"/>
         <source>Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1516"/>
+        <location filename="DraftTools.py" line="1523"/>
         <source>Create Ellipse</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1574"/>
+        <location filename="DraftTools.py" line="1581"/>
         <source>Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1586"/>
+        <location filename="DraftTools.py" line="1593"/>
         <source>Pick location point:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1606"/>
+        <location filename="DraftTools.py" line="1613"/>
         <source>Create Text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1652"/>
+        <location filename="DraftTools.py" line="1659"/>
         <source>Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1734"/>
+        <location filename="DraftTools.py" line="1741"/>
         <source>Create Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1892"/>
+        <location filename="DraftTools.py" line="1899"/>
         <source>Edges don&apos;t intersect!
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1949"/>
+        <location filename="DraftTools.py" line="1956"/>
         <source>ShapeString</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1963"/>
+        <location filename="DraftTools.py" line="1970"/>
         <source>Pick ShapeString location point:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="1984"/>
+        <location filename="DraftTools.py" line="1991"/>
         <source>Create ShapeString</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2123"/>
+        <location filename="DraftTools.py" line="2130"/>
         <source>Move</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2076"/>
+        <location filename="DraftTools.py" line="2083"/>
         <source>Select an object to move
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2098"/>
+        <location filename="DraftTools.py" line="2105"/>
         <source>Pick start point:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3023"/>
+        <location filename="DraftTools.py" line="3118"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2175"/>
+        <location filename="DraftTools.py" line="2182"/>
         <source>Pick end point:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2211"/>
+        <location filename="DraftTools.py" line="2218"/>
         <source>Change Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2238"/>
+        <location filename="DraftTools.py" line="2245"/>
         <source>Select an object to rotate
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2255"/>
+        <location filename="DraftTools.py" line="2262"/>
         <source>Pick rotation center:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2284"/>
+        <location filename="DraftTools.py" line="2291"/>
         <source>Rotate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2388"/>
+        <location filename="DraftTools.py" line="2395"/>
         <source>Pick base angle:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2400"/>
+        <location filename="DraftTools.py" line="2407"/>
         <source>Pick rotation angle:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2424"/>
+        <location filename="DraftTools.py" line="2431"/>
         <source>Select an object to offset
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2427"/>
+        <location filename="DraftTools.py" line="2434"/>
         <source>Offset only works on one object at a time
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2435"/>
+        <location filename="DraftTools.py" line="2442"/>
         <source>Cannot offset this object type
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2725"/>
+        <location filename="DraftTools.py" line="2745"/>
         <source>Pick distance:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2627"/>
+        <location filename="DraftTools.py" line="2635"/>
         <source>Select an object to upgrade
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2608"/>
+        <location filename="DraftTools.py" line="2615"/>
         <source>Upgrade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2637"/>
+        <location filename="DraftTools.py" line="2645"/>
         <source>Downgrade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2663"/>
-        <source>Select an object to trim/extend
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="DraftTools.py" line="3027"/>
+        <location filename="DraftTools.py" line="3122"/>
         <source>Scale</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2987"/>
+        <location filename="DraftTools.py" line="3082"/>
         <source>Select an object to scale
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3002"/>
+        <location filename="DraftTools.py" line="3097"/>
         <source>Pick base point:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3088"/>
+        <location filename="DraftTools.py" line="3183"/>
         <source>Pick scale factor:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3937"/>
+        <location filename="DraftTools.py" line="4032"/>
         <source>Select an object to project
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3245"/>
+        <location filename="DraftTools.py" line="3340"/>
         <source>Select a Draft object to edit
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3335"/>
+        <location filename="DraftTools.py" line="3430"/>
         <source>This object type is not editable
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3623"/>
+        <location filename="DraftTools.py" line="3718"/>
         <source>Active object must have more than two points/nodes
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3672"/>
+        <location filename="DraftTools.py" line="3767"/>
         <source>Selection is not a Knot
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3697"/>
+        <location filename="DraftTools.py" line="3792"/>
         <source>Endpoint of BezCurve can&apos;t be smoothed
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="3976"/>
+        <location filename="DraftTools.py" line="4071"/>
         <source>Select an object to convert
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4034"/>
+        <location filename="DraftTools.py" line="4129"/>
         <source>Select an object to array
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4063"/>
+        <location filename="DraftTools.py" line="4158"/>
         <source>Please select base and path objects
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4149"/>
+        <location filename="DraftTools.py" line="4244"/>
         <source>Create Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4188"/>
+        <location filename="DraftTools.py" line="4283"/>
         <source>Select an object to clone
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4259"/>
+        <location filename="DraftTools.py" line="4354"/>
         <source>Select face(s) on existing object(s)
 </source>
         <translation type="unfinished"></translation>
@@ -2647,7 +2678,7 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3025"/>
+        <location filename="Draft.py" line="3032"/>
         <source>Found 1 multi-solids compound: exploding it
 </source>
         <translation type="unfinished"></translation>
@@ -2658,47 +2689,47 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2349"/>
+        <location filename="Draft.py" line="2350"/>
         <source>BSplines and Bezier curves are not supported by this tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2345"/>
+        <location filename="Draft.py" line="2346"/>
         <source>The given object is not planar and cannot be converted into a sketch.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2810"/>
+        <location filename="Draft.py" line="2811"/>
         <source>Found several objects: creating a shell
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2815"/>
+        <location filename="Draft.py" line="2816"/>
         <source>Found several coplanar objects or faces: creating one face
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2827"/>
+        <location filename="Draft.py" line="2834"/>
         <source>Found 1 linear object: converting to line
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2835"/>
+        <location filename="Draft.py" line="2842"/>
         <source>Found 1 closed sketch object: creating a face from it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2840"/>
+        <location filename="Draft.py" line="2847"/>
         <source>Found closed wires: creating faces
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2860"/>
+        <location filename="Draft.py" line="2867"/>
         <source>Found several non-treatable objects: creating compound
 </source>
         <translation type="unfinished"></translation>
@@ -2749,29 +2780,59 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="2458"/>
+        <location filename="DraftTools.py" line="2465"/>
         <source>Sorry, offset of Bezier curves is currently still not supported
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4000"/>
+        <location filename="DraftTools.py" line="4095"/>
         <source>Convert to Sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4004"/>
+        <location filename="DraftTools.py" line="4099"/>
         <source>Convert to Draft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4016"/>
+        <location filename="DraftTools.py" line="4111"/>
         <source>Convert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="DraftTools.py" line="4045"/>
+        <location filename="DraftTools.py" line="4140"/>
         <source>Array</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DraftTools.py" line="2674"/>
+        <source>Select object(s) to trim/extend
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DraftTools.py" line="2980"/>
+        <source>Unable to trim these objects, only Draft wires and arcs are supported
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DraftTools.py" line="2983"/>
+        <source>Unable to trim these objects, too many wires
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DraftTools.py" line="3000"/>
+        <source>These objects don&apos;t intersect
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="DraftTools.py" line="3003"/>
+        <source>Too many intersection points
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

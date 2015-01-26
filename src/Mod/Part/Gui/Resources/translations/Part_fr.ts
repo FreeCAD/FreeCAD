@@ -701,7 +701,7 @@
 <context>
     <name>CmdPartRefineShape</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="+213"/>
+        <location filename="../../CommandSimple.cpp" line="+214"/>
         <source>Part</source>
         <translation>Pièce</translation>
     </message>
@@ -795,7 +795,7 @@
 <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="-108"/>
+        <location filename="../../CommandSimple.cpp" line="-109"/>
         <source>Part</source>
         <translation>Pièce</translation>
     </message>

@@ -177,7 +177,7 @@
 <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2014"/>
+        <location filename="../../CommandConstraints.cpp" line="+2102"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -195,7 +195,7 @@
 <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-        <location line="-1368"/>
+        <location line="-1358"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -231,7 +231,7 @@
 <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-        <location line="+229"/>
+        <location line="+224"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -253,7 +253,7 @@
 <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-        <location line="+132"/>
+        <location line="+126"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -275,7 +275,7 @@
 <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-        <location line="+1120"/>
+        <location line="+1116"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -293,7 +293,7 @@
 <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-        <location line="-1845"/>
+        <location line="-1830"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -311,7 +311,7 @@
 <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-        <location line="+2239"/>
+        <location line="+2224"/>
         <source>Sketcher</source>
         <translation type="unfinished">Esboço</translation>
     </message>
@@ -329,7 +329,7 @@
 <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-        <location line="-2059"/>
+        <location line="-2044"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -347,7 +347,7 @@
 <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-        <location line="+667"/>
+        <location line="+650"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -387,7 +387,7 @@
 <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-        <location line="-445"/>
+        <location line="-433"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -405,7 +405,7 @@
 <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-        <location line="+943"/>
+        <location line="+931"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -423,7 +423,7 @@
 <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-        <location line="+659"/>
+        <location line="+661"/>
         <source>Sketcher</source>
         <translation type="unfinished">Esboço</translation>
     </message>
@@ -463,7 +463,7 @@
 <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-        <location line="-744"/>
+        <location line="-746"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -481,7 +481,7 @@
 <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-        <location line="-1125"/>
+        <location line="-1108"/>
         <source>Sketcher</source>
         <translation>Esboço</translation>
     </message>
@@ -1283,21 +1283,21 @@
         <location line="+10"/>
         <location line="+79"/>
         <location line="+10"/>
-        <location line="+79"/>
-        <location line="+24"/>
+        <location line="+76"/>
+        <location line="+22"/>
         <location line="+34"/>
         <location line="+10"/>
         <location line="+41"/>
         <location line="+33"/>
         <location line="+10"/>
-        <location line="+44"/>
-        <location line="+26"/>
-        <location line="+20"/>
+        <location line="+42"/>
+        <location line="+24"/>
+        <location line="+18"/>
         <location line="+34"/>
         <location line="+10"/>
-        <location line="+42"/>
-        <location line="+26"/>
-        <location line="+20"/>
+        <location line="+40"/>
+        <location line="+24"/>
+        <location line="+18"/>
         <location line="+34"/>
         <location line="+12"/>
         <location line="+14"/>
@@ -1316,10 +1316,10 @@
         <location line="+34"/>
         <location line="+10"/>
         <location line="+25"/>
-        <location line="+141"/>
+        <location line="+148"/>
         <location line="+11"/>
-        <location line="+133"/>
-        <location line="+42"/>
+        <location line="+131"/>
+        <location line="+39"/>
         <location line="+33"/>
         <location line="+12"/>
         <location line="+15"/>
@@ -1363,7 +1363,7 @@
         <translation>Selecione aresta(s) no esboço.</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2614"/>
+        <location filename="../../CommandConstraints.cpp" line="-2599"/>
         <location line="+92"/>
         <source>Select an edge from the sketch.</source>
         <translation>Selecione uma aresta do esboço.</translation>
@@ -1449,14 +1449,14 @@
     <message>
         <location line="+53"/>
         <location line="+100"/>
-        <location line="+147"/>
+        <location line="+142"/>
         <location line="+84"/>
-        <location line="+134"/>
+        <location line="+128"/>
         <source>Select vertexes from the sketch.</source>
         <translation>Selecione vértices do esboço.</translation>
     </message>
     <message>
-        <location line="-54"/>
+        <location line="-52"/>
         <source>Cannot add a fixed x-coordinate constraint on an external geometry!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1466,7 +1466,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+131"/>
+        <location line="+125"/>
         <source>Cannot add a fixed y-coordinate constraint on an external geometry!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1476,7 +1476,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+648"/>
+        <location line="+646"/>
         <location line="+10"/>
         <location line="+25"/>
         <source>Select one or more arcs or circles from the sketch.</source>
@@ -1493,18 +1493,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+135"/>
+        <location line="+142"/>
         <source>Select only entities from the sketch.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+11"/>
-        <location line="+175"/>
+        <location line="+170"/>
         <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-68"/>
+        <location line="-64"/>
         <source>Parallel lines</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1514,7 +1514,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+360"/>
+        <location line="+356"/>
         <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
         <comment>Constraint_SnellsLaw</comment>
         <translation type="unfinished"></translation>
@@ -1618,19 +1618,19 @@
         <translation type="obsolete">Selecione exatamente dois vértices do esboço.</translation>
     </message>
     <message>
-        <location line="-2348"/>
+        <location line="-2333"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
         <translation type="unfinished">Selecione dois ou mais vértices do esboço.</translation>
     </message>
     <message>
         <location line="+89"/>
-        <location line="+103"/>
+        <location line="+98"/>
         <source>Select exactly one line or one point and one line or two points from the sketch.</source>
         <translation>Selecione exatamente uma linha ou um ponto e uma linha ou dois pontos no esboço.</translation>
     </message>
     <message>
-        <location line="-24"/>
+        <location line="-22"/>
         <source>Cannot add a length constraint on an external geometry!</source>
         <translation>Não é possível adicionar uma restrição de comprimento em uma geometria externa!</translation>
     </message>
@@ -1640,21 +1640,21 @@
         <translation>Não é possível adicionar uma restrição de comprimento em um eixo!</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+65"/>
         <location line="+41"/>
         <source>Select exactly one point and one object from the sketch.</source>
         <translation>Selecione exatamente um ponto e um objeto no esboço.</translation>
     </message>
     <message>
         <location line="+43"/>
-        <location line="+90"/>
+        <location line="+84"/>
         <location line="+44"/>
-        <location line="+88"/>
+        <location line="+82"/>
         <source>Select exactly one line or up to two points from the sketch.</source>
         <translation>Selecione exatamente uma linha ou até dois pontos no esboço.</translation>
     </message>
     <message>
-        <location line="-178"/>
+        <location line="-168"/>
         <source>Cannot add a horizontal length constraint on an external geometry!</source>
         <translation>Não é possível adicionar uma restrição de comprimento horizontal em uma geometria externa!</translation>
     </message>
@@ -1672,7 +1672,7 @@
         <translation type="obsolete">Não é possível adicionar uma restrição de coordenada X fixa sobre um ponto raiz!</translation>
     </message>
     <message>
-        <location line="+131"/>
+        <location line="+125"/>
         <source>Cannot add a vertical length constraint on an external geometry!</source>
         <translation>Não é possível adicionar uma restrição de comprimento vertical em uma geometria externa!</translation>
     </message>
@@ -1690,18 +1690,18 @@
         <translation type="obsolete">Não é possível adicionar uma restrição de coordenada Y fixa sobre um ponto raiz!</translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+75"/>
         <source>Select two or more lines from the sketch.</source>
         <translation>Selecione duas ou mais linhas no esboço.</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+990"/>
+        <location line="+992"/>
         <source>Select at least two lines from the sketch.</source>
         <translation>Selecione pelo menos duas linhas no esboço.</translation>
     </message>
     <message>
-        <location line="-976"/>
+        <location line="-978"/>
         <source>Select a valid line</source>
         <translation>Selecione uma linha válida</translation>
     </message>
@@ -1733,12 +1733,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+57"/>
         <location line="+270"/>
-        <location line="+916"/>
+        <location line="+918"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1172"/>
+        <location line="-1174"/>
         <location line="+270"/>
         <source>With 3 objects, there must be 2 curves and 1 point.</source>
         <comment>tangent constraint</comment>
@@ -1802,7 +1802,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">Selecione uma ou duas linhas do esboço.</translation>
     </message>
     <message>
-        <location line="+432"/>
+        <location line="+437"/>
         <source>Cannot add an angle constraint on an external geometry!</source>
         <translation>Não é possível adicionar uma restrição de ângulo em uma geometria externa!</translation>
     </message>
@@ -1816,7 +1816,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">Selecione exatamente uma ou duas linhas no esboço.</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+71"/>
         <source>Select two edges from the sketch.</source>
         <translation>Selecione duas arestas no esboço.</translation>
     </message>
@@ -1953,7 +1953,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>Não é possível editar o dado porque o esboço contém restrições conflitantes</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-458"/>
+        <location filename="../../CommandConstraints.cpp" line="-2385"/>
+        <location line="+1924"/>
         <location filename="../../EditDatumDialog.cpp" line="+84"/>
         <source>Dimensional constraint</source>
         <translation>Restrição de dimensão</translation>
@@ -2056,45 +2057,51 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
+        <location filename="../../CommandConstraints.cpp" line="-1985"/>
         <location filename="../../EditDatumDialog.cpp" line="-68"/>
         <source>Insert angle</source>
         <translation type="unfinished">Insira o ângulo</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Angle:</source>
         <translation type="unfinished">Ângulo:</translation>
     </message>
     <message>
         <location line="+4"/>
+        <location filename="../../EditDatumDialog.cpp" line="+4"/>
         <source>Insert radius</source>
         <translation type="unfinished">Insira o raio</translation>
     </message>
     <message>
         <location line="+6"/>
+        <location filename="../../EditDatumDialog.cpp" line="+6"/>
         <source>Refractive index ratio</source>
         <comment>Constraint_SnellsLaw</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <location filename="../../EditDatumDialog.cpp" line="+1"/>
         <source>Ratio n2/n1:</source>
         <comment>Constraint_SnellsLaw</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-31"/>
+        <location line="+1942"/>
         <source>Change radius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-1947"/>
+        <location line="+1948"/>
         <location filename="../../EditDatumDialog.cpp" line="-5"/>
         <source>Radius:</source>
         <translation type="unfinished">Raio:</translation>
     </message>
     <message>
-        <location line="+613"/>
+        <location line="+615"/>
         <source>Refractive index ratio</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2104,12 +2111,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="-2555"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
         <translation type="unfinished">Insira o comprimento</translation>
     </message>
     <message>
         <location line="+2"/>
+        <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Length:</source>
         <translation type="unfinished">Comprimento:</translation>
     </message>

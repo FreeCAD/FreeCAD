@@ -1978,6 +1978,94 @@ Spesifiseer asseblief &apos;n ander gids.</translation>
         <source>Using Undo/Redo on documents</source>
         <translation type="unfinished">Gebruik van ontdoen/herdoen in dokumente</translation>
     </message>
+    <message>
+        <source>Authoring and License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set on save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Company</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The defautl company to use for new files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default license</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The default license for new documents</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All rights reserved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CreativeCommons Attribution</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CreativeCommons Attribution-ShareAlike</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CreativeCommons Attribution-NoDerivatives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CreativeCommons Attribution-NonCommercial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Public Domain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeArt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License URL</source>
+        <translation type="unfinished">License URL</translation>
+    </message>
+    <message>
+        <source>An URL where the user can find more details about the license</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsEditorImp</name>
@@ -3580,6 +3668,10 @@ In die linkeraansig is %1 punte gekies, in die regteraansig is %2 punte gekies.<
         <source>Save value</source>
         <translation type="unfinished">Save value</translation>
     </message>
+    <message>
+        <source>Clear list</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::ProgressBar</name>
@@ -3734,17 +3826,6 @@ Wil jy afsluit sonder om jou data te stoor?</translation>
     <message>
         <source>Uncomment</source>
         <translation type="unfinished">Verwyder opmerking</translation>
-    </message>
-</context>
-<context>
-    <name>Gui::QuantitySpinBox</name>
-    <message>
-        <source>Maximum reached</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Minimum reached</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
