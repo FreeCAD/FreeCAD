@@ -714,6 +714,7 @@ CmdDrawingDraftView::CmdDrawingDraftView()
 
 void CmdDrawingDraftView::activated(int iMsg)
 {
+    addModule(Gui,"Draft");
     doCommand(Gui,"Gui.runCommand(\"Draft_Drawing\")");
 }
 
