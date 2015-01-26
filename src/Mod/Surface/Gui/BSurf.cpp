@@ -162,7 +162,6 @@ void BSurf::apply()
     if(editedObject->filltype.getValue() != fillType)
     {
         editedObject->filltype.setValue(fillType);
-        oldFillType = fillType;
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     }
 }
