@@ -173,7 +173,6 @@ if __name__ == "__main__":
             c.setopt(pycurl.WRITEFUNCTION, b.write) 
             c.perform()
             c.close()
-            print b.getvalue()
             handler = ResponseHandler()
             xml.sax.parseString(b.getvalue(),handler)
             print handler.data
