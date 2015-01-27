@@ -147,23 +147,99 @@ void CmdSurfaceCut::activated(int iMsg)
 
 
 //===========================================================================
-// Surface_Bezier
+// Bezier and BSpline surfaces
 //===========================================================================
-DEF_STD_CMD_A(CmdSurfaceBezier);
+//DEF_STD_CMD_A(CmdSurfaceBSurf);
+class CmdSurfaceBSurf : public Gui::Command
+{
+public:
+    CmdSurfaceBSurf();
+    virtual ~CmdSurfaceBSurf(){}
+    virtual const char* className() const
+    { return "CmdSurfaceBSurf"; }
+protected:
+    bool willBezier;
+    bool willBSpline;
+    virtual bool isActive(void);
+    void createBezier(void);
+    void createBSpline(void);
+    virtual void activated(int iMsg);
+};
 
-CmdSurfaceBezier::CmdSurfaceBezier()
-  :Command("Surface_Bezier")
+CmdSurfaceBSurf::CmdSurfaceBSurf() : Command("Surface_BSurf")
 {
     sAppModule    = "Surface";
     sGroup        = QT_TR_NOOP("Surface");
-    sMenuText     = QT_TR_NOOP("Bezier");
-    sToolTipText  = QT_TR_NOOP("Creates a surface from 2, 3 or 4 Bezier curves");
-    sWhatsThis    = "Surface_Bezier";
+    sMenuText     = QT_TR_NOOP("Bezier or BSpline surface");
+    sToolTipText  = QT_TR_NOOP("Creates a surface from 2, 3 or 4 Bezier or BSpline curves");
+    sWhatsThis    = "Surface_BSurf";
     sStatusTip    = sToolTipText;
-    sPixmap       = "BezSurf";
+    sPixmap       = "BSplineSurf";
 }
 
-void CmdSurfaceBezier::activated(int iMsg)
+bool CmdSurfaceBSurf::isActive(void)
+{
+    willBezier = willBSpline = false;
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    if (Sel.size() < 2 || Sel.size() > 4) {
+        return false;
+    }
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
+    {
+        if(!((*it).pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
+            return false;
+        }
+        Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
+        try {
+            TopoDS_Shape shape = ts.getSubShape("Edge1");
+            if (shape.IsNull())
+            {
+                return false;
+            }
+            if(shape.ShapeType() != TopAbs_EDGE) {  //Check Shape type and assign edge
+                return false;
+            }
+            TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
+            TopLoc_Location heloc; // this will be output
+            Standard_Real u0;// contains output
+            Standard_Real u1;// contains output
+            Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
+            Handle_Geom_BezierCurve bez_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
+            if (bez_geom.IsNull())
+            {
+                // this one is not Bezier
+                Handle_Geom_BSplineCurve bsp_geom = Handle_Geom_BSplineCurve::DownCast(c_geom); //Try to get BSpline curve
+                if (bsp_geom.IsNull()) {
+                    // neither Bezier, nor b-spline, fail
+                    return false;
+                }
+                // this one is b-spline
+                if(willBezier) {
+                    // already found the other type, fail
+                    return false;
+                }
+                // we will create b-spline surface
+                willBSpline = true;
+            }
+            else
+            {
+                // this one is Bezier
+                if(willBSpline) {
+                    // already found the other type, fail
+                    return false;
+                }
+                // we will create Bezier surface
+                willBezier = true;
+            }
+        }
+        catch(Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
+            return false;
+        }
+    }
+    return true;
+}
+
+void CmdSurfaceBSurf::createBezier()
 {
     // we take the whole selection and require that all of its members are of the required curve
     std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
@@ -183,57 +259,7 @@ void CmdSurfaceBezier::activated(int iMsg)
     updateActive();
 }
 
-bool CmdSurfaceBezier::isActive(void)
-{
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    if (Sel.size() < 2 || Sel.size() > 4) {
-       return false;
-    }
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
-    {
-        if(!((*it).pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
-            return false;
-        }
-        Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
-        TopoDS_Shape shape = ts.getSubShape("Edge1");
-        if (shape.IsNull())
-        {
-            return false;
-        }
-        if(shape.ShapeType() != TopAbs_EDGE) {  //Check Shape type and assign edge
-            return false;
-        }
-        TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
-        TopLoc_Location heloc; // this will be output
-        Standard_Real u0;// contains output
-        Standard_Real u1;// contains output
-        Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
-        Handle_Geom_BezierCurve b_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
-        if (b_geom.IsNull()) {
-            return false;
-        }
-    }
-    return true;
-}
-
-//===========================================================================
-// Surface_BSpline
-//===========================================================================
-DEF_STD_CMD_A(CmdSurfaceBSpline);
-
-CmdSurfaceBSpline::CmdSurfaceBSpline()
-  :Command("Surface_BSpline")
-{
-    sAppModule    = "Surface";
-    sGroup        = QT_TR_NOOP("Surface");
-    sMenuText     = QT_TR_NOOP("BSpline");
-    sToolTipText  = QT_TR_NOOP("Creates a surface from 2, 3 or 4 BSpline curves");
-    sWhatsThis    = "Surface_BSpline";
-    sStatusTip    = sToolTipText;
-    sPixmap       = "BSplineSurf";
-}
-
-void CmdSurfaceBSpline::activated(int iMsg)
+void CmdSurfaceBSurf::createBSpline()
 {
     // we take the whole selection and require that all of its members are of the required curve
     std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
@@ -253,45 +279,25 @@ void CmdSurfaceBSpline::activated(int iMsg)
     updateActive();
 }
 
-bool CmdSurfaceBSpline::isActive(void)
+void CmdSurfaceBSurf::activated(int iMsg)
 {
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    if (Sel.size() < 2 || Sel.size() > 4) {
-       return false;
-    }
-    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
+    // check wich was activated and perfom it clearing the flag
+    if(willBezier)
     {
-        if(!((*it).pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
-            return false;
-        }
-        Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
-        TopoDS_Shape shape = ts.getSubShape("Edge1");
-        if (shape.IsNull())
-        {
-            return false;
-        }
-        if(shape.ShapeType() != TopAbs_EDGE) {  //Check Shape type and assign edge
-            return false;
-        }
-        TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
-        TopLoc_Location heloc; // this will be output
-        Standard_Real u0;// contains output
-        Standard_Real u1;// contains output
-        Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
-        Handle_Geom_BSplineCurve b_geom = Handle_Geom_BSplineCurve::DownCast(c_geom); //Try to get BSpline curve
-        if (b_geom.IsNull()) {
-            return false;
-        }
+        createBezier();
+        willBezier = false;
     }
-    return true;
+    if(willBSpline)
+    {
+        createBSpline();
+        willBSpline = false;
+    }
 }
-
 
 void CreateSurfaceCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 /*    rcCmdMgr.addCommand(new CmdSurfaceFilling());
     rcCmdMgr.addCommand(new CmdSurfaceCut());*/
-    rcCmdMgr.addCommand(new CmdSurfaceBezier());
-    rcCmdMgr.addCommand(new CmdSurfaceBSpline());
+    rcCmdMgr.addCommand(new CmdSurfaceBSurf());
 }

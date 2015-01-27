@@ -107,9 +107,6 @@ void BSurf::setEditedObject(Surface::BSurf* obj)
         oldFillType = ft;
         ui->fillType_curved->setChecked(true);
         break;
-    /*default:
-        printf("BSurf::setEditedObject: illegal fill type: %d\n", editedObject->filltype.getValue());
-        Standard_Failure::Raise("BSurf::setEditedObject: illegal fill type.");*/
     }
     fillType = oldFillType;
 }
