@@ -53,8 +53,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* surface = new Gui::MenuItem;
     root->insertItem( item, surface );
     surface->setCommand("Surface");
-    *surface << "Surface_Bezier";
-    *surface << "Surface_BSpline";
+    *surface << "Surface_BSurf";
 /*    *surface << "Surface_Filling";
     *surface << "Surface_Cut";*/
 
@@ -67,8 +66,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* surface = new Gui::ToolBarItem(root);
     surface->setCommand( "Surface" );
-    *surface << "Surface_Bezier";
-    *surface << "Surface_BSpline";
+    *surface << "Surface_BSurf";
 /*    *surface << "Surface_Filling";
     *surface << "Surface_Cut"; */
 
