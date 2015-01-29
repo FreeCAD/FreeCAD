@@ -141,3 +141,12 @@ void BSurf::createFace(const Handle_Geom_BoundedSurface &aSurface)
     if (aFace.IsNull()) { Standard_Failure::Raise("Resulting Face is null"); }
     this->Shape.setValue(aFace);
 }
+
+void BSurf::correcteInvalidFillType()
+{
+    int ftype = filltype.getValue();
+    if(ftype == InvalidStyle)
+    {
+        filltype.setValue(StretchStyle);
+    }
+}
