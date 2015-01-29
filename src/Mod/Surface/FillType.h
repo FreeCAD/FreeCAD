@@ -3,7 +3,7 @@
 
 enum filltype_t
 {
-    StretchStyle = 1, CoonsStyle, CurvedStyle
+    InvalidStyle = 0, StretchStyle, CoonsStyle, CurvedStyle
 };
 
 #endif // SURAFCE_FILLTYPE_H

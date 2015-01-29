@@ -253,7 +253,8 @@ void CmdSurfaceBSurf::createBezier()
 
     openCommand("Create Bezier surface");
     doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")", FeatName.c_str());
-    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=1"); // TODO ask filltype from user and check it
+    // invalid fill type meaning the surface is just created and cancel should delete it
+    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=0");
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
     doCommand(Doc, bezListCmd.str().c_str());
     updateActive();
@@ -273,7 +274,8 @@ void CmdSurfaceBSurf::createBSpline()
 
     openCommand("Create BSpline surface");
     doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")", FeatName.c_str());
-    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=1");
+    // invalid fill type meaning the surface is just created and cancel should delete it
+    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=0");
     doCommand(Doc, bspListCmd.str().c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
     updateActive();
