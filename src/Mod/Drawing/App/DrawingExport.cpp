@@ -157,7 +157,7 @@ TopoDS_Edge DrawingOutput::asCircle(const BRepAdaptor_Curve& c) const
 TopoDS_Edge DrawingOutput::asBSpline(const BRepAdaptor_Curve& c, int maxDegree) const
 {
     Standard_Real tol3D = 0.001;
-    Standard_Integer maxSegment = 10;
+    Standard_Integer maxSegment = 50;
     Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
     // approximate the curve using a tolerance
     Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
@@ -355,7 +355,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         Handle_Geom_BSplineCurve spline = c.BSpline();
         if (spline->Degree() > 3 || spline->IsRational()) {
             Standard_Real tol3D = 0.001;
-            Standard_Integer maxDegree = 3, maxSegment = 10;
+            Standard_Integer maxDegree = 3, maxSegment = 50;
             Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
             // approximate the curve using a tolerance
             Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
@@ -628,7 +628,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         Handle_Geom_BSplineCurve spline = c.BSpline();
         if (spline->Degree() > 3 || spline->IsRational()) {
             Standard_Real tol3D = 0.001;
-            Standard_Integer maxDegree = 3, maxSegment = 10;
+            Standard_Integer maxDegree = 3, maxSegment = 50;
             Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
             // approximate the curve using a tolerance
             Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
