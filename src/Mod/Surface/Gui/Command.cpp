@@ -161,8 +161,7 @@ protected:
     bool willBezier;
     bool willBSpline;
     virtual bool isActive(void);
-    void createBezier(void);
-    void createBSpline(void);
+    void createSurface(const char *surfaceNamePrefix, const char *commandName, const char *pythonAddCommand);
     virtual void activated(int iMsg);
 };
 
@@ -239,41 +238,25 @@ bool CmdSurfaceBSurf::isActive(void)
     return true;
 }
 
-void CmdSurfaceBSurf::createBezier()
+void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *commandName, const char *pythonAddCommand)
 {
     // we take the whole selection and require that all of its members are of the required curve
-    std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
-    std::string FeatName = getUniqueObjectName("BezierSurface");
-    std::stringstream bezListCmd;
-    bezListCmd << "FreeCAD.ActiveDocument.ActiveObject.aBList = [";
-    for (std::vector<Gui::SelectionObject>::iterator it = Selo.begin(); it != Selo.end(); ++it) {
-        bezListCmd << "(App.activeDocument()." << it->getFeatName() << ", \'Edge1\'),";
+    std::vector<Gui::SelectionObject> sel = getSelection().getSelectionEx(0);
+    if (sel.size() == 2) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Warning"),
+            QObject::tr("Surfaces with two edges may fail for some fill types."));
     }
-    bezListCmd << "]";
 
-    openCommand("Create Bezier surface");
-    doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")", FeatName.c_str());
-    // invalid fill type meaning the surface is just created and cancel should delete it
-    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=0");
-    doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
-    doCommand(Doc, bezListCmd.str().c_str());
-    updateActive();
-}
-
-void CmdSurfaceBSurf::createBSpline()
-{
-    // we take the whole selection and require that all of its members are of the required curve
-    std::vector<Gui::SelectionObject> Selo = getSelection().getSelectionEx(0);
-    std::string FeatName = getUniqueObjectName("BSplineSurface");
+    std::string FeatName = getUniqueObjectName(surfaceNamePrefix);
     std::stringstream bspListCmd;
     bspListCmd << "FreeCAD.ActiveDocument.ActiveObject.aBList = [";
-    for (std::vector<Gui::SelectionObject>::iterator it = Selo.begin(); it != Selo.end(); ++it) {
+    for (std::vector<Gui::SelectionObject>::iterator it = sel.begin(); it != sel.end(); ++it) {
         bspListCmd << "(App.activeDocument()." << it->getFeatName() << ", \'Edge1\'),";
     }
     bspListCmd << "]";
 
-    openCommand("Create BSpline surface");
-    doCommand(Doc,"FreeCAD.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")", FeatName.c_str());
+    openCommand(commandName);
+    doCommand(Doc, pythonAddCommand, FeatName.c_str());
     // invalid fill type meaning the surface is just created and cancel should delete it
     doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=0");
     doCommand(Doc, bspListCmd.str().c_str());
@@ -286,12 +269,12 @@ void CmdSurfaceBSurf::activated(int iMsg)
     // check wich was activated and perfom it clearing the flag
     if(willBezier)
     {
-        createBezier();
+        createSurface("BezierSurface", "Create Bezier surface", "FreeCAD.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")");
         willBezier = false;
     }
     if(willBSpline)
     {
-        createBSpline();
+        createSurface("BSplineSurface", "Create BSpline surface", "FreeCAD.ActiveDocument.addObject(\"Surface::BSplineSurf\",\"%s\")");
         willBSpline = false;
     }
 }
