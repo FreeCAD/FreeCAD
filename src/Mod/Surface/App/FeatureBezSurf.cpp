@@ -57,6 +57,7 @@ BezSurf::BezSurf() : BSurf()
 
 App::DocumentObjectExecReturn *BezSurf::execute(void)
 {
+    correcteInvalidFillType();
     //Begin Construction
     try{
         Handle_Geom_BezierCurve crvs[4];

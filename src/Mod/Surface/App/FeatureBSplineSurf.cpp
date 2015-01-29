@@ -57,6 +57,7 @@ BSplineSurf::BSplineSurf() : BSurf()
 
 App::DocumentObjectExecReturn *BSplineSurf::execute(void)
 {
+    correcteInvalidFillType();
     //Begin Construction
     try{
         Handle_Geom_BSplineCurve crvs[4];

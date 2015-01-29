@@ -40,6 +40,7 @@ namespace Surface
 class BSurf : public Part::Feature
 {
   PROPERTY_HEADER(Surface::BSurf);
+
 public:
     BSurf();
     App::PropertyLinkSubList aBList; //curves to be turned into a face (2-4 curves allowed).
@@ -56,6 +57,9 @@ protected:
     GeomFill_FillingStyle getFillingStyle();
     void getWire(TopoDS_Wire& aWire);
     void createFace(const Handle_Geom_BoundedSurface &aSurface);
+
+    // corrects the initially invalid fill type
+    void correcteInvalidFillType();
 };
 
 }

@@ -92,19 +92,16 @@ BSurf::~BSurf()
 void BSurf::setEditedObject(Surface::BSurf* obj)
 {
     editedObject = obj;
-    filltype_t ft = (filltype_t)(editedObject->filltype.getValue());
-    switch(ft)
+    oldFillType = (filltype_t)(editedObject->filltype.getValue());
+    switch(oldFillType)
     {
     case StretchStyle:
-        oldFillType = ft;
         ui->fillType_stretch->setChecked(true);
         break;
     case CoonsStyle:
-        oldFillType = ft;
         ui->fillType_coons->setChecked(true);
         break;
     case CurvedStyle:
-        oldFillType = ft;
         ui->fillType_curved->setChecked(true);
         break;
     }
@@ -143,13 +140,20 @@ void BSurf::accept()
 
 void BSurf::reject()
 {
-    // if the object fill type was changed, reset the old one
-    if(editedObject->filltype.getValue() != oldFillType)
+    if(oldFillType == InvalidStyle)
     {
-        editedObject->filltype.setValue(oldFillType);
+        Gui::Command::abortCommand();
     }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    else
+    {
+        // if the object fill type was changed, reset the old one
+        if(editedObject->filltype.getValue() != oldFillType)
+        {
+            editedObject->filltype.setValue(oldFillType);
+        }
+        Gui::Command::commitCommand();
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    }
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
 }
 
