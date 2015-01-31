@@ -613,7 +613,7 @@ PyObject* Application::sAddWorkbenchHandler(PyObject * /*self*/, PyObject *args,
         // Search for some methods and members without invoking them
         Py::Callable(object.getAttr(std::string("Initialize")));
         Py::Callable(object.getAttr(std::string("GetClassName")));
-        item = name.as_std_string();
+        item = name.as_std_string("ascii");
 
         PyObject* wb = PyDict_GetItemString(Instance->_pcWorkbenchDictionary,item.c_str()); 
         if (wb) {

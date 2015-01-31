@@ -97,7 +97,7 @@ void CompleteGuiExport initCompleteGui()
             Py::Callable method(handler.getAttr(std::string("GetClassName")));
             Py::Tuple args;
             Py::String result(method.apply(args));
-            type = result.as_std_string();
+            type = result.as_std_string("ascii");
             if (type == "Gui::PythonWorkbench") {
                 Gui::Workbench* wb = Gui::WorkbenchManager::instance()->createWorkbench("DraftWorkbench", type);
                 handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
@@ -120,11 +120,11 @@ void CompleteGuiExport initCompleteGui()
         Py::Object o = Py::type(e);
         if (o.isString()) {
             Py::String s(o);
-            Base::Console().Error("%s\n", s.as_std_string().c_str());
+            Base::Console().Error("%s\n", s.as_std_string("utf-8").c_str());
         }
         else {
             Py::String s(o.repr());
-            Base::Console().Error("%s\n", s.as_std_string().c_str());
+            Base::Console().Error("%s\n", s.as_std_string("utf-8").c_str());
         }
         // Prints message to console window if we are in interactive mode
         PyErr_Print();

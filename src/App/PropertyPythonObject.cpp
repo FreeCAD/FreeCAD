@@ -104,7 +104,7 @@ std::string PropertyPythonObject::toString() const
         args.setItem(0, dump);
         Py::Object res = method.apply(args);
         Py::String str(res);
-        repr = str.as_std_string();
+        repr = str.as_std_string("ascii");
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
