@@ -91,10 +91,13 @@ PyObject*  DocumentObjectGroupPy::addObject(PyObject *args)
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (vp.hasAttr(std::string("addObject"))) {
                 Py::Callable method(vp.getAttr(std::string("addObject")));
-                Py::Tuple args(1);
-                args[0] = Py::Object(object);
-                method.apply(args);
-                Py_Return;
+                // check which this method belongs to to avoid an infinite recursion
+                if (method.getAttr(std::string("__self__")) != Py::Object(this)) {
+                    Py::Tuple args(1);
+                    args[0] = Py::Object(object);
+                    method.apply(args);
+                    Py_Return;
+                }
             }
         }
     }
@@ -128,10 +131,13 @@ PyObject*  DocumentObjectGroupPy::removeObject(PyObject *args)
             Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (vp.hasAttr(std::string("removeObject"))) {
                 Py::Callable method(vp.getAttr(std::string("removeObject")));
-                Py::Tuple args(1);
-                args[0] = Py::Object(object);
-                method.apply(args);
-                Py_Return;
+                // check which this method belongs to to avoid an infinite recursion
+                if (method.getAttr(std::string("__self__")) != Py::Object(this)) {
+                    Py::Tuple args(1);
+                    args[0] = Py::Object(object);
+                    method.apply(args);
+                    Py_Return;
+                }
             }
         }
     }
