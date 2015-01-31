@@ -247,10 +247,10 @@ QIcon ViewProviderPythonFeatureImp::getIcon() const
                 Py::Callable method(vp.getAttr(std::string("getIcon")));
                 Py::Tuple args;
                 Py::String str(method.apply(args));
-                std::string content = str.as_std_string();
+                std::string content = str.as_std_string("utf-8");
                 QPixmap icon;
                 // Check if the passed string is a filename, otherwise treat as xpm data
-                QFileInfo fi(QString::fromAscii(content.c_str()));
+                QFileInfo fi(QString::fromUtf8(content.c_str()));
                 if (fi.isFile() && fi.exists()) {
                     icon.load(fi.absoluteFilePath());
                 } else {
@@ -649,9 +649,9 @@ const char* ViewProviderPythonFeatureImp::getDefaultDisplayMode() const
                 Py::Callable method(vp.getAttr(std::string("getDefaultDisplayMode")));
                 Py::Tuple args;
                 Py::String str(method.apply(args));
-                if (str.isUnicode())
-                    str = str.encode("ascii"); // json converts strings into unicode
-                mode = str.as_std_string();
+                //if (str.isUnicode())
+                //    str = str.encode("ascii"); // json converts strings into unicode
+                mode = str.as_std_string("ascii");
                 return mode.c_str();
             }
         }
@@ -680,7 +680,7 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
                     Py::Sequence list(method.apply(args));
                     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                         Py::String str(*it);
-                        modes.push_back(str.as_std_string());
+                        modes.push_back(str.as_std_string("ascii"));
                     }
                 }
                 else {
@@ -690,7 +690,7 @@ std::vector<std::string> ViewProviderPythonFeatureImp::getDisplayModes(void) con
                     Py::Sequence list(method.apply(args));
                     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                         Py::String str(*it);
-                        modes.push_back(str.as_std_string());
+                        modes.push_back(str.as_std_string("ascii"));
                     }
                 }
             }
@@ -717,7 +717,7 @@ std::string ViewProviderPythonFeatureImp::setDisplayMode(const char* ModeName)
                 Py::Tuple args(1);
                 args.setItem(0, Py::String(ModeName));
                 Py::String str(method.apply(args));
-                return str.as_std_string();
+                return str.as_std_string("ascii");
             }
         }
     }

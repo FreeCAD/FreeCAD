@@ -71,11 +71,11 @@ void StartGuiExport initStartGui()
         Py::Object o = Py::type(e);
         if (o.isString()) {
             Py::String s(o);
-            Base::Console().Error("%s\n", s.as_std_string().c_str());
+            Base::Console().Error("%s\n", s.as_std_string("utf-8").c_str());
         }
         else {
             Py::String s(o.repr());
-            Base::Console().Error("%s\n", s.as_std_string().c_str());
+            Base::Console().Error("%s\n", s.as_std_string("utf-8").c_str());
         }
         // Prints message to console window if we are in interactive mode
         PyErr_Print();

@@ -160,7 +160,7 @@ Py::String WaypointPy::getName(void) const
 
 void WaypointPy::setName(Py::String arg)
 {
-    getWaypointPtr()->Name = arg.as_std_string();
+    getWaypointPtr()->Name = arg.as_std_string("ascii");
 }
 
 Py::String WaypointPy::getType(void) const
@@ -181,7 +181,7 @@ Py::String WaypointPy::getType(void) const
 
 void WaypointPy::setType(Py::String arg)
 {
-    std::string typeStr(arg.as_std_string());
+    std::string typeStr(arg.as_std_string("ascii"));
     if(typeStr=="PTP")
         getWaypointPtr()->Type = Waypoint::PTP;
     else if(typeStr=="LIN")

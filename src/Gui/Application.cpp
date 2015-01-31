@@ -998,7 +998,7 @@ bool Application::activateWorkbench(const char* name)
             Py::Callable method(handler.getAttr(std::string("GetClassName")));
             Py::Tuple args;
             Py::String result(method.apply(args));
-            type = result.as_std_string();
+            type = result.as_std_string("ascii");
             if (Base::Type::fromName(type.c_str()).isDerivedFrom(Gui::PythonBaseWorkbench::getClassTypeId())) {
                 Workbench* wb = WorkbenchManager::instance()->createWorkbench(name, type);
                 handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
@@ -1012,7 +1012,7 @@ bool Application::activateWorkbench(const char* name)
             // can be defined after the call of Initialize()
             if (type.empty()) {
                 Py::String result(method.apply(args));
-                type = result.as_std_string();
+                type = result.as_std_string("ascii");
             }
         }
 
@@ -1111,7 +1111,7 @@ QPixmap Application::workbenchIcon(const QString& wb) const
             if (handler.hasAttr(std::string("Icon"))) {
                 Py::Object member = handler.getAttr(std::string("Icon"));
                 Py::String data(member);
-                std::string content = data.as_std_string();
+                std::string content = data.as_std_string("utf-8");
 
                 // test if in XPM format
                 QByteArray ary;
@@ -1178,7 +1178,7 @@ QString Application::workbenchToolTip(const QString& wb) const
             Py::Object member = handler.getAttr(std::string("ToolTip"));
             if (member.isString()) {
                 Py::String tip(member);
-                return QString::fromUtf8(tip.as_std_string().c_str());
+                return QString::fromUtf8(tip.as_std_string("utf-8").c_str());
             }
         }
         catch (Py::Exception& e) {
@@ -1203,7 +1203,7 @@ QString Application::workbenchMenuText(const QString& wb) const
             Py::Object member = handler.getAttr(std::string("MenuText"));
             if (member.isString()) {
                 Py::String tip(member);
-                return QString::fromUtf8(tip.as_std_string().c_str());
+                return QString::fromUtf8(tip.as_std_string("utf-8").c_str());
             }
         }
         catch (Py::Exception& e) {
@@ -1288,7 +1288,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
                 e.clear();
                 if (o.isString()) {
                     Py::String s(o);
-                    std::clog << "Application::setupContextMenu: " << s.as_std_string() << std::endl;
+                    std::clog << "Application::setupContextMenu: " << s.as_std_string("utf-8") << std::endl;
                 }
             }
         }

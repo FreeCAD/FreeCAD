@@ -1711,11 +1711,11 @@ void View3DInventorPy::eventCallback(void * ud, SoEventCallback * n)
         Py::Object o = Py::type(e);
         if (o.isString()) {
             Py::String s(o);
-            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
         }
         else {
             Py::String s(o.repr());
-            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
         }
         // Prints message to console window if we are in interactive mode
         PyErr_Print();
@@ -1866,11 +1866,11 @@ void View3DInventorPy::eventCallbackPivy(void * ud, SoEventCallback * n)
         Py::Object o = Py::type(e);
         if (o.isString()) {
             Py::String s(o);
-            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
         }
         else {
             Py::String s(o.repr());
-            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
         }
         // Prints message to console window if we are in interactive mode
         PyErr_Print();
@@ -1899,11 +1899,11 @@ void View3DInventorPy::eventCallbackPivyEx(void * ud, SoEventCallback * n)
         Py::Object o = Py::type(e);
         if (o.isString()) {
             Py::String s(o);
-            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
         }
         else {
             Py::String s(o.repr());
-            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
         }
         // Prints message to console window if we are in interactive mode
         PyErr_Print();
@@ -2031,11 +2031,11 @@ void View3DInventorPy::draggerCallback(void * ud, SoDragger* n)
         Py::Object o = Py::type(e);
         if (o.isString()) {
             Py::String s(o);
-            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
         }
         else {
             Py::String s(o.repr());
-            Base::Console().Warning("%s\n", s.as_std_string().c_str());
+            Base::Console().Warning("%s\n", s.as_std_string("utf-8").c_str());
         }
         // Prints message to console window if we are in interactive mode
         PyErr_Print();
