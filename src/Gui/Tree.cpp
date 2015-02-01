@@ -826,21 +826,30 @@ DocumentItem::DocumentItem(const Gui::Document* doc, QTreeWidgetItem * parent)
     : QTreeWidgetItem(parent, TreeWidget::DocumentType), pDocument(doc)
 {
     // Setup connections
-    doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
-    doc->signalDeletedObject.connect(boost::bind(&DocumentItem::slotDeleteObject, this, _1));
-    doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1));
-    doc->signalRenamedObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
-    doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
-    doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
-    doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
-    doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
-    doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
+    connectNewObject = doc->signalNewObject.connect(boost::bind(&DocumentItem::slotNewObject, this, _1));
+    connectDelObject = doc->signalDeletedObject.connect(boost::bind(&DocumentItem::slotDeleteObject, this, _1));
+    connectChgObject = doc->signalChangedObject.connect(boost::bind(&DocumentItem::slotChangeObject, this, _1));
+    connectRenObject = doc->signalRenamedObject.connect(boost::bind(&DocumentItem::slotRenameObject, this, _1));
+    connectActObject = doc->signalActivatedObject.connect(boost::bind(&DocumentItem::slotActiveObject, this, _1));
+    connectEdtObject = doc->signalInEdit.connect(boost::bind(&DocumentItem::slotInEdit, this, _1));
+    connectResObject = doc->signalResetEdit.connect(boost::bind(&DocumentItem::slotResetEdit, this, _1));
+    connectHltObject = doc->signalHighlightObject.connect(boost::bind(&DocumentItem::slotHighlightObject, this, _1,_2,_3));
+    connectExpObject = doc->signalExpandObject.connect(boost::bind(&DocumentItem::slotExpandObject, this, _1,_2));
 
     setFlags(Qt::ItemIsEnabled/*|Qt::ItemIsEditable*/);
 }
 
 DocumentItem::~DocumentItem()
 {
+    connectNewObject.disconnect();
+    connectDelObject.disconnect();
+    connectChgObject.disconnect();
+    connectRenObject.disconnect();
+    connectActObject.disconnect();
+    connectEdtObject.disconnect();
+    connectResObject.disconnect();
+    connectHltObject.disconnect();
+    connectExpObject.disconnect();
 }
 
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)

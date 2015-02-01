@@ -171,6 +171,17 @@ protected:
 private:
     const Gui::Document* pDocument;
     std::map<std::string,DocumentObjectItem*> ObjectMap;
+
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection connectNewObject;
+    Connection connectDelObject;
+    Connection connectChgObject;
+    Connection connectRenObject;
+    Connection connectActObject;
+    Connection connectEdtObject;
+    Connection connectResObject;
+    Connection connectHltObject;
+    Connection connectExpObject;
 };
 
 /** The link between the tree and a document object.
