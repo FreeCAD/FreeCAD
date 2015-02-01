@@ -189,9 +189,6 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
 {
     QFileInfo fi(filename);
     if (fi.exists()) {
-        // There is a crash when using the Webkit engine in debug mode
-        // for a couple of SVG files. Thus, use the qsvg plugin.
-#if QT_VERSION < 0x040800 || !defined(_DEBUG)
         // first check if it's an SVG because Qt's qsvg4 module shouldn't be used therefore
         if (fi.suffix().toLower() == QLatin1String("svg")) {
             QFile svgFile(filename);
@@ -204,9 +201,6 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
             // try with Qt plugins
             icon.load(filename);
         }
-#else
-        icon.load(filename);
-#endif
     }
 
     return !icon.isNull();
@@ -309,6 +303,9 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) co
 QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize& size) const
 {
 #ifdef QTWEBKIT
+    // There is a crash when using the Webkit engine in debug mode
+    // for a couple of SVG files. Thus, use the qsvg plugin.
+#if QT_VERSION < 0x040800 || !defined(_DEBUG)
     QWebView webView;
     QPalette pal = webView.palette();
     pal.setColor(QPalette::Background, Qt::transparent);
@@ -331,13 +328,11 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
     double hh = frame->evaluateJavaScript(h).toDouble();
     if (ww == 0.0 || hh == 0.0)
         return QPixmap();
-#endif
 
     QImage image(size, QImage::Format_ARGB32_Premultiplied);
     image.fill(0x00000000);
 
     QPainter p(&image);
-#ifdef QTWEBKIT
     qreal xs = size.isValid() ? size.width() / ww : 1.0;
     qreal ys = size.isValid() ? size.height() / hh : 1.0;
     p.scale(xs, ys);
@@ -348,16 +343,59 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const QByteArray& contents, const QSize
     p.setRenderHint(QPainter::SmoothPixmapTransform);
     p.setOpacity(0); // important to keep transparent background
     frame->render(&p);
-#else
+    p.end();
+
+    return QPixmap::fromImage(image);
+#else // QT_VERSION
+    QWebPage webPage;
+    QPalette pal = webPage.palette();
+    pal.setColor(QPalette::Background, Qt::transparent);
+    webPage.setPalette(pal);
+    QWebFrame* frame = webPage.mainFrame();
+    if (!frame) {
+        return QPixmap();
+    }
+    frame->setContent(contents, QString::fromAscii("image/svg+xml"));
+    qApp->processEvents();
+    webPage.setViewportSize(webPage.mainFrame()->contentsSize());
+
+    double ww = webPage.viewportSize().width();
+    double hh = webPage.viewportSize().height();
+    if (ww == 0.0 || hh == 0.0)
+        return QPixmap();
+
+    QImage image(size, QImage::Format_ARGB32_Premultiplied);
+    image.fill(0x00000000);
+
+    QPainter p(&image);
+    qreal xs = size.isValid() ? size.width() / ww : 1.0;
+    qreal ys = size.isValid() ? size.height() / hh : 1.0;
+    p.scale(xs, ys);
+
+    // the best quality
+    p.setRenderHint(QPainter::Antialiasing);
+    p.setRenderHint(QPainter::TextAntialiasing);
+    p.setRenderHint(QPainter::SmoothPixmapTransform);
+    p.setOpacity(0); // important to keep transparent background
+    frame->render(&p);
+    p.end();
+
+    return QPixmap::fromImage(image);
+#endif // QT_VERSION
+#else //QTWEBKIT
+    QImage image(size, QImage::Format_ARGB32_Premultiplied);
+    image.fill(0x00000000);
+
+    QPainter p(&image);
     // tmp. disable the report window to suppress some bothering warnings
     Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, false);
     QSvgRenderer svg(contents);
     Base::Console().SetEnabledMsgType("ReportOutput", ConsoleMsgType::MsgType_Wrn, true);
     svg.render(&p);
-#endif
     p.end();
 
     return QPixmap::fromImage(image);
+#endif
 }
 
 QStringList BitmapFactoryInst::pixmapNames() const
