@@ -334,20 +334,27 @@ bool MeshInput::LoadOBJ (std::istream &rstrIn)
 /** Loads an OFF file. */
 bool MeshInput::LoadOFF (std::istream &rstrIn)
 {
+    // http://edutechwiki.unige.ch/en/3D_file_format
     boost::regex rx_n("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
     boost::regex rx_p("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+    boost::regex rx_c("^\\s*([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                       "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
     boost::regex rx_f3("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
     boost::regex rx_f4("^\\s*([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s+([0-9]+)\\s*$");
 
     boost::cmatch what;
 
+    bool colorPerVertex = false;
     MeshPointArray meshPoints;
     MeshFacetArray meshFacets;
 
     std::string line;
     float fX, fY, fZ;
+    int r, g, b, a;
     unsigned int  i1=1,i2=1,i3=1,i4=1;
     MeshGeomFacet clFacet;
     MeshFacet item;
@@ -361,8 +368,13 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
 
     std::getline(rstrIn, line);
     boost::algorithm::to_lower(line);
-    if (line.find("off") == std::string::npos)
+    if (line.find("coff") != std::string::npos) {
+        // we expect colors to be there per vertex: x y z r g b a
+        colorPerVertex = true;
+    }
+    else if (line.find("off") == std::string::npos) {
         return false; // not an OFF file
+    }
 
     // get number of vertices and faces
     int numPoints=0, numFaces=0;
@@ -379,17 +391,44 @@ bool MeshInput::LoadOFF (std::istream &rstrIn)
 
     meshPoints.reserve(numPoints);
     meshFacets.reserve(numFaces);
+    if (_material && colorPerVertex) {
+        _material->binding = MeshIO::PER_VERTEX;
+        _material->diffuseColor.reserve(numPoints);
+    }
 
     int cntPoints = 0;
     while (cntPoints < numPoints) {
         if (!std::getline(rstrIn, line))
             break;
-        if (boost::regex_match(line.c_str(), what, rx_p)) {
-            fX = (float)std::atof(what[1].first);
-            fY = (float)std::atof(what[4].first);
-            fZ = (float)std::atof(what[7].first);
-            meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
-            cntPoints++;
+        if (colorPerVertex) {
+            if (boost::regex_match(line.c_str(), what, rx_c)) {
+                fX = static_cast<float>(std::atof(what[1].first));
+                fY = static_cast<float>(std::atof(what[4].first));
+                fZ = static_cast<float>(std::atof(what[7].first));
+                r = std::min<int>(std::atof(what[10].first),255);
+                g = std::min<int>(std::atof(what[11].first),255);
+                b = std::min<int>(std::atof(what[12].first),255);
+                a = std::min<int>(std::atof(what[13].first),255);
+                // add to the material
+                if (_material) {
+                    float fr = static_cast<float>(r)/255.0f;
+                    float fg = static_cast<float>(g)/255.0f;
+                    float fb = static_cast<float>(b)/255.0f;
+                    float fa = static_cast<float>(a)/255.0f;
+                    _material->diffuseColor.push_back(App::Color(fr, fg, fb, fa));
+                }
+                meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+                cntPoints++;
+            }
+        }
+        else {
+            if (boost::regex_match(line.c_str(), what, rx_p)) {
+                fX = static_cast<float>(std::atof(what[1].first));
+                fY = static_cast<float>(std::atof(what[4].first));
+                fZ = static_cast<float>(std::atof(what[7].first));
+                meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
+                cntPoints++;
+            }
         }
     }
 
@@ -1537,25 +1576,68 @@ bool MeshOutput::SaveOFF (std::ostream &out) const
     if (!out || out.bad() == true)
         return false;
 
-    Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());  
+    Base::SequencerLauncher seq("saving...", _rclMesh.CountPoints() + _rclMesh.CountFacets());
 
-    out << "OFF" << std::endl;
+    bool exportColor = false;
+    if (_material) {
+        if (_material->binding == MeshIO::PER_FACE) {
+            Base::Console().Warning("Cannot export color information because it's defined per face");
+        }
+        else if (_material->binding == MeshIO::PER_VERTEX) {
+            if (_material->diffuseColor.size() != rPoints.size()) {
+                Base::Console().Warning("Cannot export color information because there is a different number of points and colors");
+            }
+            else {
+                exportColor = true;
+            }
+        }
+        else if (_material->binding == MeshIO::OVERALL) {
+            if (_material->diffuseColor.empty()) {
+                Base::Console().Warning("Cannot export color information because there is no color defined");
+            }
+            else {
+                exportColor = true;
+            }
+        }
+    }
+
+    if (exportColor)
+        out << "COFF" << std::endl;
+    else
+        out << "OFF" << std::endl;
     out << rPoints.size() << " " << rFacets.size() << " 0" << std::endl;
 
     // vertices
-    if (this->apply_transform) {
-        Base::Vector3f pt;
-        for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
+    Base::Vector3f pt;
+    std::size_t index = 0;
+    for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it, ++index) {
+        if (this->apply_transform) {
             pt = this->_transform * *it;
+        }
+        else {
+            pt.Set(it->x, it->y, it->z);
+        }
+
+        if (exportColor) {
+            App::Color c;
+            if (_material->binding == MeshIO::PER_VERTEX) {
+                c = _material->diffuseColor[index];
+            }
+            else {
+                c = _material->diffuseColor.front();
+            }
+
+            int r = static_cast<int>(c.r * 255.0f);
+            int g = static_cast<int>(c.g * 255.0f);
+            int b = static_cast<int>(c.b * 255.0f);
+            int a = static_cast<int>(c.a * 255.0f);
+
+            out << pt.x << " " << pt.y << " " << pt.z << " " << r << " " << g << " " << b << " " << a << std::endl;
+        }
+        else {
             out << pt.x << " " << pt.y << " " << pt.z << std::endl;
-            seq.next(true); // allow to cancel
         }
-    }
-    else {
-        for (MeshPointArray::_TConstIterator it = rPoints.begin(); it != rPoints.end(); ++it) {
-            out << it->x << " " << it->y << " " << it->z << std::endl;
-            seq.next(true); // allow to cancel
-        }
+        seq.next(true); // allow to cancel
     }
 
     // facet indices (no texture and normal indices)
