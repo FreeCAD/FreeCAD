@@ -242,6 +242,8 @@ public:
     static const std::string strToPython(const std::string &Str){return strToPython(Str.c_str());}
     //@}
 
+    PyObject *getValue(const char *key, const char *result_var);
+
 protected:
     // singleton
     static InterpreterSingleton *_pcSingelton;
