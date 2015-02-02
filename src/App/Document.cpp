@@ -211,6 +211,22 @@ void Document::exportGraphviz(std::ostream& out)
         VertexObjectList[It->second] = add_vertex(DepList);
         names.push_back(It->second->Label.getValue());
     }
+
+    // Add external document objects
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        std::vector<DocumentObject*> OutList = It->second->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+            if (*It2) {
+                std::map<DocumentObject*,Vertex>::const_iterator item = VertexObjectList.find(*It2);
+
+                if (item == VertexObjectList.end()) {
+                    VertexObjectList[*It2] = add_vertex(DepList);
+                    names.push_back(std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue());
+                }
+            }
+        }
+    }
+
     // add the edges
     for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
         std::vector<DocumentObject*> OutList = It->second->getOutList();
@@ -1251,6 +1267,22 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         Vertex v = add_vertex(DepList);
         ObjectMap[*it] = v;
         VertexMap[v] = *it;
+    }  
+
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
+        std::vector<DocumentObject*> outList = (*it)->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator jt = outList.begin(); jt != outList.end();++jt) {
+            if (*jt) {
+                std::map<DocumentObject*,Vertex>::const_iterator i = ObjectMap.find(*jt);
+
+                if (i == ObjectMap.end()) {
+                    Vertex v = add_vertex(DepList);
+
+                    ObjectMap[*jt] = v;
+                    VertexMap[v] = *jt;
+                }
+            }
+        }
     }
 
     // add the edges
@@ -1300,6 +1332,20 @@ void Document::_rebuildDependencyList(void)
         // add the object as Vertex and remember the index
         d->VertexObjectList[It->second] = add_vertex(d->DepList);
     }
+
+    // add the edges
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        std::vector<DocumentObject*> OutList = It->second->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+            if (*It2) {
+                std::map<DocumentObject*,Vertex>::iterator i = d->VertexObjectList.find(*It2);
+
+                if (i == d->VertexObjectList.end())
+                    d->VertexObjectList[*It2] = add_vertex(d->DepList);
+            }
+        }
+    }
+
     // add the edges
     for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
         std::vector<DocumentObject*> OutList = It->second->getOutList();
