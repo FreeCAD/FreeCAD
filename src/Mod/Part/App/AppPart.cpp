@@ -156,6 +156,16 @@ void PartExport initPart()
     PyModule_AddObject(partModule, "OCCDimensionError",
             PartExceptionOCCDimensionError);
 
+    //rename the types properly to pickle and unpickle them
+    Part::TopoShapePy         ::Type.tp_name = "Part.Shape";
+    Part::TopoShapeVertexPy   ::Type.tp_name = "Part.Vertex";
+    Part::TopoShapeWirePy     ::Type.tp_name = "Part.Wire";
+    Part::TopoShapeEdgePy     ::Type.tp_name = "Part.Edge";
+    Part::TopoShapeSolidPy    ::Type.tp_name = "Part.Solid";
+    Part::TopoShapeFacePy     ::Type.tp_name = "Part.Face";
+    Part::TopoShapeCompoundPy ::Type.tp_name = "Part.Compound";
+    Part::TopoShapeCompSolidPy::Type.tp_name = "Part.CompSolid";
+    Part::TopoShapeShellPy    ::Type.tp_name = "Part.Shell";
     // Add Types to module
     Base::Interpreter().addType(&Part::TopoShapePy          ::Type,partModule,"Shape");
     Base::Interpreter().addType(&Part::TopoShapeVertexPy    ::Type,partModule,"Vertex");

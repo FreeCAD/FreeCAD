@@ -18,6 +18,16 @@ Sub-elements such as vertices, edges or faces are accessible as:
 * Edge#, where # is in range(1, number of edges)
 * Face#, where # is in range(1, number of faces)</UserDocu>
     </Documentation>
+    <Methode Name="__getstate__" Const="true">
+      <Documentation>
+        <UserDocu>Serialize the content of this shape to a string in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="__setstate__">
+      <Documentation>
+        <UserDocu>Deserialize the content of this shape from a string in BREP format.</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="read">
       <Documentation>
         <UserDocu>Read in an IGES, STEP or BREP file.</UserDocu>
