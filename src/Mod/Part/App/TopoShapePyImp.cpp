@@ -455,6 +455,21 @@ PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
     Py_Return;
 }
 
+PyObject*  TopoShapePy::__getstate__(PyObject *args) {
+    return exportBrepToString(args);
+}
+
+
+PyObject*  TopoShapePy::__setstate__(PyObject *args) {
+    if (! getTopoShapePtr()) {
+        PyErr_SetString(Base::BaseExceptionFreeCADError,"no c++ object");
+        return 0;
+    }
+    else {
+        return importBrepFromString(args);
+    }
+}
+
 PyObject*  TopoShapePy::exportStl(PyObject *args)
 {
     double deflection = 0;
