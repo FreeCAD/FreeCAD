@@ -45,6 +45,7 @@ namespace SurfaceGui
     public:
         virtual bool setEdit(int ModNum);
         virtual void unsetEdit(int ModNum);
+        QIcon getIcon(void) const;
     };
 
     class BSurf : public QWidget
