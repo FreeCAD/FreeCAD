@@ -48,8 +48,8 @@ const char* BSurf::FillTypeEnums[]    = {"Invalid", "Sretched", "Coons", "Curved
 
 BSurf::BSurf(): Feature()
 {
-    ADD_PROPERTY_TYPE(FillType, ((long)0), "Surface", App::Prop_None, "Boundary of the surface");
-    ADD_PROPERTY_TYPE(BoundaryList, (0,"Dummy"), "Surface", App::Prop_None, "Boundary of the surface");
+    ADD_PROPERTY_TYPE(FillType, ((long)0), "Surface", App::Prop_Hidden, "Boundary of the surface");
+    ADD_PROPERTY_TYPE(BoundaryList, (0,"Dummy"), "Surface", App::Prop_Hidden, "Boundary of the surface");
     FillType.setEnums(FillTypeEnums);
 }
 
