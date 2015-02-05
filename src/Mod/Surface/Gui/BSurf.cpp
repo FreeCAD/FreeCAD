@@ -97,7 +97,7 @@ BSurf::~BSurf()
 void BSurf::setEditedObject(Surface::BSurf* obj)
 {
     editedObject = obj;
-    oldFillType = (filltype_t)(editedObject->filltype.getValue());
+    oldFillType = (filltype_t)(editedObject->FillType.getValue());
     switch(oldFillType)
     {
     case StretchStyle:
@@ -152,9 +152,9 @@ void BSurf::reject()
     else
     {
         // if the object fill type was changed, reset the old one
-        if(editedObject->filltype.getValue() != oldFillType)
+        if(editedObject->FillType.getValue() != oldFillType)
         {
-            editedObject->filltype.setValue(oldFillType);
+            editedObject->FillType.setValue(oldFillType);
         }
         Gui::Command::commitCommand();
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
@@ -165,9 +165,9 @@ void BSurf::reject()
 void BSurf::apply()
 {
     // apply the change only if it is a real change
-    if(editedObject->filltype.getValue() != fillType)
+    if(editedObject->FillType.getValue() != fillType)
     {
-        editedObject->filltype.setValue(fillType);
+        editedObject->FillType.setValue(fillType);
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     }
 }
