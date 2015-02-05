@@ -71,6 +71,11 @@ void ViewProviderBSurf::unsetEdit(int ModNum)
     // nothing to do
 }
 
+QIcon ViewProviderBSurf::getIcon(void) const
+{
+    return Gui::BitmapFactory().pixmap("BSplineSurf");
+}
+
 BSurf::BSurf(ViewProviderBSurf* vp, Surface::BSurf* obj)
 {
     ui = new Ui_DlgBSurf();
