@@ -43,8 +43,8 @@ class BSurf : public Part::Feature
 
 public:
     BSurf();
-    App::PropertyLinkSubList aBList; //curves to be turned into a face (2-4 curves allowed).
-    App::PropertyInteger filltype;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
+    App::PropertyLinkSubList BoundaryList; //curves to be turned into a face (2-4 curves allowed).
+    App::PropertyInteger FillType;      //Fill method (1, 2, or 3 for Stretch, Coons, and Curved)
 
     short mustExecute() const;
 

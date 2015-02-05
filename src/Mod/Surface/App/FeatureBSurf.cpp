@@ -46,16 +46,16 @@ PROPERTY_SOURCE(Surface::BSurf, Part::Feature)
 
 BSurf::BSurf(): Feature()
 {
-  ADD_PROPERTY(filltype,(1));
-  ADD_PROPERTY(aBList,(0,"Dummy"));
+  ADD_PROPERTY(FillType,(1));
+  ADD_PROPERTY(BoundaryList,(0,"Dummy"));
 }
 
 
 //Check if any components of the surface have been modified
 short BSurf::mustExecute() const
 {
-    if (aBList.isTouched() ||
-        filltype.isTouched())
+    if (BoundaryList.isTouched() ||
+        FillType.isTouched())
     {
         return 1;
     }
@@ -65,7 +65,7 @@ short BSurf::mustExecute() const
 GeomFill_FillingStyle BSurf::getFillingStyle()
 {
     //Identify filling style
-    int ftype = filltype.getValue();
+    int ftype = FillType.getValue();
     if(ftype==StretchStyle) {return GeomFill_StretchStyle;}
     else if(ftype==CoonsStyle) {return GeomFill_CoonsStyle;}
     else if(ftype==CurvedStyle) {return GeomFill_CurvedStyle;}
@@ -78,16 +78,16 @@ void BSurf::getWire(TopoDS_Wire& aWire)
     Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
 
-    if(aBList.getSize()>4 || aBList.getSize()<2){Standard_Failure::Raise("Only 2-4 curves are allowed");return;}
+    if(BoundaryList.getSize()>4 || BoundaryList.getSize()<2){Standard_Failure::Raise("Only 2-4 curves are allowed");return;}
 
-    for(int i=0; i<aBList.getSize(); i++){
+    for(int i=0; i<BoundaryList.getSize(); i++){
 
         Part::TopoShape ts; //Curve TopoShape
         TopoDS_Shape sub;   //Curve TopoDS_Shape
         TopoDS_Edge etmp;   //Curve TopoDS_Edge
 
         //Get Edge
-        App::PropertyLinkSubList::SubSet set = aBList[i];
+        App::PropertyLinkSubList::SubSet set = BoundaryList[i];
 
         if(set.obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
 
@@ -144,9 +144,9 @@ void BSurf::createFace(const Handle_Geom_BoundedSurface &aSurface)
 
 void BSurf::correcteInvalidFillType()
 {
-    int ftype = filltype.getValue();
+    int ftype = FillType.getValue();
     if(ftype == InvalidStyle)
     {
-        filltype.setValue(StretchStyle);
+        FillType.setValue(StretchStyle);
     }
 }

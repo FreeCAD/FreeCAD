@@ -89,7 +89,7 @@ App::DocumentObjectExecReturn *BezSurf::execute(void)
 
         GeomFill_FillingStyle fstyle = getFillingStyle();
         GeomFill_BezierCurves aSurfBuilder; //Create Surface Builder
-        int ncrv = aBList.getSize();
+        int ncrv = BoundaryList.getSize();
         if(ncrv==2) {aSurfBuilder.Init(crvs[0], crvs[1], fstyle);}
         else if(ncrv==3) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);}
         else if(ncrv==4) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);}
