@@ -44,10 +44,13 @@ using namespace Surface;
 
 PROPERTY_SOURCE(Surface::BSurf, Part::Feature)
 
+const char* BSurf::FillTypeEnums[]    = {"Invalid", "Sretched", "Coons", "Curved", NULL};
+
 BSurf::BSurf(): Feature()
 {
-  ADD_PROPERTY(FillType,(1));
-  ADD_PROPERTY(BoundaryList,(0,"Dummy"));
+    ADD_PROPERTY_TYPE(FillType, ((long)0), "Surface", App::Prop_None, "Boundary of the surface");
+    ADD_PROPERTY_TYPE(BoundaryList, (0,"Dummy"), "Surface", App::Prop_None, "Boundary of the surface");
+    FillType.setEnums(FillTypeEnums);
 }
 
 
@@ -78,10 +81,15 @@ void BSurf::getWire(TopoDS_Wire& aWire)
     Handle(ShapeFix_Wire) aShFW = new ShapeFix_Wire;
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
 
-    if(BoundaryList.getSize()>4 || BoundaryList.getSize()<2){Standard_Failure::Raise("Only 2-4 curves are allowed");return;}
+    int boundaryListSize = BoundaryList.getSize();
+    if(boundaryListSize > 4 || boundaryListSize < 2)
+    {
+        Standard_Failure::Raise("Only 2-4 curves are allowed");
+        return;
+    }
 
-    for(int i=0; i<BoundaryList.getSize(); i++){
-
+    for(int i = 0; i < boundaryListSize; i++)
+    {
         Part::TopoShape ts; //Curve TopoShape
         TopoDS_Shape sub;   //Curve TopoDS_Shape
         TopoDS_Edge etmp;   //Curve TopoDS_Edge

@@ -249,7 +249,7 @@ void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *c
 
     std::string FeatName = getUniqueObjectName(surfaceNamePrefix);
     std::stringstream bspListCmd;
-    bspListCmd << "FreeCAD.ActiveDocument.ActiveObject.aBList = [";
+    bspListCmd << "FreeCAD.ActiveDocument.ActiveObject.BoundaryList = [";
     for (std::vector<Gui::SelectionObject>::iterator it = sel.begin(); it != sel.end(); ++it) {
         bspListCmd << "(App.activeDocument()." << it->getFeatName() << ", \'Edge1\'),";
     }
@@ -258,7 +258,7 @@ void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *c
     openCommand(commandName);
     doCommand(Doc, pythonAddCommand, FeatName.c_str());
     // invalid fill type meaning the surface is just created and cancel should delete it
-    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.filltype=0");
+    doCommand(Doc, "FreeCAD.ActiveDocument.ActiveObject.FillType=0");
     doCommand(Doc, bspListCmd.str().c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
     updateActive();
