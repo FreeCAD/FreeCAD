@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -764,10 +764,14 @@ void TopoShape::dump(std::ostream& out) const
 void TopoShape::exportStl(const char *filename, double deflection) const
 {
     StlAPI_Writer writer;
+#if OCC_VERSION_HEX < 0x060801
     if (deflection > 0) {
         writer.RelativeMode() = false;
         writer.SetDeflection(deflection);
     }
+#else
+    BRepMesh_IncrementalMesh aMesh(this->_Shape, deflection);
+#endif
     writer.Write(this->_Shape,encodeFilename(filename).c_str());
 }
 
@@ -2295,11 +2299,16 @@ void TopoShape::getFaces(std::vector<Base::Vector3d> &aPoints,
     Standard_Real x3, y3, z3;
 
     Handle_StlMesh_Mesh aMesh = new StlMesh_Mesh();
+#if OCC_VERSION_HEX >= 0x060801
+    BRepMesh_IncrementalMesh bMesh(this->_Shape, accuracy);
+    StlTransfer::RetrieveMesh(this->_Shape,aMesh);
+#else
     StlTransfer::BuildIncrementalMesh(this->_Shape, accuracy,
 #if OCC_VERSION_HEX >= 0x060503
         Standard_True,
 #endif
         aMesh);
+#endif
     StlMesh_MeshExplorer xp(aMesh);
     for (Standard_Integer nbd=1;nbd<=aMesh->NbDomains();nbd++) {
         for (xp.InitTriangle (nbd); xp.MoreTriangle (); xp.NextTriangle ()) {
