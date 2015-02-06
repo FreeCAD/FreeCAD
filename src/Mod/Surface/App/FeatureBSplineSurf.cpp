@@ -35,6 +35,8 @@
 #include <Standard_ConstructionError.hxx>
 #include <GeomFill_BSplineCurves.hxx>
 #include <GeomFill.hxx>
+#include <BRepBuilderAPI_NurbsConvert.hxx>
+#include <StdFail_NotDone.hxx>
 #endif
 
 #include <Base/Tools.h>
@@ -70,9 +72,9 @@ App::DocumentObjectExecReturn *BSplineSurf::execute(void)
         TopExp_Explorer anExp (aWire, TopAbs_EDGE);
         int it = 0;
         for (; anExp.More(); anExp.Next()) {
-            const TopoDS_Edge hedge = TopoDS::Edge (anExp.Current());
+            const TopoDS_Edge& edge = TopoDS::Edge (anExp.Current());
             TopLoc_Location heloc; // this will be output
-            Handle_Geom_Curve c_geom = BRep_Tool::Curve(hedge, heloc, u1, u2); //The geometric curve
+            Handle_Geom_Curve c_geom = BRep_Tool::Curve(edge, heloc, u1, u2); //The geometric curve
             Handle_Geom_BSplineCurve b_geom = Handle_Geom_BSplineCurve::DownCast(c_geom); //Try to get BSpline curve
 
             if (!b_geom.IsNull()) {
@@ -82,7 +84,23 @@ App::DocumentObjectExecReturn *BSplineSurf::execute(void)
                 crvs[it] = b_geom;
             }
             else {
-                Standard_Failure::Raise("Curve not a BSpline Curve");
+                // try to convert it into a b-spline
+                BRepBuilderAPI_NurbsConvert mkNurbs(edge);
+                TopoDS_Edge nurbs = TopoDS::Edge(mkNurbs.Shape());
+                // avoid copying
+                TopLoc_Location heloc2; // this will be output
+                Handle_Geom_Curve c_geom2 = BRep_Tool::Curve(nurbs, heloc2, u1, u2); //The geometric curve
+                Handle_Geom_BSplineCurve b_geom2 = Handle_Geom_BSplineCurve::DownCast(c_geom2); //Try to get BSpline curve
+
+                if (!b_geom2.IsNull()) {
+                    gp_Trsf transf = heloc2.Transformation();
+                    b_geom2->Transform(transf); // apply original transformation to control points
+                    //Store Underlying Geometry
+                    crvs[it] = b_geom2;
+                }
+                else {
+                    Standard_Failure::Raise("A curve was not a b-spline and could not be converted into one.");
+                }
             }
             it++;
         }
@@ -102,6 +120,9 @@ App::DocumentObjectExecReturn *BSplineSurf::execute(void)
     catch(Standard_ConstructionError) {
         // message is in a Latin language, show a normal one
         return new App::DocumentObjectExecReturn("Curves are disjoint.");
+    }
+    catch(StdFail_NotDone) {
+        return new App::DocumentObjectExecReturn("A curve was not a b-spline and could not be converted into one.");
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

@@ -190,6 +190,12 @@ bool CmdSurfaceBSurf::isActive(void)
         }
         Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
         try {
+            // make sure the main shape type is edge or wire
+            TopAbs_ShapeEnum shapeType = ts._Shape.ShapeType();
+            if(shapeType != TopAbs_WIRE && shapeType != TopAbs_EDGE)
+            {
+                return false;
+            }
             TopoDS_Shape shape = ts.getSubShape("Edge1");
             if (shape.IsNull())
             {
@@ -206,13 +212,7 @@ bool CmdSurfaceBSurf::isActive(void)
             Handle_Geom_BezierCurve bez_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
             if (bez_geom.IsNull())
             {
-                // this one is not Bezier
-                Handle_Geom_BSplineCurve bsp_geom = Handle_Geom_BSplineCurve::DownCast(c_geom); //Try to get BSpline curve
-                if (bsp_geom.IsNull()) {
-                    // neither Bezier, nor b-spline, fail
-                    return false;
-                }
-                // this one is b-spline
+                // this one is not Bezier, we hope it can be converted into b-spline
                 if(willBezier) {
                     // already found the other type, fail
                     return false;
