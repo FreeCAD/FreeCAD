@@ -107,10 +107,9 @@ App::DocumentObjectExecReturn *BSplineSurf::execute(void)
 
         GeomFill_FillingStyle fstyle = getFillingStyle();
         GeomFill_BSplineCurves aSurfBuilder; //Create Surface Builder
-        int ncrv = BoundaryList.getSize();
-        if(ncrv==2) {aSurfBuilder.Init(crvs[0], crvs[1], fstyle);}
-        else if(ncrv==3) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);}
-        else if(ncrv==4) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);}
+        if(edgeCount==2) {aSurfBuilder.Init(crvs[0], crvs[1], fstyle);}
+        else if(edgeCount==3) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], fstyle);}
+        else if(edgeCount==4) {aSurfBuilder.Init(crvs[0], crvs[1], crvs[2], crvs[3], fstyle);}
 
         createFace(aSurfBuilder.Surface());
 

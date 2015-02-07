@@ -61,6 +61,9 @@ protected:
     // corrects the initially invalid fill type
     void correcteInvalidFillType();
 
+    // number of edges is a result of calculating single and wire edges
+    int edgeCount;
+
 private:
     static const char* FillTypeEnums[];
 };
