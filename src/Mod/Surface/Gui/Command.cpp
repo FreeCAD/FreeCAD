@@ -160,6 +160,8 @@ public:
 protected:
     bool willBezier;
     bool willBSpline;
+    int edgeCount;
+    bool isEdge(const TopoDS_Shape& shape);
     virtual bool isActive(void);
     void createSurface(const char *surfaceNamePrefix, const char *commandName, const char *pythonAddCommand);
     virtual void activated(int iMsg);
@@ -176,13 +178,51 @@ CmdSurfaceBSurf::CmdSurfaceBSurf() : Command("Surface_BSurf")
     sPixmap       = "BSplineSurf";
 }
 
+bool CmdSurfaceBSurf::isEdge(const TopoDS_Shape& shape)
+{
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE)
+    {
+        return false;
+    }
+    TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
+    TopLoc_Location heloc; // this will be output
+    Standard_Real u0;// contains output
+    Standard_Real u1;// contains output
+    Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
+    Handle_Geom_BezierCurve bez_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
+    if (bez_geom.IsNull())
+    {
+        // this one is not Bezier, we hope it can be converted into b-spline
+        if(willBezier) {
+            // already found the other type, fail
+            return false;
+        }
+        // we will create b-spline surface
+        willBSpline = true;
+    }
+    else
+    {
+        // this one is Bezier
+        if(willBSpline) {
+            // already found the other type, fail
+            return false;
+        }
+        // we will create Bezier surface
+        willBezier = true;
+    }
+    edgeCount++;
+    return true;
+}
+
 bool CmdSurfaceBSurf::isActive(void)
 {
     willBezier = willBSpline = false;
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    if (Sel.size() < 2 || Sel.size() > 4) {
+    if (Sel.size() > 4) {
         return false;
     }
+    // we need to count them inside wires, too
+    edgeCount = 0;
     for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
     {
         if(!((*it).pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
@@ -191,67 +231,57 @@ bool CmdSurfaceBSurf::isActive(void)
         Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
         try {
             // make sure the main shape type is edge or wire
-            TopAbs_ShapeEnum shapeType = ts._Shape.ShapeType();
-            if(shapeType != TopAbs_WIRE && shapeType != TopAbs_EDGE)
+            if(ts._Shape.ShapeType() == TopAbs_WIRE)
             {
-                return false;
-            }
-            TopoDS_Shape shape = ts.getSubShape("Edge1");
-            if (shape.IsNull())
-            {
-                return false;
-            }
-            if(shape.ShapeType() != TopAbs_EDGE) {  //Check Shape type and assign edge
-                return false;
-            }
-            TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
-            TopLoc_Location heloc; // this will be output
-            Standard_Real u0;// contains output
-            Standard_Real u1;// contains output
-            Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
-            Handle_Geom_BezierCurve bez_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
-            if (bez_geom.IsNull())
-            {
-                // this one is not Bezier, we hope it can be converted into b-spline
-                if(willBezier) {
-                    // already found the other type, fail
-                    return false;
+                TopoDS_Wire wire = TopoDS::Wire(ts._Shape);
+                for (TopExp_Explorer wireExplorer (wire, TopAbs_EDGE); wireExplorer.More(); wireExplorer.Next())
+                {
+                    if(!isEdge(wireExplorer.Current()))
+                    {
+                        return false;
+                    }
                 }
-                // we will create b-spline surface
-                willBSpline = true;
             }
             else
             {
-                // this one is Bezier
-                if(willBSpline) {
-                    // already found the other type, fail
+                TopoDS_Shape shape = ts.getSubShape("Edge1");
+                if(!isEdge(shape))
+                {
                     return false;
                 }
-                // we will create Bezier surface
-                willBezier = true;
             }
         }
         catch(Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
             return false;
         }
     }
-    return true;
+    return edgeCount >= 2 && edgeCount <= 4;
 }
 
 void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *commandName, const char *pythonAddCommand)
 {
-    // we take the whole selection and require that all of its members are of the required curve
-    std::vector<Gui::SelectionObject> sel = getSelection().getSelectionEx(0);
-    if (sel.size() == 2) {
+    if (edgeCount == 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Warning"),
             QObject::tr("Surfaces with two edges may fail for some fill types."));
     }
 
     std::string FeatName = getUniqueObjectName(surfaceNamePrefix);
     std::stringstream bspListCmd;
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
     bspListCmd << "FreeCAD.ActiveDocument.ActiveObject.BoundaryList = [";
-    for (std::vector<Gui::SelectionObject>::iterator it = sel.begin(); it != sel.end(); ++it) {
-        bspListCmd << "(App.activeDocument()." << it->getFeatName() << ", \'Edge1\'),";
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
+    {
+        Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
+        bspListCmd << "(App.activeDocument()." << it->FeatName;
+        // if it is wire, add as wire
+        if(ts._Shape.ShapeType() == TopAbs_WIRE)
+        {
+            bspListCmd << ", \'Wire1\'),";
+        }
+        else
+        {
+            bspListCmd << ", \'Edge1\'),";
+        }
     }
     bspListCmd << "]";
 

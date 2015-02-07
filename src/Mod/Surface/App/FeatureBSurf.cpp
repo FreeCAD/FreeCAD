@@ -33,6 +33,7 @@
 #include <GeomFill_BezierCurves.hxx>
 #include <Geom_BoundedSurface.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <TopExp_Explorer.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -82,43 +83,57 @@ void BSurf::getWire(TopoDS_Wire& aWire)
     Handle(ShapeExtend_WireData) aWD = new ShapeExtend_WireData;
 
     int boundaryListSize = BoundaryList.getSize();
-    if(boundaryListSize > 4 || boundaryListSize < 2)
+    if(boundaryListSize > 4) // if too many not even try
     {
         Standard_Failure::Raise("Only 2-4 curves are allowed");
         return;
     }
 
+    BRepBuilderAPI_Copy copier;
+    edgeCount = 0;
     for(int i = 0; i < boundaryListSize; i++)
     {
-        Part::TopoShape ts; //Curve TopoShape
-        TopoDS_Shape sub;   //Curve TopoDS_Shape
-        TopoDS_Edge etmp;   //Curve TopoDS_Edge
-
-        //Get Edge
         App::PropertyLinkSubList::SubSet set = BoundaryList[i];
 
         if(set.obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
 
-            ts = static_cast<Part::Feature*>(set.obj)->Shape.getShape();
-
-            //we want only the subshape which is linked
-            sub = ts.getSubShape(set.sub);
-            // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
-            BRepBuilderAPI_Copy copy(sub);
-            sub = copy.Shape();
-
-            if(sub.ShapeType() == TopAbs_EDGE) {  //Check Shape type and assign edge
-                etmp = TopoDS::Edge(sub);
+            const Part::TopoShape &ts = static_cast<Part::Feature*>(set.obj)->Shape.getShape();
+            if(ts._Shape.ShapeType() == TopAbs_WIRE)
+            {
+                const TopoDS_Wire &wire = TopoDS::Wire(ts._Shape);
+                // resolve the wire, we need edges from now on
+                for (TopExp_Explorer wireExplorer (wire, TopAbs_EDGE); wireExplorer.More(); wireExplorer.Next())
+                {
+                    // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
+                    copier.Perform(wireExplorer.Current());
+                    aWD->Add(TopoDS::Edge(copier.Shape()));
+                    edgeCount++;
+                }
             }
-            else {
-                Standard_Failure::Raise("Curves must be type TopoDS_Edge");
-                return; //Raise exception
-            }
-            aWD->Add(etmp);
+            else
+            {
+                //we want only the subshape which is linked
+                const TopoDS_Shape &sub = ts.getSubShape(set.sub);
+                // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
+                copier.Perform(sub);
+                const TopoDS_Shape &copy = copier.Shape();
 
+                if(copy.ShapeType() == TopAbs_EDGE) {  //Check Shape type and assign edge
+                    aWD->Add(TopoDS::Edge(copy));
+                    edgeCount++;
+                }
+                else {
+                    Standard_Failure::Raise("Curves must be of type TopoDS_Edge or TopoDS_Wire");
+                    return; //Raise exception
+                }
+            }
         }
         else{Standard_Failure::Raise("Curve not from Part::Feature");return;}
-
+    }
+    if(edgeCount < 2 || edgeCount > 4)
+    {
+        Standard_Failure::Raise("Only 2-4 curves are allowed");
+        return;
     }
 
     //Reorder the curves and fix the wire if required
