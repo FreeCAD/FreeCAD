@@ -25,3 +25,6 @@ INSTALL(FILES Doc/Start_Page.html Doc/freecad.qhc Doc/freecad.qch
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
 
+if(FREECAD_CREATE_MAC_APP)
+    add_subdirectory(MacAppBundle)
+endif(FREECAD_CREATE_MAC_APP)
