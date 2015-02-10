@@ -357,7 +357,7 @@
       <item row="1" column="1" colspan="2">
        <widget class="Gui::PrefLineEdit" name="prefCompany">
         <property name="toolTip">
-         <string>The defautl company to use for new files</string>
+         <string>The default company to use for new files</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>prefCompany</cstring>
