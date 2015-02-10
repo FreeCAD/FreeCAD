@@ -175,8 +175,11 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
             a->setProperty("Template", dir.absoluteFilePath(dir[i]));
 
             if (id == 3) {
-                defaultAction = a;
-                defaultId = pcAction->actions().size() - 1;
+                if (!defaultAction) {
+                    // set the first found A3 (A3_Landscape) as default
+                    defaultAction = a;
+                    defaultId = pcAction->actions().size() - 1;
+                }
             }
         }
     }
