@@ -190,14 +190,14 @@ std::string SVGOutput::exportEdges(const TopoDS_Shape& input)
             printEllipse(adapt, i, result);
         }
         else if (adapt.GetType() == GeomAbs_BSplineCurve) {
-            TopoDS_Edge circle = asCircle(adapt);
-            if (circle.IsNull()) {
+//            TopoDS_Edge circle = asCircle(adapt);
+//            if (circle.IsNull()) {
                 printBSpline(adapt, i, result);
-            }
-            else {
-                BRepAdaptor_Curve adapt_circle(circle);
-                printCircle(adapt_circle, result);
-            }
+//            }
+//            else {
+//                BRepAdaptor_Curve adapt_circle(circle);
+//                printCircle(adapt_circle, result);
+//            }
         }
         else if (adapt.GetType() == GeomAbs_BezierCurve) {
             printBezier(adapt, i, result);
