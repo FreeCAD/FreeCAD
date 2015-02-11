@@ -231,7 +231,7 @@ bool CmdSurfaceBSurf::isActive(void)
         Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
         try {
             // make sure the main shape type is edge or wire
-            if(ts._Shape.ShapeType() == TopAbs_WIRE)
+            if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
             {
                 TopoDS_Wire wire = TopoDS::Wire(ts._Shape);
                 for (TopExp_Explorer wireExplorer (wire, TopAbs_EDGE); wireExplorer.More(); wireExplorer.Next())
@@ -274,7 +274,7 @@ void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *c
         Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
         bspListCmd << "(App.activeDocument()." << it->FeatName;
         // if it is wire, add as wire
-        if(ts._Shape.ShapeType() == TopAbs_WIRE)
+        if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
         {
             bspListCmd << ", \'Wire1\'),";
         }
