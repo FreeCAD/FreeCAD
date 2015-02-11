@@ -99,7 +99,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
         if(set.obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
 
             const Part::TopoShape &ts = static_cast<Part::Feature*>(set.obj)->Shape.getShape();
-            if(ts._Shape.ShapeType() == TopAbs_WIRE)
+            if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
             {
                 const TopoDS_Wire &wire = TopoDS::Wire(ts._Shape);
                 // resolve the wire, we need edges from now on
@@ -119,7 +119,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
                 copier.Perform(sub);
                 const TopoDS_Shape &copy = copier.Shape();
 
-                if(copy.ShapeType() == TopAbs_EDGE) {  //Check Shape type and assign edge
+                if((!copy.IsNull()) && copy.ShapeType() == TopAbs_EDGE) {  //Check Shape type and assign edge
                     aWD->Add(TopoDS::Edge(copy));
                     edgeCount++;
                 }
