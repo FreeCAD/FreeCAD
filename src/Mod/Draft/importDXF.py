@@ -47,12 +47,13 @@ from Draft import _Dimension, _ViewProviderDimension
 from FreeCAD import Vector
 
 gui = FreeCAD.GuiUp
+draftui = None
 if gui:
     import FreeCADGui
-try: 
-    draftui = FreeCADGui.draftToolBar
-except AttributeError: 
-    draftui = None
+    try: 
+        draftui = FreeCADGui.draftToolBar
+    except AttributeError: 
+        pass
     
 # check dxfLibrary version
 try:
