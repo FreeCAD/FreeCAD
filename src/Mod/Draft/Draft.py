@@ -1799,7 +1799,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         if rot < -90:
                             rot += 180
                         #be carefull with the sweep flag
-                    drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+                    if hasattr(FreeCAD,"DraftWorkingPlane"):
+                        drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+                    else:
+                        drawing_plane_normal = FreeCAD.Vector(0,0,1)
                     if plane: drawing_plane_normal = plane.axis
                     flag_large_arc = (((e.ParameterRange[1] - \
                             e.ParameterRange[0]) / math.pi) % 2) > 1
