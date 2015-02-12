@@ -58,7 +58,9 @@ class ExplodeGroup:
                     obj.isDerivedFrom('Part::Compound'):
                 plm = obj.Placement
                 outlist = obj.OutList[:]
-                if plm.isNull() or all(len(oo.InList)==1 for oo in obj.OutList):
+                if plm.isNull() or all((len(oo.InList)==1 and \
+                        not oo.isDerivedFrom('PartDesign::Feature')) \
+                        for oo in obj.OutList):
                     obj.Document.removeObject(obj.Name)
                     for oo in outlist:
                         if not plm.isNull():
@@ -71,6 +73,9 @@ class ExplodeGroup:
                                     oo.ViewObject.DiffuseColor=randomcolor()
                                 else:
                                     oo.ViewObject.DiffuseColor=color
+                else:
+                    FreeCAD.Console.PrintError(unicode(translate('OpenSCAD',\
+                    'Unable to explode %s')) % obj.Name +u'\n')
 
         for obj in FreeCADGui.Selection.getSelection():
             if len(obj.InList) == 0: # allowed only for for top level objects
