@@ -951,11 +951,13 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     }
     App::Document* doc = App::GetApplication().getActiveDocument();
     if (doc) {
+        doc->openTransaction("Duplicate");
         // restore objects from file and add to active document
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
         MergeDocuments mimeView(doc);
         mimeView.importObjects(str);
         str.close();
+        doc->commitTransaction();
     }
     fi.deleteFile();
 }
