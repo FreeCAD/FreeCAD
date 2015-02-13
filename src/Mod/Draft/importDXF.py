@@ -40,7 +40,7 @@ texts, colors,layers (from groups)
 '''
 
 TEXTSCALING = 1.35 # scaling factor between autocad font sizes and coin font sizes
-CURRENTDXFLIB = 1.38 # the minimal version of the dxfLibrary needed to run 
+CURRENTDXFLIB = 1.38 # the minimal version of the dxfLibrary needed to run
 
 import sys, FreeCAD, os, Part, math, re, string, Mesh, Draft, DraftVecUtils, DraftGeomUtils
 from Draft import _Dimension, _ViewProviderDimension
@@ -50,11 +50,11 @@ gui = FreeCAD.GuiUp
 draftui = None
 if gui:
     import FreeCADGui
-    try: 
+    try:
         draftui = FreeCADGui.draftToolBar
-    except AttributeError: 
+    except AttributeError:
         pass
-    
+
 # check dxfLibrary version
 try:
     import dxfLibrary
@@ -84,10 +84,18 @@ if not libsok:
             p = None
             p = ArchCommands.download(baseurl+f,force=True)
             if not p:
-                FreeCAD.Console.PrintWarning("Download of dxf libraries failed. Please download them manually from\nhttps://github.com/yorikvanhavre/Draft-dxf-importer\nand place them in your macros folder\n")
+                message = ('Download of dxf libraries failed.\n'
+                'Please download them manually from :\n'
+                'https://github.com/yorikvanhavre/Draft-dxf-importer\n'
+                'and place them in your macros folder.\n')
+                if gui:
+                    from PySide import QtGui, QtCore
+                    QtGui.QMessageBox.information(None,"",message)
+                else:
+                    FreeCAD.Console.PrintWarning(message)
                 break
-        progressbar.stop() 
-    
+        progressbar.stop()
+
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
         try:
             import dxfColorMap, dxfLibrary, dxfReader
@@ -95,18 +103,24 @@ if not libsok:
             dxfReader = None
             dxfLibrary = None
     else:
-        FreeCAD.Console.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format\n")
-        FreeCAD.Console.PrintWarning("were not found on this system. Please either enable FreeCAD to download these\n")
-        FreeCAD.Console.PrintWarning("libraries (menu Edit > Preferences > Import-Export > DXF > Enable downloads) or download\n")
-        FreeCAD.Console.PrintWarning("these libraries manually, as explained on\n")
-        FreeCAD.Console.PrintWarning("https://github.com/yorikvanhavre/Draft-dxf-importer\n")
+        message = ('The DXF import/export libraries needed by FreeCAD to handle the DXF format'
+        ' were not found on this system.\nPlease either enable FreeCAD to download these'
+        ' libraries :\n 1 - Load Draft workbench\n'
+        ' 2 - Menu Edit > Preferences > Import-Export > DXF > Enable downloads)\n'
+        'Or download these libraries manually, as explained on\n'
+        'https://github.com/yorikvanhavre/Draft-dxf-importer\n')
+        if gui:
+            from PySide import QtGui, QtCore
+            QtGui.QMessageBox.information(None,"",message)
+        else:
+            FreeCAD.Console.PrintWarning(message)
         dxfReader = None
         dxfLibrary = None
-        
+
 
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
-    
+
 def prec():
     "returns the current Draft precision level"
     return Draft.getParam("precision",6)
@@ -148,7 +162,7 @@ def deformat(text):
                     print("unable to decode text: ",text)
     t = ns
     # replace degrees, diameters chars
-    t = re.sub('%%d','°',t) 
+    t = re.sub('%%d','°',t)
     t = re.sub('%%c','Ø',t)
     #print("output text: ",t)
     return t
@@ -160,7 +174,7 @@ def locateLayer(wantedLayer,color=None):
         if wantedLayerName==l.Label:
             return l
     if dxfUseDraftVisGroups:
-        newLayer = Draft.makeVisGroup(name=wantedLayer)   
+        newLayer = Draft.makeVisGroup(name=wantedLayer)
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup",wantedLayer)
     newLayer.Label = wantedLayerName
@@ -177,7 +191,7 @@ def getdimheight(style):
                         if rawValue(a,2) == style:
                             return rawValue(a,140)
     return 1
-    
+
 def calcBulge(v1,bulge,v2):
     '''
     calculates intermediary vertex for curved segments.
@@ -202,7 +216,7 @@ def getGroup(ob):
 
 def getACI(ob,text=False):
     "gets the ACI color closest to the objects color"
-    if not gui: 
+    if not gui:
         return 0
     else:
         if text:
@@ -265,7 +279,7 @@ def isBrightBackground():
         b1 = float((c1>>8)&0xFF)
         cv = FreeCAD.Vector(r1,g1,b1)
     value = cv.x*.3 + cv.y*.59 + cv.z*.11
-    if value < 128: 
+    if value < 128:
         return False
     else:
         return True
@@ -277,13 +291,13 @@ def getGroupColor(dxfobj,index=False):
         if table.name == "layer":
             for l in table.get_type("layer"):
                 if l.name == name:
-                    if index: 
+                    if index:
                         return l.color
                     else:
-                        if (l.color == 7) and dxfBrightBackground: 
+                        if (l.color == 7) and dxfBrightBackground:
                             return [0.0,0.0,0.0]
                         else:
-                            if isinstance(l.color,int): 
+                            if isinstance(l.color,int):
                                 if l.color > 0:
                                     return dxfColorMap.color_map[l.color]
     return [0.0,0.0,0.0]
@@ -306,17 +320,17 @@ def formatObject(obj,dxfobj=None):
     "applies color and linetype to objects"
     if dxfGetColors and dxfobj and hasattr(dxfobj,"color_index"):
         if hasattr(obj.ViewObject,"TextColor"):
-            if dxfobj.color_index == 256: 
+            if dxfobj.color_index == 256:
                 cm = getGroupColor(dxfobj)[:3]
-            else: 
+            else:
                 cm = dxfColorMap.color_map[dxfobj.color_index]
             obj.ViewObject.TextColor = (cm[0],cm[1],cm[2])
         elif hasattr(obj.ViewObject,"LineColor"):
-            if dxfobj.color_index == 256: 
+            if dxfobj.color_index == 256:
                 cm = getGroupColor(dxfobj)
-            elif (dxfobj.color_index == 7) and dxfBrightBackground: 
+            elif (dxfobj.color_index == 7) and dxfBrightBackground:
                 cm = [0.0,0.0,0.0]
-            else: 
+            else:
                 cm = dxfColorMap.color_map[dxfobj.color_index]
             obj.ViewObject.LineColor = (cm[0],cm[1],cm[2],0.0)
     else:
@@ -392,7 +406,7 @@ def drawPolyline(polyline,forceShape=False,num=None):
                 width = rawValue(polyline,43)
                 if width and dxfRenderPolylineWidth:
                     w = Part.Wire(edges)
-                    w1 = w.makeOffset(width/2) 
+                    w1 = w.makeOffset(width/2)
                     if polyline.closed:
                         w2 = w.makeOffset(-width/2)
                         w1 = Part.Face(w1)
@@ -412,7 +426,7 @@ def drawPolyline(polyline,forceShape=False,num=None):
                         w = Part.Wire(edges)
                         return(Part.Face(w))
                     else:
-                        return Part.Wire(edges)                          
+                        return Part.Wire(edges)
             except Part.OCCError:
                 warn(polyline,num)
     return None
@@ -452,7 +466,7 @@ def drawCircle(circle,forceShape=False):
     except Part.OCCError:
         warn(circle)
     return None
-    
+
 def drawEllipse(ellipse):
     "returns a Part shape from a dxf arc"
     try:
@@ -529,12 +543,12 @@ def drawMesh(mesh):
             md.append([p1,p2,p3])
             if rawValue(f,74) != None:
                 p4 = pts[rawValue(f,74)-1]
-                md.append([p1,p3,p4])                                
+                md.append([p1,p3,p4])
     try:
         return Mesh.Mesh(md)
     except FreeCAD.Base.FreeCADError:
         warn(mesh)
-    return None     
+    return None
 
 def drawSolid(solid):
     "returns a Part shape from a dxf solid"
@@ -897,7 +911,7 @@ def addText(text,attrib=False):
             newob = doc.addObject("App::Annotation","Text")
         lay.addObject(newob)
         val = deformat(val)
-        # the following stores text as Latin1 in annotations, which 
+        # the following stores text as Latin1 in annotations, which
         # displays ok in coin texts, but causes errors later on.
         # better store as utf8 always.
         #try:
@@ -1000,10 +1014,10 @@ def processdxf(document,filename,getShapes=False):
                 elif dxfJoin or getShapes:
                     if isinstance(shape,Part.Shape):
                         shapes.append(shape)
-                    else:                                        
+                    else:
                         shapes.append(shape.Shape)
                 elif dxfMakeBlocks:
-                    addToBlock(shape,line.layer)                             
+                    addToBlock(shape,line.layer)
                 else:
                     newob = addObject(shape,"Line",line.layer)
                     if gui: formatObject(newob,line)
@@ -1172,9 +1186,9 @@ def processdxf(document,filename,getShapes=False):
                 else:
                     newob = addObject(shape,"Spline",lay)
                     if gui: formatObject(newob,spline)
-                    
+
     # drawing ellipses
-    
+
     ellipses = drawing.entities.get_type("ellipse")
     if ellipses: FreeCAD.Console.PrintMessage("drawing "+str(len(ellipses))+" ellipses...\n")
     for ellipse in ellipses:
@@ -1198,7 +1212,7 @@ def processdxf(document,filename,getShapes=False):
     if dxfImportTexts:
         texts = drawing.entities.get_type("mtext")
         texts.extend(drawing.entities.get_type("text"))
-        if texts: 
+        if texts:
             FreeCAD.Console.PrintMessage("drawing "+str(len(texts))+" texts...\n")
         for text in texts:
             if dxfImportLayouts or (not rawValue(text,67)):
@@ -1294,7 +1308,7 @@ def processdxf(document,filename,getShapes=False):
                         else:
                             st = rawValue(dim,3)
                             newob.ViewObject.FontSize = float(getdimheight(st))*TEXTSCALING
-    else: 
+    else:
         FreeCAD.Console.PrintMessage("skipping dimensions...\n")
 
     # drawing points
@@ -1315,7 +1329,7 @@ def processdxf(document,filename,getShapes=False):
                         newob = Draft.makePoint(x,y,z)
                         lay = locateLayer(lay)
                         lay.addObject(newob)
-                        if gui: 
+                        if gui:
                             formatObject(newob,point)
     else:
         FreeCAD.Console.PrintMessage("skipping points...\n")
@@ -1324,7 +1338,7 @@ def processdxf(document,filename,getShapes=False):
 
     if dxfImportTexts:
         leaders = drawing.entities.get_type("leader")
-        if leaders: 
+        if leaders:
             FreeCAD.Console.PrintMessage("drawing "+str(len(leaders))+" leaders...\n")
         for leader in leaders:
             if dxfImportLayouts or (not rawValue(leader,67)):
@@ -1332,10 +1346,10 @@ def processdxf(document,filename,getShapes=False):
                 newob = Draft.makeWire(points)
                 lay = locateLayer(rawValue(leader,8))
                 lay.addObject(newob)
-                if gui: 
+                if gui:
                     newob.ViewObject.EndArrow = True
                     formatObject(newob,leader)
-    else: 
+    else:
         FreeCAD.Console.PrintMessage("skipping leaders...\n")
 
     # drawing hatches
@@ -1358,18 +1372,18 @@ def processdxf(document,filename,getShapes=False):
                             addToBlock(s,lay)
                         else:
                             newob = addObject(s,"Hatch",lay)
-                            if gui: 
+                            if gui:
                                 formatObject(newob,hatch)
                     else:
                         newob = Draft.makeWire(points)
                         locateLayer(lay).addObject(newob)
-                        if gui: 
+                        if gui:
                             formatObject(newob,hatch)
-    else: 
+    else:
         FreeCAD.Console.PrintMessage("skipping hatches...\n")
 
     # drawing blocks
-    
+
     inserts = drawing.entities.get_type("insert")
     if not dxfStarBlocks:
         FreeCAD.Console.PrintMessage("skipping *blocks...\n")
@@ -1410,21 +1424,21 @@ def processdxf(document,filename,getShapes=False):
             if shape:
                 newob = addObject(shape,k)
     del layerBlocks
-    
+
     # hide block objects, if any
-    
+
     for k,o in blockobjects.items():
         if o.ViewObject:
             o.ViewObject.hide()
     del blockobjects
-    
+
     # finishing
 
     print("done processing")
 
     doc.recompute()
     FreeCAD.Console.PrintMessage("successfully imported "+filename+"\n")
-    if badobjects: 
+    if badobjects:
         print("dxf: ",len(badobjects)," objects were not imported")
     del doc
     del blockshapes
@@ -1465,7 +1479,7 @@ def getShapes(filename):
     if dxfReader:
         return processdxf(None,filename,getShapes=True)
 
-		
+
 # EXPORT ########################################################################
 
 def projectShape(shape,direction):
@@ -1509,7 +1523,7 @@ def getArcData(edge):
             #counterclockwise
             ang2 = -DraftVecUtils.angle(v1)
             ang1 = -DraftVecUtils.angle(v2)
-        
+
         # obsolete method - fails a lot
         #if round(edge.Curve.Axis.dot(FreeCAD.Vector(0,0,1))) == 1:
         #    ang1,ang2=edge.ParameterRange
@@ -1518,7 +1532,7 @@ def getArcData(edge):
         #if edge.Curve.XAxis != FreeCAD.Vector(1,0,0):
         #    ang1 -= DraftVecUtils.angle(edge.Curve.XAxis)
         #    ang2 -= DraftVecUtils.angle(edge.Curve.XAxis)
-        
+
         return DraftVecUtils.tup(ce), radius, math.degrees(ang1),\
                 math.degrees(ang2)
 
@@ -1561,7 +1575,7 @@ def getWire(wire,nospline=False,lw=True):
             angle = edge.LastParameter-edge.FirstParameter
             bul = math.tan(angle/4)
             #if cross1[2] < 0:
-                # polyline bulge -> negative makes the arc go clockwise 
+                # polyline bulge -> negative makes the arc go clockwise
                 #bul = -bul
             if edge.Curve.Axis.dot(FreeCAD.Vector(0,0,1)) < 0:
                 bul = -bul
@@ -1582,7 +1596,7 @@ def getWire(wire,nospline=False,lw=True):
 def getBlock(sh,obj,lwPoly=False):
     "returns a dxf block with the contents of the object"
     block = dxfLibrary.Block(name=obj.Name,layer=getGroup(obj))
-    writeShape(sh,obj,block,lwPoly)	
+    writeShape(sh,obj,block,lwPoly)
     return block
 
 def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
@@ -1601,7 +1615,7 @@ def writeShape(sh,ob,dxfobject,nospline=False,lwPoly=False):
                 else: # arc
                     dxfobject.append(dxfLibrary.Arc(center, radius,
                                                     ang1, ang2, color=getACI(ob),
-                                                    layer=getGroup(ob)))               
+                                                    layer=getGroup(ob)))
         else:
             if (lwPoly):
                 if hasattr(dxfLibrary,"LwPolyLine"):
@@ -1697,7 +1711,7 @@ def writeMesh(ob,dxfobject):
     dxfobject.append(dxfLibrary.PolyLine([points,faces], [0.0,0.0,0.0],
                                          64, color=getACI(ob),
                                          layer=getGroup(ob)))
-                                
+
 def export(objectslist,filename,nospline=False,lwPoly=False):
     "called when freecad exports a file. If nospline=True, bsplines are exported as straight segs lwPoly=True for OpenSCAD DXF"
     readPreferences()
@@ -1705,7 +1719,7 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
         global exportList
         exportList = objectslist
         exportList = Draft.getGroupContents(exportList)
-    
+
         if (len(exportList) == 1) and (Draft.getType(exportList[0]) == "ArchSectionView"):
             # arch view: export it "as is"
             dxf = exportList[0].Proxy.getDXF()
@@ -1713,11 +1727,11 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                 f = open(filename,"w")
                 f.write(dxf)
                 f.close()
-    
+
         elif (len(exportList) == 1) and (exportList[0].isDerivedFrom("Drawing::FeaturePage")):
             # page: special hack-export! (see below)
             exportPage(exportList[0],filename)
-    
+
         else:
             # other cases, treat edges
             dxf = dxfLibrary.Drawing()
@@ -1756,10 +1770,10 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                                     dxf.append(dxfLibrary.Insert(name=ob.Name.upper()))
                             else:
                                 writeShape(sh,ob,dxf,nospline,lwPoly)
-                        
+
                 elif Draft.getType(ob) == "Annotation":
                     # texts
-        
+
                     # temporary - as dxfLibrary doesn't support mtexts well, we use several single-line texts
                     # well, anyway, at the moment, Draft only writes single-line texts, so...
                     for text in ob.LabelText:
@@ -1772,7 +1786,7 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                                                    color=getACI(ob,text=True),
                                                    style='STANDARD',
                                                    layer=getGroup(ob)))
-        
+
                 elif Draft.getType(ob) == "Dimension":
                     p1 = DraftVecUtils.tup(ob.Start)
                     p2 = DraftVecUtils.tup(ob.End)
@@ -1784,7 +1798,7 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                         pbase = DraftVecUtils.tup(ob.End.add(proj.negative()))
                     dxf.append(dxfLibrary.Dimension(pbase,p1,p2,color=getACI(ob),
                                                     layer=getGroup(ob)))
-                            
+
             dxf.saveas(filename)
         FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")
 
@@ -1834,13 +1848,13 @@ def getViewDXF(view):
     global dxfhandle
     block = ""
     insert = ""
-    
+
     if view.isDerivedFrom("App::DocumentObjectGroup"):
         for child in view.Group:
             b,e = getViewDXF(child)
             block += b
             insert += e
-            
+
     elif view.isDerivedFrom("Drawing::FeatureViewPython"):
         if hasattr(view.Proxy,"getDXF"):
             r = view.Rotation
@@ -1861,7 +1875,7 @@ def getViewDXF(view):
                 insert += "\n50\n"+str(r)+"\n"
                 dxfhandle += 1
                 count += 1
-                
+
     elif view.isDerivedFrom("Drawing::FeatureViewPart"):
         r = view.Rotation
         if r != 0: r = -r # fix rotation direction
@@ -1876,7 +1890,7 @@ def getViewDXF(view):
         insert += "\n30\n0\n41\n"+str(view.Scale)+"\n42\n"+str(view.Scale)+"\n43\n"+str(view.Scale)
         insert += "\n50\n"+str(r)+"\n"
         dxfhandle += 1
-        
+
     elif view.isDerivedFrom("Drawing::FeatureViewAnnotation"):
         r = view.Rotation
         if r != 0: r = -r # fix rotation direction
@@ -1886,11 +1900,11 @@ def getViewDXF(view):
         insert += "\n50\n"+str(r)
         insert += "\n1\n"+view.Text[0]+"\n"
         dxfhandle += 1
-        
+
     else:
         print("Unable to get DXF representation from view: ",view.Label)
     return block,insert
-    
+
 
 def exportPageLegacy(page,filename):
     "exports the given page the old way, by converting its SVG code to DXF with the Draft module"
@@ -1925,4 +1939,3 @@ def readPreferences():
     dxfFillMode = p.GetBool("fillmode",True)
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
-    
