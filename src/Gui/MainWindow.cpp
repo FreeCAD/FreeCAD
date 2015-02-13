@@ -1526,6 +1526,7 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) doc = App::GetApplication().newDocument();
 
+        doc->openTransaction("Paste");
         Base::ByteArrayIStreambuf buf(res);
         std::istream in(0);
         in.rdbuf(&buf);
@@ -1537,12 +1538,14 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
             if (gui)
                 gui->addRootObjectsToGroup(newObj, grp.front());
         }
+        doc->commitTransaction();
     }
     else if (mimeData->hasFormat(QLatin1String("application/x-documentobject-file"))) {
         QByteArray res = mimeData->data(QLatin1String("application/x-documentobject-file"));
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) doc = App::GetApplication().newDocument();
 
+        doc->openTransaction("Paste");
         Base::FileInfo fi((const char*)res);
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
         MergeDocuments mimeView(doc);
@@ -1554,6 +1557,7 @@ void MainWindow::insertFromMimeData (const QMimeData * mimeData)
             if (gui)
                 gui->addRootObjectsToGroup(newObj, grp.front());
         }
+        doc->commitTransaction();
     }
     else if (mimeData->hasUrls()) {
         // load the files into the active document if there is one, otherwise let create one
