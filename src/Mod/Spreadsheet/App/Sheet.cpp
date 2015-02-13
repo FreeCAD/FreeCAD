@@ -356,8 +356,6 @@ void Sheet::setCell(const char * address, const char * contents)
 
 void Sheet::setCell(CellAddress address, const char * value)
 {
-    Expression * e;
-
     assert(value != 0);
 
 
