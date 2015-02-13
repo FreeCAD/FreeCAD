@@ -235,7 +235,7 @@ void Cell::setContent(const char * value)
                     if (expr)
                         delete expr->eval();
                 }
-                catch (Base::Exception & e) {
+                catch (Base::Exception &) {
                     expr = new StringExpression(owner->sheet(), value);
                 }
             }

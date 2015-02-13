@@ -193,7 +193,7 @@ public:
     }
 
     short getPropertyType(const App::Property *prop) const {
-        props.getPropertyType(prop);
+        return props.getPropertyType(prop);
     }
 
     /// get the name of a property

@@ -147,8 +147,9 @@ void PropertySheet::setDirty(CellAddress address)
 {
     /* Merged cells will automatically force an update of the top left cell
        to be consistent. */
-    if (mergedCells.find(address) != mergedCells.end())
-        address = mergedCells[address];
+    std::map<CellAddress, CellAddress>::const_iterator i = mergedCells.find(address);
+    if (i != mergedCells.end())
+        address = i->second;
 
     dirty.insert(address);
 }
@@ -287,7 +288,7 @@ void PropertySheet::Restore(Base::XMLReader &reader)
                 mergeCells(address, CellAddress(address.row() + rows - 1, address.col() + cols - 1));
             }
         }
-        catch (const Base::Exception & e) {
+        catch (const Base::Exception &) {
             // Something is wrong, skip this cell
         }
         catch (...) {
@@ -298,66 +299,61 @@ void PropertySheet::Restore(Base::XMLReader &reader)
 
 Cell * PropertySheet::cellAt(CellAddress address)
 {
-    std::map<CellAddress, Cell*>::iterator i = data.find(address);
+    std::map<CellAddress, CellAddress>::const_iterator j = mergedCells.find(address);
 
-    if (i == data.end()) {
-        if (mergedCells.find(address) != mergedCells.end()) {
-            std::map<CellAddress, CellAddress>::iterator j = mergedCells.find(address);
+    // address actually inside a merged cell
+    if (j != mergedCells.end()) {
+        std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
+        assert(i != data.end());
 
-            assert(j != mergedCells.end());
-
-            i = data.find(j->second);
-            assert(i != data.end());
-
-            return i->second;
-        }
-        return 0;
+        return i->second;
     }
+
+    std::map<CellAddress, Cell*>::const_iterator i = data.find(address);
+
+    if (i == data.end())
+        return 0;
     else
         return i->second;
 }
 
 const Cell * PropertySheet::cellAt(CellAddress address) const
 {
+    std::map<CellAddress, CellAddress>::const_iterator j = mergedCells.find(address);
+
+    // address actually inside a merged cell
+    if (j != mergedCells.end()) {
+        std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
+        assert(i != data.end());
+
+        return i->second;
+    }
+
     std::map<CellAddress, Cell*>::const_iterator i = data.find(address);
 
-    if (i == data.end()) {
-        if (mergedCells.find(address) != mergedCells.end()) {
-            std::map<CellAddress, CellAddress>::const_iterator j = mergedCells.find(address);
-
-            assert(j != mergedCells.end());
-
-            i = data.find(j->second);
-            assert(i != data.end());
-
-            return i->second;
-        }
-
+    if (i == data.end())
         return 0;
-    }
     else
         return i->second;
 }
 
 Cell * PropertySheet::nonNullCellAt(CellAddress address)
 {
+    std::map<CellAddress, CellAddress>::const_iterator j = mergedCells.find(address);
+
+    if (j != mergedCells.end()) {
+        std::map<CellAddress, Cell*>::const_iterator i = data.find(j->second);
+
+        if (i == data.end())
+            return createCell(address);
+        else
+            return i->second;
+    }
+
     std::map<CellAddress, Cell*>::const_iterator i = data.find(address);
 
-    if (i == data.end()) {
-        if (mergedCells.find(address) != mergedCells.end()) {
-            std::map<CellAddress, CellAddress>::const_iterator j = mergedCells.find(address);
-
-            assert(j != mergedCells.end());
-
-            i = data.find(j->second);
-            if (i == data.end())
-                return createCell(address);
-            else
-                return i->second;
-        }
-
+    if (i == data.end())
         return createCell(address);
-    }
     else
         return i->second;
 }
@@ -453,8 +449,7 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos)
         clear(newPos);
 
     if (i != data.end()) {
-        int row, col;
-        Cell * cell = data.at(currPos);
+        Cell * cell = i->second;
 
         // Remove from old
         removeDependencies(currPos);
@@ -540,7 +535,11 @@ void PropertySheet::insertRows(int row, int count)
 
     Signaller signaller(*this);
     for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
-        Cell * cell = data.at(*i);
+        std::map<CellAddress, Cell*>::iterator j = data.find(*i);
+
+        assert(j != data.end());
+
+        Cell * cell = j->second;
 
         // Visit each cell to make changes to expressions if necessary
         visitor.reset();
@@ -581,7 +580,11 @@ void PropertySheet::removeRows(int row, int count)
 
     Signaller signaller(*this);
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
-        Cell * cell = data.at(*i);
+        std::map<CellAddress, Cell*>::iterator j = data.find(*i);
+
+        assert(j != data.end());
+
+        Cell * cell = j->second;
 
         // Visit each cell to make changes to expressions if necessary
         visitor.reset();
@@ -613,7 +616,11 @@ void PropertySheet::insertColumns(int col, int count)
 
     Signaller signaller(*this);
     for (std::vector<CellAddress>::const_reverse_iterator i = keys.rbegin(); i != keys.rend(); ++i) {
-        Cell * cell = data.at(*i);
+        std::map<CellAddress, Cell*>::iterator j = data.find(*i);
+
+        assert(j != data.end());
+
+        Cell * cell = j->second;
 
         // Visit each cell to make changes to expressions if necessary
         visitor.reset();
@@ -654,7 +661,11 @@ void PropertySheet::removeColumns(int col, int count)
 
     Signaller signaller(*this);
     for (std::vector<CellAddress>::const_iterator i = keys.begin(); i != keys.end(); ++i) {
-        Cell * cell = data.at(*i);
+        std::map<CellAddress, Cell*>::iterator j = data.find(*i);
+
+        assert(j != data.end());
+
+        Cell * cell = j->second;
 
         // Visit each cell to make changes to expressions if necessary
         visitor.reset();
@@ -692,7 +703,7 @@ bool PropertySheet::mergeCells(CellAddress from, CellAddress to)
     // Clear cells that will be hidden by the merge
     for (int r = from.row(); r <= to.row(); ++r)
         for (int c = from.col(); c <= to.col(); ++c)
-            if ( !(r == from.row() && c == to.row()) )
+            if ( !(r == from.row() && c == from.col()) )
                 clear(CellAddress(r, c));
 
     // Update internal structure to track merged cells
@@ -710,14 +721,14 @@ bool PropertySheet::mergeCells(CellAddress from, CellAddress to)
 void PropertySheet::splitCell(CellAddress address)
 {
     int rows, cols;
+    std::map<CellAddress, CellAddress>::const_iterator i = mergedCells.find(address);
 
-    if (mergedCells.find(address) == mergedCells.end())
+    if (i == mergedCells.end())
         return;
 
-    cellAt(address)->getSpans(rows, cols);
-
-    CellAddress anchor = mergedCells.at(address);
+    CellAddress anchor = i->second;
     Signaller signaller(*this);
+    cellAt(anchor)->getSpans(rows, cols);
 
     for (int r = anchor.row(); r <= anchor.row() + rows; ++r)
         for (int c = anchor.col(); c <= anchor.col() + cols; ++c) {
@@ -730,8 +741,10 @@ void PropertySheet::splitCell(CellAddress address)
 
 void PropertySheet::getSpans(CellAddress address, int & rows, int & cols) const
 {
-    if (mergedCells.find(address) != mergedCells.end()) {
-        CellAddress anchor = mergedCells.at(address);
+    std::map<CellAddress, CellAddress>::const_iterator i = mergedCells.find(address);
+
+    if (i != mergedCells.end()) {
+        CellAddress anchor = i->second;
 
         cellAt(anchor)->getSpans(rows, cols);
     }
@@ -747,7 +760,9 @@ bool PropertySheet::isMergedCell(CellAddress address) const
 
 bool PropertySheet::isHidden(CellAddress address) const
 {
-    return mergedCells.find(address) != mergedCells.end() && mergedCells.at(address) != address;
+    std::map<CellAddress, CellAddress>::const_iterator i = mergedCells.find(address);
+
+    return i != mergedCells.end() && i->second != address;
 }
 
 /**
@@ -839,7 +854,11 @@ void PropertySheet::removeDependencies(CellAddress key)
     j = i1->second.begin();
 
     while (j != i1->second.end()) {
-        propertyNameToCellMap.at(*j).erase(key);
+        std::map<std::string, std::set< CellAddress > >::iterator k = propertyNameToCellMap.find(*j);
+
+        assert(k != propertyNameToCellMap.end());
+
+        k->second.erase(key);
         ++j;
     }
 
@@ -855,7 +874,11 @@ void PropertySheet::removeDependencies(CellAddress key)
     j = i2->second.begin();
 
     while (j != i2->second.end()) {
-        documentObjectToCellMap.at(*j).erase(key);
+        std::map<std::string, std::set< CellAddress > >::iterator k = documentObjectToCellMap.find(*j);
+
+        assert(k != documentObjectToCellMap.end());
+
+        k->second.erase(key);
         ++j;
     }
 
@@ -997,9 +1020,10 @@ void PropertySheet::recomputeDependants(const DocumentObject *docObj)
 const std::set<CellAddress> &PropertySheet::getDeps(const std::string &name) const
 {
     static std::set<CellAddress> empty;
+    std::map<std::string, std::set< CellAddress > >::const_iterator i = propertyNameToCellMap.find(name);
 
-    if (propertyNameToCellMap.find(name) != propertyNameToCellMap.end())
-        return propertyNameToCellMap.at(name);
+    if (i != propertyNameToCellMap.end())
+        return i->second;
     else
         return empty;
 }
@@ -1007,9 +1031,10 @@ const std::set<CellAddress> &PropertySheet::getDeps(const std::string &name) con
 const std::set<std::string> &PropertySheet::getDeps(CellAddress pos) const
 {
     static std::set<std::string> empty;
+    std::map<CellAddress, std::set< std::string > >::const_iterator i = cellToPropertyNameMap.find(pos);
 
-    if (cellToPropertyNameMap.find(pos) != cellToPropertyNameMap.end())
-        return cellToPropertyNameMap.at(pos);
+    if (i != cellToPropertyNameMap.end())
+        return i->second;
     else
         return empty;
 }

@@ -416,7 +416,6 @@ PyObject* SheetPy::getStyle(PyObject *args)
 
 PyObject* SheetPy::setDisplayUnit(PyObject *args)
 {
-    int row, col;
     const char * cell;
     const char * value;
 
@@ -842,7 +841,6 @@ PyObject* SheetPy::setRowHeight(PyObject *args)
 PyObject* SheetPy::getRowHeight(PyObject *args)
 {
     const char * rowStr;
-    int row, col;
 
     if (!PyArg_ParseTuple(args, "s:getRowHeight", &rowStr))
         return 0;

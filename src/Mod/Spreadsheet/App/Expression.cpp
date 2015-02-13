@@ -60,6 +60,10 @@
 # define DOUBLE_MIN 2.2250738585072014E-308    /* min decimal value of a "double"*/
 #endif
 
+#if defined(_MSC_VER)
+#define strtoll _strtoi64
+#endif
+
 using namespace Base;
 using namespace App;
 using namespace Spreadsheet;
