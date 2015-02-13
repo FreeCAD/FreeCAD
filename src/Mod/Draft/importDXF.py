@@ -57,6 +57,8 @@ if gui:
 
 # check dxfLibrary version
 try:
+    if FreeCAD.ConfigGet("UserAppData") not in sys.path:
+        sys.path.append(FreeCAD.ConfigGet("UserAppData"))
     import dxfLibrary
     import dxfColorMap
     import dxfReader
