@@ -2030,6 +2030,8 @@ bool MeshOutput::SaveX3D (std::ostream &out) const
         out << "    <Transform>" << std::endl;
     }
     out << "      <Shape>" << std::endl;
+    out << "        <Appearance><Material DEF='Shape_Mat' diffuseColor='0.65 0.65 0.65'"
+           " shininess='0.9' specularColor='1 1 1'></Material></Appearance>" << std::endl;
 
     out << "        <IndexedFaceSet solid=\"false\" coordIndex=\"";
     for (MeshFacetArray::_TConstIterator it = fts.begin(); it != fts.end(); ++it) {
