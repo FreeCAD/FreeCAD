@@ -84,15 +84,17 @@ if not libsok:
             p = None
             p = ArchCommands.download(baseurl+f,force=True)
             if not p:
-                message = ('Download of dxf libraries failed.\n'
-                'Please download them manually from :\n'
-                'https://github.com/yorikvanhavre/Draft-dxf-importer\n'
-                'and place them in your macros folder.\n')
                 if gui:
                     from PySide import QtGui, QtCore
+                    from DraftTools import translate
+                    message = translate("Draft","""Download of dxf libraries failed.
+Please download them manually from:
+https://github.com/yorikvanhavre/Draft-dxf-importer
+and place them in your macros folder.""")
                     QtGui.QMessageBox.information(None,"",message)
                 else:
-                    FreeCAD.Console.PrintWarning(message)
+                    FreeCAD.Console.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
+                    FreeCAD.Console.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
                 break
         progressbar.stop()
 
@@ -103,17 +105,20 @@ if not libsok:
             dxfReader = None
             dxfLibrary = None
     else:
-        message = ('The DXF import/export libraries needed by FreeCAD to handle the DXF format'
-        ' were not found on this system.\nPlease either enable FreeCAD to download these'
-        ' libraries :\n 1 - Load Draft workbench\n'
-        ' 2 - Menu Edit > Preferences > Import-Export > DXF > Enable downloads)\n'
-        'Or download these libraries manually, as explained on\n'
-        'https://github.com/yorikvanhavre/Draft-dxf-importer\n')
         if gui:
             from PySide import QtGui, QtCore
+            from DraftTools import translate
+            message = translate('draft',"""The DXF import/export libraries needed by FreeCAD to handle 
+the DXF format were not found on this system.
+Please either enable FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit > Preferences > Import-Export > DXF > Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer""")
             QtGui.QMessageBox.information(None,"",message)
         else:
-            FreeCAD.Console.PrintWarning(message)
+            FreeCAD.Console.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
+            FreeCAD.Console.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
         dxfReader = None
         dxfLibrary = None
 
