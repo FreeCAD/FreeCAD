@@ -261,32 +261,30 @@ void SoFCUnifiedSelection::doAction(SoAction *action)
         if (selaction->SelChange.Type == SelectionChanges::AddSelection || 
             selaction->SelChange.Type == SelectionChanges::RmvSelection) {
             // selection changes inside the 3d view are handled in handleEvent()
-            if (!currenthighlight) {
-                App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
-                App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
-                ViewProvider*vp = Application::Instance->getViewProvider(obj);
-                if (vp && vp->useNewSelectionModel() && vp->isSelectable()) {
-                    SoDetail* detail = vp->getDetail(selaction->SelChange.pSubName);
-                    SoSelectionElementAction::Type type = SoSelectionElementAction::None;
-                    if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
-                        if (detail)
-                            type = SoSelectionElementAction::Append;
-                        else
-                            type = SoSelectionElementAction::All;
-                    }
-                    else {
-                        if (detail)
-                            type = SoSelectionElementAction::Remove;
-                        else
-                            type = SoSelectionElementAction::None;
-                    }
-
-                    SoSelectionElementAction action(type);
-                    action.setColor(this->colorSelection.getValue());
-                    action.setElement(detail);
-                    action.apply(vp->getRoot());
-                    delete detail;
+            App::Document* doc = App::GetApplication().getDocument(selaction->SelChange.pDocName);
+            App::DocumentObject* obj = doc->getObject(selaction->SelChange.pObjectName);
+            ViewProvider*vp = Application::Instance->getViewProvider(obj);
+            if (vp && vp->useNewSelectionModel() && vp->isSelectable()) {
+                SoDetail* detail = vp->getDetail(selaction->SelChange.pSubName);
+                SoSelectionElementAction::Type type = SoSelectionElementAction::None;
+                if (selaction->SelChange.Type == SelectionChanges::AddSelection) {
+                    if (detail)
+                        type = SoSelectionElementAction::Append;
+                    else
+                        type = SoSelectionElementAction::All;
                 }
+                else {
+                    if (detail)
+                        type = SoSelectionElementAction::Remove;
+                    else
+                        type = SoSelectionElementAction::None;
+                }
+
+                SoSelectionElementAction action(type);
+                action.setColor(this->colorSelection.getValue());
+                action.setElement(detail);
+                action.apply(vp->getRoot());
+                delete detail;
             }
         }
         else if (selaction->SelChange.Type == SelectionChanges::ClrSelection ||
