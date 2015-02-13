@@ -355,6 +355,8 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
             return QVariant();
         }
     }
+
+    return QVariant();
 }
 
 QVariant SheetModel::headerData(int section, Qt::Orientation orientation, int role) const

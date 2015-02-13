@@ -212,7 +212,7 @@ static void writeEscaped(std::string const& s, char quoteChar, char escapeChar, 
 bool Sheet::exportToFile(const std::string &filename, char delimiter, char quoteChar, char escapeChar) const
 {
     std::ofstream file;
-    int row, col, prevRow = -1, prevCol = -1;
+    int prevRow = -1, prevCol = -1;
 
     file.open(filename.c_str(), std::ios::out | std::ios::ate | std::ios::binary);
 
@@ -493,7 +493,6 @@ Property * Sheet::setFloatProperty(CellAddress key, double value)
 
 Property * Sheet::setQuantityProperty(CellAddress key, double value, const Base::Unit & unit)
 {
-    int row, col;
     Property * prop = props.getPropertyByName(toAddress(key).c_str());
     PropertyQuantity * quantityProp;
 

@@ -45,7 +45,10 @@ public:
         return *this;
     }
 
-    int getValue(int column) const { return find(column) != end() ? at(column) : defaultWidth; }
+    int getValue(int column) const {
+        std::map<int, int>::const_iterator i = find(column);
+        return i != end() ? i->second : defaultWidth;
+    }
 
     virtual Property *Copy(void) const;
 
