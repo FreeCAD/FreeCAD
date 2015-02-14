@@ -323,7 +323,7 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Constraint an element to be aligned with the internal geometry of another element</source>
+        <source>Constrains an element to be aligned with the internal geometry of another element</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

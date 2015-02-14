@@ -2005,10 +2005,6 @@ Ange en annan katalog.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The defautl company to use for new files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Default license</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2066,6 +2062,10 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The default company to use for new files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

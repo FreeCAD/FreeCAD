@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+472"/>
+        <location filename="../../Command.cpp" line="+475"/>
         <source>Drawing</source>
         <translation>Малюнок</translation>
     </message>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-182"/>
+        <location line="-185"/>
         <source>Drawing</source>
         <translation>Малюнок</translation>
     </message>
@@ -108,7 +108,7 @@
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+216"/>
+        <location line="+219"/>
         <source>Drawing</source>
         <translation>Малюнок</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-252"/>
+        <location line="-255"/>
         <source>Drawing</source>
         <translation>Малюнок</translation>
     </message>
@@ -144,7 +144,7 @@
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+375"/>
+        <location line="+378"/>
         <source>Drawing</source>
         <translation>Малюнок</translation>
     </message>
@@ -717,8 +717,8 @@ Do you want to continue?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-171"/>
-        <location line="+516"/>
+        <location line="-174"/>
+        <location line="+519"/>
         <source>Choose an SVG file to open</source>
         <translation>Виберіть файл SVG для відкриття</translation>
     </message>
@@ -727,8 +727,8 @@ Do you want to continue?</source>
         <translation type="obsolete">Переглядач креслення</translation>
     </message>
     <message>
-        <location line="-515"/>
-        <location line="+516"/>
+        <location line="-518"/>
+        <location line="+519"/>
         <source>Scalable Vector Graphics (*.svg *.svgz)</source>
         <translation>Масштабована векторна графіка (*.svg *.svgz)</translation>
     </message>
