@@ -87,7 +87,8 @@ locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources
              ["Test","../Mod/Test/Gui/Resources/translations","../Mod/Test/Gui/Resources/Test.qrc"],
              ["Ship","../Mod/Ship/resources/translations","../Mod/Ship/resources/Ship.qrc"],
              ["Plot","../Mod/Plot/resources/translations","../Mod/Plot/resources/Plot.qrc"],
-             ["Test","../Mod/Web/Gui/Resources/translations","../Mod/Web/Gui/Resources/Web.qrc"]]
+             ["Test","../Mod/Web/Gui/Resources/translations","../Mod/Web/Gui/Resources/Web.qrc"],
+             ["Spreadheet","../Mod/Spreadsheet/Gui/Resources/translations","../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc"]]
 
 def updateqrc(qrcpath,lncode):
     "updates a qrc file with the given translation entry"
