@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS><TS version="2.0">
 <context>
+    <name>Draft</name>
+    <message>
+        <location filename="importDXF.py" line="92"/>
+        <source>Download of dxf libraries failed.
+Please download them manually from:
+https://github.com/yorikvanhavre/Draft-dxf-importer
+and place them in your macros folder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Draft_AddPoint</name>
     <message>
         <location filename="DraftTools.py" line="3900"/>
@@ -2131,109 +2142,109 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2788"/>
+        <location filename="Draft.py" line="2791"/>
         <source>Found groups: closing each open object inside
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2793"/>
+        <location filename="Draft.py" line="2796"/>
         <source>Found mesh(es): turning into Part shapes
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2801"/>
+        <location filename="Draft.py" line="2804"/>
         <source>Found 1 solidificable object: solidifying it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2806"/>
+        <location filename="Draft.py" line="2809"/>
         <source>Found 2 objects: fusing them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2821"/>
+        <location filename="Draft.py" line="2824"/>
         <source>Found 1 non-parametric objects: draftifying it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2852"/>
+        <location filename="Draft.py" line="2855"/>
         <source>Found 1 open wire: closing it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2857"/>
+        <location filename="Draft.py" line="2860"/>
         <source>Found several open wires: joining them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2862"/>
+        <location filename="Draft.py" line="2865"/>
         <source>Found several edges: wiring them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2871"/>
+        <location filename="Draft.py" line="2874"/>
         <source>Unable to upgrade these objects.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3026"/>
+        <location filename="Draft.py" line="3029"/>
         <source>Found 1 block: exploding it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3038"/>
+        <location filename="Draft.py" line="3041"/>
         <source>Found 1 parametric object: breaking its dependencies
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3045"/>
+        <location filename="Draft.py" line="3048"/>
         <source>Found 2 objects: subtracting them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3052"/>
+        <location filename="Draft.py" line="3055"/>
         <source>Found several faces: splitting them
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3057"/>
+        <location filename="Draft.py" line="3060"/>
         <source>Found several objects: subtracting them from the first one
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3062"/>
+        <location filename="Draft.py" line="3065"/>
         <source>Found 1 face: extracting its wires
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3067"/>
+        <location filename="Draft.py" line="3070"/>
         <source>Found only wires: extracting their edges
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3071"/>
+        <location filename="Draft.py" line="3074"/>
         <source>No more downgrade possible
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="4386"/>
+        <location filename="Draft.py" line="4389"/>
         <source>_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.
 </source>
         <translation type="unfinished"></translation>
@@ -2678,7 +2689,7 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="3032"/>
+        <location filename="Draft.py" line="3035"/>
         <source>Found 1 multi-solids compound: exploding it
 </source>
         <translation type="unfinished"></translation>
@@ -2689,47 +2700,47 @@ Values with differences below this value will be treated as same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2350"/>
+        <location filename="Draft.py" line="2353"/>
         <source>BSplines and Bezier curves are not supported by this tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2346"/>
+        <location filename="Draft.py" line="2349"/>
         <source>The given object is not planar and cannot be converted into a sketch.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2811"/>
+        <location filename="Draft.py" line="2814"/>
         <source>Found several objects: creating a shell
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2816"/>
+        <location filename="Draft.py" line="2819"/>
         <source>Found several coplanar objects or faces: creating one face
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2834"/>
+        <location filename="Draft.py" line="2837"/>
         <source>Found 1 linear object: converting to line
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2842"/>
+        <location filename="Draft.py" line="2845"/>
         <source>Found 1 closed sketch object: creating a face from it
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2847"/>
+        <location filename="Draft.py" line="2850"/>
         <source>Found closed wires: creating faces
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="Draft.py" line="2867"/>
+        <location filename="Draft.py" line="2870"/>
         <source>Found several non-treatable objects: creating compound
 </source>
         <translation type="unfinished"></translation>
@@ -2833,6 +2844,17 @@ Values with differences below this value will be treated as same.</source>
         <location filename="DraftTools.py" line="3003"/>
         <source>Too many intersection points
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="importDXF.py" line="113"/>
+        <source>The DXF import/export libraries needed by FreeCAD to handle 
+the DXF format were not found on this system.
+Please either enable FreeCAD to download these libraries:
+  1 - Load Draft workbench
+  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
+Or download these libraries manually, as explained on
+https://github.com/yorikvanhavre/Draft-dxf-importer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

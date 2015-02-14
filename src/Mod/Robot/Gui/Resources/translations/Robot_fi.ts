@@ -326,13 +326,17 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Dress up trajectory...</source>
-        <translation>Pue liikerata...</translation>
+        <source>Dress-up trajectory...</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Create a dress up object which overide some aspects of a trajectory</source>
+        <source>Create a dress-up object which overrides some aspects of a trajectory</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dress up trajectory...</source>
+        <translation type="obsolete">Pue liikerata...</translation>
     </message>
     <message>
         <source>Create a dress up object which overide som aspects of a trajectory</source>

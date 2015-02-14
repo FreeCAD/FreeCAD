@@ -158,7 +158,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="730"/>
+        <location filename="ArchComponent.py" line="731"/>
         <source>closing Sketch edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -732,7 +732,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="622"/>
+        <location filename="ArchComponent.py" line="623"/>
         <source>Error computing the shape of this object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -832,17 +832,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="629"/>
+        <location filename="ArchComponent.py" line="630"/>
         <source>has no solid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="631"/>
+        <location filename="ArchComponent.py" line="632"/>
         <source>has an invalid shape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchComponent.py" line="633"/>
+        <location filename="ArchComponent.py" line="634"/>
         <source>has a null shape</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1012,52 +1012,52 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="239"/>
+        <location filename="ArchSpace.py" line="241"/>
         <source>The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="240"/>
+        <location filename="ArchSpace.py" line="242"/>
         <source>The name of the font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="241"/>
+        <location filename="ArchSpace.py" line="243"/>
         <source>The color of the area text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="242"/>
+        <location filename="ArchSpace.py" line="244"/>
         <source>The size of the text font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="243"/>
+        <location filename="ArchSpace.py" line="245"/>
         <source>The size of the first line of text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="244"/>
+        <location filename="ArchSpace.py" line="246"/>
         <source>The space between the lines of text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="245"/>
+        <location filename="ArchSpace.py" line="247"/>
         <source>The position of the text. Leave (0,0,0) for automatic position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="246"/>
+        <location filename="ArchSpace.py" line="248"/>
         <source>The justification of the text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="247"/>
+        <location filename="ArchSpace.py" line="249"/>
         <source>The number of decimals to use for calculated texts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ArchSpace.py" line="248"/>
+        <location filename="ArchSpace.py" line="250"/>
         <source>Show the unit suffix</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1768,18 +1768,13 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="161"/>
+        <location filename="archprefs-import.ui" line="125"/>
         <source>IFC export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="198"/>
+        <location filename="archprefs-import.ui" line="162"/>
         <source>Scaling factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-import.ui" line="134"/>
-        <source>IFC files are typically written in millimeters. If you are working in a different unit, this allow you to scale all your units to be expressed in millimeters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1823,12 +1818,12 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="169"/>
+        <location filename="archprefs-import.ui" line="133"/>
         <source>Some IFC viewers don&apos;t like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="190"/>
+        <location filename="archprefs-import.ui" line="154"/>
         <source>Collada export</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1878,12 +1873,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="archprefs-import.ui" line="124"/>
-        <source>A scaling factor to apply to imported IFC objects</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="archprefs-import.ui" line="172"/>
+        <location filename="archprefs-import.ui" line="136"/>
         <source>Force export as Brep</source>
         <translation type="unfinished"></translation>
     </message>
