@@ -74,7 +74,8 @@ files = [ ["Arch.ts",              "/Mod/Arch/Resources/translations/Arch.ts"],
           ["Sketcher.ts",          "/Mod/Sketcher/Gui/Resources/translations/Sketcher_de.ts"],
           ["StartPage.ts",         "/Mod/Start/Gui/Resources/translations/StartPage.ts"],
           ["Test.ts",              "/Mod/Test/Gui/Resources/translations/Test_de.ts"],
-          ["Web.ts",               "/Mod/Web/Gui/Resources/translations/Web.ts"] ]
+          ["Web.ts",               "/Mod/Web/Gui/Resources/translations/Web.ts"],
+          ["Spreadsheet.ts",       "/Mod/Spreadsheet/Gui/Resources/translations/Spreadsheet.ts"] ]
 
 
 # handler for the command responses
