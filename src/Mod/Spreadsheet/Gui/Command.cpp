@@ -576,12 +576,16 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
                 bool allBold = true;
 
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::set<std::string> style;
+                    const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
 
-                    sheet->getCell(CellAddress((*it).row(), (*it).column()))->getStyle(style);
-                    if (style.find("bold") == style.end()) {
-                        allBold = false;
-                        break;
+                    if (cell) {
+                        std::set<std::string> style;
+
+                        cell->getStyle(style);
+                        if (style.find("bold") == style.end()) {
+                            allBold = false;
+                            break;
+                        }
                     }
                 }
 
@@ -645,12 +649,16 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
                 bool allItalic = true;
 
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::set<std::string> style;
+                    const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
 
-                    sheet->getCell(CellAddress((*it).row(), (*it).column()))->getStyle(style);
-                    if (style.find("italic") == style.end()) {
-                        allItalic = false;
-                        break;
+                    if (cell) {
+                        std::set<std::string> style;
+
+                        cell->getStyle(style);
+                        if (style.find("italic") == style.end()) {
+                            allItalic = false;
+                            break;
+                        }
                     }
                 }
 
@@ -714,12 +722,16 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
                 bool allUnderline = true;
 
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::set<std::string> style;
+                    const Cell * cell = sheet->getCell(CellAddress((*it).row(), (*it).column()));
 
-                    sheet->getCell(CellAddress((*it).row(), (*it).column()))->getStyle(style);
-                    if (style.find("underline") == style.end()) {
-                        allUnderline = false;
-                        break;
+                    if (cell) {
+                        std::set<std::string> style;
+
+                        cell->getStyle(style);
+                        if (style.find("underline") == style.end()) {
+                            allUnderline = false;
+                            break;
+                        }
                     }
                 }
 
