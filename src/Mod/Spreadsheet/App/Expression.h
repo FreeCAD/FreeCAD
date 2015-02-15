@@ -506,9 +506,9 @@ public:
 
     void renameDocument(const std::string &oldName, const std::string &newName);
 
-protected:
-
     const App::Property *getProperty() const;
+
+protected:
 
     Path var; /**< Variable name  */
 };
