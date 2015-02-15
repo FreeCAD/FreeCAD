@@ -77,6 +77,34 @@ private:
     std::string newName;
 };
 
+class BuildDocDepsExpressionVisitor : public ExpressionVisitor {
+public:
+
+    BuildDocDepsExpressionVisitor(std::set<DocumentObject*> & _docDeps)
+        : docDeps(_docDeps)
+    {
+
+    }
+
+    void visit(Expression * node) {
+        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
+
+        if (expr) {
+            const App::Property * prop = expr->getProperty();
+
+            if (prop) {
+                App::DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
+
+                if (docObj)
+                    docDeps.insert(docObj);
+            }
+        }
+    }
+
+private:
+    std::set<App::DocumentObject*> & docDeps;
+};
+
 class RelabelDocumentExpressionVisitor : public ExpressionVisitor {
 public:
 
@@ -436,6 +464,8 @@ void PropertySheet::clear(CellAddress address)
 
     // Erase from internal struct
     data.erase(i);
+
+    rebuildDocDepList();
 }
 
 void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos)
@@ -461,6 +491,8 @@ void PropertySheet::moveCell(CellAddress currPos, CellAddress newPos)
         data[newPos] = cell;
         addDependencies(newPos);
         setDirty(newPos);
+
+        rebuildDocDepList();
     }
 }
 
@@ -813,11 +845,6 @@ void PropertySheet::addDependencies(CellAddress key)
 
             documentObjectName[docObject] = docObject->Label.getValue();
             documentName[docObject->getDocument()] = docObject->getDocument()->Label.getValue();
-
-            if (docObject != owner) {
-                docDeps.resize(docDeps.size() + 1);
-                docDeps[docDeps.size() - 1] = docObject;
-            }
         }
 
         // Observe document to trach changes to the property
@@ -1046,8 +1073,27 @@ const std::set<std::string> &PropertySheet::getDeps(CellAddress pos) const
 
 void PropertySheet::recomputeDependencies(CellAddress key)
 {
+    Signaller signaller(*this);
+
     removeDependencies(key);
     addDependencies(key);
+    rebuildDocDepList();
+}
+
+void PropertySheet::rebuildDocDepList()
+{
+    Signaller signaller(*this);
+
+    docDeps.clear();
+    BuildDocDepsExpressionVisitor v(docDeps);
+
+    std::map<CellAddress, Cell* >::iterator i = data.begin();
+
+    /* Resolve all cells */
+    while (i != data.end()) {
+        i->second->visit(v);
+        ++i;
+    }
 }
 
 PyObject *PropertySheet::getPyObject()

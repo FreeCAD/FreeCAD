@@ -796,7 +796,9 @@ App::DocumentObjectExecReturn *Sheet::execute(void)
     currRow.purgeTouched();
     currColumn.purgeTouched();
 
-    docDeps.setValues(cells.getDocDeps());
+    std::set<App::DocumentObject*> ds(cells.getDocDeps());
+    std::vector<App::DocumentObject*> dv(ds.begin(), ds.end());
+    docDeps.setValues(dv);
 
     purgeTouched();
 

@@ -161,6 +161,8 @@ void Cell::setExpression(Expression *expr)
 
     /* Update dependencies */
     owner->addDependencies(address);
+
+    owner->rebuildDocDepList();
 }
 
 /**

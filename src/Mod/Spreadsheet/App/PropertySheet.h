@@ -123,7 +123,7 @@ public:
 
     const std::set<std::string> &getDeps(CellAddress pos) const;
 
-    const std::vector<App::DocumentObject*> & getDocDeps() const { return docDeps; }
+    const std::set<App::DocumentObject*> & getDocDeps() const { return docDeps; }
 
     class Signaller {
     public:
@@ -184,6 +184,8 @@ private:
 
     void recomputeDependants(const App::DocumentObject * docObj);
 
+    void rebuildDocDepList();
+
     /* Cell dependencies, i.e when a change occurs to property given in key,
       the set of addresses needs to be recomputed.
       */
@@ -201,7 +203,7 @@ private:
     std::map<CellAddress, std::set< std::string > > cellToDocumentObjectMap;
 
     /* Other document objects the sheet depends on */
-    std::vector<App::DocumentObject*> docDeps;
+    std::set<App::DocumentObject*> docDeps;
 
     /* Name of document objects, used for renaming */
     std::map<const App::DocumentObject*, std::string> documentObjectName;
