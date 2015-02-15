@@ -90,13 +90,15 @@ public:
         VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
 
         if (expr) {
-            const App::Property * prop = expr->getProperty();
-
-            if (prop) {
+            try {
+                const App::Property * prop = expr->getProperty();
                 App::DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
 
                 if (docObj)
                     docDeps.insert(docObj);
+            }
+            catch (const Base::Exception &) {
+                // Ignore this type of exception; it means that the property was not found, which is ok here
             }
         }
     }
