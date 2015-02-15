@@ -909,10 +909,11 @@ void PropertySheet::removeDependencies(CellAddress key)
 
         k->second.erase(key);
 
+        if (k->second.size() == 0)
+            documentObjectToCellMap.erase(*j);
+
         ++j;
     }
-
-
 
     cellToDocumentObjectMap.erase(i2);
 }
