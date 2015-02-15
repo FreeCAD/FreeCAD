@@ -206,7 +206,7 @@ void Path::renameDocumentObject(const std::string &oldName, const std::string &n
 
 void Path::renameDocument(const std::string &oldName, const std::string &newName)
 {
-    if (documentNameSet && documentName == oldName) {
+    if (documentName == oldName) {
         documentName = newName;
         resolve();
     }

@@ -659,7 +659,7 @@ const char *Sheet::getPropertyName(const Property *prop) const
 void Sheet::recomputeCell(CellAddress p)
 {
     Cell * cell = cells.getValue(p);
-    std::string docName = getDocument()->getName();
+    std::string docName = getDocument()->Label.getValue();
     std::string docObjName = std::string(getNameInDocument());
     std::string name = docName + "#" + docObjName + "." + toAddress(p);
 
@@ -1036,7 +1036,7 @@ std::set<std::string> Sheet::dependsOn(CellAddress address) const
 
 void Sheet::providesTo(CellAddress address, std::set<std::string> & result) const
 {
-    const char * docName = getDocument()->getName();
+    const char * docName = getDocument()->Label.getValue();
     const char * docObjName = getNameInDocument();
     std::string fullName = std::string(docName) + "#" + std::string(docObjName) + "." + toAddress(address);
     std::set<CellAddress> tmpResult = cells.getDeps(fullName);
@@ -1047,7 +1047,7 @@ void Sheet::providesTo(CellAddress address, std::set<std::string> & result) cons
 
 void Sheet::providesTo(CellAddress address, std::set<CellAddress> & result) const
 {
-    const char * docName = getDocument()->getName();
+    const char * docName = getDocument()->Label.getValue();
     const char * docObjName = getNameInDocument();
     std::string fullName = std::string(docName) + "#" + std::string(docObjName) + "." + toAddress(address);
     result = cells.getDeps(fullName);
@@ -1062,23 +1062,25 @@ void Sheet::onDocumentRestored()
 void Sheet::onRelabledDocument(const Document &document)
 {
     cells.renamedDocument(&document);
+    cells.purgeTouched();
 }
 
 void Sheet::onRenamedDocument(const Document &document)
 {
 }
 
-void Sheet::observeDocument(const std::string & docName)
+void Sheet::observeDocument(Document * document)
 {
-    ObserverMap::const_iterator it = observers.find(docName);
+    ObserverMap::const_iterator it = observers.find(document->getName());
+
     if (it != observers.end()) {
         // An observer already exists, increase reference counter for it
         it->second->ref();
     }
     else {
         // Create a new observer
-        SheetObserver * observer = new SheetObserver(GetApplication().getDocument(docName.c_str()), &cells);
+        SheetObserver * observer = new SheetObserver(document, &cells);
 
-        observers[docName] = observer;
+        observers[document->getName()] = observer;
     }
 }
