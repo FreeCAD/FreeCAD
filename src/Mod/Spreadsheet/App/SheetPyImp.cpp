@@ -862,10 +862,8 @@ PyObject *SheetPy::getCustomAttributes(const char* attr) const
 {
     App::Property * prop = this->getSheetPtr()->getPropertyByName(attr);
 
-    if (prop == 0) {
-        PyErr_SetString(PyExc_ValueError, "Invalid address or property.");
+    if (prop == 0)
         return 0;
-    }
     return prop->getPyObject();
 }
 
