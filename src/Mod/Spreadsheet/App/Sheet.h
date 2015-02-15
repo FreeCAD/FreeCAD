@@ -202,7 +202,7 @@ public:
     }
     //@}
 
-    void observeDocument(const std::string &docName);
+    void observeDocument(App::Document *document);
 
 protected:
 

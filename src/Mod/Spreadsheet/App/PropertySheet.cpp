@@ -800,9 +800,10 @@ void PropertySheet::addDependencies(CellAddress key)
     while (i != expressionDeps.end()) {
         const Property * prop = (*i).getProperty();
         DocumentObject * docObj = prop ? freecad_dynamic_cast<DocumentObject>(prop->getContainer()) : 0;
+        Document * doc = docObj ? docObj->getDocument() : 0;
 
-        std::string docName = (*i).getDocumentName().getString();
-        std::string docObjName = docName + "#" + (prop ? docObj->getNameInDocument() : (*i).getDocumentObjectName().getString());
+        std::string docName = doc ? doc->Label.getValue() : (*i).getDocumentName().getString();
+        std::string docObjName = docName + "#" + (docObj ? docObj->getNameInDocument() : (*i).getDocumentObjectName().getString());
         std::string propName = docObjName + "." + (*i).getPropertyName();
 
         if (!prop)
@@ -820,7 +821,8 @@ void PropertySheet::addDependencies(CellAddress key)
         }
 
         // Observe document to trach changes to the property
-        owner->observeDocument(docName);
+        if (doc)
+            owner->observeDocument(doc);
 
         // Insert into maps
         propertyNameToCellMap[propName].insert(key);
@@ -879,8 +881,11 @@ void PropertySheet::removeDependencies(CellAddress key)
         assert(k != documentObjectToCellMap.end());
 
         k->second.erase(key);
+
         ++j;
     }
+
+
 
     cellToDocumentObjectMap.erase(i2);
 }
@@ -900,7 +905,7 @@ void PropertySheet::recomputeDependants(const Property *prop)
     assert(name != 0);
 
     if (owner && name) {
-        const char * docName = owner->getDocument()->getName();
+        const char * docName = owner->getDocument()->Label.getValue();
         const char * nameInDoc = owner->getNameInDocument();
 
         if (nameInDoc) {
@@ -924,7 +929,7 @@ void PropertySheet::recomputeDependants(const Property *prop)
 
 void PropertySheet::invalidateDependants(const DocumentObject *docObj)
 {
-    const char * docName = docObj->getDocument()->getName();
+    const char * docName = docObj->getDocument()->Label.getValue();
     const char * docObjName = docObj->getNameInDocument();
 
     // Touch to force recompute
@@ -995,7 +1000,7 @@ void PropertySheet::renamedDocument(const Document * doc)
 
 void PropertySheet::recomputeDependants(const DocumentObject *docObj)
 {
-    const char * docName = docObj->getDocument()->getName();
+    const char * docName = docObj->getDocument()->Label.getValue();
     const char * docObjName = docObj->getNameInDocument();
 
     // Touch to force recompute
