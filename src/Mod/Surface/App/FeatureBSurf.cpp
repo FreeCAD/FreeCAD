@@ -34,6 +34,7 @@
 #include <Geom_BoundedSurface.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopExp_Explorer.hxx>
+#include <BRep_Tool.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -42,6 +43,99 @@
 #include "FeatureBSurf.h"
 
 using namespace Surface;
+
+void ShapeValidator::initValidator(void)
+{
+    willBezier = willBSpline = false;
+    edgeCount = 0;
+}
+
+// shows error message if the shape is not an edge
+bool ShapeValidator::checkEdge(const TopoDS_Shape& shape)
+{
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE)
+    {
+        Standard_Failure::Raise("Shape is not an edge.");
+        return false;
+    }
+    TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
+    TopLoc_Location heloc; // this will be output
+    Standard_Real u0;// contains output
+    Standard_Real u1;// contains output
+    Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
+    Handle_Geom_BezierCurve bez_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
+    if (bez_geom.IsNull())
+    {
+        // this one is not Bezier, we hope it can be converted into b-spline
+        if(willBezier) {
+            // already found the other type, fail
+            Standard_Failure::Raise("Mixing Bezier and non-Bezier curves is not allowed.");
+            return false;
+        }
+        // we will create b-spline surface
+        willBSpline = true;
+    }
+    else
+    {
+        // this one is Bezier
+        if(willBSpline) {
+            // already found the other type, fail
+            Standard_Failure::Raise("Mixing Bezier and non-Bezier curves is not allowed.");
+            return false;
+        }
+        // we will create Bezier surface
+        willBezier = true;
+    }
+    edgeCount++;
+    return true;
+}
+
+void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD)
+{
+    if(!checkEdge(shape))
+    {
+        return;
+    }
+    if(aWD != NULL)
+    {
+        BRepBuilderAPI_Copy copier(shape);
+        // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
+        (*aWD)->Add(TopoDS::Edge(copier.Shape()));
+    }
+}
+
+void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWD)
+{
+
+    try {
+        // unwrap the wire
+        if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
+        {
+            TopoDS_Wire wire = TopoDS::Wire(ts._Shape);
+            for (TopExp_Explorer wireExplorer (wire, TopAbs_EDGE); wireExplorer.More(); wireExplorer.Next())
+            {
+                checkAndAdd(wireExplorer.Current(), aWD);
+            }
+        }
+        else
+        {
+            if(subName != NULL && *subName != 0)
+            {
+                //we want only the subshape which is linked
+                checkAndAdd(ts.getSubShape(subName), aWD);
+            }
+            else
+            {
+                checkAndAdd(ts._Shape, aWD);
+            }
+        }
+    }
+    catch(Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
+        Standard_Failure::Raise("Wrong shape type.");
+        return;
+    }
+}
+
 
 PROPERTY_SOURCE(Surface::BSurf, Part::Feature)
 
@@ -90,8 +184,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
         return;
     }
 
-    BRepBuilderAPI_Copy copier;
-    edgeCount = 0;
+    initValidator();
     for(int i = 0; i < boundaryListSize; i++)
     {
         App::PropertyLinkSubList::SubSet set = BoundaryList[i];
@@ -99,35 +192,7 @@ void BSurf::getWire(TopoDS_Wire& aWire)
         if(set.obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
 
             const Part::TopoShape &ts = static_cast<Part::Feature*>(set.obj)->Shape.getShape();
-            if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
-            {
-                const TopoDS_Wire &wire = TopoDS::Wire(ts._Shape);
-                // resolve the wire, we need edges from now on
-                for (TopExp_Explorer wireExplorer (wire, TopAbs_EDGE); wireExplorer.More(); wireExplorer.Next())
-                {
-                    // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
-                    copier.Perform(wireExplorer.Current());
-                    aWD->Add(TopoDS::Edge(copier.Shape()));
-                    edgeCount++;
-                }
-            }
-            else
-            {
-                //we want only the subshape which is linked
-                const TopoDS_Shape &sub = ts.getSubShape(set.sub);
-                // make a copy of the shape and the underlying geometry to avoid to affect the input shapes
-                copier.Perform(sub);
-                const TopoDS_Shape &copy = copier.Shape();
-
-                if((!copy.IsNull()) && copy.ShapeType() == TopAbs_EDGE) {  //Check Shape type and assign edge
-                    aWD->Add(TopoDS::Edge(copy));
-                    edgeCount++;
-                }
-                else {
-                    Standard_Failure::Raise("Curves must be of type TopoDS_Edge or TopoDS_Wire");
-                    return; //Raise exception
-                }
-            }
+            checkAndAdd(ts, set.sub, &aWD);
         }
         else{Standard_Failure::Raise("Curve not from Part::Feature");return;}
     }
