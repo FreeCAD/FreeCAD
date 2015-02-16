@@ -25,7 +25,7 @@ __title__=   "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
 __author__ = "Yorik van Havre"
 __url__ =    "http://www.freecadweb.org"
 
-import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch
+import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils
 
 if open.__module__ == '__builtin__':
     pyopen = open # because we'll redefine open below
@@ -259,6 +259,7 @@ def insert(filename,docname,skip=[]):
     floors = ifcfile.by_type("IfcBuildingStorey")
     products = ifcfile.by_type("IfcProduct")
     openings = ifcfile.by_type("IfcOpeningElement")
+    annotations = ifcfile.by_type("IfcAnnotation")
 
     # building relations tables
     objects = {} # { id:object, ... }
@@ -330,7 +331,7 @@ def insert(filename,docname,skip=[]):
         if obj:
             sh = baseobj.Shape.ShapeType if hasattr(baseobj,"Shape") else "None"
             sols = str(baseobj.Shape.Solids) if hasattr(baseobj,"Shape") else ""
-            pc = str(int((float(count)/len(products)*100)))+"% "
+            pc = str(int((float(count)/(len(products)+len(annotations))*100)))+"% "
             if DEBUG: print pc,"creating object ",pid," : ",ptype, " with shape: ",sh," ",sols
             objects[pid] = obj
             
@@ -370,6 +371,31 @@ def insert(filename,docname,skip=[]):
         if obj.isDerivedFrom("Part::Feature"):
             if obj.Shape.isNull():
                 Arch.rebuildArchShape(obj)
+                
+    FreeCAD.ActiveDocument.recompute()
+    
+    # 2D elements
+    
+    if DEBUG and annotations: print "Creating 2D geometry..."
+    
+    for annotation in annotations:
+        aid = annotation.id()
+        if aid in skip: continue # user given id skip list
+        if "IfcAnnotation" in SKIP: continue # preferences-set type skip list
+        name = "Annotation"
+        if annotation.Name: name = annotation.Name
+        if PREFIX_NUMBERS: name = "ID" + str(aid) + " " + name
+        shapes2d = []
+        for repres in annotation.Representation.Representations:
+            shapes2d.extend(setRepresentation(repres))
+        if shapes2d:
+            sh = Part.makeCompound(shapes2d)
+            pc = str(int((float(count)/(len(products)+len(annotations))*100)))+"% "
+            if DEBUG: print pc,"creating object ",aid," : Annotation with shape: ",sh
+            o = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+            o.Shape = sh
+        count += 1
+        
     FreeCAD.ActiveDocument.recompute()
     
     if FreeCAD.GuiUp:
@@ -777,3 +803,49 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
         productdef = ifcfile.createIfcProductDefinitionShape(None,None,[representation])
         
     return productdef,placement,shapetype
+    
+    
+def setRepresentation(representation):
+    """Returns a shape from a 2D IfcShapeRepresentation"""
+    
+    def getPolyline(ent):
+        pts = []
+        for p in ent.Points:
+            c = p.Coordinates
+            pts.append(FreeCAD.Vector(c[0],c[1],c[2] if len(c) > 2 else 0))
+        return Part.makePolygon(pts)
+            
+    def getCircle(ent):
+        c = ent.Position.Location.Coordinates
+        c = FreeCAD.Vector(c[0],c[1],c[2] if len(c) > 2 else 0)
+        r = ent.Radius
+        return Part.makeCircle(r,c)
+    
+    result = []
+    if representation.is_a("IfcShapeRepresentation"):
+        for item in representation.Items:
+            if item.is_a("IfcGeometricCurveSet"):
+                for el in item.Elements:
+                    if el.is_a("IfcPolyline"):
+                        result.append(getPolyline(el))
+                    elif el.is_a("IfcCircle"):
+                        result.append(getCircle(el))
+                    elif el.is_a("IfcTrimmedCurve"):
+                        base = el.BasisCurve
+                        t1 = el.Trim1[0].wrappedValue
+                        t2 = el.Trim2[0].wrappedValue
+                        if not el.SenseAgreement:
+                            t1,t2 = t2,t1
+                        if base.is_a("IfcPolyline"):
+                            bc = getPolyline(base)
+                            result.append(bc)
+                        elif base.is_a("IfcCircle"):
+                            bc = getCircle(base)
+                            e = Part.ArcOfCircle(bc.Curve,math.radians(t1),math.radians(t2)).toShape()
+                            d = base.Position.RefDirection.DirectionRatios
+                            v = FreeCAD.Vector(d[0],d[1],d[2] if len(d) > 2 else 0)
+                            a = -DraftVecUtils.angle(v)
+                            e.rotate(bc.Curve.Center,FreeCAD.Vector(0,0,1),math.degrees(a))
+                            result.append(e)
+    return result
+    
