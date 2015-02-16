@@ -106,7 +106,6 @@ void ShapeValidator::checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_W
 
 void ShapeValidator::checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWD)
 {
-
     try {
         // unwrap the wire
         if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
