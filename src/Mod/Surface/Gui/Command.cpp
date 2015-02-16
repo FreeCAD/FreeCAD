@@ -198,8 +198,9 @@ void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *c
     bspListCmd << "FreeCAD.ActiveDocument.ActiveObject.BoundaryList = [";
     for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
     {
-        Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
-        bspListCmd << "(App.activeDocument()." << it->FeatName;
+        Gui::SelectionSingleton::SelObj selObj = *it;
+        Part::TopoShape ts = static_cast<Part::Feature*>(selObj.pObject)->Shape.getShape();
+        bspListCmd << "(App.activeDocument()." << selObj.FeatName;
         // if it is wire, add as wire
         if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
         {
@@ -207,7 +208,15 @@ void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *c
         }
         else
         {
-            bspListCmd << ", \'Edge1\'),";
+            const char *subName =  selObj.SubName;
+            if(subName != NULL && *subName != 0)
+            {
+                bspListCmd << ", \'" << subName << "\'),";
+            }
+            else
+            {
+                bspListCmd << ", \'Edge1\'),";
+            }
         }
     }
     bspListCmd << "]";
