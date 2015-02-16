@@ -97,6 +97,8 @@ def read(filename):
                 tset = prim.triangles()
             elif hasattr(prim,"triangleset"):
                 tset = prim.triangleset()
+            else:
+                tset = []
             for tri in tset:
                 face = []
                 for v in tri.vertices:
