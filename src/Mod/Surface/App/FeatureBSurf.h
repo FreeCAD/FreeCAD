@@ -25,6 +25,7 @@
 #define FEATUREBSURF_H
 
 #include <GeomFill_FillingStyle.hxx>
+#include <ShapeExtend_WireData.hxx>
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -36,8 +37,21 @@ class Handle_Geom_BoundedSurface;
 
 namespace Surface
 {
+
+class ShapeValidator
+{
+protected:
+    bool willBezier;
+    bool willBSpline;
+    int edgeCount;
+
+    void initValidator(void);
+    bool checkEdge(const TopoDS_Shape& shape);
+    void checkAndAdd(const TopoDS_Shape &shape, Handle(ShapeExtend_WireData) *aWD = NULL);
+    void checkAndAdd(const Part::TopoShape &ts, const char *subName, Handle(ShapeExtend_WireData) *aWire = NULL);
+};
   
-class BSurf : public Part::Feature
+class BSurf : public Part::Feature, public ShapeValidator
 {
   PROPERTY_HEADER(Surface::BSurf);
 
@@ -60,9 +74,6 @@ protected:
 
     // corrects the initially invalid fill type
     void correcteInvalidFillType();
-
-    // number of edges is a result of calculating single and wire edges
-    int edgeCount;
 
 private:
     static const char* FillTypeEnums[];

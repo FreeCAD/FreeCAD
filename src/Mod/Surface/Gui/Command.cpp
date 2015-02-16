@@ -37,7 +37,6 @@
 #include <Geom_BSplineCurve.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
-#include <BRep_Tool.hxx>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #endif
 
@@ -150,7 +149,7 @@ void CmdSurfaceCut::activated(int iMsg)
 // Bezier and BSpline surfaces
 //===========================================================================
 //DEF_STD_CMD_A(CmdSurfaceBSurf);
-class CmdSurfaceBSurf : public Gui::Command
+class CmdSurfaceBSurf : public Gui::Command, public Surface::ShapeValidator
 {
 public:
     CmdSurfaceBSurf();
@@ -158,12 +157,9 @@ public:
     virtual const char* className() const
     { return "CmdSurfaceBSurf"; }
 protected:
-    bool willBezier;
-    bool willBSpline;
-    int edgeCount;
-    bool isEdge(const TopoDS_Shape& shape);
     virtual bool isActive(void);
     void createSurface(const char *surfaceNamePrefix, const char *commandName, const char *pythonAddCommand);
+    void showError(const char *msg);
     virtual void activated(int iMsg);
 };
 
@@ -178,93 +174,24 @@ CmdSurfaceBSurf::CmdSurfaceBSurf() : Command("Surface_BSurf")
     sPixmap       = "BSplineSurf";
 }
 
-bool CmdSurfaceBSurf::isEdge(const TopoDS_Shape& shape)
-{
-    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE)
-    {
-        return false;
-    }
-    TopoDS_Edge etmp = TopoDS::Edge(shape);   //Curve TopoDS_Edge
-    TopLoc_Location heloc; // this will be output
-    Standard_Real u0;// contains output
-    Standard_Real u1;// contains output
-    Handle_Geom_Curve c_geom = BRep_Tool::Curve(etmp,heloc,u0,u1); //The geometric curve
-    Handle_Geom_BezierCurve bez_geom = Handle_Geom_BezierCurve::DownCast(c_geom); //Try to get Bezier curve
-    if (bez_geom.IsNull())
-    {
-        // this one is not Bezier, we hope it can be converted into b-spline
-        if(willBezier) {
-            // already found the other type, fail
-            return false;
-        }
-        // we will create b-spline surface
-        willBSpline = true;
-    }
-    else
-    {
-        // this one is Bezier
-        if(willBSpline) {
-            // already found the other type, fail
-            return false;
-        }
-        // we will create Bezier surface
-        willBezier = true;
-    }
-    edgeCount++;
-    return true;
-}
-
 bool CmdSurfaceBSurf::isActive(void)
 {
-    willBezier = willBSpline = false;
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    if (Sel.size() > 4) {
+    long size = Sel.size();
+    if(size < 1 || size > 4) {
         return false;
     }
-    // we need to count them inside wires, too
-    edgeCount = 0;
     for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
     {
         if(!((*it).pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
             return false;
         }
-        Part::TopoShape ts = static_cast<Part::Feature*>((*it).pObject)->Shape.getShape();
-        try {
-            // make sure the main shape type is edge or wire
-            if((!ts._Shape.IsNull()) && ts._Shape.ShapeType() == TopAbs_WIRE)
-            {
-                TopoDS_Wire wire = TopoDS::Wire(ts._Shape);
-                for (TopExp_Explorer wireExplorer (wire, TopAbs_EDGE); wireExplorer.More(); wireExplorer.Next())
-                {
-                    if(!isEdge(wireExplorer.Current()))
-                    {
-                        return false;
-                    }
-                }
-            }
-            else
-            {
-                TopoDS_Shape shape = ts.getSubShape("Edge1");
-                if(!isEdge(shape))
-                {
-                    return false;
-                }
-            }
-        }
-        catch(Standard_Failure) { // any OCC exception means an unappropriate shape in the selection
-            return false;
-        }
     }
-    return edgeCount >= 2 && edgeCount <= 4;
+    return true;
 }
 
 void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *commandName, const char *pythonAddCommand)
 {
-    if (edgeCount == 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Warning"),
-            QObject::tr("Surfaces with two edges may fail for some fill types."));
-    }
-
     std::string FeatName = getUniqueObjectName(surfaceNamePrefix);
     std::stringstream bspListCmd;
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
@@ -294,9 +221,51 @@ void CmdSurfaceBSurf::createSurface(const char *surfaceNamePrefix, const char *c
     updateActive();
 }
 
+void CmdSurfaceBSurf::showError(const char *msg)
+{
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Error"),
+        QObject::tr(msg));
+}
+
 void CmdSurfaceBSurf::activated(int iMsg)
 {
-    // check wich was activated and perfom it clearing the flag
+    initValidator();
+    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
+    if (Sel.size() > 4) {
+        showError("Too many selected objects.");
+        return;
+    }
+    for (std::vector<Gui::SelectionSingleton::SelObj>::iterator it = Sel.begin(); it != Sel.end(); ++it)
+    {
+        Gui::SelectionSingleton::SelObj selObj = *it;
+        if(!(selObj.pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))) {
+            showError("Selected object is not a feature.");
+            return;
+        }
+
+        Part::TopoShape ts = static_cast<Part::Feature*>(selObj.pObject)->Shape.getShape();
+        try {
+            checkAndAdd(ts, selObj.SubName);
+        }
+        catch(Standard_Failure sf) {
+            showError(sf.GetMessageString());
+            return;
+        }
+    }
+    switch(edgeCount) {
+    case 2:
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Warning"),
+            QObject::tr("Surfaces with two edges may fail for some fill types."));
+        break;
+    case 3: // no message
+    case 4:
+        break;
+    default:
+        showError("This tool requires 2, 3 or 4 curves.");
+        return;
+    }
+
+    // check wich was activated and perfom and clearing the flag
     if(willBezier)
     {
         createSurface("BezierSurface", "Create Bezier surface", "FreeCAD.ActiveDocument.addObject(\"Surface::BezSurf\",\"%s\")");
