@@ -161,6 +161,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
     m_seekdistanceabs = FALSE;
     m_seekperiod = 2.0f;
     m_inseekmode = FALSE;
+    m_storedcamera = 0;
 
     m_seeksensor = new SoTimerSensor(SoQTQuarterAdaptor::seeksensorCB, (void*)this);
     getSoEventManager()->setNavigationState(SoEventManager::NO_NAVIGATION);
