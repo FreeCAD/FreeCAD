@@ -3936,7 +3936,7 @@ CmdSketcherTrimming::CmdSketcherTrimming()
     sWhatsThis      = "Sketcher_Trimming";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Trimming";
-    sAccel          = "T";
+    sAccel          = "T,R";
     eType           = ForEdit;
 }
 
@@ -4107,7 +4107,7 @@ CmdSketcherExternal::CmdSketcherExternal()
     sWhatsThis      = "Sketcher_External";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_External";
-    sAccel          = "E";
+    sAccel          = "X";
     eType           = ForEdit;
 }
 

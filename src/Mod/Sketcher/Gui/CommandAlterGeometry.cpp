@@ -71,7 +71,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     sWhatsThis      = "Sketcher_ToggleConstruction";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_AlterConstruction";
-    sAccel          = "T";
+    sAccel          = "C,M";
     eType           = ForEdit;
 }
 

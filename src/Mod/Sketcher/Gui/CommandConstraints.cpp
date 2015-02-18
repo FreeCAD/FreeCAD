@@ -1924,7 +1924,7 @@ CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
     sWhatsThis      = "Sketcher_ConstrainRadius";
     sStatusTip      = sToolTipText;
     sPixmap         = "Constraint_Radius";
-    sAccel          = "R";
+    sAccel          = "SHIFT+R";
     eType           = ForEdit;
 }
 
