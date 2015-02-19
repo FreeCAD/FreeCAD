@@ -133,6 +133,13 @@ This is a more detailed check as done in isValid().</UserDocu>
         <UserDocu>Union of this and a given topo shape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="multiFuse" Const="true">
+      <Documentation>
+        <UserDocu>multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
+Union of this and a given list of topo shapes.
+Beginning from OCCT 6.8.1 a tolerance value can be specified</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="oldFuse" Const="true">
       <Documentation>
         <UserDocu>Union of this and a given topo shape (old algorithm).</UserDocu>
