@@ -1331,6 +1331,51 @@ TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
     return mkFuse.Shape();
 }
 
+TopoDS_Shape TopoShape::multiFuse(std::vector<TopoDS_Shape> shapes, Standard_Real tolerance) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+#if OCC_VERSION_HEX <= 0x060800
+    if (tolerance > 0.0)
+        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
+    TopoDS_Shape resShape = this->_Shape;
+    if (resShape.IsNull())
+        throw Base::Exception("Object shape is null");
+    for (std::vector<TopoDS_Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Input shape is null");
+        // Let's call algorithm computing a fuse operation:
+        BRepAlgoAPI_Fuse mkFuse(resShape, *it);
+        // Let's check if the fusion has been successful
+        if (!mkFuse.IsDone())
+            throw Base::Exception("Fusion failed");
+        resShape = mkFuse.Shape();
+    }
+#else
+    BRepAlgoAPI_Fuse mkFuse;
+    TopTools_ListOfShape shapeArguments,shapeTools;
+    shapeArguments.Append(this->_Shape);
+    for (std::vector<TopoDS_Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Tool shape is null");
+        if (tolerance > 0.0)
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+        else
+            shapeTools.Append(*it);
+    }
+    mkFuse.SetArguments(shapeArguments);
+    mkFuse.SetTools(shapeTools);
+    if (tolerance > 0.0)
+        mkFuse.SetFuzzyValue(tolerance);
+    mkFuse.Build();
+    if (!mkFuse.IsDone())
+        throw Base::Exception("MultiFusion failed");
+    TopoDS_Shape resShape = mkFuse.Shape();
+#endif
+    return resShape;
+}
+
 TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const
 {
     if (this->_Shape.IsNull())
