@@ -52,7 +52,7 @@ ConstraintForce::ConstraintForce()
                       "Points where arrows are drawn");
     ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Direction of arrows");
-    naturalDirectionVector = Base::Vector3d(0,0,1);
+    naturalDirectionVector = Base::Vector3d(0,0,0); // by default use the null vector to indication an invalid value
     Points.setValues(std::vector<Base::Vector3d>());
 }
 
@@ -72,7 +72,6 @@ void ConstraintForce::onChanged(const App::Property* prop)
         std::vector<Base::Vector3d> normals;
         if (getPoints(points, normals)) {
             Points.setValues(points); // We don't use the normals because all arrows should have the same direction
-            Points.touch(); // This triggers ViewProvider::updateData()
         }
     } else if (prop == &Direction) {
         Base::Vector3d direction = getDirection(Direction);
@@ -82,14 +81,13 @@ void ConstraintForce::onChanged(const App::Property* prop)
         if (Reversed.getValue())
             direction = -direction;
         DirectionVector.setValue(direction);
-        DirectionVector.touch();
     } else if (prop == &Reversed) {
-        if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
-            DirectionVector.setValue(-naturalDirectionVector);
-            DirectionVector.touch();
-        } else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
-            DirectionVector.setValue(naturalDirectionVector);
-            DirectionVector.touch();
+        if (naturalDirectionVector.Length() >= Precision::Confusion()) {
+            if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
+                DirectionVector.setValue(-naturalDirectionVector);
+            } else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
+                DirectionVector.setValue(naturalDirectionVector);
+            }
         }
     } else if (prop == &NormalDirection) {
         // Set a default direction if no direction reference has been given
