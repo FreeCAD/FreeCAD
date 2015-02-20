@@ -51,6 +51,8 @@
         <file>icons/Arch_StructuralSystem_Tree.svg</file>
         <file>icons/Arch_ToggleIfcBrepFlag.svg</file>
         <file>icons/Arch_CutPlane.svg</file>
+        <file>icons/Arch_Bimserver.svg</file>
+        <file>icons/Git.svg</file>
         <file>ui/archprefs-base.ui</file>
         <file>ui/archprefs-defaults.ui</file>
         <file>ui/archprefs-import.ui</file>

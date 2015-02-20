@@ -149,6 +149,42 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBox_4">
+     <property name="title">
+      <string>Bim server</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_4">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Address</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit">
+          <property name="toolTip">
+           <string>The URL of a bim server instance (www.bimserver.org)  to connect to.</string>
+          </property>
+          <property name="text">
+           <string>http://localhost:8082</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BimServerUrl</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string>Collada export</string>
@@ -201,6 +237,10 @@
     </spacer>
    </item>
   </layout>
+  <zorder>groupBox_4</zorder>
+  <zorder>groupBox_2</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>groupBox_3</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
