@@ -189,7 +189,7 @@ public:
      * Checks for the given facet indices what will be the degree for each point
      * when these facets are removed from the mesh kernel.
      * The point degree information is stored in \a point_degree. The return value
-     * gices the number of points which will have a degree of zero.
+     * gives the number of points which will have a degree of zero.
      */
     unsigned long getPointDegree(const std::vector<unsigned long>& facets,
         std::vector<unsigned long>& point_degree) const;

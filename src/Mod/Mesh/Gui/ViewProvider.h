@@ -129,6 +129,7 @@ public:
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     bool exportToVrml(const char* filename, const MeshCore::Material&, bool binary=false) const;
+    void setupContextMenu(QMenu*, QObject*, const char*);
 
     /** @name Editing */
     //@{
@@ -169,6 +170,7 @@ protected:
     virtual void selectArea(short, short, short, short, const SbViewportRegion&, SoCamera*);
     void highlightSelection();
     void unhighlightSelection();
+    void highlightComponents();
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;
