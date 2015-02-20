@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <stdlib.h>
+# include <QAction>
 # include <QMenu>
 # include <Inventor/SbBox2s.h>
 # include <Inventor/SbLine.h>
@@ -572,10 +574,19 @@ bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Materi
     return false;
 }
 
+void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
+    QAction* act = menu->addAction(QObject::tr("Display components"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Color));
+}
+
 bool ViewProviderMesh::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Transform)
         return ViewProviderGeometryObject::setEdit(ModNum);
+    else if (ModNum == ViewProvider::Color)
+        highlightComponents();
     return true;
 }
 
@@ -583,6 +594,8 @@ void ViewProviderMesh::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Transform)
         ViewProviderGeometryObject::unsetEdit(ModNum);
+    else if (ModNum == ViewProvider::Color)
+        unhighlightSelection();
 }
 
 bool ViewProviderMesh::createToolMesh(const std::vector<SbVec2f>& rclPoly, const SbViewVolume& vol,
@@ -1665,6 +1678,29 @@ void ViewProviderMesh::unhighlightSelection()
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(1);
     pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
+}
+
+void ViewProviderMesh::highlightComponents()
+{
+    const Mesh::MeshObject& rMesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.getValue();
+    std::vector<std::vector<unsigned long> > comps = rMesh.getComponents();
+
+    // Colorize the components
+    pcMatBinding->value = SoMaterialBinding::PER_FACE;
+    int uCtFacets = (int)rMesh.countFacets();
+    pcShapeMaterial->diffuseColor.setNum(uCtFacets);
+
+    SbColor* cols = pcShapeMaterial->diffuseColor.startEditing();
+    for (std::vector<std::vector<unsigned long> >::iterator it = comps.begin(); it != comps.end(); ++it) {
+        float fMax = (float)RAND_MAX;
+        float fRed = (float)rand()/fMax;
+        float fGrn = (float)rand()/fMax;
+        float fBlu = (float)rand()/fMax;
+        for (std::vector<unsigned long>::iterator jt = it->begin(); jt != it->end(); ++jt) {
+            cols[*jt].setValue(fRed,fGrn,fBlu);
+        }
+    }
+    pcShapeMaterial->diffuseColor.finishEditing();
 }
 
 // ------------------------------------------------------
