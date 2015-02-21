@@ -1331,7 +1331,7 @@ TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
     return mkFuse.Shape();
 }
 
-TopoDS_Shape TopoShape::multiFuse(std::vector<TopoDS_Shape> shapes, Standard_Real tolerance) const
+TopoDS_Shape TopoShape::multiFuse(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
@@ -1341,7 +1341,7 @@ TopoDS_Shape TopoShape::multiFuse(std::vector<TopoDS_Shape> shapes, Standard_Rea
     TopoDS_Shape resShape = this->_Shape;
     if (resShape.IsNull())
         throw Base::Exception("Object shape is null");
-    for (std::vector<TopoDS_Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
         if (it->IsNull())
             throw Base::Exception("Input shape is null");
         // Let's call algorithm computing a fuse operation:
@@ -1355,7 +1355,7 @@ TopoDS_Shape TopoShape::multiFuse(std::vector<TopoDS_Shape> shapes, Standard_Rea
     BRepAlgoAPI_Fuse mkFuse;
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
-    for (std::vector<TopoDS_Shape>::iterator it = shapes.begin(); it != shapes.end(); ++it) {
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
         if (it->IsNull())
             throw Base::Exception("Tool shape is null");
         if (tolerance > 0.0)
