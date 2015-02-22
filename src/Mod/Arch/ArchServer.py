@@ -86,6 +86,7 @@ class _CommandGit:
         if not pushOK:
             d.checkBox.setChecked(False)
             d.checkBox.setEnabled(False)
+        d.label.setText(str(len(modified_files)+len(untracked_files))+" modified file(s)")
         d.lineEdit.setText("Changed " + os.path.basename(f))
         r = d.exec_()
         if r:
@@ -103,12 +104,17 @@ class _ArchGitDialog(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setObjectName("ArchGitOptions")
-        self.resize(365, 181)
+        self.resize(370, 200)
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.verticalLayout.setObjectName("verticalLayout")
         self.groupBox = QtGui.QGroupBox(self)
         self.groupBox.setObjectName("groupBox")
-        self.horizontalLayout = QtGui.QHBoxLayout(self.groupBox)
+        self.vl3 = QtGui.QVBoxLayout(self.groupBox)
+        self.vl3.setObjectName("vl3")
+        self.label = QtGui.QLabel(self.groupBox)
+        self.label.setObjectName("label")
+        self.vl3.addWidget(self.label)
+        self.horizontalLayout = QtGui.QHBoxLayout(self.vl3)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.radioButton_2 = QtGui.QRadioButton(self.groupBox)
         self.radioButton_2.setChecked(True)
