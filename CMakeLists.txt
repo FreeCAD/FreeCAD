@@ -122,6 +122,19 @@ OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of th
 OPTION(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bundled." OFF)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 
+if(APPLE)
+    OPTION(FREECAD_CREATE_MAC_APP "Create app bundle on install" OFF)
+
+    if(FREECAD_CREATE_MAC_APP)
+        install(
+            DIRECTORY ${CMAKE_SOURCE_DIR}/src/MacAppBundle/FreeCAD.app
+            DESTINATION ${CMAKE_INSTALL_PREFIX}
+        )
+        set(CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}/FreeCAD.app/Contents)
+        SET(CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
+    endif(FREECAD_CREATE_MAC_APP)
+endif(APPLE)
+
 OPTION(BUILD_CAM "Build the FreeCAD CAM module and the needed libs, be aware, unfinished code!" OFF)
 OPTION(BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
 OPTION(BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
