@@ -35,6 +35,7 @@
 # include <BRepTools.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepAdaptor_Surface.hxx>
+# include <GeomLib.hxx>
 # include <GeomAbs_CurveType.hxx>
 # include <GeomAbs_SurfaceType.hxx>
 # include <Geom_BezierCurve.hxx>
@@ -47,6 +48,7 @@
 # include <Handle_Poly_Triangulation.hxx>
 # include <Poly_Array1OfTriangle.hxx>
 # include <Poly_Triangulation.hxx>
+# include <Poly_Connect.hxx>
 # include <Standard_Version.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TopoDS.hxx>
@@ -61,7 +63,13 @@
 # include <TopTools_IndexedMapOfShape.hxx>
 # include <Poly_PolygonOnTriangulation.hxx>
 # include <TColStd_Array1OfInteger.hxx>
+# include <TColgp_Array1OfDir.hxx>
+# include <TColgp_Array1OfPnt2d.hxx>
 # include <TopTools_ListOfShape.hxx>
+# include <TShort_Array1OfShortReal.hxx>
+# include <TShort_HArray1OfShortReal.hxx>
+# include <Precision.hxx>
+
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -118,6 +126,94 @@ using namespace PartGui;
 
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 
+
+void GetNormals(const TopoDS_Face&  theFace,
+             const Handle(Poly_Triangulation)& aPolyTri,
+             TColgp_Array1OfDir& theNormals)
+{
+    Poly_Connect thePolyConnect(aPolyTri);
+    const TColgp_Array1OfPnt&         aNodes   = aPolyTri->Nodes();
+
+    if(aPolyTri->HasNormals())
+    {
+        // normals pre-computed in triangulation structure
+        const TShort_Array1OfShortReal& aNormals = aPolyTri->Normals();
+        const Standard_ShortReal*       aNormArr = &(aNormals.Value(aNormals.Lower()));
+
+        for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
+        {
+            const Standard_Integer anId = 3 * (aNodeIter - aNodes.Lower());
+            const gp_Dir aNorm(aNormArr[anId + 0],
+                               aNormArr[anId + 1],
+                               aNormArr[anId + 2]);
+            theNormals(aNodeIter) = aNorm;
+        }
+
+        if(theFace.Orientation() == TopAbs_REVERSED)
+        {
+            for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
+            {
+                theNormals.ChangeValue(aNodeIter).Reverse();
+            }
+        }
+
+        return;
+    }
+
+    // take in face the surface location
+    const TopoDS_Face      aZeroFace = TopoDS::Face(theFace.Located(TopLoc_Location()));
+    Handle(Geom_Surface)   aSurf     = BRep_Tool::Surface(aZeroFace);
+    const Standard_Real    aTol      = Precision::Confusion();
+    Handle(TShort_HArray1OfShortReal) aNormals = new TShort_HArray1OfShortReal(1, aPolyTri->NbNodes() * 3);
+    const Poly_Array1OfTriangle& aTriangles = aPolyTri->Triangles();
+    const TColgp_Array1OfPnt2d*  aNodesUV   = aPolyTri->HasUVNodes() && !aSurf.IsNull()
+            ? &aPolyTri->UVNodes()
+            : NULL;
+    Standard_Integer aTri[3];
+
+    for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
+    {
+        // try to retrieve normal from real surface first, when UV coordinates are available
+        if(aNodesUV == NULL
+                || GeomLib::NormEstim(aSurf, aNodesUV->Value(aNodeIter), aTol, theNormals(aNodeIter)) > 1)
+        {
+            // compute flat normals
+            gp_XYZ eqPlan(0.0, 0.0, 0.0);
+
+            for(thePolyConnect.Initialize(aNodeIter); thePolyConnect.More(); thePolyConnect.Next())
+            {
+                aTriangles(thePolyConnect.Value()).Get(aTri[0], aTri[1], aTri[2]);
+                const gp_XYZ v1(aNodes(aTri[1]).Coord() - aNodes(aTri[0]).Coord());
+                const gp_XYZ v2(aNodes(aTri[2]).Coord() - aNodes(aTri[1]).Coord());
+                const gp_XYZ vv = v1 ^ v2;
+                const Standard_Real aMod = vv.Modulus();
+
+                if(aMod >= aTol)
+                {
+                    eqPlan += vv / aMod;
+                }
+            }
+
+            const Standard_Real aModMax = eqPlan.Modulus();
+            theNormals(aNodeIter) = (aModMax > aTol) ? gp_Dir(eqPlan) : gp::DZ();
+        }
+
+        const Standard_Integer anId = (aNodeIter - aNodes.Lower()) * 3;
+        aNormals->SetValue(anId + 1, (Standard_ShortReal)theNormals(aNodeIter).X());
+        aNormals->SetValue(anId + 2, (Standard_ShortReal)theNormals(aNodeIter).Y());
+        aNormals->SetValue(anId + 3, (Standard_ShortReal)theNormals(aNodeIter).Z());
+    }
+
+    aPolyTri->SetNormals(aNormals);
+
+    if(theFace.Orientation() == TopAbs_REVERSED)
+    {
+        for(Standard_Integer aNodeIter = aNodes.Lower(); aNodeIter <= aNodes.Upper(); ++aNodeIter)
+        {
+            theNormals.ChangeValue(aNodeIter).Reverse();
+        }
+    }
+}
 
 //**************************************************************************
 // Construction/Destruction
@@ -765,6 +861,9 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             // cycling through the poly mesh
             const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
             const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
+            TColgp_Array1OfDir Normals (Nodes.Lower(), Nodes.Upper());
+            GetNormals(actFace, mesh, Normals);
+            
             for (int g=1;g<=nbTriInFace;g++) {
                 // Get the triangle
                 Standard_Integer N1,N2,N3;
@@ -780,22 +879,23 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
                 // get the 3 points of this triangle
                 gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
 
-                // transform the vertices to the place of the face
-                if (!identity) {
+                // get the 3 normals of this triangle
+                gp_Dir NV1(Normals(N1)), NV2(Normals(N2)), NV3(Normals(N3));                
+
+                // transform the vertices and normals to the place of the face
+                if(!identity) {
                     V1.Transform(myTransf);
                     V2.Transform(myTransf);
                     V3.Transform(myTransf);
+                    NV1.Transform(myTransf);
+                    NV2.Transform(myTransf);
+                    NV3.Transform(myTransf);
                 }
-                
-                // calculating per vertex normals
-                // Calculate triangle normal
-                gp_Vec v1(V1.X(),V1.Y(),V1.Z()),v2(V2.X(),V2.Y(),V2.Z()),v3(V3.X(),V3.Y(),V3.Z());
-                gp_Vec Normal = (v2-v1)^(v3-v1); 
 
-                // add the triangle normal to the vertex normal for all points of this triangle
-                norms[faceNodeOffset+N1-1] += SbVec3f(Normal.X(),Normal.Y(),Normal.Z());
-                norms[faceNodeOffset+N2-1] += SbVec3f(Normal.X(),Normal.Y(),Normal.Z());
-                norms[faceNodeOffset+N3-1] += SbVec3f(Normal.X(),Normal.Y(),Normal.Z());
+                // add the normals for all points of this triangle
+                norms[faceNodeOffset+N1-1] += SbVec3f(NV1.X(),NV1.Y(),NV1.Z());
+                norms[faceNodeOffset+N2-1] += SbVec3f(NV2.X(),NV2.Y(),NV2.Z());
+                norms[faceNodeOffset+N3-1] += SbVec3f(NV3.X(),NV3.Y(),NV3.Z());
 
                 // set the vertices
                 verts[faceNodeOffset+N1-1].setValue((float)(V1.X()),(float)(V1.Y()),(float)(V1.Z()));
