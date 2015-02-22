@@ -1154,7 +1154,11 @@ Base::Vector3d GeomEllipse::getMajorAxisDir() const
  */
 void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
 {
+#if OCC_VERSION_HEX >= 0x060300
     if (newdir.Sqr() < Precision::SquareConfusion())
+#else
+    if (newdir.Length() < Precision::Confusion())
+#endif
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = myCurve->Position();
@@ -1479,7 +1483,11 @@ void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
 {
     Handle_Geom_Ellipse c = Handle_Geom_Ellipse::DownCast( myCurve->BasisCurve() );
     assert(!c.IsNull());
+#if OCC_VERSION_HEX >= 0x060300
     if (newdir.Sqr() < Precision::SquareConfusion())
+#else
+    if (newdir.Length() < Precision::Confusion())
+#endif
         return;//zero vector was passed. Keep the old orientation.
     try {
         gp_Ax2 pos = c->Position();
