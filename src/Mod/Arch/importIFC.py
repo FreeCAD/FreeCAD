@@ -543,19 +543,23 @@ def export(exportList,filename):
             props = []
             for key in obj.IfcAttributes:
                 if not (key in ["IfcUID","FlagForceBrep"]):
-                    tp,val = obj.IfcAttributes[key].strip(")").split("(")
+                    r = obj.IfcAttributes[key].strip(")").split("(")
+                    tp = r[0]
+                    val = "(".join(r[1:])
                     val = val.strip("'")
                     val = val.strip('"')
-                    if tp == "IfcLabel":
+                    if DEBUG: print "      property ",key," : ",str(val), " (", str(tp), ")"
+                    if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
                         val = str(val)
                     elif tp == "IfcBoolean":
                         if val == ".T.":
                             val = True
                         else:
                             val = False
+                    elif tp == "IfcInteger":
+                        val = int(val)
                     else:
                         val = float(val)
-                    if DEBUG: print "      property ",key," : ",str(val), " (", str(tp), ")"
                     props.append(ifcfile.createIfcPropertySingleValue(str(key),None,ifcfile.create_entity(str(tp),val),None))
             if props:
                 pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'PropertySet',None,props)
