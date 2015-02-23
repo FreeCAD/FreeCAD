@@ -419,7 +419,7 @@ class _JobControlTaskPanel:
         #inpfile.write('Eall,NEWTON\n')
         
         Force = (ForceObject.Force * 1000.0) / NbrForceNods
-        vec = ForceObject.NormalDirection
+        vec = ForceObject.DirectionVector
         inpfile.write('*CLOAD\n')
         inpfile.write(NodeSetNameForce + ',1,' + `vec.x * Force` + '\n')
         inpfile.write(NodeSetNameForce + ',2,' + `vec.y * Force` + '\n')
