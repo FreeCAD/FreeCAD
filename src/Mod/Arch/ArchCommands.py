@@ -483,7 +483,7 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
                 FreeCAD.ActiveDocument.removeObject(name)
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
             newobj.Shape = solid
-            newobj.Placement = plac
+            #newobj.Placement = plac #the placement is already computed in the mesh
             if (not solid.isClosed()) or (not solid.isValid()):
                 if mark:
                     newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
