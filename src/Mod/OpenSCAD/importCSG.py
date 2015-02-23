@@ -877,7 +877,7 @@ def p_cylinder_action(p):
                     mycyl.Dir = (0,0,h)
                     try :
                         import Draft
-                        mycyl.Base = Draft.makePolygon(n,r1)
+                        mycyl.Base = Draft.makePolygon(n,r1,face=True)
                     except :
                         # If Draft can't import (probably due to lack of Pivy on Mac and
                         # Linux builds of FreeCAD), this is a fallback.
@@ -976,7 +976,8 @@ def p_circle_action(p) :
         mycircle = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",'circle')
         Draft._Circle(mycircle)
         mycircle.Radius = r
-        #mycircle = Draft.makeCircle(r) # would call doc.recompute
+        mycircle.MakeFace = True
+        #mycircle = Draft.makeCircle(r,face=True) # would call doc.recompute
         #mycircle = doc.addObject('Part::Circle',p[1]) #would not create a face
         #mycircle.Radius = r
     else :
@@ -986,6 +987,7 @@ def p_circle_action(p) :
         mycircle.FacesNumber = n
         mycircle.Radius = r
         mycircle.DrawMode = "inscribed"
+        mycircle.MakeFace = True
     if gui:
         Draft._ViewProviderDraft(mycircle.ViewObject)
     if printverbose: print "Push Circle"
