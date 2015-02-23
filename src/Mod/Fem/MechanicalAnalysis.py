@@ -411,7 +411,6 @@ class _JobControlTaskPanel:
         inpfile.write('{0:.3f}, '.format(YM.Value) )
         inpfile.write('{0:.3f}\n'.format(PR) )
         inpfile.write('*SOLID SECTION, Elset=Eall, Material='+matmap['General_name'] + '\n')
-        inpfile.write('*INITIAL CONDITIONS, TYPE=STRESS, USER\n')
         inpfile.write('*STEP\n')
         inpfile.write('*STATIC\n')
         inpfile.write('*BOUNDARY\n')
