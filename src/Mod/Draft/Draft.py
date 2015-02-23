@@ -5313,11 +5313,3 @@ class _ViewProviderVisGroup:
                                     if vobj.Object.InList[0].isDerivedFrom("Drawing::FeaturePage"):
                                         vobj.Object.InList[0].touch()
 
-
-
-
-#----End of Python Features Definitions----#
-
-if gui:    
-    if not hasattr(FreeCADGui,"Snapper"):
-        import DraftSnap
