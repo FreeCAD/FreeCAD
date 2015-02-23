@@ -1791,3 +1791,7 @@ class DraftToolBar:
                         
 if not hasattr(FreeCADGui,"draftToolBar"):
     FreeCADGui.draftToolBar = DraftToolBar()
+#----End of Python Features Definitions----#
+   
+if not hasattr(FreeCADGui,"Snapper"):
+    import DraftSnap
