@@ -957,6 +957,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
         case STATUS_SELECT_Point:
         case STATUS_SELECT_Edge:
         case STATUS_SELECT_Constraint:
+        case STATUS_SKETCH_StartRubberBand:
             short dx, dy;
             (cursorPos - prvCursorPos).getValue(dx, dy);
             if(std::abs(dx) < dragIgnoredDistance && std::abs(dy) < dragIgnoredDistance)
