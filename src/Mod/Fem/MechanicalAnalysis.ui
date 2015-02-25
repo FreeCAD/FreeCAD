@@ -39,6 +39,20 @@
     </layout>
    </item>
    <item>
+    <widget class="QPushButton" name="pushButton_write">
+     <property name="text">
+      <string>Write Calculix Input File</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="pushButton_edit">
+     <property name="text">
+      <string>Edit Calculix Input File</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QPushButton" name="pushButton_generate">
      <property name="text">
       <string>Run Calculix</string>
