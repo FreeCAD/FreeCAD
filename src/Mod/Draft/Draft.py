@@ -4577,7 +4577,7 @@ class _Shape2DView(_DraftObject):
                 for g in groups[5:]:
                     edges.append(g)
         #return Part.makeCompound(edges)
-        if hasattr(obj,"Tessellation"):
+        if hasattr(obj,"Tessellation") and obj.Tessellation:
             return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation,obj.SegmentLength)
         else:
             return Part.makeCompound(edges)

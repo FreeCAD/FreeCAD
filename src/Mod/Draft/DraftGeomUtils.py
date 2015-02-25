@@ -2024,7 +2024,7 @@ def cleanProjection(shape,tessellate=True,seglength=.05):
                         l = Part.Line(e.Vertexes[0].Point,e.Vertexes[-1].Point).toShape()
                         newedges.append(l)
                     else:
-                        newedges.append(e.Curve.toShape())
+                        newedges.append(e.Curve.toShape(e.FirstParameter,e.LastParameter))
             else:
                 newedges.append(e)
         except:
