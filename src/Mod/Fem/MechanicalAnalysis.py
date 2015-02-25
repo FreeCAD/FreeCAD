@@ -234,7 +234,9 @@ class _JobControlTaskPanel:
         
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
-        QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.run)
+        QtCore.QObject.connect(self.form.pushButton_write, QtCore.SIGNAL("clicked()"), self.writeCalculixInputFile)
+        QtCore.QObject.connect(self.form.pushButton_edit, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
+        QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runCalculix)
 
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("finished(int)"), self.calculixFinished)
@@ -311,12 +313,13 @@ class _JobControlTaskPanel:
             self.params.SetString("JobDir",str(dirname))
             self.form.lineEdit_outputDir.setText(dirname)
         
-    def run(self):
+    def writeCalculixInputFile(self):
+        print 'writeCalculixInputFile'
         self.Start = time.time()
         
         #dirName = self.form.lineEdit_outputDir.text()
         dirName = self.TempDir
-        print 'run() dir:',dirName
+        print 'CalculiX run directory: ',dirName
         self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Check dependencies...<br>'
         self.form.textEdit_Output.setText(self.OutStr)
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
@@ -404,11 +407,12 @@ class _JobControlTaskPanel:
         if YM.Unit.Type == '':
             print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
             YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa') )
-        
-        print YM
+        else:
+            print 'YM unit: ', YM.Unit.Type 
+        print 'YM = ', YM
         
         PR = float( MathObject.Material['FEM_poissonratio'] )
-        print PR
+        print 'PR= ', PR
         
         # now open again and write the setup:
         inpfile.write('*MATERIAL, Name='+matmap['General_name'] + '\n')
@@ -440,6 +444,24 @@ class _JobControlTaskPanel:
         inpfile.write('S \n')
         inpfile.write('*END STEP \n')
         
+
+        #do not run Calculix
+
+        QApplication.restoreOverrideCursor()
+
+    
+    def editCalculixInputFile(self):
+        print 'editCalculixInputFile'
+        print self.Basename + '.inp'
+        import webbrowser
+        # If inp-file extension is assigned the os will use the appropriate binary (normaly an Editor) to open the file. Works perfectly on Windows if SciTE is installed. 
+        webbrowser.open(self.Basename + '.inp')
+
+
+    def runCalculix(self):
+        print 'runCalculix'
+        self.Start = time.time()
+
         self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + self.CalculixBinary + '<br>'
         self.form.textEdit_Output.setText(self.OutStr)
         
@@ -447,7 +469,7 @@ class _JobControlTaskPanel:
         self.form.textEdit_Output.setText(self.OutStr)
 
         # run Claculix
-        print 'run Calclulix at:', self.CalculixBinary , '  with: ', self.Basename
+        print 'run Calclulix at: ', self.CalculixBinary , '  with: ', self.Basename
         self.Calculix.start(self.CalculixBinary, ['-i',self.Basename])
         
         
