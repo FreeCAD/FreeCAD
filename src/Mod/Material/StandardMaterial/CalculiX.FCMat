@@ -1,0 +1,14 @@
+; Standard Material for CalculiX Sample Calculations
+
+[General]
+; General name, need to be the same as the file name
+Name=CalculiX
+; Father of steel is metal
+Father=Metal
+
+[Mechanical]
+; youngs modulus (or E-Module) in kPa 
+YoungsModulus=2.1e+08
+
+[FEM]
+PoissonRatio = 0.3
