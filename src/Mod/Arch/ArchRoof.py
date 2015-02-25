@@ -519,7 +519,6 @@ class _Roof(ArchComponent.Component):
                 if obj.Base.isDerivedFrom("Part::Feature"):
                     if obj.Base.Shape.Solids:
                         base = obj.Base.Shape.copy()
-                        print "base", base
             else:
                 w = None
                 if obj.Base.isDerivedFrom("Part::Feature"):
