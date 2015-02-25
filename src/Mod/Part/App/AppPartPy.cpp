@@ -1790,7 +1790,7 @@ struct PyMethodDef Part_methods[] = {
      "makeSweepSurface(edge(path),edge(profile),[float]) -- Create a profile along a path."},
 
     {"makeLoft" ,makeLoft,METH_VARARGS,
-     "makeLoft(list of wires) -- Create a loft shape."},
+     "makeLoft(list of wires,[solid=False,ruled=False,closed=False]) -- Create a loft shape."},
 
     {"makeWireString" ,makeWireString ,METH_VARARGS,
      "makeWireString(string,fontdir,fontfile,height,[track]) -- Make list of wires in the form of a string's characters."},
