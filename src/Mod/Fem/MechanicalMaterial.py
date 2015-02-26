@@ -201,7 +201,7 @@ class _MechanicalMaterialTaskPanel:
         webbrowser.open("http://matweb.com")
     
     def chooseMat(self,index):
-        if index == 0:return 
+        if index <= 0:return 
         import Material
         #print index
         name = self.pathList[index-1]
@@ -218,10 +218,14 @@ class _MechanicalMaterialTaskPanel:
         dirname =  FreeCAD.ConfigGet("AppHomePath")+"data/Mod/Material/StandardMaterial" 
         self.pathList = glob.glob(dirname + '/*.FCMat')
         self.form.comboBox_MaterialsInDir.clear()
-        if(matmap.has_key('General_name')):
+        '''if(matmap.has_key('General_name')):
             self.form.comboBox_MaterialsInDir.addItem(matmap['General_name'])
         else:
             self.form.comboBox_MaterialsInDir.addItem('-> choose Material')
+        '''    
+        # workaraound: since material data is not loaded into spinBoxes the user has  
+        # to choose the material every time the MechanincalMaterialWidget is opened
+        self.form.comboBox_MaterialsInDir.addItem('-> choose Material')  
         for i in self.pathList:
             self.form.comboBox_MaterialsInDir.addItem(os.path.basename(i) )
         
