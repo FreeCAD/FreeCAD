@@ -14,9 +14,12 @@ SOURCE_GROUP("Module" FILES ${Material_SRCS})
 #FILE( GLOB MaterialLib_Files ./StandardMaterial/*.FCMat ./StandardMaterial/*.txt  )
 
 SET (MaterialLib_Files
-    StandardMaterial/Steel.FCMat
     StandardMaterial/ABS.FCMat
+    StandardMaterial/CalculiX.FCMat
+    StandardMaterial/Concrete.FCMat
     StandardMaterial/PLA.FCMat
+    StandardMaterial/Steel.FCMat
+    StandardMaterial/Wood.FCMat
     StandardMaterial/Readme.txt
 )
 SOURCE_GROUP("MatLib" FILES ${MaterialLib_Files})

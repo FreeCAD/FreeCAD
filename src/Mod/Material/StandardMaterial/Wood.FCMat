@@ -1,30 +1,29 @@
-; Standard Concrete Material
-; (c) 2013 Yorik van Havre (CC-BY 3.0)
-; file produced by FreeCAD 0.14 2756 (Git)
+; Standard Wood Material
+; (c) 2015 Bernd Hahnebach (CC-BY 3.0)
 ; information about the content of this card can be found here:
 ; http://www.freecadweb.org/wiki/index.php?title=Material
 
 [General]
 Vendor=
-Name=Concrete
+Name=Wood
 SpecificPrice=
 Father=Aggregate
-ProductURL=http://en.wikipedia.org/wiki/Concrete
-SpecificWeight=2400
-Description=A standard C-25 construction concrete
+ProductURL=http://en.wikipedia.org/wiki/Wood
+SpecificWeight=500
+Description=A standard construction wood
 
 [Mechanical]
 UltimateTensileStrength=
-CompressiveStrength=25 MPa
-YoungsModulus=3.2e+4 MPa
+CompressiveStrength=
+YoungsModulus=1.2e+4 MPa
 Elasticity=
 FractureToughness=
 
 [FEM]
-PoissonRatio=0.17
+PoissonRatio=0.05
 
 [Architectural]
-StandardCode=Masterformat 03 33 13
+StandardCode=
 EnvironmentalEfficiencyClass=
 FireResistanceClass=
 Finish=

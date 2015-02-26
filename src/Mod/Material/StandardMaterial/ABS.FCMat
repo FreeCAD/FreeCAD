@@ -6,7 +6,7 @@
 [General]
 ; General name, need to be the same as the file name
 Name=ABS
-; Father of steel is metal
+; Father of ABS is Thermoplast
 Father=Thermoplast
 ; more elaborate description of this material card:
 Description: This is a blend ABS material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised ABS-blend cards.
@@ -20,10 +20,10 @@ ProductURL=http://en.wikipedia.org/wiki/Acrylonitrile_butadiene_styrene
 SpecificPrice= 3
 
 [Mechanical]
-; youngs modulus (or E-Module or Modulus of Elasticty) in kPa (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
-YoungsModulus=2.32e+06
-; http://en.wikipedia.org/wiki/Ultimate_tensile_strength in kPa
-UltimateTensileStrength= 38000 
+; youngs modulus (or E-Module or Modulus of Elasticty) (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
+YoungsModulus=2.32e+03 MPa
+; http://en.wikipedia.org/wiki/Ultimate_tensile_strength in 
+UltimateTensileStrength= 38 MPa
 
 [FEM]
 PoissonRatio = 0.35

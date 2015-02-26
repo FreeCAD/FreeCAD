@@ -7,8 +7,8 @@ Name=CalculiX
 Father=Metal
 
 [Mechanical]
-; youngs modulus (or E-Module) in kPa 
-YoungsModulus=2.1e+08
+; youngs modulus (or E-Module) 
+YoungsModulus=2.1e+05 MPa
 
 [FEM]
 PoissonRatio = 0.3
