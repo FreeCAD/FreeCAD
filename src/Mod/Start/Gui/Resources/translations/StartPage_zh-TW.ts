@@ -109,11 +109,6 @@
       <translation type="unfinished">&lt;b&gt;建築設計&lt;/b&gt;工作平台為特別設計用於建築元件之製作,例如牆面或窗戶。由繪製2D圖型開始並使用其建立建築物件。 </translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">建築設計</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="75"/>
       <source>Working with Meshes</source>
       <translation type="unfinished">使用Mesh</translation>
@@ -229,11 +224,6 @@
       <translation type="unfinished">此教學於FreeCAD網站</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">FreeCAD網站上python scripting章節內由範例說明及API註解。</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">由FreeCAD社群成員維護，專門用於FreeCAD教學之網誌</translation>
@@ -274,11 +264,6 @@
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
@@ -287,6 +272,31 @@
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">建築設計</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">此部份FreeCAD網站以範例說明python腳本及API指令</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">您的FreeCAD為最新版本</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">FreeCAD有新版本可以使用</translation>
     </message>
   </context>
 </TS>

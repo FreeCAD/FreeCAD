@@ -43,5 +43,6 @@
         <file>translations/Drawing_ro.qm</file>
         <file>translations/Drawing_hu.qm</file>
         <file>translations/Drawing_pt-PT.qm</file>
+        <file>translations/Drawing_sr.qm</file>
     </qresource>
 </RCC> 

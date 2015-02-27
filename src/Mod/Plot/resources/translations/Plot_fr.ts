@@ -160,7 +160,7 @@
     <message>
       <location filename="TaskPanel.py" line="245"/>
       <source>Add new axes to the plot</source>
-      <translation type="unfinished">Ajouter de nouveaux axes aux graphiques</translation>
+      <translation type="unfinished">Ajouter de nouveaux axes au graphique</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="251"/>
