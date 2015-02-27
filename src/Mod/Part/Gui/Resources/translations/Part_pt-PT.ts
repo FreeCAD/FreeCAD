@@ -143,7 +143,7 @@
     <message>
         <location line="+1"/>
         <source>Analyzes Geometry For Errors</source>
-        <translation>Analyzes Geometry For Errors</translation>
+        <translation>Analiza Erros Geométricos</translation>
     </message>
 </context>
 <context>
@@ -175,7 +175,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Angular</source>
-        <translation type="unfinished">Measure Angular</translation>
+        <translation type="unfinished">Medição Angular</translation>
     </message>
 </context>
 <context>
@@ -189,7 +189,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Clear All</source>
-        <translation type="unfinished">Clear All</translation>
+        <translation type="unfinished">Limpar tudo</translation>
     </message>
 </context>
 <context>
@@ -203,7 +203,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Linear</source>
-        <translation type="unfinished">Measure Linear</translation>
+        <translation type="unfinished">Medição Linear</translation>
     </message>
 </context>
 <context>
@@ -283,7 +283,7 @@
     <message>
         <location line="-14"/>
         <source>Create a cube solid</source>
-        <translation type="unfinished">Create a cube solid</translation>
+        <translation type="unfinished">Criar um cubo sólido</translation>
     </message>
     <message>
         <source>Box</source>
@@ -340,7 +340,7 @@
     <message>
         <location line="+1"/>
         <source>Shape builder...</source>
-        <translation>Shape builder...</translation>
+        <translation>Construtor de Formas...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -394,12 +394,12 @@
     <message>
         <location line="+1"/>
         <source>Make compound</source>
-        <translation type="unfinished">Make compound</translation>
+        <translation type="unfinished">Fazer composto</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a compound of several shapes</source>
-        <translation type="unfinished">Make a compound of several shapes</translation>
+        <translation type="unfinished">Fazer composto de várias formas</translation>
     </message>
 </context>
 <context>
@@ -779,7 +779,7 @@
     <message>
         <location line="-835"/>
         <source>Make a section of two shapes</source>
-        <translation>Make a section of two shapes</translation>
+        <translation>Selecionar duas formas</translation>
     </message>
     <message>
         <location line="-2"/>
@@ -820,7 +820,7 @@
     <message>
         <location line="+1"/>
         <source>Create simple copy</source>
-        <translation>Create simple copy</translation>
+        <translation>Criar cópia simples</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1219,18 +1219,14 @@
     <message>
         <location line="+85"/>
         <source>Succeeded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Suceeded</source>
-        <translation type="obsolete">Suceeded</translation>
+        <translation type="unfinished">Succeeded</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+5"/>
         <location line="+5"/>
         <source>Failed</source>
-        <translation type="unfinished">Failed</translation>
+        <translation type="unfinished">Falhou</translation>
     </message>
 </context>
 <context>
@@ -1253,12 +1249,12 @@
     <message>
         <location line="+52"/>
         <source>Select faces</source>
-        <translation type="unfinished">Select faces</translation>
+        <translation type="unfinished">Faces selecionadas</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Select edges</source>
-        <translation type="unfinished">Select edges</translation>
+        <translation type="unfinished">Arestas selecionadas</translation>
     </message>
     <message>
         <location line="-104"/>
@@ -1298,12 +1294,12 @@
     <message>
         <location line="+1"/>
         <source>Constant Length</source>
-        <translation type="unfinished">Constant Length</translation>
+        <translation type="unfinished">Comprimento Constante</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Variable Length</source>
-        <translation type="unfinished">Variable Length</translation>
+        <translation type="unfinished">Comprimento Variável</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1314,12 +1310,12 @@
         <location line="+1"/>
         <location line="+520"/>
         <source>Start length</source>
-        <translation type="unfinished">Start length</translation>
+        <translation type="unfinished">Início do comprimento</translation>
     </message>
     <message>
         <location line="-519"/>
         <source>End length</source>
-        <translation type="unfinished">End length</translation>
+        <translation type="unfinished">Fim do comprimento</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1391,7 +1387,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IGES</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1401,7 +1397,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Units for export of IGES</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1421,37 +1417,37 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Enable B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable B-REP mode</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Importar</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Skip blank entities</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Header</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Company</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">produto</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Author</translation>
     </message>
 </context>
 <context>
@@ -1459,7 +1455,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">STEP</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1469,7 +1465,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Units for export of STEP</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1489,27 +1485,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Scheme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Scheme</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Header</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Company</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Author</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">produto</translation>
     </message>
 </context>
 <context>
@@ -1872,13 +1868,13 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+16"/>
         <source>Prism</source>
-        <translation type="unfinished">Prism</translation>
+        <translation type="unfinished">Prisma</translation>
     </message>
     <message>
         <location line="+27"/>
         <location filename="../../DlgPrimitives.cpp" line="+67"/>
         <source>Spiral</source>
-        <translation type="unfinished">Spiral</translation>
+        <translation type="unfinished">Espiral</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -1901,7 +1897,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+14"/>
         <source>Regular polygon</source>
-        <translation type="unfinished">Regular polygon</translation>
+        <translation type="unfinished">Polígono regular</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1963,28 +1959,28 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parâmetro U:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parâmetros V:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">Raio 2: {3:?}</translation>
+        <translation type="unfinished">Raio 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parâmetro V:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parâmetro U:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -1998,13 +1994,13 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+150"/>
         <location line="+882"/>
         <source>Polygon:</source>
-        <translation type="unfinished">Polygon:</translation>
+        <translation type="unfinished">Polígono:</translation>
     </message>
     <message>
         <location line="-862"/>
         <location line="+882"/>
         <source>Circumradius:</source>
-        <translation type="unfinished">Circumradius:</translation>
+        <translation type="unfinished">Raio externo:</translation>
     </message>
     <message>
         <location line="-831"/>
@@ -2049,12 +2045,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+88"/>
         <source>Growth:</source>
-        <translation type="unfinished">Growth:</translation>
+        <translation type="unfinished">Crescimento:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of rotations:</source>
-        <translation type="unfinished">Number of rotations:</translation>
+        <translation type="unfinished">Número de rotações:</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -2125,13 +2121,13 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgPrimitives.ui" line="-493"/>
         <source>Pitch:</source>
-        <translation>Pitch:</translation>
+        <translation>Altura:</translation>
     </message>
     <message>
         <location line="-1200"/>
         <location filename="../../DlgPrimitives.cpp" line="+192"/>
         <source>Helix</source>
-        <translation>Helix</translation>
+        <translation>Hélice</translation>
     </message>
     <message>
         <source>3D View</source>
@@ -2183,7 +2179,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Create Solid</source>
-        <translation type="unfinished">Create Solid</translation>
+        <translation type="unfinished">Criar Sólido</translation>
     </message>
     <message>
         <location filename="../../DlgRevolution.cpp" line="+176"/>
@@ -2314,27 +2310,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+19"/>
         <source>Automatically refine model after boolean operation</source>
-        <translation>Automatically refine model after boolean operation</translation>
+        <translation>Refinar os modelos automaticamente após operação booleana</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Automatically refine model after sketch-based operation</source>
-        <translation type="unfinished">Automatically refine model after sketch-based operation</translation>
+        <translation type="unfinished">Refinar modelos automaticamente após alterações no esboço (sketch)</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Object naming</source>
-        <translation type="unfinished">Object naming</translation>
+        <translation type="unfinished">Nomeação de objetos</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add name of base object</source>
-        <translation type="unfinished">Add name of base object</translation>
+        <translation type="unfinished">Adicionar o nome do objeto base</translation>
     </message>
     <message>
         <location line="-48"/>
         <source>Automatically check model after boolean operation</source>
-        <translation>Automatically check model after boolean operation</translation>
+        <translation>Verificar os modelos automaticamente após uma operação booleana</translation>
     </message>
 </context>
 <context>
@@ -2342,22 +2338,22 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgSettingsObjectColor.ui" line="+14"/>
         <source>Part colors</source>
-        <translation type="unfinished">Part colors</translation>
+        <translation type="unfinished">Cores de peças (Part)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Default Part colors</source>
-        <translation type="unfinished">Default Part colors</translation>
+        <translation type="unfinished">Cores predefinidas das peças (Part)</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default shape color</source>
-        <translation type="unfinished">Default shape color</translation>
+        <translation type="unfinished">Cor predefinida das formas</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The default color for new shapes</source>
-        <translation type="unfinished">The default color for new shapes</translation>
+        <translation type="unfinished">Cor predefinida para novas formas</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -2368,18 +2364,18 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line color for new shapes</source>
-        <translation type="unfinished">The default line color for new shapes</translation>
+        <translation type="unfinished">Cor predefinida de linha para novas formas</translation>
     </message>
     <message>
         <location line="-42"/>
         <source>Default line width</source>
-        <translation type="unfinished">Default line width</translation>
+        <translation type="unfinished">Largura predefinida de linha</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line thickness for new shapes</source>
-        <translation type="unfinished">The default line thickness for new shapes</translation>
+        <translation type="unfinished">Espessura de linha predefinida para novas formas</translation>
     </message>
     <message>
         <location line="-65"/>
@@ -2390,22 +2386,22 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-43"/>
         <source>Default vertex color</source>
-        <translation type="unfinished">Default vertex color</translation>
+        <translation type="unfinished">Cor predefinida de vértices</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Default vertex size</source>
-        <translation type="unfinished">Default vertex size</translation>
+        <translation type="unfinished">Tamanho predefinido de vértice</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Bounding box color</source>
-        <translation type="unfinished">Bounding box color</translation>
+        <translation type="unfinished">Cor da caixa delimitadora</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of bounding boxes in the 3D view</source>
-        <translation type="unfinished">The color of bounding boxes in the 3D view</translation>
+        <translation type="unfinished">A cor de caixas delimitadoras na vista de 3D</translation>
     </message>
 </context>
 <context>
@@ -2426,7 +2422,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../Location.ui" line="+14"/>
         <source>Location</source>
-        <translation>Location</translation>
+        <translation>Local</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2449,7 +2445,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location filename="../../TaskLoft.cpp" line="+73"/>
         <location line="+145"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+        <translation type="unfinished">Vertice/Aresta/Arame(wire)/Face</translation>
     </message>
     <message>
         <location line="-144"/>
@@ -2465,7 +2461,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+0"/>
         <source>At least two vertices, edges, wires or faces are required.</source>
-        <translation type="unfinished">At least two vertices, edges, wires or faces are required.</translation>
+        <translation type="unfinished">São necessários pelo menos dois vértices, arestas, arames ou faces.</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2486,7 +2482,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../Mirroring.ui" line="+14"/>
         <source>Mirroring</source>
-        <translation>Mirroring</translation>
+        <translation>Espelhamento</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2496,22 +2492,22 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Mirror plane:</source>
-        <translation>Mirror plane:</translation>
+        <translation>Plano de espelhamento:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>XY plane</source>
-        <translation>XY plane</translation>
+        <translation>Plano XY</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>XZ plane</source>
-        <translation>XZ plane</translation>
+        <translation>Plano XZ</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>YZ plane</source>
-        <translation>YZ plane</translation>
+        <translation>Plano YZ</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2536,7 +2532,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../Mirroring.cpp" line="+121"/>
         <source>Select a shape for mirroring, first.</source>
-        <translation>Select a shape for mirroring, first.</translation>
+        <translation>Selecione primeiro uma forma para espelhar.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2595,12 +2591,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selecione três ou mais vértices</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Select one or more edges</source>
-        <translation>Select one or more edges</translation>
+        <translation>Selecione um ou mais arestas</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2620,7 +2616,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selecione uma lista de vértices</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2654,7 +2650,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-281"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Vertex/Edge/Wire/Face</translation>
+        <translation type="unfinished">Vertice/Aresta/Arame(wire)/Face</translation>
     </message>
     <message>
         <location line="+129"/>
@@ -2670,7 +2666,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2680,7 +2676,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+0"/>
         <source>At least one edge or wire is required.</source>
-        <translation>At least one edge or wire is required.</translation>
+        <translation>É necessário pelo menos uma aresta ou arame(wire).</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2690,7 +2686,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+0"/>
         <source>&apos;%1&apos; cannot be used as profile and path.</source>
-        <translation type="unfinished">&apos;%1&apos; cannot be used as profile and path.</translation>
+        <translation type="unfinished">&apos;%1&apos; não pode ser usado como o perfil e caminho.</translation>
     </message>
     <message>
         <location line="+37"/>
@@ -2705,13 +2701,13 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one or more connected edges in the 3d view and press &apos;Done&apos;</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The selected sweep path is invalid.</translation>
     </message>
 </context>
 <context>
@@ -2918,7 +2914,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Box selection</source>
-        <translation type="unfinished">Box selection</translation>
+        <translation type="unfinished">Caixa de seleção</translation>
     </message>
 </context>
 <context>
@@ -3066,7 +3062,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Face from vertices</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3109,7 +3105,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sweep Path</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3226,12 +3222,12 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../ViewProviderMirror.cpp" line="+77"/>
         <source>Edit mirror plane</source>
-        <translation>Edit mirror plane</translation>
+        <translation>Editar o plano de espelho</translation>
     </message>
     <message>
         <location line="+300"/>
         <source>Edit chamfer edges</source>
-        <translation>Edit chamfer edges</translation>
+        <translation>Editar as arestas de chanfre</translation>
     </message>
     <message>
         <location line="+141"/>
@@ -3257,7 +3253,7 @@ Do you want to continue?</translation>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Import-Export</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3339,42 +3335,42 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Curve</source>
-        <translation>Invalid Point On Curve</translation>
+        <translation>Ponto na Curva Inválido</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Curve On Surface</source>
-        <translation>Invalid Point On Curve On Surface</translation>
+        <translation>Ponto na Curva Inválido na Superfície</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Point On Surface</source>
-        <translation>Invalid Point On Surface</translation>
+        <translation>Ponto na Superfície Inválido</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No 3D Curve</source>
-        <translation>No 3D Curve</translation>
+        <translation>Sem Curva 3D</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Multiple 3D Curve</source>
-        <translation>Multiple 3D Curve</translation>
+        <translation>Curva 3D Múltipla</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid 3D Curve</source>
-        <translation>Invalid 3D Curve</translation>
+        <translation>Curva 3D inválida</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No Curve On Surface</source>
-        <translation>No Curve On Surface</translation>
+        <translation>Sem Curva na Superfície</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid Curve On Surface</source>
-        <translation>Invalid Curve On Surface</translation>
+        <translation>Curva na Superfície Inválida</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3459,7 +3455,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Redundant Face</source>
-        <translation>Redundant Face</translation>
+        <translation>Face redundante</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3494,12 +3490,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Invalid Tolerance Value</source>
-        <translation>Invalid Tolerance Value</translation>
+        <translation>Valor de tolerância inválido</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Check Failed</source>
-        <translation>Check Failed</translation>
+        <translation>Verificação falhou</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3576,7 +3572,7 @@ Do you want to continue?</translation>
         <location filename="../../TaskDimension.cpp" line="+546"/>
         <location line="+1040"/>
         <source>Selections</source>
-        <translation type="unfinished">Selections</translation>
+        <translation type="unfinished">Seleções</translation>
     </message>
     <message>
         <location line="-1033"/>
@@ -3587,7 +3583,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-265"/>
         <source>Reset Dialog</source>
-        <translation type="unfinished">Reset Dialog</translation>
+        <translation type="unfinished">Valor de tolerância inválido</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3602,7 +3598,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+5"/>
         <source>Clear All</source>
-        <translation type="unfinished">Clear All</translation>
+        <translation type="unfinished">Limpar tudo</translation>
     </message>
 </context>
 <context>
@@ -3635,7 +3631,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+2"/>
         <source>Boolean</source>
-        <translation>Boolean</translation>
+        <translation>Booleano</translation>
     </message>
 </context>
 </TS>

@@ -60,7 +60,7 @@
     <name>CmdViewMeasureClearAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation type="unfinished">Вимірювання</translation>
     </message>
     <message>
         <source>Clear measurement</source>
@@ -71,11 +71,11 @@
     <name>CmdViewMeasureToggleAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation type="unfinished">Вимірювання</translation>
     </message>
     <message>
         <source>Toggle measurement</source>
-        <translation type="unfinished">Toggle measurement</translation>
+        <translation type="unfinished">Перемкнути вимірювання</translation>
     </message>
 </context>
 <context>
@@ -129,7 +129,7 @@
     </message>
     <message>
         <source>as:</source>
-        <translation type="unfinished">as:</translation>
+        <translation type="unfinished">як:</translation>
     </message>
     <message>
         <source>=&gt;</source>
@@ -160,7 +160,7 @@
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Filename</translation>
+        <translation type="unfinished">Ім&apos;я файлу</translation>
     </message>
 </context>
 <context>
@@ -239,13 +239,12 @@
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
-        <translation type="unfinished">Press middle and left or right mouse button</translation>
+        <translation type="unfinished">Натисніть середню та ліву або праву кнопку миші</translation>
     </message>
     <message>
         <source>Scroll middle mouse button or keep middle button pressed
 while doing a left or right click and move the mouse up or down</source>
-        <translation type="unfinished">Scroll middle mouse button or keep middle button pressed
-while doing a left or right click and move the mouse up or down</translation>
+        <translation type="unfinished">Прокрутіть середню кнопку мишки або клікніть і рухайте мишку вверх або вниз утримуючи нажатою середню кнопку</translation>
     </message>
 </context>
 <context>
@@ -313,7 +312,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Word size</translation>
+        <translation type="unfinished">Розмір слова</translation>
     </message>
 </context>
 <context>
@@ -470,7 +469,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished">Username:</translation>
+        <translation type="unfinished">ім&apos;я користувача:</translation>
     </message>
     <message>
         <source>Site:</source>
@@ -478,7 +477,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 на %2</translation>
     </message>
 </context>
 <context>
@@ -488,12 +487,8 @@ while doing a left or right click and move the mouse up or down</translation>
         <translation type="unfinished">Оберіть піктограму</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">Додати піктограми...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon folders...</translation>
     </message>
 </context>
 <context>
@@ -944,87 +939,87 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Алюміній</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Латунь</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Бронза</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Мідь</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Хром</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Смарагд</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Золото</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Нефрит</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Metalized</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Обсидіан</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pewter</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plaster</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plastic</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ruby</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Satin</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Shiny plastic</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Срібло</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сталь</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stone</translation>
     </message>
 </context>
 <context>
@@ -1134,7 +1129,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Enable tiled background</translation>
+        <translation type="unfinished">Увімкнути мозаїчний фон</translation>
     </message>
     <message>
         <source>Style sheet:</source>
@@ -1317,7 +1312,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+        <translation type="unfinished">Ви не маєте права на запис до цього каталогу. Будь ласка, оберіть інший.</translation>
     </message>
 </context>
 <context>
@@ -1516,15 +1511,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>License information:</source>
-        <translation type="unfinished">License information:</translation>
+        <translation type="unfinished">Відомості про ліцензію:</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">URL ліцензії</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="unfinished">Open in browser</translation>
+        <translation type="unfinished">Відкрити у браузері</translation>
     </message>
 </context>
 <context>
@@ -1590,23 +1585,19 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
         <source>Link</source>
-        <translation type="unfinished">Link</translation>
+        <translation type="unfinished">Посилання</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation type="unfinished">Показати всі типи об&apos;єктів</translation>
     </message>
     <message>
         <source>No selection</source>
         <translation type="unfinished">Нічого не вибрано</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Please select an object of the list</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please select an object from the list</translation>
     </message>
 </context>
 <context>
@@ -1787,7 +1778,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished">Anti-Aliasing</translation>
+        <translation type="unfinished">Згладжування</translation>
     </message>
     <message>
         <source>None</source>
@@ -1981,91 +1972,91 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Authoring and License</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Author name</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set on save</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Назва компанії</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default license</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default license for new documents</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All rights reserved</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Public Domain</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Other</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">URL ліцензії</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">An URL where the user can find more details about the license</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default company to use for new files</translation>
     </message>
 </context>
 <context>
@@ -2160,10 +2151,6 @@ Specify another directory, please.</source>
     <message>
         <source>Black</source>
         <translation type="unfinished">Чорний</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">Прозорість</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2409,11 +2396,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">US customary (in/lb)</translation>
+        <translation type="unfinished">Система мір США (дюйм / фунт)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
-        <translation type="unfinished">Number of decimals:</translation>
+        <translation type="unfinished">Кількість десяткових знаків:</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
@@ -2561,18 +2548,18 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 на %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished">Save File</translation>
+        <translation type="unfinished">Зберегти файл</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished">Download canceled: %1</translation>
+        <translation type="unfinished">Завантаження скасовано: %1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
@@ -2580,31 +2567,31 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation type="unfinished">Помилка відкриття файлу для зберігання: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Error saving: %1</translation>
+        <translation type="unfinished">Помилка збереження: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Network Error: %1</translation>
+        <translation type="unfinished">Помилка мережі: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished">seconds</translation>
+        <translation type="unfinished">секунд</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished">minutes</translation>
+        <translation type="unfinished">хвилин</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 remaining</translation>
+        <translation type="unfinished">- %4 %5 залишилося</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished">%1 of %2 (%3/sec) %4</translation>
+        <translation type="unfinished">%1 з %2 (%3/сек) %4</translation>
     </message>
     <message>
         <source>?</source>
@@ -2612,76 +2599,72 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 of %2 - Stopped</translation>
+        <translation type="unfinished">%1 з %2 - Зупинено</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished">bytes</translation>
+        <translation type="unfinished">байт</translation>
     </message>
     <message>
         <source>kB</source>
-        <translation type="unfinished">kB</translation>
+        <translation type="unfinished">кБ</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished">MB</translation>
+        <translation type="unfinished">Мб</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Downloads</translation>
+        <translation type="unfinished">Завантаження</translation>
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Clean up</translation>
+        <translation type="unfinished">Прибрати</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished">0 Items</translation>
+        <translation type="unfinished">0 елементів</translation>
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Download Manager</translation>
+        <translation type="unfinished">Менеджер завантажень</translation>
     </message>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished">1 Download</translation>
+        <translation type="unfinished">1 завантаження</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 Downloads</translation>
+        <translation type="unfinished">%1 завантажень</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">Додати іконку</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon folders</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add icon folder</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add or remove custom icon folders</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Видалити папку</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
     </message>
 </context>
 <context>
@@ -2935,11 +2918,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Incorrect quantity</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
     </message>
 </context>
 <context>
@@ -3064,7 +3047,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished">Model</translation>
+        <translation type="unfinished">Модель</translation>
     </message>
 </context>
 <context>
@@ -3179,39 +3162,39 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пошук</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Searches object labels</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Clears the search field</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select only</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects only this object</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Зняти виділення</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deselects this object</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoom fit</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects and fits this object in the 3D window</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3219,7 +3202,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects and locates this object in the tree view</translation>
     </message>
 </context>
 <context>
@@ -3412,27 +3395,27 @@ Do you want to save your changes?</source>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG format (*.png)</translation>
+        <translation type="unfinished">Формат PNG (*. png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Bitmap format (*.bmp)</translation>
+        <translation type="unfinished">Формат Bitmap (*. bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF format (*.gif)</translation>
+        <translation type="unfinished">Формат GIF (*. gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPG format (*.jpg)</translation>
+        <translation type="unfinished">JPG формат (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG format (*.svg)</translation>
+        <translation type="unfinished">Формат SVG (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF format (*.pdf)</translation>
+        <translation type="unfinished">Формат PDF (*. PDF)</translation>
     </message>
     <message>
         <source>Export graph</source>
@@ -3447,7 +3430,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Зберегти значення</translation>
     </message>
 </context>
 <context>
@@ -3473,7 +3456,7 @@ Do you want to save your changes?</source>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Список</translation>
     </message>
 </context>
 <context>
@@ -3553,7 +3536,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Залежності об&apos;єктів</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
@@ -3645,7 +3628,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">No point was found on model</translation>
+        <translation type="unfinished">Не знайдено точки на моделі</translation>
     </message>
 </context>
 <context>
@@ -3665,11 +3648,11 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Зберегти значення</translation>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Clear list</translation>
     </message>
 </context>
 <context>
@@ -3706,7 +3689,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Edit...</translation>
+        <translation type="unfinished">Редагувати...</translation>
     </message>
 </context>
 <context>
@@ -3923,11 +3906,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Automatic python modules documentation</translation>
+        <translation type="unfinished">Автоматичне документування модуля python</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
-        <translation type="unfinished">Opens a browser to show the Python modules documentation</translation>
+        <translation type="unfinished">Відкриється веб-переглядач для відображення документації модулів Python</translation>
     </message>
 </context>
 <context>
@@ -4016,7 +3999,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation type="unfinished">Press CTRL and SHIFT buttons</translation>
+        <translation type="unfinished">Одночасно натисніть кнопки CTRL і SHIFT</translation>
     </message>
 </context>
 <context>
@@ -4095,11 +4078,11 @@ Do you want to specify another directory?</source>
     <name>NetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Ввести логін і пароль для &quot;%1&quot; на %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Підключення до проксі-сервера за допомогою &quot;%1&quot;:&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -4189,7 +4172,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Введене у рядку %1 значення не є числом</translation>
     </message>
 </context>
 <context>
@@ -4432,10 +4415,6 @@ Do you want to continue?</source>
         <translation type="unfinished">Незбережений документ</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">Зберегти документ перед закриттям?</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">Зберегти макрос</translation>
     </message>
@@ -4590,11 +4569,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Do you want to save your changes to document &apos;%1&apos; before closing?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Якщо ви не збережете зміни, вони будуть утрачені.</translation>
     </message>
 </context>
 <context>
@@ -5040,15 +5019,15 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD FAQ</source>
-        <translation type="unfinished">FreeCAD FAQ</translation>
+        <translation type="unfinished">Часті питання по FreeCAD</translation>
     </message>
     <message>
         <source>Frequently Asked Questions on the FreeCAD website</source>
-        <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+        <translation type="unfinished">Часті питання на веб-сайті FreeCAD</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
-        <translation type="unfinished">Frequently Asked Questions</translation>
+        <translation type="unfinished">Найчастіші питання</translation>
     </message>
 </context>
 <context>
@@ -5059,15 +5038,15 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD Forum</source>
-        <translation type="unfinished">FreeCAD Forum</translation>
+        <translation type="unfinished">Форум FreeCAD</translation>
     </message>
     <message>
         <source>The FreeCAD forum, where you can find help from other users</source>
-        <translation type="unfinished">The FreeCAD forum, where you can find help from other users</translation>
+        <translation type="unfinished">Форум FreeCAD, де ви можете отримати допомогу від інших користувачів</translation>
     </message>
     <message>
         <source>The FreeCAD Forum</source>
-        <translation type="unfinished">The FreeCAD Forum</translation>
+        <translation type="unfinished">Форум FreeCAD</translation>
     </message>
 </context>
 <context>
@@ -5078,15 +5057,15 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Python scripting documentation</source>
-        <translation type="unfinished">Python scripting documentation</translation>
+        <translation type="unfinished">Документація зі сценаріїв Python</translation>
     </message>
     <message>
         <source>Python scripting documentation on the FreeCAD website</source>
-        <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+        <translation type="unfinished">Документація зі сценаріїв Python на сайті FreeCAD</translation>
     </message>
     <message>
         <source>PowerUsers documentation</source>
-        <translation type="unfinished">PowerUsers documentation</translation>
+        <translation type="unfinished">Документація для досвідчених користувачів</translation>
     </message>
 </context>
 <context>
@@ -5097,11 +5076,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Users documentation</source>
-        <translation type="unfinished">Users documentation</translation>
+        <translation type="unfinished">Документація користувача</translation>
     </message>
     <message>
         <source>Documentation for users on the FreeCAD website</source>
-        <translation type="unfinished">Documentation for users on the FreeCAD website</translation>
+        <translation type="unfinished">Документація користувача на веб-сайті FreeCAD</translation>
     </message>
 </context>
 <context>
@@ -5210,7 +5189,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Step into</source>
-        <translation type="unfinished">Step into</translation>
+        <translation type="unfinished">Крок у</translation>
     </message>
 </context>
 <context>
@@ -5319,7 +5298,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished">Unnamed</translation>
+        <translation type="unfinished">Без назви</translation>
     </message>
 </context>
 <context>
@@ -5372,11 +5351,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Не вдалося відкрити файл</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Завантаження файлу %1 не підтримується</translation>
     </message>
 </context>
 <context>
@@ -5893,11 +5872,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">&amp;Units calculator...</translation>
+        <translation type="unfinished">Калькулятор одиниць...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
-        <translation type="unfinished">Start the units calculator</translation>
+        <translation type="unfinished">Запустити калькулятор одиниць</translation>
     </message>
 </context>
 <context>
@@ -6132,20 +6111,12 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished">Стандартні вигляди</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">Стерео червоний/зелений</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">Перемикнути стерео перегляд у червоний/зелений</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Стерео червоно-блакитне</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Перемкнути перегляд на червоно-блакитне стерео</translation>
     </message>
 </context>
 <context>
@@ -6246,11 +6217,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Extend the FreeCAD 3D Window to a Oculus Rift</translation>
     </message>
 </context>
 <context>
@@ -6406,13 +6377,12 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Залежності об&apos;єктів</translation>
     </message>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">This object is referenced by other objects and thus these objects might get broken.
-Are you sure to continue?</translation>
+        <translation type="unfinished">На цей об&apos;єкт посилаються інші об&apos;єкти, і тому ті об&apos;єкти можуть бути пошкоджені. Бажаєте продовжити?</translation>
     </message>
 </context>
 <context>
@@ -6443,11 +6413,11 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation type="unfinished">Затінений</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation type="unfinished">Режим затіненя</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6455,20 +6425,19 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Points mode</translation>
+        <translation type="unfinished">Режим точок</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Залежності об&apos;єктів</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</translation>
+        <translation type="unfinished">Виділені об&apos;єкти залежать від невиділених об&apos;єктів. Ви хочете дублювати їх також?</translation>
     </message>
 </context>
 <context>

@@ -24,7 +24,7 @@
     <message>
         <location line="+1"/>
         <source>Chamfer the selected edges of a shape</source>
-        <translation>crea un Chaflan en las aristas seleccionadas de una forma</translation>
+        <translation>Crea un Chaflán en las aristas seleccionadas de una figura</translation>
     </message>
 </context>
 <context>
@@ -109,7 +109,7 @@
     <message>
         <location line="+1"/>
         <source>Mirrored</source>
-        <translation>Reflejado</translation>
+        <translation>Espejado</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -145,7 +145,7 @@
     <message>
         <location line="+1"/>
         <source>Pad</source>
-        <translation>Protrusión</translation>
+        <translation>Extruir</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -263,49 +263,29 @@
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alta precisión:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Verdadero</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Falso</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
+        <translation type="unfinished">Engranaje con dentado exterior:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
         <translation type="unfinished">Ángulo de presión:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">grados</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Número de curvas:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
     </message>
 </context>
 <context>
@@ -649,7 +629,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+5"/>
         <source>Up to last</source>
-        <translation>Cerca del último</translation>
+        <translation>Hasta el último</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -992,7 +972,7 @@ Please check one or more edge entities first.</source>
         <location line="-293"/>
         <location line="+294"/>
         <source>Up to face</source>
-        <translation>Cerca de la cara</translation>
+        <translation>Hasta la cara</translation>
     </message>
     <message>
         <location line="-293"/>
@@ -1109,7 +1089,7 @@ Please check one or more edge entities first.</source>
         <location line="-276"/>
         <location line="+278"/>
         <source>Up to face</source>
-        <translation>Cerca de la cara</translation>
+        <translation>Hasta la cara</translation>
     </message>
     <message>
         <location line="-284"/>
@@ -1415,7 +1395,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Por favor crea una operación aditiva o sustractiva primero</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1488,13 +1468,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Se ha perdido el enlace con el boceto base</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No se puede editar el objet ya que se ha perdido el enlace a su boceto base.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1535,12 +1515,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Editar ranura</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Editar revolución</translation>
     </message>
 </context>
 <context>

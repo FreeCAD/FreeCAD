@@ -24,7 +24,7 @@
     <message>
       <location filename="PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation type="unfinished">Configure the axes parameters</translation>
+      <translation type="unfinished">Налаштування параметрів осей</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation type="unfinished">Save the plot as an image file</translation>
+      <translation type="unfinished">Зберегти діаграму як файл зображення</translation>
     </message>
   </context>
   <context>
@@ -238,12 +238,12 @@
     <message>
       <location filename="PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation type="unfinished">The grid must be activated on top of a plot document</translation>
+      <translation type="unfinished">Сітка має бути активована поверх діаграми</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="126"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation type="unfinished">Опис позначок має бути активований поверх діаграми</translation>
     </message>
   </context>
   <context>

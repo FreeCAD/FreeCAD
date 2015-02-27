@@ -49,13 +49,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Vista Boceto</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserta una vista de boceto del/los objeto(s) seleccionado(s) en el dibujo activo</translation>
     </message>
 </context>
 <context>
@@ -194,7 +194,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Project shape onto a user-defined plane</source>
-        <translation>Forma de proyecto en un plano definido por el usuario</translation>
+        <translation>Projectar silueta a un plano definido por el usuario</translation>
     </message>
 </context>
 <context>
@@ -311,26 +311,28 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orientación diferente de la hoja</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">La impresora utiliza una orientación de papel distinta a la del dibujo.
+¿Desea continuar?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Distinto tamaño de papel</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">La impresora usa un tamaño de papel distinto al del dibujo.
+¿Desea continuar?</translation>
     </message>
 </context>
 <context>
@@ -369,7 +371,7 @@ Do you want to continue?</source>
     <message>
         <location line="+71"/>
         <source> Axis out and right</source>
-        <translation type="unfinished"> Axis out and right</translation>
+        <translation type="unfinished"> sentido de axis a derecha</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -706,12 +708,12 @@ Do you want to continue?</source>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserte nuevo dibujo %1%2 %3 (%4)</translation>
     </message>
 </context>
 <context>
@@ -764,7 +766,7 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>No page found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No se ha encontrado una página de dibujo</translation>
     </message>
     <message>
         <location line="-250"/>
@@ -773,12 +775,12 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>Create a page first.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cree una página de dibujo primero.</translation>
     </message>
     <message>
         <location line="-182"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seleccione un único objeto parte.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -789,7 +791,7 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>

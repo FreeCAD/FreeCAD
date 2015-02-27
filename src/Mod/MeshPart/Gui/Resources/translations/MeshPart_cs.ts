@@ -119,7 +119,7 @@
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Quad dominated</translation>
+        <translation type="unfinished">Převládající Quad elementy</translation>
     </message>
     <message>
         <source>Settings</source>

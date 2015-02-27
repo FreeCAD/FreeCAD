@@ -12,7 +12,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Add a part to the Analysis</source>
-        <translation type="unfinished">Add a part to the Analysis</translation>
+        <translation type="unfinished">Додати частину до аналізу</translation>
     </message>
 </context>
 <context>
@@ -116,7 +116,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Create a FEM analysis</source>
-        <translation type="unfinished">Create a FEM analysis</translation>
+        <translation type="unfinished">Створити МСЕ аналіз</translation>
     </message>
 </context>
 <context>
@@ -199,7 +199,7 @@
     <message>
         <location filename="../../TaskAnalysisInfo.cpp" line="+45"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">Набір вузлів</translation>
     </message>
 </context>
 <context>
@@ -207,7 +207,7 @@
     <message>
         <location filename="../../TaskCreateNodeSet.cpp" line="+63"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">Набір вузлів</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+356"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+365"/>
         <source>Input error</source>
         <translation type="unfinished">Помилка вводу</translation>
     </message>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../../TaskDriver.cpp" line="+51"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">Набір вузлів</translation>
     </message>
 </context>
 <context>
@@ -269,7 +269,7 @@
     <message>
         <location filename="../../TaskFemConstraint.cpp" line="-120"/>
         <source>FEM constraint parameters</source>
-        <translation type="unfinished">FEM constraint parameters</translation>
+        <translation type="unfinished">Обмежувальні параметри МСЕ</translation>
     </message>
 </context>
 <context>
@@ -287,7 +287,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Помилка виділення</translation>
     </message>
     <message>
         <location line="-37"/>
@@ -302,7 +302,7 @@
     <message>
         <location line="+7"/>
         <source>Only cylindrical faces can be picked</source>
-        <translation type="unfinished">Only cylindrical faces can be picked</translation>
+        <translation type="unfinished">Можуть бути обраними лише циліндричні поверхні</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -331,7 +331,7 @@
         <location line="+61"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Помилка виділення</translation>
     </message>
     <message>
         <location line="-5"/>
@@ -347,36 +347,24 @@
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-282"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-291"/>
         <source>Delete</source>
         <translation type="unfinished">Видалити</translation>
     </message>
     <message>
-        <source>Force [N]</source>
-        <translation type="obsolete">Сила [Н]</translation>
-    </message>
-    <message>
-        <source>Force [N/mm]</source>
-        <translation type="obsolete">Сила [Н/мм]</translation>
-    </message>
-    <message>
-        <source>Force [N/mmÂ²]</source>
-        <translation type="obsolete">Force [N/mmÂ²]</translation>
-    </message>
-    <message>
         <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Point load [N]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load [N/mm]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Line load [N/mm]</translation>
     </message>
     <message utf8="true">
         <location line="+2"/>
         <source>Area load [N/mm²]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Area load [N/mm²]</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -385,7 +373,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Помилка виділення</translation>
     </message>
     <message>
         <location line="-42"/>
@@ -420,7 +408,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Помилка виділення</translation>
     </message>
     <message>
         <location line="-10"/>
@@ -443,7 +431,7 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="-110"/>
         <source>Pulley diameter</source>
-        <translation type="unfinished">Pulley diameter</translation>
+        <translation type="unfinished">Діаметр шківу</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -472,7 +460,7 @@
     <message>
         <location filename="../../../MechanicalAnalysis.ui" line="+14"/>
         <source>Mechanical analysis</source>
-        <translation type="unfinished">Mechanical analysis</translation>
+        <translation type="unfinished">Механічний аналіз</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -481,13 +469,23 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Write Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Run Calculix</source>
         <translation type="unfinished">Run Calculix</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Time:</source>
-        <translation type="unfinished">Time:</translation>
+        <translation type="unfinished">Час:</translation>
     </message>
     <message>
         <location filename="../../../MechanicalMaterial.ui" line="+14"/>
@@ -497,27 +495,27 @@
     <message>
         <location line="+7"/>
         <source>choose...</source>
-        <translation type="unfinished">choose...</translation>
+        <translation type="unfinished">обрати...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>MatWeb database...</source>
-        <translation type="unfinished">MatWeb database...</translation>
+        <translation type="unfinished">База даних MatWeb...</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Young&apos;s Modulus:</source>
-        <translation type="unfinished">Young&apos;s Modulus:</translation>
+        <translation type="unfinished">Модуль Юнга:</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Pa</source>
-        <translation type="unfinished">Pa</translation>
+        <translation type="unfinished">Па</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Poisson Ratio:</source>
-        <translation type="unfinished">Poisson Ratio:</translation>
+        <translation type="unfinished">Коефіцієнт Пуассона:</translation>
     </message>
 </context>
 <context>
@@ -550,7 +548,7 @@
         <location line="-56"/>
         <location line="+64"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
-        <translation type="unfinished">Обрати край, грань або тіло. Можливо обрати лише одне тіло.</translation>
+        <translation type="unfinished">Обрати грань, поверхню або тіло. Можливо обрати лише одне тіло.</translation>
     </message>
     <message>
         <location line="-59"/>
@@ -567,7 +565,7 @@
     <message>
         <location filename="../../TaskFemConstraint.cpp" line="+16"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation type="unfinished">Гаразд</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -577,7 +575,7 @@
     <message>
         <location filename="../../ViewProviderFemConstraint.cpp" line="+144"/>
         <source>Edit constraint</source>
-        <translation type="unfinished">Edit constraint</translation>
+        <translation type="unfinished">Редагувати обмеження</translation>
     </message>
     <message>
         <location line="+280"/>
@@ -628,13 +626,18 @@
         <source>Meshing</source>
         <translation type="unfinished">Meshing</translation>
     </message>
+    <message>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
+        <source>Constraint force</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ShowDisplacement</name>
     <message>
         <location filename="../../../ShowDisplacement.ui" line="+14"/>
         <source>Show result</source>
-        <translation type="unfinished">Show result</translation>
+        <translation type="unfinished">Показати результат</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -649,12 +652,12 @@
     <message>
         <location line="-39"/>
         <source>Max:</source>
-        <translation type="unfinished">Max:</translation>
+        <translation type="unfinished">Максимум:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Min:</source>
-        <translation type="unfinished">Min:</translation>
+        <translation type="unfinished">Мінімум:</translation>
     </message>
     <message>
         <location line="-44"/>
@@ -664,7 +667,7 @@
     <message>
         <location line="+10"/>
         <source>Avg:</source>
-        <translation type="unfinished">Avg:</translation>
+        <translation type="unfinished">Середнє:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -699,7 +702,7 @@
     <message>
         <location line="+12"/>
         <source>Meshes:</source>
-        <translation type="unfinished">Meshes:</translation>
+        <translation type="unfinished">Сітки:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -793,7 +796,7 @@
     <message>
         <location line="+24"/>
         <source>Diameter</source>
-        <translation type="unfinished">Diameter</translation>
+        <translation type="unfinished">Діаметр</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -803,7 +806,7 @@
     <message>
         <location line="+27"/>
         <source>Center distance</source>
-        <translation type="unfinished">Center distance</translation>
+        <translation type="unfinished">Середина відстані</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -841,7 +844,7 @@
     <message>
         <location line="+15"/>
         <source>Gear diameter</source>
-        <translation type="unfinished">Gear diameter</translation>
+        <translation type="unfinished">Діаметр передачі</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -851,7 +854,7 @@
     <message>
         <location line="+24"/>
         <source>Center distance</source>
-        <translation type="unfinished">Center distance</translation>
+        <translation type="unfinished">Середина відстані</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -876,12 +879,12 @@
     <message>
         <location line="+27"/>
         <source>Force Direction</source>
-        <translation type="unfinished">Force Direction</translation>
+        <translation type="unfinished">Напрямок сили</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reversed direction</source>
-        <translation type="unfinished">Reversed direction</translation>
+        <translation type="unfinished">Зворотній напрямок</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -958,7 +961,7 @@
     <message>
         <location line="+8"/>
         <source>Max. Size:</source>
-        <translation type="unfinished">Max. Size:</translation>
+        <translation type="unfinished">Макс. розмір:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -998,7 +1001,7 @@
     <message>
         <location line="+5"/>
         <source>UserDefined</source>
-        <translation type="unfinished">UserDefined</translation>
+        <translation type="unfinished">Визначений користувачем</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1008,7 +1011,7 @@
     <message>
         <location line="+14"/>
         <source>Nbr. Segs per Edge:</source>
-        <translation type="unfinished">Nbr. Segs per Edge:</translation>
+        <translation type="unfinished">Кількість відрізків на ребро:</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1018,22 +1021,22 @@
     <message>
         <location line="+16"/>
         <source>Optimize</source>
-        <translation type="unfinished">Optimize</translation>
+        <translation type="unfinished">Оптимізувати</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Node count: </source>
-        <translation type="unfinished">Node count: </translation>
+        <translation type="unfinished">Кількість вузлів: </translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Triangle count:</source>
-        <translation type="unfinished">Triangle count:</translation>
+        <translation type="unfinished">Кількість трикутників:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Tetraeder count:</source>
-        <translation type="unfinished">Tetraeder count:</translation>
+        <translation type="unfinished">Кількість тетраедрів:</translation>
     </message>
 </context>
 <context>

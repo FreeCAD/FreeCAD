@@ -596,12 +596,12 @@
     <message>
         <location line="+1"/>
         <source>Loft...</source>
-        <translation>屋根型...</translation>
+        <translation>ロフト...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Utility to loft</source>
-        <translation>屋根型ユーティリティ</translation>
+        <translation>ロフトユーティリティ</translation>
     </message>
     <message>
         <source>Advanced utility to lofts</source>
@@ -876,12 +876,12 @@
     <message>
         <location line="+1"/>
         <source>Sweep...</source>
-        <translation>掃引...</translation>
+        <translation>スイープ...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Utility to sweep</source>
-        <translation>掃引ユーティリティ</translation>
+        <translation>スイープユーティリティ</translation>
     </message>
 </context>
 <context>
@@ -1219,11 +1219,7 @@
     <message>
         <location line="+85"/>
         <source>Succeeded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Suceeded</source>
-        <translation type="obsolete">完了</translation>
+        <translation type="unfinished">正常終了</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1298,12 +1294,12 @@
     <message>
         <location line="+1"/>
         <source>Constant Length</source>
-        <translation type="unfinished">Constant Length</translation>
+        <translation type="unfinished">一定長さ</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Variable Length</source>
-        <translation type="unfinished">Variable Length</translation>
+        <translation type="unfinished">可変長さ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1314,12 +1310,12 @@
         <location line="+1"/>
         <location line="+520"/>
         <source>Start length</source>
-        <translation type="unfinished">Start length</translation>
+        <translation type="unfinished">開始長さ</translation>
     </message>
     <message>
         <location line="-519"/>
         <source>End length</source>
-        <translation type="unfinished">End length</translation>
+        <translation type="unfinished">終了長さ</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1393,7 +1389,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IGES</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1403,7 +1399,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IGESエクスポート時の単位</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1423,37 +1419,37 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Enable B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">B-REPモードを有効化</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">インポート</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">空のエンティティをスキップ</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ヘッダー</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">会社</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">製品</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">作成者</translation>
     </message>
 </context>
 <context>
@@ -1461,7 +1457,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">STEP</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1471,7 +1467,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">STEPエクスポート時の単位</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1491,27 +1487,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Scheme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">スキーム</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ヘッダー</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">会社</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">作成者</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">製品</translation>
     </message>
 </context>
 <context>
@@ -1965,28 +1961,28 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Uパラメーター:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vパラメーター:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">半径 2: {3:?}</translation>
+        <translation type="unfinished">半径 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vパラメーター:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Uパラメーター:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -2321,17 +2317,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+13"/>
         <source>Automatically refine model after sketch-based operation</source>
-        <translation type="unfinished">Automatically refine model after sketch-based operation</translation>
+        <translation type="unfinished">スケッチ ベースの操作の後に自動でモデルを高精度化</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Object naming</source>
-        <translation type="unfinished">Object naming</translation>
+        <translation type="unfinished">オブジェクトに名前をつける</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add name of base object</source>
-        <translation type="unfinished">Add name of base object</translation>
+        <translation type="unfinished">ベース オブジェクトの名前を追加</translation>
     </message>
     <message>
         <location line="-48"/>
@@ -2375,7 +2371,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-42"/>
         <source>Default line width</source>
-        <translation type="unfinished">Default line width</translation>
+        <translation type="unfinished">既定の線幅</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2597,7 +2593,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3 つ以上の頂点を選択</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2622,7 +2618,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">頂点リストを選択</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2672,7 +2668,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">スイープ経路にしたい接続エッジを1つまたは複数選択してください</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2707,13 +2703,13 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3Dビューで1つまたは複数の接続エッジを選択して「Done」を押してください</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">選択されたスイープ経路が正しくありません。</translation>
     </message>
 </context>
 <context>
@@ -2721,7 +2717,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../TaskCheckGeometry.cpp" line="+548"/>
         <source>Shape Content</source>
-        <translation type="unfinished">Shape Content</translation>
+        <translation type="unfinished">シェイプのコンテンツ</translation>
     </message>
 </context>
 <context>
@@ -3068,7 +3064,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">幾つかの頂点から面にする。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3111,7 +3107,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">スイープ経路</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3258,7 +3254,7 @@ Do you want to continue?</source>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">インポート/エクスポート</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3515,57 +3511,58 @@ Do you want to continue?</source>
     <message>
         <location line="+12"/>
         <source>BOPAlgo CheckUnknown</source>
-        <translation type="unfinished">BOPAlgo CheckUnknown</translation>
+        <translation type="unfinished">BOPAlgo 不明です</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo BadType</source>
-        <translation type="unfinished">BOPAlgo BadType</translation>
+        <translation type="unfinished">BOPAlgo 不正な型です</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo SelfIntersect</source>
-        <translation type="unfinished">BOPAlgo SelfIntersect</translation>
+        <translation type="unfinished">BOPAlgo 自己交差しています</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo TooSmallEdge</source>
-        <translation type="unfinished">BOPAlgo TooSmallEdge</translation>
+        <translation type="unfinished">BOPAlgo エッジが短すぎます</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NonRecoverableFace</source>
-        <translation type="unfinished">BOPAlgo NonRecoverableFace</translation>
+        <translation type="unfinished">BOPAlgo 修復できない面があります</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfVertex</source>
-        <translation type="unfinished">BOPAlgo IncompatibilityOfVertex</translation>
+        <translation type="unfinished">BOPAlgo 頂点に互換性がありません
+</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfEdge</source>
-        <translation type="unfinished">BOPAlgo IncompatibilityOfEdge</translation>
+        <translation type="unfinished">BOPAlgo エッジに互換性がありません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfFace</source>
-        <translation type="unfinished">BOPAlgo IncompatibilityOfFace</translation>
+        <translation type="unfinished">BOPAlgo 面に互換性がありません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo OperationAborted</source>
-        <translation type="unfinished">BOPAlgo OperationAborted</translation>
+        <translation type="unfinished">BOPAlgo 操作が破棄されました</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo GeomAbs_C0</source>
-        <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
+        <translation type="unfinished">BOPAlgo GeomAbs C0</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NotValid</source>
-        <translation type="unfinished">BOPAlgo NotValid</translation>
+        <translation type="unfinished">BOPAlgo 不正です</translation>
     </message>
     <message>
         <location line="+284"/>

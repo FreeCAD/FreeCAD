@@ -6,12 +6,12 @@
     <message>
       <location filename="InitGui.py" line="44"/>
       <source>Plot edition tools</source>
-      <translation type="unfinished">Käyrän tulostuksen muokkaustyökalut</translation>
+      <translation type="unfinished">Pistekuvioiden muokkaustyökalut</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="47"/>
       <source>Plot</source>
-      <translation type="unfinished">Käyrän tulostus</translation>
+      <translation type="unfinished">Pistekuvio -plot</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="PlotGui.py" line="65"/>
       <source>Configure the axes parameters</source>
-      <translation type="unfinished">Configure the axes parameters</translation>
+      <translation type="unfinished">Määritä akselit-parametrit</translation>
     </message>
   </context>
   <context>
@@ -89,7 +89,7 @@
     <message>
       <location filename="PlotGui.py" line="48"/>
       <source>Save the plot as an image file</source>
-      <translation type="unfinished">Save the plot as an image file</translation>
+      <translation type="unfinished">Tallenna pistekuvio kuvatiedostona</translation>
     </message>
   </context>
   <context>
@@ -238,12 +238,12 @@
     <message>
       <location filename="PlotGui.py" line="97"/>
       <source>The grid must be activated on top of a plot document</source>
-      <translation type="unfinished">The grid must be activated on top of a plot document</translation>
+      <translation type="unfinished">Ruudukko täytyy aktivoida pistekuvioasiakirjan päällä</translation>
     </message>
     <message>
       <location filename="PlotGui.py" line="126"/>
       <source>The legend must be activated on top of a plot document</source>
-      <translation type="unfinished">The legend must be activated on top of a plot document</translation>
+      <translation type="unfinished">Selitykset täytyy aktivoida pistekuvioasiakirjan päälle</translation>
     </message>
   </context>
   <context>

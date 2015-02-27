@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de" sourcelanguage="en">
 <context>
     <name>CmdPointsExport</name>
     <message>
@@ -232,7 +232,7 @@
         <location filename="../../Command.cpp" line="-84"/>
         <location line="+43"/>
         <source>Ascii Points (*.asc);;All Files (*.*)</source>
-        <translation>ASCII-Punkte (*.asc);;Alle Dateien (*.*)</translation>
+        <translation>ASCII-Punkte (.asc); Alle Dateien (*.*)</translation>
     </message>
 </context>
 <context>

@@ -312,7 +312,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Word size</translation>
+        <translation type="unfinished">Tamaño de palabra</translation>
     </message>
 </context>
 <context>
@@ -330,11 +330,11 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::Clipping</name>
     <message>
         <source>Clipping</source>
-        <translation type="unfinished">Clipping</translation>
+        <translation type="unfinished">Recorte</translation>
     </message>
     <message>
         <source>Clipping X</source>
-        <translation type="unfinished">Clipping X</translation>
+        <translation type="unfinished">Recorte X</translation>
     </message>
     <message>
         <source>Flip</source>
@@ -346,15 +346,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Clipping Y</source>
-        <translation type="unfinished">Clipping Y</translation>
+        <translation type="unfinished">Recorte Y</translation>
     </message>
     <message>
         <source>Clipping Z</source>
-        <translation type="unfinished">Clipping Z</translation>
+        <translation type="unfinished">Recorte Z</translation>
     </message>
     <message>
         <source>Clipping custom direction</source>
-        <translation type="unfinished">Clipping custom direction</translation>
+        <translation type="unfinished">Dirección personalizada de recorte</translation>
     </message>
     <message>
         <source>View</source>
@@ -362,7 +362,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Adjust to view direction</translation>
+        <translation type="unfinished">Ajuste a la dirección de la vista</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -473,11 +473,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Site:</source>
-        <translation type="unfinished">Site:</translation>
+        <translation type="unfinished">Sitio web:</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 en %2</translation>
     </message>
 </context>
 <context>
@@ -487,12 +487,8 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished">Seleccionar icono</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">Añadir iconos...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Carpetas de icono...</translation>
     </message>
 </context>
 <context>
@@ -943,87 +939,87 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aluminio</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Latón</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bronce</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cobre</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cromo</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esmeralda</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Oro</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jade</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Metalizado</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obsidiana</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Estaño</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Yeso</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plástico</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rubí</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Satén</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plástico brillante</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plata</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Acero</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Piedra</translation>
     </message>
 </context>
 <context>
@@ -1133,11 +1129,11 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Enable tiled background</translation>
+        <translation type="unfinished">Habilitar fondo en mosaico</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation type="unfinished">Hoja de estilo:</translation>
     </message>
 </context>
 <context>
@@ -1160,7 +1156,7 @@ Por favor defina otro atajo de teclado.</translation>
     </message>
     <message>
         <source>No style sheet</source>
-        <translation type="unfinished">No style sheet</translation>
+        <translation type="unfinished">Ninguna hoja de estilo</translation>
     </message>
 </context>
 <context>
@@ -1316,7 +1312,7 @@ Este archivo ya existe.</translation>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+        <translation type="unfinished">No tiene ningún permiso de escritura para el directorio. Por favor, seleccione otro.</translation>
     </message>
 </context>
 <context>
@@ -1601,12 +1597,8 @@ Especifique otro directorio, por favor.</translation>
         <translation type="unfinished">Ninguna selección</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Por favor, selecciona un objeto de la lista</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Por favor, selecciona un objeto de la lista</translation>
     </message>
 </context>
 <context>
@@ -1981,75 +1973,75 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Autoría y licencia</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nombre del autor</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;El nombre a usar en la creación de documento.&lt;/p&gt;&lt;p&gt;En blanco para mantener anónimo.&lt;/p&gt;&lt;p&gt;También puede utilizar el formulario:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt; john@doe.com &amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Si ésto está activado, el campo &quot;Última modificación por&quot; se establecerá al guardar el fichero</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Establecer al guardar</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Organización</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Licencia por defecto</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">La licencia por defecto para nuevos documentos</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Todos los derechos reservados</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Reconocimiento</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Reconocimiento - CompartirIgual</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Reconocimiento - SinObraDerivada</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Reconocimiento - NoComercial</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Reconocimiento - NoComercial - CompartirIgual</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Reconocimiento - NoComercial - SinObraDerivada</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dominio público</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Otros</translation>
     </message>
     <message>
         <source>License URL</source>
@@ -2057,15 +2049,15 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Una dirección URL donde el usuario puede encontrar más detalles acerca de la licencia</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://es.wikipedia.org/wiki/Todos_los_derechos_reservados</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">La compañía por defecto a usar para nuevos archivos</translation>
     </message>
 </context>
 <context>
@@ -2160,10 +2152,6 @@ Especifique otro directorio, por favor.</translation>
     <message>
         <source>Black</source>
         <translation type="unfinished">Negro</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">Transparente</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2510,7 +2498,7 @@ Especifique otro directorio, por favor.</translation>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
         <source>Unit mismatch</source>
-        <translation type="unfinished">Unit mismatch</translation>
+        <translation type="unfinished">Unidad incompatible</translation>
     </message>
 </context>
 <context>
@@ -2560,7 +2548,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 en %2</translation>
     </message>
 </context>
 <context>
@@ -2579,7 +2567,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation type="unfinished">Error al abrir archivo guardado: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
@@ -2656,31 +2644,27 @@ Especifique otro directorio, por favor.</translation>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">Agregar icono</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Carpetas de icono</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Añadir icono de la carpeta</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Agregar o eliminar carpetas de icono personalizado</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eliminar carpeta</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">La acción de eliminar carpeta se hará efectiva al reiniciar la aplicación.</translation>
     </message>
 </context>
 <context>
@@ -2934,11 +2918,11 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cantidad incorrecta</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Algunos campos contienen datos incorrectos, asegúrese de introducirlos en el lugar apropiado.</translation>
     </message>
 </context>
 <context>
@@ -3178,39 +3162,39 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Búsqueda</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Busca etiquetas de objetos</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Limpia el campo de búsqueda</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seleccione sólo</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selecciona sólo este objeto</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deseleccionar</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Anula la selección de este objeto</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ampliar ajuste</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selecciona y ajusta éste objeto en la ventana 3D</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3218,7 +3202,7 @@ Especifique otro directorio, por favor.</translation>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selecciona y localiza éste objeto en la vista de árbol</translation>
     </message>
 </context>
 <context>
@@ -3472,7 +3456,7 @@ Desea guardar los cambios?</translation>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lista</translation>
     </message>
 </context>
 <context>
@@ -3644,7 +3628,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">No point was found on model</translation>
+        <translation type="unfinished">Ningún punto se encontró en el modelo</translation>
     </message>
 </context>
 <context>
@@ -3668,7 +3652,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Limpiar lista</translation>
     </message>
 </context>
 <context>
@@ -3922,7 +3906,7 @@ Desea especificar otro directorio?</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Automatic python modules documentation</translation>
+        <translation type="unfinished">Documentación de módulos python automático</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
@@ -4188,7 +4172,7 @@ Desea especificar otro directorio?</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">La linea de entrada %1 no es un número</translation>
     </message>
 </context>
 <context>
@@ -4431,10 +4415,6 @@ Desea continuar?</translation>
         <translation type="unfinished">Documento sin guardar</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">Guardar documento antes de cerrar?</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">Guardar macro</translation>
     </message>
@@ -4590,11 +4570,11 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">¿Desea guardar el documento &apos;%1&apos; antes de cerrar?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">De no guardar, se perderán los cambios.</translation>
     </message>
 </context>
 <context>
@@ -5210,7 +5190,7 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     </message>
     <message>
         <source>Step into</source>
-        <translation type="unfinished">Step into</translation>
+        <translation type="unfinished">Entrar</translation>
     </message>
 </context>
 <context>
@@ -5372,11 +5352,11 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No se puede abrir el archivo</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No está soportada la carga del archivo %1</translation>
     </message>
 </context>
 <context>
@@ -6132,20 +6112,12 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
         <translation type="unfinished">Vista estándar</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">Estéreo rojo/verde</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">Cambiar la visualización estéreo a rojo/verde</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Estéreo rojo/cian</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cambiar a visualización estéreo rojo/cian</translation>
     </message>
 </context>
 <context>
@@ -6246,11 +6218,11 @@ Tienes que finzalizar o cancelar la edición en el panel de tareas.</translation
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Extender la vista 3D a Oculus Rift</translation>
     </message>
 </context>
 <context>

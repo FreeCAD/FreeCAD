@@ -420,11 +420,11 @@
     </message>
     <message>
         <source>Segment by tool mesh</source>
-        <translation>Segment by tool mesh</translation>
+        <translation>Segmentovat pomocí sítě</translation>
     </message>
     <message>
         <source>Creates a segment from a given tool mesh</source>
-        <translation>Creates a segment from a given tool mesh</translation>
+        <translation>Vytvoří segment pomocí dané sítě</translation>
     </message>
 </context>
 <context>
@@ -450,11 +450,11 @@
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Trim mesh with a plane</translation>
+        <translation type="unfinished">Oříznout síť pomocí roviny</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Trims a mesh with a plane</translation>
+        <translation type="unfinished">Ořízne síť pomocí roviny</translation>
     </message>
 </context>
 <context>
@@ -554,7 +554,7 @@
     </message>
     <message>
         <source>Face indices</source>
-        <translation>Face indices</translation>
+        <translation>Indexy plochy</translation>
     </message>
     <message>
         <source>Number of faces:</source>
@@ -590,7 +590,7 @@
     </message>
     <message>
         <source>Folds on surface</source>
-        <translation>Folds on surface</translation>
+        <translation>Záhyby na povrchu</translation>
     </message>
 </context>
 <context>
@@ -601,19 +601,19 @@
     </message>
     <message>
         <source>Invalid neighbour indices</source>
-        <translation>Invalid neighbour indices</translation>
+        <translation>Neplatné sousední indexy</translation>
     </message>
     <message>
         <source>Invalid face indices</source>
-        <translation>Invalid face indices</translation>
+        <translation>Neplatné indexy povrchů</translation>
     </message>
     <message>
         <source>Invalid point indices</source>
-        <translation>Invalid point indices</translation>
+        <translation>Neplatné indexy bodů</translation>
     </message>
     <message>
         <source>Multiple point indices</source>
-        <translation>Multiple point indices</translation>
+        <translation>Indexy vícenásobných bodů</translation>
     </message>
     <message>
         <source>Non-manifolds</source>
@@ -645,15 +645,15 @@
     </message>
     <message>
         <source>No invalid indices</source>
-        <translation>No invalid indices</translation>
+        <translation>Žádné neplatné indexy</translation>
     </message>
     <message>
         <source>No degenerations</source>
-        <translation>No degenerations</translation>
+        <translation>Žádná degenerace</translation>
     </message>
     <message>
         <source>%1 degenerated faces</source>
-        <translation>%1 degenerated faces</translation>
+        <translation>%1 degenerovaných ploch</translation>
     </message>
     <message>
         <source>No duplicated faces</source>
@@ -681,7 +681,7 @@
     </message>
     <message>
         <source>Degenerations</source>
-        <translation>Degenerations</translation>
+        <translation>Degenerace</translation>
     </message>
     <message>
         <source>Duplicated faces</source>
@@ -706,8 +706,8 @@
     <message>
         <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-        <translation>Check failed due to folds on the surface.
-Please run the command to repair folds first</translation>
+        <translation>Kontrola selhala kvůli záhybům na povrchu.
+Prosím spusťte nejdřív příkaz pro opravu záhybů</translation>
     </message>
     <message>
         <source>No folds on surface</source>
@@ -794,7 +794,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Sampling:</source>
-        <translation>Sampling:</translation>
+        <translation>Vzorkování:</translation>
     </message>
     <message>
         <source>Edge length:</source>
@@ -832,7 +832,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Backface color</source>
-        <translation>Backface color</translation>
+        <translation>Barva zadní stěny</translation>
     </message>
     <message>
         <source>Smoothing</source>
@@ -840,19 +840,19 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;This is the smallest angle between two faces where normals get calculated to do flat shading.&lt;/p&gt;&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If the angle between the normals of two neighbouring faces is less than the crease angle, the faces will be smoothshaded around their common edge.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt; &lt;body style=&quot;white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt; &lt;p style=&quot;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; Toto je nejmenší úhel mezi dvěma plochamy, jejichž normály jsou vypočtené pro rovinné stínování.&lt;/p&gt;&lt;p style=&quot;margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt; Je-li úhel mezi normálami dvou sousedních ploch menší než úhel vrásky, plochy budou vyhlazeny podle jejich běžných hran&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Crease angle</source>
-        <translation>Vytvořit úhel</translation>
+        <translation>Úhel vrásky</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defines the appearance of surfaces.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;If this option is set Phong shading is used, if it is unset flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Rovinné stínování/Phongovo stínování&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Definuje vzhled povrchů.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Při rovinném stínováním nejsou normály povrchů definovány pomocí vrcholů, což vede k nereálnému vzhledu zakřivených povrchů. Naproti tomu Phongovo stínování dává hladší vzhled. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Je-li nastavena tato možnost, pak je použito Phongovo stínování. V opačném případě je použito rovinné stínování.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Define normal per vertex</source>
-        <translation>Define normal per vertex</translation>
+        <translation>Definovat normálu podle vrcholu</translation>
     </message>
     <message utf8="true">
         <source> °</source>
@@ -864,7 +864,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Default appearance for new meshes</source>
-        <translation>Default appearance for new meshes</translation>
+        <translation>Výchozí vzhled pro nové sítě</translation>
     </message>
     <message>
         <source>Default line color</source>
@@ -919,11 +919,11 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Mu:</source>
-        <translation>Mu:</translation>
+        <translation>μ:</translation>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Only selection</translation>
+        <translation type="unfinished">Pouze výběr</translation>
     </message>
 </context>
 <context>
@@ -1082,11 +1082,11 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Use a brush tool to select the area</translation>
+        <translation type="unfinished">Použít nástroj štětec pro výběr oblasti</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Clears completely the selected area</translation>
+        <translation type="unfinished">Zcela vymaže vybranou oblast</translation>
     </message>
 </context>
 <context>
@@ -1104,11 +1104,11 @@ Please run the command to repair folds first</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Select plane</translation>
+        <translation type="unfinished">Vyberte rovinu</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+        <translation type="unfinished">Prosím vyberte rovinu, kterou ořezáváte síť.</translation>
     </message>
 </context>
 <context>
@@ -1119,13 +1119,13 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Unknwon error occured while running OpenSCAD.</translation>
+        <translation type="unfinished">Během chodu OpenSCADu se objevila neznámá chyba.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</translation>
+        <translation type="unfinished">OpenSCAD nelze najít ve Vašem systému.
+Prosím navštivte http://www.openscad.org/index.html a nainstalujte ho.</translation>
     </message>
 </context>
 <context>
@@ -1282,11 +1282,11 @@ Max = &lt;%4,%5,%6&gt;</translation>
         <translation>Všechny soubory sítí (*stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
-        <translation type="obsolete">X3D Extensible 3D(*.x3d)</translation>
+        <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D (*.x3d)</source>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

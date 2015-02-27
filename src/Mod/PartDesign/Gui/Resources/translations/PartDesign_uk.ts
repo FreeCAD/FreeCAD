@@ -24,7 +24,7 @@
     <message>
         <location line="+1"/>
         <source>Chamfer the selected edges of a shape</source>
-        <translation>Створити фаску на обраному краю фігури</translation>
+        <translation>Створити фаску на обраному ребрі фігури</translation>
     </message>
 </context>
 <context>
@@ -37,7 +37,7 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Draft</translation>
+        <translation>Креслення</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -60,7 +60,7 @@
     <message>
         <location line="+1"/>
         <source>Make a fillet on an edge, face or body</source>
-        <translation>Зробити округлення краю, грані або тіла</translation>
+        <translation>Зробити округлення ребра, грані або тіла</translation>
     </message>
 </context>
 <context>
@@ -258,54 +258,34 @@
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation type="unfinished">Модулі:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">High precision:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">True</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">False</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">мм</translation>
+        <translation type="unfinished">External gear:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
         <translation type="unfinished">Pressure angle:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">deg</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Number of Curves:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
     </message>
 </context>
 <context>
@@ -445,7 +425,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+126"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Edit fillet</translation>
+        <translation type="unfinished">Редагувати скруглення</translation>
     </message>
 </context>
 <context>
@@ -731,12 +711,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-63"/>
         <source>Select an edge or a face</source>
-        <translation>Обрати край або поверхню</translation>
+        <translation>Обрати ребро або поверхню</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Невизначено</translation>
     </message>
 </context>
 <context>
@@ -802,12 +782,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Select a face</translation>
+        <translation type="unfinished">Обрати поверхню</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Невизначено</translation>
     </message>
 </context>
 <context>
@@ -1255,7 +1235,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Невизначено</translation>
     </message>
 </context>
 <context>
@@ -1344,13 +1324,13 @@ Please check one or more edge entities first.</source>
         <location line="-72"/>
         <location line="+152"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Please create a sketch or 2D object first. It must have a support face on a solid</translation>
+        <translation>Будь ласка, створіть ескізу або 2D об&apos;єкт спочатку. Він повинен мати підтримуючу поверхню на суцільному тілі</translation>
     </message>
     <message>
         <location line="+74"/>
         <location line="+151"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
-        <translation>Обрати край, грань або тіло. Можливо обрати лише одне тіло.</translation>
+        <translation>Обрати грань, поверхню або тіло. Можливо обрати лише одне тіло.</translation>
     </message>
     <message>
         <location line="-146"/>
@@ -1417,7 +1397,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please create a subtractive or additive feature first</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1490,13 +1470,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lost link to base sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The object can&apos;t be edited because the link to the the base sketch is lost.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1517,7 +1497,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderFillet.cpp" line="-18"/>
         <source>Edit fillet</source>
-        <translation>Edit fillet</translation>
+        <translation>Редагувати скруглення</translation>
     </message>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
@@ -1537,12 +1517,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit groove</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit revolve</translation>
     </message>
 </context>
 <context>

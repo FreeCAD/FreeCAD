@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Tessellate shape</source>
-        <translation>シェイプを細分化します。</translation>
+        <translation>シェイプをテッセレーションします。</translation>
     </message>
 </context>
 <context>
@@ -34,7 +34,7 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Meshing options</translation>
+        <translation type="unfinished">メッシュ作成オプション</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -54,7 +54,7 @@
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maximum edge length:</translation>
+        <translation type="unfinished">最大エッジ長さ:</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -64,7 +64,7 @@
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Very coarse</translation>
+        <translation type="unfinished">非常に粗い</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -84,27 +84,27 @@
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Very fine</translation>
+        <translation type="unfinished">非常に細かい</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">User defined</translation>
+        <translation type="unfinished">ユーザー定義</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Mesh size grading:</translation>
+        <translation type="unfinished">メッシュサイズの程度</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elements per edge:</translation>
+        <translation type="unfinished">エッジあたりの要素:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Elements per curvature radius:</translation>
+        <translation type="unfinished">曲率半径あたりの要素:</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -114,12 +114,12 @@
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Second order elements</translation>
+        <translation type="unfinished">2次要素</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Quad dominated</translation>
+        <translation type="unfinished">四角形優占</translation>
     </message>
     <message>
         <source>Settings</source>

@@ -94,6 +94,7 @@
         <file>translations/Draft_zh-CN.qm</file>
         <file>translations/Draft_ro.qm</file>
         <file>translations/Draft_pt-PT.qm</file>
+        <file>translations/Draft_sr.qm</file>
         <file>ui/userprefs-base.ui</file>
         <file>ui/userprefs-snap.ui</file>
         <file>ui/userprefs-import1.ui</file>

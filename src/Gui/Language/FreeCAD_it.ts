@@ -98,7 +98,7 @@
     </message>
     <message>
         <source>Enable Translations</source>
-        <translation type="unfinished">Abilita le traduzioni</translation>
+        <translation type="unfinished">Abilita le traslazioni</translation>
     </message>
     <message>
         <source>Enable Rotations</source>
@@ -190,7 +190,7 @@
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Spostare verso l&apos;alto</translation>
+        <translation type="unfinished">Sposta verso l&apos;alto</translation>
     </message>
     <message>
         <source>Move down</source>
@@ -400,7 +400,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Enable timer</source>
-        <translation type="unfinished">Abilita timer</translation>
+        <translation type="unfinished">Abilita il timer</translation>
     </message>
     <message>
         <source> s</source>
@@ -487,12 +487,8 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished">Scegli Icona</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">Aggiungi icone...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cartella icone...</translation>
     </message>
 </context>
 <context>
@@ -503,7 +499,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Setup Custom Macros</source>
-        <translation type="unfinished">Configurare Macro Personali</translation>
+        <translation type="unfinished">Configura Macro Personali</translation>
     </message>
     <message>
         <source>Macro:</source>
@@ -675,7 +671,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Re&amp;set All</source>
-        <translation type="unfinished">Ri&amp;pristina tutto</translation>
+        <translation type="unfinished">Ripri&amp;stina tutto</translation>
     </message>
     <message>
         <source>Alt+S</source>
@@ -744,7 +740,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Sposta l&apos;elemento selezionato un livello in basso.&lt;/b&gt;&lt;p&gt;Questo cambierà anche il livello degli elementi padre.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;b&gt;Sposta l&apos;elemento selezionato un livello in basso.&lt;/b&gt;&lt;p&gt;Questo cambierà anche il livello degli elementi genitore.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move left</source>
@@ -752,7 +748,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Sposta l&apos;elemento selezionato un livello in alto.&lt;/b&gt;&lt;p&gt;Questo cambierà anche il livello degli elementi padre.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;b&gt;Sposta l&apos;elemento selezionato un livello in alto.&lt;/b&gt;&lt;p&gt;Questo cambierà anche il livello degli elementi genitore.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move down</source>
@@ -764,11 +760,11 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="unfinished">Spostare verso l&apos;alto</translation>
+        <translation type="unfinished">Sposta verso l&apos;alto</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;b&gt;Sposta l&apos;elemento selezionato in alto.&lt;/b&gt;&lt;p&gt;L&apos;elemento verrà spostato all&apos;interno del livello di gerarchia.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;b&gt;Sposta in alto l&apos;elemento selezionato.&lt;/b&gt;&lt;p&gt;L&apos;elemento verrà spostato all&apos;interno del livello di gerarchia.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>New...</source>
@@ -943,87 +939,87 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alluminio</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ottone</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bronzo</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rame</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chrome</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Smeraldo</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Oro</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Giada</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Metallizzato</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ossidiana</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Peltro</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Intonaco</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plastica</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rubino</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Raso</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plastica lucida</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Argento</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Acciaio</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pietra</translation>
     </message>
 </context>
 <context>
@@ -1066,7 +1062,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Display Items</source>
-        <translation type="unfinished">Visualizzazione elementi</translation>
+        <translation type="unfinished">Visualizza gli elementi</translation>
     </message>
     <message>
         <source>Family:</source>
@@ -1105,7 +1101,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Auto load module after start up:</source>
-        <translation type="unfinished">Caricamento automatico del modulo dopo l&apos;avvio:</translation>
+        <translation type="unfinished">Modulo da caricare automaticamente dopo l&apos;avvio:</translation>
     </message>
     <message>
         <source>Language</source>
@@ -1133,7 +1129,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Abilita sfondo a mosaico</translation>
+        <translation type="unfinished">Abilita lo sfondo a mosaico</translation>
     </message>
     <message>
         <source>Style sheet:</source>
@@ -1261,7 +1257,7 @@ Il file esiste già.</translation>
     <name>Gui::Dialog::DlgMacroRecord</name>
     <message>
         <source>Macro recording</source>
-        <translation type="unfinished">Registrazione macro</translation>
+        <translation type="unfinished">Registra macro</translation>
     </message>
     <message>
         <source>Macro name:</source>
@@ -1396,7 +1392,7 @@ Specificare un&apos;altra cartella.</translation>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
         <source>Parameter Editor</source>
-        <translation type="unfinished">Editor parametri</translation>
+        <translation type="unfinished">Editor dei parametri</translation>
     </message>
     <message>
         <source>Save to disk</source>
@@ -1488,7 +1484,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>&amp;Last modified by:</source>
-        <translation type="unfinished">&amp;Ultima modifica effettuata da:</translation>
+        <translation type="unfinished">U&amp;ltima modifica effettuata da:</translation>
     </message>
     <message>
         <source>Created &amp;by:</source>
@@ -1520,7 +1516,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">Indirizzo licenza</translation>
+        <translation type="unfinished">URL licenza</translation>
     </message>
     <message>
         <source>Open in browser</source>
@@ -1575,7 +1571,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>No source is defined.</source>
-        <translation type="unfinished">Nessuna fonte è definita.</translation>
+        <translation type="unfinished">Non è definita nessuna fonte.</translation>
     </message>
     <message>
         <source>Empty destination</source>
@@ -1601,12 +1597,8 @@ Specificare un&apos;altra cartella.</translation>
         <translation type="unfinished">Nessuna selezione</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Selezionare un oggetto dell&apos;elenco</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selezionare un oggetto dell&apos;elenco</translation>
     </message>
 </context>
 <context>
@@ -1621,7 +1613,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Record log messages</source>
-        <translation type="unfinished">Registra messaggi di log</translation>
+        <translation type="unfinished">Registra i messaggi di log</translation>
     </message>
     <message>
         <source>Record warnings</source>
@@ -1969,103 +1961,103 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Allow duplicate object labels in one document</source>
-        <translation type="unfinished">Consente la duplicazione delle etichette degli oggetti in uno stesso documento</translation>
+        <translation type="unfinished">Consenti la duplicazione delle etichette degli oggetti in uno stesso documento</translation>
     </message>
     <message>
         <source>Maximum Undo/Redo steps</source>
-        <translation type="unfinished">Massimo numero di passaggi di Annulla/Modifica</translation>
+        <translation type="unfinished">Massimo numero di passaggi di Annulla/Ripeti</translation>
     </message>
     <message>
         <source>Using Undo/Redo on documents</source>
-        <translation type="unfinished">Utilizzo di Annulla/Ripeti sui documenti</translation>
+        <translation type="unfinished">Utilizza  Annulla/Ripeti sui documenti</translation>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Diritti d&apos;autore e licenze</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nome autore</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;Nome da utilizzare alla creazione dei documenti.&lt;/p&gt;&lt;p&gt;Lasciare vuoto per i lavori anonimi.&lt;/p&gt;&lt;p&gt;Inoltre è possibile utilizzare il modulo:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Se è selezionato, quando si salva il file viene impostato il campo &quot;Ultima modifica da&quot;</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Imposta su salva</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Azienda</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Licenza di default</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">La licenza di default per i nuovi documenti</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tutti i diritti riservati</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Attribuzione</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Attribuzione-Condividi allo stesso modo</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribuzione - Non opere derivate</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Attribuzione - Non commerciale</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Attribuzione - Non commerciale - Condividi allo stesso modo</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Attribuzione - Non commerciale - Non opere derivate</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dominio Pubblico</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Altro</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">Indirizzo licenza</translation>
+        <translation type="unfinished">URL licenza</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Un URL dove l&apos;utente può trovare ulteriori dettagli sulla licenza</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://it.wikipedia.org/wiki/Copyright</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">L&apos;azienda predefinita da utilizzare per i nuovi file</translation>
     </message>
 </context>
 <context>
@@ -2132,7 +2124,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Current line highlight</source>
-        <translation type="unfinished">Evidenziazione di linea corrente</translation>
+        <translation type="unfinished">Evidenziare la linea corrente</translation>
     </message>
 </context>
 <context>
@@ -2160,10 +2152,6 @@ Specificare un&apos;altra cartella.</translation>
     <message>
         <source>Black</source>
         <translation type="unfinished">Nero</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">Trasparente</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2342,7 +2330,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Show script commands in python console</source>
-        <translation type="unfinished">Mostra i comandi di script nella console Python</translation>
+        <translation type="unfinished">Mostra lo script dei comandi nella console Python</translation>
     </message>
     <message>
         <source>Log all commands issued by menus to file:</source>
@@ -2409,7 +2397,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">Consuetudinario statunitense (in/lb)</translation>
+        <translation type="unfinished">Us comune (in/lb)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
@@ -2467,7 +2455,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>&amp;Show tips at start up</source>
-        <translation type="unfinished">&amp;Mostra i consigli all&apos;avvio</translation>
+        <translation type="unfinished">Mo&amp;stra i consigli all&apos;avvio</translation>
     </message>
     <message>
         <source>Alt+S</source>
@@ -2537,7 +2525,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation type="unfinished">Esiste già un file chiamato %1 nella directory corrente. Si desidera sovrascrivere?</translation>
+        <translation type="unfinished">Nella directory corrente esiste già un file chiamato %1 . Si desidera sovrascriverlo?</translation>
     </message>
     <message>
         <source>Unable to save the file %1: %2.</source>
@@ -2657,31 +2645,27 @@ Specificare un&apos;altra cartella.</translation>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">Aggiungi icona</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cartelle di icone</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aggiungere cartella icone</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aggiungere o rimuovere delle cartelle di icone personalizzate</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rimuovere la cartella</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rimuovere una cartella ha effetto solo dopo il riavvio di un&apos;applicazione.</translation>
     </message>
 </context>
 <context>
@@ -2935,11 +2919,11 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Quantità non corretta</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ci sono dei campi di input con valori errati, assicurarsi che i valori di posizionamento siano validi!</translation>
     </message>
 </context>
 <context>
@@ -3179,39 +3163,39 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Trova</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cerca tra le etichette degli oggetti</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vuota il campo di ricerca</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selezionare solo</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seleziona solo questo oggetto</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deseleziona</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deseleziona questo oggetto</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Adatta alla finestra</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seleziona e adatta l&apos;oggetto alla finestra 3D</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3219,7 +3203,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seleziona e individua l&apos;oggetto nella struttura ad albero</translation>
     </message>
 </context>
 <context>
@@ -3237,7 +3221,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation type="unfinished">Si è provato ad accedere all&apos;indirizzo %1 che non è disponibile. Assicurarsi che quell&apos;URL esista e provare a ricaricare la pagina.</translation>
+        <translation type="unfinished">Si è provato ad accedere all&apos;indirizzo %1 che non è disponibile. Assicurarsi che questo URL esista e provare a ricaricare la pagina.</translation>
     </message>
     <message>
         <source>Connecting to %1</source>
@@ -3473,7 +3457,7 @@ Si desidera salvare le modifiche?</translation>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elenco</translation>
     </message>
 </context>
 <context>
@@ -3558,7 +3542,7 @@ Si desidera salvare le modifiche?</translation>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-        <translation type="unfinished">Gli oggetti selezionati hanno una dipendenza rispetto agli oggetti non selezionati. Copiare anche questi?</translation>
+        <translation type="unfinished">Gli oggetti selezionati hanno una dipendenza in oggetti non selezionati. Copiare anche questi?</translation>
     </message>
 </context>
 <context>
@@ -3577,15 +3561,15 @@ Do you want to copy them, too?</source>
     </message>
     <message>
         <source>Please, select at least one point in the left and the right view</source>
-        <translation type="unfinished">Seleziona almeno un punt0 nelle viste di sinistra e destra</translation>
+        <translation type="unfinished">Seleziona almeno un punto nelle viste di sinistra e di destra</translation>
     </message>
     <message>
         <source>Please, select at least %1 points in the left and the right view</source>
-        <translation type="unfinished">Seleziona almeno %1 punti nelle viste di sinistra e destra</translation>
+        <translation type="unfinished">Seleziona almeno %1 punti nelle viste di sinistra e di destra</translation>
     </message>
     <message>
         <source>Please pick points in the left and right view</source>
-        <translation type="unfinished">Specificare i punti nelle viste di destra e sinistra</translation>
+        <translation type="unfinished">Specificare i punti nelle viste di destra e di sinistra</translation>
     </message>
     <message>
         <source>The alignment has finished</source>
@@ -3597,11 +3581,11 @@ Do you want to copy them, too?</source>
     </message>
     <message>
         <source>Too few points picked in the left view. At least %1 points are needed.</source>
-        <translation type="unfinished">I punti raccolti nella vista sinistra sono troppo pochi. Sono necessari almeno %1 punti.</translation>
+        <translation type="unfinished">I punti selezionati nella vista di sinistra non sono sufficienti. Sono necessari almeno %1 punti.</translation>
     </message>
     <message>
         <source>Too few points picked in the right view. At least %1 points are needed.</source>
-        <translation type="unfinished">I punti raccolti nella vista destra sono troppo pochi. Sono necessari almeno %1 punti.</translation>
+        <translation type="unfinished">I punti selezionati nella vista di destra non sono sufficienti. Sono necessari almeno %1 punti.</translation>
     </message>
     <message>
         <source>Different number of points picked in left and right view.
@@ -3670,7 +3654,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cancella la lista</translation>
     </message>
 </context>
 <context>
@@ -4024,7 +4008,7 @@ Vuoi specificare un&apos;altra cartella?</translation>
     <name>Gui::TreeDockWidget</name>
     <message>
         <source>Tree view</source>
-        <translation type="unfinished">Visualizzazione Struttura</translation>
+        <translation type="unfinished">Struttura</translation>
     </message>
 </context>
 <context>
@@ -4190,14 +4174,14 @@ Vuoi specificare un&apos;altra cartella?</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nella riga %1 non è stato inserito un numero</translation>
     </message>
 </context>
 <context>
     <name>QDockWidget</name>
     <message>
         <source>Tree view</source>
-        <translation type="unfinished">Visualizzazione Struttura</translation>
+        <translation type="unfinished">Struttura</translation>
     </message>
     <message>
         <source>Property view</source>
@@ -4292,7 +4276,7 @@ Vuoi specificare un&apos;altra cartella?</translation>
     </message>
     <message>
         <source>A general error occurred while loading the workbench</source>
-        <translation type="unfinished">Un errore generico è accaduto durante il caricamento dell&apos;ambiente</translation>
+        <translation type="unfinished">Durante il caricamento dell&apos;ambiente si è verificato un errore generico</translation>
     </message>
     <message>
         <source>Save views...</source>
@@ -4433,10 +4417,6 @@ Vuoi continuare?</translation>
         <translation type="unfinished">Documento non salvato</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">Salvare il documento prima di chiudere?</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">Salva macro</translation>
     </message>
@@ -4536,7 +4516,7 @@ Aprire una finestra browser e scrivere http://localhost:%1.</translation>
         <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
         <translation type="unfinished">Impossibile caricare la documentazione.
-Per poterla caricare Qt 4.4 o superiore è necessario.</translation>
+Per poterla caricare serve Qt 4.4 o superiore.</translation>
     </message>
     <message>
         <source>%1 Help</source>
@@ -4553,7 +4533,7 @@ Per poterla caricare Qt 4.4 o superiore è necessario.</translation>
     <message>
         <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-        <translation type="unfinished">un solo oggetto selezionato. Si prega di selezionare due oggetti.
+        <translation type="unfinished">Un solo oggetto selezionato. Si prega di selezionare due oggetti.
 Prestare attenzione al punto dove si fa clic.</translation>
     </message>
     <message>
@@ -4585,7 +4565,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     <message>
         <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-        <translation type="unfinished">Il documento è in modalità modifica e quindi non può essere chiuso per il momento. E&apos; necessario terminare o annullare la modifica nel pannello attività.</translation>
+        <translation type="unfinished">Attualmente il documento è in modalità modifica e quindi non può essere chiuso. E&apos; necessario terminare o annullare la modifica nel pannello attività.</translation>
     </message>
     <message>
         <source>Do you want to close this dialog?</source>
@@ -4593,11 +4573,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Si desidera salvare le modifiche apportate al documento &apos;%1&apos; prima di chiuderlo?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Se non vengono salvate, le modifiche andranno perse.</translation>
     </message>
 </context>
 <context>
@@ -5375,11 +5355,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Non è possibile aprire il file</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Il caricamento del file %1 non è supportato</translation>
     </message>
 </context>
 <context>
@@ -5761,7 +5741,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Toggle navigation/Edit mode</source>
-        <translation type="unfinished">Attiva/Disattiva modalità di spostamento o modifica</translation>
+        <translation type="unfinished">Attiva/Disattiva la modalità di spostamento o modifica</translation>
     </message>
     <message>
         <source>Toggle between navigation and edit mode</source>
@@ -5780,7 +5760,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Toggles visibility of all objects in the active document</source>
-        <translation type="unfinished">Nascondi tutti gli oggetti nel documento attivo</translation>
+        <translation type="unfinished">Nascondi tutti gli oggetti del documento attivo</translation>
     </message>
 </context>
 <context>
@@ -6135,20 +6115,12 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">Stereo rosso/verde</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">Passa alla visualizzazione stereo rosso/verde</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stereo rosso/ciano</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Commuta la visualizzazione stereo in rosso/ciano</translation>
     </message>
 </context>
 <context>
@@ -6249,11 +6221,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Estendere la finestra 3D di FreeCAD a Oculus Rift</translation>
     </message>
 </context>
 <context>

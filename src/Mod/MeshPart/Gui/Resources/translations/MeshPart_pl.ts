@@ -34,7 +34,7 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Meshing options</translation>
+        <translation type="unfinished">Opcje tworzenia siatki</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -54,72 +54,72 @@
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maximum edge length:</translation>
+        <translation type="unfinished">Maksymalna długość krawędzi:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation type="unfinished">Stopień rozdrobnienia:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Very coarse</translation>
+        <translation type="unfinished">Bardzo zgrubna</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation type="unfinished">Zgrubnie</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderate</translation>
+        <translation type="unfinished">Umiarkowanie</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation type="unfinished">Drobno</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Very fine</translation>
+        <translation type="unfinished">Bardzo dokładna</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">User defined</translation>
+        <translation type="unfinished">Zdefiniowana przez użytkownika</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Mesh size grading:</translation>
+        <translation type="unfinished">Stopnie rozmiaru siatki:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elements per edge:</translation>
+        <translation type="unfinished">Elementy na krawędź:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Elements per curvature radius:</translation>
+        <translation type="unfinished">Elementy na promień krzywizny:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimize surface</translation>
+        <translation type="unfinished">Optymalizuj powirzchnię</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Second order elements</translation>
+        <translation type="unfinished">Elementy drugiego rzędu</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Quad dominated</translation>
+        <translation type="unfinished">Dominujące czworokąty</translation>
     </message>
     <message>
         <source>Settings</source>

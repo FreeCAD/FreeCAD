@@ -12,7 +12,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Add a part to the Analysis</source>
-        <translation type="unfinished">Add a part to the Analysis</translation>
+        <translation type="unfinished">Legg til en del til analysen</translation>
     </message>
 </context>
 <context>
@@ -216,7 +216,7 @@
         <location filename="../../TaskFemConstraint.cpp" line="+184"/>
         <location line="+11"/>
         <source>Input error</source>
-        <translation type="unfinished">Input error</translation>
+        <translation type="unfinished">Inndatafeil</translation>
     </message>
     <message>
         <location line="-11"/>
@@ -229,15 +229,15 @@
     <message>
         <location filename="../../TaskFemConstraintBearing.cpp" line="+349"/>
         <source>Input error</source>
-        <translation type="unfinished">Input error</translation>
+        <translation type="unfinished">Inndatafeil</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+356"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+365"/>
         <source>Input error</source>
-        <translation type="unfinished">Input error</translation>
+        <translation type="unfinished">Inndatafeil</translation>
     </message>
 </context>
 <context>
@@ -245,7 +245,7 @@
     <message>
         <location filename="../../TaskFemConstraintGear.cpp" line="+308"/>
         <source>Input error</source>
-        <translation type="unfinished">Input error</translation>
+        <translation type="unfinished">Inndatafeil</translation>
     </message>
 </context>
 <context>
@@ -253,7 +253,7 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="+203"/>
         <source>Input error</source>
-        <translation type="unfinished">Input error</translation>
+        <translation type="unfinished">Inndatafeil</translation>
     </message>
 </context>
 <context>
@@ -347,36 +347,24 @@
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-282"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-291"/>
         <source>Delete</source>
         <translation type="unfinished">Slett</translation>
     </message>
     <message>
-        <source>Force [N]</source>
-        <translation type="obsolete">Force [N]</translation>
-    </message>
-    <message>
-        <source>Force [N/mm]</source>
-        <translation type="obsolete">Force [N/mm]</translation>
-    </message>
-    <message>
-        <source>Force [N/mmÂ²]</source>
-        <translation type="obsolete">Force [N/mmÂ²]</translation>
-    </message>
-    <message>
         <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Point load [N]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load [N/mm]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Line load [N/mm]</translation>
     </message>
     <message utf8="true">
         <location line="+2"/>
         <source>Area load [N/mm²]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Area load [N/mm²]</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -481,6 +469,16 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Write Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Run Calculix</source>
         <translation type="unfinished">Run Calculix</translation>
     </message>
@@ -627,6 +625,11 @@
         <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="+57"/>
         <source>Meshing</source>
         <translation type="unfinished">Meshing</translation>
+    </message>
+    <message>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
+        <source>Constraint force</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -783,7 +786,7 @@
     <message>
         <location line="+9"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Legg til referanse</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -836,7 +839,7 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Legg til referanse</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -909,7 +912,7 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Legg til referanse</translation>
     </message>
 </context>
 <context>
@@ -922,7 +925,7 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Legg til referanse</translation>
     </message>
     <message>
         <location line="+12"/>

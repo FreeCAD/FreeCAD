@@ -24,7 +24,7 @@
     <message>
         <location line="+1"/>
         <source>Chamfer the selected edges of a shape</source>
-        <translation>Притупить фаской выбранные края фигуры</translation>
+        <translation>Притупить фаской выбранные грани фигуры</translation>
     </message>
 </context>
 <context>
@@ -37,12 +37,12 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Высота осадки</translation>
+        <translation>Притяжка</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a draft on a face</source>
-        <translation>Сделать набросок на поверхности</translation>
+        <translation>Сделать притяжку грани</translation>
     </message>
 </context>
 <context>
@@ -60,7 +60,7 @@
     <message>
         <location line="+1"/>
         <source>Make a fillet on an edge, face or body</source>
-        <translation>Сделать скругление кромки, поверхности или тела</translation>
+        <translation>Скруглить грани поверхности или тела</translation>
     </message>
 </context>
 <context>
@@ -91,12 +91,12 @@
     <message>
         <location line="+1"/>
         <source>LinearPattern</source>
-        <translation>ЛинейныйМассив</translation>
+        <translation>Линейный массив</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a linear pattern feature</source>
-        <translation>Создать линейный шаблон детали</translation>
+        <translation>Создать линейный массив из детали</translation>
     </message>
 </context>
 <context>
@@ -127,12 +127,12 @@
     <message>
         <location line="+1"/>
         <source>MultiTransform</source>
-        <translation>MultiTransform</translation>
+        <translation>Множественное преобразование</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a multitransform feature</source>
-        <translation>Создать multitransform деталь</translation>
+        <translation>Создать множественное преобразование</translation>
     </message>
 </context>
 <context>
@@ -145,12 +145,12 @@
     <message>
         <location line="+1"/>
         <source>Pad</source>
-        <translation>Заполнитель</translation>
+        <translation>Вырост</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Pad a selected sketch</source>
-        <translation>Заполнитель выбранного эскиза</translation>
+        <translation>Выдавить выбранный эскиз</translation>
     </message>
 </context>
 <context>
@@ -168,7 +168,7 @@
     <message>
         <location line="+1"/>
         <source>create a pocket with the selected sketch</source>
-        <translation>создать карман с выбранным эскизом</translation>
+        <translation>Создать карман в выбранном эскизе</translation>
     </message>
 </context>
 <context>
@@ -181,12 +181,12 @@
     <message>
         <location line="+1"/>
         <source>PolarPattern</source>
-        <translation>КруговойМассив</translation>
+        <translation>Круговой массив</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a polar pattern feature</source>
-        <translation>Создать полярный шаблон детали</translation>
+        <translation>Создать круговой массив из детали</translation>
     </message>
 </context>
 <context>
@@ -248,64 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Involute parameter</translation>
+        <translation type="unfinished">Инволютивный параметр</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Number of teeth:</translation>
+        <translation type="unfinished">Количество зубов:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation type="unfinished">Модуль:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Высокая точность:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Да</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Нет</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">мм</translation>
+        <translation type="unfinished">внешнее зацепление:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Pressure angle:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">deg</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Number of Curves:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
+        <translation type="unfinished">Угол зацепления:</translation>
     </message>
 </context>
 <context>
@@ -337,8 +317,8 @@
     <message>
         <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-        <translation type="obsolete">Допустимая форма не выбрана.
-Пожалуйста сначала выберите допустимую форму в выпадающем списке.</translation>
+        <translation type="obsolete">Допустимая фигура не выбрана.
+Сначала выберите допустимую фигуру в раскрывающемся списке.</translation>
     </message>
     <message>
         <source>No edge selected</source>
@@ -347,7 +327,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <source>No edge entity is checked to chamfer.
 Please check one or more edge entities first.</source>
-        <translation type="obsolete">Нельзя сгладить край обьекта. Пожалуйста, выберите края обьекта, один или более.</translation>
+        <translation type="obsolete">Выберите хотя бы одно ребро объекта для сглаживания.</translation>
     </message>
 </context>
 <context>
@@ -531,7 +511,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+10"/>
         <source>Remove face</source>
-        <translation>Удалить грань</translation>
+        <translation>Убрать грань</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -556,7 +536,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="-347"/>
         <source>Draft parameters</source>
-        <translation>Параметры проекта</translation>
+        <translation>Параметры притяжки</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -592,7 +572,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Axis:</source>
-        <translation>Оси:</translation>
+        <translation>Ось:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -700,7 +680,7 @@ Please check one or more edge entities first.</source>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Выбрать ориентир...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -735,7 +715,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Не определено</translation>
     </message>
 </context>
 <context>
@@ -782,7 +762,7 @@ Please check one or more edge entities first.</source>
         <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Выбрать ориентир...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -801,12 +781,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Select a face</translation>
+        <translation type="unfinished">Выделите грать</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Не определено</translation>
     </message>
 </context>
 <context>
@@ -844,7 +824,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+4"/>
         <source>Add mirrored transformation</source>
-        <translation>Добавить зеркальное преобразование</translation>
+        <translation>Добавить зеркальное отражение</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1156,14 +1136,14 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal sketch axis</translation>
+        <translation type="unfinished">Нормаль оси Эскиза</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Выбрать ориентир...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1206,7 +1186,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Axis:</source>
-        <translation>Оси:</translation>
+        <translation>Ось:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1254,7 +1234,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Не определено</translation>
     </message>
 </context>
 <context>
@@ -1343,7 +1323,7 @@ Please check one or more edge entities first.</source>
         <location line="-72"/>
         <location line="+152"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Пожалуйста, сначала создайте эскиз или 2D контур.  Он должен быть на одной из поверхностей детали</translation>
+        <translation>Сначала создайте эскиз или 2D-объект. Он должен быть на одной из поверхностей детали</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -1397,12 +1377,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Проект строится только по частям</translation>
+        <translation>Притяжка работает только с частями</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>Отсутствуют контура на выбранной поверхности</translation>
+        <translation>Сделать притяжку выбранных граней невозможно</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1416,7 +1396,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сначала используйте функцию вычитания или сложения</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1424,7 +1404,7 @@ Please check one or more edge entities first.</source>
         <location line="+83"/>
         <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Пожалуйста, создайте первыми детали удаляемые или добавочные, пожалуйста</translation>
+        <translation>Сначала используйте функцию вычитания или сложения</translation>
     </message>
     <message>
         <source>No Support</source>
@@ -1490,13 +1470,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lost link to base sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The object can&apos;t be edited because the link to the the base sketch is lost.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1506,13 +1486,13 @@ Create the sketch on a face.</source>
     <message>
         <location line="+1"/>
         <source>Please select a plane or an edge plus a pull direction</source>
-        <translation>Пожалуйста, выберите плоскость или ребро плюс направление вытягивания</translation>
+        <translation>Выберите плоскость или ребро, а также направление вытягивания</translation>
     </message>
     <message>
         <location line="-17"/>
         <location filename="../../ViewProviderDraft.cpp" line="-18"/>
         <source>Edit draft</source>
-        <translation>Редактировать черновик</translation>
+        <translation>Изменить притяжку</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFillet.cpp" line="-18"/>
@@ -1537,12 +1517,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit groove</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Изменить вращение</translation>
     </message>
 </context>
 <context>

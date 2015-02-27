@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Create a planar image in the 3D space</source>
-        <translation>Vytvoří roviný obrázek ve 3D prostoru</translation>
+        <translation>Vytvoří rovinný obrázek ve 3D prostoru</translation>
     </message>
     <message>
         <source>create a planar image in the 3D space</source>
@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Image plane</translation>
+        <translation type="unfinished">Rovina obrázku</translation>
     </message>
     <message>
         <location line="+6"/>

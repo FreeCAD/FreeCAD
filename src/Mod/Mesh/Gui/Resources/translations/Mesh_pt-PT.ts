@@ -1104,7 +1104,7 @@ Please run the command to repair folds first</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Select plane</translation>
+        <translation type="unfinished">Selecionar plano</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
@@ -1282,11 +1282,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
         <translation>Todos os arquivos de malha (*.stl *.ast *.bms *.obj *.off * .ply)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
-        <translation type="obsolete">X3D Extensible 3D(*.x3d)</translation>
+        <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D (*.x3d)</source>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1298,7 +1298,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Boolean</source>
-        <translation>Boolean</translation>
+        <translation>Booleano</translation>
     </message>
     <message>
         <source>&amp;Meshes</source>

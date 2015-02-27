@@ -109,11 +109,6 @@
       <translation type="unfinished">&lt;b&gt;Návrh staveb&lt;/b&gt; pracovní plocha speciálně pro práci s architektonickými prvky, jako jsou například stěny nebo okna. Začíná kreslením 2D tvarů a používá je jako skicu k vybudování architektonických objektů.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">Návrh Stavby</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="75"/>
       <source>Working with Meshes</source>
       <translation type="unfinished">Práce s drátovými modely</translation>
@@ -229,11 +224,6 @@
       <translation type="unfinished">Kapitola cvičení na stránkách FreeCAD</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">Kapitola věnovaná skriptování v Pythonu na stánkách FreeCAD, s příklady, vysvětlivkami, a příkazy API.</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">Blog věnovaný výuce FreeCADu, spravovaný členy FreeCAD comunity</translation>
@@ -274,11 +264,6 @@
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
@@ -287,6 +272,31 @@
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">Architektonický návrh</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">Your version of FreeCAD is up to date.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">There is a new release of FreeCAD available.</translation>
     </message>
   </context>
 </TS>

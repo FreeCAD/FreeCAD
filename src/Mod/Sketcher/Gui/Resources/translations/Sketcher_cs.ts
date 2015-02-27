@@ -11,12 +11,12 @@
     <message>
         <location line="+1"/>
         <source>Close Shape</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Uzavřít tvar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Produce closed shape by Link end point of element with next elements&apos; starting point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří uzavřený tvar spojením koncového bodu elementu s počátečním bodem následujícího elementu</translation>
     </message>
 </context>
 <context>
@@ -34,17 +34,17 @@
     <message>
         <location line="+1"/>
         <source>Create an arc in the sketcher</source>
-        <translation type="unfinished">Create an arc in the sketcher</translation>
+        <translation type="unfinished">Vytvoří oblouk v náčrtu</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Center and end points</source>
-        <translation type="unfinished">Center and end points</translation>
+        <translation type="unfinished">Střed a koncové body</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>End points and rim point</source>
-        <translation type="unfinished">End points and rim point</translation>
+        <translation type="unfinished">Koncové body a okrajový bod</translation>
     </message>
 </context>
 <context>
@@ -62,17 +62,17 @@
     <message>
         <location line="+1"/>
         <source>Create a circle in the sketcher</source>
-        <translation type="unfinished">Create a circle in the sketcher</translation>
+        <translation type="unfinished">Vytvoří kružnici v náčrtu</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Center and rim point</source>
-        <translation type="unfinished">Center and rim point</translation>
+        <translation type="unfinished">Střed a okrajový bod</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>3 rim points</source>
-        <translation type="unfinished">3 rim points</translation>
+        <translation type="unfinished">3 okrajové body</translation>
     </message>
 </context>
 <context>
@@ -85,27 +85,27 @@
     <message>
         <location line="+1"/>
         <source>Create a conic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří kuželosečku</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a conic in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří kuželosečku v náčrtu</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>Ellipse by center, major radius, point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elipsa pomocí středu, hlavní poloosy a bodu</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Ellipse by Periapsis, apoapsis, minor radius</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elipsa pomocí perihélia, afélia a vedlejší poloosy</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Arc of ellipse by center, major radius, endpoints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Oblouk elipsy pomocí středu, hlavní poloosy a koncových bodů</translation>
     </message>
 </context>
 <context>
@@ -118,42 +118,42 @@
     <message>
         <location line="+1"/>
         <source>Create regular polygon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří pravidelný mnohoúhleník</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an regular polygon in the sketcher</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří pravidelný mnohoúhelník v náčrtu</translation>
     </message>
     <message>
         <location line="+73"/>
         <source>Triangle</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Trojúhelník</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Square</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Čtverec</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Pentagon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pětiúhelník</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Hexagon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Šestiúhelník</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Heptagon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sedmiúhelník</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Octagon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Osmiúhelník</translation>
     </message>
 </context>
 <context>
@@ -166,12 +166,12 @@
     <message>
         <location line="+1"/>
         <source>Connect Edges</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Spojí hrany</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Link end point of element with next elements&apos; starting point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Spojí koncový bod elementu s počátečním bodem následujícího elementu</translation>
     </message>
 </context>
 <context>
@@ -318,12 +318,12 @@
     <message>
         <location line="+1"/>
         <source>Constrain InternalAlignment</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyzba vnitřní uspořádání</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrains an element to be aligned with the internal geometry of another element</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří vazbu elementu s vnitřní geometrií jiného elementu</translation>
     </message>
 </context>
 <context>
@@ -377,7 +377,7 @@
     <message>
         <location line="+1"/>
         <source>Create a perpendicular constraint between two lines</source>
-        <translation type="unfinished">Create a perpendicular constraint between two lines</translation>
+        <translation type="unfinished">Vytvoří kolmou vazbu mezi dvěma čarami</translation>
     </message>
     <message>
         <source>Create a Perpendicular constraint between two lines</source>
@@ -430,12 +430,12 @@
     <message>
         <location line="+1"/>
         <source>Constrain refraction (Snell&apos;s law&apos;)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vazba refrakce (Snellův zákon)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a refraction law (Snell&apos;s law) constraint between two endpoints of rays and an edge as an interface.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří refrakční (Snellův) zákon jako vazbu mezi koncovými body paprsku a hrany tvořící rozhraní.</translation>
     </message>
 </context>
 <context>
@@ -453,7 +453,7 @@
     <message>
         <location line="+1"/>
         <source>Create a symmetry constraint between two points with respect to a line or a third point</source>
-        <translation type="unfinished">Create a symmetry constraint between two points with respect to a line or a third point</translation>
+        <translation type="unfinished">Vytvoří symetrikcou vazbu mezi dvěma body vzhledem k čáře nebo třetímu bodu</translation>
     </message>
     <message>
         <source>Create an symmetry constraint between two points with respect to a line</source>
@@ -506,12 +506,12 @@
     <message>
         <location line="+1"/>
         <source>Create arc by three points</source>
-        <translation type="unfinished">Create arc by three points</translation>
+        <translation type="unfinished">Vytvoř oblouk třemi body</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+        <translation type="unfinished">Vytvoří oblouk jeho koncovými body a bodem podél oblouku</translation>
     </message>
 </context>
 <context>
@@ -524,12 +524,12 @@
     <message>
         <location line="+1"/>
         <source>Create circle by three points</source>
-        <translation type="unfinished">Create circle by three points</translation>
+        <translation type="unfinished">Vytvoř kružnici třemi body</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a circle by 3 perimeter points</source>
-        <translation type="unfinished">Create a circle by 3 perimeter points</translation>
+        <translation type="unfinished">Vytvoř kružnici třemi obvodovými body</translation>
     </message>
 </context>
 <context>
@@ -542,12 +542,12 @@
     <message>
         <location line="+1"/>
         <source>Create arc by center</source>
-        <translation type="unfinished">Create arc by center</translation>
+        <translation type="unfinished">Vytvoř oblouk podle středu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
-        <translation type="unfinished">Create an arc by its center and by its end points</translation>
+        <translation type="unfinished">Vytvoří oblouk podle jeho středu a skrz jeho koncové body</translation>
     </message>
     <message>
         <source>Create arc</source>
@@ -568,12 +568,12 @@
     <message>
         <location line="+1"/>
         <source>Create an arc of ellipse</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří oblouk elipsy</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc of ellipse in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří oblouk elipsy v náčrtu</translation>
     </message>
 </context>
 <context>
@@ -622,12 +622,12 @@
     <message>
         <location line="+1"/>
         <source>Create ellipse by 3 points</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří elipsu pomocí 3 bodů</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an ellipse by 3 points in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří elipsu pomocí 3 bodů v náčrtu</translation>
     </message>
 </context>
 <context>
@@ -640,12 +640,12 @@
     <message>
         <location line="+1"/>
         <source>Create ellipse by center</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří elipsu pomocí středu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an ellipse by center in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří elipsu pomocí středu v náčrtu</translation>
     </message>
 </context>
 <context>
@@ -680,12 +680,12 @@
     <message>
         <location line="+1"/>
         <source>Create heptagon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří sedmiúhelník</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a heptagon in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří sedmiúhelník v náčrtu</translation>
     </message>
 </context>
 <context>
@@ -698,12 +698,12 @@
     <message>
         <location line="+1"/>
         <source>Create hexagon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří šestiúhelník</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a hexagon in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří šestiúhelník v náčrtu</translation>
     </message>
 </context>
 <context>
@@ -734,12 +734,12 @@
     <message>
         <location line="+1"/>
         <source>Create octagon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří osmiúhelník</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an octagon in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří osmiúhelník v náčrtu</translation>
     </message>
 </context>
 <context>
@@ -752,12 +752,12 @@
     <message>
         <location line="+1"/>
         <source>Create pentagon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří pětiúhelník</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a pentagon in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří pětiúhelník v náčrtu</translation>
     </message>
 </context>
 <context>
@@ -793,7 +793,7 @@
     <message>
         <location line="+1"/>
         <source>Create a polyline in the sketch. &apos;M&apos; Key cycles behaviour</source>
-        <translation type="unfinished">Create a polyline in the sketch. &apos;M&apos; Key cycles behaviour</translation>
+        <translation type="unfinished">Vytvoří lomenou čáru v náčrtu. Klávesa &apos;M&apos; mění chování</translation>
     </message>
     <message>
         <source>Create a polyline in the sketch</source>
@@ -828,12 +828,12 @@
     <message>
         <location line="+1"/>
         <source>Create slot</source>
-        <translation type="unfinished">Create slot</translation>
+        <translation type="unfinished">Vytvoř drážku</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a slot in the sketch</source>
-        <translation type="unfinished">Create a slot in the sketch</translation>
+        <translation type="unfinished">Vytvoří drážku v náčertu</translation>
     </message>
 </context>
 <context>
@@ -846,12 +846,12 @@
     <message>
         <location line="+1"/>
         <source>Create square</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří čtverec</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a square in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří čtverec v náčrtu</translation>
     </message>
 </context>
 <context>
@@ -882,12 +882,12 @@
     <message>
         <location line="+1"/>
         <source>Create equilateral triangle</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří rovnostranný trojúhelník</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an equilateral triangle in the sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří rovnostranný trojúhelník v náčrtu</translation>
     </message>
 </context>
 <context>
@@ -905,7 +905,7 @@
     <message>
         <location line="+1"/>
         <source>Edit the selected sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Upravit vybraný náčrt</translation>
     </message>
 </context>
 <context>
@@ -973,7 +973,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Merge sketches</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sloučit náčrty</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -983,7 +983,7 @@
     <message>
         <location line="+1"/>
         <source>Select at least two sketches, please.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte prosím alespoň dva náčrty.</translation>
     </message>
 </context>
 <context>
@@ -1051,12 +1051,12 @@
     <message>
         <location line="+1"/>
         <source>Show/hide internal geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zobrazit / skrýt vnitřní geometrii</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show all internal geometry / hide unused internal geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zobrazit veškerou vnitřní geometrii / skrýt nepoužitou vnitřní geometrii</translation>
     </message>
 </context>
 <context>
@@ -1070,7 +1070,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Conflicting Constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere konfliktní vazby</translation>
     </message>
 </context>
 <context>
@@ -1083,12 +1083,12 @@
     <message>
         <location line="+1"/>
         <source>Select Constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybrere vazby</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the constraints associated to the selected elements</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere vyzby související s vybranými elementy</translation>
     </message>
 </context>
 <context>
@@ -1102,7 +1102,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Elements associated with constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere elementy související s vazbami</translation>
     </message>
 </context>
 <context>
@@ -1115,12 +1115,12 @@
     <message>
         <location line="+1"/>
         <source>Select Horizontal Axis</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere horizontální osu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the horizontal axis</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere horizontální osu</translation>
     </message>
 </context>
 <context>
@@ -1133,12 +1133,12 @@
     <message>
         <location line="+1"/>
         <source>Select Origin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere počátek</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the origin point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere počáteční bod</translation>
     </message>
 </context>
 <context>
@@ -1152,7 +1152,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Redundant Constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere nadbytečné vazby</translation>
     </message>
 </context>
 <context>
@@ -1165,12 +1165,12 @@
     <message>
         <location line="+1"/>
         <source>Select Vertical Axis</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere vertikální osu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the vertical axis</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere vertikální osu</translation>
     </message>
 </context>
 <context>
@@ -1352,7 +1352,7 @@
         <location line="+8"/>
         <location line="+74"/>
         <location line="+428"/>
-        <location line="+244"/>
+        <location line="+245"/>
         <source>Wrong selection</source>
         <translation>Neplatný výběr</translation>
     </message>
@@ -1387,7 +1387,7 @@
         <location line="+68"/>
         <location line="+9"/>
         <location line="+15"/>
-        <location filename="../../CommandSketcherTools.cpp" line="-820"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-821"/>
         <location line="+98"/>
         <source>Impossible constraint</source>
         <translation>Nemožné omezení</translation>
@@ -1458,29 +1458,29 @@
     <message>
         <location line="-52"/>
         <source>Cannot add a fixed x-coordinate constraint on an external geometry!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nelze přidat vazbu souřadnice x na vnější geometrii!</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cannot add a fixed x-coordinate constraint on the root point!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nelze přidat vazbu souřadnice x na počátek souřadnic!</translation>
     </message>
     <message>
         <location line="+125"/>
         <source>Cannot add a fixed y-coordinate constraint on an external geometry!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nelze přidat vazbu souřadnice y na vnější geometrii!</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nelze přidat vazbu souřadnice x na počátek souřadnic!</translation>
     </message>
     <message>
         <location line="+646"/>
         <location line="+10"/>
         <location line="+25"/>
         <source>Select one or more arcs or circles from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte jeden nebo více oblouků nebo kružnic z náčrtu.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1490,88 +1490,88 @@
     <message>
         <location line="+1"/>
         <source>Do you want to share the same radius for all selected elements?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Má být poloměr stejný pro všechny vybrané elementy?</translation>
     </message>
     <message>
         <location line="+142"/>
         <source>Select only entities from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte pouze entity z náčrtu.</translation>
     </message>
     <message>
         <location line="+11"/>
         <location line="+170"/>
         <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte jednu nebo dvě úsečky z náčrtu. Nebo vyberte dvě hrany a bod.</translation>
     </message>
     <message>
         <location line="-64"/>
         <source>Parallel lines</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rovnoběžné úsečky</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>An angle constraint cannot be set for two parallel lines.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Úhlová vazba nemůže být nastavena pro dvě rovnoběžné úsečky.</translation>
     </message>
     <message>
         <location line="+356"/>
         <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte koncové body úsečky představující paprsek a hranu reprezentující rozhraní. První vybraný bod odpovídá intexu n1, druhý indexu n2, zadává se hodnota poměru n2/n1.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Selected objects are not just geometry from one sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybrané objekty nejsou geometrií jednoho náčrtu.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Number of selected objects is not 3 (is %1).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Počet vybraných objektu není 3 (vybráno je %1).</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Incompatible geometry is selected!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Je vybrána nekompatibilní geometrie!</translation>
     </message>
     <message>
         <location line="+85"/>
         <location line="+11"/>
         <source>Select at least one ellipse and one edge from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte alespoň jednu elipsu a jednu hranu z náčrtu.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Sketch axes cannot be used in internal alignment constraint</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Osy náčrtu nelze použít ve vazbách vnitřního uspořádání</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>You can not internally constraint an ellipse on other ellipse. Select only one ellipse.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nemůžete vnitřně vazbit jednu elipsu k druhé. Vyberte pouze jednu elipsu.</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+156"/>
         <source>Maximum 2 points are supported.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jsou podporovány maximálně 2 body.</translation>
     </message>
     <message>
         <location line="-150"/>
         <location line="+156"/>
         <source>Maximum 2 lines are supported.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jsou podporovány maximálně dvě čáry.</translation>
     </message>
     <message>
         <location line="-121"/>
         <location line="+156"/>
         <source>Nothing to constraint</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Není co vazbit</translation>
     </message>
     <message>
         <location line="-155"/>
         <source>Currently all internal geometry of the ellipse is already exposed.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Momentálně je veškerá vnitřní geometrie elipsy odhalená.</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -1579,39 +1579,39 @@
         <location line="+148"/>
         <location line="+8"/>
         <source>Extra elements</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dodatečné elementy</translation>
     </message>
     <message>
         <location line="-163"/>
         <location line="+8"/>
         <location line="+148"/>
         <source>More elements than possible for the given ellipse were provided. These were ignored.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bylo poskytnuto více elementů, než bylo pro danou elipsu možné. Tyto byly ignorovány.</translation>
     </message>
     <message>
         <location line="-135"/>
         <source>You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nemůžete vnitřně vazbit jeden oblouk elipsy k druhému. Vyberte pouze jeden oblouk elipsy.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nemůžete vnitřně vazbit elipsu k oblouku elipsy. Vyberte pouze elipsu nebo oblouk elipsy.</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Currently all internal geometry of the arc of ellipse is already exposed.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Momentálně je veškerá vnitřní geometrie oblouku elipsy odhalená.</translation>
     </message>
     <message>
         <location line="+89"/>
         <source>More elements than possible for the given arc of ellipse were provided. These were ignored.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bylo poskytnuto více elementů, než bylo pro daný oblouk elipsy možné. Tyto byly ignorovány.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Momentálně je vnitřní geometrie podporována jen pro elipsu nebo oblouk elipsy. Naposledy vybraným elementem musí být elipsa nebo oblouk elipsy.</translation>
     </message>
     <message>
         <source>Select exactly two vertexes from the sketch.</source>
@@ -1621,7 +1621,7 @@
         <location line="-2333"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
-        <translation type="unfinished">Select two or more vertexes from the sketch.</translation>
+        <translation type="unfinished">Vyberte dva nebo více vrcholů z náčrtu.</translation>
     </message>
     <message>
         <location line="+89"/>
@@ -1716,33 +1716,35 @@
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tuto vaztu je možno použít více způsoby.
+
+Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body; dvě křivky a bod.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Select some geometry from the sketch.</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte geometrii z náčrtu.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Wrong number of selected objects!</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nesprávný počet vybraných objektů!</translation>
     </message>
     <message>
         <location line="+57"/>
         <location line="+270"/>
         <location line="+918"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chyba</translation>
     </message>
     <message>
         <location line="-1174"/>
         <location line="+270"/>
         <source>With 3 objects, there must be 2 curves and 1 point.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mezi třemi objekty musí být 2 křivky a 1 bod.</translation>
     </message>
     <message>
         <location line="-261"/>
@@ -1773,19 +1775,21 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tuto vaztu je možno použít více způsoby.
+
+Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body; dvě křivky a bod.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Select some geometry from the sketch.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte geometrii z náčrtu.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Wrong number of selected objects!</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nesprávný počet vybraných objektů!</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -1847,7 +1851,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+42"/>
         <location line="+66"/>
         <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
-        <translation type="unfinished">Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</translation>
+        <translation type="unfinished">Vyberte dva body a čáru symetrie, dva body a bod symetrie nebo čáru a bod symetrie z náčrtu.</translation>
     </message>
     <message>
         <location line="-48"/>
@@ -1898,7 +1902,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">Vyberte právě dvě entity ze skici.</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+4061"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+4064"/>
         <source>Edit sketch</source>
         <translation>Upravit skicu</translation>
     </message>
@@ -1970,39 +1974,39 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+98"/>
         <location line="+8"/>
         <source>Select at least two edges from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte alespoň dvě hrany z náčrtu.</translation>
     </message>
     <message>
         <location line="-74"/>
         <location line="+98"/>
         <source>One selected edge is not connectable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jedna vybraná hrana není připojitelná</translation>
     </message>
     <message>
         <location line="-88"/>
         <source>Closing a shape formed by exactly two lines makes no sense.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Uzavření tvaru složeného právě ze dvou úseček nemá smysl.</translation>
     </message>
     <message>
         <location line="+138"/>
         <location line="+428"/>
         <source>Select elements from a single sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte elementy z jednoho náčrtu.</translation>
     </message>
     <message>
         <location line="-35"/>
         <source>No constraint selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nebyla vybrána vazba</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>At least one constraint must be selected</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Musí být vybrána alespoň jedna vazba</translation>
     </message>
     <message>
-        <location line="+278"/>
+        <location line="+279"/>
         <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Momentálně je vnitřní geometrie podporována jen pro elipsu nebo oblouk elipsy. Naposledy vybraným elementem musí být elipsa nebo oblouk elipsy.</translation>
     </message>
 </context>
 <context>
@@ -2060,7 +2064,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location filename="../../CommandConstraints.cpp" line="-1985"/>
         <location filename="../../EditDatumDialog.cpp" line="-68"/>
         <source>Insert angle</source>
-        <translation type="unfinished">Insert angle</translation>
+        <translation type="unfinished">Vložit úhel</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2072,26 +2076,26 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+4"/>
         <location filename="../../EditDatumDialog.cpp" line="+4"/>
         <source>Insert radius</source>
-        <translation type="unfinished">Insert radius</translation>
+        <translation type="unfinished">Vložit rádius</translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../EditDatumDialog.cpp" line="+6"/>
         <source>Refractive index ratio</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Index lomu</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../EditDatumDialog.cpp" line="+1"/>
         <source>Ratio n2/n1:</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Poměr n2/n1:</translation>
     </message>
     <message>
         <location line="+1942"/>
         <source>Change radius</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Změna poloměru</translation>
     </message>
     <message>
         <location line="-1947"/>
@@ -2103,18 +2107,18 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+615"/>
         <source>Refractive index ratio</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Index lomu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ratio n2/n1:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Poměr n2/n1:</translation>
     </message>
     <message>
         <location line="-2555"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
-        <translation type="unfinished">Insert length</translation>
+        <translation type="unfinished">Vložit délku</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2149,7 +2153,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location filename="../../PropertyConstraintListItem.cpp" line="+120"/>
         <source>Unnamed</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nepojmenovaný</translation>
     </message>
 </context>
 <context>
@@ -2205,13 +2209,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+14"/>
         <source>Default edge color</source>
-        <translation type="unfinished">Default edge color</translation>
+        <translation type="unfinished">Výchozí barva hran</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+66"/>
         <source>The color of edges being edited</source>
-        <translation type="unfinished">The color of edges being edited</translation>
+        <translation type="unfinished">Barva hran při editaci</translation>
     </message>
     <message>
         <location line="-40"/>
@@ -2222,7 +2226,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+7"/>
         <location line="+66"/>
         <source>The color of vertices being edited</source>
-        <translation type="unfinished">The color of vertices being edited</translation>
+        <translation type="unfinished">Barva vrcholů při editace</translation>
     </message>
     <message>
         <location line="-40"/>
@@ -2242,7 +2246,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+7"/>
         <source>The color of construction geometry in edit mode</source>
-        <translation type="unfinished">The color of construction geometry in edit mode</translation>
+        <translation type="unfinished">Barva konstrukční geometrie v editačním režimu</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -2252,33 +2256,29 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+7"/>
         <source>The color of external geometry in edit mode</source>
-        <translation type="unfinished">The color of external geometry in edit mode</translation>
+        <translation type="unfinished">Barva vnější geometrie v editačním režimu</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Fully constrained geometry</source>
-        <translation type="unfinished">Fully constrained geometry</translation>
+        <translation type="unfinished">Plně zavazbená geometrie</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+33"/>
         <location line="+33"/>
         <source>The color of fully constrained geometry in edit mode</source>
-        <translation type="unfinished">The color of fully constrained geometry in edit mode</translation>
+        <translation type="unfinished">Barva plně zavazbené geometrie v editačním módu</translation>
     </message>
     <message>
         <location line="-40"/>
         <source>Constraint color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Constrain color</source>
-        <translation type="obsolete">Barva vazby</translation>
+        <translation type="unfinished">Barva vazeb</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Datum color</source>
-        <translation type="unfinished">Barva datumu</translation>
+        <translation type="unfinished">Barva kót</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2308,12 +2308,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+35"/>
         <source>Default line width</source>
-        <translation type="unfinished">Default line width</translation>
+        <translation type="unfinished">Výchozí tloušťka čáry</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Cursor text color</source>
-        <translation type="unfinished">Cursor text color</translation>
+        <translation type="unfinished">Barva textu kurzoru</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2328,54 +2328,120 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+33"/>
         <source>Grid line pattern</source>
-        <translation type="unfinished">Grid line pattern</translation>
+        <translation type="unfinished">Typ čáry mřížky</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Ask for value after creating a distance constraint</source>
-        <translation type="unfinished">Ask for value after creating a distance constraint</translation>
+        <translation type="unfinished">Zeptat se na hodnotu při vytvoření délkové vazby</translation>
     </message>
 </context>
 <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-        <location filename="../../TaskSketcherValidation.cpp" line="+278"/>
+        <location filename="../../TaskSketcherValidation.cpp" line="+279"/>
         <source>No missing coincidences</source>
-        <translation type="unfinished">No missing coincidences</translation>
+        <translation type="unfinished">Shody nechybí</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No missing coincidences found</source>
-        <translation type="unfinished">No missing coincidences found</translation>
+        <translation type="unfinished">Chybějící shody nebyly nalezeny</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">Missing coincidences</translation>
+        <translation type="unfinished">Chybějící shody</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 missing coincidences found</source>
-        <translation type="unfinished">%1 missing coincidences found</translation>
+        <translation type="unfinished">Počet chybějících shod: %1</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>No invalid constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neplatné vazby nejsou</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No invalid constraints found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neplatné vazby nenalezeny</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Invalid constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neplatné vazby</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid constraints found</source>
+        <translation type="unfinished">Byly nalezeny neplatné vazby</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <location line="+11"/>
+        <location line="+7"/>
+        <location line="+11"/>
+        <source>Reversed external geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-28"/>
+        <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
+
+Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+However, no constraints linking to the endpoints were found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>No reversed external-geometry arcs were found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <location line="+14"/>
+        <source>Constraint orientation locking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-13"/>
+        <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location line="+12"/>
+        <source>Delete constraints to external geom.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-11"/>
+        <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>All constraints that deal with external geometry were deleted.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2427,47 +2493,47 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+8"/>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Typ:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Edge</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hrana</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Starting Point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Výchozí bod</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>End Point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Koncový bod</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Center Point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Středový bod</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Extended Naming</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rozšířené názvy</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Auto-switch to Edge</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Automaticky přepnout na hranu</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: výcenásobný výběr&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: přepnout na další platný typ&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../../TaskSketcherElements.cpp" line="+66"/>
         <source>Elements</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elementy</translation>
     </message>
     <message>
         <location line="+444"/>
@@ -2475,7 +2541,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+46"/>
         <location line="+1"/>
         <source>Point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bod</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -2483,7 +2549,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+46"/>
         <location line="+1"/>
         <source>Line</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Čára</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -2491,7 +2557,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+46"/>
         <location line="+1"/>
         <source>Arc</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">oblouk</translation>
     </message>
     <message>
         <location line="-45"/>
@@ -2499,19 +2565,19 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+46"/>
         <location line="+1"/>
         <source>Circle</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kruh</translation>
     </message>
     <message>
         <location line="-45"/>
         <location line="+1"/>
         <source>Ellipse</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elipsa</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+1"/>
         <source>Elliptical Arc</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eliptický oblouk</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2519,7 +2585,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+40"/>
         <location line="+1"/>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jiný</translation>
     </message>
 </context>
 <context>
@@ -2538,10 +2604,6 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+12"/>
         <source>Grid size:</source>
         <translation>Velikost mřížky:</translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -2655,9 +2717,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished">Kontrola náčrtku</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+26"/>
+        <source>Delete constraints to external geom.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">Missing coincidences</translation>
+        <translation type="unfinished">Chybějící shody</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2665,21 +2732,47 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished">Tolerance:</translation>
     </message>
     <message>
+        <location line="+27"/>
+        <source>Reversed external geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Swap endpoints in constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+10"/>
+        <source>Constraint orientation locking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Enable/Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Disable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-86"/>
+        <location line="+33"/>
         <location line="+23"/>
         <source>Find</source>
         <translation type="unfinished">Hledat</translation>
     </message>
     <message>
-        <location line="-16"/>
-        <location line="+23"/>
+        <location line="-63"/>
+        <location line="+47"/>
         <source>Fix</source>
         <translation type="unfinished">Opravit</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="-53"/>
         <source>Invalid constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neplatné vazby</translation>
     </message>
 </context>
 <context>
@@ -2687,13 +2780,14 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location filename="../../ViewProviderSketch.cpp" line="+12"/>
         <source>Invalid sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neplatný náčrt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The sketch is invalid and cannot be edited.
 Use the sketch validation tool.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Náčrt je neplatný a nelze ho upravovat.
+Použijte nástroj Kontrola náčrtu.</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -2723,24 +2817,24 @@ Use the sketch validation tool.</source>
     <message>
         <location line="+7"/>
         <source>Over-constrained sketch </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Převazbený náčrt </translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+7"/>
         <location line="+8"/>
         <source>(click to select)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">(klikněte pro vybrání)</translation>
     </message>
     <message>
         <location line="-9"/>
         <source>Sketch contains conflicting constraints </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Náčrt obsahuje konfliktní vazby </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Sketch contains redundant constraints </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Náčrt obsahuje nadbytečné vazby </translation>
     </message>
     <message>
         <source>Over-constrained sketch</source>
@@ -2786,7 +2880,7 @@ Use the sketch validation tool.</source>
         <location filename="../../CommandCreateGeo.cpp" line="-2320"/>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">Create an arc by its end points and a point along the arc</translation>
+        <translation type="unfinished">Vytvoří oblouk jeho koncovými body a bodem podél oblouku</translation>
     </message>
 </context>
 <context>
@@ -2795,7 +2889,7 @@ Use the sketch validation tool.</source>
         <location line="+1742"/>
         <location line="+1"/>
         <source>Create a circle by 3 rim points</source>
-        <translation type="unfinished">Create a circle by 3 rim points</translation>
+        <translation type="unfinished">Vytvoří kružnici třemi okrajovými body</translation>
     </message>
 </context>
 <context>
@@ -2804,7 +2898,7 @@ Use the sketch validation tool.</source>
         <location line="-1748"/>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
-        <translation type="unfinished">Create an arc by its center and by its end points</translation>
+        <translation type="unfinished">Vytvoří oblouk podle jeho středu a skrz jeho koncové body</translation>
     </message>
 </context>
 <context>
@@ -2813,7 +2907,7 @@ Use the sketch validation tool.</source>
         <location line="+1448"/>
         <location line="+1"/>
         <source>Create an arc of ellipse by its center, major radius, endpoints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří oblouk elipsy pomocí středu, hlavní poloosy a koncových bodů</translation>
     </message>
 </context>
 <context>
@@ -2822,7 +2916,7 @@ Use the sketch validation tool.</source>
         <location line="+293"/>
         <location line="+1"/>
         <source>Create a circle by its center and by a rim point</source>
-        <translation type="unfinished">Create a circle by its center and by a rim point</translation>
+        <translation type="unfinished">Vytvoří kružnici podle jeho středu a skrz okrajový bod</translation>
     </message>
 </context>
 <context>
@@ -2831,7 +2925,7 @@ Use the sketch validation tool.</source>
         <location line="-299"/>
         <location line="+1"/>
         <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří elipsu pomocí perihélia, afélia a vedlejší poloosy</translation>
     </message>
 </context>
 <context>
@@ -2840,7 +2934,7 @@ Use the sketch validation tool.</source>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create an ellipse by center, major radius and point</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří elipsu pomocí středu, hlavní poloosy a bodu</translation>
     </message>
 </context>
 <context>
@@ -2849,7 +2943,7 @@ Use the sketch validation tool.</source>
         <location line="+1747"/>
         <location line="+1"/>
         <source>Create a heptagon by its center and by one corner</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří sedmiúhelník pomocí jeho středu a vrcholu</translation>
     </message>
 </context>
 <context>
@@ -2858,7 +2952,7 @@ Use the sketch validation tool.</source>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create a hexagon by its center and by one corner</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří šestiúhelník pomocí jeho středu a vrcholu</translation>
     </message>
 </context>
 <context>
@@ -2867,7 +2961,7 @@ Use the sketch validation tool.</source>
         <location line="+7"/>
         <location line="+1"/>
         <source>Create an octagon by its center and by one corner</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří osmiúhelník pomocí jeho středu a vrcholu</translation>
     </message>
 </context>
 <context>
@@ -2876,7 +2970,7 @@ Use the sketch validation tool.</source>
         <location line="-13"/>
         <location line="+1"/>
         <source>Create a pentagon by its center and by one corner</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří pětiúhelník pomocí jeho středu a vrcholu</translation>
     </message>
 </context>
 <context>
@@ -2885,7 +2979,7 @@ Use the sketch validation tool.</source>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create a square by its center and by one corner</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří čtverec pomocí jeho středu a vrcholu</translation>
     </message>
 </context>
 <context>
@@ -2894,7 +2988,7 @@ Use the sketch validation tool.</source>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create an equilateral triangle by its center and by one corner</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvoří pravidelný trojúhelník pomocí jeho středu a vrcholu</translation>
     </message>
 </context>
 <context>
@@ -2966,7 +3060,7 @@ Přeješ si odstranit podporu průčelí?</translation>
     <message>
         <location line="+2"/>
         <source>Sketcher tools</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nástroje náčrtu</translation>
     </message>
     <message>
         <source>Sketcher geoms</source>

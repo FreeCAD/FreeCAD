@@ -6,13 +6,13 @@
     <message>
         <location filename="../../Command.cpp" line="+183"/>
         <source>Fem</source>
-        <translation type="unfinished">Elementtimenetelmä</translation>
+        <translation type="unfinished">FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Add a part to the Analysis</source>
-        <translation type="unfinished">Add a part to the Analysis</translation>
+        <translation type="unfinished">Lisää osa analyysiin</translation>
     </message>
 </context>
 <context>
@@ -20,17 +20,17 @@
     <message>
         <location line="+65"/>
         <source>Fem</source>
-        <translation type="unfinished">Elementtimenetelmä</translation>
+        <translation type="unfinished">FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM bearing constraint</source>
-        <translation type="unfinished">Create FEM bearing constraint</translation>
+        <translation type="unfinished">Luo FEM suuntima rajoite</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a bearing</source>
-        <translation type="unfinished">Create FEM constraint for a bearing</translation>
+        <translation type="unfinished">Luo FEM rajoite suuntimaa varten</translation>
     </message>
 </context>
 <context>
@@ -38,17 +38,17 @@
     <message>
         <location line="+36"/>
         <source>Fem</source>
-        <translation type="unfinished">Elementtimenetelmä</translation>
+        <translation type="unfinished">FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM fixed constraint</source>
-        <translation type="unfinished">Create FEM fixed constraint</translation>
+        <translation type="unfinished">Luo FEMin kiinteä rajoite</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a fixed geometric entity</source>
-        <translation type="unfinished">Create FEM constraint for a fixed geometric entity</translation>
+        <translation type="unfinished">Luo FEM rajoite kiiinteän gemetrian kohteelle</translation>
     </message>
 </context>
 <context>
@@ -56,17 +56,17 @@
     <message>
         <location line="+36"/>
         <source>Fem</source>
-        <translation type="unfinished">Elementtimenetelmä</translation>
+        <translation type="unfinished">FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM force constraint</source>
-        <translation type="unfinished">Create FEM force constraint</translation>
+        <translation type="unfinished">Luo FEM voima rajoite</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a force acting on a geometric entity</source>
-        <translation type="unfinished">Create FEM constraint for a force acting on a geometric entity</translation>
+        <translation type="unfinished">Luo FEM rajoite voimalle, joka toimii geometrisellä kohteella</translation>
     </message>
 </context>
 <context>
@@ -74,17 +74,17 @@
     <message>
         <location line="+37"/>
         <source>Fem</source>
-        <translation type="unfinished">Elementtimenetelmä</translation>
+        <translation type="unfinished">FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM gear constraint</source>
-        <translation type="unfinished">Create FEM gear constraint</translation>
+        <translation type="unfinished">Luo FEM ratas rajoite</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a gear</source>
-        <translation type="unfinished">Create FEM constraint for a gear</translation>
+        <translation type="unfinished">Luo FEM rajoite rattaalle</translation>
     </message>
 </context>
 <context>
@@ -92,17 +92,17 @@
     <message>
         <location line="+36"/>
         <source>Fem</source>
-        <translation type="unfinished">Elementtimenetelmä</translation>
+        <translation type="unfinished">FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM pulley constraint</source>
-        <translation type="unfinished">Create FEM pulley constraint</translation>
+        <translation type="unfinished">Luo FEM hihnapyörä rajoite</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a pulley</source>
-        <translation type="unfinished">Create FEM constraint for a pulley</translation>
+        <translation type="unfinished">Luo FEM rajoite hihnapyörälle</translation>
     </message>
 </context>
 <context>
@@ -110,13 +110,13 @@
     <message>
         <location line="-286"/>
         <source>Fem</source>
-        <translation type="unfinished">Elementtimenetelmä</translation>
+        <translation type="unfinished">FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Create a FEM analysis</source>
-        <translation type="unfinished">Create a FEM analysis</translation>
+        <translation type="unfinished">Luo FEM analyysi</translation>
     </message>
 </context>
 <context>
@@ -124,17 +124,17 @@
     <message>
         <location line="-31"/>
         <source>Fem</source>
-        <translation>Elementtimenetelmä</translation>
+        <translation>FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM mesh</source>
-        <translation>Luo ELEMENTTIMENETELMÄN verkko</translation>
+        <translation>Luo FEM-ELEMENTTIMENETELMÄN tahko</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM mesh from shape</source>
-        <translation>Luo ELEMENTTIMENETELMÄN verkko muodosta</translation>
+        <translation>Luo FEM-ELEMENTTIMENETELMÄN tahko muodosta</translation>
     </message>
 </context>
 <context>
@@ -142,13 +142,13 @@
     <message>
         <location line="+500"/>
         <source>Fem</source>
-        <translation type="unfinished">Elementtimenetelmä</translation>
+        <translation type="unfinished">FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Define/create a nodes set...</source>
-        <translation type="unfinished">Define/create a nodes set...</translation>
+        <translation type="unfinished">Määritä/Luo solmukohtien joukko...</translation>
     </message>
 </context>
 <context>
@@ -156,14 +156,14 @@
     <message>
         <location line="-59"/>
         <source>Fem</source>
-        <translation type="unfinished">Elementtimenetelmä</translation>
+        <translation type="unfinished">FEM-Elementtimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+2"/>
         <source>Create node set by Poly</source>
-        <translation type="unfinished">Create node set by Poly</translation>
+        <translation type="unfinished">Luo monikulmion määrittämä solmukohtien joukko</translation>
     </message>
 </context>
 <context>
@@ -199,7 +199,7 @@
     <message>
         <location filename="../../TaskAnalysisInfo.cpp" line="+45"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">Solmukohtien määrittely</translation>
     </message>
 </context>
 <context>
@@ -207,7 +207,7 @@
     <message>
         <location filename="../../TaskCreateNodeSet.cpp" line="+63"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">Solmukohtien määrittely</translation>
     </message>
 </context>
 <context>
@@ -221,7 +221,7 @@
     <message>
         <location line="-11"/>
         <source>You must specify at least one reference</source>
-        <translation type="unfinished">You must specify at least one reference</translation>
+        <translation type="unfinished">Sinun on määritettävä vähintään yksi viittaus</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+356"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+365"/>
         <source>Input error</source>
         <translation type="unfinished">Syötteen virhe</translation>
     </message>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../../TaskDriver.cpp" line="+51"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">Solmukohtien määrittely</translation>
     </message>
 </context>
 <context>
@@ -269,7 +269,7 @@
     <message>
         <location filename="../../TaskFemConstraint.cpp" line="-120"/>
         <source>FEM constraint parameters</source>
-        <translation type="unfinished">FEM constraint parameters</translation>
+        <translation type="unfinished">FEM-elementtimenetelmän rajoitteiden parametrit</translation>
     </message>
 </context>
 <context>
@@ -287,37 +287,37 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Valintavirhe</translation>
     </message>
     <message>
         <location line="-37"/>
         <source>Please use only a single reference for bearing constraint</source>
-        <translation type="unfinished">Please use only a single reference for bearing constraint</translation>
+        <translation type="unfinished">Käytä vain yhtä viitettä suuntiman rajoitteessa</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces can be picked</source>
-        <translation type="unfinished">Only faces can be picked</translation>
+        <translation type="unfinished">Vain tahkoja voidaan poimia</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Only cylindrical faces can be picked</source>
-        <translation type="unfinished">Only cylindrical faces can be picked</translation>
+        <translation type="unfinished">Vain sylinteripintoja voidaan poimia</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Only planar faces can be picked</translation>
+        <translation type="unfinished">Vain tasopinnat on poimittavissa</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Vain lineaariset reunat on poimittavissa</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Only faces and edges can be picked</translation>
+        <translation type="unfinished">Vain tahkot ja reunat on poimittavissa</translation>
     </message>
 </context>
 <context>
@@ -331,52 +331,40 @@
         <location line="+61"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Valintavirhe</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">Sekoitetut muototyypit eivät ole mahdollisia. Käytä  sen sijaan toista rajoitetta</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+        <translation type="unfinished">Vain näkymäpinna, reunat ja kärkipisteet ovat noudettavissa</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-282"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-291"/>
         <source>Delete</source>
         <translation type="unfinished">Poista</translation>
     </message>
     <message>
-        <source>Force [N]</source>
-        <translation type="obsolete">Force [N]</translation>
-    </message>
-    <message>
-        <source>Force [N/mm]</source>
-        <translation type="obsolete">Force [N/mm]</translation>
-    </message>
-    <message>
-        <source>Force [N/mmÂ²]</source>
-        <translation type="obsolete">Force [N/mmÂ²]</translation>
-    </message>
-    <message>
         <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pistekuorma [N]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load [N/mm]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Viivakuorma [N/mm]</translation>
     </message>
     <message utf8="true">
         <location line="+2"/>
         <source>Area load [N/mm²]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pinta-ala kuorma [N/mm²]</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -385,32 +373,32 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Valintavirhe</translation>
     </message>
     <message>
         <location line="-42"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">Sekoitetut muototyypit eivät ole mahdollisia. Käytä  sen sijaan toista rajoitetta</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+        <translation type="unfinished">Vain näkymäpinna, reunat ja kärkipisteet ovat noudettavissa</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Only planar faces can be picked</translation>
+        <translation type="unfinished">Vain tasopinnat on poimittavissa</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Vain lineaariset reunat on poimittavissa</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Only faces and edges can be picked</translation>
+        <translation type="unfinished">Vain tahkot ja reunat on poimittavissa</translation>
     </message>
 </context>
 <context>
@@ -420,22 +408,22 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Valintavirhe</translation>
     </message>
     <message>
         <location line="-10"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Only planar faces can be picked</translation>
+        <translation type="unfinished">Vain tasopinnat on poimittavissa</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Vain lineaariset reunat on poimittavissa</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Only faces and edges can be picked</translation>
+        <translation type="unfinished">Vain tahkot ja reunat on poimittavissa</translation>
     </message>
 </context>
 <context>
@@ -443,12 +431,12 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="-110"/>
         <source>Pulley diameter</source>
-        <translation type="unfinished">Pulley diameter</translation>
+        <translation type="unfinished">Hihnapyörän halkaisija</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Torque [Nm]</source>
-        <translation type="unfinished">Torque [Nm]</translation>
+        <translation type="unfinished">Vääntömomentti [Nm]</translation>
     </message>
 </context>
 <context>
@@ -456,7 +444,7 @@
     <message>
         <location filename="../../TaskObjectName.cpp" line="+48"/>
         <source>TaskObjectName</source>
-        <translation type="unfinished">TaskObjectName</translation>
+        <translation type="unfinished">TehtäväKohteenNimi</translation>
     </message>
 </context>
 <context>
@@ -464,7 +452,7 @@
     <message>
         <location filename="../../TaskTetParameter.cpp" line="+52"/>
         <source>Tet Parameter</source>
-        <translation type="unfinished">Tet Parameter</translation>
+        <translation type="unfinished">Tet muuttuja</translation>
     </message>
 </context>
 <context>
@@ -472,7 +460,7 @@
     <message>
         <location filename="../../../MechanicalAnalysis.ui" line="+14"/>
         <source>Mechanical analysis</source>
-        <translation type="unfinished">Mechanical analysis</translation>
+        <translation type="unfinished">Mekaaninen analysointi</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -481,33 +469,43 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Write Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Run Calculix</source>
-        <translation type="unfinished">Run Calculix</translation>
+        <translation type="unfinished">Suorita Calculix</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Time:</source>
-        <translation type="unfinished">Time:</translation>
+        <translation type="unfinished">Aika:</translation>
     </message>
     <message>
         <location filename="../../../MechanicalMaterial.ui" line="+14"/>
         <source>Mechanical material</source>
-        <translation type="unfinished">Mechanical material</translation>
+        <translation type="unfinished">Mekaaninen materiaali</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>choose...</source>
-        <translation type="unfinished">choose...</translation>
+        <translation type="unfinished">Valitse...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>MatWeb database...</source>
-        <translation type="unfinished">MatWeb database...</translation>
+        <translation type="unfinished">MatWeb tietokantaa...</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Young&apos;s Modulus:</source>
-        <translation type="unfinished">Young&apos;s Modulus:</translation>
+        <translation type="unfinished">Elastiset kertoimet:</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -517,7 +515,7 @@
     <message>
         <location line="+19"/>
         <source>Poisson Ratio:</source>
-        <translation type="unfinished">Poisson Ratio:</translation>
+        <translation type="unfinished">Poissonin suhde:</translation>
     </message>
 </context>
 <context>
@@ -525,12 +523,12 @@
     <message>
         <location filename="../../Command.cpp" line="-468"/>
         <source>No active Analysis</source>
-        <translation type="unfinished">No active Analysis</translation>
+        <translation type="unfinished">Ei aktiivia analysointia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to create or activate a Analysis</source>
-        <translation type="unfinished">You need to create or activate a Analysis</translation>
+        <translation type="unfinished">Sinun täytyy luoda tai aktivoida analyysi</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -544,7 +542,7 @@
         <location line="-71"/>
         <location line="+64"/>
         <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-        <translation type="unfinished">Your FreeCAD is build without NETGEN support. Meshing will not work....</translation>
+        <translation type="unfinished">Sinun FreeCAD on koottu ilman NETGEN tukea. Verkkopinnan käyttö ei toimi....</translation>
     </message>
     <message>
         <location line="-56"/>
@@ -577,7 +575,7 @@
     <message>
         <location filename="../../ViewProviderFemConstraint.cpp" line="+144"/>
         <source>Edit constraint</source>
-        <translation type="unfinished">Edit constraint</translation>
+        <translation type="unfinished">Muokkaa rajoitusta</translation>
     </message>
     <message>
         <location line="+280"/>
@@ -598,12 +596,12 @@
     <message>
         <location line="+6"/>
         <source>ShaftWizard</source>
-        <translation type="unfinished">ShaftWizard</translation>
+        <translation type="unfinished">AkseliApuväline</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>ShaftWizardLayout</source>
-        <translation type="unfinished">ShaftWizardLayout</translation>
+        <translation type="unfinished">AkseliApuvälineUlkonäkö</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFemConstraintBearing.cpp" line="+74"/>
@@ -626,7 +624,12 @@
     <message>
         <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="+57"/>
         <source>Meshing</source>
-        <translation type="unfinished">Meshing</translation>
+        <translation type="unfinished">Verkkopinnan käyttö</translation>
+    </message>
+    <message>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
+        <source>Constraint force</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -634,7 +637,7 @@
     <message>
         <location filename="../../../ShowDisplacement.ui" line="+14"/>
         <source>Show result</source>
-        <translation type="unfinished">Show result</translation>
+        <translation type="unfinished">Näytä tulos</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -664,7 +667,7 @@
     <message>
         <location line="+10"/>
         <source>Avg:</source>
-        <translation type="unfinished">Avg:</translation>
+        <translation type="unfinished">Keskiarvo:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -676,17 +679,17 @@
     <message>
         <location line="+18"/>
         <source>Show</source>
-        <translation type="unfinished">Show</translation>
+        <translation type="unfinished">Näytä</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Factor:</source>
-        <translation type="unfinished">Factor:</translation>
+        <translation type="unfinished">Kerroin:</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Slider max:</source>
-        <translation type="unfinished">Slider max:</translation>
+        <translation type="unfinished">Liukusäädin max:</translation>
     </message>
 </context>
 <context>
@@ -699,7 +702,7 @@
     <message>
         <location line="+12"/>
         <source>Meshes:</source>
-        <translation type="unfinished">Meshes:</translation>
+        <translation type="unfinished">Verkkopinnat:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -717,22 +720,22 @@
     <message>
         <location line="+7"/>
         <source>Volume</source>
-        <translation type="unfinished">Volume</translation>
+        <translation type="unfinished">Tilavuus</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Surface</source>
-        <translation type="unfinished">Surface</translation>
+        <translation type="unfinished">Pinta</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Nodes: 0</source>
-        <translation type="unfinished">Nodes: 0</translation>
+        <translation type="unfinished">Solmukohdat: 0</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Poly</source>
-        <translation type="unfinished">Poly</translation>
+        <translation type="unfinished">Moni(kulmio)</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -742,7 +745,7 @@
     <message>
         <location line="+10"/>
         <source>Pick</source>
-        <translation type="unfinished">Pick</translation>
+        <translation type="unfinished">Valitse</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -752,17 +755,17 @@
     <message>
         <location line="+9"/>
         <source>Angle-search</source>
-        <translation type="unfinished">Angle-search</translation>
+        <translation type="unfinished">Kulma-haku</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Collect adjancent nodes</source>
-        <translation type="unfinished">Collect adjancent nodes</translation>
+        <translation type="unfinished">Kerää vierekkäiset solmukohdat</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Stop angle:</source>
-        <translation type="unfinished">Stop angle:</translation>
+        <translation type="unfinished">Lopetuskulma:</translation>
     </message>
 </context>
 <context>
@@ -783,27 +786,27 @@
     <message>
         <location line="+9"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Lisää viite</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Load [N]</translation>
+        <translation type="unfinished">Kuorma [N]</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Diameter</source>
-        <translation type="unfinished">Diameter</translation>
+        <translation type="unfinished">Halkaisija</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Other diameter</source>
-        <translation type="unfinished">Other diameter</translation>
+        <translation type="unfinished">Muu halkaisija</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Center distance</source>
-        <translation type="unfinished">Center distance</translation>
+        <translation type="unfinished">Akseliväli</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -836,57 +839,57 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Lisää viite</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Gear diameter</source>
-        <translation type="unfinished">Gear diameter</translation>
+        <translation type="unfinished">Hammaspyörän halkaisija</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Other pulley dia</source>
-        <translation type="unfinished">Other pulley dia</translation>
+        <translation type="unfinished">Muu hihnapyörän halkaisija</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Center distance</source>
-        <translation type="unfinished">Center distance</translation>
+        <translation type="unfinished">Akseliväli</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Force</source>
-        <translation type="unfinished">Force</translation>
+        <translation type="unfinished">Voima</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Belt tension force</source>
-        <translation type="unfinished">Belt tension force</translation>
+        <translation type="unfinished">Vyön kireys voima</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Driven pulley</source>
-        <translation type="unfinished">Driven pulley</translation>
+        <translation type="unfinished">Variaattori</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Force location [deg]</source>
-        <translation type="unfinished">Force location [deg]</translation>
+        <translation type="unfinished">Voiman sijainti [deg]</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Force Direction</source>
-        <translation type="unfinished">Force Direction</translation>
+        <translation type="unfinished">Voiman suunta</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reversed direction</source>
-        <translation type="unfinished">Reversed direction</translation>
+        <translation type="unfinished">Käänteinen suunta</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Axial free</source>
-        <translation type="unfinished">Axial free</translation>
+        <translation type="unfinished">Akselivapaa</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -909,7 +912,7 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Lisää viite</translation>
     </message>
 </context>
 <context>
@@ -922,12 +925,12 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Lisää viite</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Load [N]</translation>
+        <translation type="unfinished">Kuorma [N]</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -958,82 +961,82 @@
     <message>
         <location line="+8"/>
         <source>Max. Size:</source>
-        <translation type="unfinished">Max. Size:</translation>
+        <translation type="unfinished">Max. koko:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Second order</source>
-        <translation type="unfinished">Second order</translation>
+        <translation type="unfinished">Toinen järjestys</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation type="unfinished">Hienous:</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>VeryCoarse</source>
-        <translation type="unfinished">VeryCoarse</translation>
+        <translation type="unfinished">HyvinKarkea</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation type="unfinished">Karkea</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderate</translation>
+        <translation type="unfinished">Kohtalainen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation type="unfinished">Hieno</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>VeryFine</source>
-        <translation type="unfinished">VeryFine</translation>
+        <translation type="unfinished">HyvinHieno</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>UserDefined</source>
-        <translation type="unfinished">UserDefined</translation>
+        <translation type="unfinished">KäyttäjänMäärittelemä</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Growth Rate:</source>
-        <translation type="unfinished">Growth Rate:</translation>
+        <translation type="unfinished">Kasvunopeus:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Nbr. Segs per Edge:</source>
-        <translation type="unfinished">Nbr. Segs per Edge:</translation>
+        <translation type="unfinished">Lohkojen lukumäärä reunaa kohden:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Nbr. Segs per Radius:</source>
-        <translation type="unfinished">Nbr. Segs per Radius:</translation>
+        <translation type="unfinished">Lohkojen lukumäärä sädettä kohden:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Optimize</source>
-        <translation type="unfinished">Optimize</translation>
+        <translation type="unfinished">Optimoi</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Node count: </source>
-        <translation type="unfinished">Node count: </translation>
+        <translation type="unfinished">Solmupisteiden määrä: </translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Triangle count:</source>
-        <translation type="unfinished">Triangle count:</translation>
+        <translation type="unfinished">Kolmioiden määrä:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Tetraeder count:</source>
-        <translation type="unfinished">Tetraeder count:</translation>
+        <translation type="unfinished">Tetraedrien määrä:</translation>
     </message>
 </context>
 <context>
@@ -1041,12 +1044,12 @@
     <message>
         <location filename="../../Workbench.cpp" line="+38"/>
         <source>FEM</source>
-        <translation>ELEMENTTIMENETELMÄ</translation>
+        <translation>FEM-elementimenetelmä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;FEM</source>
-        <translation>&amp;ELEMENTTIMENETELMÄ</translation>
+        <translation>&amp;FEM-elementimenetelmä</translation>
     </message>
 </context>
 </TS>

@@ -138,7 +138,7 @@
     <message>
         <location line="+1"/>
         <source>Check Geometry</source>
-        <translation>Check Geometry</translation>
+        <translation>Geometrie nakijken</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -189,7 +189,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Clear All</source>
-        <translation type="unfinished">Clear All</translation>
+        <translation type="unfinished">Alles &amp;Leegmaken</translation>
     </message>
 </context>
 <context>
@@ -231,7 +231,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle All</source>
-        <translation type="unfinished">Toggle All</translation>
+        <translation type="unfinished">Alles omschakelen</translation>
     </message>
 </context>
 <context>
@@ -283,7 +283,7 @@
     <message>
         <location line="-14"/>
         <source>Create a cube solid</source>
-        <translation type="unfinished">Create a cube solid</translation>
+        <translation type="unfinished">Maak een kubus</translation>
     </message>
     <message>
         <source>Box</source>
@@ -340,12 +340,12 @@
     <message>
         <location line="+1"/>
         <source>Shape builder...</source>
-        <translation>Shape builder...</translation>
+        <translation>Vormbouwer...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Advanced utility to create shapes</source>
-        <translation>Advanced utility to create shapes</translation>
+        <translation>Geavanceerd werktuig om vormen te maken</translation>
     </message>
 </context>
 <context>
@@ -1219,18 +1219,14 @@
     <message>
         <location line="+85"/>
         <source>Succeeded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Suceeded</source>
-        <translation type="obsolete">Suceeded</translation>
+        <translation type="unfinished">Succeeded</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+5"/>
         <location line="+5"/>
         <source>Failed</source>
-        <translation type="unfinished">Failed</translation>
+        <translation type="unfinished">Mislukt</translation>
     </message>
 </context>
 <context>
@@ -1253,12 +1249,12 @@
     <message>
         <location line="+52"/>
         <source>Select faces</source>
-        <translation type="unfinished">Select faces</translation>
+        <translation type="unfinished">Selecteer vlakken</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Select edges</source>
-        <translation type="unfinished">Select edges</translation>
+        <translation type="unfinished">Selecteer randen</translation>
     </message>
     <message>
         <location line="-104"/>
@@ -1298,12 +1294,12 @@
     <message>
         <location line="+1"/>
         <source>Constant Length</source>
-        <translation type="unfinished">Constant Length</translation>
+        <translation type="unfinished">Constante lengte</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Variable Length</source>
-        <translation type="unfinished">Variable Length</translation>
+        <translation type="unfinished">Variabele lengte</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1314,12 +1310,12 @@
         <location line="+1"/>
         <location line="+520"/>
         <source>Start length</source>
-        <translation type="unfinished">Start length</translation>
+        <translation type="unfinished">Startlengte</translation>
     </message>
     <message>
         <location line="-519"/>
         <source>End length</source>
-        <translation type="unfinished">End length</translation>
+        <translation type="unfinished">Eindlengte</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1392,7 +1388,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IGES</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1402,7 +1398,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Units for export of IGES</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1422,37 +1418,37 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Enable B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable B-REP mode</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Importeren</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Skip blank entities</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Header</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bedrijf</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Product</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Auteur</translation>
     </message>
 </context>
 <context>
@@ -1460,7 +1456,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">STEP</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1470,7 +1466,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Units for export of STEP</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1490,27 +1486,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Scheme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Scheme</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Header</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bedrijf</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Auteur</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Product</translation>
     </message>
 </context>
 <context>
@@ -1873,13 +1869,13 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+16"/>
         <source>Prism</source>
-        <translation type="unfinished">Prism</translation>
+        <translation type="unfinished">Prisma</translation>
     </message>
     <message>
         <location line="+27"/>
         <location filename="../../DlgPrimitives.cpp" line="+67"/>
         <source>Spiral</source>
-        <translation type="unfinished">Spiral</translation>
+        <translation type="unfinished">Spiraal</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -1902,7 +1898,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+14"/>
         <source>Regular polygon</source>
-        <translation type="unfinished">Regular polygon</translation>
+        <translation type="unfinished">Regelmatige veelhoek</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1964,28 +1960,28 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">U parameter:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">V parameters:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">Straal 2: {3:?}</translation>
+        <translation type="unfinished">Radius 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">V parameter:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">U parameter:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -1999,13 +1995,13 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+150"/>
         <location line="+882"/>
         <source>Polygon:</source>
-        <translation type="unfinished">Polygon:</translation>
+        <translation type="unfinished">Veelhoek:</translation>
     </message>
     <message>
         <location line="-862"/>
         <location line="+882"/>
         <source>Circumradius:</source>
-        <translation type="unfinished">Circumradius:</translation>
+        <translation type="unfinished">Straal:</translation>
     </message>
     <message>
         <location line="-831"/>
@@ -2050,12 +2046,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+88"/>
         <source>Growth:</source>
-        <translation type="unfinished">Growth:</translation>
+        <translation type="unfinished">Groei:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of rotations:</source>
-        <translation type="unfinished">Number of rotations:</translation>
+        <translation type="unfinished">Aantal rotaties:</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -2072,7 +2068,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-49"/>
         <source>From three points</source>
-        <translation>From three points</translation>
+        <translation>Van drie punten</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2132,7 +2128,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="-1200"/>
         <location filename="../../DlgPrimitives.cpp" line="+192"/>
         <source>Helix</source>
-        <translation>Helix</translation>
+        <translation>Schroef</translation>
     </message>
     <message>
         <source>3D View</source>
@@ -2179,7 +2175,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Select line in 3D view</source>
-        <translation>Select line in 3D view</translation>
+        <translation>Selecteer lijn in 3D-weergave</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2374,7 +2370,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-42"/>
         <source>Default line width</source>
-        <translation type="unfinished">Default line width</translation>
+        <translation type="unfinished">Standaard lijndikte</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2596,7 +2592,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select three or more vertices</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2621,7 +2617,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select a list of vertices</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2671,7 +2667,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2706,13 +2702,13 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one or more connected edges in the 3d view and press &apos;Done&apos;</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The selected sweep path is invalid.</translation>
     </message>
 </context>
 <context>
@@ -2728,7 +2724,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-511"/>
         <source>Check Geometry</source>
-        <translation>Check Geometry</translation>
+        <translation>Geometrie nakijken</translation>
     </message>
 </context>
 <context>
@@ -3067,7 +3063,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Face from vertices</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3110,7 +3106,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sweep Path</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3242,7 +3238,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+81"/>
         <source>Edit thickness</source>
-        <translation>Edit thickness</translation>
+        <translation>Dikte bewerken</translation>
     </message>
     <message>
         <source>Transform</source>
@@ -3258,7 +3254,7 @@ Do you want to continue?</translation>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Import-Export</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3465,7 +3461,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Unorientable Shape</source>
-        <translation>Unorientable Shape</translation>
+        <translation>Niet-oriënteerbare vorm</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3480,12 +3476,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Sub Shape Not In Shape</source>
-        <translation>Sub Shape Not In Shape</translation>
+        <translation>Deelvorm niet in vorm</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Bad Orientation</source>
-        <translation>Bad Orientation</translation>
+        <translation>Slechte oriëntatie</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3577,7 +3573,7 @@ Do you want to continue?</translation>
         <location filename="../../TaskDimension.cpp" line="+546"/>
         <location line="+1040"/>
         <source>Selections</source>
-        <translation type="unfinished">Selections</translation>
+        <translation type="unfinished">Selecties</translation>
     </message>
     <message>
         <location line="-1033"/>
@@ -3603,7 +3599,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+5"/>
         <source>Clear All</source>
-        <translation type="unfinished">Clear All</translation>
+        <translation type="unfinished">Alles &amp;Leegmaken</translation>
     </message>
 </context>
 <context>

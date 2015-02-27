@@ -11,12 +11,12 @@
     <message>
         <location line="+1"/>
         <source>Create mesh from shape...</source>
-        <translation>Luo verkko muodosta...</translation>
+        <translation>Luo verkkotaso muodosta...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tessellate shape</source>
-        <translation>Geometrian pilkottu muoto</translation>
+        <translation>Jaa muoto ruutuihin</translation>
     </message>
 </context>
 <context>
@@ -34,7 +34,7 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Meshing options</translation>
+        <translation type="unfinished">Verkon asetukset</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -54,72 +54,72 @@
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maximum edge length:</translation>
+        <translation type="unfinished">Maksimaalin en reunan pituus:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation type="unfinished">Hienous:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Very coarse</translation>
+        <translation type="unfinished">Hyvin karkea</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation type="unfinished">Karkea</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderate</translation>
+        <translation type="unfinished">Kohtalainen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation type="unfinished">Hieno</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Very fine</translation>
+        <translation type="unfinished">Erittäin hieno</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">User defined</translation>
+        <translation type="unfinished">Käyttäjän määrittämä</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Mesh size grading:</translation>
+        <translation type="unfinished">Verkkopinnan koon luokittelu:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elements per edge:</translation>
+        <translation type="unfinished">yksiköitä reunaa kohden:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Elements per curvature radius:</translation>
+        <translation type="unfinished">Yksiköitä kaarevuussädettä kohden:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimize surface</translation>
+        <translation type="unfinished">Optimoi pinta</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Second order elements</translation>
+        <translation type="unfinished">Elementtien toinen järjestys</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Quad dominated</translation>
+        <translation type="unfinished">Nelikkö Quad on hallitseva</translation>
     </message>
     <message>
         <source>Settings</source>

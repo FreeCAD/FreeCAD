@@ -195,7 +195,7 @@
         <location line="-36"/>
         <location line="+41"/>
         <source>All files</source>
-        <translation>All files</translation>
+        <translation>Alle filer</translation>
     </message>
     <message>
         <location line="+8"/>

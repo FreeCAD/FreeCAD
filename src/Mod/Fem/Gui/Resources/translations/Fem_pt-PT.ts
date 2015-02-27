@@ -12,7 +12,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Add a part to the Analysis</source>
-        <translation type="unfinished">Adicionar uma peça para a análise</translation>
+        <translation type="unfinished">Adicionar uma parte para a análise</translation>
     </message>
 </context>
 <context>
@@ -61,12 +61,12 @@
     <message>
         <location line="+1"/>
         <source>Create FEM force constraint</source>
-        <translation type="unfinished">Create FEM force constraint</translation>
+        <translation type="unfinished">Criar restrição de força MEF</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a force acting on a geometric entity</source>
-        <translation type="unfinished">Create FEM constraint for a force acting on a geometric entity</translation>
+        <translation type="unfinished">Criar restrição MEF para uma força a atuar numa entidade geométrica</translation>
     </message>
 </context>
 <context>
@@ -79,12 +79,12 @@
     <message>
         <location line="+1"/>
         <source>Create FEM gear constraint</source>
-        <translation type="unfinished">Create FEM gear constraint</translation>
+        <translation type="unfinished">Criar restrição de engrenagem MEF</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a gear</source>
-        <translation type="unfinished">Create FEM constraint for a gear</translation>
+        <translation type="unfinished">Criar restrição  MEF para uma engrenagem</translation>
     </message>
 </context>
 <context>
@@ -97,12 +97,12 @@
     <message>
         <location line="+1"/>
         <source>Create FEM pulley constraint</source>
-        <translation type="unfinished">Create FEM pulley constraint</translation>
+        <translation type="unfinished">Criar restrição de polia MEF</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a pulley</source>
-        <translation type="unfinished">Create FEM constraint for a pulley</translation>
+        <translation type="unfinished">Criar restrição FEM para uma polia</translation>
     </message>
 </context>
 <context>
@@ -116,7 +116,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Create a FEM analysis</source>
-        <translation type="unfinished">Create a FEM analysis</translation>
+        <translation type="unfinished">Criar uma análise MEF</translation>
     </message>
 </context>
 <context>
@@ -186,7 +186,7 @@
     <message>
         <location line="+20"/>
         <source>Local length</source>
-        <translation>Comprimento do local</translation>
+        <translation>Comprimento local</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -221,7 +221,7 @@
     <message>
         <location line="-11"/>
         <source>You must specify at least one reference</source>
-        <translation type="unfinished">You must specify at least one reference</translation>
+        <translation type="unfinished">Deve especificar pelo menos uma referência</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+356"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+365"/>
         <source>Input error</source>
         <translation type="unfinished">Erro de Inserção</translation>
     </message>
@@ -287,7 +287,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Erro de seleção</translation>
     </message>
     <message>
         <location line="-37"/>
@@ -297,27 +297,27 @@
     <message>
         <location line="+4"/>
         <source>Only faces can be picked</source>
-        <translation type="unfinished">Only faces can be picked</translation>
+        <translation type="unfinished">Só podem ser selecionadas faces</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Only cylindrical faces can be picked</source>
-        <translation type="unfinished">Only cylindrical faces can be picked</translation>
+        <translation type="unfinished">Somente as faces cilíndricas podem ser selecionadas</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Only planar faces can be picked</translation>
+        <translation type="unfinished">Apenas faces planas podem ser selecionadas</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Apenas arestas lineares podem ser selecionadas</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Only faces and edges can be picked</translation>
+        <translation type="unfinished">Apenas podem ser selecionadas faces e arestas</translation>
     </message>
 </context>
 <context>
@@ -331,52 +331,40 @@
         <location line="+61"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Erro de seleção</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">Tipos de forma mixtos não são possíveis. Use em vez disso uma segunda restrição</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+        <translation type="unfinished">Apenas faces, arestas e vértices podem ser selecionados</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-282"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-291"/>
         <source>Delete</source>
         <translation type="unfinished">Apagar</translation>
     </message>
     <message>
-        <source>Force [N]</source>
-        <translation type="obsolete">Force [N]</translation>
-    </message>
-    <message>
-        <source>Force [N/mm]</source>
-        <translation type="obsolete">Force [N/mm]</translation>
-    </message>
-    <message>
-        <source>Force [N/mmÂ²]</source>
-        <translation type="obsolete">Force [N/mmÂ²]</translation>
-    </message>
-    <message>
         <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Point load [N]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load [N/mm]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Line load [N/mm]</translation>
     </message>
     <message utf8="true">
         <location line="+2"/>
         <source>Area load [N/mm²]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Area load [N/mm²]</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -385,32 +373,32 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Erro de seleção</translation>
     </message>
     <message>
         <location line="-42"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">Tipos de forma mixtos não são possíveis. Use em vez disso uma segunda restrição</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+        <translation type="unfinished">Apenas faces, arestas e vértices podem ser selecionados</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Only planar faces can be picked</translation>
+        <translation type="unfinished">Apenas faces planas podem ser selecionadas</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Apenas arestas lineares podem ser selecionadas</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Only faces and edges can be picked</translation>
+        <translation type="unfinished">Apenas podem ser selecionadas faces e arestas</translation>
     </message>
 </context>
 <context>
@@ -420,22 +408,22 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Erro de seleção</translation>
     </message>
     <message>
         <location line="-10"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Only planar faces can be picked</translation>
+        <translation type="unfinished">Apenas faces planas podem ser selecionadas</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Apenas arestas lineares podem ser selecionadas</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Only faces and edges can be picked</translation>
+        <translation type="unfinished">Apenas podem ser selecionadas faces e arestas</translation>
     </message>
 </context>
 <context>
@@ -443,7 +431,7 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="-110"/>
         <source>Pulley diameter</source>
-        <translation type="unfinished">Pulley diameter</translation>
+        <translation type="unfinished">Diâmetro da polia</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -472,7 +460,7 @@
     <message>
         <location filename="../../../MechanicalAnalysis.ui" line="+14"/>
         <source>Mechanical analysis</source>
-        <translation type="unfinished">Mechanical analysis</translation>
+        <translation type="unfinished">Análise mecânica</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -481,13 +469,23 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Write Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Run Calculix</source>
         <translation type="unfinished">Run Calculix</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Time:</source>
-        <translation type="unfinished">Time:</translation>
+        <translation type="unfinished">Tempo:</translation>
     </message>
     <message>
         <location filename="../../../MechanicalMaterial.ui" line="+14"/>
@@ -497,7 +495,7 @@
     <message>
         <location line="+7"/>
         <source>choose...</source>
-        <translation type="unfinished">choose...</translation>
+        <translation type="unfinished">escolha...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -525,12 +523,12 @@
     <message>
         <location filename="../../Command.cpp" line="-468"/>
         <source>No active Analysis</source>
-        <translation type="unfinished">No active Analysis</translation>
+        <translation type="unfinished">Nenhuma análise ativa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to create or activate a Analysis</source>
-        <translation type="unfinished">You need to create or activate a Analysis</translation>
+        <translation type="unfinished">É preciso criar ou ativar uma Análise</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -544,7 +542,7 @@
         <location line="-71"/>
         <location line="+64"/>
         <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-        <translation type="unfinished">Your FreeCAD is build without NETGEN support. Meshing will not work....</translation>
+        <translation type="unfinished">O seu FreeCAD está construído sem suporte NETGEN. A emalhagem não vai funcionar....</translation>
     </message>
     <message>
         <location line="-56"/>
@@ -626,7 +624,12 @@
     <message>
         <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="+57"/>
         <source>Meshing</source>
-        <translation type="unfinished">Meshing</translation>
+        <translation type="unfinished">Emalhar</translation>
+    </message>
+    <message>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
+        <source>Constraint force</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -634,7 +637,7 @@
     <message>
         <location filename="../../../ShowDisplacement.ui" line="+14"/>
         <source>Show result</source>
-        <translation type="unfinished">Show result</translation>
+        <translation type="unfinished">Mostrar resultado</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -664,7 +667,7 @@
     <message>
         <location line="+10"/>
         <source>Avg:</source>
-        <translation type="unfinished">Avg:</translation>
+        <translation type="unfinished">Média:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -676,12 +679,12 @@
     <message>
         <location line="+18"/>
         <source>Show</source>
-        <translation type="unfinished">Show</translation>
+        <translation type="unfinished">Mostrar</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Factor:</source>
-        <translation type="unfinished">Factor:</translation>
+        <translation type="unfinished">Fator:</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -699,7 +702,7 @@
     <message>
         <location line="+12"/>
         <source>Meshes:</source>
-        <translation type="unfinished">Meshes:</translation>
+        <translation type="unfinished">Malhas:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -722,17 +725,17 @@
     <message>
         <location line="+5"/>
         <source>Surface</source>
-        <translation type="unfinished">Surface</translation>
+        <translation type="unfinished">Superfície</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Nodes: 0</source>
-        <translation type="unfinished">Nodes: 0</translation>
+        <translation type="unfinished">Nós:0</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Poly</source>
-        <translation type="unfinished">Poly</translation>
+        <translation type="unfinished">Polia</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -742,7 +745,7 @@
     <message>
         <location line="+10"/>
         <source>Pick</source>
-        <translation type="unfinished">Pick</translation>
+        <translation type="unfinished">Escolher</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -762,7 +765,7 @@
     <message>
         <location line="+9"/>
         <source>Stop angle:</source>
-        <translation type="unfinished">Stop angle:</translation>
+        <translation type="unfinished">Ângulo de paragem:</translation>
     </message>
 </context>
 <context>
@@ -783,12 +786,12 @@
     <message>
         <location line="+9"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Adicionar referência</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Load [N]</translation>
+        <translation type="unfinished">Carga [N]</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -798,12 +801,12 @@
     <message>
         <location line="+27"/>
         <source>Other diameter</source>
-        <translation type="unfinished">Other diameter</translation>
+        <translation type="unfinished">Outro diâmetro</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Center distance</source>
-        <translation type="unfinished">Center distance</translation>
+        <translation type="unfinished">Distância do centro</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -818,7 +821,7 @@
     <message>
         <location line="+9"/>
         <source>Location</source>
-        <translation type="unfinished">Location</translation>
+        <translation type="unfinished">Local</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -836,32 +839,32 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Adicionar referência</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Gear diameter</source>
-        <translation type="unfinished">Gear diameter</translation>
+        <translation type="unfinished">Diâmetro da engrenagem</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Other pulley dia</source>
-        <translation type="unfinished">Other pulley dia</translation>
+        <translation type="unfinished">Outro diâmetro de polia</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Center distance</source>
-        <translation type="unfinished">Center distance</translation>
+        <translation type="unfinished">Distância do centro</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Force</source>
-        <translation type="unfinished">Force</translation>
+        <translation type="unfinished">Força</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Belt tension force</source>
-        <translation type="unfinished">Belt tension force</translation>
+        <translation type="unfinished">Força de tensão da correia</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -871,17 +874,17 @@
     <message>
         <location line="+9"/>
         <source>Force location [deg]</source>
-        <translation type="unfinished">Force location [deg]</translation>
+        <translation type="unfinished">Localização da força [graus]</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Force Direction</source>
-        <translation type="unfinished">Force Direction</translation>
+        <translation type="unfinished">Direção da força</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reversed direction</source>
-        <translation type="unfinished">Reversed direction</translation>
+        <translation type="unfinished">Direção invertida</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -891,7 +894,7 @@
     <message>
         <location line="+9"/>
         <source>Location</source>
-        <translation type="unfinished">Location</translation>
+        <translation type="unfinished">Local</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -909,7 +912,7 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Adicionar referência</translation>
     </message>
 </context>
 <context>
@@ -922,12 +925,12 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">Adicionar referência</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Load [N]</translation>
+        <translation type="unfinished">Carga [N]</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -958,12 +961,12 @@
     <message>
         <location line="+8"/>
         <source>Max. Size:</source>
-        <translation type="unfinished">Max. Size:</translation>
+        <translation type="unfinished">Tamanho max:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Second order</source>
-        <translation type="unfinished">Second order</translation>
+        <translation type="unfinished">Segunda ordem</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -973,22 +976,22 @@
     <message>
         <location line="+11"/>
         <source>VeryCoarse</source>
-        <translation type="unfinished">VeryCoarse</translation>
+        <translation type="unfinished">Muito Grosseiro</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation type="unfinished">Grosso</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderate</translation>
+        <translation type="unfinished">Moderado</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation type="unfinished">Fino</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -998,42 +1001,42 @@
     <message>
         <location line="+5"/>
         <source>UserDefined</source>
-        <translation type="unfinished">UserDefined</translation>
+        <translation type="unfinished">Definido pelo Utilizador</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Growth Rate:</source>
-        <translation type="unfinished">Growth Rate:</translation>
+        <translation type="unfinished">Taxa de crescimento:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Nbr. Segs per Edge:</source>
-        <translation type="unfinished">Nbr. Segs per Edge:</translation>
+        <translation type="unfinished">Número de segundos por aresta:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Nbr. Segs per Radius:</source>
-        <translation type="unfinished">Nbr. Segs per Radius:</translation>
+        <translation type="unfinished">Nº Seg. por Raio:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Optimize</source>
-        <translation type="unfinished">Optimize</translation>
+        <translation type="unfinished">Ótimizar</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Node count: </source>
-        <translation type="unfinished">Node count: </translation>
+        <translation type="unfinished">Contagem de nós: </translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Triangle count:</source>
-        <translation type="unfinished">Triangle count:</translation>
+        <translation type="unfinished">Contagem de triângulos:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Tetraeder count:</source>
-        <translation type="unfinished">Tetraeder count:</translation>
+        <translation type="unfinished">Contagem de Tetraedros:</translation>
     </message>
 </context>
 <context>

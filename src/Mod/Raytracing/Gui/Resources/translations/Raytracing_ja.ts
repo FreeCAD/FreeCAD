@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Export a Raytracing project to a file</source>
-        <translation type="unfinished">Export a Raytracing project to a file</translation>
+        <translation type="unfinished">レイトレーシングプロジェクトをファイルへエクスポート</translation>
     </message>
     <message>
         <source>Export the Povray project file</source>
@@ -38,17 +38,17 @@
     <message>
         <location line="+1"/>
         <source>Insert new Luxrender project into the document</source>
-        <translation type="unfinished">Insert new Luxrender project into the document</translation>
+        <translation type="unfinished">ドキュメントに新しいLuxrenderプロジェクトを挿入</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>No template</source>
-        <translation type="unfinished">No template</translation>
+        <translation type="unfinished">テンプレートがありません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">No template available</translation>
+        <translation type="unfinished">利用可能なテンプレートがありません</translation>
     </message>
 </context>
 <context>
@@ -66,7 +66,7 @@
     <message>
         <location line="+1"/>
         <source>Insert a new part object into a Raytracing project</source>
-        <translation type="unfinished">Insert a new part object into a Raytracing project</translation>
+        <translation type="unfinished">レイトレーシングプロジェクトに新しいパートオブジェクトを挿入</translation>
     </message>
     <message>
         <source>Insert a new part object into a Povray project</source>
@@ -91,22 +91,22 @@
     <message>
         <location line="+1"/>
         <source>New POV-Ray project</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新しいPOV-Rayプロジェクト</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new POV-Ray project into the document</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ドキュメントに新しいPOV-Rayプロジェクトを挿入</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>No template</source>
-        <translation type="unfinished">No template</translation>
+        <translation type="unfinished">テンプレートがありません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">No template available</translation>
+        <translation type="unfinished">利用可能なテンプレートがありません</translation>
     </message>
 </context>
 <context>
@@ -124,7 +124,7 @@
     <message>
         <location line="+1"/>
         <source>Renders the current raytracing project with an external renderer</source>
-        <translation type="unfinished">Renders the current raytracing project with an external renderer</translation>
+        <translation type="unfinished">外部のレンダラーを使って現在のレイトレーシングプロジェクトをレンダリング</translation>
     </message>
 </context>
 <context>
@@ -137,12 +137,12 @@
     <message>
         <location line="+1"/>
         <source>&amp;Reset Camera</source>
-        <translation type="unfinished">&amp;Reset Camera</translation>
+        <translation type="unfinished">カメラをリセット (&amp;R)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sets the camera of the selected Raytracing project to match the current view</source>
-        <translation type="unfinished">Sets the camera of the selected Raytracing project to match the current view</translation>
+        <translation type="unfinished">選択されているレイトレーシングプロジェクトのカメラを現在のビューに一致させます</translation>
     </message>
 </context>
 <context>
@@ -155,12 +155,12 @@
     <message>
         <location line="+1"/>
         <source>Export camera to POV-Ray...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">カメラをPOV-Rayへエクスポート...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">現在の3 D ビューでのカメラ位置をPOV-Ray フォーマットのファイルにエクスポートします。</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -181,12 +181,12 @@
     <message>
         <location line="+1"/>
         <source>Export part to POV-Ray...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">パーツをPOV-Rayへエクスポート...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write the selected Part (object) as a POV-Ray file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">選択した部品 (オブジェクト) をPOV-Ray ファイルとして書き出す</translation>
     </message>
     <message>
         <source>Export part to povray...</source>
@@ -213,17 +213,18 @@
         <location line="+87"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">現在のビューカメラは透視投影ではありませんので、従ってこの後のPOV-Ray画像結果は意図したものと異なる可能性があります。
+続行しますか？</translation>
     </message>
     <message>
         <location line="-103"/>
         <source>Export view to POV-Ray...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ビューをPOV-Rayへエクスポート...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">現在の3 D ビューにおけるカメラと全てのコンテンツをPOV-Ray ファイルに書き込む</translation>
     </message>
     <message>
         <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
@@ -247,8 +248,8 @@ Do you want to continue?</source>
         <location line="+493"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
-Do you want to continue?</translation>
+        <translation type="unfinished">現在のビューカメラは透視投影ではありません。従ってこの後のLuxRender画像結果は意図したものと異なる可能性があります。
+続行しますか？</translation>
     </message>
 </context>
 <context>
@@ -261,7 +262,7 @@ Do you want to continue?</translation>
         <location line="-579"/>
         <location line="+51"/>
         <source>POV-Ray (*.pov)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">POV-Ray (*.pov)</translation>
     </message>
     <message>
         <location line="-50"/>
@@ -283,7 +284,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-272"/>
         <source>POV-Ray(*.pov)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">POV-Ray(*.pov)</translation>
     </message>
     <message>
         <location line="+171"/>
@@ -302,98 +303,86 @@ Do you want to continue?</translation>
         <location line="+10"/>
         <location line="+12"/>
         <source>No Raytracing project to insert</source>
-        <translation type="unfinished">No Raytracing project to insert</translation>
+        <translation type="unfinished">挿入するレイトレーシングプロジェクトがありません。</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>Create a Raytracing project to insert a view.</source>
-        <translation type="unfinished">Create a Raytracing project to insert a view.</translation>
+        <translation type="unfinished">ビューを挿入するレイトレーシングプロジェクトを作成</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select a Raytracing project to insert the view.</source>
-        <translation type="unfinished">Select a Raytracing project to insert the view.</translation>
+        <translation type="unfinished">ビューを挿入するレイトレーシングプロジェクトを選択</translation>
     </message>
     <message>
         <location line="+64"/>
         <location line="+61"/>
         <location line="+244"/>
         <source>Select one Raytracing project object.</source>
-        <translation type="unfinished">Select one Raytracing project object.</translation>
+        <translation type="unfinished">レイトレーシングプロジェクトオブジェクトを 1 つ選択してください。</translation>
     </message>
     <message>
         <location line="-229"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">POV-Ray が見つかりません</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Please set the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">プリファレンスでPOV-Ray実行ファイルのパスを設定してください。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">フリファレンスで、POV-Ray実行ファイルのパスを修正してください。</translation>
     </message>
     <message>
         <location line="+74"/>
         <source>Lux project file missing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Luxプロジェクトファイルが見つかりません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Lux project file doesn&apos;t exist.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Povray not found</source>
-        <translation type="obsolete">Povray が見つかりません</translation>
-    </message>
-    <message>
-        <source>Please set the path to the povray executable in the preferences.</source>
-        <translation type="obsolete">Please set the path to the povray executable in the preferences.</translation>
-    </message>
-    <message>
-        <source>Please correct the path to the povray executable in the preferences.</source>
-        <translation type="obsolete">Please correct the path to the povray executable in the preferences.</translation>
+        <translation type="unfinished">Luxプロジェクトファイルがありません。</translation>
     </message>
     <message>
         <location line="-68"/>
         <location line="+6"/>
         <source>Luxrender not found</source>
-        <translation type="unfinished">Luxrender not found</translation>
+        <translation type="unfinished">Luxrender が見つかりません</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Please set the path to the luxrender or luxconsole executable in the preferences.</translation>
+        <translation type="unfinished">必要に応じてLuxRenderまたはLuxconsoleの実行ファイルのパスを設定してください。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Please correct the path to the luxrender or luxconsole executable in the preferences.</translation>
+        <translation type="unfinished">必要に応じてLuxRenderまたはLuxconsoleの実行ファイルのパスを修正してください。</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>POV-Ray file missing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">POV-Rayファイルが見つかりません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The POV-Ray project file doesn&apos;t exist.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">POV-Ray プロジェクトファイルがありません。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Rendered image (*.bmp)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">レンダリング画像 (*.bmp)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rendered image (*.png)</source>
-        <translation type="unfinished">Rendered image (*.png)</translation>
+        <translation type="unfinished">レンダリングされた画像 (*.png)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -427,22 +416,22 @@ Do you want to continue?</translation>
     <message>
         <location line="+103"/>
         <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCADからレンダリングしたい場合の、POV-Ray実行ファイルのパス</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>POV-Ray executable:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">POV-Ray実行ファイル:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>POV-Ray output parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">POV-Ray出力パラメーター:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The POV-Ray parameters to be passed to the render.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">レンダーに渡されるPOV-Rayパラメーター。</translation>
     </message>
     <message>
         <location line="+95"/>
@@ -462,23 +451,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-159"/>
         <source>Render</source>
-        <translation type="unfinished">Render</translation>
-    </message>
-    <message>
-        <source>The path to the povray executable, if you want to render from FreeCAD</source>
-        <translation type="obsolete">The path to the povray executable, if you want to render from FreeCAD</translation>
-    </message>
-    <message>
-        <source>Povray executable:</source>
-        <translation type="obsolete">Povray executable:</translation>
-    </message>
-    <message>
-        <source>Povray output parameters:</source>
-        <translation type="obsolete">Povray 出力パラメーター:</translation>
-    </message>
-    <message>
-        <source>The povray parameters to be passed to the render.</source>
-        <translation type="obsolete">レンダリングに渡される povray パラメーター。</translation>
+        <translation type="unfinished">レンダー</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -488,17 +461,17 @@ Do you want to continue?</translation>
     <message>
         <location line="+13"/>
         <source>+W: </source>
-        <translation type="unfinished">+W: </translation>
+        <translation type="unfinished">+W: </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The width of the rendered image</source>
-        <translation type="unfinished">The width of the rendered image</translation>
+        <translation type="unfinished">レンダリング・イメージの幅</translation>
     </message>
     <message>
         <location line="+19"/>
         <source> +H : </source>
-        <translation type="unfinished"> +H : </translation>
+        <translation type="unfinished"> +H : </translation>
     </message>
     <message>
         <location line="+7"/>
@@ -513,7 +486,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+7"/>
         <source>The path to the luxrender (or luxconsole) executable</source>
-        <translation type="unfinished">The path to the luxrender (or luxconsole) executable</translation>
+        <translation type="unfinished">LuxRender(またはluxconsole)実行ファイルのパス</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -525,7 +498,7 @@ Do you want to continue?</translation>
         <location line="+23"/>
         <location line="+16"/>
         <source>Used by utility tools</source>
-        <translation type="unfinished">Used by utility tools</translation>
+        <translation type="unfinished">ユーティリティ ツールで使用</translation>
     </message>
     <message>
         <location line="-13"/>
@@ -563,7 +536,7 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../ViewProvider.cpp" line="+68"/>
         <source>Edit LuxRender project</source>
-        <translation type="unfinished">Edit LuxRender project</translation>
+        <translation type="unfinished">LuxRender プロジェクトの編集</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -573,7 +546,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+0"/>
         <source>Select a LuxRender template</source>
-        <translation type="unfinished">Select a LuxRender template</translation>
+        <translation type="unfinished">LuxRender テンプレートを選択</translation>
     </message>
 </context>
 <context>

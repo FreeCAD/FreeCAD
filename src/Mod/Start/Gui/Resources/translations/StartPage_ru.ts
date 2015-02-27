@@ -21,7 +21,7 @@
     <message>
       <location filename="StartPage.py" line="88"/>
       <source>Tutorials</source>
-      <translation type="unfinished">Учебники</translation>
+      <translation type="unfinished">Уроки</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="57"/>
@@ -106,12 +106,7 @@
     <message>
       <location filename="StartPage.py" line="73"/>
       <source>The &lt;b&gt;Architectural Design&lt;/b&gt; workbench is specially designed for working with architectural elements such as walls or windows. Start by drawing 2D shapes, and use them as guides to build architecutral objects.</source>
-      <translation type="unfinished">Рабочая среда &lt;b&gt;Архитектурный дизайн&lt;/b&gt; разработана специально для работы с архитектурными элементами типа окон или стен. Начните с построения 2D фигур и используйте их как основу для создания объектов архитектуры.</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">Архитектурный дизайн</translation>
+      <translation type="unfinished">Рабочая среда &lt;b&gt;Архитектурное проектирование&lt;/b&gt; разработана специально для работы с архитектурными элементами типа окон или стен. Начните с построения 2D-фигур и используйте их как основу для создания архитектурных объектов.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="75"/>
@@ -131,7 +126,7 @@
     <message>
       <location filename="StartPage.py" line="78"/>
       <source>Work with Meshes</source>
-      <translation type="unfinished">Работа с сетями</translation>
+      <translation type="unfinished">Работа с сетками</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="79"/>
@@ -229,11 +224,6 @@
       <translation type="unfinished">Раздел обучения на веб-сайте FreeCAD</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">Раздел веб-сайта FreeCad посвящённый, созданию скриптов на python, с примерами, объясненими и командами API.</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">Блог, посвященный обучению FreeCAD, поддерживается членами сообщества FreeCAD</translation>
@@ -271,12 +261,7 @@
     <message>
       <location filename="StartPage.py" line="87"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
-    </message>
-    <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc/ru</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="105"/>
@@ -286,7 +271,32 @@
     <message>
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub/ru</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">Архитектурное проектирование</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">Раздел сайта FreeCAD, посвящённый созданию сценариев на Python, с примерами, объяснениями и командами API.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches/ru</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">Установлена самая новая версия FreeCAD.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">Доступна для скачивания более новая версия FreeCAD.</translation>
     </message>
   </context>
 </TS>

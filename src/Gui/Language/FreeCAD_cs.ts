@@ -239,13 +239,12 @@
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
-        <translation type="unfinished">Press middle and left or right mouse button</translation>
+        <translation type="unfinished">Stiskni prostřední a levé nebo pravé tlačítko myši</translation>
     </message>
     <message>
         <source>Scroll middle mouse button or keep middle button pressed
 while doing a left or right click and move the mouse up or down</source>
-        <translation type="unfinished">Scroll middle mouse button or keep middle button pressed
-while doing a left or right click and move the mouse up or down</translation>
+        <translation type="unfinished">Rolujte prostředním tlačítkem myši nebo držte prostřední tlačítko zmáčknuté během stisknutí levého nebo pravého tlačítka a pohybujte myší nahoru nebo dolů</translation>
     </message>
 </context>
 <context>
@@ -313,7 +312,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Word size</translation>
+        <translation type="unfinished">Velikost slova</translation>
     </message>
 </context>
 <context>
@@ -355,7 +354,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Clipping custom direction</source>
-        <translation type="unfinished">Clipping custom direction</translation>
+        <translation type="unfinished">Oříznutí vlastním směrem</translation>
     </message>
     <message>
         <source>View</source>
@@ -363,7 +362,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Adjust to view direction</translation>
+        <translation type="unfinished">Nastavit na směr pohledu</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -474,11 +473,11 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Site:</source>
-        <translation type="unfinished">Site:</translation>
+        <translation type="unfinished">Stránka:</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 z %2</translation>
     </message>
 </context>
 <context>
@@ -488,12 +487,8 @@ while doing a left or right click and move the mouse up or down</translation>
         <translation type="unfinished">Zvolte ikonu</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">Přidat ikony...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Složky ikon...</translation>
     </message>
 </context>
 <context>
@@ -942,87 +937,87 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hliník</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mosaz</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Brnoz</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Měď</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chrom</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Smaragd</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zlato</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nefrit</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Metalizované</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obsidián</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cín</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sádra</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plast</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rubín</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Satén</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lesklý plast</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stříbro</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ocel</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kámen</translation>
     </message>
 </context>
 <context>
@@ -1132,11 +1127,11 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Enable tiled background</translation>
+        <translation type="unfinished">Povolit dlaždicové pozadí</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation type="unfinished">Formát listu:</translation>
     </message>
 </context>
 <context>
@@ -1159,7 +1154,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>No style sheet</source>
-        <translation type="unfinished">No style sheet</translation>
+        <translation type="unfinished">Bez stylů</translation>
     </message>
 </context>
 <context>
@@ -1315,7 +1310,7 @@ Tento soubor již existuje.</translation>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+        <translation type="unfinished">Nemáš práva pro zápis do tohoto adresáře. Prosím, zvol jiný.</translation>
     </message>
 </context>
 <context>
@@ -1513,15 +1508,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>License information:</source>
-        <translation type="unfinished">License information:</translation>
+        <translation type="unfinished">Informace o licenci:</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">URL licence</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="unfinished">Open in browser</translation>
+        <translation type="unfinished">Otevři v prohlížeči</translation>
     </message>
 </context>
 <context>
@@ -1587,23 +1582,19 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
         <source>Link</source>
-        <translation type="unfinished">Link</translation>
+        <translation type="unfinished">Odkaz</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation type="unfinished">Zobraz všechny typy objektů</translation>
     </message>
     <message>
         <source>No selection</source>
         <translation type="unfinished">Žádný výběr</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Please select an object of the list</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Prosím vyberte objekt ze seznamu</translation>
     </message>
 </context>
 <context>
@@ -1792,7 +1783,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation type="unfinished">Vyhlazování čáry</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
@@ -1977,91 +1968,91 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Autorství a licence</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jméno autora</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jméno pro použití při vytvoření dokumentu.&lt;/p&gt;&lt;p&gt;Pro anonymitu nechte prázdné.&lt;/p&gt;&lt;p&gt;Můžete také použít tvar:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Je-li zaškrtnuto, políčko &quot;Naposledy upravil&quot; bude vyplněno při ukládání souboru</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nastavit při ukládání</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Společnost</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Výchozí licence</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Výchozí licence pro nové dokumenty</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Všechna práva vyhrazena</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Uveďte autora</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Uveďte autora - Zachovejte licenci</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons  Uveďte autora – Nezpracovávejte</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Uveďte autora – Neužívejte komerčně</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Creative Commons Uveďte autora – Neužívejte komerčně – Zachovejte licenci</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Uveďte autora – Neužívejte komerčně – Nezpracovávejte</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Veřejná doména</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jiný</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">URL licence</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">URL, kde může uživatel najít podrobnosti o licenci</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Výchozí společnost pro nové soubory</translation>
     </message>
 </context>
 <context>
@@ -2156,10 +2147,6 @@ Specify another directory, please.</source>
     <message>
         <source>Black</source>
         <translation type="unfinished">Černá</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">Průhledný</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2405,15 +2392,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">US customary (in/lb)</translation>
+        <translation type="unfinished">obvyklé v USA (in/lb)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
-        <translation type="unfinished">Number of decimals:</translation>
+        <translation type="unfinished">Počet desetinných míst:</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation type="unfinished">Imperial decimal (in/lb)</translation>
+        <translation type="unfinished">Imperiální desetinné (in/lb)</translation>
     </message>
 </context>
 <context>
@@ -2507,7 +2494,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
         <source>Unit mismatch</source>
-        <translation type="unfinished">Unit mismatch</translation>
+        <translation type="unfinished">Jednotky si neodpovídají</translation>
     </message>
 </context>
 <context>
@@ -2557,50 +2544,50 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 z %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished">Save File</translation>
+        <translation type="unfinished">Ulož soubor</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished">Download canceled: %1</translation>
+        <translation type="unfinished">Stahovaní zrušeno: %1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation type="unfinished">Open containing folder</translation>
+        <translation type="unfinished">Otevřít odpovídající složku</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation type="unfinished">Chyba při otevírání uloženého souboru: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Error saving: %1</translation>
+        <translation type="unfinished">Chyba při ukládání: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Network Error: %1</translation>
+        <translation type="unfinished">Chyba sítě: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished">seconds</translation>
+        <translation type="unfinished">vteřiny</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished">minutes</translation>
+        <translation type="unfinished">minuty</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 remaining</translation>
+        <translation type="unfinished">- zbývá %4 %5</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished">%1 of %2 (%3/sec) %4</translation>
+        <translation type="unfinished">%1 z %2 (%3/sec) %4</translation>
     </message>
     <message>
         <source>?</source>
@@ -2608,11 +2595,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 of %2 - Stopped</translation>
+        <translation type="unfinished">%1 z %2 - Zastaveno</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished">bytes</translation>
+        <translation type="unfinished">bajtů</translation>
     </message>
     <message>
         <source>kB</source>
@@ -2627,57 +2614,53 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Downloads</translation>
+        <translation type="unfinished">Stahování</translation>
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Clean up</translation>
+        <translation type="unfinished">Vyčistit</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished">0 Items</translation>
+        <translation type="unfinished">0 položek</translation>
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Download Manager</translation>
+        <translation type="unfinished">Správce stahování</translation>
     </message>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished">1 Download</translation>
+        <translation type="unfinished">1 stahování</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 Downloads</translation>
+        <translation type="unfinished">%1 stahování</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">Přidat ikonu</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Složky ikon</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Přidat složku ikony</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Přidat nebo odebrat obvyklé složky ikon</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Odstranit složku</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Odstranění složky se projeví až po restartu aplikace.</translation>
     </message>
 </context>
 <context>
@@ -2931,11 +2914,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nesprávné množství</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vstupních pole obsahují nesprávná data, prosím vložte platné hodnoty umístění!</translation>
     </message>
 </context>
 <context>
@@ -3175,39 +3158,39 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hledat</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyhledávání popisků objektů</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vymaže pole hledání</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybrat pouze</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere pouze tento objekt</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zrušit výběr</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zruší výběr tohoto objektu</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Přizpůsobit zvětšení</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere a přizpůsobí tento objekt ve 3D okně</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3215,7 +3198,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybere a vyhledá tento objekt ve stromovém zobrazení</translation>
     </message>
 </context>
 <context>
@@ -3430,7 +3413,7 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
         <source>Export graph</source>
-        <translation type="unfinished">Export graph</translation>
+        <translation type="unfinished">Exportovat graf</translation>
     </message>
 </context>
 <context>
@@ -3441,7 +3424,7 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Uložit hodnotu</translation>
     </message>
 </context>
 <context>
@@ -3467,7 +3450,7 @@ Chcete uložit provedené změny?</translation>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seznam</translation>
     </message>
 </context>
 <context>
@@ -3547,13 +3530,12 @@ Chcete uložit provedené změny?</translation>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Závislosti objektu</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</translation>
+        <translation type="unfinished">Vybrané objekty mají závislost na nevybrané objekty. Chcete je také zkopírovat?</translation>
     </message>
 </context>
 <context>
@@ -3644,7 +3626,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">No point was found on model</translation>
+        <translation type="unfinished">V modelu nebyly nalezeny žádné body</translation>
     </message>
 </context>
 <context>
@@ -3663,11 +3645,11 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Uložit hodnotu</translation>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Smazat seznam</translation>
     </message>
 </context>
 <context>
@@ -3704,7 +3686,7 @@ V pravém pohledu jsou %2 body vybrány.</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Edit...</translation>
+        <translation type="unfinished">Upravit...</translation>
     </message>
 </context>
 <context>
@@ -4010,7 +3992,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation type="unfinished">Press CTRL and SHIFT buttons</translation>
+        <translation type="unfinished">Stisknout CTRL + SHIFT</translation>
     </message>
 </context>
 <context>
@@ -4089,11 +4071,11 @@ Do you want to specify another directory?</source>
     <name>NetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Vložte uživatelské jméno a heslo pro &quot;%1&quot; na %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Připojit se k proxy &quot;%1&quot; pomocí:&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -4183,7 +4165,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vstup na řádku %1 není číslo</translation>
     </message>
 </context>
 <context>
@@ -4425,10 +4407,6 @@ Do you want to continue?</source>
         <translation type="unfinished">Neuložený dokument</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">Uložit dokument před zavřením?</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">Uložit makro</translation>
     </message>
@@ -4585,11 +4563,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Přejete si uložit změny v dokumentu &quot;%1&quot; před zavřením?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">V případě neuložení dokumentu budou změny ztraceny.</translation>
     </message>
 </context>
 <context>
@@ -5039,11 +5017,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Frequently Asked Questions on the FreeCAD website</source>
-        <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+        <translation type="unfinished">FAQ na stránkách FreeCAD</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
-        <translation type="unfinished">Frequently Asked Questions</translation>
+        <translation type="unfinished">Často Kladené Otázky</translation>
     </message>
 </context>
 <context>
@@ -5062,7 +5040,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>The FreeCAD Forum</source>
-        <translation type="unfinished">The FreeCAD Forum</translation>
+        <translation type="unfinished">FreeCAD Forum</translation>
     </message>
 </context>
 <context>
@@ -5073,15 +5051,15 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Python scripting documentation</source>
-        <translation type="unfinished">Python scripting documentation</translation>
+        <translation type="unfinished">Dokumentace o skriptování v Pythonu</translation>
     </message>
     <message>
         <source>Python scripting documentation on the FreeCAD website</source>
-        <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+        <translation type="unfinished">Dokumentace o skriptování v Pythonu na stránkách FreeCAD</translation>
     </message>
     <message>
         <source>PowerUsers documentation</source>
-        <translation type="unfinished">PowerUsers documentation</translation>
+        <translation type="unfinished">Dokumentace pokročilých uživatelů</translation>
     </message>
 </context>
 <context>
@@ -5092,11 +5070,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Users documentation</source>
-        <translation type="unfinished">Users documentation</translation>
+        <translation type="unfinished">Uživatelská dokumentace</translation>
     </message>
     <message>
         <source>Documentation for users on the FreeCAD website</source>
-        <translation type="unfinished">Documentation for users on the FreeCAD website</translation>
+        <translation type="unfinished">Dokumentace pro uživatele na stránkách FreeCAD</translation>
     </message>
 </context>
 <context>
@@ -5205,7 +5183,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Step into</source>
-        <translation type="unfinished">Step into</translation>
+        <translation type="unfinished">Vstoupit dovnitř</translation>
     </message>
 </context>
 <context>
@@ -5314,7 +5292,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished">Unnamed</translation>
+        <translation type="unfinished">Nepojmenovaný</translation>
     </message>
 </context>
 <context>
@@ -5367,11 +5345,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Soubor nelze otevřít</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Otevření souboru %1 není podporováno</translation>
     </message>
 </context>
 <context>
@@ -5888,11 +5866,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">&amp;Units calculator...</translation>
+        <translation type="unfinished">Převodník jednotek...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
-        <translation type="unfinished">Start the units calculator</translation>
+        <translation type="unfinished">Spustit kalkulátor jednotek</translation>
     </message>
 </context>
 <context>
@@ -6127,20 +6105,12 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished">Standardní pohledy</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">Stereo červená/zelená</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">Přepnout stereo zobrazení červená/zelená</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stereo červená/azurová</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Přepnout stereo zobrazení na červená/azurová</translation>
     </message>
 </context>
 <context>
@@ -6241,11 +6211,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rozšíření FReeCAD 3D okna na Oculus Rift</translation>
     </message>
 </context>
 <context>
@@ -6401,13 +6371,13 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Závislosti objektu</translation>
     </message>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">This object is referenced by other objects and thus these objects might get broken.
-Are you sure to continue?</translation>
+        <translation type="unfinished">Na tento objekt odkazují jiné objekty a proto mohou být tyto objekty poškozeny.
+Opravdu chcete pokračovat?</translation>
     </message>
 </context>
 <context>
@@ -6430,19 +6400,19 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Flat lines</source>
-        <translation type="unfinished">Flat lines</translation>
+        <translation type="unfinished">Hrany</translation>
     </message>
     <message>
         <source>Flat lines mode</source>
-        <translation type="unfinished">Flat lines mode</translation>
+        <translation type="unfinished">Režim hran</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation type="unfinished">Stínované</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation type="unfinished">Režim stínování</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6450,20 +6420,19 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Points mode</translation>
+        <translation type="unfinished">Režim bodů</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Závislosti objektu</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</translation>
+        <translation type="unfinished">Vybrané objekty mají závislost na nevybrané objekty. Chcete je také duplikovat?</translation>
     </message>
 </context>
 <context>
@@ -6522,7 +6491,7 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>&amp;View</source>
-        <translation type="unfinished">&amp; Pohled</translation>
+        <translation type="unfinished">&amp;Zobrazit</translation>
     </message>
     <message>
         <source>&amp;Tools</source>

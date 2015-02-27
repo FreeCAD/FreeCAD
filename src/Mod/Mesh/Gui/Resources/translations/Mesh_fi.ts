@@ -13,7 +13,7 @@
     </message>
     <message>
         <source>Add triangle manually to a mesh</source>
-        <translation>Lisää uusi kolmio käsin verkkopintaan</translation>
+        <translation>Lisää kolmio käsivaraisesti verkkopintaan</translation>
     </message>
 </context>
 <context>
@@ -24,11 +24,11 @@
     </message>
     <message>
         <source>Boundings info...</source>
-        <translation>Rajaamistiedot...</translation>
+        <translation>Rajoituksista tietoa...</translation>
     </message>
     <message>
         <source>Shows the boundings of the selected mesh</source>
-        <translation>Näytä valitun verkon rajat</translation>
+        <translation>Näytä valitun verkkopinnan rajat</translation>
     </message>
 </context>
 <context>
@@ -50,7 +50,7 @@
     <name>CmdMeshDemolding</name>
     <message>
         <source>Interactive demolding direction</source>
-        <translation>Interaktiivinen muodonmuokkauksen suunta</translation>
+        <translation>Interaktiivinen muotista irroituksen suunta</translation>
     </message>
     <message>
         <source>Mesh</source>
@@ -91,11 +91,11 @@
     </message>
     <message>
         <source>Check solid mesh</source>
-        <translation>Tarkasta kiinteä verkko</translation>
+        <translation>Tarkasta kiinteä verkkopinta</translation>
     </message>
     <message>
         <source>Checks whether the mesh is a solid</source>
-        <translation>Takastaa onko verkko ehyt</translation>
+        <translation>Tarkastaa onko verkkopinta kiinteä</translation>
     </message>
 </context>
 <context>
@@ -106,7 +106,7 @@
     </message>
     <message>
         <source>Opens a dialog to analyze and repair a mesh</source>
-        <translation>Avaa valintaikkunan jossa voit anlysoida ja korjata verkkopinnan</translation>
+        <translation>Avaa valintaikkunan jossa voit analysoida ja korjata verkkopinnan</translation>
     </message>
     <message>
         <source>Evaluate &amp;&amp; Repair mesh...</source>
@@ -158,7 +158,7 @@
     </message>
     <message>
         <source>Exports a mesh to file</source>
-        <translation>Vie verkkopinan tiedot tiedostoon</translation>
+        <translation>Vie verkkopinnan tiedot tiedostoon</translation>
     </message>
 </context>
 <context>
@@ -169,7 +169,7 @@
     </message>
     <message>
         <source>Close hole</source>
-        <translation>Tiivistä reikä</translation>
+        <translation>Sulje reikä</translation>
     </message>
     <message>
         <source>Close holes interactively</source>
@@ -188,7 +188,7 @@
     </message>
     <message>
         <source>Fill holes of the mesh</source>
-        <translation>Täytä verkon reiät</translation>
+        <translation>Täytä verkkopinnan reiät</translation>
     </message>
 </context>
 <context>
@@ -203,7 +203,7 @@
     </message>
     <message>
         <source>Flips the normals of the mesh</source>
-        <translation>Käännä verkkopinan normaalit</translation>
+        <translation>Käännä verkkopinnan normaalit</translation>
     </message>
 </context>
 <context>
@@ -229,11 +229,11 @@
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation type="unfinished">Luo verkko muodosta...</translation>
+        <translation type="unfinished">Luo verkkotaso muodosta...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished">Geometrian pilkottu muoto</translation>
+        <translation type="unfinished">Jaa muoto ruutuihin</translation>
     </message>
 </context>
 <context>
@@ -285,11 +285,11 @@
     </message>
     <message>
         <source>Cut mesh</source>
-        <translation>Leikkaa verkkopintaa</translation>
+        <translation>Leikkaa verkkopinta</translation>
     </message>
     <message>
         <source>Cuts a mesh with a picked polygon</source>
-        <translation>Leikkaa verkkopintaa valitulla monikulmiolla</translation>
+        <translation>Leikkaa verkkopinta valitulla monikulmiolla</translation>
     </message>
 </context>
 <context>
@@ -319,7 +319,7 @@
     </message>
     <message>
         <source>Select an area of the mesh</source>
-        <translation>Valitse verkkopinnan alueen</translation>
+        <translation>Valitse verkkopinnan alue</translation>
     </message>
 </context>
 <context>
@@ -364,7 +364,7 @@
     </message>
     <message>
         <source>Mark a component to remove it from the mesh</source>
-        <translation>Merkitse osat jotka poistetaan verkkopinnasta</translation>
+        <translation>Merkitse osa, joka poistetaan verkkopinnasta</translation>
     </message>
 </context>
 <context>
@@ -450,11 +450,11 @@
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Trim mesh with a plane</translation>
+        <translation type="unfinished">Leikkaa vekkopintaan tasolla</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Trims a mesh with a plane</translation>
+        <translation type="unfinished">Leikkaa verkkopintaan tasolla</translation>
     </message>
 </context>
 <context>
@@ -518,7 +518,7 @@
     </message>
     <message>
         <source>Mesh information</source>
-        <translation>Verkon tiedot</translation>
+        <translation>Verkkopinnan tiedot</translation>
     </message>
     <message>
         <source>No information</source>
@@ -530,7 +530,7 @@
     </message>
     <message>
         <source>Number of edges:</source>
-        <translation>Reunojen määrät:</translation>
+        <translation>Reunojen määrä:</translation>
     </message>
     <message>
         <source>Refresh</source>
@@ -586,7 +586,7 @@
     </message>
     <message>
         <source>Evaluate &amp; Repair Mesh</source>
-        <translation>Arvioida &amp; korjata verkkopinta</translation>
+        <translation>Arvioi &amp; korjaa verkkopinta</translation>
     </message>
     <message>
         <source>Folds on surface</source>
@@ -923,7 +923,7 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Only selection</translation>
+        <translation type="unfinished">Ainoa valinta</translation>
     </message>
 </context>
 <context>
@@ -1082,11 +1082,11 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Use a brush tool to select the area</translation>
+        <translation type="unfinished">Käytä sivellintyökalua valitaksesi alueen</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Clears completely the selected area</translation>
+        <translation type="unfinished">Tyhjentää kokonaan valitun alueen</translation>
     </message>
 </context>
 <context>
@@ -1104,35 +1104,35 @@ Aja ensin komento jolla taitteet poistetaan</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Select plane</translation>
+        <translation type="unfinished">Valitse taso</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+        <translation type="unfinished">Valitse taso, jolla leikkaat verkkopinnan.</translation>
     </message>
 </context>
 <context>
     <name>Mesh_Union</name>
     <message>
         <source>OpenSCAD</source>
-        <translation type="unfinished">OpenSCAD</translation>
+        <translation type="unfinished">openSCAD</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Unknwon error occured while running OpenSCAD.</translation>
+        <translation type="unfinished">Tuntematon virhe ilmeni OpenSCAD:n käytössä.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</translation>
+        <translation type="unfinished">OpenSCAD ei löydy järjestelmästäsi. Käy http://www.openscad.org/index.html 
+osoittweessa asentaaksesi ohjelman.</translation>
     </message>
 </context>
 <context>
     <name>QDockWidget</name>
     <message>
         <source>Evaluate &amp; Repair Mesh</source>
-        <translation>Arvioida &amp; korjata verkkopinta</translation>
+        <translation>Arvioi &amp; korjaa verkkopinta</translation>
     </message>
 </context>
 <context>
@@ -1282,11 +1282,11 @@ Suurin=&lt;%4,%5,%6&gt;</translation>
         <translation>Kaikki verkkopintatiedostot (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
-        <translation type="obsolete">X3D Extensible 3D(*.x3d)</translation>
+        <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D laajennettava 3D(*.x3d)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D (*.x3d)</source>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

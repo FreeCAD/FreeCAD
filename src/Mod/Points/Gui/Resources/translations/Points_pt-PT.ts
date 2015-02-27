@@ -18,7 +18,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Exports a point cloud</source>
-        <translation>Exports a point cloud</translation>
+        <translation>Exporta uma nuvem de pontos</translation>
     </message>
 </context>
 <context>
@@ -38,7 +38,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Imports a point cloud</source>
-        <translation>Imports a point cloud</translation>
+        <translation>Importar uma nuvem de pontos</translation>
     </message>
 </context>
 <context>
@@ -51,14 +51,14 @@
     <message>
         <location line="+1"/>
         <source>Cut point cloud</source>
-        <translation>Cut point cloud</translation>
+        <translation>Cortar nuvem de pontos</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
         <source>Cuts a point cloud with a picked polygon</source>
-        <translation>Cuts a point cloud with a picked polygon</translation>
+        <translation>Corta uma nuvem de pontos com um polígono traçado</translation>
     </message>
 </context>
 <context>
@@ -78,7 +78,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Test to transform a point cloud</source>
-        <translation>Test to transform a point cloud</translation>
+        <translation>Teste para transformar uma nuvem de pontos</translation>
     </message>
 </context>
 <context>
@@ -111,7 +111,7 @@
     <message>
         <location line="-21"/>
         <source>Cluster by lines starting with:</source>
-        <translation>Cluster by lines starting with:</translation>
+        <translation>Agrupar por linhas começando com:</translation>
     </message>
     <message>
         <location line="-7"/>
@@ -126,7 +126,7 @@
     <message>
         <location line="+78"/>
         <source>Number separator:</source>
-        <translation>Number separator:</translation>
+        <translation>Separador de número:</translation>
     </message>
     <message>
         <location line="+98"/>

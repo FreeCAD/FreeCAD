@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Image plane</translation>
+        <translation type="unfinished">Imagine plană</translation>
     </message>
     <message>
         <location line="+6"/>

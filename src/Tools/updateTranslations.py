@@ -87,8 +87,10 @@ locations = [["Arch","../Mod/Arch/Resources/translations","../Mod/Arch/Resources
              ["Test","../Mod/Test/Gui/Resources/translations","../Mod/Test/Gui/Resources/Test.qrc"],
              ["Ship","../Mod/Ship/resources/translations","../Mod/Ship/resources/Ship.qrc"],
              ["Plot","../Mod/Plot/resources/translations","../Mod/Plot/resources/Plot.qrc"],
-             ["Test","../Mod/Web/Gui/Resources/translations","../Mod/Web/Gui/Resources/Web.qrc"],
-             ["Spreadheet","../Mod/Spreadsheet/Gui/Resources/translations","../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc"]]
+             ["Web","../Mod/Web/Gui/Resources/translations","../Mod/Web/Gui/Resources/Web.qrc"],
+             ["Spreadsheet","../Mod/Spreadsheet/Gui/Resources/translations","../Mod/Spreadsheet/Gui/Resources/Spreadsheet.qrc"]]
+             
+default_languages = "af zh-CN zh-TW hr cs nl fi fr de hu ja no pl pt-PT ro ru sr es-ES sv-SE uk it pt-BR"
 
 def updateqrc(qrcpath,lncode):
     "updates a qrc file with the given translation entry"
@@ -128,7 +130,11 @@ def updateqrc(qrcpath,lncode):
 
     # inserting new entry just after the last one
     line = resources[pos]
-    line = re.sub("_.*\.qm","_"+lncode+".qm",line)
+    if ".qm" in line:
+        line = re.sub("_.*\.qm","_"+lncode+".qm",line)
+    else:
+        print "ERROR: no existing qm entry in this resource: Please add one manually " + qrcpath
+        sys.exit()
     print "inserting line: ",line
     resources.insert(pos+1,line)
 
@@ -156,6 +162,9 @@ def doFile(tsfilepath,targetpath,lncode,qrcpath):
 
 def doLanguage(lncode,fmodule=""):
     " treats a single language"
+    if lncode == "en":
+        # never treat "english" translation... For now :)
+        return
     mods = []
     if fmodule:
         for l in locations:
@@ -230,7 +239,9 @@ if __name__ == "__main__":
         zfile.extractall()
     os.chdir(currentfolder)
     if not args:
-        args = [o for o in os.listdir(tempfolder) if o != "freecad.zip"]
+        #args = [o for o in os.listdir(tempfolder) if o != "freecad.zip"]
+        # do not treat all languages in the zip file. Some are not translated enough.
+        args = default_languages.split()
     for ln in args:
         if not os.path.exists(tempfolder + os.sep + ln):
             print "ERROR: language path for " + ln + " not found!"
