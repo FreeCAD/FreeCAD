@@ -1289,6 +1289,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
         <source>X3D Extensible 3D (*.x3d)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Display components</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Workbench</name>
