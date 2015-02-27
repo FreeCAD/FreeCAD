@@ -34,7 +34,7 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Meshing options</translation>
+        <translation type="unfinished">Параметры сетки</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -54,7 +54,7 @@
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maximum edge length:</translation>
+        <translation type="unfinished">Максимальная длина  кромки:</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -64,7 +64,7 @@
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Very coarse</translation>
+        <translation type="unfinished">Очень грубая</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -84,12 +84,12 @@
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Very fine</translation>
+        <translation type="unfinished">Очень хорошая</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">User defined</translation>
+        <translation type="unfinished">Определяемые пользователем</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -99,7 +99,7 @@
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elements per edge:</translation>
+        <translation type="unfinished">Количество элементов на  ребро:</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -114,7 +114,7 @@
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Second order elements</translation>
+        <translation type="unfinished">Элементы второго порядка</translation>
     </message>
     <message>
         <location line="+7"/>

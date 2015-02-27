@@ -125,11 +125,11 @@
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation type="unfinished">Units calculator</translation>
+        <translation type="unfinished">Enhetskalkylator</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation type="unfinished">as:</translation>
+        <translation type="unfinished">som:</translation>
     </message>
     <message>
         <source>=&gt;</source>
@@ -313,7 +313,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Word size</translation>
+        <translation type="unfinished">Ordstorlek</translation>
     </message>
 </context>
 <context>
@@ -331,15 +331,15 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::Clipping</name>
     <message>
         <source>Clipping</source>
-        <translation type="unfinished">Clipping</translation>
+        <translation type="unfinished">Beskärning</translation>
     </message>
     <message>
         <source>Clipping X</source>
-        <translation type="unfinished">Clipping X</translation>
+        <translation type="unfinished">Beskärning X</translation>
     </message>
     <message>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation type="unfinished">Vänd</translation>
     </message>
     <message>
         <source>Offset</source>
@@ -347,15 +347,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Clipping Y</source>
-        <translation type="unfinished">Clipping Y</translation>
+        <translation type="unfinished">Beskärning Y</translation>
     </message>
     <message>
         <source>Clipping Z</source>
-        <translation type="unfinished">Clipping Z</translation>
+        <translation type="unfinished">Beskärning Z</translation>
     </message>
     <message>
         <source>Clipping custom direction</source>
-        <translation type="unfinished">Clipping custom direction</translation>
+        <translation type="unfinished">Beskärning anpassad riktning</translation>
     </message>
     <message>
         <source>View</source>
@@ -363,7 +363,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Adjust to view direction</translation>
+        <translation type="unfinished">Anpassa till vyriktning</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -488,12 +488,8 @@ while doing a left or right click and move the mouse up or down</translation>
         <translation type="unfinished">Välj ikon</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">Lägg till ikoner ...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon folders...</translation>
     </message>
 </context>
 <context>
@@ -944,87 +940,87 @@ Definiera en annan genväg.</translation>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aluminium</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Brass</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bronze</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Copper</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chrome</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Emerald</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gold</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jade</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Metalized</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obsidian</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pewter</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plaster</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plastic</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ruby</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Satin</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Shiny plastic</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Silver</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stål</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stone</translation>
     </message>
 </context>
 <context>
@@ -1134,11 +1130,11 @@ Definiera en annan genväg.</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Enable tiled background</translation>
+        <translation type="unfinished">Aktivera staplad bakgrund</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation type="unfinished">Formatmall:</translation>
     </message>
 </context>
 <context>
@@ -1161,7 +1157,7 @@ Definiera en annan genväg.</translation>
     </message>
     <message>
         <source>No style sheet</source>
-        <translation type="unfinished">No style sheet</translation>
+        <translation type="unfinished">Ingen formatmall</translation>
     </message>
 </context>
 <context>
@@ -1317,7 +1313,7 @@ Denna fil finns redan.</translation>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+        <translation type="unfinished">Du saknar skrivbehörighet för katalogen. Vänligen välj en annan.</translation>
     </message>
 </context>
 <context>
@@ -1595,19 +1591,15 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation type="unfinished">Visa alla objekttyper</translation>
     </message>
     <message>
         <source>No selection</source>
         <translation type="unfinished">Inget val</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Please select an object of the list</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please select an object from the list</translation>
     </message>
 </context>
 <context>
@@ -1796,7 +1788,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation type="unfinished">Linjeutjämning</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
@@ -1982,75 +1974,75 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Authoring and License</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Author name</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set on save</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Company</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default license</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default license for new documents</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All rights reserved</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Public Domain</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Other</translation>
     </message>
     <message>
         <source>License URL</source>
@@ -2058,15 +2050,15 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">An URL where the user can find more details about the license</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default company to use for new files</translation>
     </message>
 </context>
 <context>
@@ -2161,10 +2153,6 @@ Ange en annan katalog.</translation>
     <message>
         <source>Black</source>
         <translation type="unfinished">Svart</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">Transparent</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2569,39 +2557,39 @@ Ange en annan katalog.</translation>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished">Save File</translation>
+        <translation type="unfinished">Spara fil</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished">Download canceled: %1</translation>
+        <translation type="unfinished">Nedladdning avbruten: %1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation type="unfinished">Open containing folder</translation>
+        <translation type="unfinished">Öppna innehållande mapp</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation type="unfinished">Fel vid öppning av sparad fil: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Error saving: %1</translation>
+        <translation type="unfinished">Fel vid sparande: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Network Error: %1</translation>
+        <translation type="unfinished">Nätverkfel: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished">seconds</translation>
+        <translation type="unfinished">sekunder</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished">minutes</translation>
+        <translation type="unfinished">minuter</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 remaining</translation>
+        <translation type="unfinished">-%4 %5 återstår</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
@@ -2613,7 +2601,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 of %2 - Stopped</translation>
+        <translation type="unfinished">%1 av %2 - Stoppad</translation>
     </message>
     <message>
         <source>bytes</source>
@@ -2632,11 +2620,11 @@ Ange en annan katalog.</translation>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Downloads</translation>
+        <translation type="unfinished">Nedladdningar</translation>
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Clean up</translation>
+        <translation type="unfinished">Städa</translation>
     </message>
     <message>
         <source>0 Items</source>
@@ -2644,7 +2632,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Download Manager</translation>
+        <translation type="unfinished">Nedladdningshanterare</translation>
     </message>
     <message>
         <source>1 Download</source>
@@ -2658,31 +2646,27 @@ Ange en annan katalog.</translation>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">Lägg till ikon</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon folders</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add icon folder</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add or remove custom icon folders</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Remove folder</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
     </message>
 </context>
 <context>
@@ -2936,11 +2920,11 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Incorrect quantity</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
     </message>
 </context>
 <context>
@@ -3180,39 +3164,39 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Search</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Searches object labels</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Clears the search field</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select only</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects only this object</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Avmarkera</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deselects this object</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoom fit</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects and fits this object in the 3D window</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3220,7 +3204,7 @@ Ange en annan katalog.</translation>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects and locates this object in the tree view</translation>
     </message>
 </context>
 <context>
@@ -3474,7 +3458,7 @@ Vill du spara ändringarna?</translation>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">List</translation>
     </message>
 </context>
 <context>
@@ -3554,7 +3538,7 @@ Vill du spara ändringarna?</translation>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Objektberoenden</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
@@ -3672,7 +3656,7 @@ Hur vill du fortsätta?</translation>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Clear list</translation>
     </message>
 </context>
 <context>
@@ -4192,7 +4176,7 @@ Vill du ange en annan katalog?</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Input in line %1 is not a number</translation>
     </message>
 </context>
 <context>
@@ -4435,10 +4419,6 @@ vill du fortsätta?</translation>
         <translation type="unfinished">Osparat dokument</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">Spara dokument innan stängning?</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">Spara Makro</translation>
     </message>
@@ -4595,11 +4575,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Do you want to save your changes to document &apos;%1&apos; before closing?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
     </message>
 </context>
 <context>
@@ -5215,7 +5195,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Step into</source>
-        <translation type="unfinished">Step into</translation>
+        <translation type="unfinished">Stega in i</translation>
     </message>
 </context>
 <context>
@@ -5324,7 +5304,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished">Unnamed</translation>
+        <translation type="unfinished">Namnlös</translation>
     </message>
 </context>
 <context>
@@ -5377,11 +5357,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cannot open file</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Loading the file %1 is not supported</translation>
     </message>
 </context>
 <context>
@@ -5898,11 +5878,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">&amp;Units calculator...</translation>
+        <translation type="unfinished">&amp; Enhetskalkylator...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
-        <translation type="unfinished">Start the units calculator</translation>
+        <translation type="unfinished">Starta enhetskalkylatorn</translation>
     </message>
 </context>
 <context>
@@ -6137,20 +6117,12 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished">Standardvy</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">Stereo röd/grön</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">Ändra stereovisning till röd/grön</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stereo red/cyan</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
     </message>
 </context>
 <context>
@@ -6251,11 +6223,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Extend the FreeCAD 3D Window to a Oculus Rift</translation>
     </message>
 </context>
 <context>
@@ -6411,7 +6383,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Objektberoenden</translation>
     </message>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
@@ -6448,11 +6420,11 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation type="unfinished">Skuggad</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation type="unfinished">Skuggläge</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6460,14 +6432,14 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Points mode</translation>
+        <translation type="unfinished">Punktläge</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Objektberoenden</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.

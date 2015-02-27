@@ -109,11 +109,6 @@
       <translation type="unfinished">Az &lt;b&gt;építészeti tervezés&lt;/b&gt; munkafelület kifejezetten építészeti elemek szerkesztésére szolgál, mint például falak vagy ablakok. Kezdjük 2D formák rajzolásával, és használja őket építészeti tárgyakat építési irányvonalára.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">Építőelemek tervezése</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="75"/>
       <source>Working with Meshes</source>
       <translation type="unfinished">Munka hálótesttel</translation>
@@ -229,11 +224,6 @@
       <translation type="unfinished">Az oktató rész a FreeCAD honlapon</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">A FreeCAd webhely egy része a python szkripteknek van kialakítva, példákkal, magyarázatokkal és API-parancsokkal.</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">A blog a FreeCAD oktatási céljára rendelt, a FreeCAD-Közösség tagjai tartják fenn</translation>
@@ -274,11 +264,6 @@
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
@@ -287,6 +272,31 @@
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">Építészeti tervezés</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">Your version of FreeCAD is up to date.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">There is a new release of FreeCAD available.</translation>
     </message>
   </context>
 </TS>

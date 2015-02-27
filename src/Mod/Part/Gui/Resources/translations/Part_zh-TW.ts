@@ -1219,11 +1219,7 @@
     <message>
         <location line="+85"/>
         <source>Succeeded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Suceeded</source>
-        <translation type="obsolete">成功</translation>
+        <translation type="unfinished">成功</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1392,7 +1388,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IGES</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1402,7 +1398,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">輸出IGES檔所用之單位</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1422,37 +1418,37 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Enable B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable B-REP mode</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">匯入</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Skip blank entities</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">標題</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">公司</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">產品</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">作者</translation>
     </message>
 </context>
 <context>
@@ -1460,7 +1456,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">STEP</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1470,7 +1466,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">輸出STEP檔所用之單位</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1490,27 +1486,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Scheme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Scheme</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">標題</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">公司</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">作者</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">產品</translation>
     </message>
 </context>
 <context>
@@ -1964,28 +1960,28 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">U parameter:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">V parameters:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">半徑 2: {3:?}</translation>
+        <translation type="unfinished">半徑 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">V parameter:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">U Parameter:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -2184,7 +2180,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Create Solid</source>
-        <translation type="unfinished">Create Solid</translation>
+        <translation type="unfinished">建立實體</translation>
     </message>
     <message>
         <location filename="../../DlgRevolution.cpp" line="+176"/>
@@ -2596,7 +2592,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select three or more vertices</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2621,7 +2617,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">選取一個頂點之清單</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2671,7 +2667,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one or more connected edges you want to sweep along.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2706,13 +2702,13 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select one or more connected edges in the 3d view and press &apos;Done&apos;</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The selected sweep path is invalid.</translation>
     </message>
 </context>
 <context>
@@ -3067,7 +3063,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Face from vertices</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3110,7 +3106,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">掃掠路徑</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3257,7 +3253,7 @@ Do you want to continue?</source>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">匯入-匯出</translation>
     </message>
     <message>
         <location line="+1"/>

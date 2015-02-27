@@ -47,12 +47,12 @@
     <message>
         <location line="+1"/>
         <source>Create trajectory</source>
-        <translation>軌跡を作成</translation>
+        <translation>軌道を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a new empty trajectory </source>
-        <translation>新しい空の軌跡を作成</translation>
+        <translation>新しい空の軌道を作成 </translation>
     </message>
 </context>
 <context>
@@ -65,7 +65,7 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation>エッジから起動へ...</translation>
+        <translation>エッジから軌道へ...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -259,7 +259,7 @@
     <message>
         <location line="+1"/>
         <source>Set default values</source>
-        <translation>デフォルト値を設定する</translation>
+        <translation>デフォルト値を設定</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dress-up trajectory...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>

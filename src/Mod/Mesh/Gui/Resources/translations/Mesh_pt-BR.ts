@@ -1281,11 +1281,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
         <translation>Todos os arquivos de malha (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
-        <translation type="obsolete">X3D Expansível 3D(*.x3d)</translation>
+        <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D 3D Expansível (*.x3d)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D (*.x3d)</source>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

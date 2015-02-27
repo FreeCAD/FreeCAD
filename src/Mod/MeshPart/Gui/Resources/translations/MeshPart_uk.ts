@@ -44,7 +44,7 @@
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation type="unfinished">Мефісто</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -54,7 +54,7 @@
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maximum edge length:</translation>
+        <translation type="unfinished">Максимальна довжина ребра:</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -64,7 +64,7 @@
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Very coarse</translation>
+        <translation type="unfinished">Дуже грубо</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -84,12 +84,12 @@
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Very fine</translation>
+        <translation type="unfinished">Дуже добре</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">User defined</translation>
+        <translation type="unfinished">Визначено користувачем</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -99,7 +99,7 @@
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elements per edge:</translation>
+        <translation type="unfinished">Елементи на ребро:</translation>
     </message>
     <message>
         <location line="+29"/>

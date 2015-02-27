@@ -263,49 +263,29 @@
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vysoká přesnost:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ano</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ne</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
+        <translation type="unfinished">Vnější ozubení:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
         <translation type="unfinished">Úhel záběru:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">stupně</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Počet křivek:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
     </message>
 </context>
 <context>
@@ -1294,7 +1274,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation>Transformed feature messages</translation>
+        <translation>Zprávy transformovaného prvku</translation>
     </message>
 </context>
 <context>
@@ -1415,7 +1395,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vytvořte prosím nejprve odčítací nebo přídavný prvek</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1488,13 +1468,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ztratila se návaznost na základní náčrt</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Objekt nemůže být editován, protože vazba na základní náčrt je ztracená.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1535,12 +1515,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Upravit vybrání</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Upravit rotaci</translation>
     </message>
 </context>
 <context>

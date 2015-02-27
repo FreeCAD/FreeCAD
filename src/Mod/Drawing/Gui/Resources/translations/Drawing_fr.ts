@@ -49,13 +49,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Draft Vue</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Insère une vue Draft des objets sélectionnés dans la page active</translation>
     </message>
 </context>
 <context>
@@ -311,26 +311,26 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orientation différente</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">L&apos;imprimante utilise une orientation différente que le dessin. Voulez-vous continuer ?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Format de papier différent</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">L&apos;imprimante utilise un format de papier différent que le dessin. Voulez-vous continuer ?</translation>
     </message>
 </context>
 <context>
@@ -706,12 +706,12 @@ Do you want to continue?</source>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Insérer le nouveau dessin %1 %2 %3 (%4)</translation>
     </message>
 </context>
 <context>
@@ -764,7 +764,7 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>No page found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aucune page trouvée</translation>
     </message>
     <message>
         <location line="-250"/>
@@ -773,12 +773,12 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>Create a page first.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Créez d&apos;abord une page.</translation>
     </message>
     <message>
         <location line="-182"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sélectionnez exactement un seul objet Pièce.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -789,7 +789,7 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>
@@ -850,7 +850,7 @@ Do you want to continue?</source>
         <location line="-928"/>
         <location line="+929"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">Faire orthographique</translation>
+        <translation type="unfinished">Rendre orthographique</translation>
     </message>
 </context>
 <context>

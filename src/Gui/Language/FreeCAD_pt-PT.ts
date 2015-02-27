@@ -212,7 +212,7 @@
     <name>Gui::BlenderNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation type="unfinished">Pressione o botão esquerdo do rato</translation>
     </message>
     <message>
         <source>Press SHIFT and middle mouse button</source>
@@ -224,14 +224,14 @@
     </message>
     <message>
         <source>Scroll middle mouse button</source>
-        <translation type="unfinished">Scroll middle mouse button</translation>
+        <translation type="unfinished">Rode a roda do rato</translation>
     </message>
 </context>
 <context>
     <name>Gui::CADNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation type="unfinished">Pressione o botão esquerdo do rato</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
@@ -362,7 +362,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Adjust to view direction</translation>
+        <translation type="unfinished">Ajustar à direção da vista</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -396,7 +396,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation type="unfinished">Fullscreen</translation>
+        <translation type="unfinished">Ecrã inteiro</translation>
     </message>
     <message>
         <source>Enable timer</source>
@@ -473,11 +473,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Site:</source>
-        <translation type="unfinished">Site:</translation>
+        <translation type="unfinished">Sítio:</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 para %2</translation>
     </message>
 </context>
 <context>
@@ -487,12 +487,8 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished">Escolher Ícone</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">Adicionar Ícones ...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon folders...</translation>
     </message>
 </context>
 <context>
@@ -930,7 +926,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Document window:</source>
-        <translation type="unfinished">Document window:</translation>
+        <translation type="unfinished">Janela de documento:</translation>
     </message>
 </context>
 <context>
@@ -941,87 +937,87 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alumínio</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Latão</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bronze</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cobre</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Crómio</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Esmeralda</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ouro</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jade</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Metalizado</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Néon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Néon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obsidiana</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Estanho</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Reboco</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plástico</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rubi</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Satin</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plástico brilhante</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Prata</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aço</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pedra</translation>
     </message>
 </context>
 <context>
@@ -1598,12 +1594,8 @@ Por favor, indique outra pasta.</translation>
         <translation type="unfinished">Nenhuma seleção</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Por favor, selecione um objeto da lista</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Por favor, selecione um objeto da lista</translation>
     </message>
 </context>
 <context>
@@ -1842,7 +1834,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Visibility</source>
-        <translation type="unfinished">Visibility</translation>
+        <translation type="unfinished">Visibilidade</translation>
     </message>
     <message>
         <source>Out g&amp;rayed</source>
@@ -1874,7 +1866,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>&amp;Flow</source>
-        <translation type="unfinished">&amp;Flow</translation>
+        <translation type="unfinished">&amp;Fluxo</translation>
     </message>
     <message>
         <source>Alt+F</source>
@@ -1977,75 +1969,75 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Autoria e licença</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nome do autor</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt; &lt;body&gt;&lt;p&gt;nome para usar na criação de documentos.&lt;/p&gt;&lt;p&gt;Manter em branco para anónimo.&lt;/p&gt;&lt;p&gt;Também pode usar o formulário:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt; john@doe.com &amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Se estiver marcado, o campo &quot;Modificado por&quot; será definido ao salvar o ficheiro</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set on save</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Company</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Licença padrão</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default license for new documents</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Todos os direitos reservados</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Domínio público</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Other</translation>
     </message>
     <message>
         <source>License URL</source>
@@ -2053,15 +2045,15 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">An URL where the user can find more details about the license</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default company to use for new files</translation>
     </message>
 </context>
 <context>
@@ -2096,7 +2088,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>String</source>
-        <translation type="unfinished">String</translation>
+        <translation type="unfinished">Texto</translation>
     </message>
     <message>
         <source>Character</source>
@@ -2128,7 +2120,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Current line highlight</source>
-        <translation type="unfinished">Current line highlight</translation>
+        <translation type="unfinished">Linha atual realçada</translation>
     </message>
 </context>
 <context>
@@ -2156,10 +2148,6 @@ Por favor, indique outra pasta.</translation>
     <message>
         <source>Black</source>
         <translation type="unfinished">Preto</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">Transparente</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2370,7 +2358,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Run macros in local environment</source>
-        <translation type="unfinished">Run macros in local environment</translation>
+        <translation type="unfinished">Executar macros no ambiente local</translation>
     </message>
 </context>
 <context>
@@ -2405,11 +2393,11 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">US customary (in/lb)</translation>
+        <translation type="unfinished">Padrão US (in/lb)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
-        <translation type="unfinished">Number of decimals:</translation>
+        <translation type="unfinished">Número de casas decimais:</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
@@ -2432,7 +2420,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Enable preselection highlighting</source>
-        <translation type="unfinished">Enable preselection highlighting</translation>
+        <translation type="unfinished">Habilitar preseleção realçada</translation>
     </message>
     <message>
         <source>Background color</source>
@@ -2440,7 +2428,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Middle color</source>
-        <translation type="unfinished">Middle color</translation>
+        <translation type="unfinished">Cor intermédia</translation>
     </message>
     <message>
         <source>Color gradient</source>
@@ -2495,19 +2483,18 @@ Por favor, indique outra pasta.</translation>
     <message>
         <source>Download failed: %1
 </source>
-        <translation type="unfinished">Download failed: %1
-</translation>
+        <translation type="unfinished">Download falhado: %1 </translation>
     </message>
     <message>
         <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation type="unfinished">If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</translation>
+        <translation type="unfinished">Se quer aprender mais sobre o FreeCAD deve ir para %1 ou pressione o item de ajuda no menu ajuda.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
         <source>Unit mismatch</source>
-        <translation type="unfinished">Unit mismatch</translation>
+        <translation type="unfinished">Incompatibilidade de unidades</translation>
     </message>
 </context>
 <context>
@@ -2533,11 +2520,11 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation type="unfinished">There already exists a file called %1 in the current directory. Overwrite?</translation>
+        <translation type="unfinished">Já existe um ficheiro chamado %1 neste diretório. Substituir?</translation>
     </message>
     <message>
         <source>Unable to save the file %1: %2.</source>
-        <translation type="unfinished">Unable to save the file %1: %2.</translation>
+        <translation type="unfinished">Não é possível salvar o ficheiro %1: %2.</translation>
     </message>
     <message>
         <source>Downloading %1.</source>
@@ -2549,58 +2536,58 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation type="unfinished">Download failed: %1.</translation>
+        <translation type="unfinished">O download falhou: %1.</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
-        <translation type="unfinished">Downloaded %1 to current directory.</translation>
+        <translation type="unfinished">%1 descarregado para o diretório atual.</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 para %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished">Save File</translation>
+        <translation type="unfinished">Salvar ficheiro</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished">Download canceled: %1</translation>
+        <translation type="unfinished">Download cancelado: %1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation type="unfinished">Open containing folder</translation>
+        <translation type="unfinished">Abrir a pasta</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation type="unfinished">Erro ao abrir, salvar o ficheiro: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Error saving: %1</translation>
+        <translation type="unfinished">Erro ao salvar: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Network Error: %1</translation>
+        <translation type="unfinished">Erro de rede: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished">seconds</translation>
+        <translation type="unfinished">segundos</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished">minutes</translation>
+        <translation type="unfinished">minutos</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 remaining</translation>
+        <translation type="unfinished">-%4 %5 restantes</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished">%1 of %2 (%3/sec) %4</translation>
+        <translation type="unfinished">%1 de %2 (%3/sec) %4</translation>
     </message>
     <message>
         <source>?</source>
@@ -2608,7 +2595,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 of %2 - Stopped</translation>
+        <translation type="unfinished">%1 de %2 - parado</translation>
     </message>
     <message>
         <source>bytes</source>
@@ -2620,71 +2607,67 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished">MB</translation>
+        <translation type="unfinished"> MB</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Downloads</translation>
+        <translation type="unfinished">Transferências</translation>
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Clean up</translation>
+        <translation type="unfinished">Limpar</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished">0 Items</translation>
+        <translation type="unfinished">0 itens</translation>
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Download Manager</translation>
+        <translation type="unfinished">Gestor de transferências</translation>
     </message>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished">1 Download</translation>
+        <translation type="unfinished">1 transferência</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 Downloads</translation>
+        <translation type="unfinished">%1 transferências</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">Adicionar Ícone</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pastas de ícone</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Adicionar pasta de ícones</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Adicionar ou remover pastas de ícones personalizados</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Remover pasta</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Remover uma pasta só terá efeito depois de reiniciar o programa.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::InputVector</name>
     <message>
         <source>Input vector</source>
-        <translation type="unfinished">Input vector</translation>
+        <translation type="unfinished">Vetor de entrada</translation>
     </message>
     <message>
         <source>Vector</source>
@@ -2753,7 +2736,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Rename group</source>
-        <translation type="unfinished">Rename group</translation>
+        <translation type="unfinished">Renomear Grupo</translation>
     </message>
     <message>
         <source>Export parameter</source>
@@ -2828,11 +2811,11 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>New integer item</source>
-        <translation type="unfinished">New integer item</translation>
+        <translation type="unfinished">Novo item inteiro</translation>
     </message>
     <message>
         <source>New unsigned item</source>
-        <translation type="unfinished">New unsigned item</translation>
+        <translation type="unfinished">Novo item  não atribuído (unsigned)</translation>
     </message>
     <message>
         <source>New Boolean item</source>
@@ -2891,7 +2874,7 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Pitch:</source>
-        <translation type="unfinished">Pitch:</translation>
+        <translation type="unfinished">Altura:</translation>
     </message>
     <message>
         <source>Roll:</source>
@@ -2931,11 +2914,11 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Quantidade incorreta</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Existem campos com valor incorreto, por favor, certifique-se de usar valores de posicionamento válidos!</translation>
     </message>
 </context>
 <context>
@@ -3175,47 +3158,47 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Procurar</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Procurar rótulos de objetos</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Limpa o campo de pesquisa</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selecione somente</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seleciona apenas este objeto</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deselect</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Desseleciona este objeto</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoom fit</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects and fits this object in the 3D window</translation>
     </message>
     <message>
         <source>Go to selection</source>
-        <translation type="unfinished">Go to selection</translation>
+        <translation type="unfinished">Ir para seleção</translation>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seleciona e localiza este objeto na árvore</translation>
     </message>
 </context>
 <context>
@@ -3245,11 +3228,11 @@ Por favor, indique outra pasta.</translation>
     </message>
     <message>
         <source>Reading from %1</source>
-        <translation type="unfinished">Reading from %1</translation>
+        <translation type="unfinished">Lendo %1</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation type="unfinished">Download failed: %1.</translation>
+        <translation type="unfinished">O download falhou: %1.</translation>
     </message>
     <message>
         <source>Previous</source>
@@ -3408,31 +3391,31 @@ Deseja guardar as suas alterações?</translation>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG format (*.png)</translation>
+        <translation type="unfinished">Formato PNG (*. png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Bitmap format (*.bmp)</translation>
+        <translation type="unfinished">Formato bitmap (*. bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF format (*.gif)</translation>
+        <translation type="unfinished">Formato GIF (*. gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPG format (*.jpg)</translation>
+        <translation type="unfinished">Formato JPG (*. jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG format (*.svg)</translation>
+        <translation type="unfinished">Formato SVG (SVG)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF format (*.pdf)</translation>
+        <translation type="unfinished">Formato PDF (*. pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
-        <translation type="unfinished">Export graph</translation>
+        <translation type="unfinished">Exportar gráfico</translation>
     </message>
 </context>
 <context>
@@ -3443,7 +3426,7 @@ Deseja guardar as suas alterações?</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Salvar o valor</translation>
     </message>
 </context>
 <context>
@@ -3458,18 +3441,18 @@ Deseja guardar as suas alterações?</translation>
     </message>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation type="unfinished">Pressione o botão esquerdo do rato</translation>
     </message>
     <message>
         <source>Scroll middle mouse button</source>
-        <translation type="unfinished">Scroll middle mouse button</translation>
+        <translation type="unfinished">Rode a roda do rato</translation>
     </message>
 </context>
 <context>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lista</translation>
     </message>
 </context>
 <context>
@@ -3480,7 +3463,7 @@ Deseja guardar as suas alterações?</translation>
     </message>
     <message>
         <source>Direction must not be the null vector</source>
-        <translation type="unfinished">Direction must not be the null vector</translation>
+        <translation type="unfinished">Direção não pode ser um vector nulo</translation>
     </message>
     <message>
         <source>X</source>
@@ -3541,7 +3524,7 @@ Deseja guardar as suas alterações?</translation>
     </message>
     <message>
         <source>Toggles this dockable window</source>
-        <translation type="unfinished">Toggles this dockable window</translation>
+        <translation type="unfinished">Ativa/desativa esta janela encaixável</translation>
     </message>
     <message>
         <source>Close All</source>
@@ -3549,13 +3532,12 @@ Deseja guardar as suas alterações?</translation>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Dependências do objeto</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</translation>
+        <translation type="unfinished">Os objetos selecionados dependem de objetos não selecionados. Deseja copiá-los também?</translation>
     </message>
 </context>
 <context>
@@ -3574,15 +3556,15 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>Please, select at least one point in the left and the right view</source>
-        <translation type="unfinished">Please, select at least one point in the left and the right view</translation>
+        <translation type="unfinished">Por favor, selecione pelo menos um ponto nos lados esquerdo e direito</translation>
     </message>
     <message>
         <source>Please, select at least %1 points in the left and the right view</source>
-        <translation type="unfinished">Please, select at least %1 points in the left and the right view</translation>
+        <translation type="unfinished">Por favor, selecione pelo menos %1 pontos nos lados esquerdo e direito</translation>
     </message>
     <message>
         <source>Please pick points in the left and right view</source>
-        <translation type="unfinished">Please pick points in the left and right view</translation>
+        <translation type="unfinished">Por favor, selecione pontos dos lados direito e esquerdo</translation>
     </message>
     <message>
         <source>The alignment has finished</source>
@@ -3594,29 +3576,29 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>Too few points picked in the left view. At least %1 points are needed.</source>
-        <translation type="unfinished">Too few points picked in the left view. At least %1 points are needed.</translation>
+        <translation type="unfinished">Poucos pontos selecionados no lado esquerdo. São necessários pelo menos %1 pontos.</translation>
     </message>
     <message>
         <source>Too few points picked in the right view. At least %1 points are needed.</source>
-        <translation type="unfinished">Too few points picked in the right view. At least %1 points are needed.</translation>
+        <translation type="unfinished">Poucos pontos selecionados no lado direito. São necessários pelo menos %1 pontos.</translation>
     </message>
     <message>
         <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-        <translation type="unfinished">Different number of points picked in left and right view.
-On the left view %1 points are picked,
-on the right view %2 points are picked.</translation>
+        <translation type="unfinished">Diferente número de pontos selecionados no lado esquerdo e direito.
+No lado esquerdo foram selecionados %1,
+no lado direito foram selecionados %2.</translation>
     </message>
     <message>
         <source>Try to align group of views</source>
-        <translation type="unfinished">Try to align group of views</translation>
+        <translation type="unfinished">Tentar alinhar o grupo de vistas</translation>
     </message>
     <message>
         <source>The alignment failed.
 How do you want to proceed?</source>
-        <translation type="unfinished">The alignment failed.
-How do you want to proceed?</translation>
+        <translation type="unfinished">O alinhamento falhou.
+Como pretende continuar?</translation>
     </message>
     <message>
         <source>Retry</source>
@@ -3632,19 +3614,19 @@ How do you want to proceed?</translation>
     </message>
     <message>
         <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-        <translation type="unfinished">Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</translation>
+        <translation type="unfinished">Diferente número de pontos selecionados no lado esquerdo e direito. No lado esquerdo foram selecionados %1 pontos e, no lado direito foram selecionados %2 pontos.</translation>
     </message>
     <message>
         <source>Point picked at (%1,%2,%3)</source>
-        <translation type="unfinished">Point picked at (%1,%2,%3)</translation>
+        <translation type="unfinished">Selecionado o ponto (%1,%2,%3)</translation>
     </message>
     <message>
         <source>No point was picked</source>
-        <translation type="unfinished">No point was picked</translation>
+        <translation type="unfinished">Nenhum ponto foi escolhido</translation>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">No point was found on model</translation>
+        <translation type="unfinished">Nenhum ponto foi encontrado no modelo</translation>
     </message>
 </context>
 <context>
@@ -3663,11 +3645,11 @@ How do you want to proceed?</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Salvar o valor</translation>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Limpar lista</translation>
     </message>
 </context>
 <context>
@@ -3682,7 +3664,7 @@ How do you want to proceed?</translation>
     </message>
     <message>
         <source>Do you really want to abort the operation?</source>
-        <translation type="unfinished">Do you really want to abort the operation?</translation>
+        <translation type="unfinished">Quer realmente abortar a operação?</translation>
     </message>
 </context>
 <context>
@@ -3697,14 +3679,14 @@ How do you want to proceed?</translation>
     </message>
     <message>
         <source>Do you really want to abort the operation?</source>
-        <translation type="unfinished">Do you really want to abort the operation?</translation>
+        <translation type="unfinished">Quer realmente abortar a operação?</translation>
     </message>
 </context>
 <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Edit...</translation>
+        <translation type="unfinished">Editar...</translation>
     </message>
 </context>
 <context>
@@ -3747,15 +3729,15 @@ Deseja sair sem guardar os seus dados?</translation>
     </message>
     <message>
         <source>Unhandled PyCXX exception.</source>
-        <translation type="unfinished">Unhandled PyCXX exception.</translation>
+        <translation type="unfinished">Exceção PyCXX não tratada.</translation>
     </message>
     <message>
         <source>Unhandled FreeCAD exception.</source>
-        <translation type="unfinished">Unhandled FreeCAD exception.</translation>
+        <translation type="unfinished">Exceção FreeCAD não resolvida.</translation>
     </message>
     <message>
         <source>Unhandled unknown C++ exception.</source>
-        <translation type="unfinished">Unhandled unknown C++ exception.</translation>
+        <translation type="unfinished">Exceção de C++ desconhecida não resolvida.</translation>
     </message>
     <message>
         <source>&amp;Copy command</source>
@@ -3791,7 +3773,7 @@ Deseja sair sem guardar os seus dados?</translation>
     </message>
     <message>
         <source>Unhandled std C++ exception.</source>
-        <translation type="unfinished">Unhandled std C++ exception.</translation>
+        <translation type="unfinished">Exceção std C++ não resolvida.</translation>
     </message>
     <message>
         <source>Word wrap</source>
@@ -3822,7 +3804,7 @@ Deseja sair sem guardar os seus dados?</translation>
     </message>
     <message>
         <source>Uncomment</source>
-        <translation type="unfinished">Uncomment</translation>
+        <translation type="unfinished">Descomentar</translation>
     </message>
 </context>
 <context>
@@ -3878,35 +3860,33 @@ Deseja sair sem guardar os seus dados?</translation>
     </message>
     <message>
         <source>Download online help</source>
-        <translation type="unfinished">Download online help</translation>
+        <translation type="unfinished">Transferir a ajuda on-line</translation>
     </message>
     <message>
         <source>Download %1&apos;s online help</source>
-        <translation type="unfinished">Download %1&apos;s online help</translation>
+        <translation type="unfinished">transferindo %1 da ajuda on-line</translation>
     </message>
     <message>
         <source>Non-existing directory</source>
-        <translation type="unfinished">Non-existing directory</translation>
+        <translation type="unfinished">Diretório não-existente</translation>
     </message>
     <message>
         <source>The directory &apos;%1&apos; does not exist.
 
 Do you want to specify an existing directory?</source>
-        <translation type="unfinished">The directory &apos;%1&apos; does not exist.
-
-Do you want to specify an existing directory?</translation>
+        <translation type="unfinished">O diretório &apos;%1&apos; não existe.  
+Quer especificar um diretório existente?</translation>
     </message>
     <message>
         <source>Missing permission</source>
-        <translation type="unfinished">Missing permission</translation>
+        <translation type="unfinished">Falta de permissão</translation>
     </message>
     <message>
         <source>You don&apos;t have write permission to &apos;%1&apos;
 
 Do you want to specify another directory?</source>
-        <translation type="unfinished">You don&apos;t have write permission to &apos;%1&apos;
-
-Do you want to specify another directory?</translation>
+        <translation type="unfinished">Você não tem permissão de escrita em &apos;%1&apos; 
+Quer especificar outro diretório?</translation>
     </message>
     <message>
         <source>Stop downloading</source>
@@ -3921,11 +3901,11 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Automatic python modules documentation</translation>
+        <translation type="unfinished">Documentação de módulos Automatic python</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
-        <translation type="unfinished">Opens a browser to show the Python modules documentation</translation>
+        <translation type="unfinished">Abre um navegador para visualizar a documentação de módulos Python</translation>
     </message>
 </context>
 <context>
@@ -3966,7 +3946,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Document window:</source>
-        <translation type="unfinished">Document window:</translation>
+        <translation type="unfinished">Janela de documento:</translation>
     </message>
 </context>
 <context>
@@ -4002,19 +3982,19 @@ Do you want to specify another directory?</translation>
     <name>Gui::TouchpadNavigationStyle</name>
     <message>
         <source>Press left mouse button</source>
-        <translation type="unfinished">Press left mouse button</translation>
+        <translation type="unfinished">Pressione o botão esquerdo do rato</translation>
     </message>
     <message>
         <source>Press SHIFT button</source>
-        <translation type="unfinished">Press SHIFT button</translation>
+        <translation type="unfinished">Pressione a tecla SHIFT</translation>
     </message>
     <message>
         <source>Press ALT button</source>
-        <translation type="unfinished">Press ALT button</translation>
+        <translation type="unfinished">Pressione a tecla ALT</translation>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation type="unfinished">Press CTRL and SHIFT buttons</translation>
+        <translation type="unfinished">Pressione as teclas CTRL e SHIFT</translation>
     </message>
 </context>
 <context>
@@ -4086,18 +4066,18 @@ Do you want to specify another directory?</translation>
     <name>Gui::WorkbenchGroup</name>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
-        <translation type="unfinished">Select the &apos;%1&apos; workbench</translation>
+        <translation type="unfinished">Selecione a bancada &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
     <name>NetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Insira username e senha para &quot;%1&quot; em %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;ligar-se ao proxy &quot;%1&quot; usando:&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -4176,7 +4156,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Grid Snap in</source>
-        <translation type="unfinished">Grid Snap in</translation>
+        <translation type="unfinished">Atrair à grelha</translation>
     </message>
 </context>
 <context>
@@ -4187,7 +4167,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A entrada na linha %1 não é um número</translation>
     </message>
 </context>
 <context>
@@ -4241,19 +4221,19 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Unknown filetype</source>
-        <translation type="unfinished">Unknown filetype</translation>
+        <translation type="unfinished">Tipo de ficheiro desconhecido</translation>
     </message>
     <message>
         <source>Cannot open unknown filetype: %1</source>
-        <translation type="unfinished">Cannot open unknown filetype: %1</translation>
+        <translation type="unfinished">Não é possível abrir o tipo de ficheiro desconhecido: %1</translation>
     </message>
     <message>
         <source>Cannot save to unknown filetype: %1</source>
-        <translation type="unfinished">Cannot save to unknown filetype: %1</translation>
+        <translation type="unfinished">Não é possível salvar um tipo de ficheiro desconhecido: %1</translation>
     </message>
     <message>
         <source>Workbench failure</source>
-        <translation type="unfinished">Workbench failure</translation>
+        <translation type="unfinished">Falha da bancada de trabalho</translation>
     </message>
     <message>
         <source>%1</source>
@@ -4261,7 +4241,7 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Unable to launch Qt Assistant (%1)</source>
-        <translation type="unfinished">Unable to launch Qt Assistant (%1)</translation>
+        <translation type="unfinished">Não é possível iniciar o assistente de Qt (%1)</translation>
     </message>
     <message>
         <source>Exception</source>
@@ -4285,23 +4265,23 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Cannot load workbench</source>
-        <translation type="unfinished">Cannot load workbench</translation>
+        <translation type="unfinished">Não é possível carregar a bancada</translation>
     </message>
     <message>
         <source>A general error occurred while loading the workbench</source>
-        <translation type="unfinished">A general error occurred while loading the workbench</translation>
+        <translation type="unfinished">Ocorreu um erro geral ao carregar a bancada</translation>
     </message>
     <message>
         <source>Save views...</source>
-        <translation type="unfinished">Save views...</translation>
+        <translation type="unfinished">Salvar vistas...</translation>
     </message>
     <message>
         <source>Load views...</source>
-        <translation type="unfinished">Load views...</translation>
+        <translation type="unfinished">Carregar vistas...</translation>
     </message>
     <message>
         <source>Freeze view</source>
-        <translation type="unfinished">Freeze view</translation>
+        <translation type="unfinished">Congelar a vista</translation>
     </message>
     <message>
         <source>Clear views</source>
@@ -4309,33 +4289,32 @@ Do you want to specify another directory?</translation>
     </message>
     <message>
         <source>Restore view &amp;%1</source>
-        <translation type="unfinished">Restore view &amp;%1</translation>
+        <translation type="unfinished">Restaurar a vista &amp; %1</translation>
     </message>
     <message>
         <source>Save frozen views</source>
-        <translation type="unfinished">Save frozen views</translation>
+        <translation type="unfinished">Salvar vistas congeladas</translation>
     </message>
     <message>
         <source>Frozen views (*.cam)</source>
-        <translation type="unfinished">Frozen views (*.cam)</translation>
+        <translation type="unfinished">Vistas congeladas (*.cam)</translation>
     </message>
     <message>
         <source>Restore views</source>
-        <translation type="unfinished">Restore views</translation>
+        <translation type="unfinished">Restaurar vistas</translation>
     </message>
     <message>
         <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
-        <translation type="unfinished">Importing the restored views would clear the already stored views.
-Do you want to continue?</translation>
+        <translation type="unfinished">Importar as vistas restauradas apagará as vistas já armazenadas.Quer continuar?</translation>
     </message>
     <message>
         <source>Restore frozen views</source>
-        <translation type="unfinished">Restore frozen views</translation>
+        <translation type="unfinished">Restaurar vistas congeladas</translation>
     </message>
     <message>
         <source>Cannot open file &apos;%1&apos;.</source>
-        <translation type="unfinished">Cannot open file &apos;%1&apos;.</translation>
+        <translation type="unfinished">Não é possível abrir o ficheiro &apos;%1&apos;.</translation>
     </message>
     <message>
         <source>Docked</source>
@@ -4347,27 +4326,27 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation type="unfinished">Fullscreen</translation>
+        <translation type="unfinished">Ecrã inteiro</translation>
     </message>
     <message>
         <source>files</source>
-        <translation type="unfinished">files</translation>
+        <translation type="unfinished">ficheiros</translation>
     </message>
     <message>
         <source>Save picture</source>
-        <translation type="unfinished">Save picture</translation>
+        <translation type="unfinished">Salvar imagem</translation>
     </message>
     <message>
         <source>New sub-group</source>
-        <translation type="unfinished">New sub-group</translation>
+        <translation type="unfinished">Novo subgrupo</translation>
     </message>
     <message>
         <source>Enter the name:</source>
-        <translation type="unfinished">Enter the name:</translation>
+        <translation type="unfinished">Insira o nome:</translation>
     </message>
     <message>
         <source>New text item</source>
-        <translation type="unfinished">New text item</translation>
+        <translation type="unfinished">Novo item de texto</translation>
     </message>
     <message>
         <source>Enter your text:</source>
@@ -4375,7 +4354,7 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>New integer item</source>
-        <translation type="unfinished">New integer item</translation>
+        <translation type="unfinished">Novo item inteiro</translation>
     </message>
     <message>
         <source>Enter your number:</source>
@@ -4383,7 +4362,7 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>New unsigned item</source>
-        <translation type="unfinished">New unsigned item</translation>
+        <translation type="unfinished">Novo item  não atribuído (unsigned)</translation>
     </message>
     <message>
         <source>New float item</source>
@@ -4399,7 +4378,7 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>Rename group</source>
-        <translation type="unfinished">Rename group</translation>
+        <translation type="unfinished">Renomear Grupo</translation>
     </message>
     <message>
         <source>The group &apos;%1&apos; cannot be renamed.</source>
@@ -4423,15 +4402,11 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>Saving aborted</source>
-        <translation type="unfinished">Saving aborted</translation>
+        <translation type="unfinished">Guardar interrompido</translation>
     </message>
     <message>
         <source>Unsaved document</source>
         <translation type="unfinished">Documento não guardado</translation>
-    </message>
-    <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">Guardar o documento antes de fechar?</translation>
     </message>
     <message>
         <source>Save Macro</source>
@@ -4451,11 +4426,11 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>Inner</source>
-        <translation type="unfinished">Inner</translation>
+        <translation type="unfinished">Interno</translation>
     </message>
     <message>
         <source>Outer</source>
-        <translation type="unfinished">Outer</translation>
+        <translation type="unfinished">Externo</translation>
     </message>
     <message>
         <source>No Browser</source>
@@ -4507,15 +4482,15 @@ Por favor, abra um navegador e digite: http://localhost:%1.</translation>
     </message>
     <message>
         <source>%1 document (*.FCStd)</source>
-        <translation type="unfinished">%1 document (*.FCStd)</translation>
+        <translation type="unfinished">documento %1 (*.FCStd)</translation>
     </message>
     <message>
         <source>Document not closable</source>
-        <translation type="unfinished">Document not closable</translation>
+        <translation type="unfinished">O documento não pode ser fechado</translation>
     </message>
     <message>
         <source>The document is not closable for the moment.</source>
-        <translation type="unfinished">The document is not closable for the moment.</translation>
+        <translation type="unfinished">O documento não pode ser fechado neste momento.</translation>
     </message>
     <message>
         <source>No OpenGL</source>
@@ -4532,8 +4507,7 @@ Por favor, abra um navegador e digite: http://localhost:%1.</translation>
     <message>
         <source>Unable to load documentation.
 In order to load it Qt 4.4 or higher is required.</source>
-        <translation type="unfinished">Unable to load documentation.
-In order to load it Qt 4.4 or higher is required.</translation>
+        <translation type="unfinished">Não é possível carregar a documentação. Para carregá-la Qt 4. 4 ou superior é necessário.</translation>
     </message>
     <message>
         <source>%1 Help</source>
@@ -4550,14 +4524,12 @@ In order to load it Qt 4.4 or higher is required.</translation>
     <message>
         <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-        <translation type="unfinished">Only one object selected. Please select two objects.
-Be aware the point where you click matters.</translation>
+        <translation type="unfinished">Apenas um objeto selecionado. Por favor selecione dois objetos. Lembre-se que o ponto onde você clicar tem importância.</translation>
     </message>
     <message>
         <source>Please select two objects.
 Be aware the point where you click matters.</source>
-        <translation type="unfinished">Please select two objects.
-Be aware the point where you click matters.</translation>
+        <translation type="unfinished">Por favor selecione dois objetos. Lembre-se o que ponto onde você clicar tem importância.</translation>
     </message>
     <message>
         <source>New boolean item</source>
@@ -4591,22 +4563,22 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deseja salvar as alterações no documento &apos;%1&apos; antes de fechar?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Se não salvar, as alterações serão perdidas.</translation>
     </message>
 </context>
 <context>
     <name>StdBoxSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Box selection</source>
-        <translation type="unfinished">Box selection</translation>
+        <translation type="unfinished">Caixa de seleção</translation>
     </message>
 </context>
 <context>
@@ -4681,7 +4653,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Align the selected objects</source>
-        <translation type="unfinished">Align the selected objects</translation>
+        <translation type="unfinished">Alinhar os objetos selecionados</translation>
     </message>
 </context>
 <context>
@@ -4703,11 +4675,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdAxisCross</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Toggle axis cross</source>
-        <translation type="unfinished">Toggle axis cross</translation>
+        <translation type="unfinished">Ligar/desligar símbolo de eixos</translation>
     </message>
 </context>
 <context>
@@ -4722,7 +4694,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Tile pragmatic</source>
-        <translation type="unfinished">Tile pragmatic</translation>
+        <translation type="unfinished">Lado a lado (tile) pragmático</translation>
     </message>
 </context>
 <context>
@@ -4767,7 +4739,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Opens the command line in the console</source>
-        <translation type="unfinished">Opens the command line in the console</translation>
+        <translation type="unfinished">Abre a linha de comando na consola</translation>
     </message>
 </context>
 <context>
@@ -4797,7 +4769,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Cut out</source>
-        <translation type="unfinished">Cut out</translation>
+        <translation type="unfinished">Cortar</translation>
     </message>
 </context>
 <context>
@@ -4812,14 +4784,14 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Deletes the selected objects</source>
-        <translation type="unfinished">Deletes the selected objects</translation>
+        <translation type="unfinished">Apaga os objetos selecionados</translation>
     </message>
 </context>
 <context>
     <name>StdCmdDemoMode</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>View turntable...</source>
@@ -4883,7 +4855,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Opens a dialog to record a macro</source>
-        <translation type="unfinished">Opens a dialog to record a macro</translation>
+        <translation type="unfinished">Abre uma caixa de diálogo para gravar uma macro</translation>
     </message>
     <message>
         <source>Macro</source>
@@ -4898,11 +4870,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>E&amp;dit parameters ...</source>
-        <translation type="unfinished">E&amp;dit parameters ...</translation>
+        <translation type="unfinished">&amp;Editar parâmetros...</translation>
     </message>
     <message>
         <source>Opens a Dialog to edit the parameters</source>
-        <translation type="unfinished">Opens a Dialog to edit the parameters</translation>
+        <translation type="unfinished">Abre uma caixa de diálogo para editar os parâmetros</translation>
     </message>
 </context>
 <context>
@@ -4913,11 +4885,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>&amp;Preferences ...</source>
-        <translation type="unfinished">&amp;Preferences ...</translation>
+        <translation type="unfinished">&amp;Preferências...</translation>
     </message>
     <message>
         <source>Opens a Dialog to edit the preferences</source>
-        <translation type="unfinished">Opens a Dialog to edit the preferences</translation>
+        <translation type="unfinished">Abre uma caixa de diálogo para editar as preferências</translation>
     </message>
 </context>
 <context>
@@ -4928,7 +4900,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Vie&amp;ws</source>
-        <translation type="unfinished">Vie&amp;ws</translation>
+        <translation type="unfinished">&amp;Vistas</translation>
     </message>
     <message>
         <source>Toggles this window</source>
@@ -4939,11 +4911,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdDrawStyle</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Draw style</source>
-        <translation type="unfinished">Draw style</translation>
+        <translation type="unfinished">Estilo de desenho</translation>
     </message>
 </context>
 <context>
@@ -5015,7 +4987,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Show the dependency graph of the objects in the active document</source>
-        <translation type="unfinished">Show the dependency graph of the objects in the active document</translation>
+        <translation type="unfinished">Mostra o gráfico de dependência dos objetos do documento ativo</translation>
     </message>
 </context>
 <context>
@@ -5045,11 +5017,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Frequently Asked Questions on the FreeCAD website</source>
-        <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+        <translation type="unfinished">Perguntas frequentes no site do FreeCAD</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
-        <translation type="unfinished">Frequently Asked Questions</translation>
+        <translation type="unfinished">Perguntas Frequentes</translation>
     </message>
 </context>
 <context>
@@ -5060,15 +5032,15 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>FreeCAD Forum</source>
-        <translation type="unfinished">FreeCAD Forum</translation>
+        <translation type="unfinished">Fórum do FreeCAD</translation>
     </message>
     <message>
         <source>The FreeCAD forum, where you can find help from other users</source>
-        <translation type="unfinished">The FreeCAD forum, where you can find help from other users</translation>
+        <translation type="unfinished">O fórum de FreeCAD, onde pode obter ajuda de outros utilizadores</translation>
     </message>
     <message>
         <source>The FreeCAD Forum</source>
-        <translation type="unfinished">The FreeCAD Forum</translation>
+        <translation type="unfinished">O fórum de FreeCAD</translation>
     </message>
 </context>
 <context>
@@ -5079,15 +5051,15 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Python scripting documentation</source>
-        <translation type="unfinished">Python scripting documentation</translation>
+        <translation type="unfinished">Documentação de programação Python</translation>
     </message>
     <message>
         <source>Python scripting documentation on the FreeCAD website</source>
-        <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+        <translation type="unfinished">Documentação sobre a programação em Python no site do FreeCAD</translation>
     </message>
     <message>
         <source>PowerUsers documentation</source>
-        <translation type="unfinished">PowerUsers documentation</translation>
+        <translation type="unfinished">Documentação para utilizadores avançados</translation>
     </message>
 </context>
 <context>
@@ -5098,11 +5070,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Users documentation</source>
-        <translation type="unfinished">Users documentation</translation>
+        <translation type="unfinished">Documentação para utilizadores</translation>
     </message>
     <message>
         <source>Documentation for users on the FreeCAD website</source>
-        <translation type="unfinished">Documentation for users on the FreeCAD website</translation>
+        <translation type="unfinished">Documentação para utilizadores no site FreeCAD</translation>
     </message>
 </context>
 <context>
@@ -5124,22 +5096,22 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdFreezeViews</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Freeze display</source>
-        <translation type="unfinished">Freeze display</translation>
+        <translation type="unfinished">Congelar a visualização</translation>
     </message>
     <message>
         <source>Freezes the current view position</source>
-        <translation type="unfinished">Freezes the current view position</translation>
+        <translation type="unfinished">Congela o ponto de vista atual</translation>
     </message>
 </context>
 <context>
     <name>StdCmdHideObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Hide all objects</source>
@@ -5154,7 +5126,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdHideSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Hide selection</source>
@@ -5181,7 +5153,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Supported formats</source>
-        <translation type="unfinished">Supported formats</translation>
+        <translation type="unfinished">Formatos suportados</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
@@ -5274,7 +5246,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Measures distance between two selected objects</source>
-        <translation type="unfinished">Measures distance between two selected objects</translation>
+        <translation type="unfinished">Medir a distância entre dois objetos selecionados</translation>
     </message>
     <message>
         <source>Measure distance</source>
@@ -5289,19 +5261,19 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Merge project...</source>
-        <translation type="unfinished">Merge project...</translation>
+        <translation type="unfinished">Juntar projeto...</translation>
     </message>
     <message>
         <source>Merge project</source>
-        <translation type="unfinished">Merge project</translation>
+        <translation type="unfinished">Juntar projeto</translation>
     </message>
     <message>
         <source>%1 document (*.fcstd)</source>
-        <translation type="unfinished">%1 document (*.fcstd)</translation>
+        <translation type="unfinished">documento %1 (*.fcstd)</translation>
     </message>
     <message>
         <source>Cannot merge project with itself.</source>
-        <translation type="unfinished">Cannot merge project with itself.</translation>
+        <translation type="unfinished">Não é possível juntar projeto a ele próprio.</translation>
     </message>
 </context>
 <context>
@@ -5320,7 +5292,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished">Unnamed</translation>
+        <translation type="unfinished">Sem nome</translation>
     </message>
 </context>
 <context>
@@ -5365,7 +5337,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Supported formats</source>
-        <translation type="unfinished">Supported formats</translation>
+        <translation type="unfinished">Formatos suportados</translation>
     </message>
     <message>
         <source>All files (*.*)</source>
@@ -5373,11 +5345,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Não é possível abrir o ficheiro.</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Carregar o ficheiro %1 não é suportado</translation>
     </message>
 </context>
 <context>
@@ -5403,11 +5375,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Placement...</source>
-        <translation type="unfinished">Placement...</translation>
+        <translation type="unfinished">Posição...</translation>
     </message>
     <message>
         <source>Place the selected objects</source>
-        <translation type="unfinished">Place the selected objects</translation>
+        <translation type="unfinished">Colocar os objetos selecionados</translation>
     </message>
 </context>
 <context>
@@ -5448,7 +5420,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>&amp;Print preview...</source>
-        <translation type="unfinished">&amp;Print preview...</translation>
+        <translation type="unfinished">&amp; Pré-visualizar impressão...</translation>
     </message>
     <message>
         <source>Print the document</source>
@@ -5456,7 +5428,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Print preview</source>
-        <translation type="unfinished">Print preview</translation>
+        <translation type="unfinished">Pré-Visualizar Impressão</translation>
     </message>
 </context>
 <context>
@@ -5482,11 +5454,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Project utility...</source>
-        <translation type="unfinished">Project utility...</translation>
+        <translation type="unfinished">Utilitário de projeto...</translation>
     </message>
     <message>
         <source>Utility to extract or create project files</source>
-        <translation type="unfinished">Utility to extract or create project files</translation>
+        <translation type="unfinished">Utilitário para extrair ou criar ficheiros de projeto</translation>
     </message>
 </context>
 <context>
@@ -5542,7 +5514,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Recent file list</source>
-        <translation type="unfinished">Recent file list</translation>
+        <translation type="unfinished">Lista de ficheiros recentes</translation>
     </message>
 </context>
 <context>
@@ -5553,11 +5525,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>&amp;Redo</source>
-        <translation type="unfinished">&amp;Redo</translation>
+        <translation type="unfinished">&amp;Refazer</translation>
     </message>
     <message>
         <source>Redoes a previously undone action</source>
-        <translation type="unfinished">Redoes a previously undone action</translation>
+        <translation type="unfinished">Refaz uma ação desfeita anteriormente</translation>
     </message>
 </context>
 <context>
@@ -5572,7 +5544,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Recomputes the current active document</source>
-        <translation type="unfinished">Recomputes the current active document</translation>
+        <translation type="unfinished">Recalcula o documento ativo atual</translation>
     </message>
 </context>
 <context>
@@ -5613,11 +5585,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Scene inspector...</source>
-        <translation type="unfinished">Scene inspector...</translation>
+        <translation type="unfinished">Inspetor de cena...</translation>
     </message>
     <message>
         <source>Scene inspector</source>
-        <translation type="unfinished">Scene inspector</translation>
+        <translation type="unfinished">Inspetor de cena</translation>
     </message>
 </context>
 <context>
@@ -5639,7 +5611,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Appearance...</source>
@@ -5647,14 +5619,14 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Sets the display properties of the selected object</source>
-        <translation type="unfinished">Sets the display properties of the selected object</translation>
+        <translation type="unfinished">Define as propriedades de exibição do objeto selecionado</translation>
     </message>
 </context>
 <context>
     <name>StdCmdShowObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Show all objects</source>
@@ -5669,7 +5641,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdShowSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Show selection</source>
@@ -5703,7 +5675,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Texture mapping...</source>
-        <translation type="unfinished">Texture mapping...</translation>
+        <translation type="unfinished">Mapeamento de textura...</translation>
     </message>
     <message>
         <source>Texture mapping</source>
@@ -5740,7 +5712,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdToggleClipPlane</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Clipping plane</source>
@@ -5755,22 +5727,22 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdToggleNavigation</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Toggle navigation/Edit mode</source>
-        <translation type="unfinished">Toggle navigation/Edit mode</translation>
+        <translation type="unfinished">Alternar o modo de navegação/modo de edição</translation>
     </message>
     <message>
         <source>Toggle between navigation and edit mode</source>
-        <translation type="unfinished">Toggle between navigation and edit mode</translation>
+        <translation type="unfinished">Alternar entre o modo de edição e navegação</translation>
     </message>
 </context>
 <context>
     <name>StdCmdToggleObjects</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Toggle all objects</source>
@@ -5785,11 +5757,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdToggleSelectability</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Toggle selectability</source>
-        <translation type="unfinished">Toggle selectability</translation>
+        <translation type="unfinished">Alternar seletibilidade</translation>
     </message>
     <message>
         <source>Toggles the property of the objects to get selected in the 3D-View</source>
@@ -5800,7 +5772,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdToggleVisibility</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Toggle visibility</source>
@@ -5819,7 +5791,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Tool&amp;bars</source>
-        <translation type="unfinished">Tool&amp;bars</translation>
+        <translation type="unfinished">&amp;Barras de ferramentas</translation>
     </message>
     <message>
         <source>Toggles this window</source>
@@ -5834,11 +5806,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Transform...</source>
-        <translation type="unfinished">Transform...</translation>
+        <translation type="unfinished">Transformar...</translation>
     </message>
     <message>
         <source>Transform the geometry of selected objects</source>
-        <translation type="unfinished">Transform the geometry of selected objects</translation>
+        <translation type="unfinished">Transformar a geometria dos objetos selecionados</translation>
     </message>
 </context>
 <context>
@@ -5853,7 +5825,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Transform the selected object in the 3d view</source>
-        <translation type="unfinished">Transform the selected object in the 3d view</translation>
+        <translation type="unfinished">Transformar o objeto selecionado na vista 3D</translation>
     </message>
 </context>
 <context>
@@ -5864,11 +5836,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Go to selection</source>
-        <translation type="unfinished">Go to selection</translation>
+        <translation type="unfinished">Ir para seleção</translation>
     </message>
     <message>
         <source>Scroll to first selected item</source>
-        <translation type="unfinished">Scroll to first selected item</translation>
+        <translation type="unfinished">Ir para o primeiro item selecionado</translation>
     </message>
 </context>
 <context>
@@ -5883,7 +5855,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Undo exactly one action</source>
-        <translation type="unfinished">Undo exactly one action</translation>
+        <translation type="unfinished">Desfazer só uma ação</translation>
     </message>
 </context>
 <context>
@@ -5894,11 +5866,11 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">&amp;Units calculator...</translation>
+        <translation type="unfinished">&amp; Calculadora unidades...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
-        <translation type="unfinished">Start the units calculator</translation>
+        <translation type="unfinished">Iniciar o calculador de unidades</translation>
     </message>
 </context>
 <context>
@@ -5909,7 +5881,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Dock views</source>
-        <translation type="unfinished">Dock views</translation>
+        <translation type="unfinished">Ancorar vistas</translation>
     </message>
     <message>
         <source>Dock all top-level views</source>
@@ -5920,71 +5892,71 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdViewAxo</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Axometric</source>
-        <translation type="unfinished">Axometric</translation>
+        <translation type="unfinished">Axonometria</translation>
     </message>
     <message>
         <source>Set to axometric view</source>
-        <translation type="unfinished">Set to axometric view</translation>
+        <translation type="unfinished">Definir vista axonométrica</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewBottom</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Bottom</translation>
+        <translation type="unfinished">De baixo</translation>
     </message>
     <message>
         <source>Set to bottom view</source>
-        <translation type="unfinished">Set to bottom view</translation>
+        <translation type="unfinished">Vista de baixo</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewCreate</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Create new view</source>
-        <translation type="unfinished">Create new view</translation>
+        <translation type="unfinished">Criar nova vista</translation>
     </message>
     <message>
         <source>Creates a new  view window for the active document</source>
-        <translation type="unfinished">Creates a new  view window for the active document</translation>
+        <translation type="unfinished">Cria uma nova janela de exibição para o documento ativo</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample1</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Inventor example #1</source>
-        <translation type="unfinished">Inventor example #1</translation>
+        <translation type="unfinished">Exemplo Inventor #1</translation>
     </message>
     <message>
         <source>Shows a 3D texture with manipulator</source>
-        <translation type="unfinished">Shows a 3D texture with manipulator</translation>
+        <translation type="unfinished">Mostra uma textura 3D com manipulador</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewExample2</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Inventor example #2</source>
-        <translation type="unfinished">Inventor example #2</translation>
+        <translation type="unfinished">Exemplo Inventor #2</translation>
     </message>
     <message>
         <source>Shows spheres and drag-lights</source>
@@ -5995,71 +5967,71 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdViewExample3</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Inventor example #3</source>
-        <translation type="unfinished">Inventor example #3</translation>
+        <translation type="unfinished">Exemplo Inventor #3</translation>
     </message>
     <message>
         <source>Shows a animated texture</source>
-        <translation type="unfinished">Shows a animated texture</translation>
+        <translation type="unfinished">Mostra uma textura animada</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFitAll</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Fit all</source>
-        <translation type="unfinished">Fit all</translation>
+        <translation type="unfinished">Visualizar tudo</translation>
     </message>
     <message>
         <source>Fits the whole content on the screen</source>
-        <translation type="unfinished">Fits the whole content on the screen</translation>
+        <translation type="unfinished">Ajustar todo o conteúdo à tela</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFitSelection</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Fit selection</source>
-        <translation type="unfinished">Fit selection</translation>
+        <translation type="unfinished">Enquadrar seleção</translation>
     </message>
     <message>
         <source>Fits the selected content on the screen</source>
-        <translation type="unfinished">Fits the selected content on the screen</translation>
+        <translation type="unfinished">Enquadra o conteúdo selecionado no monitor</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewFront</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Front</source>
-        <translation type="unfinished">Front</translation>
+        <translation type="unfinished">Frente</translation>
     </message>
     <message>
         <source>Set to front view</source>
-        <translation type="unfinished">Set to front view</translation>
+        <translation type="unfinished">Ajusta para a vista frontal</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Issue camera position</source>
-        <translation type="unfinished">Issue camera position</translation>
+        <translation type="unfinished">Mostrar a posição da câmera</translation>
     </message>
     <message>
         <source>Issue the camera position to the console and to a macro, to easily recall this position</source>
@@ -6070,7 +6042,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdViewIvStereoInterleavedColumns</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Stereo Interleaved Columns</source>
@@ -6085,7 +6057,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdViewIvStereoInterleavedRows</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Stereo Interleaved Rows</source>
@@ -6100,7 +6072,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdViewIvStereoOff</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Stereo Off</source>
@@ -6115,7 +6087,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdViewIvStereoQuadBuff</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Stereo quad buffer</source>
@@ -6130,60 +6102,52 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdCmdViewIvStereoRedGreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
-    </message>
-    <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">Stereo red/green</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">Switch stereo viewing to red/green</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stereo red/cyan</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewLeft</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Left</translation>
+        <translation type="unfinished">Esquerda</translation>
     </message>
     <message>
         <source>Set to left view</source>
-        <translation type="unfinished">Set to left view</translation>
+        <translation type="unfinished">Ajusta para a vista esquerda</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRear</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Rear</source>
-        <translation type="unfinished">Rear</translation>
+        <translation type="unfinished">Traseira</translation>
     </message>
     <message>
         <source>Set to rear view</source>
-        <translation type="unfinished">Set to rear view</translation>
+        <translation type="unfinished">Ajusta para a vista de trás</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRight</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Right</source>
@@ -6191,44 +6155,44 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Set to right view</source>
-        <translation type="unfinished">Set to right view</translation>
+        <translation type="unfinished">Ajusta para a vista direita</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Rotate Left</source>
-        <translation type="unfinished">Rotate Left</translation>
+        <translation type="unfinished">Rodar para a Esquerda</translation>
     </message>
     <message>
         <source>Rotate the view by 90Â° counter-clockwise</source>
-        <translation type="unfinished">Rotate the view by 90Â° counter-clockwise</translation>
+        <translation type="unfinished">Rodar a vista 90º no sentido anti-horário</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewRotateRight</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Rotate Right</source>
-        <translation type="unfinished">Rotate Right</translation>
+        <translation type="unfinished">Rodar para a Direita</translation>
     </message>
     <message>
         <source>Rotate the view by 90Â° clockwise</source>
-        <translation type="unfinished">Rotate the view by 90Â° clockwise</translation>
+        <translation type="unfinished">Rodar a vista 90º no sentido horário</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewTop</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Top</source>
@@ -6236,22 +6200,22 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Set to top view</source>
-        <translation type="unfinished">Set to top view</translation>
+        <translation type="unfinished">Vista de topo</translation>
     </message>
 </context>
 <context>
     <name>StdCmdViewVR</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Estender a janela 3D FreeCAD para Oculus Rift</translation>
     </message>
 </context>
 <context>
@@ -6303,74 +6267,74 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     </message>
     <message>
         <source>Workbench</source>
-        <translation type="unfinished">Workbench</translation>
+        <translation type="unfinished">Bancada de trabalho</translation>
     </message>
     <message>
         <source>Switch between workbenches</source>
-        <translation type="unfinished">Switch between workbenches</translation>
+        <translation type="unfinished">Alternar entre bancadas de trabalho</translation>
     </message>
 </context>
 <context>
     <name>StdOrthographicCamera</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Orthographic view</source>
-        <translation type="unfinished">Orthographic view</translation>
+        <translation type="unfinished">Vista ortogonal</translation>
     </message>
     <message>
         <source>Switches to orthographic view mode</source>
-        <translation type="unfinished">Switches to orthographic view mode</translation>
+        <translation type="unfinished">Alterna para o modo de vista ortogonal</translation>
     </message>
 </context>
 <context>
     <name>StdPerspectiveCamera</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Perspective view</source>
-        <translation type="unfinished">Perspective view</translation>
+        <translation type="unfinished">Vista em perspectiva</translation>
     </message>
     <message>
         <source>Switches to perspective view mode</source>
-        <translation type="unfinished">Switches to perspective view mode</translation>
+        <translation type="unfinished">Alterna para o modo de vista em perspetiva</translation>
     </message>
 </context>
 <context>
     <name>StdViewBoxZoom</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Box zoom</source>
-        <translation type="unfinished">Box zoom</translation>
+        <translation type="unfinished">Zoom por caixa</translation>
     </message>
 </context>
 <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Document window</source>
-        <translation type="unfinished">Document window</translation>
+        <translation type="unfinished">Janela do documento</translation>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-        <translation type="unfinished">Display the active view either in fullscreen, in undocked or docked mode</translation>
+        <translation type="unfinished">Mostrar a vista activa em tela cheia, em modo desencaixado ou encaixado</translation>
     </message>
 </context>
 <context>
     <name>StdViewScreenShot</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Save picture...</source>
@@ -6385,7 +6349,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdViewZoomIn</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Zoom In</source>
@@ -6396,7 +6360,7 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>StdViewZoomOut</name>
     <message>
         <source>Standard-View</source>
-        <translation type="unfinished">Standard-View</translation>
+        <translation type="unfinished">Vista standard</translation>
     </message>
     <message>
         <source>Zoom Out</source>
@@ -6407,24 +6371,23 @@ Pode terminar ou cancelar a edição no painel de tarefas.</translation>
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Dependências do objeto</translation>
     </message>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">This object is referenced by other objects and thus these objects might get broken.
-Are you sure to continue?</translation>
+        <translation type="unfinished">Este objeto é referenciado por outros objetos, e assim, esses objetos podem ficar quebrados. Deseja continuar?</translation>
     </message>
 </context>
 <context>
     <name>Std_DrawStyle</name>
     <message>
         <source>As is</source>
-        <translation type="unfinished">As is</translation>
+        <translation type="unfinished">Como é</translation>
     </message>
     <message>
         <source>Normal mode</source>
-        <translation type="unfinished">Normal mode</translation>
+        <translation type="unfinished">Modo normal</translation>
     </message>
     <message>
         <source>Wireframe</source>
@@ -6444,11 +6407,11 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation type="unfinished">Sombreado</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation type="unfinished">Modo sombreado</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6456,49 +6419,47 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Points mode</translation>
+        <translation type="unfinished">Modo de pontos</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Dependências do objeto</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</translation>
+        <translation type="unfinished">Os objetos selecionados dependem de objetos não selecionados. Deseja duplica-los também?</translation>
     </message>
 </context>
 <context>
     <name>Std_ExportGraphviz</name>
     <message>
         <source>Graphviz not found</source>
-        <translation type="unfinished">Graphviz not found</translation>
+        <translation type="unfinished">Graphviz não encontrado</translation>
     </message>
     <message>
         <source>Graphviz couldn&apos;t be found on your system.
 Do you want to specify its installation path if it&apos;s already installed?</source>
-        <translation type="unfinished">Graphviz couldn&apos;t be found on your system.
-Do you want to specify its installation path if it&apos;s already installed?</translation>
+        <translation type="unfinished">Graphviz não pôde ser encontrado no seu sistema. Quer especificar seu caminho de instalação se já estiver instalado?</translation>
     </message>
     <message>
         <source>Graphviz installation path</source>
-        <translation type="unfinished">Graphviz installation path</translation>
+        <translation type="unfinished">Caminho de instalação do Graphviz</translation>
     </message>
     <message>
         <source>Dependency graph</source>
-        <translation type="unfinished">Dependency graph</translation>
+        <translation type="unfinished">Gráfico de dependência</translation>
     </message>
     <message>
         <source>Graphviz failed</source>
-        <translation type="unfinished">Graphviz failed</translation>
+        <translation type="unfinished">Graphviz falhou</translation>
     </message>
     <message>
         <source>Graphviz failed to create an image file</source>
-        <translation type="unfinished">Graphviz failed to create an image file</translation>
+        <translation type="unfinished">O Graphviz falhou ao criar um ficheiro de imagem</translation>
     </message>
 </context>
 <context>
@@ -6525,7 +6486,7 @@ Do you want to specify its installation path if it&apos;s already installed?</tr
     </message>
     <message>
         <source>Visibility</source>
-        <translation type="unfinished">Visibility</translation>
+        <translation type="unfinished">Visibilidade</translation>
     </message>
     <message>
         <source>&amp;View</source>

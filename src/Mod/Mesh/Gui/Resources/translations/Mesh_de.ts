@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de" sourcelanguage="en">
 <context>
     <name>CmdMeshAddFacet</name>
     <message>
@@ -229,11 +229,11 @@
     </message>
     <message>
         <source>Create mesh from shape...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Netz aus Form erstellen...</translation>
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form tessellieren</translation>
     </message>
 </context>
 <context>
@@ -345,11 +345,11 @@
     </message>
     <message>
         <source>Trim mesh</source>
-        <translation>Netz trimmen</translation>
+        <translation>Netz beschneiden</translation>
     </message>
     <message>
         <source>Trims a mesh with a picked polygon</source>
-        <translation>Ein Netz mit einem gewählten Polygon trimmen</translation>
+        <translation>Ein Netz mit einem gewählten Polygon beschneiden</translation>
     </message>
 </context>
 <context>
@@ -450,11 +450,11 @@
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Netz mit Ebene zuschneiden</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Schneidet ein Netz mit einer Ebene zu</translation>
     </message>
 </context>
 <context>
@@ -923,7 +923,7 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nur Auswahl</translation>
     </message>
 </context>
 <context>
@@ -1062,11 +1062,11 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     <name>MeshGui::Selection</name>
     <message>
         <source>Selection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Auswahl</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hinzufügen</translation>
     </message>
     <message>
         <source>Clear</source>
@@ -1082,11 +1082,11 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Verwenden Sie einen Pinsel, um den Bereich auszuwählen</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Löscht den ausgewählten Bereich vollständig</translation>
     </message>
 </context>
 <context>
@@ -1104,27 +1104,28 @@ Bitte starten Sie vorher den Befehl zum Reparieren von Falten</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ebene auswählen</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bitte wählen Sie eine Ebene, mit welcher Sie das Netz zuschneiden.</translation>
     </message>
 </context>
 <context>
     <name>Mesh_Union</name>
     <message>
         <source>OpenSCAD</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OpenSCAD</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Während der Ausführung von OpenSCAD ist ein unbekannter Fehler aufgetreten.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">OpenSCAD kann auf Ihrem System nicht gefunden werden.
+Bitte besuchen Sie http://www.openscad.org/index.html, um es zu installieren.</translation>
     </message>
 </context>
 <context>
@@ -1282,6 +1283,10 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D Erweiterbares 3D (*.x3d)</translation>
+    </message>
+    <message>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

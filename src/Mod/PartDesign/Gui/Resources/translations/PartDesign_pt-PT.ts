@@ -42,7 +42,7 @@
     <message>
         <location line="+1"/>
         <source>Make a draft on a face</source>
-        <translation>Make a draft on a face</translation>
+        <translation>Fazer rascunho sobre uma face</translation>
     </message>
 </context>
 <context>
@@ -96,7 +96,7 @@
     <message>
         <location line="+1"/>
         <source>create a linear pattern feature</source>
-        <translation>create a linear pattern feature</translation>
+        <translation>Criar um padrão linear</translation>
     </message>
 </context>
 <context>
@@ -109,7 +109,7 @@
     <message>
         <location line="+1"/>
         <source>Mirrored</source>
-        <translation>Mirrored</translation>
+        <translation>Espelhado</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -163,7 +163,7 @@
     <message>
         <location line="+1"/>
         <source>Pocket</source>
-        <translation>Pocket</translation>
+        <translation>Bolso</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -253,59 +253,39 @@
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Number of teeth:</translation>
+        <translation type="unfinished">Número de dentes:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation type="unfinished">Módulos:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">High precision:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">True</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">False</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
+        <translation type="unfinished">External gear:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Pressure angle:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">deg</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Number of Curves:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
+        <translation type="unfinished">Ângulo de pressão:</translation>
     </message>
 </context>
 <context>
@@ -428,7 +408,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+74"/>
         <source>Edit chamfer</source>
-        <translation type="unfinished">Edit chamfer</translation>
+        <translation type="unfinished">Editar chanfro</translation>
     </message>
 </context>
 <context>
@@ -444,7 +424,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+126"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Edit fillet</translation>
+        <translation type="unfinished">Editar filete</translation>
     </message>
 </context>
 <context>
@@ -526,17 +506,17 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+8"/>
         <source>Add face</source>
-        <translation>Add face</translation>
+        <translation>Adicionar face</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Remove face</source>
-        <translation>Remove face</translation>
+        <translation>Remover face</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Draft angle</source>
-        <translation>Draft angle</translation>
+        <translation>Ângulo de projeto</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -546,7 +526,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+17"/>
         <source>Pull direction</source>
-        <translation>Pull direction</translation>
+        <translation>Direção da tração</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -730,12 +710,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-63"/>
         <source>Select an edge or a face</source>
-        <translation>Select an edge or a face</translation>
+        <translation>Selecione aresta ou face</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Indefinido</translation>
     </message>
 </context>
 <context>
@@ -801,12 +781,12 @@ Please check one or more edge entities first.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Select a face</translation>
+        <translation type="unfinished">Se</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Indefinido</translation>
     </message>
 </context>
 <context>
@@ -844,7 +824,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+4"/>
         <source>Add mirrored transformation</source>
-        <translation>Add mirrored transformation</translation>
+        <translation>Selecione uma face</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -874,7 +854,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+27"/>
         <source>Right-click to add</source>
-        <translation>Right-click to add</translation>
+        <translation>Clique direito para adicionar</translation>
     </message>
 </context>
 <context>
@@ -1254,7 +1234,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Indefinido</translation>
     </message>
 </context>
 <context>
@@ -1392,7 +1372,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="+65"/>
         <source>Select one or more faces.</source>
-        <translation>Select one or more faces.</translation>
+        <translation>Selecione uma ou mais faces.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1416,7 +1396,7 @@ Please check one or more edge entities first.</translation>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please create a subtractive or additive feature first</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1449,7 +1429,7 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderChamfer.cpp" line="+55"/>
         <source>Edit chamfer</source>
-        <translation>Edit chamfer</translation>
+        <translation>Editar chanfro</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1483,40 +1463,40 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../ViewProviderGroove.cpp" line="-28"/>
         <source>Edit Groove</source>
-        <translation>Edit Groove</translation>
+        <translation>Editar Sulco</translation>
     </message>
     <message>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lost link to base sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The object can&apos;t be edited because the link to the the base sketch is lost.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
         <source>Missing neutral plane</source>
-        <translation>Missing neutral plane</translation>
+        <translation>Plano neutro ausente</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane or an edge plus a pull direction</source>
-        <translation>Please select a plane or an edge plus a pull direction</translation>
+        <translation>Por favor selecione um plano ou uma aresta mais uma direção de tração</translation>
     </message>
     <message>
         <location line="-17"/>
         <location filename="../../ViewProviderDraft.cpp" line="-18"/>
         <source>Edit draft</source>
-        <translation>Edit draft</translation>
+        <translation>Editar rascunho</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFillet.cpp" line="-18"/>
         <source>Edit fillet</source>
-        <translation>Edit fillet</translation>
+        <translation>Editar filete</translation>
     </message>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
@@ -1531,17 +1511,17 @@ Create the sketch on a face.</source>
     <message>
         <location line="+9"/>
         <source>Transformation succeeded</source>
-        <translation>Transformation succeeded</translation>
+        <translation>Transformação bem sucedida</translation>
     </message>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit groove</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit revolve</translation>
     </message>
 </context>
 <context>
@@ -1554,7 +1534,7 @@ Create the sketch on a face.</source>
     <message>
         <location line="+12"/>
         <source>No message</source>
-        <translation>No message</translation>
+        <translation>Nenhuma mensagem</translation>
     </message>
 </context>
 <context>

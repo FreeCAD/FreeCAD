@@ -529,7 +529,7 @@
     <message>
         <location line="+1"/>
         <source>Fillet the selected edges of a shape</source>
-        <translation>Raccorda gli spigoli di una forma selezionati</translation>
+        <translation>Raccorda gli spigoli selezionati in una forma</translation>
     </message>
 </context>
 <context>
@@ -605,7 +605,7 @@
     </message>
     <message>
         <source>Advanced utility to lofts</source>
-        <translation type="obsolete">Utilità avanzate per lofts</translation>
+        <translation type="obsolete">Utilità avanzate per loft</translation>
     </message>
 </context>
 <context>
@@ -708,12 +708,12 @@
     <message>
         <location line="+1"/>
         <source>Refine shape</source>
-        <translation>Affinare una forma</translation>
+        <translation>Affina una forma</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Refine the copy of a shape</source>
-        <translation>Affinare la copia di una forma</translation>
+        <translation>Affina la copia di una forma</translation>
     </message>
 </context>
 <context>
@@ -1219,11 +1219,7 @@
     <message>
         <location line="+85"/>
         <source>Succeeded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Suceeded</source>
-        <translation type="obsolete">Riuscito</translation>
+        <translation type="unfinished">Riuscito</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1356,8 +1352,8 @@
         <location line="+1"/>
         <source>No edge entity is checked to fillet.
 Please check one or more edge entities first.</source>
-        <translation>Nessuna entità spigolo è stata assegnata da raccordare.
-Assegnare una o più entità raccordo prima.</translation>
+        <translation>Non è stata selezionata nessuna entità spigolo da raccordare.
+Selezionare prima uno o più spigoli.</translation>
     </message>
     <message>
         <location filename="../../DlgFilletEdges.ui" line="+101"/>
@@ -1393,7 +1389,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IGES</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1403,7 +1399,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unità per l&apos;esportazione IGES</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1423,37 +1419,37 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+8"/>
         <source>Enable B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Abilitare la modalità B-REP</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Importa</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Saltare le entità vuote</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Intestazione</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Azienda</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Prodotto</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Autore</translation>
     </message>
 </context>
 <context>
@@ -1461,7 +1457,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">STEP</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1471,7 +1467,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unità per l&apos;esportazione STEP</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1491,27 +1487,27 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+8"/>
         <source>Scheme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Schema</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Intestazione</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Azienda</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Autore</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Prodotto</translation>
     </message>
 </context>
 <context>
@@ -1965,28 +1961,28 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parametro U:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parametri V:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">Raggio 2: {3:?}</translation>
+        <translation type="unfinished">Raggio 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parametro V:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parametro U:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -2208,7 +2204,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+41"/>
         <source>Using high-quality normals</source>
-        <translation>Usare normali di alta qualità</translation>
+        <translation>Usa normali di alta qualità</translation>
     </message>
     <message>
         <location line="-6"/>
@@ -2349,7 +2345,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+6"/>
         <source>Default Part colors</source>
-        <translation type="unfinished">Color della parte predefiniti</translation>
+        <translation type="unfinished">Colori della parte predefiniti</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2462,7 +2458,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="-63"/>
         <source>Too few elements</source>
-        <translation>Troppo pochi elementi</translation>
+        <translation>Elementi insufficienti</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2597,7 +2593,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selezionare tre o più vertici</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2622,7 +2618,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+6"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selezionare un elenco di vertici</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2672,12 +2668,12 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selezionare uno o più bordi collegati lungo i quali eseguire sweep.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Too few elements</source>
-        <translation>Troppo pochi elementi</translation>
+        <translation>Elementi insufficienti</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2707,13 +2703,13 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selezionare uno o più spigoli connessi nella vista 3d e poi premere &apos;Fatto&apos;</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Il percorso sweep selezionato non è valido.</translation>
     </message>
 </context>
 <context>
@@ -2940,7 +2936,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Sposta l&apos;elemento selezionato un livello in basso.&lt;/b&gt;&lt;p&gt;Questo cambierà anche il livello degli elementi padre.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;Sposta l&apos;elemento selezionato un livello in basso.&lt;/b&gt;&lt;p&gt;Questo cambierà anche il livello degli elementi genitore.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move left</source>
@@ -2948,15 +2944,15 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Sposta l&apos;elemento selezionato un livello in alto.&lt;/b&gt;&lt;p&gt;Questo cambierà anche il livello degli elementi padre.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;Sposta l&apos;elemento selezionato un livello in alto.&lt;/b&gt;&lt;p&gt;Questo cambierà anche il livello degli elementi genitore.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation type="obsolete">Spostare verso l&apos;alto</translation>
+        <translation type="obsolete">Sposta verso l&apos;alto</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
-        <translation type="obsolete">&lt;b&gt;Sposta l&apos;elemento selezionato in alto.&lt;/b&gt;&lt;p&gt;L&apos;elemento verrà spostato all&apos;interno del livello di gerarchia.&lt;/p&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;Sposta in alto l&apos;elemento selezionato.&lt;/b&gt;&lt;p&gt;L&apos;elemento verrà spostato all&apos;interno del livello di gerarchia.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Move down</source>
@@ -3068,7 +3064,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Faccia da vertici</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3111,7 +3107,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Percorso Sweep</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3257,7 +3253,7 @@ Do you want to continue?</source>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Importa/Esporta</translation>
     </message>
     <message>
         <location line="+1"/>

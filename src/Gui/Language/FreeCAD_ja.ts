@@ -338,7 +338,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation type="unfinished">反転</translation>
     </message>
     <message>
         <source>Offset</source>
@@ -488,12 +488,8 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished">アイコンを選択</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">アイコンを追加...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">アイコンフォルダー…</translation>
     </message>
 </context>
 <context>
@@ -944,87 +940,87 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">アルミニウム</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">真鍮</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">青銅</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">銅</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">クロム</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">エメラルド</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">金</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">翡翠</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">金属化</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ネオンGNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ネオンPHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">黒曜石</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">白目</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">石膏</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">プラスチック</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ルビー</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">サテン</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">光沢のあるプラスチック</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">銀</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">鋼材</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">石</translation>
     </message>
 </context>
 <context>
@@ -1600,12 +1596,8 @@ Specify another directory, please.</source>
         <translation type="unfinished">選択されていません</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Please select an object of the list</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">リスト上のオブジェクトを選択してください。</translation>
     </message>
 </context>
 <context>
@@ -1979,75 +1971,75 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">著作とライセンス</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">作成者</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;名前はドキュメント作成に用いられます。&lt;/p&gt;&lt;p&gt;空欄のままだと匿名。&lt;/p&gt;&lt;p&gt;また、フォームを使用することもできます：&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">チェックするとファイル保存時に「最終更新者」フィールドがセットされます</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">保存時にセット</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">会社</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">既定のライセンス</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新規ドキュメントにおける既定ライセンス</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">著作権表示</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">クリエイティブコモンズ（帰属の表示）</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">クリエイティブコモンズ（帰属の継承）</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">クリエイティブコモンズ（帰属と改変禁止）</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">クリエイティブコモンズ（非営利のみに限定）</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">クリエイティブコモンズ（帰属表示と非営利に限定した許諾）</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">クリエイティブコモンズ（帰属表示と非営利限定および改変禁止）</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">パブリック・ドメイン</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">自由芸術ライセンス</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">その他</translation>
     </message>
     <message>
         <source>License URL</source>
@@ -2055,15 +2047,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">利用者がライセンスに関する詳細を確認できるURL</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://ja.wikipedia.org/wiki/%E8%91%97%E4%BD%9C%E6%A8%A9%E8%A1%A8%E7%A4%BA</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新規ファイルに使用する規定の会社名</translation>
     </message>
 </context>
 <context>
@@ -2158,10 +2150,6 @@ Specify another directory, please.</source>
     <message>
         <source>Black</source>
         <translation type="unfinished">黒</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">透明</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2391,7 +2379,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>MKS (m/kg/s/degree)</source>
-        <translation type="unfinished">Mks 単位系 (m/kg/s/度)</translation>
+        <translation type="unfinished">MKS 単位系 (m/kg/s/度)</translation>
     </message>
     <message>
         <source>Magnitude</source>
@@ -2407,7 +2395,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">米国単位系  (in/lb)</translation>
+        <translation type="unfinished">米インチ・ポンド法 (in/lb)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
@@ -2656,31 +2644,27 @@ Specify another directory, please.</source>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">アイコンを追加</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">アイコンフォルダー</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">アイコンフォルダーを追加</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">カスタムアイコンのフォルダーの追加または削除</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">フォルダーを削除</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">フォルダーの削除はアプリケーション再起動後に反映されます。</translation>
     </message>
 </context>
 <context>
@@ -2934,11 +2918,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">不適切な数値です</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">入力欄に不適切な入力がされています。適切な位置かどうか確認してください！</translation>
     </message>
 </context>
 <context>
@@ -3178,39 +3162,39 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索　</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">オブジェクトラベルの検索</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">検索入力欄をクリア</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">選択のみ</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">このオブジェクトのみ選択</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">選択を解除</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">このオブジェクトの選択を解除</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ズームフィット</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3Dウィンドウでこのオブジェクトを選択してフィット</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3218,7 +3202,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ツリービューでこのオブジェクトを選択して配置</translation>
     </message>
 </context>
 <context>
@@ -3445,7 +3429,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">値を保存</translation>
     </message>
 </context>
 <context>
@@ -3471,7 +3455,7 @@ Do you want to save your changes?</source>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">リスト</translation>
     </message>
 </context>
 <context>
@@ -3662,11 +3646,11 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">値を保存</translation>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">リストをクリア</translation>
     </message>
 </context>
 <context>
@@ -4095,7 +4079,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;プロキシ &quot;%1&quot; を使用してへの接続：&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;以下を使用してプロキシ &quot;%1&quot; へ接続：&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -4185,7 +4169,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">行 %1 の入力が数値ではありません</translation>
     </message>
 </context>
 <context>
@@ -4428,10 +4412,6 @@ Do you want to continue?</source>
         <translation type="unfinished">未保存のドキュメント</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">閉じる前にドキュメントを保存しますか？</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">マクロを保存します。</translation>
     </message>
@@ -4585,11 +4565,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">閉じる前にドキュメント &apos;%1&apos; に変更を保存しますか？</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">保存しない場合、変更内容は失われます。</translation>
     </message>
 </context>
 <context>
@@ -5314,7 +5294,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished">名称未設定</translation>
+        <translation type="unfinished">MeishoMisette</translation>
     </message>
 </context>
 <context>
@@ -5367,11 +5347,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ファイルを開くことができません</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ファイル %1 の読み込みはサポートされていません</translation>
     </message>
 </context>
 <context>
@@ -6127,20 +6107,12 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished">標準ビュー</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">赤/緑でステレオ表示</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">ステレオビューを赤/緑の表示に切り替え</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ステレオ 赤/シアン</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">赤/シアン ステレオ表示切り替え</translation>
     </message>
 </context>
 <context>
@@ -6241,11 +6213,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD 3DウィンドウをOculus Rift用に拡張</translation>
     </message>
 </context>
 <context>

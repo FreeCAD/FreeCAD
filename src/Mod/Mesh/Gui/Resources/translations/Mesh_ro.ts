@@ -923,7 +923,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Only selection</translation>
+        <translation type="unfinished">Numai selecția</translation>
     </message>
 </context>
 <context>
@@ -1082,11 +1082,11 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Use a brush tool to select the area</translation>
+        <translation type="unfinished">Utilizați o unealtă pensulă pentru a selecta zona</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Clears completely the selected area</translation>
+        <translation type="unfinished">Curăță complet zona selectată</translation>
     </message>
 </context>
 <context>
@@ -1104,7 +1104,7 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Select plane</translation>
+        <translation type="unfinished">Selectare plan</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
@@ -1119,13 +1119,13 @@ Rulati mai intai comanda de reparare a pliurilor</translation>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Unknwon error occured while running OpenSCAD.</translation>
+        <translation type="unfinished">A intervenit o eroare necunoscută în timpul rulării OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</translation>
+        <translation type="unfinished">OpenSCAD nu poate fi găsit pe sistem.
+Vizitați http://www.openscad.org/index.html pentru a-l instala.</translation>
     </message>
 </context>
 <context>
@@ -1282,11 +1282,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
         <translation>Toate fisierele retea (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
-        <translation type="obsolete">X3D Extensible 3D(*.x3d)</translation>
+        <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D (*.x3d)</source>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

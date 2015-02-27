@@ -51,7 +51,7 @@
     <message>
         <location line="-1"/>
         <source>Image pixel format</source>
-        <translation>Kuvan kuvapistemuotoilu</translation>
+        <translation>Kuvan pikselimuoto</translation>
     </message>
 </context>
 <context>
@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Image plane</translation>
+        <translation type="unfinished">Kuvataso</translation>
     </message>
     <message>
         <location line="+6"/>

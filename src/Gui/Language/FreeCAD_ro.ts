@@ -21,7 +21,7 @@
     </message>
     <message>
         <source>Angle Snap</source>
-        <translation type="unfinished">Ancora la unghi</translation>
+        <translation type="unfinished">Ancoră la unghi</translation>
     </message>
     <message utf8="true">
         <source>1 °</source>
@@ -60,22 +60,22 @@
     <name>CmdViewMeasureClearAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation type="unfinished">Măsură</translation>
     </message>
     <message>
         <source>Clear measurement</source>
-        <translation type="unfinished">Clear measurement</translation>
+        <translation type="unfinished">Curăță măsurătoarea</translation>
     </message>
 </context>
 <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation type="unfinished">Măsură</translation>
     </message>
     <message>
         <source>Toggle measurement</source>
-        <translation type="unfinished">Toggle measurement</translation>
+        <translation type="unfinished">Comută măsurătoarea</translation>
     </message>
 </context>
 <context>
@@ -86,7 +86,7 @@
     </message>
     <message>
         <source>Global Sensitivity:  </source>
-        <translation type="unfinished">Sensibilitate globala:  </translation>
+        <translation type="unfinished">Sensibilitate globală:  </translation>
     </message>
     <message>
         <source>Dominant Mode</source>
@@ -94,19 +94,19 @@
     </message>
     <message>
         <source>Flip Y/Z</source>
-        <translation type="unfinished">Schimba Y/Z</translation>
+        <translation type="unfinished">Schimbă Y/Z</translation>
     </message>
     <message>
         <source>Enable Translations</source>
-        <translation type="unfinished">Activeaza traducerile</translation>
+        <translation type="unfinished">Activează traducerile</translation>
     </message>
     <message>
         <source>Enable Rotations</source>
-        <translation type="unfinished">Activeaza rotatiile</translation>
+        <translation type="unfinished">Activează rotaţiile</translation>
     </message>
     <message>
         <source>Calibrate</source>
-        <translation type="unfinished">Calibreaza</translation>
+        <translation type="unfinished">Calibrează</translation>
     </message>
     <message>
         <source>Default</source>
@@ -125,11 +125,11 @@
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation type="unfinished">Units calculator</translation>
+        <translation type="unfinished">Calculator unități</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation type="unfinished">as:</translation>
+        <translation type="unfinished">ca:</translation>
     </message>
     <message>
         <source>=&gt;</source>
@@ -160,7 +160,7 @@
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Filename</translation>
+        <translation type="unfinished">Nume fișier</translation>
     </message>
 </context>
 <context>
@@ -216,7 +216,7 @@
     </message>
     <message>
         <source>Press SHIFT and middle mouse button</source>
-        <translation type="unfinished">Apasa SHIFT si butonul din mijloc al mouse-ului</translation>
+        <translation type="unfinished">Apasă SHIFT şi butonul din mijloc al mouse-ului</translation>
     </message>
     <message>
         <source>Press middle mouse button</source>
@@ -239,7 +239,7 @@
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
-        <translation type="unfinished">Press middle and left or right mouse button</translation>
+        <translation type="unfinished">Apăsați butoanele stâng și mijloc sau drept al mausului</translation>
     </message>
     <message>
         <source>Scroll middle mouse button or keep middle button pressed
@@ -313,7 +313,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Word size</translation>
+        <translation type="unfinished">Dimensiune cuvânt</translation>
     </message>
 </context>
 <context>
@@ -331,15 +331,15 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::Clipping</name>
     <message>
         <source>Clipping</source>
-        <translation type="unfinished">Clipping</translation>
+        <translation type="unfinished">Clipire</translation>
     </message>
     <message>
         <source>Clipping X</source>
-        <translation type="unfinished">Clipping X</translation>
+        <translation type="unfinished">Clipire X</translation>
     </message>
     <message>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation type="unfinished">Întoarce</translation>
     </message>
     <message>
         <source>Offset</source>
@@ -347,15 +347,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Clipping Y</source>
-        <translation type="unfinished">Clipping Y</translation>
+        <translation type="unfinished">Clipire Y</translation>
     </message>
     <message>
         <source>Clipping Z</source>
-        <translation type="unfinished">Clipping Z</translation>
+        <translation type="unfinished">Clipire Z</translation>
     </message>
     <message>
         <source>Clipping custom direction</source>
-        <translation type="unfinished">Clipping custom direction</translation>
+        <translation type="unfinished">Clipire direcție personalizată</translation>
     </message>
     <message>
         <source>View</source>
@@ -363,7 +363,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Adjust to view direction</translation>
+        <translation type="unfinished">Ajustează pentru a vizualiza direcția</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -385,7 +385,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Speed</source>
-        <translation type="unfinished">Viteza</translation>
+        <translation type="unfinished">Viteză</translation>
     </message>
     <message>
         <source>Maximum</source>
@@ -401,7 +401,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Enable timer</source>
-        <translation type="unfinished">Activeaza cronometru</translation>
+        <translation type="unfinished">Activează cronometru</translation>
     </message>
     <message>
         <source> s</source>
@@ -470,7 +470,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished">Username:</translation>
+        <translation type="unfinished">Nume utilizator:</translation>
     </message>
     <message>
         <source>Site:</source>
@@ -478,7 +478,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 la %2</translation>
     </message>
 </context>
 <context>
@@ -488,12 +488,8 @@ while doing a left or right click and move the mouse up or down</translation>
         <translation type="unfinished">Alege iconiţa</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">Adauga icon-uri...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon folders...</translation>
     </message>
 </context>
 <context>
@@ -944,87 +940,87 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aluminium</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Brass</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bronze</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Copper</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chrome</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Emerald</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gold</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jade</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Metalized</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obsidian</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pewter</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plaster</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plastic</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ruby</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Satin</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Shiny plastic</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Silver</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Oţel</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stone</translation>
     </message>
 </context>
 <context>
@@ -1134,11 +1130,11 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Enable tiled background</translation>
+        <translation type="unfinished">Activează fundalul placat</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation type="unfinished">Stil foaie:</translation>
     </message>
 </context>
 <context>
@@ -1161,7 +1157,7 @@ Vă rugăm definiți o altă comandă rapidă.</translation>
     </message>
     <message>
         <source>No style sheet</source>
-        <translation type="unfinished">No style sheet</translation>
+        <translation type="unfinished">Fără stil foaie</translation>
     </message>
 </context>
 <context>
@@ -1317,7 +1313,7 @@ Acest fişier există deja.</translation>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+        <translation type="unfinished">Nu aveți permisiune de scriere pentru director. Alegeți altul.</translation>
     </message>
 </context>
 <context>
@@ -1515,15 +1511,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>License information:</source>
-        <translation type="unfinished">License information:</translation>
+        <translation type="unfinished">Informație licență:</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">URL licență</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="unfinished">Open in browser</translation>
+        <translation type="unfinished">Deschide în navigator</translation>
     </message>
 </context>
 <context>
@@ -1593,19 +1589,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation type="unfinished">Arată toate tipurile de obiecte</translation>
     </message>
     <message>
         <source>No selection</source>
         <translation type="unfinished">Nici o selecţie</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Please select an object of the list</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please select an object from the list</translation>
     </message>
 </context>
 <context>
@@ -1786,7 +1778,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished">Anti-Aliasing</translation>
+        <translation type="unfinished">Anti-aliere</translation>
     </message>
     <message>
         <source>None</source>
@@ -1794,7 +1786,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation type="unfinished">Netezire linie</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
@@ -1980,91 +1972,91 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Authoring and License</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Author name</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set on save</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Company</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default license</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default license for new documents</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All rights reserved</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Public Domain</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Altceva</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">URL licență</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">An URL where the user can find more details about the license</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default company to use for new files</translation>
     </message>
 </context>
 <context>
@@ -2159,10 +2151,6 @@ Specify another directory, please.</source>
     <message>
         <source>Black</source>
         <translation type="unfinished">Negru</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">Transparent</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2408,15 +2396,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">US customary (in/lb)</translation>
+        <translation type="unfinished">US obișnuit (in/lb)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
-        <translation type="unfinished">Number of decimals:</translation>
+        <translation type="unfinished">Număr de zecimale:</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation type="unfinished">Imperial decimal (in/lb)</translation>
+        <translation type="unfinished">Zecimale imperiale (in/lb)</translation>
     </message>
 </context>
 <context>
@@ -2509,7 +2497,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
         <source>Unit mismatch</source>
-        <translation type="unfinished">Unit mismatch</translation>
+        <translation type="unfinished">Unitatea nu se potrivește</translation>
     </message>
 </context>
 <context>
@@ -2559,50 +2547,50 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 la %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished">Save File</translation>
+        <translation type="unfinished">Salvează fișierul</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished">Download canceled: %1</translation>
+        <translation type="unfinished">Descărcare anulată: %1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation type="unfinished">Open containing folder</translation>
+        <translation type="unfinished">Deschidere dosarul care conţine</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation type="unfinished">Eroare la deschiderea fișierului salvat: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Error saving: %1</translation>
+        <translation type="unfinished">Eroare la salvare: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Network Error: %1</translation>
+        <translation type="unfinished">Eroare rețea: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished">seconds</translation>
+        <translation type="unfinished">secunde</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished">minutes</translation>
+        <translation type="unfinished">minute</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 remaining</translation>
+        <translation type="unfinished">- %4 %5 rămase</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished">%1 of %2 (%3/sec) %4</translation>
+        <translation type="unfinished">%1 din %2 (%3/sec) %4</translation>
     </message>
     <message>
         <source>?</source>
@@ -2610,76 +2598,72 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 of %2 - Stopped</translation>
+        <translation type="unfinished">%1 din %2 - Oprit</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished">bytes</translation>
+        <translation type="unfinished">octeți</translation>
     </message>
     <message>
         <source>kB</source>
-        <translation type="unfinished">kB</translation>
+        <translation type="unfinished">kO</translation>
     </message>
     <message>
         <source>MB</source>
-        <translation type="unfinished">MB</translation>
+        <translation type="unfinished">MO</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Downloads</translation>
+        <translation type="unfinished">Descărcări</translation>
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Clean up</translation>
+        <translation type="unfinished">Curăță</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished">0 Items</translation>
+        <translation type="unfinished">0 elemente</translation>
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Download Manager</translation>
+        <translation type="unfinished">Administrator descărcări</translation>
     </message>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished">1 Download</translation>
+        <translation type="unfinished">1 descărcare</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 Downloads</translation>
+        <translation type="unfinished">%1 descărcări</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">Adauga pictograma</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon folders</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add icon folder</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add or remove custom icon folders</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Remove folder</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
     </message>
 </context>
 <context>
@@ -2933,11 +2917,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Incorrect quantity</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
     </message>
 </context>
 <context>
@@ -3177,39 +3161,39 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Search</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Searches object labels</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Clears the search field</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select only</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects only this object</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deselectati</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deselects this object</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoom fit</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects and fits this object in the 3D window</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3217,7 +3201,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects and locates this object in the tree view</translation>
     </message>
 </context>
 <context>
@@ -3409,31 +3393,31 @@ Doriți să salvați modificările?</translation>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG format (*.png)</translation>
+        <translation type="unfinished">Format PNG (*.png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Bitmap format (*.bmp)</translation>
+        <translation type="unfinished">Format bitmap (*.bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF format (*.gif)</translation>
+        <translation type="unfinished">Format GIF (*.gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPG format (*.jpg)</translation>
+        <translation type="unfinished">Format JPG  (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG format (*.svg)</translation>
+        <translation type="unfinished">Format SVG  (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF format (*.pdf)</translation>
+        <translation type="unfinished">Format PDF (*.pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
-        <translation type="unfinished">Export graph</translation>
+        <translation type="unfinished">Exportă graficul</translation>
     </message>
 </context>
 <context>
@@ -3444,7 +3428,7 @@ Doriți să salvați modificările?</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Salvează valoarea</translation>
     </message>
 </context>
 <context>
@@ -3470,7 +3454,7 @@ Doriți să salvați modificările?</translation>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">List</translation>
     </message>
 </context>
 <context>
@@ -3550,13 +3534,13 @@ Doriți să salvați modificările?</translation>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Dependențe obiect</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</translation>
+        <translation type="unfinished">Obiectele selectate au o dependență la un obiect neselectat.
+Doriți să fie copiat și acesta?</translation>
     </message>
 </context>
 <context>
@@ -3645,7 +3629,7 @@ Cum doresti sa continuam?</translation>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">No point was found on model</translation>
+        <translation type="unfinished">Pe model nu a fost găsit nici un punct</translation>
     </message>
 </context>
 <context>
@@ -3664,11 +3648,11 @@ Cum doresti sa continuam?</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Salvează valoarea</translation>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Clear list</translation>
     </message>
 </context>
 <context>
@@ -3705,7 +3689,7 @@ Cum doresti sa continuam?</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Edit...</translation>
+        <translation type="unfinished">Editare...</translation>
     </message>
 </context>
 <context>
@@ -3920,11 +3904,11 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Automatic python modules documentation</translation>
+        <translation type="unfinished">Documentație automată module python</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
-        <translation type="unfinished">Opens a browser to show the Python modules documentation</translation>
+        <translation type="unfinished">Deschide un navigator pentru a arăta documentația modulelor Python</translation>
     </message>
 </context>
 <context>
@@ -3972,7 +3956,7 @@ Doriţi să specificaţi un alt director?</translation>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
         <source>A dialog is already open in the task panel</source>
-        <translation type="unfinished">O fereastra de dialog este deja deschisa in fereastra de sarcini</translation>
+        <translation type="unfinished">O fereastră de dialog este deja deschisă în fereastra de sarcini</translation>
     </message>
 </context>
 <context>
@@ -4013,7 +3997,7 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation type="unfinished">Press CTRL and SHIFT buttons</translation>
+        <translation type="unfinished">Apăsați tastele CTRL și SHIFT</translation>
     </message>
 </context>
 <context>
@@ -4092,11 +4076,11 @@ Doriţi să specificaţi un alt director?</translation>
     <name>NetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Introduceți numele de utilizator și parola pentru &quot;%1&quot; la %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Conectare la proxy &quot;%1&quot; utilizând:&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -4186,7 +4170,7 @@ Doriţi să specificaţi un alt director?</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Input in line %1 is not a number</translation>
     </message>
 </context>
 <context>
@@ -4429,10 +4413,6 @@ Doriţi să continuaţi?</translation>
         <translation type="unfinished">Document nesalvat</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">Salvați documentul înainte de a închide?</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">Salvaţi macrocomanda</translation>
     </message>
@@ -4583,15 +4563,15 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>Do you want to close this dialog?</source>
-        <translation type="unfinished">Doriti sa inchideti aceasta fereastra de dialog?</translation>
+        <translation type="unfinished">Doriţi să închideţi această fereastră de dialog?</translation>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Do you want to save your changes to document &apos;%1&apos; before closing?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
     </message>
 </context>
 <context>
@@ -5041,11 +5021,11 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>Frequently Asked Questions on the FreeCAD website</source>
-        <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+        <translation type="unfinished">Întrebări puse frecvent pe pagina web a FreeCAD</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
-        <translation type="unfinished">Frequently Asked Questions</translation>
+        <translation type="unfinished">Întrebări puse frecvent</translation>
     </message>
 </context>
 <context>
@@ -5056,15 +5036,15 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>FreeCAD Forum</source>
-        <translation type="unfinished">FreeCAD Forum</translation>
+        <translation type="unfinished">Forum FreeCAD</translation>
     </message>
     <message>
         <source>The FreeCAD forum, where you can find help from other users</source>
-        <translation type="unfinished">The FreeCAD forum, where you can find help from other users</translation>
+        <translation type="unfinished">Forumul FreeCAD, unde puteți găsi ajutor de la alți utilizatori</translation>
     </message>
     <message>
         <source>The FreeCAD Forum</source>
-        <translation type="unfinished">The FreeCAD Forum</translation>
+        <translation type="unfinished">Forumul FreeCAD</translation>
     </message>
 </context>
 <context>
@@ -5075,15 +5055,15 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>Python scripting documentation</source>
-        <translation type="unfinished">Python scripting documentation</translation>
+        <translation type="unfinished">Documente despre codarea în limbajul python</translation>
     </message>
     <message>
         <source>Python scripting documentation on the FreeCAD website</source>
-        <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+        <translation type="unfinished">Documente despre codarea în limbajul python pe pagina web FreeCAD</translation>
     </message>
     <message>
         <source>PowerUsers documentation</source>
-        <translation type="unfinished">PowerUsers documentation</translation>
+        <translation type="unfinished">Documentație utilizatori avansați</translation>
     </message>
 </context>
 <context>
@@ -5094,11 +5074,11 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>Users documentation</source>
-        <translation type="unfinished">Users documentation</translation>
+        <translation type="unfinished">Documentație utilizatori</translation>
     </message>
     <message>
         <source>Documentation for users on the FreeCAD website</source>
-        <translation type="unfinished">Documentation for users on the FreeCAD website</translation>
+        <translation type="unfinished">Documentația pentru utilizatori pe pagina web a FreeCAD</translation>
     </message>
 </context>
 <context>
@@ -5207,7 +5187,7 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>Step into</source>
-        <translation type="unfinished">Step into</translation>
+        <translation type="unfinished">Pas în</translation>
     </message>
 </context>
 <context>
@@ -5316,7 +5296,7 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished">Unnamed</translation>
+        <translation type="unfinished">Nedenumit</translation>
     </message>
 </context>
 <context>
@@ -5369,11 +5349,11 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cannot open file</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Loading the file %1 is not supported</translation>
     </message>
 </context>
 <context>
@@ -5890,11 +5870,11 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">&amp;Units calculator...</translation>
+        <translation type="unfinished">&amp;calculator unități...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
-        <translation type="unfinished">Start the units calculator</translation>
+        <translation type="unfinished">Pornește calculatorul de unități</translation>
     </message>
 </context>
 <context>
@@ -6129,20 +6109,12 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
         <translation type="unfinished">Vedere standard</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">Stereo rosu/verde</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">Schimba vizualizarea stereo in rosu/verde</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stereo red/cyan</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
     </message>
 </context>
 <context>
@@ -6243,11 +6215,11 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Extend the FreeCAD 3D Window to a Oculus Rift</translation>
     </message>
 </context>
 <context>
@@ -6403,13 +6375,13 @@ Trebuie fie să terminaţi sau să anulaţi editarea în panoul de activitate.</
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Dependențe obiect</translation>
     </message>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">This object is referenced by other objects and thus these objects might get broken.
-Are you sure to continue?</translation>
+        <translation type="unfinished">La acest obiect face referire alte obiecte și prin urmare aceste obiecte ar putea fi defalcate.
+Sigur continuați?</translation>
     </message>
 </context>
 <context>
@@ -6432,19 +6404,19 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Flat lines</source>
-        <translation type="unfinished">Flat lines</translation>
+        <translation type="unfinished">Linii plane</translation>
     </message>
     <message>
         <source>Flat lines mode</source>
-        <translation type="unfinished">Flat lines mode</translation>
+        <translation type="unfinished">Mod linii plane</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation type="unfinished">Umbrit</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation type="unfinished">Mod umbrit</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6452,20 +6424,20 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Points mode</translation>
+        <translation type="unfinished">Mod puncte</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Dependențe obiect</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</translation>
+        <translation type="unfinished">Obiectele selectate au o dependență la un obiect neselectat.
+Doriți să fie duplicat și acesta?</translation>
     </message>
 </context>
 <context>

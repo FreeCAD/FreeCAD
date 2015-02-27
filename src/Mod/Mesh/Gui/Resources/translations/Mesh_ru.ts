@@ -110,7 +110,7 @@
     </message>
     <message>
         <source>Evaluate &amp;&amp; Repair mesh...</source>
-        <translation>Оценить и ремонтировать сетку...</translation>
+        <translation>Оценить и отремонтировать сетку...</translation>
     </message>
 </context>
 <context>
@@ -154,11 +154,11 @@
     </message>
     <message>
         <source>Export mesh...</source>
-        <translation>Экспорт сети...</translation>
+        <translation>Экспорт сетки...</translation>
     </message>
     <message>
         <source>Exports a mesh to file</source>
-        <translation>Экспорт сети в файл</translation>
+        <translation>Экспорт сетки в файл</translation>
     </message>
 </context>
 <context>
@@ -199,11 +199,11 @@
     </message>
     <message>
         <source>Flip normals</source>
-        <translation>Сменить направление нормалей на противоположное</translation>
+        <translation>Развернуть направление нормалей</translation>
     </message>
     <message>
         <source>Flips the normals of the mesh</source>
-        <translation>Сменить направление нормалей сети на противоположное</translation>
+        <translation>Меняет направление нормалей сетки на противоположное</translation>
     </message>
 </context>
 <context>
@@ -214,11 +214,11 @@
     </message>
     <message>
         <source>Create mesh from geometry...</source>
-        <translation>Создать сеть по геометрии ...</translation>
+        <translation>Создать сетку по геометрии ...</translation>
     </message>
     <message>
         <source>Create mesh from the selected geometry</source>
-        <translation>Создание сети из выбранного геометрии</translation>
+        <translation>Создание сетки из выбранного геометрии</translation>
     </message>
 </context>
 <context>
@@ -244,11 +244,11 @@
     </message>
     <message>
         <source>Harmonize normals</source>
-        <translation>Согласование нормалей</translation>
+        <translation>Согласовать нормали</translation>
     </message>
     <message>
         <source>Harmonizes the normals of the mesh</source>
-        <translation>Согласует нормали сети</translation>
+        <translation>Согласует нормали сетки</translation>
     </message>
 </context>
 <context>
@@ -259,11 +259,11 @@
     </message>
     <message>
         <source>Import mesh...</source>
-        <translation>Импорт сети...</translation>
+        <translation>Импорт сетки...</translation>
     </message>
     <message>
         <source>Imports a mesh from file</source>
-        <translation>Импорт сети из файла</translation>
+        <translation>Импорт сетки из файла</translation>
     </message>
 </context>
 <context>
@@ -285,11 +285,11 @@
     </message>
     <message>
         <source>Cut mesh</source>
-        <translation>Обрезать сеть</translation>
+        <translation>Обрезать сетку</translation>
     </message>
     <message>
         <source>Cuts a mesh with a picked polygon</source>
-        <translation>Обрезать сеть, выбранным многоугольником</translation>
+        <translation>Обрезать сетку выбранным многоугольником</translation>
     </message>
 </context>
 <context>
@@ -315,7 +315,7 @@
     </message>
     <message>
         <source>Select mesh</source>
-        <translation>Выберите сеть</translation>
+        <translation>Выберите сетку</translation>
     </message>
     <message>
         <source>Select an area of the mesh</source>
@@ -330,7 +330,7 @@
     </message>
     <message>
         <source>Split mesh</source>
-        <translation>Разделить сети</translation>
+        <translation>Разделить сетку</translation>
     </message>
     <message>
         <source>Splits a mesh into two meshes</source>
@@ -345,11 +345,11 @@
     </message>
     <message>
         <source>Trim mesh</source>
-        <translation>Обрезать сеть</translation>
+        <translation>Подрезать сетку</translation>
     </message>
     <message>
         <source>Trims a mesh with a picked polygon</source>
-        <translation>Обрезать сеть с выбранным полигоном</translation>
+        <translation>Подрезать сетку выбранным многоугольником</translation>
     </message>
 </context>
 <context>
@@ -450,11 +450,11 @@
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Trim mesh with a plane</translation>
+        <translation type="unfinished">Подрезать сетку плоскостью</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Trims a mesh with a plane</translation>
+        <translation type="unfinished">Подрезает сетку выбранной плоскостью</translation>
     </message>
 </context>
 <context>
@@ -491,11 +491,11 @@
     </message>
     <message>
         <source>Curvature info</source>
-        <translation>Информация о кривизне</translation>
+        <translation>Данные о кривизне</translation>
     </message>
     <message>
         <source>Information about curvature</source>
-        <translation>Информация о кривизне</translation>
+        <translation>Данные о кривизне</translation>
     </message>
 </context>
 <context>
@@ -542,7 +542,7 @@
     </message>
     <message>
         <source>Repair</source>
-        <translation>Ремонт</translation>
+        <translation>Исправить</translation>
     </message>
     <message>
         <source>Orientation</source>
@@ -689,7 +689,7 @@
     </message>
     <message>
         <source>No self-intersections</source>
-        <translation>Не самопересечений</translation>
+        <translation>Нет самопересечений</translation>
     </message>
     <message>
         <source>Self-intersections</source>
@@ -797,7 +797,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Edge length:</source>
-        <translation>Длина кромки:</translation>
+        <translation>Длина ребра:</translation>
     </message>
     <message>
         <source>Radius 1:</source>
@@ -898,7 +898,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Taubin</source>
-        <translation>Таубин</translation>
+        <translation>Таубина</translation>
     </message>
     <message>
         <source>Laplace</source>
@@ -918,11 +918,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Mu:</source>
-        <translation>Mu:</translation>
+        <translation>Мю:</translation>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Only selection</translation>
+        <translation type="unfinished">Только выделение</translation>
     </message>
 </context>
 <context>
@@ -963,11 +963,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Select whole component</source>
-        <translation>Выбрать все компоненты</translation>
+        <translation>Выбрать весь компонент</translation>
     </message>
     <message>
         <source>Pick triangle</source>
-        <translation>Подобрать треугольник</translation>
+        <translation>Выбрать треугольник</translation>
     </message>
     <message>
         <source>&lt; faces than</source>
@@ -1085,7 +1085,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Clears completely the selected area</translation>
+        <translation type="unfinished">Полностью очистить выделенную область</translation>
     </message>
 </context>
 <context>
@@ -1103,11 +1103,11 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Select plane</translation>
+        <translation type="unfinished">Выберите плоскость</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+        <translation type="unfinished">Выберите плоскость, которая подрежет сетку.</translation>
     </message>
 </context>
 <context>
@@ -1118,13 +1118,13 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Unknwon error occured while running OpenSCAD.</source>
-        <translation type="unfinished">Unknwon error occured while running OpenSCAD.</translation>
+        <translation type="unfinished">Произошла неизвестная ошибка при выполнении OpenSCAD.</translation>
     </message>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</translation>
+        <translation type="unfinished">Приложение OpenSCAD не обнаружено в системе.
+Скачайте его на сайте http://www.openscad.org и установите.</translation>
     </message>
 </context>
 <context>
@@ -1281,11 +1281,11 @@ Max=&lt;%4,%5,%6&gt;</translation>
         <translation>Все файлы (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
-        <translation type="obsolete">X3D Extensible 3D(*.x3d)</translation>
+        <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D (*.x3d)</source>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -64,7 +64,7 @@
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Very coarse</translation>
+        <translation type="unfinished">Väldigt grov</translation>
     </message>
     <message>
         <location line="+5"/>

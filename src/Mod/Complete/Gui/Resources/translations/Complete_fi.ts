@@ -29,7 +29,7 @@
     <message>
         <location line="+1"/>
         <source>Runs a self-test to check if the application works properly</source>
-        <translation>Suoritetaan itsetestauksen tarkistaminen, jos sovellus toimii oikein</translation>
+        <translation>Suoritetaan itsetestaus ja tarkistetaan, toimiiko sovellus oikein</translation>
     </message>
 </context>
 <context>
@@ -57,12 +57,12 @@
     <message>
         <location line="+1"/>
         <source>Sketch based</source>
-        <translation>Sketsin perusta</translation>
+        <translation>Luonnokseen perustuva</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Primitives</source>
-        <translation>Primitiivi</translation>
+        <translation>Perusalkiot</translation>
     </message>
     <message>
         <source>Parametric</source>
@@ -71,7 +71,7 @@
     <message>
         <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Objektin ulkoasu</translation>
+        <translation>Kohteen ulkoasu</translation>
     </message>
     <message>
         <location line="+1"/>

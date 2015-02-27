@@ -6,17 +6,17 @@
     <message>
         <location filename="../../Command.cpp" line="+112"/>
         <source>Reverse Engineering</source>
-        <translation>Reverter Engenharia</translation>
+        <translation>Engenharia inversa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Approximate plane...</source>
-        <translation>Approximate plane...</translation>
+        <translation>Aproximar plano...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Approximate a plane</source>
-        <translation>Approximate a plane</translation>
+        <translation>Aproximar a um plano</translation>
     </message>
 </context>
 <context>
@@ -24,7 +24,7 @@
     <message>
         <location line="-62"/>
         <source>Reverse Engineering</source>
-        <translation>Reverter Engenharia</translation>
+        <translation>Engenharia inversa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -42,7 +42,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>Reverse Engineering</source>
-        <translation>Reverter Engenharia</translation>
+        <translation>Engenharia inversa</translation>
     </message>
 </context>
 </TS>

@@ -1352,7 +1352,7 @@
         <location line="+8"/>
         <location line="+74"/>
         <location line="+428"/>
-        <location line="+244"/>
+        <location line="+245"/>
         <source>Wrong selection</source>
         <translation>Yanlış seçim</translation>
     </message>
@@ -1387,7 +1387,7 @@
         <location line="+68"/>
         <location line="+9"/>
         <location line="+15"/>
-        <location filename="../../CommandSketcherTools.cpp" line="-820"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-821"/>
         <location line="+98"/>
         <source>Impossible constraint</source>
         <translation>Impossible constraint</translation>
@@ -1898,7 +1898,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">Select exactly two entities from the sketch.</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+4061"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+4064"/>
         <source>Edit sketch</source>
         <translation>Taslağı düzenle</translation>
     </message>
@@ -2000,7 +2000,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+278"/>
+        <location line="+279"/>
         <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2339,7 +2339,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-        <location filename="../../TaskSketcherValidation.cpp" line="+278"/>
+        <location filename="../../TaskSketcherValidation.cpp" line="+279"/>
         <source>No missing coincidences</source>
         <translation type="unfinished">No missing coincidences</translation>
     </message>
@@ -2376,6 +2376,72 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+1"/>
         <source>Invalid constraints found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <location line="+11"/>
+        <location line="+7"/>
+        <location line="+11"/>
+        <source>Reversed external geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-28"/>
+        <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
+
+Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+However, no constraints linking to the endpoints were found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>No reversed external-geometry arcs were found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <location line="+14"/>
+        <source>Constraint orientation locking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-13"/>
+        <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <location line="+12"/>
+        <source>Delete constraints to external geom.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-11"/>
+        <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>All constraints that deal with external geometry were deleted.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2655,7 +2721,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished">Sketcher validation</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+26"/>
+        <source>Delete constraints to external geom.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Missing coincidences</source>
         <translation type="unfinished">Missing coincidences</translation>
     </message>
@@ -2665,19 +2736,45 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished">Tolerance:</translation>
     </message>
     <message>
+        <location line="+27"/>
+        <source>Reversed external geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Swap endpoints in constraints</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+10"/>
+        <source>Constraint orientation locking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Enable/Update</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Disable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-86"/>
+        <location line="+33"/>
         <location line="+23"/>
         <source>Find</source>
         <translation type="unfinished">Find</translation>
     </message>
     <message>
-        <location line="-16"/>
-        <location line="+23"/>
+        <location line="-63"/>
+        <location line="+47"/>
         <source>Fix</source>
         <translation type="unfinished">Fix</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="-53"/>
         <source>Invalid constraints</source>
         <translation type="unfinished"></translation>
     </message>

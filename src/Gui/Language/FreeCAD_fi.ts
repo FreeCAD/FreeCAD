@@ -21,7 +21,7 @@
     </message>
     <message>
         <source>Angle Snap</source>
-        <translation type="unfinished">Automaattinen kulmaan kohdistus</translation>
+        <translation type="unfinished">Kulman kohdistus</translation>
     </message>
     <message utf8="true">
         <source>1 °</source>
@@ -60,22 +60,22 @@
     <name>CmdViewMeasureClearAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation type="unfinished">Mittaa</translation>
     </message>
     <message>
         <source>Clear measurement</source>
-        <translation type="unfinished">Clear measurement</translation>
+        <translation type="unfinished">Nollaa mittaus</translation>
     </message>
 </context>
 <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation type="unfinished">Mittaa</translation>
     </message>
     <message>
         <source>Toggle measurement</source>
-        <translation type="unfinished">Toggle measurement</translation>
+        <translation type="unfinished">Vaihda mittaus</translation>
     </message>
 </context>
 <context>
@@ -114,7 +114,7 @@
     </message>
     <message>
         <source>Enable</source>
-        <translation type="unfinished">Päälle</translation>
+        <translation type="unfinished">Käytä</translation>
     </message>
     <message>
         <source>Reverse</source>
@@ -125,11 +125,11 @@
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation type="unfinished">Units calculator</translation>
+        <translation type="unfinished">Yksikkölaskuri</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation type="unfinished">as:</translation>
+        <translation type="unfinished">kuten:</translation>
     </message>
     <message>
         <source>=&gt;</source>
@@ -160,7 +160,7 @@
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Filename</translation>
+        <translation type="unfinished">Tiedostonimi</translation>
     </message>
 </context>
 <context>
@@ -201,7 +201,7 @@
     <name>Gui::AlignmentView</name>
     <message>
         <source>Movable object</source>
-        <translation type="unfinished">Siirretävä objekti</translation>
+        <translation type="unfinished">Siirrettävä objekti</translation>
     </message>
     <message>
         <source>Fixed object</source>
@@ -239,13 +239,12 @@
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
-        <translation type="unfinished">Press middle and left or right mouse button</translation>
+        <translation type="unfinished">Paina keski- ja vasenta tai oikeata hiiren painiketta</translation>
     </message>
     <message>
         <source>Scroll middle mouse button or keep middle button pressed
 while doing a left or right click and move the mouse up or down</source>
-        <translation type="unfinished">Scroll middle mouse button or keep middle button pressed
-while doing a left or right click and move the mouse up or down</translation>
+        <translation type="unfinished">Vieritä hiiren keskipainiketta tai pidä keskimmäistä painiketta painettuna kun painat vasenta tai oikeata hiiren nappia ja liikutat samalla hiirtä ylös tai alas</translation>
     </message>
 </context>
 <context>
@@ -313,7 +312,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Word size</translation>
+        <translation type="unfinished">Sanakoko</translation>
     </message>
 </context>
 <context>
@@ -331,15 +330,15 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::Clipping</name>
     <message>
         <source>Clipping</source>
-        <translation type="unfinished">Clipping</translation>
+        <translation type="unfinished">Leikkaaminen</translation>
     </message>
     <message>
         <source>Clipping X</source>
-        <translation type="unfinished">Clipping X</translation>
+        <translation type="unfinished">Leikataan X</translation>
     </message>
     <message>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation type="unfinished">Käännä</translation>
     </message>
     <message>
         <source>Offset</source>
@@ -347,15 +346,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Clipping Y</source>
-        <translation type="unfinished">Clipping Y</translation>
+        <translation type="unfinished">Leikataan Y</translation>
     </message>
     <message>
         <source>Clipping Z</source>
-        <translation type="unfinished">Clipping Z</translation>
+        <translation type="unfinished">Leikataan Z</translation>
     </message>
     <message>
         <source>Clipping custom direction</source>
-        <translation type="unfinished">Clipping custom direction</translation>
+        <translation type="unfinished">Leikataan mukautettuun suuntaan</translation>
     </message>
     <message>
         <source>View</source>
@@ -363,7 +362,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Adjust to view direction</translation>
+        <translation type="unfinished">Säädä näytön suuntaan</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -470,15 +469,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished">Username:</translation>
+        <translation type="unfinished">Käyttäjanimi:</translation>
     </message>
     <message>
         <source>Site:</source>
-        <translation type="unfinished">Site:</translation>
+        <translation type="unfinished">Sivusto:</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 on %2:ssa</translation>
     </message>
 </context>
 <context>
@@ -488,12 +487,8 @@ while doing a left or right click and move the mouse up or down</translation>
         <translation type="unfinished">Valitse kuvake</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">Lisää kuvakkeet...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kuvake kansiot...</translation>
     </message>
 </context>
 <context>
@@ -504,7 +499,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Setup Custom Macros</source>
-        <translation type="unfinished">Asennuksen mukautetut makrot</translation>
+        <translation type="unfinished">Luo mukautetut makrot</translation>
     </message>
     <message>
         <source>Macro:</source>
@@ -591,7 +586,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Please specify the menu text first.</source>
-        <translation type="unfinished">Ole hyvä ja määritä valikon teksti.</translation>
+        <translation type="unfinished">Ole hyvä ja määritä valikon teksti ensin.</translation>
     </message>
     <message>
         <source>No item selected</source>
@@ -599,7 +594,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Please select a macro item first.</source>
-        <translation type="unfinished">Ole hyvä ja valitse makro kohde.</translation>
+        <translation type="unfinished">Ole hyvä ja valitse makro kohde ensin.</translation>
     </message>
 </context>
 <context>
@@ -644,7 +639,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>C&amp;ommands:</source>
-        <translation type="unfinished">&amp;Komennot:</translation>
+        <translation type="unfinished">K&amp;omennot:</translation>
     </message>
     <message>
         <source>Current shortcut:</source>
@@ -676,7 +671,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Re&amp;set All</source>
-        <translation type="unfinished">Nollaa Kaikki</translation>
+        <translation type="unfinished">Nollaa kaikki</translation>
     </message>
     <message>
         <source>Alt+S</source>
@@ -717,7 +712,9 @@ while doing a left or right click and move the mouse up or down</translation>
         <source>The shortcut &apos;%1&apos; is already assigned to &apos;%2&apos;.
 
 Please define another shortcut.</source>
-        <translation type="unfinished">Jo aikaisemmin määritelty pikakuvake</translation>
+        <translation type="unfinished">Pikakuvake &quot;%1&quot; on jo liitetty &quot;%2&quot;. 
+
+Määritä toinen pikakuvake.</translation>
     </message>
 </context>
 <context>
@@ -845,14 +842,14 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>No Spaceball Present</source>
-        <translation type="unfinished">&quot;Spaceball:ia&quot; ei ole paikallistettu</translation>
+        <translation type="unfinished">&quot;Spaceball&quot; ei ole käytössä</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgCustomizeSpaceball</name>
     <message>
         <source>No Spaceball Present</source>
-        <translation type="unfinished">&quot;Spaceball:ia&quot; ei ole paikallistettu</translation>
+        <translation type="unfinished">&quot;Spaceball&quot; ei ole käytössä</translation>
     </message>
     <message>
         <source>Buttons</source>
@@ -942,87 +939,87 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alumiini</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Messinki</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pronssi</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kupari</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kromi</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Smaragdi</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kulta</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jade</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Metallisoitu</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obsidiaani</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kovatina</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kipsi</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Muovi</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rubiini</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Satiini</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kiiltävä muovi</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hopea</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Teräs</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kivi</translation>
     </message>
 </context>
 <context>
@@ -1057,7 +1054,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Indent size:</source>
-        <translation type="unfinished">Sisennä koko:</translation>
+        <translation type="unfinished">Sisennyksen koko:</translation>
     </message>
     <message>
         <source>Keep tabs</source>
@@ -1092,7 +1089,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Start up</source>
-        <translation type="unfinished">käynnistys</translation>
+        <translation type="unfinished">Käynnistys</translation>
     </message>
     <message>
         <source>Enable splash screen at start up</source>
@@ -1120,7 +1117,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Size of recent file list</source>
-        <translation type="unfinished">Viimeksi käytettyjen tiedostojen listauksen pituus</translation>
+        <translation type="unfinished">Viimeisimpien tiedostojen listauksen pituus</translation>
     </message>
     <message>
         <source>Window style:</source>
@@ -1132,34 +1129,34 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Enable tiled background</translation>
+        <translation type="unfinished">Valitse tiilikuvio tausta</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation type="unfinished">Tyylisivu:</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
         <source>Default (%1 x %1)</source>
-        <translation type="unfinished">Oletus(%1x%1)</translation>
+        <translation type="unfinished">Oletus (%1 x %1)</translation>
     </message>
     <message>
         <source>Small (%1 x %1)</source>
-        <translation type="unfinished">Pieni(%1x%1)</translation>
+        <translation type="unfinished">Pieni (%1 x %1)</translation>
     </message>
     <message>
         <source>Large (%1 x %1)</source>
-        <translation type="unfinished">Suuri(%1x%1)</translation>
+        <translation type="unfinished">Suuri (%1 x %1)</translation>
     </message>
     <message>
         <source>Extra large (%1 x %1)</source>
-        <translation type="unfinished">Erittäin suuri(%1x%1)</translation>
+        <translation type="unfinished">Erittäin suuri (%1 x %1)</translation>
     </message>
     <message>
         <source>No style sheet</source>
-        <translation type="unfinished">No style sheet</translation>
+        <translation type="unfinished">Ei tyylimallia</translation>
     </message>
 </context>
 <context>
@@ -1236,7 +1233,8 @@ Please define another shortcut.</source>
     <message>
         <source>&apos;%1&apos;.
 This file already exists.</source>
-        <translation type="unfinished">&quot;%1&quot;. Tämä tiedosto on jo olemassa.</translation>
+        <translation type="unfinished">&quot;%1&quot;.
+Tämä tiedosto on jo olemassa.</translation>
     </message>
     <message>
         <source>Delete macro</source>
@@ -1244,7 +1242,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Do you really want to delete the macro &apos;%1&apos;?</source>
-        <translation type="unfinished">Haluatko varmasti poistaa makron &quot;%1&quot;?</translation>
+        <translation type="unfinished">Haluatko varmasti poistaa makron &apos;%1&apos;?</translation>
     </message>
     <message>
         <source>Cannot create file</source>
@@ -1283,7 +1281,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Record</source>
-        <translation type="unfinished">Tietue</translation>
+        <translation type="unfinished">Tallennus</translation>
     </message>
 </context>
 <context>
@@ -1302,7 +1300,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>The macro &apos;%1&apos; already exists. Do you want to overwrite?</source>
-        <translation type="unfinished">Makro &apos;%1&apos; on jo olemassa. Haluatko korvata?</translation>
+        <translation type="unfinished">Makro &apos;%1&apos; on jo olemassa. Haluatko korvata sen?</translation>
     </message>
     <message>
         <source>The macro directory doesn&apos;t exist. Please, choose another one.</source>
@@ -1314,14 +1312,14 @@ This file already exists.</source>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+        <translation type="unfinished">Sinulla ei ole käyttöoikeuksia kirjoittaa kansioon.  Valitse toinen kansio.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgMaterialProperties</name>
     <message>
         <source>Material properties</source>
-        <translation type="unfinished">Materiaaliominaisuudet</translation>
+        <translation type="unfinished">Materiaalin ominaisuudet</translation>
     </message>
     <message>
         <source>Material</source>
@@ -1360,7 +1358,7 @@ This file already exists.</source>
     <name>Gui::Dialog::DlgOnlineHelp</name>
     <message>
         <source>On-line help</source>
-        <translation type="unfinished">Käytönaikainen ohje</translation>
+        <translation type="unfinished">Internetistä saatava apu</translation>
     </message>
     <message>
         <source>Help viewer</source>
@@ -1379,13 +1377,15 @@ This file already exists.</source>
     </message>
     <message>
         <source>Access denied</source>
-        <translation type="unfinished">Pääsy evätty</translation>
+        <translation type="unfinished">Pääsy estetty</translation>
     </message>
     <message>
         <source>Access denied to &apos;%1&apos;
 
 Specify another directory, please.</source>
-        <translation type="unfinished">Pääsy evätty &quot;%1&quot; Määritä toinen hakemisto, ole hyvä.</translation>
+        <translation type="unfinished">Pääsy estetty &apos;%1&apos;:een.
+
+Määritä toinen hakemisto, ole hyvä.</translation>
     </message>
 </context>
 <context>
@@ -1435,7 +1435,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Invalid key name &apos;%1&apos;</source>
-        <translation type="unfinished">Virheellinen avaimen nimi &quot;%1&quot;</translation>
+        <translation type="unfinished">Virheellinen avaimen nimi &apos;%1&apos;</translation>
     </message>
     <message>
         <source>System parameter</source>
@@ -1496,7 +1496,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Last &amp;modification date:</source>
-        <translation type="unfinished">Viime&amp;muutosten päivämäärä:</translation>
+        <translation type="unfinished">Viime &amp;muutosten päivämäärä:</translation>
     </message>
     <message>
         <source>Creation &amp;date:</source>
@@ -1512,15 +1512,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>License information:</source>
-        <translation type="unfinished">License information:</translation>
+        <translation type="unfinished">Lisenssitiedot:</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">Lisenssi URL</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="unfinished">Open in browser</translation>
+        <translation type="unfinished">Avaa selaimessa</translation>
     </message>
 </context>
 <context>
@@ -1531,7 +1531,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Extract project</source>
-        <translation type="unfinished">Lisäprojekti</translation>
+        <translation type="unfinished">Pura projekti</translation>
     </message>
     <message>
         <source>Source</source>
@@ -1547,7 +1547,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Extract</source>
-        <translation type="unfinished">Ote</translation>
+        <translation type="unfinished">Pura</translation>
     </message>
     <message>
         <source>Create project</source>
@@ -1586,23 +1586,19 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
         <source>Link</source>
-        <translation type="unfinished">Link</translation>
+        <translation type="unfinished">Linkki</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation type="unfinished">Näytä kaikki kohdetyypit</translation>
     </message>
     <message>
         <source>No selection</source>
         <translation type="unfinished">Ei valintaa</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Please select an object of the list</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Valitse kohde luettelosta</translation>
     </message>
 </context>
 <context>
@@ -1657,7 +1653,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Redirect internal Python output to report view</source>
-        <translation type="unfinished">Uudelleenohjaa Pythonin sisäiset tulosteet raportointinäkymään</translation>
+        <translation type="unfinished">Uudelleenohjaa sisäiset Pythonin tulosteet raportointinäkymään</translation>
     </message>
 </context>
 <context>
@@ -1668,7 +1664,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished">TextLabel</translation>
+        <translation type="unfinished">TekstiSelite</translation>
     </message>
     <message>
         <source>Advanced &gt;&gt;</source>
@@ -1783,7 +1779,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished">Anti-Aliasing</translation>
+        <translation type="unfinished">sahalaitaisuuden poisto</translation>
     </message>
     <message>
         <source>None</source>
@@ -1791,7 +1787,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation type="unfinished">Rivin tasoitus</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
@@ -1853,7 +1849,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Out &amp;invisible</source>
-        <translation type="unfinished">Ulos&amp;näkymätön</translation>
+        <translation type="unfinished">Ulos &amp;näkymätön</translation>
     </message>
     <message>
         <source>Alt+I</source>
@@ -1873,7 +1869,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&amp;Flow</source>
-        <translation type="unfinished">&amp;Virtaukset</translation>
+        <translation type="unfinished">&amp;Virtaus</translation>
     </message>
     <message>
         <source>Alt+F</source>
@@ -1893,7 +1889,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&amp;Labels:</source>
-        <translation type="unfinished">&amp;Otsikot:</translation>
+        <translation type="unfinished">&amp;Selitteet:</translation>
     </message>
     <message>
         <source>&amp;Decimals:</source>
@@ -1964,103 +1960,103 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Allow duplicate object labels in one document</source>
-        <translation type="unfinished">Salli samoja objektien nimiä asiakirjassa</translation>
+        <translation type="unfinished">Salli monistettuja objektien nimilappuja asiakirjassa</translation>
     </message>
     <message>
         <source>Maximum Undo/Redo steps</source>
-        <translation type="unfinished">Suurin sallittu &quot;Pura&quot;/&quot;Tee uudelleen&quot; askelten määrä</translation>
+        <translation type="unfinished">Suurin sallittu &quot;Peruuta&quot;/&quot;Tee uudelleen&quot; askelten määrä</translation>
     </message>
     <message>
         <source>Using Undo/Redo on documents</source>
-        <translation type="unfinished">&quot;Pura&quot;/&quot;Tee uudelleen&quot; komentojen käyttö asiakirjoissa</translation>
+        <translation type="unfinished">&quot;Peruuta&quot;/&quot;Tee uudelleen&quot; komentojen käyttö asiakirjoissa</translation>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kirjoittaminen ja lisenssi</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tekijän nimi</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Nimi, jota käytetään dokumenttiä luotaessa.&lt;/p&gt;&lt;p&gt;Jätä tyhjäksi nimetöntä varten.&lt;/p&gt;&lt;p&gt;voit käyttää myös muotoa:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jos tämä on valittuna, &quot;Viimeksi muutettu&quot;-kenttä asetetaan, kun tallennat tiedostoa</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aseta tallennettaessa</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Yritys</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Oletuslisenssi</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Oletuslisenssi uusille dokumenteille</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kaikki oikeudet pidätetään</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons ominaisuudet</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons ominaisuudet-JaaSamankaltaiset</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons ominaisuudet-EiJohdannaisia</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons ominaisuudet-EiKaupallinen</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons ominaisuudet-EiKaupallinen-JaaSamankaltaisia</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons ominaisuudet-EiKaupallinen-EiJohdannaisia</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Julkinen Aineisto</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Muu</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">Lisenssi URL</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">URL, josta käyttäjä voi löytää lisätietoa lisenssistä</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Oletusyhtiö, jota käytetään uusille tiedostoille</translation>
     </message>
 </context>
 <context>
@@ -2127,14 +2123,14 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Current line highlight</source>
-        <translation type="unfinished">Nykyisen rivin kohokohta</translation>
+        <translation type="unfinished">Nykyinen rivin korostus</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsImage</name>
     <message>
         <source>Image settings</source>
-        <translation type="unfinished">Kuvan asetukset</translation>
+        <translation type="unfinished">Kuva-asetukset</translation>
     </message>
     <message>
         <source>Image properties</source>
@@ -2155,10 +2151,6 @@ Specify another directory, please.</source>
     <message>
         <source>Black</source>
         <translation type="unfinished">Musta</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">Läpinäkyvä</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2337,7 +2329,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Show script commands in python console</source>
-        <translation type="unfinished">Näytä script komennot python konsolissa</translation>
+        <translation type="unfinished">Näytä skripti komennot python konsolissa</translation>
     </message>
     <message>
         <source>Log all commands issued by menus to file:</source>
@@ -2404,15 +2396,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">US customary (in/lb)</translation>
+        <translation type="unfinished">US tavalla (tuumat/ paunat)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
-        <translation type="unfinished">Number of decimals:</translation>
+        <translation type="unfinished">Desimaalien määrä:</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation type="unfinished">Imperial decimal (in/lb)</translation>
+        <translation type="unfinished">englantilainen desimaaliluku (tuumat / paunat)</translation>
     </message>
 </context>
 <context>
@@ -2427,7 +2419,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Enable selection highlighting</source>
-        <translation type="unfinished">Ota käyttöön, korostus</translation>
+        <translation type="unfinished">Ota käyttöön valinnan korostus</translation>
     </message>
     <message>
         <source>Enable preselection highlighting</source>
@@ -2498,14 +2490,14 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation type="unfinished">Jos haluat lisätietoja FreeCAD:sta Siirry %1 tai painaa Ohje-vaihtoehtoa Ohje-valikosta.</translation>
+        <translation type="unfinished">Jos haluat lisätietoja FreeCAD:sta, niin siirry %1:een tai paina Ohje-vaihtoehtoa Ohje-valikosta.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
         <source>Unit mismatch</source>
-        <translation type="unfinished">Unit mismatch</translation>
+        <translation type="unfinished">Yksikön ristiriita</translation>
     </message>
 </context>
 <context>
@@ -2555,50 +2547,50 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 on %2:ssa</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished">Save File</translation>
+        <translation type="unfinished">Tallenna tiedosto</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished">Download canceled: %1</translation>
+        <translation type="unfinished">Lataus peruutettu: %1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation type="unfinished">Open containing folder</translation>
+        <translation type="unfinished">Avaa sisältävä kansio</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation type="unfinished">Virhe avattaessa tallennettavaa tiedostoa: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Error saving: %1</translation>
+        <translation type="unfinished">Virhe tallennettaessa: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Network Error: %1</translation>
+        <translation type="unfinished">Verkkovirhe: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished">seconds</translation>
+        <translation type="unfinished">sekuntia</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished">minutes</translation>
+        <translation type="unfinished">minuuttia</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 remaining</translation>
+        <translation type="unfinished">-%4 %5 jäljellä</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished">%1 of %2 (%3/sec) %4</translation>
+        <translation type="unfinished">%1 on %2:sta (%3/s) %4</translation>
     </message>
     <message>
         <source>?</source>
@@ -2606,11 +2598,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 of %2 - Stopped</translation>
+        <translation type="unfinished">%1  %2:sta - keskeytynyt</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished">bytes</translation>
+        <translation type="unfinished">tavua</translation>
     </message>
     <message>
         <source>kB</source>
@@ -2625,57 +2617,53 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Downloads</translation>
+        <translation type="unfinished">Lataukset</translation>
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Clean up</translation>
+        <translation type="unfinished">Siivoa</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished">0 Items</translation>
+        <translation type="unfinished">0 kohdetta</translation>
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Download Manager</translation>
+        <translation type="unfinished">Latauksenhallinta</translation>
     </message>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished">1 Download</translation>
+        <translation type="unfinished">1 Lataus</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 Downloads</translation>
+        <translation type="unfinished">%1 Latausta</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">Lisää kuvake</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kuvake kansiot</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lisää kuvake kansio</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mukautetun kuvakkeen kansioiden lisääminen tai poistaminen</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Poista kansio</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kansion poistaminen tulee voimaan, kun sovellus on käynnistetty uudelleen.</translation>
     </message>
 </context>
 <context>
@@ -2929,11 +2917,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Virheellinen määrä</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Syöttökentissä on virheellisiä tietoja, varmista että on kelvolliset sijoitetut arvot!</translation>
     </message>
 </context>
 <context>
@@ -3058,7 +3046,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished">Model</translation>
+        <translation type="unfinished">Malli</translation>
     </message>
 </context>
 <context>
@@ -3173,39 +3161,39 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Haku</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hae kohteiden nimilappuja</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tyhjentää Etsi-kentän</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Valitse vain</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Valitsee vain tämä objektin</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Poista valinta</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Poistaa tämän objektin valinnan</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoomaa sopivaksi</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Valitsee ja sovittaa tämän kohteen 3D-ikkunassa</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3213,7 +3201,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Valitsee ja paikantaa tämän kohteen puunäkymässä</translation>
     </message>
 </context>
 <context>
@@ -3286,7 +3274,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Labels &amp; Attributes</source>
-        <translation type="unfinished">Otsikot &amp; Määritteet</translation>
+        <translation type="unfinished">Nimilaput &amp; Määritteet</translation>
     </message>
 </context>
 <context>
@@ -3405,31 +3393,31 @@ Do you want to save your changes?</source>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG format (*.png)</translation>
+        <translation type="unfinished">PNG-muodossa (*.png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Bitmap format (*.bmp)</translation>
+        <translation type="unfinished">Bittikarttamuoto (*.bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF format (*.gif)</translation>
+        <translation type="unfinished">GIF-muodossa (*.gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPG format (*.jpg)</translation>
+        <translation type="unfinished">JPG-muodossa (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG format (*.svg)</translation>
+        <translation type="unfinished">SVG-muodossa (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF format (*.pdf)</translation>
+        <translation type="unfinished">PDF-muodossa (*.pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
-        <translation type="unfinished">Export graph</translation>
+        <translation type="unfinished">Vie kaavio</translation>
     </message>
 </context>
 <context>
@@ -3440,7 +3428,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Tallenna arvo</translation>
     </message>
 </context>
 <context>
@@ -3466,7 +3454,7 @@ Do you want to save your changes?</source>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lista</translation>
     </message>
 </context>
 <context>
@@ -3546,13 +3534,13 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Kohteiden riippuvuudet</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</translation>
+        <translation type="unfinished">Valituilla kohteilla on riippuvuus valitsemattomiin kohteisiin.
+Haluatko luoda niistä myös kaksoiskappaleet?</translation>
     </message>
 </context>
 <context>
@@ -3640,7 +3628,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">No point was found on model</translation>
+        <translation type="unfinished">Yhtään pistettä ei löytynyt mallista</translation>
     </message>
 </context>
 <context>
@@ -3660,11 +3648,11 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Tallenna arvo</translation>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tyhjennä luettelo</translation>
     </message>
 </context>
 <context>
@@ -3701,7 +3689,7 @@ How do you want to proceed?</source>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Edit...</translation>
+        <translation type="unfinished">Muokkaa...</translation>
     </message>
 </context>
 <context>
@@ -3917,11 +3905,11 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Automatic python modules documentation</translation>
+        <translation type="unfinished">Automaattinen python moduulien dokumentaatio</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
-        <translation type="unfinished">Opens a browser to show the Python modules documentation</translation>
+        <translation type="unfinished">Avaa selain näyttämään Python moduulien dokumentaatio</translation>
     </message>
 </context>
 <context>
@@ -4010,7 +3998,7 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation type="unfinished">Press CTRL and SHIFT buttons</translation>
+        <translation type="unfinished">Paina CTRL ja SHIFT painikkeet</translation>
     </message>
 </context>
 <context>
@@ -4044,7 +4032,7 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
         <source>Labels &amp; Attributes</source>
-        <translation type="unfinished">Otsikot &amp; Määritteet</translation>
+        <translation type="unfinished">Nimilaput &amp; Määritteet</translation>
     </message>
     <message>
         <source>Application</source>
@@ -4089,11 +4077,11 @@ Haluatko valita toisen hakemiston?</translation>
     <name>NetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Kirjoita käyttäjänimi ja salasana &quot;%1&quot;:lle %2:ssa&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Yhdistä välityspalvelimeen &quot;%1&quot; käyttäen:&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -4183,7 +4171,7 @@ Haluatko valita toisen hakemiston?</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Syötetty tieto viivalla %1 ei ole numero</translation>
     </message>
 </context>
 <context>
@@ -4426,10 +4414,6 @@ Haluatko jatkaa?</translation>
         <translation type="unfinished">Tallentamaton asiakirja</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">Tallennetaanko asiakirja ennen sulkemista?</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">Tallenna makro</translation>
     </message>
@@ -4585,11 +4569,11 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Haluatko tallentaa asiakirjan &quot;%1&quot; muutokset ennen sulkemista?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jos et tallenna, niin tekemäsi muutokset menetetään.</translation>
     </message>
 </context>
 <context>
@@ -5035,15 +5019,15 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>FreeCAD FAQ</source>
-        <translation type="unfinished">FreeCAD FAQ</translation>
+        <translation type="unfinished">FreeCAD tietoja</translation>
     </message>
     <message>
         <source>Frequently Asked Questions on the FreeCAD website</source>
-        <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+        <translation type="unfinished">Usein kysyttyjä kysymyksiä FreeCAD-sivustolla</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
-        <translation type="unfinished">Frequently Asked Questions</translation>
+        <translation type="unfinished">Usein kysyttyjä kysymyksiä</translation>
     </message>
 </context>
 <context>
@@ -5054,15 +5038,15 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>FreeCAD Forum</source>
-        <translation type="unfinished">FreeCAD Forum</translation>
+        <translation type="unfinished">FreeCAD foorumi</translation>
     </message>
     <message>
         <source>The FreeCAD forum, where you can find help from other users</source>
-        <translation type="unfinished">The FreeCAD forum, where you can find help from other users</translation>
+        <translation type="unfinished">FreeCAD foorumi, josta löydät apua muilta käyttäjiltä</translation>
     </message>
     <message>
         <source>The FreeCAD Forum</source>
-        <translation type="unfinished">The FreeCAD Forum</translation>
+        <translation type="unfinished">FreeCAD foorumi</translation>
     </message>
 </context>
 <context>
@@ -5073,15 +5057,15 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>Python scripting documentation</source>
-        <translation type="unfinished">Python scripting documentation</translation>
+        <translation type="unfinished">Python komentosarjojen ohjeisto</translation>
     </message>
     <message>
         <source>Python scripting documentation on the FreeCAD website</source>
-        <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+        <translation type="unfinished">Python komentosarjojen ohjeisto FreeCAD-sivustolla</translation>
     </message>
     <message>
         <source>PowerUsers documentation</source>
-        <translation type="unfinished">PowerUsers documentation</translation>
+        <translation type="unfinished">Tehokäyttäjän ohjeisto</translation>
     </message>
 </context>
 <context>
@@ -5092,11 +5076,11 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>Users documentation</source>
-        <translation type="unfinished">Users documentation</translation>
+        <translation type="unfinished">Käyttäjän ohjeisto</translation>
     </message>
     <message>
         <source>Documentation for users on the FreeCAD website</source>
-        <translation type="unfinished">Documentation for users on the FreeCAD website</translation>
+        <translation type="unfinished">Ohjeita käyttäjille FreeCAD-sivustolla</translation>
     </message>
 </context>
 <context>
@@ -5205,7 +5189,7 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>Step into</source>
-        <translation type="unfinished">Step into</translation>
+        <translation type="unfinished">Astu sisälle</translation>
     </message>
 </context>
 <context>
@@ -5314,7 +5298,7 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished">Unnamed</translation>
+        <translation type="unfinished">Nimetön</translation>
     </message>
 </context>
 <context>
@@ -5367,11 +5351,11 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tiedostoa ei voi avata</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tiedoston %1 lataamista ei tueta</translation>
     </message>
 </context>
 <context>
@@ -5888,11 +5872,11 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">&amp;Units calculator...</translation>
+        <translation type="unfinished">&amp; Yksiköiden laskin...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
-        <translation type="unfinished">Start the units calculator</translation>
+        <translation type="unfinished">Käynnistä yksiköiden laskimen</translation>
     </message>
 </context>
 <context>
@@ -6127,20 +6111,12 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
         <translation type="unfinished">Standardi-Näkymä</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">Kolmiulotteinen puna/vihreä</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">Vaihda stereokatselusta puna-/viherkatseluun</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stereo punainen/syaani</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vaihda stereokatselu  punainen/syaani -näkymään</translation>
     </message>
 </context>
 <context>
@@ -6241,11 +6217,11 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Laajentaa FreeCAD 3D-näkymä Oculus Rift :iin</translation>
     </message>
 </context>
 <context>
@@ -6401,13 +6377,13 @@ Sinun täytyy joko saattaa loppuun muokkaus tai peruuttaa tässä tehtäväruudu
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Kohteiden riippuvuudet</translation>
     </message>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">This object is referenced by other objects and thus these objects might get broken.
-Are you sure to continue?</translation>
+        <translation type="unfinished">Tähän kohteeseen viittaavat muut kohteet ja siten ne kohteet voivat rikkoutua.
+Haluatko varmasti jatkaa?</translation>
     </message>
 </context>
 <context>
@@ -6430,19 +6406,19 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Flat lines</source>
-        <translation type="unfinished">Flat lines</translation>
+        <translation type="unfinished">Tasainen rivit</translation>
     </message>
     <message>
         <source>Flat lines mode</source>
-        <translation type="unfinished">Flat lines mode</translation>
+        <translation type="unfinished">Tasaisten rivien tila</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation type="unfinished">Varjostettu</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation type="unfinished">Varjostettu tila</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6450,20 +6426,20 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Points mode</translation>
+        <translation type="unfinished">Pisteiden tila</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Kohteiden riippuvuudet</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</translation>
+        <translation type="unfinished">Valituilla kohteilla on riippuvuus valitsemattomiin kohteisiin.
+Haluatko luoda niistä myös kaksoiskappaleet?</translation>
     </message>
 </context>
 <context>

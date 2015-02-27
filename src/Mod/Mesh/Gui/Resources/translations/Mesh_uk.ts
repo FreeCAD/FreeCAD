@@ -24,7 +24,7 @@
     </message>
     <message>
         <source>Boundings info...</source>
-        <translation>Boundings info...</translation>
+        <translation>Інформація про обмеження...</translation>
     </message>
     <message>
         <source>Shows the boundings of the selected mesh</source>
@@ -39,11 +39,11 @@
     </message>
     <message>
         <source>Regular solid...</source>
-        <translation>Regular solid...</translation>
+        <translation>Правильне суцільне тіло...</translation>
     </message>
     <message>
         <source>Builds a regular solid</source>
-        <translation>Builds a regular solid</translation>
+        <translation>Створює правильне суцільне тіло</translation>
     </message>
 </context>
 <context>
@@ -726,7 +726,7 @@ Please run the command to repair folds first</translation>
     <name>MeshGui::DlgRegularSolid</name>
     <message>
         <source>Regular Solid</source>
-        <translation>Правильне геометричне тіло</translation>
+        <translation>Правильне суцільне тіло</translation>
     </message>
     <message>
         <source>&amp;Create</source>
@@ -746,7 +746,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Solid:</source>
-        <translation>Solid:</translation>
+        <translation>Суцільне тіло:</translation>
     </message>
     <message>
         <source>Cube</source>
@@ -790,7 +790,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Closed</source>
-        <translation>Закрито</translation>
+        <translation>Замкнене</translation>
     </message>
     <message>
         <source>Sampling:</source>
@@ -798,7 +798,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Edge length:</source>
-        <translation>Довжина краю:</translation>
+        <translation>Довжина ребра:</translation>
     </message>
     <message>
         <source>Radius 1:</source>
@@ -1051,7 +1051,7 @@ Please run the command to repair folds first</translation>
     </message>
     <message>
         <source>Minimum number of faces</source>
-        <translation>Minimum number of faces</translation>
+        <translation>Мінімальна кількість граней</translation>
     </message>
     <message>
         <source>Sphere</source>
@@ -1124,8 +1124,7 @@ Please run the command to repair folds first</translation>
     <message>
         <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-        <translation type="unfinished">OpenSCAD cannot be found on your system.
-Please visit http://www.openscad.org/index.html to install it.</translation>
+        <translation type="unfinished">OpenSCAD не знайдений на вашій системі. Будь ласка, відвідайте http://www.openscad.org/index.html щоб встановити цю програму.</translation>
     </message>
 </context>
 <context>
@@ -1279,14 +1278,14 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
-        <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
-    </message>
-    <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
-        <translation type="obsolete">X3D Extensible 3D(*.x3d)</translation>
+        <translation>Всі файли з сітками (*. STL *.ast *.bms *.obj *.off * .ply)</translation>
     </message>
     <message>
         <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
+    </message>
+    <message>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

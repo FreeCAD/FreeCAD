@@ -60,7 +60,7 @@
     <message>
         <location line="+1"/>
         <source>Make a fillet on an edge, face or body</source>
-        <translation>Maak een filet op een rand, vlak of lichaam</translation>
+        <translation>Maak een afronding op een rand, vlak of lichaam</translation>
     </message>
 </context>
 <context>
@@ -96,7 +96,7 @@
     <message>
         <location line="+1"/>
         <source>create a linear pattern feature</source>
-        <translation>create a linear pattern feature</translation>
+        <translation>Creëer een lineair patroon</translation>
     </message>
 </context>
 <context>
@@ -217,7 +217,7 @@
     <message>
         <location line="+1"/>
         <source>Scaled</source>
-        <translation>Scaled</translation>
+        <translation>geschaald</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -253,7 +253,7 @@
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Number of teeth:</translation>
+        <translation type="unfinished">Aantal tanden:</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -263,49 +263,29 @@
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">High precision:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">True</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">False</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
+        <translation type="unfinished">External gear:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Pressure angle:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">deg</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Number of Curves:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
+        <translation type="unfinished">Drukhoek:</translation>
     </message>
 </context>
 <context>
@@ -421,7 +401,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskChamferParameters.cpp" line="+52"/>
         <source>Chamfer parameters</source>
-        <translation>Afschuining parameters</translation>
+        <translation>Parameters voor afschuining</translation>
     </message>
 </context>
 <context>
@@ -701,7 +681,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -736,7 +716,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -783,7 +763,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -802,12 +782,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Select a face</translation>
+        <translation type="unfinished">Selecteer een vlak</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -825,7 +805,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+12"/>
         <source>Transformations</source>
-        <translation>Transformations</translation>
+        <translation>Transformaties</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -845,7 +825,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+4"/>
         <source>Add mirrored transformation</source>
-        <translation>Add mirrored transformation</translation>
+        <translation>Gespiegelde transformatie toevoegen</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -860,7 +840,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+4"/>
         <source>Add scaled transformation</source>
-        <translation>Add scaled transformation</translation>
+        <translation>Geschaalde transformatie toevoegen</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1164,7 +1144,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1255,7 +1235,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -1344,7 +1324,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <location line="-72"/>
         <location line="+152"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Please create a sketch or 2D object first. It must have a support face on a solid</translation>
+        <translation>Maak eerst een schets of 2D-object. Het moet een steunvlak hebben op een voorwerp</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -1372,18 +1352,18 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>No fillet possible on selected faces/edges</translation>
+        <translation>Geen afronding mogelijk op de geselecteerde vlakken/randen</translation>
     </message>
     <message>
         <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>Chamfer works only on parts</translation>
+        <translation>Afschuining werkt alleen op delen</translation>
     </message>
     <message>
         <location line="-142"/>
         <location line="+152"/>
         <source>Shape of selected part is empty</source>
-        <translation>Shape of selected part is empty</translation>
+        <translation>Vorm van geselecteerde deel is leeg</translation>
     </message>
     <message>
         <location line="+71"/>
@@ -1398,12 +1378,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Draft works only on parts</translation>
+        <translation>Klad werkt alleen op onderdelen</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>No draft possible on selected faces</translation>
+        <translation>Geen klad mogelijk op geselecteerde vlakken</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1417,7 +1397,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please create a subtractive or additive feature first</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1491,13 +1471,13 @@ Creëer de schets op een vlak.</translation>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lost link to base sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The object can&apos;t be edited because the link to the the base sketch is lost.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1538,12 +1518,12 @@ Creëer de schets op een vlak.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit groove</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit revolve</translation>
     </message>
 </context>
 <context>

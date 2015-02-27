@@ -37,7 +37,7 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Pescaggio</translation>
+        <translation>Sformo</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -263,49 +263,29 @@
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alta precisione:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vero</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Falso</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
+        <translation type="unfinished">Ingranaggio esterno:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
         <translation type="unfinished">Angolo di pressione:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">grado</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Numero di curve:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
     </message>
 </context>
 <context>
@@ -865,7 +845,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+4"/>
         <source>Move up</source>
-        <translation>Spostare verso l&apos;alto</translation>
+        <translation>Sposta verso l&apos;alto</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1417,7 +1397,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Si prega di creare prima una funzione additiva o sottrattiva</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1491,13 +1471,13 @@ Creare lo sketch su una faccia.</translation>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Perso il collegamento allo schizzo di base</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">L&apos;oggetto non può essere modificato perché si è perso il link per lo schizzo di base.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1538,12 +1518,12 @@ Creare lo sketch su una faccia.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Modificare la scanalatura</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Modifica la rivoluzione</translation>
     </message>
 </context>
 <context>

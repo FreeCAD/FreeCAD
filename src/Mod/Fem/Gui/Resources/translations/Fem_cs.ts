@@ -116,7 +116,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Create a FEM analysis</source>
-        <translation type="unfinished">Create a FEM analysis</translation>
+        <translation type="unfinished">Vytvoření FEM analýzy</translation>
     </message>
 </context>
 <context>
@@ -148,7 +148,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Define/create a nodes set...</source>
-        <translation type="unfinished">Define/create a nodes set...</translation>
+        <translation type="unfinished">Definuj/vytvoř nastavení uzlů...</translation>
     </message>
 </context>
 <context>
@@ -221,7 +221,7 @@
     <message>
         <location line="-11"/>
         <source>You must specify at least one reference</source>
-        <translation type="unfinished">You must specify at least one reference</translation>
+        <translation type="unfinished">Musíte specifikovat nejméně jednu referenci</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+356"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+365"/>
         <source>Input error</source>
         <translation type="unfinished">Chyba zadání</translation>
     </message>
@@ -287,7 +287,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Chyba výběru</translation>
     </message>
     <message>
         <location line="-37"/>
@@ -312,7 +312,7 @@
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Mohou být vybrány pouze lineární hrany</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -331,7 +331,7 @@
         <location line="+61"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Chyba výběru</translation>
     </message>
     <message>
         <location line="-5"/>
@@ -347,36 +347,24 @@
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-282"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-291"/>
         <source>Delete</source>
         <translation type="unfinished">Odstranit</translation>
     </message>
     <message>
-        <source>Force [N]</source>
-        <translation type="obsolete">Síla [N]</translation>
-    </message>
-    <message>
-        <source>Force [N/mm]</source>
-        <translation type="obsolete">Tah [N/mm]</translation>
-    </message>
-    <message>
-        <source>Force [N/mmÂ²]</source>
-        <translation type="obsolete">Tlak [N/mm²]</translation>
-    </message>
-    <message>
         <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Point load [N]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load [N/mm]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Line load [N/mm]</translation>
     </message>
     <message utf8="true">
         <location line="+2"/>
         <source>Area load [N/mm²]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Area load [N/mm²]</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -385,7 +373,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Chyba výběru</translation>
     </message>
     <message>
         <location line="-42"/>
@@ -405,7 +393,7 @@
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Mohou být vybrány pouze lineární hrany</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -420,7 +408,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Chyba výběru</translation>
     </message>
     <message>
         <location line="-10"/>
@@ -430,7 +418,7 @@
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Mohou být vybrány pouze lineární hrany</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -464,7 +452,7 @@
     <message>
         <location filename="../../TaskTetParameter.cpp" line="+52"/>
         <source>Tet Parameter</source>
-        <translation type="unfinished">Tet Parameter</translation>
+        <translation type="unfinished">Tet parametr</translation>
     </message>
 </context>
 <context>
@@ -472,7 +460,7 @@
     <message>
         <location filename="../../../MechanicalAnalysis.ui" line="+14"/>
         <source>Mechanical analysis</source>
-        <translation type="unfinished">Mechanical analysis</translation>
+        <translation type="unfinished">Mechanická analýza</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -481,8 +469,18 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Write Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Run Calculix</source>
-        <translation type="unfinished">Run Calculix</translation>
+        <translation type="unfinished">Spusť CalculiX</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -497,17 +495,17 @@
     <message>
         <location line="+7"/>
         <source>choose...</source>
-        <translation type="unfinished">choose...</translation>
+        <translation type="unfinished">vyber...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>MatWeb database...</source>
-        <translation type="unfinished">MatWeb database...</translation>
+        <translation type="unfinished">Databáze MatWeb...</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Young&apos;s Modulus:</source>
-        <translation type="unfinished">Young&apos;s Modulus:</translation>
+        <translation type="unfinished">Youngův modul:</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -525,12 +523,12 @@
     <message>
         <location filename="../../Command.cpp" line="-468"/>
         <source>No active Analysis</source>
-        <translation type="unfinished">No active Analysis</translation>
+        <translation type="unfinished">Žádná aktivní analýza</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to create or activate a Analysis</source>
-        <translation type="unfinished">You need to create or activate a Analysis</translation>
+        <translation type="unfinished">Musíš vytvořit nebo aktivovat analýzu</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -628,13 +626,18 @@
         <source>Meshing</source>
         <translation type="unfinished">Meshing</translation>
     </message>
+    <message>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
+        <source>Constraint force</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ShowDisplacement</name>
     <message>
         <location filename="../../../ShowDisplacement.ui" line="+14"/>
         <source>Show result</source>
-        <translation type="unfinished">Show result</translation>
+        <translation type="unfinished">Zobrazit výsledek</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -699,7 +702,7 @@
     <message>
         <location line="+12"/>
         <source>Meshes:</source>
-        <translation type="unfinished">Meshes:</translation>
+        <translation type="unfinished">Sítě:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -727,7 +730,7 @@
     <message>
         <location line="+17"/>
         <source>Nodes: 0</source>
-        <translation type="unfinished">Nodes: 0</translation>
+        <translation type="unfinished">Uzly: 0</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -793,7 +796,7 @@
     <message>
         <location line="+24"/>
         <source>Diameter</source>
-        <translation type="unfinished">Diameter</translation>
+        <translation type="unfinished">Průměr</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -803,7 +806,7 @@
     <message>
         <location line="+27"/>
         <source>Center distance</source>
-        <translation type="unfinished">Center distance</translation>
+        <translation type="unfinished">Vzdálenost středu</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -851,7 +854,7 @@
     <message>
         <location line="+24"/>
         <source>Center distance</source>
-        <translation type="unfinished">Center distance</translation>
+        <translation type="unfinished">Vzdálenost středu</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -1018,22 +1021,22 @@
     <message>
         <location line="+16"/>
         <source>Optimize</source>
-        <translation type="unfinished">Optimize</translation>
+        <translation type="unfinished">Optimalizovat</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Node count: </source>
-        <translation type="unfinished">Node count: </translation>
+        <translation type="unfinished">Počet uzlů: </translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Triangle count:</source>
-        <translation type="unfinished">Triangle count:</translation>
+        <translation type="unfinished">Počet trojúhelníků:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Tetraeder count:</source>
-        <translation type="unfinished">Tetraeder count:</translation>
+        <translation type="unfinished">Počet tetraedrů:</translation>
     </message>
 </context>
 <context>

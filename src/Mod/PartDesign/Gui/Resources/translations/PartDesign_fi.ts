@@ -37,12 +37,12 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Vesirajasta pohjaan</translation>
+        <translation>Vedos (vesirajasta pohjaan)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a draft on a face</source>
-        <translation>Tee luonnos tahkon päälle</translation>
+        <translation>Tee vedos tahkon päälle</translation>
     </message>
 </context>
 <context>
@@ -248,64 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Involute parameter</translation>
+        <translation type="unfinished">Käyrän määrite</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Number of teeth:</translation>
+        <translation type="unfinished">Hampaiden lukumäärä:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation type="unfinished">Moduuli - lisäosat:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Korkea tarkkuus:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tosi</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Epätosi</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
+        <translation type="unfinished">Ulkoinen hammaspyörä:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Pressure angle:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">deg</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Number of Curves:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
+        <translation type="unfinished">Painekulma:</translation>
     </message>
 </context>
 <context>
@@ -536,7 +516,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+17"/>
         <source>Draft angle</source>
-        <translation>Luonnostele kulma</translation>
+        <translation>Vedoskulma</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -556,7 +536,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="-347"/>
         <source>Draft parameters</source>
-        <translation>Luonnoksen parametrit</translation>
+        <translation>Vedoksen parametrit</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -700,7 +680,7 @@ Please check one or more edge entities first.</source>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Valitse viite...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -735,7 +715,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Määrittelemätön</translation>
     </message>
 </context>
 <context>
@@ -782,7 +762,7 @@ Please check one or more edge entities first.</source>
         <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Valitse viite...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -801,12 +781,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Select a face</translation>
+        <translation type="unfinished">Valitse pinta</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Määrittelemätön</translation>
     </message>
 </context>
 <context>
@@ -1156,14 +1136,14 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal sketch axis</translation>
+        <translation type="unfinished">Normaali luonnos akseli</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Valitse viite...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1254,7 +1234,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Määrittelemätön</translation>
     </message>
 </context>
 <context>
@@ -1397,7 +1377,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Luonnos toimii vain osille</translation>
+        <translation>Vedos toimii vain osille</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -1416,7 +1396,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Luo vähentävä tai lisäävä ominaisuus ensin</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1489,13 +1469,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Linkki hävisi pohja luonnokseen</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Objektia ei voi muokata, koska linkki pohja luonnokseen on menetetty.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1511,7 +1491,7 @@ Create the sketch on a face.</source>
         <location line="-17"/>
         <location filename="../../ViewProviderDraft.cpp" line="-18"/>
         <source>Edit draft</source>
-        <translation>Muokkaa luonnosta</translation>
+        <translation>Muokkaa vedosta</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFillet.cpp" line="-18"/>
@@ -1536,12 +1516,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Muokkaa uraa</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Muokkaa kiertoa</translation>
     </message>
 </context>
 <context>

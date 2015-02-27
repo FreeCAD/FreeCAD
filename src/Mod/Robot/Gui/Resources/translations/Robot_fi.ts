@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Liikeradan peitto...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Luo peittokohde, joka naamioi joitakin piirretyn kuvion liikeratoja</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>

@@ -49,13 +49,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Draft View</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserts a Draft view of the selected object(s) in the active drawing</translation>
     </message>
 </context>
 <context>
@@ -311,26 +311,28 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Different orientation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The printer uses a different orientation  than the drawing.
+Do you want to continue?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Different paper size</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The printer uses a different paper size than the drawing.
+Do you want to continue?</translation>
     </message>
 </context>
 <context>
@@ -419,7 +421,7 @@ Do you want to continue?</source>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Isometric</translation>
+        <translation type="unfinished">Isometrisch</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -572,7 +574,7 @@ Do you want to continue?</source>
     <message>
         <location line="+11"/>
         <source>Axonometric</source>
-        <translation>Axonometric</translation>
+        <translation>Axonometrisch</translation>
     </message>
 </context>
 <context>
@@ -686,12 +688,12 @@ Do you want to continue?</source>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">Landscape</translation>
+        <translation type="unfinished">Liggend</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">Portrait</translation>
+        <translation type="unfinished">Staand</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -706,12 +708,12 @@ Do you want to continue?</source>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
     </message>
 </context>
 <context>
@@ -764,7 +766,7 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>No page found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No page found</translation>
     </message>
     <message>
         <location line="-250"/>
@@ -773,12 +775,12 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>Create a page first.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create a page first.</translation>
     </message>
     <message>
         <location line="-182"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select exactly one Part object.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -789,7 +791,7 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>
@@ -838,7 +840,7 @@ Do you want to continue?</source>
         <location filename="../../TaskOrthoViews.cpp" line="+45"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Make axonometric...</translation>
+        <translation type="unfinished">Axonometrisch maken...</translation>
     </message>
     <message>
         <location line="-928"/>

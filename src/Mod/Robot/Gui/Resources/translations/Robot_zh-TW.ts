@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">修改軌跡</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">建立一個由修改一個軌跡的部份設定之物件</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -479,7 +479,7 @@
     <message>
         <location line="+127"/>
         <source>Select the Trajectory which you want to dress up.</source>
-        <translation>選擇您想裝飾之軌跡</translation>
+        <translation>選取您想要修改的軌跡</translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>

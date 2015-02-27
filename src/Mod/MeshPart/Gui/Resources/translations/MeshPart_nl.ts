@@ -59,37 +59,37 @@
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation type="unfinished">Fijnheid:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Very coarse</translation>
+        <translation type="unfinished">Zeer grof</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation type="unfinished">Ruw</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderate</translation>
+        <translation type="unfinished">Normaal</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation type="unfinished">Fijn</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Very fine</translation>
+        <translation type="unfinished">Zeer fijn</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">User defined</translation>
+        <translation type="unfinished">Door de gebruiker bepaald</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -109,7 +109,7 @@
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimize surface</translation>
+        <translation type="unfinished">Oppervlak optimaliseren</translation>
     </message>
     <message>
         <location line="+10"/>

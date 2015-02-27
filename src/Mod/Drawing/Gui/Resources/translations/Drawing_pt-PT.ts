@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+475"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -17,7 +17,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts an Annotation view in the active drawing</source>
-        <translation>Insere uma visualização da Anotação no desenho ativo</translation>
+        <translation>Insere uma Anotação no desenho (folha) ativo</translation>
     </message>
 </context>
 <context>
@@ -25,7 +25,7 @@
     <message>
         <location line="+44"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -44,18 +44,18 @@
     <message>
         <location line="+183"/>
         <source>Drawing</source>
-        <translation type="unfinished">Desenho</translation>
+        <translation type="unfinished">Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Vista Draft</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Insere uma vista Draft dos objetos selecionados na folha ativa</translation>
     </message>
 </context>
 <context>
@@ -82,7 +82,7 @@
     <message>
         <location line="-355"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -96,13 +96,13 @@
     <message>
         <location line="-185"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Insert new drawing</source>
-        <translation>Inserir novo desenho</translation>
+        <translation>Inserir novo desenho (folha)</translation>
     </message>
 </context>
 <context>
@@ -110,12 +110,12 @@
     <message>
         <location line="+219"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert view in drawing</source>
-        <translation>Inserir uma visualização no desenho</translation>
+        <translation>Inserir uma vista no desenho (folha)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -128,7 +128,7 @@
     <message>
         <location line="-255"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -146,7 +146,7 @@
     <message>
         <location line="+378"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -165,7 +165,7 @@
     <message>
         <location line="-53"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -183,18 +183,18 @@
     <message>
         <location line="+284"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Project shape...</source>
-        <translation>Forma de projeto...</translation>
+        <translation>Projetar forma...</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Project shape onto a user-defined plane</source>
-        <translation>Forma de projeto num plano definido pelo utilizador</translation>
+        <translation>Projeta forma sobre um plano definido pelo utilizador</translation>
     </message>
 </context>
 <context>
@@ -202,7 +202,7 @@
     <message>
         <location line="-110"/>
         <source>Drawing</source>
-        <translation type="unfinished">Desenho</translation>
+        <translation type="unfinished">Desenho (layout)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -311,26 +311,26 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orientação diferente</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A impressora utiliza uma orientação diferente do desenho. Deseja continuar?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tamanho de papel diferente</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A impressora usa um tamanho de papel diferente do desenho. Deseja continuar?</translation>
     </message>
 </context>
 <context>
@@ -439,7 +439,7 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished">Vista de projeção</translation>
+        <translation type="unfinished"> Visualizar projeção   </translation>
     </message>
     <message>
         <location line="+7"/>
@@ -488,7 +488,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Front</source>
-        <translation type="obsolete">Front</translation>
+        <translation type="obsolete">Frente</translation>
     </message>
     <message>
         <source>Right</source>
@@ -500,7 +500,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Left</source>
-        <translation type="obsolete">Left</translation>
+        <translation type="obsolete">Esquerda</translation>
     </message>
     <message>
         <source>Top</source>
@@ -508,7 +508,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="obsolete">Bottom</translation>
+        <translation type="obsolete">De baixo</translation>
     </message>
     <message>
         <source>- Rotate</source>
@@ -630,7 +630,7 @@ Do you want to continue?</source>
     <message>
         <location line="+17"/>
         <source>Project shapes</source>
-        <translation>Formas de projeto</translation>
+        <translation>Projetar formas</translation>
     </message>
 </context>
 <context>
@@ -686,12 +686,12 @@ Do you want to continue?</source>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">Paisagem</translation>
+        <translation type="unfinished">Horizontal</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">Retrato</translation>
+        <translation type="unfinished">Vertical</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -701,17 +701,17 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Inserir novo desenho %1%2 %3</translation>
+        <translation type="unfinished">Inserir novo desenho %1%2 %3 (folha)</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserir novo desenho %1%2 %3 (%4) Folha</translation>
     </message>
 </context>
 <context>
@@ -764,7 +764,7 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>No page found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nenhuma página encontrada</translation>
     </message>
     <message>
         <location line="-250"/>
@@ -773,12 +773,12 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>Create a page first.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Primeiro, crie uma página.</translation>
     </message>
     <message>
         <location line="-182"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selecione exatamente uma peça (Part).</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -789,7 +789,7 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>
@@ -812,7 +812,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Front</source>
-        <translation type="obsolete">Front</translation>
+        <translation type="obsolete">Frente</translation>
     </message>
     <message>
         <source>Back</source>
@@ -824,7 +824,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Left</source>
-        <translation type="obsolete">Left</translation>
+        <translation type="obsolete">Esquerda</translation>
     </message>
     <message>
         <source>Top</source>
@@ -832,7 +832,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="obsolete">Bottom</translation>
+        <translation type="obsolete">De baixo</translation>
     </message>
     <message>
         <location filename="../../TaskOrthoViews.cpp" line="+45"/>
@@ -850,7 +850,7 @@ Do you want to continue?</source>
         <location line="-928"/>
         <location line="+929"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">Make orthographic</translation>
+        <translation type="unfinished">Tornar ortográfico</translation>
     </message>
 </context>
 <context>
@@ -858,7 +858,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>Drawing</source>
-        <translation>Desenho</translation>
+        <translation>Desenho (layout)</translation>
     </message>
 </context>
 </TS>

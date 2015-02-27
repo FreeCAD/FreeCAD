@@ -49,13 +49,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Draft View</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserts a Draft view of the selected object(s) in the active drawing</translation>
     </message>
 </context>
 <context>
@@ -213,7 +213,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a symbol from a svg file in the active drawing</source>
-        <translation type="unfinished">Inserts a symbol from a svg file in the active drawing</translation>
+        <translation type="unfinished">Вставити символ з svg файлу в креслення, що редагується</translation>
     </message>
 </context>
 <context>
@@ -311,26 +311,28 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Different orientation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The printer uses a different orientation  than the drawing.
+Do you want to continue?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Different paper size</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The printer uses a different paper size than the drawing.
+Do you want to continue?</translation>
     </message>
 </context>
 <context>
@@ -374,7 +376,7 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source> Vertical tilt</source>
-        <translation type="unfinished"> Vertical tilt</translation>
+        <translation type="unfinished"> Вертикальний нахил</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -419,27 +421,27 @@ Do you want to continue?</source>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Isometric</translation>
+        <translation type="unfinished">Ізометричний</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Dimetric</source>
-        <translation type="unfinished">Dimetric</translation>
+        <translation type="unfinished">Диметрія</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Trimetric</source>
-        <translation type="unfinished">Trimetric</translation>
+        <translation type="unfinished">Триметрія</translation>
     </message>
     <message>
         <location line="+8"/>
         <source> Scale</source>
-        <translation type="unfinished"> Scale</translation>
+        <translation type="unfinished"> Масштаб</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished"> View projection   </translation>
+        <translation type="unfinished"> Переглянути проекцію   </translation>
     </message>
     <message>
         <location line="+7"/>
@@ -455,7 +457,7 @@ Do you want to continue?</source>
     <message>
         <location line="-10"/>
         <source> Trimetric</source>
-        <translation type="unfinished"> Trimetric</translation>
+        <translation type="unfinished"> Триметрія</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -475,7 +477,7 @@ Do you want to continue?</source>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation type="unfinished">View from:</translation>
+        <translation type="unfinished">Вигляд з:</translation>
     </message>
     <message>
         <location line="+47"/>
@@ -580,22 +582,22 @@ Do you want to continue?</source>
     <message>
         <location filename="../../TaskDialog.cpp" line="+49"/>
         <source>Visible sharp edges</source>
-        <translation>Видимі гострі краї</translation>
+        <translation>Видимі гострі ребра</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Visible smooth edges</source>
-        <translation>Видимі згладжені краї</translation>
+        <translation>Видимі згладжені ребра</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Visible sewn edges</source>
-        <translation>Видимі зшиті краї</translation>
+        <translation>Видимі зшиті ребра</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Visible outline edges</source>
-        <translation>Видимі контурні краї</translation>
+        <translation>Видимі контурні ребра</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -605,22 +607,22 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Hidden sharp edges</source>
-        <translation>Приховані гострі краї</translation>
+        <translation>Приховані гострі ребра</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hidden smooth edges</source>
-        <translation>Приховані згладжені краї</translation>
+        <translation>Приховані згладжені ребра</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hidden sewn edges</source>
-        <translation>Приховані зшиті краї</translation>
+        <translation>Приховані зшиті ребра</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hidden outline edges</source>
-        <translation>Приховані контурні краї</translation>
+        <translation>Приховані контурні ребра</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -686,32 +688,32 @@ Do you want to continue?</source>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">Landscape</translation>
+        <translation type="unfinished">Альбомна</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">Portrait</translation>
+        <translation type="unfinished">Портретна</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1%2 %3</source>
-        <translation type="unfinished">%1%2 %3</translation>
+        <translation type="unfinished">%1 %2 %3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 drawing</translation>
+        <translation type="unfinished">Вставити нове %1%2 %3 креслення</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
     </message>
 </context>
 <context>
@@ -764,7 +766,7 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>No page found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No page found</translation>
     </message>
     <message>
         <location line="-250"/>
@@ -773,12 +775,12 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>Create a page first.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create a page first.</translation>
     </message>
     <message>
         <location line="-182"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select exactly one Part object.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -789,7 +791,7 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>
@@ -838,19 +840,19 @@ Do you want to continue?</source>
         <location filename="../../TaskOrthoViews.cpp" line="+45"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Make axonometric...</translation>
+        <translation type="unfinished">Зробити аксонометрію...</translation>
     </message>
     <message>
         <location line="-928"/>
         <location line="+929"/>
         <source>Edit axonometric settings...</source>
-        <translation type="unfinished">Edit axonometric settings...</translation>
+        <translation type="unfinished">Редагувати налаштування аксонометрії...</translation>
     </message>
     <message>
         <location line="-928"/>
         <location line="+929"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">Make orthographic</translation>
+        <translation type="unfinished">Зробити ортогональну проекцію</translation>
     </message>
 </context>
 <context>

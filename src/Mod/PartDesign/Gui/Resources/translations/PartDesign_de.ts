@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de" sourcelanguage="en">
 <context>
     <name>CmdPartDesignChamfer</name>
     <message>
@@ -37,12 +37,12 @@
     <message>
         <location line="+1"/>
         <source>Draft</source>
-        <translation>Draft</translation>
+        <translation>Tiefgang</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Make a draft on a face</source>
-        <translation>Make a draft on a face</translation>
+        <translation>Formschräge auf Fläche</translation>
     </message>
 </context>
 <context>
@@ -73,12 +73,12 @@
     <message>
         <location line="+1"/>
         <source>Groove</source>
-        <translation>Nuten</translation>
+        <translation>Nut</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Groove a selected sketch</source>
-        <translation>Erzeuge Nuten mit einer selektierten Zeichnung</translation>
+        <translation>Erzeuge Nut mit der ausgewählten Skizze</translation>
     </message>
 </context>
 <context>
@@ -91,12 +91,12 @@
     <message>
         <location line="+1"/>
         <source>LinearPattern</source>
-        <translation>LinearPattern</translation>
+        <translation>Lineares Muster</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a linear pattern feature</source>
-        <translation>create a linear pattern feature</translation>
+        <translation>Ein lineares Muster erstellen</translation>
     </message>
 </context>
 <context>
@@ -114,7 +114,7 @@
     <message>
         <location line="+1"/>
         <source>create a mirrored feature</source>
-        <translation>create a mirrored feature</translation>
+        <translation>erzeuge ein gespiegeltes Feature</translation>
     </message>
 </context>
 <context>
@@ -132,7 +132,7 @@
     <message>
         <location line="+1"/>
         <source>create a multitransform feature</source>
-        <translation>create a multitransform feature</translation>
+        <translation>Eine Mehrfachtransformation erstellen</translation>
     </message>
 </context>
 <context>
@@ -181,12 +181,12 @@
     <message>
         <location line="+1"/>
         <source>PolarPattern</source>
-        <translation>PolarPattern</translation>
+        <translation>Radiales Muster</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a polar pattern feature</source>
-        <translation>create a polar pattern feature</translation>
+        <translation>Ein radiales Muster erstellen</translation>
     </message>
 </context>
 <context>
@@ -199,12 +199,12 @@
     <message>
         <location line="+1"/>
         <source>Revolution</source>
-        <translation>Drehen</translation>
+        <translation>Rotation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Revolve a selected sketch</source>
-        <translation>Drehe die ausgewählte Skizze</translation>
+        <translation>Rotiere die ausgewählte Skizze</translation>
     </message>
 </context>
 <context>
@@ -217,12 +217,12 @@
     <message>
         <location line="+1"/>
         <source>Scaled</source>
-        <translation>Skaliert</translation>
+        <translation>Skalierung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a scaled feature</source>
-        <translation>create a scaled feature</translation>
+        <translation>erzeuge ein skaliertes Feature</translation>
     </message>
 </context>
 <context>
@@ -230,7 +230,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+42"/>
         <source>Face tools</source>
-        <translation>Oberflächenwerkzeuge</translation>
+        <translation>Flächenwerkzeuge</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -240,7 +240,7 @@
     <message>
         <location line="+1"/>
         <source>Create Geometry</source>
-        <translation>Geometrie erstellen</translation>
+        <translation>Erzeuge Geometrie</translation>
     </message>
 </context>
 <context>
@@ -248,44 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Evolventenparameter</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Anzahl der Zähne:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Module:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hohe Präzision:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Wahr</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Falsch</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aussenzahnrad:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eingriffswinkel:</translation>
     </message>
 </context>
 <context>
@@ -336,7 +336,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../FeaturePickDialog.ui" line="+14"/>
         <source>Choose feature</source>
-        <translation>Choose feature</translation>
+        <translation>Wähle ein Feature</translation>
     </message>
 </context>
 <context>
@@ -401,7 +401,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskChamferParameters.cpp" line="+52"/>
         <source>Chamfer parameters</source>
-        <translation>Schrägenparameter</translation>
+        <translation>Parameter der Fase</translation>
     </message>
 </context>
 <context>
@@ -425,7 +425,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="+126"/>
         <source>Edit fillet</source>
-        <translation type="unfinished">Bearbeite Verrundung</translation>
+        <translation type="unfinished">Rundung bearbeiten</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+441"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Bearbeite Tasche</translation>
+        <translation type="unfinished">Tasche bearbeiten</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -517,7 +517,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+17"/>
         <source>Draft angle</source>
-        <translation>Draft angle</translation>
+        <translation>Formschrägenwinkel</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -527,17 +527,17 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+17"/>
         <source>Pull direction</source>
-        <translation>Pull direction</translation>
+        <translation>Entformungsrichtung</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Reverse pull direction</source>
-        <translation>Reverse pull direction</translation>
+        <translation>Entformungsrichtung umkehren</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="-347"/>
         <source>Draft parameters</source>
-        <translation>Draft parameters</translation>
+        <translation>Parameter der Formschräge</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -560,7 +560,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="-74"/>
         <source>Fillet parameters</source>
-        <translation>Rundungsparameter</translation>
+        <translation>Parameter der Rundung</translation>
     </message>
 </context>
 <context>
@@ -578,12 +578,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Vertical sketch axis</source>
-        <translation>Vertikale Zeichnungsachse</translation>
+        <translation>Vertikale Skizzenachse</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Horizontal sketch axis</source>
-        <translation>Horizonthale Zeichnungsachse</translation>
+        <translation>Horizontale Skizzenachse</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -593,7 +593,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+31"/>
         <source>Symmetric to plane</source>
-        <translation>Symmetrisch zur Ebene</translation>
+        <translation>Symmetrisch zu einer Ebene</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -608,7 +608,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+52"/>
         <source>Groove parameters</source>
-        <translation>Nutenparameter</translation>
+        <translation>Parameter der Nut</translation>
     </message>
 </context>
 <context>
@@ -636,7 +636,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+5"/>
         <source>Up to first</source>
-        <translation>Bis zum ersten</translation>
+        <translation>Bis nächste Fläche</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -646,7 +646,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskHoleParameters.cpp" line="+48"/>
         <source>TaskHoleParameters</source>
-        <translation>Lochparameter</translation>
+        <translation>Parameter der Bohrung</translation>
     </message>
 </context>
 <context>
@@ -659,7 +659,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation>Ursprüngliches Feature</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -669,19 +669,19 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horizonthale Zeichnungsachse</translation>
+        <translation type="unfinished">Horizontale Skizzenachse</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vertikale Zeichnungsachse</translation>
+        <translation type="unfinished">Vertikale Skizzenachse</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Referenz auswählen...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -696,7 +696,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+21"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation>Vorkommen</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -711,12 +711,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-63"/>
         <source>Select an edge or a face</source>
-        <translation>Select an edge or a face</translation>
+        <translation>Wähle eine Kante oder eine Fläche</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unbestimmt</translation>
     </message>
 </context>
 <context>
@@ -729,7 +729,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation>Ursprüngliches Feature</translation>
     </message>
     <message>
         <source>XY</source>
@@ -751,19 +751,19 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation type="unfinished">Horizonthale Zeichnungsachse</translation>
+        <translation type="unfinished">Horizontale Skizzenachse</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation type="unfinished">Vertikale Zeichnungsachse</translation>
+        <translation type="unfinished">Vertikale Skizzenachse</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Referenz auswählen...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -782,12 +782,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eine Fläche auswählen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unbestimmt</translation>
     </message>
 </context>
 <context>
@@ -800,7 +800,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation>Ursprüngliches Feature</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -825,22 +825,22 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+4"/>
         <source>Add mirrored transformation</source>
-        <translation>Add mirrored transformation</translation>
+        <translation>Gespiegelte Transformation hinzufügen</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add linear pattern</source>
-        <translation>Add linear pattern</translation>
+        <translation>Lineares Muster hinzufügen</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add polar pattern</source>
-        <translation>Add polar pattern</translation>
+        <translation>Radiales Muster hinzufügen</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Add scaled transformation</source>
-        <translation>Add scaled transformation</translation>
+        <translation>Skalierte Transformation hinzufügen</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -855,7 +855,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+27"/>
         <source>Right-click to add</source>
-        <translation>Rechtsklich zum Hinzufügen</translation>
+        <translation>Rechtsklick zum Hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -878,7 +878,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+28"/>
         <source>Symmetric to plane</source>
-        <translation>Symmetrisch zur Ebene</translation>
+        <translation>Symmetrisch zu einer Ebene</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -950,7 +950,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskPadParameters.cpp" line="-371"/>
         <source>Pad parameters</source>
-        <translation>Seitenparameter</translation>
+        <translation>Parameter des Blocks</translation>
     </message>
     <message>
         <location line="+70"/>
@@ -968,7 +968,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <location line="-293"/>
         <location line="+294"/>
         <source>To first</source>
-        <translation>Zur Ersten</translation>
+        <translation>Zur nächsten Fläche</translation>
     </message>
     <message>
         <location line="-293"/>
@@ -980,7 +980,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <location line="-293"/>
         <location line="+294"/>
         <source>Two dimensions</source>
-        <translation>Zwei Maße</translation>
+        <translation>Zwei Längen</translation>
     </message>
 </context>
 <context>
@@ -1040,7 +1040,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+34"/>
         <source>Symmetric to plane</source>
-        <translation>Symmetrisch zur Ebene</translation>
+        <translation>Symmetrisch zu einer Ebene</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1069,7 +1069,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="-350"/>
         <source>Pocket parameters</source>
-        <translation>Taschenparameter</translation>
+        <translation>Parameter der Tasche</translation>
     </message>
     <message>
         <source>To last</source>
@@ -1079,7 +1079,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <location line="+61"/>
         <location line="+278"/>
         <source>To first</source>
-        <translation>Zur Ersten</translation>
+        <translation>Zur nächsten Fläche</translation>
     </message>
     <message>
         <location line="-279"/>
@@ -1111,7 +1111,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation>Ursprüngliches Feature</translation>
     </message>
     <message>
         <source>X</source>
@@ -1132,19 +1132,19 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+14"/>
         <source>Axis</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Achse</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Normale Skizzenachse</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Referenz auswählen...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1159,7 +1159,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+27"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation>Vorkommen</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1192,17 +1192,17 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Vertical sketch axis</source>
-        <translation>Vertikale Zeichnungsachse</translation>
+        <translation>Vertikale Skizzenachse</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Horizontal sketch axis</source>
-        <translation>Horizonthale Zeichnungsachse</translation>
+        <translation>Horizontale Skizzenachse</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Symmetric to plane</source>
-        <translation>Symmetrisch zur Ebene</translation>
+        <translation>Symmetrisch zu einer Ebene</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1230,12 +1230,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+52"/>
         <source>Revolution parameters</source>
-        <translation>Drehparameter</translation>
+        <translation>Parameter der Rotation</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Unbestimmt</translation>
     </message>
 </context>
 <context>
@@ -1248,7 +1248,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Original feature</source>
-        <translation>Original feature</translation>
+        <translation>Ursprüngliches Feature</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1258,7 +1258,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+27"/>
         <source>Occurrences</source>
-        <translation>Occurrences</translation>
+        <translation>Vorkommen</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1276,7 +1276,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location filename="../../TaskTransformedMessages.cpp" line="+43"/>
         <source>Transformed feature messages</source>
-        <translation>Transformed feature messages</translation>
+        <translation>Meldungen über die Transformation</translation>
     </message>
 </context>
 <context>
@@ -1318,13 +1318,13 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <location line="-231"/>
         <location line="+152"/>
         <source>Please create a sketch or 2D object first</source>
-        <translation>Please create a sketch or 2D object first</translation>
+        <translation>Bitte zuerst eine Skizze oder ein 2D-Objekt erstellen</translation>
     </message>
     <message>
         <location line="-72"/>
         <location line="+152"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Please create a sketch or 2D object first. It must have a support face on a solid</translation>
+        <translation>Bitte erstellen Sie zuerst eine Skizze oder ein 2D-Objekt. Es muss auf eine Fläche eines Körpers gezeichnet werden</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -1347,17 +1347,17 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+312"/>
         <source>Shape of selected Part is empty</source>
-        <translation>Selektierter Körper ist leer</translation>
+        <translation>Ausgewählter Körper ist leer</translation>
     </message>
     <message>
         <location line="-232"/>
         <source>No fillet possible on selected faces/edges</source>
-        <translation>Rundung auf ausgewählter Fläche/Kante nicht möglich</translation>
+        <translation>Rundung auf ausgewählten Flächen/Kanten nicht möglich</translation>
     </message>
     <message>
         <location line="+71"/>
         <source>Chamfer works only on parts</source>
-        <translation>Fase arbeitet nur auf Körpern</translation>
+        <translation>Fase kann nur an Körper erzeugt werden</translation>
     </message>
     <message>
         <location line="-142"/>
@@ -1368,22 +1368,22 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+71"/>
         <source>No chamfer possible on selected faces/edges</source>
-        <translation>Fase auf ausgewählter Fläche/Kante nicht möglich</translation>
+        <translation>Fase auf ausgewählten Flächen/Kanten nicht möglich</translation>
     </message>
     <message>
         <location line="+65"/>
         <source>Select one or more faces.</source>
-        <translation>Wähle eine oder mehr Flächen aus.</translation>
+        <translation>Wähle eine oder mehrere Flächen.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Draft works only on parts</source>
-        <translation>Draft works only on parts</translation>
+        <translation>Formschräge kann nur an Körper erzeugt werden</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>No draft possible on selected faces</source>
-        <translation>No draft possible on selected faces</translation>
+        <translation>Formschräge auf ausgewählten Flächen nicht möglich</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1392,12 +1392,12 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <location line="+83"/>
         <location line="+72"/>
         <source>No valid features in this document</source>
-        <translation>No valid features in this document</translation>
+        <translation>Keine gültigen Features in diesem Dokument</translation>
     </message>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bitte zuerst eine subtraktive oder additive Funktion erstellen</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1405,7 +1405,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
         <location line="+83"/>
         <location line="+72"/>
         <source>Please create a subtractive or additive feature first, please</source>
-        <translation>Please create a subtractive or additive feature first, please</translation>
+        <translation>Bitte erzeugen Sie zuerst ein subtraktives oder additives Merkmal</translation>
     </message>
     <message>
         <source>No Support</source>
@@ -1426,7 +1426,7 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
         <location filename="../../ViewProviderPocket.cpp" line="+62"/>
         <source>Edit pocket</source>
-        <translation>Bearbeite Tasche</translation>
+        <translation>Tasche bearbeiten</translation>
     </message>
     <message>
         <location filename="../../ViewProviderChamfer.cpp" line="+55"/>
@@ -1460,55 +1460,55 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
         <location filename="../../ViewProviderRevolution.cpp" line="-28"/>
         <source>Edit revolution</source>
-        <translation>Drehung bearbeiten</translation>
+        <translation>Rotation bearbeiten</translation>
     </message>
     <message>
         <location filename="../../ViewProviderGroove.cpp" line="-28"/>
         <source>Edit Groove</source>
-        <translation>Nuten bearbeiten</translation>
+        <translation>Nut bearbeiten</translation>
     </message>
     <message>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Link zu Basis-Skizze verloren</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Das Objekt kann nicht bearbeitet werden, da der Link zu der Basis-Skizze verloren gegangen ist.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
         <source>Missing neutral plane</source>
-        <translation>Missing neutral plane</translation>
+        <translation>Fehlende neutrale Ebene</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please select a plane or an edge plus a pull direction</source>
-        <translation>Please select a plane or an edge plus a pull direction</translation>
+        <translation>Bitte wählen Sie eine Ebene oder eine Kante und eine Entformungsrichtung</translation>
     </message>
     <message>
         <location line="-17"/>
         <location filename="../../ViewProviderDraft.cpp" line="-18"/>
         <source>Edit draft</source>
-        <translation>Entwurf bearbeiten</translation>
+        <translation>Formschräge bearbeiten</translation>
     </message>
     <message>
         <location filename="../../ViewProviderFillet.cpp" line="-18"/>
         <source>Edit fillet</source>
-        <translation>Bearbeite Verrundung</translation>
+        <translation>Rundung bearbeiten</translation>
     </message>
     <message>
         <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
         <source>One transformed shape does not intersect support</source>
-        <translation>One transformed shape does not intersect support</translation>
+        <translation>Eine Transformation überschneidet die Basis nicht</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 transformed shapes do not intersect support</source>
-        <translation>%1 transformed shapes do not intersect support</translation>
+        <translation>%1 Transformationen überschneiden die Basis nicht</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1518,12 +1518,12 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bearbeiten des Einstiches</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bearbeiten des Revolve-Objektes</translation>
     </message>
 </context>
 <context>
@@ -1536,7 +1536,7 @@ Erstelle die Skizze auf der Fläche.</translation>
     <message>
         <location line="+12"/>
         <source>No message</source>
-        <translation>Keine Nachricht</translation>
+        <translation>Keine Meldung</translation>
     </message>
 </context>
 <context>

@@ -163,7 +163,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Create node set by Poly</source>
-        <translation type="unfinished">Create node set by Poly</translation>
+        <translation type="unfinished">Crea un set di nodi</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+356"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+365"/>
         <source>Input error</source>
         <translation type="unfinished">Errore di input</translation>
     </message>
@@ -297,27 +297,27 @@
     <message>
         <location line="+4"/>
         <source>Only faces can be picked</source>
-        <translation type="unfinished">Only faces can be picked</translation>
+        <translation type="unfinished">Solo le facce possono essere selezionate</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Only cylindrical faces can be picked</source>
-        <translation type="unfinished">Only cylindrical faces can be picked</translation>
+        <translation type="unfinished">Solo le superfici cilindriche possono essere selezionate</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Only planar faces can be picked</translation>
+        <translation type="unfinished">Solo le superfici piane possono essere selezionate</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Solo i bordi rettilinei possono essere selezionati</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Only faces and edges can be picked</translation>
+        <translation type="unfinished">Solo le superfici e i bordi possono essere selezionati</translation>
     </message>
 </context>
 <context>
@@ -341,42 +341,30 @@
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+        <translation type="unfinished">Solo le superfici, i bordi e i vertici possono essere selezionati</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-282"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-291"/>
         <source>Delete</source>
         <translation type="unfinished">Elimina</translation>
     </message>
     <message>
-        <source>Force [N]</source>
-        <translation type="obsolete">Forza [N]</translation>
-    </message>
-    <message>
-        <source>Force [N/mm]</source>
-        <translation type="obsolete">Forza [N/mm]</translation>
-    </message>
-    <message>
-        <source>Force [N/mmÂ²]</source>
-        <translation type="obsolete">Forza [N/mm²]</translation>
-    </message>
-    <message>
         <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Carico nel punto [N]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load [N/mm]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Carico sulla linea [N/mm]</translation>
     </message>
     <message utf8="true">
         <location line="+2"/>
         <source>Area load [N/mm²]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Carico sull&apos;area [N/mm ²]</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -395,22 +383,22 @@
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+        <translation type="unfinished">Solo le superfici, i bordi e i vertici possono essere selezionati</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Only planar faces can be picked</translation>
+        <translation type="unfinished">Solo le superfici piane possono essere selezionate</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Solo i bordi rettilinei possono essere selezionati</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Only faces and edges can be picked</translation>
+        <translation type="unfinished">Solo le superfici e i bordi possono essere selezionati</translation>
     </message>
 </context>
 <context>
@@ -425,17 +413,17 @@
     <message>
         <location line="-10"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">Only planar faces can be picked</translation>
+        <translation type="unfinished">Solo le superfici piane possono essere selezionate</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Solo i bordi rettilinei possono essere selezionati</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Only faces and edges can be picked</source>
-        <translation type="unfinished">Only faces and edges can be picked</translation>
+        <translation type="unfinished">Solo le superfici e i bordi possono essere selezionati</translation>
     </message>
 </context>
 <context>
@@ -464,7 +452,7 @@
     <message>
         <location filename="../../TaskTetParameter.cpp" line="+52"/>
         <source>Tet Parameter</source>
-        <translation type="unfinished">Tet Parameter</translation>
+        <translation type="unfinished">Parametro Tetraedro</translation>
     </message>
 </context>
 <context>
@@ -481,6 +469,16 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Write Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Run Calculix</source>
         <translation type="unfinished">Esegui Calculix</translation>
     </message>
@@ -628,6 +626,11 @@
         <source>Meshing</source>
         <translation type="unfinished">Meshing</translation>
     </message>
+    <message>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
+        <source>Constraint force</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ShowDisplacement</name>
@@ -686,7 +689,7 @@
     <message>
         <location line="+27"/>
         <source>Slider max:</source>
-        <translation type="unfinished">Slider max:</translation>
+        <translation type="unfinished">Corsa max:</translation>
     </message>
 </context>
 <context>
@@ -732,7 +735,7 @@
     <message>
         <location line="+11"/>
         <source>Poly</source>
-        <translation type="unfinished">Poly</translation>
+        <translation type="unfinished">Poligono</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -752,12 +755,12 @@
     <message>
         <location line="+9"/>
         <source>Angle-search</source>
-        <translation type="unfinished">Angle-search</translation>
+        <translation type="unfinished">Ricerca dell&apos;angolo</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Collect adjancent nodes</source>
-        <translation type="unfinished">Collect adjancent nodes</translation>
+        <translation type="unfinished">Seleziona i nodi adiacenti</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -841,12 +844,12 @@
     <message>
         <location line="+15"/>
         <source>Gear diameter</source>
-        <translation type="unfinished">Gear diameter</translation>
+        <translation type="unfinished">Diametro dell&apos;ingranaggio</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Other pulley dia</source>
-        <translation type="unfinished">Other pulley dia</translation>
+        <translation type="unfinished">Diametro altra puleggia</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -866,7 +869,7 @@
     <message>
         <location line="+22"/>
         <source>Driven pulley</source>
-        <translation type="unfinished">Driven pulley</translation>
+        <translation type="unfinished">Puleggia motrice</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -886,7 +889,7 @@
     <message>
         <location line="+7"/>
         <source>Axial free</source>
-        <translation type="unfinished">Axial free</translation>
+        <translation type="unfinished">Libertà assiale</translation>
     </message>
     <message>
         <location line="+9"/>

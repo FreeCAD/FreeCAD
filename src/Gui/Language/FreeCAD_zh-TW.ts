@@ -312,7 +312,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Word size</translation>
+        <translation type="unfinished">字型大小</translation>
     </message>
 </context>
 <context>
@@ -487,12 +487,8 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished">選擇圖示</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">添加圖示...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">圖示資料夾...</translation>
     </message>
 </context>
 <context>
@@ -941,87 +937,87 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">鋁</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">黃銅</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">青銅</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">銅</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">鉻</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">祖母綠</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">金</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">玉</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">金屬化</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">黑曜岩</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">錫鉛合金</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">石膏</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">塑膠</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">紅寶石</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">緞布</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">亮面塑膠</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">銀</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">鋼</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">石頭</translation>
     </message>
 </context>
 <context>
@@ -1585,23 +1581,19 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
         <source>Link</source>
-        <translation type="unfinished">Link</translation>
+        <translation type="unfinished">連結</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation type="unfinished">顯示所有物件類型</translation>
     </message>
     <message>
         <source>No selection</source>
         <translation type="unfinished">未選取</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Please select an object of the list</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">請從清單中選擇一個物件</translation>
     </message>
 </context>
 <context>
@@ -1782,7 +1774,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished">Anti-Aliasing</translation>
+        <translation type="unfinished">反鋸齒</translation>
     </message>
     <message>
         <source>None</source>
@@ -1790,19 +1782,19 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation type="unfinished">線條平滑化</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
-        <translation type="unfinished">MSAA 2x</translation>
+        <translation type="unfinished">反鋸齒 2x</translation>
     </message>
     <message>
         <source>MSAA 4x</source>
-        <translation type="unfinished">MSAA 4x</translation>
+        <translation type="unfinished">反鋸齒 4x</translation>
     </message>
     <message>
         <source>MSAA 8x</source>
-        <translation type="unfinished">MSAA 8x</translation>
+        <translation type="unfinished">反鋸齒 8x</translation>
     </message>
 </context>
 <context>
@@ -1975,75 +1967,75 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">授權及版權</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">作者</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;用做檔案創作者之名稱&lt;/p&gt;&lt;p&gt;留白則為匿名&lt;/p&gt;&lt;p&gt;您可以使用此種格式:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">若勾選此項,「最後修改者為」區域將於儲存檔案時設定</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">儲存時設定</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">公司</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">預設授權</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新文件的預設授權</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">版權所有</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">姓名標示之創用CC授權</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">姓名標示-相同方式分享之創用CC授權</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">姓名標示─禁止改作之創用CC授權</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">姓名標示─非商業性之創用CC授權</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">姓名標示─非商業性─相同方式分享之創用CC授權</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">姓名標示─非商業性─禁止改作之創用CC授權</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">公眾領域</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">自由藝術</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">其他</translation>
     </message>
     <message>
         <source>License URL</source>
@@ -2051,15 +2043,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">一個使用者可以找到更多有關授權說明之網址</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">新檔案預設之公司名稱</translation>
     </message>
 </context>
 <context>
@@ -2154,10 +2146,6 @@ Specify another directory, please.</source>
     <message>
         <source>Black</source>
         <translation type="unfinished">黑色</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">透明</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2411,7 +2399,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation type="unfinished">Imperial decimal (in/lb)</translation>
+        <translation type="unfinished">美制(吋/磅)</translation>
     </message>
 </context>
 <context>
@@ -2650,31 +2638,27 @@ Specify another directory, please.</source>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">添加圖示</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">圖示資料夾</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">增加圖示資料夾</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">增加或刪除自訂圖示資料夾</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">刪除資料夾</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">僅於應用程式重新啟動後才移除資料夾</translation>
     </message>
 </context>
 <context>
@@ -2928,11 +2912,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">錯誤的數量</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">於輸入區域有錯誤的內容,請確認該區域合理之輸入內容</translation>
     </message>
 </context>
 <context>
@@ -3172,39 +3156,39 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">搜尋</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">搜尋物件標籤</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">清除搜尋</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">僅選擇</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">僅選擇此物件</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">取消選擇</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">取消選擇此物件</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">最適化縮放</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">於3D視窗選取並聚焦於此物件</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3212,7 +3196,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">於樹狀圖選取並定位此物件</translation>
     </message>
 </context>
 <context>
@@ -3404,31 +3388,31 @@ Do you want to save your changes?</source>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG format (*.png)</translation>
+        <translation type="unfinished">PNG 格式 (*.png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Bitmap format (*.bmp)</translation>
+        <translation type="unfinished">點陣圖格式 （*.bmp）</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF format (*.gif)</translation>
+        <translation type="unfinished">GIF 格式 (*.gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPG format (*.jpg)</translation>
+        <translation type="unfinished">JPG 格式 (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG format (*.svg)</translation>
+        <translation type="unfinished">SVG 格式 (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF format (*.pdf)</translation>
+        <translation type="unfinished">PDF 格式 (*.pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
-        <translation type="unfinished">Export graph</translation>
+        <translation type="unfinished">匯出圖形</translation>
     </message>
 </context>
 <context>
@@ -3465,7 +3449,7 @@ Do you want to save your changes?</source>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">清單</translation>
     </message>
 </context>
 <context>
@@ -3659,7 +3643,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">清除清單</translation>
     </message>
 </context>
 <context>
@@ -4175,7 +4159,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">於%1之輸入並非數字</translation>
     </message>
 </context>
 <context>
@@ -4417,10 +4401,6 @@ Do you want to continue?</source>
         <translation type="unfinished">未儲存文件</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">關閉之前先存檔?</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">儲存巨集</translation>
     </message>
@@ -4572,11 +4552,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">於關閉前要儲存「%1」檔嘛?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">若不儲存將會失去所有修改</translation>
     </message>
 </context>
 <context>
@@ -5354,11 +5334,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">無法開啟檔案</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">並不支援載入之%1檔</translation>
     </message>
 </context>
 <context>
@@ -6114,20 +6094,12 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished">標準視景</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">立體視圖紅/綠</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">轉換立體視圖為紅/綠</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stereo red/cyan</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
     </message>
 </context>
 <context>
@@ -6228,11 +6200,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-虛擬實境</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">延伸FreeCAD 3D視窗到Oculus Rift</translation>
     </message>
 </context>
 <context>

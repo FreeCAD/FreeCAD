@@ -109,11 +109,6 @@
       <translation type="unfinished">de &lt;/b&gt;bouwkundig ontwerp&lt;/b&gt; werkbank is speciaal ontworpen voor het werken met bouwkundige elementen zoals muren of ramen. Begin met het tekenen van 2D vormen, en gebruik ze als leidraad om bouwkundige objecten te ontwerpen.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">Bouwkundig ontwerp</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="75"/>
       <source>Working with Meshes</source>
       <translation type="unfinished">Werken met meshes</translation>
@@ -151,7 +146,7 @@
     <message>
       <location filename="StartPage.py" line="83"/>
       <source>creation time:</source>
-      <translation type="unfinished">creatietijd:</translation>
+      <translation type="unfinished">Aanmaakdatum:</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="84"/>
@@ -166,7 +161,7 @@
     <message>
       <location filename="StartPage.py" line="53"/>
       <source>Latest videos</source>
-      <translation type="unfinished">Laatste video's</translation>
+      <translation type="unfinished">Recentste Video's</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="54"/>
@@ -229,11 +224,6 @@
       <translation type="unfinished">De tutorials sectie van de FreeCAD website</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">De sectie van de FreeCAD website gewijd aan Python scripten, met voorbeelden, uitleg en API-kommando's.</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">Een blog gewijd aan het leren van FreeCAD, beheerd door leden van de FreeCAD gemeenschap</translation>
@@ -274,11 +264,6 @@
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
@@ -287,6 +272,31 @@
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">Architectural Design</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">Your version of FreeCAD is up to date.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">There is a new release of FreeCAD available.</translation>
     </message>
   </context>
 </TS>

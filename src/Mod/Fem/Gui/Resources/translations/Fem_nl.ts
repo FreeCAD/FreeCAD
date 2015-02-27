@@ -176,7 +176,7 @@
     <message>
         <location line="+8"/>
         <source>Quadrangle</source>
-        <translation>Quadrangle</translation>
+        <translation>Vierhoek</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -221,7 +221,7 @@
     <message>
         <location line="-11"/>
         <source>You must specify at least one reference</source>
-        <translation type="unfinished">You must specify at least one reference</translation>
+        <translation type="unfinished">U moet minstens 1 referentie specifiëren</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+356"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+365"/>
         <source>Input error</source>
         <translation type="unfinished">Invoerfout</translation>
     </message>
@@ -287,7 +287,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Selectie fout</translation>
     </message>
     <message>
         <location line="-37"/>
@@ -331,7 +331,7 @@
         <location line="+61"/>
         <location line="+5"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Selectie fout</translation>
     </message>
     <message>
         <location line="-5"/>
@@ -347,36 +347,24 @@
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-282"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-291"/>
         <source>Delete</source>
         <translation type="unfinished">Verwijderen</translation>
     </message>
     <message>
-        <source>Force [N]</source>
-        <translation type="obsolete">Force [N]</translation>
-    </message>
-    <message>
-        <source>Force [N/mm]</source>
-        <translation type="obsolete">Force [N/mm]</translation>
-    </message>
-    <message>
-        <source>Force [N/mmÂ²]</source>
-        <translation type="obsolete">Force [N/mmÂ²]</translation>
-    </message>
-    <message>
         <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Point load [N]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load [N/mm]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Line load [N/mm]</translation>
     </message>
     <message utf8="true">
         <location line="+2"/>
         <source>Area load [N/mm²]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Area load [N/mm²]</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -385,7 +373,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Selectie fout</translation>
     </message>
     <message>
         <location line="-42"/>
@@ -420,7 +408,7 @@
         <location line="+6"/>
         <location line="+4"/>
         <source>Selection error</source>
-        <translation type="unfinished">Selection error</translation>
+        <translation type="unfinished">Selectie fout</translation>
     </message>
     <message>
         <location line="-10"/>
@@ -443,12 +431,12 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="-110"/>
         <source>Pulley diameter</source>
-        <translation type="unfinished">Pulley diameter</translation>
+        <translation type="unfinished">Katroldiameter</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Torque [Nm]</source>
-        <translation type="unfinished">Torque [Nm]</translation>
+        <translation type="unfinished">Koppel [Nm]</translation>
     </message>
 </context>
 <context>
@@ -472,7 +460,7 @@
     <message>
         <location filename="../../../MechanicalAnalysis.ui" line="+14"/>
         <source>Mechanical analysis</source>
-        <translation type="unfinished">Mechanical analysis</translation>
+        <translation type="unfinished">Mechanische analyse</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -481,23 +469,33 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Write Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Run Calculix</source>
-        <translation type="unfinished">Run Calculix</translation>
+        <translation type="unfinished">Calculix draaien</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Time:</source>
-        <translation type="unfinished">Time:</translation>
+        <translation type="unfinished">Tijd:</translation>
     </message>
     <message>
         <location filename="../../../MechanicalMaterial.ui" line="+14"/>
         <source>Mechanical material</source>
-        <translation type="unfinished">Mechanical material</translation>
+        <translation type="unfinished">Mechanisch materiaal</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>choose...</source>
-        <translation type="unfinished">choose...</translation>
+        <translation type="unfinished">Kies...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -507,7 +505,7 @@
     <message>
         <location line="+11"/>
         <source>Young&apos;s Modulus:</source>
-        <translation type="unfinished">Young&apos;s Modulus:</translation>
+        <translation type="unfinished">Modulus van Young:</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -517,7 +515,7 @@
     <message>
         <location line="+19"/>
         <source>Poisson Ratio:</source>
-        <translation type="unfinished">Poisson Ratio:</translation>
+        <translation type="unfinished">Poisson verhouding:</translation>
     </message>
 </context>
 <context>
@@ -525,12 +523,12 @@
     <message>
         <location filename="../../Command.cpp" line="-468"/>
         <source>No active Analysis</source>
-        <translation type="unfinished">No active Analysis</translation>
+        <translation type="unfinished">Geen actieve analyse</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to create or activate a Analysis</source>
-        <translation type="unfinished">You need to create or activate a Analysis</translation>
+        <translation type="unfinished">U moet een analyse maken of activeren</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -544,7 +542,7 @@
         <location line="-71"/>
         <location line="+64"/>
         <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-        <translation type="unfinished">Your FreeCAD is build without NETGEN support. Meshing will not work....</translation>
+        <translation type="unfinished">Uw FreeCAD is gebouwd zonder NETGEN ondersteuning. Meshing zal niet werken....</translation>
     </message>
     <message>
         <location line="-56"/>
@@ -577,7 +575,7 @@
     <message>
         <location filename="../../ViewProviderFemConstraint.cpp" line="+144"/>
         <source>Edit constraint</source>
-        <translation type="unfinished">Edit constraint</translation>
+        <translation type="unfinished">Beperking bewerken</translation>
     </message>
     <message>
         <location line="+280"/>
@@ -628,6 +626,11 @@
         <source>Meshing</source>
         <translation type="unfinished">Meshing</translation>
     </message>
+    <message>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
+        <source>Constraint force</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ShowDisplacement</name>
@@ -676,7 +679,7 @@
     <message>
         <location line="+18"/>
         <source>Show</source>
-        <translation type="unfinished">Show</translation>
+        <translation type="unfinished">Weergeven</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -722,7 +725,7 @@
     <message>
         <location line="+5"/>
         <source>Surface</source>
-        <translation type="unfinished">Surface</translation>
+        <translation type="unfinished">Oppervlak</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -788,7 +791,7 @@
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Load [N]</translation>
+        <translation type="unfinished">Belasting [N]</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -798,7 +801,7 @@
     <message>
         <location line="+27"/>
         <source>Other diameter</source>
-        <translation type="unfinished">Other diameter</translation>
+        <translation type="unfinished">Andere diameter</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -861,7 +864,7 @@
     <message>
         <location line="+24"/>
         <source>Belt tension force</source>
-        <translation type="unfinished">Belt tension force</translation>
+        <translation type="unfinished">Riem spankracht</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -927,7 +930,7 @@
     <message>
         <location line="+12"/>
         <source>Load [N]</source>
-        <translation type="unfinished">Load [N]</translation>
+        <translation type="unfinished">Belasting [N]</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -958,47 +961,47 @@
     <message>
         <location line="+8"/>
         <source>Max. Size:</source>
-        <translation type="unfinished">Max. Size:</translation>
+        <translation type="unfinished">Max. afmeting:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Second order</source>
-        <translation type="unfinished">Second order</translation>
+        <translation type="unfinished">Tweede orde</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation type="unfinished">Fijnheid:</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>VeryCoarse</source>
-        <translation type="unfinished">VeryCoarse</translation>
+        <translation type="unfinished">ZeerRuw</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation type="unfinished">Ruw</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moderate</translation>
+        <translation type="unfinished">Normaal</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation type="unfinished">Fijn</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>VeryFine</source>
-        <translation type="unfinished">VeryFine</translation>
+        <translation type="unfinished">ZeerFijn</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>UserDefined</source>
-        <translation type="unfinished">UserDefined</translation>
+        <translation type="unfinished">GebruikersGedefinieerd</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1018,7 +1021,7 @@
     <message>
         <location line="+16"/>
         <source>Optimize</source>
-        <translation type="unfinished">Optimize</translation>
+        <translation type="unfinished">Optimaliseren</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1028,7 +1031,7 @@
     <message>
         <location line="+14"/>
         <source>Triangle count:</source>
-        <translation type="unfinished">Triangle count:</translation>
+        <translation type="unfinished">Aantal driehoeken:</translation>
     </message>
     <message>
         <location line="+14"/>

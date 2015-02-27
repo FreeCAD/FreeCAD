@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dress-up trajectory...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -768,7 +768,7 @@
     <message>
         <location line="+18"/>
         <source>Edges: 0</source>
-        <translation>Краї: 0</translation>
+        <translation>Ребра: 0</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -783,7 +783,7 @@
     <message>
         <location line="+31"/>
         <source>Use orientation of edge</source>
-        <translation>Використовувати орієнтацію грані</translation>
+        <translation>Використовувати орієнтацію ребра</translation>
     </message>
     <message>
         <source>TaskEdge2TracParameter</source>

@@ -37,7 +37,7 @@
     <message>
         <location line="-9"/>
         <source>Dr&amp;awing</source>
-        <translation>Dr&amp;awing</translation>
+        <translation>&amp;Tekening</translation>
     </message>
     <message>
         <location line="-1"/>

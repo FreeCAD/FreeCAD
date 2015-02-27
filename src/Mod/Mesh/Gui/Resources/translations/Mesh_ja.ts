@@ -233,7 +233,7 @@
     </message>
     <message>
         <source>Tessellate shape</source>
-        <translation type="unfinished">シェイプを細分化します。</translation>
+        <translation type="unfinished">シェイプをテッセレーションします。</translation>
     </message>
 </context>
 <context>
@@ -450,11 +450,11 @@
     </message>
     <message>
         <source>Trim mesh with a plane</source>
-        <translation type="unfinished">Trim mesh with a plane</translation>
+        <translation type="unfinished">平面上のメッシュをトリム</translation>
     </message>
     <message>
         <source>Trims a mesh with a plane</source>
-        <translation type="unfinished">Trims a mesh with a plane</translation>
+        <translation type="unfinished">平面上のメッシュを1つトリム</translation>
     </message>
 </context>
 <context>
@@ -923,7 +923,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Only selection</source>
-        <translation type="unfinished">Only selection</translation>
+        <translation type="unfinished">選択のみ</translation>
     </message>
 </context>
 <context>
@@ -1082,11 +1082,11 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Use a brush tool to select the area</source>
-        <translation type="unfinished">Use a brush tool to select the area</translation>
+        <translation type="unfinished">ブラシツールを使用して領域を選択</translation>
     </message>
     <message>
         <source>Clears completely the selected area</source>
-        <translation type="unfinished">Clears completely the selected area</translation>
+        <translation type="unfinished">選択した領域を完全にクリア</translation>
     </message>
 </context>
 <context>
@@ -1104,11 +1104,11 @@ Please run the command to repair folds first</source>
     <name>Mesh_TrimByPlane</name>
     <message>
         <source>Select plane</source>
-        <translation type="unfinished">Select plane</translation>
+        <translation type="unfinished">平面を選択</translation>
     </message>
     <message>
         <source>Please select a plane at which you trim the mesh.</source>
-        <translation type="unfinished">Please select a plane at which you trim the mesh.</translation>
+        <translation type="unfinished">メッシュのトリムを行う平面を選択してください。</translation>
     </message>
 </context>
 <context>
@@ -1281,11 +1281,11 @@ Max=&lt;%4,%5,%6&gt;</source>
         <translation>すべてのメッシュファイル (*.stl *.ast *.bms *.obj *.off *.ply）</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
-        <translation type="obsolete">X3D Extensible 3D(*.x3d)</translation>
+        <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D Extensible 3D(*.x3d)</translation>
     </message>
     <message>
-        <source>X3D Extensible 3D (*.x3d)</source>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

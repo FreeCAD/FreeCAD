@@ -49,13 +49,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ドラフト・ビュー (&amp;D)</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">アクティブな図面に選択オブジェクトのドラフト・ビューを挿入</translation>
     </message>
 </context>
 <context>
@@ -311,26 +311,26 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Different orientation</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">プリンターでは、図面と異なる印刷方向を使用します。続行しますか？</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">別の用紙サイズ</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">プリンターでは、図面とは異なる用紙サイズを使用します。続行しますか？</translation>
     </message>
 </context>
 <context>
@@ -359,22 +359,22 @@ Do you want to continue?</source>
     <message>
         <location line="+106"/>
         <source>Top left x / y</source>
-        <translation type="unfinished">Top left x / y</translation>
+        <translation type="unfinished">左上のx / y</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Spacing dx / dy   </source>
-        <translation type="unfinished">Spacing dx / dy   </translation>
+        <translation type="unfinished">間隔 dx/dy</translation>
     </message>
     <message>
         <location line="+71"/>
         <source> Axis out and right</source>
-        <translation type="unfinished"> Axis out and right</translation>
+        <translation type="unfinished"> 座標軸を外側右部へ</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Vertical tilt</source>
-        <translation type="unfinished"> Vertical tilt</translation>
+        <translation type="unfinished">垂直方向の傾き</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -429,33 +429,33 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>Trimetric</source>
-        <translation type="unfinished">トリメトリック</translation>
+        <translation type="unfinished">不等角投影図法</translation>
     </message>
     <message>
         <location line="+8"/>
         <source> Scale</source>
-        <translation type="unfinished"> Scale</translation>
+        <translation type="unfinished">拡大縮小</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished"> View projection   </translation>
+        <translation type="unfinished">ビュー投影</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Axis aligned up</source>
-        <translation type="unfinished"> Axis aligned up</translation>
+        <translation type="unfinished">座標軸を上部に配置</translation>
     </message>
     <message>
         <location line="+41"/>
         <location line="+23"/>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation type="unfinished">反転</translation>
     </message>
     <message>
         <location line="-10"/>
         <source> Trimetric</source>
-        <translation type="unfinished"> Trimetric</translation>
+        <translation type="unfinished">不等角投影図法</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -475,12 +475,12 @@ Do you want to continue?</source>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation type="unfinished">View from:</translation>
+        <translation type="unfinished">視点：</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Axis aligned right:</source>
-        <translation type="unfinished">Axis aligned right:</translation>
+        <translation type="unfinished">座標軸を右部に配置：</translation>
     </message>
     <message>
         <source>Primary View</source>
@@ -702,17 +702,17 @@ Do you want to continue?</source>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 drawing</translation>
+        <translation type="unfinished">新しい %1 %2 %3 の図面を挿入</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
     </message>
 </context>
 <context>
@@ -765,7 +765,7 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>No page found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ページが見つかりません</translation>
     </message>
     <message>
         <location line="-250"/>
@@ -774,12 +774,12 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>Create a page first.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">最初にページを作成してください</translation>
     </message>
     <message>
         <location line="-182"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">部品オブジェクトを1 つだけ選択して下さい。</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -790,7 +790,7 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>
@@ -839,19 +839,19 @@ Do you want to continue?</source>
         <location filename="../../TaskOrthoViews.cpp" line="+45"/>
         <location line="+929"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Make axonometric...</translation>
+        <translation type="unfinished">不等角投影図を作成...</translation>
     </message>
     <message>
         <location line="-928"/>
         <location line="+929"/>
         <source>Edit axonometric settings...</source>
-        <translation type="unfinished">Edit axonometric settings...</translation>
+        <translation type="unfinished">不等角投影図設定を編集</translation>
     </message>
     <message>
         <location line="-928"/>
         <location line="+929"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">Make orthographic</translation>
+        <translation type="unfinished">正投影図を作成</translation>
     </message>
 </context>
 <context>

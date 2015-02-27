@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dress-up trajectory...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -484,12 +484,12 @@
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>
         <source>No robot files installed</source>
-        <translation>No robot files installed</translation>
+        <translation>Não há ficheiros de robô instalados</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Please visit %1 and copy the files to %2</source>
-        <translation>Please visit %1 and copy the files to %2</translation>
+        <translation>Por favor visite o %1 e copie os ficheiros para %2</translation>
     </message>
 </context>
 <context>
@@ -953,7 +953,7 @@
     <message>
         <location line="+6"/>
         <source>Speed &amp; Acceleration:</source>
-        <translation>Speed &amp; Acceleration:</translation>
+        <translation>Velocidade e aceleração:</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -979,17 +979,17 @@
     <message>
         <location line="+5"/>
         <source>Continues</source>
-        <translation>Continues</translation>
+        <translation>Continua</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Discontinues</source>
-        <translation>Discontinues</translation>
+        <translation>Termina</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Position and Orientation:</source>
-        <translation>Position and Orientation:</translation>
+        <translation>Posição e orientação:</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1004,22 +1004,22 @@
     <message>
         <location line="+10"/>
         <source>Don&apos;t change Position &amp; Orientation</source>
-        <translation>Don&apos;t change Position &amp; Orientation</translation>
+        <translation>Não altere a posição e a orientação</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Use Orientation</source>
-        <translation>Use Orientation</translation>
+        <translation>Orientação de uso</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Add Position</source>
-        <translation>Add Position</translation>
+        <translation>Adicionar posição</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Add Orientation</source>
-        <translation>Add Orientation</translation>
+        <translation>Adicionar orientação</translation>
     </message>
     <message>
         <source>Dress Up Parameter</source>

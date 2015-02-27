@@ -60,22 +60,22 @@
     <name>CmdViewMeasureClearAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation type="unfinished">Mérés</translation>
     </message>
     <message>
         <source>Clear measurement</source>
-        <translation type="unfinished">Clear measurement</translation>
+        <translation type="unfinished">Méretek törlése</translation>
     </message>
 </context>
 <context>
     <name>CmdViewMeasureToggleAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Measure</translation>
+        <translation type="unfinished">Mérés</translation>
     </message>
     <message>
         <source>Toggle measurement</source>
-        <translation type="unfinished">Toggle measurement</translation>
+        <translation type="unfinished">Mérés ki/be kapcsolása</translation>
     </message>
 </context>
 <context>
@@ -125,11 +125,11 @@
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation type="unfinished">Units calculator</translation>
+        <translation type="unfinished">Mennyiségi egységek számítása</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation type="unfinished">as:</translation>
+        <translation type="unfinished">mint:</translation>
     </message>
     <message>
         <source>=&gt;</source>
@@ -160,7 +160,7 @@
     </message>
     <message>
         <source>Filename</source>
-        <translation type="unfinished">Filename</translation>
+        <translation type="unfinished">Fájlnév</translation>
     </message>
 </context>
 <context>
@@ -239,13 +239,12 @@
     </message>
     <message>
         <source>Press middle and left or right mouse button</source>
-        <translation type="unfinished">Press middle and left or right mouse button</translation>
+        <translation type="unfinished">Nyomja meg a középső és a jobb vagy bal egérgombot</translation>
     </message>
     <message>
         <source>Scroll middle mouse button or keep middle button pressed
 while doing a left or right click and move the mouse up or down</source>
-        <translation type="unfinished">Scroll middle mouse button or keep middle button pressed
-while doing a left or right click and move the mouse up or down</translation>
+        <translation type="unfinished">Görgesse a középső egérgombot vagy tartsa a középső gombot megnyomva, a bal vagy jobb kattintás esetén, és mozgassa az egeret felfelé vagy lefelé</translation>
     </message>
 </context>
 <context>
@@ -313,7 +312,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Word size</source>
-        <translation type="unfinished">Word size</translation>
+        <translation type="unfinished">Szó méret</translation>
     </message>
 </context>
 <context>
@@ -331,11 +330,11 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::Clipping</name>
     <message>
         <source>Clipping</source>
-        <translation type="unfinished">Clipping</translation>
+        <translation type="unfinished">Nyírás</translation>
     </message>
     <message>
         <source>Clipping X</source>
-        <translation type="unfinished">Clipping X</translation>
+        <translation type="unfinished">Nyírás X</translation>
     </message>
     <message>
         <source>Flip</source>
@@ -347,15 +346,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Clipping Y</source>
-        <translation type="unfinished">Clipping Y</translation>
+        <translation type="unfinished">Nyírás X</translation>
     </message>
     <message>
         <source>Clipping Z</source>
-        <translation type="unfinished">Clipping Z</translation>
+        <translation type="unfinished">Nyírás Z</translation>
     </message>
     <message>
         <source>Clipping custom direction</source>
-        <translation type="unfinished">Clipping custom direction</translation>
+        <translation type="unfinished">Nyírás egyéni irányba</translation>
     </message>
     <message>
         <source>View</source>
@@ -363,7 +362,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Adjust to view direction</translation>
+        <translation type="unfinished">Állítsa be a nézet irányát</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -470,15 +469,15 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>Username:</source>
-        <translation type="unfinished">Username:</translation>
+        <translation type="unfinished">Felhasználónév:</translation>
     </message>
     <message>
         <source>Site:</source>
-        <translation type="unfinished">Site:</translation>
+        <translation type="unfinished">Oldal:</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 ezen %2</translation>
     </message>
 </context>
 <context>
@@ -488,12 +487,8 @@ while doing a left or right click and move the mouse up or down</translation>
         <translation type="unfinished">Válassz ikont</translation>
     </message>
     <message>
-        <source>Add icons...</source>
-        <translation type="obsolete">Ikon hozzáadása...</translation>
-    </message>
-    <message>
         <source>Icon folders...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon folders...</translation>
     </message>
 </context>
 <context>
@@ -640,11 +635,11 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>&amp;Category:</source>
-        <translation type="unfinished">&amp;Csoportosítás:</translation>
+        <translation type="unfinished">Csoportosítás:</translation>
     </message>
     <message>
         <source>C&amp;ommands:</source>
-        <translation type="unfinished">Parancs&amp;ok:</translation>
+        <translation type="unfinished">Parancsok:</translation>
     </message>
     <message>
         <source>Current shortcut:</source>
@@ -832,7 +827,7 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished">Súgó &amp;H</translation>
+        <translation type="unfinished">Súgó</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -944,87 +939,87 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
     <message>
         <source>Aluminium</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aluminium</translation>
     </message>
     <message>
         <source>Brass</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Brass</translation>
     </message>
     <message>
         <source>Bronze</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bronze</translation>
     </message>
     <message>
         <source>Copper</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Copper</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chrome</translation>
     </message>
     <message>
         <source>Emerald</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Emerald</translation>
     </message>
     <message>
         <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gold</translation>
     </message>
     <message>
         <source>Jade</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jade</translation>
     </message>
     <message>
         <source>Metalized</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Metalized</translation>
     </message>
     <message>
         <source>Neon GNC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon GNC</translation>
     </message>
     <message>
         <source>Neon PHC</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Neon PHC</translation>
     </message>
     <message>
         <source>Obsidian</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obsidian</translation>
     </message>
     <message>
         <source>Pewter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pewter</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plaster</translation>
     </message>
     <message>
         <source>Plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plastic</translation>
     </message>
     <message>
         <source>Ruby</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ruby</translation>
     </message>
     <message>
         <source>Satin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Satin</translation>
     </message>
     <message>
         <source>Shiny plastic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Shiny plastic</translation>
     </message>
     <message>
         <source>Silver</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Silver</translation>
     </message>
     <message>
         <source>Steel</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Acél</translation>
     </message>
     <message>
         <source>Stone</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stone</translation>
     </message>
 </context>
 <context>
@@ -1134,11 +1129,11 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Enable tiled background</translation>
+        <translation type="unfinished">Engedélyezi a csempézett háttérképet</translation>
     </message>
     <message>
         <source>Style sheet:</source>
-        <translation type="unfinished">Style sheet:</translation>
+        <translation type="unfinished">Stíluslap:</translation>
     </message>
 </context>
 <context>
@@ -1161,7 +1156,7 @@ Kérem másik elérési utat definiálni.</translation>
     </message>
     <message>
         <source>No style sheet</source>
-        <translation type="unfinished">No style sheet</translation>
+        <translation type="unfinished">Nincs stíluslap</translation>
     </message>
 </context>
 <context>
@@ -1316,7 +1311,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
-        <translation type="unfinished">You have no write permission for the directory. Please, choose another one.</translation>
+        <translation type="unfinished">A könyvtárhoz nincs írási engedélye. Válasszon egy másikat.</translation>
     </message>
 </context>
 <context>
@@ -1516,15 +1511,15 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>License information:</source>
-        <translation type="unfinished">License information:</translation>
+        <translation type="unfinished">Licenc információ:</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">Licenc URL-címe</translation>
     </message>
     <message>
         <source>Open in browser</source>
-        <translation type="unfinished">Open in browser</translation>
+        <translation type="unfinished">Megnyitás böngészőben</translation>
     </message>
 </context>
 <context>
@@ -1590,23 +1585,19 @@ Kérem válasszon másik könyvtárat.</translation>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
         <source>Link</source>
-        <translation type="unfinished">Link</translation>
+        <translation type="unfinished">Hivatkozás</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation type="unfinished">Mutassa az összes objektum típust</translation>
     </message>
     <message>
         <source>No selection</source>
         <translation type="unfinished">Nincs kijelölés</translation>
     </message>
     <message>
-        <source>Please select an object of the list</source>
-        <translation type="obsolete">Please select an object of the list</translation>
-    </message>
-    <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please select an object from the list</translation>
     </message>
 </context>
 <context>
@@ -1672,7 +1663,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>TextLabel</source>
-        <translation type="unfinished">TextLabel</translation>
+        <translation type="unfinished">Szövegcimke</translation>
     </message>
     <message>
         <source>Advanced &gt;&gt;</source>
@@ -1787,7 +1778,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished">Anti-Aliasing</translation>
+        <translation type="unfinished">Élsimítás</translation>
     </message>
     <message>
         <source>None</source>
@@ -1795,19 +1786,19 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation type="unfinished">Vonal simítás</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
-        <translation type="unfinished">MSAA 2x</translation>
+        <translation type="unfinished">MSAA 2 x</translation>
     </message>
     <message>
         <source>MSAA 4x</source>
-        <translation type="unfinished">MSAA 4x</translation>
+        <translation type="unfinished">MSAA 4 x</translation>
     </message>
     <message>
         <source>MSAA 8x</source>
-        <translation type="unfinished">MSAA 8x</translation>
+        <translation type="unfinished">MSAA 8 x</translation>
     </message>
 </context>
 <context>
@@ -1825,7 +1816,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>&amp;Gradient:</source>
-        <translation type="unfinished">&amp;Színátmenet:</translation>
+        <translation type="unfinished">Színátmenet:</translation>
     </message>
     <message>
         <source>red-yellow-green-cyan-blue</source>
@@ -1981,91 +1972,91 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Authoring and License</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Authoring and License</translation>
     </message>
     <message>
         <source>Author name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Author name</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</translation>
     </message>
     <message>
         <source>Set on save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Set on save</translation>
     </message>
     <message>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Company</translation>
     </message>
     <message>
         <source>Default license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Default license</translation>
     </message>
     <message>
         <source>The default license for new documents</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default license for new documents</translation>
     </message>
     <message>
         <source>All rights reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All rights reserved</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NoDerivatives</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-ShareAlike</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-ShareAlike</translation>
     </message>
     <message>
         <source>CreativeCommons Attribution-NonCommercial-NoDerivatives</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">CreativeCommons Attribution-NonCommercial-NoDerivatives</translation>
     </message>
     <message>
         <source>Public Domain</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Public Domain</translation>
     </message>
     <message>
         <source>FreeArt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeArt</translation>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Other</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">License URL</translation>
+        <translation type="unfinished">Licenc URL-címe</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">An URL where the user can find more details about the license</translation>
     </message>
     <message>
         <source>http://en.wikipedia.org/wiki/All_rights_reserved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">http://en.wikipedia.org/wiki/All_rights_reserved</translation>
     </message>
     <message>
         <source>The default company to use for new files</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The default company to use for new files</translation>
     </message>
 </context>
 <context>
@@ -2160,10 +2151,6 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
         <source>Black</source>
         <translation type="unfinished">Fekete</translation>
-    </message>
-    <message>
-        <source>Transparent</source>
-        <translation type="obsolete">Átlátszó</translation>
     </message>
     <message>
         <source>Image dimensions</source>
@@ -2409,15 +2396,15 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">US customary (in/lb)</translation>
+        <translation type="unfinished">U.S. szokásos (in / lb)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
-        <translation type="unfinished">Number of decimals:</translation>
+        <translation type="unfinished">Tizedesjegyek száma:</translation>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation type="unfinished">Imperial decimal (in/lb)</translation>
+        <translation type="unfinished">Császári decimális (in / lb)</translation>
     </message>
 </context>
 <context>
@@ -2510,7 +2497,7 @@ Kérem válasszon másik könyvtárat.</translation>
     <name>Gui::Dialog::DlgUnitsCalculator</name>
     <message>
         <source>Unit mismatch</source>
-        <translation type="unfinished">Unit mismatch</translation>
+        <translation type="unfinished">Mértékegység eltérés</translation>
     </message>
 </context>
 <context>
@@ -2560,50 +2547,50 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="unfinished">%1 ezen %2</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DownloadItem</name>
     <message>
         <source>Save File</source>
-        <translation type="unfinished">Save File</translation>
+        <translation type="unfinished">Fájl mentése</translation>
     </message>
     <message>
         <source>Download canceled: %1</source>
-        <translation type="unfinished">Download canceled: %1</translation>
+        <translation type="unfinished">Letöltés megszakítva: %1</translation>
     </message>
     <message>
         <source>Open containing folder</source>
-        <translation type="unfinished">Open containing folder</translation>
+        <translation type="unfinished">Tartalmazó mappa megnyitása</translation>
     </message>
     <message>
         <source>Error opening save file: %1</source>
-        <translation type="unfinished">Error opening save file: %1</translation>
+        <translation type="unfinished">Mentett fájl megnyitási hiba: %1</translation>
     </message>
     <message>
         <source>Error saving: %1</source>
-        <translation type="unfinished">Error saving: %1</translation>
+        <translation type="unfinished">Mentés hiba: %1</translation>
     </message>
     <message>
         <source>Network Error: %1</source>
-        <translation type="unfinished">Network Error: %1</translation>
+        <translation type="unfinished">Hálózati hiba: %1</translation>
     </message>
     <message>
         <source>seconds</source>
-        <translation type="unfinished">seconds</translation>
+        <translation type="unfinished">másodpercek</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished">minutes</translation>
+        <translation type="unfinished">percek</translation>
     </message>
     <message>
         <source>- %4 %5 remaining</source>
-        <translation type="unfinished">- %4 %5 remaining</translation>
+        <translation type="unfinished">-%4 %5 még hátra van</translation>
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation type="unfinished">%1 of %2 (%3/sec) %4</translation>
+        <translation type="unfinished">%1 ebből %2 (%3/sec) %4</translation>
     </message>
     <message>
         <source>?</source>
@@ -2611,11 +2598,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation type="unfinished">%1 of %2 - Stopped</translation>
+        <translation type="unfinished">%1 ebből %2 - Leállítva</translation>
     </message>
     <message>
         <source>bytes</source>
-        <translation type="unfinished">bytes</translation>
+        <translation type="unfinished">bájt</translation>
     </message>
     <message>
         <source>kB</source>
@@ -2630,57 +2617,53 @@ Kérem válasszon másik könyvtárat.</translation>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Downloads</translation>
+        <translation type="unfinished">Letöltések</translation>
     </message>
     <message>
         <source>Clean up</source>
-        <translation type="unfinished">Clean up</translation>
+        <translation type="unfinished">Takarítás</translation>
     </message>
     <message>
         <source>0 Items</source>
-        <translation type="unfinished">0 Items</translation>
+        <translation type="unfinished">0 cikk található</translation>
     </message>
     <message>
         <source>Download Manager</source>
-        <translation type="unfinished">Download Manager</translation>
+        <translation type="unfinished">Letöltéskezelő</translation>
     </message>
     <message>
         <source>1 Download</source>
-        <translation type="unfinished">1 Download</translation>
+        <translation type="unfinished">1 letöltés</translation>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 Downloads</translation>
+        <translation type="unfinished">%1 letöltés</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
-        <source>Add icon</source>
-        <translation type="obsolete">Ikon hozzáadása</translation>
-    </message>
-    <message>
         <source>Icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Icon folders</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add icon folder</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Add or remove custom icon folders</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Remove folder</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
     </message>
 </context>
 <context>
@@ -2934,11 +2917,11 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Incorrect quantity</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Incorrect quantity</translation>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
     </message>
 </context>
 <context>
@@ -3063,7 +3046,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Model</source>
-        <translation type="unfinished">Model</translation>
+        <translation type="unfinished">Modell</translation>
     </message>
 </context>
 <context>
@@ -3178,39 +3161,39 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Search</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Searches object labels</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Clears the search field</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Select only</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects only this object</translation>
     </message>
     <message>
         <source>Deselect</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kijelölés megszüntetése</translation>
     </message>
     <message>
         <source>Deselects this object</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Deselects this object</translation>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoom fit</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects and fits this object in the 3D window</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3218,7 +3201,7 @@ Kérem válasszon másik könyvtárat.</translation>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selects and locates this object in the tree view</translation>
     </message>
 </context>
 <context>
@@ -3411,31 +3394,31 @@ El akarja menteni a változásokat?</translation>
     <name>Gui::GraphvizView</name>
     <message>
         <source>PNG format (*.png)</source>
-        <translation type="unfinished">PNG format (*.png)</translation>
+        <translation type="unfinished">PNG formátum (*.png)</translation>
     </message>
     <message>
         <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished">Bitmap format (*.bmp)</translation>
+        <translation type="unfinished">Bittérkép-formátumban (*.bmp)</translation>
     </message>
     <message>
         <source>GIF format (*.gif)</source>
-        <translation type="unfinished">GIF format (*.gif)</translation>
+        <translation type="unfinished">GIF formátum (*.gif)</translation>
     </message>
     <message>
         <source>JPG format (*.jpg)</source>
-        <translation type="unfinished">JPG format (*.jpg)</translation>
+        <translation type="unfinished">JPG formátumban (*.jpg)</translation>
     </message>
     <message>
         <source>SVG format (*.svg)</source>
-        <translation type="unfinished">SVG format (*.svg)</translation>
+        <translation type="unfinished">SVG formátumban (*.svg)</translation>
     </message>
     <message>
         <source>PDF format (*.pdf)</source>
-        <translation type="unfinished">PDF format (*.pdf)</translation>
+        <translation type="unfinished">PDF formátumban (*.pdf)</translation>
     </message>
     <message>
         <source>Export graph</source>
-        <translation type="unfinished">Export graph</translation>
+        <translation type="unfinished">Export grafikon</translation>
     </message>
 </context>
 <context>
@@ -3446,7 +3429,7 @@ El akarja menteni a változásokat?</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Érték mentése</translation>
     </message>
 </context>
 <context>
@@ -3472,7 +3455,7 @@ El akarja menteni a változásokat?</translation>
     <name>Gui::LabelEditor</name>
     <message>
         <source>List</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">List</translation>
     </message>
 </context>
 <context>
@@ -3552,13 +3535,12 @@ El akarja menteni a változásokat?</translation>
     </message>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Objektumfüggőségek</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</translation>
+        <translation type="unfinished">A kijelölt objektumoknak függőségei vannak ki nem jelölt objektumokkal. Szeretné másolni azokat is?</translation>
     </message>
 </context>
 <context>
@@ -3649,7 +3631,7 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">No point was found on model</translation>
+        <translation type="unfinished">A modellen nem talált pontot</translation>
     </message>
 </context>
 <context>
@@ -3668,11 +3650,11 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
     </message>
     <message>
         <source>Save value</source>
-        <translation type="unfinished">Save value</translation>
+        <translation type="unfinished">Érték mentése</translation>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Clear list</translation>
     </message>
 </context>
 <context>
@@ -3709,7 +3691,7 @@ a jobboldali nézetben %2 pont lett jelölve.</translation>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
         <source>Edit...</source>
-        <translation type="unfinished">Edit...</translation>
+        <translation type="unfinished">Szerkesztés...</translation>
     </message>
 </context>
 <context>
@@ -3808,7 +3790,7 @@ Ki szeretne lépni az adatok mentése nélkül?</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation type="unfinished">Beillesztés &amp;P</translation>
+        <translation type="unfinished">Beillesztés</translation>
     </message>
     <message>
         <source>Select All</source>
@@ -3924,11 +3906,11 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Automatic python modules documentation</translation>
+        <translation type="unfinished">Automatikus python modulok dokumentáció</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
-        <translation type="unfinished">Opens a browser to show the Python modules documentation</translation>
+        <translation type="unfinished">A Python modulok dokumentációhoz megnyitja a böngészőt</translation>
     </message>
 </context>
 <context>
@@ -4017,7 +3999,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation type="unfinished">Press CTRL and SHIFT buttons</translation>
+        <translation type="unfinished">Nyomja meg a CTRL és a SHIFT gombokat</translation>
     </message>
 </context>
 <context>
@@ -4096,11 +4078,11 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <name>NetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Ehhez &quot;%1&quot; itt %2 írja be a felhasználó nevet és a jelszót&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Kapcsolódás a &quot;%1&quot; proxyhoz ennek segítségével:&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -4190,7 +4172,7 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Input in line %1 is not a number</translation>
     </message>
 </context>
 <context>
@@ -4433,10 +4415,6 @@ Folytatni kívánja?</translation>
         <translation type="unfinished">Nem mentett dokumentum</translation>
     </message>
     <message>
-        <source>Save document before close?</source>
-        <translation type="obsolete">Mentse a dokumentumot a bezárás előtt?</translation>
-    </message>
-    <message>
         <source>Save Macro</source>
         <translation type="unfinished">Mentse a makrót</translation>
     </message>
@@ -4592,11 +4570,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Do you want to save your changes to document &apos;%1&apos; before closing?</translation>
     </message>
     <message>
         <source>If you don&apos;t save, your changes will be lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">If you don&apos;t save, your changes will be lost.</translation>
     </message>
 </context>
 <context>
@@ -4749,7 +4727,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Close Al&amp;l</source>
-        <translation type="unfinished">Összes bezárása &amp;l</translation>
+        <translation type="unfinished">Összes bezárása</translation>
     </message>
     <message>
         <source>Close all windows</source>
@@ -4779,7 +4757,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>C&amp;opy</source>
-        <translation type="unfinished">Más&amp;olás</translation>
+        <translation type="unfinished">Másolás</translation>
     </message>
     <message>
         <source>Copy operation</source>
@@ -4794,7 +4772,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Cut</source>
-        <translation type="unfinished">Kivágás &amp;C</translation>
+        <translation type="unfinished">Kivágás</translation>
     </message>
     <message>
         <source>Cut out</source>
@@ -4809,7 +4787,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished">Törlés &amp;D</translation>
+        <translation type="unfinished">Törlés</translation>
     </message>
     <message>
         <source>Deletes the selected objects</source>
@@ -5042,15 +5020,15 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD FAQ</source>
-        <translation type="unfinished">FreeCAD FAQ</translation>
+        <translation type="unfinished">FreeCAD GYIK</translation>
     </message>
     <message>
         <source>Frequently Asked Questions on the FreeCAD website</source>
-        <translation type="unfinished">Frequently Asked Questions on the FreeCAD website</translation>
+        <translation type="unfinished">Gyakran ismételt kérdések-FreeCAD honlapján</translation>
     </message>
     <message>
         <source>Frequently Asked Questions</source>
-        <translation type="unfinished">Frequently Asked Questions</translation>
+        <translation type="unfinished">Gyakran Ismételt Kérdések</translation>
     </message>
 </context>
 <context>
@@ -5061,15 +5039,15 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD Forum</source>
-        <translation type="unfinished">FreeCAD Forum</translation>
+        <translation type="unfinished">FreeCAD fórum</translation>
     </message>
     <message>
         <source>The FreeCAD forum, where you can find help from other users</source>
-        <translation type="unfinished">The FreeCAD forum, where you can find help from other users</translation>
+        <translation type="unfinished">A FreeCAD fórum, ahol más felhasználóktól talál segítséget</translation>
     </message>
     <message>
         <source>The FreeCAD Forum</source>
-        <translation type="unfinished">The FreeCAD Forum</translation>
+        <translation type="unfinished">A FreeCAD-fórum</translation>
     </message>
 </context>
 <context>
@@ -5080,15 +5058,15 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Python scripting documentation</source>
-        <translation type="unfinished">Python scripting documentation</translation>
+        <translation type="unfinished">Python scripting dokumentáció</translation>
     </message>
     <message>
         <source>Python scripting documentation on the FreeCAD website</source>
-        <translation type="unfinished">Python scripting documentation on the FreeCAD website</translation>
+        <translation type="unfinished">Python scripting dokumentáció FreeCAD honlapján</translation>
     </message>
     <message>
         <source>PowerUsers documentation</source>
-        <translation type="unfinished">PowerUsers documentation</translation>
+        <translation type="unfinished">Kiemelt felhasználók dokumentációi</translation>
     </message>
 </context>
 <context>
@@ -5099,11 +5077,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Users documentation</source>
-        <translation type="unfinished">Users documentation</translation>
+        <translation type="unfinished">Felhasználói dokumentációk</translation>
     </message>
     <message>
         <source>Documentation for users on the FreeCAD website</source>
-        <translation type="unfinished">Documentation for users on the FreeCAD website</translation>
+        <translation type="unfinished">A FreeCAD honlapját használók dokumentációja</translation>
     </message>
 </context>
 <context>
@@ -5212,7 +5190,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Step into</source>
-        <translation type="unfinished">Step into</translation>
+        <translation type="unfinished">Lépj be</translation>
     </message>
 </context>
 <context>
@@ -5313,7 +5291,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;New</source>
-        <translation type="unfinished">Új &amp;N</translation>
+        <translation type="unfinished">Új</translation>
     </message>
     <message>
         <source>Create a new empty document</source>
@@ -5321,7 +5299,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Unnamed</source>
-        <translation type="unfinished">Unnamed</translation>
+        <translation type="unfinished">Névtelen</translation>
     </message>
 </context>
 <context>
@@ -5358,7 +5336,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation type="unfinished">Megnyitás &amp;O...</translation>
+        <translation type="unfinished">Megnyitás...</translation>
     </message>
     <message>
         <source>Open a document or import files</source>
@@ -5374,11 +5352,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Cannot open file</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Cannot open file</translation>
     </message>
     <message>
         <source>Loading the file %1 is not supported</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Loading the file %1 is not supported</translation>
     </message>
 </context>
 <context>
@@ -5389,7 +5367,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation type="unfinished">Beillesztés &amp;P</translation>
+        <translation type="unfinished">Beillesztés</translation>
     </message>
     <message>
         <source>Paste operation</source>
@@ -5419,7 +5397,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Print...</source>
-        <translation type="unfinished">Nyomtatás &amp;P...</translation>
+        <translation type="unfinished">Nyomtatás...</translation>
     </message>
     <message>
         <source>Print the document</source>
@@ -5434,7 +5412,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Export PDF...</source>
-        <translation type="unfinished">PDF &amp;exportálása...</translation>
+        <translation type="unfinished">PDF &amp;Exportálása...</translation>
     </message>
     <message>
         <source>Export the document as PDF</source>
@@ -5449,7 +5427,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Print preview...</source>
-        <translation type="unfinished">Nyomtatási ké&amp;P...</translation>
+        <translation type="unfinished">Nyomtatási kép...</translation>
     </message>
     <message>
         <source>Print the document</source>
@@ -5599,7 +5577,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Save &amp;As...</source>
-        <translation type="unfinished">Mentés másként &amp;A...</translation>
+        <translation type="unfinished">Mentés másként...</translation>
     </message>
     <message>
         <source>Save the active document under a new file name</source>
@@ -5719,7 +5697,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Tile</source>
-        <translation type="unfinished">Cím &amp;T</translation>
+        <translation type="unfinished">Cím</translation>
     </message>
     <message>
         <source>Tile the windows</source>
@@ -5820,7 +5798,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Tool&amp;bars</source>
-        <translation type="unfinished">Eszköztárak &amp;b</translation>
+        <translation type="unfinished">Eszköztárak</translation>
     </message>
     <message>
         <source>Toggles this window</source>
@@ -5895,11 +5873,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
-        <translation type="unfinished">&amp;Units calculator...</translation>
+        <translation type="unfinished">Mennyiségi egységek számítása...</translation>
     </message>
     <message>
         <source>Start the units calculator</source>
-        <translation type="unfinished">Start the units calculator</translation>
+        <translation type="unfinished">Mennyiségi egységek számításának elindítása</translation>
     </message>
 </context>
 <context>
@@ -6134,20 +6112,12 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished">Standard-nézet</translation>
     </message>
     <message>
-        <source>Stereo red/green</source>
-        <translation type="obsolete">Sztereó piros/zöld</translation>
-    </message>
-    <message>
-        <source>Switch stereo viewing to red/green</source>
-        <translation type="obsolete">Sztereó nézet váltása: piros/zöld</translation>
-    </message>
-    <message>
         <source>Stereo red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stereo red/cyan</translation>
     </message>
     <message>
         <source>Switch stereo viewing to red/cyan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Switch stereo viewing to red/cyan</translation>
     </message>
 </context>
 <context>
@@ -6248,11 +6218,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>FreeCAD-VR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">FreeCAD-VR</translation>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Extend the FreeCAD 3D Window to a Oculus Rift</translation>
     </message>
 </context>
 <context>
@@ -6278,7 +6248,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Windows...</source>
-        <translation type="unfinished">Ablakok &amp;W...</translation>
+        <translation type="unfinished">Ablakok</translation>
     </message>
     <message>
         <source>Windows list</source>
@@ -6408,13 +6378,12 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>Std_Delete</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Objektumfüggőségek</translation>
     </message>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">This object is referenced by other objects and thus these objects might get broken.
-Are you sure to continue?</translation>
+        <translation type="unfinished">Erre az objektumra más objektumok hivatkoznak, és ezek tört objektumok lehetnek. Biztosan folytatja?</translation>
     </message>
 </context>
 <context>
@@ -6437,19 +6406,19 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Flat lines</source>
-        <translation type="unfinished">Flat lines</translation>
+        <translation type="unfinished">Sima vonalak</translation>
     </message>
     <message>
         <source>Flat lines mode</source>
-        <translation type="unfinished">Flat lines mode</translation>
+        <translation type="unfinished">Sima vonal mód</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation type="unfinished">Árnyékolt</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation type="unfinished">Árnyékolt mód</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6457,20 +6426,19 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Points mode</translation>
+        <translation type="unfinished">Pontozott mód</translation>
     </message>
 </context>
 <context>
     <name>Std_DuplicateSelection</name>
     <message>
         <source>Object dependencies</source>
-        <translation type="unfinished">Object dependencies</translation>
+        <translation type="unfinished">Objektumfüggőségek</translation>
     </message>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</translation>
+        <translation type="unfinished">A kijelölt objektumoknak függőségei vannak ki nem jelölt objektumokkal. Szeretné megkettőzni azokat is?</translation>
     </message>
 </context>
 <context>
@@ -6549,7 +6517,7 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation type="unfinished">Súgó &amp;H</translation>
+        <translation type="unfinished">Súgó</translation>
     </message>
     <message>
         <source>File</source>

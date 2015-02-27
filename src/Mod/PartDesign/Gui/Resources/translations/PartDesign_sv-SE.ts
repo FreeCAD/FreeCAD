@@ -253,7 +253,7 @@
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Number of teeth:</translation>
+        <translation type="unfinished">Antal tänder:</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -263,49 +263,29 @@
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">High precision:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">True</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">False</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
+        <translation type="unfinished">External gear:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
         <translation type="unfinished">Pressure angle:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">deg</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Number of Curves:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
     </message>
 </context>
 <context>
@@ -701,7 +681,7 @@ Välj en eller fler kanter först.</translation>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Välj referens...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -736,7 +716,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Odefinierad</translation>
     </message>
 </context>
 <context>
@@ -783,7 +763,7 @@ Välj en eller fler kanter först.</translation>
         <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Välj referens...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -802,12 +782,12 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Select a face</translation>
+        <translation type="unfinished">Välj en yta</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Odefinierad</translation>
     </message>
 </context>
 <context>
@@ -1157,14 +1137,14 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal sketch axis</translation>
+        <translation type="unfinished">Normal skissaxel</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Välj referens...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1255,7 +1235,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Odefinierad</translation>
     </message>
 </context>
 <context>
@@ -1417,7 +1397,7 @@ Välj en eller fler kanter först.</translation>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please create a subtractive or additive feature first</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1490,13 +1470,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lost link to base sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The object can&apos;t be edited because the link to the the base sketch is lost.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1527,22 +1507,22 @@ Create the sketch on a face.</source>
     <message>
         <location line="+2"/>
         <source>%1 transformed shapes do not intersect support</source>
-        <translation>%1 transformed shapes do not intersect support</translation>
+        <translation>%1 transformerade former stöds inte för snitt</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Transformation succeeded</source>
-        <translation>Transformation succeeded</translation>
+        <translation>Transformeringen lyckades</translation>
     </message>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit groove</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit revolve</translation>
     </message>
 </context>
 <context>
@@ -1555,7 +1535,7 @@ Create the sketch on a face.</source>
     <message>
         <location line="+12"/>
         <source>No message</source>
-        <translation>No message</translation>
+        <translation>Inget meddelande</translation>
     </message>
 </context>
 <context>

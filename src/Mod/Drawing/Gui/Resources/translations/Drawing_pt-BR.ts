@@ -17,7 +17,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts an Annotation view in the active drawing</source>
-        <translation>Inserir uma anotação no desenho ativo</translation>
+        <translation>Insere uma Anotação no desenho ativo</translation>
     </message>
 </context>
 <context>
@@ -49,13 +49,13 @@
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vista &amp;Traço</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Insere uma vista produzida pelo módulo Traço do(s) objeto(s) selecionado(s) na folha ativa</translation>
     </message>
 </context>
 <context>
@@ -74,7 +74,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Export a page to an SVG file</source>
-        <translation>Exportar página para formato SVG</translation>
+        <translation>Exportar página para um arquivo SVG</translation>
     </message>
 </context>
 <context>
@@ -311,26 +311,26 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orientação diferente</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A impressora utiliza uma orientação diferente do que o desenho. Deseja continuar?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tamanho de papel diferente</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">A impressora usa um tamanho de papel diferente do que o desenho. Deseja continuar?</translation>
     </message>
 </context>
 <context>
@@ -706,12 +706,12 @@ Do you want to continue?</source>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inserir novo desenho %1%2 %3 (%4)</translation>
     </message>
 </context>
 <context>
@@ -764,7 +764,7 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>No page found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nenhuma página encontrada</translation>
     </message>
     <message>
         <location line="-250"/>
@@ -773,12 +773,12 @@ Do you want to continue?</source>
         <location line="+48"/>
         <location line="+45"/>
         <source>Create a page first.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Primeiro, crie uma página.</translation>
     </message>
     <message>
         <location line="-182"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Selecione exatamente uma peça.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -789,7 +789,7 @@ Do you want to continue?</source>
     <message>
         <location line="+5"/>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>

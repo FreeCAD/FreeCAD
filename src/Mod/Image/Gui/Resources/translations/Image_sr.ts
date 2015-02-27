@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="sr" sourcelanguage="en">
+<context>
+    <name>CmdCreateImagePlane</name>
+    <message>
+        <location filename="../../Command.cpp" line="+93"/>
+        <source>Image</source>
+        <translation>Слика</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create image plane...</source>
+        <translation>Креирање равни слике ...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a planar image in the 3D space</source>
+        <translation>Направи раван од слике у 3Д простору</translation>
+    </message>
+    <message>
+        <source>create a planar image in the 3D space</source>
+        <translation type="obsolete">Креирање планарне слике у 3Д простору</translation>
+    </message>
+</context>
+<context>
+    <name>CmdImageOpen</name>
+    <message>
+        <location line="-44"/>
+        <source>Image</source>
+        <translation>Слика</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Open...</source>
+        <translation>Отвори ...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Open image view</source>
+        <translation>Отвори преглед слике</translation>
+    </message>
+</context>
+<context>
+    <name>ImageGui::GLImageBox</name>
+    <message>
+        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <source>Undefined type of colour space for image viewing</source>
+        <translation>Недефинисани тип боје простора за приказ слике</translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>Image pixel format</source>
+        <translation>Формат пиксела слике</translation>
+    </message>
+</context>
+<context>
+    <name>ImageGui::ImageOrientationDialog</name>
+    <message>
+        <location filename="../../ImageOrientationDialog.ui" line="+14"/>
+        <source>Choose orientation</source>
+        <translation type="unfinished">Choose orientation</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Image plane</source>
+        <translation type="unfinished">Раван од слике</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>XY-Plane</source>
+        <translation type="unfinished">XY-Plane</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>XZ-Plane</source>
+        <translation type="unfinished">XZ-Plane</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>YZ-Plane</source>
+        <translation type="unfinished">YZ-Plane</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Reverse direction</source>
+        <translation type="unfinished">Reverse direction</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Offset:</source>
+        <translation type="unfinished">Offset:</translation>
+    </message>
+</context>
+<context>
+    <name>ImageGui::ImageView</name>
+    <message>
+        <location filename="../../ImageView.cpp" line="+77"/>
+        <source>&amp;Fit image</source>
+        <translation>&amp;Уклапање слике</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Stretch the image to fit the view</source>
+        <translation>Увећај слику за боље уклапање</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;1:1 scale</source>
+        <translation>&amp;1:1 мера</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Display the image at a 1:1 scale</source>
+        <translation>Приказ слике у мерилу 1:1</translation>
+    </message>
+    <message>
+        <source>&amp;Original color</source>
+        <translation type="obsolete">&amp;Izvorna boja</translation>
+    </message>
+    <message>
+        <source>Display the image with its original color(s)</source>
+        <translation type="obsolete">Prikaži sliku s izvonom bojom</translation>
+    </message>
+    <message>
+        <source>&amp;Brightened color</source>
+        <translation type="obsolete">&amp;Svjetlina boje</translation>
+    </message>
+    <message>
+        <source>Display the image with brightened color(s)</source>
+        <translation type="obsolete">Prikaz slike sa svjetlijom bojom</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Standard</source>
+        <translation>Normalno</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Ready...</source>
+        <translation>Спреман...</translation>
+    </message>
+    <message>
+        <location line="+375"/>
+        <source>grey</source>
+        <translation>сиве боје</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <location line="+10"/>
+        <location line="+5"/>
+        <location line="+10"/>
+        <location line="+5"/>
+        <location line="+11"/>
+        <location line="+5"/>
+        <location line="+11"/>
+        <location line="+5"/>
+        <source>zoom</source>
+        <translation>зумирање</translation>
+    </message>
+    <message>
+        <location line="-62"/>
+        <location line="+10"/>
+        <location line="+15"/>
+        <location line="+16"/>
+        <location line="+16"/>
+        <source>outside image</source>
+        <translation>изван слике</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Image viewer</source>
+        <translation type="obsolete">Pregled slike</translation>
+    </message>
+    <message>
+        <source>Images (*.png *.xpm *.jpg *.bmp)</source>
+        <translation type="obsolete">Слике (*.png *.xpm *.jpg *.bmp)</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="+18"/>
+        <location line="+41"/>
+        <source>Choose an image file to open</source>
+        <translation>Одаберите сликовну датотеку за отварање</translation>
+    </message>
+    <message>
+        <location line="-48"/>
+        <location line="+41"/>
+        <source>Images</source>
+        <translation>Слике</translation>
+    </message>
+    <message>
+        <location line="-36"/>
+        <location line="+41"/>
+        <source>All files</source>
+        <translation>Све датотеке</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Error open image</source>
+        <translation>Грешка отварања слике</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Could not load the choosen image</source>
+        <translation>Није могуће учитати изабрану слику</translation>
+    </message>
+</context>
+<context>
+    <name>Workbench</name>
+    <message>
+        <location filename="../../Workbench.cpp" line="+36"/>
+        <source>Image</source>
+        <translation>Слика</translation>
+    </message>
+</context>
+</TS>

@@ -69,7 +69,7 @@
     </message>
     <message>
         <source>Failures:</source>
-        <translation>エラー:</translation>
+        <translation>障害:</translation>
     </message>
     <message>
         <source>Run:</source>

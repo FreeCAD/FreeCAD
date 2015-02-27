@@ -25,12 +25,12 @@
     <message>
         <location line="+1"/>
         <source>Create FEM bearing constraint</source>
-        <translation type="unfinished">Create FEM bearing constraint</translation>
+        <translation type="unfinished">FEMベアリング拘束を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a bearing</source>
-        <translation type="unfinished">Create FEM constraint for a bearing</translation>
+        <translation type="unfinished">ベアリングのためのFEM拘束を作成</translation>
     </message>
 </context>
 <context>
@@ -43,12 +43,12 @@
     <message>
         <location line="+1"/>
         <source>Create FEM fixed constraint</source>
-        <translation type="unfinished">Create FEM fixed constraint</translation>
+        <translation type="unfinished">FEM固定拘束を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a fixed geometric entity</source>
-        <translation type="unfinished">固定ジオメトリ エンティティの拘束を作成</translation>
+        <translation type="unfinished">ジオメトリーエンティティの固定を表すFEM拘束を作成</translation>
     </message>
 </context>
 <context>
@@ -61,12 +61,12 @@
     <message>
         <location line="+1"/>
         <source>Create FEM force constraint</source>
-        <translation type="unfinished">Create FEM force constraint</translation>
+        <translation type="unfinished">FEM荷重拘束を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a force acting on a geometric entity</source>
-        <translation type="unfinished">Create FEM constraint for a force acting on a geometric entity</translation>
+        <translation type="unfinished">ジオメトリーエンティティに作用する力を表すFEM拘束を作成</translation>
     </message>
 </context>
 <context>
@@ -79,12 +79,12 @@
     <message>
         <location line="+1"/>
         <source>Create FEM gear constraint</source>
-        <translation type="unfinished">Create FEM gear constraint</translation>
+        <translation type="unfinished">FEMギア拘束を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a gear</source>
-        <translation type="unfinished">Create FEM constraint for a gear</translation>
+        <translation type="unfinished">ギアのためのFEM拘束を作成</translation>
     </message>
 </context>
 <context>
@@ -97,12 +97,12 @@
     <message>
         <location line="+1"/>
         <source>Create FEM pulley constraint</source>
-        <translation type="unfinished">Create FEM pulley constraint</translation>
+        <translation type="unfinished">FEMプーリー拘束を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM constraint for a pulley</source>
-        <translation type="unfinished">Create FEM constraint for a pulley</translation>
+        <translation type="unfinished">プーリーのためのFEM拘束を作成</translation>
     </message>
 </context>
 <context>
@@ -116,7 +116,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Create a FEM analysis</source>
-        <translation type="unfinished">Create a FEM analysis</translation>
+        <translation type="unfinished">FEM解析を作成</translation>
     </message>
 </context>
 <context>
@@ -148,7 +148,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Define/create a nodes set...</source>
-        <translation type="unfinished">Define/create a nodes set...</translation>
+        <translation type="unfinished">頂点セットを定義/作成</translation>
     </message>
 </context>
 <context>
@@ -163,7 +163,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Create node set by Poly</source>
-        <translation type="unfinished">Create node set by Poly</translation>
+        <translation type="unfinished">ポリゴンから頂点セットを作成</translation>
     </message>
 </context>
 <context>
@@ -199,7 +199,7 @@
     <message>
         <location filename="../../TaskAnalysisInfo.cpp" line="+45"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">頂点セット</translation>
     </message>
 </context>
 <context>
@@ -207,7 +207,7 @@
     <message>
         <location filename="../../TaskCreateNodeSet.cpp" line="+63"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">頂点セット</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+356"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+365"/>
         <source>Input error</source>
         <translation type="unfinished">入力エラー</translation>
     </message>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../../TaskDriver.cpp" line="+51"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">頂点セット</translation>
     </message>
 </context>
 <context>
@@ -269,7 +269,7 @@
     <message>
         <location filename="../../TaskFemConstraint.cpp" line="-120"/>
         <source>FEM constraint parameters</source>
-        <translation type="unfinished">FEM constraint parameters</translation>
+        <translation type="unfinished">FEM拘束パラメーター</translation>
     </message>
 </context>
 <context>
@@ -292,7 +292,7 @@
     <message>
         <location line="-37"/>
         <source>Please use only a single reference for bearing constraint</source>
-        <translation type="unfinished">Please use only a single reference for bearing constraint</translation>
+        <translation type="unfinished">ベアリング拘束では参照を1つだけ使用してください</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -307,7 +307,7 @@
     <message>
         <location line="+16"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">平坦な面のみを選択できます。</translation>
+        <translation type="unfinished">平らな面のみを選択できます。</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -336,47 +336,35 @@
     <message>
         <location line="-5"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">複数のシェイプタイプを使用することはできません。2番目の拘束を代わりに使用してください。</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+        <translation type="unfinished">面，エッジ，および頂点のみ選択可能</translation>
     </message>
 </context>
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-282"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-291"/>
         <source>Delete</source>
         <translation type="unfinished">削除</translation>
     </message>
     <message>
-        <source>Force [N]</source>
-        <translation type="obsolete">Force [N]</translation>
-    </message>
-    <message>
-        <source>Force [N/mm]</source>
-        <translation type="obsolete">Force [N/mm]</translation>
-    </message>
-    <message>
-        <source>Force [N/mmÂ²]</source>
-        <translation type="obsolete">Force [N/mmÂ²]</translation>
-    </message>
-    <message>
         <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">点荷重 [N]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load [N/mm]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">線荷重 [N/mm]</translation>
     </message>
     <message utf8="true">
         <location line="+2"/>
         <source>Area load [N/mm²]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">面荷重 [N/mm ²]</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -390,17 +378,17 @@
     <message>
         <location line="-42"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">複数のシェイプタイプを使用することはできません。2番目の拘束を代わりに使用してください。</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Only faces, edges and vertices can be picked</translation>
+        <translation type="unfinished">面，エッジ，および頂点のみ選択可能</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">平坦な面のみを選択できます。</translation>
+        <translation type="unfinished">平らな面のみを選択できます。</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -425,7 +413,7 @@
     <message>
         <location line="-10"/>
         <source>Only planar faces can be picked</source>
-        <translation type="unfinished">平坦な面のみを選択できます。</translation>
+        <translation type="unfinished">平らな面のみを選択できます。</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -443,7 +431,7 @@
     <message>
         <location filename="../../TaskFemConstraintPulley.cpp" line="-110"/>
         <source>Pulley diameter</source>
-        <translation type="unfinished">Pulley diameter</translation>
+        <translation type="unfinished">プーリ径</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -464,7 +452,7 @@
     <message>
         <location filename="../../TaskTetParameter.cpp" line="+52"/>
         <source>Tet Parameter</source>
-        <translation type="unfinished">Tet Parameter</translation>
+        <translation type="unfinished">テトラパラメーター</translation>
     </message>
 </context>
 <context>
@@ -472,7 +460,7 @@
     <message>
         <location filename="../../../MechanicalAnalysis.ui" line="+14"/>
         <source>Mechanical analysis</source>
-        <translation type="unfinished">Mechanical analysis</translation>
+        <translation type="unfinished">機械解析</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -481,33 +469,43 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Write Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Run Calculix</source>
-        <translation type="unfinished">Run Calculix</translation>
+        <translation type="unfinished">Calculix を実行</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Time:</source>
-        <translation type="unfinished">Time:</translation>
+        <translation type="unfinished">時間：</translation>
     </message>
     <message>
         <location filename="../../../MechanicalMaterial.ui" line="+14"/>
         <source>Mechanical material</source>
-        <translation type="unfinished">Mechanical material</translation>
+        <translation type="unfinished">機械材料</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>choose...</source>
-        <translation type="unfinished">choose...</translation>
+        <translation type="unfinished">選択...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>MatWeb database...</source>
-        <translation type="unfinished">MatWeb database...</translation>
+        <translation type="unfinished">MatWebデータベース...</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Young&apos;s Modulus:</source>
-        <translation type="unfinished">Young&apos;s Modulus:</translation>
+        <translation type="unfinished">ヤング係数:</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -525,12 +523,12 @@
     <message>
         <location filename="../../Command.cpp" line="-468"/>
         <source>No active Analysis</source>
-        <translation type="unfinished">No active Analysis</translation>
+        <translation type="unfinished">実行中の解析はありません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>You need to create or activate a Analysis</source>
-        <translation type="unfinished">You need to create or activate a Analysis</translation>
+        <translation type="unfinished">解析を作成または有効にする必要があります。</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -567,7 +565,7 @@
     <message>
         <location filename="../../TaskFemConstraint.cpp" line="+16"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation type="unfinished">OK</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -577,7 +575,7 @@
     <message>
         <location filename="../../ViewProviderFemConstraint.cpp" line="+144"/>
         <source>Edit constraint</source>
-        <translation type="unfinished">Edit constraint</translation>
+        <translation type="unfinished">拘束を編集</translation>
     </message>
     <message>
         <location line="+280"/>
@@ -628,6 +626,11 @@
         <source>Meshing</source>
         <translation type="unfinished">メッシュ作成</translation>
     </message>
+    <message>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
+        <source>Constraint force</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ShowDisplacement</name>
@@ -664,7 +667,7 @@
     <message>
         <location line="+10"/>
         <source>Avg:</source>
-        <translation type="unfinished">Avg:</translation>
+        <translation type="unfinished">平均:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -686,7 +689,7 @@
     <message>
         <location line="+27"/>
         <source>Slider max:</source>
-        <translation type="unfinished">Slider max:</translation>
+        <translation type="unfinished">スライダー最大値:</translation>
     </message>
 </context>
 <context>
@@ -699,7 +702,7 @@
     <message>
         <location line="+12"/>
         <source>Meshes:</source>
-        <translation type="unfinished">Meshes:</translation>
+        <translation type="unfinished">メッシュ:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -727,12 +730,12 @@
     <message>
         <location line="+17"/>
         <source>Nodes: 0</source>
-        <translation type="unfinished">Nodes: 0</translation>
+        <translation type="unfinished">ノード: 0</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Poly</source>
-        <translation type="unfinished">Poly</translation>
+        <translation type="unfinished">ポリゴン</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -742,7 +745,7 @@
     <message>
         <location line="+10"/>
         <source>Pick</source>
-        <translation type="unfinished">Pick</translation>
+        <translation type="unfinished">ピック</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -752,17 +755,17 @@
     <message>
         <location line="+9"/>
         <source>Angle-search</source>
-        <translation type="unfinished">Angle-search</translation>
+        <translation type="unfinished">角度を検索</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Collect adjancent nodes</source>
-        <translation type="unfinished">Collect adjancent nodes</translation>
+        <translation type="unfinished">隣接する頂点を集める</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Stop angle:</source>
-        <translation type="unfinished">Stop angle:</translation>
+        <translation type="unfinished">停止角度</translation>
     </message>
 </context>
 <context>
@@ -783,7 +786,8 @@
     <message>
         <location line="+9"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">参照を追加
+</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -793,12 +797,12 @@
     <message>
         <location line="+24"/>
         <source>Diameter</source>
-        <translation type="unfinished">Diameter</translation>
+        <translation type="unfinished">直径</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Other diameter</source>
-        <translation type="unfinished">Other diameter</translation>
+        <translation type="unfinished">その他の直径</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -836,17 +840,18 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">参照を追加
+</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Gear diameter</source>
-        <translation type="unfinished">Gear diameter</translation>
+        <translation type="unfinished">歯車の直径</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Other pulley dia</source>
-        <translation type="unfinished">Other pulley dia</translation>
+        <translation type="unfinished">その他の滑車直径</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -856,7 +861,7 @@
     <message>
         <location line="+24"/>
         <source>Force</source>
-        <translation type="unfinished">Force</translation>
+        <translation type="unfinished">加力</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -866,27 +871,27 @@
     <message>
         <location line="+22"/>
         <source>Driven pulley</source>
-        <translation type="unfinished">Driven pulley</translation>
+        <translation type="unfinished">駆動プーリー</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Force location [deg]</source>
-        <translation type="unfinished">Force location [deg]</translation>
+        <translation type="unfinished">加力位置 [度]</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Force Direction</source>
-        <translation type="unfinished">Force Direction</translation>
+        <translation type="unfinished">荷重方向</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Reversed direction</source>
-        <translation type="unfinished">Reversed direction</translation>
+        <translation type="unfinished">逆方向</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Axial free</source>
-        <translation type="unfinished">Axial free</translation>
+        <translation type="unfinished">軸方向は非拘束</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -909,7 +914,8 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">参照を追加
+</translation>
     </message>
 </context>
 <context>
@@ -922,7 +928,8 @@
     <message>
         <location line="+6"/>
         <source>Add reference</source>
-        <translation type="unfinished">Add reference</translation>
+        <translation type="unfinished">参照を追加
+</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -958,12 +965,12 @@
     <message>
         <location line="+8"/>
         <source>Max. Size:</source>
-        <translation type="unfinished">Max. Size:</translation>
+        <translation type="unfinished">最大サイズ:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Second order</source>
-        <translation type="unfinished">Second order</translation>
+        <translation type="unfinished">2次精度</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -973,7 +980,7 @@
     <message>
         <location line="+11"/>
         <source>VeryCoarse</source>
-        <translation type="unfinished">かなり粗い</translation>
+        <translation type="unfinished">非常に粗い</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -993,7 +1000,7 @@
     <message>
         <location line="+5"/>
         <source>VeryFine</source>
-        <translation type="unfinished">かなり細かい</translation>
+        <translation type="unfinished">非常に細かい</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1003,17 +1010,17 @@
     <message>
         <location line="+8"/>
         <source>Growth Rate:</source>
-        <translation type="unfinished">Growth Rate:</translation>
+        <translation type="unfinished">増加率:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Nbr. Segs per Edge:</source>
-        <translation type="unfinished">Nbr. Segs per Edge:</translation>
+        <translation type="unfinished">エッジあたりのセグメント数</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Nbr. Segs per Radius:</source>
-        <translation type="unfinished">Nbr. Segs per Radius:</translation>
+        <translation type="unfinished">半径あたりのセグメント数</translation>
     </message>
     <message>
         <location line="+16"/>

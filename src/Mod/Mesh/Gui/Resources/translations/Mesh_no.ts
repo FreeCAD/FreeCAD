@@ -1278,14 +1278,14 @@ Maks=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</source>
-        <translation>All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)</translation>
-    </message>
-    <message>
-        <source>X3D Extensible 3D(*.x3d)</source>
-        <translation type="obsolete">X3D Extensible 3D(*.x3d)</translation>
+        <translation>Alle Mesh filer (*.stl *.ast *.bms *.obj *.off * .ply)</translation>
     </message>
     <message>
         <source>X3D Extensible 3D (*.x3d)</source>
+        <translation type="unfinished">X3D Extensible 3D (*.x3d)</translation>
+    </message>
+    <message>
+        <source>Display components</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

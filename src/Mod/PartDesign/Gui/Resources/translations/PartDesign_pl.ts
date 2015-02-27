@@ -73,12 +73,12 @@
     <message>
         <location line="+1"/>
         <source>Groove</source>
-        <translation>Spoina</translation>
+        <translation>Rowek</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Groove a selected sketch</source>
-        <translation>Spoinuj wybrany szkic</translation>
+        <translation>Wytnij rowek wybranym szkicem</translation>
     </message>
 </context>
 <context>
@@ -248,64 +248,44 @@
     <message>
         <location filename="../../../InvoluteGearFeature.ui" line="+14"/>
         <source>Involute parameter</source>
-        <translation type="unfinished">Involute parameter</translation>
+        <translation type="unfinished">Parametry ewolwenty</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Number of teeth:</source>
-        <translation type="unfinished">Number of teeth:</translation>
+        <translation type="unfinished">Liczba zębów:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Modules:</source>
-        <translation type="unfinished">Modules:</translation>
+        <translation type="unfinished">Moduły:</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>High precision:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">High precision:</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+27"/>
         <source>True</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">True</translation>
     </message>
     <message>
         <location line="-22"/>
         <location line="+27"/>
         <source>False</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">False</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>External gear:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>mm</source>
-        <translation type="obsolete">mm</translation>
+        <translation type="unfinished">External gear:</translation>
     </message>
     <message>
         <location line="-68"/>
         <source>Pressure angle:</source>
-        <translation type="unfinished">Pressure angle:</translation>
-    </message>
-    <message>
-        <source>deg</source>
-        <translation type="obsolete">deg</translation>
-    </message>
-    <message>
-        <source>Number of Curves:</source>
-        <translation type="obsolete">Number of Curves:</translation>
-    </message>
-    <message>
-        <source>2x3</source>
-        <translation type="obsolete">2x3</translation>
-    </message>
-    <message>
-        <source>1x4</source>
-        <translation type="obsolete">1x4</translation>
+        <translation type="unfinished">Kąt przyporu:</translation>
     </message>
 </context>
 <context>
@@ -699,7 +679,7 @@ Please check one or more edge entities first.</source>
         <location filename="../../TaskLinearPatternParameters.cpp" line="-261"/>
         <location line="+57"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Wybierz odniesienie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -734,7 +714,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Niezdefiniowany</translation>
     </message>
 </context>
 <context>
@@ -781,7 +761,7 @@ Please check one or more edge entities first.</source>
         <location filename="../../TaskMirroredParameters.cpp" line="-190"/>
         <location line="+40"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Wybierz odniesienie...</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -800,12 +780,12 @@ Please check one or more edge entities first.</source>
     <message>
         <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation type="unfinished">Select a face</translation>
+        <translation type="unfinished">Wybierz ścianę</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Niezdefiniowany</translation>
     </message>
 </context>
 <context>
@@ -992,7 +972,7 @@ Please check one or more edge entities first.</source>
         <location line="-293"/>
         <location line="+294"/>
         <source>Up to face</source>
-        <translation>Do fasetki</translation>
+        <translation>Do płaszczyzny</translation>
     </message>
     <message>
         <location line="-293"/>
@@ -1109,7 +1089,7 @@ Please check one or more edge entities first.</source>
         <location line="-276"/>
         <location line="+278"/>
         <source>Up to face</source>
-        <translation>Do fasetki</translation>
+        <translation>Do płaszczyzny</translation>
     </message>
     <message>
         <location line="-284"/>
@@ -1155,14 +1135,14 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal sketch axis</translation>
+        <translation type="unfinished">Oś normalna do szkicu</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../../TaskPolarPatternParameters.cpp" line="-227"/>
         <location line="+52"/>
         <source>Select reference...</source>
-        <translation type="unfinished">Select reference...</translation>
+        <translation type="unfinished">Wybierz odniesienie...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1253,7 +1233,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="+56"/>
         <source>Undefined</source>
-        <translation type="unfinished">Undefined</translation>
+        <translation type="unfinished">Niezdefiniowany</translation>
     </message>
 </context>
 <context>
@@ -1415,7 +1395,7 @@ Please check one or more edge entities first.</source>
     <message>
         <location line="-313"/>
         <source>Please create a subtractive or additive feature first</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please create a subtractive or additive feature first</translation>
     </message>
     <message>
         <location line="+76"/>
@@ -1488,13 +1468,13 @@ Create the sketch on a face.</source>
         <location line="+12"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lost link to base sketch</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">The object can&apos;t be edited because the link to the the base sketch is lost.</translation>
     </message>
     <message>
         <location filename="../../TaskDraftParameters.cpp" line="+284"/>
@@ -1535,12 +1515,12 @@ Create the sketch on a face.</source>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit groove</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>
         <source>Edit revolve</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit revolve</translation>
     </message>
 </context>
 <context>

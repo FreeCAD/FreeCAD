@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vesti una traiettoria...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Crea un oggetto di vestimento che sostituisce alcuni aspetti di una traiettoria</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>

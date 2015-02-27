@@ -59,7 +59,7 @@
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation type="unfinished">Precisión:</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -69,7 +69,7 @@
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation type="unfinished">Grueso</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -79,7 +79,7 @@
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation type="unfinished">Fino</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -94,7 +94,7 @@
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Mesh size grading:</translation>
+        <translation type="unfinished">Graduación del tamaño de malla:</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -119,7 +119,7 @@
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Quad dominated</translation>
+        <translation type="unfinished">Predominio de cuadriláteros</translation>
     </message>
     <message>
         <source>Settings</source>

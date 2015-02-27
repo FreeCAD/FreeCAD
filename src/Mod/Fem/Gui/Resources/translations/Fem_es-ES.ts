@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+183"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation type="unfinished">FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -20,7 +20,7 @@
     <message>
         <location line="+65"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation type="unfinished">FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -38,7 +38,7 @@
     <message>
         <location line="+36"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation type="unfinished">FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -56,7 +56,7 @@
     <message>
         <location line="+36"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation type="unfinished">FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -74,7 +74,7 @@
     <message>
         <location line="+37"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation type="unfinished">FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -92,12 +92,12 @@
     <message>
         <location line="+36"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation type="unfinished">FEM</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create FEM pulley constraint</source>
-        <translation type="unfinished">Create FEM pulley constraint</translation>
+        <translation type="unfinished">Crear una restriccíon polea FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -110,7 +110,7 @@
     <message>
         <location line="-286"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation type="unfinished">FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -124,7 +124,7 @@
     <message>
         <location line="-31"/>
         <source>Fem</source>
-        <translation>Fem</translation>
+        <translation>FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -142,7 +142,7 @@
     <message>
         <location line="+500"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation type="unfinished">FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -156,14 +156,14 @@
     <message>
         <location line="-59"/>
         <source>Fem</source>
-        <translation type="unfinished">Fem</translation>
+        <translation type="unfinished">FEM</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+2"/>
         <source>Create node set by Poly</source>
-        <translation type="unfinished">Create node set by Poly</translation>
+        <translation type="unfinished">Crear conjunto de nodos por Poly</translation>
     </message>
 </context>
 <context>
@@ -199,7 +199,7 @@
     <message>
         <location filename="../../TaskAnalysisInfo.cpp" line="+45"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">Conjunto de nodos</translation>
     </message>
 </context>
 <context>
@@ -207,7 +207,7 @@
     <message>
         <location filename="../../TaskCreateNodeSet.cpp" line="+63"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">Conjunto de nodos</translation>
     </message>
 </context>
 <context>
@@ -235,7 +235,7 @@
 <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="+356"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+365"/>
         <source>Input error</source>
         <translation type="unfinished">Error de entrada</translation>
     </message>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../../TaskDriver.cpp" line="+51"/>
         <source>Nodes set</source>
-        <translation type="unfinished">Nodes set</translation>
+        <translation type="unfinished">Conjunto de nodos</translation>
     </message>
 </context>
 <context>
@@ -336,7 +336,7 @@
     <message>
         <location line="-5"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">Tipos de forma mixta no son posibles. Utilice en su lugar una segunda limitación</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -347,36 +347,24 @@
 <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-        <location filename="../../TaskFemConstraintForce.cpp" line="-282"/>
+        <location filename="../../TaskFemConstraintForce.cpp" line="-291"/>
         <source>Delete</source>
         <translation type="unfinished">Borrar</translation>
     </message>
     <message>
-        <source>Force [N]</source>
-        <translation type="obsolete">Fuerza [N]</translation>
-    </message>
-    <message>
-        <source>Force [N/mm]</source>
-        <translation type="obsolete">Fuerza [N/mm]</translation>
-    </message>
-    <message>
-        <source>Force [N/mmÂ²]</source>
-        <translation type="obsolete">Fuerza [N/mm^2]</translation>
-    </message>
-    <message>
         <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fuerza puntual [N]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Line load [N/mm]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fuerza lineal [N/mm]</translation>
     </message>
     <message utf8="true">
         <location line="+2"/>
         <source>Area load [N/mm²]</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Fuerza superficial [N/mm²]</translation>
     </message>
     <message>
         <location line="+30"/>
@@ -390,7 +378,7 @@
     <message>
         <location line="-42"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">Tipos de forma mixta no son posibles. Utilice en su lugar una segunda limitación</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -481,6 +469,16 @@
     </message>
     <message>
         <location line="+9"/>
+        <source>Write Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Edit Calculix Input File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Run Calculix</source>
         <translation type="unfinished">Ejecutar Calculix</translation>
     </message>
@@ -628,6 +626,11 @@
         <source>Meshing</source>
         <translation type="unfinished">Mallado</translation>
     </message>
+    <message>
+        <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
+        <source>Constraint force</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ShowDisplacement</name>
@@ -686,7 +689,7 @@
     <message>
         <location line="+27"/>
         <source>Slider max:</source>
-        <translation type="unfinished">Slider max:</translation>
+        <translation type="unfinished">Máx. deslizador:</translation>
     </message>
 </context>
 <context>
@@ -752,17 +755,17 @@
     <message>
         <location line="+9"/>
         <source>Angle-search</source>
-        <translation type="unfinished">Angle-search</translation>
+        <translation type="unfinished">Búsqueda por ángulo</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Collect adjancent nodes</source>
-        <translation type="unfinished">Collect adjancent nodes</translation>
+        <translation type="unfinished">Reunir nodos adyacentes</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Stop angle:</source>
-        <translation type="unfinished">Stop angle:</translation>
+        <translation type="unfinished">Ángulo final:</translation>
     </message>
 </context>
 <context>
@@ -846,7 +849,7 @@
     <message>
         <location line="+27"/>
         <source>Other pulley dia</source>
-        <translation type="unfinished">Other pulley dia</translation>
+        <translation type="unfinished">Otro diámetro de polea</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -968,17 +971,17 @@
     <message>
         <location line="+9"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation type="unfinished">Precisión:</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>VeryCoarse</source>
-        <translation type="unfinished">VeryCoarse</translation>
+        <translation type="unfinished">Muy basta</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Coarse</translation>
+        <translation type="unfinished">Grueso</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -988,32 +991,32 @@
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fine</translation>
+        <translation type="unfinished">Fino</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>VeryFine</source>
-        <translation type="unfinished">VeryFine</translation>
+        <translation type="unfinished">Muy fina</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>UserDefined</source>
-        <translation type="unfinished">UserDefined</translation>
+        <translation type="unfinished">Definido por el usuario</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Growth Rate:</source>
-        <translation type="unfinished">Growth Rate:</translation>
+        <translation type="unfinished">Tasa de crecimiento:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Nbr. Segs per Edge:</source>
-        <translation type="unfinished">Nbr. Segs per Edge:</translation>
+        <translation type="unfinished">Nº de segmentos por arista:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Nbr. Segs per Radius:</source>
-        <translation type="unfinished">Nbr. Segs per Radius:</translation>
+        <translation type="unfinished">Nº de segmentos por radio:</translation>
     </message>
     <message>
         <location line="+16"/>

@@ -345,7 +345,7 @@
     <message>
         <location line="+1"/>
         <source>Advanced utility to create shapes</source>
-        <translation>Rozšířeneé nástroje pro tvorbu útvarů</translation>
+        <translation>Rozšířené nástroje pro tvorbu útvarů</translation>
     </message>
 </context>
 <context>
@@ -1219,11 +1219,7 @@
     <message>
         <location line="+85"/>
         <source>Succeeded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Suceeded</source>
-        <translation type="obsolete">Úspěšně dokončeno</translation>
+        <translation type="unfinished">Proběhlo úspěšně</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1391,7 +1387,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IGES</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1401,7 +1397,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jednotky pro export formátu IGES</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1421,37 +1417,37 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Enable B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Povolit režim B-REP</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Import</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Import</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Přeskočit prázdné entity</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hlavička</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Společnost</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Produkt</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Autor</translation>
     </message>
 </context>
 <context>
@@ -1459,7 +1455,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">STEP</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1469,7 +1465,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Jednotky pro export formátu STEP</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1489,27 +1485,27 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+8"/>
         <source>Scheme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Schéma</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Header</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hlavička</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Společnost</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Autor</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Produkt</translation>
     </message>
 </context>
 <context>
@@ -1963,28 +1959,28 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parametr U:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parametry V:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">Poloměr 2: {3:?}</translation>
+        <translation type="unfinished">Poloměr 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parametr V:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parametr U:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -2183,7 +2179,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Create Solid</source>
-        <translation type="unfinished">Create Solid</translation>
+        <translation type="unfinished">Vytvoř těleso</translation>
     </message>
     <message>
         <location filename="../../DlgRevolution.cpp" line="+176"/>
@@ -2373,7 +2369,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-42"/>
         <source>Default line width</source>
-        <translation type="unfinished">Default line width</translation>
+        <translation type="unfinished">Výchozí tloušťka čáry</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2595,7 +2591,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte tři nebo více vrcholů</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2620,7 +2616,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+6"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte seznam vrcholů</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2670,7 +2666,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-139"/>
         <source>Select one or more connected edges you want to sweep along.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte jednu nebo více spojitých hran, podél kterých kterých chcete provést Tažení.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -2690,7 +2686,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+0"/>
         <source>&apos;%1&apos; cannot be used as profile and path.</source>
-        <translation type="unfinished">&apos;%1&apos; cannot be used as profile and path.</translation>
+        <translation type="unfinished">&apos;%1&apos; nemůže být použit jako profil a cesta.</translation>
     </message>
     <message>
         <location line="+37"/>
@@ -2705,13 +2701,13 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyberte jednu nebo více spojitých hran v 3D pohledu a stiskněte &quot;Hotovo&quot;</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vybraná dráha Tažení je neplatná.</translation>
     </message>
 </context>
 <context>
@@ -3006,7 +3002,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+5"/>
         <source>RectoVerso</source>
-        <translation>RectoVerso</translation>
+        <translation>Rub-Líc</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3066,7 +3062,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Plocha z vrcholů</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3109,7 +3105,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dráha Tažení</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3256,7 +3252,7 @@ Chcete pokračovat?</translation>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Import-Export</translation>
     </message>
     <message>
         <location line="+1"/>
