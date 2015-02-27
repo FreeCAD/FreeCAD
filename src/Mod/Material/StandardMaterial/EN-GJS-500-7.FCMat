@@ -26,7 +26,7 @@ UltimateTensileStrength=500
 YieldStrength=320
 CompressiveStrength=
 ; Youngs Modulus - E-Modul - N/mm²
-YoungsModulus=170000
+YoungsModulus=170000 MPa
 ; ModulusOfShare - G-Modul - N/mm²
 ModulusOfShare=66000
 Elasticity=
