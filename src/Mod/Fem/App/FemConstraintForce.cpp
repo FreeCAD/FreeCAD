@@ -82,6 +82,10 @@ void ConstraintForce::onChanged(const App::Property* prop)
             direction = -direction;
         DirectionVector.setValue(direction);
     } else if (prop == &Reversed) {
+        // if the direction is invalid try to compute it again
+        if (naturalDirectionVector.Length() < Precision::Confusion()) {
+            naturalDirectionVector = getDirection(Direction);
+        }
         if (naturalDirectionVector.Length() >= Precision::Confusion()) {
             if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
                 DirectionVector.setValue(-naturalDirectionVector);
