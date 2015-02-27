@@ -35,5 +35,6 @@
         <file>translations/Ship_zh-CN.qm</file>
         <file>translations/Ship_zh-TW.qm</file>
         <file>translations/Ship_pt-PT.qm</file>
+        <file>translations/Ship_sr.qm</file>
     </qresource>
 </RCC> 

@@ -109,11 +109,6 @@
       <translation type="unfinished">&lt;b&gt;ArkitekturDesign&lt;/b&gt; arbetsbänken är speciellt utformad för att arbeta med arkitektoniska element såsom väggar eller fönster. Börja med att rita 2D-former, och använd dem som guider för att bygga arkitektoniska objekt.</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="74"/>
-      <source>Architectual Design</source>
-      <translation type="unfinished">Arkitektur Design</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="75"/>
       <source>Working with Meshes</source>
       <translation type="unfinished">Arbeta med Nät</translation>
@@ -141,7 +136,7 @@
     <message>
       <location filename="StartPage.py" line="80"/>
       <source>FreeCAD Complete workbench</source>
-      <translation type="unfinished">FreeCAD Complete workbench</translation>
+      <translation type="unfinished">FreeCAD Komplett arbetsbänk</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="82"/>
@@ -229,11 +224,6 @@
       <translation type="unfinished">Handledningsavsnittet på FreeCADs webbplats</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="96"/>
-      <source>The section of the FreeCAd website dedicate dto python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">Sektionen i FreeCAD-webbplatsen som ägnas åt pythonskript, med exempel, förklaringar och API-kommandon.</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="97"/>
       <source>A blog dedicated to teaching FreeCAD, maintained by members of the FreeCAD community</source>
       <translation type="unfinished">En Blogg dedikerad till undervisning i FreeCAD, som underhålls av medlemmarna av FreeCAD-gemenskapen</translation>
@@ -246,22 +236,22 @@
     <message>
       <location filename="StartPage.py" line="99"/>
       <source>The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</source>
-      <translation type="unfinished">The FreeCAD interface is divided in workbenches, which are sets of tools suited for a specific task. You can start with one of the workbenches in this list, or with the complete workbench, which presents you with some of the most used tools gathered from other workbenches. Click to read more about workbenches on the FreeCAD website.</translation>
+      <translation type="unfinished">FreeCADs gränssnitt är uppdelat i arbetsbänkar, vilka är uppsättningar med verktyg lämpade för en viss uppgift. Du kan börja med en av arbetsbänkarna i listan, eller med Komplett arbetsbänk, som tillhandahåller några av de mest använda verktygen som samlats in från andra arbetsbänkar. Läs mer om arbetsbänkar på FreeCADs webbplats.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="101"/>
       <source>Ship Design</source>
-      <translation type="unfinished">Ship Design</translation>
+      <translation type="unfinished">Fartygskonstruktion</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="102"/>
       <source>Designing and calculating ships</source>
-      <translation type="unfinished">Designing and calculating ships</translation>
+      <translation type="unfinished">Konstruktion och beräkning av fartyg</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="103"/>
       <source>The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</source>
-      <translation type="unfinished">The &lt;b&gt;Ship Design&lt;/b&gt; module offers several tools to help ship designers to view, model and calculate profiles and other specific properties of ship hulls.</translation>
+      <translation type="unfinished">Modulen &lt;b&gt;Fartygskonstruktion&lt;/b&gt; erbjuder flera verktyg för att hjälpa fartygskonstruktörer att visa, modellera och beräkna profiler och andra specifika egenskaper för fartygsskrov.</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="104"/>
@@ -274,11 +264,6 @@
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Online_Help_Toc</translation>
     </message>
     <message>
-      <location filename="StartPage.py" line="100"/>
-      <source>http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</source>
-      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbench_Concept</translation>
-    </message>
-    <message>
       <location filename="StartPage.py" line="105"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Tutorials</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Tutorials</translation>
@@ -287,6 +272,31 @@
       <location filename="StartPage.py" line="106"/>
       <source>http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</source>
       <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Power_users_hub</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="74"/>
+      <source>Architectural Design</source>
+      <translation type="unfinished">Arkitektonisk konstruktion</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="96"/>
+      <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
+      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="100"/>
+      <source>http://www.freecadweb.org/wiki/index.php?title=Workbenches</source>
+      <translation type="unfinished">http://www.freecadweb.org/wiki/index.php?title=Workbenches</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="107"/>
+      <source>Your version of FreeCAD is up to date.</source>
+      <translation type="unfinished">Your version of FreeCAD is up to date.</translation>
+    </message>
+    <message>
+      <location filename="StartPage.py" line="108"/>
+      <source>There is a new release of FreeCAD available.</source>
+      <translation type="unfinished">There is a new release of FreeCAD available.</translation>
     </message>
   </context>
 </TS>

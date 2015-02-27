@@ -36,5 +36,6 @@
         <file>translations/Robot_ro.qm</file>
         <file>translations/Robot_hu.qm</file>
         <file>translations/Robot_pt-PT.qm</file>
+        <file>translations/Robot_sr.qm</file>
     </qresource>
 </RCC> 
