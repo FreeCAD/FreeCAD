@@ -55,6 +55,7 @@
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 
 using namespace Fem;
 
@@ -312,7 +313,15 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub &direct
     const Part::TopoShape& shape = feat->Shape.getShape();
     if (shape.isNull())
         return Base::Vector3d(0,0,0);
-    TopoDS_Shape sh = shape.getSubShape(subName.c_str());
+    TopoDS_Shape sh;
+    try {
+        sh = shape.getSubShape(subName.c_str());
+    }
+    catch (Standard_Failure) {
+        std::stringstream str;
+        str << "No such sub-element '" << subName << "'";
+        throw Base::AttributeError(str.str());
+    }
     gp_Dir dir;
 
     if (sh.ShapeType() == TopAbs_FACE) {
