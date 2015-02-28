@@ -147,12 +147,14 @@ class _ViewProviderSectionPlane:
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.addProperty("App::PropertyBool","CutView","Arch",translate("Arch","Show the cut in the 3D view"))
         vobj.DisplayLength = 1
         vobj.DisplayHeight = 1
         vobj.ArrowSize = 1
         vobj.Transparency = 85
         vobj.LineWidth = 1
         vobj.LineColor = (0.0,0.0,0.4,1.0)
+        vobj.CutView = False
         vobj.Proxy = self
         self.Object = vobj.Object
 
@@ -164,6 +166,7 @@ class _ViewProviderSectionPlane:
         return []
 
     def attach(self,vobj):
+        self.clip = None
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()
         self.fcoords = coin.SoCoordinate3()
@@ -191,6 +194,7 @@ class _ViewProviderSectionPlane:
         self.onChanged(vobj,"DisplayLength")
         self.onChanged(vobj,"LineColor")
         self.onChanged(vobj,"Transparency")
+        self.onChanged(vobj,"CutView")
 
     def getDisplayModes(self,vobj):
         return ["Default"]
@@ -204,6 +208,7 @@ class _ViewProviderSectionPlane:
     def updateData(self,obj,prop):
         if prop in ["Placement"]:
             self.onChanged(obj.ViewObject,"DisplayLength")
+            self.onChanged(obj.ViewObject,"CutView")
         return
 
     def onChanged(self,vobj,prop):
@@ -249,6 +254,31 @@ class _ViewProviderSectionPlane:
             self.fcoords.point.setValues(fverts)
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth
+        elif prop == "CutView":
+            if hasattr(vobj,"CutView"):
+                sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+                if vobj.CutView:
+                    if self.clip:
+                        sg.removeChild(self.clip)
+                        self.clip = None
+                    else:
+                        for o in Draft.getGroupContents(vobj.Object.Objects,walls=True):
+                            if hasattr(o.ViewObject,"Lighting"):
+                                o.ViewObject.Lighting = "One side"
+                        self.clip = coin.SoClipPlane()
+                        self.clip.on.setValue(True)
+                        norm = vobj.Object.Proxy.getNormal(vobj.Object)
+                        mp = vobj.Object.Shape.CenterOfMass
+                        mp = DraftVecUtils.project(mp,norm)
+                        dist = mp.Length + 0.1 # to not clip exactly on the section object
+                        norm = norm.negative()
+                        plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),-dist)
+                        self.clip.plane.setValue(plane)
+                        sg.insertChild(self.clip,0)
+                else:
+                    if self.clip:
+                        sg.removeChild(self.clip)
+                        self.clip = None
         return
 
     def __getstate__(self):
