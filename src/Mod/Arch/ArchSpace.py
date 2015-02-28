@@ -229,7 +229,7 @@ class _Space(ArchComponent.Component):
         obj.addProperty("App::PropertyString",     "FinishWalls",  "Arch",translate("Arch","The finishing of the walls of this space"))
         obj.addProperty("App::PropertyString",     "FinishCeiling","Arch",translate("Arch","The finishing of the ceiling of this space"))
         obj.addProperty("App::PropertyLinkList",   "Group",        "Arch",translate("Arch","Objects that are included inside this space, such as furniture"))
-        obj.addProperty("App::PropertyEnum",       "SpaceType",    "Arch",translate("Arch","The type of this space"))
+        obj.addProperty("App::PropertyEnumeration","SpaceType",    "Arch",translate("Arch","The type of this space"))
         self.Type = "Space"
         self.SpaceType = "Undefined"
         obj.Role = Roles
