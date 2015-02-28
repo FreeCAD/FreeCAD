@@ -1742,9 +1742,12 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getPath(edges=[],wires=[],pathname=None):
         import DraftGeomUtils
+        svg = "<path "
         if pathname is None:
-            pathname = obj.Name
-        svg ='<path id="%s" d="' % pathname
+            svg += 'id="%s" ' % obj.Name
+        elif pathname != "":
+            svg += 'id="%s" ' % pathname
+        svg += ' d="'
         if not wires:
             egroups = (DraftGeomUtils.sortEdges(edges),)
         else:
@@ -1813,6 +1816,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                 (str(rx),str(ry),str(rot),\
                                 str(int(flag_large_arc)),\
                                 str(int(flag_sweep)),str(v.x),str(v.y))
+                        print svg
                 elif DraftGeomUtils.geomType(e) == "Line":
                     v = getProj(vs[-1].Point)
                     svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
@@ -1963,7 +1967,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         
     if not obj:
         pass
-
+        
+    elif isinstance(obj,Part.Shape):
+        fill = 'url(#'+fillstyle+')'
+        lstyle = getLineStyle()
+        svg += getPath(obj.Edges,pathname="")
+        
+        
     elif getType(obj) == "Dimension":
         if obj.ViewObject.Proxy:
             if hasattr(obj.ViewObject.Proxy,"p1"):

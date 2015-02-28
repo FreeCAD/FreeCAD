@@ -662,6 +662,8 @@ def sortEdges(edges):
     # Build a dictionary of edges according to their end points.
     # Each entry is a set of edges that starts, or ends, at the
     # given vertex hash.
+    if len(edges) < 2:
+        return edges
     sdict = dict()
     edict = dict()
     nedges = []
@@ -670,6 +672,9 @@ def sortEdges(edges):
             sdict.setdefault( e.Vertexes[0].hashCode(), [] ).append(e)
             edict.setdefault( e.Vertexes[-1].hashCode(),[] ).append(e)
             nedges.append(e)
+    if not nedges:
+        print "DraftGeomUtils.sortEdges: zero-length edges"
+        return edges
     # Find the start of the path.  The start is the vertex that appears
     # in the sdict dictionary but not in the edict dictionary, and has
     # only one edge ending there.
@@ -719,7 +724,7 @@ def sortEdges(edges):
                 eh = e.hashCode()
                 e = invert(e)
             except KeyError:
-                print("DraftGeomUtils.sortEdges failed - running old version:")
+                print("DraftGeomUtils.sortEdges failed - running old version")
                 return sortEdgesOld(edges)
         ret.append(e)
     # All done.
