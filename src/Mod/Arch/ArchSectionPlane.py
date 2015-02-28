@@ -292,6 +292,7 @@ class _ArchDrawingView:
         obj.addProperty("App::PropertyLink","Source","Base","The linked object")
         obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing view","The rendering mode to use")
         obj.addProperty("App::PropertyBool","ShowCut","Drawing view","If cut geometry is shown or not")
+        obj.addProperty("App::PropertyBool","ShowFill","Drawing view","If cut geometry is filled or not")
         obj.addProperty("App::PropertyFloat","LineWidth","Drawing view","The line width of the rendered objects")
         obj.addProperty("App::PropertyLength","FontSize","Drawing view","The size of the texts inside this object")
         obj.RenderingMode = ["Solid","Wireframe"]
@@ -408,12 +409,17 @@ class _ArchDrawingView:
                                         c = sol.cut(cutvolume)
                                         s = sol.section(cutface)
                                         try:
-                                            s = Part.Wire(s.Edges)
-                                            s = Part.Face(s)
+                                            wires = DraftGeomUtils.findWires(s.Edges)
+                                            for w in wires:
+                                                f = Part.Face(w)
+                                                sshapes.append(f)
+                                            #s = Part.Wire(s.Edges)
+                                            #s = Part.Face(s)
                                         except Part.OCCError:
-                                            pass
+                                            #print "ArchDrawingView: unable to get a face"
+                                            sshapes.append(s)
                                         nsh.extend(c.Solids)
-                                        sshapes.append(s)
+                                        #sshapes.append(s)
                                         if hasattr(obj,"ShowCut"):
                                             if obj.ShowCut:
                                                 c = sol.cut(invcutvolume)
@@ -439,13 +445,28 @@ class _ArchDrawingView:
                                     svgh = svgh.replace('fill="none"','fill="none"\nstroke-dasharray="DAPlaceholder"')
                                     self.svg += svgh
                             if sshapes:
+                                svgs = ""
+                                if hasattr(obj,"ShowFill"):
+                                    if obj.ShowFill:
+                                        svgs += '<g transform="rotate(180)">\n'
+                                        svgs += '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
+                                        svgs += ' x="0" y="0" width="10" height="10">'
+                                        svgs += '<g style="fill:none; stroke:#000000; stroke-width:1">'
+                                        svgs += '<path d="M0,0 l10,10" /></g></pattern>'
+                                        for s in sshapes:
+                                            if s.Edges:
+                                                f = Draft.getSVG(s,direction=self.direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                                                svgs += f
+                                        svgs += "</g>\n"
                                 sshapes = Part.makeCompound(sshapes)
                                 self.sectionshape = sshapes
-                                svgs = Drawing.projectToSVG(sshapes,self.direction)
+                                svgs += Drawing.projectToSVG(sshapes,self.direction)
                                 if svgs:
                                     svgs = svgs.replace('stroke-width="0.35"','stroke-width="SWPlaceholder"')
                                     svgs = svgs.replace('stroke-width="1"','stroke-width="SWPlaceholder"')
                                     svgs = svgs.replace('stroke-width:0.01','stroke-width:SWPlaceholder')
+                                    svgs = svgs.replace('stroke-width="0.35 px"','stroke-width="SWPlaceholder"')
+                                    svgs = svgs.replace('stroke-width:0.35','stroke-width:SWPlaceholder')
                                     self.svg += svgs
 
     def __getstate__(self):
