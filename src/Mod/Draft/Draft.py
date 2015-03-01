@@ -1810,13 +1810,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     flag_large_arc = (((e.ParameterRange[1] - \
                             e.ParameterRange[0]) / math.pi) % 2) > 1
                     flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
-                            == (e.Orientation == "Forward")
+                             == (e.LastParameter > e.FirstParameter)
+                    #        == (e.Orientation == "Forward")
                     for v in endpoints:
                         svg += 'A %s %s %s %s %s %s %s ' % \
                                 (str(rx),str(ry),str(rot),\
                                 str(int(flag_large_arc)),\
                                 str(int(flag_sweep)),str(v.x),str(v.y))
-                        print svg
                 elif DraftGeomUtils.geomType(e) == "Line":
                     v = getProj(vs[-1].Point)
                     svg += 'L '+ str(v.x) +' '+ str(v.y) + ' '
