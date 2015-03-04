@@ -35,8 +35,6 @@ class SpreadsheetExport PropertyRowHeights : public App::Property, std::map<int,
 public:
     PropertyRowHeights();
 
-    PropertyRowHeights(const PropertyRowHeights & other);
-
     void setValue() { }
 
     void setValue(int row, int height);
@@ -68,7 +66,11 @@ public:
 
     static const int defaultHeight;
 
+    void clear();
+
 private:
+
+    PropertyRowHeights(const PropertyRowHeights & other);
 
     std::set<int> dirty;
 

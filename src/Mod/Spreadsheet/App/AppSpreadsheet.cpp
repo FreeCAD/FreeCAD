@@ -31,6 +31,7 @@ void SpreadsheetExport initSpreadsheet() {
     (void) Py_InitModule("Spreadsheet", Spreadsheet_methods);   /* mod name, table ptr */
     Base::Console().Log("Loading Spreadsheet module... done\n");
 
+    Spreadsheet::PropertySpreadsheetQuantity::init();
     Spreadsheet::PropertyColumnWidths::init();
     Spreadsheet::PropertyRowHeights::init();
     Spreadsheet::PropertySheet::init();

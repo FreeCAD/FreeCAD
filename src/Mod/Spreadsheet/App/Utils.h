@@ -42,12 +42,9 @@ SpreadsheetExport void createRectangles(std::set<std::pair<int, int> > & cells, 
 SpreadsheetExport std::string quote(const std::string &input);
 SpreadsheetExport std::string unquote(const std::string & input);
 
-SpreadsheetExport std::string addressToString(const CellAddress & address);
+struct SpreadsheetExport CellAddress {
 
-struct CellAddress {
-    CellAddress(unsigned int _value) : value(_value) { }
-
-    CellAddress(int row = -1, int col = -1) : value(((row & 0xffff) << 16) | (col & 0xffff)) { }
+    CellAddress(int row = -1, int col = -1) : _row(row), _col(col) { }
 
     CellAddress(const char * address) {
         *this = stringToAddress(address);
@@ -57,17 +54,19 @@ struct CellAddress {
         *this = stringToAddress(address.c_str());
     }
 
-    inline int row() const { return (value >> 16) & 0xffff; }
+    inline int row() const { return _row; }
 
-    inline int col() const { return value & 0xffff; }
+    inline int col() const { return _col; }
 
-    inline bool operator<(const CellAddress & other) const { return value < other.value; }
+    inline bool operator<(const CellAddress & other) const { return asInt() < other.asInt(); }
 
-    inline bool operator==(const CellAddress & other) const { return value == other.value; }
+    inline bool operator==(const CellAddress & other) const { return asInt() == other.asInt(); }
 
-    inline bool operator!=(const CellAddress & other) const { return value != other.value; }
+    inline bool operator!=(const CellAddress & other) const { return asInt() != other.asInt(); }
 
     inline bool isValid() { return (row() >=0 && row() < MAX_ROWS && col() >= 0 && col() < MAX_COLUMNS); }
+
+    std::string toString() const;
 
     // Static members
 
@@ -76,7 +75,11 @@ struct CellAddress {
     static const int MAX_COLUMNS;
 
 protected:
-    unsigned int value;
+
+    inline unsigned int asInt() const { return ((_row << 16) | _col); }
+
+    short _row;
+    short _col;
 };
 
 template<typename T> T * freecad_dynamic_cast(Base::BaseClass * t)

@@ -43,8 +43,6 @@ public:
 
     PropertySheet(Sheet * _owner = 0);
 
-    PropertySheet(const PropertySheet & other);
-
     ~PropertySheet();
 
     virtual Property *Copy(void) const;
@@ -145,7 +143,11 @@ public:
 
     void renamedDocument(const App::Document *doc);
 
+    void documentSet();
+
 private:
+
+    PropertySheet(const PropertySheet & other);
 
     friend class Signaller;
 
@@ -210,6 +212,12 @@ private:
 
     /* Name of documents, used for renaming */
     std::map<const App::Document*, std::string> documentName;
+
+    /* Mapping of cell position to alias property */
+    std::map<CellAddress, std::string> aliasProp;
+
+    /* Mapping of alias property to cell position */
+    std::map<std::string, CellAddress> revAliasProp;
 
     int signalCounter;
 

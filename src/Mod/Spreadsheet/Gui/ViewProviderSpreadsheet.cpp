@@ -158,7 +158,7 @@ bool ViewProviderSheet::onDelete(const std::vector<std::string> &)
             if (selection.size() > 0) {
                 Gui::Command::openCommand("Clear cell(s)");
                 for (QModelIndexList::const_iterator it = selection.begin(); it != selection.end(); ++it) {
-                    std::string address = Spreadsheet::addressToString(CellAddress((*it).row(), (*it).column()));
+                    std::string address = CellAddress((*it).row(), (*it).column()).toString();
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.clear('%s')", sheet->getNameInDocument(),
                                             address.c_str());
                 }

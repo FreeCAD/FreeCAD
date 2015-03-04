@@ -66,6 +66,16 @@ Range::Range(int _row_begin, int _col_begin, int _row_end, int _col_end)
 {
 }
 
+Range::Range(const CellAddress &from, const CellAddress &to)
+    : row_curr(from.row())
+    , col_curr(from.col())
+    , row_begin(from.row())
+    , col_begin(from.col())
+    , row_end(to.row())
+    , col_end(to.col())
+{
+}
+
 bool Range::next()
 {
     if (row_curr < row_end) {
