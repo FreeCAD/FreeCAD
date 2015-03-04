@@ -158,6 +158,8 @@ public:
 
     App::Document *getDocument() const;
 
+    const App::DocumentObject *getDocumentObject() const;
+
 protected:
 
     const App::DocumentObject *getDocumentObject(const App::Document *doc, const std::string &name) const;
@@ -366,6 +368,8 @@ public:
     virtual Expression * simplify() const;
 
     Range getRange() const { return range; }
+
+    void setRange(const Range & r);
 
 protected:
     Range range;

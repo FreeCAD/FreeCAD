@@ -35,8 +35,6 @@ class SpreadsheetExport PropertyColumnWidths : public App::Property, std::map<in
 public:
     PropertyColumnWidths();
 
-    PropertyColumnWidths(const PropertyColumnWidths & other);
-
     void setValue() { }
 
     void setValue(int col, int width);
@@ -66,10 +64,14 @@ public:
 
     PyObject *getPyObject(void);
 
+    void clear();
+
     static const int defaultWidth;
     static const int defaultHeaderWidth;
 
 private:
+
+    PropertyColumnWidths(const PropertyColumnWidths & other);
 
     std::set<int> dirty;
 

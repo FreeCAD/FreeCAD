@@ -395,8 +395,20 @@ void Cell::setAlias(const std::string &n)
     if (alias != n) {
         PropertySheet::Signaller signaller(*owner);
 
+        owner->revAliasProp.erase(alias);
+
         alias = n;
+
+        // Update owner
+        if (alias != "") {
+            owner->aliasProp[address] = n;
+            owner->revAliasProp[n] = address;
+        }
+        else
+            owner->aliasProp.erase(address);
+
         setUsed(ALIAS_SET, !alias.empty());
+
     }
 }
 
@@ -590,7 +602,7 @@ void Cell::save(Base::Writer &writer) const
 
     writer.Stream() << writer.ind() << "<Cell ";
 
-    writer.Stream() << "address=\"" << addressToString(address) << "\" ";
+    writer.Stream() << "address=\"" << address.toString() << "\" ";
 
     if (isUsed(EXPRESSION_SET)) {
         std::string content;
@@ -663,7 +675,7 @@ bool Cell::isUsed() const
 void Cell::visit(ExpressionVisitor &v)
 {
     if (expression)
-        v.visit(expression);
+        expression->visit(v);
 }
 
 /**

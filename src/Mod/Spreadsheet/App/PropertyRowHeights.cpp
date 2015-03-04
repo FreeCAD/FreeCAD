@@ -148,3 +148,14 @@ PyObject *PropertyRowHeights::getPyObject()
     }
     return Py::new_reference_to(PythonObject);
 }
+
+void PropertyRowHeights::clear()
+{
+    std::map<int, int>::const_iterator i = begin();
+
+    while (i != end()) {
+        dirty.insert(i->first);
+        ++i;
+    }
+    std::map<int,int>::clear();
+}

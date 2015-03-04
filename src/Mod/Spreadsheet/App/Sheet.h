@@ -52,10 +52,25 @@ class Expression;
 class Range;
 class SheetObserver;
 
+/** Spreadsheet quantity property
+ * This is a property for quantities, and unlike its ancestor implements
+ * Copy() and Paste() methods. It is used by the spreadsheet to
+ * create aliases in a generic way.
+ */
+class SpreadsheetExport PropertySpreadsheetQuantity : public App::PropertyQuantity
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertySpreadsheetQuantity(void){}
+    virtual ~PropertySpreadsheetQuantity(){}
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+};
 
 class SpreadsheetExport Sheet : public App::DocumentObject
 {
-    PROPERTY_HEADER(Sheet::Sheet);
+    PROPERTY_HEADER(Spreadsheet::Sheet);
 
 public:
 
@@ -220,6 +235,8 @@ protected:
 
     App::Property *getProperty(const char * addr) const;
 
+    void updateAlias(CellAddress key);
+
     void updateProperty(CellAddress key);
 
     App::Property *setStringProperty(CellAddress key, const std::string & value) ;
@@ -228,11 +245,15 @@ protected:
 
     App::Property *setQuantityProperty(CellAddress key, double value, const Base::Unit &unit);
 
-    static std::string toAddress(CellAddress key);
-
     void moveCell(CellAddress currPos, CellAddress newPos);
 
     void renamedDocumentObject(const App::DocumentObject * docObj);
+
+    void aliasRemoved(CellAddress address, const std::string &alias);
+
+    void removeAliases();
+
+    virtual void onSettingDocument();
 
     /* Properties for used cells */
     App::DynamicProperty props;
@@ -240,8 +261,8 @@ protected:
     /* Mapping of properties to cell position */
     std::map<const App::Property*, CellAddress > propAddress;
 
-    /* Mapping of cell position to alias property */
-    std::map<CellAddress, App::Property*> aliasProp;
+    /* Removed (unprocessed) aliases */
+    std::map<CellAddress, std::string> removedAliases;
 
     /* Set of cells with errors */
     std::set<CellAddress> cellErrors;

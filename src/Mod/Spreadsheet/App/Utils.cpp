@@ -161,33 +161,6 @@ Spreadsheet::CellAddress Spreadsheet::stringToAddress(const char * strAddress)
         throw Base::Exception("Invalid cell specifier.");
 }
 
-/**
-  * Convert given \a row and \a col into a string address.
-  *
-  * @param row Row address.
-  * @param col Column address.
-  *
-  * @returns Address given as a string.
-  */
-
-std::string Spreadsheet::addressToString(const CellAddress &address)
-{
-    std::stringstream s;
-
-    if (address.col() < 26)
-        s << (char)('A' + address.col());
-    else {
-        int col = address.col() - 26;
-
-        s << (char)('A' + (col / 26));
-        s << (char)('A' + (col % 26));
-    }
-
-    s << (address.row() + 1);
-
-    return s.str();
-}
-
 void Spreadsheet::createRectangles(std::set<std::pair<int, int> > & cells, std::map<std::pair<int, int>, std::pair<int, int> > & rectangles)
 {
     while (cells.size() != 0) {
@@ -341,4 +314,29 @@ std::string Spreadsheet::unquote(const std::string & input)
     }
 
     return output;
+}
+
+
+/**
+  * Convert given \a cell address into its string representation.
+  *
+  * @returns Address given as a string.
+  */
+
+std::string Spreadsheet::CellAddress::toString() const
+{
+    std::stringstream s;
+
+    if (col() < 26)
+        s << (char)('A' + col());
+    else {
+        int colnum = col() - 26;
+
+        s << (char)('A' + (colnum / 26));
+        s << (char)('A' + (colnum % 26));
+    }
+
+    s << (row() + 1);
+
+    return s.str();
 }
