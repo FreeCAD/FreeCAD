@@ -388,9 +388,18 @@ class _JobControlTaskPanel:
         inpfile.write('*NSET,NSET=' + NodeSetName + '\n')
         for o,f in FixedObject.References:
             fo = o.Shape.getElement(f)
-            n = MeshObject.FemMesh.getNodesByFace(fo)
-            for i in n:
-                inpfile.write( str(i)+',\n')
+            if fo.ShapeType == 'Face':
+                FixedObjectType = 'AreaSupport'
+                n = MeshObject.FemMesh.getNodesByFace(fo)
+                for i in n:
+                    inpfile.write( str(i)+',\n')
+            elif fo.ShapeType == 'Edge':
+                FixedObjectType = 'LineSupport'
+                print 'Line Supports are not yet implemented to export to CalculiX'
+                # getNodesByEdge(fo) # not implemented yet
+            elif fo.ShapeType == 'Vertex':
+                FixedObjectType = 'PointSupport'
+                print 'Point Supports are not yet implemented to export to CalculiX'
         
         # write load node set 
         NodeSetNameForce = ForceObject.Name 
@@ -400,10 +409,19 @@ class _JobControlTaskPanel:
         NbrForceNods = 0
         for o,f in ForceObject.References:
             fo = o.Shape.getElement(f)
-            n = MeshObject.FemMesh.getNodesByFace(fo)
-            for i in n:
-                inpfile.write( str(i)+',\n')
-                NbrForceNods = NbrForceNods + 1
+            if fo.ShapeType == 'Face':
+                ForceObjectType = 'AreaLoad'
+                n = MeshObject.FemMesh.getNodesByFace(fo)
+                for i in n:
+                    inpfile.write( str(i)+',\n')
+                    NbrForceNods = NbrForceNods + 1
+            elif fo.ShapeType == 'Edge':
+                ForceObjectType = 'LineLoad'
+                print 'Line Loads are not yet implemented to export to CalculiX'
+                # getNodesByEdge(fo) # not implemented yet
+            elif fo.ShapeType == 'Vertex':
+                ForceObjectType = 'PointLoad'
+                print 'Point Loads are not yet implemented to export to CalculiX'
         
         # get material properties
         YM = FreeCAD.Units.Quantity(MathObject.Material['Mechanical_youngsmodulus'])
@@ -436,24 +454,33 @@ class _JobControlTaskPanel:
 
         # write constaints
         inpfile.write('\n\n** constaints\n')
-        inpfile.write('*BOUNDARY\n')
-        inpfile.write(NodeSetName + ',1,3,0.0\n')
-
+        if FixedObjectType == 'AreaSupport':
+            inpfile.write('*BOUNDARY\n')
+            inpfile.write(NodeSetName + ',1,3,0.0\n')
+        elif FixedObjectType == 'LineSupport':
+            pass  # ToDo
+        elif FixedObjectType == 'PointSupport':
+            pass  # ToDo
 
         # write loads
         #inpfile.write('*DLOAD\n')
         #inpfile.write('Eall,NEWTON\n')
-        Force = (ForceObject.Force * 1000.0) / NbrForceNods
-        vec = ForceObject.DirectionVector
         inpfile.write('\n\n** loads\n')
-        inpfile.write('** direction: ' + str(vec)  + '\n')
-        inpfile.write('** concentrated load [N] distributed on the area of the given faces.\n')
-        inpfile.write('** ' + str(ForceObject.Force) + ' N * 1000 / ' + str(NbrForceNods) + ' Nodes = ' + str(Force) + ' mN on each node\n')
-        inpfile.write('*CLOAD\n')
-        inpfile.write(NodeSetNameForce + ',1,' + `vec.x * Force` + '\n')
-        inpfile.write(NodeSetNameForce + ',2,' + `vec.y * Force` + '\n')
-        inpfile.write(NodeSetNameForce + ',3,' + `vec.z * Force` + '\n')
-
+        if ForceObjectType == 'AreaLoad':
+            Force = (ForceObject.Force * 1000.0) / NbrForceNods
+            vec = ForceObject.DirectionVector
+            inpfile.write('** direction: ' + str(vec)  + '\n')
+            inpfile.write('** concentrated load [N] distributed on the area of the given faces.\n')
+            inpfile.write('** ' + str(ForceObject.Force) + ' N * 1000 / ' + str(NbrForceNods) + ' Nodes = ' + str(Force) + ' mN on each node\n')
+            inpfile.write('*CLOAD\n')
+            inpfile.write(NodeSetNameForce + ',1,' + `vec.x * Force` + '\n')
+            inpfile.write(NodeSetNameForce + ',2,' + `vec.y * Force` + '\n')
+            inpfile.write(NodeSetNameForce + ',3,' + `vec.z * Force` + '\n')
+        elif ForceObjectType == 'LineLoad':
+            pass  # ToDo
+        elif ForceObjectType == 'PointLoad':
+            pass  # ToDo
+ 
         # write outputs, both are needed by FreeCAD        
         inpfile.write('\n\n** outputs --> frd file\n')
         inpfile.write('*NODE FILE\n')
