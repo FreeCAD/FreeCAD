@@ -138,11 +138,11 @@ void TaskFemConstraintForce::updateUI()
     std::string ref = ui->listReferences->item(0)->text().toStdString();
     int pos = ref.find_last_of(":");
     if (ref.substr(pos+1, 6) == "Vertex")
-        ui->labelForce->setText(tr("Point load [N]"));
+        ui->labelForce->setText(tr("Point load"));
     else if (ref.substr(pos+1, 4) == "Edge")
-        ui->labelForce->setText(tr("Line load [N/mm]"));
+        ui->labelForce->setText(tr("Line load"));
     else if (ref.substr(pos+1, 4) == "Face")
-        ui->labelForce->setText(trUtf8("Area load [N/mm\xc2\xb2]"));
+        ui->labelForce->setText(tr("Area load"));
 }
 
 void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg)
