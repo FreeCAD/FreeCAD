@@ -125,7 +125,7 @@ void CmdSpreadsheetSplitCell::activated(int iMsg)
             QModelIndex current = sheetView->currentIndex();
 
             if (current.isValid()) {
-                std::string address = addressToString(CellAddress(current.row(), current.column()));
+                std::string address = CellAddress(current.row(), current.column()).toString();
                 Gui::Command::openCommand("Split cell");
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.splitCell('%s')", sheet->getNameInDocument(),
                                         address.c_str());

@@ -372,37 +372,58 @@ class _JobControlTaskPanel:
         self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Write mesh...<br>'
         self.form.textEdit_Output.setText(self.OutStr)
 
+        # write mesh
         MeshObject.FemMesh.writeABAQUS(filename)
+        
         # reopen file with "append" and add the analysis definition
         inpfile = open(filename,'a')
-        inpfile.write('\n\n')
         
         self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Write loads & Co...<br>'
         self.form.textEdit_Output.setText(self.OutStr)
         
-        # write the fixed node set
+        # write fixed node set
         NodeSetName = FixedObject.Name 
+        inpfile.write('\n\n\n\n***********************************************************\n')
+        inpfile.write('** node set for fixed constraint\n')
         inpfile.write('*NSET,NSET=' + NodeSetName + '\n')
         for o,f in FixedObject.References:
             fo = o.Shape.getElement(f)
-            n = MeshObject.FemMesh.getNodesByFace(fo)
-            for i in n:
-                inpfile.write( str(i)+',\n')
-        inpfile.write('\n\n')
+            if fo.ShapeType == 'Face':
+                FixedObjectType = 'AreaSupport'
+                n = MeshObject.FemMesh.getNodesByFace(fo)
+                for i in n:
+                    inpfile.write( str(i)+',\n')
+            elif fo.ShapeType == 'Edge':
+                FixedObjectType = 'LineSupport'
+                print 'Line Supports are not yet implemented to export to CalculiX'
+                # getNodesByEdge(fo) # not implemented yet
+            elif fo.ShapeType == 'Vertex':
+                FixedObjectType = 'PointSupport'
+                print 'Point Supports are not yet implemented to export to CalculiX'
         
-        # write the load node set 
+        # write load node set 
         NodeSetNameForce = ForceObject.Name 
+        inpfile.write('\n\n\n\n***********************************************************\n')
+        inpfile.write('** node set for load\n')
         inpfile.write('*NSET,NSET=' + NodeSetNameForce + '\n')
         NbrForceNods = 0
         for o,f in ForceObject.References:
             fo = o.Shape.getElement(f)
-            n = MeshObject.FemMesh.getNodesByFace(fo)
-            for i in n:
-                inpfile.write( str(i)+',\n')
-                NbrForceNods = NbrForceNods + 1
-        inpfile.write('\n\n')
+            if fo.ShapeType == 'Face':
+                ForceObjectType = 'AreaLoad'
+                n = MeshObject.FemMesh.getNodesByFace(fo)
+                for i in n:
+                    inpfile.write( str(i)+',\n')
+                    NbrForceNods = NbrForceNods + 1
+            elif fo.ShapeType == 'Edge':
+                ForceObjectType = 'LineLoad'
+                print 'Line Loads are not yet implemented to export to CalculiX'
+                # getNodesByEdge(fo) # not implemented yet
+            elif fo.ShapeType == 'Vertex':
+                ForceObjectType = 'PointLoad'
+                print 'Point Loads are not yet implemented to export to CalculiX'
         
-        # get the material properties
+        # get material properties
         YM = FreeCAD.Units.Quantity(MathObject.Material['Mechanical_youngsmodulus'])
         if YM.Unit.Type == '':
             print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
@@ -412,40 +433,83 @@ class _JobControlTaskPanel:
         print 'YM = ', YM
         
         PR = float( MathObject.Material['FEM_poissonratio'] )
-        print 'PR= ', PR
+        print 'PR = ', PR
         
-        # now open again and write the setup:
+        # write material properties
+        inpfile.write('\n\n\n\n***********************************************************\n')
+        inpfile.write('** material\n')
+        inpfile.write('** unit is kPa = mN/mm2 = (kg*mm/s^2) * 1/mm^2 = kg/mm*s^2 = 10e-3 N/mm2 = 10e-3 MPa\n')
         inpfile.write('*MATERIAL, Name='+matmap['General_name'] + '\n')
         inpfile.write('*ELASTIC \n')
         inpfile.write('{0:.3f}, '.format(YM.Value) )
         inpfile.write('{0:.3f}\n'.format(PR) )
         inpfile.write('*SOLID SECTION, Elset=Eall, Material='+matmap['General_name'] + '\n')
+        
+        # write step beginn
+        inpfile.write('\n\n\n\n***********************************************************\n')
+        inpfile.write('** one step is needed to calculate the mechanical analysis of FreeCAD\n')
+        inpfile.write('** loads are applied quasi-static, means without involving the time dimension\n')
         inpfile.write('*STEP\n')
         inpfile.write('*STATIC\n')
-        inpfile.write('*BOUNDARY\n')
-        inpfile.write(NodeSetName + ',1,3,0.0\n')
+
+        # write constaints
+        inpfile.write('\n\n** constaints\n')
+        if FixedObjectType == 'AreaSupport':
+            inpfile.write('*BOUNDARY\n')
+            inpfile.write(NodeSetName + ',1,3,0.0\n')
+        elif FixedObjectType == 'LineSupport':
+            pass  # ToDo
+        elif FixedObjectType == 'PointSupport':
+            pass  # ToDo
+
+        # write loads
         #inpfile.write('*DLOAD\n')
         #inpfile.write('Eall,NEWTON\n')
-        
-        Force = (ForceObject.Force * 1000.0) / NbrForceNods
-        vec = ForceObject.DirectionVector
-        inpfile.write('*CLOAD\n')
-        inpfile.write(NodeSetNameForce + ',1,' + `vec.x * Force` + '\n')
-        inpfile.write(NodeSetNameForce + ',2,' + `vec.y * Force` + '\n')
-        inpfile.write(NodeSetNameForce + ',3,' + `vec.z * Force` + '\n')
-
+        inpfile.write('\n\n** loads\n')
+        if ForceObjectType == 'AreaLoad':
+            Force = (ForceObject.Force * 1000.0) / NbrForceNods
+            vec = ForceObject.DirectionVector
+            inpfile.write('** direction: ' + str(vec)  + '\n')
+            inpfile.write('** concentrated load [N] distributed on the area of the given faces.\n')
+            inpfile.write('** ' + str(ForceObject.Force) + ' N * 1000 / ' + str(NbrForceNods) + ' Nodes = ' + str(Force) + ' mN on each node\n')
+            inpfile.write('*CLOAD\n')
+            inpfile.write(NodeSetNameForce + ',1,' + `vec.x * Force` + '\n')
+            inpfile.write(NodeSetNameForce + ',2,' + `vec.y * Force` + '\n')
+            inpfile.write(NodeSetNameForce + ',3,' + `vec.z * Force` + '\n')
+        elif ForceObjectType == 'LineLoad':
+            pass  # ToDo
+        elif ForceObjectType == 'PointLoad':
+            pass  # ToDo
+ 
+        # write outputs, both are needed by FreeCAD        
+        inpfile.write('\n\n** outputs --> frd file\n')
         inpfile.write('*NODE FILE\n')
         inpfile.write('U\n')
         inpfile.write('*EL FILE\n')
         inpfile.write('S, E\n')
+        inpfile.write('** outputs --> dat file\n')
         inpfile.write('*NODE PRINT , NSET=Nall \n')
         inpfile.write('U \n')
         inpfile.write('*EL PRINT , ELSET=Eall \n')
         inpfile.write('S \n')
-        inpfile.write('*END STEP \n')
-        
+        inpfile.write('\n\n')
 
-        #do not run Calculix
+        # write step end
+        inpfile.write('*END STEP \n')
+
+        # write some informations
+        FcVersionInfo = FreeCAD.Version()
+        inpfile.write('\n\n\n\n***********************************************************\n')
+        inpfile.write('**\n')
+        inpfile.write('**   CalculiX Inputfile\n')
+        inpfile.write('**\n')
+        inpfile.write('**   written by: FreeCAD ' + FcVersionInfo[0] + '.' + FcVersionInfo[1] + '.' + FcVersionInfo[2] + '\n')
+        inpfile.write('**   written on: ' + time.ctime() + '\n')
+        inpfile.write('**   file name: ' + os.path.basename(FreeCAD.ActiveDocument.FileName) + '\n')
+        inpfile.write('**   analysis name: ' + FemGui.getActiveAnalysis().Name + '\n')
+        inpfile.write('**\n')
+
+        inpfile.close()
 
         QApplication.restoreOverrideCursor()
 
@@ -543,11 +607,11 @@ class _ResultControlTaskPanel:
         self.form.spinBox_DisplacementFactor.setValue(value)
 
     def sliderMaxValue(self,value):
-        print 'sliderMaxValue()'
+        #print 'sliderMaxValue()'
         self.form.verticalScrollBar_Factor.setMaximum(value)
         
     def displacementFactorValue(self,value):
-        print 'displacementFactorValue()'
+        #print 'displacementFactorValue()'
         self.form.verticalScrollBar_Factor.setValue(value)
                     
     def setDisplacement(self):
@@ -564,7 +628,7 @@ class _ResultControlTaskPanel:
 
     def update(self):
         'fills the widgets'
-        print "Update-------------------------------"
+        #print "Update-------------------------------"
         self.MeshObject = None
         if FemGui.getActiveAnalysis():
             for i in FemGui.getActiveAnalysis().Member:

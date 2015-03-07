@@ -176,7 +176,7 @@ std::string Path::getPythonAccessor() const
     const Property * prop = getProperty();
 
     if (!prop)
-        throw Exception("Property not found");
+        throw Exception(std::string("Property '") + getPropertyName() + std::string("' not found."));
 
     const DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop->getContainer());
 
@@ -1309,6 +1309,16 @@ Document * Path::getDocument() const
     return doc;
 }
 
+const DocumentObject *Path::getDocumentObject() const
+{
+    const App::Document * doc = getDocument();
+
+    if (!doc)
+        return 0;
+
+    return  getDocumentObject(doc, documentObjectName);
+}
+
 const Property *Path::getProperty() const
 {
     const App::Document * doc = getDocument();
@@ -1346,7 +1356,7 @@ const Property * VariableExpression::getProperty() const
     if (prop)
         return prop;
     else
-        throw Base::Exception("Property not found.");
+        throw Base::Exception(std::string("Property '") + var.getPropertyName() + std::string("' not found."));
 }
 
 /**
@@ -1783,6 +1793,11 @@ void RangeExpression::getDeps(std::set<Path> &props) const
 Expression *RangeExpression::simplify() const
 {
     return copy();
+}
+
+void RangeExpression::setRange(const Range &r)
+{
+    range = r;
 }
 
 }
