@@ -189,7 +189,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="DraftTools.py" line="4063"/>
       <source>Draft to Sketch</source>
-      <translation type="unfinished">Draft to Sketch</translation>
+      <translation type="unfinished">Нацрт у Cкицу</translation>
     </message>
   </context>
   <context>
@@ -431,12 +431,12 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     <message>
       <location filename="DraftTools.py" line="4024"/>
       <source>Shape 2D view</source>
-      <translation type="unfinished">Shape 2D view</translation>
+      <translation type="unfinished">2D приказ облика</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4025"/>
       <source>Creates Shape 2D views of selected objects</source>
-      <translation type="unfinished">Creates Shape 2D views of selected objects</translation>
+      <translation type="unfinished">Cтвара 2D поглед одабраних објеката</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4064"/>
@@ -1300,7 +1300,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="422"/>
       <source>Construction geometry color</source>
-      <translation type="unfinished">Construction geometry color</translation>
+      <translation type="unfinished">Боја конcтрукционе геометрије</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="69"/>

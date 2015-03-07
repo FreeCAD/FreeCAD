@@ -137,12 +137,12 @@
       <translation type="unfinished">Будь ласка, оберіть спочатку 3 об'єкти</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">Непідтримувані функції</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Press OK</source>
       <translation type="unfinished">Натисніть OK</translation>
     </message>

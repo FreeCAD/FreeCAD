@@ -494,7 +494,7 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="obsolete">Вправо</translation>
+        <translation type="obsolete">Справа</translation>
     </message>
     <message>
         <source>Back</source>
@@ -506,11 +506,11 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="obsolete">Вверх</translation>
+        <translation type="obsolete">Сверху</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="obsolete">Дно</translation>
+        <translation type="obsolete">Снизу</translation>
     </message>
     <message>
         <source>- Rotate</source>
@@ -822,7 +822,7 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="obsolete">Вправо</translation>
+        <translation type="obsolete">Справа</translation>
     </message>
     <message>
         <source>Left</source>
@@ -830,11 +830,11 @@ Do you want to continue?</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="obsolete">Вверх</translation>
+        <translation type="obsolete">Сверху</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="obsolete">Дно</translation>
+        <translation type="obsolete">Снизу</translation>
     </message>
     <message>
         <location filename="../../TaskOrthoViews.cpp" line="+45"/>

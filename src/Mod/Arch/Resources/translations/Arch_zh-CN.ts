@@ -169,7 +169,7 @@
       <translation type="unfinished">楼板标高</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="715"/>
+      <location filename="ArchRoof.py" line="720"/>
       <source>Roof</source>
       <translation type="unfinished">屋顶</translation>
     </message>
@@ -369,7 +369,7 @@
       <translation type="unfinished">错误:无法确定字符编码</translation>
     </message>
     <message>
-      <location filename="importDAE.py" line="180"/>
+      <location filename="importDAE.py" line="182"/>
       <source>file %s successfully created.</source>
       <translation type="unfinished">文件%s已成功创建.</translation>
     </message>
@@ -952,7 +952,7 @@
       <translation type="unfinished">The offset between this panel and its baseline</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="716"/>
+      <location filename="ArchRoof.py" line="721"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -977,12 +977,12 @@ If Angle = 0 then angle is calculated so that the height is the same one as the 
 If Run = 0 then Run is calculated so that the height is the same one as the relative profile.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Id</source>
       <translation type="unfinished">Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>IdRel</source>
       <translation type="unfinished">IdRel</translation>
     </message>
@@ -1169,27 +1169,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">A list of calculated heights for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Angle (deg)</source>
       <translation type="unfinished">Angle (deg)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Run (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Thickness (mm)</source>
       <translation type="unfinished">Thickness (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Overhang (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Height (mm)</source>
       <translation type="unfinished">Height (mm)</translation>
     </message>

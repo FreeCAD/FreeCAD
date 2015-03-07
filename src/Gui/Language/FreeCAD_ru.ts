@@ -21,7 +21,7 @@
     </message>
     <message>
         <source>Angle Snap</source>
-        <translation type="unfinished">Угол оснастки</translation>
+        <translation type="unfinished">Прилипание угла</translation>
     </message>
     <message utf8="true">
         <source>1 °</source>
@@ -60,7 +60,7 @@
     <name>CmdViewMeasureClearAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Мера</translation>
+        <translation type="unfinished">Измерения</translation>
     </message>
     <message>
         <source>Clear measurement</source>
@@ -71,18 +71,18 @@
     <name>CmdViewMeasureToggleAll</name>
     <message>
         <source>Measure</source>
-        <translation type="unfinished">Мера</translation>
+        <translation type="unfinished">Измерения</translation>
     </message>
     <message>
         <source>Toggle measurement</source>
-        <translation type="unfinished">Переключатель измерения</translation>
+        <translation type="unfinished">Скрыть/Показать всё</translation>
     </message>
 </context>
 <context>
     <name>DlgCustomizeSpNavSettings</name>
     <message>
         <source>Spaceball Motion</source>
-        <translation type="unfinished">Spaceball Движение</translation>
+        <translation type="unfinished">Spaceball</translation>
     </message>
     <message>
         <source>Global Sensitivity:  </source>
@@ -90,23 +90,23 @@
     </message>
     <message>
         <source>Dominant Mode</source>
-        <translation type="unfinished">Основной режим</translation>
+        <translation type="unfinished">Доминантный режим</translation>
     </message>
     <message>
         <source>Flip Y/Z</source>
-        <translation type="unfinished">Отразить-Y/Z</translation>
+        <translation type="unfinished">Обменять Y/Z</translation>
     </message>
     <message>
         <source>Enable Translations</source>
-        <translation type="unfinished">Включить перевод</translation>
+        <translation type="unfinished">Разрешить перемещение</translation>
     </message>
     <message>
         <source>Enable Rotations</source>
-        <translation type="unfinished">начать вращение</translation>
+        <translation type="unfinished">Разрешить вращение</translation>
     </message>
     <message>
         <source>Calibrate</source>
-        <translation type="unfinished">проверить</translation>
+        <translation type="unfinished">Калибровать</translation>
     </message>
     <message>
         <source>Default</source>
@@ -118,14 +118,14 @@
     </message>
     <message>
         <source>Reverse</source>
-        <translation type="unfinished">Развернуть</translation>
+        <translation type="unfinished">Инвертировать</translation>
     </message>
 </context>
 <context>
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation type="unfinished">Калькулятор значений</translation>
+        <translation type="unfinished">Конвертер величин</translation>
     </message>
     <message>
         <source>as:</source>
@@ -323,7 +323,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Out Of Range</source>
-        <translation type="unfinished">За пределами допустимого диапазона</translation>
+        <translation type="unfinished">нет такой кнопки</translation>
     </message>
 </context>
 <context>
@@ -334,11 +334,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Clipping X</source>
-        <translation type="unfinished">Отсечения X</translation>
+        <translation type="unfinished">Отсечение по X</translation>
     </message>
     <message>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation type="unfinished">инверт.</translation>
     </message>
     <message>
         <source>Offset</source>
@@ -346,15 +346,15 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Clipping Y</source>
-        <translation type="unfinished">Отсечения Y</translation>
+        <translation type="unfinished">Отсечение по Y</translation>
     </message>
     <message>
         <source>Clipping Z</source>
-        <translation type="unfinished">Отсечения Y</translation>
+        <translation type="unfinished">Отсечение по Z</translation>
     </message>
     <message>
         <source>Clipping custom direction</source>
-        <translation type="unfinished">Отсечение пользовательских направление</translation>
+        <translation type="unfinished">Отсечение по произвольному направлению</translation>
     </message>
     <message>
         <source>View</source>
@@ -362,7 +362,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Настройки для просмотра направление</translation>
+        <translation type="unfinished">Привязать к направлению обзора</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -400,7 +400,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Enable timer</source>
-        <translation type="unfinished">Включить таймер</translation>
+        <translation type="unfinished">Таймер</translation>
     </message>
     <message>
         <source> s</source>
@@ -420,7 +420,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Play</source>
-        <translation type="unfinished">Воспроизвести</translation>
+        <translation type="unfinished">Старт</translation>
     </message>
     <message>
         <source>Stop</source>
@@ -488,7 +488,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Icon folders...</source>
-        <translation type="unfinished">Icon folders...</translation>
+        <translation type="unfinished">Список папок...</translation>
     </message>
 </context>
 <context>
@@ -515,7 +515,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Accelerator:</source>
-        <translation type="unfinished">Ускоритель:</translation>
+        <translation type="unfinished">Сочетание клавиш:</translation>
     </message>
     <message>
         <source>What&apos;s this:</source>
@@ -531,7 +531,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Menu text:</source>
-        <translation type="unfinished">Текст меню:</translation>
+        <translation type="unfinished">В меню:</translation>
     </message>
     <message>
         <source>Add</source>
@@ -558,11 +558,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>No macro</source>
-        <translation type="unfinished">Нет макроса</translation>
+        <translation type="unfinished">Нет макросов</translation>
     </message>
     <message>
         <source>No macros found.</source>
-        <translation type="unfinished">Макросы не найдены.</translation>
+        <translation type="unfinished">Нет ни одного макроса.</translation>
     </message>
     <message>
         <source>Macro not found</source>
@@ -570,7 +570,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Sorry, couldn&apos;t find macro file &apos;%1&apos;.</source>
-        <translation type="unfinished">К сожалению не удалось найти файл &apos;% 1&apos; макроса. </translation>
+        <translation type="unfinished">К сожалению не удалось найти файл макроса &apos;%1&apos;.</translation>
     </message>
     <message>
         <source>Empty macro</source>
@@ -590,11 +590,11 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>No item selected</source>
-        <translation type="unfinished">Ни один пункт выбран</translation>
+        <translation type="unfinished">Ничего не выбрано</translation>
     </message>
     <message>
         <source>Please select a macro item first.</source>
-        <translation type="unfinished">Пожалуйста, выберите сначала макрос.</translation>
+        <translation type="unfinished">Пожалуйста, сначала выберите макрос.</translation>
     </message>
 </context>
 <context>
@@ -702,18 +702,19 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>The shortcut &apos;%1&apos; is defined more than once. This could result into unexpected behaviour.</source>
-        <translation type="unfinished">&apos;%1&apos; клавиша быстрого доступа определена более одного раза. Это может привести к неожиданному поведению.</translation>
+        <translation type="unfinished">Сочетанию клавиш &apos;%1&apos; назначено более одного действия. Это может привести к неожиданному поведению.</translation>
     </message>
     <message>
         <source>Already defined shortcut</source>
-        <translation type="unfinished">Ярлык уже определен</translation>
+        <translation type="unfinished">Уже назначено</translation>
     </message>
     <message>
         <source>The shortcut &apos;%1&apos; is already assigned to &apos;%2&apos;.
 
 Please define another shortcut.</source>
-        <translation type="unfinished">Клавиша быстрого доступа &apos;%1&apos; уже назначена для &apos;%2&apos;.
-Пожалуйста, определите другое значение клавиши быстрого доступа.</translation>
+        <translation type="unfinished">Сочетание &apos;%1&apos; уже назначено: &apos;%2&apos;.
+
+Пожалуйста, измените сочетание.</translation>
     </message>
 </context>
 <context>
@@ -731,11 +732,11 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; The changes become active the next time you load the appropriate workbench&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Внимание:&lt;/span&gt; изменения вступят в силу только после повторной загрузки верстака&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation type="unfinished">Перейти вправо</translation>
+        <translation type="unfinished">Добавить</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -743,7 +744,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Move left</source>
-        <translation type="unfinished">Перейти влево</translation>
+        <translation type="unfinished">Удалить</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -815,7 +816,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Global</source>
-        <translation type="unfinished">Глобальный</translation>
+        <translation type="unfinished">Глобально</translation>
     </message>
 </context>
 <context>
@@ -837,7 +838,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgCustomizeSpNavSettings</name>
     <message>
         <source>Spaceball Motion</source>
-        <translation type="unfinished">Spaceball Движение</translation>
+        <translation type="unfinished">Spaceball</translation>
     </message>
     <message>
         <source>No Spaceball Present</source>
@@ -860,18 +861,18 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Print Reference</source>
-        <translation type="unfinished">Руководство по печати</translation>
+        <translation type="unfinished">Напечатать шпаргалку</translation>
     </message>
     <message>
         <source>Spaceball Buttons</source>
-        <translation type="unfinished">Spaceball кнопка</translation>
+        <translation type="unfinished">Кнопки Spaceball</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgDisplayProperties</name>
     <message>
         <source>Display properties</source>
-        <translation type="unfinished">Отобразить свойства</translation>
+        <translation type="unfinished">Внешний вид</translation>
     </message>
     <message>
         <source>Display</source>
@@ -899,11 +900,11 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Viewing mode</source>
-        <translation type="unfinished">Режим просмотра</translation>
+        <translation type="unfinished">Стиль представления</translation>
     </message>
     <message>
         <source>Plot mode:</source>
-        <translation type="unfinished">Режим вывода  на печать:</translation>
+        <translation type="unfinished">Режим графика:</translation>
     </message>
     <message>
         <source></source>
@@ -911,19 +912,19 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Line transparency:</source>
-        <translation type="unfinished">Прозрачность линии:</translation>
+        <translation type="unfinished">Прозрачность линий:</translation>
     </message>
     <message>
         <source>Line color:</source>
-        <translation type="unfinished">Цвет линии:</translation>
+        <translation type="unfinished">Цвет линий:</translation>
     </message>
     <message>
         <source>Shape color:</source>
-        <translation type="unfinished">Цвет фигуры:</translation>
+        <translation type="unfinished">Цвет граней:</translation>
     </message>
     <message>
         <source>Color plot:</source>
-        <translation type="unfinished">Цветной рисунок:</translation>
+        <translation type="unfinished">Цветографик:</translation>
     </message>
     <message>
         <source>Document window:</source>
@@ -1025,7 +1026,7 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgEditorSettings</name>
     <message>
         <source>Editor</source>
-        <translation type="unfinished">Редактор</translation>
+        <translation type="unfinished">Редактор кода</translation>
     </message>
     <message>
         <source>Options</source>
@@ -1033,7 +1034,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Enable line numbers</source>
-        <translation type="unfinished">Включить номера строк</translation>
+        <translation type="unfinished">Показывать номера строк</translation>
     </message>
     <message>
         <source>Enable folding</source>
@@ -1041,11 +1042,11 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Indentation</source>
-        <translation type="unfinished">Отступ</translation>
+        <translation type="unfinished">Отступы</translation>
     </message>
     <message>
         <source>Insert spaces</source>
-        <translation type="unfinished">Вставить пробелы</translation>
+        <translation type="unfinished">Заменять на пробелы</translation>
     </message>
     <message>
         <source>Tab size:</source>
@@ -1057,15 +1058,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Keep tabs</source>
-        <translation type="unfinished">Сохранить вкладки</translation>
+        <translation type="unfinished">Символы табуляции</translation>
     </message>
     <message>
         <source>Display Items</source>
-        <translation type="unfinished">Отобразить элементы</translation>
+        <translation type="unfinished">Раскрашивание кода</translation>
     </message>
     <message>
         <source>Family:</source>
-        <translation type="unfinished">Семейство:</translation>
+        <translation type="unfinished">Шрифт:</translation>
     </message>
     <message>
         <source>Size:</source>
@@ -1100,15 +1101,15 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Auto load module after start up:</source>
-        <translation type="unfinished">Автоматическая загрузка модуля после запуска:</translation>
+        <translation type="unfinished">Автоматическая загружать верстак:</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation type="unfinished">Язык</translation>
+        <translation type="unfinished">Язык (Language)</translation>
     </message>
     <message>
         <source>Change language:</source>
-        <translation type="unfinished">Изменить язык:</translation>
+        <translation type="unfinished">Изменить язык (Change language):</translation>
     </message>
     <message>
         <source>Main window</source>
@@ -1128,7 +1129,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Enable tiled background</source>
-        <translation type="unfinished">Включить повторяющийся фон</translation>
+        <translation type="unfinished">Замостить фон</translation>
     </message>
     <message>
         <source>Style sheet:</source>
@@ -1139,19 +1140,19 @@ Please define another shortcut.</source>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
         <source>Default (%1 x %1)</source>
-        <translation type="unfinished">По умолчанию (%1х%1)</translation>
+        <translation type="unfinished">Обычные (%1х%1)</translation>
     </message>
     <message>
         <source>Small (%1 x %1)</source>
-        <translation type="unfinished">Маленький (%1%х%1)</translation>
+        <translation type="unfinished">Мелкие (%1%х%1)</translation>
     </message>
     <message>
         <source>Large (%1 x %1)</source>
-        <translation type="unfinished">Большой (%1x%1)</translation>
+        <translation type="unfinished">Крупные (%1 x %1)</translation>
     </message>
     <message>
         <source>Extra large (%1 x %1)</source>
-        <translation type="unfinished">Очень большой (%1х%1)</translation>
+        <translation type="unfinished">Очень крупные (%1 х %1)</translation>
     </message>
     <message>
         <source>No style sheet</source>
@@ -1188,7 +1189,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Macro destination:</source>
-        <translation type="unfinished">Назначение макроса:</translation>
+        <translation type="unfinished">Папка с макросами:</translation>
     </message>
     <message>
         <source>Execute</source>
@@ -1200,7 +1201,7 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished">Создать</translation>
+        <translation type="unfinished">Запаковать</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1294,7 +1295,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Existing macro</source>
-        <translation type="unfinished">Существующие макросы</translation>
+        <translation type="unfinished">Уже есть</translation>
     </message>
     <message>
         <source>The macro &apos;%1&apos; already exists. Do you want to overwrite?</source>
@@ -1302,11 +1303,11 @@ This file already exists.</source>
     </message>
     <message>
         <source>The macro directory doesn&apos;t exist. Please, choose another one.</source>
-        <translation type="unfinished">Макрос каталог не существует. Пожалуйста выберите другой.</translation>
+        <translation type="unfinished">Указанная директория не существует. Пожалуйста, укажите другую.</translation>
     </message>
     <message>
         <source>Choose macro directory</source>
-        <translation type="unfinished">Выберите каталог макросов</translation>
+        <translation type="unfinished">Выберите директорию для макросов</translation>
     </message>
     <message>
         <source>You have no write permission for the directory. Please, choose another one.</source>
@@ -1329,7 +1330,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Specular color:</source>
-        <translation type="unfinished">Отраженный цвет:</translation>
+        <translation type="unfinished">Цвет блеска:</translation>
     </message>
     <message>
         <source>Shininess:</source>
@@ -1349,7 +1350,7 @@ This file already exists.</source>
     </message>
     <message>
         <source>Emissive color:</source>
-        <translation type="unfinished">Воздействующий цвет:</translation>
+        <translation type="unfinished">Цвет свечения:</translation>
     </message>
 </context>
 <context>
@@ -1389,7 +1390,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgParameter</name>
     <message>
         <source>Parameter Editor</source>
-        <translation type="unfinished">Параметры редактора</translation>
+        <translation type="unfinished">Редактор параметров</translation>
     </message>
     <message>
         <source>Save to disk</source>
@@ -1432,7 +1433,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Invalid key name &apos;%1&apos;</source>
-        <translation type="unfinished">Недопустимое имя ключа &apos;% 1&apos;</translation>
+        <translation type="unfinished">Недопустимое имя ключа &apos;%1&apos;</translation>
     </message>
     <message>
         <source>System parameter</source>
@@ -1481,7 +1482,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&amp;Last modified by:</source>
-        <translation type="unfinished">&amp;Последние изменения внесены:</translation>
+        <translation type="unfinished">Автор последних изменений:</translation>
     </message>
     <message>
         <source>Created &amp;by:</source>
@@ -1509,7 +1510,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>License information:</source>
-        <translation type="unfinished">Информация о лицензии:</translation>
+        <translation type="unfinished">Лицензия:</translation>
     </message>
     <message>
         <source>License URL</source>
@@ -1528,11 +1529,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Extract project</source>
-        <translation type="unfinished">Извлечь проект</translation>
+        <translation type="unfinished">Распаковать проект</translation>
     </message>
     <message>
         <source>Source</source>
-        <translation type="unfinished">Источник</translation>
+        <translation type="unfinished">Откуда:</translation>
     </message>
     <message>
         <source>Project file (*.fcstd)</source>
@@ -1540,15 +1541,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Destination</source>
-        <translation type="unfinished">Назначение</translation>
+        <translation type="unfinished">Куда:</translation>
     </message>
     <message>
         <source>Extract</source>
-        <translation type="unfinished">Извлечь</translation>
+        <translation type="unfinished">Распаковать</translation>
     </message>
     <message>
         <source>Create project</source>
-        <translation type="unfinished">Создать проект</translation>
+        <translation type="unfinished">Запаковать проект</translation>
     </message>
     <message>
         <source>Document.xml</source>
@@ -1556,38 +1557,38 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Create</source>
-        <translation type="unfinished">Создать</translation>
+        <translation type="unfinished">Запаковать</translation>
     </message>
     <message>
         <source>Load project file after creation</source>
-        <translation type="unfinished">Загрузить файл проекта после создания</translation>
+        <translation type="unfinished">Открыть проект после запаковки</translation>
     </message>
     <message>
         <source>Empty source</source>
-        <translation type="unfinished">Пустой источник</translation>
+        <translation type="unfinished">Откуда?</translation>
     </message>
     <message>
         <source>No source is defined.</source>
-        <translation type="unfinished">Источник не определён.</translation>
+        <translation type="unfinished">Не указан источник.</translation>
     </message>
     <message>
         <source>Empty destination</source>
-        <translation type="unfinished">Назначение пусто</translation>
+        <translation type="unfinished">Куда?</translation>
     </message>
     <message>
         <source>No destination is defined.</source>
-        <translation type="unfinished">Назначение не определено.</translation>
+        <translation type="unfinished">Не указано, куда.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
         <source>Link</source>
-        <translation type="unfinished">Link</translation>
+        <translation type="unfinished">Зависимость</translation>
     </message>
     <message>
         <source>Show all object types</source>
-        <translation type="unfinished">Show all object types</translation>
+        <translation type="unfinished">Показывать объекты всех типов</translation>
     </message>
     <message>
         <source>No selection</source>
@@ -1602,7 +1603,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgReportView</name>
     <message>
         <source>Output window</source>
-        <translation type="unfinished">Окно вывода</translation>
+        <translation type="unfinished">Просмотр отчёта</translation>
     </message>
     <message>
         <source>Output</source>
@@ -1610,15 +1611,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Record log messages</source>
-        <translation type="unfinished">Запись журнала</translation>
+        <translation type="unfinished">Выводить информационные сообщения (log)</translation>
     </message>
     <message>
         <source>Record warnings</source>
-        <translation type="unfinished">Запись предупреждений</translation>
+        <translation type="unfinished">Выводить предупреждения (warnings)</translation>
     </message>
     <message>
         <source>Record error messages</source>
-        <translation type="unfinished">Запись сообщений об ошибках</translation>
+        <translation type="unfinished">Выводить сообщения об ошибках (errors)</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -1630,15 +1631,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Log messages:</source>
-        <translation type="unfinished">Журнал сообщений:</translation>
+        <translation type="unfinished">Журнал (log):</translation>
     </message>
     <message>
         <source>Warnings:</source>
-        <translation type="unfinished">Предупреждения:</translation>
+        <translation type="unfinished">Предупреждения (warnings):</translation>
     </message>
     <message>
         <source>Errors:</source>
-        <translation type="unfinished">Ошибки:</translation>
+        <translation type="unfinished">Ошибки (errors):</translation>
     </message>
     <message>
         <source></source>
@@ -1646,11 +1647,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Redirect internal Python errors to report view</source>
-        <translation type="unfinished">Перенаправить внутренние ошибки Python для представления отчета</translation>
+        <translation type="unfinished">Перенаправить внутренние ошибки Python в отчёт</translation>
     </message>
     <message>
         <source>Redirect internal Python output to report view</source>
-        <translation type="unfinished">Перенаправить внутренний выход Python в информационное окно</translation>
+        <translation type="unfinished">Перенаправить внутренний вывод Python в отчёт</translation>
     </message>
 </context>
 <context>
@@ -1704,11 +1705,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Show coordinate system in the corner</source>
-        <translation type="unfinished">Показать систему координат в углу</translation>
+        <translation type="unfinished">Показывать систему координат в углу</translation>
     </message>
     <message>
         <source>Show counter of frames per second</source>
-        <translation type="unfinished">Показать счетчик кадров в секунду</translation>
+        <translation type="unfinished">Показывать счетчик кадров в секунду</translation>
     </message>
     <message>
         <source>Enable animation</source>
@@ -1724,11 +1725,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orthographic rendering</source>
-        <translation type="unfinished">Ортогональный рендеринг</translation>
+        <translation type="unfinished">Рендеринг в параллельной проекции</translation>
     </message>
     <message>
         <source>Perspective rendering</source>
-        <translation type="unfinished">Рендер в перспективе</translation>
+        <translation type="unfinished">Рендеринг в перспективной проекции</translation>
     </message>
     <message>
         <source></source>
@@ -1752,7 +1753,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Orbit style</source>
-        <translation type="unfinished">Стиль орбиты</translation>
+        <translation type="unfinished">Вращение</translation>
     </message>
     <message>
         <source>Turntable</source>
@@ -1768,7 +1769,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Zoom at cursor</source>
-        <translation type="unfinished">Масштабирование курсора</translation>
+        <translation type="unfinished">Зум туда, где мышь</translation>
     </message>
     <message>
         <source>Zoom step</source>
@@ -1776,15 +1777,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Anti-Aliasing</source>
-        <translation type="unfinished">Anti-Aliasing</translation>
+        <translation type="unfinished">Сглаживание</translation>
     </message>
     <message>
         <source>None</source>
-        <translation type="unfinished">Ничего</translation>
+        <translation type="unfinished">Нет</translation>
     </message>
     <message>
         <source>Line Smoothing</source>
-        <translation type="unfinished">Line Smoothing</translation>
+        <translation type="unfinished">Сглаживание линий</translation>
     </message>
     <message>
         <source>MSAA 2x</source>
@@ -1814,7 +1815,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&amp;Gradient:</source>
-        <translation type="unfinished">&amp; Градиент:</translation>
+        <translation type="unfinished">Градиент:</translation>
     </message>
     <message>
         <source>red-yellow-green-cyan-blue</source>
@@ -1838,7 +1839,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Out g&amp;rayed</source>
-        <translation type="unfinished">Из серого</translation>
+        <translation type="unfinished">Зашкал - серым</translation>
     </message>
     <message>
         <source>Alt+R</source>
@@ -1846,7 +1847,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Out &amp;invisible</source>
-        <translation type="unfinished">Из &amp;невидимого</translation>
+        <translation type="unfinished">Зашкал - прозрачный</translation>
     </message>
     <message>
         <source>Alt+I</source>
@@ -1878,19 +1879,19 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Mi&amp;nimum:</source>
-        <translation type="unfinished">Ми&amp;нимум:</translation>
+        <translation type="unfinished">Минимум:</translation>
     </message>
     <message>
         <source>Ma&amp;ximum:</source>
-        <translation type="unfinished">Ма&amp;ксимум:</translation>
+        <translation type="unfinished">Максимум:</translation>
     </message>
     <message>
         <source>&amp;Labels:</source>
-        <translation type="unfinished">Ярлыки:</translation>
+        <translation type="unfinished">Делений:</translation>
     </message>
     <message>
         <source>&amp;Decimals:</source>
-        <translation type="unfinished">&amp; Десятичные:</translation>
+        <translation type="unfinished">Точность:</translation>
     </message>
     <message>
         <source></source>
@@ -1898,7 +1899,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Color-gradient settings</source>
-        <translation type="unfinished">Настройки цветового градиента</translation>
+        <translation type="unfinished">Настройки цветовой шкалы</translation>
     </message>
 </context>
 <context>
@@ -1930,15 +1931,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Create new document at start up</source>
-        <translation type="unfinished">Создание нового документа при запуске</translation>
+        <translation type="unfinished">Создавать новый документ при запуске</translation>
     </message>
     <message>
         <source>Storage</source>
-        <translation type="unfinished">Хранилище</translation>
+        <translation type="unfinished">Сохранение</translation>
     </message>
     <message>
         <source>Saving transactions (Auto-save)</source>
-        <translation type="unfinished">Сохранение операций (Автосохранение)</translation>
+        <translation type="unfinished">Записывать все операции (Автосохранение)</translation>
     </message>
     <message>
         <source>Discard saved transaction after saving document</source>
@@ -1950,23 +1951,23 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Create up to backup files when resaving document</source>
-        <translation type="unfinished">Создать резервную копию файлов, когда сохраняется  документ</translation>
+        <translation type="unfinished">Сколько старых версий оставлять при сохранении:</translation>
     </message>
     <message>
         <source>Document objects</source>
-        <translation type="unfinished">Объекты документа</translation>
+        <translation type="unfinished">Объекты в документе</translation>
     </message>
     <message>
         <source>Allow duplicate object labels in one document</source>
-        <translation type="unfinished">Разрешить создавать дубликат этикетки в одном документе</translation>
+        <translation type="unfinished">Разрешить идентичные метки (Label) в одном документе</translation>
     </message>
     <message>
         <source>Maximum Undo/Redo steps</source>
-        <translation type="unfinished">Максимальная Отмена/Повтор шагов</translation>
+        <translation type="unfinished">Максимум отмен/повторов</translation>
     </message>
     <message>
         <source>Using Undo/Redo on documents</source>
-        <translation type="unfinished">Использование Undo/Redo на документах</translation>
+        <translation type="unfinished">отмены/повторы</translation>
     </message>
     <message>
         <source>Authoring and License</source>
@@ -1978,7 +1979,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The name to use on document creation.&lt;/p&gt;&lt;p&gt;Keep blank for anonymous.&lt;/p&gt;&lt;p&gt;You can also use the form:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Какое имя использовать при создании документов.&lt;/p&gt;&lt;p&gt;Не заполняйте поле, чтобы сохранить анонимность.&lt;/p&gt;&lt;p&gt;Также можно написать что-то вроде этого:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Какое имя использовать при создании документов.&lt;/p&gt;&lt;p&gt;Можно оставить пустым.&lt;/p&gt;&lt;p&gt;Также можно написать что-то вроде этого:&lt;/p&gt;&lt;p&gt;John Doe &amp;lt;john@doe.com&amp;gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>If this is checked, the &quot;Last modified by&quot; field will be set when saving the file</source>
@@ -2038,7 +2039,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Other</source>
-        <translation type="unfinished">Нечто</translation>
+        <translation type="unfinished">Другое</translation>
     </message>
     <message>
         <source>License URL</source>
@@ -2065,7 +2066,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Bookmark</source>
-        <translation type="unfinished">Закладки</translation>
+        <translation type="unfinished">Закладка</translation>
     </message>
     <message>
         <source>Breakpoint</source>
@@ -2077,7 +2078,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Comment</source>
-        <translation type="unfinished">Комментарий</translation>
+        <translation type="unfinished">Закомментировать</translation>
     </message>
     <message>
         <source>Block comment</source>
@@ -2101,7 +2102,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Define name</source>
-        <translation type="unfinished">Задать имя</translation>
+        <translation type="unfinished">Символ препроцессора</translation>
     </message>
     <message>
         <source>Operator</source>
@@ -2156,15 +2157,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Pixel</source>
-        <translation type="unfinished">Пиксель</translation>
+        <translation type="unfinished">пикс.</translation>
     </message>
     <message>
         <source>&amp;Width:</source>
-        <translation type="unfinished">&amp;Ширина:</translation>
+        <translation type="unfinished">Ширина:</translation>
     </message>
     <message>
         <source>Current screen</source>
-        <translation type="unfinished">Текущий экран</translation>
+        <translation type="unfinished">Текущий вид</translation>
     </message>
     <message>
         <source>Icon       32  x 32</source>
@@ -2260,7 +2261,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>&amp;Height:</source>
-        <translation type="unfinished">&amp; Высота:</translation>
+        <translation type="unfinished">Высота:</translation>
     </message>
     <message>
         <source>Aspect ratio:</source>
@@ -2331,7 +2332,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Log all commands issued by menus to file:</source>
-        <translation type="unfinished">Регистрация всех команд, вызванных при помощи меню, в файле:</translation>
+        <translation type="unfinished">Записывать все команды интерфейса в файл:</translation>
     </message>
     <message>
         <source>FullScript.FCScript</source>
@@ -2355,7 +2356,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>General macro settings</source>
-        <translation type="unfinished">Параметры общих макросов</translation>
+        <translation type="unfinished">Общие параметры макросов</translation>
     </message>
     <message>
         <source>Run macros in local environment</source>
@@ -2374,11 +2375,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Standard (mm/kg/s/degree)</source>
-        <translation type="unfinished">Стандарт (мм/кг/с/град)</translation>
+        <translation type="unfinished">Стандартные (мм/кг/с/градус)</translation>
     </message>
     <message>
         <source>MKS (m/kg/s/degree)</source>
-        <translation type="unfinished">МКС (м/кг/с/степень)</translation>
+        <translation type="unfinished">МКС (м/кг/с/градус)</translation>
     </message>
     <message>
         <source>Magnitude</source>
@@ -2394,7 +2395,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>US customary (in/lb)</source>
-        <translation type="unfinished">Английская система мер (в фунтах)</translation>
+        <translation type="unfinished">Английская система мер (дюймы, футы, ярды, ...)</translation>
     </message>
     <message>
         <source>Number of decimals:</source>
@@ -2402,7 +2403,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Imperial decimal (in/lb)</source>
-        <translation type="unfinished">Imperial decimal (in/lb)</translation>
+        <translation type="unfinished">Английская десятичная (дюймы, фунты)</translation>
     </message>
 </context>
 <context>
@@ -2421,7 +2422,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Enable preselection highlighting</source>
-        <translation type="unfinished">Включить подсвечивание предварительного выделения</translation>
+        <translation type="unfinished">Включить подсвечивание при наведении курсора</translation>
     </message>
     <message>
         <source>Background color</source>
@@ -2437,7 +2438,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Simple color</source>
-        <translation type="unfinished">Простые цвета</translation>
+        <translation type="unfinished">Один цвет</translation>
     </message>
 </context>
 <context>
@@ -2635,25 +2636,25 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>%1 Downloads</source>
-        <translation type="unfinished">%1 Downloads</translation>
+        <translation type="unfinished">%1 загрузок</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconDialog</name>
     <message>
         <source>Icon folders</source>
-        <translation type="unfinished">Icon folders</translation>
+        <translation type="unfinished">Папки со значками</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished">Add icon folder</translation>
+        <translation type="unfinished">Добавить папку</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished">Add or remove custom icon folders</translation>
+        <translation type="unfinished">Добавить папку пользовательскую папку, содержащую значки</translation>
     </message>
     <message>
         <source>Remove folder</source>
@@ -2661,14 +2662,14 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
-        <translation type="unfinished">Removing a folder only takes effect after an application restart.</translation>
+        <translation type="unfinished">Чтобы изменения вступили в силу, перезапустите программу.</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::InputVector</name>
     <message>
         <source>Input vector</source>
-        <translation type="unfinished">Входной вектор</translation>
+        <translation type="unfinished">Введите вектор</translation>
     </message>
     <message>
         <source>Vector</source>
@@ -2745,7 +2746,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Import parameter</source>
-        <translation type="unfinished">Параметры импорта</translation>
+        <translation type="unfinished">Импортировать параметр</translation>
     </message>
     <message>
         <source>Collapse</source>
@@ -2757,7 +2758,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Existing sub-group</source>
-        <translation type="unfinished">Существующие подгруппы</translation>
+        <translation type="unfinished">Уже есть</translation>
     </message>
     <message>
         <source>The sub-group &apos;%1&apos; already exists.</source>
@@ -2804,7 +2805,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>New string item</source>
-        <translation type="unfinished">Новый элемент строки</translation>
+        <translation type="unfinished">Новый текстовый параметр</translation>
     </message>
     <message>
         <source>New float item</source>
@@ -2867,7 +2868,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Axis:</source>
-        <translation type="unfinished">Оси:</translation>
+        <translation type="unfinished">Ось:</translation>
     </message>
     <message>
         <source>Center:</source>
@@ -2875,15 +2876,15 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Pitch:</source>
-        <translation type="unfinished">Шаг:</translation>
+        <translation type="unfinished">Тангаж:</translation>
     </message>
     <message>
         <source>Roll:</source>
-        <translation type="unfinished">Рулон:</translation>
+        <translation type="unfinished">Крен:</translation>
     </message>
     <message>
         <source>Yaw:</source>
-        <translation type="unfinished">Отклонение:</translation>
+        <translation type="unfinished">Рыскание:</translation>
     </message>
     <message>
         <source>Rotation axis with angle</source>
@@ -2895,7 +2896,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Apply placement changes immediately</source>
-        <translation type="unfinished">Немедленно применить изменения размещений</translation>
+        <translation type="unfinished">Показывать результат</translation>
     </message>
     <message>
         <source>Apply incremental changes to object placement</source>
@@ -2919,7 +2920,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>There are input fields with incorrect input, please ensure valid placement values!</source>
-        <translation type="unfinished">There are input fields with incorrect input, please ensure valid placement values!</translation>
+        <translation type="unfinished">Некоторые поля заполнены неправильно. Убедитесь в правильности выражений и единиц.</translation>
     </message>
 </context>
 <context>
@@ -2952,11 +2953,11 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::SceneModel</name>
     <message>
         <source>Inventor Tree</source>
-        <translation type="unfinished">Создатель дерева</translation>
+        <translation type="unfinished">Inventor Tree</translation>
     </message>
     <message>
         <source>Nodes</source>
-        <translation type="unfinished">Узлы</translation>
+        <translation type="unfinished">Nodes</translation>
     </message>
     <message>
         <source>Name</source>
@@ -2975,7 +2976,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Global</source>
-        <translation type="unfinished">Глобальный</translation>
+        <translation type="unfinished">Глобально</translation>
     </message>
     <message>
         <source>Environment</source>
@@ -2991,7 +2992,7 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>The specified file is not a valid image file.</source>
-        <translation type="unfinished">Указанный файл не является допустимым.</translation>
+        <translation type="unfinished">Указанный файл не является допустимым файлом изображения.</translation>
     </message>
     <message>
         <source>No 3d view</source>
@@ -3097,15 +3098,15 @@ Specify another directory, please.</source>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
         <source>Logging</source>
-        <translation type="unfinished">Ведение журнала</translation>
+        <translation type="unfinished">Информационные сообщения</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation type="unfinished">Внимание</translation>
+        <translation type="unfinished">Предупреждения</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation type="unfinished">Ошибки</translation>
     </message>
     <message>
         <source>Options</source>
@@ -3133,11 +3134,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Redirect Python output</source>
-        <translation type="unfinished">Перенаправить вывод Python-a</translation>
+        <translation type="unfinished">Вывод Python</translation>
     </message>
     <message>
         <source>Redirect Python errors</source>
-        <translation type="unfinished">Сообщить об ошибке Python</translation>
+        <translation type="unfinished">Ошибки Python</translation>
     </message>
 </context>
 <context>
@@ -3159,23 +3160,23 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Search</source>
-        <translation type="unfinished">Search</translation>
+        <translation type="unfinished">Поиск</translation>
     </message>
     <message>
         <source>Searches object labels</source>
-        <translation type="unfinished">Searches object labels</translation>
+        <translation type="unfinished">Поиск по меткам объектов (Label)</translation>
     </message>
     <message>
         <source>Clears the search field</source>
-        <translation type="unfinished">Clears the search field</translation>
+        <translation type="unfinished">Очистить поле поиска</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished">Select only</translation>
+        <translation type="unfinished">Выделить</translation>
     </message>
     <message>
         <source>Selects only this object</source>
-        <translation type="unfinished">Selects only this object</translation>
+        <translation type="unfinished">Выделить только этот объект</translation>
     </message>
     <message>
         <source>Deselect</source>
@@ -3187,11 +3188,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Zoom fit</source>
-        <translation type="unfinished">Zoom fit</translation>
+        <translation type="unfinished">Вписать в окно просмотра</translation>
     </message>
     <message>
         <source>Selects and fits this object in the 3D window</source>
-        <translation type="unfinished">Selects and fits this object in the 3D window</translation>
+        <translation type="unfinished">Изменить положение камеры так, чтобы объект уместился на экране</translation>
     </message>
     <message>
         <source>Go to selection</source>
@@ -3199,14 +3200,14 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Selects and locates this object in the tree view</source>
-        <translation type="unfinished">Selects and locates this object in the tree view</translation>
+        <translation type="unfinished">Выделить объект и показать его в дереве модели</translation>
     </message>
 </context>
 <context>
     <name>Gui::DockWnd::TaskPanelView</name>
     <message>
         <source>Task View</source>
-        <translation type="unfinished">Просмотр задач</translation>
+        <translation type="unfinished">Панель задачи</translation>
     </message>
 </context>
 <context>
@@ -3287,7 +3288,7 @@ Specify another directory, please.</source>
 This has been modified outside of the source editor. Do you want to reload it?</source>
         <translation type="unfinished">%1.
 
-Это было изменено вне редактора исходного кода. Вы хотите перезагрузить его?</translation>
+Файл был изменён другой программой. Перезагрузить его?</translation>
     </message>
     <message>
         <source>Unsaved document</source>
@@ -3328,7 +3329,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Formatted</source>
-        <translation type="unfinished">Форматированный</translation>
+        <translation type="unfinished">Форматирование</translation>
     </message>
 </context>
 <context>
@@ -3415,7 +3416,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Export graph</source>
-        <translation type="unfinished">Export graph</translation>
+        <translation type="unfinished">Экспорт графа</translation>
     </message>
 </context>
 <context>
@@ -3479,7 +3480,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>User defined...</source>
-        <translation type="unfinished">Пользовательские...</translation>
+        <translation type="unfinished">Задать...</translation>
     </message>
 </context>
 <context>
@@ -3524,7 +3525,7 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Toggles this dockable window</source>
-        <translation type="unfinished">Переключить закрепляемое окно</translation>
+        <translation type="unfinished">Спрятать/показать это встраиваемое окно</translation>
     </message>
     <message>
         <source>Close All</source>
@@ -3537,8 +3538,8 @@ Do you want to save your changes?</source>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to copy them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to copy them, too?</translation>
+        <translation type="unfinished">Выделенные объекты зависят от других объектов, которые не выделены.
+Сделать ли копии этих исходных объектов?</translation>
     </message>
 </context>
 <context>
@@ -3549,7 +3550,7 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>The alignment is already in progress.</source>
-        <translation type="unfinished">Выравнивание выполняется.</translation>
+        <translation type="unfinished">Выравнивание уже в процессе.</translation>
     </message>
     <message>
         <source>Alignment[*]</source>
@@ -3577,17 +3578,18 @@ Do you want to copy them, too?</translation>
     </message>
     <message>
         <source>Too few points picked in the left view. At least %1 points are needed.</source>
-        <translation type="unfinished">Слишком мало точек на левом виде По крайней мере %1 точек необходимо.</translation>
+        <translation type="unfinished">Выбрано слишком мало точек в левом окне. Выберите как минимум %1 точки.</translation>
     </message>
     <message>
         <source>Too few points picked in the right view. At least %1 points are needed.</source>
-        <translation type="unfinished">Слишком мало точек на правом виде. По крайней мере %1 точек необходимо.</translation>
+        <translation type="unfinished">Выбрано слишком мало точек в правом окне. Выберите как минимум %1 точки.</translation>
     </message>
     <message>
         <source>Different number of points picked in left and right view.
 On the left view %1 points are picked,
 on the right view %2 points are picked.</source>
-        <translation type="unfinished">Выбрано различное количество точек на виде слева и справа. На левом виде выбрано %1 точек, а на виде справа %2.</translation>
+        <translation type="unfinished">Выбрано различное количество точек слева и справа.
+В левом окне выбрано %1 точки, а в правом - %2.</translation>
     </message>
     <message>
         <source>Try to align group of views</source>
@@ -3612,19 +3614,20 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Different number of points picked in left and right view. On the left view %1 points are picked, on the right view %2 points are picked.</source>
-        <translation type="unfinished">Выбрано различное количество точек на виде слева и справа. На левом виде выбрано %1 точек, а на виде справа %2.</translation>
+        <translation type="unfinished">Выбрано различное количество точек слева и справа.
+В левом окне выбрано %1 точки, а в правом - %2.</translation>
     </message>
     <message>
         <source>Point picked at (%1,%2,%3)</source>
-        <translation type="unfinished">Выбрана точка (%1, %2, %3)</translation>
+        <translation type="unfinished">Выбраны точки: (%1, %2, %3)</translation>
     </message>
     <message>
         <source>No point was picked</source>
-        <translation type="unfinished">Ни одна точка не выбрана</translation>
+        <translation type="unfinished">Не выбрано ни одной точки</translation>
     </message>
     <message>
         <source>No point was found on model</source>
-        <translation type="unfinished">No point was found on model</translation>
+        <translation type="unfinished">В модели нет ни одной точки</translation>
     </message>
 </context>
 <context>
@@ -3648,7 +3651,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Clear list</source>
-        <translation type="unfinished">Clear list</translation>
+        <translation type="unfinished">Очистить список</translation>
     </message>
 </context>
 <context>
@@ -3719,7 +3722,7 @@ How do you want to proceed?</source>
     <message>
         <source>The application is still running.
 Do you want to exit without saving your data?</source>
-        <translation type="unfinished">Приложение по-прежнему выполняеться. Вы хотите, выйти без сохранения ваших данных?</translation>
+        <translation type="unfinished">Приложение по-прежнему выполняется. Вы хотите выйти без сохранения ваших данных?</translation>
     </message>
     <message>
         <source>Python console</source>
@@ -3739,7 +3742,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>&amp;Copy command</source>
-        <translation type="unfinished">Команда копирования</translation>
+        <translation type="unfinished">Скопировать команду</translation>
     </message>
     <message>
         <source>&amp;Copy history</source>
@@ -3751,7 +3754,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Insert file name...</source>
-        <translation type="unfinished">Введите имя файла...</translation>
+        <translation type="unfinished">Вставить путь к файлу...</translation>
     </message>
     <message>
         <source>Save History</source>
@@ -3763,7 +3766,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Insert file name</source>
-        <translation type="unfinished">Введите имя файла</translation>
+        <translation type="unfinished">Вставить путь к файлу в консоль Python</translation>
     </message>
     <message>
         <source>All Files (*.*)</source>
@@ -3775,7 +3778,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Word wrap</source>
-        <translation type="unfinished">Перенос слов</translation>
+        <translation type="unfinished">Переносить строки</translation>
     </message>
     <message>
         <source>&amp;Copy</source>
@@ -3787,7 +3790,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Select All</source>
-        <translation type="unfinished">Выбрать всё</translation>
+        <translation type="unfinished">Выделить всё</translation>
     </message>
     <message>
         <source>Clear console</source>
@@ -3798,7 +3801,7 @@ Do you want to exit without saving your data?</source>
     <name>Gui::PythonEditor</name>
     <message>
         <source>Comment</source>
-        <translation type="unfinished">Комментарий</translation>
+        <translation type="unfinished">Закомментировать</translation>
     </message>
     <message>
         <source>Uncomment</source>
@@ -3817,7 +3820,7 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>The file &apos;%1&apos; cannot be opened.</source>
-        <translation type="unfinished">&apos;%1&apos; файл не может быть открыт.</translation>
+        <translation type="unfinished">Не удаётся открыть файл &apos;%1&apos;.</translation>
     </message>
 </context>
 <context>
@@ -3894,15 +3897,15 @@ Do you want to specify another directory?</source>
     <name>Gui::StdCmdPythonHelp</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>Automatic python modules documentation</source>
-        <translation type="unfinished">Automatic python modules documentation</translation>
+        <translation type="unfinished">Автоматически сгенерированная документация python</translation>
     </message>
     <message>
         <source>Opens a browser to show the Python modules documentation</source>
-        <translation type="unfinished">Opens a browser to show the Python modules documentation</translation>
+        <translation type="unfinished">Показать документацию модулей Python в интрернете</translation>
     </message>
 </context>
 <context>
@@ -3923,7 +3926,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
-        <translation type="unfinished">Режим вывода  на печать:</translation>
+        <translation type="unfinished">Режим графика:</translation>
     </message>
     <message>
         <source>Point size:</source>
@@ -3939,7 +3942,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished">Представление</translation>
+        <translation type="unfinished">Внешний вид</translation>
     </message>
     <message>
         <source>Document window:</source>
@@ -3950,7 +3953,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
         <source>A dialog is already open in the task panel</source>
-        <translation type="unfinished">Диалог уже открыт в панели задач</translation>
+        <translation type="unfinished">В панели задач ещё открыт другой диалог</translation>
     </message>
 </context>
 <context>
@@ -3964,7 +3967,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskView::TaskSelectLinkProperty</name>
     <message>
         <source>Appearance</source>
-        <translation type="unfinished">Представление</translation>
+        <translation type="unfinished">Внешний вид</translation>
     </message>
     <message>
         <source>...</source>
@@ -3998,7 +4001,7 @@ Do you want to specify another directory?</source>
     <name>Gui::TreeDockWidget</name>
     <message>
         <source>Tree view</source>
-        <translation type="unfinished">Древовидное представление</translation>
+        <translation type="unfinished">Дерево документа</translation>
     </message>
 </context>
 <context>
@@ -4045,7 +4048,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Activate document %1</source>
-        <translation type="unfinished">Включить документ %1</translation>
+        <translation type="unfinished">Активировать документ %1</translation>
     </message>
 </context>
 <context>
@@ -4063,18 +4066,18 @@ Do you want to specify another directory?</source>
     <name>Gui::WorkbenchGroup</name>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
-        <translation type="unfinished">Выберите верстак &apos;%1&apos;</translation>
+        <translation type="unfinished">Переключить верстак на &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
     <name>NetworkAccessManager</name>
     <message>
         <source>&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Enter username and password for &quot;%1&quot; at %2&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Введите имя пользователя и пароль для &quot;%1&quot; из %2&lt;/qt&gt;</translation>
     </message>
     <message>
         <source>&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</source>
-        <translation type="unfinished">&lt;qt&gt;Connect to proxy &quot;%1&quot; using:&lt;/qt&gt;</translation>
+        <translation type="unfinished">&lt;qt&gt;Подключиться к прокси-серверу &quot;%1&quot; используя:&lt;/qt&gt;</translation>
     </message>
 </context>
 <context>
@@ -4153,7 +4156,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Grid Snap in</source>
-        <translation type="unfinished">Захват сетки в</translation>
+        <translation type="unfinished">Привязка к сетке с шагом</translation>
     </message>
 </context>
 <context>
@@ -4164,14 +4167,14 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Input in line %1 is not a number</source>
-        <translation type="unfinished">Input in line %1 is not a number</translation>
+        <translation type="unfinished">Введённое в строку %1 не является числом</translation>
     </message>
 </context>
 <context>
     <name>QDockWidget</name>
     <message>
         <source>Tree view</source>
-        <translation type="unfinished">Древовидное представление</translation>
+        <translation type="unfinished">Дерево документа</translation>
     </message>
     <message>
         <source>Property view</source>
@@ -4187,11 +4190,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Task View</source>
-        <translation type="unfinished">Просмотр задач</translation>
+        <translation type="unfinished">Панель задачи</translation>
     </message>
     <message>
         <source>Combo View</source>
-        <translation type="unfinished">Комбинированный вид</translation>
+        <translation type="unfinished">Комбо панель</translation>
     </message>
     <message>
         <source>Toolbox</source>
@@ -4203,7 +4206,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Display properties</source>
-        <translation type="unfinished">Отобразить свойства</translation>
+        <translation type="unfinished">Внешний вид</translation>
     </message>
 </context>
 <context>
@@ -4230,7 +4233,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Workbench failure</source>
-        <translation type="unfinished">Рабочее окружение отказало</translation>
+        <translation type="unfinished">Ошибка загрузки верстака</translation>
     </message>
     <message>
         <source>%1</source>
@@ -4270,19 +4273,19 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Save views...</source>
-        <translation type="unfinished">Сохранение видов...</translation>
+        <translation type="unfinished">Сохранить положения в файл...</translation>
     </message>
     <message>
         <source>Load views...</source>
-        <translation type="unfinished">Загрузить виды...</translation>
+        <translation type="unfinished">Загрузить положения из файла...</translation>
     </message>
     <message>
         <source>Freeze view</source>
-        <translation type="unfinished">Заморозить виды</translation>
+        <translation type="unfinished">Запомнить</translation>
     </message>
     <message>
         <source>Clear views</source>
-        <translation type="unfinished">Очистить виды</translation>
+        <translation type="unfinished">Забыть все положения</translation>
     </message>
     <message>
         <source>Restore view &amp;%1</source>
@@ -4290,11 +4293,11 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <source>Save frozen views</source>
-        <translation type="unfinished">Сохранить замороженные виды</translation>
+        <translation type="unfinished">Сохранить запомненные виды</translation>
     </message>
     <message>
         <source>Frozen views (*.cam)</source>
-        <translation type="unfinished">Замороженные виды (*.cam)</translation>
+        <translation type="unfinished">Положения просмотра (*.cam)</translation>
     </message>
     <message>
         <source>Restore views</source>
@@ -4303,7 +4306,7 @@ Do you want to specify another directory?</source>
     <message>
         <source>Importing the restored views would clear the already stored views.
 Do you want to continue?</source>
-        <translation type="unfinished">Восстановление видов очисит храняшиеся виды.
+        <translation type="unfinished">Импортирование положений просмотра приведёт к сбросу текущих запомненных положений.
 Вы хотите продолжить?</translation>
     </message>
     <message>
@@ -4316,11 +4319,11 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Docked</source>
-        <translation type="unfinished">Закрепленный</translation>
+        <translation type="unfinished">Встроенное</translation>
     </message>
     <message>
         <source>Undocked</source>
-        <translation type="unfinished">Открепить</translation>
+        <translation type="unfinished">Отдельное</translation>
     </message>
     <message>
         <source>Fullscreen</source>
@@ -4573,7 +4576,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Box selection</source>
-        <translation type="unfinished">Объемное выделение</translation>
+        <translation type="unfinished">Выделить область</translation>
     </message>
 </context>
 <context>
@@ -4648,7 +4651,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Align the selected objects</source>
-        <translation type="unfinished">Выравнять выбранные объекты</translation>
+        <translation type="unfinished">Утилита выравнивания объектов</translation>
     </message>
 </context>
 <context>
@@ -4674,7 +4677,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Toggle axis cross</source>
-        <translation type="unfinished">Индикатор начала координат</translation>
+        <translation type="unfinished">Показать/скрыть оси координат</translation>
     </message>
 </context>
 <context>
@@ -4726,7 +4729,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdCommandLine</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>Start command &amp;line...</source>
@@ -4801,7 +4804,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdDlgCustomize</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>Cu&amp;stomize...</source>
@@ -4861,11 +4864,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdDlgParameter</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>E&amp;dit parameters ...</source>
-        <translation type="unfinished">&amp;Параметры редактирования...</translation>
+        <translation type="unfinished">Редактор параметров...</translation>
     </message>
     <message>
         <source>Opens a Dialog to edit the parameters</source>
@@ -4876,7 +4879,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdDlgPreferences</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>&amp;Preferences ...</source>
@@ -4895,7 +4898,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Vie&amp;ws</source>
-        <translation type="unfinished">Ви&amp;ды</translation>
+        <translation type="unfinished">Окна</translation>
     </message>
     <message>
         <source>Toggles this window</source>
@@ -4921,11 +4924,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Duplicate selection</source>
-        <translation type="unfinished">Двойное выделение</translation>
+        <translation type="unfinished">Дубликат</translation>
     </message>
     <message>
         <source>Put duplicates of the selected objects to the active document</source>
-        <translation type="unfinished">Вложить дубликаты выбранных объектов в активный документ</translation>
+        <translation type="unfinished">Сделать дубликаты (копии) выбранных объектов</translation>
     </message>
 </context>
 <context>
@@ -4936,15 +4939,15 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Toggle &amp;Edit mode</source>
-        <translation type="unfinished">Переключение в режим редактирования</translation>
+        <translation type="unfinished">Редактировать / закончить редактирование</translation>
     </message>
     <message>
         <source>Toggles the selected object&apos;s edit mode</source>
-        <translation type="unfinished">Переключить выбранные объекты в режим редактирования</translation>
+        <translation type="unfinished">Редактировать выделенный объект / закончить редактирование</translation>
     </message>
     <message>
         <source>Enters or leaves the selected object&apos;s edit mode</source>
-        <translation type="unfinished">Добавьте или уберите выбранные объекты из режима редактирования</translation>
+        <translation type="unfinished">Открыть объект для редактирования / закончить редактирование</translation>
     </message>
 </context>
 <context>
@@ -4959,7 +4962,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Export an object in the active document</source>
-        <translation type="unfinished">Экспорт объекта в активный документ</translation>
+        <translation type="unfinished">Экспортировать выделенный объект</translation>
     </message>
     <message>
         <source>No selection</source>
@@ -4974,7 +4977,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdExportGraphviz</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>Dependency graph...</source>
@@ -5095,11 +5098,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Freeze display</source>
-        <translation type="unfinished">Заморозить экран</translation>
+        <translation type="unfinished">Положения камеры</translation>
     </message>
     <message>
         <source>Freezes the current view position</source>
-        <translation type="unfinished">Замораживает текущую позицию просмотра</translation>
+        <translation type="unfinished">Запомнить текущую позицию просмотра</translation>
     </message>
 </context>
 <context>
@@ -5237,7 +5240,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdMeasurementSimple</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>Measures distance between two selected objects</source>
@@ -5283,7 +5286,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Create a new empty document</source>
-        <translation type="unfinished">Создайте новый пустой документ</translation>
+        <translation type="unfinished">Создайть новый пустой документ</translation>
     </message>
     <message>
         <source>Unnamed</source>
@@ -5374,7 +5377,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Place the selected objects</source>
-        <translation type="unfinished">Поместить выделенные объекты</translation>
+        <translation type="unfinished">Редактировать положение и ориентацию выделенных объектов</translation>
     </message>
 </context>
 <context>
@@ -5445,7 +5448,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdProjectUtil</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>Project utility...</source>
@@ -5453,7 +5456,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Utility to extract or create project files</source>
-        <translation type="unfinished">Утилита для извлечения или создания файлов проекта</translation>
+        <translation type="unfinished">Утилита для распаковки и запаковки файлов .FCStd</translation>
     </message>
 </context>
 <context>
@@ -5520,7 +5523,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>&amp;Redo</source>
-        <translation type="unfinished">&amp;Повторить</translation>
+        <translation type="unfinished">Вернуть</translation>
     </message>
     <message>
         <source>Redoes a previously undone action</source>
@@ -5576,7 +5579,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdSceneInspector</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>Scene inspector...</source>
@@ -5640,7 +5643,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Show selection</source>
-        <translation type="unfinished">Показывать выделение</translation>
+        <translation type="unfinished">Показать выделенное</translation>
     </message>
     <message>
         <source>Show all selected objects</source>
@@ -5666,7 +5669,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdTextureMapping</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>Texture mapping...</source>
@@ -5711,7 +5714,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Clipping plane</source>
-        <translation type="unfinished">Показать плоскости</translation>
+        <translation type="unfinished">Плоскость сечения</translation>
     </message>
     <message>
         <source>Toggles clipping plane for active view</source>
@@ -5726,7 +5729,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Toggle navigation/Edit mode</source>
-        <translation type="unfinished">Переключить режим навигации / редактирования</translation>
+        <translation type="unfinished">Навигация / редактирование</translation>
     </message>
     <message>
         <source>Toggle between navigation and edit mode</source>
@@ -5741,11 +5744,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Toggle all objects</source>
-        <translation type="unfinished">Переключить все объекты</translation>
+        <translation type="unfinished">Инвертировать все видимости</translation>
     </message>
     <message>
         <source>Toggles visibility of all objects in the active document</source>
-        <translation type="unfinished">Переключает видимость всех объектов в активном документе</translation>
+        <translation type="unfinished">Спрятать все видимые объекты документа и показать все невидимые</translation>
     </message>
 </context>
 <context>
@@ -5756,11 +5759,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Toggle selectability</source>
-        <translation type="unfinished">Переключить возможность выбора</translation>
+        <translation type="unfinished">Откл/вкл выделяемость</translation>
     </message>
     <message>
         <source>Toggles the property of the objects to get selected in the 3D-View</source>
-        <translation type="unfinished">Переключает свойство выбранных объектов в 3D-режим</translation>
+        <translation type="unfinished">Включает/выключает возможность выделить объект через окно 3D-просмотра</translation>
     </message>
 </context>
 <context>
@@ -5771,11 +5774,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Toggle visibility</source>
-        <translation type="unfinished">Переключить видимость</translation>
+        <translation type="unfinished">Скрыть/показать выделенное</translation>
     </message>
     <message>
         <source>Toggles visibility</source>
-        <translation type="unfinished">Переключает видимость</translation>
+        <translation type="unfinished">Переключает видимость выделенных объектов</translation>
     </message>
 </context>
 <context>
@@ -5857,7 +5860,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <name>StdCmdUnitsCalculator</name>
     <message>
         <source>Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>&amp;Units calculator...</source>
@@ -5880,7 +5883,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Dock all top-level views</source>
-        <translation type="unfinished">Закрепить все виды верхнего уровня</translation>
+        <translation type="unfinished">Встроить все виды верхнего уровня</translation>
     </message>
 </context>
 <context>
@@ -5906,7 +5909,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Дно</translation>
+        <translation type="unfinished">Снизу</translation>
     </message>
     <message>
         <source>Set to bottom view</source>
@@ -5981,7 +5984,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Fit all</source>
-        <translation type="unfinished">Заполнить всё</translation>
+        <translation type="unfinished">Уместить всё</translation>
     </message>
     <message>
         <source>Fits the whole content on the screen</source>
@@ -5996,7 +5999,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Fit selection</source>
-        <translation type="unfinished">Заполнить выделенное</translation>
+        <translation type="unfinished">Уместить выделенное</translation>
     </message>
     <message>
         <source>Fits the selected content on the screen</source>
@@ -6045,7 +6048,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Switch stereo viewing to Interleaved Columns</source>
-        <translation type="unfinished">Переключить стерео просмотр в чередующиеся столбцы</translation>
+        <translation type="unfinished">Режим стерео - чередующиеся столбцы (Interleaved Columns)</translation>
     </message>
 </context>
 <context>
@@ -6060,7 +6063,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Switch stereo viewing to Interleaved Rows</source>
-        <translation type="unfinished">Переключить стерео в упорядоченные строки</translation>
+        <translation type="unfinished">Режим стерео - чередующиеся строки (Interleaved Rows)</translation>
     </message>
 </context>
 <context>
@@ -6090,7 +6093,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Switch stereo viewing to quad buffer</source>
-        <translation type="unfinished">Переключить стерео просмотр в квадро-буфер</translation>
+        <translation type="unfinished">Режим стерео - четверной буфер (quad buffer)</translation>
     </message>
 </context>
 <context>
@@ -6146,7 +6149,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Вправо</translation>
+        <translation type="unfinished">Справа</translation>
     </message>
     <message>
         <source>Set to right view</source>
@@ -6191,7 +6194,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Вверх</translation>
+        <translation type="unfinished">Сверху</translation>
     </message>
     <message>
         <source>Set to top view</source>
@@ -6262,11 +6265,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Workbench</source>
-        <translation type="unfinished">Рабочий стол</translation>
+        <translation type="unfinished">Верстак</translation>
     </message>
     <message>
         <source>Switch between workbenches</source>
-        <translation type="unfinished">Переключение между рабочими столами</translation>
+        <translation type="unfinished">Переключение верстака</translation>
     </message>
 </context>
 <context>
@@ -6277,11 +6280,11 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Orthographic view</source>
-        <translation type="unfinished">Ортогональный вид</translation>
+        <translation type="unfinished">Параллельная проекция</translation>
     </message>
     <message>
         <source>Switches to orthographic view mode</source>
-        <translation type="unfinished">Переключение в ортогональный режим</translation>
+        <translation type="unfinished">Переключение в ортогональный просмотр</translation>
     </message>
 </context>
 <context>
@@ -6292,7 +6295,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Perspective view</source>
-        <translation type="unfinished">Перспективный вид</translation>
+        <translation type="unfinished">Перспективная проекция</translation>
     </message>
     <message>
         <source>Switches to perspective view mode</source>
@@ -6307,7 +6310,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Box zoom</source>
-        <translation type="unfinished">Масштаб поля</translation>
+        <translation type="unfinished">Увеличить область</translation>
     </message>
 </context>
 <context>
@@ -6322,7 +6325,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-        <translation type="unfinished">Отображать активный вид в полноэкранном, закрепленном или не закрепленном режиме</translation>
+        <translation type="unfinished">Отображать активный вид в полноэкранном режиме, встроенном окне или в отдельном окне</translation>
     </message>
 </context>
 <context>
@@ -6403,11 +6406,11 @@ Are you sure to continue?</translation>
     </message>
     <message>
         <source>Shaded</source>
-        <translation type="unfinished">Shaded</translation>
+        <translation type="unfinished">только грани</translation>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Shaded mode</translation>
+        <translation type="unfinished">Только грани</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6427,8 +6430,8 @@ Are you sure to continue?</translation>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">The selected objects have a dependency to unselected objects.
-Do you want to duplicate them, too?</translation>
+        <translation type="unfinished">Выделенные объекты зависят от других объектов, которые не выделены.
+Сделать ли копии этих исходных объектов?</translation>
     </message>
 </context>
 <context>
@@ -6491,7 +6494,7 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>&amp;Tools</source>
-        <translation type="unfinished">Инструменты</translation>
+        <translation type="unfinished">Панели инструментов</translation>
     </message>
     <message>
         <source>&amp;Macro</source>

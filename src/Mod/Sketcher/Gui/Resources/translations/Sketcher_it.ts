@@ -242,7 +242,7 @@
     </message>
     <message>
         <source>Constrain vertical distance</source>
-        <translation type="obsolete">Vincola una distanza verticale</translation>
+        <translation type="obsolete">Vincolo di distanza verticale</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -260,7 +260,7 @@
     <message>
         <location line="+1"/>
         <source>Constrain vertical distance</source>
-        <translation>Vincola una distanza verticale</translation>
+        <translation>Vincolo di distanza verticale</translation>
     </message>
     <message>
         <source>Constrain horizontal distance</source>
@@ -318,7 +318,7 @@
     <message>
         <location line="+1"/>
         <source>Constrain InternalAlignment</source>
-        <translation type="unfinished">Vincolare Allineamento interno</translation>
+        <translation type="unfinished">Vincolo di Allineamento interno</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -430,7 +430,7 @@
     <message>
         <location line="+1"/>
         <source>Constrain refraction (Snell&apos;s law&apos;)</source>
-        <translation type="unfinished">Vincolo rifrazione (legge di Snell&apos;)</translation>
+        <translation type="unfinished">Vincolo di rifrazione (legge di Snell&apos;)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -470,7 +470,7 @@
     <message>
         <location line="+1"/>
         <source>Constrain tangent</source>
-        <translation>Vincolo tangente</translation>
+        <translation>Vincolo di tangenza</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2124,7 +2124,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
         <location line="+2"/>
         <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Length:</source>
-        <translation type="unfinished">Lunghezza:</translation>
+        <translation type="unfinished">Larghezza:</translation>
     </message>
 </context>
 <context>
@@ -2278,12 +2278,12 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+33"/>
         <source>Datum color</source>
-        <translation type="unfinished">Colore di riferimento</translation>
+        <translation type="unfinished">Colore dei dati</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Datum text size</source>
-        <translation type="unfinished">Dimensione del testo di riferimento</translation>
+        <translation type="unfinished">Dimensione del testo dei dati</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2308,12 +2308,12 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+35"/>
         <source>Default line width</source>
-        <translation type="unfinished">Larghezza linea predefinita</translation>
+        <translation type="unfinished">Larghezza predefinita della linea</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Cursor text color</source>
-        <translation type="unfinished">Colore del cursore di testo</translation>
+        <translation type="unfinished">Colore del testo del cursore</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -2328,12 +2328,12 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
     <message>
         <location line="+33"/>
         <source>Grid line pattern</source>
-        <translation type="unfinished">Serie su griglia</translation>
+        <translation type="unfinished">Tipo di linea per la griglia</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Ask for value after creating a distance constraint</source>
-        <translation type="unfinished">Chiedere il valore dopo la creazione di un vincolo di distanza</translation>
+        <translation type="unfinished">Richiedi il valore dopo la creazione di un vincolo di distanza</translation>
     </message>
 </context>
 <context>
@@ -2384,7 +2384,7 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
         <location line="+7"/>
         <location line="+11"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Geometria esterna reversa</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -2393,56 +2393,62 @@ Combinazioni ammesse: due curve; un punto finale e una curva; due punti finali; 
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nella geometria esterna sono stati trovati %1 archi invertiti. I loro punti finali sono evidenziati nella vista 3d.
+
+Ai punti finali sono applicati %2 vincoli. I vincoli sono elencati nella vista Rapporto (menu Visualizza -&gt; Vista -&gt; Rapporto).
+
+Per riassegnare i punti finali cliccare sul pulsante &quot;Scambia i punti finali vincolati&quot;. Fare questo solo una volta per gli schizzi creati con versioni di FreeCAD precedenti alla 0.15.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nella geometria esterna sono stati trovati %1 archi invertiti. I loro punti finali sono evidenziati nella vista 3d.
+
+Tuttavia, non sono stati trovati i vincoli che riguardano i punti finali.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>No reversed external-geometry arcs were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nella geometria esterna non sono stati trovati archi invertiti.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sono state apportate %1 modifiche ai vincoli collegati ai punti finali di archi invertiti.</translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+14"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vincolo orientamento bloccato</translation>
     </message>
     <message>
         <location line="-13"/>
         <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Il blocco dell&apos;orientamento è stato attivato e ricalcolato per %1 vincoli. I vincoli sono elencati nella vista Rapporto (menu Visualizza -&gt; Vista -&gt; Rapporto).</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Il blocco dell&apos;orientamento è stato disattivato per %1 vincoli. I vincoli sono elencati nella vista Rapporto (menu Visualizza -&gt; Vista -&gt; Rapporto). Si noti che per tutti i vincoli futuri, di default il blocco è ancora attivo.</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+12"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elimina i vincoli alla geometria esterna</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Stai per eliminare tutti i vincoli che trattano con la geometria esterna. Questo è utile per salvare uno schizzo che contiene dei collegamenti con  la geometria esterna che sono interrotti o modificati. Sei sicuro di voler eliminare i vincoli?</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>All constraints that deal with external geometry were deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tutti i vincoli che trattano con la geometria esterna sono stati cancellati.</translation>
     </message>
 </context>
 <context>
@@ -2475,7 +2481,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+5"/>
         <source>Named</source>
-        <translation>Denominato</translation>
+        <translation>Denominazione</translation>
     </message>
     <message>
         <location filename="../../TaskSketcherConstrains.cpp" line="+39"/>
@@ -2503,7 +2509,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+5"/>
         <source>Starting Point</source>
-        <translation type="unfinished">Punto di partenza</translation>
+        <translation type="unfinished">Punto iniziale</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2523,7 +2529,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+10"/>
         <source>Auto-switch to Edge</source>
-        <translation type="unfinished">Commuta automaticamente su Bordo</translation>
+        <translation type="unfinished">Commuta automaticamente su Spigolo</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2719,7 +2725,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+26"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Elimina i vincoli alla geometria esterna</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2734,27 +2740,27 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+27"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Geometria esterna reversa</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Swap endpoints in constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Scambia i punti finali nei vincoli</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vincolo orientamento bloccato</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Enable/Update</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Abilita/aggiorna</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Disabilita</translation>
     </message>
     <message>
         <location line="-86"/>

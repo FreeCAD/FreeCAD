@@ -712,7 +712,7 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
+        <translation type="unfinished">新しい図面を %1%2 %3 (%4) で挿入します</translation>
     </message>
 </context>
 <context>

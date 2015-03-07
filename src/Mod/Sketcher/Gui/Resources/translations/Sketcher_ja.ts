@@ -11,7 +11,7 @@
     <message>
         <location line="+1"/>
         <source>Close Shape</source>
-        <translation type="unfinished">Close Shape</translation>
+        <translation type="unfinished">図形を閉じる</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -95,17 +95,17 @@
     <message>
         <location line="+67"/>
         <source>Ellipse by center, major radius, point</source>
-        <translation type="unfinished">中心、主半径、点からなる楕円</translation>
+        <translation type="unfinished">中心、主半径、点からなる楕円を作成</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Ellipse by Periapsis, apoapsis, minor radius</source>
-        <translation type="unfinished">Ellipse by Periapsis, apoapsis, minor radius</translation>
+        <translation type="unfinished">近点、軌道遠点、小半径からなる楕円を作成</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Arc of ellipse by center, major radius, endpoints</source>
-        <translation type="unfinished">中心点、主半径、端点からなる楕円の円弧</translation>
+        <translation type="unfinished">中心点、主半径、端点からなる楕円の円弧を作成</translation>
     </message>
 </context>
 <context>
@@ -573,7 +573,7 @@
     <message>
         <location line="+1"/>
         <source>Create an arc of ellipse in the sketch</source>
-        <translation type="unfinished">Create an arc of ellipse in the sketch</translation>
+        <translation type="unfinished">スケッチに楕円弧を作成します</translation>
     </message>
 </context>
 <context>
@@ -983,7 +983,7 @@
     <message>
         <location line="+1"/>
         <source>Select at least two sketches, please.</source>
-        <translation type="unfinished">Select at least two sketches, please.</translation>
+        <translation type="unfinished">少なくとも 2 つのスケッチを選択してください。</translation>
     </message>
 </context>
 <context>
@@ -1056,7 +1056,7 @@
     <message>
         <location line="+1"/>
         <source>Show all internal geometry / hide unused internal geometry</source>
-        <translation type="unfinished">Show all internal geometry / hide unused internal geometry</translation>
+        <translation type="unfinished">全ての内部ジオメトリを表示/未使用の内部ジオメトリを非表示</translation>
     </message>
 </context>
 <context>
@@ -1133,12 +1133,12 @@
     <message>
         <location line="+1"/>
         <source>Select Origin</source>
-        <translation type="unfinished">Select Origin</translation>
+        <translation type="unfinished">原点を選択</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the origin point</source>
-        <translation type="unfinished">Select the origin point</translation>
+        <translation type="unfinished">原点を選択する</translation>
     </message>
 </context>
 <context>
@@ -1152,7 +1152,7 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Redundant Constraints</source>
-        <translation type="unfinished">Select Redundant Constraints</translation>
+        <translation type="unfinished">冗長な拘束を選択</translation>
     </message>
 </context>
 <context>
@@ -1458,29 +1458,29 @@
     <message>
         <location line="-52"/>
         <source>Cannot add a fixed x-coordinate constraint on an external geometry!</source>
-        <translation type="unfinished">Cannot add a fixed x-coordinate constraint on an external geometry!</translation>
+        <translation type="unfinished">外部形状においてX固定座標の拘束を追加することはできません！</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cannot add a fixed x-coordinate constraint on the root point!</source>
-        <translation type="unfinished">Cannot add a fixed x-coordinate constraint on the root point!</translation>
+        <translation type="unfinished">原点に対してX固定座標の拘束を追加することはできません！</translation>
     </message>
     <message>
         <location line="+125"/>
         <source>Cannot add a fixed y-coordinate constraint on an external geometry!</source>
-        <translation type="unfinished">Cannot add a fixed y-coordinate constraint on an external geometry!</translation>
+        <translation type="unfinished">外部形状に対してY固定座標の拘束を追加することはできません！</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
-        <translation type="unfinished">Cannot add a fixed y-coordinate constraint on the root point!</translation>
+        <translation type="unfinished">原点に対してY固定座標の拘束を追加することはできません！</translation>
     </message>
     <message>
         <location line="+646"/>
         <location line="+10"/>
         <location line="+25"/>
         <source>Select one or more arcs or circles from the sketch.</source>
-        <translation type="unfinished">Select one or more arcs or circles from the sketch.</translation>
+        <translation type="unfinished">スケッチから 1 つ以上の円弧または円を選択してください。</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1501,7 +1501,7 @@
         <location line="+11"/>
         <location line="+170"/>
         <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
-        <translation type="unfinished">Select one or two lines from the sketch. Or select two edges and a point.</translation>
+        <translation type="unfinished">スケッチから1本か2本の線分を選択してください。あるいは2つのエッジと頂点を選択します。</translation>
     </message>
     <message>
         <location line="-64"/>
@@ -1511,7 +1511,7 @@
     <message>
         <location line="+1"/>
         <source>An angle constraint cannot be set for two parallel lines.</source>
-        <translation type="unfinished">An angle constraint cannot be set for two parallel lines.</translation>
+        <translation type="unfinished">２つの平行線に角度拘束を設定できません。</translation>
     </message>
     <message>
         <location line="+356"/>
@@ -1532,7 +1532,7 @@
     <message>
         <location line="+29"/>
         <source>Incompatible geometry is selected!</source>
-        <translation type="unfinished">Incompatible geometry is selected!</translation>
+        <translation type="unfinished">互換性のないジオメトリが選択されています！</translation>
     </message>
     <message>
         <location line="+85"/>
@@ -1548,25 +1548,25 @@
     <message>
         <location line="+45"/>
         <source>You can not internally constraint an ellipse on other ellipse. Select only one ellipse.</source>
-        <translation type="unfinished">You can not internally constraint an ellipse on other ellipse. Select only one ellipse.</translation>
+        <translation type="unfinished">他の楕円上にある楕円は内部拘束することができない。一つだけ楕円を選択して下さい。</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+156"/>
         <source>Maximum 2 points are supported.</source>
-        <translation type="unfinished">Maximum 2 points are supported.</translation>
+        <translation type="unfinished">最大 2 点がサポートされています。</translation>
     </message>
     <message>
         <location line="-150"/>
         <location line="+156"/>
         <source>Maximum 2 lines are supported.</source>
-        <translation type="unfinished">Maximum 2 lines are supported.</translation>
+        <translation type="unfinished">最大 2線がサポートされています。</translation>
     </message>
     <message>
         <location line="-121"/>
         <location line="+156"/>
         <source>Nothing to constraint</source>
-        <translation type="unfinished">Nothing to constraint</translation>
+        <translation type="unfinished">拘束はありません</translation>
     </message>
     <message>
         <location line="-155"/>
@@ -1591,12 +1591,12 @@
     <message>
         <location line="-135"/>
         <source>You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
-        <translation type="unfinished">You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</translation>
+        <translation type="unfinished">他の楕円弧にある楕円弧には内部拘束することができません。楕円弧を一つだけ選択してください。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
-        <translation type="unfinished">You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</translation>
+        <translation type="unfinished">楕円弧にある楕円には内部拘束することができません。楕円弧または楕円を一つだけ選択してください。</translation>
     </message>
     <message>
         <location line="+48"/>
@@ -1611,7 +1611,7 @@
     <message>
         <location line="+5"/>
         <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-        <translation type="unfinished">Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</translation>
+        <translation type="unfinished">現在の内部ジオメトリにおいては、楕円または楕円弧のサポートのみサポートされてます。最後に選択した要素は、楕円または楕円弧である必要があります。</translation>
     </message>
     <message>
         <source>Select exactly two vertexes from the sketch.</source>
@@ -1724,7 +1724,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+11"/>
         <source>Select some geometry from the sketch.</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished">Select some geometry from the sketch.</translation>
+        <translation type="unfinished">スケッチから幾つかのジオメトリを選択してください。</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1783,7 +1783,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+11"/>
         <source>Select some geometry from the sketch.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">Select some geometry from the sketch.</translation>
+        <translation type="unfinished">スケッチから幾つかのジオメトリを選択してください。</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1996,17 +1996,17 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="-35"/>
         <source>No constraint selected</source>
-        <translation type="unfinished">No constraint selected</translation>
+        <translation type="unfinished">拘束が選択されていません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>At least one constraint must be selected</source>
-        <translation type="unfinished">At least one constraint must be selected</translation>
+        <translation type="unfinished">拘束には1つ以上を選択する必要があります</translation>
     </message>
     <message>
         <location line="+279"/>
         <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-        <translation type="unfinished">Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</translation>
+        <translation type="unfinished">現在の内部ジオメトリにおいては、楕円または楕円弧のサポートのみサポートされてます。最後に選択した要素は、楕円または楕円弧である必要があります。</translation>
     </message>
 </context>
 <context>
@@ -2083,19 +2083,19 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location filename="../../EditDatumDialog.cpp" line="+6"/>
         <source>Refractive index ratio</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">Refractive index ratio</translation>
+        <translation type="unfinished">屈折率</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../EditDatumDialog.cpp" line="+1"/>
         <source>Ratio n2/n1:</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">Ratio n2/n1:</translation>
+        <translation type="unfinished">比 n2/n1:</translation>
     </message>
     <message>
         <location line="+1942"/>
         <source>Change radius</source>
-        <translation type="unfinished">Change radius</translation>
+        <translation type="unfinished">半径を変更</translation>
     </message>
     <message>
         <location line="-1947"/>
@@ -2107,12 +2107,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+615"/>
         <source>Refractive index ratio</source>
-        <translation type="unfinished">Refractive index ratio</translation>
+        <translation type="unfinished">屈折率</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ratio n2/n1:</source>
-        <translation type="unfinished">Ratio n2/n1:</translation>
+        <translation type="unfinished">比 n2/n1:</translation>
     </message>
     <message>
         <location line="-2555"/>
@@ -2384,7 +2384,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+7"/>
         <location line="+11"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">外部ジオメトリを反転</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -2393,56 +2393,62 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
+
+Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+However, no constraints linking to the endpoints were found.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>No reversed external-geometry arcs were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No reversed external-geometry arcs were found.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 changes were made to constraints linking to endpoints of reversed arcs.</translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+14"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Constraint orientation locking</translation>
     </message>
     <message>
         <location line="-13"/>
         <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+12"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">外部ジオメトリへの拘束を削除します。</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>All constraints that deal with external geometry were deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All constraints that deal with external geometry were deleted.</translation>
     </message>
 </context>
 <context>
@@ -2503,7 +2509,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+5"/>
         <source>Starting Point</source>
-        <translation type="unfinished">Starting Point</translation>
+        <translation type="unfinished">始点</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2523,7 +2529,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+10"/>
         <source>Auto-switch to Edge</source>
-        <translation type="unfinished">Auto-switch to Edge</translation>
+        <translation type="unfinished">エッジに自動切換</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2533,7 +2539,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location filename="../../TaskSketcherElements.cpp" line="+66"/>
         <source>Elements</source>
-        <translation type="unfinished">Elements</translation>
+        <translation type="unfinished">要素</translation>
     </message>
     <message>
         <location line="+444"/>
@@ -2719,7 +2725,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+26"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">外部ジオメトリへの拘束を削除します。</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2734,27 +2740,27 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+27"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">外部ジオメトリを反転</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Swap endpoints in constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Swap endpoints in constraints</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Constraint orientation locking</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Enable/Update</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">有効化/更新</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">無効化</translation>
     </message>
     <message>
         <location line="-86"/>
@@ -2786,8 +2792,8 @@ However, no constraints linking to the endpoints were found.</source>
         <location line="+1"/>
         <source>The sketch is invalid and cannot be edited.
 Use the sketch validation tool.</source>
-        <translation type="unfinished">The sketch is invalid and cannot be edited.
-Use the sketch validation tool.</translation>
+        <translation type="unfinished">スケッチが無効で編集できません。
+スケッチ検証ツールを使って下さい。</translation>
     </message>
     <message>
         <location line="+80"/>
@@ -2817,7 +2823,7 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+7"/>
         <source>Over-constrained sketch </source>
-        <translation type="unfinished">Over-constrained sketch </translation>
+        <translation type="unfinished">スケッチが過剰拘束です </translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2829,12 +2835,12 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="-9"/>
         <source>Sketch contains conflicting constraints </source>
-        <translation type="unfinished">Sketch contains conflicting constraints </translation>
+        <translation type="unfinished">スケッチには、競合する拘束が含まれています </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Sketch contains redundant constraints </source>
-        <translation type="unfinished">Sketch contains redundant constraints </translation>
+        <translation type="unfinished">スケッチには冗長な拘束が含まれています </translation>
     </message>
     <message>
         <source>Over-constrained sketch</source>
@@ -2866,12 +2872,12 @@ Use the sketch validation tool.</translation>
     <message>
         <location line="+3"/>
         <source>Solved in %1 sec</source>
-        <translation>%1 秒で解求しました</translation>
+        <translation>%1 秒で求解しました</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unsolved (%1 sec)</source>
-        <translation>解求できません（%1 秒）</translation>
+        <translation>求解できません（%1 秒）</translation>
     </message>
 </context>
 <context>
@@ -2907,7 +2913,7 @@ Use the sketch validation tool.</translation>
         <location line="+1448"/>
         <location line="+1"/>
         <source>Create an arc of ellipse by its center, major radius, endpoints</source>
-        <translation type="unfinished">Create an arc of ellipse by its center, major radius, endpoints</translation>
+        <translation type="unfinished">中心点、長半径、端点かななる楕円弧を作成する</translation>
     </message>
 </context>
 <context>
@@ -2943,7 +2949,7 @@ Use the sketch validation tool.</translation>
         <location line="+1747"/>
         <location line="+1"/>
         <source>Create a heptagon by its center and by one corner</source>
-        <translation type="unfinished">Create a heptagon by its center and by one corner</translation>
+        <translation type="unfinished">1 つの角と中心点からなる正七角形を作成します</translation>
     </message>
 </context>
 <context>
@@ -2952,7 +2958,7 @@ Use the sketch validation tool.</translation>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create a hexagon by its center and by one corner</source>
-        <translation type="unfinished">Create a hexagon by its center and by one corner</translation>
+        <translation type="unfinished">1 つの角と中心点からなる正六角形を作成します</translation>
     </message>
 </context>
 <context>
@@ -2961,7 +2967,7 @@ Use the sketch validation tool.</translation>
         <location line="+7"/>
         <location line="+1"/>
         <source>Create an octagon by its center and by one corner</source>
-        <translation type="unfinished">Create an octagon by its center and by one corner</translation>
+        <translation type="unfinished">1 つの角と中心点からなる正八角形を作成します</translation>
     </message>
 </context>
 <context>
@@ -2970,7 +2976,7 @@ Use the sketch validation tool.</translation>
         <location line="-13"/>
         <location line="+1"/>
         <source>Create a pentagon by its center and by one corner</source>
-        <translation type="unfinished">Create a pentagon by its center and by one corner</translation>
+        <translation type="unfinished">1 つの角と中心点からなる正五角形を作成します</translation>
     </message>
 </context>
 <context>
@@ -2979,7 +2985,7 @@ Use the sketch validation tool.</translation>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create a square by its center and by one corner</source>
-        <translation type="unfinished">Create a square by its center and by one corner</translation>
+        <translation type="unfinished">中心点と1つの角からなる正方形を作成します</translation>
     </message>
 </context>
 <context>
@@ -3041,7 +3047,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+16"/>
         <source>Not solved yet</source>
-        <translation>未解求</translation>
+        <translation>未求解</translation>
     </message>
 </context>
 <context>
@@ -3059,7 +3065,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+2"/>
         <source>Sketcher tools</source>
-        <translation type="unfinished">Sketcher tools</translation>
+        <translation type="unfinished">スケッチャー ツール</translation>
     </message>
     <message>
         <source>Sketcher geoms</source>

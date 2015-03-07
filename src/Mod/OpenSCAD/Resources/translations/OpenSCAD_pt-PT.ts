@@ -137,12 +137,12 @@
       <translation type="unfinished">Por favor, selecione primeiro 3 objetos</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">Função não Suportada</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Press OK</source>
       <translation type="unfinished">Pressione OK</translation>
     </message>

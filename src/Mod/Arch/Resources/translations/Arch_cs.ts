@@ -169,7 +169,7 @@
       <translation type="unfinished">Výška této podlahy</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="715"/>
+      <location filename="ArchRoof.py" line="720"/>
       <source>Roof</source>
       <translation type="unfinished">Střecha</translation>
     </message>
@@ -206,7 +206,7 @@
     <message>
       <location filename="ArchSectionPlane.py" line="104"/>
       <source>The objects that must be considered by this section plane. Empty means all document</source>
-      <translation type="unfinished">The objects that must be considered by this section plane. Empty means all document</translation>
+      <translation type="unfinished">Objekty k posouzení vzhledem k řezné rovině. Prázný výběr znamená celý dokument</translation>
     </message>
     <message>
       <location filename="ArchSectionPlane.py" line="373"/>
@@ -216,7 +216,7 @@
     <message>
       <location filename="ArchSite.py" line="85"/>
       <source>Create Site</source>
-      <translation type="unfinished">Create Site</translation>
+      <translation type="unfinished">Vytvořit parcelu</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="434"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="ArchWall.py" line="395"/>
       <source>The alignment of this wall on its base object, if applicable</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable</translation>
+      <translation type="unfinished">Zarovnání této zdi k jejímu základnímu objektu, je-li aplikovatelné</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="458"/>
@@ -306,7 +306,7 @@
     <message>
       <location filename="ArchWall.py" line="467"/>
       <source>This mesh is an invalid solid</source>
-      <translation type="unfinished">This mesh is an invalid solid</translation>
+      <translation type="unfinished">Tato síť netvoří platné těleso</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="463"/>
@@ -369,7 +369,7 @@
       <translation type="unfinished">Chyba: Nelze určit kódování znaků</translation>
     </message>
     <message>
-      <location filename="importDAE.py" line="180"/>
+      <location filename="importDAE.py" line="182"/>
       <source>file %s successfully created.</source>
       <translation type="unfinished">soubor %s byl úspěšně vytvořen.</translation>
     </message>
@@ -412,12 +412,12 @@
     <message>
       <location filename="ArchCommands.py" line="884"/>
       <source>Add space boundary</source>
-      <translation type="unfinished">Add space boundary</translation>
+      <translation type="unfinished">Přidat hranici prostoru</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="916"/>
       <source>Remove space boundary</source>
-      <translation type="unfinished">Remove space boundary</translation>
+      <translation type="unfinished">Odstranit hranici prostoru</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="125"/>
@@ -957,7 +957,7 @@
       <translation type="unfinished">The offset between this panel and its baseline</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="716"/>
+      <location filename="ArchRoof.py" line="721"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -982,12 +982,12 @@ If Angle = 0 then angle is calculated so that the height is the same one as the 
 If Run = 0 then Run is calculated so that the height is the same one as the relative profile.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Id</source>
       <translation type="unfinished">Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>IdRel</source>
       <translation type="unfinished">IdRel</translation>
     </message>
@@ -1174,27 +1174,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">A list of calculated heights for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Angle (deg)</source>
       <translation type="unfinished">Angle (deg)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Run (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Thickness (mm)</source>
       <translation type="unfinished">Thickness (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Overhang (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Height (mm)</source>
       <translation type="unfinished">Height (mm)</translation>
     </message>
@@ -1932,7 +1932,7 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
     <message>
       <location filename="InitGui.py" line="113"/>
       <source>&amp;Draft</source>
-      <translation type="unfinished">&amp;Draft</translation>
+      <translation type="unfinished">&amp;Návrh</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="112"/>

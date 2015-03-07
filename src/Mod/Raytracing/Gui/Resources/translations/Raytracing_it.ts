@@ -96,7 +96,7 @@
     <message>
         <location line="+1"/>
         <source>Insert new POV-Ray project into the document</source>
-        <translation type="unfinished">Inserisci il nuovo progetto POV-Ray nel documento</translation>
+        <translation type="unfinished">Inserisce il nuovo progetto POV-Ray nel documento</translation>
     </message>
     <message>
         <location line="+39"/>
@@ -124,7 +124,7 @@
     <message>
         <location line="+1"/>
         <source>Renders the current raytracing project with an external renderer</source>
-        <translation type="unfinished">Esegue il rendering del progetto corrente raytracing con un renderizzatore esterno</translation>
+        <translation type="unfinished">Esegue il rendering del progetto raytracing corrente con un renderizzatore esterno</translation>
     </message>
 </context>
 <context>
@@ -366,7 +366,7 @@ Do you want to continue?</source>
     <message>
         <location line="+12"/>
         <source>POV-Ray file missing</source>
-        <translation type="unfinished">il file POV-Ray è mancante</translation>
+        <translation type="unfinished">Manca il file POV-Ray</translation>
     </message>
     <message>
         <location line="+1"/>

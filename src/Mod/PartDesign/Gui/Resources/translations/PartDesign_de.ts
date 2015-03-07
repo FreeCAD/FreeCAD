@@ -1137,7 +1137,7 @@ Bitte markieren Sie zuerst ein oder mehrere Kanten.</translation>
     <message>
         <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normale Skizzenachse</translation>
+        <translation type="unfinished">Senkrecht zur Skizze</translation>
     </message>
     <message>
         <location line="+5"/>

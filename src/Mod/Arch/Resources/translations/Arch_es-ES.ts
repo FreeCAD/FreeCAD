@@ -169,7 +169,7 @@
       <translation type="unfinished">La altura de este piso</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="715"/>
+      <location filename="ArchRoof.py" line="720"/>
       <source>Roof</source>
       <translation type="unfinished">Techo</translation>
     </message>
@@ -369,7 +369,7 @@
       <translation type="unfinished">Error: No se pudo determinar la codificación de caracteres</translation>
     </message>
     <message>
-      <location filename="importDAE.py" line="180"/>
+      <location filename="importDAE.py" line="182"/>
       <source>file %s successfully created.</source>
       <translation type="unfinished">archivo %s creado correctamente.</translation>
     </message>
@@ -953,7 +953,7 @@
       <translation type="unfinished">La separación entre este panel y su línea base</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="716"/>
+      <location filename="ArchRoof.py" line="721"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -978,12 +978,12 @@ Si Angulo = 0 entonces el angulo es calculado de forma que la altura sea igual a
 Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igual a la del perfil relativo.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Id</source>
       <translation type="unfinished">Identificación</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>IdRel</source>
       <translation type="unfinished">IdRel</translation>
     </message>
@@ -1170,27 +1170,27 @@ Si Distancia = 0 entonces la distancia es calcula de forma que la altura sea igu
       <translation type="unfinished">Una lista de las alturas calculadas para cada panel de techo</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Angle (deg)</source>
       <translation type="unfinished">Ángulo (grados)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Distancia (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Thickness (mm)</source>
       <translation type="unfinished">Espesor (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Proyección (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Height (mm)</source>
       <translation type="unfinished">Altura (mm)</translation>
     </message>

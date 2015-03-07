@@ -137,12 +137,12 @@
       <translation type="unfinished">Selecteer eerst 3 objecten</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">Niet-ondersteunde functie</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Press OK</source>
       <translation type="unfinished">Druk op OK</translation>
     </message>

@@ -24,11 +24,11 @@
     </message>
     <message>
         <source>Boundings info...</source>
-        <translation>Dettagli sulle connessioni...</translation>
+        <translation>Info Limiti Contenitore...</translation>
     </message>
     <message>
         <source>Shows the boundings of the selected mesh</source>
-        <translation>Mostra le connessioni della mesh selezionata</translation>
+        <translation>Mostra le coordinate dei limiti del contenitore della mesh selezionata</translation>
     </message>
 </context>
 <context>
@@ -91,7 +91,7 @@
     </message>
     <message>
         <source>Check solid mesh</source>
-        <translation>Controlla la mesh del solido</translation>
+        <translation>Controlla il solido mesh</translation>
     </message>
     <message>
         <source>Checks whether the mesh is a solid</source>
@@ -706,7 +706,7 @@
     <message>
         <source>Check failed due to folds on the surface.
 Please run the command to repair folds first</source>
-        <translation>Controllo non riuscito a causa di pieghe sulla superficie. Eseguire il comando per riparare pieghe prima</translation>
+        <translation>Controllo non riuscito a causa di pieghe sulla superficie. Eseguire prima il comando per riparare le pieghe</translation>
     </message>
     <message>
         <source>No folds on surface</source>
@@ -879,7 +879,7 @@ Please run the command to repair folds first</source>
     </message>
     <message>
         <source>Show bounding-box for highlighted or selected meshes</source>
-        <translation>Mostra riquadro per le mesh evidenziate o selezionate</translation>
+        <translation>Mostra contenitore per le mesh evidenziate o selezionate</translation>
     </message>
     <message>
         <source>Line transparency</source>
@@ -1149,7 +1149,7 @@ Please visit http://www.openscad.org/index.html to install it.</source>
     </message>
     <message>
         <source>Boundings</source>
-        <translation>Connessioni</translation>
+        <translation>Limiti</translation>
     </message>
     <message>
         <source>Fill holes</source>
@@ -1285,7 +1285,7 @@ Max=&lt;%4,%5,%6&gt;</translation>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Visualizza i componenti</translation>
     </message>
 </context>
 <context>

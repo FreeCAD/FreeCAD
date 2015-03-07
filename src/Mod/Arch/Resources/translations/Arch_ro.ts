@@ -169,7 +169,7 @@
       <translation type="unfinished">Înălțimea acestui etaj</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="715"/>
+      <location filename="ArchRoof.py" line="720"/>
       <source>Roof</source>
       <translation type="unfinished">Acoperiș</translation>
     </message>
@@ -369,7 +369,7 @@
       <translation type="unfinished">Eroare: nu pot determina codarea caracterelor</translation>
     </message>
     <message>
-      <location filename="importDAE.py" line="180"/>
+      <location filename="importDAE.py" line="182"/>
       <source>file %s successfully created.</source>
       <translation type="unfinished">fişierul %s a fost creat cu succes.</translation>
     </message>
@@ -953,7 +953,7 @@
       <translation type="unfinished">Ofsetul între acest panou şi linia de bază</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="716"/>
+      <location filename="ArchRoof.py" line="721"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -980,12 +980,12 @@ Dacă Unghiul = 0 atunci unghiul este calculat astfel încât înălțimea să f
 Dacă Lungimea orizontală = 0 atunci Lungimea orizontală este calculată astfel încât înălțimea să fie aceeași ca a profilului relativ.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Id</source>
       <translation type="unfinished">Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>IdRel</source>
       <translation type="unfinished">IdRel</translation>
     </message>
@@ -1171,27 +1171,27 @@ Dacă Lungimea orizontală = 0 atunci Lungimea orizontală este calculată astfe
       <translation type="unfinished">A list of calculated heights for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Angle (deg)</source>
       <translation type="unfinished">Unghiul (grade)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Distanță (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Thickness (mm)</source>
       <translation type="unfinished">Grosime (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Streașină (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Height (mm)</source>
       <translation type="unfinished">Înălțime (mm)</translation>
     </message>

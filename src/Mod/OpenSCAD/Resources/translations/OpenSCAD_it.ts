@@ -26,12 +26,12 @@
     <message>
       <location filename="openscadprefs-base.ui" line="65"/>
       <source>OpenSCAD import</source>
-      <translation type="unfinished">Importa OpenSCAD</translation>
+      <translation type="unfinished">Importazione OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="76"/>
       <source>Use ViewProvider in Tree View</source>
-      <translation type="unfinished">Utilizzare ViewProvider in visualizzazione struttura</translation>
+      <translation type="unfinished">Utilizza ViewProvider in visualizzazione struttura</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="93"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="openscadprefs-base.ui" line="160"/>
       <source>OpenSCAD export</source>
-      <translation type="unfinished">Esporta OpenSCAD</translation>
+      <translation type="unfinished">Esportazione OpenSCAD</translation>
     </message>
     <message>
       <location filename="openscadprefs-base.ui" line="168"/>
@@ -129,7 +129,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="127"/>
       <source>Convert Edges to Faces</source>
-      <translation type="unfinished">Converti i bordi di facce</translation>
+      <translation type="unfinished">Converti i bordi in facce</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="206"/>
@@ -137,12 +137,12 @@
       <translation type="unfinished">Seleziona prima 3 oggetti</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">Funzione non supportata</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Press OK</source>
       <translation type="unfinished">Premere OK</translation>
     </message>
@@ -179,7 +179,7 @@
     <message>
       <location filename="OpenSCADUtils.py" line="559"/>
       <source>Error all shapes must be either 2D or both must be 3D</source>
-      <translation type="unfinished">Errore.Le forme devono essere tutte  2D o tutte 3D</translation>
+      <translation type="unfinished">Errore. Le forme devono essere tutte  2D o tutte 3D</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="77"/>
@@ -205,12 +205,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="104"/>
       <source>Color Shapes</source>
-      <translation type="unfinished">Forme di colore</translation>
+      <translation type="unfinished">Colore delle forme</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="106"/>
       <source>Color Shapes by validity and type</source>
-      <translation type="unfinished">Forme di colore per validità e tipo</translation>
+      <translation type="unfinished">Colore delle forme per validità e tipo</translation>
     </message>
   </context>
   <context>
@@ -218,7 +218,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="125"/>
       <source>Convert Edges To Faces</source>
-      <translation type="unfinished">Converti i bordi di facce</translation>
+      <translation type="unfinished">Converti i bordi in facce</translation>
     </message>
   </context>
   <context>
@@ -239,7 +239,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="86"/>
       <source>Explode Group</source>
-      <translation type="unfinished">Scompone il gruppo</translation>
+      <translation type="unfinished">Scomponi il gruppo</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="88"/>
@@ -252,12 +252,12 @@
     <message>
       <location filename="OpenSCADCommands.py" line="403"/>
       <source>Hull</source>
-      <translation type="unfinished">Guscio</translation>
+      <translation type="unfinished">Hull</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="405"/>
       <source>Perform Hull</source>
-      <translation type="unfinished">Esegui scafo</translation>
+      <translation type="unfinished">Esegui Hull</translation>
     </message>
   </context>
   <context>
@@ -265,7 +265,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="167"/>
       <source>Increase Tolerance Feature</source>
-      <translation type="unfinished">Aumentare la tolleranza caratteristica</translation>
+      <translation type="unfinished">Aumenta la caratteristica tolleranza</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="169"/>
@@ -309,7 +309,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="148"/>
       <source>Create Refine Shape Feature</source>
-      <translation type="unfinished">Crea una feauter di rifinitura forma</translation>
+      <translation type="unfinished">Crea una feature di rifinitura forma</translation>
     </message>
   </context>
   <context>
@@ -317,7 +317,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="225"/>
       <source>Remove Objects and their Children</source>
-      <translation type="unfinished">Rimuovere gli oggetti e i loro figli</translation>
+      <translation type="unfinished">Rimuovi gli oggetti e i loro figli</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="227"/>
@@ -343,7 +343,7 @@
     <message>
       <location filename="InitGui.py" line="131"/>
       <source>OpenSCAD Part tools</source>
-      <translation type="unfinished">OpenSCAD Part strumenti</translation>
+      <translation type="unfinished">Strumenti OpenSCAD Part</translation>
     </message>
   </context>
   <context>
@@ -351,7 +351,7 @@
     <message>
       <location filename="InitGui.py" line="129"/>
       <source>OpenSCADTools</source>
-      <translation type="unfinished">OpenSCADTools</translation>
+      <translation type="unfinished">Strumenti OpenSCAD</translation>
     </message>
   </context>
 </TS>

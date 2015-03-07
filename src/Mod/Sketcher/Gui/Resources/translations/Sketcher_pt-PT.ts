@@ -1490,12 +1490,12 @@
     <message>
         <location line="+1"/>
         <source>Do you want to share the same radius for all selected elements?</source>
-        <translation type="unfinished">Do you want to share the same radius for all selected elements?</translation>
+        <translation type="unfinished">Deseja usar o mesmo raio para todos os elementos selecionados?</translation>
     </message>
     <message>
         <location line="+142"/>
         <source>Select only entities from the sketch.</source>
-        <translation type="unfinished">Select only entities from the sketch.</translation>
+        <translation type="unfinished">Selecione apenas entidades no esboço.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2384,7 +2384,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+7"/>
         <location line="+11"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Reversed external geometry</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -2393,56 +2393,62 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
+
+Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+
+However, no constraints linking to the endpoints were found.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>No reversed external-geometry arcs were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No reversed external-geometry arcs were found.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 changes were made to constraints linking to endpoints of reversed arcs.</translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+14"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Constraint orientation locking</translation>
     </message>
     <message>
         <location line="-13"/>
         <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+12"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Delete constraints to external geom.</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>All constraints that deal with external geometry were deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">All constraints that deal with external geometry were deleted.</translation>
     </message>
 </context>
 <context>
@@ -2719,7 +2725,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+26"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Delete constraints to external geom.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2734,27 +2740,27 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+27"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Reversed external geometry</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Swap endpoints in constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Swap endpoints in constraints</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Constraint orientation locking</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Enable/Update</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Enable/Update</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Disable</translation>
     </message>
     <message>
         <location line="-86"/>

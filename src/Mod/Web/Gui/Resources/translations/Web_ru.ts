@@ -141,7 +141,7 @@
     <message>
         <location filename="../../BrowserView.cpp" line="199"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation type="unfinished">Ошибки</translation>
     </message>
     <message>
         <location filename="../../BrowserView.cpp" line="279"/>

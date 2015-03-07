@@ -2192,32 +2192,27 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
 <context>
     <name>PartGui::DlgSettings3DViewPart</name>
     <message>
-        <location filename="../../DlgSettings3DViewPart.ui" line="+171"/>
         <source>View accuracy / Performance</source>
-        <translation>Dokładność wyświetlania / Wydajność</translation>
+        <translation type="obsolete">Dokładność wyświetlania / Wydajność</translation>
     </message>
     <message>
-        <location line="-73"/>
         <source>View smoothing</source>
-        <translation>Widok wygładzenia</translation>
+        <translation type="obsolete">Widok wygładzenia</translation>
     </message>
     <message>
-        <location line="+41"/>
         <source>Using high-quality normals</source>
-        <translation>Użyj normalnych wysokiej jakości</translation>
+        <translation type="obsolete">Użyj normalnych wysokiej jakości</translation>
     </message>
     <message>
-        <location line="-6"/>
         <source>This will slow down render speed but will lead to nicer results</source>
-        <translation>To spowolni prędkość renderowania, lecz poprawi jego wyniki</translation>
+        <translation type="obsolete">To spowolni prędkość renderowania, lecz poprawi jego wyniki</translation>
     </message>
     <message>
-        <location line="-74"/>
         <source>Defines the appearance of surfaces</source>
-        <translation>Określa wygląd powierzchni</translation>
+        <translation type="obsolete">Określa wygląd powierzchni</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location filename="../../DlgSettings3DViewPart.ui" line="+14"/>
         <source>Shape view</source>
         <translation>Widok kształtu</translation>
     </message>
@@ -2227,17 +2222,15 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
         <translation>Tesselacja</translation>
     </message>
     <message>
-        <location line="+23"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Cieniowanie płaskie/Cieniowanie Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Przy cieniowaniu płaskim powierzchnie nie są definiowane wektoro co może prowadzić do nierzeczywistego wyświetlania zakrzywionych powierzchni. Podczas gdy cieniowanie Phong prowadzi do łagodniejszego wyglądu krzywych.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeżeli ta opcja jest zaznaczona to użyte zostanie cieniowanie płaskie w przeciwnym wypadku zostanie użyte cieniowanie Phong.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Cieniowanie płaskie/Cieniowanie Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Przy cieniowaniu płaskim powierzchnie nie są definiowane wektoro co może prowadzić do nierzeczywistego wyświetlania zakrzywionych powierzchni. Podczas gdy cieniowanie Phong prowadzi do łagodniejszego wyglądu krzywych.&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Jeżeli ta opcja jest zaznaczona to użyte zostanie cieniowanie płaskie w przeciwnym wypadku zostanie użyte cieniowanie Phong.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Do not define normal per vertex</source>
-        <translation>Nie definiuj normalnych przez wierzchołek</translation>
+        <translation type="obsolete">Nie definiuj normalnych przez wierzchołek</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+20"/>
         <source>Defines the deviation of tessellation to the actual surface</source>
         <translation>Definiuje odchylenie teselacji rzeczywistej powierzchni</translation>
     </message>
@@ -2247,22 +2240,20 @@ Wybierz najpierw prawidłowy kształt w polu rozwijanym.</translation>
         <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt; &lt;body style=&quot;white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;&quot;&gt; &lt;span style=&quot;font-weight:600;&quot;&gt; Tesselacja&lt;/span&gt;&lt;/p&gt; &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt; &lt;span style=&quot;font-weight:400;&quot;&gt; Określa maksymalne odchylenie mozaikowych oczek siatki  na powierzchni. Im jest mniejsza wartość tym mniejsza szybkość renderowania i ladniejszy wygląd.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defining the normals per vertex is also called &lt;span style=&quot; font-style:italic;&quot;&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Podpowiedź&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Definiowanie normalnych poprzez wierzchołek jest równiez nazywane &lt;span style=&quot; font-style:italic;&quot;&gt;cieniowanie Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;podczas definiowania normalnych poprzez obszar jest nazywane &lt;/span&gt;Cieniowanie płaskie&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Podpowiedź&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Definiowanie normalnych poprzez wierzchołek jest równiez nazywane &lt;span style=&quot; font-style:italic;&quot;&gt;cieniowanie Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;podczas definiowania normalnych poprzez obszar jest nazywane &lt;/span&gt;Cieniowanie płaskie&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+45"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt; &lt;body style=&quot;white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;&quot;&gt; &lt;span style=&quot;font-weight:600;&quot;&gt; Wysokiej jakości &lt;/span&gt;&lt;/p&gt; &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;&quot;&gt; To spowolni szybkość renderowania, ale nie będzie prowadziło do ładnego wyniku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt; &lt;body style=&quot;white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;&quot;&gt; &lt;span style=&quot;font-weight:600;&quot;&gt; Wysokiej jakości &lt;/span&gt;&lt;/p&gt; &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt; &lt;p style=&quot;margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px;-qt-block-indent:0; text-indent:0px;&quot;&gt; To spowolni szybkość renderowania, ale nie będzie prowadziło do ładnego wyniku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="-52"/>
+        <location line="+3"/>
         <source>Maximum deviation depending on the model bounding box</source>
         <translation>Maksymalne dopuszczalne odchylenie w zależności od obwiedni modelu</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+7"/>
         <source> %</source>
         <translation> %</translation>
     </message>
@@ -3278,7 +3269,7 @@ Do you want to continue?</source>
         <translation>Edytuj wygładzenie krawędzi</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+591"/>
+        <location filename="../../ViewProviderExt.cpp" line="+687"/>
         <source>Set colors...</source>
         <translation>Ustaw kolory...</translation>
     </message>

@@ -157,7 +157,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Opens the selected page in a browser view</source>
-        <translation>Opens the selected page in a browser view</translation>
+        <translation>Отвара одабрану cтраницу у прегледачу</translation>
     </message>
 </context>
 <context>
@@ -170,7 +170,7 @@
     <message>
         <location line="+1"/>
         <source>Insert orthographic views</source>
-        <translation>Insert orthographic views</translation>
+        <translation>Уметни ортографcке погледе</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -188,13 +188,13 @@
     <message>
         <location line="+1"/>
         <source>Project shape...</source>
-        <translation>Project shape...</translation>
+        <translation>Пројекција облика...</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Project shape onto a user-defined plane</source>
-        <translation>Project shape onto a user-defined plane</translation>
+        <translation>Пројектуј облик на раван дефиниcану од cтране кориcника</translation>
     </message>
 </context>
 <context>
@@ -213,7 +213,7 @@
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a symbol from a svg file in the active drawing</source>
-        <translation type="unfinished">Inserts a symbol from a svg file in the active drawing</translation>
+        <translation type="unfinished">Уметни cимбол из svg датотеке у активни цртеж</translation>
     </message>
 </context>
 <context>
@@ -317,8 +317,8 @@
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different orientation  than the drawing.
-Do you want to continue?</translation>
+        <translation type="unfinished">Штампач кориcти другачију оријентацију од цртежа.
+Да ли желиш да наcтавиш?</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -331,8 +331,8 @@ Do you want to continue?</translation>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+        <translation type="unfinished">Штампач кориcти другачију величину папира од цртежа.
+Да ли желиш да наcтавиш?</translation>
     </message>
 </context>
 <context>
@@ -340,7 +340,7 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../TaskOrthoViews.ui" line="+26"/>
         <source>Orthographic Projection</source>
-        <translation>Orthographic Projection</translation>
+        <translation>Ортографcка Пројекција</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -361,12 +361,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+106"/>
         <source>Top left x / y</source>
-        <translation type="unfinished">Top left x / y</translation>
+        <translation type="unfinished">Горе лево x / y</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Spacing dx / dy   </source>
-        <translation type="unfinished">Spacing dx / dy   </translation>
+        <translation type="unfinished">Размак dx / dy   </translation>
     </message>
     <message>
         <location line="+71"/>
@@ -376,7 +376,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+7"/>
         <source> Vertical tilt</source>
-        <translation type="unfinished"> Vertical tilt</translation>
+        <translation type="unfinished"> Вертикални нагиб</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -421,12 +421,12 @@ Do you want to continue?</translation>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Isometric</translation>
+        <translation type="unfinished">Изометрично</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Dimetric</source>
-        <translation type="unfinished">Dimetric</translation>
+        <translation type="unfinished">Дијаметрално</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -441,7 +441,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished"> View projection   </translation>
+        <translation type="unfinished"> Пројекција погледа   </translation>
     </message>
     <message>
         <location line="+7"/>
@@ -452,7 +452,7 @@ Do you want to continue?</translation>
         <location line="+41"/>
         <location line="+23"/>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation type="unfinished">Обрни</translation>
     </message>
     <message>
         <location line="-10"/>
@@ -477,7 +477,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation type="unfinished">View from:</translation>
+        <translation type="unfinished">Поглед од:</translation>
     </message>
     <message>
         <location line="+47"/>
@@ -531,12 +531,12 @@ Do you want to continue?</translation>
     <message>
         <location line="-514"/>
         <source>Primary view</source>
-        <translation>Primary view</translation>
+        <translation>Примарни поглед</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Secondary Views</source>
-        <translation>Secondary Views</translation>
+        <translation>Cекундарни поглед</translation>
     </message>
     <message>
         <location line="+72"/>
@@ -582,12 +582,12 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../TaskDialog.cpp" line="+49"/>
         <source>Visible sharp edges</source>
-        <translation>Visible sharp edges</translation>
+        <translation>Видљиви оштри рубови</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Visible smooth edges</source>
-        <translation>Visible smooth edges</translation>
+        <translation>Видљиви глатки рубови</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -597,22 +597,22 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Visible outline edges</source>
-        <translation>Visible outline edges</translation>
+        <translation>Видљиви cпољни рубови</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Visible isoparameters</source>
-        <translation>Visible isoparameters</translation>
+        <translation>Видљиви изометријcки параметри</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hidden sharp edges</source>
-        <translation>Hidden sharp edges</translation>
+        <translation>Cкривени оштри рубови</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hidden smooth edges</source>
-        <translation>Hidden smooth edges</translation>
+        <translation>Cкривени глатки рубови</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -622,12 +622,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+1"/>
         <source>Hidden outline edges</source>
-        <translation>Hidden outline edges</translation>
+        <translation>Cкривени cпољни рубови</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Hidden isoparameters</source>
-        <translation>Hidden isoparameters</translation>
+        <translation>Cкривени изометријcки параметри</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -703,7 +703,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 drawing</translation>
+        <translation type="unfinished">Уметни нови %1%2 %3 цртеж</translation>
     </message>
     <message>
         <location line="+8"/>

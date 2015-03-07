@@ -73,12 +73,12 @@
     <message>
         <location line="+1"/>
         <source>Groove</source>
-        <translation>Groove</translation>
+        <translation>Gola</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Groove a selected sketch</source>
-        <translation>Groove di uno sketch selezionato</translation>
+        <translation>Crea una gola o scanalatura in uno sketch selezionato</translation>
     </message>
 </context>
 <context>
@@ -163,12 +163,12 @@
     <message>
         <location line="+1"/>
         <source>Pocket</source>
-        <translation>Tasca</translation>
+        <translation>Cavità</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>create a pocket with the selected sketch</source>
-        <translation>Crea una tasca usando lo sketch selezionato</translation>
+        <translation>Crea una cavità o tasca usando lo sketch selezionato</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="+441"/>
         <source>Edit pocket</source>
-        <translation type="unfinished">Modifica tasca</translation>
+        <translation type="unfinished">Modifica cavità</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -608,7 +608,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+52"/>
         <source>Groove parameters</source>
-        <translation>Parametri Groove</translation>
+        <translation>Parametri Gola</translation>
     </message>
 </context>
 <context>
@@ -646,7 +646,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location filename="../../TaskHoleParameters.cpp" line="+48"/>
         <source>TaskHoleParameters</source>
-        <translation>Parametri tasca</translation>
+        <translation>Parametri cavità</translation>
     </message>
 </context>
 <context>
@@ -850,7 +850,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location line="+4"/>
         <source>Move down</source>
-        <translation>Sposta verso il basso</translation>
+        <translation>Sposta in basso</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1069,7 +1069,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <location filename="../../TaskPocketParameters.cpp" line="-350"/>
         <source>Pocket parameters</source>
-        <translation>Parametri Tasca</translation>
+        <translation>Parametri Cavità</translation>
     </message>
     <message>
         <source>To last</source>
@@ -1324,7 +1324,7 @@ Selezionare prima una o più entità spigolo.</translation>
         <location line="-72"/>
         <location line="+152"/>
         <source>Please create a sketch or 2D object first. It must have a support face on a solid</source>
-        <translation>Si prega di creare prima uno sketch o un oggetto 2D. Deve avere una faccia di appoggio su un solido</translation>
+        <translation>Si prega di creare prima uno sketch o un oggetto 2D. Deve essere posizionato su una faccia di supporto di un solido</translation>
     </message>
     <message>
         <location line="+74"/>
@@ -1414,7 +1414,7 @@ Selezionare prima una o più entità spigolo.</translation>
     <message>
         <source>The sketch has to have a support for the pocket feature.
 Create the sketch on a face.</source>
-        <translation type="obsolete">Lo sketch deve avere un supporto per la feature di tasca. 
+        <translation type="obsolete">Per la feature cavità lo sketch deve avere un supporto. 
 Creare lo sketch su una faccia.</translation>
     </message>
     <message>
@@ -1426,7 +1426,7 @@ Creare lo sketch su una faccia.</translation>
     <message>
         <location filename="../../ViewProviderPocket.cpp" line="+62"/>
         <source>Edit pocket</source>
-        <translation>Modifica tasca</translation>
+        <translation>Modifica cavità</translation>
     </message>
     <message>
         <location filename="../../ViewProviderChamfer.cpp" line="+55"/>
@@ -1465,7 +1465,7 @@ Creare lo sketch su una faccia.</translation>
     <message>
         <location filename="../../ViewProviderGroove.cpp" line="-28"/>
         <source>Edit Groove</source>
-        <translation>Modifica Groove</translation>
+        <translation>Modifica Gola</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1518,7 +1518,7 @@ Creare lo sketch su una faccia.</translation>
     <message>
         <location filename="../../TaskGrooveParameters.cpp" line="+227"/>
         <source>Edit groove</source>
-        <translation type="unfinished">Modificare la scanalatura</translation>
+        <translation type="unfinished">Modifica la scanalatura</translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="+171"/>

@@ -339,7 +339,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation type="unfinished">Обрни</translation>
     </message>
     <message>
         <source>Offset</source>
@@ -3130,11 +3130,11 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Go to end</source>
-        <translation type="unfinished">Go to end</translation>
+        <translation type="unfinished">Иди на крај</translation>
     </message>
     <message>
         <source>Redirect Python output</source>
-        <translation type="unfinished">Redirect Python output</translation>
+        <translation type="unfinished">Преусмери Python излаз</translation>
     </message>
     <message>
         <source>Redirect Python errors</source>

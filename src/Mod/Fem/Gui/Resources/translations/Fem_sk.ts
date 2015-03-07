@@ -365,17 +365,17 @@
     </message>
     <message>
         <location line="+67"/>
-        <source>Point load [N]</source>
+        <source>Point load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Line load [N/mm]</source>
+        <source>Line load</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location line="+2"/>
-        <source>Area load [N/mm²]</source>
+        <source>Area load</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

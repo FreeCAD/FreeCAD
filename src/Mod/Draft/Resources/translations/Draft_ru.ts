@@ -1510,7 +1510,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-import1.ui" line="141"/>
       <source>Create</source>
-      <translation type="unfinished">Создать</translation>
+      <translation type="unfinished">Запаковать</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="151"/>

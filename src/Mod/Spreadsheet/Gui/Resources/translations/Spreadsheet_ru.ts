@@ -254,7 +254,7 @@
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Вправо</translation>
+        <translation type="unfinished">Справа</translation>
     </message>
     <message>
         <source>Vertical</source>
@@ -262,11 +262,11 @@
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Вверх</translation>
+        <translation type="unfinished">Сверху</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Дно</translation>
+        <translation type="unfinished">Снизу</translation>
     </message>
     <message>
         <source>&amp;Style</source>

@@ -169,7 +169,7 @@
       <translation type="unfinished">L'altezza di questo piano</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="715"/>
+      <location filename="ArchRoof.py" line="720"/>
       <source>Roof</source>
       <translation type="unfinished">Tetto</translation>
     </message>
@@ -369,7 +369,7 @@
       <translation type="unfinished">Errore: impossibile determinare la codifica dei caratteri</translation>
     </message>
     <message>
-      <location filename="importDAE.py" line="180"/>
+      <location filename="importDAE.py" line="182"/>
       <source>file %s successfully created.</source>
       <translation type="unfinished">file %s creato con successo.</translation>
     </message>
@@ -685,7 +685,7 @@
       <location filename="ArchWindow.py" line="452"/>
       <source>Pick a face on an existing object or select a preset
 </source>
-      <translation type="unfinished">Scegli una faccia su un oggetto esistente o selezionane uno preimpostato
+      <translation type="unfinished">Scegliere una faccia su un oggetto esistente o selezionare un preimpostato
 </translation>
     </message>
     <message>
@@ -950,7 +950,7 @@
       <translation type="unfinished">Lo scostamento tra questo pannello e la sua linea di base</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="716"/>
+      <location filename="ArchRoof.py" line="721"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -975,12 +975,12 @@ Se Angle = 0 allora l'angolo viene calcolato in modo che l'altezza sia la stessa
 Se Run = 0 allora Run è calcolato in modo che l'altezza sia la stessa del profilo relativo.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Id</source>
       <translation type="unfinished">Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>IdRel</source>
       <translation type="unfinished">IdRel</translation>
     </message>
@@ -1167,27 +1167,27 @@ Se Run = 0 allora Run è calcolato in modo che l'altezza sia la stessa del profi
       <translation type="unfinished">Una lista delle altezze calcolate per ogni falda del tetto</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Angle (deg)</source>
       <translation type="unfinished">Angolo (gradi)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Corsa (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Thickness (mm)</source>
       <translation type="unfinished">Spessore (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Sbalzo (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Height (mm)</source>
       <translation type="unfinished">Altezza (mm)</translation>
     </message>
@@ -1634,7 +1634,7 @@ Se Run = 0 allora Run è calcolato in modo che l'altezza sia la stessa del profi
     <message>
       <location filename="archprefs-defaults.ui" line="804"/>
       <source>Length:</source>
-      <translation type="unfinished">Lunghezza:</translation>
+      <translation type="unfinished">Larghezza:</translation>
     </message>
     <message>
       <location filename="archprefs-defaults.ui" line="317"/>
@@ -1694,7 +1694,7 @@ Se Run = 0 allora Run è calcolato in modo che l'altezza sia la stessa del profi
     <message>
       <location filename="archprefs-base.ui" line="83"/>
       <source>If this is checked, when 2 similar walls are being connected, their underlying sketches will be joined into one, and the two walls will become one</source>
-      <translation type="unfinished">Se selezionato, quando 2 pareti simili vengono connesse, i loro skecth sono uniti in uno, e le due pareti diventano una</translation>
+      <translation type="unfinished">Se selezionato, quando vengono connesse 2 pareti simili, i loro skecth sono uniti in uno solo, e le due pareti diventano una parete unica</translation>
     </message>
     <message>
       <location filename="archprefs-base.ui" line="86"/>
@@ -1729,7 +1729,7 @@ Se Run = 0 allora Run è calcolato in modo che l'altezza sia la stessa del profi
     <message>
       <location filename="archprefs-base.ui" line="164"/>
       <source>If this is checked, flat groups of faces will be force-flattened, resulting in possible gaps and non-solid results</source>
-      <translation type="unfinished">Se selezionato, gruppi piani di facce saranno appiattiti forzatamente, con conseguente possibili lacune e risultati non solidi</translation>
+      <translation type="unfinished">Se selezionato, i gruppi di facce piane saranno appiattiti forzatamente, con conseguente possibili lacune e risultati non solidi</translation>
     </message>
     <message>
       <location filename="archprefs-base.ui" line="167"/>
@@ -1739,7 +1739,7 @@ Se Run = 0 allora Run è calcolato in modo che l'altezza sia la stessa del profi
     <message>
       <location filename="archprefs-base.ui" line="184"/>
       <source>If this is checked, holes in faces will be performed by subtraction rather than using wires orientation</source>
-      <translation type="unfinished">Se selezionato, i fori nelle facce sono creati mediante sottrazione piuttosto che utilizzando l'orientamento dei wire</translation>
+      <translation type="unfinished">Se selezionato, i fori nelle facce sono creati mediante sottrazione invece di utilizzare l'orientamento degli spigoli</translation>
     </message>
     <message>
       <location filename="archprefs-base.ui" line="187"/>
@@ -1759,7 +1759,7 @@ Se Run = 0 allora Run è calcolato in modo che l'altezza sia la stessa del profi
     <message>
       <location filename="archprefs-import.ui" line="54"/>
       <source>If this is checked, openings will be imported as subtractions, otherwise wall shapes will already have their openings subtracted</source>
-      <translation type="unfinished">Se selezionato, le aperture sono importate come sottrazioni, altrimenti le forme muro avranno già le loro aperture sottratte</translation>
+      <translation type="unfinished">Se selezionato, le aperture sono importate come elementi sottrazioni, altrimenti le aperture sono già sottratte dalle forme pareti</translation>
     </message>
     <message>
       <location filename="archprefs-import.ui" line="57"/>
@@ -1769,7 +1769,7 @@ Se Run = 0 allora Run è calcolato in modo che l'altezza sia la stessa del profi
     <message>
       <location filename="archprefs-import.ui" line="74"/>
       <source>If this is checked, object names will be prefixed with the IFC ID number</source>
-      <translation type="unfinished">Se selezionato, i nomi degli oggetti saranno preceduti dal numero ID IFC</translation>
+      <translation type="unfinished">Se selezionato, i nomi degli oggetti saranno preceduti dal numero di identificazione IFC</translation>
     </message>
     <message>
       <location filename="archprefs-import.ui" line="77"/>
