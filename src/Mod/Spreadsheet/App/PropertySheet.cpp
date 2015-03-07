@@ -149,6 +149,8 @@ void PropertySheet::clear()
     propertyNameToCellMap.clear();
     documentObjectToCellMap.clear();
     docDeps.clear();
+    aliasProp.clear();
+    revAliasProp.clear();
 }
 
 Cell *PropertySheet::getValue(CellAddress key)
@@ -429,8 +431,30 @@ void PropertySheet::setDisplayUnit(CellAddress address, const std::string &unit)
 
 void PropertySheet::setAlias(CellAddress address, const std::string &alias)
 {
-    assert(nonNullCellAt(address) != 0);
-    nonNullCellAt(address)->setAlias(alias);
+    Cell * cell = nonNullCellAt(address);
+    assert(cell != 0);
+
+    /* Mark cells depending on this cell dirty; they need to be resolved when an alias changes or disappears */
+    const char * docName = owner->getDocument()->Label.getValue();
+    const char * docObjName = owner->getNameInDocument();
+    std::string fullName = std::string(docName) + "#" + std::string(docObjName) + "." + address.toString();
+
+    std::map<std::string, std::set< CellAddress > >::const_iterator j = propertyNameToCellMap.find(fullName);
+    if (j != propertyNameToCellMap.end()) {
+        std::set< CellAddress >::const_iterator k = j->second.begin();
+
+        while (k != j->second.end()) {
+            setDirty(*k);
+            ++k;
+        }
+    }
+
+    std::string oldAlias;
+
+    if (cell->getAlias(oldAlias))
+        owner->aliasRemoved(address, oldAlias);
+
+    cell->setAlias(alias);
 }
 
 void PropertySheet::setComputedUnit(CellAddress address, const Base::Unit &unit)
@@ -463,6 +487,13 @@ void PropertySheet::clear(CellAddress address)
 
     // Mark as dirty
     dirty.insert(i->first);
+
+    // Remove alias if it exists
+    std::map<CellAddress, std::string>::iterator j = aliasProp.find(address);
+    if (j != aliasProp.end()) {
+        revAliasProp.erase(j->second);
+        aliasProp.erase(j);
+    }
 
     // Erase from internal struct
     data.erase(i);
@@ -524,13 +555,15 @@ public:
     bool changed() const { return mChanged; }
 
     void visit(Expression * node) {
-        VariableExpression *expr = freecad_dynamic_cast<VariableExpression>(node);
+        VariableExpression *varExpr = freecad_dynamic_cast<VariableExpression>(node);
+        RangeExpression *rangeExpr = freecad_dynamic_cast<RangeExpression>(node);
 
-        if (expr) {
+
+        if (varExpr) {
             static const boost::regex e("(\\${0,1})([A-Za-z]+)(\\${0,1})([0-9]+)");
             boost::cmatch cm;
 
-            if (boost::regex_match(expr->name().c_str(), cm, e)) {
+            if (boost::regex_match(varExpr->name().c_str(), cm, e)) {
                 const boost::sub_match<const char *> colstr = cm[2];
                 const boost::sub_match<const char *> rowstr = cm[4];
                 int thisRow, thisCol;
@@ -541,10 +574,25 @@ public:
                 if (thisRow >= mRow || thisCol >= mCol) {
                     thisRow += mRowCount;
                     thisCol += mColCount;
-                    expr->setName(columnName(thisCol) + rowName(thisRow));
+                    varExpr->setName(columnName(thisCol) + rowName(thisRow));
                     mChanged = true;
                 }
             }
+        }
+        else if (rangeExpr) {
+            Range r = rangeExpr->getRange();
+            CellAddress from(r.from());
+            CellAddress to(r.to());
+
+            if (from.row() >= mRow || from.col() >= mCol) {
+                from = CellAddress(from.row() + mRowCount, from.col() + mColCount);
+                mChanged = true;
+            }
+            if (to.row() >= mRow || to.col() >= mCol) {
+                to = CellAddress(to.row() + mRowCount, to.col() + mColCount);
+                mChanged = true;
+            }
+            rangeExpr->setRange(Range(from, to));
         }
     }
 private:
@@ -832,13 +880,13 @@ void PropertySheet::addDependencies(CellAddress key)
 
     std::set<Path>::const_iterator i = expressionDeps.begin();
     while (i != expressionDeps.end()) {
-        const Property * prop = (*i).getProperty();
-        DocumentObject * docObj = prop ? freecad_dynamic_cast<DocumentObject>(prop->getContainer()) : 0;
-        Document * doc = docObj ? docObj->getDocument() : 0;
+        const Property * prop = i->getProperty();
+        const DocumentObject * docObj = i->getDocumentObject();
+        Document * doc = i->getDocument();
 
-        std::string docName = doc ? doc->Label.getValue() : (*i).getDocumentName().getString();
-        std::string docObjName = docName + "#" + (docObj ? docObj->getNameInDocument() : (*i).getDocumentObjectName().getString());
-        std::string propName = docObjName + "." + (*i).getPropertyName();
+        std::string docName = doc ? doc->Label.getValue() : i->getDocumentName().getString();
+        std::string docObjName = docName + "#" + (docObj ? docObj->getNameInDocument() : i->getDocumentObjectName().getString());
+        std::string propName = docObjName + "." + i->getPropertyName();
 
         if (!prop)
             cell->setResolveException("Unresolved dependency");
@@ -857,6 +905,19 @@ void PropertySheet::addDependencies(CellAddress key)
         propertyNameToCellMap[propName].insert(key);
         cellToPropertyNameMap[key].insert(propName);
 
+        // Also an alias?
+        if (docObj == owner) {
+            std::map<std::string, CellAddress>::const_iterator j = revAliasProp.find(i->getPropertyName());
+
+            if (j != revAliasProp.end()) {
+                propName = docObjName + "." + j->second.toString();
+
+                // Insert into maps
+                propertyNameToCellMap[propName].insert(key);
+                cellToPropertyNameMap[key].insert(propName);
+            }
+        }
+
         documentObjectToCellMap[docObjName].insert(key);
         cellToDocumentObjectMap[key].insert(docObjName);
 
@@ -874,50 +935,47 @@ void PropertySheet::addDependencies(CellAddress key)
 
 void PropertySheet::removeDependencies(CellAddress key)
 {
-    std::map<CellAddress, std::set< std::string > >::iterator i1 = cellToPropertyNameMap.find(key);
-    std::set< std::string >::iterator j;
-
     /* Remove from Property <-> Key maps */
 
-    if (i1 == cellToPropertyNameMap.end())
-        return;
+    std::map<CellAddress, std::set< std::string > >::iterator i1 = cellToPropertyNameMap.find(key);
 
-    j = i1->second.begin();
+    if (i1 != cellToPropertyNameMap.end()) {
+        std::set< std::string >::const_iterator j = i1->second.begin();
 
-    while (j != i1->second.end()) {
-        std::map<std::string, std::set< CellAddress > >::iterator k = propertyNameToCellMap.find(*j);
+        while (j != i1->second.end()) {
+            std::map<std::string, std::set< CellAddress > >::iterator k = propertyNameToCellMap.find(*j);
 
-        assert(k != propertyNameToCellMap.end());
+            assert(k != propertyNameToCellMap.end());
 
-        k->second.erase(key);
-        ++j;
+            k->second.erase(key);
+            ++j;
+        }
+
+        cellToPropertyNameMap.erase(i1);
     }
-
-    cellToPropertyNameMap.erase(i1);
 
     /* Remove from DocumentObject <-> Key maps */
 
     std::map<CellAddress, std::set< std::string > >::iterator i2 = cellToDocumentObjectMap.find(key);
 
-    if (i2 == cellToDocumentObjectMap.end())
-        return;
+    if (i2 != cellToDocumentObjectMap.end()) {
+        std::set< std::string >::const_iterator j = i2->second.begin();
 
-    j = i2->second.begin();
+        while (j != i2->second.end()) {
+            std::map<std::string, std::set< CellAddress > >::iterator k = documentObjectToCellMap.find(*j);
 
-    while (j != i2->second.end()) {
-        std::map<std::string, std::set< CellAddress > >::iterator k = documentObjectToCellMap.find(*j);
+            assert(k != documentObjectToCellMap.end());
 
-        assert(k != documentObjectToCellMap.end());
+            k->second.erase(key);
 
-        k->second.erase(key);
+            if (k->second.size() == 0)
+                documentObjectToCellMap.erase(*j);
 
-        if (k->second.size() == 0)
-            documentObjectToCellMap.erase(*j);
+            ++j;
+        }
 
-        ++j;
+        cellToDocumentObjectMap.erase(i2);
     }
-
-    cellToDocumentObjectMap.erase(i2);
 }
 
 /**
@@ -1026,6 +1084,11 @@ void PropertySheet::renamedDocument(const Document * doc)
         setDirty(i->first);
         ++i;
     }
+}
+
+void PropertySheet::documentSet()
+{
+    documentName[owner->getDocument()] = owner->getDocument()->Label.getValue();
 }
 
 void PropertySheet::recomputeDependants(const DocumentObject *docObj)

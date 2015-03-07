@@ -116,6 +116,8 @@ public:
 
     void visit(ExpressionVisitor & v);
 
+    CellAddress getAddress() const { return address; }
+
     /* Alignment */
     static const int ALIGNMENT_LEFT;
     static const int ALIGNMENT_HCENTER;

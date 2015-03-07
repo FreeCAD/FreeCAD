@@ -45,6 +45,8 @@ public:
 
     Range(int _row_begin, int _col_begin, int _row_end, int _col_end);
 
+    Range(const CellAddress & from, const CellAddress & to);
+
     bool next();
 
     /** Current row */
@@ -60,17 +62,17 @@ public:
     inline CellAddress to() const { return CellAddress(row_end, col_end); }
 
     /** Start of range as a string */
-    inline std::string fromCellString() const { return addressToString(CellAddress(row_begin, col_begin)); }
+    inline std::string fromCellString() const { return CellAddress(row_begin, col_begin).toString(); }
 
     /** End of range as a string */
-    inline std::string toCellString() const { return addressToString(CellAddress(row_end, col_end)); }
+    inline std::string toCellString() const { return CellAddress(row_end, col_end).toString(); }
 
     /** Current cell as a string */
-    inline std::string address() const { return addressToString(CellAddress(row_curr, col_curr)); }
+    inline std::string address() const { return CellAddress(row_curr, col_curr).toString(); }
 
     /** The raneg as a string */
     inline std::string rangeString() const {
-        return addressToString(CellAddress(row_begin, col_begin)) + ":" + addressToString(CellAddress(row_end, col_end));
+        return CellAddress(row_begin, col_begin).toString() + ":" + CellAddress(row_end, col_end).toString();
     }
 
     CellAddress operator*() const { return CellAddress(row_curr, col_curr); }

@@ -147,10 +147,10 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     if (role == Qt::ToolTipRole) {
         QString v;
 
-        std::set<std::string> deps = sheet->dependsOn(row, col);
+        std::set<std::string> deps = sheet->dependsOn(CellAddress(row, col));
         std::set<std::string> provides;
 
-        sheet->providesTo(row, col, provides);
+        sheet->providesTo(CellAddress(row, col), provides);
 
         if (deps.size() > 0) {
             v += QString::fromUtf8("Depends on:");
@@ -196,7 +196,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
     }
 
     // Get display value as computed property
-    std::string address = addressToString(CellAddress(row, col));
+    std::string address = CellAddress(row, col).toString();
     Property * prop = sheet->getPropertyByName(address.c_str());
 
     if (prop == 0)
@@ -394,8 +394,8 @@ bool SheetModel::setData(const QModelIndex & index, const QVariant & value, int 
         CellAddress address(index.row(), index.column());
 
         try {
-            std::string strAddress = addressToString(address);
-            std::string next_address = addressToString(CellAddress(address.row() + 1, address.col()));
+            std::string strAddress = address.toString();
+            std::string next_address = CellAddress(address.row() + 1, address.col()).toString();
             QString str = value.toString();
             std::string content;
             Cell * cell = sheet->getCell(address);
