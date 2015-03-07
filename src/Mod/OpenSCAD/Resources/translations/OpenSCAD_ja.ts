@@ -137,12 +137,12 @@
       <translation type="unfinished">まず最初にオブジェクトを3つ選択してください</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">サポートされていない関数です</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Press OK</source>
       <translation type="unfinished">OKを押してください</translation>
     </message>
@@ -278,7 +278,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="382"/>
       <source>Mesh Boolean...</source>
-      <translation type="unfinished">Mesh Boolean...</translation>
+      <translation type="unfinished">メッシュのブール演算...</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="384"/>
@@ -296,7 +296,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="426"/>
       <source>Perform Minkowski</source>
-      <translation type="unfinished">Perform Minkowski</translation>
+      <translation type="unfinished">ミンコフスキーを演算</translation>
     </message>
   </context>
   <context>

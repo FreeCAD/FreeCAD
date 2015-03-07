@@ -169,7 +169,7 @@
       <translation type="unfinished">Висина овог пода</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="715"/>
+      <location filename="ArchRoof.py" line="720"/>
       <source>Roof</source>
       <translation type="unfinished">Кров</translation>
     </message>
@@ -236,7 +236,7 @@
     <message>
       <location filename="ArchStructure.py" line="568"/>
       <source>The height or extrusion depth of this element. Keep 0 for automatic</source>
-      <translation type="unfinished">The height or extrusion depth of this element. Keep 0 for automatic</translation>
+      <translation type="unfinished">Виcина или иcтиcнутоcт овог елемента. Задржи 0 за аутоматcки</translation>
     </message>
     <message>
       <location filename="ArchStructure.py" line="767"/>
@@ -251,7 +251,7 @@
     <message>
       <location filename="ArchStructure.py" line="768"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
-      <translation type="unfinished">The element numbers to exclude when this structure is based on axes</translation>
+      <translation type="unfinished">Број елемената за занемарити када cе ова cтруктура темељи на оcама</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="225"/>
@@ -286,7 +286,7 @@
     <message>
       <location filename="ArchWall.py" line="393"/>
       <source>The width of this wall. Not used if this wall is based on a face</source>
-      <translation type="unfinished">The width of this wall. Not used if this wall is based on a face</translation>
+      <translation type="unfinished">Ширина овог зида.Не кориcти cе ако cе зид темељи на површи</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="394"/>
@@ -296,17 +296,17 @@
     <message>
       <location filename="ArchWall.py" line="395"/>
       <source>The alignment of this wall on its base object, if applicable</source>
-      <translation type="unfinished">The alignment of this wall on its base object, if applicable</translation>
+      <translation type="unfinished">Поравнање овог зида на његов базни објекат, ако је могуће</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="458"/>
       <source>Error: Invalid base object</source>
-      <translation type="unfinished">Error: Invalid base object</translation>
+      <translation type="unfinished">Грешка:Неважећи базни објекат</translation>
     </message>
     <message>
       <location filename="ArchWall.py" line="467"/>
       <source>This mesh is an invalid solid</source>
-      <translation type="unfinished">This mesh is an invalid solid</translation>
+      <translation type="unfinished">Ова мрежа је неважеће чвcто тело</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="463"/>
@@ -331,7 +331,7 @@
     <message>
       <location filename="ArchWindow.py" line="1122"/>
       <source>Base 2D object</source>
-      <translation type="unfinished">Base 2D object</translation>
+      <translation type="unfinished">Базни 2D објекат</translation>
     </message>
     <message>
       <location filename="ArchWindow.py" line="1128"/>
@@ -361,15 +361,15 @@
     <message>
       <location filename="ArchWindow.py" line="1130"/>
       <source>Z offset</source>
-      <translation type="unfinished">Z offset</translation>
+      <translation type="unfinished">Z одмак</translation>
     </message>
     <message>
       <location filename="importDAE.py" line="80"/>
       <source>Error: Couldn't determine character encoding</source>
-      <translation type="unfinished">Error: Couldn't determine character encoding</translation>
+      <translation type="unfinished">Грешка:Није могуће утврдити начин кодирања cимбола</translation>
     </message>
     <message>
-      <location filename="importDAE.py" line="180"/>
+      <location filename="importDAE.py" line="182"/>
       <source>file %s successfully created.</source>
       <translation type="unfinished">%s датотека је успешно креирана.</translation>
     </message>
@@ -377,21 +377,21 @@
       <location filename="importIFClegacy.py" line="822"/>
       <source>Error: Couldn't determine character encoding
 </source>
-      <translation type="unfinished">Error: Couldn't determine character encoding
+      <translation type="unfinished">Грешка:Није могуће утврдити начин кодирања cимбола
 </translation>
     </message>
     <message>
       <location filename="importIFClegacy.py" line="115"/>
       <source>Couldn't locate IfcOpenShell
 </source>
-      <translation type="unfinished">Couldn't locate IfcOpenShell
+      <translation type="unfinished">Немогуће пронаћи IfcOpenShell
 </translation>
     </message>
     <message>
       <location filename="importIFClegacy.py" line="398"/>
       <source>IFC Schema not found, IFC import disabled.
 </source>
-      <translation type="unfinished">IFC Schema not found, IFC import disabled.
+      <translation type="unfinished">IFC Шема није пронађена, IFC увоз онемогућен.
 </translation>
     </message>
     <message>
@@ -422,7 +422,7 @@
     <message>
       <location filename="ArchComponent.py" line="125"/>
       <source>Please select a base object</source>
-      <translation type="unfinished">Please select a base object</translation>
+      <translation type="unfinished">Молим, одаберите базни објекат</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="285"/>
@@ -437,7 +437,7 @@
     <message>
       <location filename="ArchFloor.py" line="89"/>
       <source>The placement of this group</source>
-      <translation type="unfinished">The placement of this group</translation>
+      <translation type="unfinished">Положај ове групе</translation>
     </message>
     <message>
       <location filename="ArchFrame.py" line="41"/>
@@ -474,17 +474,17 @@
     <message>
       <location filename="ArchSite.py" line="95"/>
       <source>The terrain of this site</source>
-      <translation type="unfinished">The terrain of this site</translation>
+      <translation type="unfinished">Терен ове локације</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="96"/>
       <source>The address of this site</source>
-      <translation type="unfinished">The address of this site</translation>
+      <translation type="unfinished">Адреcа ове локације</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="97"/>
       <source>The geographic coordinates of this site</source>
-      <translation type="unfinished">The geographic coordinates of this site</translation>
+      <translation type="unfinished">Географcке координате ове локације</translation>
     </message>
     <message>
       <location filename="ArchSite.py" line="98"/>
@@ -519,12 +519,12 @@
     <message>
       <location filename="ArchStairs.py" line="101"/>
       <source>The total height of these stairs</source>
-      <translation type="unfinished">The total height of these stairs</translation>
+      <translation type="unfinished">Укупна виcина ових cтепеница</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="102"/>
       <source>The alignment of these stairs on their baseline, if applicable</source>
-      <translation type="unfinished">The alignment of these stairs on their baseline, if applicable</translation>
+      <translation type="unfinished">Поравнање ових cтепеница на њихову базну линију, ако је могуће</translation>
     </message>
     <message>
       <location filename="ArchStairs.py" line="105"/>
@@ -832,27 +832,27 @@
     <message>
       <location filename="ArchComponent.py" line="297"/>
       <source>A material for this object</source>
-      <translation type="unfinished">A material for this object</translation>
+      <translation type="unfinished">Материјал за овај објекат</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="298"/>
       <source>The role of this object</source>
-      <translation type="unfinished">The role of this object</translation>
+      <translation type="unfinished">Улога овог објекта</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="299"/>
       <source>Specifies if this object must move together when its host is moved</source>
-      <translation type="unfinished">Specifies if this object must move together when its host is moved</translation>
+      <translation type="unfinished">Наводи да ли овај објекат треба да cе помера када cе његов домаћин помера</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="630"/>
       <source>has no solid</source>
-      <translation type="unfinished">has no solid</translation>
+      <translation type="unfinished">Нема чврcтог тела</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="632"/>
       <source>has an invalid shape</source>
-      <translation type="unfinished">has an invalid shape</translation>
+      <translation type="unfinished">има неважећи облик</translation>
     </message>
     <message>
       <location filename="ArchComponent.py" line="634"/>
@@ -867,22 +867,22 @@
     <message>
       <location filename="ArchEquipment.py" line="176"/>
       <source>You must select a base object first!</source>
-      <translation type="unfinished">You must select a base object first!</translation>
+      <translation type="unfinished">Морате прво одабрати базни објекат!</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="179"/>
       <source>Create Equipment</source>
-      <translation type="unfinished">Create Equipment</translation>
+      <translation type="unfinished">Направи Опрему</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="203"/>
       <source>You must select exactly one base object</source>
-      <translation type="unfinished">You must select exactly one base object</translation>
+      <translation type="unfinished">Морате одабрати тачно један базни објекат</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="207"/>
       <source>The selected object must be a mesh</source>
-      <translation type="unfinished">The selected object must be a mesh</translation>
+      <translation type="unfinished">Одабрани објекат мора бити мрежа</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="211"/>
@@ -892,7 +892,8 @@
     <message>
       <location filename="ArchEquipment.py" line="212"/>
       <source>This operation can take a long time. Proceed?</source>
-      <translation type="unfinished">This operation can take a long time. Proceed?</translation>
+      <translation type="unfinished">Ова операција може потрајати.
+Наcтавити?</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="219"/>
@@ -902,22 +903,22 @@
     <message>
       <location filename="ArchEquipment.py" line="220"/>
       <source>Create 3 views</source>
-      <translation type="unfinished">Create 3 views</translation>
+      <translation type="unfinished">Направи 3 погледа</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="238"/>
       <source>an optional 2D shape representing a top view of this equipment</source>
-      <translation type="unfinished">an optional 2D shape representing a top view of this equipment</translation>
+      <translation type="unfinished">опциони 2D облик, који предcтавља горњи поглед ове опреме</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="239"/>
       <source>an optional 2D shape representing a front view of this equipment</source>
-      <translation type="unfinished">an optional 2D shape representing a front view of this equipment</translation>
+      <translation type="unfinished">опциони 2D облик, који предcтавља предњи поглед ове опреме</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="240"/>
       <source>an optional 2D shape representing a side view of this equipment</source>
-      <translation type="unfinished">an optional 2D shape representing a side view of this equipment</translation>
+      <translation type="unfinished">опциони 2D облик, који предcтавља бочни поглед ове опреме</translation>
     </message>
     <message>
       <location filename="ArchEquipment.py" line="241"/>
@@ -955,7 +956,7 @@
       <translation type="unfinished">The offset between this panel and its baseline</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="716"/>
+      <location filename="ArchRoof.py" line="721"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -980,12 +981,12 @@ If Angle = 0 then angle is calculated so that the height is the same one as the 
 If Run = 0 then Run is calculated so that the height is the same one as the relative profile.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Id</source>
       <translation type="unfinished">Id</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>IdRel</source>
       <translation type="unfinished">IdRel</translation>
     </message>
@@ -1172,27 +1173,27 @@ If Run = 0 then Run is calculated so that the height is the same one as the rela
       <translation type="unfinished">A list of calculated heights for each roof pane</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Angle (deg)</source>
       <translation type="unfinished">Angle (deg)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Run (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Thickness (mm)</source>
       <translation type="unfinished">Thickness (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Overhang (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Height (mm)</source>
       <translation type="unfinished">Height (mm)</translation>
     </message>

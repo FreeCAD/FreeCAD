@@ -445,7 +445,7 @@
     <message>
       <location filename="TankInstance.py" line="70"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation type="unfinished">密度 [kg / m^3]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="171"/>
@@ -470,7 +470,7 @@
     <message>
       <location filename="TaskPanel.py" line="176"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation type="unfinished">船舶</translation>
     </message>
   </context>
   <context>
@@ -503,7 +503,7 @@
     <message>
       <location filename="WeightInstance.py" line="88"/>
       <source>Density [kg / m^3]</source>
-      <translation type="unfinished">Density [kg / m^3]</translation>
+      <translation type="unfinished">密度 [kg / m^3]</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="136"/>
@@ -533,7 +533,7 @@
     <message>
       <location filename="TaskPanel.py" line="245"/>
       <source>Ship</source>
-      <translation type="unfinished">Ship</translation>
+      <translation type="unfinished">船舶</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="252"/>
@@ -553,7 +553,7 @@
     <message>
       <location filename="TaskPanel.py" line="273"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation type="unfinished">密度</translation>
     </message>
   </context>
 </TS>

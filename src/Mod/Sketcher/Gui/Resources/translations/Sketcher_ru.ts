@@ -242,7 +242,7 @@
     </message>
     <message>
         <source>Constrain vertical distance</source>
-        <translation type="obsolete">Constrain vertical distance</translation>
+        <translation type="obsolete">Ограничение расстояния по вертикали</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -260,7 +260,7 @@
     <message>
         <location line="+1"/>
         <source>Constrain vertical distance</source>
-        <translation>Constrain vertical distance</translation>
+        <translation>Ограничение расстояния по вертикали</translation>
     </message>
     <message>
         <source>Constrain horizontal distance</source>
@@ -457,7 +457,7 @@
     </message>
     <message>
         <source>Create an symmetry constraint between two points with respect to a line</source>
-        <translation type="obsolete">Создать ограничение симметричности для дух точек относительно линии</translation>
+        <translation type="obsolete">Создать ограничение симметричности для двух точек относительно линии</translation>
     </message>
 </context>
 <context>
@@ -918,7 +918,7 @@
     <message>
         <location line="+1"/>
         <source>External geometry</source>
-        <translation>Внешняя геометрия:</translation>
+        <translation>Геометрия извне</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -954,7 +954,7 @@
     <message>
         <location line="+1"/>
         <source>Map sketch to face...</source>
-        <translation>Разместито эскиз на грани...</translation>
+        <translation>Разместить эскиз на грани...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1737,7 +1737,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+270"/>
         <location line="+918"/>
         <source>Error</source>
-        <translation type="unfinished">Ошибка</translation>
+        <translation type="unfinished">Ошибки</translation>
     </message>
     <message>
         <location line="-1174"/>
@@ -2251,7 +2251,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+26"/>
         <source>External geometry</source>
-        <translation type="unfinished">Внешняя геометрия:</translation>
+        <translation type="unfinished">Геометрия извне</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2384,7 +2384,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+7"/>
         <location line="+11"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Перевёрнутые элементы извне</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -2393,56 +2393,62 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Найдено %1 перевернутых дуг окружностей в геометрии извне. Их концевые точки отмечены в окне 3D.
+
+%2 ограничений ссылаются на концевые точки этих дуг. Эти ограничения были перечислены в окне просмотра отчёта (меню Вид -&gt; Виды -&gt; Просмотр отчёта).
+
+Нажмите кнопку &quot;Поменять конц.точки в ограничениях&quot;, чтобы поменять ссылки в ограничениях на противоположные точки. Это нужно сделать для исправления эскизов, созданных во FreeCAD версий старше, чем v0.15.???, причем только один раз.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Найдено %1 перевернутых дуг окружностей в геометрии извне. Их концевые точки отмечены в окне 3D.
+
+Однако, ни одно ограничение не ссылается на концевые точки этих дуг.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>No reversed external-geometry arcs were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Не найдено ни одной перевёрнутой дуги окружности.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Было сделано %1 изменений в ограничениях, ссылающихся на концевые точки перевёрнутых дуг.</translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+14"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Фиксация ориентации ограничений</translation>
     </message>
     <message>
         <location line="-13"/>
         <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Блокировка ориентации была включена и пересчитана для %1 ограничений. Эти ограничения были перечислены в окне просмотра отчёта (меню Вид -&gt; Виды -&gt; Просмотр отчёта).</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Блокировка ориентации была отключена для %1 ограничений. Эти ограничения были перечислены в окне просмотра отчёта (меню Вид -&gt; Виды -&gt; Просмотр отчёта). Обратите внимание, что для всех новых ограничений, блокировка будет всё равно по умолчанию включаться.</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+12"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Удалить ограничения к геом. извне</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Сейчас будут удалены все ограничения, в которых фигурирует геометрия извне. Это может быть полезно для спасения эскиза с изменившимися или испорченными ссылками на геометрию извне. Вы уверены, что хотите удалить эти ограничения?</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>All constraints that deal with external geometry were deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Все ограничения, в которых фигурирует геометрия извне, были удалены.</translation>
     </message>
 </context>
 <context>
@@ -2498,7 +2504,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+20"/>
         <source>Edge</source>
-        <translation type="unfinished">Грань</translation>
+        <translation type="unfinished">Ребро</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2698,7 +2704,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location filename="../../TaskSketcherGeneral.cpp" line="+121"/>
         <source>Edit controls</source>
-        <translation>Элементы управления для редактирования</translation>
+        <translation>Настройки</translation>
     </message>
 </context>
 <context>
@@ -2719,7 +2725,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+26"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Удалить ограничения к геом. извне</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2729,32 +2735,32 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+6"/>
         <source>Tolerance:</source>
-        <translation type="unfinished">Tolerance:</translation>
+        <translation type="unfinished">Допуск:</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Перевёрнутые элементы извне</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Swap endpoints in constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Поменять конц.точки в ограничениях</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Фиксация ориентации ограничений</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Enable/Update</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Активировать/Пересчитать</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Деактивировать</translation>
     </message>
     <message>
         <location line="-86"/>
@@ -3023,7 +3029,7 @@ Do you want to detach it from the support?</source>
     <name>TaskSketcherGeneral</name>
     <message>
         <source>Edit controls</source>
-        <translation type="obsolete">Элементы управления для редактирования</translation>
+        <translation type="obsolete">Настройки</translation>
     </message>
 </context>
 <context>

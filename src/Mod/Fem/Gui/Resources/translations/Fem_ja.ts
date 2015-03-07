@@ -352,19 +352,31 @@
         <translation type="unfinished">削除</translation>
     </message>
     <message>
-        <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished">点荷重 [N]</translation>
+        <translation type="obsolete">点荷重 [N]</translation>
+    </message>
+    <message>
+        <source>Line load [N/mm]</source>
+        <translation type="obsolete">線荷重 [N/mm]</translation>
+    </message>
+    <message utf8="true">
+        <source>Area load [N/mm²]</source>
+        <translation type="obsolete">面荷重 [N/mm ²]</translation>
+    </message>
+    <message>
+        <location line="+67"/>
+        <source>Point load</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Line load [N/mm]</source>
-        <translation type="unfinished">線荷重 [N/mm]</translation>
+        <source>Line load</source>
+        <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location line="+2"/>
-        <source>Area load [N/mm²]</source>
-        <translation type="unfinished">面荷重 [N/mm ²]</translation>
+        <source>Area load</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
@@ -470,12 +482,12 @@
     <message>
         <location line="+9"/>
         <source>Write Calculix Input File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calculix 入力ファイルを書き込みする</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Edit Calculix Input File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Calculix 入力ファイルを編集</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -629,7 +641,7 @@
     <message>
         <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
         <source>Constraint force</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">拘束力</translation>
     </message>
 </context>
 <context>

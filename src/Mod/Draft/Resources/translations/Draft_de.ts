@@ -454,7 +454,7 @@ und kopieren Sie sie in Ihren Macro Ordner.</translation>
     <message>
       <location filename="DraftTools.py" line="1953"/>
       <source>Creates text string in shapes.</source>
-      <translation type="unfinished">Erzeugt eine Form aus einem Stück Text.</translation>
+      <translation type="unfinished">Erzeugt aus Text eine Form.</translation>
     </message>
   </context>
   <context>
@@ -571,7 +571,7 @@ und kopieren Sie sie in Ihren Macro Ordner.</translation>
     <message>
       <location filename="DraftTools.py" line="4416"/>
       <source>Activates/deactivates all snap tools at once</source>
-      <translation type="unfinished">Aktiviert/deaktiviert alle Rast-Tools auf einmal</translation>
+      <translation type="unfinished">Aktiviert/deaktiviert alle Fang-Tools auf einmal</translation>
     </message>
   </context>
   <context>
@@ -636,7 +636,7 @@ und kopieren Sie sie in Ihren Macro Ordner.</translation>
     <message>
       <location filename="DraftTools.py" line="4438"/>
       <source>Snaps to perpendicular points on edges</source>
-      <translation type="unfinished">Rastet an Punkten senkrecht zu den Kanten ein</translation>
+      <translation type="unfinished">Rastet an Punkten senkrecht zu Kanten ein</translation>
     </message>
   </context>
   <context>
@@ -709,12 +709,12 @@ und kopieren Sie sie in Ihren Macro Ordner.</translation>
     <message>
       <location filename="DraftTools.py" line="4306"/>
       <source>Toggle Grid</source>
-      <translation type="unfinished">Gitternetz umschalten</translation>
+      <translation type="unfinished">Raster umschalten</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4307"/>
       <source>Toggles the Draft grid on/off</source>
-      <translation type="unfinished">Entwurfsgitter ein-/ausschalten</translation>
+      <translation type="unfinished">Entwurfsraster ein-/ausschalten</translation>
     </message>
   </context>
   <context>
@@ -774,12 +774,12 @@ und kopieren Sie sie in Ihren Macro Ordner.</translation>
     <message>
       <location filename="DraftTools.py" line="576"/>
       <source>DWire</source>
-      <translation type="unfinished">DWire</translation>
+      <translation type="unfinished">Polygonzug</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="577"/>
       <source>Creates a multiple-point DraftWire (DWire). CTRL to snap, SHIFT to constrain</source>
-      <translation type="unfinished">Erstellt einen Mehrpunkt-Entwurfsdraht (DWire). Strg zum Fangen, Umschalt für Bezüge</translation>
+      <translation type="unfinished">Erstellt einen Polygonzug (DWire). STRG zum Fangen, SHIFT zum Einschränken</translation>
     </message>
   </context>
   <context>
@@ -825,7 +825,7 @@ und kopieren Sie sie in Ihren Macro Ordner.</translation>
     <message>
       <location filename="userprefs-base.ui" line="402"/>
       <source>This is the default group name for construction geometry</source>
-      <translation type="unfinished">Dies ist der Standard-Gruppenname für die Konstruktionsgeometrie</translation>
+      <translation type="unfinished">Dies ist der Standard-Gruppenname für die Hilfsgeometrie</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="405"/>
@@ -1565,7 +1565,7 @@ Werte mit Differenzen unterhalb diesen Wertes werden als gleich behandelt.</tran
     <message>
       <location filename="userprefs-snap.ui" line="14"/>
       <source>Snapping settings</source>
-      <translation type="unfinished">Rast-Optionen</translation>
+      <translation type="unfinished">Fang-Optionen</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="700"/>
@@ -2031,7 +2031,7 @@ Werte mit Differenzen unterhalb diesen Wertes werden als gleich behandelt.</tran
     <message>
       <location filename="DraftTools.py" line="579"/>
       <source>DWire</source>
-      <translation type="unfinished">DWire</translation>
+      <translation type="unfinished">Polygonzug</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="790"/>
@@ -2292,13 +2292,14 @@ Werte mit Differenzen unterhalb diesen Wertes werden als gleich behandelt.</tran
     <message>
       <location filename="DraftTools.py" line="473"/>
       <source>Create DWire</source>
-      <translation type="unfinished">Entwurfsdraht (DWire) erstellen</translation>
+      <translation type="unfinished">Polygonzug erstellen</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="510"/>
       <source>DWire has been closed
 </source>
-      <translation type="unfinished">DWire wurde geschlossen </translation>
+      <translation type="unfinished">Polygonzug wurde geschlossen
+</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="736"/>

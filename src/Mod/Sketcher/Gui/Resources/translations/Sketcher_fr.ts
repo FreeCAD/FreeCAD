@@ -2384,7 +2384,7 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
         <location line="+7"/>
         <location line="+11"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Géométrie externe inversée</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -2393,56 +2393,62 @@ Combinaisons acceptés : deux courbes ; un point d&apos;extrémité et une courb
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs points d&apos;extrémité sont mis en évidence dans la vue 3D. 
+
+%2 contraintes sont appliquées aux extrémités. Ces contraintes sont affichées dans la vue rapport (menu vues -&gt; vue -&gt; vue rapport).  
+
+Cliquez sur le bouton «Inverser les points d&apos;extrémité des contraintes» pour réaffecter ces points d&apos;extrémité. Ne faites ceci qu&apos;une seule fois pour les croquis créé avec une version de FreeCAD antérieure à 0.15.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 arcs inversés ont été trouvés dans la géométrie externe. Leurs points d&apos;extrémité sont mis en évidence dans la vue 3D.  
+
+Toutefois, aucune contrainte liée aux points d&apos;extrémité n&apos;a été trouvée.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>No reversed external-geometry arcs were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aucun arc inversé n&apos;a été trouvé dans la géométrie externe.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 modifications ont été apportées aux contraintes liées aux points d&apos;extrémité des arcs inversés.</translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+14"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Contrainte de verrouillage d&apos;orientation</translation>
     </message>
     <message>
         <location line="-13"/>
         <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Le verrouillage de l&apos;orientation a été activé et recalculé pour %1 contraintes. Ces contraintes sont indiquées dans la vue rapport (menu vues -&gt; vue -&gt; vue rapport).</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Le verrouillage de l&apos;orientation a été désactivé pour %1 contraintes. Ces contraintes sont indiquées dans la vue rapport (menu vues -&gt; vue -&gt; vue rapport). Notez que pour les contraintes futures, le verrouillage par défaut est toujours activé.</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+12"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Supprimer les contraintes liées à une géométrie externe</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vous êtes sur le point de supprimer toutes les contraintes liées à la géométrie externe. Ceci est utile pour réparer une esquisse avec des liens vers une géométrie externe brisés ou modifiés. Êtes-vous sûr de que vouloir supprimer ces contraintes?</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>All constraints that deal with external geometry were deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Toutes les contraintes liées à une géométrie externe ont été supprimées.</translation>
     </message>
 </context>
 <context>
@@ -2719,7 +2725,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+26"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Supprimer les contraintes liées à une géométrie externe</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2734,27 +2740,27 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+27"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Géométrie externe inversée</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Swap endpoints in constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Inverser les points d&apos;extrémité de contraintes</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Contrainte de verrouillage d&apos;orientation</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Enable/Update</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Activer/mettre à jour</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Désactiver</translation>
     </message>
     <message>
         <location line="-86"/>

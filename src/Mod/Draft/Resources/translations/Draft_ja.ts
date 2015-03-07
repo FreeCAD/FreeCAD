@@ -278,7 +278,7 @@ and place them in your macros folder.</source>
     <message>
       <location filename="DraftTools.py" line="4328"/>
       <source>Heal faulty Draft objects saved from an earlier FreeCAD version</source>
-      <translation type="unfinished">Heal faulty Draft objects saved from an earlier FreeCAD version</translation>
+      <translation type="unfinished"> 旧FreeCAD バージョンに保存されている、 欠陥のあるドラフト オブジェクトを修復します</translation>
     </message>
   </context>
   <context>
@@ -765,7 +765,7 @@ and place them in your macros folder.</source>
     <message>
       <location filename="DraftTools.py" line="4390"/>
       <source>Adds a VisGroup</source>
-      <translation type="unfinished">Adds a VisGroup</translation>
+      <translation type="unfinished">VisGroup を追加</translation>
     </message>
   </context>
   <context>
@@ -1584,27 +1584,27 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-import1.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;By checking this, you will allow FreeCAD to download and update the&lt;/p&gt;&lt;p&gt;components needed for DXF import and export. You can also do that&lt;/p&gt;&lt;p&gt;manually, by visiting https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;これをチェックすると、FreeCADにDXFのインポートとエクスポートに必要なコン&lt;/p&gt;&lt;p&gt;ポーネントをのダウンロードと更新ができる。 また次のサイトを参照すると手動で&lt;/p&gt;&lt;p&gt;同様のことができる。https://github.com/yorikvanhavre/Draft-dxf-importer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="37"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation type="unfinished">Allow FreeCAD to automatically download and update the DXF libraries</translation>
+      <translation type="unfinished">FreeCAD に、DXF ライブラリの自動的なダウンロードと更新を許可します。</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="148"/>
       <source>If this is checked, only standard Part objects will be created (fastest)</source>
-      <translation type="unfinished">If this is checked, only standard Part objects will be created (fastest)</translation>
+      <translation type="unfinished">チェックされている場合、標準のPartオブジェクトだけが作成されます(最も高速)</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="323"/>
       <source>If this is checked, DXF layers will be imported as Draft VisGroups</source>
-      <translation type="unfinished">If this is checked, DXF layers will be imported as Draft VisGroups</translation>
+      <translation type="unfinished">チェックされている場合、DXFレイヤーはドラフト VisGroups としてインポートされます</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="326"/>
       <source>Use VisGroups</source>
-      <translation type="unfinished">Use VisGroups</translation>
+      <translation type="unfinished">VisGroups を使用</translation>
     </message>
     <message>
       <location filename="userprefs-snap.ui" line="401"/>
@@ -1624,12 +1624,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-snap.ui" line="447"/>
       <source>the number of horizontal or vertical lines of the grid</source>
-      <translation type="unfinished">the number of horizontal or vertical lines of the grid</translation>
+      <translation type="unfinished">水平または垂直のグリッドの線数</translation>
     </message>
     <message>
       <location filename="userprefs-snap.ui" line="453"/>
       <source> lines</source>
-      <translation type="unfinished"> lines</translation>
+      <translation type="unfinished"> 線</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="464"/>
@@ -1639,7 +1639,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-visual.ui" line="484"/>
       <source>display mode</source>
-      <translation type="unfinished">display mode</translation>
+      <translation type="unfinished">表示モード</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="504"/>
@@ -1659,17 +1659,17 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-visual.ui" line="764"/>
       <source>Drawing views</source>
-      <translation type="unfinished">Drawing views</translation>
+      <translation type="unfinished">図面ビュー</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="772"/>
       <source>Dashed line definition</source>
-      <translation type="unfinished">Dashed line definition</translation>
+      <translation type="unfinished">破線の定義</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="878"/>
       <source>A SVG linestyle definition</source>
-      <translation type="unfinished">A SVG linestyle definition</translation>
+      <translation type="unfinished">SVG ラインスタイルの定義</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="795"/>
@@ -1679,7 +1679,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-visual.ui" line="815"/>
       <source>Dashdot line definition</source>
-      <translation type="unfinished">Dashdot line definition</translation>
+      <translation type="unfinished">破線の定義</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="838"/>
@@ -1689,7 +1689,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-visual.ui" line="858"/>
       <source>Dotted line definition</source>
-      <translation type="unfinished">Dotted line definition</translation>
+      <translation type="unfinished">点線の定義</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="881"/>
@@ -2733,48 +2733,48 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="Draft.py" line="2349"/>
       <source>The given object is not planar and cannot be converted into a sketch.</source>
-      <translation type="unfinished">The given object is not planar and cannot be converted into a sketch.</translation>
+      <translation type="unfinished">指定されたオブジェクトは平面およびスケッチに変換することができません。</translation>
     </message>
     <message>
       <location filename="Draft.py" line="2814"/>
       <source>Found several objects: creating a shell
 </source>
-      <translation type="unfinished">Found several objects: creating a shell
+      <translation type="unfinished">幾つかのオブジェクトが見つかりました: シェルを作成します
 </translation>
     </message>
     <message>
       <location filename="Draft.py" line="2819"/>
       <source>Found several coplanar objects or faces: creating one face
 </source>
-      <translation type="unfinished">Found several coplanar objects or faces: creating one face
+      <translation type="unfinished">同一平面上にあるオブジェクトまたは面が見つかりました：ひとつの面を作成します
 </translation>
     </message>
     <message>
       <location filename="Draft.py" line="2837"/>
       <source>Found 1 linear object: converting to line
 </source>
-      <translation type="unfinished">Found 1 linear object: converting to line
+      <translation type="unfinished">ひとつの 線形オブジェクトが見つかりました: 線分へ変換します
 </translation>
     </message>
     <message>
       <location filename="Draft.py" line="2845"/>
       <source>Found 1 closed sketch object: creating a face from it
 </source>
-      <translation type="unfinished">Found 1 closed sketch object: creating a face from it
+      <translation type="unfinished">閉じたスケッチオブジェクトを1つ見つけました: 面を作成します
 </translation>
     </message>
     <message>
       <location filename="Draft.py" line="2850"/>
       <source>Found closed wires: creating faces
 </source>
-      <translation type="unfinished">Found closed wires: creating faces
+      <translation type="unfinished">閉じた連線が見つかりました： 面を作成します
 </translation>
     </message>
     <message>
       <location filename="Draft.py" line="2870"/>
       <source>Found several non-treatable objects: creating compound
 </source>
-      <translation type="unfinished">Found several non-treatable objects: creating compound
+      <translation type="unfinished">複数の修復不能なオブジェクトを見つけました: 複合物を作成します
 </translation>
     </message>
     <message>
@@ -2790,12 +2790,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftGui.py" line="608"/>
       <source>Length of current segment</source>
-      <translation type="unfinished">Length of current segment</translation>
+      <translation type="unfinished">現在のセグメントの長さ</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="609"/>
       <source>Angle of current segment</source>
-      <translation type="unfinished">Angle of current segment</translation>
+      <translation type="unfinished">現在のセグメントの角度</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="611"/>
@@ -2810,7 +2810,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftGui.py" line="635"/>
       <source>&amp;Select edge</source>
-      <translation type="unfinished">&amp;Select edge</translation>
+      <translation type="unfinished">エッジを選択 (&amp;S)</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="636"/>
@@ -2820,13 +2820,13 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftGui.py" line="648"/>
       <source>Auto</source>
-      <translation type="unfinished">Auto</translation>
+      <translation type="unfinished">自動</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="2465"/>
       <source>Sorry, offset of Bezier curves is currently still not supported
 </source>
-      <translation type="unfinished">Sorry, offset of Bezier curves is currently still not supported
+      <translation type="unfinished">申し訳ありませんが、ベジエ曲線のオフセットは、現在まだサポートされていません
 </translation>
     </message>
     <message>
@@ -2853,35 +2853,35 @@ Values with differences below this value will be treated as same.</source>
       <location filename="DraftTools.py" line="2674"/>
       <source>Select object(s) to trim/extend
 </source>
-      <translation type="unfinished">Select object(s) to trim/extend
+      <translation type="unfinished">トリム/伸長するオブジェクトを選択してください
 </translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="2980"/>
       <source>Unable to trim these objects, only Draft wires and arcs are supported
 </source>
-      <translation type="unfinished">Unable to trim these objects, only Draft wires and arcs are supported
+      <translation type="unfinished">これらのオブジェクトをトリムすることはできません。ドラフトにおける線と円弧のみでサポートされてます
 </translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="2983"/>
       <source>Unable to trim these objects, too many wires
 </source>
-      <translation type="unfinished">Unable to trim these objects, too many wires
+      <translation type="unfinished">これらのオブジェクトは、ワイヤがあまりにも多すぎてトリミを行うことができません
 </translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="3000"/>
       <source>These objects don't intersect
 </source>
-      <translation type="unfinished">These objects don't intersect
+      <translation type="unfinished">これらのオブジェクトは交差してません
 </translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="3003"/>
       <source>Too many intersection points
 </source>
-      <translation type="unfinished">Too many intersection points
+      <translation type="unfinished">交点があまりにも多すぎます
 </translation>
     </message>
     <message>
@@ -2893,13 +2893,12 @@ Please either enable FreeCAD to download these libraries:
   2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
 Or download these libraries manually, as explained on
 https://github.com/yorikvanhavre/Draft-dxf-importer</source>
-      <translation type="unfinished">The DXF import/export libraries needed by FreeCAD to handle 
-the DXF format were not found on this system.
-Please either enable FreeCAD to download these libraries:
-  1 - Load Draft workbench
-  2 - Menu Edit &gt; Preferences &gt; Import-Export &gt; DXF &gt; Enable downloads
-Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer</translation>
+      <translation type="unfinished">FreeCADでDXF形式を処理するのに必要なDXFインポート/エクスポートライブラリが、このシステム上で見つかりませんでした。
+FreeCADで有効にするためにこれらをダウンロードしてください：
+1 - Load Draft workbench
+2 - メニューより、編集 &gt; 設定 (P)... &gt; インポート/エクスポート &gt; DXF &gt; 自動ダウンロードを有効にする
+もしくは、 https://github.com/yorikvanhavre/Draft-dxf-importer の説明にあるように、
+手動でこれらのライブラリーをダウンロードして下さい。</translation>
     </message>
   </context>
 </TS>

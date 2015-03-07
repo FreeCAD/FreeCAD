@@ -352,19 +352,31 @@
         <translation type="unfinished">Excluir</translation>
     </message>
     <message>
-        <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished">Carga pontual [N]</translation>
+        <translation type="obsolete">Carga pontual [N]</translation>
+    </message>
+    <message>
+        <source>Line load [N/mm]</source>
+        <translation type="obsolete">Carga linear [M/mm]</translation>
+    </message>
+    <message utf8="true">
+        <source>Area load [N/mm²]</source>
+        <translation type="obsolete">Carga de área [N/mm²]</translation>
+    </message>
+    <message>
+        <location line="+67"/>
+        <source>Point load</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Line load [N/mm]</source>
-        <translation type="unfinished">Carga linear [M/mm]</translation>
+        <source>Line load</source>
+        <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location line="+2"/>
-        <source>Area load [N/mm²]</source>
-        <translation type="unfinished">Carga de área [N/mm²]</translation>
+        <source>Area load</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
@@ -470,12 +482,12 @@
     <message>
         <location line="+9"/>
         <source>Write Calculix Input File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Gravar um arquivo de entrada do Calculix</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Edit Calculix Input File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Editar um arquivo de entrada do Calculix</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -629,7 +641,7 @@
     <message>
         <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
         <source>Constraint force</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Restrição de força</translation>
     </message>
 </context>
 <context>

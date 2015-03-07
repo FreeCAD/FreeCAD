@@ -282,7 +282,7 @@
     <message>
       <location filename="StartPage.py" line="96"/>
       <source>The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</source>
-      <translation type="unfinished">The section of the FreeCAD website dedicated to python scripting, with examples, explanations, and API commands.</translation>
+      <translation type="unfinished">FreeCAD ウェブサイトのセクションには、python スクリプトの例および API コマンドに関する説明があります 。</translation>
     </message>
     <message>
       <location filename="StartPage.py" line="100"/>

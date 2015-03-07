@@ -137,12 +137,12 @@
       <translation type="unfinished">Сначала необходимо выбрать 3 объекта</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">Неподдерживаемая функция</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Press OK</source>
       <translation type="unfinished">Нажмите кнопку OK</translation>
     </message>

@@ -1209,7 +1209,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-snap.ui" line="297"/>
       <source>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</source>
-      <translation type="unfinished">Je-li vybráno, mřížka bude vždy viditelná při aktivním režimu náčrtu. Jinak pouze když použijete příkaz</translation>
+      <translation type="unfinished">Je-li vybráno, mřížka bude vždy viditelná při aktivním režimu návrhu. Jinak pouze když použijete příkaz</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="303"/>
@@ -1269,7 +1269,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="343"/>
       <source>When this is checked, the Draft tools will create Part primitives instead of Draft objects, when available.</source>
-      <translation type="unfinished">Je-li zaškrtnuto, Draft nástroje budou kreslit primitivy Part namísto objektů Draft, pokud to jde.</translation>
+      <translation type="unfinished">Je-li zaškrtnuto, Návrhové nástroje budou kreslit primitivy Dílů namísto objektů Návrhu, pokud to jde.</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="346"/>
@@ -1384,7 +1384,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-visual.ui" line="138"/>
       <source>Draft classic style</source>
-      <translation type="unfinished">Klasický styl Draft</translation>
+      <translation type="unfinished">Klasický styl Návrhu</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="143"/>
@@ -1519,12 +1519,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-import1.ui" line="167"/>
       <source>If this is checked, parametric Draft objects will be created whenever possible</source>
-      <translation type="unfinished">Je-li zaškrtnuto, budou vytvořeny Draft objekty, kdykoliv je to možné</translation>
+      <translation type="unfinished">Je-li zaškrtnuto, budou vytvořeny objekty Návrhu, kdykoliv je to možné</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="170"/>
       <source>Draft objects</source>
-      <translation type="unfinished">Draft objekty</translation>
+      <translation type="unfinished">Objekty Návrhu</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="183"/>
@@ -1702,17 +1702,17 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftSnap.py" line="1075"/>
       <source>Draft Snap</source>
-      <translation type="unfinished">Draft úchopy</translation>
+      <translation type="unfinished">Úchopy návrhu</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="127"/>
       <source>Draft creation tools</source>
-      <translation type="unfinished">Draft kreslící nástroje</translation>
+      <translation type="unfinished">Kreslící nástroje Návrhu</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="128"/>
       <source>Draft modification tools</source>
-      <translation type="unfinished">Draft modifikační nástroje</translation>
+      <translation type="unfinished">Modifikační nástroje Návrhu</translation>
     </message>
   </context>
   <context>
@@ -1720,7 +1720,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftGui.py" line="261"/>
       <source>Draft Command Bar</source>
-      <translation type="unfinished">Draft příkazový panel</translation>
+      <translation type="unfinished">Příkazový panel Návrhu</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="597"/>
@@ -2180,7 +2180,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="2824"/>
       <source>Found 1 non-parametric objects: draftifying it
 </source>
-      <translation type="unfinished">Nalezen 1 neparametrický objekt: převádění na parametrický drát Draft
+      <translation type="unfinished">Nalezen 1 neparametrický objekt: převádění na parametrický drát Návrhu
 </translation>
     </message>
     <message>
@@ -2629,7 +2629,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="DraftTools.py" line="3340"/>
       <source>Select a Draft object to edit
 </source>
-      <translation type="unfinished">Vyberte objekt Draft k editaci
+      <translation type="unfinished">Vyberte objekt Návrhu k editaci
 </translation>
     </message>
     <message>
@@ -2710,7 +2710,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="InitGui.py" line="132"/>
       <source>&amp;Draft</source>
-      <translation type="unfinished">&amp;Draft</translation>
+      <translation type="unfinished">&amp;Návrh</translation>
     </message>
     <message>
       <location filename="InitGui.py" line="130"/>
@@ -2851,7 +2851,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftTools.py" line="4099"/>
       <source>Convert to Draft</source>
-      <translation type="unfinished">Převást na Návrh</translation>
+      <translation type="unfinished">Převést na Návrh</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4111"/>

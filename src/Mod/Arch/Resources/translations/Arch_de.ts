@@ -81,7 +81,7 @@
     <message>
       <location filename="ArchFloor.py" line="79"/>
       <source>Floor</source>
-      <translation type="unfinished">Boden</translation>
+      <translation type="unfinished">Geschoss</translation>
     </message>
     <message>
       <location filename="ArchCommands.py" line="208"/>
@@ -169,7 +169,7 @@
       <translation type="unfinished">Die Höhe dieser Etage</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="715"/>
+      <location filename="ArchRoof.py" line="720"/>
       <source>Roof</source>
       <translation type="unfinished">Dach</translation>
     </message>
@@ -369,7 +369,7 @@
       <translation type="unfinished">Fehler: Konnte Zeichencodierung nicht bestimmen</translation>
     </message>
     <message>
-      <location filename="importDAE.py" line="180"/>
+      <location filename="importDAE.py" line="182"/>
       <source>file %s successfully created.</source>
       <translation type="unfinished">Datei %s erfolgreich erzeugt.</translation>
     </message>
@@ -951,7 +951,7 @@
       <translation type="unfinished">Der Versatz zwischen diesem Panel und der Basislinie</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="716"/>
+      <location filename="ArchRoof.py" line="721"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -976,12 +976,12 @@ Wenn Angle = 0 wird der Winkel so berechnet, das die Höhe identisch zum relativ
 Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil ist</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Id</source>
       <translation type="unfinished">ID</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>IdRel</source>
       <translation type="unfinished">IdRel</translation>
     </message>
@@ -1167,27 +1167,27 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
       <translation type="unfinished">Eine Liste der berechneten Höhen für jede Dach Ebene</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Angle (deg)</source>
       <translation type="unfinished">Winkel (Grad)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Ausführen (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Thickness (mm)</source>
       <translation type="unfinished">Dicke (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Überhang (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Height (mm)</source>
       <translation type="unfinished">Höhe (mm)</translation>
     </message>
@@ -1306,12 +1306,12 @@ Wenn Run = 0 wird Run so berechnet, das die Höhe identisch zum relativen Profil
     <message>
       <location filename="ArchFloor.py" line="53"/>
       <source>Floor</source>
-      <translation type="unfinished">Boden</translation>
+      <translation type="unfinished">Geschoss</translation>
     </message>
     <message>
       <location filename="ArchFloor.py" line="55"/>
       <source>Creates a floor object including selected objects</source>
-      <translation type="unfinished">Erstellt ein Boden-Objekt, einschließlich der ausgewählten Objekte</translation>
+      <translation type="unfinished">Erstellt ein Geschossobjekt, einschließlich der ausgewählten Objekte</translation>
     </message>
   </context>
   <context>

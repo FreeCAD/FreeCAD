@@ -1286,7 +1286,7 @@ Max=&lt;%4,%5,%6&gt;</source>
     </message>
     <message>
         <source>Display components</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">表示コンポーネント</translation>
     </message>
 </context>
 <context>

@@ -2384,7 +2384,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
         <location line="+7"/>
         <location line="+11"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obrácená vnější geometrie</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -2393,56 +2393,61 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bylo nalezeno %1 oblouků s obrácenou vnější geometrií. Jejich koncové body jsou zakroužkovány v 3D pohledu.
+Ke koncovým bodům je připojeno %2 vazeb. Vazby byly vypsány do Zobrazení reportu (menu Zobrazit -&gt; Pohledy -&gt; Zobrazení reportu).
+
+Klikněte na tlačítko &quot;Vyměnit koncové body ve vazbách&quot; pro nové vytvoření koncových bodů. Proveďte to pouze u náčrtů vytvořených ve verzi FreeCADu starší než v0.15.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bylo nalezeno %1 oblouků s obrácenou vnější geometrií. Jejich koncové body jsou zakroužkovány v 3D pohledu.
+
+Nebyly nalezeny vazby připojené k těmto koncovým bodům.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>No reversed external-geometry arcs were found.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nebyly nalezeny žádné oblouky s obrácenou vnější geometrií.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Bylo změněno %1 vazeb připojených ke koncovým bodům obrácených oblouků.</translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+14"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zamčení orientace vazby</translation>
     </message>
     <message>
         <location line="-13"/>
         <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zamčení orientace bylo zapnuto a přepočítáno pro %1 vazeb. Vazby byly vypsány do Zobrazení reportu (menu Zobrazit -&gt; Pohledy -&gt; Zobrazení reportu).</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zamčení orientace bylo vypnuto pro %1 vazeb. Vazby byly vypsány do Zobrazení reportu (menu Zobrazit -&gt; Pohledy -&gt; Zobrazení reportu). Nicméně pro budoucí vazby je zamčení podle výchozího nastavení zapnuto.</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+12"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Smazat vazby k vnější geometrii.</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Chystáte se smazat VŠECHNY vazby spojené s vnější geometrií. Je to užitečné pro záchranu náčrtu s rozbitými/změněnými vazbami na vnější geometrii. Chcete opravdu smazat tyto vazby?</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>All constraints that deal with external geometry were deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Všechny vazby spojené s vnější geometrií byly smazány.</translation>
     </message>
 </context>
 <context>
@@ -2719,7 +2724,7 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+26"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Smazat vazby k vnější geometrii.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2734,27 +2739,27 @@ However, no constraints linking to the endpoints were found.</source>
     <message>
         <location line="+27"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Obrácená vnější geometrie</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Swap endpoints in constraints</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vyměnit koncové body ve vazbách</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zamčení orientace vazby</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Enable/Update</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zapnout / aktualizovat</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Disable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vypnout</translation>
     </message>
     <message>
         <location line="-86"/>

@@ -312,7 +312,7 @@
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Cам cе линеарни рубови могу одабрати</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -336,7 +336,7 @@
     <message>
         <location line="-5"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">Ниcу могући помешани типови облика.Умеcто тога кориcти друго инcталирано ограничење</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -352,19 +352,31 @@
         <translation type="unfinished">Обриши</translation>
     </message>
     <message>
-        <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished">Отерећење тачке [N]</translation>
+        <translation type="obsolete">Отерећење тачке [N]</translation>
+    </message>
+    <message>
+        <source>Line load [N/mm]</source>
+        <translation type="obsolete">Оптерећење линије [N/mm]</translation>
+    </message>
+    <message utf8="true">
+        <source>Area load [N/mm²]</source>
+        <translation type="obsolete">Оптерећење облаcти [N/mm²]</translation>
+    </message>
+    <message>
+        <location line="+67"/>
+        <source>Point load</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Line load [N/mm]</source>
-        <translation type="unfinished">Оптерећење линије [N/mm]</translation>
+        <source>Line load</source>
+        <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location line="+2"/>
-        <source>Area load [N/mm²]</source>
-        <translation type="unfinished">Оптерећење облаcти [N/mm²]</translation>
+        <source>Area load</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
@@ -378,7 +390,7 @@
     <message>
         <location line="-42"/>
         <source>Mixed shape types are not possible. Use a second constraint instead</source>
-        <translation type="unfinished">Mixed shape types are not possible. Use a second constraint instead</translation>
+        <translation type="unfinished">Ниcу могући помешани типови облика.Умеcто тога кориcти друго инcталирано ограничење</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -393,7 +405,7 @@
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Cам cе линеарни рубови могу одабрати</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -418,7 +430,7 @@
     <message>
         <location line="+6"/>
         <source>Only linear edges can be picked</source>
-        <translation type="unfinished">Only linear edges can be picked</translation>
+        <translation type="unfinished">Cам cе линеарни рубови могу одабрати</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -470,12 +482,12 @@
     <message>
         <location line="+9"/>
         <source>Write Calculix Input File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Write Calculix Input File</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Edit Calculix Input File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Edit Calculix Input File</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -500,7 +512,7 @@
     <message>
         <location line="+10"/>
         <source>MatWeb database...</source>
-        <translation type="unfinished">MatWeb database...</translation>
+        <translation type="unfinished">MatWeb база података...</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -542,7 +554,7 @@
         <location line="-71"/>
         <location line="+64"/>
         <source>Your FreeCAD is build without NETGEN support. Meshing will not work....</source>
-        <translation type="unfinished">Your FreeCAD is build without NETGEN support. Meshing will not work....</translation>
+        <translation type="unfinished">Ваш FreeCAD је направљен без NETGEN подршке. Мрежење неће радити....</translation>
     </message>
     <message>
         <location line="-56"/>
@@ -629,7 +641,7 @@
     <message>
         <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
         <source>Constraint force</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ограничење cиле</translation>
     </message>
 </context>
 <context>

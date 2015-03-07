@@ -354,7 +354,7 @@ Do you want to continue?</source>
         <location line="+25"/>
         <location line="+60"/>
         <source>Right click for axonometric settings</source>
-        <translation type="unfinished">Fare clic con il pulsante destro per le impostazioni assonometriche</translation>
+        <translation type="unfinished">Fare clic con il pulsante destro per impostare le assonometrie</translation>
     </message>
     <message>
         <location line="+106"/>
@@ -369,7 +369,7 @@ Do you want to continue?</source>
     <message>
         <location line="+71"/>
         <source> Axis out and right</source>
-        <translation type="unfinished"> Asse fuori e a sinistra</translation>
+        <translation type="unfinished"> Asse diretto all&apos;esterno a destra</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -439,18 +439,18 @@ Do you want to continue?</source>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished"> Proiezione della vista   </translation>
+        <translation type="unfinished"> Vista in Proiezione   </translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Axis aligned up</source>
-        <translation type="unfinished"> Asse allineato verso l&apos;alto</translation>
+        <translation type="unfinished"> Asse diretto verso l&apos;alto</translation>
     </message>
     <message>
         <location line="+41"/>
         <location line="+23"/>
         <source>Flip</source>
-        <translation type="unfinished">Specchia</translation>
+        <translation type="unfinished">Invertita</translation>
     </message>
     <message>
         <location line="-10"/>
@@ -488,7 +488,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Front</source>
-        <translation type="obsolete">Di fronte</translation>
+        <translation type="obsolete">Frontale</translation>
     </message>
     <message>
         <source>Right</source>
@@ -500,7 +500,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Left</source>
-        <translation type="obsolete">Da sinistra</translation>
+        <translation type="obsolete">Sinistra</translation>
     </message>
     <message>
         <source>Top</source>
@@ -544,7 +544,7 @@ Do you want to continue?</source>
     <message>
         <location line="+9"/>
         <source>Auto scale / position</source>
-        <translation>Scala/posiziona automaticamente</translation>
+        <translation>Scala e posiziona automaticamente</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -562,17 +562,17 @@ Do you want to continue?</source>
     <message>
         <location line="+125"/>
         <source>Show hidden</source>
-        <translation>Visualizza linee nascoste</translation>
+        <translation>Visualizza le linee nascoste</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Show smooth</source>
-        <translation>Visualizzazione lisciata</translation>
+        <translation>Visualizza le linee di tangenza</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Axonometric</source>
-        <translation>Assonometrica</translation>
+        <translation>Assonometria</translation>
     </message>
 </context>
 <context>
@@ -585,7 +585,7 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Visible smooth edges</source>
-        <translation>Mostra i bordi smussati</translation>
+        <translation>Mostra i bordi dei raccordi</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -610,7 +610,7 @@ Do you want to continue?</source>
     <message>
         <location line="+1"/>
         <source>Hidden smooth edges</source>
-        <translation>Nascondi i bordi smussati</translation>
+        <translation>Nascondi i bordi dei raccordi</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -812,7 +812,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Front</source>
-        <translation type="obsolete">Di fronte</translation>
+        <translation type="obsolete">Frontale</translation>
     </message>
     <message>
         <source>Back</source>
@@ -824,7 +824,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Left</source>
-        <translation type="obsolete">Da sinistra</translation>
+        <translation type="obsolete">Sinistra</translation>
     </message>
     <message>
         <source>Top</source>

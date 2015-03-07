@@ -137,12 +137,12 @@
       <translation type="unfinished">Nejdříve prosím vyberte 3 objekty</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">Nepodporovaná funkce</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Press OK</source>
       <translation type="unfinished">Stiskněte OK</translation>
     </message>
@@ -252,7 +252,7 @@
     <message>
       <location filename="OpenSCADCommands.py" line="403"/>
       <source>Hull</source>
-      <translation type="unfinished">Hull</translation>
+      <translation type="unfinished">trup, skořepina</translation>
     </message>
     <message>
       <location filename="OpenSCADCommands.py" line="405"/>

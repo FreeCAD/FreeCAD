@@ -137,12 +137,12 @@
       <translation type="unfinished">Kérem válasszon ki előszőr 3 tárgyat</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Unsupported Function</source>
       <translation type="unfinished">Nem támogatott funkció</translation>
     </message>
     <message>
-      <location filename="importCSG.py" line="1113"/>
+      <location filename="importCSG.py" line="1115"/>
       <source>Press OK</source>
       <translation type="unfinished">OK-ra kattintson</translation>
     </message>

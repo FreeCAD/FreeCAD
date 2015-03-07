@@ -194,7 +194,7 @@
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Sposta verso il basso</translation>
+        <translation type="unfinished">Sposta in basso</translation>
     </message>
 </context>
 <context>
@@ -269,7 +269,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::ControlSingleton</name>
     <message>
         <source>Task panel</source>
-        <translation type="unfinished">Riquadro delle attività</translation>
+        <translation type="unfinished">Riquadro delle azioni</translation>
     </message>
 </context>
 <context>
@@ -323,7 +323,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Out Of Range</source>
-        <translation type="unfinished">Fuori dalla portata</translation>
+        <translation type="unfinished">Fuori portata</translation>
     </message>
 </context>
 <context>
@@ -338,7 +338,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Flip</source>
-        <translation type="unfinished">Specchia</translation>
+        <translation type="unfinished">Invertita</translation>
     </message>
     <message>
         <source>Offset</source>
@@ -362,7 +362,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Adjust to view direction</source>
-        <translation type="unfinished">Regola verso la direzione della vista</translation>
+        <translation type="unfinished">Adatta alla direzione della vista</translation>
     </message>
     <message>
         <source>Direction</source>
@@ -586,7 +586,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Please specify the menu text first.</source>
-        <translation type="unfinished">Specificare prima il menu testo.</translation>
+        <translation type="unfinished">Specificare prima il testo del menu.</translation>
     </message>
     <message>
         <source>No item selected</source>
@@ -736,7 +736,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation type="unfinished">Sposta verso destra</translation>
+        <translation type="unfinished">Sposta a destra</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -744,7 +744,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Move left</source>
-        <translation type="unfinished">Sposta verso sinistra</translation>
+        <translation type="unfinished">Sposta a sinistra</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -752,7 +752,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="unfinished">Sposta verso il basso</translation>
+        <translation type="unfinished">Sposta in basso</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -955,7 +955,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Chrome</source>
-        <translation type="unfinished">Chrome</translation>
+        <translation type="unfinished">Cromo</translation>
     </message>
     <message>
         <source>Emerald</source>
@@ -991,7 +991,7 @@ Definire un&apos;altra scorciatoia.</translation>
     </message>
     <message>
         <source>Plaster</source>
-        <translation type="unfinished">Intonaco</translation>
+        <translation type="unfinished">Gesso</translation>
     </message>
     <message>
         <source>Plastic</source>
@@ -1516,7 +1516,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">URL licenza</translation>
+        <translation type="unfinished">URL della licenza</translation>
     </message>
     <message>
         <source>Open in browser</source>
@@ -1535,7 +1535,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Source</source>
-        <translation type="unfinished">Fonte</translation>
+        <translation type="unfinished">Sorgente</translation>
     </message>
     <message>
         <source>Project file (*.fcstd)</source>
@@ -1567,7 +1567,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Empty source</source>
-        <translation type="unfinished">Fonte vuota</translation>
+        <translation type="unfinished">Sorgente vuota</translation>
     </message>
     <message>
         <source>No source is defined.</source>
@@ -1598,7 +1598,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Please select an object from the list</source>
-        <translation type="unfinished">Selezionare un oggetto dell&apos;elenco</translation>
+        <translation type="unfinished">Seleziona un oggetto dell&apos;elenco</translation>
     </message>
 </context>
 <context>
@@ -1621,7 +1621,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Record error messages</source>
-        <translation type="unfinished">Registra messaggi di errore</translation>
+        <translation type="unfinished">Registra i messaggi di errore</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -1649,11 +1649,11 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Redirect internal Python errors to report view</source>
-        <translation type="unfinished">Reindirizzare gli errori interni di Python alla finestra di report</translation>
+        <translation type="unfinished">Reindirizza gli errori interni di Python alla finestra di report</translation>
     </message>
     <message>
         <source>Redirect internal Python output to report view</source>
-        <translation type="unfinished">Reindirizzare l&apos;output interno di Python nella vista report</translation>
+        <translation type="unfinished">Reindirizza l&apos;output interno di Python nella vista report</translation>
     </message>
 </context>
 <context>
@@ -1680,11 +1680,11 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Discard changes</source>
-        <translation type="unfinished">Ignorare le modifiche</translation>
+        <translation type="unfinished">Ignora le modifiche</translation>
     </message>
     <message>
         <source>Abort program</source>
-        <translation type="unfinished">Interrompere il programma</translation>
+        <translation type="unfinished">Interrompi il programma</translation>
     </message>
     <message>
         <source>Help</source>
@@ -1941,7 +1941,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Saving transactions (Auto-save)</source>
-        <translation type="unfinished">Salvataggio delle transazioni (Salvataggio automatico)</translation>
+        <translation type="unfinished">Salva la cronologia delle operazioni (Salvataggio automatico)</translation>
     </message>
     <message>
         <source>Discard saved transaction after saving document</source>
@@ -1961,11 +1961,11 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Allow duplicate object labels in one document</source>
-        <translation type="unfinished">Consenti la duplicazione delle etichette degli oggetti in uno stesso documento</translation>
+        <translation type="unfinished">Consenti la duplicazione delle etichette degli oggetti nello stesso documento</translation>
     </message>
     <message>
         <source>Maximum Undo/Redo steps</source>
-        <translation type="unfinished">Massimo numero di passaggi di Annulla/Ripeti</translation>
+        <translation type="unfinished">Numero massimo di passaggi di Annulla/Ripeti</translation>
     </message>
     <message>
         <source>Using Undo/Redo on documents</source>
@@ -2045,7 +2045,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>License URL</source>
-        <translation type="unfinished">URL licenza</translation>
+        <translation type="unfinished">URL della licenza</translation>
     </message>
     <message>
         <source>An URL where the user can find more details about the license</source>
@@ -2346,7 +2346,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Recording GUI commands</source>
-        <translation type="unfinished">Registrazione dei comandi d&apos;interfaccia utente</translation>
+        <translation type="unfinished">Registra i comandi dell&apos;interfaccia utente</translation>
     </message>
     <message>
         <source>Record as comment</source>
@@ -2619,7 +2619,7 @@ Specificare un&apos;altra cartella.</translation>
     <name>Gui::Dialog::DownloadManager</name>
     <message>
         <source>Downloads</source>
-        <translation type="unfinished">Downloads</translation>
+        <translation type="unfinished">Download</translation>
     </message>
     <message>
         <source>Clean up</source>
@@ -2650,18 +2650,18 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Add icon folder</source>
-        <translation type="unfinished">Aggiungere cartella icone</translation>
+        <translation type="unfinished">Aggiungi cartella icone</translation>
     </message>
 </context>
 <context>
     <name>Gui::Dialog::IconFolders</name>
     <message>
         <source>Add or remove custom icon folders</source>
-        <translation type="unfinished">Aggiungere o rimuovere delle cartelle di icone personalizzate</translation>
+        <translation type="unfinished">Aggiunge o rimuove delle cartelle di icone personalizzate</translation>
     </message>
     <message>
         <source>Remove folder</source>
-        <translation type="unfinished">Rimuovere la cartella</translation>
+        <translation type="unfinished">Rimuovi la cartella</translation>
     </message>
     <message>
         <source>Removing a folder only takes effect after an application restart.</source>
@@ -3175,7 +3175,7 @@ Specificare un&apos;altra cartella.</translation>
     </message>
     <message>
         <source>Select only</source>
-        <translation type="unfinished">Selezionare solo</translation>
+        <translation type="unfinished">Seleziona solo</translation>
     </message>
     <message>
         <source>Selects only this object</source>
@@ -3210,7 +3210,7 @@ Specificare un&apos;altra cartella.</translation>
     <name>Gui::DockWnd::TaskPanelView</name>
     <message>
         <source>Task View</source>
-        <translation type="unfinished">Attività</translation>
+        <translation type="unfinished">Azioni</translation>
     </message>
 </context>
 <context>
@@ -3581,11 +3581,11 @@ Do you want to copy them, too?</source>
     </message>
     <message>
         <source>Too few points picked in the left view. At least %1 points are needed.</source>
-        <translation type="unfinished">I punti selezionati nella vista di sinistra non sono sufficienti. Sono necessari almeno %1 punti.</translation>
+        <translation type="unfinished">I punti selezionati nella vista di sinistra non sono sufficienti. Servono almeno %1 punti.</translation>
     </message>
     <message>
         <source>Too few points picked in the right view. At least %1 points are needed.</source>
-        <translation type="unfinished">I punti selezionati nella vista di destra non sono sufficienti. Sono necessari almeno %1 punti.</translation>
+        <translation type="unfinished">I punti selezionati nella vista di destra non sono sufficienti. Servono almeno %1 punti.</translation>
     </message>
     <message>
         <source>Different number of points picked in left and right view.
@@ -3665,7 +3665,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Aborting</source>
-        <translation type="unfinished">Interrompere</translation>
+        <translation type="unfinished">Interrompi</translation>
     </message>
     <message>
         <source>Do you really want to abort the operation?</source>
@@ -3680,7 +3680,7 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>Aborting</source>
-        <translation type="unfinished">Interrompere</translation>
+        <translation type="unfinished">Interrompi</translation>
     </message>
     <message>
         <source>Do you really want to abort the operation?</source>
@@ -4197,7 +4197,7 @@ Vuoi specificare un&apos;altra cartella?</translation>
     </message>
     <message>
         <source>Task View</source>
-        <translation type="unfinished">Attività</translation>
+        <translation type="unfinished">Azioni</translation>
     </message>
     <message>
         <source>Combo View</source>
@@ -4565,7 +4565,7 @@ Prestare attenzione al punto dove si fa clic.</translation>
     <message>
         <source>The document is in editing mode and thus cannot be closed for the moment.
 You either have to finish or cancel the editing in the task panel.</source>
-        <translation type="unfinished">Attualmente il documento è in modalità modifica e quindi non può essere chiuso. E&apos; necessario terminare o annullare la modifica nel pannello attività.</translation>
+        <translation type="unfinished">Attualmente il documento è in modalità modifica e quindi non può essere chiuso. E&apos; necessario terminare o annullare la modifica nel pannello Azioni.</translation>
     </message>
     <message>
         <source>Do you want to close this dialog?</source>
@@ -4734,7 +4734,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Close all windows</source>
-        <translation type="unfinished">Chiude tutte le finestre</translation>
+        <translation type="unfinished">Chiudi tutte le finestre</translation>
     </message>
 </context>
 <context>
@@ -5498,7 +5498,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Quits the application</source>
-        <translation type="unfinished">Esce dal&apos;applicazione</translation>
+        <translation type="unfinished">Esce dall&apos;applicazione</translation>
     </message>
 </context>
 <context>
@@ -5835,7 +5835,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Transform the selected object in the 3d view</source>
-        <translation type="unfinished">Trasformare l&apos;oggetto selezionato nella vista 3D</translation>
+        <translation type="unfinished">Trasforma l&apos;oggetto selezionato nella vista 3D</translation>
     </message>
 </context>
 <context>
@@ -6176,7 +6176,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Rotate Left</source>
-        <translation type="unfinished">Ruota verso sinistra</translation>
+        <translation type="unfinished">Ruota a sinistra</translation>
     </message>
     <message>
         <source>Rotate the view by 90Â° counter-clockwise</source>
@@ -6191,7 +6191,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Rotate Right</source>
-        <translation type="unfinished">Ruota verso destra</translation>
+        <translation type="unfinished">Ruota a destra</translation>
     </message>
     <message>
         <source>Rotate the view by 90Â° clockwise</source>
@@ -6225,7 +6225,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Extend the FreeCAD 3D Window to a Oculus Rift</source>
-        <translation type="unfinished">Estendere la finestra 3D di FreeCAD a Oculus Rift</translation>
+        <translation type="unfinished">Estendi la finestra 3D di FreeCAD a Oculus Rift</translation>
     </message>
 </context>
 <context>
@@ -6296,7 +6296,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Switches to orthographic view mode</source>
-        <translation type="unfinished">Passa al modo di vista ortografico</translation>
+        <translation type="unfinished">Passa alla vista ortografica</translation>
     </message>
 </context>
 <context>
@@ -6311,7 +6311,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Switches to perspective view mode</source>
-        <translation type="unfinished">Passa al modo di vista in prospettiva</translation>
+        <translation type="unfinished">Passa alla vista in prospettiva</translation>
     </message>
 </context>
 <context>
@@ -6386,7 +6386,7 @@ You either have to finish or cancel the editing in the task panel.</source>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">Questo oggetto è riferimento di altri oggetti e in questo modo questi oggetti si potrebbero rovinare. Continuare?</translation>
+        <translation type="unfinished">Questo è un oggetto di riferimento per altri oggetti che in questo si potrebbero rovinare. Continuare?</translation>
     </message>
 </context>
 <context>
@@ -6401,19 +6401,19 @@ Are you sure to continue?</source>
     </message>
     <message>
         <source>Wireframe</source>
-        <translation type="unfinished">Wireframe</translation>
+        <translation type="unfinished">Reticolo</translation>
     </message>
     <message>
         <source>Wireframe mode</source>
-        <translation type="unfinished">Modalità wireframe</translation>
+        <translation type="unfinished">Modalità reticolo</translation>
     </message>
     <message>
         <source>Flat lines</source>
-        <translation type="unfinished">Linee piatte</translation>
+        <translation type="unfinished">Facce piene</translation>
     </message>
     <message>
         <source>Flat lines mode</source>
-        <translation type="unfinished">Modalità linee piatte</translation>
+        <translation type="unfinished">Modalità facce piene con linee visibili</translation>
     </message>
     <message>
         <source>Shaded</source>
@@ -6421,7 +6421,7 @@ Are you sure to continue?</source>
     </message>
     <message>
         <source>Shaded mode</source>
-        <translation type="unfinished">Modalità ombreggiata</translation>
+        <translation type="unfinished">Modalità ombreggiata, senza linee</translation>
     </message>
     <message>
         <source>Points</source>
@@ -6429,7 +6429,7 @@ Are you sure to continue?</source>
     </message>
     <message>
         <source>Points mode</source>
-        <translation type="unfinished">Modalità punti</translation>
+        <translation type="unfinished">Punti</translation>
     </message>
 </context>
 <context>
@@ -6441,7 +6441,7 @@ Are you sure to continue?</source>
     <message>
         <source>The selected objects have a dependency to unselected objects.
 Do you want to duplicate them, too?</source>
-        <translation type="unfinished">Gli oggetti selezionati hanno una dipendenza rispetto agli oggetti non selezionati. Copiare anche questi?</translation>
+        <translation type="unfinished">Gli oggetti selezionati hanno dipendenze con altri oggetti non selezionati. Copiare anche questi?</translation>
     </message>
 </context>
 <context>
@@ -6566,7 +6566,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Choose the style of the Task Panel</source>
-        <translation type="unfinished">Seleziona lo stile del riquadro attività</translation>
+        <translation type="unfinished">Seleziona lo stile del riquadro Azioni</translation>
     </message>
     <message>
         <source>Default</source>

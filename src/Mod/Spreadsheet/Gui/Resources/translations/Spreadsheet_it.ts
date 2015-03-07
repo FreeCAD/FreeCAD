@@ -24,7 +24,7 @@
     </message>
     <message>
         <source>Align bottom</source>
-        <translation type="unfinished">Allinea la parte inferiore</translation>
+        <translation type="unfinished">Allinea in basso</translation>
     </message>
     <message>
         <source>Bottom-align contents of selected cells</source>

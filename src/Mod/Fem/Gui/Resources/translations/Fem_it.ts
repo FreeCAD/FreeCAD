@@ -43,7 +43,7 @@
     <message>
         <location line="+1"/>
         <source>Create FEM fixed constraint</source>
-        <translation type="unfinished">Crear vincolo FEM fisso</translation>
+        <translation type="unfinished">Crea vincolo fissaggio FEM</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -341,7 +341,7 @@
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Solo le superfici, i bordi e i vertici possono essere selezionati</translation>
+        <translation type="unfinished">Possono essere selezionati solo le superfici, i bordi e i vertici</translation>
     </message>
 </context>
 <context>
@@ -352,19 +352,31 @@
         <translation type="unfinished">Elimina</translation>
     </message>
     <message>
-        <location line="+67"/>
         <source>Point load [N]</source>
-        <translation type="unfinished">Carico nel punto [N]</translation>
+        <translation type="obsolete">Carico nel punto [N]</translation>
+    </message>
+    <message>
+        <source>Line load [N/mm]</source>
+        <translation type="obsolete">Carico sulla linea [N/mm]</translation>
+    </message>
+    <message utf8="true">
+        <source>Area load [N/mm²]</source>
+        <translation type="obsolete">Carico sull&apos;area [N/mm ²]</translation>
+    </message>
+    <message>
+        <location line="+67"/>
+        <source>Point load</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Line load [N/mm]</source>
-        <translation type="unfinished">Carico sulla linea [N/mm]</translation>
+        <source>Line load</source>
+        <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
+    <message>
         <location line="+2"/>
-        <source>Area load [N/mm²]</source>
-        <translation type="unfinished">Carico sull&apos;area [N/mm ²]</translation>
+        <source>Area load</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+30"/>
@@ -383,7 +395,7 @@
     <message>
         <location line="+5"/>
         <source>Only faces, edges and vertices can be picked</source>
-        <translation type="unfinished">Solo le superfici, i bordi e i vertici possono essere selezionati</translation>
+        <translation type="unfinished">Possono essere selezionati solo le superfici, i bordi e i vertici</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -470,12 +482,12 @@
     <message>
         <location line="+9"/>
         <source>Write Calculix Input File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Scrivere il File di Input Calculix</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Edit Calculix Input File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Modifica il File di Input Calculix</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -629,7 +641,7 @@
     <message>
         <location filename="../../TaskFemConstraintForce.cpp" line="+119"/>
         <source>Constraint force</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vincolo forza</translation>
     </message>
 </context>
 <context>

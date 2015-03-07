@@ -169,7 +169,7 @@
       <translation type="unfinished">La hauteur de cet étage</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="715"/>
+      <location filename="ArchRoof.py" line="720"/>
       <source>Roof</source>
       <translation type="unfinished">Toiture</translation>
     </message>
@@ -369,7 +369,7 @@
       <translation type="unfinished">Erreur : impossible de déterminer l'encodage de caractères</translation>
     </message>
     <message>
-      <location filename="importDAE.py" line="180"/>
+      <location filename="importDAE.py" line="182"/>
       <source>file %s successfully created.</source>
       <translation type="unfinished">Le fichier %s a été correctement créé.</translation>
     </message>
@@ -952,7 +952,7 @@
       <translation type="unfinished">Le décalage entre ce panneau et sa ligne de base</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="716"/>
+      <location filename="ArchRoof.py" line="721"/>
       <source>Parameters of the profiles of the roof:
 * Angle : slope in degrees compared to the horizontal one.
 * Run : outdistance between the wall and the ridge sheathing.
@@ -977,12 +977,12 @@ Si Angle = 0 alors l'angle est calculé de sorte que la hauteur soit la même qu
 Si Largeur = 0 alors la largeur est calculée de façon que la hauteur du profil soit la même que celle du profil relatif.</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Id</source>
       <translation type="unfinished">ID</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>IdRel</source>
       <translation type="unfinished">ID Relatif</translation>
     </message>
@@ -1169,27 +1169,27 @@ Si Largeur = 0 alors la largeur est calculée de façon que la hauteur du profil
       <translation type="unfinished">Une liste des hauteurs calculées pour chaque pan de toit</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Angle (deg)</source>
       <translation type="unfinished">Angle (deg)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Run (mm)</source>
       <translation type="unfinished">Largeur (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Thickness (mm)</source>
       <translation type="unfinished">Épaisseur (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Overhang (mm)</source>
       <translation type="unfinished">Débord (mm)</translation>
     </message>
     <message>
-      <location filename="ArchRoof.py" line="717"/>
+      <location filename="ArchRoof.py" line="722"/>
       <source>Height (mm)</source>
       <translation type="unfinished">Hauteur (mm)</translation>
     </message>

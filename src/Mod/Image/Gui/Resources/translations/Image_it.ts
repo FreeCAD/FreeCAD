@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Image plane</translation>
+        <translation type="unfinished">Piano dell&apos;immagine</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -102,7 +102,7 @@
     <message>
         <location line="+2"/>
         <source>Stretch the image to fit the view</source>
-        <translation>Stira l&apos;immagine per adattarsi alla vista</translation>
+        <translation>Stira l&apos;immagine per adattarla alla vista</translation>
     </message>
     <message>
         <location line="+4"/>

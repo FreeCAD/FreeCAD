@@ -29,7 +29,7 @@
         <location line="-144"/>
         <location line="+200"/>
         <source>Length:</source>
-        <translation>Lunghezza:</translation>
+        <translation>Larghezza:</translation>
     </message>
     <message>
         <location line="-192"/>
@@ -340,7 +340,7 @@
     <message>
         <location line="+1"/>
         <source>Shape builder...</source>
-        <translation>Generatore di forma...</translation>
+        <translation>Genera una forma...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -450,7 +450,7 @@
     <message>
         <location line="+1"/>
         <source>Cut</source>
-        <translation>Taglia</translation>
+        <translation>Taglio</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -524,7 +524,7 @@
     <message>
         <location line="+1"/>
         <source>Fillet...</source>
-        <translation>Raccordo...</translation>
+        <translation>Raccorda...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -695,7 +695,7 @@
     <message>
         <location line="+1"/>
         <source>Creation of parametrized geometric primitives</source>
-        <translation>Creazione di primitive geometriche parametrizzate</translation>
+        <translation>Crea primitive geometriche parametriche</translation>
     </message>
 </context>
 <context>
@@ -807,7 +807,7 @@
     <message>
         <location line="+1"/>
         <source>Create shape from selected mesh object</source>
-        <translation>Crea forma dall&apos;oggetto mesh selezionato</translation>
+        <translation>Crea una forma dall&apos;oggetto mesh selezionato</translation>
     </message>
 </context>
 <context>
@@ -1160,7 +1160,7 @@
     <message>
         <location line="-34"/>
         <source>Length:</source>
-        <translation>Lunghezza:</translation>
+        <translation>Larghezza:</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -1289,17 +1289,17 @@
     <message>
         <location filename="../../DlgFilletEdges.cpp" line="-728"/>
         <source>Length:</source>
-        <translation type="unfinished">Lunghezza:</translation>
+        <translation type="unfinished">Larghezza:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constant Length</source>
-        <translation type="unfinished">Lunghezza costante</translation>
+        <translation type="unfinished">Larghezza costante</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Variable Length</source>
-        <translation type="unfinished">Lunghezza variabile</translation>
+        <translation type="unfinished">Larghezza variabile</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1310,12 +1310,12 @@
         <location line="+1"/>
         <location line="+520"/>
         <source>Start length</source>
-        <translation type="unfinished">Lunghezza iniziale</translation>
+        <translation type="unfinished">Valore iniziale</translation>
     </message>
     <message>
         <location line="-519"/>
         <source>End length</source>
-        <translation type="unfinished">Lunghezza finale</translation>
+        <translation type="unfinished">Valore finale</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1369,7 +1369,7 @@ Selezionare prima uno o più spigoli.</translation>
         <location filename="../../DlgFilletEdges.cpp" line="-246"/>
         <location line="+60"/>
         <source>Edge%1</source>
-        <translation>Spigoli %1</translation>
+        <translation>Spigolo %1</translation>
     </message>
     <message>
         <location line="+135"/>
@@ -1380,7 +1380,7 @@ Selezionare prima uno o più spigoli.</translation>
         <location line="+1"/>
         <source>No valid shape is selected.
 Please select a valid shape in the drop-down box first.</source>
-        <translation>Nessuna forma valida è stat selezionata.
+        <translation>Nessuna forma valida è stata selezionata.
 Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
 </context>
@@ -1558,7 +1558,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+7"/>
         <source>Length:</source>
-        <translation>Lunghezza:</translation>
+        <translation>Larghezza:</translation>
     </message>
     <message>
         <location line="-136"/>
@@ -1916,7 +1916,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
         <location line="-100"/>
         <location line="+93"/>
         <source>Length:</source>
-        <translation>Lunghezza:</translation>
+        <translation>Larghezza:</translation>
     </message>
     <message>
         <location line="-7"/>
@@ -2192,32 +2192,27 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
 <context>
     <name>PartGui::DlgSettings3DViewPart</name>
     <message>
-        <location filename="../../DlgSettings3DViewPart.ui" line="+171"/>
         <source>View accuracy / Performance</source>
-        <translation>Vista Precisione / Performance</translation>
+        <translation type="obsolete">Vista Precisione / Performance</translation>
     </message>
     <message>
-        <location line="-73"/>
         <source>View smoothing</source>
-        <translation>Vista piatta</translation>
+        <translation type="obsolete">Vista piatta</translation>
     </message>
     <message>
-        <location line="+41"/>
         <source>Using high-quality normals</source>
-        <translation>Usa normali di alta qualità</translation>
+        <translation type="obsolete">Usa normali di alta qualità</translation>
     </message>
     <message>
-        <location line="-6"/>
         <source>This will slow down render speed but will lead to nicer results</source>
-        <translation>Questo rallenterà la velocità di render ma si otterranno risultati migliori</translation>
+        <translation type="obsolete">Questo rallenta la velocità di render ma si ottengono risultati migliori</translation>
     </message>
     <message>
-        <location line="-74"/>
         <source>Defines the appearance of surfaces</source>
-        <translation>Definisce l&apos;estetica della superfici</translation>
+        <translation type="obsolete">Definisce l&apos;estetica della superfici</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location filename="../../DlgSettings3DViewPart.ui" line="+14"/>
         <source>Shape view</source>
         <translation>Visualizzazione della figura</translation>
     </message>
@@ -2227,17 +2222,15 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
         <translation>Tassellazione</translation>
     </message>
     <message>
-        <location line="+23"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ombreggiatura piatta/Ombreggiatura Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Con l&apos;ombreggiatura piatta le superfici normali non sono definite con il vertice risultano con una estetica non reale per superfici curve mentre usando l&apos;ombreggiatura Phong shading risulta un&apos;estetica più liscia. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Se questa opzione non è selezionata, verrà usata l&apos;ombreggiatura Phong. Se selezionata verrà usata l&apos;ombreggiatura piatta.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ombreggiatura piatta/Ombreggiatura Phong&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Con l&apos;ombreggiatura piatta le superfici normali non sono definite con il vertice risultano con una estetica non reale per superfici curve mentre usando l&apos;ombreggiatura Phong shading risulta un&apos;estetica più liscia. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Se questa opzione non è selezionata, verrà usata l&apos;ombreggiatura Phong. Se selezionata verrà usata l&apos;ombreggiatura piatta.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Do not define normal per vertex</source>
-        <translation>Non definire le normali per i vertici</translation>
+        <translation type="obsolete">Non definire le normali per i vertici</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+20"/>
         <source>Defines the deviation of tessellation to the actual surface</source>
         <translation>Definisce la deviazione della tassellazione della superficie attuale</translation>
     </message>
@@ -2247,22 +2240,20 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
         <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Tassellazione&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:600;&quot;&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Definisce la massima deviazione della mesh tassellata della superficie. Più piccolo è il valore più lenta sarà la velocità di render e migliore sarà l&apos;estetica.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Hint&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Defining the normals per vertex is also called &lt;span style=&quot; font-style:italic;&quot;&gt;Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt;while defining the normals per face is called &lt;/span&gt;Flat shading&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Suggerimento&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Definire le normali per vertice è chiamato anche &lt;span style=&quot; font-style:italic;&quot;&gt; ombreggiatura di Phong &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt; mentre definire le normali per faccia è chiamato anche &lt;/span&gt; ombreggiatura Flat&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Suggerimento&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;Definire le normali per vertice è chiamato anche &lt;span style=&quot; font-style:italic;&quot;&gt; ombreggiatura di Phong &lt;/span&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt; font-style:italic;&quot;&gt;&lt;span style=&quot; font-style:normal;&quot;&gt; mentre definire le normali per faccia è chiamato anche &lt;/span&gt; ombreggiatura Flat&lt;span style=&quot; font-style:normal;&quot;&gt;.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="+45"/>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;High-quality normals&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;This will slow down render speed but will lead to nicer results.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Normali di alta qualità&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Questo rallenterà la velocità di render ma si otterranno risultati migliori.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Normali di alta qualità&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Questo rallenterà la velocità di render ma si otterranno risultati migliori.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location line="-52"/>
+        <location line="+3"/>
         <source>Maximum deviation depending on the model bounding box</source>
         <translation>Massima deviazione dipendente dal riquadro di delimitazione del modello</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+7"/>
         <source> %</source>
         <translation> %</translation>
     </message>
@@ -2317,7 +2308,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+13"/>
         <source>Automatically refine model after sketch-based operation</source>
-        <translation type="unfinished">Ridefinire automaticamente il modello dopo le operazioni basate sugli sketch</translation>
+        <translation type="unfinished">Ridefinisci automaticamente il modello dopo le operazioni basate sugli sketch</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2327,7 +2318,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+6"/>
         <source>Add name of base object</source>
-        <translation type="unfinished">Aggiunge il nome dell&apos;oggetto base</translation>
+        <translation type="unfinished">Aggiungi il nome dell&apos;oggetto base</translation>
     </message>
     <message>
         <location line="-48"/>
@@ -2350,7 +2341,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+14"/>
         <source>Default shape color</source>
-        <translation type="unfinished">Colore forma predefinito</translation>
+        <translation type="unfinished">Colore predefinito della forma</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2371,7 +2362,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="-42"/>
         <source>Default line width</source>
-        <translation type="unfinished">Larghezza linea predefinita</translation>
+        <translation type="unfinished">Larghezza predefinita della linea</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2463,7 +2454,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+0"/>
         <source>At least two vertices, edges, wires or faces are required.</source>
-        <translation type="unfinished">Sono richiesti almeno due vertici, spigoli, wire o facce.</translation>
+        <translation type="unfinished">Sono richiesti almeno due vertici, spigoli, contorni o facce.</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2613,7 +2604,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+40"/>
         <source>Select two vertices to create an edge</source>
-        <translation>Seleziona due vertici per creare uno spigolo</translation>
+        <translation>Selezionare due vertici per creare uno spigolo</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2628,7 +2619,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     <message>
         <location line="+6"/>
         <source>Select adjacent faces</source>
-        <translation>Seleziona facce adiacenti</translation>
+        <translation>Selezionare facce adiacenti</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2932,7 +2923,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
         <source>Move right</source>
-        <translation type="obsolete">Sposta verso destra</translation>
+        <translation type="obsolete">Sposta a destra</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -2940,7 +2931,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
         <source>Move left</source>
-        <translation type="obsolete">Sposta verso sinistra</translation>
+        <translation type="obsolete">Sposta a sinistra</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</source>
@@ -2956,7 +2947,7 @@ Seleziona prima una forma valida dal menu a tendina.</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation type="obsolete">Sposta verso il basso</translation>
+        <translation type="obsolete">Sposta in basso</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -3278,7 +3269,7 @@ Do you want to continue?</source>
         <translation>Modifica gli spigoli raccordati</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+591"/>
+        <location filename="../../ViewProviderExt.cpp" line="+687"/>
         <source>Set colors...</source>
         <translation>Imposta colori...</translation>
     </message>

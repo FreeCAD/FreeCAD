@@ -178,7 +178,7 @@ and place them in your macros folder.</source>
     <message>
       <location filename="DraftTools.py" line="2628"/>
       <source>Explodes the selected objects into simpler objects, or subtract faces</source>
-      <translation type="unfinished">Esplode gli oggetti selezionati in oggetti piú semplici, o sottrae facce</translation>
+      <translation type="unfinished">Dissocia gli oggetti selezionati in oggetti piú semplici, o sottrae facce</translation>
     </message>
   </context>
   <context>
@@ -737,7 +737,7 @@ and place them in your macros folder.</source>
     <message>
       <location filename="DraftTools.py" line="833"/>
       <source>Undoes the last drawn segment of the line being drawn</source>
-      <translation type="unfinished">Annulla l'ultimo segmento disegnato della linea che si sta disegnando</translation>
+      <translation type="unfinished">Annulla l'ultimo segmento della linea che si sta disegnando</translation>
     </message>
   </context>
   <context>
@@ -797,7 +797,7 @@ and place them in your macros folder.</source>
     <message>
       <location filename="userprefs-base.ui" line="26"/>
       <source>General Draft Settings</source>
-      <translation type="unfinished">Impostazioni generali Draft</translation>
+      <translation type="unfinished">Impostazioni generali di Draft</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="54"/>
@@ -852,7 +852,7 @@ and place them in your macros folder.</source>
     <message>
       <location filename="userprefs-base.ui" line="363"/>
       <source>If this is checked, objects will appear as filled as default. Otherwise, they will appear as wireframe</source>
-      <translation type="unfinished">Se questa opzione è spuntata, per difetto gli oggetti appariranno "a facce piene". Altrimenti, appariranno "a reticolo"</translation>
+      <translation type="unfinished">Se questa opzione è spuntata, di default gli oggetti appaiono "a facce piene". Altrimenti, appaiono "a reticolo"</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="150"/>
@@ -901,7 +901,7 @@ Può essere un nome di carattere come "Arial", uno stile predefinito come "sans"
     <message>
       <location filename="userprefs-visual.ui" line="235"/>
       <source>Default template sheet</source>
-      <translation type="unfinished">Modello di foglio predefinito</translation>
+      <translation type="unfinished">Modello di squadratura predefinita</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="261"/>
@@ -992,7 +992,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-import1.ui" line="223"/>
       <source>If checked, freecad will try to joint coincident objects into wires. Beware, this can take a while...</source>
-      <translation type="unfinished">Se spuntato, freecad cercherà di congiungere in polilinee gli oggetti coincidenti. Attenzione, ciò può richiedere del tempo...</translation>
+      <translation type="unfinished">Se spuntato, freecad cerca di congiungere in polilinee gli oggetti coincidenti. Attenzione, ciò può richiedere del tempo...</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="226"/>
@@ -1012,7 +1012,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-visual.ui" line="278"/>
       <source>Alternate SVG Patterns location</source>
-      <translation type="unfinished">Percorso alternativo per Motivi SVG</translation>
+      <translation type="unfinished">Percorso alternativo per i Motivi SVG</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="304"/>
@@ -1042,7 +1042,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-snap.ui" line="57"/>
       <source>Constrain mod</source>
-      <translation type="unfinished">Vincolo mod</translation>
+      <translation type="unfinished">Modalità di Vincolo</translation>
     </message>
     <message>
       <location filename="userprefs-snap.ui" line="77"/>
@@ -1067,7 +1067,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-snap.ui" line="109"/>
       <source>Snap mod</source>
-      <translation type="unfinished">Aggancio mod</translation>
+      <translation type="unfinished">Modalità di Aggancio</translation>
     </message>
     <message>
       <location filename="userprefs-snap.ui" line="129"/>
@@ -1077,7 +1077,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-snap.ui" line="164"/>
       <source>Alt mod</source>
-      <translation type="unfinished">Alt mod</translation>
+      <translation type="unfinished">Modalità di Alt</translation>
     </message>
     <message>
       <location filename="userprefs-snap.ui" line="184"/>
@@ -1102,7 +1102,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-snap.ui" line="274"/>
       <source>Use grid</source>
-      <translation type="unfinished">Usa griglia</translation>
+      <translation type="unfinished">Usa la griglia</translation>
     </message>
     <message>
       <location filename="userprefs-snap.ui" line="372"/>
@@ -1157,7 +1157,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-import1.ui" line="246"/>
       <source>Group layers into blocks</source>
-      <translation type="unfinished">Raggruppa livelli in blocchi</translation>
+      <translation type="unfinished">Raggruppa i livelli (layer) in blocchi</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="263"/>
@@ -1262,7 +1262,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-import2.ui" line="128"/>
       <source>Translate white line color to black</source>
-      <translation type="unfinished">Trasforma le linee di colore bianco in nero</translation>
+      <translation type="unfinished">Trasforma le linee bianche in linee nere</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="343"/>
@@ -1272,7 +1272,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="346"/>
       <source>Use Part Primitives when available</source>
-      <translation type="unfinished">Usa le primitive di Part quando disponibili</translation>
+      <translation type="unfinished">Usa le primitive di Part quando sono disponibili</translation>
     </message>
     <message>
       <location filename="userprefs-snap.ui" line="26"/>
@@ -1287,7 +1287,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-snap.ui" line="37"/>
       <source>Always snap (disable snap mod)</source>
-      <translation type="unfinished">Snap sempre (disabilita snap mod)</translation>
+      <translation type="unfinished">Aggancia sempre (disabilita la Modalità di aggancio)</translation>
     </message>
     <message>
       <location filename="userprefs-base.ui" line="387"/>
@@ -1297,7 +1297,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="422"/>
       <source>Construction geometry color</source>
-      <translation type="unfinished">Colore geometria di costruzione</translation>
+      <translation type="unfinished">Colore della geometria di costruzione</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="69"/>
@@ -1372,7 +1372,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-visual.ui" line="78"/>
       <source>Default line width</source>
-      <translation type="unfinished">Larghezza linea predefinita</translation>
+      <translation type="unfinished">Larghezza predefinita della linea</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="118"/>
@@ -1492,7 +1492,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-visual.ui" line="720"/>
       <source>Default ShapeString Font File</source>
-      <translation type="unfinished">File predefinito ShapeString Font</translation>
+      <translation type="unfinished">File di Font predefinito per Forma da Testo</translation>
     </message>
     <message>
       <location filename="userprefs-visual.ui" line="746"/>
@@ -1502,7 +1502,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="userprefs-base.ui" line="366"/>
       <source>Fill objects with faces whenever possible</source>
-      <translation type="unfinished">Riempe gli oggetti con le facce quando possibile</translation>
+      <translation type="unfinished">Riempi gli oggetti con le facce quando è possibile</translation>
     </message>
     <message>
       <location filename="userprefs-import1.ui" line="141"/>
@@ -1938,7 +1938,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftGui.py" line="651"/>
       <source>If checked, objects will be copied instead of moved (C)</source>
-      <translation type="unfinished">Se selezionato, gli oggetti saranno copiati invece che spostati (C)</translation>
+      <translation type="unfinished">Se selezionato, gli oggetti sono copiati invece che spostati (C)</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="652"/>
@@ -2243,7 +2243,8 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="3070"/>
       <source>Found only wires: extracting their edges
 </source>
-      <translation type="unfinished">Trovate solo polilinee: estrazione dei rispettivi lati </translation>
+      <translation type="unfinished">Trovate solo polilinee: estrazione dei rispettivi bordi
+</translation>
     </message>
     <message>
       <location filename="Draft.py" line="3074"/>
@@ -2273,7 +2274,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftTools.py" line="461"/>
       <source>Create Line</source>
-      <translation type="unfinished">Crea linea</translation>
+      <translation type="unfinished">Crea Linea</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="473"/>
@@ -2336,7 +2337,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftTools.py" line="772"/>
       <source>Create BezCurve</source>
-      <translation type="unfinished">Crea una curva di Bezier</translation>
+      <translation type="unfinished">Crea Curva di Bezier</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="852"/>
@@ -2482,7 +2483,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftTools.py" line="1991"/>
       <source>Create ShapeString</source>
-      <translation type="unfinished">Crea una Forma da una Stringa</translation>
+      <translation type="unfinished">Crea Forma da Stringa</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="2130"/>
@@ -2522,7 +2523,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="DraftTools.py" line="2245"/>
       <source>Select an object to rotate
 </source>
-      <translation type="unfinished">Selezionare un oggetto da ruotare</translation>
+      <translation type="unfinished">Seleziona un oggetto da ruotare</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="2262"/>
@@ -2653,7 +2654,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="DraftTools.py" line="3792"/>
       <source>Endpoint of BezCurve can't be smoothed
 </source>
-      <translation type="unfinished">Un punto finale di una curva di Bezier non può essere levigato
+      <translation type="unfinished">Il punto finale di una curva di Bezier non può essere levigato
 </translation>
     </message>
     <message>
@@ -2672,12 +2673,13 @@ Values with differences below this value will be treated as same.</source>
       <location filename="DraftTools.py" line="4158"/>
       <source>Please select base and path objects
 </source>
-      <translation type="unfinished">Selezionare gli oggetti di base e di percorso </translation>
+      <translation type="unfinished">Seleziona gli oggetti di base e del percorso
+</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4244"/>
       <source>Create Point</source>
-      <translation type="unfinished">Crea punto</translation>
+      <translation type="unfinished">Crea Punto</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4283"/>
@@ -2689,7 +2691,8 @@ Values with differences below this value will be treated as same.</source>
       <location filename="DraftTools.py" line="4354"/>
       <source>Select face(s) on existing object(s)
 </source>
-      <translation type="unfinished">Selezionare facce sugli oggetti esistenti </translation>
+      <translation type="unfinished">Seleziona facce sugli oggetti esistenti
+</translation>
     </message>
     <message>
       <location filename="importDWG.py" line="82"/>
@@ -2771,7 +2774,7 @@ Values with differences below this value will be treated as same.</source>
       <location filename="Draft.py" line="2850"/>
       <source>Found closed wires: creating faces
 </source>
-      <translation type="unfinished">Contorni chiusi trovati: creazione di facce
+      <translation type="unfinished">Trovati contorni chiusi: creazione di facce
 </translation>
     </message>
     <message>
@@ -2814,7 +2817,7 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftGui.py" line="635"/>
       <source>&amp;Select edge</source>
-      <translation type="unfinished">&amp; Seleziona bordo</translation>
+      <translation type="unfinished">&amp;Seleziona bordo</translation>
     </message>
     <message>
       <location filename="DraftGui.py" line="636"/>
@@ -2836,12 +2839,12 @@ Values with differences below this value will be treated as same.</source>
     <message>
       <location filename="DraftTools.py" line="4095"/>
       <source>Convert to Sketch</source>
-      <translation type="unfinished">Convertire in schizzo</translation>
+      <translation type="unfinished">Converti in schizzo</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4099"/>
       <source>Convert to Draft</source>
-      <translation type="unfinished">Convertire in Draft</translation>
+      <translation type="unfinished">Converti in Draft</translation>
     </message>
     <message>
       <location filename="DraftTools.py" line="4111"/>
