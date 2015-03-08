@@ -414,6 +414,11 @@ Boolean indicates if the point lying directly on a face is considered to be insi
         <UserDocu>Removes redundant edges from the B-REP model</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="proximity" Const="true">
+      <Documentation>
+        <UserDocu>proximity(Shape s): Returns two lists of Face indexes for the Faces involved in the intersection.</UserDocu>
+      </Documentation>
+    </Methode>
 	<Methode Name="distToShape" Const="true">
       <Documentation>
 		<UserDocu>Find the minimum distance to another shape.
