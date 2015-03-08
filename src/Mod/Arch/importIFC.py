@@ -87,6 +87,15 @@ END-ISO-10303-21;
 """
 
 
+def doubleClickTree(item,column):
+    txt = item.text(column)
+    if "Entity #" in txt:
+        eid = txt.split("#")[1].split(":")[0]
+        addr = tree.findItems(eid,0,0)
+        if addr:
+            tree.scrollToItem(addr[0])
+            addr[0].setSelected(True)
+
 def explore(filename=None):
     """explore([filename]): opens a dialog showing 
     the contents of an IFC file. If no filename is given, a dialog will
@@ -118,6 +127,7 @@ def explore(filename=None):
         return
 
     ifc = ifcopenshell.open(filename)
+    global tree
     tree = QtGui.QTreeWidget()
     tree.setColumnCount(3)
     tree.setWordWrap(True)
@@ -136,11 +146,18 @@ def explore(filename=None):
     entities += ifc.by_type("IfcRepresentation")
     entities += ifc.by_type("IfcRepresentationItem")
     entities += ifc.by_type("IfcPlacement")
+    entities += ifc.by_type("IfcProperty")
+    entities += ifc.by_type("IfcPhysicalSimpleQuantity")
     entities = sorted(entities, key=lambda eid: eid.id())
+    
+    done = []
 
     for entity in entities:
-        item = QtGui.QTreeWidgetItem(tree)
         if hasattr(entity,"id"):
+            if entity.id() in done:
+                continue
+            done.append(entity.id())
+            item = QtGui.QTreeWidgetItem(tree)
             item.setText(0,str(entity.id()))
             if entity.is_a() in ["IfcWall","IfcWallStandardCase"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Wall_Tree.svg"))
@@ -162,6 +179,8 @@ def explore(filename=None):
                 item.setIcon(1,QtGui.QIcon(":icons/Draft_SwitchMode.svg"))
             elif entity.is_a() in ["IfcArbitraryClosedProfileDef","IfcPolyloop"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Draft_Draft.svg"))
+            elif entity.is_a() in ["IfcPropertySingleValue","IfcQuantityArea","IfcQuantityVolume"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Tree_Annotation.svg"))
             item.setText(2,str(entity.is_a()))
             item.setFont(2,bold);
             
@@ -179,8 +198,13 @@ def explore(filename=None):
                         break
                     else:
                         if not argname in ["Id", "GlobalId"]:
+                            colored = False
                             if isinstance(argvalue,ifcopenshell.entity_instance):
-                                t = "Entity #" + str(argvalue.id()) + ": " + str(argvalue.is_a())
+                                if argvalue.id() == 0:
+                                    t = str(argvalue)
+                                else:
+                                    colored = True
+                                    t = "Entity #" + str(argvalue.id()) + ": " + str(argvalue.is_a())
                             elif isinstance(argvalue,list):
                                 t = ""
                             else:
@@ -188,15 +212,24 @@ def explore(filename=None):
                             t = "    " + str(argname) + " : " + str(t)
                             item = QtGui.QTreeWidgetItem(tree)
                             item.setText(2,str(t))
+                            if colored:
+                                item.setForeground(2,QtGui.QBrush(QtGui.QColor("#005AFF")))
                             if isinstance(argvalue,list):
                                 for argitem in argvalue:
+                                    colored = False
                                     if isinstance(argitem,ifcopenshell.entity_instance):
-                                        t = "Entity #" + str(argitem.id()) + ": " + str(argitem.is_a()) 
+                                        if argitem.id() == 0:
+                                            t = str(argitem)
+                                        else:
+                                            colored = True
+                                            t = "Entity #" + str(argitem.id()) + ": " + str(argitem.is_a()) 
                                     else:
                                         t = argitem
                                     t = "        " + str(t)
                                     item = QtGui.QTreeWidgetItem(tree)
                                     item.setText(2,str(t))
+                                    if colored:
+                                        item.setForeground(2,QtGui.QBrush(QtGui.QColor("#005AFF")))
                     i += 1
                     
     d = QtGui.QDialog()
@@ -205,8 +238,11 @@ def explore(filename=None):
     d.resize(640, 480)
     layout = QtGui.QVBoxLayout(d)
     layout.addWidget(tree)
+    
+    tree.itemDoubleClicked.connect(doubleClickTree)
 
     d.exec_()
+    del tree
     return
 
 
