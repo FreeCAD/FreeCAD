@@ -220,6 +220,7 @@ void GetNormals(const TopoDS_Face&  theFace,
 
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::sizeRange = {1.0,64.0,1.0};
 App::PropertyFloatConstraint::Constraints ViewProviderPartExt::tessRange = {0.0001,100.0,0.01};
+App::PropertyQuantityConstraint::Constraints ViewProviderPartExt::angDeflectionRange = {0.0,180.0,0.05};
 const char* ViewProviderPartExt::LightingEnums[]= {"One side","Two side",NULL};
 const char* ViewProviderPartExt::DrawStyleEnums[]= {"Solid","Dashed","Dotted","Dashdot",NULL};
 
@@ -250,6 +251,8 @@ ViewProviderPartExt::ViewProviderPartExt()
     ADD_PROPERTY(PointSize,(lwidth));
     ADD_PROPERTY(Deviation,(0.5f));
     Deviation.setConstraints(&tessRange);
+    ADD_PROPERTY(AngularDeflection,(28.65));
+    AngularDeflection.setConstraints(&angDeflectionRange);
     ADD_PROPERTY(Lighting,(1));
     Lighting.setEnums(LightingEnums);
     ADD_PROPERTY(DrawStyle,((long int)0));
@@ -319,6 +322,9 @@ ViewProviderPartExt::~ViewProviderPartExt()
 void ViewProviderPartExt::onChanged(const App::Property* prop)
 {
     if (prop == &Deviation) {
+        VisualTouched = true;
+    }
+    if (prop == &AngularDeflection) {
         VisualTouched = true;
     }
     if (prop == &LineWidth) {
@@ -632,12 +638,16 @@ bool ViewProviderPartExt::loadParameter()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Part");
     float deviation = hGrp->GetFloat("MeshDeviation",0.2);
+    float angularDeflection = hGrp->GetFloat("MeshAngularDeflection",28.65);
     bool novertexnormals = hGrp->GetBool("NoPerVertexNormals",false);
     bool qualitynormals = hGrp->GetBool("QualityNormals",false);
 
     if (Deviation.getValue() != deviation) {
         Deviation.setValue(deviation);
         changed = true;
+    }
+    if (AngularDeflection.getValue() != angularDeflection ) {
+        AngularDeflection.setValue(angularDeflection);
     }
     if (this->noPerVertexNormals != novertexnormals) {
         this->noPerVertexNormals = novertexnormals;
@@ -752,12 +762,14 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
         Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 *
             Deviation.getValue();
+        Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
 
         // create or use the mesh on the data structure
 #if OCC_VERSION_HEX >= 0x060600
-        BRepMesh_IncrementalMesh myMesh(cShape,deflection,Standard_False,0.5,Standard_True);
+        BRepMesh_IncrementalMesh(cShape,deflection,Standard_False,
+                AngDeflectionRads,Standard_True);
 #else
-        BRepMesh_IncrementalMesh myMesh(cShape,deflection);
+        BRepMesh_IncrementalMesh(cShape,deflection);
 #endif
         // We must reset the location here because the transformation data
         // are set in the placement property

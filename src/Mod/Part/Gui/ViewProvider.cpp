@@ -422,12 +422,16 @@ bool ViewProviderPartBase::loadParameter()
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Mod/Part");
     float deviation = hGrp->GetFloat("MeshDeviation",0.2);
+    float angularDeflection = hGrp->GetFloat("MeshAngularDeflection",28.65);
     bool novertexnormals = hGrp->GetBool("NoPerVertexNormals",false);
     bool qualitynormals = hGrp->GetBool("QualityNormals",false);
 
     if (this->meshDeviation != deviation) {
         this->meshDeviation = deviation;
         changed = true;
+    }
+    if (this->angularDeflection != angularDeflection) {
+        this->angularDeflection = angularDeflection;
     }
     if (this->noPerVertexNormals != novertexnormals) {
         this->noPerVertexNormals = novertexnormals;
@@ -472,8 +476,14 @@ void ViewProviderPartBase::updateData(const App::Property* prop)
             bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
             Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 *
                 this->meshDeviation;
+            Standard_Real AngDeflectionRads = this-> angularDeflection / 180.0 * M_PI;
 
+#if OCC_VERSION_HEX >= 0x060600
+            BRepMesh_IncrementalMesh(cShape,deflection,Standard_False,
+                    AngDeflectionRads,Standard_True);
+#else
             BRepMesh_IncrementalMesh(cShape,deflection);
+#endif
             //BRepMesh_IncrementalMesh MESH(cShape,meshDeviation);
             // We must reset the location here because the transformation data
             // are set in the placement property

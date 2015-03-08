@@ -247,9 +247,15 @@ void ViewProviderTransformed::recomputeFeature(void)
                 bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
             }
             Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
+            Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
 
             // create or use the mesh on the data structure
-            BRepMesh_IncrementalMesh myMesh(cShape,deflection);
+#if OCC_VERSION_HEX >= 0x060600
+            BRepMesh_IncrementalMesh(cShape,deflection,Standard_False,
+                                        AngDeflectionRads,Standard_True);
+#else
+            BRepMesh_IncrementalMesh(cShape,deflection);
+#endif
             // We must reset the location here because the transformation data
             // are set in the placement property
             TopLoc_Location aLoc;
