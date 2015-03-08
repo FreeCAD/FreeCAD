@@ -223,13 +223,14 @@ class _Space(ArchComponent.Component):
     "A space object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLinkSubList","Boundaries",   "Arch",translate("Arch","The objects that make the boundaries of this space object"))
-        obj.addProperty("App::PropertyFloat",      "Area",         "Arch",translate("Arch","The computed floor area of this space"))
-        obj.addProperty("App::PropertyString",     "FinishFloor",  "Arch",translate("Arch","The finishing of the floor of this space"))
-        obj.addProperty("App::PropertyString",     "FinishWalls",  "Arch",translate("Arch","The finishing of the walls of this space"))
-        obj.addProperty("App::PropertyString",     "FinishCeiling","Arch",translate("Arch","The finishing of the ceiling of this space"))
-        obj.addProperty("App::PropertyLinkList",   "Group",        "Arch",translate("Arch","Objects that are included inside this space, such as furniture"))
-        obj.addProperty("App::PropertyEnumeration","SpaceType",    "Arch",translate("Arch","The type of this space"))
+        obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Arch",translate("Arch","The objects that make the boundaries of this space object"))
+        obj.addProperty("App::PropertyFloat",      "Area",          "Arch",translate("Arch","The computed floor area of this space"))
+        obj.addProperty("App::PropertyString",     "FinishFloor",   "Arch",translate("Arch","The finishing of the floor of this space"))
+        obj.addProperty("App::PropertyString",     "FinishWalls",   "Arch",translate("Arch","The finishing of the walls of this space"))
+        obj.addProperty("App::PropertyString",     "FinishCeiling", "Arch",translate("Arch","The finishing of the ceiling of this space"))
+        obj.addProperty("App::PropertyLinkList",   "Group",         "Arch",translate("Arch","Objects that are included inside this space, such as furniture"))
+        obj.addProperty("App::PropertyEnumeration","SpaceType",     "Arch",translate("Arch","The type of this space"))
+        obj.addProperty("App::PropertyLength",     "FloorThickness","Arch",translate("Arch","The thickness of the floor finish"))
         self.Type = "Space"
         self.SpaceType = "Undefined"
         obj.Role = Roles
