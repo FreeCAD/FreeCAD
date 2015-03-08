@@ -1246,6 +1246,10 @@ void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
     glDepthRange(0.1,1.0);
 
     SoGLRenderAction gl(SbViewportRegion(width, height));
+    // When creating a new GL render action we have to copy over the cache context id
+    // For further details see init().
+    uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
+    gl.setCacheContext(id);
     gl.setTransparencyType(SoGLRenderAction::SORTED_OBJECT_SORTED_TRIANGLE_BLEND);
     gl.apply(this->backgroundroot);
     gl.apply(this->getSoRenderManager()->getSceneGraph());
