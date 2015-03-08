@@ -37,7 +37,7 @@ from urllib2 import urlopen, HTTPError
 
 DEFAULTURL = "http://www.freecadweb.org/wiki" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
-NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site'] # pages that won't be fetched (kept online)
+NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','Introduction_to_python'] # pages that won't be fetched (kept online)
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
@@ -137,7 +137,7 @@ def crawl():
 
 def get(page):
     "downloads a single page, returns the other pages it links to"
-    if page[-4:] in [".png",".jpg",".svg",".gif","jpeg"]:
+    if page[-4:] in [".png",".jpg",".svg",".gif","jpeg",".PNG",".JPG"]:
         fetchimage(page)
     elif not exists(page):
         html = fetchpage(page)
