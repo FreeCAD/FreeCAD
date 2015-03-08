@@ -27,6 +27,7 @@
 #include <Standard_math.hxx>
 #include <Standard_Boolean.hxx>
 #include <TopoDS_Shape.hxx>
+#include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <map>
 
@@ -71,6 +72,7 @@ public:
     App::PropertyFloatConstraint LineWidth;
     App::PropertyFloatConstraint PointSize;
     App::PropertyFloatConstraint Deviation;
+    App::PropertyAngle AngularDeflection;
     App::PropertyColor LineColor;
     App::PropertyColor PointColor;
     App::PropertyMaterial LineMaterial;
@@ -143,6 +145,7 @@ private:
     bool qualityNormals;
     static App::PropertyFloatConstraint::Constraints sizeRange;
     static App::PropertyFloatConstraint::Constraints tessRange;
+    static App::PropertyQuantityConstraint::Constraints angDeflectionRange;
     static const char* LightingEnums[];
     static const char* DrawStyleEnums[];
 };

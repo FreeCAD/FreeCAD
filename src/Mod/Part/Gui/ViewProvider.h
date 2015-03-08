@@ -124,6 +124,7 @@ protected:
 private:
     // settings stuff
     float meshDeviation;
+    float angularDeflection;
     bool noPerVertexNormals;
     bool qualityNormals;
     static App::PropertyFloatConstraint::Constraints floatRange;

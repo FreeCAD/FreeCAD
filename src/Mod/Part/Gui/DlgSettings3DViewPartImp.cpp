@@ -70,6 +70,7 @@ void DlgSettings3DViewPart::on_maxDeviation_valueChanged(double v)
 void DlgSettings3DViewPart::saveSettings()
 {
     ui->maxDeviation->onSave();
+    ui->maxAngularDeflection->onSave();
 
     // search for Part view providers and apply the new settings
     std::vector<App::Document*> docs = App::GetApplication().getDocuments();
@@ -85,6 +86,7 @@ void DlgSettings3DViewPart::saveSettings()
 void DlgSettings3DViewPart::loadSettings()
 {
     ui->maxDeviation->onRestore();
+    ui->maxAngularDeflection->onRestore();
 }
 
 /**
