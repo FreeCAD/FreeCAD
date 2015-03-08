@@ -34,6 +34,148 @@ __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+BuildingTypes = ['Undefined',
+'Agricultural - Barn',
+'Agricultural - Chicken coop or chickenhouse',
+'Agricultural - Cow-shed',
+'Agricultural - Farmhouse',
+'Agricultural - Granary',
+'Agricultural - Greenhouse',
+'Agricultural - Hayloft',
+'Agricultural - Pigpen or sty',
+'Agricultural - Root cellar',
+'Agricultural - Shed',
+'Agricultural - Silo',
+'Agricultural - Stable',
+'Agricultural - Storm cellar',
+'Agricultural - Well house',
+'Agricultural - Underground pit',
+
+'Commercial - Automobile repair shop',
+'Commercial - Bank',
+'Commercial - Car wash',
+'Commercial - Convention center',
+'Commercial - Forum',
+'Commercial - Gas station',
+'Commercial - Hotel',
+'Commercial - Market',
+'Commercial - Market house',
+'Commercial - Skyscraper',
+'Commercial - Shop',
+'Commercial - Shopping mall',
+'Commercial - Supermarket',
+'Commercial - Warehouse',
+'Commercial - Restaurant',
+
+'Residential - Apartment block',
+'Residential - Asylum',
+'Residential - Condominium',
+'Residential - Dormitory',
+'Residential - Duplex',
+'Residential - House',
+'Residential - Nursing home',
+'Residential - Townhouse',
+'Residential - Villa',
+'Residential - Bungalow',
+
+'Educational - Archive',
+'Educational - College classroom building',
+'Educational - College gymnasium',
+'Educational - College students union',
+'Educational - School',
+'Educational - Library',
+'Educational - Museum',
+'Educational - Art gallery',
+'Educational - Theater',
+'Educational - Amphitheater',
+'Educational - Concert hall',
+'Educational - Cinema',
+'Educational - Opera house',
+'Educational - Boarding school',
+
+'Government - Capitol',
+'Government - City hall',
+'Government - Consulate',
+'Government - Courthouse',
+'Government - Embassy',
+'Government - Fire station',
+'Government - Meeting house',
+'Government - Moot hall',
+'Government - Palace',
+'Government - Parliament',
+'Government - Police station',
+'Government - Post office',
+'Government - Prison',
+
+'Industrial - Brewery',
+'Industrial - Factory',
+'Industrial - Foundry',
+'Industrial - Power plant',
+'Industrial - Mill',
+
+'Military - Arsenal',
+'Military -Barracks',
+
+'Parking - Boathouse',
+'Parking - Garage',
+'Parking - Hangar',
+
+'Storage - Silo',
+'Storage - Hangar',
+
+'Religious - Church',
+'Religious - Basilica',
+'Religious - Cathedral',
+'Religious - Chapel',
+'Religious - Oratory',
+'Religious - Martyrium',
+'Religious - Mosque',
+'Religious - Mihrab',
+'Religious - Surau',
+'Religious - Imambargah',
+'Religious - Monastery',
+'Religious - Mithraeum',
+'Religious - Fire temple',
+'Religious - Shrine',
+'Religious - Synagogue',
+'Religious - Temple',
+'Religious - Pagoda',
+'Religious - Gurdwara',
+'Religious - Hindu temple',
+
+'Transport - Airport terminal',
+'Transport - Bus station',
+'Transport - Metro station',
+'Transport - Taxi station',
+'Transport - Railway station',
+'Transport - Signal box',
+'Transport - Lighthouse',
+
+'Infrastructure - Data centre',
+
+'Power station - Fossil-fuel power station',
+'Power station - Nuclear power plant',
+'Power station - Geothermal power',
+'Power station - Biomass-fuelled power plant',
+'Power station - Waste heat power plant',
+'Power station - Renewable energy power station',
+'Power station - Atomic energy plant',
+
+'Other - Apartment',
+'Other - Clinic',
+'Other - Community hall',
+'Other - Eatery',
+'Other - Folly',
+'Other - Food court',
+'Other - Hospice',
+'Other - Hospital',
+'Other - Hut',
+'Other - Bathhouse',
+'Other - Workshop',
+'Other - World trade centre'
+]
+
+
 def makeBuilding(objectslist=None,baseobj=None,name="Building"):
     '''makeBuilding(objectslist): creates a building including the
     objects from the given list.'''
@@ -87,8 +229,10 @@ class _Building(ArchFloor._Floor):
     "The Building object"
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
+        obj.addProperty("App::PropertyEnumeration","BuildingType","Arch",translate("Arch","The type of this building"))
         self.Type = "Building"
         obj.setEditorMode('Height',2)
+        obj.BuildingType = BuildingTypes
 
 class _ViewProviderBuilding(ArchFloor._ViewProviderFloor):
     "A View Provider for the Building object"
