@@ -790,6 +790,15 @@ void MeshObject::transformToEigenSystem()
     this->setTransform(cMeshEval.Transform());
 }
 
+Base::Matrix4D MeshObject::getEigenSystem(Base::Vector3d& v) const
+{
+    MeshCore::MeshEigensystem cMeshEval(_kernel);
+    cMeshEval.Evaluate();
+    Base::Vector3f uvw = cMeshEval.GetBoundings();
+    v.Set(uvw.x, uvw.y, uvw.z);
+    return cMeshEval.Transform();
+}
+
 void MeshObject::movePoint(unsigned long index, const Base::Vector3d& v)
 {
     // v is a vector, hence we must not apply the translation part
