@@ -447,8 +447,9 @@ void PrefColorButton::savePreferences()
 
   QColor col = color();
   // (r,g,b,a) with a = 255 (opaque)
-  unsigned long lcol = (col.red() << 24) | (col.green() << 16) | (col.blue() << 8) | 255;
-
+  unsigned long lcol = (static_cast<unsigned long> (col.red()) << 24)
+          | (static_cast<unsigned long> (col.green()) << 16)
+          | (static_cast<unsigned long> (col.blue()) << 8) | 255;
   getWindowParameter()->SetUnsigned( entryName(), lcol );
 }
 
