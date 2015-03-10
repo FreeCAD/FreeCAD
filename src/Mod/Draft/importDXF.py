@@ -1494,7 +1494,7 @@ def projectShape(shape,direction):
     edges = []
     try:
         groups = Drawing.projectEx(shape,direction)
-    except OCCError:
+    except Part.OCCError:
         print("unable to project shape on direction ",direction)
         return shape
     else:
