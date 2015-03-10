@@ -27,6 +27,7 @@
 #include <Base/Handle.h>
 #include <Base/Builder3D.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/MatrixPy.h>
 
 #include "Mesh.h"
 #include "MeshPy.h"
@@ -463,6 +464,18 @@ PyObject*  MeshPy::transformToEigen(PyObject *args)
         return NULL;
     getMeshObjectPtr()->transformToEigenSystem();
     Py_Return;
+}
+
+PyObject*  MeshPy::getEigenSystem(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+    Base::Vector3d vec;
+    Base::Matrix4D mat = getMeshObjectPtr()->getEigenSystem(vec);
+    Py::Tuple t(2);
+    t.setItem(0, Py::Matrix(mat));
+    t.setItem(1, Py::Vector(vec));
+    return Py::new_reference_to(t);
 }
 
 PyObject*  MeshPy::addFacet(PyObject *args)

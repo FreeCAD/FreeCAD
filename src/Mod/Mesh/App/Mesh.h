@@ -200,6 +200,7 @@ public:
     /// clears the Mesh
     void clear(void);
     void transformToEigenSystem();
+    Base::Matrix4D getEigenSystem(Base::Vector3d& v) const;
     void movePoint(unsigned long, const Base::Vector3d& v);
     void setPoint(unsigned long, const Base::Vector3d& v);
     void smooth(int iterations, float d_max);
