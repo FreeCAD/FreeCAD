@@ -88,7 +88,9 @@ QuarterWidgetP::QuarterWidgetP(QuarterWidget * masterptr, const QGLWidget * shar
 
   // FIXME: Centralize this as only one custom event filter can be
   // added to an application. (20101019 handegar)
+#ifdef HAVE_SPACENAV_LIB // fixes #0001970
   qApp->setEventFilter(QuarterWidgetP::nativeEventFilter);
+#endif
 }
 
 QuarterWidgetP::~QuarterWidgetP()
