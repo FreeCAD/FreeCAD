@@ -55,23 +55,7 @@ if gui:
     except AttributeError:
         pass
 
-# check dxfLibrary version
-try:
-    if FreeCAD.ConfigGet("UserAppData") not in sys.path:
-        sys.path.append(FreeCAD.ConfigGet("UserAppData"))
-    import dxfLibrary
-    import dxfColorMap
-    import dxfReader
-except ImportError:
-    libsok = False
-    FreeCAD.Console.PrintWarning("DXF libraries not found. Downloading...\n")
-else:
-    if "v"+str(CURRENTDXFLIB) in dxfLibrary.__version__:
-        libsok = True
-    else:
-        FreeCAD.Console.PrintWarning("DXF libraries need to be updated. Downloading...\n")
-        libsok = False
-if not libsok:
+def errorDXFLib(gui):
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     dxfAllowDownload = p.GetBool("dxfAllowDownload",False)
     if dxfAllowDownload:
@@ -99,31 +83,53 @@ and place them in your macros folder.""")
                     FreeCAD.Console.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
                 break
         progressbar.stop()
-
         sys.path.append(FreeCAD.ConfigGet("UserAppData"))
-        try:
-            import dxfColorMap, dxfLibrary, dxfReader
-        except ImportError:
-            dxfReader = None
-            dxfLibrary = None
     else:
         if gui:
             from PySide import QtGui, QtCore
             from DraftTools import translate
-            message = translate('draft',"""The DXF import/export libraries needed by FreeCAD to handle 
+            message = translate('draft',"""The DXF import/export libraries needed by FreeCAD to handle
 the DXF format were not found on this system.
 Please either enable FreeCAD to download these libraries:
   1 - Load Draft workbench
   2 - Menu Edit > Preferences > Import-Export > DXF > Enable downloads
 Or download these libraries manually, as explained on
-https://github.com/yorikvanhavre/Draft-dxf-importer""")
-            QtGui.QMessageBox.information(None,"",message)
+https://github.com/yorikvanhavre/Draft-dxf-importer
+To enabled FreeCAD to download these libraries, answer Yes.""")
+            reply = QtGui.QMessageBox.question(None,"",message,
+                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+            if reply == QtGui.QMessageBox.Yes:
+                p.SetBool("dxfAllowDownload",True)
+                errorDXFLib(gui)
+            if reply == QtGui.QMessageBox.No:
+                pass
         else:
             FreeCAD.Console.PrintWarning("The DXF import/export libraries needed by FreeCAD to handle the DXF format are not installed.\n")
             FreeCAD.Console.PrintWarning("Please check https://github.com/yorikvanhavre/Draft-dxf-importer\n")
+
+# check dxfLibrary version
+try:
+    if FreeCAD.ConfigGet("UserAppData") not in sys.path:
+        sys.path.append(FreeCAD.ConfigGet("UserAppData"))
+    import dxfLibrary
+    import dxfColorMap
+    import dxfReader
+except ImportError:
+    libsok = False
+    FreeCAD.Console.PrintWarning("DXF libraries not found. Trying to download...\n")
+else:
+    if "v"+str(CURRENTDXFLIB) in dxfLibrary.__version__:
+        libsok = True
+    else:
+        FreeCAD.Console.PrintWarning("DXF libraries need to be updated. Trying to download...\n")
+        libsok = False
+if not libsok:
+    errorDXFLib(gui)
+    try:
+        import dxfColorMap, dxfLibrary, dxfReader
+    except ImportError:
         dxfReader = None
         dxfLibrary = None
-
 
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
@@ -1464,6 +1470,8 @@ def open(filename):
         doc.Label = decodeName(docname)
         processdxf(doc,filename)
         return doc
+    else:
+        errorDXFLib(gui)
 
 def insert(filename,docname):
     "called when freecad imports a file"
@@ -1480,6 +1488,8 @@ def insert(filename,docname):
         processdxf(doc,filename)
         for l in layers:
             importgroup.addObject(l)
+    else:
+        errorDXFLib(gui)
 
 def getShapes(filename):
     "reads a dxf file and returns a list of shapes from its contents"
@@ -1808,7 +1818,8 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
 
             dxf.saveas(filename)
         FreeCAD.Console.PrintMessage("successfully exported "+filename+"\r\n")
-
+    else:
+        errorDXFLib(gui)
 
 def exportPage(page,filename):
     "special export for pages"
