@@ -79,12 +79,12 @@
         <UserDocu>Use a Placement object to perform a translation or rotation</UserDocu>
       </Documentation>
       </Methode>
-      <Methode Name="copy">
+      <Methode Name="copy" Const="true">
           <Documentation>
               <UserDocu>Make a copy of this FEM mesh.</UserDocu>
           </Documentation>
       </Methode>
-    <Methode Name="getNodeById">
+    <Methode Name="getNodeById" Const="true">
       <Documentation>
         <UserDocu>Get the node position vector by an Node-ID</UserDocu>
       </Documentation>
