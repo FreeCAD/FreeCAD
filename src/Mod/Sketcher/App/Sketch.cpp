@@ -594,8 +594,9 @@ Py::Tuple Sketch::getPyGeometry(void) const
 int Sketch::checkGeoId(int geoId)
 {
     if (geoId < 0)
-        geoId += Geoms.size();
-    assert(geoId >= 0 && geoId < int(Geoms.size()));
+        geoId += Geoms.size();//convert negative external-geometry index to index into Geoms
+    if(!(   geoId >= 0   &&   geoId < int(Geoms.size())   ))
+        throw Base::Exception("Sketch::checkGeoId. GeoId index out range.");
     return geoId;
 }
 
@@ -619,7 +620,6 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
             return &ArcsOfEllipse[Geoms[geoId].index];
         break;
         default:
-            assert(0);
             return 0;
     };
 }
@@ -628,8 +628,8 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
 
 int Sketch::addConstraint(const Constraint *constraint)
 {
-    // constraints on nothing makes no sense
-    assert(int(Geoms.size()) > 0);
+    if(int(Geoms.size()) <= 0)
+        throw Base::Exception("Sketch::addConstraint. Can't add constraint to a sketch with no geometry!");
     int rtn = -1;
     switch (constraint->Type) {
     case DistanceX:
@@ -767,7 +767,7 @@ int Sketch::addConstraint(const Constraint *constraint)
         }
         break;
     case SnellsLaw:
-        assert(constraint->ThirdPos==none);
+        //assert(constraint->ThirdPos==none); //will work anyway...
         rtn = addSnellsLawConstraint(constraint->First, constraint->FirstPos,
                                      constraint->Second, constraint->SecondPos,
                                      constraint->Third,
@@ -781,9 +781,6 @@ int Sketch::addConstraint(const Constraint *constraint)
 
 int Sketch::addConstraints(const std::vector<Constraint *> &ConstraintList)
 {
-    // constraints on nothing makes no sense
-    assert(!Geoms.empty() || ConstraintList.empty());
-
     int rtn = -1;
     for (std::vector<Constraint *>::const_iterator it = ConstraintList.begin();it!=ConstraintList.end();++it)
         rtn = addConstraint (*it);
@@ -1157,7 +1154,7 @@ int Sketch::addAngleAtPointConstraint(
 {
 
     if(!(cTyp == Angle || cTyp == Tangent || cTyp == Perpendicular)) {
-        assert(0);//none of the three types. Why are we here??
+        //assert(0);//none of the three types. Why are we here??
         return -1;
     }
 
@@ -1166,7 +1163,7 @@ int Sketch::addAngleAtPointConstraint(
     bool e2e = pos2 != none  &&  pos1 != none;//is endpoint-to-endpoint?
 
     if (!( avp || e2c || e2e )) {
-        assert(0);//none of the three types. Why are we here??
+        //assert(0);//none of the three types. Why are we here??
         return -1;
     }
 
@@ -1177,14 +1174,13 @@ int Sketch::addAngleAtPointConstraint(
 
     if (Geoms[geoId1].type == Point ||
         Geoms[geoId2].type == Point){
-        assert(0);//point is not a curve. No tangency/whatever!
+        Base::Console().Error("addAngleAtPointConstraint: one of the curves is a point!\n");
         return -1;
     }
 
     GCS::Curve* crv1 =getGCSCurveByGeoId(geoId1);
     GCS::Curve* crv2 =getGCSCurveByGeoId(geoId2);
     if (!crv1 || !crv2) {
-        assert(0);
         Base::Console().Error("addAngleAtPointConstraint: getGCSCurveByGeoId returned NULL!\n");
         return -1;
     }
@@ -1196,7 +1192,6 @@ int Sketch::addAngleAtPointConstraint(
         pointId = getPointId(geoId1, pos1);
 
     if (pointId < 0 || pointId >= int(Points.size())){
-        assert(0);
         Base::Console().Error("addAngleAtPointConstraint: point index out of range.\n");
         return -1;
     }
@@ -1205,7 +1200,6 @@ int Sketch::addAngleAtPointConstraint(
     if(e2e){//we need second point
         int pointId = getPointId(geoId2, pos2);
         if (pointId < 0 || pointId >= int(Points.size())){
-            assert(0);
             Base::Console().Error("addAngleAtPointConstraint: point index out of range.\n");
             return -1;
         }
@@ -1660,7 +1654,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
 
     if (Geoms[geoIdRay1].type == Point ||
         Geoms[geoIdRay2].type == Point){
-        assert(0);//point is not a curve. Not applicable!
+        Base::Console().Error("addSnellsLawConstraint: point is not a curve. Not applicable!\n");
         return -1;
     }
 
@@ -1668,7 +1662,6 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
     GCS::Curve* ray2 =getGCSCurveByGeoId(geoIdRay2);
     GCS::Curve* boundary =getGCSCurveByGeoId(geoIdBnd);
     if (!ray1 || !ray2 || !boundary) {
-        assert(0);
         Base::Console().Error("addSnellsLawConstraint: getGCSCurveByGeoId returned NULL!\n");
         return -1;
     }
@@ -1677,7 +1670,6 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
     int pointId2 = getPointId(geoIdRay2, posRay2);
     if ( pointId1 < 0 || pointId1 >= int(Points.size()) ||
          pointId2 < 0 || pointId2 >= int(Points.size()) ){
-        assert(0);
         Base::Console().Error("addSnellsLawConstraint: point index out of range.\n");
         return -1;
     }
