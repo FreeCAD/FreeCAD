@@ -26,5 +26,5 @@
 #***************************************************************************/
 
 import FreeCAD
-FreeCAD.addExportType("DRAWEXE source (*.draw)","exportDRAWEXE")
+FreeCAD.addExportType("DRAWEXE script (*.tcl)","exportDRAWEXE")
 
