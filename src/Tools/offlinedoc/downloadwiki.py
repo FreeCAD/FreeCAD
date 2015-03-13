@@ -49,32 +49,48 @@ LISTFILE = "wikifiles.txt"
 URL = DEFAULTURL
 wikiindex = "/index.php?title="
 defaultfile = "<html><head><link type='text/css' href='wiki.css' rel='stylesheet'></head><body>&nbsp;</body></html>"
-css = """
-/* Basic CSS for offline wiki rendering */
+css = """/* Basic CSS for offline wiki rendering */
 
 body {
   font-family: Arial,Helvetica,sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   text-align: justify;
-  background: #ffffff;
-  color: #000000;
+  background: #fff;
+  color: #000;
+  max-width: 800px;
   }
 
 h1 {
-  font-size: 2.2em;
+  font-size: 2.4em;
   font-weight: bold;
-  background: #46A4D0;
-  color: white;
   padding: 5px;
   border-radius: 5px;
   }
+  
+h2 {
+  font-weight: normal;
+  color: #888;
+  font-size: 2em;
+  }
+  
+h3 {
+  padding-left: 20px;
+  }
+  
+img {
+  max-width: 100%;
+  }
+  
+li {
+  margin-top: 10px;
+  }
 
-pre {
-  border: 1px solid #888888;
+pre, .mw-code {
   text-align: left;
-  background: #EEEEEE;
-  padding: 5px;
-  border-radius: 5px;
+  background: #eee;
+  padding: 5px 5px 5px 20px;
+  font-family: mono;
+  border-radius: 2px;
   }
 
 a:link, a:visited {
@@ -90,7 +106,8 @@ a:hover {
 .printfooter {
   font-size: 0.8em;
   color: #333333;
-  border-top: 1px solid #333333;
+  border-top: 1px solid #333;
+  margin-top: 20px;
   }
 
 .wikitable #toc {
@@ -98,10 +115,18 @@ a:hover {
   }
 
 .ct, .ctTitle, .ctOdd, .ctEven th {
+  font-size: 1em;
   text-align: left;
-  width: 200px;
+  width: 190px;
   float: right;
-  background: #eeeeee;
+  background: #eee;
+  margin-top: 10px;
+  border-radius: 2px;
+  }
+  
+.ct {
+  margin-left: 15px;
+  padding: 10px;
   }
 """
 
