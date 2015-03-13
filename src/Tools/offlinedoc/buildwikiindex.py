@@ -48,11 +48,13 @@ WRITETHROUGH = True # if true, fetched files are constantly written to disk, in 
 
 wikiindex = "/index.php?title="
 
-def crawl():
+def crawl(pagename):
     "downloads an entire wiki site"    
     todolist = []
     processed = []
     count = 1
+    if pagename:
+        INDEX = pagename[0]
     if os.path.exists("wikifiles.txt"):
         f = open("wikifiles.txt","r")
         if VERBOSE: print "Reading existing list..."
@@ -180,5 +182,5 @@ def writeList(pages,filename="wikifiles.txt"):
     if VERBOSE: print "written ",filename
 
 if __name__ == "__main__":
-	crawl()
+	crawl(sys.argv[1:])
       
