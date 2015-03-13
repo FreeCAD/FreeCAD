@@ -1756,7 +1756,7 @@ int SketchObject::delExternal(int ExtGeoId)
 
 int SketchObject::delConstraintsToExternal()
 {
-    const std::vector< Constraint * > &constraints = Constraints.getValues();
+    const std::vector< Constraint * > &constraints = Constraints.getValuesForce();
     std::vector< Constraint * > newConstraints(0);
     int GeoId = -3, NullId = -2000;
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
@@ -2270,7 +2270,7 @@ bool SketchObject::evaluateConstraints() const
     int extGeoCount = getExternalGeometryCount();
 
     std::vector<Part::Geometry *> geometry = getCompleteGeometry();
-    const std::vector<Sketcher::Constraint *>& constraints = Constraints.getValues();
+    const std::vector<Sketcher::Constraint *>& constraints = Constraints.getValuesForce();
     if (static_cast<int>(geometry.size()) != extGeoCount + intGeoCount)
         return false;
     if (geometry.size() < 2)
@@ -2280,6 +2280,10 @@ bool SketchObject::evaluateConstraints() const
     for (it = constraints.begin(); it != constraints.end(); ++it) {
         if (!evaluateConstraint(*it))
             return false;
+    }
+
+    if(constraints.size()>0){
+        if (!Constraints.scanGeometry(geometry)) return false;
     }
 
     return true;

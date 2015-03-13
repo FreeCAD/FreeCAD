@@ -79,6 +79,9 @@ public:
     const std::vector<Constraint*> &getValues(void) const {
         return invalidGeometry ? _emptyValueList : _lValueList;
     }
+    const std::vector<Constraint*> &getValuesForce(void) const {//to suppress check for invalid geometry, to be used for sketch repairing.
+        return  _lValueList;
+    }
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -93,6 +96,8 @@ public:
 
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
     void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
+    bool scanGeometry(const std::vector<Part::Geometry *> &GeoList) const;
+    bool isGeometryInvalid(){return invalidGeometry;}
 
 private:
     std::vector<Constraint *> _lValueList;

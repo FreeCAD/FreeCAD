@@ -232,24 +232,41 @@ void PropertyConstraintList::applyValidGeometryKeys(const std::vector<unsigned i
 
 void PropertyConstraintList::checkGeometry(const std::vector<Part::Geometry *> &GeoList)
 {
-    if (validGeometryKeys.size() != GeoList.size()) {
+    if (!scanGeometry(GeoList)) {
         invalidGeometry = true;
         return;
+    }
+
+    //if we made it here, geometry is OK
+    if (invalidGeometry) {
+        //geometry was bad, but now it became OK.
+        invalidGeometry = false;
+        touch();
+    }
+}
+
+/*!
+ * \brief PropertyConstraintList::scanGeometry tests if the supplied geometry
+ *  is the same (all elements are of the same type as they used to be).
+ * \param GeoList - new geometry list to be checked
+ * \return false, if the types have changed.
+ */
+bool PropertyConstraintList::scanGeometry(const std::vector<Part::Geometry *> &GeoList) const
+{
+    if (validGeometryKeys.size() != GeoList.size()) {
+        return false;
     }
 
     unsigned int i=0;
     for (std::vector< Part::Geometry * >::const_iterator it=GeoList.begin();
          it != GeoList.end(); ++it, i++) {
         if (validGeometryKeys[i] != (*it)->getTypeId().getKey()) {
-            invalidGeometry = true;
-            return;
+            return false;
         }
     }
 
-    if (invalidGeometry) {
-        invalidGeometry = false;
-        touch();
-    }
+    return true;
 }
+
 
 std::vector<Constraint *> PropertyConstraintList::_emptyValueList(0);
