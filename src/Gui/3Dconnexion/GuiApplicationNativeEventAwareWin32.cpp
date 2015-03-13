@@ -32,6 +32,7 @@ http://www.3dconnexion.com/forum/viewtopic.php?f=19&t=4968&sid=72c018bdcf0e6edc9
 #include <cmath>
 
 #define LOGITECH_VENDOR_ID 0x46d
+#define CONNEXION_VENDOR_ID  0x256f
 #define _CONSTANT_INPUT_PERIOD 0
 
 #ifndef RIDEV_DEVNOTIFY
@@ -56,7 +57,9 @@ enum e3dconnexion_pid {
    eSpaceNavigator = 0xc626,
    eSpaceExplorer = 0xc627,
    eSpaceNavigatorForNotebooks = 0xc628,
-   eSpacePilotPRO = 0xc629
+   eSpacePilotPRO = 0xc629,
+   eSpaceMouseWireless = 0xc62e,
+   eSpaceMouseWirelessReceiver = 0xc62f
 };
 
 enum e3dmouse_virtual_key
@@ -77,6 +80,28 @@ struct tag_VirtualKeys
    e3dconnexion_pid pid;
    size_t nKeys;
    e3dmouse_virtual_key *vkeys;
+};
+
+static const e3dmouse_virtual_key SpaceMouseWirelessKeys [] =
+{
+   V3DK_INVALID     // there is no button 0
+   , V3DK_1, V3DK_2
+   , V3DK_TOP, V3DK_LEFT, V3DK_RIGHT, V3DK_FRONT
+   , V3DK_ESC, V3DK_ALT, V3DK_SHIFT, V3DK_CTRL
+   , V3DK_FIT, V3DK_MENU
+   , V3DK_PLUS, V3DK_MINUS
+   , V3DK_ROTATE
+};
+
+static const e3dmouse_virtual_key SpaceMouseWirelessReceiverKeys [] =
+{
+   V3DK_INVALID     // there is no button 0
+   , V3DK_1, V3DK_2
+   , V3DK_TOP, V3DK_LEFT, V3DK_RIGHT, V3DK_FRONT
+   , V3DK_ESC, V3DK_ALT, V3DK_SHIFT, V3DK_CTRL
+   , V3DK_FIT, V3DK_MENU
+   , V3DK_PLUS, V3DK_MINUS
+   , V3DK_ROTATE
 };
 
 static const e3dmouse_virtual_key SpaceExplorerKeys [] =
@@ -101,6 +126,7 @@ static const e3dmouse_virtual_key SpacePilotKeys [] =
    , V3DK_DOMINANT, V3DK_ROTATE
 };
 
+
 static const struct tag_VirtualKeys _3dmouseVirtualKeys[]=
 {
    eSpacePilot
@@ -108,7 +134,13 @@ static const struct tag_VirtualKeys _3dmouseVirtualKeys[]=
    , const_cast<e3dmouse_virtual_key *>(SpacePilotKeys),
    eSpaceExplorer
    , sizeof(SpaceExplorerKeys)/sizeof(SpaceExplorerKeys[0])
-   , const_cast<e3dmouse_virtual_key *>(SpaceExplorerKeys)
+   , const_cast<e3dmouse_virtual_key *>(SpaceExplorerKeys),
+   eSpaceMouseWireless
+   , sizeof(SpaceMouseWirelessKeys)/sizeof(SpaceMouseWirelessKeys[0])
+   , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessKeys),
+   eSpaceMouseWirelessReceiver
+   , sizeof(SpaceMouseWirelessReceiverKeys)/sizeof(SpaceMouseWirelessReceiverKeys[0])
+   , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessReceiverKeys)
 };
 
 
@@ -295,8 +327,8 @@ bool Gui::GUIApplicationNativeEventAware::Is3dmouseAttached()
 
 		if (GetRawInputDeviceInfo(rawInputDeviceList[i].hDevice, RIDI_DEVICEINFO, &rdi, &cbSize) > 0) {
 			//skip non HID and non logitec (3DConnexion) devices
-			if (rdi.dwType != RIM_TYPEHID || rdi.hid.dwVendorId != LOGITECH_VENDOR_ID) {
-				continue;
+			if (!(rdi.dwType == RIM_TYPEHID && (rdi.hid.dwVendorId == LOGITECH_VENDOR_ID || rdi.hid.dwVendorId == CONNEXION_VENDOR_ID))) {
+			continue;
 			}
 
 			//check if devices matches Multi-axis Controller
@@ -626,7 +658,7 @@ bool Gui::GUIApplicationNativeEventAware::TranslateRawInputData(UINT nInputCode,
 		}
 #endif
 
-		if (sRidDeviceInfo.hid.dwVendorId == LOGITECH_VENDOR_ID) {
+		if (sRidDeviceInfo.hid.dwVendorId == LOGITECH_VENDOR_ID  || sRidDeviceInfo.hid.dwVendorId == CONNEXION_VENDOR_ID) {
 			if (pRawInput->data.hid.bRawData[0] == 0x01) { // Translation vector
 
 				TInputData& deviceData = fDevice2Data[pRawInput->header.hDevice];
