@@ -59,7 +59,9 @@ enum e3dconnexion_pid {
    eSpaceNavigatorForNotebooks = 0xc628,
    eSpacePilotPRO = 0xc629,
    eSpaceMouseWireless = 0xc62e,
-   eSpaceMouseWirelessReceiver = 0xc62f
+   eSpaceMouseWirelessReceiver = 0xc62f,
+   eSpaceMousePROWireless = 0xC631,
+   eSpaceMousePROWirelessReceiver = 0xC632
 };
 
 enum e3dmouse_virtual_key
@@ -139,6 +141,12 @@ static const struct tag_VirtualKeys _3dmouseVirtualKeys[]=
    , sizeof(SpaceMouseWirelessKeys)/sizeof(SpaceMouseWirelessKeys[0])
    , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessKeys),
    eSpaceMouseWirelessReceiver
+   , sizeof(SpaceMouseWirelessReceiverKeys)/sizeof(SpaceMouseWirelessReceiverKeys[0])
+   , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessReceiverKeys),
+   eSpaceMousePROWireless
+   , sizeof(SpaceMouseWirelessKeys)/sizeof(SpaceMouseWirelessKeys[0])
+   , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessKeys),
+   eSpaceMousePROWirelessReceiver
    , sizeof(SpaceMouseWirelessReceiverKeys)/sizeof(SpaceMouseWirelessReceiverKeys[0])
    , const_cast<e3dmouse_virtual_key *>(SpaceMouseWirelessReceiverKeys)
 };
