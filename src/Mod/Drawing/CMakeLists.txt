@@ -11,6 +11,7 @@ INSTALL(
         DrawingAlgos.py
         DrawingExample.py
         DrawingTests.py
+        DrawingPatterns.py
     DESTINATION
         Mod/Drawing
 )
