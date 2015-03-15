@@ -4187,7 +4187,7 @@ class _Wire(_DraftObject):
                     pts[-1] = realfpend
                     obj.Points = pts
         elif prop == "Length":
-            if obj.Shape:
+            if obj.Shape and not obj.Shape.isNull():
                 if obj.Length.Value != obj.Shape.Length:
                     if len(obj.Points) == 2:
                         v = obj.Points[-1].sub(obj.Points[0])
