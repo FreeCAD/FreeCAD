@@ -48,10 +48,14 @@ public:
 
 private Q_SLOTS:
     void on_mouseButton_clicked();
+    void onAliasingChanged(int);
 
 protected:
     void changeEvent(QEvent *e);
     void retranslate();
+
+private:
+    static bool showMsg;
 };
 
 } // namespace Dialog

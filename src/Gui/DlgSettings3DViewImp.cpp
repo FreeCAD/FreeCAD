@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QRegExp>
+# include <QMessageBox>
 # include <memory>
 #endif
 
@@ -41,6 +42,8 @@
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettings3DViewImp */
+
+bool DlgSettings3DViewImp::showMsg = true;
 
 /**
  *  Constructs a DlgSettings3DViewImp which is a child of 'parent', with the 
@@ -118,6 +121,9 @@ void DlgSettings3DViewImp::loadSettings()
     index = hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None));
     index = Base::clamp(index, 0, comboAliasing->count()-1);
     comboAliasing->setCurrentIndex(index);
+    // connect after setting current item of the combo box
+    connect(comboAliasing, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onAliasingChanged(int)));
 }
 
 void DlgSettings3DViewImp::on_mouseButton_clicked()
@@ -154,12 +160,12 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         int navigation = comboNavigationStyle->currentIndex();
         int orbit = comboOrbitStyle->currentIndex();
-	int aliasing = comboAliasing->currentIndex();
+        int aliasing = comboAliasing->currentIndex();
         retranslateUi(this);
         retranslate();
         comboNavigationStyle->setCurrentIndex(navigation);
         comboOrbitStyle->setCurrentIndex(orbit);
-	comboAliasing->setCurrentIndex(aliasing);
+        comboAliasing->setCurrentIndex(aliasing);
     }
     else {
         QWidget::changeEvent(e);
@@ -182,6 +188,21 @@ void DlgSettings3DViewImp::retranslate()
             }
             comboNavigationStyle->addItem(name, data);
         }
+    }
+}
+
+void DlgSettings3DViewImp::onAliasingChanged(int index)
+{
+    if (index < 0 || !isVisible())
+        return;
+    // When user actively changes the setting the widget has the focus
+    bool active = comboAliasing->hasFocus();
+    // Show this message only once per application session to reduce
+    // annoyance when showing it too often.
+    if (active && showMsg) {
+        showMsg = false;
+        QMessageBox::information(this, tr("Anti-aliasing"),
+            tr("Changing anti-aliasing only takes effect when creating a new viewer."));
     }
 }
 
