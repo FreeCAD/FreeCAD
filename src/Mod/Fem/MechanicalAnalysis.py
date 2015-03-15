@@ -284,10 +284,13 @@ class _JobControlTaskPanel:
         self.form.textEdit_Output.setText(self.OutStr)
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
 
-        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
-        CalculixLib.importFrd(self.Basename + '.frd',FemGui.getActiveAnalysis() )
-        QApplication.restoreOverrideCursor()
-        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + '<font color="#00FF00">Loading results done!</font><br>'
+        if os.path.isfile(self.Basename + '.frd'):
+            QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+            CalculixLib.importFrd(self.Basename + '.frd',FemGui.getActiveAnalysis() )
+            QApplication.restoreOverrideCursor()
+            self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + '<font color="#00FF00">Loading results done!</font><br>'
+        else:
+            self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + '<font color="#FF0000">Loading results failed! Results file doesn\'t exist</font><br>'
         self.form.textEdit_Output.setText(self.OutStr)
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
         
