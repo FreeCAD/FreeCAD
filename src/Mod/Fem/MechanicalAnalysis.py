@@ -245,14 +245,17 @@ class _JobControlTaskPanel:
         
         self.update()
         
+    def femConsoleMessage(self, message="", color="#000000"):
+        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
+                                    format(time.time() - self.Start, color, message)
+        self.form.textEdit_Output.setText(self.OutStr)
 
     def UpdateText(self):
         if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
             out = self.Calculix.readAllStandardOutput()
             #print out
             if out:
-                self.OutStr = self.OutStr + unicode(out).replace('\n','<br>')
-                self.form.textEdit_Output.setText(self.OutStr)
+                self.femConsoleMessage(unicode(out).replace('\n','<br>'))
             self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
 
     def calculixError(self,error):
@@ -270,28 +273,24 @@ class _JobControlTaskPanel:
         out = self.Calculix.readAllStandardOutput()
         print out
         if out:
-            self.OutStr = self.OutStr + unicode(out).replace('\n','<br>')
-            self.form.textEdit_Output.setText(self.OutStr)
+            self.femConsoleMessage(unicode(out).replace('\n','<br>'))
 
         self.Timer.stop()
         
-        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + '<font color="#00FF00">Calculix done!</font><br>'
-        self.form.textEdit_Output.setText(self.OutStr)
+        self.femConsoleMessage("Calculix done!", "#00FF00")
 
         self.form.pushButton_generate.setText("Re-run Calculix")
         print "Loading results...."
-        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Loading result sets...<br>'
-        self.form.textEdit_Output.setText(self.OutStr)
+        self.femConsoleMessage("Loading result sets...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
 
         if os.path.isfile(self.Basename + '.frd'):
             QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
             CalculixLib.importFrd(self.Basename + '.frd',FemGui.getActiveAnalysis() )
             QApplication.restoreOverrideCursor()
-            self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + '<font color="#00FF00">Loading results done!</font><br>'
+            self.femConsoleMessage("Loading results done!", "#00FF00")
         else:
-            self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + '<font color="#FF0000">Loading results failed! Results file doesn\'t exist</font><br>'
-        self.form.textEdit_Output.setText(self.OutStr)
+            self.femConsoleMessage("Loading results failed! Results file doesn\'t exist", "#FF0000")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
         
     def getStandardButtons(self):
@@ -323,8 +322,7 @@ class _JobControlTaskPanel:
         #dirName = self.form.lineEdit_outputDir.text()
         dirName = self.TempDir
         print 'CalculiX run directory: ',dirName
-        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Check dependencies...<br>'
-        self.form.textEdit_Output.setText(self.OutStr)
+        self.femConsoleMessage("Check dependencies...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
         MeshObject = None
         if FemGui.getActiveAnalysis():
@@ -369,11 +367,8 @@ class _JobControlTaskPanel:
         self.Basename = self.TempDir + '/' + MeshObject.Name
         filename = self.Basename + '.inp'
 
-        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + self.Basename + '<br>'
-        self.form.textEdit_Output.setText(self.OutStr)
-        
-        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Write mesh...<br>'
-        self.form.textEdit_Output.setText(self.OutStr)
+        self.femConsoleMessage(self.Basename)
+        self.femConsoleMessage("Write mesh...")
 
         # write mesh
         MeshObject.FemMesh.writeABAQUS(filename)
@@ -381,8 +376,7 @@ class _JobControlTaskPanel:
         # reopen file with "append" and add the analysis definition
         inpfile = open(filename,'a')
         
-        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Write loads & Co...<br>'
-        self.form.textEdit_Output.setText(self.OutStr)
+        self.femConsoleMessage("Write loads & Co...")
         
         # write fixed node set
         NodeSetName = FixedObject.Name 
@@ -537,11 +531,8 @@ class _JobControlTaskPanel:
         print 'runCalculix'
         self.Start = time.time()
 
-        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + self.CalculixBinary + '<br>'
-        self.form.textEdit_Output.setText(self.OutStr)
-        
-        self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> '.format(time.time() - self.Start) + 'Run Calculix...<br>'
-        self.form.textEdit_Output.setText(self.OutStr)
+        self.femConsoleMessage(self.CalculixBinary)
+        self.femConsoleMessage("Run Calculix...")
 
         # run Claculix
         print 'run Calclulix at: ', self.CalculixBinary , '  with: ', self.Basename
