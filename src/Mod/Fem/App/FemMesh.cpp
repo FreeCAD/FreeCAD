@@ -643,10 +643,10 @@ void FemMesh::read(const char *FileName)
         // read brep-file
         myMesh->DATToMesh(File.filePath().c_str());
     }
-	else if (File.hasExtension("bdf") ) {
-		// read Nastran-file
-		readNastran(File.filePath());
-	}
+    else if (File.hasExtension("bdf") ) {
+        // read Nastran-file
+        readNastran(File.filePath());
+    }
     else{
         throw Base::Exception("Unknown extension");
     }
@@ -656,63 +656,71 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
 {
     std::ofstream anABAQUS_Output;
     anABAQUS_Output.open(Filename.c_str());
-    anABAQUS_Output << "*Node , NSET=Nall" << std::endl;
+    anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
 
     //Extract Nodes and Elements of the current SMESH datastructure
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
 
     Base::Vector3d current_node;
-    for (;aNodeIter->more();) {
+    while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
         current_node.Set(aNode->X(),aNode->Y(),aNode->Z());
         current_node = _Mtrx * current_node;
-        anABAQUS_Output << aNode->GetID() << ","
-            << current_node.x << "," 
-            << current_node.y << ","
+        anABAQUS_Output << aNode->GetID() << ", "
+            << current_node.x << ", "
+            << current_node.y << ", "
             << current_node.z << std::endl;
     }
 
-	anABAQUS_Output << "*Element, TYPE=C3D10, ELSET=Eall" << std::endl;
-	SMDS_VolumeIteratorPtr aVolIter = myMesh->GetMeshDS()->volumesIterator();
+    typedef std::map<int, std::vector<int> > NodesMap;
+    typedef std::map<std::string, NodesMap> ElementsMap;
 
-	std::map<int,std::vector<int> > temp_map;
-	std::pair<int,std::vector<int> > apair;
-	temp_map.clear();
-	for (;aVolIter->more();) 
-	{
-		const SMDS_MeshVolume* aVol = aVolIter->next();
-		//Dont ask about the order in which we have to output the SMESH structure
-		//I absolute dont understand the scheme behind it but somehow its working like this
-		apair.first = aVol->GetID();
-		apair.second.clear();
+    ElementsMap elementsMap;
+    SMDS_VolumeIteratorPtr aVolIter = myMesh->GetMeshDS()->volumesIterator();
+    while (aVolIter->more()) {
+        const SMDS_MeshVolume* aVol = aVolIter->next();
+        std::pair<int, std::vector<int> > apair;
+        apair.first = aVol->GetID();
 
-		//Neuer Versuch
-		apair.second.push_back(aVol->GetNode(1)->GetID());
-		apair.second.push_back(aVol->GetNode(0)->GetID());
-		apair.second.push_back(aVol->GetNode(2)->GetID());
-		apair.second.push_back(aVol->GetNode(3)->GetID());
-		apair.second.push_back(aVol->GetNode(4)->GetID());
-		apair.second.push_back(aVol->GetNode(6)->GetID());
-		apair.second.push_back(aVol->GetNode(5)->GetID());
-		apair.second.push_back(aVol->GetNode(8)->GetID());
-		apair.second.push_back(aVol->GetNode(7)->GetID());
-		apair.second.push_back(aVol->GetNode(9)->GetID());
-	
-        temp_map.insert(apair);
-	}
+        int numNodes = aVol->NbNodes();
+        std::vector<int> ids;
 
-	std::map<int,std::vector<int> >::iterator it_map;
-	std::vector<int>::iterator it_vector;
-	for(it_map = temp_map.begin();it_map!=temp_map.end();it_map++)
-	{
-		anABAQUS_Output << it_map->first << ",";
-		for(it_vector = it_map->second.begin();it_vector!=it_map->second.end();it_vector++)
-		{
-			anABAQUS_Output << *it_vector << ",";
-		}
-		anABAQUS_Output << std::endl;
-	}
-	anABAQUS_Output.close();
+        // C3D4
+        if (numNodes == 4) {
+            apair.second.push_back(aVol->GetNode(0)->GetID());
+            apair.second.push_back(aVol->GetNode(3)->GetID());
+            apair.second.push_back(aVol->GetNode(1)->GetID());
+            apair.second.push_back(aVol->GetNode(2)->GetID());
+            elementsMap["C3D4"].insert(apair);
+        }
+        // C3D10
+        else if (numNodes == 10) {
+            apair.second.push_back(aVol->GetNode(0)->GetID());
+            apair.second.push_back(aVol->GetNode(2)->GetID());
+            apair.second.push_back(aVol->GetNode(1)->GetID());
+            apair.second.push_back(aVol->GetNode(3)->GetID());
+            apair.second.push_back(aVol->GetNode(6)->GetID());
+            apair.second.push_back(aVol->GetNode(5)->GetID());
+            apair.second.push_back(aVol->GetNode(4)->GetID());
+            apair.second.push_back(aVol->GetNode(7)->GetID());
+            apair.second.push_back(aVol->GetNode(9)->GetID());
+            apair.second.push_back(aVol->GetNode(8)->GetID());
+            elementsMap["C3D10"].insert(apair);
+        }
+    }
+
+    for (ElementsMap::iterator it = elementsMap.begin(); it != elementsMap.end(); ++it) {
+        anABAQUS_Output << "*Element, TYPE=" << it->first << ", ELSET=" << it->first << std::endl;
+        for (NodesMap::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+            anABAQUS_Output << jt->first << ", ";
+            for (std::vector<int>::iterator kt = jt->second.begin(); kt != jt->second.end(); ++kt) {
+                anABAQUS_Output << *kt << ", ";
+            }
+            anABAQUS_Output << std::endl;
+        }
+    }
+
+    anABAQUS_Output.close();
 }
 
 void FemMesh::write(const char *FileName) const
