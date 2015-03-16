@@ -438,10 +438,10 @@ class _JobControlTaskPanel:
         # write material properties
         inpfile.write('\n\n\n\n***********************************************************\n')
         inpfile.write('** material\n')
-        inpfile.write('** unit is kPa = mN/mm2 = (kg*mm/s^2) * 1/mm^2 = kg/mm*s^2 = 10e-3 N/mm2 = 10e-3 MPa\n')
+        inpfile.write('** unit is MPa = N/mm2\n')
         inpfile.write('*MATERIAL, Name='+matmap['General_name'] + '\n')
         inpfile.write('*ELASTIC \n')
-        inpfile.write('{0:.3f}, '.format(YM.Value) )
+        inpfile.write('{0:.3f}, '.format(YM.Value*1E-3) )
         inpfile.write('{0:.3f}\n'.format(PR) )
         inpfile.write('*SOLID SECTION, Elset=Eall, Material='+matmap['General_name'] + '\n')
         
@@ -467,11 +467,11 @@ class _JobControlTaskPanel:
         #inpfile.write('Eall,NEWTON\n')
         inpfile.write('\n\n** loads\n')
         if ForceObjectType == 'AreaLoad':
-            Force = (ForceObject.Force * 1000.0) / NbrForceNods
+            Force = ForceObject.Force / NbrForceNods
             vec = ForceObject.DirectionVector
             inpfile.write('** direction: ' + str(vec)  + '\n')
             inpfile.write('** concentrated load [N] distributed on the area of the given faces.\n')
-            inpfile.write('** ' + str(ForceObject.Force) + ' N * 1000 / ' + str(NbrForceNods) + ' Nodes = ' + str(Force) + ' mN on each node\n')
+            inpfile.write('** ' + str(ForceObject.Force) + ' N / ' + str(NbrForceNods) + ' Nodes = ' + str(Force) + ' N on each node\n')
             inpfile.write('*CLOAD\n')
             inpfile.write(NodeSetNameForce + ',1,' + `vec.x * Force` + '\n')
             inpfile.write(NodeSetNameForce + ',2,' + `vec.y * Force` + '\n')
@@ -503,10 +503,18 @@ class _JobControlTaskPanel:
         inpfile.write('**\n')
         inpfile.write('**   CalculiX Inputfile\n')
         inpfile.write('**\n')
-        inpfile.write('**   written by: FreeCAD ' + FcVersionInfo[0] + '.' + FcVersionInfo[1] + '.' + FcVersionInfo[2] + '\n')
-        inpfile.write('**   written on: ' + time.ctime() + '\n')
-        inpfile.write('**   file name: ' + os.path.basename(FreeCAD.ActiveDocument.FileName) + '\n')
-        inpfile.write('**   analysis name: ' + FemGui.getActiveAnalysis().Name + '\n')
+        inpfile.write('**   written by    --> FreeCAD ' + FcVersionInfo[0] + '.' + FcVersionInfo[1] + '.' + FcVersionInfo[2] + '\n')
+        inpfile.write('**   written on    --> ' + time.ctime() + '\n')
+        inpfile.write('**   file name     --> ' + os.path.basename(FreeCAD.ActiveDocument.FileName) + '\n')
+        inpfile.write('**   analysis name --> ' + FemGui.getActiveAnalysis().Name + '\n')
+        inpfile.write('**\n')
+        inpfile.write('**\n')
+        inpfile.write('**   Units\n')
+        inpfile.write('**\n')
+        inpfile.write('**   Geometry (mesh data)        --> mm\n')
+        inpfile.write("**   Materials (young's modulus) --> N/mm2 = MPa\n")
+        inpfile.write('**   Loads (nodal loads)         --> N\n')
+        inpfile.write('**\n')
         inpfile.write('**\n')
 
         inpfile.close()
