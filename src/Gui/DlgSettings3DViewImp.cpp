@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QRegExp>
 # include <QMessageBox>
 # include <memory>
@@ -158,6 +159,7 @@ void DlgSettings3DViewImp::on_mouseButton_clicked()
 void DlgSettings3DViewImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        comboAliasing->blockSignals(true);
         int navigation = comboNavigationStyle->currentIndex();
         int orbit = comboOrbitStyle->currentIndex();
         int aliasing = comboAliasing->currentIndex();
@@ -166,6 +168,7 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
         comboNavigationStyle->setCurrentIndex(navigation);
         comboOrbitStyle->setCurrentIndex(orbit);
         comboAliasing->setCurrentIndex(aliasing);
+        comboAliasing->blockSignals(false);
     }
     else {
         QWidget::changeEvent(e);
@@ -195,14 +198,12 @@ void DlgSettings3DViewImp::onAliasingChanged(int index)
 {
     if (index < 0 || !isVisible())
         return;
-    // When user actively changes the setting the widget has the focus
-    bool active = comboAliasing->hasFocus();
     // Show this message only once per application session to reduce
     // annoyance when showing it too often.
-    if (active && showMsg) {
+    if (showMsg) {
         showMsg = false;
         QMessageBox::information(this, tr("Anti-aliasing"),
-            tr("Changing anti-aliasing only takes effect when creating a new viewer."));
+            tr("Open a new viewer or restart %1 to apply anti-aliasing changes.").arg(qApp->applicationName()));
     }
 }
 
