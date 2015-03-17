@@ -515,6 +515,7 @@ class _JobControlTaskPanel:
         inpfile.write('**\n')
 
         inpfile.close()
+        self.femConsoleMessage("Write completed.")
 
         QApplication.restoreOverrideCursor()
 
