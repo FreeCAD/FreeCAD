@@ -285,7 +285,7 @@ class _JobControlTaskPanel:
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
 
         if os.path.isfile(self.Basename + '.frd'):
-            QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+            QApplication.setOverrideCursor(Qt.WaitCursor)
             CalculixLib.importFrd(self.Basename + '.frd',FemGui.getActiveAnalysis() )
             QApplication.restoreOverrideCursor()
             self.femConsoleMessage("Loading results done!", "#00FF00")
@@ -362,7 +362,7 @@ class _JobControlTaskPanel:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No force-constraint nodes defined in the Analysis")
             return
         
-        QApplication.setOverrideCursor(QCursor(Qt.WaitCursor))
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         
         self.Basename = self.TempDir + '/' + MeshObject.Name
         filename = self.Basename + '.inp'
@@ -575,7 +575,7 @@ class _ResultControlTaskPanel:
             self.MeshObject.ViewObject.ElementColor = {}
             return
             
-        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         
         if typeName[:2] == "Ua" and self.DisplacementObject:            
             (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject)
@@ -598,7 +598,7 @@ class _ResultControlTaskPanel:
         
         
     def showDisplacementClicked(self,bool):
-        QtGui.qApp.setOverrideCursor(QtCore.Qt.WaitCursor)
+        QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setDisplacement()
         QtGui.qApp.restoreOverrideCursor()
     
