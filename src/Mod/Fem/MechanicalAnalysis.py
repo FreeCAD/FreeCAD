@@ -87,7 +87,7 @@ class _CommandMechanicalJobControl:
         return {'Pixmap'  : 'Fem_NewAnalysis',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Start calculation"),
                 'Accel': "A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Dialog to start the calculation of the machanical anlysis")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Dialog to start the calculation of the mechanical anlysis")}
         
     def Activated(self):
         import FemGui
@@ -122,7 +122,7 @@ class _CommandMechanicalShowResult:
         StressObject = None
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemResultValue"):
-                if i.DataType == 'VanMisesStress':
+                if i.DataType == 'VonMisesStress':
                     StressObject = i
 
         if not DisplacementObject and not StressObject:
@@ -647,9 +647,9 @@ class _ResultControlTaskPanel:
                     self.form.comboBox_Type.addItem("Uabs (Disp. abs)")
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemResultValue"):
-                if i.DataType == 'VanMisesStress':
+                if i.DataType == 'VonMisesStress':
                     self.StressObject = i
-                    self.form.comboBox_Type.addItem("Sabs (Van Mises Stress)")
+                    self.form.comboBox_Type.addItem("Sabs (Von Mises Stress)")
                 
     def accept(self):
         FreeCADGui.Control.closeDialog()
