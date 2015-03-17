@@ -163,7 +163,7 @@ def importFrd(filename,Analysis=None):
                     mstress.append( sqrt( pow( i[0] - i[1] ,2) + pow( i[1] - i[2] ,2) + pow( i[2] - i[0] ,2) + 6 * (pow(i[3],2)+pow(i[4],2)+pow(i[5],2)  )  ) )
                 
                 o.Values = mstress
-                o.DataType = 'VanMisesStress'
+                o.DataType = 'VonMisesStress'
                 o.ElementNumbers = stress.keys()
                 if(MeshObject):
                     o.Mesh = MeshObject
