@@ -552,7 +552,7 @@ class _JobControlTaskPanel:
         print 'runCalculix'
         self.Start = time.time()
 
-        self.femConsoleMessage(self.CalculixBinary)
+        self.femConsoleMessage("CalculiX binary: {}".format(self.CalculixBinary))
         self.femConsoleMessage("Run Calculix...")
 
         # run Claculix
