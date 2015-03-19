@@ -239,6 +239,7 @@ class _JobControlTaskPanel:
         QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runCalculix)
 
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
+        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("error(QProcess::ProcessError)"), self.calculixError)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("finished(int)"), self.calculixFinished)
 
         QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.UpdateText)
@@ -258,8 +259,9 @@ class _JobControlTaskPanel:
                 self.femConsoleMessage(unicode(out).replace('\n','<br>'))
             self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
 
-    def calculixError(self,error):
+    def calculixError(self, error):
         print "Error()",error
+        self.femConsoleMessage("CalculiX execute error: {}".format(error))
         
     def calculixStarted(self):
         print "calculixStarted()"
