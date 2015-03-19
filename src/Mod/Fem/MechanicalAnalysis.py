@@ -252,12 +252,21 @@ class _JobControlTaskPanel:
                                     format(time.time() - self.Start, color, message)
         self.form.textEdit_Output.setText(self.OutStr)
 
+    def printCalculiXstdout(self):
+        #There is probably no need to show user output from CalculiX. It should be
+        #written to a file in the calcs directory and shown to user upon request [BUTTON]
+        out = self.Calculix.readAllStandardOutput()
+        if out.isEmpty():
+            self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
+        else:
+            try:
+                self.femConsoleMessage(unicode(out).replace('\n','<br>'))
+            except UnicodeDecodeError:
+                self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
+
     def UpdateText(self):
         if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
-            out = self.Calculix.readAllStandardOutput()
-            #print out
-            if out:
-                self.femConsoleMessage(unicode(out).replace('\n','<br>'))
+            self.printCalculiXstdout()
             self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
 
     def calculixError(self, error):
@@ -280,11 +289,8 @@ class _JobControlTaskPanel:
     def calculixFinished(self,exitCode):
         print "calculixFinished()",exitCode
         print self.Calculix.state()
-        out = self.Calculix.readAllStandardOutput()
-        print out
-        if out:
-            self.femConsoleMessage(unicode(out).replace('\n','<br>'))
 
+        self.printCalculiXstdout()
         self.Timer.stop()
         
         self.femConsoleMessage("Calculix done!", "#00FF00")
