@@ -395,10 +395,12 @@ class _JobControlTaskPanel:
             elif fo.ShapeType == 'Edge':
                 FixedObjectType = 'LineSupport'
                 print 'Line Supports are not yet implemented to export to CalculiX'
+                self.femConsoleMessage("Line Supports are not yet implemented to export to CalculiX", "#FF0000")
                 # getNodesByEdge(fo) # not implemented yet
             elif fo.ShapeType == 'Vertex':
                 FixedObjectType = 'PointSupport'
                 print 'Point Supports are not yet implemented to export to CalculiX'
+                self.femConsoleMessage("Point Supports are not yet implemented to export to CalculiX", "#FF0000")
         
         # write load node set 
         NodeSetNameForce = ForceObject.Name 
@@ -417,10 +419,12 @@ class _JobControlTaskPanel:
             elif fo.ShapeType == 'Edge':
                 ForceObjectType = 'LineLoad'
                 print 'Line Loads are not yet implemented to export to CalculiX'
+                self.femConsoleMessage("Line Loads are not yet implemented to export to CalculiX", "#FF0000")
                 # getNodesByEdge(fo) # not implemented yet
             elif fo.ShapeType == 'Vertex':
                 ForceObjectType = 'PointLoad'
                 print 'Point Loads are not yet implemented to export to CalculiX'
+                self.femConsoleMessage("Point Loads are not yet implemented to export to CalculiX", "#FF0000")
         
         # get material properties
         YM = FreeCAD.Units.Quantity(MathObject.Material['Mechanical_youngsmodulus'])
