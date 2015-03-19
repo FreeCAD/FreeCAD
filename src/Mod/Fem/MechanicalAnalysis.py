@@ -239,6 +239,7 @@ class _JobControlTaskPanel:
         QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runCalculix)
 
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("started()"), self.calculixStarted)
+        QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("stateChanged(QProcess::ProcessState)"), self.calculixStateChanged)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("error(QProcess::ProcessError)"), self.calculixError)
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("finished(int)"), self.calculixFinished)
 
@@ -268,6 +269,13 @@ class _JobControlTaskPanel:
         print self.Calculix.state()
         self.form.pushButton_generate.setText("Break Calculix")
         
+    def calculixStateChanged(self, newState):
+        if (newState == QtCore.QProcess.ProcessState.Starting):
+                self.femConsoleMessage("Staring CalculiX...")
+        if (newState == QtCore.QProcess.ProcessState.Running):
+                self.femConsoleMessage("CalculiX is running...")
+        if (newState == QtCore.QProcess.ProcessState.NotRunning):
+                self.femConsoleMessage("CalculiX stopped.")
         
     def calculixFinished(self,exitCode):
         print "calculixFinished()",exitCode
