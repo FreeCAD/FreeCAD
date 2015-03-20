@@ -152,6 +152,8 @@
 # include <Transfer_TransientProcess.hxx>
 # include <Transfer_FinderProcess.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
+# include <ShapeAnalysis_FreeBoundsProperties.hxx>
+# include <ShapeAnalysis_FreeBoundData.hxx>
 
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>
@@ -1953,9 +1955,6 @@ TopoDS_Shape TopoShape::revolve(const gp_Ax1& axis, double d, Standard_Boolean i
     return mkRevol.Shape();
 }
 
-//#include <BRepFill.hxx>
-//#include <BRepTools_Quilt.hxx>
-
 TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersection,
                                         bool selfInter, short offsetMode, short join,
                                         bool fill) const
@@ -1964,85 +1963,109 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
         intersection ? Standard_True : Standard_False,
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join));
+    if (!mkOffset.IsDone())
+      return TopoDS_Shape(); //maybe throw exception?
     const TopoDS_Shape& res = mkOffset.Shape();
     if (!fill)
         return res;
-#if 1
-    //s=Part.makePlane(10,10)
-    //s.makeOffsetShape(1.0,0.01,False,False,0,0,True)
-    const BRepOffset_MakeOffset& off = mkOffset.MakeOffset();
-    const BRepAlgo_Image& img = off.OffsetEdgesFromShapes();
-
-    // build up map edge->face
-    TopTools_IndexedDataMapOfShapeListOfShape edge2Face;
-    TopExp::MapShapesAndAncestors(this->_Shape, TopAbs_EDGE, TopAbs_FACE, edge2Face);
-    TopTools_IndexedMapOfShape mapOfShape;
-    TopExp::MapShapes(this->_Shape, TopAbs_EDGE, mapOfShape);
-
-    TopoDS_Shell shell;
+    
+    //get perimeter wire of original shape.
+    //Wires returned seem to have edges in connection order.
+    ShapeAnalysis_FreeBoundsProperties freeCheck(this->_Shape);
+    freeCheck.Perform();
+    if (freeCheck.NbClosedFreeBounds() < 1)
+    {
+      std::ostringstream stream;
+      stream << "no closed bounds" << std::endl;
+      Base::Console().Message(stream.str().c_str());
+      return TopoDS_Shape(); //maybe throw exception?
+    }
+    
     BRep_Builder builder;
-    TopExp_Explorer xp;
-    builder.MakeShell(shell);
-
-    for (xp.Init(this->_Shape,TopAbs_FACE); xp.More(); xp.Next()) {
-        builder.Add(shell, xp.Current());
-    } 
-
-    for (int i=1; i<= edge2Face.Extent(); ++i) {
-        const TopTools_ListOfShape& los = edge2Face.FindFromIndex(i);
-        if (los.Extent() == 1) {
-            // set the index value as user data to use it in accept()
-            const TopoDS_Shape& edge = edge2Face.FindKey(i);
-            Standard_Boolean ok = img.HasImage(edge);
-            if (ok) {
-                const TopTools_ListOfShape& edges = img.Image(edge);
-                TopTools_ListIteratorOfListOfShape it;
-                it.Initialize(edges);
-                BRepOffsetAPI_ThruSections aGenerator (0,0);
-                aGenerator.AddWire(BRepBuilderAPI_MakeWire(TopoDS::Edge(edge)).Wire());
-                aGenerator.AddWire(BRepBuilderAPI_MakeWire(TopoDS::Edge(it.Value())).Wire());
-                aGenerator.Build();
-                for (xp.Init(aGenerator.Shape(),TopAbs_FACE); xp.More(); xp.Next()) {
-                    builder.Add(shell, xp.Current());
-                }
-                //TopoDS_Face face = BRepFill::Face(TopoDS::Edge(edge), TopoDS::Edge(it.Value()));
-                //builder.Add(shell, face);
-            }
+    TopoDS_Compound perimeterCompound;
+    builder.MakeCompound(perimeterCompound);
+    for (int index = 1; index <= freeCheck.NbClosedFreeBounds(); ++index)
+    {
+      TopoDS_Wire originalWire = freeCheck.ClosedFreeBound(index)->FreeBound();
+      const BRepAlgo_Image& img = mkOffset.MakeOffset().OffsetEdgesFromShapes();
+      
+      //build offset wire.
+      TopoDS_Wire offsetWire;
+      builder.MakeWire(offsetWire);
+      TopExp_Explorer xp;
+      for (xp.Init(originalWire, TopAbs_EDGE); xp.More(); xp.Next())
+      {
+        if (!img.HasImage(xp.Current()))
+        {
+          std::ostringstream stream;
+          stream << "no image for shape" << std::endl;
+          Base::Console().Message(stream.str().c_str());
+          return TopoDS_Shape();
         }
+        const TopTools_ListOfShape& currentImage = img.Image(xp.Current());
+        TopTools_ListIteratorOfListOfShape listIt;
+        int edgeCount(0);
+        TopoDS_Edge mappedEdge;
+        for (listIt.Initialize(currentImage); listIt.More(); listIt.Next())
+        {
+          if (listIt.Value().ShapeType() != TopAbs_EDGE)
+            continue;
+          edgeCount++;
+          mappedEdge = TopoDS::Edge(listIt.Value());
+        }
+        
+        if (edgeCount != 1)
+        {
+          std::ostringstream stream;
+          stream << "wrong edge count: " << edgeCount << std::endl;
+          Base::Console().Message(stream.str().c_str());
+          return TopoDS_Shape();
+        }
+        builder.Add(offsetWire, mappedEdge);
+      }
+      
+      //It would be nice if we could get thruSections to build planar faces
+      //in all areas possible, so we could run through refine. I tried setting
+      //ruled to standard_true, but that didn't have the desired affect.
+      BRepOffsetAPI_ThruSections aGenerator;
+      aGenerator.AddWire(originalWire);
+      aGenerator.AddWire(offsetWire);
+      aGenerator.Build();
+      if (!aGenerator.IsDone())
+      {
+        std::ostringstream stream;
+        stream << "ThruSections failed" << std::endl;
+        Base::Console().Message(stream.str().c_str());
+        return TopoDS_Shape();
+      }
+      
+      builder.Add(perimeterCompound, aGenerator.Shape());
     }
-
-    for (xp.Init(mkOffset.Shape(),TopAbs_FACE); xp.More(); xp.Next()) {
-        builder.Add(shell, xp.Current());
-    } 
-
-    //BRepBuilderAPI_Sewing sew(offset);
-    //sew.Load(this->_Shape);
-    //sew.Add(mkOffset.Shape());
-    //sew.Perform();
-
-    //shell.Closed(Standard_True);
-
-    return shell;
-#else
-    TopoDS_Solid    Res;
-    TopExp_Explorer exp;
-    BRep_Builder    B;
-    B.MakeSolid(Res);
-
-    BRepTools_Quilt Glue;
-    for (exp.Init(this->_Shape,TopAbs_FACE); exp.More(); exp.Next()) {
-      Glue.Add (exp.Current());
-    } 
-    for (exp.Init(mkOffset.Shape(),TopAbs_FACE);exp.More(); exp.Next()) {
-      Glue.Add (exp.Current().Reversed());
+    
+    //still had to sew. not using the passed in parameter for sew. 
+    //Sew has it's own default tolerance. Opinions?
+    BRepBuilderAPI_Sewing sewTool;
+    sewTool.Add(this->_Shape);
+    sewTool.Add(perimeterCompound);
+    sewTool.Add(res);
+    sewTool.Perform(); //Perform Sewing
+    
+    TopoDS_Shape outputShape = sewTool.SewedShape();
+    if ((outputShape.ShapeType() == TopAbs_SHELL) && (outputShape.Closed()))
+    {
+      BRepBuilderAPI_MakeSolid solidMaker(TopoDS::Shell(outputShape));
+      if (solidMaker.IsDone())
+      {
+        TopoDS_Solid temp = solidMaker.Solid();
+        //contrary to the occ docs the return value OrientCloseSolid doesn't
+        //indicate whether the shell was open or not. It returns true with an
+        //open shell and we end up with an invalid solid.
+        if (BRepLib::OrientClosedSolid(temp))
+          outputShape = temp;
+      }
     }
-    TopoDS_Shape S = Glue.Shells();
-    for (exp.Init(S,TopAbs_SHELL); exp.More(); exp.Next()) {
-      B.Add(Res,exp.Current());
-    }
-    Res.Closed(Standard_True);
-    return Res;
-#endif
+    
+    return outputShape;
 }
 
 TopoDS_Shape TopoShape::makeThickSolid(const TopTools_ListOfShape& remFace,
