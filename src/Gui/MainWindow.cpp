@@ -488,6 +488,29 @@ void MainWindow::tile()
 {
 #if !defined (NO_USE_QT_MDI_AREA)
     d->mdiArea->tileSubWindows();
+
+// Warn about limitation in Qt4.8 involving multiple OpenGL widgets with Cocoa.
+#if defined(__APPLE__)
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("MainWindow");
+
+    if(hGrp->GetBool("ShowAppleMdiWarning", true)) {
+        QMessageBox mb(this);
+        mb.setIcon(QMessageBox::Warning);
+        mb.setTextFormat(Qt::RichText);
+        mb.setText(tr("There is a rendering issue on MacOS."));
+        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS\"> the wiki</a> for more information"));
+
+        QAbstractButton *suppressBtn;
+        suppressBtn = mb.addButton(tr("Don't show again"), QMessageBox::DestructiveRole);
+        mb.addButton(QMessageBox::Ok);
+
+        mb.exec();
+        if(mb.clickedButton() == suppressBtn) {
+            hGrp->SetBool("ShowAppleMdiWarning", false);
+        }
+    }
+#endif // defined(__APPLE__)
 #else
     d->workspace->tile();
 #endif
@@ -497,6 +520,29 @@ void MainWindow::cascade()
 {
 #if !defined (NO_USE_QT_MDI_AREA)
     d->mdiArea->cascadeSubWindows();
+
+// See above in MainWindow::tile()
+#if defined(__APPLE__)
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("MainWindow");
+
+    if(hGrp->GetBool("ShowAppleMdiWarning", true)) {
+        QMessageBox mb(this);
+        mb.setIcon(QMessageBox::Warning);
+        mb.setTextFormat(Qt::RichText);
+        mb.setText(tr("There is a rendering issue on MacOS."));
+        mb.setInformativeText(tr("See <a href=\"http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS\"> the wiki</a> for more information"));
+
+        QAbstractButton *suppressBtn;
+        suppressBtn = mb.addButton(tr("Don't show again"), QMessageBox::DestructiveRole);
+        mb.addButton(QMessageBox::Ok);
+
+        mb.exec();
+        if(mb.clickedButton() == suppressBtn) {
+            hGrp->SetBool("ShowAppleMdiWarning", false);
+        }
+    }
+#endif // defined(__APPLE__)
 #else
     d->workspace->cascade();
 #endif
@@ -1312,7 +1358,7 @@ void MainWindow::startSplasher(void)
          (App::Application::Config()["RunMode"] == "Gui")) {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
             GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
-        // first search for an external imahe file
+        // first search for an external image file
         if (hGrp->GetBool("ShowSplasher", true)) {
             d->splashscreen = new SplashScreen(this->splashImage());
             d->splashscreen->show();
