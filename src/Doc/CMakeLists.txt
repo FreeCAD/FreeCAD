@@ -104,6 +104,8 @@ if(DOXYGEN_FOUND)
         )
 
     endif( FREECAD_MAINTAINERS_BUILD )
-
+else( DOXYGEN_FOUND )
+    ADD_CUSTOM_TARGET(DevDoc
+                      echo "Doxygen not found.  Install it and rerun CMake")
 endif( DOXYGEN_FOUND )
 
