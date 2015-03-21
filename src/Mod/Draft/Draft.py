@@ -584,8 +584,8 @@ def getMovableChildren(objectslist,recursive=False):
     recursive is True, all descendents are considered, otherwise only direct children.'''
     added = []
     for obj in objectslist:
-        if getType(obj) != "Clone":
-            # clones should never move their children
+        if not (getType(obj) in ["Clone","SectionPlane"]):
+            # objects that should never move their children
             children = obj.OutList
             if  hasattr(obj,"Proxy"):
                 if obj.Proxy:
