@@ -78,7 +78,8 @@ class ArchWorkbench(Workbench):
         self.utilities = ["Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
-                     "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views"]
+                     "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",
+                     "Arch_Bimserver","Arch_Git"]
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",

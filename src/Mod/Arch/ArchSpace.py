@@ -29,6 +29,118 @@ __url__ = "http://www.freecadweb.org"
 
 Roles = ["Space"]
 
+SpaceTypes = [
+"Undefined",
+"Exterior",
+"Exterior - Terrace",
+"Office",
+"Office - Enclosed",
+"Office - Open Plan",
+"Conference / Meeting / Multipurpose",
+"Classroom / Lecture / Training For Penitentiary",
+"Lobby",
+"Lobby - For Hotel",
+"Lobby - For Performing Arts Theater",
+"Lobby - For Motion Picture Theater",
+"Audience/Seating Area",
+"Audience/Seating Area - For Gymnasium",
+"Audience/Seating Area - For Exercise Center",
+"Audience/Seating Area - For Convention Center",
+"Audience/Seating Area - For Penitentiary",
+"Audience/Seating Area - For Religious Buildings",
+"Audience/Seating Area - For Sports Arena",
+"Audience/Seating Area - For Performing Arts Theater",
+"Audience/Seating Area - For Motion Picture Theater",
+"Audience/Seating Area - For Transportation",
+"Atrium",
+"Atrium - First Three Floors",
+"Atrium - Each Additional Floor",
+"Lounge / Recreation",
+"Lounge / Recreation - For Hospital",
+"Dining Area",
+"Dining Area - For Penitentiary",
+"Dining Area - For Hotel",
+"Dining Area - For Motel",
+"Dining Area - For Bar Lounge/Leisure Dining",
+"Dining Area - For Family Dining",
+"Food Preparation",
+"Laboratory",
+"Restrooms",
+"Dressing / Locker / Fitting",
+"Room",
+"Corridor / Transition",
+"Corridor / Transition - For Hospital",
+"Corridor / Transition - For Manufacturing Facility",
+"Stairs",
+"Active Storage",
+"Active Storage - For Hospital",
+"Inactive Storage",
+"Inactive Storage - For Museum",
+"Electrical / Mechanical",
+"Gymnasium / Exercise Center",
+"Gymnasium / Exercise Center - Playing Area",
+"Gymnasium / Exercise Center - Exercise Area",
+"Courthouse / Police Station / Penitentiary",
+"Courthouse / Police Station / Penitentiary - Courtroom",
+"Courthouse / Police Station / Penitentiary - Confinement Cells",
+"Courthouse / Police Station / Penitentiary - Judges' Chambers",
+"Fire Stations",
+"Fire Stations - Engine Room",
+"Fire Stations - Sleeping Quarters",
+"Post Office - Sorting Area",
+"Convention Center - Exhibit Space",
+"Library",
+"Library - Card File and Cataloging",
+"Library - Stacks",
+"Library - Reading Area",
+"Hospital",
+"Hospital - Emergency",
+"Hospital - Recovery",
+"Hospital - Nurses' Station",
+"Hospital - Exam / Treatment",
+"Hospital - Pharmacy",
+"Hospital - Patient Room",
+"Hospital - Operating Room",
+"Hospital - Nursery",
+"Hospital - Medical Supply",
+"Hospital - Physical Therapy",
+"Hospital - Radiology",
+"Hospital - Laundry-Washing",
+"Automotive - Service / Repair",
+"Manufacturing",
+"Manufacturing - Low Bay (< 7.5m Floor to Ceiling Height)",
+"Manufacturing - High Bay (> 7.5m Floor to Ceiling Height)",
+"Manufacturing - Detailed Manufacturing",
+"Manufacturing - Equipment Room",
+"Manufacturing - Control Room",
+"Hotel / Motel Guest Rooms",
+"Dormitory - Living Quarters",
+"Museum",
+"Museum - General Exhibition",
+"Museum - Restoration",
+"Bank / Office - Banking Activity Area",
+"Workshop",
+"Sales Area",
+"Religious Buildings",
+"Religious Buildings - Worship Pulpit, Choir",
+"Religious Buildings - Fellowship Hall",
+"Retail",
+"Retail - Sales Area",
+"Retail - Mall Concourse",
+"Sports Arena",
+"Sports Arena - Ring Sports Area",
+"Sports Arena - Court Sports Area",
+"Sports Arena - Indoor Playing Field Area",
+"Warehouse",
+"Warehouse - Fine Material Storage",
+"Warehouse - Medium / Bulky Material Storage",
+"Parking Garage - Garage Area",
+"Transportation",
+"Transportation - Airport / Concourse",
+"Transportation - Air / Train / Bus - Baggage Area",
+"Transportation - Terminal - Ticket Counter"
+]
+
 import FreeCAD,ArchComponent,ArchCommands,math,Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -111,13 +223,16 @@ class _Space(ArchComponent.Component):
     "A space object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLinkSubList","Boundaries",   "Arch",translate("Arch","The objects that make the boundaries of this space object"))
-        obj.addProperty("App::PropertyFloat",      "Area",         "Arch",translate("Arch","The computed floor area of this space"))
-        obj.addProperty("App::PropertyString",     "FinishFloor",  "Arch",translate("Arch","The finishing of the floor of this space"))
-        obj.addProperty("App::PropertyString",     "FinishWalls",  "Arch",translate("Arch","The finishing of the walls of this space"))
-        obj.addProperty("App::PropertyString",     "FinishCeiling","Arch",translate("Arch","The finishing of the ceiling of this space"))
-        obj.addProperty("App::PropertyLinkList",   "Group",        "Arch",translate("Arch","Objects that are included inside this space, such as furniture"))
+        obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Arch",translate("Arch","The objects that make the boundaries of this space object"))
+        obj.addProperty("App::PropertyFloat",      "Area",          "Arch",translate("Arch","The computed floor area of this space"))
+        obj.addProperty("App::PropertyString",     "FinishFloor",   "Arch",translate("Arch","The finishing of the floor of this space"))
+        obj.addProperty("App::PropertyString",     "FinishWalls",   "Arch",translate("Arch","The finishing of the walls of this space"))
+        obj.addProperty("App::PropertyString",     "FinishCeiling", "Arch",translate("Arch","The finishing of the ceiling of this space"))
+        obj.addProperty("App::PropertyLinkList",   "Group",         "Arch",translate("Arch","Objects that are included inside this space, such as furniture"))
+        obj.addProperty("App::PropertyEnumeration","SpaceType",     "Arch",translate("Arch","The type of this space"))
+        obj.addProperty("App::PropertyLength",     "FloorThickness","Arch",translate("Arch","The thickness of the floor finish"))
         self.Type = "Space"
+        self.SpaceType = "Undefined"
         obj.Role = Roles
 
     def execute(self,obj):
