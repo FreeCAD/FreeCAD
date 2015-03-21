@@ -166,6 +166,8 @@ void DownloadManager::download(const QNetworkRequest &request, bool requestFileN
 {
     if (request.url().isEmpty())
         return;
+        
+    std::cout << request.url().toString().toStdString() << std::endl;
 
     // postpone this reply until we can examine it in replyFinished
     QNetworkReply* reply = m_manager->get(request);

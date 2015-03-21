@@ -29,6 +29,7 @@ SET(Arch_SRCS
     ArchPanel.py
     ArchEquipment.py
     ArchCutPlane.py
+    ArchServer.py
 )
 SOURCE_GROUP("" FILES ${Arch_SRCS})
 
