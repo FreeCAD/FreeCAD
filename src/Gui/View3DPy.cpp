@@ -27,6 +27,8 @@
 # include "InventorAll.h"
 # include <sstream>
 # include <QColor>
+# include <QDir>
+# include <QFileInfo>
 # include <QImage>
 # include <QGLFramebufferObject>
 # include <QGLPixelBuffer>
@@ -688,6 +690,10 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 
     if (!PyArg_ParseTuple(args.ptr(), "s|iiss",&cFileName,&w,&h,&cColor,&cComment))
         throw Py::Exception();
+
+    QFileInfo fi(QString::fromUtf8(cFileName));
+    if (!fi.absoluteDir().exists())
+        throw Py::RuntimeError("Directory where to save image doesn't exist");
 
     QColor bg;
     QString colname = QString::fromLatin1(cColor);
