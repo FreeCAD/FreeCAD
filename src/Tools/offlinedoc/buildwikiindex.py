@@ -53,8 +53,6 @@ def crawl(pagename):
     todolist = []
     processed = []
     count = 1
-    if pagename:
-        INDEX = pagename[0]
     if os.path.exists("wikifiles.txt"):
         f = open("wikifiles.txt","r")
         if VERBOSE: print "Reading existing list..."
@@ -71,8 +69,11 @@ def crawl(pagename):
                 todolist.append(l.strip())
         f.close()
     else:
-        indexpages,imgs = get(INDEX)
-        todolist.extend(indexpages)
+        if pagename:
+            todolist = pagename
+        else:
+            indexpages,imgs = get(INDEX)
+            todolist.extend(indexpages)
     while todolist:
         targetpage = todolist.pop()
         if not targetpage in NORETRIEVE:
