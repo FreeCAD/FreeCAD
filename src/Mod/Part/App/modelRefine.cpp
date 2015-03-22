@@ -61,6 +61,7 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <TColgp_SequenceOfPnt.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <Base/Console.h>
 #include "modelRefine.h"
 
 using namespace ModelRefine;
@@ -767,6 +768,8 @@ FaceTypedBSpline::FaceTypedBSpline() : FaceTypedBase(GeomAbs_BSplineSurface)
 
 bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
 {
+  try
+  {
     Handle(Geom_BSplineSurface) surfaceOne = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceOne));
     Handle(Geom_BSplineSurface) surfaceTwo = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceTwo));
 
@@ -849,6 +852,22 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
         if (vKnotSequenceOne.Value(indexV) != vKnotSequenceTwo.Value(indexV))
             return false;
     return true;
+  }
+  catch (Standard_Failure)
+  {
+    Handle(Standard_Failure) e = Standard_Failure::Caught();
+    std::ostringstream stream;
+    stream << "FaceTypedBSpline::isEqual: OCC Error: " << e->GetMessageString() << std::endl;
+    Base::Console().Message(stream.str().c_str());
+  }
+  catch (...)
+  {
+    std::ostringstream stream;
+    stream << "FaceTypedBSpline::isEqual: Unknown Error" << std::endl;
+    Base::Console().Message(stream.str().c_str());
+  }
+  
+  return false;
 }
 
 GeomAbs_SurfaceType FaceTypedBSpline::getType() const
