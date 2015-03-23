@@ -100,9 +100,8 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 
 bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object, QEvent *event)
 {
-    // Maybe this causes the regression reported in #0001970. So to test it it will be commented out for now
-    //if (!activeWindow())
-    //    return true;
+    if (!activeWindow())
+        return true;
 
     QApplication::notify(object, event);
     if (event->type() == Spaceball::MotionEvent::MotionEventType)
