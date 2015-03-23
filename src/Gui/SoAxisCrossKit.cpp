@@ -213,6 +213,12 @@ SoAxisCrossKit::createAxes()
    set("zHead.transform", "rotation 1 0 0  1.5707999");
 
    // Set colors & styles
+   set("xAxis.appearance.lightModel", "model BASE_COLOR");
+   set("xHead.appearance.lightModel", "model BASE_COLOR");
+   set("yAxis.appearance.lightModel", "model BASE_COLOR");
+   set("yHead.appearance.lightModel", "model BASE_COLOR");
+   set("zAxis.appearance.lightModel", "model BASE_COLOR");
+   set("zHead.appearance.lightModel", "model BASE_COLOR");
    set("xAxis.appearance.drawStyle", "lineWidth 1");
    set("yAxis.appearance.drawStyle", "lineWidth 1");
    set("zAxis.appearance.drawStyle", "lineWidth 1");
