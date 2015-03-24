@@ -20,8 +20,13 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Fem, FemLib, CalculixLib
-import os,sys,string,math,shutil,glob,subprocess,tempfile,time
+import FreeCAD
+import CalculixLib
+from platform import system
+import os
+import subprocess
+import tempfile
+import time
 
 if FreeCAD.GuiUp:
     import FreeCADGui,FemGui
@@ -225,14 +230,14 @@ class _JobControlTaskPanel:
             os.mkdir(self.TempDir)
 
         self.obj = object
+        self.OutStr = ''
+        self.Start = time.time()
         self.setup_calculix()
         #self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
-        
-        self.OutStr = ''
-        
+
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
         QtCore.QObject.connect(self.form.pushButton_write, QtCore.SIGNAL("clicked()"), self.writeCalculixInputFile)
@@ -249,13 +254,21 @@ class _JobControlTaskPanel:
         self.update()
 
     def setup_calculix(self):
-        from platform import system
+        print 'Setup CalculiX'
         if system() == 'Linux':
             self.calculix_bin = 'ccx'
         elif system() == 'Windows':
             self.calculix_bin = FreeCAD.getHomePath() + 'bin/ccx.exe'
         else:
             self.calculix_bin = 'ccx'
+
+        output = subprocess.check_output([self.calculix_bin + "; exit 0"], stderr=subprocess.STDOUT, shell=True)
+        if output.find("CalculiX") != -1:
+            self.femConsoleMessage("CalculiX binary: found")
+        else:
+            self.femConsoleMessage("CalculiX binary: not found", "#FF0000")
+            self.femConsoleMessage("Running calculation will probably fail!", "#FF0000")
+
         self.TempDir = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + self.obj.Uid[-4:]
         if not os.path.isdir(self.TempDir):
             os.mkdir(self.TempDir)
@@ -582,7 +595,7 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("CalculiX binary: {}".format(self.calculix_bin))
         self.femConsoleMessage("Run Calculix...")
 
-        # run Claculix
+        # run Calculix
         print 'run Calclulix at: ', self.calculix_bin, '  with: ', self.Basename
         self.Calculix.start(self.calculix_bin, ['-i', self.Basename])
 
