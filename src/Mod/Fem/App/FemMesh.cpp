@@ -443,6 +443,46 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
     return result;
 }
 
+std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Edge &edge)const
+{
+
+    std::set<long> result;
+
+    Bnd_Box box;
+    BRepBndLib::Add(edge, box);
+    // limit where the mesh node belongs to the edge:
+    double limit = box.SquareExtent()/10000.0;
+    box.Enlarge(limit);
+
+    // get the actuall transform of the FemMesh
+    const Base::Matrix4D Mtrx(getTransform());
+
+    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
+    while (aNodeIter->more()) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        // Apply the matrix to hold the BoundBox in absolute space. 
+        vec = Mtrx * vec;
+
+        if(!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))){
+            // create a Vertex
+            BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
+            TopoDS_Shape s = aBuilder.Vertex();
+            // measure distance
+            BRepExtrema_DistShapeShape measure(edge,s);
+            measure.Perform();
+            if (!measure.IsDone() || measure.NbSolution() < 1)
+                continue;
+            
+            if(measure.Value() < limit)         
+                result.insert(aNode->GetID());
+
+        }
+    }
+
+    return result;
+}
+
 
 
 void FemMesh::readNastran(const std::string &Filename)
