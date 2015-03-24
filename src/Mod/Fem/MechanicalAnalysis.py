@@ -271,9 +271,9 @@ class _JobControlTaskPanel:
             self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
 
     def calculixError(self, error):
-        print "Error()",error
-        self.femConsoleMessage("CalculiX execute error: {}".format(error))
-        
+        print "Error()", error
+        self.femConsoleMessage("CalculiX execute error: {}".format(error), "#FF0000")
+
     def calculixStarted(self):
         print "calculixStarted()"
         print self.Calculix.state()
