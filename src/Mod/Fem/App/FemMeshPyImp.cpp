@@ -39,6 +39,7 @@
 
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "Mod/Fem/App/FemMesh.h"
@@ -548,7 +549,7 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
         std::set<long> resultSet = getFemMeshPtr()->getSurfaceNodes(fc);
         for( std::set<long>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
             ret.append(Py::Int(*it));
-        
+
         return Py::new_reference_to(ret);
 
     }
@@ -560,6 +561,34 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
   
 }
 
+PyObject* FemMeshPy::getNodesByEdge(PyObject *args)
+{
+    PyObject *pW;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeEdgePy::Type), &pW))
+         return 0;
+
+    try {
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeEdgePy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Edge& fc = TopoDS::Edge(sh);
+        if (sh.IsNull()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Edge is empty");
+            return 0;
+        }
+        Py::List ret;
+        std::set<long> resultSet = getFemMeshPtr()->getSurfaceNodes(fc);
+        for( std::set<long>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
+            ret.append(Py::Int(*it));
+
+        return Py::new_reference_to(ret);
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        return 0;
+    }
+  
+}
 
 
 // ===== Atributes ============================================================

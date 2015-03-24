@@ -411,8 +411,8 @@ class _JobControlTaskPanel:
                     print '  Face Support (fixed face) on: ', f
                     n = MeshObject.FemMesh.getNodesByFace(fo)
                 elif fo.ShapeType == 'Edge':
-                    print '  Line Support (fixed edge) on: ', f, ' --> not supported yet'
-                    #n = MeshObject.FemMesh.getNodesByEdge(fo)  # ToDo
+                    print '  Line Support (fixed edge) on: ', f
+                    n = MeshObject.FemMesh.getNodesByEdge(fo)
                 elif fo.ShapeType == 'Vertex':
                     print '  Point Support (fixed vertex) on: ', f, ' --> not supported yet'
                     #n = MeshObject.FemMesh.getNodesByVertex(fo)   # ToDo
@@ -434,8 +434,8 @@ class _JobControlTaskPanel:
                     print '  AreaLoad (face load) on: ', f
                     n = MeshObject.FemMesh.getNodesByFace(fo)
                 elif fo.ShapeType == 'Edge':
-                    print '  Line Load (edge load) on: ', f, ' --> not supported yet'
-                    #n = MeshObject.FemMesh.getNodesByEdge(fo)  # ToDo
+                    print '  Line Load (edge load) on: ', f
+                    n = MeshObject.FemMesh.getNodesByEdge(fo)
                 elif fo.ShapeType == 'Vertex':
                     print '  Point Load (vertex load) on: ', f, ' --> not supported yet'
                     #n = MeshObject.FemMesh.getNodesByVertex(fo)   # ToDo
