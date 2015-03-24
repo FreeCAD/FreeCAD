@@ -362,19 +362,23 @@ class _JobControlTaskPanel:
             return
         matmap = MathObject.Material
             
-        FixedObject = None
+        FixedObjects = []    # [{'Object':FixedObject, 'NodeSupports':bool}, {}, ...]
         for i in FemGui.getActiveAnalysis().Member:
+            FixedObjectDict = {}
             if i.isDerivedFrom("Fem::ConstraintFixed"):
-                FixedObject = i
-        if not FixedObject:
+                FixedObjectDict['Object'] = i
+                FixedObjects.append(FixedObjectDict)
+        if len(FixedObjects) == 0:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No fixed-constraint nodes defined in the Analysis")
             return
             
-        ForceObject = None
+        ForceObjects = []    # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...]
         for i in FemGui.getActiveAnalysis().Member:
+            ForceObjectDict = {}
             if i.isDerivedFrom("Fem::ConstraintForce"):
-                ForceObject = i
-        if not ForceObject:
+                ForceObjectDict['Object'] = i
+                ForceObjects.append(ForceObjectDict)
+        if len(ForceObjects) == 0:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No force-constraint nodes defined in the Analysis")
             return
         
@@ -394,51 +398,60 @@ class _JobControlTaskPanel:
         
         self.femConsoleMessage("Write loads & Co...")
         
-        # write fixed node set
-        NodeSetName = FixedObject.Name 
+        # write fixed node sets
         inpfile.write('\n\n\n\n***********************************************************\n')
         inpfile.write('** node set for fixed constraint\n')
-        inpfile.write('*NSET,NSET=' + NodeSetName + '\n')
-        for o,f in FixedObject.References:
-            fo = o.Shape.getElement(f)
-            if fo.ShapeType == 'Face':
-                FixedObjectType = 'AreaSupport'
-                n = MeshObject.FemMesh.getNodesByFace(fo)
+        for FixedObject in FixedObjects:
+            print FixedObject['Object'].Name
+            inpfile.write('*NSET,NSET=' + FixedObject['Object'].Name + '\n')
+            for o,f in FixedObject['Object'].References:
+                fo = o.Shape.getElement(f)
+                n = []
+                if fo.ShapeType == 'Face':
+                    print '  Face Support (fixed face) on: ', f
+                    n = MeshObject.FemMesh.getNodesByFace(fo)
+                elif fo.ShapeType == 'Edge':
+                    print '  Line Support (fixed edge) on: ', f, ' --> not supported yet'
+                    #n = MeshObject.FemMesh.getNodesByEdge(fo)  # ToDo
+                elif fo.ShapeType == 'Vertex':
+                    print '  Point Support (fixed vertex) on: ', f, ' --> not supported yet'
+                    #n = MeshObject.FemMesh.getNodesByVertex(fo)   # ToDo
                 for i in n:
                     inpfile.write( str(i)+',\n')
-            elif fo.ShapeType == 'Edge':
-                FixedObjectType = 'LineSupport'
-                print 'Line Supports are not yet implemented to export to CalculiX'
-                self.femConsoleMessage("Line Supports are not yet implemented to export to CalculiX", "#FF0000")
-                # getNodesByEdge(fo) # not implemented yet
-            elif fo.ShapeType == 'Vertex':
-                FixedObjectType = 'PointSupport'
-                print 'Point Supports are not yet implemented to export to CalculiX'
-                self.femConsoleMessage("Point Supports are not yet implemented to export to CalculiX", "#FF0000")
-        
-        # write load node set 
-        NodeSetNameForce = ForceObject.Name 
-        inpfile.write('\n\n\n\n***********************************************************\n')
-        inpfile.write('** node set for load\n')
-        inpfile.write('*NSET,NSET=' + NodeSetNameForce + '\n')
-        NbrForceNods = 0
-        for o,f in ForceObject.References:
-            fo = o.Shape.getElement(f)
-            if fo.ShapeType == 'Face':
-                ForceObjectType = 'AreaLoad'
-                n = MeshObject.FemMesh.getNodesByFace(fo)
+            inpfile.write('\n\n')
+
+        # write load node sets and calculate node loads
+        inpfile.write('\n\n***********************************************************\n')
+        inpfile.write('** node sets for loads\n')        
+        for ForceObject in ForceObjects:
+            print ForceObject['Object'].Name
+            inpfile.write('*NSET,NSET=' + ForceObject['Object'].Name + '\n')
+            NbrForceNodes = 0
+            for o,f in ForceObject['Object'].References:
+                fo = o.Shape.getElement(f)
+                n = []
+                if fo.ShapeType == 'Face':
+                    print '  AreaLoad (face load) on: ', f
+                    n = MeshObject.FemMesh.getNodesByFace(fo)
+                elif fo.ShapeType == 'Edge':
+                    print '  Line Load (edge load) on: ', f, ' --> not supported yet'
+                    #n = MeshObject.FemMesh.getNodesByEdge(fo)  # ToDo
+                elif fo.ShapeType == 'Vertex':
+                    print '  Point Load (vertex load) on: ', f, ' --> not supported yet'
+                    #n = MeshObject.FemMesh.getNodesByVertex(fo)   # ToDo
                 for i in n:
                     inpfile.write( str(i)+',\n')
-                    NbrForceNods = NbrForceNods + 1
-            elif fo.ShapeType == 'Edge':
-                ForceObjectType = 'LineLoad'
-                print 'Line Loads are not yet implemented to export to CalculiX'
-                self.femConsoleMessage("Line Loads are not yet implemented to export to CalculiX", "#FF0000")
-                # getNodesByEdge(fo) # not implemented yet
-            elif fo.ShapeType == 'Vertex':
-                ForceObjectType = 'PointLoad'
-                print 'Point Loads are not yet implemented to export to CalculiX'
-                self.femConsoleMessage("Point Loads are not yet implemented to export to CalculiX", "#FF0000")
+                    NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from ForceObject
+            # calculate node load
+            if NbrForceNodes == 0: 
+                print '  Warning --> no FEM-Mesh-node to apply the load to was found?'
+            else:
+                ForceObject['NodeLoad'] = (ForceObject['Object'].Force) / NbrForceNodes  
+                inpfile.write('** concentrated load [N] distributed on the area sum of the given faces\n')
+                inpfile.write('** ' + str(ForceObject['Object'].Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(ForceObject['NodeLoad']) + ' N on each node\n')
+            if ForceObject['Object'].Force == 0: 
+                print '  Warning --> Force = 0'
+            inpfile.write('\n\n')
         
         # get material properties
         YM = FreeCAD.Units.Quantity(MathObject.Material['Mechanical_youngsmodulus'])
@@ -453,7 +466,7 @@ class _JobControlTaskPanel:
         print 'PR = ', PR
         
         # write material properties
-        inpfile.write('\n\n\n\n***********************************************************\n')
+        inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** material\n')
         inpfile.write('** unit is MPa = N/mm2\n')
         inpfile.write('*MATERIAL, Name='+matmap['General_name'] + '\n')
@@ -471,32 +484,23 @@ class _JobControlTaskPanel:
 
         # write constaints
         inpfile.write('\n\n** constaints\n')
-        if FixedObjectType == 'AreaSupport':
-            inpfile.write('*BOUNDARY\n')
-            inpfile.write(NodeSetName + ',1,3,0.0\n')
-        elif FixedObjectType == 'LineSupport':
-            pass  # ToDo
-        elif FixedObjectType == 'PointSupport':
-            pass  # ToDo
-
+        for FixedObject in FixedObjects:
+            inpfile.write('\n*BOUNDARY\n')
+            inpfile.write(FixedObject['Object'].Name + ',1,3,0.0\n')
+  
         # write loads
         #inpfile.write('*DLOAD\n')
         #inpfile.write('Eall,NEWTON\n')
         inpfile.write('\n\n** loads\n')
-        if ForceObjectType == 'AreaLoad':
-            Force = ForceObject.Force / NbrForceNods
-            vec = ForceObject.DirectionVector
-            inpfile.write('** direction: ' + str(vec)  + '\n')
-            inpfile.write('** concentrated load [N] distributed on the area of the given faces.\n')
-            inpfile.write('** ' + str(ForceObject.Force) + ' N / ' + str(NbrForceNods) + ' Nodes = ' + str(Force) + ' N on each node\n')
-            inpfile.write('*CLOAD\n')
-            inpfile.write(NodeSetNameForce + ',1,' + `vec.x * Force` + '\n')
-            inpfile.write(NodeSetNameForce + ',2,' + `vec.y * Force` + '\n')
-            inpfile.write(NodeSetNameForce + ',3,' + `vec.z * Force` + '\n')
-        elif ForceObjectType == 'LineLoad':
-            pass  # ToDo
-        elif ForceObjectType == 'PointLoad':
-            pass  # ToDo
+        inpfile.write('** node loads, see load node sets for how the value is calculated!\n\n')
+        for ForceObject in ForceObjects:
+            if 'NodeLoad' in ForceObject:
+                vec = ForceObject['Object'].DirectionVector
+                inpfile.write('\n** force: ' + str(ForceObject['NodeLoad']) + '  direction: ' + str(vec)  + '\n')
+                inpfile.write('*CLOAD\n')
+                inpfile.write(ForceObject['Object'].Name + ',1,' + `vec.x * ForceObject['NodeLoad']` + '\n')
+                inpfile.write(ForceObject['Object'].Name + ',2,' + `vec.y * ForceObject['NodeLoad']` + '\n')
+                inpfile.write(ForceObject['Object'].Name + ',3,' + `vec.z * ForceObject['NodeLoad']` + '\n')
  
         # write outputs, both are needed by FreeCAD        
         inpfile.write('\n\n** outputs --> frd file\n')
