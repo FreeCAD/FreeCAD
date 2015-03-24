@@ -214,9 +214,9 @@ class _JobControlTaskPanel:
         # the categories are shown only if they are not empty.
         self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
         from platform import system
-        if system == 'Linux':
+        if system() == 'Linux':
           self.CalculixBinary = 'ccx'
-        elif  system == 'Windows':
+        elif  system() == 'Windows':
           self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
         else:
           self.CalculixBinary = 'ccx'
