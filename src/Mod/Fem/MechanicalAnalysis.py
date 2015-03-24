@@ -225,6 +225,7 @@ class _JobControlTaskPanel:
             os.mkdir(self.TempDir)
 
         self.obj = object
+        self.setup_calculix()
         #self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
@@ -246,7 +247,19 @@ class _JobControlTaskPanel:
         QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.UpdateText)
         
         self.update()
-        
+
+    def setup_calculix(self):
+        from platform import system
+        if system() == 'Linux':
+            self.CalculixBinary = 'ccx'
+        elif system() == 'Windows':
+            self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
+        else:
+            self.CalculixBinary = 'ccx'
+        self.TempDir = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + self.obj.Uid[-4:]
+        if not os.path.isdir(self.TempDir):
+            os.mkdir(self.TempDir)
+
     def femConsoleMessage(self, message="", color="#000000"):
         self.OutStr = self.OutStr + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
                                     format(time.time() - self.Start, color, message)
