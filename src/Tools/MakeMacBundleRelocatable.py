@@ -3,7 +3,7 @@ import sys
 import subprocess
 import pprint
 
-SYS_PATHS = ["/System/","/usr/lib/"]
+SYS_PATHS = ["/System/", "/usr/lib/"]
 
 class LibraryNotFound(Exception):
     pass
@@ -64,7 +64,7 @@ class DepsGraph:
                     operation(self, self.graph[node_key], *op_args)
 
 def is_macho(path):
-    output = subprocess.check_output(["file",path])
+    output = subprocess.check_output(["file", path])
     if output.count("Mach-O") != 0:
         return True
     
@@ -134,7 +134,7 @@ def create_dep_nodes(install_names, search_paths):
                 path = install_path
        
         if not path:
-            raise LibraryNotFound("{0} not found in given paths".format(lib_name))
+            raise LibraryNotFound(lib_name + "not found in given paths")
 
         nodes.append(Node(lib_name, path))
     
@@ -155,10 +155,6 @@ def should_visit(prefix, path_filters, path):
     #we only want to use filters if they have the same parent as path 
     for rel_pf in path_filters:
         pf = os.path.join(prefix, rel_pf)
-        #print(path)
-        #print(pf)
-        #print(os.path.split(pf)[0] == os.path.split(path)[0])
-        #print('----')
         if os.path.split(pf)[0] == os.path.split(path)[0]:
             filters.append(pf)
     if not filters:
@@ -189,7 +185,7 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
 
     for root, dirs, files in os.walk(bundle_path):
         if dirs_filter != None:
-            dirs[:] = [d for d in dirs if should_visit(bundle_path, dirs_filter, 
+            dirs[:] = [d for d in dirs if should_visit(bundle_path, dirs_filter,
                                                        os.path.join(root, d))]
 
         s_paths.insert(0, root)
@@ -197,7 +193,8 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
         for f in files:
             fpath = os.path.join(root, f)
             ext = os.path.splitext(f)[1]
-            if (ext == "" and is_macho(fpath)) or ext == ".so" or ext == ".dylib":
+            if ( (ext == "" and is_macho(fpath)) or
+                 ext == ".so" or ext == ".dylib" ):
                 visited[fpath] = False
 
     stack = []
@@ -223,8 +220,6 @@ def build_deps_graph(graph, bundle_path, dirs_filter=None, search_paths=[]):
                     if not visited[dk]:
                         stack.append(dk)
 
-                
-
 def in_bundle(lib, bundle_path):
     if lib.startswith(bundle_path):
         return True
@@ -232,12 +227,13 @@ def in_bundle(lib, bundle_path):
 
 def copy_into_bundle(graph, node, bundle_path):
     if not in_bundle(node.path, bundle_path):
-        subprocess.check_call(["cp","-L",os.path.join(node.path,node.name), 
-                               os.path.join(bundle_path,"lib",node.name)])
-        node.path = os.path.join(bundle_path,"lib")
+        subprocess.check_call(["cp", "-L", os.path.join(node.path, node.name),
+                               os.path.join(bundle_path, "lib", node.name)])
+        node.path = os.path.join(bundle_path, "lib")
         
         #fix permissions
-        subprocess.check_call(["chmod", "a+w", os.path.join(bundle_path,"lib",node.name)])
+        subprocess.check_call(["chmod", "a+w", os.path.join(bundle_path,
+                                                            "lib", node.name)])
  
 def add_rpaths(graph, node, bundle_path):
     if node.children:
@@ -249,11 +245,12 @@ def add_rpaths(graph, node, bundle_path):
             for install_name in install_names:
                 name = os.path.basename(install_name)
                 #change install names to use rpaths
-                subprocess.check_call(["install_name_tool","-change", 
+                subprocess.check_call(["install_name_tool", "-change", 
                     install_name, "@rpath/" + name, lib]) 
                   
                 dep_node = node.children[node.children.index(name)]
-                rel_path = os.path.relpath(graph.get_node(dep_node).path, node.path)
+                rel_path = os.path.relpath(graph.get_node(dep_node).path,
+                                           node.path)
                 rpath = ""
                 if rel_path == ".":
                     rpath = "@loader_path/"
@@ -264,21 +261,21 @@ def add_rpaths(graph, node, bundle_path):
             for path in rpaths:
                 subprocess.call(["install_name_tool", "-add_rpath", path, lib])
 
-def print_node(graph, node):
-    print(os.path.join(node.path, node.name))
-    
 def main():
+    if len(sys.argv) < 2:
+        print "Usage " + sys.argv[0] + " path [additional search paths]"
+        quit()
+
     path = sys.argv[1]
     bundle_path = os.path.abspath(os.path.join(path, "Contents"))
     graph = DepsGraph()
-    dir_filter = ["bin","lib", "Mod","Mod/PartDesign", 
+    dir_filter = ["bin", "lib", "Mod", "Mod/PartDesign", 
                   "lib/python2.7/site-packages",
                   "lib/python2.7/lib-dynload"]
-    search_paths = [bundle_path + "/lib", "/usr/local/lib", "/usr/local/Cellar/freetype/2.5.4/lib"]
-    
+    search_paths = [bundle_path + "/lib"] + sys.argv[2:]
+
     build_deps_graph(graph, bundle_path, dir_filter, search_paths)
 
-    #graph.visit(print_node)
     graph.visit(copy_into_bundle, [bundle_path])
     graph.visit(add_rpaths, [bundle_path])
 

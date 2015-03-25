@@ -9,7 +9,14 @@
 
 # First try to find OpenCASCADE Community Edition
 if(NOT DEFINED OCE_DIR)
-  if(UNIX)
+  # Check for OSX needs to come first because UNIX evaluates to true on OSX
+  if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    if(DEFINED MACPORTS_PREFIX)
+      find_package(OCE HINTS ${MACPORTS_PREFIX}/Library/Frameworks)
+    elseif(DEFINED HOMEBREW_PREFIX)
+      find_package(OCE HINTS ${HOMEBREW_PREFIX}/Cellar/oce/*)
+    endif()
+  elseif(UNIX)
     set(OCE_DIR "/usr/local/share/cmake/")
   elseif(WIN32)
     set(OCE_DIR "c:/OCE-0.4.0/share/cmake")
@@ -126,5 +133,5 @@ if(OCC_FOUND)
   message(STATUS "-- OCE/OpenCASCADE include directory: ${OCC_INCLUDE_DIR}")
   message(STATUS "-- OCE/OpenCASCADE shared libraries directory: ${OCC_LIBRARY_DIR}")
 else(OCC_FOUND)
-  message("Neither OpenCASCADE Community Edition nor OpenCasCade were found: will not build CAD modules!")
+    message(SEND_ERROR "Neither OpenCASCADE Community Edition nor OpenCasCade were found: will not build CAD modules!")
 endif(OCC_FOUND)

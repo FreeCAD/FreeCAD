@@ -21,8 +21,11 @@ get_filename_component(APP_PATH ${CMAKE_INSTALL_PREFIX} PATH)
 
 install(CODE 
     "message(STATUS \"Making bundle relocatable...\")
+    # The top-level CMakeLists.txt should prevent multiple package manager
+    # prefixes from being set, so the lib path will resolve correctly...
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} 
-        ${CMAKE_SOURCE_DIR}/src/Tools/MakeMacBundleRelocatable.py ${APP_PATH}
+        COMMAND ${PYTHON_EXECUTABLE}
+        ${CMAKE_SOURCE_DIR}/src/Tools/MakeMacBundleRelocatable.py
+        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib
     )"
 )
