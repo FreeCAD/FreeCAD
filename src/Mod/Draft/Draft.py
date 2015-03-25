@@ -4785,11 +4785,8 @@ class _Array(_DraftObject):
                         nshape = shape.copy()
                         nshape.translate(currentzvector)
                         base.append(nshape)
-        if fuse:
-            fshape = base.pop()
-            for s in base:
-                fshape = fshape.fuse(s)
-            return fshape.removeSplitter()
+        if fuse and len(base) > 1:
+            return base[0].multiFuse(base[1:]).removeSplitter()
         else:
             return Part.makeCompound(base)
 
@@ -4811,11 +4808,8 @@ class _Array(_DraftObject):
                 if not DraftVecUtils.isNull(axisvector):
                     nshape.translate(FreeCAD.Vector(axisvector).multiply(i+1))
             base.append(nshape)
-        if fuse:
-            fshape = base.pop()
-            for s in base:
-                fshape = fshape.fuse(s)
-            return fshape.removeSplitter()
+        if fuse and len(base) > 1:
+            return base[0].multiFuse(base[1:]).removeSplitter()
         else:
             return Part.makeCompound(base)
 
