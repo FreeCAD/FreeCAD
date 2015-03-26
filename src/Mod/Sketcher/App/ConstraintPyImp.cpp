@@ -456,6 +456,7 @@ std::string ConstraintPy::representation(void) const
             else
                 result << "'AngleViaPoint'>";
         break;
+        case Symmetric          : result << "'Symmetric'>"; break;
         case SnellsLaw          : result << "'SnellsLaw'>"; break;
         case InternalAlignment  : 
             switch(this->getConstraintPtr()->AlignmentType) {
