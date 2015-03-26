@@ -42,7 +42,6 @@ else(WIN32)
     set(PLATFORM_MK mkdir -p)
 endif(WIN32)
 
-
 # ================================================================================
 
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
@@ -169,16 +168,27 @@ OPTION(BUILD_WEB "Build the FreeCAD web module" ON)
 OPTION(BUILD_VR "Build the FreeCAD Oculus Rift support (need Oculus SDK 4.x or higher)" OFF)
 
 if(MSVC)
-OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" OFF)
 OPTION(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" ON)
+OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion SDK to support 3d mouse." ON)
+elseif(APPLE)
+	find_library(3DCONNEXIONCLIENT_FRAMEWORK 3DconnexionClient)
+	if(IS_DIRECTORY ${3DCONNEXIONCLIENT_FRAMEWORK})
+		OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion
+		SDK to support 3d mouse." ON)
+	else(IS_DIRECTORY ${3DCONNEXIONCLIENT_FRAMEWORK})
+		OPTION(FREECAD_USE_3DCONNEXION "Use the 3D connexion
+		SDK to support 3d mouse." OFF)
+	endif(IS_DIRECTORY ${3DCONNEXIONCLIENT_FRAMEWORK})
 else(MSVC)
 set(FREECAD_USE_3DCONNEXION OFF)
+endif(MSVC)
+if(NOT MSVC)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(BUILD_FEM_NETGEN "Build the FreeCAD FEM module with the NETGEN mesher" OFF)
 OPTION(FREECAD_USE_PCL "Build the features that use PCL libs" OFF)
 OPTION(FREECAD_USE_EXTERNAL_PIVY "Use system installed python-pivy instead of the bundled." ON)
-endif(MSVC)
+endif(NOT MSVC)
 
 # if this is set override some options
 if (FREECAD_BUILD_DEBIAN)
