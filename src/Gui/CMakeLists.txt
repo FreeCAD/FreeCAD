@@ -6,7 +6,11 @@ endif(WIN32)
 
 if (FREECAD_USE_3DCONNEXION)
     add_definitions(-D_USE_3DCONNEXION_SDK)
-endif(FREECAD_USE_3DCONNEXION)
+    if(APPLE)
+	set(3DCONNEXION_LINKFLAGS "-F/Library/Frameworks -weak_framework 3DconnexionClient")
+	set(3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers )
+    endif(APPLE)
+ endif(FREECAD_USE_3DCONNEXION)
 
 if (BUILD_VR)
     add_definitions(-DBUILD_VR )
@@ -28,6 +32,7 @@ include_directories(
     ${XERCESC_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
+    ${3DCONNEXION_INCLUDE_DIR}
 )
 
 if(MSVC)
@@ -49,6 +54,7 @@ else(MSVC)
         ${QT_LIBRARIES}
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
+	${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
 
@@ -121,7 +127,7 @@ SET(FreeCADGui_XML_SRCS
 SOURCE_GROUP("XML" FILES ${FreeCADApp_XML_SRCS})
 
 # The 3D Connexion SDK files
-if(FREECAD_USE_3DCONNEXION)
+if(FREECAD_USE_3DCONNEXION AND MSVC)
 SET(FreeCADGui_SDK_SRCS
     3Dconnexion/I3dMouseParams.h
     3Dconnexion/MouseParameters.cpp
@@ -129,7 +135,13 @@ SET(FreeCADGui_SDK_SRCS
     3Dconnexion/GuiApplicationNativeEventAwareWin32.cpp
 )
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
-endif(FREECAD_USE_3DCONNEXION)
+endif(FREECAD_USE_3DCONNEXION AND MSVC)
+
+if(FREECAD_USE_3DCONNEXION AND APPLE)
+SET(FreeCADGui_SDK_SRCS
+   3Dconnexion/GuiApplicationNativeEventAwareMac.cpp)
+SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
+endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
 set(Gui_MOC_HDRS
     Action.h
@@ -927,6 +939,7 @@ SET(FreeCADGui_SRCS
 
 SET(FreeCADGui_SRCS
     ${FreeCADGui_SDK_SRCS}
+    ${FreeCADGui_SDK_SRCS_Mac}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
     ${iis_MOC_SRCS}
