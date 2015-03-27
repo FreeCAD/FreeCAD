@@ -657,6 +657,7 @@ SET(View3D_CPP_SRCS
     CADNavigationStyle.cpp
     BlenderNavigationStyle.cpp
     TouchpadNavigationStyle.cpp
+    GestureNavigationStyle.cpp
     SplitView3DInventor.cpp
     View.cpp
     View3DInventor.cpp
