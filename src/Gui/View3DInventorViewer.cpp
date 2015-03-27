@@ -210,7 +210,29 @@ public:
     ViewerEventFilter() {}
     ~ViewerEventFilter() {}
 
+
+
     bool eventFilter(QObject* obj, QEvent* event) {
+
+#ifdef GESTURE_MESS
+        if (obj->isWidgetType()) {
+            View3DInventorViewer* v = dynamic_cast<View3DInventorViewer*>(obj);
+            if(v) {
+                if(! v->isWinGesturesTuned) {
+                    v->isWinGesturesTuned = true;
+                    try{
+                        WinNativeGestureRecognizerPinch::TuneWindowsGestures(v);
+                    } catch (...){
+                        Base::Console().Warning("Failed to TuneWindowsGestures.\n");
+                    }
+                }
+                if (event->type() == QEvent::Show)
+                    v->isWinGesturesTuned = false;//internally, Qt seems to set up the gestures upon showing the widget (but after this event is processed), thus invalidating our settings. Needs to be re-tuned asap.
+
+            }
+        }
+#endif
+
         // Bug #0000607: Some mices also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
         // Thus, we filter out horizontal scrolling.
@@ -471,6 +493,7 @@ void View3DInventorViewer::init()
             recognizer->registerRecognizer(recognizer); //From now on, Qt owns the pointer.
         }
     }
+    this->isWinGesturesTuned = false;
 #endif
     
     //create the cursors
