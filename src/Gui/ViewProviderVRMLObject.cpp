@@ -29,6 +29,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoTransform.h>
 # include <QFile>
+# include <QFileInfo>
 #endif
 
 #include "ViewProviderVRMLObject.h"
@@ -91,10 +92,15 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
         SoInput in;
         pcVRML->removeAllChildren();
         if (!fn.isEmpty() && file.open(QFile::ReadOnly)) {
+            QFileInfo fi(fn);
+            QByteArray path = fi.absolutePath().toUtf8();
+            // Add this to the search path in order to read inline files
+            SoInput::addDirectoryFirst(path.constData());
             QByteArray buffer = file.readAll();
             in.setBuffer((void *)buffer.constData(), buffer.length());
             SoSeparator * node = SoDB::readAll(&in);
             if (node) pcVRML->addChild(node);
+            SoInput::removeDirectory(path.constData());
         }
     }
     else if (prop->isDerivedFrom(App::PropertyPlacement::getClassTypeId()) &&
