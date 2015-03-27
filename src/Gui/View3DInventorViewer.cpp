@@ -123,6 +123,7 @@
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
+#include <SoTouchEvents.h>
 #include <qgesture.h>
 
 #include <WinNativeGestureRecognizers.h>
@@ -482,6 +483,7 @@ void View3DInventorViewer::init()
     viewerEventFilter = new ViewerEventFilter;
     installEventFilter(viewerEventFilter);
     getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
+    getEventFilter()->registerInputDevice(new GesturesDevice(this));
 
     this->grabGesture(Qt::PanGesture);
     this->grabGesture(Qt::PinchGesture);
