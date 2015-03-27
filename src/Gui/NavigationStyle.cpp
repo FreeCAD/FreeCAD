@@ -761,6 +761,39 @@ void NavigationStyle::zoomOut()
 
 void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& pos)
 {
+//    SbBool zoomAtCur = this->zoomAtCursor;
+//    if (zoomAtCur) {
+//        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+//        float ratio = vp.getViewportAspectRatio();
+//        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
+//        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
+//        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, SbVec2f(0.5,0.5), pos);
+//    }
+
+    float value = this->zoomStep;
+    if (!forward)
+        value = -value;
+    if (this->invertZoom)
+        value = -value;
+    doZoom(camera, value, pos);
+
+//    if (zoomAtCur) {
+//        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+//        float ratio = vp.getViewportAspectRatio();
+//        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
+//        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
+//        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, pos, SbVec2f(0.5,0.5));
+//    }
+}
+
+
+/*!
+ *\brief NavigationStyle::doZoom Zooms in or out by specified factor, keeping the point on screen specified by parameter pos fixed
+ *  or not according to user preference (NavigationStyle::zoomAtCursor). Ignores invertZoom user preference.
+ */
+void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& pos)
+{
+    if (abs(logfactor)>4.0) return;//something is asking for big zoom factor. This func is made for interactive zooming, where the changes are per mouse move and thus are small.
     SbBool zoomAtCur = this->zoomAtCursor;
     if (zoomAtCur) {
         const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
@@ -770,12 +803,7 @@ void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& po
         panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, SbVec2f(0.5,0.5), pos);
     }
 
-    float value = this->zoomStep;
-    if (!forward)
-        value = -value;
-    if (this->invertZoom)
-        value = -value;
-    zoom(camera, value);
+    zoom(camera, logfactor);
 
     if (zoomAtCur) {
         const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
@@ -784,6 +812,35 @@ void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& po
         SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
         panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, pos, SbVec2f(0.5,0.5));
     }
+}
+
+void NavigationStyle::doRotate(SoCamera * camera, float angle, const SbVec2f& pos)
+{
+    SbBool zoomAtCur = this->zoomAtCursor;
+    if (zoomAtCur) {
+        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+        float ratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
+        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
+        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, SbVec2f(0.5,0.5), pos);
+    }
+
+    SbRotation rotcam = camera->orientation.getValue();
+    //get view direction
+    SbVec3f vdir;
+    rotcam.multVec(SbVec3f(0,0,-1),vdir);
+    //rotate
+    SbRotation drot(vdir,angle);
+    camera->orientation.setValue(rotcam * drot);
+
+    if (zoomAtCur) {
+        const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+        float ratio = vp.getViewportAspectRatio();
+        SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
+        SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
+        panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, pos, SbVec2f(0.5,0.5));
+    }
+
 }
 
 /** Uses the sphere sheet projector to map the mouseposition onto
@@ -859,6 +916,40 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     if (this->spinsamplecounter > 3) this->spinsamplecounter = 3;
 }
 
+/*!
+ * \brief NavigationStyle::spin_simplified is a simplified version of
+ * NavigationStyle::spin(..), which uses less global variables. Doesn't support
+ * starting an animated spinning.
+ *
+ * \param cam the camera to affect. The rotation amount is determined by delta
+ * (curpos-prevpos), and rotation axis is also affected by average pos.
+ * \param curpos  current normalized position or mouse pointer
+ * \param prevpos  previous normalized position of mouse pointer
+ */
+void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f prevpos){
+    assert(this->spinprojector != NULL);
+
+    // 0000333: Turntable camera rotation
+    SbMatrix mat;
+    viewer->getSoRenderManager()->getCamera()->orientation.getValue().getValue(mat);
+    this->spinprojector->setWorkingSpace(mat);
+
+    this->spinprojector->project(prevpos);
+    SbRotation r;
+    this->spinprojector->projectAndGetRotation(curpos, r);
+    float sensitivity = getSensitivity();
+    if (sensitivity > 1.0f) {
+        SbVec3f axis;
+        float radians;
+        r.getValue(axis, radians);
+        radians = sensitivity * radians;
+        r.setValue(axis, radians);
+    }
+    r.invert();
+    this->reorientCamera(cam, r);
+
+}
+
 SbBool NavigationStyle::doSpin()
 {
     if (this->log.historysize >= 3) {
@@ -907,6 +998,22 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
             PRIVATE(this)->startDragPoint = picked->getPoint();
         }
     }
+}
+
+SbVec2f NavigationStyle::normalizePixelPos(SbVec2s pixpos)
+{
+    const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+    const SbVec2s size(vp.getViewportSizePixels());
+    return SbVec2f ((float) pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
+                    (float) pixpos[1] / (float) std::max((int)(size[1] - 1), 1));
+}
+
+SbVec2f NavigationStyle::normalizePixelPos(SbVec2f pixpos)
+{
+    const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
+    const SbVec2s size(vp.getViewportSizePixels());
+    return SbVec2f ( pixpos[0] / (float) std::max((int)(size[0] - 1), 1),
+                     pixpos[1] / (float) std::max((int)(size[1] - 1), 1));
 }
 
 void NavigationStyle::moveCursorPosition()
