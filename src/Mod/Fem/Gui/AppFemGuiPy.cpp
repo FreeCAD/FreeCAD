@@ -24,12 +24,17 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Python.h>
+# include <QFileInfo>
 #endif
 
 #include <App/DocumentObjectPy.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Gui/MainWindow.h>
+#include <Gui/TextEdit.h>
+#include <Gui/EditorView.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>
 #include "ActiveAnalysisObserver.h"
@@ -69,6 +74,43 @@ static PyObject * getActiveAnalysis(PyObject *self, PyObject *args)
     Py_Return;
 }
 
+/* module functions */
+static PyObject * openEditor(PyObject *self, PyObject *args)
+{
+    char* Name;
+    const char* DocName;
+    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
+        return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
+    PY_TRY {
+        QString fileName = QString::fromUtf8(EncodedName.c_str());
+        QFileInfo fi;
+        fi.setFile(fileName);
+        QString ext = fi.completeSuffix().toLower();
+        QList<Gui::EditorView*> views = Gui::getMainWindow()->findChildren<Gui::EditorView*>();
+        for (QList<Gui::EditorView*>::Iterator it = views.begin(); it != views.end(); ++it) {
+            if ((*it)->fileName() == fileName) {
+                (*it)->setFocus();
+                Py_Return;
+            }
+        }
+
+        if (ext == QLatin1String("inp")) {
+            Gui::TextEditor* editor = new Gui::TextEditor();
+            editor->setWindowIcon(Gui::BitmapFactory().pixmap(":/icons/Fem_Inp_Editor.svg"));
+            Gui::EditorView* edit = new Gui::EditorView(editor, Gui::getMainWindow());
+            edit->open(fileName);
+            edit->resize(400, 300);
+            QString shownName = QString::fromAscii("%1[*]").arg(fi.fileName());
+            edit->setWindowTitle(shownName);
+            Gui::getMainWindow()->addWindow(edit);
+        }
+    } PY_CATCH;
+
+    Py_Return;
+}
+
 
 
 /* registration table  */
@@ -77,5 +119,7 @@ struct PyMethodDef FemGui_Import_methods[] = {
      "setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."},
     {"getActiveAnalysis"       ,getActiveAnalysis      ,METH_VARARGS,
      "getActiveAnalysis() -- Returns the Analysis object in work."},
+    {"openEditor"              ,openEditor             ,METH_VARARGS,
+     "openEditor() -- Opens a simple text editor for an FEM file."},
     {NULL, NULL}                   /* end of table marker */
 };

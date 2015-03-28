@@ -539,14 +539,22 @@ class _JobControlTaskPanel:
 
         QApplication.restoreOverrideCursor()
 
-    
     def editCalculixInputFile(self):
-        print 'editCalculixInputFile'
-        print self.Basename + '.inp'
-        import webbrowser
-        # If inp-file extension is assigned the os will use the appropriate binary (normaly an Editor) to open the file. Works perfectly on Windows if SciTE is installed. 
-        webbrowser.open(self.Basename + '.inp')
-
+        filename = self.Basename + '.inp'
+        print 'editCalculixInputFile {}'.format(filename)
+        from platform import system
+        if system() == 'Linux':
+            import FemGui
+            FemGui.openEditor(filename)
+        else:
+            import webbrowser
+            # If inp-file extension is assigned the os will use the appropriate binary
+            # (normaly an Editor) to open the file. Works perfectly on Windows if SciTE is installed.
+            # However using webbrower.open is not portable and not supported
+            # https://docs.python.org/3.4/library/webbrowser.html
+            # FIXME That code should be removed as soon as there is "Preferred editor" option
+            # added to Preferences, to allow existing SciTE users override built-in editor
+            webbrowser.open(filename)
 
     def runCalculix(self):
         print 'runCalculix'
