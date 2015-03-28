@@ -38,6 +38,7 @@
 
 #include <Mod/Fem/App/FemAnalysis.h>
 #include "ActiveAnalysisObserver.h"
+#include "AbaqusHighlighter.h"
 
 
 /* module functions */
@@ -100,10 +101,10 @@ static PyObject * openEditor(PyObject *self, PyObject *args)
             Gui::TextEditor* editor = new Gui::TextEditor();
             editor->setWindowIcon(Gui::BitmapFactory().pixmap(":/icons/Fem_Inp_Editor.svg"));
             Gui::EditorView* edit = new Gui::EditorView(editor, Gui::getMainWindow());
+            editor->setSyntaxHighlighter(new FemGui::AbaqusHighlighter(editor));
+            edit->setDisplayName(Gui::EditorView::FileName);
             edit->open(fileName);
             edit->resize(400, 300);
-            QString shownName = QString::fromAscii("%1[*]").arg(fi.fileName());
-            edit->setWindowTitle(shownName);
             Gui::getMainWindow()->addWindow(edit);
         }
     } PY_CATCH;
