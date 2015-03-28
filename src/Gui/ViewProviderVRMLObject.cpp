@@ -113,6 +113,7 @@ void ViewProviderVRMLObject::getResourceFile(SoNode* node, std::list<std::string
     }
 }
 
+namespace Gui {
 // Special handling for SoVRMLBackground
 template<>
 void ViewProviderVRMLObject::getResourceFile<SoVRMLBackground>(SoNode* node, std::list<std::string>& resources)
@@ -153,6 +154,8 @@ void ViewProviderVRMLObject::getResourceFile<SoVRMLBackground>(SoNode* node, std
             }
         }
     }
+}
+
 }
 
 void ViewProviderVRMLObject::addResource(const SbString& url, std::list<std::string>& resources)
