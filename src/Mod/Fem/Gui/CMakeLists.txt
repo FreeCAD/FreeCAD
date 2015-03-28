@@ -170,6 +170,8 @@ SOURCE_GROUP("Task_Dialogs" FILES ${FemGui_SRCS_TaskDlg})
 SET(FemGui_SRCS_Module
     AppFemGui.cpp
     AppFemGuiPy.cpp
+    AbaqusHighlighter.cpp
+    AbaqusHighlighter.h
     ActiveAnalysisObserver.cpp
     ActiveAnalysisObserver.h
     Command.cpp

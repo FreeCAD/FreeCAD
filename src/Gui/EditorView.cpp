@@ -58,6 +58,7 @@ class EditorViewP {
 public:
     QPlainTextEdit* textEdit;
     QString fileName;
+    EditorView::DisplayName displayName;
     QTimer*  activityTimer;
     uint timeStamp;
     bool lock;
@@ -79,6 +80,7 @@ EditorView::EditorView(QPlainTextEdit* editor, QWidget* parent)
 {
     d = new EditorViewP;
     d->lock = false;
+    d->displayName = EditorView::FullName;
 
     // create the editor first
     d->textEdit = editor;
@@ -256,6 +258,11 @@ bool EditorView::canClose(void)
     }
 }
 
+void EditorView::setDisplayName(EditorView::DisplayName type)
+{
+    d->displayName = type;
+}
+
 /**
  * Saves the content of the editor to a file specified by the appearing file dialog.
  */
@@ -399,11 +406,25 @@ void EditorView::setCurrentFileName(const QString &fileName)
     /*emit*/ changeFileName(d->fileName);
     d->textEdit->document()->setModified(false);
 
+    QString name;
+    QFileInfo fi(fileName);
+    switch (d->displayName) {
+    case FullName:
+        name = fileName;
+        break;
+    case FileName:
+        name = fi.fileName();
+        break;
+    case BaseName:
+        name = fi.baseName();
+        break;
+    }
+
     QString shownName;
     if (fileName.isEmpty())
         shownName = tr("untitled[*]");
     else
-        shownName = QString::fromAscii("%1[*]").arg(fileName);
+        shownName = QString::fromAscii("%1[*]").arg(name);
     shownName += tr(" - Editor");
     setWindowTitle(shownName);
     setWindowModified(false);
