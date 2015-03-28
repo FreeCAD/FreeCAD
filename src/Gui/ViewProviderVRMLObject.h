@@ -26,6 +26,7 @@
 
 #include "ViewProviderDocumentObject.h"
 
+class SbString;
 
 namespace Gui
 {
@@ -46,6 +47,9 @@ public:
     void setDisplayMode(const char* ModeName);
     std::vector<std::string> getDisplayModes() const;
     void updateData(const App::Property*);
+    void getLocalResources(SoNode*, std::list<std::string>&);
+    void addResource(const SbString&, std::list<std::string>&);
+    template<typename T> void getResourceFile(SoNode*, std::list<std::string>&);
 
 protected:
     SoFCSelection    * pcVRML;
