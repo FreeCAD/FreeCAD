@@ -113,11 +113,19 @@ std::string PropertyFileIncluded::getExchangeTempFile(void) const
         (getValue()).fileName().c_str(), getDocTransientPath().c_str());
 }
 
+std::string PropertyFileIncluded::getOriginalFileName(void) const
+{
+    return _OriginalName;
+}
+
 void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
 {
     if (sFile && sFile[0] != '\0') {
         if (_cValue == sFile)
             throw Base::Exception("Not possible to set the same file!");
+
+        // keep the path to the original file
+        _OriginalName = sFile;
 
         std::string pathTrans = getDocTransientPath();
         Base::FileInfo file(sFile);

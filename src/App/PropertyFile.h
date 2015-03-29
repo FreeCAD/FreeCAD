@@ -103,6 +103,7 @@ public:
       * the File.
       */
     std::string getExchangeTempFile(void) const;
+    std::string getOriginalFileName(void) const;
 
 protected:
     // get the transient path if the property is in a DocumentObject
@@ -113,6 +114,7 @@ protected:
 protected:
     mutable std::string _cValue;
     mutable std::string _BaseFileName;
+    mutable std::string _OriginalName;
 };
 
 

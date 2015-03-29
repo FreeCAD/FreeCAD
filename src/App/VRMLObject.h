@@ -56,8 +56,15 @@ public:
 
     PropertyFileIncluded VrmlFile;
     PropertyStringList Urls;
+    PropertyStringList Resources;
+
+protected:
+    void onChanged(const App::Property*);
+    std::string getOutputFile(const std::string&, const std::string&) const;
+    void makeDirectories(const std::string&, const std::string&);
 
 private:
+    mutable std::string vrmlPath;
     mutable int index;
 };
 
