@@ -42,8 +42,12 @@ PROPERTY_SOURCE(App::VRMLObject, App::GeoFeature)
 VRMLObject::VRMLObject() 
 {
     ADD_PROPERTY_TYPE(VrmlFile,(0),"",Prop_None,"Included file with the VRML definition");
-    ADD_PROPERTY_TYPE(Urls,(""),"",static_cast<PropertyType>(Prop_ReadOnly|Prop_Output),"Included file with the VRML definition");
+    ADD_PROPERTY_TYPE(Urls,(""),"",static_cast<PropertyType>(Prop_ReadOnly|Prop_Output|Prop_Transient),
+        "Resource files loaded by the VRML file");
+    ADD_PROPERTY_TYPE(Resources,(""),"",static_cast<PropertyType>(Prop_ReadOnly|Prop_Output),
+        "Resource files loaded by the VRML file");
     Urls.setSize(0);
+    Resources.setSize(0);
 }
 
 VRMLObject::~VRMLObject()
@@ -55,6 +59,29 @@ short VRMLObject::mustExecute(void) const
     return 0;
 }
 
+void VRMLObject::onChanged(const App::Property* prop)
+{
+    if (prop == &VrmlFile) {
+        std::string orig = VrmlFile.getOriginalFileName();
+        if (!orig.empty()) {
+            // store the path name of the VRML file
+            Base::FileInfo fi(orig);
+            this->vrmlPath = fi.dirPath();
+        }
+    }
+    else if (prop == &Urls) {
+        // save the relative paths to the resource files in the project file
+        Resources.setSize(Urls.getSize());
+        const std::vector<std::string>& urls = Urls.getValues();
+        int index=0;
+        for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it, ++index) {
+            std::string output = getOutputFile(this->vrmlPath, *it);
+            Resources.set1Value(index, output);
+        }
+    }
+    GeoFeature::onChanged(prop);
+}
+
 PyObject *VRMLObject::getPyObject()
 {
     if (PythonObject.is(Py::_None())){
@@ -64,27 +91,46 @@ PyObject *VRMLObject::getPyObject()
     return Py::new_reference_to(PythonObject); 
 }
 
+std::string VRMLObject::getOutputFile(const std::string& prefix, const std::string& resource) const
+{
+    std::string str;
+    std::string intname = this->getNameInDocument();
+    if (!prefix.empty()) {
+        if (resource.substr(0, prefix.size()) == prefix) {
+            std::string suffix = resource.substr(prefix.size());
+            str = intname + suffix;
+        }
+    }
+
+    if (str.empty()) {
+        Base::FileInfo fi(resource);
+        str = intname + "/" + fi.fileName();
+    }
+
+    return str;
+}
+
+void VRMLObject::makeDirectories(const std::string& path, const std::string& subdir)
+{
+    std::string::size_type pos = subdir.find('/');
+    while (pos != std::string::npos) {
+        std::string sub = subdir.substr(0, pos);
+        std::string dir = path + "/" + sub;
+        Base::FileInfo fi(dir);
+        if (!fi.createDirectory())
+            break;
+        pos = subdir.find('/', pos+1);
+    }
+}
+
 void VRMLObject::Save (Base::Writer &writer) const
 {
     App::GeoFeature::Save(writer);
 
-    // if the VRML file has some inline files then store them inside the project file
-    if (Urls.getSize() > 0) {
-        const std::vector<std::string>& urls = Urls.getValues();
-        writer.incInd();
-        writer.Stream() << writer.ind() << "<UrlList count=\"" << urls.size() <<"\">" << std::endl;
-        writer.incInd();
-        std::string intname = this->getNameInDocument();
-        for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
-            Base::FileInfo fi(*it);
-            // make sure to put the VRML files into a sub-directory
-            std::string output = intname + "/" + fi.fileName();
-            output = writer.addFile(output.c_str(), this);
-            writer.Stream() << writer.ind() << "<Url value=\"" << output <<"\"/>" << std::endl;
-        }
-        writer.decInd();
-        writer.Stream() << writer.ind() << "</UrlList>" << std::endl;
-        writer.decInd();
+    // save also the inline files if there
+    const std::vector<std::string>& urls = Resources.getValues();
+    for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
+        writer.addFile(it->c_str(), this);
     }
 
     this->index = 0;
@@ -93,18 +139,12 @@ void VRMLObject::Save (Base::Writer &writer) const
 void VRMLObject::Restore(Base::XMLReader &reader)
 {
     App::GeoFeature::Restore(reader);
+    Urls.setSize(Resources.getSize());
 
-    // are there inline files
-    if (Urls.getSize() > 0) {
-        reader.readElement("UrlList");
-        int count = reader.getAttributeAsInteger("count");
-        for(int i = 0; i < count; i++) {
-            reader.readElement("Url");
-            std::string value = reader.getAttribute("value");
-            reader.addFile(value.c_str(), this);
-        }
-
-        reader.readEndElement("UrlList");
+    // restore also the inline files if there
+    const std::vector<std::string>& urls = Resources.getValues();
+    for(std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it) {
+        reader.addFile(it->c_str(), this);
     }
 
     this->index = 0;
@@ -127,16 +167,13 @@ void VRMLObject::SaveDocFile (Base::Writer &writer) const
 
 void VRMLObject::RestoreDocFile(Base::Reader &reader)
 {
-    if (this->index < Urls.getSize()) {
+    if (this->index < Resources.getSize()) {
         std::string path = getDocument()->TransientDir.getValue();
-        std::string url = Urls[this->index];
-        std::string intname = this->getNameInDocument();
+        std::string url = Resources[this->index];
+        makeDirectories(path, url);
 
+        url = path + "/" + url;
         Base::FileInfo fi(url);
-        std::string subdir = path + "/" + intname;
-        Base::FileInfo(subdir).createDirectory();
-        url = subdir + "/" + fi.fileName();
-        fi.setFile(url);
         Urls.set1Value(this->index, url);
         this->index++;
 
@@ -149,6 +186,8 @@ void VRMLObject::RestoreDocFile(Base::Reader &reader)
         // after restoring all inline files reload the VRML file
         if (this->index == Urls.getSize()) {
             VrmlFile.touch();
+            Base::FileInfo fi(VrmlFile.getValue());
+            this->vrmlPath = fi.dirPath();
         }
     }
 }
