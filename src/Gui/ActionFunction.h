@@ -27,6 +27,8 @@
 #include <QObject>
 #include <boost/function.hpp>
 
+class QAction;
+
 namespace Gui
 {
 
