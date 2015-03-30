@@ -133,6 +133,7 @@ endif(FREECAD_USE_3DCONNEXION)
 
 set(Gui_MOC_HDRS
     Action.h
+    ActionFunction.h
     Assistant.h
     CallTips.h
     CombiView.h
@@ -296,6 +297,7 @@ SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 # The command sources
 SET(Command_CPP_SRCS
     Action.cpp
+    ActionFunction.cpp
     Command.cpp
     CommandDoc.cpp
     CommandFeat.cpp
@@ -308,6 +310,7 @@ SET(Command_CPP_SRCS
 SET(Command_SRCS
     ${Command_CPP_SRCS}
     Action.h
+    ActionFunction.h
     Command.h
 )
 SOURCE_GROUP("Command" FILES ${Command_SRCS})
@@ -660,7 +663,7 @@ SET(View3D_CPP_SRCS
     View3DInventorExamples.cpp
     View3DInventorViewer.cpp
     View3DInventorRiftViewer.cpp
-	CoinRiftWidget.cpp
+    CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
 )
