@@ -551,14 +551,18 @@ class _JobControlTaskPanel:
             import FemGui
             FemGui.openEditor(filename)
         else:
-            import webbrowser
+            #import webbrowser
             # If inp-file extension is assigned the os will use the appropriate binary
             # (normaly an Editor) to open the file. Works perfectly on Windows if SciTE is installed.
             # However using webbrower.open is not portable and not supported
             # https://docs.python.org/3.4/library/webbrowser.html
             # FIXME That code should be removed as soon as there is "Preferred editor" option
             # added to Preferences, to allow existing SciTE users override built-in editor
-            webbrowser.open(filename)
+            #webbrowser.open(filename)
+            # The Abaqus synax highlighter works similarly to that one of SciTE so that our
+            # own editor can be used now
+            import FemGui
+            FemGui.openEditor(filename)
 
     def runCalculix(self):
         print 'runCalculix'

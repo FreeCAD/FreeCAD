@@ -106,6 +106,10 @@ static PyObject * openEditor(PyObject *self, PyObject *args)
             edit->open(fileName);
             edit->resize(400, 300);
             Gui::getMainWindow()->addWindow(edit);
+
+            QFont font = editor->font();
+            font.setFamily(QString::fromLatin1("Arial"));
+            editor->setFont(font);
         }
     } PY_CATCH;
 
