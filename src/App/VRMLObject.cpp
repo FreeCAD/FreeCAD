@@ -75,7 +75,7 @@ void VRMLObject::onChanged(const App::Property* prop)
         const std::vector<std::string>& urls = Urls.getValues();
         int index=0;
         for (std::vector<std::string>::const_iterator it = urls.begin(); it != urls.end(); ++it, ++index) {
-            std::string output = getOutputFile(this->vrmlPath, *it);
+            std::string output = getRelativePath(this->vrmlPath, *it);
             Resources.set1Value(index, output);
         }
     }
@@ -91,7 +91,7 @@ PyObject *VRMLObject::getPyObject()
     return Py::new_reference_to(PythonObject); 
 }
 
-std::string VRMLObject::getOutputFile(const std::string& prefix, const std::string& resource) const
+std::string VRMLObject::getRelativePath(const std::string& prefix, const std::string& resource) const
 {
     std::string str;
     std::string intname = this->getNameInDocument();
@@ -108,6 +108,20 @@ std::string VRMLObject::getOutputFile(const std::string& prefix, const std::stri
     }
 
     return str;
+}
+
+std::string VRMLObject::fixRelativePath(const std::string& name, const std::string& resource) const
+{
+    // the part before the first '/' must match with object's internal name
+    std::string::size_type pos = resource.find('/');
+    if (pos != std::string::npos) {
+        std::string prefix = resource.substr(0, pos);
+        std::string suffix = resource.substr(pos);
+        if (prefix != name) {
+            return name + suffix;
+        }
+    }
+    return resource;
 }
 
 void VRMLObject::makeDirectories(const std::string& path, const std::string& subdir)
@@ -155,9 +169,19 @@ void VRMLObject::SaveDocFile (Base::Writer &writer) const
     // store the inline files of the VRML file
     if (this->index < Urls.getSize()) {
         std::string url = Urls[this->index];
-        this->index++;
 
         Base::FileInfo fi(url);
+        // it can happen that the transient directory has changed after
+        // saving the 'URLs' in RestoreDocFile() and then we have to
+        // try again with the new transient directory.
+        if (!fi.exists()) {
+            std::string path = getDocument()->TransientDir.getValue();
+            url = Resources[this->index];
+            url = path + "/" + url;
+            fi.setFile(url);
+        }
+
+        this->index++;
         Base::ifstream file(fi, std::ios::in | std::ios::binary);
         if (file) {
             writer.Stream() << file.rdbuf();
@@ -170,6 +194,9 @@ void VRMLObject::RestoreDocFile(Base::Reader &reader)
     if (this->index < Resources.getSize()) {
         std::string path = getDocument()->TransientDir.getValue();
         std::string url = Resources[this->index];
+        std::string intname = this->getNameInDocument();
+        url = fixRelativePath(intname, url);
+        Resources.set1Value(this->index, url);
         makeDirectories(path, url);
 
         url = path + "/" + url;

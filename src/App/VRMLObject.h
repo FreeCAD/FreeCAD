@@ -60,7 +60,8 @@ public:
 
 protected:
     void onChanged(const App::Property*);
-    std::string getOutputFile(const std::string&, const std::string&) const;
+    std::string getRelativePath(const std::string&, const std::string&) const;
+    std::string fixRelativePath(const std::string&, const std::string&) const;
     void makeDirectories(const std::string&, const std::string&);
 
 private:
