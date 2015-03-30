@@ -391,7 +391,7 @@ void FemMesh::compute()
     myGen->Compute(*myMesh, myMesh->GetShapeToMesh());
 }
 
-std::set<long> FemMesh::getSurfaceNodes(long ElemId,short FaceId, float Angle) const
+std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) const
 {
     std::set<long> result;
     //const SMESHDS_Mesh* data = myMesh->GetMeshDS();
@@ -403,9 +403,8 @@ std::set<long> FemMesh::getSurfaceNodes(long ElemId,short FaceId, float Angle) c
     return result;
 }
 
-std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
+std::set<long> FemMesh::getNodesByFace(const TopoDS_Face &face) const
 {
-
     std::set<long> result;
 
     Bnd_Box box;
@@ -414,18 +413,18 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
     double limit = box.SquareExtent()/10000.0;
     box.Enlarge(limit);
 
-    // get the actuall transform of the FemMesh
+    // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
-        // Apply the matrix to hold the BoundBox in absolute space. 
+        // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
-        if(!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))){
-            // create a Vertex
+        if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
+            // create a vertex
             BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
@@ -433,19 +432,17 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Face &face)const
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
-            
-            if(measure.Value() < limit)         
-                result.insert(aNode->GetID());
 
+            if (measure.Value() < limit)
+                result.insert(aNode->GetID());
         }
     }
 
     return result;
 }
 
-std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Edge &edge)const
+std::set<long> FemMesh::getNodesByEdge(const TopoDS_Edge &edge) const
 {
-
     std::set<long> result;
 
     Bnd_Box box;
@@ -454,18 +451,18 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Edge &edge)const
     double limit = box.SquareExtent()/10000.0;
     box.Enlarge(limit);
 
-    // get the actuall transform of the FemMesh
+    // get the current transform of the FemMesh
     const Base::Matrix4D Mtrx(getTransform());
 
     SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
     while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
-        // Apply the matrix to hold the BoundBox in absolute space. 
+        // Apply the matrix to hold the BoundBox in absolute space.
         vec = Mtrx * vec;
 
-        if(!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))){
-            // create a Vertex
+        if (!box.IsOut(gp_Pnt(vec.x,vec.y,vec.z))) {
+            // create a vertex
             BRepBuilderAPI_MakeVertex aBuilder(gp_Pnt(vec.x,vec.y,vec.z));
             TopoDS_Shape s = aBuilder.Vertex();
             // measure distance
@@ -473,17 +470,14 @@ std::set<long> FemMesh::getSurfaceNodes(const TopoDS_Edge &edge)const
             measure.Perform();
             if (!measure.IsDone() || measure.NbSolution() < 1)
                 continue;
-            
-            if(measure.Value() < limit)         
-                result.insert(aNode->GetID());
 
+            if (measure.Value() < limit)
+                result.insert(aNode->GetID());
         }
     }
 
     return result;
 }
-
-
 
 void FemMesh::readNastran(const std::string &Filename)
 {
