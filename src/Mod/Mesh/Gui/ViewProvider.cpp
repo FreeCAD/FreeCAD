@@ -79,6 +79,7 @@
 #include <Gui/WaitCursor.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/ActionFunction.h>
 
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Evaluation.h>
@@ -92,6 +93,7 @@
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <zipios++/gzipoutputstream.h>
+#include <boost/bind.hpp>
 
 #include "ViewProvider.h"
 #include "SoFCIndexedFaceSet.h"
@@ -577,8 +579,13 @@ bool ViewProviderMesh::exportToVrml(const char* filename, const MeshCore::Materi
 void ViewProviderMesh::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     ViewProviderGeometryObject::setupContextMenu(menu, receiver, member);
-    QAction* act = menu->addAction(QObject::tr("Display components"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Color));
+
+    // toggle command to display components
+    Gui::ActionFunction* func = new Gui::ActionFunction(menu);
+    QAction* act = menu->addAction(QObject::tr("Display components"));
+    act->setCheckable(true);
+    act->setChecked(pcMatBinding->value.getValue() == SoMaterialBinding::PER_FACE);
+    func->toggle(act, boost::bind(&ViewProviderMesh::setHighlightedComponents, this, _1));
 }
 
 bool ViewProviderMesh::setEdit(int ModNum)
@@ -1678,6 +1685,16 @@ void ViewProviderMesh::unhighlightSelection()
     pcMatBinding->value = SoMaterialBinding::OVERALL;
     pcShapeMaterial->diffuseColor.setNum(1);
     pcShapeMaterial->diffuseColor.setValue(c.r,c.g,c.b);
+}
+
+void ViewProviderMesh::setHighlightedComponents(bool on)
+{
+    if (on) {
+        highlightComponents();
+    }
+    else {
+        unhighlightSelection();
+    }
 }
 
 void ViewProviderMesh::highlightComponents()
