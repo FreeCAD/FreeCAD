@@ -414,8 +414,8 @@ class _JobControlTaskPanel:
                     print '  Line Support (fixed edge) on: ', f
                     n = MeshObject.FemMesh.getNodesByEdge(fo)
                 elif fo.ShapeType == 'Vertex':
-                    print '  Point Support (fixed vertex) on: ', f, ' --> not supported yet'
-                    #n = MeshObject.FemMesh.getNodesByVertex(fo)   # ToDo
+                    print '  Point Support (fixed vertex) on: ', f
+                    n = MeshObject.FemMesh.getNodesByVertex(fo)
                 for i in n:
                     inpfile.write( str(i)+',\n')
             inpfile.write('\n\n')
@@ -437,8 +437,8 @@ class _JobControlTaskPanel:
                     print '  Line Load (edge load) on: ', f
                     n = MeshObject.FemMesh.getNodesByEdge(fo)
                 elif fo.ShapeType == 'Vertex':
-                    print '  Point Load (vertex load) on: ', f, ' --> not supported yet'
-                    #n = MeshObject.FemMesh.getNodesByVertex(fo)   # ToDo
+                    print '  Point Load (vertex load) on: ', f
+                    n = MeshObject.FemMesh.getNodesByVertex(fo)
                 for i in n:
                     inpfile.write( str(i)+',\n')
                     NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from ForceObject
