@@ -546,8 +546,8 @@ PyObject* FemMeshPy::getNodesByFace(PyObject *args)
             return 0;
         }
         Py::List ret;
-        std::set<long> resultSet = getFemMeshPtr()->getSurfaceNodes(fc);
-        for( std::set<long>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
+        std::set<long> resultSet = getFemMeshPtr()->getNodesByFace(fc);
+        for (std::set<long>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
             ret.append(Py::Int(*it));
 
         return Py::new_reference_to(ret);
@@ -575,8 +575,8 @@ PyObject* FemMeshPy::getNodesByEdge(PyObject *args)
             return 0;
         }
         Py::List ret;
-        std::set<long> resultSet = getFemMeshPtr()->getSurfaceNodes(fc);
-        for( std::set<long>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
+        std::set<long> resultSet = getFemMeshPtr()->getNodesByEdge(fc);
+        for (std::set<long>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
             ret.append(Py::Int(*it));
 
         return Py::new_reference_to(ret);
@@ -603,15 +603,15 @@ Py::Dict FemMeshPy::getNodes(void) const
     Base::Matrix4D Mtrx = getFemMeshPtr()->getTransform();
 
     SMDS_NodeIteratorPtr aNodeIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->nodesIterator();
-	for (int i=0;aNodeIter->more();i++) {
-		const SMDS_MeshNode* aNode = aNodeIter->next();
+    for (int i=0;aNodeIter->more();i++) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
         // Apply the matrix to hold the BoundBox in absolute space. 
         vec = Mtrx * vec;
         int id = aNode->GetID();
 
         dict[Py::Int(id)] = Py::asObject(new Base::VectorPy( vec ));
-	}
+    }
 
     return dict;
 }

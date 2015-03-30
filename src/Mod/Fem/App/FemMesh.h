@@ -82,14 +82,14 @@ public:
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
     //@}
 
-    /** @name search and retraivel */
+    /** @name search and retrieval */
     //@{
-    /// retriving by region growing
-    std::set<long> getSurfaceNodes(long ElemId,short FaceId, float Angle=360)const;
-    /// retrivinb by face
-    std::set<long> getSurfaceNodes(const TopoDS_Face &face)const;
-    /// retrivinb by edge
-    std::set<long> getSurfaceNodes(const TopoDS_Edge &edge)const;
+    /// retrieving by region growing
+    std::set<long> getSurfaceNodes(long ElemId, short FaceId, float Angle=360)const;
+    /// retrieving by face
+    std::set<long> getNodesByFace(const TopoDS_Face &face)const;
+    /// retrieving by edge
+    std::set<long> getNodesByEdge(const TopoDS_Edge &edge)const;
     //@}
 
     /** @name Placement control */
@@ -111,7 +111,7 @@ public:
     //@}
 
     struct FemMeshInfo {
-	    int numFaces; 
+        int numFaces; 
         int numNode;
         int numTria;
         int numQuad;
