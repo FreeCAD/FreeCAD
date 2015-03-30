@@ -99,6 +99,11 @@
         <UserDocu>Return a list of node IDs which belong to a TopoEdge</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getNodesByVertex" Const="true">
+      <Documentation>
+        <UserDocu>Return a list of node IDs which belong to a TopoVertex</UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="Nodes" ReadOnly="true">
       <Documentation>
         <UserDocu>Dictionary of Nodes by ID (int ID:Vector())</UserDocu>

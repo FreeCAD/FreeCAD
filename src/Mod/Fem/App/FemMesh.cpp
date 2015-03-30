@@ -28,6 +28,7 @@
 # include <memory>
 # include <strstream>
 # include <Bnd_Box.hxx>
+# include <BRep_Tool.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepExtrema_DistShapeShape.hxx>
 # include <TopoDS_Vertex.hxx>
@@ -473,6 +474,32 @@ std::set<long> FemMesh::getNodesByEdge(const TopoDS_Edge &edge) const
 
             if (measure.Value() < limit)
                 result.insert(aNode->GetID());
+        }
+    }
+
+    return result;
+}
+
+std::set<long> FemMesh::getNodesByVertex(const TopoDS_Vertex &vertex) const
+{
+    std::set<long> result;
+
+    double limit = BRep_Tool::Tolerance(vertex);
+    limit *= limit; // use square to improve speed
+    gp_Pnt pnt = BRep_Tool::Pnt(vertex);
+    Base::Vector3d node(pnt.X(), pnt.Y(), pnt.Z());
+
+    // get the current transform of the FemMesh
+    const Base::Matrix4D Mtrx(getTransform());
+
+    SMDS_NodeIteratorPtr aNodeIter = myMesh->GetMeshDS()->nodesIterator();
+    while (aNodeIter->more()) {
+        const SMDS_MeshNode* aNode = aNodeIter->next();
+        Base::Vector3d vec(aNode->X(),aNode->Y(),aNode->Z());
+        vec = Mtrx * vec;
+
+        if (Base::DistanceP2(node, vec) <= limit) {
+            result.insert(aNode->GetID());
         }
     }
 

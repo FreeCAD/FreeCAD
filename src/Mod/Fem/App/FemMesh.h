@@ -38,6 +38,7 @@ class SMESH_Hypothesis;
 class TopoDS_Shape;
 class TopoDS_Face;
 class TopoDS_Edge;
+class TopoDS_Vertex;
 
 namespace Fem
 {
@@ -87,9 +88,11 @@ public:
     /// retrieving by region growing
     std::set<long> getSurfaceNodes(long ElemId, short FaceId, float Angle=360)const;
     /// retrieving by face
-    std::set<long> getNodesByFace(const TopoDS_Face &face)const;
+    std::set<long> getNodesByFace(const TopoDS_Face &face) const;
     /// retrieving by edge
-    std::set<long> getNodesByEdge(const TopoDS_Edge &edge)const;
+    std::set<long> getNodesByEdge(const TopoDS_Edge &edge) const;
+    /// retrieving by vertex
+    std::set<long> getNodesByVertex(const TopoDS_Vertex &vertex) const;
     //@}
 
     /** @name Placement control */
