@@ -412,11 +412,16 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 {
     Base::FileInfo fi(_cValue.c_str());
+    if (fi.exists() && !fi.isWritable()) {
+        // This happens when an object is being restored and tries to reference the
+        // same file of another object (e.g. for copy&paste of objects inside the same document).
+        return;
+    }
     Base::ofstream to(fi, std::ios::out | std::ios::binary);
     if (!to) {
         std::stringstream str;
         str << "PropertyFileIncluded::RestoreDocFile(): "
-            << "File '" << _cValue << "' in transient directory doesn't exist.";
+            << "File '" << _cValue << "' in transient directory cannot be created.";
         throw Base::Exception(str.str());
     }
 
