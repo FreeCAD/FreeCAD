@@ -45,13 +45,13 @@ class ActionFunctionPrivate;
         Gui::ActionFunction* func = new Gui::ActionFunction(menu);
 
         QAction* a1 = menu->addAction(QObject::tr("Menu item 1..."));
-        func->mapSignal(a1, boost::bind(&MyViewProvider::doItem1, this));
+        func->triggered(a1, boost::bind(&MyViewProvider::doItem1, this));
 
         QAction* a2 = menu->addAction(QObject::tr("Menu item 2..."));
-        func->mapSignal(a2, boost::bind(&MyViewProvider::doItem2, this));
+        func->triggered(a2, boost::bind(&MyViewProvider::doItem2, this));
 
         QAction* a3 = menu->addAction(QObject::tr("Menu item 3..."));
-        func->mapSignal(a3, boost::bind(&MyViewProvider::doItem3, this));
+        func->triggered(a3, boost::bind(&MyViewProvider::doItem3, this));
     }
   \endcode
 
@@ -71,10 +71,14 @@ public:
     /*!
        Connects the QAction's triggered() signal with the function \a func
      */
-    void mapSignal(QAction* a, boost::function<void()> func);
+    void trigger(QAction* a, boost::function<void()> func);
+    void toggle(QAction* a, boost::function<void(bool)> func);
+    void hover(QAction* a, boost::function<void()> func);
 
 private Q_SLOTS:
-    void trigger();
+    void triggered();
+    void toggled(bool);
+    void hovered();
 
 private:
     QScopedPointer<ActionFunctionPrivate> d_ptr;

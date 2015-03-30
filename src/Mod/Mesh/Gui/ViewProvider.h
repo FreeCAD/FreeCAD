@@ -171,6 +171,7 @@ protected:
     void highlightSelection();
     void unhighlightSelection();
     void highlightComponents();
+    void setHighlightedComponents(bool);
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;
