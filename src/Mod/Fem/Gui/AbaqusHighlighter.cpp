@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QRegExp>
+# include <QTextCharFormat>
 #endif
 
 #include "AbaqusHighlighter.h"
@@ -45,14 +46,121 @@ AbaqusHighlighter::~AbaqusHighlighter()
 
 void AbaqusHighlighter::highlightBlock(const QString &text)
 {
+    // Find a syntax file for the Abaqus format here
+    // http://notepad-plus.sourceforge.net/commun/userDefinedLang/userDefineLang_Abaqus.xml
+    //
+    enum { NormalState = -1, Definition, BeforeKey, InideKey, BeforeValue, InsideValue, Number };
+
+    int state = NormalState;
+    int start = 0;
+
+    QColor keywordColor(102,0,227); // this->colorByType(SyntaxHighlighter::Keyword)
+    QColor defnameColor(0,119,255); // this->colorByType(SyntaxHighlighter::Defname)
+    QColor operateColor(153,0,102); // this->colorByType(SyntaxHighlighter::Operator)
+    QColor valueColor(0,0,0); // this->colorByType(SyntaxHighlighter::String)
+    QColor numberColor(0,127,127); // this->colorByType(SyntaxHighlighter::Number)
+    QColor commentColor = this->colorByType(SyntaxHighlighter::Comment);
+
     for (int i = 0; i < text.length(); ++i) {
-        if (text.mid(i, 2) == QLatin1String("**")) {
-            setFormat(i, text.length() - i, this->colorByType(SyntaxHighlighter::Comment));
+        // highlight the supported operators
+        if (text[i] == QLatin1Char(',') || text[i] == QLatin1Char('=')) {
+            setFormat(i, 1, operateColor);
+        }
+
+        if (state == Definition) {
+            if (!text[i].isLetterOrNumber() && !text[i].isSpace()) {
+                QTextCharFormat keywordFormat;
+                keywordFormat.setForeground(keywordColor);
+                keywordFormat.setFontWeight(QFont::Bold);
+                setFormat(start, i - start, keywordFormat);
+
+                start = i;
+                state = BeforeKey;
+            }
+        }
+        else if (state == BeforeKey) {
+            if (text[i].isLetterOrNumber()) {
+                start = i;
+                state = InideKey;
+            }
+        }
+        else if (state == InideKey) {
+            if (!text[i].isLetterOrNumber() && !text[i].isSpace()) {
+                QTextCharFormat keyFormat;
+                keyFormat.setForeground(defnameColor);
+                setFormat(start, i - start, keyFormat);
+
+                start = i;
+                state = BeforeValue;
+            }
+        }
+        else if (state == BeforeValue) {
+            if (text[i].isLetterOrNumber()) {
+                start = i;
+                state = InsideValue;
+            }
+        }
+        else if (state == InsideValue) {
+            if (!text[i].isLetterOrNumber() && !text[i].isSpace()) {
+                QTextCharFormat valueFormat;
+                valueFormat.setForeground(valueColor);
+                setFormat(start, i - start, valueFormat);
+
+                start = i;
+                state = BeforeKey;
+            }
+        }
+        // Number
+        else if (state == Number) {
+            if (!text[i].isNumber()) {
+                QTextCharFormat numberFormat;
+                numberFormat.setForeground(numberColor);
+                setFormat(start, i - start, numberFormat);
+
+                start = i;
+                state = NormalState;
+            }
+        }
+        else if (text[i].isNumber()) {
+            if (state == NormalState) {
+                start = i;
+                state = Number;
+            }
+        }
+        // Comment lines
+        else if (text.mid(i, 2) == QLatin1String("**")) {
+            QTextCharFormat commentFormat;
+            commentFormat.setForeground(commentColor);
+            commentFormat.setFontItalic(true);
+            setFormat(i, text.length() - i, commentFormat);
             break;
         }
-        else if (text.mid(i, 1) == QLatin1String("*")) {
-            setFormat(i, text.length() - i, this->colorByType(SyntaxHighlighter::Defname));
-            break;
+        // Definition
+        else if (text[i] == QLatin1Char('*')) {
+            start = i;
+            state = Definition;
         }
+    }
+
+    if (state == Definition) {
+        QTextCharFormat keywordFormat;
+        keywordFormat.setForeground(keywordColor);
+        keywordFormat.setFontWeight(QFont::Bold);
+        setFormat(start, text.length() - start, keywordFormat);
+    }
+    else if (state == InideKey) {
+        QTextCharFormat keyFormat;
+        keyFormat.setForeground(defnameColor);
+        setFormat(start, text.length() - start, keyFormat);
+    }
+    else if (state == InsideValue) {
+        QTextCharFormat valueFormat;
+        valueFormat.setForeground(valueColor);
+        setFormat(start, text.length() - start, valueFormat);
+    }
+    else if (state == Number) {
+        QTextCharFormat numberFormat;
+        numberFormat.setForeground(numberColor);
+        setFormat(start, text.length() - start, numberFormat);
     }
 }
