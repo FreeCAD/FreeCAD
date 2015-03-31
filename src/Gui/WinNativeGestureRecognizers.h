@@ -35,7 +35,7 @@
 
 #ifdef Q_WS_WIN
 #if QT_VERSION < 0x050000
-#define GESTURE_MESS
+//#define GESTURE_MESS
 #endif // QT_VERSION < 0x050000
 #endif // Q_WS_WIN
 
