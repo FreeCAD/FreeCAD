@@ -55,6 +55,7 @@ public:
     bool setEdit(int ModNum);
     bool unsetEdit(int ModNum);
     bool doubleClicked(void);
+    void setupContextMenu(QMenu* menu);
 
     /** @name Update data methods*/
     //@{
@@ -319,6 +320,14 @@ protected:
         if (!ok) ViewProviderT::unsetEdit(ModNum);
     }
 
+public:
+    virtual void setupContextMenu(QMenu* menu, QObject* recipient, const char* member)
+    {
+        ViewProviderT::setupContextMenu(menu, recipient, member);
+        imp->setupContextMenu(menu);
+    }
+
+protected:
     virtual bool doubleClicked(void)
     {
         bool ok = imp->doubleClicked();
