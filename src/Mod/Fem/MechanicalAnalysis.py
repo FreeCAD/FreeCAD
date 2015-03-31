@@ -226,6 +226,7 @@ class _JobControlTaskPanel:
 
         self.obj = object
         #self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
@@ -543,24 +544,22 @@ class _JobControlTaskPanel:
 
         QApplication.restoreOverrideCursor()
 
+    def start_ext_editor(self, ext_editor_path, filename):
+        self.ext_editor_process = QtCore.QProcess()
+        self.ext_editor_process.execute(ext_editor_path, [filename])
+
     def editCalculixInputFile(self):
         filename = self.Basename + '.inp'
         print 'editCalculixInputFile {}'.format(filename)
-
-        # FIXME: That code should be removed as soon as there is "Preferred editor" option
-        # added to Preferences, to allow existing SciTE users override built-in editor
-        #
-        #import webbrowser
-        # If inp-file extension is assigned the os will use the appropriate binary
-        # (normally an Editor) to open the file. Works perfectly on Windows if SciTE is installed.
-        # However using webbrower.open is not portable and not supported
-        # https://docs.python.org/3.4/library/webbrowser.html
-        #webbrowser.open(filename)
-
-        # The Abaqus syntax highlighter works similarly to that one of SciTE so that our
-        # own editor can be used now
-        import FemGui
-        FemGui.open(filename)
+        if self.fem_prefs.GetBool("UseInternalEditor",True):
+            FemGui.open(filename)
+        else:
+            ext_editor_path = self.fem_prefs.GetString("ExternalEditorPath","")
+            if ext_editor_path:
+                self.start_ext_editor(ext_editor_path, filename)
+            else:
+                print "External editor is not defined in FEM preferences. Falling back to internal editor"
+                FemGui.open(filename)
 
     def runCalculix(self):
         print 'runCalculix'
