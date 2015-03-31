@@ -793,7 +793,10 @@ void NavigationStyle::doZoom(SoCamera* camera, SbBool forward, const SbVec2f& po
  */
 void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& pos)
 {
-    if (abs(logfactor)>4.0) return;//something is asking for big zoom factor. This func is made for interactive zooming, where the changes are per mouse move and thus are small.
+    // something is asking for big zoom factor. This func is made for interactive zooming,
+    // where the changes are per mouse move and thus are small.
+    if (abs(logfactor)>4.0)
+        return;
     SbBool zoomAtCur = this->zoomAtCursor;
     if (zoomAtCur) {
         const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();

@@ -23,11 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-    #include <qevent.h>
-    #include <qgraphicsitem.h>
-    #include <QWidget>
-    #include <Windows.h>
-    #include <assert.h>
+# include <QEvent>
+# include <QGraphicsItem>
+# include <QWidget>
+# ifdef FC_OS_WIN32
+# include <Windows.h>
+# endif
+# include <cassert>
 #endif
 
 #include "WinNativeGestureRecognizers.h"

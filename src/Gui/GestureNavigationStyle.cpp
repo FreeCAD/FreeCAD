@@ -50,7 +50,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <cfloat>
-# include "InventorAll.h"
 # include <QAction>
 # include <QActionGroup>
 # include <QApplication>
@@ -58,6 +57,7 @@
 # include <QCursor>
 # include <QList>
 # include <QMenu>
+# include <QMessageBox>
 # include <QMetaObject>
 # include <QRegExp>
 #endif
