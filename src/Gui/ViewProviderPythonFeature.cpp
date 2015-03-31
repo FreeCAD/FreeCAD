@@ -59,6 +59,7 @@
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Document.h"
+#include "WidgetFactory.h"
 #include <App/DocumentObjectPy.h>
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
@@ -516,6 +517,40 @@ bool ViewProviderPythonFeatureImp::doubleClicked(void)
     return false;
 }
 
+void ViewProviderPythonFeatureImp::setupContextMenu(QMenu* menu)
+{
+    // Run the attach method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        App::Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            Py::Object vp = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
+            if (vp.hasAttr(std::string("setupContextMenu"))) {
+                if (vp.hasAttr("__object__")) {
+                    PythonWrapper wrap;
+                    wrap.loadGuiModule();
+                    Py::Callable method(vp.getAttr(std::string("setupContextMenu")));
+                    Py::Tuple args(1);
+                    args.setItem(0, wrap.fromQWidget(menu, "QMenu"));
+                    method.apply(args);
+                }
+                else {
+                    PythonWrapper wrap;
+                    wrap.loadGuiModule();
+                    Py::Callable method(vp.getAttr(std::string("setupContextMenu")));
+                    Py::Tuple args(2);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                    args.setItem(1, wrap.fromQWidget(menu, "QMenu"));
+                    method.apply(args);
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
 
 void ViewProviderPythonFeatureImp::attach(App::DocumentObject *pcObject)
 {
