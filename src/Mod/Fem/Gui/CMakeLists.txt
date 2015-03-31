@@ -41,6 +41,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 
 set(FemGui_MOC_HDRS
+    DlgSettingsFemImp.h
     Hypothesis.h
     TaskObjectName.h
     TaskCreateNodeSet.h
@@ -61,6 +62,7 @@ fc_wrap_cpp(FemGui_MOC_SRCS ${FemGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 
 set(FemGui_UIC_SRCS
+    DlgSettingsFem.ui
     Hypothesis.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
@@ -76,6 +78,9 @@ qt4_wrap_ui(FemGui_UIC_HDRS ${FemGui_UIC_SRCS})
 
 SET(FemGui_DLG_SRCS
     ${FemGui_UIC_HDRS}
+    DlgSettingsFem.ui
+    DlgSettingsFemImp.cpp
+    DlgSettingsFemImp.h
     Hypothesis.ui
     Hypothesis.cpp
     Hypothesis.h
