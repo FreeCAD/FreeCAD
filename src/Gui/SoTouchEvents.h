@@ -24,10 +24,14 @@
 #ifndef SOTOUCHEVENTS_H
 #define SOTOUCHEVENTS_H
 
-#include <qwidget.h>
-#include <qgesture.h>
-#include <InventorAll.h>
+#include <QGesture>
 #include <Quarter/devices/InputDevice.h>
+#include <Inventor/SbLinear.h>
+#include <Inventor/events/SoEvent.h>
+#include <Inventor/events/SoSubEvent.h>
+
+class QWidget;
+
 namespace Quarter = SIM::Coin3D::Quarter;
 
 class SoGestureEvent : public SoEvent {

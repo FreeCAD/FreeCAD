@@ -81,7 +81,7 @@
 # include <QMessageBox>
 # include <QTimer>
 # include <QStatusBar>
-#include <QBitmap>
+# include <QBitmap>
 #endif
 
 #include <sstream>
@@ -123,10 +123,10 @@
 
 #include <Inventor/draggers/SoCenterballDragger.h>
 #include <Inventor/annex/Profiler/SoProfiler.h>
-#include <SoTouchEvents.h>
-#include <qgesture.h>
+#include <QGesture>
 
-#include <WinNativeGestureRecognizers.h>
+#include "SoTouchEvents.h"
+#include "WinNativeGestureRecognizers.h"
 
 //#define FC_LOGGING_CB
 
