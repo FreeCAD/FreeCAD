@@ -28,6 +28,7 @@
 # include <QApplication>
 # include <QEvent>
 # include <QFileInfo>
+# include <QMenu>
 # include <QPixmap>
 # include <boost/signals.hpp>
 # include <boost/bind.hpp>
