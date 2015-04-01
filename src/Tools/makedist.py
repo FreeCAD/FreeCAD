@@ -43,7 +43,7 @@ def main():
     revision='%04d' % (info.count('\n'))
 
     PACKAGE_NAME = 'freecad'
-    version = "0.14.%s" % (revision)
+    version = "0.15.%s" % (revision)
 
     DIRNAME = "%(p)s-%(v)s" % {'p': PACKAGE_NAME, 'v': version}
     TARNAME = DIRNAME + '.tar'
