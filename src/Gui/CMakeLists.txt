@@ -7,8 +7,8 @@ endif(WIN32)
 if (FREECAD_USE_3DCONNEXION)
     add_definitions(-D_USE_3DCONNEXION_SDK)
     if(APPLE)
-	set(3DCONNEXION_LINKFLAGS "-F/Library/Frameworks -weak_framework 3DconnexionClient")
-	set(3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers )
+        set(3DCONNEXION_LINKFLAGS "-F/Library/Frameworks -weak_framework 3DconnexionClient")
+        set(3DCONNEXION_INCLUDE_DIR ${3DCONNEXIONCLIENT_FRAMEWORK}/Headers )
     endif(APPLE)
  endif(FREECAD_USE_3DCONNEXION)
 
@@ -54,7 +54,7 @@ else(MSVC)
         ${QT_LIBRARIES}
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
-	${3DCONNEXION_LINKFLAGS}
+        ${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
 
@@ -139,7 +139,8 @@ endif(FREECAD_USE_3DCONNEXION AND MSVC)
 
 if(FREECAD_USE_3DCONNEXION AND APPLE)
 SET(FreeCADGui_SDK_SRCS
-   3Dconnexion/GuiApplicationNativeEventAwareMac.cpp)
+    3Dconnexion/GuiApplicationNativeEventAwareMac.cpp
+)
 SOURCE_GROUP("3D connexion SDK" FILES ${FreeCADGui_SDK_SRCS})
 endif(FREECAD_USE_3DCONNEXION AND APPLE)
 
@@ -939,7 +940,6 @@ SET(FreeCADGui_SRCS
 
 SET(FreeCADGui_SRCS
     ${FreeCADGui_SDK_SRCS}
-    ${FreeCADGui_SDK_SRCS_Mac}
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
     ${iis_MOC_SRCS}
