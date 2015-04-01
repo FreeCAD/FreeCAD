@@ -35,7 +35,9 @@
 
 #ifdef Q_WS_WIN
 #if QT_VERSION < 0x050000
-//#define GESTURE_MESS
+#if(WINVER >= 0x0601) // need Windows 7
+#define GESTURE_MESS
+#endif
 #endif // QT_VERSION < 0x050000
 #endif // Q_WS_WIN
 
