@@ -77,7 +77,7 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
     if (InstallConnexionHandlers == NULL)
       {
         Base::Console().Log("3Dconnexion framework not found!\n");
-	return;
+        return;
       }
     /* close the connection with the 3dx driver */
     //std::cerr << "tdxClientID: " << tdxClientID << std::endl;
@@ -132,8 +132,8 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
     assert(err == 0);
     if (err)
       {
-	Base::Console().Log("Error installing 3Dconnexion handler\n");
-	return;
+        Base::Console().Log("Error installing 3Dconnexion handler\n");
+        return;
       }
     /* register our app with the driver */
     //Pascal string Application name required to register driver for application
@@ -145,12 +145,11 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
     //std::cerr << "tdxClientID: " << tdxClientID << std::endl;
     if (tdxClientID == 0)
       {
-	Base::Console().Log("Couldn't connect to 3Dconnexion driver\n");
-	return;
+        Base::Console().Log("Couldn't connect to 3Dconnexion driver\n");
+        return;
       }
     
-    Base::Console().Log("3Dconnexion device initialized. Client ID: %d\n", 
-			tdxClientID);
+    Base::Console().Log("3Dconnexion device initialized. Client ID: %d\n", tdxClientID);
     spaceballPresent = true;
 #endif
 #endif // _USE_3DCONNEXION_SDK
@@ -167,7 +166,6 @@ bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject *object,
     QApplication::notify(object, event);
     if (event->type() == Spaceball::MotionEvent::MotionEventType)
     {
-Base::Console().Log("process motion event\n");
         Spaceball::MotionEvent *motionEvent = dynamic_cast<Spaceball::MotionEvent*>(event);
         if (!motionEvent)
             return true;
