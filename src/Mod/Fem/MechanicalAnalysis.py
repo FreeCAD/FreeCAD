@@ -560,7 +560,7 @@ class _JobControlTaskPanel:
         # The Abaqus syntax highlighter works similarly to that one of SciTE so that our
         # own editor can be used now
         import FemGui
-        FemGui.openEditor(filename)
+        FemGui.open(filename)
 
     def runCalculix(self):
         print 'runCalculix'
