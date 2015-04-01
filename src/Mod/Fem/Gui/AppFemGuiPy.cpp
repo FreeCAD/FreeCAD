@@ -76,7 +76,7 @@ static PyObject * getActiveAnalysis(PyObject *self, PyObject *args)
 }
 
 /* module functions */
-static PyObject * openEditor(PyObject *self, PyObject *args)
+static PyObject * open(PyObject *self, PyObject *args)
 {
     char* Name;
     const char* DocName;
@@ -124,7 +124,9 @@ struct PyMethodDef FemGui_Import_methods[] = {
      "setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."},
     {"getActiveAnalysis"       ,getActiveAnalysis      ,METH_VARARGS,
      "getActiveAnalysis() -- Returns the Analysis object in work."},
-    {"openEditor"              ,openEditor             ,METH_VARARGS,
-     "openEditor() -- Opens a simple text editor for an FEM file."},
+    {"open"                    ,open                   ,METH_VARARGS,
+     "open(string) -- Opens an Abaqus file in a text editor."},
+    {"insert"                  ,open                   ,METH_VARARGS,
+     "insert(string,string) -- Opens an Abaqus file in a text editor."},
     {NULL, NULL}                   /* end of table marker */
 };
