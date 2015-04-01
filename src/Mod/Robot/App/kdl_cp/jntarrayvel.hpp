@@ -54,7 +54,7 @@ namespace KDL
         friend void Divide(const JntArrayVel& src,const double& factor,JntArrayVel& dest);
         friend void Divide(const JntArrayVel& src,const doubleVel& factor,JntArrayVel& dest);
         friend void SetToZero(JntArrayVel& array);
-        friend bool Equal(const JntArrayVel& src1,const JntArrayVel& src2,double eps=epsilon);
+        friend bool Equal(const JntArrayVel& src1,const JntArrayVel& src2,double eps);
 
     };
 }

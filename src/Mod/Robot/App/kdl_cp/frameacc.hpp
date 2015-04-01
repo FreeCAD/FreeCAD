@@ -79,9 +79,9 @@ public:
     IMETHOD friend VectorAcc operator / (const VectorAcc& r2,const doubleAcc& r1);
 
 
-    IMETHOD friend bool Equal(const VectorAcc& r1,const VectorAcc& r2,double eps=epsilon);
-    IMETHOD friend bool Equal(const Vector& r1,const VectorAcc& r2,double eps=epsilon);
-    IMETHOD friend bool Equal(const VectorAcc& r1,const Vector& r2,double eps=epsilon);
+    IMETHOD friend bool Equal(const VectorAcc& r1,const VectorAcc& r2,double eps);
+    IMETHOD friend bool Equal(const Vector& r1,const VectorAcc& r2,double eps);
+    IMETHOD friend bool Equal(const VectorAcc& r1,const Vector& r2,double eps);
     IMETHOD friend VectorAcc operator - (const VectorAcc& r);
     IMETHOD friend doubleAcc dot(const VectorAcc& lhs,const VectorAcc& rhs);
     IMETHOD friend doubleAcc dot(const VectorAcc& lhs,const Vector& rhs);
@@ -133,9 +133,9 @@ public:
     IMETHOD friend RotationAcc operator* (const RotationAcc& r1,const RotationAcc& r2);
     IMETHOD friend RotationAcc operator* (const Rotation& r1,const RotationAcc& r2);
     IMETHOD friend RotationAcc operator* (const RotationAcc& r1,const Rotation& r2);
-    IMETHOD friend bool Equal(const RotationAcc& r1,const RotationAcc& r2,double eps=epsilon);
-    IMETHOD friend bool Equal(const Rotation& r1,const RotationAcc& r2,double eps=epsilon);
-    IMETHOD friend bool Equal(const RotationAcc& r1,const Rotation& r2,double eps=epsilon);
+    IMETHOD friend bool Equal(const RotationAcc& r1,const RotationAcc& r2,double eps);
+    IMETHOD friend bool Equal(const Rotation& r1,const RotationAcc& r2,double eps);
+    IMETHOD friend bool Equal(const RotationAcc& r1,const Rotation& r2,double eps);
     IMETHOD TwistAcc Inverse(const TwistAcc& arg) const;
     IMETHOD TwistAcc Inverse(const Twist& arg) const;
     IMETHOD TwistAcc operator * (const TwistAcc& arg) const;
@@ -171,9 +171,9 @@ public:
     IMETHOD friend FrameAcc operator * (const FrameAcc& f1,const FrameAcc& f2);
     IMETHOD friend FrameAcc operator * (const Frame& f1,const FrameAcc& f2);
     IMETHOD friend FrameAcc operator * (const FrameAcc& f1,const Frame& f2);
-    IMETHOD friend bool Equal(const FrameAcc& r1,const FrameAcc& r2,double eps=epsilon);
-    IMETHOD friend bool Equal(const Frame& r1,const FrameAcc& r2,double eps=epsilon);
-    IMETHOD friend bool Equal(const FrameAcc& r1,const Frame& r2,double eps=epsilon);
+    IMETHOD friend bool Equal(const FrameAcc& r1,const FrameAcc& r2,double eps);
+    IMETHOD friend bool Equal(const Frame& r1,const FrameAcc& r2,double eps);
+    IMETHOD friend bool Equal(const FrameAcc& r1,const Frame& r2,double eps);
 
     IMETHOD TwistAcc  Inverse(const TwistAcc& arg) const;
     IMETHOD TwistAcc  Inverse(const Twist& arg) const;
@@ -227,9 +227,9 @@ public:
      // the new point.
      // Complexity : 6M+6A
 
-     IMETHOD friend bool Equal(const TwistAcc& a,const TwistAcc& b,double eps=epsilon);
-     IMETHOD friend bool Equal(const Twist& a,const TwistAcc& b,double eps=epsilon);
-     IMETHOD friend bool Equal(const TwistAcc& a,const Twist& b,double eps=epsilon);
+     IMETHOD friend bool Equal(const TwistAcc& a,const TwistAcc& b,double eps);
+     IMETHOD friend bool Equal(const Twist& a,const TwistAcc& b,double eps);
+     IMETHOD friend bool Equal(const TwistAcc& a,const Twist& b,double eps);
 
 
      IMETHOD Twist GetTwist() const;

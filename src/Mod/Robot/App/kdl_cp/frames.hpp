@@ -244,7 +244,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Vector& a,const Vector& b,double eps=epsilon);
+     inline friend bool Equal(const Vector& a,const Vector& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      inline friend bool operator==(const Vector& a,const Vector& b);
@@ -493,7 +493,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     friend bool Equal(const Rotation& a,const Rotation& b,double eps=epsilon);
+     friend bool Equal(const Rotation& a,const Rotation& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      friend bool operator==(const Rotation& a,const Rotation& b);
@@ -651,7 +651,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Frame& a,const Frame& b,double eps=epsilon);
+     inline friend bool Equal(const Frame& a,const Frame& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      inline friend bool operator==(const Frame& a,const Frame& b);
@@ -726,7 +726,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Twist& a,const Twist& b,double eps=epsilon);
+     inline friend bool Equal(const Twist& a,const Twist& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      inline friend bool operator==(const Twist& a,const Twist& b);
@@ -889,7 +889,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Wrench& a,const Wrench& b,double eps=epsilon);
+     inline friend bool Equal(const Wrench& a,const Wrench& b,double eps);
 
 	 //! The literal equality operator==(), also identical.
      inline friend bool operator==(const Wrench& a,const Wrench& b);
@@ -982,7 +982,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Vector2& a,const Vector2& b,double eps=epsilon);
+     inline friend bool Equal(const Vector2& a,const Vector2& b,double eps);
 
 	//! The literal equality operator==(), also identical.
 	inline friend bool operator==(const Vector2& a,const Vector2& b);
@@ -1034,7 +1034,7 @@ public:
 
      //! do not use operator == because the definition of Equal(.,.) is slightly
      //! different.  It compares whether the 2 arguments are equal in an eps-interval
-     inline friend bool Equal(const Rotation2& a,const Rotation2& b,double eps=epsilon);
+     inline friend bool Equal(const Rotation2& a,const Rotation2& b,double eps);
 };
 
 //! A 2D frame class, for further documentation see the Frames class
@@ -1075,7 +1075,7 @@ public:
         tmp.SetIdentity();
         return tmp;
      }
-     inline friend bool Equal(const Frame2& a,const Frame2& b,double eps=epsilon);
+     inline friend bool Equal(const Frame2& a,const Frame2& b,double eps);
 };
 
 IMETHOD Vector diff(const Vector& a,const Vector& b,double dt=1);
