@@ -148,7 +148,7 @@ class _MechanicalMaterialTaskPanel:
 
         matmap = self.obj.Material
 
-        matmap['Mechanical_youngsmodulus'] = self.form.spinBox_young_modulus.text()
+        matmap['Mechanical_youngsmodulus'] = self.form.input_fd_young_modulus.text()
         matmap['FEM_poissonratio'] = str(self.form.spinBox_poisson_ratio.value())
         print self.form.comboBox_MaterialsInDir.currentText()
 
@@ -161,7 +161,7 @@ class _MechanicalMaterialTaskPanel:
 
         if 'Mechanical_youngsmodulus' in matmap:
             #print matmap['Mechanical_youngsmodulus']
-            self.form.spinBox_young_modulus.setText(matmap['Mechanical_youngsmodulus'])
+            self.form.input_fd_young_modulus.setText(matmap['Mechanical_youngsmodulus'])
         if 'FEM_poissonratio' in matmap:
             #print float(matmap['FEM_poissonratio'])
             self.form.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
@@ -177,7 +177,7 @@ class _MechanicalMaterialTaskPanel:
 
     def update(self):
         'fills the widgets'
-        #self.form.spinBox_young_modulus.setValue(0.0)
+        #self.form.input_fd_young_modulus.setValue(0.0)
         #self.form.spinBox_poisson_ratio.setValue(0.0)
         self.transferFrom()
         self.fillMaterialCombo()
