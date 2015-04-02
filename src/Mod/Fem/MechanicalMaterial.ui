@@ -44,7 +44,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="Gui::InputField" name="spinBox_young_modulus">
+      <widget class="Gui::InputField" name="input_fd_young_modulus">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
