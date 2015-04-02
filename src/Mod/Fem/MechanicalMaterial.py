@@ -134,6 +134,15 @@ class _MechanicalMaterialTaskPanel:
 
         self.update()
 
+    def print_mat_data(self, matmap):
+        print 'material data:'
+        if 'General_name' in matmap:
+            print ' Name = ', matmap['General_name']
+        if 'Mechanical_youngsmodulus' in matmap:
+            print ' YM = ', matmap['Mechanical_youngsmodulus']
+        if 'FEM_poissonratio' in matmap:
+            print ' PR = ', matmap['FEM_poissonratio']
+
     def transferTo(self):
         "Transfer from the dialog to the object"
 
@@ -144,13 +153,7 @@ class _MechanicalMaterialTaskPanel:
         print self.form.comboBox_MaterialsInDir.currentText()
 
         self.obj.Material = matmap
-        print 'material data:'
-        if 'General_name' in matmap:
-            print ' Name = ', matmap['General_name']
-        if 'Mechanical_youngsmodulus' in matmap:
-            print ' YM = ', matmap['Mechanical_youngsmodulus']
-        if 'FEM_poissonratio' in matmap:
-            print ' PR = ', matmap['FEM_poissonratio']
+        self.print_mat_data(matmap)
 
     def transferFrom(self):
         "Transfer from the object to the dialog"
@@ -189,13 +192,7 @@ class _MechanicalMaterialTaskPanel:
     def reject(self):
         #print 'reject(self)'
         matmap = self.obj.Material
-        print 'material data:'
-        if 'General_name' in matmap:
-            print ' Name = ', matmap['General_name']
-        if 'Mechanical_youngsmodulus' in matmap:
-            print ' YM = ', matmap['Mechanical_youngsmodulus']
-        if 'FEM_poissonratio' in matmap:
-            print ' PR = ', matmap['FEM_poissonratio']
+        self.print_mat_data(matmap)
         FreeCADGui.ActiveDocument.resetEdit()
 
     def saveMat(self):
