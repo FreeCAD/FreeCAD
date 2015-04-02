@@ -50,6 +50,20 @@ const char* Part::BaseplaneTypes[3] = {"XY-Plane", "XZ-Plane", "YZ-Plane"};
 Part::Part(void)
 {
     ADD_PROPERTY(Type,(""));
+    ADD_PROPERTY_TYPE(Material, (), 0, App::Prop_None, "Map with material properties");
+    ADD_PROPERTY_TYPE(Meta, (), 0, App::Prop_None, "Map with additional meta information");
+
+    // create the uuid for the document
+    Base::Uuid id;
+    ADD_PROPERTY_TYPE(Id, (""), 0, App::Prop_None, "ID (Part-Number) of the Item");
+    ADD_PROPERTY_TYPE(Uid, (id), 0, App::Prop_None, "UUID of the Item");
+
+    // license stuff
+    ADD_PROPERTY_TYPE(License, ("CC BY 3.0"), 0, App::Prop_None, "License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL, ("http://creativecommons.org/licenses/by/3.0/"), 0, App::Prop_None, "URL to the license text/contract");
+    // color and apperance
+    ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 1.0)); // set transparent -> not used
+
 }
 
 Part::~Part(void)

@@ -40,7 +40,42 @@ class AppExport Part : public App::GeoFeatureGroup
     PROPERTY_HEADER(App::Part);
 
 public:
+    /// type of the part
     PropertyString Type;
+
+    /** @name base properties of all Assembly Items
+    * This properties corospond mostly to the meta information
+    * in the App::Document class
+    */
+    //@{
+    /// Id e.g. Part number
+    App::PropertyString  Id;
+    /// unique identifier of the Item 
+    App::PropertyUUID    Uid;
+    /// material descriptons
+    App::PropertyMap     Material;
+    /// Meta descriptons
+    App::PropertyMap     Meta;
+
+
+    /** License string
+    * Holds the short license string for the Item, e.g. CC-BY
+    * for the Creative Commons license suit.
+    */
+    App::PropertyString  License;
+    /// License descripton/contract URL
+    App::PropertyString  LicenseURL;
+    //@}
+
+    /** @name Visual properties */
+    //@{
+    /** Base color of the Item
+    If the transparency value is 1.0
+    the color or the next hirachy is used
+    */
+    App::PropertyColor Color;
+    //@}
+
 
     /// Constructor
     Part(void);

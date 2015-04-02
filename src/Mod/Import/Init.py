@@ -31,4 +31,4 @@
 #FreeCAD.addImportType("STEP 214 (*.step *.stp)","ImportGui")
 #FreeCAD.addExportType("STEP 214 (*.step *.stp)","ImportGui")
 #FreeCAD.addExportType("IGES files (*.iges *.igs)","ImportGui")
-FreeCAD.addExportType("PLMXML files (*.plmxml)","Import")
+FreeCAD.addImportType("PLMXML files (*.plmxml)","PlmXmlParser")
