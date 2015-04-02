@@ -50,6 +50,10 @@ public:
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
 
     virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
+    virtual bool showInTree() const
+    {
+      return false;
+    }
     
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     virtual bool setEdit(int ModNum);

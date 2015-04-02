@@ -52,29 +52,16 @@ public:
     App::PropertyString  Id;
     /// unique identifier of the Item 
     App::PropertyUUID    Uid;
-    /// long description of the Item 
-    App::PropertyString  Description  ;
-    /// creators name (utf-8)
-    App::PropertyString  CreatedBy;
-    App::PropertyString  CreationDate;
-    /// user last modified the document
-    App::PropertyString  LastModifiedBy;
-    App::PropertyString  LastModifiedDate;
-    /// company name UTF8(optional)
-    App::PropertyString  Company;
-    /// long comment or description (UTF8 with line breaks)
-    App::PropertyString  Comment;
+    /// material descriptons
+    App::PropertyMap     Material;
+
     /** License string
-      * Holds the short license string for the Item, e.g. CC-BY
-      * for the Creative Commons license suit. 
-      */
+    * Holds the short license string for the Item, e.g. CC-BY
+    * for the Creative Commons license suit.
+    */
     App::PropertyString  License;
     /// License descripton/contract URL
     App::PropertyString  LicenseURL;
-    /// Meta descriptons
-    App::PropertyMap     Meta;
-    /// Meta descriptons
-    App::PropertyMap     Material;
     //@}
 
     /** @name Visual properties */

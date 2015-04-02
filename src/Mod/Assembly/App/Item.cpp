@@ -43,6 +43,8 @@ PROPERTY_SOURCE_ABSTRACT(Assembly::Item, App::GeoFeature)
 
 Item::Item()
 {
+  ADD_PROPERTY_TYPE(Meta, (), 0, App::Prop_None, "Map with additional meta information");
+
 }
 
 short Item::mustExecute() const

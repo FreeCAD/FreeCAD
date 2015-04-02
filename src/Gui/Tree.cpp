@@ -897,18 +897,20 @@ void DocumentItem::slotResetEdit(const Gui::ViewProviderDocumentObject& v)
 
 void DocumentItem::slotNewObject(const Gui::ViewProviderDocumentObject& obj)
 {
-    std::string displayName = obj.getObject()->Label.getValue();
-    std::string objectName = obj.getObject()->getNameInDocument();
-    std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
-    if (it == ObjectMap.end()) {
-        // cast to non-const object
-        DocumentObjectItem* item = new DocumentObjectItem(
-            const_cast<Gui::ViewProviderDocumentObject*>(&obj), this);
-        item->setIcon(0, obj.getIcon());
-        item->setText(0, QString::fromUtf8(displayName.c_str()));
-        ObjectMap[objectName] = item;
-    } else {
-        Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
+    if (obj.showInTree()){
+        std::string displayName = obj.getObject()->Label.getValue();
+        std::string objectName = obj.getObject()->getNameInDocument();
+        std::map<std::string, DocumentObjectItem*>::iterator it = ObjectMap.find(objectName);
+        if (it == ObjectMap.end()) {
+            // cast to non-const object
+            DocumentObjectItem* item = new DocumentObjectItem(
+              const_cast<Gui::ViewProviderDocumentObject*>(&obj), this);
+            item->setIcon(0, obj.getIcon());
+            item->setText(0, QString::fromUtf8(displayName.c_str()));
+            ObjectMap[objectName] = item;
+        }else {
+            Base::Console().Warning("DocumentItem::slotNewObject: Cannot add view provider twice.\n");
+        }
     }
 }
 

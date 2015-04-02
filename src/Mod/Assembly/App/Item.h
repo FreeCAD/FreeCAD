@@ -39,7 +39,10 @@ class AssemblyExport Item : public App::GeoFeature
 
 public:
     Item();
-	~Item() {};
+	  ~Item() {};
+
+    /// Meta descriptons
+    App::PropertyMap     Meta;
 
     /** @name methods override feature */
     //@{

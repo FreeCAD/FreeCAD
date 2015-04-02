@@ -35,7 +35,7 @@
 #include <Gui/Application.h>
 
 #include <Mod/Assembly/App/Product.h>
-#include <Mod/Assembly/App/PartRef.h>
+#include <Mod/Assembly/App/ProductRef.h>
 //#include <Mod/Part/App/BodyBase.h>
 
 using namespace AssemblyGui;
@@ -94,9 +94,26 @@ std::vector<std::string> ViewProviderProduct::getDisplayModes(void) const
 
 std::vector<App::DocumentObject*> ViewProviderProduct::claimChildren(void)const
 {
-    std::vector<App::DocumentObject*> temp(static_cast<Assembly::Product*>(getObject())->Items.getValues());
 
-    return temp;
+    std::vector<App::DocumentObject*> returnVector;
+    
+    // do not adopt the ref-objects as child, rather use the target objects if any 
+    // that makes the ProductRefs invisibly in the tree!
+    const std::vector<App::DocumentObject*> &items = static_cast<Assembly::Product*>(getObject())->Items.getValues();
+    for (std::vector<App::DocumentObject*>::const_iterator it = items.begin(); it != items.end(); ++it)
+    {
+        if ((*it)->getTypeId() == Assembly::ProductRef::getClassTypeId())
+        {
+            App::DocumentObject *obj = static_cast<Assembly::ProductRef *> (*it)->Item.getValue();
+            if (obj)
+            {
+                returnVector.push_back(obj);
+            }
+        }
+
+    }
+
+    return returnVector;
 }
 
 std::vector<App::DocumentObject*> ViewProviderProduct::claimChildren3D(void)const

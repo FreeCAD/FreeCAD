@@ -45,13 +45,6 @@ PROPERTY_SOURCE(Assembly::Product, Assembly::Item)
 
 Product::Product() {
     ADD_PROPERTY(Items,(0));
-    ADD_PROPERTY_TYPE(CreatedBy,(""),0,App::Prop_None,"The creator of the Item");
-    ADD_PROPERTY_TYPE(CreationDate,(Base::TimeInfo::currentDateTimeString()),0,App::Prop_ReadOnly,"Date of creation");
-    ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,App::Prop_None,0);
-    ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,App::Prop_ReadOnly,"Date of last modification");
-    ADD_PROPERTY_TYPE(Company,(""),0,App::Prop_None,"Additional tag to save the the name of the company");
-    ADD_PROPERTY_TYPE(Comment,(""),0,App::Prop_None,"Additional tag to save a comment");
-    ADD_PROPERTY_TYPE(Meta,(),0,App::Prop_None,"Map with additional meta information");
     ADD_PROPERTY_TYPE(Material,(),0,App::Prop_None,"Map with material properties");
     // create the uuid for the document
     Base::Uuid id;

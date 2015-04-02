@@ -61,6 +61,7 @@ SET(SCL_Resources
     automotive_design.py     # AP214e3
     ifc2x3.py                # IFC
     ifc4.py                  # IFC 4
+    PlmXmlParser.py
 )
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})
 

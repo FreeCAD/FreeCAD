@@ -94,9 +94,15 @@ std::vector<std::string> ViewProviderProductRef::getDisplayModes(void) const
 
 std::vector<App::DocumentObject*> ViewProviderProductRef::claimChildren(void)const
 {
+  App::DocumentObject * obj = static_cast<Assembly::ProductRef*>(getObject())->Item.getValue();
+  if (obj){
     std::vector<App::DocumentObject*> ret(1);
-    ret[0] =  static_cast<Assembly::ProductRef*>(getObject())->Item.getValue();
+    ret[0] = obj;
     return ret;
+  }
+  else{
+    return std::vector<App::DocumentObject*>();
+  }
 }
 
 std::vector<App::DocumentObject*> ViewProviderProductRef::claimChildren3D(void)const
