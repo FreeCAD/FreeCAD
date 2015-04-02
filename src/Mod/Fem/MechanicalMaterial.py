@@ -145,21 +145,21 @@ class _MechanicalMaterialTaskPanel:
 
         self.obj.Material = matmap
         print 'material data:'
-        if matmap.has_key('General_name'):
+        if 'General_name' in matmap:
             print ' Name = ', matmap['General_name']
-        if matmap.has_key('Mechanical_youngsmodulus'):
+        if 'Mechanical_youngsmodulus' in matmap:
             print ' YM = ', matmap['Mechanical_youngsmodulus']
-        if matmap.has_key('FEM_poissonratio'):
+        if 'FEM_poissonratio' in matmap:
             print ' PR = ', matmap['FEM_poissonratio']
 
     def transferFrom(self):
         "Transfer from the object to the dialog"
         matmap = self.obj.Material
 
-        if matmap.has_key('Mechanical_youngsmodulus'):
+        if 'Mechanical_youngsmodulus' in matmap:
             #print matmap['Mechanical_youngsmodulus']
             self.form.spinBox_young_modulus.setText(matmap['Mechanical_youngsmodulus'])
-        if matmap.has_key('FEM_poissonratio'):
+        if 'FEM_poissonratio' in matmap:
             #print float(matmap['FEM_poissonratio'])
             self.form.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
 
@@ -190,11 +190,11 @@ class _MechanicalMaterialTaskPanel:
         #print 'reject(self)'
         matmap = self.obj.Material
         print 'material data:'
-        if matmap.has_key('General_name'):
+        if 'General_name' in matmap:
             print ' Name = ', matmap['General_name']
-        if matmap.has_key('Mechanical_youngsmodulus'):
+        if 'Mechanical_youngsmodulus' in matmap:
             print ' YM = ', matmap['Mechanical_youngsmodulus']
-        if matmap.has_key('FEM_poissonratio'):
+        if 'FEM_poissonratio' in matmap:
             print ' PR = ', matmap['FEM_poissonratio']
         FreeCADGui.ActiveDocument.resetEdit()
 
