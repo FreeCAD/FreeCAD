@@ -357,12 +357,13 @@ protected:
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
-    /** A flag. If false, gestures on windows will get tuned(or re-tuned)
-     *  upon the first event that arrives to eventFilter. This is needed to
-     *  tune windows gestures after Qt does it internally, since its settings
-     *  are not all right for us.
-     */
-    bool isWinGesturesTuned;
+
+    enum eWinGestureTuneState{
+        ewgtsDisabled, //suppress tuning/re-tuning after errors
+        ewgtsNeedTuning, //gestures are to be retuned upon next event
+        ewgtsTuned
+    };
+    eWinGestureTuneState winGestureTuneState;//See ViewerEventFilter::eventFilter function for explanation
 
 private:
     static void setViewportCB(void * userdata, SoAction * action);
