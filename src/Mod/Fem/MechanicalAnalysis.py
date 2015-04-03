@@ -545,8 +545,10 @@ class _JobControlTaskPanel:
         QApplication.restoreOverrideCursor()
 
     def start_ext_editor(self, ext_editor_path, filename):
-        self.ext_editor_process = QtCore.QProcess()
-        self.ext_editor_process.execute(ext_editor_path, [filename])
+        if not hasattr(self, "ext_editor_process"):
+            self.ext_editor_process = QtCore.QProcess()
+        if  self.ext_editor_process.state() != QtCore.QProcess.Running:
+            self.ext_editor_process.start(ext_editor_path, [filename])
 
     def editCalculixInputFile(self):
         filename = self.Basename + '.inp'
