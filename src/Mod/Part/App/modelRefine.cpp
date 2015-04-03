@@ -1095,7 +1095,8 @@ bool FaceUniter::process()
             TopTools_ListIteratorOfListOfShape edgeIt;
             for (edgeIt.Initialize(edges); edgeIt.More(); edgeIt.Next())
             {
-                modifiedShapes.push_back(std::make_pair(edgeIt.Value(), newEdges(idx)));
+                if (newEdges.IsBound(idx))
+                    modifiedShapes.push_back(std::make_pair(edgeIt.Value(), newEdges(idx)));
             }
             // TODO: Handle vertices that have disappeared in the fusion of the edges
         }
