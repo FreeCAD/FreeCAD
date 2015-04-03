@@ -442,7 +442,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
         }
 
         //gesture start
-        if (evIsGesture && !this->button1down && !this->button2down){//ignore gestures when mouse buttons are down.
+        if (evIsGesture && /*!this->button1down &&*/ !this->button2down){//ignore gestures when mouse buttons are down. Button1down check was disabled because of wrong state after doubleclick on sketcher constraint to edit datum
             const SoGestureEvent* gesture = static_cast<const SoGestureEvent*>(ev);
             if (gesture->state == SoGestureEvent::SbGSStart
                     || gesture->state == SoGestureEvent::SbGSUpdate) {//even if we didn't get a start, assume the first update is a start (sort-of fail-safe).
