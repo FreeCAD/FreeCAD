@@ -41,6 +41,7 @@
 
 #include <qgesture.h>
 #include <private/qevent_p.h>
+#include <Base/Exception.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -188,10 +189,28 @@ void WinNativeGestureRecognizerPinch::reset(QGesture* gesture)
   q->fingerDistance = 0;
 }
 
+//function prototype for dymanic linking
+typedef BOOL ( __stdcall * ptrSetGestureConfig) (
+     HWND ,              // window for which configuration is specified
+     DWORD ,             // reserved, must be 0
+     UINT ,              // count of GESTURECONFIG structures
+     PGESTURECONFIG ,    // array of GESTURECONFIG structures, dwIDs will be processed in the
+                         // order specified and repeated occurances will overwrite previous ones
+     UINT );             // sizeof(GESTURECONFIG)
+
 void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)
 {
     //modify windows-specific gesture options
 #if WINVER >= _WIN32_WINNT_WIN7
+    //dynamic linking - required to be able to run on windows pre-7
+    HINSTANCE hinstLib = LoadLibraryA("user32.dll");
+    if (hinstLib == 0)
+        throw Base::Exception("LoadLibrary(user32.dll) failed. Could not tune Windows gestures.");
+
+    ptrSetGestureConfig dllSetGestureConfig = reinterpret_cast<ptrSetGestureConfig> (GetProcAddress(hinstLib,"SetGestureConfig"));
+    if (dllSetGestureConfig == 0)
+        throw Base::Exception("DLL entry point for SetGestureConfig not found in user32.dll. Could not tune Windows gestures.");
+
     HWND w = target->winId();
 
     //fill in the options
@@ -205,10 +224,12 @@ void WinNativeGestureRecognizerPinch::TuneWindowsGestures(QWidget* target)
     cfgs[1].dwWant = GC_ROTATE;
 
     //set the options
-    bool ret = SetGestureConfig(w, 0, nCfg, cfgs, sizeof(GESTURECONFIG));
-    assert(ret); //if(!ret) throw
+    bool ret = dllSetGestureConfig(w, 0, nCfg, cfgs, sizeof(GESTURECONFIG));
+    assert(ret);
     if(!ret){
-        DWORD err = GetLastError();//for debugging
+        DWORD err = GetLastError();
+        QString errMsg = QString::fromLatin1("Error in SetGestureConfig. GetLastError = %1").arg(err);
+        throw Base::Exception(errMsg.toLatin1());
     }
 #endif
 }
