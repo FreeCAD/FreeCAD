@@ -107,7 +107,7 @@ class _CommandMechanicalShowResult:
         return {'Pixmap': 'Fem_Result',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show result"),
                 'Accel': "A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show result imformatation of an analysis")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show result information of an analysis")}
 
     def Activated(self):
         import FemGui
