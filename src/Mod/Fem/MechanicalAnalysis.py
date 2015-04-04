@@ -583,7 +583,7 @@ class _ResultControlTaskPanel:
         QtCore.QObject.connect(self.form.comboBox_Type, QtCore.SIGNAL("currentIndexChanged(QString)"), self.typeChanged)
 
         QtCore.QObject.connect(self.form.checkBox_ShowDisplacement, QtCore.SIGNAL("clicked(bool)"), self.showDisplacementClicked)
-        QtCore.QObject.connect(self.form.verticalScrollBar_Factor, QtCore.SIGNAL("valueChanged(int)"), self.sliderValue)
+        QtCore.QObject.connect(self.form.horizontalScrollBar_Factor, QtCore.SIGNAL("valueChanged(int)"), self.sliderValue)
         QtCore.QObject.connect(self.form.spinBox_SliderFactor, QtCore.SIGNAL("valueChanged(int)"), self.sliderMaxValue)
         QtCore.QObject.connect(self.form.spinBox_DisplacementFactor, QtCore.SIGNAL("valueChanged(int)"), self.displacementFactorValue)
 
@@ -635,11 +635,11 @@ class _ResultControlTaskPanel:
 
     def sliderMaxValue(self,value):
         #print 'sliderMaxValue()'
-        self.form.verticalScrollBar_Factor.setMaximum(value)
+        self.form.horizontalScrollBar_Factor.setMaximum(value)
 
     def displacementFactorValue(self,value):
         #print 'displacementFactorValue()'
-        self.form.verticalScrollBar_Factor.setValue(value)
+        self.form.horizontalScrollBar_Factor.setValue(value)
 
     def setDisplacement(self):
         if self.DisplacementObject:

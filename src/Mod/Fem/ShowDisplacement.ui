@@ -45,9 +45,9 @@
             <property name="readOnly">
              <bool>true</bool>
             </property>
-           <property name="unit" stdset="0">
-            <string>mm</string>
-           </property>
+            <property name="unit" stdset="0">
+             <string>mm</string>
+            </property>
            </widget>
           </item>
           <item row="1" column="0">
@@ -62,9 +62,9 @@
             <property name="readOnly">
              <bool>true</bool>
             </property>
-           <property name="unit" stdset="0">
-            <string>mm</string>
-           </property>
+            <property name="unit" stdset="0">
+             <string>mm</string>
+            </property>
            </widget>
           </item>
           <item row="2" column="0">
@@ -79,9 +79,9 @@
             <property name="readOnly">
              <bool>true</bool>
             </property>
-           <property name="unit" stdset="0">
-            <string>mm</string>
-           </property>
+            <property name="unit" stdset="0">
+             <string>mm</string>
+            </property>
            </widget>
           </item>
          </layout>
@@ -159,6 +159,13 @@
           </item>
          </layout>
         </item>
+        <item>
+         <widget class="QScrollBar" name="horizontalScrollBar_Factor">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>
@@ -176,22 +183,6 @@
       </spacer>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QScrollBar" name="verticalScrollBar_Factor">
-     <property name="maximum">
-      <number>100</number>
-     </property>
-     <property name="pageStep">
-      <number>1</number>
-     </property>
-     <property name="sliderPosition">
-      <number>1</number>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>
