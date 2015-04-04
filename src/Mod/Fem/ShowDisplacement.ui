@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>186</width>
-    <height>371</height>
+    <width>203</width>
+    <height>379</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -109,6 +109,9 @@
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QLabel" name="label_3">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Factor:</string>
             </property>
@@ -116,6 +119,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="spinBox_DisplacementFactor">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="readOnly">
              <bool>false</bool>
             </property>
@@ -136,6 +142,9 @@
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
            <widget class="QLabel" name="label_7">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Slider max:</string>
             </property>
@@ -143,6 +152,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="spinBox_SliderFactor">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="readOnly">
              <bool>false</bool>
             </property>
@@ -161,6 +173,9 @@
         </item>
         <item>
          <widget class="QScrollBar" name="horizontalScrollBar_Factor">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -194,5 +209,86 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBox_ShowDisplacement</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_3</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>90</x>
+     <y>232</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>68</x>
+     <y>269</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_ShowDisplacement</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_DisplacementFactor</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>240</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>124</x>
+     <y>269</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_ShowDisplacement</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_7</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>95</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>86</x>
+     <y>309</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_ShowDisplacement</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_SliderFactor</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>161</x>
+     <y>237</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>159</x>
+     <y>302</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_ShowDisplacement</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>horizontalScrollBar_Factor</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>48</x>
+     <y>241</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>36</x>
+     <y>345</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
