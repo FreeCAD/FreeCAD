@@ -67,7 +67,7 @@
         <number>3</number>
        </property>
        <property name="maximum" stdset="0">
-        <double>2000.000000000000000</double>
+        <double>2000000000.000000000</double>
        </property>
        <property name="singleStep" stdset="0">
         <double>2.000000000000000</double>
