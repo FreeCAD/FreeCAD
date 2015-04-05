@@ -307,6 +307,14 @@ from the knots table of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="toBiArcs">
+			<Documentation>
+				<UserDocu>
+					Build a list of arcs and lines to approximate the b-spline.
+					toBiArcs(tolerance) -> list.
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="join">
 			<Documentation>
 				<UserDocu>

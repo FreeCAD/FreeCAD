@@ -54,6 +54,7 @@
 # include <GeomLProp_CLProps.hxx>
 # include <GeomLProp_SLProps.hxx>
 # include <gp.hxx>
+# include <gp_Ax2.hxx>
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Hypr.hxx>
