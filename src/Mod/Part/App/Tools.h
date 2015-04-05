@@ -29,6 +29,9 @@
 #include <gp_Dir.hxx>
 #include <gp_XYZ.hxx>
 
+class gp_Lin;
+class gp_Pln;
+
 namespace Base {
 // Specialization for gp_Pnt
 template <>
@@ -82,6 +85,13 @@ private:
 
 namespace Part
 {
+
+PartExport
+void closestPointsOnLines(const gp_Lin& lin1, const gp_Lin& lin2, gp_Pnt &p1, gp_Pnt &p2);
+PartExport
+bool intersect(const gp_Pln& pln1, const gp_Pln& pln2, gp_Lin& lin);
+PartExport
+bool tangentialArc(const gp_Pnt& p0, const gp_Vec& v0, const gp_Pnt& p1, gp_Pnt& c, gp_Dir& a);
 
 } //namespace Part
 

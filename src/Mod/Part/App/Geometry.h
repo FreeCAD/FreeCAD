@@ -49,6 +49,7 @@
 #include <TopoDS_Shape.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
+#include <list>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -160,6 +161,7 @@ public:
     std::vector<Base::Vector3d> getPoles() const;
     bool join(const Handle_Geom_BSplineCurve&);
     void makeC1Continuous(double, double);
+    std::list<Geometry*> toBiArcs(double tolerance) const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -171,6 +173,13 @@ public:
     void setHandle(const Handle_Geom_BSplineCurve&);
     const Handle_Geom_Geometry& handle() const;
 
+private:
+    void createArcs(double tolerance, std::list<Geometry*>& new_spans,
+                    const gp_Pnt &p_start, const gp_Vec &v_start,
+                    double t_start, double t_end, gp_Pnt &p_end, gp_Vec &v_end) const;
+    bool calculateBiArcPoints(const gp_Pnt& p0, gp_Vec v_start,
+                              const gp_Pnt& p4, gp_Vec v_end,
+                              gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const;
 private:
     Handle_Geom_BSplineCurve myCurve;
 };

@@ -558,6 +558,7 @@ PyObject* BSplineCurvePy::setPeriodic(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
+        std::list<Geometry*> new_spans;
     try {
         Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
             (getGeometryPtr()->handle());
@@ -709,6 +710,31 @@ Py::List BSplineCurvePy::getKnotSequence(void) const
         list.append(Py::Float(k(i)));
     }
     return list;
+}
+
+PyObject* BSplineCurvePy::toBiArcs(PyObject * args)
+{
+    double tolerance = 0.001;
+    if (!PyArg_ParseTuple(args, "d", &tolerance))
+        return 0;
+    try {
+        GeomBSplineCurve* curve = getGeomBSplineCurvePtr();
+        std::list<Geometry*> arcs;
+        arcs = curve->toBiArcs(tolerance);
+
+        Py::List list;
+        for (std::list<Geometry*>::iterator it = arcs.begin(); it != arcs.end(); ++it) {
+            list.append(Py::Object((*it)->getPyObject()));
+            delete (*it);
+        }
+
+        return Py::new_reference_to(list);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
 }
 
 PyObject* BSplineCurvePy::approximate(PyObject *args)
