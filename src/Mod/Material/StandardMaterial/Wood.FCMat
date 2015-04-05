@@ -15,7 +15,7 @@ Description=A standard construction wood
 [Mechanical]
 UltimateTensileStrength=
 CompressiveStrength=
-YoungsModulus=1.2e+4 MPa
+YoungsModulus=12000 MPa
 Elasticity=
 FractureToughness=
 

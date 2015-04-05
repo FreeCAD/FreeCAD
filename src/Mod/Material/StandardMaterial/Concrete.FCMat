@@ -16,7 +16,7 @@ Description=A standard C-25 construction concrete
 [Mechanical]
 UltimateTensileStrength=
 CompressiveStrength=25 MPa
-YoungsModulus=3.2e+4 MPa
+YoungsModulus=32000 MPa
 Elasticity=
 FractureToughness=
 

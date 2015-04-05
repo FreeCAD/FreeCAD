@@ -21,7 +21,7 @@ SpecificPrice= 1,5 Euro/Kg
 
 [Mechanical]
 ; youngs modulus (or E-Module) (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
-YoungsModulus=2.0e+05 MPa
+YoungsModulus=200000 MPa
 ; http://en.wikipedia.org/wiki/Ultimate_tensile_strength
 UltimateTensileStrength=
 ; http://en.wikipedia.org/wiki/Compressive_strength

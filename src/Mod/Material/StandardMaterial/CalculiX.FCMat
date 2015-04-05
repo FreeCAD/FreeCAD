@@ -8,7 +8,7 @@ Father=Metal
 
 [Mechanical]
 ; youngs modulus (or E-Module) 
-YoungsModulus=2.1e+05 MPa
+YoungsModulus=210000 MPa
 
 [FEM]
 PoissonRatio = 0.3
