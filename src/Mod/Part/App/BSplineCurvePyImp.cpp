@@ -723,7 +723,7 @@ PyObject* BSplineCurvePy::toBiArcs(PyObject * args)
 
         Py::List list;
         for (std::list<Geometry*>::iterator it = arcs.begin(); it != arcs.end(); ++it) {
-            list.append(Py::Object((*it)->getPyObject()));
+            list.append(Py::asObject((*it)->getPyObject()));
             delete (*it);
         }
 
