@@ -230,7 +230,7 @@ class _MechanicalMaterialTaskPanel:
     def fillMaterialCombo(self):
         import glob,os
         matmap = self.obj.Material
-        dirname =  FreeCAD.ConfigGet("AppHomePath")+"data/Mod/Material/StandardMaterial" 
+        dirname =  FreeCAD.getResourceDir()+"/Mod/Material/StandardMaterial"
         self.pathList = glob.glob(dirname + '/*.FCMat')
         self.form.comboBox_MaterialsInDir.clear()
         '''if(matmap.has_key('General_name')):
