@@ -21,7 +21,7 @@ SpecificPrice= 4
 
 [Mechanical]
 ; youngs modulus (or E-Module) (source: http://en.wikipedia.org/wiki/Young%27s_modulus)
-YoungsModulus=3.64e+03 MPa
+YoungsModulus=3640 MPa
 ; http://en.wikipedia.org/wiki/Ultimate_tensile_strength 
 UltimateTensileStrength= 49.6 MPa
 
