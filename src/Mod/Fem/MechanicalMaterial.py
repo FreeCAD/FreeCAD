@@ -31,7 +31,6 @@ __title__="Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-          
 
 def makeMechanicalMaterial(name):
     '''makeMaterial(name): makes an Material
@@ -42,6 +41,7 @@ def makeMechanicalMaterial(name):
     #FreeCAD.ActiveDocument.recompute()
     return obj
 
+
 class _CommandMechanicalMaterial:
     "the Fem Material command definition"
     def GetResources(self):
@@ -49,7 +49,7 @@ class _CommandMechanicalMaterial:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material","Mechanical material..."),
                 'Accel': "A, X",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material","Creates or edit the mechanical material definition.")}
-        
+
     def Activated(self):
         MatObj = None
         for i in FemGui.getActiveAnalysis().Member:
@@ -72,7 +72,7 @@ class _CommandMechanicalMaterial:
         else:
             return False
 
-       
+
 class _MechanicalMaterial:
     "The Material object"
     def __init__(self,obj):
@@ -80,17 +80,16 @@ class _MechanicalMaterial:
         obj.Proxy = self
         #obj.Material = StartMat
 
-        
     def execute(self,obj):
         return
-        
-        
+
+
 class _ViewProviderMechanicalMaterial:
     "A View Provider for the MechanicalMaterial object"
 
     def __init__(self,vobj):
         vobj.Proxy = self
-       
+
     def getIcon(self):
         return ":/icons/Fem_Material.svg"
 
@@ -98,20 +97,19 @@ class _ViewProviderMechanicalMaterial:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-
     def updateData(self, obj, prop):
         return
 
     def onChanged(self, vobj, prop):
         return
-  
+
     def setEdit(self,vobj,mode):
         taskd = _MechanicalMaterialTaskPanel(self.Object)
         taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
-    
+
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         return
@@ -133,19 +131,19 @@ class _MechanicalMaterialTaskPanel:
 
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
         QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(int)"), self.chooseMat)
-        
+
         self.update()
-        
+
     def transferTo(self):
-        "Transfer from the dialog to the object" 
-        
+        "Transfer from the dialog to the object"
+
         matmap = self.obj.Material
 
         matmap['Mechanical_youngsmodulus']       = self.form.spinBox_young_modulus.text() 
         matmap['FEM_poissonratio']   = str(self.form.spinBox_poisson_ratio.value())
         print self.form.comboBox_MaterialsInDir.currentText()
-        
-        self.obj.Material = matmap 
+
+        self.obj.Material = matmap
         print 'material data:'
         if matmap.has_key('General_name'):
             print ' Name = ', matmap['General_name']
@@ -154,7 +152,6 @@ class _MechanicalMaterialTaskPanel:
         if matmap.has_key('FEM_poissonratio'):
             print ' PR = ', matmap['FEM_poissonratio']
 
-    
     def transferFrom(self):
         "Transfer from the object to the dialog"
         matmap = self.obj.Material
@@ -174,7 +171,7 @@ class _MechanicalMaterialTaskPanel:
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)
-    
+
     def update(self):
         'fills the widgets'
         #self.form.spinBox_young_modulus.setValue(0.0)
@@ -182,14 +179,13 @@ class _MechanicalMaterialTaskPanel:
         self.transferFrom()
         self.fillMaterialCombo()
 
+        return
 
-        return 
-                
     def accept(self):
         #print 'accept(self)'
         self.transferTo()
         FreeCADGui.ActiveDocument.resetEdit()
-                    
+
     def reject(self):
         #print 'reject(self)'
         matmap = self.obj.Material
@@ -208,25 +204,27 @@ class _MechanicalMaterialTaskPanel:
         if(filename):
             import Material
             Material.exportFCMat(filename,self.obj.Material)
-            
+
     def goMatWeb(self):
         import webbrowser
         webbrowser.open("http://matweb.com")
-    
+
     def chooseMat(self,index):
-        if index <= 0:return 
+        if index <= 0:
+            return
         import Material
         #print index
-        name = self.pathList[index-1]
+        name = self.pathList[index - 1]
         #print 'Import ', str(name)
-        
+
         self.obj.Material = Material.importFCMat(str(name))
         #print self.obj.Material
-        
+
         self.transferFrom()
-        
+
     def fillMaterialCombo(self):
-        import glob,os
+        import glob
+        import os
         matmap = self.obj.Material
         dirname =  FreeCAD.getResourceDir()+"/Mod/Material/StandardMaterial"
         self.pathList = glob.glob(dirname + '/*.FCMat')
@@ -235,14 +233,12 @@ class _MechanicalMaterialTaskPanel:
             self.form.comboBox_MaterialsInDir.addItem(matmap['General_name'])
         else:
             self.form.comboBox_MaterialsInDir.addItem('-> choose Material')
-        '''    
-        # workaraound: since material data is not loaded into spinBoxes the user has  
+        '''
+        # workaraound: since material data is not loaded into spinBoxes the user has
         # to choose the material every time the MechanincalMaterialWidget is opened
-        self.form.comboBox_MaterialsInDir.addItem('-> choose Material')  
+        self.form.comboBox_MaterialsInDir.addItem('-> choose Material')
         for i in self.pathList:
-            self.form.comboBox_MaterialsInDir.addItem(os.path.basename(i) )
-        
-        
+            self.form.comboBox_MaterialsInDir.addItem(os.path.basename(i))
 
-         
+
 FreeCADGui.addCommand('Fem_MechanicalMaterial',_CommandMechanicalMaterial())
