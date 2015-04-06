@@ -106,7 +106,6 @@ class _ViewProviderMechanicalMaterial:
     def setEdit(self,vobj,mode):
         taskd = _MechanicalMaterialTaskPanel(self.Object)
         taskd.obj = vobj.Object
-        taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -130,9 +129,16 @@ class _MechanicalMaterialTaskPanel:
         self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
-        QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("currentIndexChanged(int)"), self.chooseMat)
-
-        self.update()
+        QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("activated(int)"), self.chooseMat)
+        self.previous_material = self.obj.Material
+        self.fillMaterialCombo()
+        matmap = self.obj.Material
+        if 'General_name' in matmap:
+            material_name = matmap['General_name']
+            new_index = self.form.comboBox_MaterialsInDir.findText(material_name)
+            if new_index != -1:
+                self.form.comboBox_MaterialsInDir.setCurrentIndex(new_index)
+                self.set_mat_params_in_combo_box(matmap)
 
     def print_mat_data(self, matmap):
         print 'material data:'
@@ -143,56 +149,18 @@ class _MechanicalMaterialTaskPanel:
         if 'FEM_poissonratio' in matmap:
             print ' PR = ', matmap['FEM_poissonratio']
 
-    def transferTo(self):
-        "Transfer from the dialog to the object"
-
-        matmap = self.obj.Material
-
-        matmap['Mechanical_youngsmodulus'] = self.form.input_fd_young_modulus.text()
-        matmap['FEM_poissonratio'] = str(self.form.spinBox_poisson_ratio.value())
-        print self.form.comboBox_MaterialsInDir.currentText()
-
-        self.obj.Material = matmap
-        self.print_mat_data(matmap)
-
-    def transferFrom(self):
-        "Transfer from the object to the dialog"
-        matmap = self.obj.Material
-
+    def set_mat_params_in_combo_box(self, matmap):
         if 'Mechanical_youngsmodulus' in matmap:
-            #print matmap['Mechanical_youngsmodulus']
             self.form.input_fd_young_modulus.setText(matmap['Mechanical_youngsmodulus'])
         if 'FEM_poissonratio' in matmap:
-            #print float(matmap['FEM_poissonratio'])
             self.form.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
 
-    def isAllowedAlterSelection(self):
-        return False
-
-    def isAllowedAlterView(self):
-        return True
-
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok) | int(QtGui.QDialogButtonBox.Cancel)
-
-    def update(self):
-        'fills the widgets'
-        #self.form.input_fd_young_modulus.setValue(0.0)
-        #self.form.spinBox_poisson_ratio.setValue(0.0)
-        self.transferFrom()
-        self.fillMaterialCombo()
-
-        return
-
     def accept(self):
-        #print 'accept(self)'
-        self.transferTo()
         FreeCADGui.ActiveDocument.resetEdit()
 
     def reject(self):
-        #print 'reject(self)'
-        matmap = self.obj.Material
-        self.print_mat_data(matmap)
+        self.obj.Material = self.previous_material
+        self.print_mat_data(self.previous_material)
         FreeCADGui.ActiveDocument.resetEdit()
 
 # Function not yet used
@@ -207,35 +175,27 @@ class _MechanicalMaterialTaskPanel:
         import webbrowser
         webbrowser.open("http://matweb.com")
 
-    def chooseMat(self,index):
-        if index <= 0:
+    def chooseMat(self, index):
+        if index < 0:
             return
         import Material
-        #print index
-        name = self.pathList[index - 1]
-        #print 'Import ', str(name)
-
+        name = self.pathList[index]
         self.obj.Material = Material.importFCMat(str(name))
-        #print self.obj.Material
-
-        self.transferFrom()
+        self.form.comboBox_MaterialsInDir.setCurrentIndex(index)
+        self.set_mat_params_in_combo_box(self.obj.Material)
+        self.print_mat_data(self.obj.Material)
 
     def fillMaterialCombo(self):
         import glob
         import os
+        mat_file_extension = ".FCMat"
         dirname =  FreeCAD.getResourceDir()+"/Mod/Material/StandardMaterial"
-        self.pathList = glob.glob(dirname + '/*.FCMat')
+        self.pathList = glob.glob(dirname + '/*' + mat_file_extension)
         self.form.comboBox_MaterialsInDir.clear()
-        '''if(matmap.has_key('General_name')):
-            self.form.comboBox_MaterialsInDir.addItem(matmap['General_name'])
-        else:
-            self.form.comboBox_MaterialsInDir.addItem('-> choose Material')
-        '''
-        # workaraound: since material data is not loaded into spinBoxes the user has
-        # to choose the material every time the MechanincalMaterialWidget is opened
-        self.form.comboBox_MaterialsInDir.addItem('-> choose Material')
+        l = len(mat_file_extension)
         for i in self.pathList:
-            self.form.comboBox_MaterialsInDir.addItem(os.path.basename(i))
+            material_name = os.path.basename(i[:-l])
+            self.form.comboBox_MaterialsInDir.addItem(material_name)
 
 
 FreeCADGui.addCommand('Fem_MechanicalMaterial',_CommandMechanicalMaterial())
