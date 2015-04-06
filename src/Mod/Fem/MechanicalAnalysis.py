@@ -42,8 +42,8 @@ def makeMechanicalAnalysis(name):
     _ViewProviderFemAnalysis(obj.ViewObject)
     #FreeCAD.ActiveDocument.recompute()
     return obj
-    
-    
+
+
 class _CommandNewMechanicalAnalysis:
     "the Fem Analysis command definition"
     def GetResources(self):
@@ -51,7 +51,7 @@ class _CommandNewMechanicalAnalysis:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","New mechanical analysis"),
                 'Accel': "A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","Create a new mechanical analysis")}
-        
+
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
         FreeCADGui.addModule("FemGui")
@@ -74,7 +74,7 @@ class _CommandNewMechanicalAnalysis:
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
-       
+
     def IsActive(self):
         import FemGui
         return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() == None
@@ -86,16 +86,15 @@ class _CommandMechanicalJobControl:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Start calculation"),
                 'Accel': "A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Dialog to start the calculation of the mechanical anlysis")}
-        
+
     def Activated(self):
         import FemGui
-        
+
         taskd = _JobControlTaskPanel(FemGui.getActiveAnalysis())
         #taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
 
-       
     def IsActive(self):
         import FemGui
         return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() != None
@@ -109,7 +108,7 @@ class _CommandMechanicalShowResult:
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show result"),
                 'Accel': "A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show result imformatation of an analysis")}
-        
+
     def Activated(self):
         import FemGui
         DisplacementObject = None
@@ -126,17 +125,15 @@ class _CommandMechanicalShowResult:
         if not DisplacementObject and not StressObject:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No result found in active Analysis")
             return
-        
+
         taskd = _ResultControlTaskPanel(FemGui.getActiveAnalysis())
         FreeCADGui.Control.showDialog(taskd)
 
-       
     def IsActive(self):
         import FemGui
         return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() != None
 
 
-        
 class _FemAnalysis:
     "The Material object"
     def __init__(self,obj):
@@ -146,10 +143,9 @@ class _FemAnalysis:
         obj.addProperty("App::PropertyString","OutputDir","Base","Directory where the jobs get generated")
         obj.addProperty("App::PropertyFloat","PlateThickness","Base","Thickness of the plate")
 
-        
     def execute(self,obj):
         return
-        
+
     def onChanged(self,obj,prop):
         if prop in ["MaterialName"]:
             return
@@ -160,30 +156,29 @@ class _FemAnalysis:
     def __setstate__(self,state):
         if state:
             self.Type = state
-        
+
+
 class _ViewProviderFemAnalysis:
     "A View Provider for the Material object"
 
     def __init__(self,vobj):
         #vobj.addProperty("App::PropertyLength","BubbleSize","Base", str(translate("Fem","The size of the axis bubbles")))
         vobj.Proxy = self
-       
+
     def getIcon(self):
         return ":/icons/Fem_Analysis.svg"
-
 
     def attach(self, vobj):
         self.ViewObject = vobj
         self.Object = vobj.Object
         self.bubbles = None
 
-
     def updateData(self, obj, prop):
         return
 
     def onChanged(self, vobj, prop):
         return
-  
+
     def doubleClicked(self,vobj):
         import FemGui
         if not FemGui.getActiveAnalysis() == self.Object:
@@ -191,11 +186,10 @@ class _ViewProviderFemAnalysis:
                 FreeCADGui.activateWorkbench("FemWorkbench")
             FemGui.setActiveAnalysis(self.Object)
             return True
-        else:    
+        else:
             taskd = _JobControlTaskPanel(self.Object)
             FreeCADGui.Control.showDialog(taskd)
         return True
-        
 
     def __getstate__(self):
         return None
@@ -203,7 +197,7 @@ class _ViewProviderFemAnalysis:
     def __setstate__(self,state):
         return None
 
-        
+
 class _JobControlTaskPanel:
     '''The editmode TaskPanel for Material objects'''
     def __init__(self,object):
@@ -243,7 +237,7 @@ class _JobControlTaskPanel:
         QtCore.QObject.connect(self.Calculix, QtCore.SIGNAL("finished(int)"), self.calculixFinished)
 
         QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.UpdateText)
-        
+
         self.update()
         
     def femConsoleMessage(self, message="", color="#000000"):
@@ -276,7 +270,7 @@ class _JobControlTaskPanel:
         print "calculixStarted()"
         print self.Calculix.state()
         self.form.pushButton_generate.setText("Break Calculix")
-        
+
     def calculixStateChanged(self, newState):
         if (newState == QtCore.QProcess.ProcessState.Starting):
                 self.femConsoleMessage("Staring CalculiX...")
@@ -284,14 +278,14 @@ class _JobControlTaskPanel:
                 self.femConsoleMessage("CalculiX is running...")
         if (newState == QtCore.QProcess.ProcessState.NotRunning):
                 self.femConsoleMessage("CalculiX stopped.")
-        
+
     def calculixFinished(self,exitCode):
         print "calculixFinished()",exitCode
         print self.Calculix.state()
 
         self.printCalculiXstdout()
         self.Timer.stop()
-        
+
         self.femConsoleMessage("Calculix done!", "#00FF00")
 
         self.form.pushButton_generate.setText("Re-run Calculix")
@@ -310,16 +304,15 @@ class _JobControlTaskPanel:
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
-    
+
     def update(self):
         'fills the widgets'
         self.form.lineEdit_outputDir.setText(tempfile.gettempdir())
-        return 
-                
+        return
+
     def accept(self):
         FreeCADGui.Control.closeDialog()
-        
-                    
+
     def reject(self):
         FreeCADGui.Control.closeDialog()
 
@@ -347,11 +340,11 @@ class _JobControlTaskPanel:
         else:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No active Analysis")
             return
-            
+
         if not MeshObject:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No mesh object in the Analysis")
             return
-        
+
         MathObject = None
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("App::MaterialObjectPython"):
@@ -360,7 +353,7 @@ class _JobControlTaskPanel:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No material object in the Analysis")
             return
         matmap = MathObject.Material
-            
+
         FixedObjects = []    # [{'Object':FixedObject, 'NodeSupports':bool}, {}, ...]
         for i in FemGui.getActiveAnalysis().Member:
             FixedObjectDict = {}
@@ -370,7 +363,7 @@ class _JobControlTaskPanel:
         if len(FixedObjects) == 0:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No fixed-constraint nodes defined in the Analysis")
             return
-            
+
         ForceObjects = []    # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...]
         for i in FemGui.getActiveAnalysis().Member:
             ForceObjectDict = {}
@@ -380,9 +373,9 @@ class _JobControlTaskPanel:
         if len(ForceObjects) == 0:
             QtGui.QMessageBox.critical(None, "Missing prerequisit","No force-constraint nodes defined in the Analysis")
             return
-        
+
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        
+
         self.Basename = self.TempDir + '/' + MeshObject.Name
         filename = self.Basename + '.inp'
 
@@ -391,12 +384,12 @@ class _JobControlTaskPanel:
 
         # write mesh
         MeshObject.FemMesh.writeABAQUS(filename)
-        
+
         # reopen file with "append" and add the analysis definition
         inpfile = open(filename,'a')
-        
+
         self.femConsoleMessage("Write loads & Co...")
-        
+
         # write fixed node sets
         inpfile.write('\n\n\n\n***********************************************************\n')
         inpfile.write('** node set for fixed constraint\n')
@@ -421,7 +414,7 @@ class _JobControlTaskPanel:
 
         # write load node sets and calculate node loads
         inpfile.write('\n\n***********************************************************\n')
-        inpfile.write('** node sets for loads\n')        
+        inpfile.write('** node sets for loads\n')
         for ForceObject in ForceObjects:
             print ForceObject['Object'].Name
             inpfile.write('*NSET,NSET=' + ForceObject['Object'].Name + '\n')
@@ -442,28 +435,28 @@ class _JobControlTaskPanel:
                     inpfile.write(str(i) + ',\n')
                     NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from ForceObject
             # calculate node load
-            if NbrForceNodes == 0: 
+            if NbrForceNodes == 0:
                 print '  Warning --> no FEM-Mesh-node to apply the load to was found?'
             else:
-                ForceObject['NodeLoad'] = (ForceObject['Object'].Force) / NbrForceNodes  
+                ForceObject['NodeLoad'] = (ForceObject['Object'].Force) / NbrForceNodes
                 inpfile.write('** concentrated load [N] distributed on the area sum of the given faces\n')
                 inpfile.write('** ' + str(ForceObject['Object'].Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(ForceObject['NodeLoad']) + ' N on each node\n')
-            if ForceObject['Object'].Force == 0: 
+            if ForceObject['Object'].Force == 0:
                 print '  Warning --> Force = 0'
             inpfile.write('\n\n')
-        
+
         # get material properties
         YM = FreeCAD.Units.Quantity(MathObject.Material['Mechanical_youngsmodulus'])
         if YM.Unit.Type == '':
             print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
             YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa'))
         else:
-            print 'YM unit: ', YM.Unit.Type 
+            print 'YM unit: ', YM.Unit.Type
         print 'YM = ', YM
 
         PR = float(MathObject.Material['FEM_poissonratio'])
         print 'PR = ', PR
-        
+
         # write material properties
         inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** material\n')
@@ -486,7 +479,7 @@ class _JobControlTaskPanel:
         for FixedObject in FixedObjects:
             inpfile.write('\n*BOUNDARY\n')
             inpfile.write(FixedObject['Object'].Name + ',1,3,0.0\n')
-  
+
         # write loads
         #inpfile.write('*DLOAD\n')
         #inpfile.write('Eall,NEWTON\n')
@@ -598,31 +591,29 @@ class _ResultControlTaskPanel:
         self.StressObject = None
 
         self.update()
-        
-
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
-        
+
     def typeChanged(self,typeName):
         if typeName == "None":
             self.MeshObject.ViewObject.NodeColor = {}
             self.MeshObject.ViewObject.ElementColor = {}
             return
-            
+
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        
-        if typeName[:2] == "Ua" and self.DisplacementObject:            
+
+        if typeName[:2] == "Ua" and self.DisplacementObject:
             (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject)
-        if typeName[:2] == "U1" and self.DisplacementObject:            
+        if typeName[:2] == "U1" and self.DisplacementObject:
             (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject,1)
-        if typeName[:2] == "U2" and self.DisplacementObject:            
+        if typeName[:2] == "U2" and self.DisplacementObject:
             (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject,2)
-        if typeName[:2] == "U3" and self.DisplacementObject:            
+        if typeName[:2] == "U3" and self.DisplacementObject:
             (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject,3)
-        if typeName[:2] == "Sa" and self.StressObject:            
+        if typeName[:2] == "Sa" and self.StressObject:
             (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
-            
+
         self.form.lineEdit_Max.setText(str(max))
         self.form.lineEdit_Min.setText(str(min))
         self.form.lineEdit_Avg.setText(str(avg))
@@ -630,37 +621,36 @@ class _ResultControlTaskPanel:
         print typeName
 
         QtGui.qApp.restoreOverrideCursor()
-        
-        
+
     def showDisplacementClicked(self,bool):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setDisplacement()
         QtGui.qApp.restoreOverrideCursor()
-    
+
     def sliderValue(self,value):
         if(self.form.checkBox_ShowDisplacement.isChecked()):
             self.MeshObject.ViewObject.animate(value)
-        
+
         self.form.spinBox_DisplacementFactor.setValue(value)
 
     def sliderMaxValue(self,value):
         #print 'sliderMaxValue()'
         self.form.verticalScrollBar_Factor.setMaximum(value)
-        
+
     def displacementFactorValue(self,value):
         #print 'displacementFactorValue()'
         self.form.verticalScrollBar_Factor.setValue(value)
-                    
+
     def setDisplacement(self):
         if self.DisplacementObject:
-            self.MeshObject.ViewObject.setNodeDisplacementByResult(self.DisplacementObject)   
-    
+            self.MeshObject.ViewObject.setNodeDisplacementByResult(self.DisplacementObject)
+
     def setColorStress(self):
         if self.StressObject:
             values = self.StressObject.Values
             maxVal = max(values)
             self.form.doubleSpinBox_MinValueColor.setValue(maxVal)
-            
+
             self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
 
     def update(self):
@@ -685,19 +675,13 @@ class _ResultControlTaskPanel:
                 if i.DataType == 'VonMisesStress':
                     self.StressObject = i
                     self.form.comboBox_Type.addItem("Sabs (Von Mises Stress)")
-                
+
     def accept(self):
         FreeCADGui.Control.closeDialog()
-        
-                    
+
     def reject(self):
         FreeCADGui.Control.closeDialog()
 
-        
-        
-    
-    
-    
 FreeCADGui.addCommand('Fem_NewMechanicalAnalysis',_CommandNewMechanicalAnalysis())
 FreeCADGui.addCommand('Fem_MechanicalJobControl',_CommandMechanicalJobControl())
 FreeCADGui.addCommand('Fem_ShowResult',_CommandMechanicalShowResult())
