@@ -77,7 +77,8 @@ class _CommandNewMechanicalAnalysis:
 
     def IsActive(self):
         import FemGui
-        return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() == None
+        return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is None
+
 
 class _CommandMechanicalJobControl:
     "the Fem JobControl command definition"
@@ -97,8 +98,7 @@ class _CommandMechanicalJobControl:
 
     def IsActive(self):
         import FemGui
-        return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() != None
-
+        return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
 
 
 class _CommandMechanicalShowResult:
@@ -131,7 +131,7 @@ class _CommandMechanicalShowResult:
 
     def IsActive(self):
         import FemGui
-        return FreeCADGui.ActiveDocument != None and FemGui.getActiveAnalysis() != None
+        return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
 
 
 class _FemAnalysis:
