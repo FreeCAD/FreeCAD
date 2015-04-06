@@ -57,7 +57,6 @@
 # include <QCursor>
 # include <QList>
 # include <QMenu>
-# include <QMessageBox>
 # include <QMetaObject>
 # include <QRegExp>
 #endif
@@ -65,6 +64,7 @@
 #include <Inventor/sensors/SoTimerSensor.h>
 
 #include <App/Application.h>
+#include <Base/Console.h>
 #include "NavigationStyle.h"
 #include "View3DInventorViewer.h"
 #include "Application.h"
@@ -289,8 +289,8 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             if(!press){
                 SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                 if(!ret){
-                    QMessageBox::information(viewer,QObject::tr("Set focus"),
-                                             QObject::tr("Aim mouse pointer at a point on some object, and hit H on keyboard. The camera's focus point will jump there.\nIf using touchscreen, tap the point to aim the cursor."));
+                    Base::Console().Warning(
+                        "No object under cursor! Can't set new center of rotation.\n");
                 }
             }
             break;
@@ -359,10 +359,10 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
             case SoMouseButtonEvent::BUTTON1:
             case SoMouseButtonEvent::BUTTON2:
                 if(press){
-                    if(button == SoMouseButtonEvent::BUTTON1 && suppressLMBDrag){
-                        //LMB drag suppressed. The event will be propagated, don't do anything.
+                    if(this->thisClickIsComplex && this->mouseMoveThresholdBroken){
+                        //this should prevent re-attempts to enter navigation when doing more clicks after a move.
                     } else {
-                        //on left-mouse-button-down, enter dragging mode upon move detetion, or the event will need refiring if the mouse is released with no move.
+                        //on LMB-down or RMB-down, we don't know yet if we should propagate it or process it. Save the event to be refired later, when it becomes clear.
                         //reset/start move detection machine
                         this->mousedownPos = pos;
                         this->mouseMoveThresholdBroken = false;
@@ -376,31 +376,22 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                         }
                         processed = true;//just consume this event, and wait for the move threshold to be broken to start dragging/panning
                     }
-                } else {//either a release, or another press in a complex click
-                    if (this->mouseMoveThresholdBroken) {
-                        assert(this->mousedownConsumedCount == 0);
-                        //we typically end up here if suppressLMBDrag was true when mousedown.
-                        //do nothing (propagate)
-                    } else {
-                        if (button == SoMouseButtonEvent::BUTTON2 && !this->thisClickIsComplex) {
-                            if (!viewer->isEditing() && this->isPopupMenuEnabled()) {
-                                processed=true;
-                                if (!press) { // release right mouse button
-                                    this->openPopupMenu(event->getPosition());
-                                }
-                            }
+                } else {//release
+                    if (button == SoMouseButtonEvent::BUTTON2 && !this->thisClickIsComplex) {
+                        if (!viewer->isEditing() && this->isPopupMenuEnabled()) {
+                            processed=true;
+                            this->openPopupMenu(event->getPosition());
                         }
-                        if(! processed) {
-                            //a left-click without drag (or tap) has happened.
-                            //re-synthesize all previously-consumed mouseDown.
-                            for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
-                                inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
-                            }
-                            this->mousedownConsumedCount = 0;
-                            processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
-                            propagated = true;
+                    }
+                    if(! processed) {
+                        //re-synthesize all previously-consumed mouseDowns, if any. They might have been re-synthesized already when threshold was broken.
+                        for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
+                            inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
                         }
-                    } // end else of if mouseMoveThresholdBroken
+                        this->mousedownConsumedCount = 0;
+                        processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
+                        propagated = true;
+                    }
                 }
             break;
             case SoMouseButtonEvent::BUTTON3://press the wheel
@@ -408,10 +399,8 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 if(press){
                     SbBool ret = NavigationStyle::lookAtPoint(event->getPosition());
                     if(!ret){
-                        //no object under point or other failure.
-                        //ignore...
-                        //QMessageBox::information(viewer,QObject::tr("Set focus"),
-                        //                         QObject::tr("Aim mouse pointer at a point on some object, and hit H on keyboard. The camera's focus point will jump there.\nIf using touchscreen, tap the point to aim the cursor."));
+                        Base::Console().Warning(
+                            "No object under cursor! Can't set new center of rotation.\n");
                     }
                 }
                 break;
@@ -428,17 +417,30 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
 
         //mouse moves - test for move threshold breaking
         if (evIsLoc2) {
-            if ((this->button1down && !suppressLMBDrag) || this->button2down) {
-                if (this->mouseMoveThresholdBroken) {
-                    //dupm all consumed mousedowns, we have processed them for navigation.
-                    mousedownConsumedCount = 0;
+            if (this->mouseMoveThresholdBroken && (this->button1down || this->button2down) && mousedownConsumedCount > 0) {
+                //mousemovethreshold has JUST been broken
+
+                //test if we should enter navigation
+                if ((this->button1down && !suppressLMBDrag) || this->button2down) {
+                    //yes, we are entering navigation.
+                    //throw away consumed mousedowns.
+                    this->mousedownConsumedCount = 0;
 
                     setViewingMode(this->button1down ? NavigationStyle::DRAGGING : NavigationStyle::PANNING);
                     processed = true;
+                } else {
+                    //no, we are not entering navigation.
+                    //re-synthesize all previously-consumed mouseDowns, if any, and propagate this mousemove.
+                    for( int i=0;   i < this->mousedownConsumedCount;   i++ ){
+                        inherited::processSoEvent(& (this->mousedownConsumedEvent[i]));//simulate the previously-comsumed mousedown.
+                    }
+                    this->mousedownConsumedCount = 0;
+                    processed = inherited::processSoEvent(ev);//explicitly, just for clarity that we are sending a full click sequence.
+                    propagated = true;
                 }
-                if (mousedownConsumedCount  > 0)
-                    processed = true;//if we are still deciding if it's a drag or not, consume mouseMoves.
             }
+            if (mousedownConsumedCount  > 0)
+                processed = true;//if we are still deciding if it's a drag or not, consume mouseMoves.
         }
 
         //gesture start
