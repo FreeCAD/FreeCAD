@@ -25,7 +25,7 @@ import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
-    from PySide import QtCore, QtGui
+    from PySide import QtCore
 
 __title__ = "Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
