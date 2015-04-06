@@ -20,14 +20,12 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Fem
+import FreeCAD
 
 if FreeCAD.GuiUp:
-    import FreeCADGui,FemGui
-    from FreeCAD import Vector
+    import FreeCADGui
+    import FemGui
     from PySide import QtCore, QtGui
-    from pivy import coin
-    from FreeCADGui import PySideUic as uic
 
 __title__="Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
