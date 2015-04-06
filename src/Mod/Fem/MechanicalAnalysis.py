@@ -24,13 +24,11 @@ import FreeCAD, Fem, FemLib, CalculixLib
 import os,sys,string,math,shutil,glob,subprocess,tempfile,time
 
 if FreeCAD.GuiUp:
-    import FreeCADGui,FemGui
-    from FreeCAD import Vector
+    import FreeCADGui
+    import FemGui
     from PySide import QtCore, QtGui
     from PySide.QtCore import Qt
-    from PySide.QtGui import QApplication, QCursor
-    from pivy import coin
-    from FreeCADGui import PySideUic as uic
+    from PySide.QtGui import QApplication
 
 __title__="Mechanical Analysis managment"
 __author__ = "Juergen Riegel"
