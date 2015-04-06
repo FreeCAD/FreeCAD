@@ -30,7 +30,7 @@ if FreeCAD.GuiUp:
     from PySide.QtCore import Qt
     from PySide.QtGui import QApplication
 
-__title__="Mechanical Analysis managment"
+__title__ = "Mechanical Analysis managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
@@ -47,7 +47,7 @@ def makeMechanicalAnalysis(name):
 class _CommandNewMechanicalAnalysis:
     "the Fem Analysis command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Fem_Analysis',
+        return {'Pixmap': 'Fem_Analysis',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","New mechanical analysis"),
                 'Accel': "A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","Create a new mechanical analysis")}
@@ -62,12 +62,12 @@ class _CommandNewMechanicalAnalysis:
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
             if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
-                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument()."+sel[0].Name+"]")
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument()." + sel[0].Name + "]")
             if(sel[0].isDerivedFrom("Part::Feature")):
-                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','"+sel[0].Name +"_Mesh')")
-                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()."+sel[0].Name)                
+                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','" + sel[0].Name + "_Mesh')")
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
                 FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
-                FreeCADGui.doCommand("Gui.activeDocument().hide('"+sel[0].Name+"')")
+                FreeCADGui.doCommand("Gui.activeDocument().hide('" + sel[0].Name + "')")
                 #FreeCADGui.doCommand("App.activeDocument().ActiveObject.touch()")
                 #FreeCADGui.doCommand("App.activeDocument().recompute()")
                 FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
@@ -82,7 +82,7 @@ class _CommandNewMechanicalAnalysis:
 class _CommandMechanicalJobControl:
     "the Fem JobControl command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Fem_NewAnalysis',
+        return {'Pixmap': 'Fem_NewAnalysis',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Start calculation"),
                 'Accel': "A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Dialog to start the calculation of the mechanical anlysis")}
@@ -105,7 +105,7 @@ class _CommandMechanicalJobControl:
 class _CommandMechanicalShowResult:
     "the Fem JobControl command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Fem_Result',
+        return {'Pixmap': 'Fem_Result',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show result"),
                 'Accel': "A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show result imformatation of an analysis")}
@@ -266,7 +266,7 @@ class _JobControlTaskPanel:
     def UpdateText(self):
         if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
             self.printCalculiXstdout()
-            self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
+            self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def calculixError(self, error):
         print "Error()", error
@@ -297,17 +297,17 @@ class _JobControlTaskPanel:
         self.form.pushButton_generate.setText("Re-run Calculix")
         print "Loading results...."
         self.femConsoleMessage("Loading result sets...")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
+        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
         if os.path.isfile(self.Basename + '.frd'):
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            CalculixLib.importFrd(self.Basename + '.frd',FemGui.getActiveAnalysis() )
+            CalculixLib.importFrd(self.Basename + '.frd',FemGui.getActiveAnalysis())
             QApplication.restoreOverrideCursor()
             self.femConsoleMessage("Loading results done!", "#00FF00")
         else:
             self.femConsoleMessage("Loading results failed! Results file doesn\'t exist", "#FF0000")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
-        
+        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
     
@@ -329,16 +329,16 @@ class _JobControlTaskPanel:
         if(dirname):
             self.params.SetString("JobDir",str(dirname))
             self.form.lineEdit_outputDir.setText(dirname)
-        
+
     def writeCalculixInputFile(self):
         print 'writeCalculixInputFile'
         self.Start = time.time()
-        
+
         #dirName = self.form.lineEdit_outputDir.text()
         dirName = self.TempDir
         print 'CalculiX run directory: ',dirName
         self.femConsoleMessage("Check dependencies...")
-        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start) )
+        self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         MeshObject = None
         if FemGui.getActiveAnalysis():
             for i in FemGui.getActiveAnalysis().Member:
@@ -416,7 +416,7 @@ class _JobControlTaskPanel:
                     print '  Point Support (fixed vertex) on: ', f
                     n = MeshObject.FemMesh.getNodesByVertex(fo)
                 for i in n:
-                    inpfile.write( str(i)+',\n')
+                    inpfile.write(str(i) + ',\n')
             inpfile.write('\n\n')
 
         # write load node sets and calculate node loads
@@ -439,7 +439,7 @@ class _JobControlTaskPanel:
                     print '  Point Load (vertex load) on: ', f
                     n = MeshObject.FemMesh.getNodesByVertex(fo)
                 for i in n:
-                    inpfile.write( str(i)+',\n')
+                    inpfile.write(str(i) + ',\n')
                     NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from ForceObject
             # calculate node load
             if NbrForceNodes == 0: 
@@ -456,24 +456,24 @@ class _JobControlTaskPanel:
         YM = FreeCAD.Units.Quantity(MathObject.Material['Mechanical_youngsmodulus'])
         if YM.Unit.Type == '':
             print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
-            YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa') )
+            YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa'))
         else:
             print 'YM unit: ', YM.Unit.Type 
         print 'YM = ', YM
-        
-        PR = float( MathObject.Material['FEM_poissonratio'] )
+
+        PR = float(MathObject.Material['FEM_poissonratio'])
         print 'PR = ', PR
         
         # write material properties
         inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** material\n')
         inpfile.write('** unit is MPa = N/mm2\n')
-        inpfile.write('*MATERIAL, Name='+matmap['General_name'] + '\n')
+        inpfile.write('*MATERIAL, Name=' + matmap['General_name'] + '\n')
         inpfile.write('*ELASTIC \n')
-        inpfile.write('{0:.3f}, '.format(YM.Value*1E-3) )
-        inpfile.write('{0:.3f}\n'.format(PR) )
-        inpfile.write('*SOLID SECTION, Elset=Eall, Material='+matmap['General_name'] + '\n')
-        
+        inpfile.write('{0:.3f}, '.format(YM.Value * 1E-3))
+        inpfile.write('{0:.3f}\n'.format(PR))
+        inpfile.write('*SOLID SECTION, Elset=Eall, Material=' + matmap['General_name'] + '\n')
+
         # write step beginn
         inpfile.write('\n\n\n\n***********************************************************\n')
         inpfile.write('** one step is needed to calculate the mechanical analysis of FreeCAD\n')
@@ -495,7 +495,7 @@ class _JobControlTaskPanel:
         for ForceObject in ForceObjects:
             if 'NodeLoad' in ForceObject:
                 vec = ForceObject['Object'].DirectionVector
-                inpfile.write('\n** force: ' + str(ForceObject['NodeLoad']) + '  direction: ' + str(vec)  + '\n')
+                inpfile.write('\n** force: ' + str(ForceObject['NodeLoad']) + '  direction: ' + str(vec) + '\n')
                 inpfile.write('*CLOAD\n')
                 inpfile.write(ForceObject['Object'].Name + ',1,' + `vec.x * ForceObject['NodeLoad']` + '\n')
                 inpfile.write(ForceObject['Object'].Name + ',2,' + `vec.y * ForceObject['NodeLoad']` + '\n')
@@ -574,14 +574,15 @@ class _JobControlTaskPanel:
         
         
         QApplication.restoreOverrideCursor()
-    
+
+
 class _ResultControlTaskPanel:
     '''The control for the displacement post-processing'''
     def __init__(self,object):
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
-        self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/ShowDisplacement.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/ShowDisplacement.ui")
 
         self.obj = object
 
