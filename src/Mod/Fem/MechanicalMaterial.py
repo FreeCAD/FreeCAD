@@ -27,7 +27,7 @@ if FreeCAD.GuiUp:
     import FemGui
     from PySide import QtCore, QtGui
 
-__title__="Machine-Distortion FemSetGeometryObject managment"
+__title__ = "Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
@@ -45,7 +45,7 @@ def makeMechanicalMaterial(name):
 class _CommandMechanicalMaterial:
     "the Fem Material command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Fem_Material',
+        return {'Pixmap': 'Fem_Material',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material","Mechanical material..."),
                 'Accel': "A, X",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material","Creates or edit the mechanical material definition.")}
@@ -60,12 +60,12 @@ class _CommandMechanicalMaterial:
             FreeCAD.ActiveDocument.openTransaction("Create Material")
             FreeCADGui.addModule("MechanicalMaterial")
             FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
-            FreeCADGui.doCommand("App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member = App.activeDocument()."+FemGui.getActiveAnalysis().Name+".Member + [App.ActiveDocument.ActiveObject]")
+            FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
             FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)")
             #FreeCADGui.doCommand("Fem.makeMaterial()")
         else:
-            FreeCADGui.doCommand("Gui.activeDocument().setEdit('"+MatObj.Name+"',0)")
-        
+            FreeCADGui.doCommand("Gui.activeDocument().setEdit('" + MatObj.Name + "',0)")
+
     def IsActive(self):
         if FemGui.getActiveAnalysis():
             return True
@@ -125,8 +125,8 @@ class _MechanicalMaterialTaskPanel:
     '''The editmode TaskPanel for MechanicalMaterial objects'''
     def __init__(self,obj):
         self.obj = obj
-        
-        self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
+
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
         self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
@@ -139,8 +139,8 @@ class _MechanicalMaterialTaskPanel:
 
         matmap = self.obj.Material
 
-        matmap['Mechanical_youngsmodulus']       = self.form.spinBox_young_modulus.text() 
-        matmap['FEM_poissonratio']   = str(self.form.spinBox_poisson_ratio.value())
+        matmap['Mechanical_youngsmodulus'] = self.form.spinBox_young_modulus.text()
+        matmap['FEM_poissonratio'] = str(self.form.spinBox_poisson_ratio.value())
         print self.form.comboBox_MaterialsInDir.currentText()
 
         self.obj.Material = matmap
