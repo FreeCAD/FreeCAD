@@ -211,6 +211,14 @@ fc_target_copy_resource(FemGui
     MechanicalAnalysis.ui
     )
 
+SET(FemGuiIcon_SVG
+    Resources/icons/preferences-fem.svg
+)
+
+fc_copy_sources(FemGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Fem" ${FemGuiIcon_SVG})
+
+INSTALL(FILES ${FemGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Fem/Resources/icons")
+
 SET_BIN_DIR(FemGui FemGui /Mod/Fem)
 SET_PYTHON_PREFIX_SUFFIX(FemGui)
 
