@@ -225,6 +225,28 @@ void SelectionView::treeSelect(void)
     Gui::Command::runCommand(Gui::Command::Gui,"Gui.runCommand(\"Std_TreeSelection\")"); 
 }
 
+void SelectionView::toPython(void)
+{
+    QListWidgetItem *item = selectionView->currentItem();
+    if (!item)
+        return;
+    QStringList elements = item->text().split(QString::fromAscii("."));
+    // remove possible space from object name followed by label
+    elements[1] = elements[1].split(QString::fromAscii(" "))[0];
+
+    QString cmd = QString::fromAscii("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(elements[0]).arg(elements[1]);
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+    if (elements.length() > 2) {
+        elements[2] = elements[2].split(QString::fromAscii(" "))[0];
+        if ( elements[2].contains(QString::fromAscii("Face")) || elements[2].contains(QString::fromAscii("Edge")) ) {
+            cmd = QString::fromAscii("shp = App.getDocument(\"%1\").getObject(\"%2\").Shape").arg(elements[0]).arg(elements[1]);
+            Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+            cmd = QString::fromAscii("elt = App.getDocument(\"%1\").getObject(\"%2\").Shape.%3").arg(elements[0]).arg(elements[1]).arg(elements[2]);
+            Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+        }
+    }
+}
+
 void SelectionView::onItemContextMenu(const QPoint& point)
 {
     QListWidgetItem *item = selectionView->itemAt(point);
@@ -242,6 +264,9 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     zoomAction->setToolTip(tr("Selects and fits this object in the 3D window"));
     QAction *gotoAction = menu.addAction(tr("Go to selection"),this,SLOT(treeSelect()));
     gotoAction->setToolTip(tr("Selects and locates this object in the tree view"));
+    QAction *toPythonAction = menu.addAction(tr("To python console"),this,SLOT(toPython()));
+    toPythonAction->setIcon(QIcon(QString::fromAscii(":/icons/applications-python.svg")));
+    toPythonAction->setToolTip(tr("Reveals this object and its subelements in the python console."));
     menu.exec(selectionView->mapToGlobal(point));
 }
 
