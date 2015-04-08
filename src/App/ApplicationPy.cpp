@@ -80,6 +80,8 @@ PyMethodDef Application::Methods[] = {
      "Get the name of the module that can export the filetype"},
     {"getResourceDir", (PyCFunction) Application::sGetResourceDir  ,1,
      "Get the root directory of all resources"},
+    {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataDir  ,1,
+     "Get the root directory of user settings"},
     {"getHomePath",    (PyCFunction) Application::sGetHomePath  ,1,
      "Get the home path, i.e. the parent directory of the executable"},
 
@@ -523,6 +525,15 @@ PyObject* Application::sGetResourceDir(PyObject * /*self*/, PyObject *args,PyObj
 
     Py::String datadir(Application::getResourceDir(),"utf-8");
     return Py::new_reference_to(datadir);
+}
+
+PyObject* Application::sGetUserAppDataDir(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
+
+    Py::String user_data_dir(Application::getUserAppDataDir(),"utf-8");
+    return Py::new_reference_to(user_data_dir);
 }
 
 PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)

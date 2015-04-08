@@ -139,6 +139,10 @@ class _MechanicalMaterialTaskPanel:
             if new_index != -1:
                 self.form.comboBox_MaterialsInDir.setCurrentIndex(new_index)
                 self.set_mat_params_in_combo_box(matmap)
+            else:
+                print "Cannot find previously used material \'{}\' - setting to \'None\'".format(material_name)
+                i = self.form.comboBox_MaterialsInDir.findText('None')
+                self.chooseMat(i)
 
     def print_mat_data(self, matmap):
         print 'material data:'
@@ -197,5 +201,11 @@ class _MechanicalMaterialTaskPanel:
             material_name = os.path.basename(i[:-l])
             self.form.comboBox_MaterialsInDir.addItem(material_name)
 
+        user_mat_dir = FreeCAD.getUserAppDataDir() + "/Materials"
+        user_mat_path_list = glob.glob(user_mat_dir + '/*' + mat_file_extension)
+        for i in user_mat_path_list:
+            material_name = os.path.basename(i[:-l])
+            self.form.comboBox_MaterialsInDir.addItem(material_name)
+        self.pathList = self.pathList + user_mat_path_list
 
 FreeCADGui.addCommand('Fem_MechanicalMaterial',_CommandMechanicalMaterial())
