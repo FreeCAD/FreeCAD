@@ -78,6 +78,7 @@ public Q_SLOTS:
     void deselect(void);
     void zoom(void);
     void treeSelect(void);
+    void toPython(void);
 
 };
 
