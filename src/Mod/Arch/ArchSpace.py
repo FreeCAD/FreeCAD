@@ -236,6 +236,10 @@ class _Space(ArchComponent.Component):
         obj.Role = Roles
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         self.getShape(obj)
 
     def onChanged(self,obj,prop):

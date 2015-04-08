@@ -130,7 +130,10 @@ class _Stairs(ArchComponent.Component):
     def execute(self,obj):
 
         "constructs the shape of the stairs"
-
+        
+        if self.clone(obj):
+            return
+        
         import Part
         self.steps = []
         self.pseudosteps = []

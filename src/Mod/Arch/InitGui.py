@@ -75,7 +75,7 @@ class ArchWorkbench(Workbench):
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_Panel","Arch_Equipment",
                      "Arch_Frame","Arch_CutPlane","Arch_Add","Arch_Remove","Arch_Survey"]
-        self.utilities = ["Arch_SplitMesh","Arch_MeshToShape",
+        self.utilities = ["Arch_Component","Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
                      "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",

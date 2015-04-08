@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>503</width>
-    <height>526</height>
+    <width>463</width>
+    <height>516</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,11 +27,82 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Import IFC objects as</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox">
+          <property name="toolTip">
+           <string>Specifies what kind of objects will be created in FreeCAD</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcImportMode</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Parametric Arch objects</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Non-parametric Arch objects</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Simple Part shapes</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>One compound per floor</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Root element:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit_2">
+          <property name="toolTip">
+           <string>Only subtypes of this element will be imported. Keep value as &quot;IfcProduct&quot; to import all building elements.</string>
+          </property>
+          <property name="text">
+           <string>IfcProduct</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcRootElement</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
           <property name="toolTip">
-           <string>Check this to display debug messages while importing IFC files</string>
+           <string>Show verbose information during import and export of IFC files</string>
           </property>
           <property name="text">
            <string>Show debug messages</string>
@@ -87,6 +158,29 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_3">
+          <property name="toolTip">
+           <string>Check this to retrieve object colors.</string>
+          </property>
+          <property name="text">
+           <string>Read colors</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcReadColors</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
          <widget class="QLabel" name="label_4">
@@ -125,6 +219,17 @@
       <string>IFC export</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>&quot;Show debug messages&quot; option above will apply to export too</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
@@ -248,6 +353,11 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>

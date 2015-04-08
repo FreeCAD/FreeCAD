@@ -265,6 +265,9 @@ class _Panel(ArchComponent.Component):
 
     def execute(self,obj):
         "creates the panel shape"
+        
+        if self.clone(obj):
+            return
 
         import Part, DraftGeomUtils
 

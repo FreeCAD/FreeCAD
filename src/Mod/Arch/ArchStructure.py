@@ -577,6 +577,9 @@ class _Structure(ArchComponent.Component):
         "creates the structure shape"
 
         import Part, DraftGeomUtils
+        
+        if self.clone(obj):
+            return
 
         normal,length,width,height = self.getDefaultValues(obj)
 

@@ -90,6 +90,10 @@ class _Frame(ArchComponent.Component):
         obj.Role = Roles
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         if not obj.Base:
             return
         if not obj.Base.Shape:

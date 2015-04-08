@@ -158,6 +158,10 @@ class _Rebar(ArchComponent.Component):
         return None,None
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         if len(obj.InList) != 1:
             return
         if Draft.getType(obj.InList[0]) != "Structure":
