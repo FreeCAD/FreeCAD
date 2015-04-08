@@ -40,6 +40,7 @@ if FreeCAD.GuiUp:
 else:
     def translate(ctxt,txt):
         return txt
+        
 
 def addToComponent(compobject,addobject,mod=None):
     '''addToComponent(compobject,addobject,mod): adds addobject
@@ -132,8 +133,8 @@ class SelectionTaskPanel:
             FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
             del FreeCAD.ArchObserver
         return True
-
-            
+        
+                    
 class ComponentTaskPanel:
     '''The default TaskPanel for all Arch components'''
     def __init__(self):
@@ -289,6 +290,7 @@ class Component:
     "The default Arch Component object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLink","Base","Arch",translate("Arch","The base object this component is built upon"))
+        obj.addProperty("App::PropertyLink","CloneOf","Arch",translate("Arch","The object this component is cloning"))
         obj.addProperty("App::PropertyLinkList","Additions","Arch",translate("Arch","Other shapes that are appended to this object"))
         obj.addProperty("App::PropertyLinkList","Subtractions","Arch",translate("Arch","Other shapes that are subtracted from this object"))
         obj.addProperty("App::PropertyString","Description","Arch",translate("Arch","An optional description for this component"))
@@ -315,6 +317,17 @@ class Component:
             
     def onChanged(self,obj,prop):
         pass
+        
+    def clone(self,obj):
+        "if this object is a clone, sets the shape. Returns True if this is the case"
+        if hasattr(obj,"CloneOf"):
+            if obj.CloneOf:
+                if Draft.getType(obj.CloneOf) == Draft.getType(obj):
+                    pl = obj.Placement
+                    obj.Shape = obj.CloneOf.Shape.copy()
+                    obj.Placement = pl
+                    return True
+        return False
         
     def getSiblings(self,obj):
         "returns a list of objects with the same type and same base as this object"
@@ -642,6 +655,10 @@ class ViewProviderComponent:
         
     def updateData(self,obj,prop):
         return
+        
+    def getIcon(self):
+        import Arch_rc
+        return ":/icons/Arch_Component.svg"
 
     def onChanged(self,vobj,prop):
         if prop == "Visibility":

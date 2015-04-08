@@ -35,19 +35,28 @@ __title__="FreeCAD Roof"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann"
 __url__ = "http://www.freecadweb.org"
 
-def makeRoof(baseobj=None,facenr=1, angles=[45.,], run = [], idrel = [0,],thickness = [1.,], overhang=[2.,], name="Roof"):
+def makeRoof(baseobj=None,facenr=0, angles=[45.,], run = [], idrel = [0,],thickness = [1.,], overhang=[2.,], name="Roof"):
     '''makeRoof(baseobj,[facenr],[angle],[name]) : Makes a roof based on a closed wire.
     face from an existing object. You can provide a list of angles, run, idrel, thickness,
     overhang for each edges in the wire to define the roof shape. The default for angle is 45
     and the list is automatically complete to match with number of edges in the wire.'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)
+    w = None
     _Roof(obj)
     if FreeCAD.GuiUp:
         _ViewProviderRoof(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
         if obj.Base.isDerivedFrom("Part::Feature"):
+            if (facenr == 0) and obj.Base.Shape.Solids:
+                # the base shape is a solid and facenr hasn't been set:
+                # assume its shape is copied over
+                if FreeCAD.GuiUp:
+                    obj.Base.ViewObject.hide()
+            else:
+                # set facenr to 1
+                facenr = 1
             if (obj.Base.Shape.Faces and obj.Face):
                 w = obj.Base.Shape.Faces[obj.Face-1].Wires[0]
             elif obj.Base.Shape.Wires:
@@ -509,6 +518,10 @@ class _Roof(ArchComponent.Component):
         print("PROFIL " + str(i) + " : End calculs")
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         import Part, math, DraftGeomUtils
         pl = obj.Placement
         self.baseface = None

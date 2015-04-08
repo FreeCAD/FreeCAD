@@ -248,6 +248,10 @@ class _Equipment(ArchComponent.Component):
         self.hideSubobjects(obj,prop)
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         pl = obj.Placement
         if obj.Base:
             if obj.isDerivedFrom("Mesh::Feature"):

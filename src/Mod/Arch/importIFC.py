@@ -246,24 +246,36 @@ def explore(filename=None):
     return
 
 
-def open(filename,skip=[]):
+def open(filename,skip=[],only=[],root=None):
     "opens an IFC file in a new document"
     
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
     doc.Label = docname
-    doc = insert(filename,doc.Name,skip)
+    doc = insert(filename,doc.Name,skip,only,root)
     return doc
 
 
-def insert(filename,docname,skip=[]):
-    "imports the contents of an IFC file"
+def insert(filename,docname,skip=[],only=[],root=None):
+    """insert(filename,docname,skip=[],only=[],root=None): imports the contents of an IFC file.
+    skip can contain a list of ids of objects to be skipped, only can restrict the import to
+    certain object ids (will also get their children) and root can be used to
+    import only the derivates of a certain element type (default = ifcProduct)."""
     
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     DEBUG = p.GetBool("ifcDebug",False)
     PREFIX_NUMBERS = p.GetBool("ifcPrefixNumbers",False)
-    SKIP = p.GetString("ifcSkip","")
+    SKIP = p.GetString("ifcSkip","").split(",")
     SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
+    ROOT_ELEMENT = p.GetString("ifcRootElement","IfcProduct")
+    if root:
+        ROOT_ELEMENT = root
+    MERGE_MODE = p.GetInt("ifcImportMode",0)
+    if MERGE_MODE > 0:
+        SEPARATE_OPENINGS = False
+    READ_COLORS = p.GetBool("ifcReadColors",True)
+    if not SEPARATE_OPENINGS:
+        SKIP.append("IfcOpeningElement")
     
     try:
         import ifcopenshell
@@ -271,12 +283,14 @@ def insert(filename,docname,skip=[]):
         FreeCAD.Console.PrintError("IfcOpenShell was not found on this system. IFC support is disabled\n")
         return
 
-    if DEBUG: print "opening ",filename,"..."
+    if DEBUG: print "Opening ",filename,"...",
     try:
         doc = FreeCAD.getDocument(docname)
     except:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
+    
+    if DEBUG: print "done."
     
     global ifcfile # keeping global for debugging purposes
     if isinstance(filename,unicode): 
@@ -293,15 +307,19 @@ def insert(filename,docname,skip=[]):
     sites = ifcfile.by_type("IfcSite")
     buildings = ifcfile.by_type("IfcBuilding")
     floors = ifcfile.by_type("IfcBuildingStorey")
-    products = ifcfile.by_type("IfcProduct")
+    products = ifcfile.by_type(ROOT_ELEMENT)
     openings = ifcfile.by_type("IfcOpeningElement")
     annotations = ifcfile.by_type("IfcAnnotation")
+    
+    if DEBUG: print "Building relationships table...",
 
     # building relations tables
     objects = {} # { id:object, ... }
     additions = {} # { host:[child,...], ... }
     subtractions = [] # [ [opening,host], ... ]
     properties = {} # { host:[property, ...], ... }
+    colors = {} # { id:(r,g,b) }
+    shapes = {} # { id:shaoe } only used for merge mode
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
     for r in ifcfile.by_type("IfcRelAggregates"):
@@ -312,101 +330,239 @@ def insert(filename,docname,skip=[]):
         for obj in r.RelatedObjects:
             if r.RelatingPropertyDefinition.is_a("IfcPropertySet"):
                 properties.setdefault(obj.id(),[]).extend([e.id() for e in r.RelatingPropertyDefinition.HasProperties])
+    if READ_COLORS:
+        for r in ifcfile.by_type("IfcStyledItem"):
+            if r.Item and r.Styles[0].is_a("IfcPresentationStyleAssignment"):
+                if r.Styles[0].Styles[0].is_a("IfcSurfaceStyle"):
+                    if r.Styles[0].Styles[0].Styles[0].is_a("IfcSurfaceStyleRendering"):
+                        if r.Styles[0].Styles[0].Styles[0].SurfaceColour:
+                            c = r.Styles[0].Styles[0].Styles[0].SurfaceColour
+                            for p in ifcfile.by_type("IfcProduct"):
+                                if p.Representation:
+                                    for it in p.Representation.Representations:
+                                        if it.Items:
+                                            if it.Items[0].id() == r.Item.id():
+                                                colors[p.id()] = (c.Red,c.Green,c.Blue)
+                                            elif it.Items[0].is_a("IfcBooleanResult"):
+                                                if (it.Items[0].FirstOperand.id() == r.Item.id()):
+                                                    colors[p.id()] = (c.Red,c.Green,c.Blue)
+    if only: # only import a list of IDs and their children
+        ids = []
+        while only:
+            currentid = only.pop()
+            ids.append(currentid)
+            if currentid in additions.keys():
+                only.extend(additions[currentid])
+        products = [ifcfile[currentid] for currentid in ids]
+                    
+    if DEBUG: print "done."
+        
     count = 0
+    from FreeCAD import Base
+    progressbar = Base.ProgressIndicator()
+    progressbar.start("Importing IFC objects...",len(products))
 
     # products
     for product in products:
+                
         pid = product.id()
         guid = product.GlobalId
         ptype = product.is_a()
+        if DEBUG: print count,"/",len(products)," creating object ",pid," : ",ptype,
         name = product.Name or str(ptype[3:])
         if PREFIX_NUMBERS: name = "ID" + str(pid) + " " + name
         obj = None
         baseobj = None
         brep = None
-        
-        if (ptype == "IfcOpeningElement") and (not SEPARATE_OPENINGS): continue
-        if pid in skip: continue # user given id skip list
-        if ptype in SKIP: continue # preferences-set type skip list
+
+        if pid in skip: # user given id skip list
+            if DEBUG: print " skipped."
+            continue
+        if ptype in SKIP: # preferences-set type skip list
+            if DEBUG: print " skipped."
+            continue
+            
         try:
             cr = ifcopenshell.geom.create_shape(settings,product)
             brep = cr.geometry.brep_data
         except:
-            pass
+            pass # IfcOpenShell will yield an error if a given product has no shape, but we don't care
+            
         if brep:
+            if DEBUG: print " ",str(len(brep)/1000),"k ",
+            
             shape = Part.Shape()
             shape.importBrepFromString(brep)
+            
             shape.scale(1000.0) # IfcOpenShell always outputs in meters
+
             if not shape.isNull():
-                baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
-                baseobj.Shape = shape
-        for freecadtype,ifctypes in typesmap.iteritems():
-            if ptype in ifctypes:
-                obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                if MERGE_MODE > 0:
+                    if ptype == "IfcSpace": # do not add spaces to compounds
+                        if DEBUG: print "skipping space ",pid
+                    else:
+                        shapes[pid] = shape
+                        if DEBUG: print shape.Solids
+                        baseobj = shape
+                else:
+                    baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+                    baseobj.Shape = shape
+            else:
+                if DEBUG: print  "null shape ",
+            if not shape.isValid():
+                if DEBUG: print "invalid shape. Skipping"
+                continue
+                
+        else:
+            if DEBUG: print " no brep "
+            
+        if MERGE_MODE == 0:
+            
+            # full Arch objects
+            for freecadtype,ifctypes in typesmap.items():
+                if ptype in ifctypes:
+                    obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
+                    obj.Label = name
+                    # setting role
+                    try:
+                        r = ptype[3:]
+                        tr = dict((v,k) for k, v in translationtable.iteritems())
+                        if r in tr.keys():
+                            r = tr[r]
+                        # remove the "StandardCase"
+                        if "StandardCase" in r:
+                            r = r[:-12]
+                        obj.Role = r
+                    except:
+                        pass
+                    # setting uid
+                    if hasattr(obj,"IfcAttributes"):
+                        a = obj.IfcAttributes
+                        a["IfcUID"] = str(guid)
+                        obj.IfcAttributes = a
+                    break
+            if not obj:
+                obj = baseobj
+            if obj:
+                sols = str(baseobj.Shape.Solids) if hasattr(baseobj,"Shape") else "[]"
+                if DEBUG: print sols
+                objects[pid] = obj
+                        
+        elif MERGE_MODE == 1:
+            
+            # non-parametric Arch objects
+            if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
+                for freecadtype,ifctypes in typesmap.items():
+                    if ptype in ifctypes:
+                        obj = getattr(Arch,"make"+freecadtype)(baseobj=None,name=name)
+                        obj.Label = name
+                        objects[pid] = obj
+            elif baseobj:
+                obj = Arch.makeComponent(baseobj,name=name)
                 obj.Label = name
-                # setting role
-                try:
-                    r = ptype[3:]
-                    tr = dict((v,k) for k, v in translationtable.iteritems())
-                    if r in tr.keys():
-                        r = tr[r]
-                    # remove the "StandardCase"
-                    if "StandardCase" in r:
-                        r = r[:-12]
-                    obj.Role = r
-                except:
-                    pass
-                # setting uid
+                objects[pid] = obj
+                
+        elif MERGE_MODE == 2:
+            
+            # Part shapes
+            if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
+                for freecadtype,ifctypes in typesmap.items():
+                    if ptype in ifctypes:
+                        obj = getattr(Arch,"make"+freecadtype)(baseobj=None,name=name)
+                        obj.Label = name
+                        objects[pid] = obj
+            elif baseobj:
+                obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                obj.Label = name
+                obj.Shape = shape
+
+                
+        if obj:
+            
+            # properties
+            if pid in properties:
                 if hasattr(obj,"IfcAttributes"):
                     a = obj.IfcAttributes
-                    a["IfcUID"] = str(guid)
+                    for p in properties[pid]:
+                        o = ifcfile[p]
+                        if o.is_a("IfcPropertySingleValue"):
+                            a[o.Name] = str(o.NominalValue)
                     obj.IfcAttributes = a
-                break
-        if not obj:
-            obj = baseobj
-        if obj:
-            sh = baseobj.Shape.ShapeType if hasattr(baseobj,"Shape") else "None"
-            sols = str(baseobj.Shape.Solids) if hasattr(baseobj,"Shape") else ""
-            pc = str(int((float(count)/(len(products)+len(annotations))*100)))+"% "
-            if DEBUG: print pc,"creating object ",pid," : ",ptype, " with shape: ",sh," ",sols
-            objects[pid] = obj
             
-        # properties
-        if pid in properties:
-            if hasattr(obj,"IfcAttributes"):
-                a = obj.IfcAttributes
-                for p in properties[pid]:
-                    o = ifcfile[p]
-                    if o.is_a("IfcPropertySingleValue"):
-                        a[o.Name] = str(o.NominalValue)
-                obj.IfcAttributes = a
+            # color
+            if FreeCAD.GuiUp and (pid in colors):
+                if DEBUG: print "    setting color: ",colors[pid]
+                obj.ViewObject.ShapeColor = colors[pid]
+        
+            # if DEBUG is on, recompute after each shape
+            if DEBUG: FreeCAD.ActiveDocument.recompute()
+            
         count += 1
-        
+        progressbar.next()
+    
+    progressbar.stop()
     FreeCAD.ActiveDocument.recompute()
         
-    if DEBUG: print "Processing relationships..."
+    if MERGE_MODE == 3:
+        
+        if DEBUG: print "Joining shapes..."
+        
+        for host,children in additions.items():
+            if ifcfile[host].is_a("IfcBuildingStorey"):
+                compound = []
+                for c in children:
+                    if c in shapes.keys():
+                        compound.append(shapes[c])
+                        del shapes[c]
+                    if c in additions.keys():
+                        for c2 in additions[c]:
+                            if c2 in shapes.keys():
+                                compound.append(shapes[c2])
+                                del shapes[c2]
+                if compound:
+                    name = ifcfile[host].Name or "Floor"
+                    if PREFIX_NUMBERS: name = "ID" + str(host) + " " + name
+                    obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
+                    obj.Label = name
+                    obj.Shape = Part.makeCompound(compound)
+        if shapes: # remaining shapes
+            obj = FreeCAD.ActiveDocument.addObject("Part::Feature","Unclaimed")
+            obj.Shape = Part.makeCompound(shapes.values())
             
-    # subtractions
-    if SEPARATE_OPENINGS:
-        for subtraction in subtractions:
-            if (subtraction[0] in objects.keys()) and (subtraction[1] in objects.keys()):
-                #print objects[subtraction[0]].Name, objects[subtraction[1]].Name
-                Arch.removeComponents(objects[subtraction[0]],objects[subtraction[1]])
-                
-    # additions
-    for host,children in additions.iteritems():
-        if host in objects.keys():
-            cobs = [objects[child] for child in children if child in objects.keys()]
-            if cobs:
-                Arch.addComponents(cobs,objects[host])
-                
-    FreeCAD.ActiveDocument.recompute()
+    else:
         
-    # cleaning bad shapes
-    for obj in objects.values():
-        if obj.isDerivedFrom("Part::Feature"):
-            if obj.Shape.isNull():
-                Arch.rebuildArchShape(obj)
+        if DEBUG: print "Processing relationships..."
+        
+        # subtractions
+        if SEPARATE_OPENINGS:
+            for subtraction in subtractions:
+                if (subtraction[0] in objects.keys()) and (subtraction[1] in objects.keys()):
+                    if DEBUG: print "subtracting ",objects[subtraction[0]].Name, " from ", objects[subtraction[1]].Name
+                    Arch.removeComponents(objects[subtraction[0]],objects[subtraction[1]])
+                    if DEBUG: FreeCAD.ActiveDocument.recompute()
+                    
+        # additions
+        for host,children in additions.items():
+            if host in objects.keys():
+                cobs = [objects[child] for child in children if child in objects.keys()]
+                if cobs:
+                    if DEBUG and (len(cobs) > 10) and ( not(Draft.getType(objects[host]) in ["Site","Building","Floor"])):
+                        # avoid huge fusions
+                        print "more than 10 shapes to add: skipping."
+                    else:
+                        if DEBUG: print "adding ",cobs, " to ", objects[host].Name
+                        Arch.addComponents(cobs,objects[host])
+                        if DEBUG: FreeCAD.ActiveDocument.recompute()
+                    
+        FreeCAD.ActiveDocument.recompute()
+        
+        if DEBUG: print "Cleaning..."
+            
+        # cleaning bad shapes
+        for obj in objects.values():
+            if obj.isDerivedFrom("Part::Feature"):
+                if obj.Shape.isNull():
+                    Arch.rebuildArchShape(obj)
                 
     FreeCAD.ActiveDocument.recompute()
     
@@ -433,10 +589,11 @@ def insert(filename,docname,skip=[]):
         count += 1
         
     FreeCAD.ActiveDocument.recompute()
-    
+        
     if FreeCAD.GuiUp:
         import FreeCADGui
         FreeCADGui.SendMsgToActiveView("ViewFit")
+    print "Finished importing."
     return doc
 
 
@@ -552,7 +709,7 @@ def export(exportList,filename):
         elif ifctype == "IfcBuilding":
             args = args + ["ELEMENT",None,None,None]
         elif ifctype == "IfcBuildingStorey":
-            args = args + ["ELEMENT",None]
+            args = args + ["ELEMENT",obj.Placement.Base.z]
             
         # creating the product
         product = getattr(ifcfile,"create"+ifctype)(*args)
@@ -580,22 +737,26 @@ def export(exportList,filename):
             for key in obj.IfcAttributes:
                 if not (key in ["IfcUID","FlagForceBrep"]):
                     r = obj.IfcAttributes[key].strip(")").split("(")
-                    tp = r[0]
-                    val = "(".join(r[1:])
-                    val = val.strip("'")
-                    val = val.strip('"')
-                    if DEBUG: print "      property ",key," : ",str(val), " (", str(tp), ")"
-                    if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
-                        val = str(val)
-                    elif tp == "IfcBoolean":
-                        if val == ".T.":
-                            val = True
-                        else:
-                            val = False
-                    elif tp == "IfcInteger":
-                        val = int(val)
+                    if len(r) == 1:
+                        tp = "IfcText"
+                        val = r[0]
                     else:
-                        val = float(val)
+                        tp = r[0]
+                        val = "(".join(r[1:])
+                        val = val.strip("'")
+                        val = val.strip('"')
+                        if DEBUG: print "      property ",key," : ",str(val), " (", str(tp), ")"
+                        if tp in ["IfcLabel","IfcText","IfcIdentifier"]:
+                            val = str(val)
+                        elif tp == "IfcBoolean":
+                            if val == ".T.":
+                                val = True
+                            else:
+                                val = False
+                        elif tp == "IfcInteger":
+                            val = int(val)
+                        else:
+                            val = float(val)
                     props.append(ifcfile.createIfcPropertySingleValue(str(key),None,ifcfile.create_entity(str(tp),val),None))
             if props:
                 pset = ifcfile.createIfcPropertySet(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'PropertySet',None,props)
@@ -781,8 +942,11 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 for fcface in fcsolid.Faces:
                     for e in fcface.Edges:
                         if not isinstance(e.Curve,Part.Line):
-                            curves = True
+                            if e.curvatureAt(e.FirstParameter+(e.LastParameter-e.FirstParameter)/2) > 0.0001:
+                                curves = True
+                                break
                 if curves:
+                    shapetype = "triangulated"
                     tris = fcsolid.tessellate(tessellation)
                     for tri in tris[1]:
                         pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
@@ -791,6 +955,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                         face =  ifcfile.createIfcFace([bound])
                         faces.append(face)
                 else:
+                    shapetype = "brep"
                     for fcface in fcsolid.Faces:
                         loops = []
                         verts = [v.Point for v in Part.Wire(DraftGeomUtils.sortEdges(fcface.OuterWire.Edges)).Vertexes]
@@ -820,7 +985,6 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                 shell = ifcfile.createIfcClosedShell(faces)
                 shape = ifcfile.createIfcFacetedBrep(shell)
                 shapes.append(shape)
-                shapetype = "brep"
 
     if shapes:
         

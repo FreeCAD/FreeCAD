@@ -192,6 +192,23 @@ def removeComponents(objectsList,host=None):
                    if o in a:
                        a.remove(o)
                        h.Objects = a
+                       
+def makeComponent(baseobj=None,name="Component"):
+    '''makeComponent([baseobj]): creates an undefined, non-parametric Arch
+    component from the given base object'''
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
+    ArchComponent.Component(obj)
+    if FreeCAD.GuiUp:
+        ArchComponent.ViewProviderComponent(obj.ViewObject)
+    if baseobj:
+        import Part
+        if baseobj.isDerivedFrom("Part::Feature"):
+            obj.Shape = baseobj.Shape
+            obj.Placement = baseobj.Placement
+        elif isinstance(baseobj,Part.Shape):
+            obj.Shape = baseobj
+    return obj
 
 def fixWindow(obj):
     '''fixWindow(object): Fixes non-DAG problems in windows
@@ -1114,6 +1131,29 @@ class _ToggleIfcBrepFlag:
     def Activated(self):
         for o in FreeCADGui.Selection.getSelection():
             toggleIfcBrepFlag(o)
+            
+            
+class _CommandComponent:
+    "the Arch Component command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Component',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Component","Component"),
+                'Accel': "C, M",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Component","Creates an undefined architectural component")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if sel:
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Component"))
+            FreeCADGui.addModule("Arch")
+            FreeCADGui.Control.closeDialog()
+            for o in sel:
+                FreeCADGui.doCommand("Arch.makeComponent(FreeCAD.ActiveDocument."+o.Name+")")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
 
 
 if FreeCAD.GuiUp:
@@ -1128,3 +1168,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_IfcExplorer',_CommandIfcExplorer())
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
+    FreeCADGui.addCommand('Arch_Component',_CommandComponent())

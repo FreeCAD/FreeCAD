@@ -2430,6 +2430,13 @@ def clone(obj,delta=None):
     if (len(obj) == 1) and obj[0].isDerivedFrom("Part::Part2DObject"):
         cl = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython","Clone2D")
         cl.Label = "Clone of " + obj[0].Label + " (2D)"
+    elif (len(obj) == 1) and hasattr(obj[0],"IfcAttributes"):
+        # arch objects can be clones
+        import Arch
+        cl = getattr(Arch,"make"+obj[0].Proxy.Type)()
+        cl.Label = "Clone of " + obj[0].Label
+        cl.CloneOf = obj[0]
+        return cl
     else:
         cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
         cl.Label = "Clone of " + obj[0].Label

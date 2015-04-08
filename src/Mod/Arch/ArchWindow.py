@@ -636,6 +636,10 @@ class _Window(ArchComponent.Component):
 
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         import Part, DraftGeomUtils
         pl = obj.Placement
         base = None

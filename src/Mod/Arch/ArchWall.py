@@ -402,6 +402,9 @@ class _Wall(ArchComponent.Component):
 
     def execute(self,obj):
         "builds the wall shape"
+        
+        if self.clone(obj):
+            return
 
         import Part, DraftGeomUtils
         pl = obj.Placement
