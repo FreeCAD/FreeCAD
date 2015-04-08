@@ -90,6 +90,30 @@
           </item>
          </layout>
         </item>
+        <item row="2" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="l_ccx_binary">
+            <property name="text">
+             <string>ccx binary</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Gui::PrefFileChooser" name="fc_ccx_binary">
+            <property name="toolTip">
+             <string>Leave blank to use default CalculiX ccx binary file</string>
+            </property>
+            <property name="prefEntry" stdset="0">
+             <cstring>ccxBinaryPath</cstring>
+            </property>
+            <property name="prefPath" stdset="0">
+             <cstring>Mod/Fem</cstring>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
       </item>
      </layout>

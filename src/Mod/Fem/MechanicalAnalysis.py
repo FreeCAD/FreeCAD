@@ -205,20 +205,25 @@ class _JobControlTaskPanel:
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
         self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
-        from platform import system
-        if system() == 'Linux':
-          self.CalculixBinary = 'ccx'
-        elif  system() == 'Windows':
-          self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        ccx_binary = self.fem_prefs.GetString("ccxBinaryPath","")
+        if ccx_binary:
+            self.CalculixBinary = ccx_binary
+            print "Using ccx binary path from FEM preferences: {}".format(ccx_binary)
         else:
-          self.CalculixBinary = 'ccx'
+            from platform import system
+            if system() == 'Linux':
+                self.CalculixBinary = 'ccx'
+            elif system() == 'Windows':
+                self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
+            else:
+                self.CalculixBinary = 'ccx'
         self.TempDir = FreeCAD.ActiveDocument.TransientDir.replace('\\','/') + '/FemAnl_'+ object.Uid[-4:]
         if not os.path.isdir(self.TempDir):
             os.mkdir(self.TempDir)
 
         self.obj = object
         #self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
