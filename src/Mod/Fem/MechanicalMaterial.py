@@ -139,8 +139,7 @@ class _MechanicalMaterialTaskPanel:
             material_name = matmap['General_name']
             new_index = self.form.comboBox_MaterialsInDir.findText(material_name)
             if new_index != -1:
-                self.form.comboBox_MaterialsInDir.setCurrentIndex(new_index)
-                self.set_mat_params_in_combo_box(matmap)
+                self.chooseMat(new_index)
             else:
                 print "Cannot find previously used material \'{}\' - setting to \'None\'".format(material_name)
                 i = self.form.comboBox_MaterialsInDir.findText('None')
