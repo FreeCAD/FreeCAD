@@ -25,7 +25,9 @@ import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
+    from PySide import QtGui
     from PySide import QtCore
+
 
 __title__ = "Machine-Distortion FemSetGeometryObject managment"
 __author__ = "Juergen Riegel"
@@ -199,20 +201,20 @@ class _MechanicalMaterialTaskPanel:
         l = len(mat_file_extension)
         for i in self.pathList:
             material_name = os.path.basename(i[:-l])
-            self.form.comboBox_MaterialsInDir.addItem(material_name)
+            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(":/icons/freecad.svg"), material_name)
 
         user_mat_dir = FreeCAD.getUserAppDataDir() + "/Materials"
         user_mat_path_list = glob.glob(user_mat_dir + '/*' + mat_file_extension)
         for i in user_mat_path_list:
             material_name = os.path.basename(i[:-l])
-            self.form.comboBox_MaterialsInDir.addItem(material_name)
+            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(":/icons/preferences-general.svg"), material_name)
         self.pathList = self.pathList + user_mat_path_list
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir","")
         custom_mat_path_list = glob.glob(custom_mat_dir + '/*' + mat_file_extension)
         for i in custom_mat_path_list:
             material_name = os.path.basename(i[:-l])
-            self.form.comboBox_MaterialsInDir.addItem(material_name)
+            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(":/icons/user.svg"), material_name)
         self.pathList = self.pathList + custom_mat_path_list
 
 FreeCADGui.addCommand('Fem_MechanicalMaterial',_CommandMechanicalMaterial())
