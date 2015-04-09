@@ -46,6 +46,7 @@ void DlgSettingsFemImp::saveSettings()
     cb_int_editor->onSave();
     fc_ext_editor->onSave();
     fc_ccx_binary->onSave();
+    fc_custom_mat_dir->onSave();
 }
 
 void DlgSettingsFemImp::loadSettings()
@@ -53,6 +54,7 @@ void DlgSettingsFemImp::loadSettings()
     cb_int_editor->onRestore();
     fc_ext_editor->onRestore();
     fc_ccx_binary->onRestore();
+    fc_custom_mat_dir->onRestore();
 }
 
 /**

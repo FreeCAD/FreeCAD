@@ -207,5 +207,12 @@ class _MechanicalMaterialTaskPanel:
             material_name = os.path.basename(i[:-l])
             self.form.comboBox_MaterialsInDir.addItem(material_name)
         self.pathList = self.pathList + user_mat_path_list
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir","")
+        custom_mat_path_list = glob.glob(custom_mat_dir + '/*' + mat_file_extension)
+        for i in custom_mat_path_list:
+            material_name = os.path.basename(i[:-l])
+            self.form.comboBox_MaterialsInDir.addItem(material_name)
+        self.pathList = self.pathList + custom_mat_path_list
 
 FreeCADGui.addCommand('Fem_MechanicalMaterial',_CommandMechanicalMaterial())
