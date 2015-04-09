@@ -283,10 +283,13 @@ class _JobControlTaskPanel:
         print "calculixFinished()",exitCode
         print self.Calculix.state()
 
+        # Restore previous cwd
+        QtCore.QDir.setCurrent(self.cwd)
+
         self.printCalculiXstdout()
         self.Timer.stop()
 
-        self.femConsoleMessage("Calculix done!", "#00FF00")
+        self.femConsoleMessage("Calculix done!", "#00AA00")
 
         self.form.pushButton_generate.setText("Re-run Calculix")
         print "Loading results...."
@@ -297,7 +300,7 @@ class _JobControlTaskPanel:
             QApplication.setOverrideCursor(Qt.WaitCursor)
             CalculixLib.importFrd(self.Basename + '.frd',FemGui.getActiveAnalysis())
             QApplication.restoreOverrideCursor()
-            self.femConsoleMessage("Loading results done!", "#00FF00")
+            self.femConsoleMessage("Loading results done!", "#00AA00")
         else:
             self.femConsoleMessage("Loading results failed! Results file doesn\'t exist", "#FF0000")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
@@ -561,8 +564,11 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("CalculiX binary: {}".format(self.CalculixBinary))
         self.femConsoleMessage("Run Calculix...")
 
-        # run Claculix
-        print 'run Calclulix at: ', self.CalculixBinary , '  with: ', self.Basename
+        # run Calculix
+        print 'run Calculix at: ', self.CalculixBinary , '  with: ', self.Basename
+        # change cwd because ccx may crash if directory has no write permission
+        self.cwd = QtCore.QDir.currentPath()
+        QtCore.QDir.setCurrent(QtCore.QDir.homePath())
         self.Calculix.start(self.CalculixBinary, ['-i',self.Basename])
         
         
