@@ -125,12 +125,12 @@ def export(exportList,filename):
     objind = 0
     scenenodes = []
     for obj in exportList:
+        vindex = []
+        nindex = []
+        findex = []
         if obj.isDerivedFrom("Part::Feature"):
             print "exporting object ",obj.Name, obj.Shape
             m = obj.Shape.tessellate(1)
-            vindex = []
-            nindex = []
-            findex = []
             # vertex indices
             for v in m[0]:
                 vindex.extend([v.x*scale,v.y*scale,v.z*scale])
@@ -146,9 +146,6 @@ def export(exportList,filename):
         elif obj.isDerivedFrom("Mesh::Feature"):
             print "exporting object ",obj.Name, obj.Mesh
             m = obj.Mesh
-            vindex = []
-            nindex = []
-            findex = []
             # vertex indices
             for v in m.Topology[0]:
                 vindex.extend([v.x*scale,v.y*scale,v.z*scale])
