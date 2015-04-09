@@ -193,8 +193,8 @@ class _MechanicalMaterialTaskPanel:
         import glob
         import os
         mat_file_extension = ".FCMat"
-        dirname =  FreeCAD.getResourceDir()+"/Mod/Material/StandardMaterial"
-        self.pathList = glob.glob(dirname + '/*' + mat_file_extension)
+        system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
+        self.pathList = glob.glob(system_mat_dir + '/*' + mat_file_extension)
         self.form.comboBox_MaterialsInDir.clear()
         l = len(mat_file_extension)
         for i in self.pathList:
