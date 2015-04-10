@@ -190,30 +190,29 @@ class _MechanicalMaterialTaskPanel:
         self.set_mat_params_in_combo_box(self.obj.Material)
         self.print_mat_data(self.obj.Material)
 
-    def fillMaterialCombo(self):
+    def add_mat_dir(self, mat_dir, icon):
         import glob
         import os
         mat_file_extension = ".FCMat"
-        system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
-        self.pathList = glob.glob(system_mat_dir + '/*' + mat_file_extension)
-        self.form.comboBox_MaterialsInDir.clear()
-        l = len(mat_file_extension)
-        for i in self.pathList:
-            material_name = os.path.basename(i[:-l])
-            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(":/icons/freecad.svg"), material_name)
+        ext_len = len(mat_file_extension)
+        dir_path_list = glob.glob(mat_dir + '/*' + mat_file_extension)
+        self.pathList = self.pathList + dir_path_list
+        for i in dir_path_list:
+            material_name = os.path.basename(i[:-ext_len])
+            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(icon), material_name)
 
-        user_mat_dir = FreeCAD.getUserAppDataDir() + "/Materials"
-        user_mat_path_list = glob.glob(user_mat_dir + '/*' + mat_file_extension)
-        for i in user_mat_path_list:
-            material_name = os.path.basename(i[:-l])
-            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(":/icons/preferences-general.svg"), material_name)
-        self.pathList = self.pathList + user_mat_path_list
+    def fillMaterialCombo(self):
+        self.pathList = []
+        self.form.comboBox_MaterialsInDir.clear()
+        system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
+        self.add_mat_dir(system_mat_dir, ":/icons/freecad.svg")
+
+        user_mat_dirname = FreeCAD.getUserAppDataDir() + "Materials"
+        self.add_mat_dir(user_mat_dirname, ":/icons/preferences-general.svg")
+
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         custom_mat_dir = self.fem_prefs.GetString("CustomMaterialsDir","")
-        custom_mat_path_list = glob.glob(custom_mat_dir + '/*' + mat_file_extension)
-        for i in custom_mat_path_list:
-            material_name = os.path.basename(i[:-l])
-            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(":/icons/user.svg"), material_name)
-        self.pathList = self.pathList + custom_mat_path_list
+        self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
+
 
 FreeCADGui.addCommand('Fem_MechanicalMaterial',_CommandMechanicalMaterial())
