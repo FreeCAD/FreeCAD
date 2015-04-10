@@ -49,7 +49,7 @@ void AbaqusHighlighter::highlightBlock(const QString &text)
     // Find a syntax file for the Abaqus format here
     // http://notepad-plus.sourceforge.net/commun/userDefinedLang/userDefineLang_Abaqus.xml
     //
-    enum { NormalState = -1, Definition, BeforeKey, InideKey, BeforeValue, InsideValue, Number };
+    enum { NormalState = -1, Definition, BeforeKey, InideKey, BeforeValue, InsideValue, Text, Number };
 
     int state = NormalState;
     int start = 0;
@@ -112,7 +112,7 @@ void AbaqusHighlighter::highlightBlock(const QString &text)
         }
         // Number
         else if (state == Number) {
-            if (!text[i].isNumber()) {
+            if (!text[i].isNumber() && text[i] != QLatin1Char('.')) {
                 QTextCharFormat numberFormat;
                 numberFormat.setForeground(numberColor);
                 setFormat(start, i - start, numberFormat);
@@ -121,7 +121,7 @@ void AbaqusHighlighter::highlightBlock(const QString &text)
                 state = NormalState;
             }
         }
-        else if (text[i].isNumber()) {
+        else if (text[i].isNumber() || text[i] == QLatin1Char('-')) {
             if (state == NormalState) {
                 start = i;
                 state = Number;
@@ -139,6 +139,15 @@ void AbaqusHighlighter::highlightBlock(const QString &text)
         else if (text[i] == QLatin1Char('*')) {
             start = i;
             state = Definition;
+        }
+        else if (text[i].isLetterOrNumber()) {
+            if (state == NormalState) {
+                start = i;
+                state = Text;
+            }
+        }
+        else {
+            state = NormalState;
         }
     }
 
