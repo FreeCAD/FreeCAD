@@ -188,6 +188,10 @@ class _MechanicalMaterialTaskPanel:
         self.obj.Material = Material.importFCMat(str(name))
         self.form.comboBox_MaterialsInDir.setCurrentIndex(index)
         self.set_mat_params_in_combo_box(self.obj.Material)
+        gen_mat_desc = ""
+        if 'General_description' in self.obj.Material:
+            gen_mat_desc = self.obj.Material['General_description']
+        self.form.l_mat_description.setText(gen_mat_desc)
         self.print_mat_data(self.obj.Material)
 
     def add_mat_dir(self, mat_dir, icon):

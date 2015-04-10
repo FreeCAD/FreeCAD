@@ -117,6 +117,16 @@
      </item>
     </layout>
    </item>
+   <item>
+    <widget class="QLabel" name="l_mat_description">
+     <property name="text">
+      <string>Material Description</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>
