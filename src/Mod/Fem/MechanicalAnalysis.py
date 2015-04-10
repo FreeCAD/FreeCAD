@@ -442,7 +442,7 @@ class _JobControlTaskPanel:
                 print '  Warning --> no FEM-Mesh-node to apply the load to was found?'
             else:
                 ForceObject['NodeLoad'] = (ForceObject['Object'].Force) / NbrForceNodes
-                inpfile.write('** concentrated load [N] distributed on the area sum of the given faces\n')
+                inpfile.write('** concentrated load [N] distributed on all mesh nodes of the given shapes\n')
                 inpfile.write('** ' + str(ForceObject['Object'].Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(ForceObject['NodeLoad']) + ' N on each node\n')
             if ForceObject['Object'].Force == 0:
                 print '  Warning --> Force = 0'
@@ -475,30 +475,30 @@ class _JobControlTaskPanel:
         inpfile.write('** one step is needed to calculate the mechanical analysis of FreeCAD\n')
         inpfile.write('** loads are applied quasi-static, means without involving the time dimension\n')
         inpfile.write('*STEP\n')
-        inpfile.write('*STATIC\n')
+        inpfile.write('*STATIC\n\n')
 
         # write constaints
-        inpfile.write('\n\n** constaints\n')
+        inpfile.write('\n** constaints\n')
         for FixedObject in FixedObjects:
-            inpfile.write('\n*BOUNDARY\n')
-            inpfile.write(FixedObject['Object'].Name + ',1,3,0.0\n')
+            inpfile.write('*BOUNDARY\n')
+            inpfile.write(FixedObject['Object'].Name + ',1,3,0.0\n\n')
 
         # write loads
         #inpfile.write('*DLOAD\n')
         #inpfile.write('Eall,NEWTON\n')
-        inpfile.write('\n\n** loads\n')
-        inpfile.write('** node loads, see load node sets for how the value is calculated!\n\n')
+        inpfile.write('\n** loads\n')
+        inpfile.write('** node loads, see load node sets for how the value is calculated!\n')
         for ForceObject in ForceObjects:
             if 'NodeLoad' in ForceObject:
                 vec = ForceObject['Object'].DirectionVector
-                inpfile.write('\n** force: ' + str(ForceObject['NodeLoad']) + '  direction: ' + str(vec) + '\n')
                 inpfile.write('*CLOAD\n')
+                inpfile.write('** force: ' + str(ForceObject['NodeLoad']) + ' N,  direction: ' + str(vec) + '\n')
                 inpfile.write(ForceObject['Object'].Name + ',1,' + repr(vec.x * ForceObject['NodeLoad']) + '\n')
                 inpfile.write(ForceObject['Object'].Name + ',2,' + repr(vec.y * ForceObject['NodeLoad']) + '\n')
-                inpfile.write(ForceObject['Object'].Name + ',3,' + repr(vec.z * ForceObject['NodeLoad']) + '\n')
+                inpfile.write(ForceObject['Object'].Name + ',3,' + repr(vec.z * ForceObject['NodeLoad']) + '\n\n')
 
         # write outputs, both are needed by FreeCAD
-        inpfile.write('\n\n** outputs --> frd file\n')
+        inpfile.write('\n** outputs --> frd file\n')
         inpfile.write('*NODE FILE\n')
         inpfile.write('U\n')
         inpfile.write('*EL FILE\n')
