@@ -636,14 +636,15 @@ def export(exportList,filename):
     of = pyopen(template,"wb")
     of.write(ifctemplate)
     of.close()
-    global ifcfile
+    global ifcfile, surfstyles
     ifcfile = ifcopenshell.open(template)
     history = ifcfile.by_type("IfcOwnerHistory")[0]
     context = ifcfile.by_type("IfcGeometricRepresentationContext")[0]
     project = ifcfile.by_type("IfcProject")[0]
     objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
     objectslist = Arch.pruneIncluded(objectslist)
-    products = {}
+    products = {} # { Name: IfcEntity, ... }
+    surfstyles = {} # { (r,g,b): IfcEntity, ... }
     count = 1
     
     # products
@@ -988,12 +989,17 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
     if shapes:
         
+        # set surface style
         if FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
-            rgb = obj.ViewObject.ShapeColor
-            col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
-            ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
-            iss = ifcfile.createIfcSurfaceStyle(None,"BOTH",[ssr])
-            psa = ifcfile.createIfcPresentationStyleAssignment([iss])
+            rgb = obj.ViewObject.ShapeColor[:3]
+            if rgb in surfstyles:
+                psa = surfstyles[rgb]
+            else:
+                col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
+                ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
+                iss = ifcfile.createIfcSurfaceStyle(None,"BOTH",[ssr])
+                psa = ifcfile.createIfcPresentationStyleAssignment([iss])
+                surfstyles[rgb] = psa
             for shape in shapes:
                 isi = ifcfile.createIfcStyledItem(shape,[psa],None)
                 
