@@ -1524,24 +1524,28 @@ static std::list<TopoDS_Edge> sort_Edges(double tol3d, const std::vector<TopoDS_
                 last = pEI->v2;
                 sorted.push_back(pEI->edge);
                 edge_points.erase(pEI);
+                pEI = edge_points.begin();
                 break;
             }
             else if (pEI->v2.SquareDistance(first) <= tol3d) {
                 first = pEI->v1;
                 sorted.push_front(pEI->edge);
                 edge_points.erase(pEI);
+                pEI = edge_points.begin();
                 break;
             }
             else if (pEI->v2.SquareDistance(last) <= tol3d) {
                 last = pEI->v1;
                 sorted.push_back(pEI->edge);
                 edge_points.erase(pEI);
+                pEI = edge_points.begin();
                 break;
             }
             else if (pEI->v1.SquareDistance(first) <= tol3d) {
                 first = pEI->v2;
                 sorted.push_front(pEI->edge);
                 edge_points.erase(pEI);
+                pEI = edge_points.begin();
                 break;
             }
         }

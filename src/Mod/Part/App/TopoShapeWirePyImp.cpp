@@ -107,6 +107,11 @@ int TopoShapeWirePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     PyErr_Clear();
     if (PyArg_ParseTuple(args, "O", &pcObj)) {
+        if(!Py::Object(pcObj).isList() && !Py::Object(pcObj).isTuple()) {
+            PyErr_SetString(PyExc_TypeError, "object is neither a list nor a tuple");
+            return -1;
+        }
+
         BRepBuilderAPI_MakeWire mkWire;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
