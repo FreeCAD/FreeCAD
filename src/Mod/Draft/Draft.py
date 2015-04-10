@@ -4871,7 +4871,7 @@ class _PathArray(_DraftObject):
             length = offset
         return(edge.getParameterByLength(length))
         
-    def orientShape(self,shape,edge,offset,RefPt,xlate,align):
+    def orientShape(self,shape,edge,offset,RefPt,xlate,align,normal=None):
         '''Orient shape to tangent at parm offset along edge.'''
         # http://en.wikipedia.org/wiki/Euler_angles
         import Part
@@ -4893,8 +4893,11 @@ class _PathArray(_DraftObject):
         t = edge.tangentAt(self.getParameterFromV0(edge,offset))
         t.normalize()
         try:
-            n = edge.normalAt(self.getParameterFromV0(edge,offset))
-            n.normalize()
+            if normal:
+                n = normal
+            else:
+                n = edge.normalAt(self.getParameterFromV0(edge,offset))
+                n.normalize()
             b = (t.cross(n)) 
             b.normalize()
         except FreeCAD.Base.FreeCADError:                                                      # no normal defined here
@@ -4932,7 +4935,8 @@ class _PathArray(_DraftObject):
         import Part
         import DraftGeomUtils
         closedpath = DraftGeomUtils.isReallyClosed(pathwire)
-        path = DraftGeomUtils.sortEdges(pathwire.Edges) 
+        normal = DraftGeomUtils.getNormal(pathwire)
+        path = DraftGeomUtils.sortEdges(pathwire.Edges)
         ends = []
         cdist = 0
         for e in path:                                                 # find cumulative edge end distance
@@ -4940,11 +4944,11 @@ class _PathArray(_DraftObject):
             ends.append(cdist)
         base = []
         pt = path[0].Vertexes[0].Point                                 # place the start shape
-        ns = self.orientShape(shape,path[0],0,pt,xlate,align)
+        ns = self.orientShape(shape,path[0],0,pt,xlate,align,normal)
         base.append(ns)
         if not(closedpath):                                            # closed path doesn't need shape on last vertex
             pt = path[-1].Vertexes[-1].Point                           # place the end shape
-            ns = self.orientShape(shape,path[-1],path[-1].Length,pt,xlate,align)
+            ns = self.orientShape(shape,path[-1],path[-1].Length,pt,xlate,align,normal)
             base.append(ns)
         if count < 3:
             return(Part.makeCompound(base))                            
@@ -4968,7 +4972,7 @@ class _PathArray(_DraftObject):
             remains = ends[iend] - travel
             offset = path[iend].Length - remains           
             pt = path[iend].valueAt(self.getParameterFromV0(path[iend],offset))
-            ns = self.orientShape(shape,path[iend],offset,pt,xlate,align)
+            ns = self.orientShape(shape,path[iend],offset,pt,xlate,align,normal)
             base.append(ns)
             travel += step
         return(Part.makeCompound(base))      
