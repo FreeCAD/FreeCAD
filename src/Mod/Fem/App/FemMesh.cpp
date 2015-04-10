@@ -411,7 +411,7 @@ std::set<long> FemMesh::getNodesByFace(const TopoDS_Face &face) const
     Bnd_Box box;
     BRepBndLib::Add(face, box);
     // limit where the mesh node belongs to the face:
-    double limit = box.SquareExtent()/10000.0;
+    double limit = BRep_Tool::Tolerance(face);
     box.Enlarge(limit);
 
     // get the current transform of the FemMesh
@@ -449,7 +449,7 @@ std::set<long> FemMesh::getNodesByEdge(const TopoDS_Edge &edge) const
     Bnd_Box box;
     BRepBndLib::Add(edge, box);
     // limit where the mesh node belongs to the edge:
-    double limit = box.SquareExtent()/10000.0;
+    double limit = BRep_Tool::Tolerance(edge);
     box.Enlarge(limit);
 
     // get the current transform of the FemMesh
