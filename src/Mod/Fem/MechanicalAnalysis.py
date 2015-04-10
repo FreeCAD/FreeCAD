@@ -481,7 +481,9 @@ class _JobControlTaskPanel:
         inpfile.write('\n** constaints\n')
         for FixedObject in FixedObjects:
             inpfile.write('*BOUNDARY\n')
-            inpfile.write(FixedObject['Object'].Name + ',1,3,0.0\n\n')
+            inpfile.write(FixedObject['Object'].Name + ',1\n')
+            inpfile.write(FixedObject['Object'].Name + ',2\n')
+            inpfile.write(FixedObject['Object'].Name + ',3\n\n')
 
         # write loads
         #inpfile.write('*DLOAD\n')
