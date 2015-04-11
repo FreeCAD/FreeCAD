@@ -60,7 +60,8 @@ using namespace std;
 // ---------------------------------------------------------------------------
 
 Base::XMLReader::XMLReader(const char* FileName, std::istream& str) 
-  : DocumentSchema(0), ProgramVersion(""), FileVersion(0), Level(0), _File(FileName), _verbose(true)
+  : DocumentSchema(0), ProgramVersion(""), FileVersion(0), Level(0),
+    _File(FileName), _valid(false), _verbose(true)
 {
 #ifdef _MSC_VER
     str.imbue(std::locale::empty());
@@ -85,7 +86,7 @@ Base::XMLReader::XMLReader(const char* FileName, std::istream& str)
 
     try {
         StdInputSource file(str, _File.filePath().c_str());
-        _valid = parser->parseFirst( file,token);
+        _valid = parser->parseFirst(file, token);
     }
     catch (const XMLException& toCatch) {
         char* message = XMLString::transcode(toCatch.getMessage());
@@ -238,6 +239,10 @@ void Base::XMLReader::readElement(const char* ElementName)
             // thus we must stop reading on.
             break;
         }
+        else if (ReadType == EndDocument) {
+            // the end of the document has been reached but we still try to continue on reading
+            throw Base::XMLParseException("End of document reached");
+        }
     } while ((ReadType != StartElement && ReadType != StartEndElement) ||
              (ElementName && LocalName != ElementName));
 }
@@ -245,11 +250,19 @@ void Base::XMLReader::readElement(const char* ElementName)
 void Base::XMLReader::readEndElement(const char* ElementName)
 {
     // if we are already at the end of the current element
-    if (ReadType == EndElement && LocalName == ElementName)
+    if (ReadType == EndElement && LocalName == ElementName) {
         return;
+    }
+    else if (ReadType == EndDocument) {
+        // the end of the document has been reached but we still try to continue on reading
+        throw Base::XMLParseException("End of document reached");
+    }
+
     bool ok;
     do {
         ok = read(); if (!ok) break;
+        if (ReadType == EndDocument)
+            break;
     } while (ReadType != EndElement || (ElementName && LocalName != ElementName));
 }
 
@@ -378,6 +391,16 @@ bool Base::XMLReader::doNameMapping() const
 // ---------------------------------------------------------------------------
 //  Base::XMLReader: Implementation of the SAX DocumentHandler interface
 // ---------------------------------------------------------------------------
+void Base::XMLReader::startDocument()
+{
+    ReadType = StartDocument;
+}
+
+void Base::XMLReader::endDocument()
+{
+    ReadType = EndDocument;
+}
+
 void Base::XMLReader::startElement(const XMLCh* const /*uri*/, const XMLCh* const localname, const XMLCh* const /*qname*/, const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs)
 {
     Level++; // new scope
