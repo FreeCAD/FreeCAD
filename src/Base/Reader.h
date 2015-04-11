@@ -180,10 +180,12 @@ protected:
     // -----------------------------------------------------------------------
     //  Handlers for the SAX ContentHandler interface
     // -----------------------------------------------------------------------
+    /** @name Content handler */
+    //@{
+    virtual void startDocument();
+    virtual void endDocument();
     virtual void startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs);
     virtual void endElement  (const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname);
-    virtual void startCDATA  ();
-    virtual void endCDATA    ();
 #if (XERCES_VERSION_MAJOR == 2)
     virtual void characters         (const XMLCh* const chars, const unsigned int length);
     virtual void ignorableWhitespace(const XMLCh* const chars, const unsigned int length);
@@ -191,16 +193,30 @@ protected:
     virtual void characters         (const XMLCh* const chars, const XMLSize_t length);
     virtual void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length);
 #endif
+    //@}
+
+    /** @name Lexical handler */
+    //@{
+    virtual void startCDATA  ();
+    virtual void endCDATA    ();
+    //@}
+
+    /** @name Document handler */
+    //@{
     virtual void resetDocument();
+    //@}
 
 
     // -----------------------------------------------------------------------
     //  Handlers for the SAX ErrorHandler interface
     // -----------------------------------------------------------------------
+    /** @name Error handler */
+    //@{
     void warning(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc);
     void error(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc);
     void fatalError(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc);
     void resetErrors();
+    //@}
 
 
     int Level;
@@ -214,6 +230,8 @@ protected:
     enum {
         None = 0,
         Chars,
+        StartDocument,
+        EndDocument,
         StartElement,
         StartEndElement,
         EndElement,
