@@ -29,6 +29,7 @@
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Parameter.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>
@@ -73,9 +74,22 @@ PropertyView::PropertyView(QWidget *parent)
     propertyEditorView = new Gui::PropertyEditor::PropertyEditor();
     propertyEditorView->setAutomaticDocumentUpdate(false);
     tabs->addTab(propertyEditorView, tr("View"));
+
     propertyEditorData = new Gui::PropertyEditor::PropertyEditor();
     propertyEditorData->setAutomaticDocumentUpdate(true);
     tabs->addTab(propertyEditorData, tr("Data"));
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("PropertyView");
+    if ( hGrp ) {
+        int preferredTab = hGrp->GetInt("LastTabIndex", 1);
+
+        if ( preferredTab > 0 && preferredTab < tabs->count() )
+            tabs->setCurrentIndex(preferredTab);
+    }
+
+    // connect after adding all tabs, so adding doesn't thrash the parameter
+    connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 }
 
 PropertyView::~PropertyView()
@@ -190,6 +204,15 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         }
     }
     propertyEditorView->buildUp(viewProps);
+}
+
+void PropertyView::tabChanged(int index)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("PropertyView");
+    if (hGrp) {
+        hGrp->SetInt("LastTabIndex", index);
+    }
 }
 
 void PropertyView::changeEvent(QEvent *e)
