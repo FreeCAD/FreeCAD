@@ -134,16 +134,29 @@ class _MechanicalMaterialTaskPanel:
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.chooseMat)
         self.previous_material = self.obj.Material
         self.import_materials()
-        matmap = self.obj.Material
-        if 'General_name' in matmap:
-            material_name = matmap['General_name']
-            new_index = self.form.cb_materials.findText(material_name)
-            if new_index != -1:
-                self.chooseMat(new_index)
-            else:
-                print "Cannot find previously used material \'{}\' - setting to \'None\'".format(material_name)
-                i = self.form.cb_materials.findText('None')
-                self.chooseMat(i)
+        previous_mat_path = self.get_material_path(self.previous_material)
+        if not previous_mat_path:
+            print "Previously used material cannot be found in material directories. Using transient material."
+            self.add_transient_material(self.previous_material)
+            material_name = self.get_material_name(self.previous_material)
+            index = self.form.cb_materials.findData(material_name)
+            self.chooseMat(index)
+        else:
+            index = self.form.cb_materials.findData(previous_mat_path)
+            self.chooseMat(index)
+
+    def get_material_name(self, material):
+        if 'General_name' in self.previous_material:
+            return self.previous_material['General_name']
+        else:
+            return 'None'
+
+    def get_material_path(self, material):
+        for a_mat in self.materials:
+            unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
+            if len(unmatched_items) == 0:
+                return a_mat
+        return ""
 
     def print_mat_data(self, matmap):
         print 'material data:'
@@ -192,6 +205,11 @@ class _MechanicalMaterialTaskPanel:
             gen_mat_desc = self.obj.Material['General_description']
         self.form.l_mat_description.setText(gen_mat_desc)
         self.print_mat_data(self.obj.Material)
+
+    def add_transient_material(self, material):
+        material_name = self.get_material_name(material)
+        self.form.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), material_name, material_name)
+        self.materials[material_name] = material
 
     def add_mat_dir(self, mat_dir, icon):
         import glob
