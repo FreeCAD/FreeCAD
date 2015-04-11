@@ -161,6 +161,8 @@ def explore(filename=None):
             item.setText(0,str(entity.id()))
             if entity.is_a() in ["IfcWall","IfcWallStandardCase"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Wall_Tree.svg"))
+            elif entity.is_a() in ["IfcBuildingElementProxy"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Component.svg"))
             elif entity.is_a() in ["IfcColumn","IfcColumnStandardCase","IfcBeam","IfcBeamStandardCase","IfcSlab","IfcFooting","IfcPile","IfcTendon"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Arch_Structure_Tree.svg"))
             elif entity.is_a() in ["IfcSite"]:
