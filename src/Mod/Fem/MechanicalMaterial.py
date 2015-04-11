@@ -133,7 +133,7 @@ class _MechanicalMaterialTaskPanel:
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
         QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("activated(int)"), self.chooseMat)
         self.previous_material = self.obj.Material
-        self.fillMaterialCombo()
+        self.import_materials()
         matmap = self.obj.Material
         if 'General_name' in matmap:
             material_name = matmap['General_name']
@@ -183,9 +183,8 @@ class _MechanicalMaterialTaskPanel:
     def chooseMat(self, index):
         if index < 0:
             return
-        import Material
-        name = self.pathList[index]
-        self.obj.Material = Material.importFCMat(str(name))
+        mat_file_path = self.form.comboBox_MaterialsInDir.itemData(index)
+        self.obj.Material = self.materials[mat_file_path]
         self.form.comboBox_MaterialsInDir.setCurrentIndex(index)
         self.set_mat_params_in_combo_box(self.obj.Material)
         gen_mat_desc = ""
@@ -197,15 +196,18 @@ class _MechanicalMaterialTaskPanel:
     def add_mat_dir(self, mat_dir, icon):
         import glob
         import os
+        import Material
         mat_file_extension = ".FCMat"
         ext_len = len(mat_file_extension)
         dir_path_list = glob.glob(mat_dir + '/*' + mat_file_extension)
         self.pathList = self.pathList + dir_path_list
-        for i in dir_path_list:
-            material_name = os.path.basename(i[:-ext_len])
-            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(icon), material_name)
+        for a_path in dir_path_list:
+            material_name = os.path.basename(a_path[:-ext_len])
+            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(icon), material_name, a_path)
+            self.materials[a_path] = Material.importFCMat(a_path)
 
-    def fillMaterialCombo(self):
+    def import_materials(self):
+        self.materials = {}
         self.pathList = []
         self.form.comboBox_MaterialsInDir.clear()
         system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
