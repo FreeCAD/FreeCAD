@@ -131,18 +131,18 @@ class _MechanicalMaterialTaskPanel:
         self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
-        QtCore.QObject.connect(self.form.comboBox_MaterialsInDir, QtCore.SIGNAL("activated(int)"), self.chooseMat)
+        QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.chooseMat)
         self.previous_material = self.obj.Material
         self.import_materials()
         matmap = self.obj.Material
         if 'General_name' in matmap:
             material_name = matmap['General_name']
-            new_index = self.form.comboBox_MaterialsInDir.findText(material_name)
+            new_index = self.form.cb_materials.findText(material_name)
             if new_index != -1:
                 self.chooseMat(new_index)
             else:
                 print "Cannot find previously used material \'{}\' - setting to \'None\'".format(material_name)
-                i = self.form.comboBox_MaterialsInDir.findText('None')
+                i = self.form.cb_materials.findText('None')
                 self.chooseMat(i)
 
     def print_mat_data(self, matmap):
@@ -183,9 +183,9 @@ class _MechanicalMaterialTaskPanel:
     def chooseMat(self, index):
         if index < 0:
             return
-        mat_file_path = self.form.comboBox_MaterialsInDir.itemData(index)
+        mat_file_path = self.form.cb_materials.itemData(index)
         self.obj.Material = self.materials[mat_file_path]
-        self.form.comboBox_MaterialsInDir.setCurrentIndex(index)
+        self.form.cb_materials.setCurrentIndex(index)
         self.set_mat_params_in_combo_box(self.obj.Material)
         gen_mat_desc = ""
         if 'General_description' in self.obj.Material:
@@ -203,13 +203,13 @@ class _MechanicalMaterialTaskPanel:
         self.pathList = self.pathList + dir_path_list
         for a_path in dir_path_list:
             material_name = os.path.basename(a_path[:-ext_len])
-            self.form.comboBox_MaterialsInDir.addItem(QtGui.QIcon(icon), material_name, a_path)
+            self.form.cb_materials.addItem(QtGui.QIcon(icon), material_name, a_path)
             self.materials[a_path] = Material.importFCMat(a_path)
 
     def import_materials(self):
         self.materials = {}
         self.pathList = []
-        self.form.comboBox_MaterialsInDir.clear()
+        self.form.cb_materials.clear()
         system_mat_dir = FreeCAD.getResourceDir() + "/Mod/Material/StandardMaterial"
         self.add_mat_dir(system_mat_dir, ":/icons/freecad.svg")
 

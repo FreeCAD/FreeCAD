@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QComboBox" name="comboBox_MaterialsInDir">
+    <widget class="QComboBox" name="cb_materials">
      <item>
       <property name="text">
        <string>choose...</string>
