@@ -96,6 +96,7 @@ private:
     {
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
         if (vp && vp->isDerivedFrom(PartGui::ViewProviderPartExt::getClassTypeId())) {
+            static_cast<PartGui::ViewProviderPartExt*>(vp)->ShapeColor.setValue(colors.front());
             static_cast<PartGui::ViewProviderPartExt*>(vp)->DiffuseColor.setValues(colors);
         }
     }
