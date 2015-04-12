@@ -132,6 +132,8 @@ class _MechanicalMaterialTaskPanel:
 
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.chooseMat)
+        QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
+        QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
         self.previous_material = self.obj.Material
         self.import_materials()
         previous_mat_path = self.get_material_path(self.previous_material)
@@ -192,6 +194,22 @@ class _MechanicalMaterialTaskPanel:
     def goMatWeb(self):
         import webbrowser
         webbrowser.open("http://matweb.com")
+
+    def ym_changed(self, value):
+        import Units
+        old_ym = Units.Quantity(self.obj.Material['Mechanical_youngsmodulus'])
+        if old_ym != value:
+            material = self.obj.Material
+            material['Mechanical_youngsmodulus'] = unicode(value)
+            self.obj.Material = material
+
+    def pr_changed(self, value):
+        import Units
+        old_pr = Units.Quantity(self.obj.Material['FEM_poissonratio'])
+        if old_pr != value:
+            material = self.obj.Material
+            material['FEM_poissonratio'] = unicode(value)
+            self.obj.Material = material
 
     def chooseMat(self, index):
         if index < 0:
