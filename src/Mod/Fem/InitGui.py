@@ -33,9 +33,20 @@
 class FemWorkbench (Workbench):
     "Fem workbench object"
     def __init__(self):
+        import subprocess
+        from platform import system
         self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Fem/Resources/icons/preferences-fem.svg"
         self.__class__.MenuText = "FEM"
         self.__class__.ToolTip = "FEM workbench"
+        ccx_path = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("ccxBinaryPath")
+        if not ccx_path:
+            if system() == 'Linux':
+                p1 = subprocess.Popen(['which', 'ccx'], stdout=subprocess.PIPE)
+                if p1.wait() == 0:
+                    ccx_path = p1.stdout.read().split('\n')[0]
+            elif system() == 'Windows':
+                ccx_path = FreeCAD.getHomePath() + 'bin/ccx.exe'
+            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").SetString("ccxBinaryPath", ccx_path)
 
     def Initialize(self):
             # load the module
