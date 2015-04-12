@@ -257,9 +257,10 @@ class _MechanicalMaterialTaskPanel:
             user_mat_dirname = FreeCAD.getUserAppDataDir() + "Materials"
             self.add_mat_dir(user_mat_dirname, ":/icons/preferences-general.svg")
 
-        self.fem_preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        custom_mat_dir = self.fem_preferences.GetString("CustomMaterialsDir","")
-        self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
+        use_mat_from_custom_dir = self.fem_preferences.GetBool("UseMaterialsFromCustomDir")
+        if use_mat_from_custom_dir:
+            custom_mat_dir = self.fem_preferences.GetString("CustomMaterialsDir","")
+            self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
 
 
 FreeCADGui.addCommand('Fem_MechanicalMaterial',_CommandMechanicalMaterial())
