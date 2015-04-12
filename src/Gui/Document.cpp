@@ -1163,6 +1163,26 @@ bool Document::sendMsgToViews(const char* pMsg)
     return false;
 }
 
+bool Document::sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, const char** ppReturn)
+{
+    // first try the active view
+    Gui::MDIView* view = getActiveView();
+    if (view && view->isDerivedFrom(typeId)) {
+        if (view->onMsg(pMsg, ppReturn))
+            return true;
+    }
+
+    // now try the other views
+    std::list<Gui::MDIView*> views = getMDIViewsOfType(typeId);
+    for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+        if ((*it != view) && (*it)->onMsg(pMsg, ppReturn)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /// Getter for the active view
 MDIView* Document::getActiveView(void) const
 {

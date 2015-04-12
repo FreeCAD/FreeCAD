@@ -98,17 +98,7 @@ povViewCamera(PyObject *self, PyObject *args)
 
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
-            // try active view first
-            Gui::MDIView* view = doc->getActiveView();
-            if (!(view && view->onMsg("GetCamera",&ppReturn))) {
-                // now try all views
-                std::list<Gui::MDIView*> views = doc->getMDIViews();
-                for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
-                    if ((*it)->onMsg("GetCamera",&ppReturn)) {
-                        break;
-                    }
-                }
-            }
+            doc->sendMsgToFirstView(Gui::MDIView::getClassTypeId(), "GetCamera", &ppReturn);
         }
         else {
             PyErr_SetString(PyExc_RuntimeError, "No active document found");
@@ -146,6 +136,7 @@ povViewCamera(PyObject *self, PyObject *args)
 
         SbVec3f pos = Cam->position.getValue();
         float Dist = Cam->focalDistance.getValue();
+        Cam->unref(); // free memory
 
         // making gp out of the Coin stuff
         gp_Vec gpPos(pos.getValue()[0],pos.getValue()[1],pos.getValue()[2]);
@@ -180,17 +171,7 @@ luxViewCamera(PyObject *self, PyObject *args)
 
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
-            // try active view first
-            Gui::MDIView* view = doc->getActiveView();
-            if (!(view && view->onMsg("GetCamera",&ppReturn))) {
-                // now try all views
-                std::list<Gui::MDIView*> views = doc->getMDIViews();
-                for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
-                    if ((*it)->onMsg("GetCamera",&ppReturn)) {
-                        break;
-                    }
-                }
-            }
+            doc->sendMsgToFirstView(Gui::MDIView::getClassTypeId(), "GetCamera", &ppReturn);
         }
         else {
             PyErr_SetString(PyExc_RuntimeError, "No active document found");
@@ -228,6 +209,7 @@ luxViewCamera(PyObject *self, PyObject *args)
 
         SbVec3f pos = Cam->position.getValue();
         float Dist = Cam->focalDistance.getValue();
+        Cam->unref(); // free memory
 
         // making gp out of the Coin stuff
         gp_Vec gpPos(pos.getValue()[0],pos.getValue()[1],pos.getValue()[2]);
