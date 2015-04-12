@@ -150,6 +150,12 @@ public:
      */
     /// send Messages to all views
     bool sendMsgToViews(const char* pMsg);
+    /** Sends the message \a pMsg to the views of type \a typeid and stops with
+     * the first view that supports the message and returns \a ppReturn. The very
+     * first checked view is the current active view.
+     * If a view supports the message true is returned and false otherwise.
+     */
+    bool sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, const char** ppReturn);
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// Detach a view (get called by the MDIView destructor)
