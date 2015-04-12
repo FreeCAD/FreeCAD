@@ -17,10 +17,10 @@ SET (MaterialLib_Files
     StandardMaterial/None.FCMat
     StandardMaterial/ABS.FCMat
     StandardMaterial/CalculiX.FCMat
-    StandardMaterial/Concrete.FCMat
+    StandardMaterial/Concrete-Generic.FCMat
     StandardMaterial/PLA.FCMat
-    StandardMaterial/Steel.FCMat
-    StandardMaterial/Wood.FCMat
+    StandardMaterial/Steel-Generic.FCMat
+    StandardMaterial/Wood-Generic.FCMat
     StandardMaterial/Readme.txt
 )
 SOURCE_GROUP("MatLib" FILES ${MaterialLib_Files})
