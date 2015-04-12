@@ -205,7 +205,12 @@ void FileInfo::setFile(const char* name)
     }
 
     FileName = name;
-    std::replace(FileName.begin(), FileName.end(), '\\', '/');
+
+    // keep the UNC paths intact
+    if (FileName.substr(0,2) == std::string("\\\\"))
+        std::replace(FileName.begin()+2, FileName.end(), '\\', '/');
+    else
+        std::replace(FileName.begin(), FileName.end(), '\\', '/');
 }
 
 std::string FileInfo::filePath () const
