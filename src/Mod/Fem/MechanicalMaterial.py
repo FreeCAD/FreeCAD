@@ -180,6 +180,7 @@ class _MechanicalMaterialTaskPanel:
 
     def reject(self):
         self.obj.Material = self.previous_material
+        print "Reverting to material:"
         self.print_mat_data(self.previous_material)
         FreeCADGui.ActiveDocument.resetEdit()
 
