@@ -128,7 +128,6 @@ class _MechanicalMaterialTaskPanel:
         self.obj = obj
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
-        self.params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
 
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.chooseMat)
