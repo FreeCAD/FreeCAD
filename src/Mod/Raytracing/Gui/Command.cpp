@@ -632,7 +632,7 @@ void CmdRaytracingRender::activated(int iMsg)
 
         QStringList filter;
 #ifdef FC_OS_WIN32
-        filter << QObject::tr("Rendered image (*.bmp)");
+        filter << QObject::tr("Rendered image (*.bmp *.png)");
 #else
         filter << QObject::tr("Rendered image (*.png)");
 #endif
