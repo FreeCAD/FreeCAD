@@ -569,11 +569,12 @@ class _JobControlTaskPanel:
         # run Calculix
         print 'run Calculix at: ', self.CalculixBinary , '  with: ', self.Basename
         # change cwd because ccx may crash if directory has no write permission
+        # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
-        QtCore.QDir.setCurrent(QtCore.QDir.homePath())
-        self.Calculix.start(self.CalculixBinary, ['-i',self.Basename])
-        
-        
+        fi = QtCore.QFileInfo(self.Basename)
+        QtCore.QDir.setCurrent(fi.path())
+        self.Calculix.start(self.CalculixBinary, ['-i',fi.baseName()])
+
         QApplication.restoreOverrideCursor()
 
 
