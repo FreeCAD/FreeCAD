@@ -72,12 +72,9 @@ ViewProviderFemConstraint::ViewProviderFemConstraint()
     pTextColor = new SoBaseColor();
     pTextColor->ref();
 
-    pMaterials = new SoMaterial();
+    pMaterials = new SoBaseColor();
     pMaterials->ref();
-    pMaterials->diffuseColor.setValue(1.0f, 0.0f, 0.2f);
-    pMaterials->transparency.setValue(0.1f);
-    //pMaterials->ambientColor.setValue(0.8f, 0.8f, 0.8f);
-    //pMaterials->shininess.setValue(1.0);
+    pMaterials->rgb.setValue(1.0f, 0.0f, 0.2f);
 
     pShapeSep = new SoSeparator();
     pShapeSep->ref();
@@ -157,7 +154,7 @@ void ViewProviderFemConstraint::onChanged(const App::Property* prop)
     }
     else if (prop == &FaceColor) {
         const App::Color& c = FaceColor.getValue();
-        pMaterials->diffuseColor.setValue(c.r,c.g,c.b);
+        pMaterials->rgb.setValue(c.r,c.g,c.b);
     }
     else if (prop == &FontSize) {
         pFont->size = FontSize.getValue();
