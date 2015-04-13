@@ -102,7 +102,7 @@ private:
     SoFontStyle      * pFont;
     SoText2          * pLabel;
     SoBaseColor      * pTextColor;
-    SoMaterial       * pMaterials;
+    SoBaseColor      * pMaterials;
 
 protected:
     SoSeparator      * pShapeSep;
