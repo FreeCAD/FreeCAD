@@ -53,7 +53,7 @@ RayProject::RayProject(void)
 void RayProject::onDocumentRestored()
 {
     Base::FileInfo fi(PageResult.getValue());
-    Template.setValue(App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName());
+    Template.setValue(App::Application::getResourceDir() + "Mod/Raytracing/Templates/" + fi.fileName());
 }
 
 App::DocumentObjectExecReturn *RayProject::execute(void)
