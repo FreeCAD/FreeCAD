@@ -49,6 +49,8 @@ PropertyEditor::PropertyEditor(QWidget *parent)
 
     setAlternatingRowColors(true);
     setRootIsDecorated(true);
+    
+    resizeColumnToContents(0);
 }
 
 PropertyEditor::~PropertyEditor()
@@ -143,6 +145,7 @@ void PropertyEditor::buildUp(const PropertyModel::PropertyList& props)
         QModelIndex index = propertyModel->propertyIndexFromPath(this->selectedProperty);
         this->setCurrentIndex(index);
     }
+    
 }
 
 #include "moc_PropertyEditor.cpp"
