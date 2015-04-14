@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 J?rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -49,6 +49,7 @@
 # include <QFileInfo>
 # include <QDesktopServices>
 # include <QMenu>
+# include <QDesktopWidget>
 #endif
 
 #include "BrowserView.h"
@@ -74,6 +75,10 @@ using namespace Gui;
 WebView::WebView(QWidget *parent)
     : QWebView(parent)
 {
+  QRect mainScreenSize = QApplication::desktop()->screenGeometry();
+  if(mainScreenSize.width() > 1920){
+    setTextSizeMultiplier (2.0);
+  }
 }
 
 void WebView::wheelEvent(QWheelEvent *event)

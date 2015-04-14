@@ -542,7 +542,8 @@ class DraftToolBar:
         
     def setupTray(self):
         "sets draft tray buttons up"
-
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
+        isize = p.GetInt("ToolbarIconSize",24)
         self.wplabel = self._pushbutton("wplabel", self.toptray, icon='Draft_SelectPlane',hide=False,width=120)
         defaultWP = Draft.getParam("defaultWP",0)
         if defaultWP == 1:
@@ -553,20 +554,26 @@ class DraftToolBar:
             self.wplabel.setText("Side")
         else:
             self.wplabel.setText("Auto")
-        self.constrButton = self._pushbutton("constrButton", self.toptray, hide=False, icon='Draft_Construction',width=22, checkable=True)
+        self.constrButton = self._pushbutton("constrButton", self.toptray, hide=False, icon='Draft_Construction',width=isize, checkable=True)
         self.constrColor = QtGui.QColor(self.paramconstr)
-        self.colorButton = self._pushbutton("colorButton",self.bottomtray, hide=False,width=22)
-        self.colorPix = QtGui.QPixmap(16,16)
+        self.colorButton = self._pushbutton("colorButton",self.bottomtray, hide=False,width=isize)
+        self.colorPix = QtGui.QPixmap(isize-6,isize-6)
         self.colorPix.fill(self.color)
         self.colorButton.setIcon(QtGui.QIcon(self.colorPix))
-        self.facecolorButton = self._pushbutton("facecolorButton",self.bottomtray, hide=False,width=22)
-        self.facecolorPix = QtGui.QPixmap(16,16)
+        self.facecolorButton = self._pushbutton("facecolorButton",self.bottomtray, hide=False,width=isize)
+        self.facecolorPix = QtGui.QPixmap(isize-6,isize-6)
         self.facecolorPix.fill(self.facecolor)
         self.facecolorButton.setIcon(QtGui.QIcon(self.facecolorPix))
-        self.widthButton = self._spinbox("widthButton", self.bottomtray, val=self.linewidth,hide=False,size=(50,22))
+        screenWidth = QtGui.QApplication.desktop().screenGeometry().width()
+        textHeight=22
+        textWidth=50
+        if screenWidth>1920:
+          textHeight=44
+          textWidth=100
+        self.widthButton = self._spinbox("widthButton", self.bottomtray, val=self.linewidth,hide=False,size=(textWidth,textHeight))
         self.widthButton.setSuffix("px")
-        self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(65,22))
-        self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',width=22)
+        self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(textWidth+15,textHeight))
+        self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',width=isize)
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
         QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
