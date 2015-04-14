@@ -64,7 +64,6 @@ class BitmapFactoryInstP
 public:
     QMap<std::string, const char**> xpmMap;
     QMap<std::string, QPixmap> xpmCache;
-    QStringList paths;
 };
 }
 
@@ -126,18 +125,22 @@ void BitmapFactoryInst::restoreCustomPaths()
 
 void BitmapFactoryInst::addPath(const QString& path)
 {
-    d->paths.push_back(path);
+    QDir::addSearchPath(QString::fromLatin1("icons"), path);
 }
 
 void BitmapFactoryInst::removePath(const QString& path)
 {
-    int pos = d->paths.indexOf(path);
-    if (pos != -1) d->paths.removeAt(pos);
+    QStringList iconPaths = QDir::searchPaths(QString::fromLatin1("icons"));
+    int pos = iconPaths.indexOf(path);
+    if (pos != -1) {
+        iconPaths.removeAt(pos);
+        QDir::setSearchPaths(QString::fromLatin1("icons"), iconPaths);
+    }
 }
 
 QStringList BitmapFactoryInst::getPaths() const
 {
-    return d->paths;
+    return QDir::searchPaths(QString::fromLatin1("icons"));
 }
 
 QStringList BitmapFactoryInst::findIconFiles() const
@@ -147,7 +150,7 @@ QStringList BitmapFactoryInst::findIconFiles() const
     for (QList<QByteArray>::iterator it = formats.begin(); it != formats.end(); ++it)
         filters << QString::fromAscii("*.%1").arg(QString::fromAscii(*it).toLower());
 
-    QStringList paths = d->paths;
+    QStringList paths = QDir::searchPaths(QString::fromLatin1("icons"));
 #if QT_VERSION >= 0x040500
     paths.removeDuplicates();
 #endif
@@ -191,7 +194,7 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
     if (fi.exists()) {
         // first check if it's an SVG because Qt's qsvg4 module shouldn't be used therefore
         if (fi.suffix().toLower() == QLatin1String("svg")) {
-            QFile svgFile(filename);
+            QFile svgFile(fi.filePath());
             if (svgFile.open(QFile::ReadOnly | QFile::Text)) {
                 QByteArray content = svgFile.readAll();
                 icon = pixmapFromSvg(content, QSize(64,64));
@@ -199,7 +202,7 @@ bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
         }
         else {
             // try with Qt plugins
-            icon.load(filename);
+            icon.load(fi.filePath());
         }
     }
 
@@ -227,28 +230,20 @@ QPixmap BitmapFactoryInst::pixmap(const char* name) const
     if (icon.isNull())
         loadPixmap(fn, icon);
 
-    // try to find it in the given directories
+    // try to find it in the 'icons' search paths
     if (icon.isNull()) {
         QList<QByteArray> formats = QImageReader::supportedImageFormats();
         formats.prepend("SVG"); // check first for SVG to use special import mechanism
-        for (QStringList::ConstIterator pt = d->paths.begin(); pt != d->paths.end(); ++pt) {
-            QDir d(*pt);
-            QString fileName = d.filePath(fn);
-            if (loadPixmap(fileName, icon)) {
-                break;
-            }
-            else {
-                // Go through supported file formats
-                for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
-                    QString path = QString::fromAscii("%1.%2").arg(fileName).
-                        arg(QString::fromAscii((*fm).toLower().constData()));
-                    if (loadPixmap(path, icon)) {
-                        break;
-                    }
-                }
 
-                if (!icon.isNull())
+        QString fileName = QString::fromLatin1("icons:") + fn;
+        if (!loadPixmap(fileName, icon)) {
+            // Go through supported file formats
+            for (QList<QByteArray>::iterator fm = formats.begin(); fm != formats.end(); ++fm) {
+                QString path = QString::fromAscii("%1.%2").arg(fileName).
+                    arg(QString::fromAscii((*fm).toLower().constData()));
+                if (loadPixmap(path, icon)) {
                     break;
+                }
             }
         }
     }
@@ -271,20 +266,18 @@ QPixmap BitmapFactoryInst::pixmapFromSvg(const char* name, const QSize& size) co
     if (QFile(fn).exists())
         iconPath = fn;
 
-    // try to find it in the given directories
+    // try to find it in the 'icons' search paths
     if (iconPath.isEmpty()) {
-        for (QStringList::ConstIterator pt = d->paths.begin(); pt != d->paths.end(); ++pt) {
-            QDir d(*pt);
-            QString fileName = d.filePath(fn);
-            if (QFile(fileName).exists()) {
-                iconPath = fileName;
-                break;
-            } else {
-                fileName += QLatin1String(".svg");
-                if (QFile(fileName).exists()) {
-                    iconPath = fileName;
-                    break;
-                }
+        QString fileName = QString::fromLatin1("icons:") + fn;
+        QFileInfo fi(fileName);
+        if (fi.exists()) {
+            iconPath = fi.filePath();
+        }
+        else {
+            fileName += QLatin1String(".svg");
+            fi.setFile(fileName);
+            if (fi.exists()) {
+                iconPath = fi.filePath();
             }
         }
     }
