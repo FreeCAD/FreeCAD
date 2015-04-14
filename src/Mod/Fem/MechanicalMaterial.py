@@ -236,10 +236,14 @@ class _MechanicalMaterialTaskPanel:
         ext_len = len(mat_file_extension)
         dir_path_list = glob.glob(mat_dir + '/*' + mat_file_extension)
         self.pathList = self.pathList + dir_path_list
+        material_name_list = []
         for a_path in dir_path_list:
             material_name = os.path.basename(a_path[:-ext_len])
-            self.form.cb_materials.addItem(QtGui.QIcon(icon), material_name, a_path)
             self.materials[a_path] = Material.importFCMat(a_path)
+            material_name_list.append([material_name, a_path])
+        material_name_list.sort()
+        for mat in material_name_list:
+            self.form.cb_materials.addItem(QtGui.QIcon(icon), mat[0], mat[1])
 
     def import_materials(self):
         self.materials = {}
