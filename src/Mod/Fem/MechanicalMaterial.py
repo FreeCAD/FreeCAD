@@ -37,10 +37,10 @@ __url__ = "http://www.freecadweb.org"
 def makeMechanicalMaterial(name):
     '''makeMaterial(name): makes an Material
     name there fore is a material name or an file name for a FCMat file'''
-    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython",name)
+    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
     _MechanicalMaterial(obj)
     _ViewProviderMechanicalMaterial(obj.ViewObject)
-    #FreeCAD.ActiveDocument.recompute()
+    # FreeCAD.ActiveDocument.recompute()
     return obj
 
 
@@ -48,9 +48,9 @@ class _CommandMechanicalMaterial:
     "the Fem Material command definition"
     def GetResources(self):
         return {'Pixmap': 'Fem_Material',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material","Mechanical material..."),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Mechanical material..."),
                 'Accel': "A, X",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material","Creates or edit the mechanical material definition.")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Creates or edit the mechanical material definition.")}
 
     def Activated(self):
         MatObj = None
@@ -64,7 +64,7 @@ class _CommandMechanicalMaterial:
             FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
             FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
             FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name,0)")
-            #FreeCADGui.doCommand("Fem.makeMaterial()")
+            # FreeCADGui.doCommand("Fem.makeMaterial()")
         else:
             FreeCADGui.doCommand("Gui.activeDocument().setEdit('" + MatObj.Name + "',0)")
 
@@ -77,19 +77,19 @@ class _CommandMechanicalMaterial:
 
 class _MechanicalMaterial:
     "The Material object"
-    def __init__(self,obj):
+    def __init__(self, obj):
         self.Type = "MechanicaltMaterial"
         obj.Proxy = self
-        #obj.Material = StartMat
+        # obj.Material = StartMat
 
-    def execute(self,obj):
+    def execute(self, obj):
         return
 
 
 class _ViewProviderMechanicalMaterial:
     "A View Provider for the MechanicalMaterial object"
 
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
 
     def getIcon(self):
@@ -105,26 +105,26 @@ class _ViewProviderMechanicalMaterial:
     def onChanged(self, vobj, prop):
         return
 
-    def setEdit(self,vobj,mode):
+    def setEdit(self, vobj, mode):
         taskd = _MechanicalMaterialTaskPanel(self.Object)
         taskd.obj = vobj.Object
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self,vobj,mode):
+    def unsetEdit(self, vobj, mode):
         FreeCADGui.Control.closeDialog()
         return
 
     def __getstate__(self):
         return None
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         return None
 
 
 class _MechanicalMaterialTaskPanel:
     '''The editmode TaskPanel for MechanicalMaterial objects'''
-    def __init__(self,obj):
+    def __init__(self, obj):
         self.obj = obj
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
@@ -263,4 +263,4 @@ class _MechanicalMaterialTaskPanel:
             self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
 
 
-FreeCADGui.addCommand('Fem_MechanicalMaterial',_CommandMechanicalMaterial())
+FreeCADGui.addCommand('Fem_MechanicalMaterial', _CommandMechanicalMaterial())
