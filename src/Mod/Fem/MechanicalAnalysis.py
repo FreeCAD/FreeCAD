@@ -259,6 +259,13 @@ class _JobControlTaskPanel:
         else:
             try:
                 out = unicode(out, 'utf-8')
+                rx = QtCore.QRegExp("\\*ERROR.*\\n\\n")
+                rx.setMinimal(True)
+                pos = rx.indexIn(out)
+                while not pos < 0:
+                    match = rx.cap(0)
+                    FreeCAD.Console.PrintError(match.strip().replace('\n',' ') + '\n')
+                    pos = rx.indexIn(out, pos + 1)
                 self.femConsoleMessage(out.replace('\n','<br>'))
             except UnicodeDecodeError:
                 self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
