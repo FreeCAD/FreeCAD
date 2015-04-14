@@ -258,7 +258,8 @@ class _JobControlTaskPanel:
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
         else:
             try:
-                self.femConsoleMessage(unicode(out).replace('\n','<br>'))
+                out = unicode(out, 'utf-8')
+                self.femConsoleMessage(out.replace('\n','<br>'))
             except UnicodeDecodeError:
                 self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
 
