@@ -160,9 +160,8 @@ class _MechanicalMaterialTaskPanel:
         return ""
 
     def print_mat_data(self, matmap):
-        print 'material data:'
-        if 'General_name' in matmap:
-            print ' Name = ', matmap['General_name']
+        print 'Material data:'
+        print ' Name = {}'.format(self.get_material_name(matmap))
         if 'Mechanical_youngsmodulus' in matmap:
             print ' YM = ', matmap['Mechanical_youngsmodulus']
         if 'FEM_poissonratio' in matmap:
