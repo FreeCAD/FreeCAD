@@ -723,28 +723,27 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
     if (elemOrderMap.empty()) {
         // dimension 1
         //
-        // FIXME: get the right order
         std::vector<int> b31 = boost::assign::list_of(0)(1);
         std::vector<int> b32 = boost::assign::list_of(0)(1)(2);
-#if 0
+
         elemOrderMap.insert(std::make_pair("B31", b31));
         edgeTypeMap.insert(std::make_pair(elemOrderMap["B31"].size(), "B31"));
         elemOrderMap.insert(std::make_pair("B32", b32));
         edgeTypeMap.insert(std::make_pair(elemOrderMap["B32"].size(), "B32"));
-#endif
 
         // dimension 2
         //
+        std::vector<int> s3 = boost::assign::list_of(0)(1)(2);
+        std::vector<int> s6 = boost::assign::list_of(0)(1)(2)(3)(4)(5);
         // FIXME: get the right order
-        std::vector<int> s3;
-        std::vector<int> s6;
         std::vector<int> s4r;
         std::vector<int> s8r;
-#if 0
+
         elemOrderMap.insert(std::make_pair("S3", s3));
         faceTypeMap.insert(std::make_pair(elemOrderMap["S3"].size(), "S3"));
         elemOrderMap.insert(std::make_pair("S6", s6));
         faceTypeMap.insert(std::make_pair(elemOrderMap["S6"].size(), "S6"));
+#if 0
         elemOrderMap.insert(std::make_pair("S4R", s4r));
         faceTypeMap.insert(std::make_pair(elemOrderMap["S4R"].size(), "S4R"));
         elemOrderMap.insert(std::make_pair("S8R", s8r));
@@ -829,10 +828,15 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
             anABAQUS_Output << std::endl;
         }
     }
-    elementsMap.clear();
+
+    if (!elementsMap.empty()) {
+        anABAQUS_Output.close();
+        return; // done
+    }
 
     // add faces
     //
+    elementsMap.clear();
     SMDS_FaceIteratorPtr aFaceIter = myMesh->GetMeshDS()->facesIterator();
     while (aFaceIter->more()) {
         const SMDS_MeshFace* aFace = aFaceIter->next();
@@ -859,10 +863,15 @@ void FemMesh::writeABAQUS(const std::string &Filename) const
             anABAQUS_Output << std::endl;
         }
     }
-    elementsMap.clear();
+
+    if (!elementsMap.empty()) {
+        anABAQUS_Output.close();
+        return; // done
+    }
 
     // add edges
     //
+    elementsMap.clear();
     SMDS_EdgeIteratorPtr aEdgeIter = myMesh->GetMeshDS()->edgesIterator();
     while (aEdgeIter->more()) {
         const SMDS_MeshEdge* aEdge = aEdgeIter->next();
