@@ -340,74 +340,81 @@ class _JobControlTaskPanel:
             self.form.lineEdit_outputDir.setText(dirname)
 
     def write_input_file_handler(self):
-        QApplication.setOverrideCursor(Qt.WaitCursor)
-        try:
-            self.write_calculix_input_file()
-        except:
-            print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
-            raise
-        finally:
-            QApplication.restoreOverrideCursor()
+        QApplication.restoreOverrideCursor()
+        if self.check_prerequisites():
+            QApplication.setOverrideCursor(Qt.WaitCursor)
+            try:
+                self.write_calculix_input_file()
+            except:
+                print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
+                raise
+            finally:
+                QApplication.restoreOverrideCursor()
+            self.form.pushButton_edit.setEnabled(True)
+            self.form.pushButton_generate.setEnabled(True)
 
-    def write_calculix_input_file(self):
-        print 'writeCalculixInputFile'
+    def check_prerequisites(self):
         self.Start = time.time()
-
-        #dirName = self.form.lineEdit_outputDir.text()
-        dirName = self.TempDir
-        print 'CalculiX run directory: ',dirName
         self.femConsoleMessage("Check dependencies...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-        MeshObject = None
+        self.MeshObject = None
         if FemGui.getActiveAnalysis():
             for i in FemGui.getActiveAnalysis().Member:
                 if i.isDerivedFrom("Fem::FemMeshObject"):
-                    MeshObject = i
+                    self.MeshObject = i
         else:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No active Analysis")
-            return
+            return False
 
-        if not MeshObject:
+        if not self.MeshObject:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No mesh object in the Analysis")
-            return
+            return False
 
-        MathObject = None
+        self.MathObject = None
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("App::MaterialObjectPython"):
-                MathObject = i
-        if not MathObject:
+                self.MathObject = i
+        if not self.MathObject:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No material object in the Analysis")
-            return
-        matmap = MathObject.Material
+            return False
 
-        FixedObjects = []    # [{'Object':FixedObject, 'NodeSupports':bool}, {}, ...]
+        self.FixedObjects = []    # [{'Object':FixedObject, 'NodeSupports':bool}, {}, ...]
         for i in FemGui.getActiveAnalysis().Member:
             FixedObjectDict = {}
             if i.isDerivedFrom("Fem::ConstraintFixed"):
                 FixedObjectDict['Object'] = i
-                FixedObjects.append(FixedObjectDict)
-        if len(FixedObjects) == 0:
+                self.FixedObjects.append(FixedObjectDict)
+        if len(self.FixedObjects) == 0:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No fixed-constraint nodes defined in the Analysis")
-            return
-
-        ForceObjects = []    # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...]
+            return False
+        self.ForceObjects = []    # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...]
         for i in FemGui.getActiveAnalysis().Member:
             ForceObjectDict = {}
             if i.isDerivedFrom("Fem::ConstraintForce"):
                 ForceObjectDict['Object'] = i
-                ForceObjects.append(ForceObjectDict)
-        if len(ForceObjects) == 0:
+                self.ForceObjects.append(ForceObjectDict)
+        if len(self.ForceObjects) == 0:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No force-constraint nodes defined in the Analysis")
-            return
+            return False
+        return True
 
-        self.Basename = self.TempDir + '/' + MeshObject.Name
+    def write_calculix_input_file(self):
+        print 'writeCalculixInputFile'
+
+        #dirName = self.form.lineEdit_outputDir.text()
+        dirName = self.TempDir
+        print 'CalculiX run directory: ',dirName
+
+        matmap = self.MathObject.Material
+
+        self.Basename = self.TempDir + '/' + self.MeshObject.Name
         filename = self.Basename + '.inp'
 
         self.femConsoleMessage(self.Basename)
         self.femConsoleMessage("Write mesh...")
 
         # write mesh
-        MeshObject.FemMesh.writeABAQUS(filename)
+        self.MeshObject.FemMesh.writeABAQUS(filename)
 
         # reopen file with "append" and add the analysis definition
         inpfile = open(filename,'a')
@@ -417,7 +424,7 @@ class _JobControlTaskPanel:
         # write fixed node sets
         inpfile.write('\n\n\n\n***********************************************************\n')
         inpfile.write('** node set for fixed constraint\n')
-        for FixedObject in FixedObjects:
+        for FixedObject in self.FixedObjects:
             print FixedObject['Object'].Name
             inpfile.write('*NSET,NSET=' + FixedObject['Object'].Name + '\n')
             for o,f in FixedObject['Object'].References:
@@ -425,13 +432,13 @@ class _JobControlTaskPanel:
                 n = []
                 if fo.ShapeType == 'Face':
                     print '  Face Support (fixed face) on: ', f
-                    n = MeshObject.FemMesh.getNodesByFace(fo)
+                    n = self.MeshObject.FemMesh.getNodesByFace(fo)
                 elif fo.ShapeType == 'Edge':
                     print '  Line Support (fixed edge) on: ', f
-                    n = MeshObject.FemMesh.getNodesByEdge(fo)
+                    n = self.MeshObject.FemMesh.getNodesByEdge(fo)
                 elif fo.ShapeType == 'Vertex':
                     print '  Point Support (fixed vertex) on: ', f
-                    n = MeshObject.FemMesh.getNodesByVertex(fo)
+                    n = self.MeshObject.FemMesh.getNodesByVertex(fo)
                 for i in n:
                     inpfile.write(str(i) + ',\n')
             inpfile.write('\n\n')
@@ -439,7 +446,7 @@ class _JobControlTaskPanel:
         # write load node sets and calculate node loads
         inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** node sets for loads\n')
-        for ForceObject in ForceObjects:
+        for ForceObject in self.ForceObjects:
             print ForceObject['Object'].Name
             inpfile.write('*NSET,NSET=' + ForceObject['Object'].Name + '\n')
             NbrForceNodes = 0
@@ -448,13 +455,13 @@ class _JobControlTaskPanel:
                 n = []
                 if fo.ShapeType == 'Face':
                     print '  AreaLoad (face load) on: ', f
-                    n = MeshObject.FemMesh.getNodesByFace(fo)
+                    n = self.MeshObject.FemMesh.getNodesByFace(fo)
                 elif fo.ShapeType == 'Edge':
                     print '  Line Load (edge load) on: ', f
-                    n = MeshObject.FemMesh.getNodesByEdge(fo)
+                    n = self.MeshObject.FemMesh.getNodesByEdge(fo)
                 elif fo.ShapeType == 'Vertex':
                     print '  Point Load (vertex load) on: ', f
-                    n = MeshObject.FemMesh.getNodesByVertex(fo)
+                    n = self.MeshObject.FemMesh.getNodesByVertex(fo)
                 for i in n:
                     inpfile.write(str(i) + ',\n')
                     NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from ForceObject
@@ -470,7 +477,7 @@ class _JobControlTaskPanel:
             inpfile.write('\n\n')
 
         # get material properties
-        YM = FreeCAD.Units.Quantity(MathObject.Material['Mechanical_youngsmodulus'])
+        YM = FreeCAD.Units.Quantity(self.MathObject.Material['Mechanical_youngsmodulus'])
         if YM.Unit.Type == '':
             print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
             YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa'))
@@ -478,7 +485,7 @@ class _JobControlTaskPanel:
             print 'YM unit: ', YM.Unit.Type
         print 'YM = ', YM
 
-        PR = float(MathObject.Material['FEM_poissonratio'])
+        PR = float(self.MathObject.Material['FEM_poissonratio'])
         print 'PR = ', PR
 
         # write material properties
@@ -500,7 +507,7 @@ class _JobControlTaskPanel:
 
         # write constaints
         inpfile.write('\n** constaints\n')
-        for FixedObject in FixedObjects:
+        for FixedObject in self.FixedObjects:
             inpfile.write('*BOUNDARY\n')
             inpfile.write(FixedObject['Object'].Name + ',1\n')
             inpfile.write(FixedObject['Object'].Name + ',2\n')
@@ -511,7 +518,7 @@ class _JobControlTaskPanel:
         #inpfile.write('Eall,NEWTON\n')
         inpfile.write('\n** loads\n')
         inpfile.write('** node loads, see load node sets for how the value is calculated!\n')
-        for ForceObject in ForceObjects:
+        for ForceObject in self.ForceObjects:
             if 'NodeLoad' in ForceObject:
                 vec = ForceObject['Object'].DirectionVector
                 inpfile.write('*CLOAD\n')
