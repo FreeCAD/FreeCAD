@@ -47,6 +47,9 @@
    </item>
    <item>
     <widget class="QPushButton" name="pushButton_edit">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Edit Calculix Input File</string>
      </property>
@@ -54,6 +57,9 @@
    </item>
    <item>
     <widget class="QPushButton" name="pushButton_generate">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="text">
       <string>Run Calculix</string>
      </property>
