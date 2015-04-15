@@ -138,9 +138,12 @@ class _MechanicalMaterialTaskPanel:
         previous_mat_path = self.get_material_path(self.previous_material)
         if not previous_mat_path:
             print "Previously used material cannot be found in material directories. Using transient material."
-            self.add_transient_material(self.previous_material)
             material_name = self.get_material_name(self.previous_material)
-            index = self.form.cb_materials.findData(material_name)
+            if material_name != 'None':
+                self.add_transient_material(self.previous_material)
+                index = self.form.cb_materials.findData(material_name)
+            else:
+                index = self.form.cb_materials.findText(material_name)
             self.chooseMat(index)
         else:
             index = self.form.cb_materials.findData(previous_mat_path)
