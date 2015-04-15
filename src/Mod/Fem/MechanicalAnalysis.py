@@ -228,7 +228,7 @@ class _JobControlTaskPanel:
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
         
-        self.fem_console_meaasge = ''
+        self.fem_console_message = ''
         
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
@@ -246,9 +246,9 @@ class _JobControlTaskPanel:
         self.update()
         
     def femConsoleMessage(self, message="", color="#000000"):
-        self.fem_console_meaasge = self.fem_console_meaasge + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
+        self.fem_console_message = self.fem_console_message + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
                                     format(time.time() - self.Start, color, message.encode('utf-8'))
-        self.form.textEdit_Output.setText(self.fem_console_meaasge)
+        self.form.textEdit_Output.setText(self.fem_console_message)
 
     def printCalculiXstdout(self):
         #There is probably no need to show user output from CalculiX. It should be
