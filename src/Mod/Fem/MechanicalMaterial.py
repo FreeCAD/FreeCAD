@@ -130,7 +130,7 @@ class _MechanicalMaterialTaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalMaterial.ui")
 
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
-        QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.chooseMat)
+        QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
         QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)
         QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
         self.previous_material = self.obj.Material
@@ -144,10 +144,10 @@ class _MechanicalMaterialTaskPanel:
                 index = self.form.cb_materials.findData(material_name)
             else:
                 index = self.form.cb_materials.findText(material_name)
-            self.chooseMat(index)
+            self.choose_material(index)
         else:
             index = self.form.cb_materials.findData(previous_mat_path)
-            self.chooseMat(index)
+            self.choose_material(index)
 
     def get_material_name(self, material):
         if 'General_name' in self.previous_material:
@@ -213,7 +213,7 @@ class _MechanicalMaterialTaskPanel:
             material['FEM_poissonratio'] = unicode(value)
             self.obj.Material = material
 
-    def chooseMat(self, index):
+    def choose_material(self, index):
         if index < 0:
             return
         mat_file_path = self.form.cb_materials.itemData(index)
