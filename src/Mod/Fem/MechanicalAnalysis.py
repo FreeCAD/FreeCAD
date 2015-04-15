@@ -123,7 +123,7 @@ class _CommandMechanicalShowResult:
                     StressObject = i
 
         if not DisplacementObject and not StressObject:
-            QtGui.QMessageBox.critical(None, "Missing prerequisit","No result found in active Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite","No result found in active Analysis")
             return
 
         taskd = _ResultControlTaskPanel(FemGui.getActiveAnalysis())
@@ -354,11 +354,11 @@ class _JobControlTaskPanel:
                 if i.isDerivedFrom("Fem::FemMeshObject"):
                     MeshObject = i
         else:
-            QtGui.QMessageBox.critical(None, "Missing prerequisit","No active Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite","No active Analysis")
             return
 
         if not MeshObject:
-            QtGui.QMessageBox.critical(None, "Missing prerequisit","No mesh object in the Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite","No mesh object in the Analysis")
             return
 
         MathObject = None
@@ -366,7 +366,7 @@ class _JobControlTaskPanel:
             if i.isDerivedFrom("App::MaterialObjectPython"):
                 MathObject = i
         if not MathObject:
-            QtGui.QMessageBox.critical(None, "Missing prerequisit","No material object in the Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite","No material object in the Analysis")
             return
         matmap = MathObject.Material
 
@@ -377,7 +377,7 @@ class _JobControlTaskPanel:
                 FixedObjectDict['Object'] = i
                 FixedObjects.append(FixedObjectDict)
         if len(FixedObjects) == 0:
-            QtGui.QMessageBox.critical(None, "Missing prerequisit","No fixed-constraint nodes defined in the Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite","No fixed-constraint nodes defined in the Analysis")
             return
 
         ForceObjects = []    # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...]
@@ -387,7 +387,7 @@ class _JobControlTaskPanel:
                 ForceObjectDict['Object'] = i
                 ForceObjects.append(ForceObjectDict)
         if len(ForceObjects) == 0:
-            QtGui.QMessageBox.critical(None, "Missing prerequisit","No force-constraint nodes defined in the Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite","No force-constraint nodes defined in the Analysis")
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
