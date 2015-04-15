@@ -247,7 +247,7 @@ class _JobControlTaskPanel:
         
     def femConsoleMessage(self, message="", color="#000000"):
         self.fem_console_meaasge = self.fem_console_meaasge + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
-                                    format(time.time() - self.Start, color, message)
+                                    format(time.time() - self.Start, color, message.encode('utf-8'))
         self.form.textEdit_Output.setText(self.fem_console_meaasge)
 
     def printCalculiXstdout(self):
