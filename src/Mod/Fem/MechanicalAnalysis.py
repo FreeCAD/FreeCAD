@@ -384,7 +384,7 @@ class _JobControlTaskPanel:
             if i.isDerivedFrom("Fem::ConstraintFixed"):
                 FixedObjectDict['Object'] = i
                 self.FixedObjects.append(FixedObjectDict)
-        if len(self.FixedObjects) == 0:
+        if not self.FixedObjects:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No fixed-constraint nodes defined in the Analysis")
             return False
         self.ForceObjects = []    # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...]
@@ -393,7 +393,7 @@ class _JobControlTaskPanel:
             if i.isDerivedFrom("Fem::ConstraintForce"):
                 ForceObjectDict['Object'] = i
                 self.ForceObjects.append(ForceObjectDict)
-        if len(self.ForceObjects) == 0:
+        if not self.ForceObjects:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No force-constraint nodes defined in the Analysis")
             return False
         return True
