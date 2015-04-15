@@ -149,33 +149,6 @@ class _MechanicalMaterialTaskPanel:
             index = self.form.cb_materials.findData(previous_mat_path)
             self.choose_material(index)
 
-    def get_material_name(self, material):
-        if 'General_name' in self.previous_material:
-            return self.previous_material['General_name']
-        else:
-            return 'None'
-
-    def get_material_path(self, material):
-        for a_mat in self.materials:
-            unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
-            if len(unmatched_items) == 0:
-                return a_mat
-        return ""
-
-    def print_mat_data(self, matmap):
-        print 'Material data:'
-        print ' Name = {}'.format(self.get_material_name(matmap))
-        if 'Mechanical_youngsmodulus' in matmap:
-            print ' YM = ', matmap['Mechanical_youngsmodulus']
-        if 'FEM_poissonratio' in matmap:
-            print ' PR = ', matmap['FEM_poissonratio']
-
-    def set_mat_params_in_combo_box(self, matmap):
-        if 'Mechanical_youngsmodulus' in matmap:
-            self.form.input_fd_young_modulus.setText(matmap['Mechanical_youngsmodulus'])
-        if 'FEM_poissonratio' in matmap:
-            self.form.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
-
     def accept(self):
         FreeCADGui.ActiveDocument.resetEdit()
 
@@ -225,6 +198,33 @@ class _MechanicalMaterialTaskPanel:
             gen_mat_desc = self.obj.Material['General_description']
         self.form.l_mat_description.setText(gen_mat_desc)
         self.print_mat_data(self.obj.Material)
+
+    def get_material_name(self, material):
+        if 'General_name' in self.previous_material:
+            return self.previous_material['General_name']
+        else:
+            return 'None'
+
+    def get_material_path(self, material):
+        for a_mat in self.materials:
+            unmatched_items = set(self.materials[a_mat].items()) ^ set(material.items())
+            if len(unmatched_items) == 0:
+                return a_mat
+        return ""
+
+    def print_mat_data(self, matmap):
+        print 'Material data:'
+        print ' Name = {}'.format(self.get_material_name(matmap))
+        if 'Mechanical_youngsmodulus' in matmap:
+            print ' YM = ', matmap['Mechanical_youngsmodulus']
+        if 'FEM_poissonratio' in matmap:
+            print ' PR = ', matmap['FEM_poissonratio']
+
+    def set_mat_params_in_combo_box(self, matmap):
+        if 'Mechanical_youngsmodulus' in matmap:
+            self.form.input_fd_young_modulus.setText(matmap['Mechanical_youngsmodulus'])
+        if 'FEM_poissonratio' in matmap:
+            self.form.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
 
     def add_transient_material(self, material):
         material_name = self.get_material_name(material)
