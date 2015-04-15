@@ -370,11 +370,11 @@ class _JobControlTaskPanel:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No mesh object in the Analysis")
             return False
 
-        self.MathObject = None
+        self.MaterialObject = None
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("App::MaterialObjectPython"):
-                self.MathObject = i
-        if not self.MathObject:
+                self.MaterialObject = i
+        if not self.MaterialObject:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No material object in the Analysis")
             return False
 
@@ -405,7 +405,7 @@ class _JobControlTaskPanel:
         dirName = self.TempDir
         print 'CalculiX run directory: ',dirName
 
-        matmap = self.MathObject.Material
+        matmap = self.MaterialObject.Material
 
         self.Basename = self.TempDir + '/' + self.MeshObject.Name
         filename = self.Basename + '.inp'
@@ -477,7 +477,7 @@ class _JobControlTaskPanel:
             inpfile.write('\n\n')
 
         # get material properties
-        YM = FreeCAD.Units.Quantity(self.MathObject.Material['Mechanical_youngsmodulus'])
+        YM = FreeCAD.Units.Quantity(self.MaterialObject.Material['Mechanical_youngsmodulus'])
         if YM.Unit.Type == '':
             print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
             YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa'))
@@ -485,7 +485,7 @@ class _JobControlTaskPanel:
             print 'YM unit: ', YM.Unit.Type
         print 'YM = ', YM
 
-        PR = float(self.MathObject.Material['FEM_poissonratio'])
+        PR = float(self.MaterialObject.Material['FEM_poissonratio'])
         print 'PR = ', PR
 
         # write material properties
