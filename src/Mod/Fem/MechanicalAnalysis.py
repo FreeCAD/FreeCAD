@@ -232,7 +232,7 @@ class _JobControlTaskPanel:
         
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
-        QtCore.QObject.connect(self.form.pushButton_write, QtCore.SIGNAL("clicked()"), self.writeCalculixInputFile)
+        QtCore.QObject.connect(self.form.pushButton_write, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
         QtCore.QObject.connect(self.form.pushButton_edit, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
         QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runCalculix)
 
@@ -339,7 +339,17 @@ class _JobControlTaskPanel:
             self.params.SetString("JobDir",str(dirname))
             self.form.lineEdit_outputDir.setText(dirname)
 
-    def writeCalculixInputFile(self):
+    def write_input_file_handler(self):
+        QApplication.setOverrideCursor(Qt.WaitCursor)
+        try:
+            self.write_calculix_input_file()
+        except:
+            print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
+            raise
+        finally:
+            QApplication.restoreOverrideCursor()
+
+    def write_calculix_input_file(self):
         print 'writeCalculixInputFile'
         self.Start = time.time()
 
@@ -389,8 +399,6 @@ class _JobControlTaskPanel:
         if len(ForceObjects) == 0:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No force-constraint nodes defined in the Analysis")
             return
-
-        QApplication.setOverrideCursor(Qt.WaitCursor)
 
         self.Basename = self.TempDir + '/' + MeshObject.Name
         filename = self.Basename + '.inp'
@@ -550,8 +558,6 @@ class _JobControlTaskPanel:
 
         inpfile.close()
         self.femConsoleMessage("Write completed.")
-
-        QApplication.restoreOverrideCursor()
 
     def start_ext_editor(self, ext_editor_path, filename):
         if not hasattr(self, "ext_editor_process"):
