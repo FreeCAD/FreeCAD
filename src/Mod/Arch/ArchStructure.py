@@ -693,6 +693,7 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                     self.coords.point.setValues(0,len(p),p)
                     self.pointset.numPoints.setValue(len(p))
                     self.lineset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
+        ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
     def onChanged(self,vobj,prop):
         if prop == "ShowNodes":

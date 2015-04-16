@@ -54,6 +54,7 @@
         <file>icons/Arch_Bimserver.svg</file>
         <file>icons/Git.svg</file>
         <file>icons/Arch_Component.svg</file>
+        <file>icons/Arch_Material.svg</file>
         <file>ui/archprefs-base.ui</file>
         <file>ui/archprefs-defaults.ui</file>
         <file>ui/archprefs-import.ui</file>

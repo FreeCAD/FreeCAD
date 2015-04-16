@@ -296,7 +296,7 @@ class Component:
         obj.addProperty("App::PropertyString","Description","Arch",translate("Arch","An optional description for this component"))
         obj.addProperty("App::PropertyString","Tag","Arch",translate("Arch","An optional tag for this component"))
         obj.addProperty("App::PropertyMap","IfcAttributes","Arch",translate("Arch","Custom IFC properties and attributes"))
-        obj.addProperty("App::PropertyMap","Material","Arch",translate("Arch","A material for this object"))
+        obj.addProperty("App::PropertyLink","BaseMaterial","Material",translate("Arch","A material for this object"))
         obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this object"))
         obj.addProperty("App::PropertyBool","MoveWithHost","Arch",translate("Arch","Specifies if this object must move together when its host is moved"))
         obj.Proxy = self
@@ -326,6 +326,9 @@ class Component:
                     pl = obj.Placement
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
+                    if hasattr(obj,"BaseMaterial"):
+                        if hasattr(obj.CloneOf,"BaseMaterial"):
+                            obj.BaseMaterial = obj.CloneOf.BaseMaterial
                     return True
         return False
         
@@ -654,6 +657,13 @@ class ViewProviderComponent:
         self.Object = vobj.Object
         
     def updateData(self,obj,prop):
+        if prop == "BaseMaterial":
+            if obj.BaseMaterial:
+                if 'Color' in obj.BaseMaterial.Material:
+                    if "(" in obj.BaseMaterial.Material['Color']:
+                        c = tuple([float(f) for f in obj.BaseMaterial.Material['Color'].strip("()").split(",")])
+                        if obj.ViewObject:
+                            obj.ViewObject.ShapeColor = c
         return
         
     def getIcon(self):
