@@ -444,9 +444,9 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj.IfcAttributes = a
                     break
             if not obj:
-                obj = baseobj
+                obj = Arch.makeComponent(baseobj,name=name,delete=True)
             if obj:
-                sols = str(baseobj.Shape.Solids) if hasattr(baseobj,"Shape") else "[]"
+                sols = str(obj.Shape.Solids) if hasattr(obj,"Shape") else "[]"
                 if DEBUG: print sols
                 objects[pid] = obj
                         

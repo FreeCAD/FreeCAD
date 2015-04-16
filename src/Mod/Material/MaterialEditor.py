@@ -45,19 +45,21 @@ class UiLoader(QtUiTools.QUiLoader):
 
 class MaterialEditor(QtGui.QDialog):
 
-    def __init__(self, obj = None, prop = None):
-        "Initializes, optionally with an object name and a material property name to edit"
+    def __init__(self, obj = None, prop = None, material = None):
+        """Initializes, optionally with an object name and a material property name to edit, or directly
+        with a material dictionary."""
         QtGui.QDialog.__init__(self)
         self.obj = obj
         self.prop = prop
+        self.material = material
         self.customprops = []
         # load the UI file from the same directory as this script
         loader = UiLoader(self)
         widget = loader.load(os.path.dirname(__file__)+os.sep+"materials-editor.ui")
         #QtCore.QMetaObject.connectSlotsByName(widget)
         self.ui = self
-        print self.ui
-        print dir(self.ui)
+        #print self.ui
+        #print dir(self.ui)
         # additional UI fixes and tweaks
         self.ButtonURL.setIcon(QtGui.QIcon(":/icons/internet-web-browser.svg"))
         self.ButtonDeleteProperty.setEnabled(False)
@@ -81,8 +83,12 @@ class MaterialEditor(QtGui.QDialog):
         QtCore.QObject.connect(self.ButtonOpen, QtCore.SIGNAL("clicked()"), self.openfile)
         QtCore.QObject.connect(self.ButtonSave, QtCore.SIGNAL("clicked()"), self.savefile)
         # update the editor with the contents of the property, if we have one
+        d = None
         if self.prop and self.obj:
             d = FreeCAD.ActiveDocument.getObject(self.obj).getPropertyByName(self.prop)
+        elif self.material:
+            d = self.material
+        if d:
             self.updateContents(d)
 
     def updateCards(self):
@@ -100,7 +106,7 @@ class MaterialEditor(QtGui.QDialog):
         if self.cards:
             self.ComboMaterial.clear()
             self.ComboMaterial.addItem("") # add a blank item first
-            for k,i in self.cards.iteritems():
+            for k,i in self.cards.items():
                 self.ComboMaterial.addItem(k)
 
     def updateContents(self,data):
@@ -108,7 +114,7 @@ class MaterialEditor(QtGui.QDialog):
         #print type(data)
         if isinstance(data,dict):
             self.clearEditor()
-            for k,i in data.iteritems():
+            for k,i in data.items():
                 k = self.expandKey(k)
                 slot = self.Editor.findItems(k,QtCore.Qt.MatchRecursive,0)
                 if len(slot) == 1:
@@ -257,4 +263,14 @@ def openEditor(obj = None, prop = None):
     an object name and material property name to edit"""
     editor = MaterialEditor(obj,prop)
     editor.show()
+    
+def editMaterial(material):
+    """editMaterial(material): opens the editor to edit the contents
+    of the given material dictionary. Returns the modified material."""
+    editor = MaterialEditor(material=material)
+    result = editor.exec_()
+    if result:
+        return editor.getDict()
+    else:
+        return material
 

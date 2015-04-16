@@ -193,7 +193,7 @@ def removeComponents(objectsList,host=None):
                        a.remove(o)
                        h.Objects = a
                        
-def makeComponent(baseobj=None,name="Component"):
+def makeComponent(baseobj=None,name="Component",delete=False):
     '''makeComponent([baseobj]): creates an undefined, non-parametric Arch
     component from the given base object'''
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
@@ -206,6 +206,8 @@ def makeComponent(baseobj=None,name="Component"):
         if baseobj.isDerivedFrom("Part::Feature"):
             obj.Shape = baseobj.Shape
             obj.Placement = baseobj.Placement
+            if delete:
+                FreeCAD.ActiveDocument.removeObject(baseobj.Name)
         elif isinstance(baseobj,Part.Shape):
             obj.Shape = baseobj
     return obj
