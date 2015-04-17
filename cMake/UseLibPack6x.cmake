@@ -284,11 +284,6 @@ set(OPENCV_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/opencv)
 set(OPENCV_LIBRARIES  cv.lib cvaux.lib cxcore.lib cxts.lib highgui.lib)
 set(OPENCV_FOUND TRUE) 
 
-# ODE
-set(ODE_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include)
-set(ODE_LIBRARIES  ode_double.lib)
-set(ODE_FOUND TRUE) 
-
 # OCC
 set(OCC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/OpenCascade)
 set(OCC_LIBRARY_DIR
