@@ -158,29 +158,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_3">
-          <property name="toolTip">
-           <string>Check this to retrieve object colors.</string>
-          </property>
-          <property name="text">
-           <string>Read colors</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcReadColors</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
          <widget class="QLabel" name="label_4">

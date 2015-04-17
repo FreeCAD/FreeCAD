@@ -275,7 +275,6 @@ def insert(filename,docname,skip=[],only=[],root=None):
     MERGE_MODE = p.GetInt("ifcImportMode",0)
     if MERGE_MODE > 0:
         SEPARATE_OPENINGS = False
-    READ_COLORS = p.GetBool("ifcReadColors",True)
     if not SEPARATE_OPENINGS:
         SKIP.append("IfcOpeningElement")
     
@@ -312,6 +311,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     products = ifcfile.by_type(ROOT_ELEMENT)
     openings = ifcfile.by_type("IfcOpeningElement")
     annotations = ifcfile.by_type("IfcAnnotation")
+    materials = ifcfile.by_type("IfcMaterial")
     
     if DEBUG: print "Building relationships table...",
 
@@ -322,6 +322,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     properties = {} # { host:[property, ...], ... }
     colors = {} # { id:(r,g,b) }
     shapes = {} # { id:shaoe } only used for merge mode
+    mattable = {} # { objid:matid }
     for r in ifcfile.by_type("IfcRelContainedInSpatialStructure"):
         additions.setdefault(r.RelatingStructure.id(),[]).extend([e.id() for e in r.RelatedElements])
     for r in ifcfile.by_type("IfcRelAggregates"):
@@ -332,13 +333,16 @@ def insert(filename,docname,skip=[],only=[],root=None):
         for obj in r.RelatedObjects:
             if r.RelatingPropertyDefinition.is_a("IfcPropertySet"):
                 properties.setdefault(obj.id(),[]).extend([e.id() for e in r.RelatingPropertyDefinition.HasProperties])
-    if READ_COLORS:
-        for r in ifcfile.by_type("IfcStyledItem"):
-            if r.Item and r.Styles[0].is_a("IfcPresentationStyleAssignment"):
-                if r.Styles[0].Styles[0].is_a("IfcSurfaceStyle"):
-                    if r.Styles[0].Styles[0].Styles[0].is_a("IfcSurfaceStyleRendering"):
-                        if r.Styles[0].Styles[0].Styles[0].SurfaceColour:
-                            c = r.Styles[0].Styles[0].Styles[0].SurfaceColour
+    for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
+        for o in r.RelatedObjects:
+            mattable[o.id()] = r.RelatingMaterial.id()
+    for r in ifcfile.by_type("IfcStyledItem"):
+        if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
+            if r.Styles[0].Styles[0].is_a("IfcSurfaceStyle"):
+                if r.Styles[0].Styles[0].Styles[0].is_a("IfcSurfaceStyleRendering"):
+                    if r.Styles[0].Styles[0].Styles[0].SurfaceColour:
+                        c = r.Styles[0].Styles[0].Styles[0].SurfaceColour
+                        if r.Item:
                             for p in ifcfile.by_type("IfcProduct"):
                                 if p.Representation:
                                     for it in p.Representation.Representations:
@@ -348,6 +352,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                             elif it.Items[0].is_a("IfcBooleanResult"):
                                                 if (it.Items[0].FirstOperand.id() == r.Item.id()):
                                                     colors[p.id()] = (c.Red,c.Green,c.Blue)
+                        else:
+                            for m in ifcfile.by_type("IfcMaterialDefinitionRepresentation"):
+                                for it in m.Representations:
+                                    if it.Items:
+                                        if it.Items[0].id() == r.id():
+                                            colors[m.RepresentedMaterial.id()] = (c.Red,c.Green,c.Blue)
+                            
     if only: # only import a list of IDs and their children
         ids = []
         while only:
@@ -416,7 +427,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 continue
                 
         else:
-            if DEBUG: print " no brep "
+            if DEBUG: print " no brep ",
             
         if MERGE_MODE == 0:
             
@@ -457,12 +468,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=None,name=name)
-                        obj.Label = name
-                        objects[pid] = obj
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name)
-                obj.Label = name
-                objects[pid] = obj
                 
         elif MERGE_MODE == 2:
             
@@ -471,15 +478,14 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=None,name=name)
-                        obj.Label = name
-                        objects[pid] = obj
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
-                obj.Label = name
                 obj.Shape = shape
-
                 
         if obj:
+            
+            obj.Label = name
+            objects[pid] = obj
             
             # properties
             if pid in properties:
@@ -589,6 +595,26 @@ def insert(filename,docname,skip=[],only=[],root=None):
             o = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
             o.Shape = sh
         count += 1
+        
+    FreeCAD.ActiveDocument.recompute()
+        
+    # Materials
+    
+    if DEBUG and materials: print "Creating materials..."
+    
+    for material in materials:
+        name = material.Name or "Material"
+        mat = Arch.makeMaterial(name=name)
+        mdict = {}
+        if material.id() in colors:
+            mdict["Color"] = str(colors[material.id()])
+        if mdict:
+            mat.Material = mdict
+        for o,m in mattable.items():
+            if m == material.id():
+                if o in objects:
+                    if hasattr(objects[o],"BaseMaterial"):
+                        objects[o].BaseMaterial = mat
         
     FreeCAD.ActiveDocument.recompute()
         
@@ -798,6 +824,20 @@ def export(exportList,filename):
         ifcfile.createIfcRelAggregates(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'SiteLink','',sites[0],buildings)
         ifcfile.createIfcRelContainedInSpatialStructure(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'BuildingLink','',products.values(),buildings[0])
 
+    # materials
+    materials = {}
+    for m in Arch.getDocumentMaterials():
+        mat = ifcfile.createIfcMaterial(str(m.Label))
+        materials[m.Label] = mat
+        if "Color" in m.Material:
+            rgb = tuple([float(f) for f in m.Material['Color'].strip("()").split(",")])
+            col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
+            ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
+            iss = ifcfile.createIfcSurfaceStyle(None,"BOTH",[ssr])
+            psa = ifcfile.createIfcPresentationStyleAssignment([iss])
+            isi = ifcfile.createIfcStyledItem(None,[psa],None)
+            isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
+            imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
 
     if DEBUG: print "writing ",filename,"..."
     ifcfile.write(filename)
