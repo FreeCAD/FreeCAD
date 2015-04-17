@@ -165,7 +165,7 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
                 QString s = QString::fromAscii("style=\"font-size:22px\">%1%2</tspan></text>").arg(paper).arg(id);
                 QByteArray data = file.readAll();
                 data.replace("style=\"font-size:22px\">A0</tspan></text>", s.toAscii());
-                a->setIcon(Gui::BitmapFactory().pixmapFromSvg(data, QSize(24,24)));
+                a->setIcon(Gui::BitmapFactory().pixmapFromSvg(data, QSize(64,64)));
             }
 
             a->setProperty("TemplatePaper", paper);
