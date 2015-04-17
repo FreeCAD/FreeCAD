@@ -656,10 +656,6 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 "====================\n")
     ENDIF(NOT EIGEN3_FOUND)
 
-# -------------------------------- ODE ----------------------------------
-
-#    find_package(ODE)
-
 # -------------------------------- Qt --------------------------------
 
 # sets ${QT_LIBRARIES}
