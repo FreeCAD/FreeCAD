@@ -1583,9 +1583,9 @@ Gui::Action * CmdSketcherCompCreateArc::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateArc", QSize(24,24)));
+    arc1->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateArc"));
     QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_Create3PointArc", QSize(24,24)));
+    arc2->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc"));
 
     _pcAction = pcAction;
     languageChange();
@@ -3019,19 +3019,19 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* ellipseByCenter = pcAction->addAction(QString());
-    ellipseByCenter->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateEllipse", QSize(24,24)));
+    ellipseByCenter->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse"));
      /// @todo replace with correct icon
     QAction* ellipseBy3Points = pcAction->addAction(QString());
-    ellipseBy3Points->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateEllipse_3points", QSize(24,24)));
+    ellipseBy3Points->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points"));
     
     QAction* arcofellipse = pcAction->addAction(QString());
-    arcofellipse->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_Elliptical_Arc", QSize(24,24)));
+    arcofellipse->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc"));
 
     _pcAction = pcAction;
     languageChange();
 
     // set ellipse by center, a, b as default method
-    pcAction->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_Conics", QSize(24,24)));
+    pcAction->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Conics"));
     int defaultId = 0;
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
@@ -3326,9 +3326,9 @@ Gui::Action * CmdSketcherCompCreateCircle::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* arc1 = pcAction->addAction(QString());
-    arc1->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateCircle", QSize(24,24)));
+    arc1->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle"));
     QAction* arc2 = pcAction->addAction(QString());
-    arc2->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_Create3PointCircle", QSize(24,24)));
+    arc2->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle"));
 
     _pcAction = pcAction;
     languageChange();
@@ -4748,17 +4748,17 @@ Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* triangle = pcAction->addAction(QString());
-    triangle->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateTriangle", QSize(24,24)));
+    triangle->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle"));
     QAction* square = pcAction->addAction(QString());
-    square->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateSquare", QSize(24,24)));
+    square->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSquare"));
     QAction* pentagon = pcAction->addAction(QString());
-    pentagon->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreatePentagon", QSize(24,24)));
+    pentagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon"));
     QAction* hexagon = pcAction->addAction(QString());
-    hexagon->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateHexagon", QSize(24,24)));
+    hexagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon"));
     QAction* heptagon = pcAction->addAction(QString());
-    heptagon->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateHeptagon", QSize(24,24)));
+    heptagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"));
     QAction* octagon = pcAction->addAction(QString());
-    octagon->setIcon(Gui::BitmapFactory().pixmapFromSvg("Sketcher_CreateOctagon", QSize(24,24)));
+    octagon->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));
 
     _pcAction = pcAction;
     languageChange();
