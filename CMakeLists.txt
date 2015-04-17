@@ -822,10 +822,6 @@ IF(MINGW)
 	# SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -static-libgcc -static-libstdc++")
 	LINK_LIBRARIES(-lgdi32)
 ENDIF(MINGW)
-# 0000661: cmake build on Mac OS: dealing with dylib versus so
-IF(APPLE)
-	SET(CMAKE_SHARED_LIBRARY_SUFFIX ".so")
-ENDIF(APPLE)
 
 # force build directory to be different to source directory
 #if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
