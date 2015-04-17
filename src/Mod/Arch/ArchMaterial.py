@@ -51,6 +51,18 @@ def getMaterialContainer():
     return obj
 
 
+def getDocumentMaterials():
+    '''getDocumentMaterials(): returns all the arch materials of the document'''
+    for obj in FreeCAD.ActiveDocument.Objects:
+        if obj.Name == "MaterialContainer":
+            mats = []
+            for o in obj.Group:
+                if o.isDerivedFrom("App::MaterialObjectPython"):
+                    mats.append(o)
+            return mats
+    return []
+
+
 class _CommandArchMaterial:
     "the Arch Material command definition"
     def GetResources(self):
