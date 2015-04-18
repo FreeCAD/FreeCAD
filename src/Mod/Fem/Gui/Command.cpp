@@ -81,34 +81,6 @@ bool getConstraintPrerequisits(Fem::FemAnalysis **Analysis)
 }
 
 
-DEF_STD_CMD_A(CmdFemCreateFromShape);
-
-CmdFemCreateFromShape::CmdFemCreateFromShape()
-  : Command("Fem_CreateFromShape")
-{
-    sAppModule      = "Fem";
-    sGroup          = QT_TR_NOOP("Fem");
-    sMenuText       = QT_TR_NOOP("Create FEM mesh");
-    sToolTipText    = QT_TR_NOOP("Create FEM mesh from shape");
-    sWhatsThis      = "Fem_CreateFromShape";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Fem_FemMesh";
-}
-
-void CmdFemCreateFromShape::activated(int iMsg)
-{
-    FemGui::TaskHypothesis* dlg = new FemGui::TaskHypothesis();
-    Gui::Control().showDialog(dlg);
-}
-
-bool CmdFemCreateFromShape::isActive(void)
-{
-    if (Gui::Control().activeDialog())
-        return false;
-    Base::Type type = Base::Type::fromName("Part::Feature");
-    return Gui::Selection().countObjectsOfType(type) > 0;
-}
-
 //=====================================================================================
 DEF_STD_CMD_A(CmdFemCreateAnalysis);
 
@@ -633,7 +605,6 @@ bool CmdFemCreateNodesSet::isActive(void)
 void CreateFemCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    rcCmdMgr.addCommand(new CmdFemCreateFromShape());
     //rcCmdMgr.addCommand(new CmdFemCreateAnalysis());
     rcCmdMgr.addCommand(new CmdFemAddPart());
     rcCmdMgr.addCommand(new CmdFemCreateNodesSet());
