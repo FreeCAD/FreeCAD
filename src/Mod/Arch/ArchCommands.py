@@ -423,7 +423,12 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
             pts = []
             for pp in p:
                 pts.append(FreeCAD.Vector(pp[0],pp[1],pp[2]))
-            faces.append(Part.Face(Part.makePolygon(pts)))
+            try:
+                f = Part.Face(Part.makePolygon(pts))
+            except:
+                pass
+            else:
+                faces.append(f)
         shell = Part.makeShell(faces)
         solid = Part.Solid(shell)
         solid = solid.removeSplitter()
@@ -508,6 +513,14 @@ def meshToShape(obj,mark=True,fast=True,tol=0.001,flat=False,cut=True):
                     newobj.ViewObject.ShapeColor = (1.0,0.0,0.0,1.0)
             return newobj
     return None
+
+def removeCurves(shape,tolerance=5):
+    '''removeCurves(shape,tolerance=5): replaces curved faces in a shape
+    with faceted segments'''
+    import Mesh
+    t = shape.cleaned().tessellate(tolerance)
+    m = Mesh.Mesh(t)
+    return getShapeFromMesh(m)
 
 def removeShape(objs,mark=True):
     '''removeShape(objs,mark=True): takes an arch object (wall or structure) built on a cubic shape, and removes

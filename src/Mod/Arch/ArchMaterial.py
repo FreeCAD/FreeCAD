@@ -46,8 +46,10 @@ def getMaterialContainer():
     for obj in FreeCAD.ActiveDocument.Objects:
         if obj.Name == "MaterialContainer":
             return obj
-    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup","MaterialContainer")
+    obj = FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroupPython","MaterialContainer")
     obj.Label = "Materials"
+    _ArchMaterialContainer(obj)
+    _ViewProviderArchMaterialContainer(obj.ViewObject)
     return obj
 
 
@@ -66,7 +68,7 @@ def getDocumentMaterials():
 class _CommandArchMaterial:
     "the Arch Material command definition"
     def GetResources(self):
-        return {'Pixmap': 'Arch_Material',
+        return {'Pixmap': 'Arch_Material_Group',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Material","Set material..."),
                 'Accel': "M, T",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Material","Creates or edits the material definition of a selected object.")}
@@ -90,6 +92,26 @@ class _CommandArchMaterial:
             return False
 
 
+class _ArchMaterialContainer:
+    "The Material Container"
+    def __init__(self,obj):
+        self.Type = "MaterialContainer"
+        obj.Proxy = self
+
+    def execute(self,obj):
+        return
+
+
+class _ViewProviderArchMaterialContainer:
+    "A View Provider for the Material Container"
+
+    def __init__(self,vobj):
+        vobj.Proxy = self
+
+    def getIcon(self):
+        return ":/icons/Arch_Material_Group.svg"
+
+
 class _ArchMaterial:
     "The Material object"
     def __init__(self,obj):
@@ -97,11 +119,18 @@ class _ArchMaterial:
         obj.Proxy = self
 
     def execute(self,obj):
+        if obj.Material and FreeCAD.GuiUp:
+            if "Color" in obj.Material:
+                c = tuple([float(f) for f in obj.Material['Color'].strip("()").split(",")])
+                for p in obj.InList:
+                    if hasattr(p,"BaseMaterial"):
+                        if p.BaseMaterial.Name == obj.Name:
+                            p.ViewObject.ShapeColor = c
         return
 
 
 class _ViewProviderArchMaterial:
-    "A View Provider for the MechanicalMaterial object"
+    "A View Provider for the Material object"
 
     def __init__(self,vobj):
         vobj.Proxy = self
@@ -158,6 +187,8 @@ class _ArchMaterialTaskPanel:
         "sets the task box contents from self.material"
         if 'Name' in self.material:
             self.form.FieldName.setText(self.material['Name'])
+        elif self.obj:
+            self.form.FieldName.setText(self.obj.Label)
         if 'Description' in self.material:
             self.form.FieldDescription.setText(self.material['Description'])
         if 'Color' in self.material:
@@ -168,7 +199,6 @@ class _ArchMaterialTaskPanel:
                 colorPix = QtGui.QPixmap(16,16)
                 colorPix.fill(self.color)
                 self.form.ButtonColor.setIcon(QtGui.QIcon(colorPix))
-                self.form.FieldColor.setText(self.material['Color'])
         if 'StandardCode' in self.material:
             self.form.FieldCode.setText(self.material['StandardCode'])
         if 'ProductURL' in self.material:
@@ -188,10 +218,7 @@ class _ArchMaterialTaskPanel:
             if hasattr(self.obj,"Material"):
                 self.obj.Material = self.material
                 self.obj.Label = self.material['Name']
-        FreeCADGui.Control.closeDialog()
-
-    def reject(self):
-        FreeCADGui.Control.closeDialog()
+        FreeCADGui.ActiveDocument.resetEdit()
 
     def chooseMat(self, card):
         "sets self.material from a card"
