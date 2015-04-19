@@ -55,6 +55,7 @@
         <file>icons/Git.svg</file>
         <file>icons/Arch_Component.svg</file>
         <file>icons/Arch_Material.svg</file>
+        <file>icons/Arch_Material_Group.svg</file>
         <file>ui/archprefs-base.ui</file>
         <file>ui/archprefs-defaults.ui</file>
         <file>ui/archprefs-import.ui</file>

@@ -838,6 +838,15 @@ def export(exportList,filename):
             isi = ifcfile.createIfcStyledItem(None,[psa],None)
             isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
             imd = ifcfile.createIfcMaterialDefinitionRepresentation(None,None,[isr],mat)
+            relobjs = []
+            for o in m.InList:
+                if hasattr(o,"BaseMaterial"):
+                    if o.BaseMaterial:
+                        if o.BaseMaterial.Name == m.Name:
+                            if o.Name in products:
+                                relobjs.append(products[o.Name])
+            if relobjs:
+                ifcfile.createIfcRelAssociatesMaterial(ifcopenshell.guid.compress(uuid.uuid1().hex),history,'MaterialLink','',relobjs,mat)
 
     if DEBUG: print "writing ",filename,"..."
     ifcfile.write(filename)
@@ -989,42 +998,44 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                                 curves = True
                                 break
                 if curves:
-                    shapetype = "triangulated"
-                    tris = fcsolid.tessellate(tessellation)
-                    for tri in tris[1]:
-                        pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
-                        loop =  ifcfile.createIfcPolyLoop(pts)
-                        bound = ifcfile.createIfcFaceOuterBound(loop,True)
-                        face =  ifcfile.createIfcFace([bound])
-                        faces.append(face)
-                else:
-                    shapetype = "brep"
-                    for fcface in fcsolid.Faces:
-                        loops = []
-                        verts = [v.Point for v in Part.Wire(DraftGeomUtils.sortEdges(fcface.OuterWire.Edges)).Vertexes]
-                        c = fcface.CenterOfMass
-                        v1 = verts[0].sub(c)
-                        v2 = verts[1].sub(c)
-                        n = fcface.normalAt(0,0)
-                        if DraftVecUtils.angle(v2,v1,n) >= 0:
-                            verts.reverse() # inverting verts order if the direction is couterclockwise
-                        pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
-                        loop =  ifcfile.createIfcPolyLoop(pts)
-                        bound = ifcfile.createIfcFaceOuterBound(loop,True)
-                        loops.append(bound)
-                        for wire in fcface.Wires:
-                            if wire.hashCode() != fcface.OuterWire.hashCode():
-                                verts = [v.Point for v in Part.Wire(DraftGeomUtils.sortEdges(wire.Edges)).Vertexes]
-                                v1 = verts[0].sub(c)
-                                v2 = verts[1].sub(c)
-                                if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:
-                                    verts.reverse()
-                                pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
-                                loop =  ifcfile.createIfcPolyLoop(pts)
-                                bound = ifcfile.createIfcFaceBound(loop,True)
-                                loops.append(bound)
-                        face =  ifcfile.createIfcFace(loops)
-                        faces.append(face)
+                    #shapetype = "triangulated"
+                    #tris = fcsolid.tessellate(tessellation)
+                    #for tri in tris[1]:
+                    #    pts =   [ifcfile.createIfcCartesianPoint(tuple(tris[0][i])) for i in tri]
+                    #    loop =  ifcfile.createIfcPolyLoop(pts)
+                    #    bound = ifcfile.createIfcFaceOuterBound(loop,True)
+                    #    face =  ifcfile.createIfcFace([bound])
+                    #    faces.append(face)
+                    fcsolid = Arch.removeCurves(fcsolid)
+
+                shapetype = "brep"
+                for fcface in fcsolid.Faces:
+                    loops = []
+                    verts = [v.Point for v in Part.Wire(DraftGeomUtils.sortEdges(fcface.OuterWire.Edges)).Vertexes]
+                    c = fcface.CenterOfMass
+                    v1 = verts[0].sub(c)
+                    v2 = verts[1].sub(c)
+                    n = fcface.normalAt(0,0)
+                    if DraftVecUtils.angle(v2,v1,n) >= 0:
+                        verts.reverse() # inverting verts order if the direction is couterclockwise
+                    pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
+                    loop =  ifcfile.createIfcPolyLoop(pts)
+                    bound = ifcfile.createIfcFaceOuterBound(loop,True)
+                    loops.append(bound)
+                    for wire in fcface.Wires:
+                        if wire.hashCode() != fcface.OuterWire.hashCode():
+                            verts = [v.Point for v in Part.Wire(DraftGeomUtils.sortEdges(wire.Edges)).Vertexes]
+                            v1 = verts[0].sub(c)
+                            v2 = verts[1].sub(c)
+                            if DraftVecUtils.angle(v2,v1,DraftVecUtils.neg(n)) >= 0:
+                                verts.reverse()
+                            pts =   [ifcfile.createIfcCartesianPoint(tuple(v)) for v in verts]
+                            loop =  ifcfile.createIfcPolyLoop(pts)
+                            bound = ifcfile.createIfcFaceBound(loop,True)
+                            loops.append(bound)
+                    face =  ifcfile.createIfcFace(loops)
+                    faces.append(face)
+                        
                 shell = ifcfile.createIfcClosedShell(faces)
                 shape = ifcfile.createIfcFacetedBrep(shell)
                 shapes.append(shape)
@@ -1033,6 +1044,14 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
         
         # set surface style
         if FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
+            # only set a surface style if the object has no material.
+            # apparently not needed, no harm in having both.
+            #m = False
+            #if hasattr(obj,"BaseMaterial"):
+            #    if obj.BaseMaterial:
+            #        if "Color" in obj.BaseMaterial.Material:
+            #            m = True
+            #if not m:
             rgb = obj.ViewObject.ShapeColor[:3]
             if rgb in surfstyles:
                 psa = surfstyles[rgb]
