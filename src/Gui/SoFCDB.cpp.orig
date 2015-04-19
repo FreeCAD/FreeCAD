@@ -116,7 +116,11 @@ void Gui::SoFCDB::init()
     SoDrawingGrid                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
     MarkerBitmaps                   ::initClass();
+<<<<<<< d7d347b2d62ec685840e7db1c35863e659148981
     SoFCCSysDragger                 ::initClass();
+=======
+    SoVTKActor                      ::initClass();
+>>>>>>> proof of concept
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
