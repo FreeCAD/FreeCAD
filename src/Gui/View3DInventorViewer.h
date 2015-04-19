@@ -39,6 +39,10 @@
 
 #include <Gui/Selection.h>
 
+#include <vtkDataSetReader.h>
+#include <vtkSmartPointer.h>
+#include <vtkPolyDataMapper.h>
+
 class SoTranslation;
 class SoTransform;
 class SoText2;
@@ -431,6 +435,11 @@ private:
     friend class NavigationStyle;
     friend class GLPainter;
     friend class ViewerEventFilter;
+    
+    
+    //vtk test
+    vtkSmartPointer<vtkDataSetReader> source;
+    vtkSmartPointer<vtkPolyDataMapper> mapper;
 };
 
 } // namespace Gui
