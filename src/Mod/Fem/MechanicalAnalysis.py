@@ -20,8 +20,12 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Fem, FemLib, CalculixLib
-import os,sys,string,math,shutil,glob,subprocess,tempfile,time
+import CalculixLib
+import FreeCAD
+import os
+import sys
+import tempfile
+import time
 
 if FreeCAD.GuiUp:
     import FreeCADGui
