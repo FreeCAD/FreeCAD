@@ -4237,7 +4237,8 @@ class _Wire(_DraftObject):
             if len(obj.Points) > 2:
                 obj.setEditorMode('Start',2)
                 obj.setEditorMode('End',2)
-                obj.setEditorMode('Length',2)
+                if hasattr(obj,"Length"):
+                    obj.setEditorMode('Length',2)
                         
 
 class _ViewProviderWire(_ViewProviderDraft):

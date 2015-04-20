@@ -357,20 +357,28 @@ class _ArchDrawingView:
                                 os.append(o)
                         objs = os
                         self.svg = ''
+                        fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
+                        fillpattern += ' x="0" y="0" width="10" height="10">'
+                        fillpattern += '<g>'
+                        fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
 
                         # generating SVG
                         if obj.RenderingMode == "Solid":
                             # render using the Arch Vector Renderer
-                            import ArchVRM
+                            import ArchVRM, WorkingPlane
+                            wp = WorkingPlane.plane()
+                            wp.setFromPlacement(obj.Source.Placement)
+                            wp.inverse()
                             render = ArchVRM.Renderer()
-                            render.setWorkingPlane(obj.Source.Placement)
+                            render.setWorkingPlane(wp)
                             render.addObjects(objs)
                             if hasattr(obj,"ShowCut"):
                                 render.cut(obj.Source.Shape,obj.ShowCut)
                             else:
                                 render.cut(obj.Source.Shape)
                             self.svg += render.getViewSVG(linewidth="LWPlaceholder")
-                            self.svg += render.getSectionSVG(linewidth="SWPLaceholder")
+                            self.svg += fillpattern
+                            self.svg += render.getSectionSVG(linewidth="SWPlaceholder",fillpattern="sectionfill")
                             if hasattr(obj,"ShowCut"):
                                 if obj.ShowCut:
                                     self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
@@ -448,11 +456,8 @@ class _ArchDrawingView:
                                 svgs = ""
                                 if hasattr(obj,"ShowFill"):
                                     if obj.ShowFill:
+                                        svgs += fillpattern
                                         svgs += '<g transform="rotate(180)">\n'
-                                        svgs += '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
-                                        svgs += ' x="0" y="0" width="10" height="10">'
-                                        svgs += '<g style="fill:none; stroke:#000000; stroke-width:1">'
-                                        svgs += '<path d="M0,0 l10,10" /></g></pattern>'
                                         for s in sshapes:
                                             if s.Edges:
                                                 f = Draft.getSVG(s,direction=self.direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
