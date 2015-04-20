@@ -219,6 +219,7 @@ class _ArchMaterialTaskPanel:
                 self.obj.Material = self.material
                 self.obj.Label = self.material['Name']
         FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
 
     def chooseMat(self, card):
         "sets self.material from a card"
@@ -247,7 +248,7 @@ class _ArchMaterialTaskPanel:
                 if e.upper() == ".FCMAT":
                     self.cards[b] = p + os.sep + f
         if self.cards:
-            for k,i in self.cards.items():
+            for k in sorted(self.cards.keys()):
                 self.form.comboBox_MaterialsInDir.addItem(k)
 
     def openEditor(self):

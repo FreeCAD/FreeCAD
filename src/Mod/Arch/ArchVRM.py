@@ -521,13 +521,16 @@ class Renderer:
                         notfoundstack = 0
                         break
                     elif r == 31:
-                        faces.remove(f1)
+                        if f1 in faces:
+                            faces.remove(f1)
                     elif r == 32:
-                        faces.remove(f2)
+                        if f2 in faces:
+                            faces.remove(f2)
                 else:
                     # nothing found, move the face to the end of the pile
-                    faces.remove(f1)
-                    faces.append(f1)
+                    if f1 in faces:
+                        faces.remove(f1)
+                        faces.append(f1)
             loopcount += 1
             if loopcount == MAXLOOP * len(self.faces):
                 if DEBUG: print "Too many loops, aborting."
@@ -586,50 +589,42 @@ class Renderer:
         if DEBUG: print "Printing ", len(self.faces), " faces"
         if not self.sorted:
             self.sort()
-        svg = ''
+        svg =  '<g stroke="#000000" stroke-width="' + str(linewidth) + '" style="stroke-width:' + str(linewidth)
+        svg += ';stroke-miterlimit:1;stroke-linejoin:round;stroke-dasharray:none;">\n'
         for f in self.faces:
             if f:
                 fill = self.getFill(f[1])
-                svg +='<path '
+                svg +='    <path '
                 svg += 'd="'
                 for w in f[0].Wires:
                     svg += self.getPathData(w)
-                svg += '" '
-                svg += 'stroke="#000000" '
-                svg += 'stroke-width="' + str(linewidth) + '" '
-                svg += 'style="stroke-width:' + str(linewidth) + ';'
-                svg += 'stroke-miterlimit:1;'
-                svg += 'stroke-linejoin:round;'
-                svg += 'stroke-dasharray:none;'
-                svg += 'fill:' + fill + ';'
-                svg += 'fill-rule: evenodd'
-                svg += '"/>\n'
+                svg += '" style="fill:' + fill + ';fill-rule: evenodd;"/>\n'
+        svg += '</g>\n'
         return svg
 
-    def getSectionSVG(self,linewidth=0.02):
+    def getSectionSVG(self,linewidth=0.02,fillpattern=None):
         "Returns a SVG fragment from cut faces"
         if DEBUG: print "Printing ", len(self.sections), " sections"
         if not self.oriented:
             self.reorient()
-        svg = ''
+        svg =  '<g stroke="#000000" stroke-width="' + str(linewidth) + '" style="stroke-width:' + str(linewidth)
+        svg += ';stroke-miterlimit:1;stroke-linejoin:round;stroke-dasharray:none;">\n'
         for f in self.sections:
             if f:
-                fill = self.getFill(f[1])
+                if fillpattern:
+                    if "#" in fillpattern: # color
+                        fill = fillpattern
+                    else:
+                        fill="url(#"+fillpattern+")" # pattern name
+                else:
+                    fill = 'none' # none
                 svg +='<path '
                 svg += 'd="'
                 for w in f[0].Wires:
                     #print "wire with ",len(w.Vertexes)," verts"
                     svg += self.getPathData(w)
-                svg += '" '
-                svg += 'stroke="#000000" '
-                svg += 'stroke-width="' + str(linewidth) + '" '
-                svg += 'style="stroke-width:' + str(linewidth) + ';'
-                svg += 'stroke-miterlimit:1;'
-                svg += 'stroke-linejoin:round;'
-                svg += 'stroke-dasharray:none;'
-                svg += 'fill:' + fill + ';'
-                svg += 'fill-rule: evenodd'
-                svg += '"/>\n'
+                svg += '" style="fill:' + fill + ';fill-rule: evenodd;"/>\n'
+        svg += '</g>\n'
         return svg
 
     def getHiddenSVG(self,linewidth=0.02):
@@ -637,19 +632,13 @@ class Renderer:
         if DEBUG: print "Printing ", len(self.sections), " hidden faces"
         if not self.oriented:
             self.reorient()
-        svg = ''
+        svg =  '<g stroke="#000000" stroke-width="' + str(linewidth) + '" style="stroke-width:' + str(linewidth)
+        svg += ';stroke-miterlimit:1;stroke-linejoin:round;stroke-dasharray:0.09,0.05;fill:none;">\n'
         for e in self.hiddenEdges:
             svg +='<path '
             svg += 'd="'
             svg += self.getPathData(e)
-            svg += '" '
-            svg += 'stroke="#000000" '
-            svg += 'stroke-width="' + str(linewidth) + '" '
-            svg += 'style="stroke-width:' + str(linewidth) + ';'
-            svg += 'stroke-miterlimit:1;'
-            svg += 'stroke-linejoin:round;'
-            svg += 'stroke-dasharray:0.09,0.05;'
-            svg += 'fill:none;'
             svg += '"/>\n'
+        svg += '</g>\n'
         return svg
         
