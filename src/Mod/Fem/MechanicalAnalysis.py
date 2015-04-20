@@ -208,7 +208,7 @@ class _JobControlTaskPanel:
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
-        self.form=FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         ccx_binary = self.fem_prefs.GetString("ccxBinaryPath","")
         if ccx_binary:
@@ -222,7 +222,7 @@ class _JobControlTaskPanel:
                 self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
             else:
                 self.CalculixBinary = 'ccx'
-        self.TempDir = FreeCAD.ActiveDocument.TransientDir.replace('\\','/') + '/FemAnl_'+ object.Uid[-4:]
+        self.TempDir = FreeCAD.ActiveDocument.TransientDir.replace('\\','/') + '/FemAnl_' + object.Uid[-4:]
         if not os.path.isdir(self.TempDir):
             os.mkdir(self.TempDir)
 
@@ -231,9 +231,9 @@ class _JobControlTaskPanel:
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
-        
+
         self.fem_console_message = ''
-        
+
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
         QtCore.QObject.connect(self.form.pushButton_write, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
@@ -248,10 +248,10 @@ class _JobControlTaskPanel:
         QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.UpdateText)
 
         self.update()
-        
+
     def femConsoleMessage(self, message="", color="#000000"):
         self.fem_console_message = self.fem_console_message + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
-                                    format(time.time() - self.Start, color, message.encode('utf-8'))
+            format(time.time() - self.Start, color, message.encode('utf-8'))
         self.form.textEdit_Output.setText(self.fem_console_message)
 
     def printCalculiXstdout(self):
@@ -596,7 +596,7 @@ class _JobControlTaskPanel:
     def start_ext_editor(self, ext_editor_path, filename):
         if not hasattr(self, "ext_editor_process"):
             self.ext_editor_process = QtCore.QProcess()
-        if  self.ext_editor_process.state() != QtCore.QProcess.Running:
+        if self.ext_editor_process.state() != QtCore.QProcess.Running:
             self.ext_editor_process.start(ext_editor_path, [filename])
 
     def editCalculixInputFile(self):
@@ -620,7 +620,7 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("Run Calculix...")
 
         # run Calculix
-        print 'run Calculix at: ', self.CalculixBinary , '  with: ', self.Basename
+        print 'run Calculix at: ', self.CalculixBinary, '  with: ', self.Basename
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
