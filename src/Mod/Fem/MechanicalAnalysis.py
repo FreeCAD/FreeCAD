@@ -642,7 +642,7 @@ class _ResultControlTaskPanel:
         self.obj = object
 
         #Connect Signals and Slots
-        QtCore.QObject.connect(self.form.comboBox_Type, QtCore.SIGNAL("currentIndexChanged(QString)"), self.typeChanged)
+        QtCore.QObject.connect(self.form.comboBox_Type, QtCore.SIGNAL("activated(int)"), self.typeChanged)
 
         QtCore.QObject.connect(self.form.checkBox_ShowDisplacement, QtCore.SIGNAL("clicked(bool)"), self.showDisplacementClicked)
         QtCore.QObject.connect(self.form.horizontalScrollBar_Factor, QtCore.SIGNAL("valueChanged(int)"), self.sliderValue)
@@ -657,30 +657,24 @@ class _ResultControlTaskPanel:
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
 
-    def typeChanged(self,typeName):
-        if typeName == "None":
+    def typeChanged(self, index):
+        selected = self.form.comboBox_Type.itemData(index)
+        if selected[0] == "None":
             self.MeshObject.ViewObject.NodeColor = {}
             self.MeshObject.ViewObject.ElementColor = {}
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
-
-        if typeName[:2] == "Ua" and self.DisplacementObject:
-            (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject)
-        if typeName[:2] == "U1" and self.DisplacementObject:
-            (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject,1)
-        if typeName[:2] == "U2" and self.DisplacementObject:
-            (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject,2)
-        if typeName[:2] == "U3" and self.DisplacementObject:
-            (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject,3)
-        if typeName[:2] == "Sa" and self.StressObject:
-            (min,max,avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
+        if self.DisplacementObject:
+            if selected[0] in ("U1", "U2", "U3", "Uabs"):
+                (min, max, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject, selected[1])
+        if self.StressObject:
+            if selected[0] in ("Sabs"):
+                (min, max, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
 
         self.form.lineEdit_Max.setText(str(max))
         self.form.lineEdit_Min.setText(str(min))
         self.form.lineEdit_Avg.setText(str(avg))
-
-        print typeName
 
         QtGui.qApp.restoreOverrideCursor()
 
@@ -719,6 +713,8 @@ class _ResultControlTaskPanel:
         'fills the widgets'
         #print "Update-------------------------------"
         self.MeshObject = None
+        self.form.comboBox_Type.clear()
+        self.form.comboBox_Type.addItem("None", ("None", 0))
         if FemGui.getActiveAnalysis():
             for i in FemGui.getActiveAnalysis().Member:
                 if i.isDerivedFrom("Fem::FemMeshObject"):
@@ -728,15 +724,15 @@ class _ResultControlTaskPanel:
             if i.isDerivedFrom("Fem::FemResultVector"):
                 if i.DataType == 'Displacement':
                     self.DisplacementObject = i
-                    self.form.comboBox_Type.addItem("U1   (Disp. X)")
-                    self.form.comboBox_Type.addItem("U2   (Disp. Y)")
-                    self.form.comboBox_Type.addItem("U3   (Disp. z)")
-                    self.form.comboBox_Type.addItem("Uabs (Disp. abs)")
+                    self.form.comboBox_Type.addItem("U1   (Disp. X)", ("U1", 1))
+                    self.form.comboBox_Type.addItem("U2   (Disp. Y)", ("U2", 2))
+                    self.form.comboBox_Type.addItem("U3   (Disp. Z)", ("U3", 3))
+                    self.form.comboBox_Type.addItem("Uabs (Disp. abs)", ("Uabs", 0))
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemResultValue"):
                 if i.DataType == 'VonMisesStress':
                     self.StressObject = i
-                    self.form.comboBox_Type.addItem("Sabs (Von Mises Stress)")
+                    self.form.comboBox_Type.addItem("Sabs (Von Mises Stress)", ("Sabs", 0))
 
     def accept(self):
         FreeCADGui.Control.closeDialog()
