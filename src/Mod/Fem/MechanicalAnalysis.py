@@ -543,9 +543,12 @@ class _JobControlTaskPanel:
                 vec = ForceObject['Object'].DirectionVector
                 inpfile.write('*CLOAD\n')
                 inpfile.write('** force: ' + str(ForceObject['NodeLoad']) + ' N,  direction: ' + str(vec) + '\n')
-                inpfile.write(ForceObject['Object'].Name + ',1,' + repr(vec.x * ForceObject['NodeLoad']) + '\n')
-                inpfile.write(ForceObject['Object'].Name + ',2,' + repr(vec.y * ForceObject['NodeLoad']) + '\n')
-                inpfile.write(ForceObject['Object'].Name + ',3,' + repr(vec.z * ForceObject['NodeLoad']) + '\n\n')
+                v1 = "{:.15}".format(repr(vec.x * ForceObject['NodeLoad']))
+                v2 = "{:.15}".format(repr(vec.y * ForceObject['NodeLoad']))
+                v3 = "{:.15}".format(repr(vec.z * ForceObject['NodeLoad']))
+                inpfile.write(ForceObject['Object'].Name + ',1,' + v1 + '\n')
+                inpfile.write(ForceObject['Object'].Name + ',2,' + v2 + '\n')
+                inpfile.write(ForceObject['Object'].Name + ',3,' + v3 + '\n\n')
 
         # write outputs, both are needed by FreeCAD
         inpfile.write('\n** outputs --> frd file\n')
