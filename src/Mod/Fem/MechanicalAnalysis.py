@@ -370,11 +370,13 @@ class _JobControlTaskPanel:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No mesh object in the Analysis")
             return False
 
-        self.MaterialObject = None
+        self.MaterialObjects = [] # [{'Object':MaterialObject}, {}, ...]
         for i in FemGui.getActiveAnalysis().Member:
+            MaterialObjectDict = {}
             if i.isDerivedFrom("App::MaterialObjectPython"):
-                self.MaterialObject = i
-        if not self.MaterialObject:
+                MaterialObjectDict['Object'] = i
+                self.MaterialObjects.append(MaterialObjectDict)
+        if not self.MaterialObjects:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No material object in the Analysis")
             return False
 
@@ -387,6 +389,7 @@ class _JobControlTaskPanel:
         if not self.FixedObjects:
             QtGui.QMessageBox.critical(None, "Missing prerequisite","No fixed-constraint nodes defined in the Analysis")
             return False
+
         self.ForceObjects = []    # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...]
         for i in FemGui.getActiveAnalysis().Member:
             ForceObjectDict = {}
@@ -405,8 +408,6 @@ class _JobControlTaskPanel:
         dirName = self.TempDir
         print 'CalculiX run directory: ',dirName
 
-        matmap = self.MaterialObject.Material
-
         self.Basename = self.TempDir + '/' + self.MeshObject.Name
         filename = self.Basename + '.inp'
 
@@ -418,11 +419,25 @@ class _JobControlTaskPanel:
 
         # reopen file with "append" and add the analysis definition
         inpfile = open(filename,'a')
+        inpfile.write('\n\n')
 
         self.femConsoleMessage("Write loads & Co...")
 
+        # write material element sets
+        inpfile.write('\n\n***********************************************************\n')
+        inpfile.write('** element sets for materials\n')
+        for MaterialObject in self.MaterialObjects:
+            print MaterialObject['Object'].Name, ':  ', MaterialObject['Object'].Material['General_name']
+            inpfile.write('*ELSET,ELSET=' + MaterialObject['Object'].Name + '\n')   
+            if len(self.MaterialObjects) == 1:
+                inpfile.write('Eall\n')
+            else:
+                if MaterialObject['Object'].Name == 'MechanicalMaterial':
+                    inpfile.write('Eall\n')
+            inpfile.write('\n\n')
+
         # write fixed node sets
-        inpfile.write('\n\n\n\n***********************************************************\n')
+        inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** node set for fixed constraint\n')
         for FixedObject in self.FixedObjects:
             print FixedObject['Object'].Name
@@ -476,27 +491,32 @@ class _JobControlTaskPanel:
                 print '  Warning --> Force = 0'
             inpfile.write('\n\n')
 
-        # get material properties
-        YM = FreeCAD.Units.Quantity(self.MaterialObject.Material['Mechanical_youngsmodulus'])
-        if YM.Unit.Type == '':
-            print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
-            YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa'))
-        else:
-            print 'YM unit: ', YM.Unit.Type
-        print 'YM = ', YM
-
-        PR = float(self.MaterialObject.Material['FEM_poissonratio'])
-        print 'PR = ', PR
-
-        # write material properties
+        # write materials
         inpfile.write('\n\n***********************************************************\n')
-        inpfile.write('** material\n')
-        inpfile.write('** unit is MPa = N/mm2\n')
-        inpfile.write('*MATERIAL, Name=' + matmap['General_name'] + '\n')
-        inpfile.write('*ELASTIC \n')
-        inpfile.write('{0:.3f}, '.format(YM.Value * 1E-3))
-        inpfile.write('{0:.3f}\n'.format(PR))
-        inpfile.write('*SOLID SECTION, Elset=Eall, Material=' + matmap['General_name'] + '\n')
+        inpfile.write('** materials\n')
+        inpfile.write('** youngs modulus unit is MPa = N/mm2\n')
+        for MaterialObject in self.MaterialObjects:
+            # get material properties
+            YM = FreeCAD.Units.Quantity(MaterialObject['Object'].Material['Mechanical_youngsmodulus'])
+            if YM.Unit.Type == '':
+                print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
+                YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa'))
+            else:
+                print 'YM unit: ', YM.Unit.Type
+            print 'YM = ', YM
+            PR = float(MaterialObject['Object'].Material['FEM_poissonratio'])
+            print 'PR = ', PR
+            # write material properties
+            inpfile.write('*MATERIAL, NAME=' + MaterialObject['Object'].Material['General_name'] + '\n')
+            inpfile.write('*ELASTIC \n')
+            inpfile.write('{0:.3f}, '.format(YM.Value * 1E-3))
+            inpfile.write('{0:.3f}\n'.format(PR))
+            # write element properties
+            if len(self.MaterialObjects) == 1:
+                inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + MaterialObject['Object'].Material['General_name'] + '\n\n')
+            else:
+                if MaterialObject['Object'].Name == 'MechanicalMaterial':
+                    inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + MaterialObject['Object'].Material['General_name'] + '\n\n')
 
         # write step beginn
         inpfile.write('\n\n\n\n***********************************************************\n')
