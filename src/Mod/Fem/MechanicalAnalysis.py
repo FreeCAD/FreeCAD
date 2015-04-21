@@ -251,7 +251,7 @@ class _JobControlTaskPanel:
 
     def femConsoleMessage(self, message="", color="#000000"):
         self.fem_console_message = self.fem_console_message + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
-            format(time.time() - self.Start, color, message.encode('utf-8'))
+            format(time.time() - self.Start, color, message.encode('utf-8', 'replace'))
         self.form.textEdit_Output.setText(self.fem_console_message)
 
     def printCalculiXstdout(self):
@@ -262,7 +262,7 @@ class _JobControlTaskPanel:
             self.femConsoleMessage("CalculiX stdout is empty", "#FF0000")
         else:
             try:
-                out = unicode(out, 'utf-8')
+                out = unicode(out, 'utf-8', 'replace')
                 rx = QtCore.QRegExp("\\*ERROR.*\\n\\n")
                 rx.setMinimal(True)
                 pos = rx.indexIn(out)
