@@ -109,5 +109,5 @@ if __name__ == '__main__':
 
     kv_map = importFCMat(FileName)
     for k in kv_map.keys():
-        print `k` + " : " + `kv_map[k]`
+        print repr(k) + " : " + repr(kv_map[k])
     sys.exit(0)  # no error
