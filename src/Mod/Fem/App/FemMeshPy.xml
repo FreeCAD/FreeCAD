@@ -99,6 +99,11 @@
         <UserDocu>Get the node position vector by an Node-ID</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getNodesBySolid" Const="true">
+      <Documentation>
+        <UserDocu>Return a list of node IDs which belong to a TopoSolid</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getNodesByFace" Const="true">
       <Documentation>
         <UserDocu>Return a list of node IDs which belong to a TopoFace</UserDocu>
