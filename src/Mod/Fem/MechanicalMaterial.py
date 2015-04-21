@@ -172,18 +172,18 @@ class _MechanicalMaterialTaskPanel:
 
     def ym_changed(self, value):
         import Units
-        old_ym = Units.Quantity(self.obj.Material['Mechanical_youngsmodulus'])
+        old_ym = Units.Quantity(self.obj.Material['YoungsModulus'])
         if old_ym != value:
             material = self.obj.Material
-            material['Mechanical_youngsmodulus'] = unicode(value)
+            material['YoungsModulus'] = unicode(value)
             self.obj.Material = material
 
     def pr_changed(self, value):
         import Units
-        old_pr = Units.Quantity(self.obj.Material['FEM_poissonratio'])
+        old_pr = Units.Quantity(self.obj.Material['PoissonRatio'])
         if old_pr != value:
             material = self.obj.Material
-            material['FEM_poissonratio'] = unicode(value)
+            material['PoissonRatio'] = unicode(value)
             self.obj.Material = material
 
     def choose_material(self, index):
@@ -215,16 +215,16 @@ class _MechanicalMaterialTaskPanel:
     def print_mat_data(self, matmap):
         print 'Material data:'
         print ' Name = {}'.format(self.get_material_name(matmap))
-        if 'Mechanical_youngsmodulus' in matmap:
-            print ' YM = ', matmap['Mechanical_youngsmodulus']
-        if 'FEM_poissonratio' in matmap:
-            print ' PR = ', matmap['FEM_poissonratio']
+        if 'YoungsModulus' in matmap:
+            print ' YM = ', matmap['YoungsModulus']
+        if 'PoissonRatio' in matmap:
+            print ' PR = ', matmap['PoissonRatio']
 
     def set_mat_params_in_combo_box(self, matmap):
-        if 'Mechanical_youngsmodulus' in matmap:
-            self.form.input_fd_young_modulus.setText(matmap['Mechanical_youngsmodulus'])
-        if 'FEM_poissonratio' in matmap:
-            self.form.spinBox_poisson_ratio.setValue(float(matmap['FEM_poissonratio']))
+        if 'YoungsModulus' in matmap:
+            self.form.input_fd_young_modulus.setText(matmap['YoungsModulus'])
+        if 'PoissonRatio' in matmap:
+            self.form.spinBox_poisson_ratio.setValue(float(matmap['PoissonRatio']))
 
     def add_transient_material(self, material):
         material_name = self.get_material_name(material)
