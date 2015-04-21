@@ -57,12 +57,13 @@ def importFCMat(fileName):
     "Read a FCMat file into a dictionary"
     import ConfigParser
     Config = ConfigParser.ConfigParser()
+    Config.optionxform = str
     Config.read(fileName)
     dict1 = {}
     for section in Config.sections():
         options = Config.options(section)
         for option in options:
-            dict1[section+'_'+option] = Config.get(section, option)
+            dict1[option] = Config.get(section, option)
 
     return dict1
     

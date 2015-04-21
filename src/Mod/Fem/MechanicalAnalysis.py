@@ -431,7 +431,7 @@ class _JobControlTaskPanel:
         inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** element sets for materials\n')
         for MaterialObject in self.MaterialObjects:
-            print MaterialObject['Object'].Name, ':  ', MaterialObject['Object'].Material['General_name']
+            print MaterialObject['Object'].Name, ':  ', MaterialObject['Object'].Material['Name']
             inpfile.write('*ELSET,ELSET=' + MaterialObject['Object'].Name + '\n')   
             if len(self.MaterialObjects) == 1:
                 inpfile.write('Eall\n')
@@ -501,26 +501,26 @@ class _JobControlTaskPanel:
         inpfile.write('** youngs modulus unit is MPa = N/mm2\n')
         for MaterialObject in self.MaterialObjects:
             # get material properties
-            YM = FreeCAD.Units.Quantity(MaterialObject['Object'].Material['Mechanical_youngsmodulus'])
+            YM = FreeCAD.Units.Quantity(MaterialObject['Object'].Material['YoungsModulus'])
             if YM.Unit.Type == '':
-                print 'Material "Mechanical_youngsmodulus" has no Unit, asuming kPa!'
+                print 'Material "YoungsModulus" has no Unit, asuming kPa!'
                 YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa'))
             else:
                 print 'YM unit: ', YM.Unit.Type
             print 'YM = ', YM
-            PR = float(MaterialObject['Object'].Material['FEM_poissonratio'])
+            PR = float(MaterialObject['Object'].Material['PoissonRatio'])
             print 'PR = ', PR
             # write material properties
-            inpfile.write('*MATERIAL, NAME=' + MaterialObject['Object'].Material['General_name'] + '\n')
+            inpfile.write('*MATERIAL, NAME=' + MaterialObject['Object'].Material['Name'] + '\n')
             inpfile.write('*ELASTIC \n')
             inpfile.write('{0:.3f}, '.format(YM.Value * 1E-3))
             inpfile.write('{0:.3f}\n'.format(PR))
             # write element properties
             if len(self.MaterialObjects) == 1:
-                inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + MaterialObject['Object'].Material['General_name'] + '\n\n')
+                inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + MaterialObject['Object'].Material['Name'] + '\n\n')
             else:
                 if MaterialObject['Object'].Name == 'MechanicalMaterial':
-                    inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + MaterialObject['Object'].Material['General_name'] + '\n\n')
+                    inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + MaterialObject['Object'].Material['Name'] + '\n\n')
 
         # write step beginn
         inpfile.write('\n\n\n\n***********************************************************\n')
