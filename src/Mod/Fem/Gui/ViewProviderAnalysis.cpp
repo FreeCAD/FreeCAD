@@ -34,6 +34,7 @@
 #include <Gui/Control.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemMeshObject.h>
 
 #include "TaskDlgAnalysis.h"
 
@@ -157,6 +158,39 @@ bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
     //    Gui::Application::Instance->getViewProvider(pcSupport)->show();
 
     return true;
+}
+
+bool ViewProviderFemAnalysis::canDragObjects() const
+{
+    return true;
+}
+
+void ViewProviderFemAnalysis::dragObject(App::DocumentObject* obj)
+{
+    Fem::FemAnalysis* analyze = static_cast<Fem::FemAnalysis*>(getObject());
+    std::vector<App::DocumentObject*> fem = analyze->Member.getValues();
+    for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
+        if (*it == obj) {
+            fem.erase(it);
+            analyze->Member.setValues(fem);
+            break;
+        }
+    }
+}
+
+bool ViewProviderFemAnalysis::canDropObjects() const
+{
+    return true;
+}
+
+void ViewProviderFemAnalysis::dropObject(App::DocumentObject* obj)
+{
+    if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
+        return;
+    Fem::FemAnalysis* analyze = static_cast<Fem::FemAnalysis*>(getObject());
+    std::vector<App::DocumentObject*> fem = analyze->Member.getValues();
+    fem.push_back(obj);
+    analyze->Member.setValues(fem);
 }
 
 // Python feature -----------------------------------------------------------------------
