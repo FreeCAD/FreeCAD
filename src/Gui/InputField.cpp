@@ -497,6 +497,11 @@ void InputField::focusInEvent(QFocusEvent * event)
 
 void InputField::keyPressEvent(QKeyEvent *event)
 {
+    if (isReadOnly()) {
+        QLineEdit::keyPressEvent(event);
+        return;
+    }
+
     switch (event->key()) {
     case Qt::Key_Up:
         {
@@ -520,6 +525,11 @@ void InputField::keyPressEvent(QKeyEvent *event)
 
 void InputField::wheelEvent (QWheelEvent * event)
 {
+    if (isReadOnly()) {
+        QLineEdit::wheelEvent(event);
+        return;
+    }
+
     double step = event->delta() > 0 ? StepSize : -StepSize;
     double val = actUnitValue + step;
     if (val > Maximum)
