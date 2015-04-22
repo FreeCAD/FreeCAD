@@ -668,13 +668,13 @@ class _ResultControlTaskPanel:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.DisplacementObject:
             if selected[0] in ("U1", "U2", "U3", "Uabs"):
-                (min, max, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject, selected[1])
+                (minm, maxm, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject, selected[1])
         if self.StressObject:
             if selected[0] in ("Sabs"):
-                (min, max, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
+                (minm, maxm, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
 
-        self.form.lineEdit_Max.setText(str(max))
-        self.form.lineEdit_Min.setText(str(min))
+        self.form.lineEdit_Max.setText(str(maxm))
+        self.form.lineEdit_Min.setText(str(minm))
         self.form.lineEdit_Avg.setText(str(avg))
 
         QtGui.qApp.restoreOverrideCursor()
