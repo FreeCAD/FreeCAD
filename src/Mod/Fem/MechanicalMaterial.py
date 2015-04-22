@@ -49,7 +49,7 @@ class _CommandMechanicalMaterial:
     def GetResources(self):
         return {'Pixmap': 'Fem_Material',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Mechanical material..."),
-                'Accel': "A, X",
+                'Accel': "M, M",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Creates or edit the mechanical material definition.")}
 
     def Activated(self):
