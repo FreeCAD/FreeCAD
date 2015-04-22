@@ -1827,7 +1827,7 @@ def exportPage(page,filename):
     global dxfhandle
     dxfhandle = 1
     if os.path.exists(template):
-        f = pythonopen(template,"rb")
+        f = pythonopen(template,"U")
         template = f.read()
         f.close()
         # find & replace editable texts
@@ -1854,8 +1854,8 @@ def exportPage(page,filename):
         b,e = getViewDXF(view)
         blocks += b
         entities += e
-    result = template.replace("$blocks",blocks[:-1])
-    result = result.replace("$entities",entities[:-1])
+    result = template.replace("999\n$blocks",blocks[:-1])
+    result = result.replace("999\n$entities",entities[:-1])
     f = pythonopen(filename,"wb")
     f.write(result)
     f.close()
