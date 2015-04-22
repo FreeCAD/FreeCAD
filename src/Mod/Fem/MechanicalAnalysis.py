@@ -53,7 +53,7 @@ class _CommandNewMechanicalAnalysis:
     def GetResources(self):
         return {'Pixmap': 'Fem_Analysis',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "New mechanical analysis"),
-                'Accel': "A",
+                'Accel': "N, A",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Create a new mechanical analysis")}
 
     def Activated(self):
