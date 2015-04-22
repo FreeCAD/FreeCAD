@@ -185,9 +185,7 @@ void CmdFemAddPart::activated(int iMsg)
     Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
 
     std::string AnalysisName = getUniqueObjectName("FemAnalysis");
-
     std::string MeshName = getUniqueObjectName((std::string(base->getNameInDocument()) +"_Mesh").c_str());
-
 
     openCommand("Create FEM analysis");
     doCommand(Doc,"App.activeDocument().addObject('Fem::FemAnalysis','%s')",AnalysisName.c_str());
@@ -199,7 +197,6 @@ void CmdFemAddPart::activated(int iMsg)
     commitCommand();
 
     updateActive();
-
 }
 
 bool CmdFemAddPart::isActive(void)
@@ -558,7 +555,7 @@ bool CmdFemDefineNodesSet::isActive(void)
 DEF_STD_CMD_A(CmdFemCreateNodesSet);
 
 CmdFemCreateNodesSet::CmdFemCreateNodesSet()
-	:Command("Fem_CreateNodesSet")
+  : Command("Fem_CreateNodesSet")
 {
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
@@ -567,30 +564,32 @@ CmdFemCreateNodesSet::CmdFemCreateNodesSet()
     sWhatsThis      = "Fem_CreateNodesSet";
     sStatusTip      = sToolTipText;
     sPixmap         = "Fem_FemMesh_createnodebypoly";
-
 }
-
 
 void CmdFemCreateNodesSet::activated(int iMsg)
 {
-     
     Gui::SelectionFilter ObjectFilter("SELECT Fem::FemSetNodesObject COUNT 1");
-    Gui::SelectionFilter FemMeshFilter  ("SELECT Fem::FemMeshObject COUNT 1");
+    Gui::SelectionFilter FemMeshFilter("SELECT Fem::FemMeshObject COUNT 1");
 
     if (ObjectFilter.match()) {
         Fem::FemSetNodesObject *NodesObj = static_cast<Fem::FemSetNodesObject*>(ObjectFilter.Result[0][0].getObject());
-        openCommand("Edit nodes-set");
+        openCommand("Edit nodes set");
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",NodesObj->getNameInDocument());
-    }else if (FemMeshFilter.match()) {
+    }
+    else if (FemMeshFilter.match()) {
         Fem::FemMeshObject *MeshObj = static_cast<Fem::FemMeshObject*>(FemMeshFilter.Result[0][0].getObject());
 
         std::string FeatName = getUniqueObjectName("NodesSet");
 
-        openCommand("Create a new nodes-set");
+        openCommand("Create nodes set");
         doCommand(Doc,"App.activeDocument().addObject('Fem::FemSetNodesObject','%s')",FeatName.c_str());
         doCommand(Gui,"App.activeDocument().%s.FemMesh = App.activeDocument().%s",FeatName.c_str(),MeshObj->getNameInDocument());
         doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-
+    }
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemCreateNodesSet", "Wrong selection"),
+            qApp->translate("CmdFemCreateNodesSet", "Select a single FEM mesh or nodes set, please."));
     }
 }
 
