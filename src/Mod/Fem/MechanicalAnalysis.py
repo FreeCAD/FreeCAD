@@ -67,12 +67,12 @@ class _CommandNewMechanicalAnalysis:
                 FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','" + sel[0].Name + "_Mesh')")
                 FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
                 FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
-                FreeCADGui.doCommand("Gui.activeDocument().hide('" + sel[0].Name + "')")
+                #FreeCADGui.doCommand("Gui.activeDocument().hide('" + sel[0].Name + "')")
                 #FreeCADGui.doCommand("App.activeDocument().ActiveObject.touch()")
                 #FreeCADGui.doCommand("App.activeDocument().recompute()")
                 FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
-        FreeCAD.ActiveDocument.commitTransaction()
+        #FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Selection.clearSelection()
 
     def IsActive(self):
