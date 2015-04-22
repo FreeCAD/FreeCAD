@@ -669,13 +669,18 @@ class _ResultControlTaskPanel:
         if self.DisplacementObject:
             if selected[0] in ("U1", "U2", "U3", "Uabs"):
                 (minm, maxm, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject, selected[1])
+                unit = "mm"
         if self.StressObject:
             if selected[0] in ("Sabs"):
                 (minm, maxm, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
+                unit = "MPa"
 
-        self.form.lineEdit_Max.setText(str(maxm))
-        self.form.lineEdit_Min.setText(str(minm))
-        self.form.lineEdit_Avg.setText(str(avg))
+        self.form.lineEdit_Max.setProperty("unit", unit)
+        self.form.lineEdit_Max.setText("{:.6} {}".format(maxm, unit))
+        self.form.lineEdit_Min.setProperty("unit", unit)
+        self.form.lineEdit_Min.setText("{:.6} {}".format(minm, unit))
+        self.form.lineEdit_Avg.setProperty("unit", unit)
+        self.form.lineEdit_Avg.setText("{:.6} {}".format(avg, unit))
 
         QtGui.qApp.restoreOverrideCursor()
 
