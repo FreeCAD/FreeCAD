@@ -41,7 +41,7 @@ __url__ = "http://www.freecadweb.org"
 
 def makeMechanicalAnalysis(name):
     '''makeFemAnalysis(name): makes a Fem Analysis object'''
-    obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython",name)
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
     _FemAnalysis(obj)
     _ViewProviderFemAnalysis(obj.ViewObject)
     #FreeCAD.ActiveDocument.recompute()
@@ -52,9 +52,9 @@ class _CommandNewMechanicalAnalysis:
     "the Fem Analysis command definition"
     def GetResources(self):
         return {'Pixmap': 'Fem_Analysis',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","New mechanical analysis"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "New mechanical analysis"),
                 'Accel': "A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis","Create a new mechanical analysis")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Analysis", "Create a new mechanical analysis")}
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create Analysis")
@@ -68,7 +68,7 @@ class _CommandNewMechanicalAnalysis:
             if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
                 FreeCADGui.doCommand("App.activeDocument().ActiveObject.Member = App.activeDocument().ActiveObject.Member + [App.activeDocument()." + sel[0].Name + "]")
             if(sel[0].isDerivedFrom("Part::Feature")):
-                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','" + sel[0].Name + "_Mesh')")
+                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
                 FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
                 FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument().ActiveObject]")
                 #FreeCADGui.doCommand("Gui.activeDocument().hide('" + sel[0].Name + "')")
@@ -88,9 +88,9 @@ class _CommandMechanicalJobControl:
     "the Fem JobControl command definition"
     def GetResources(self):
         return {'Pixmap': 'Fem_NewAnalysis',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Start calculation"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Start calculation"),
                 'Accel': "A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl","Dialog to start the calculation of the mechanical anlysis")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Dialog to start the calculation of the mechanical anlysis")}
 
     def Activated(self):
         import FemGui
@@ -109,9 +109,9 @@ class _CommandMechanicalShowResult:
     "the Fem JobControl command definition"
     def GetResources(self):
         return {'Pixmap': 'Fem_Result',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show result"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement", "Show result"),
                 'Accel': "A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement","Show result information of an analysis")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement", "Show result information of an analysis")}
 
     def Activated(self):
         import FemGui
@@ -127,7 +127,7 @@ class _CommandMechanicalShowResult:
                     StressObject = i
 
         if not DisplacementObject and not StressObject:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite","No result found in active Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
             return
 
         taskd = _ResultControlTaskPanel(FemGui.getActiveAnalysis())
@@ -140,24 +140,24 @@ class _CommandMechanicalShowResult:
 
 class _FemAnalysis:
     "The Material object"
-    def __init__(self,obj):
+    def __init__(self, obj):
         self.Type = "FemAnalysis"
         obj.Proxy = self
         #obj.Material = StartMat
-        obj.addProperty("App::PropertyString","OutputDir","Base","Directory where the jobs get generated")
-        obj.addProperty("App::PropertyFloat","PlateThickness","Base","Thickness of the plate")
+        obj.addProperty("App::PropertyString", "OutputDir", "Base", "Directory where the jobs get generated")
+        obj.addProperty("App::PropertyFloat", "PlateThickness", "Base", "Thickness of the plate")
 
-    def execute(self,obj):
+    def execute(self, obj):
         return
 
-    def onChanged(self,obj,prop):
+    def onChanged(self, obj, prop):
         if prop in ["MaterialName"]:
             return
 
     def __getstate__(self):
         return self.Type
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         if state:
             self.Type = state
 
@@ -165,8 +165,8 @@ class _FemAnalysis:
 class _ViewProviderFemAnalysis:
     "A View Provider for the Material object"
 
-    def __init__(self,vobj):
-        #vobj.addProperty("App::PropertyLength","BubbleSize","Base", str(translate("Fem","The size of the axis bubbles")))
+    def __init__(self, vobj):
+        #vobj.addProperty("App::PropertyLength", "BubbleSize", "Base", str(translate("Fem", "The size of the axis bubbles")))
         vobj.Proxy = self
 
     def getIcon(self):
@@ -183,7 +183,7 @@ class _ViewProviderFemAnalysis:
     def onChanged(self, vobj, prop):
         return
 
-    def doubleClicked(self,vobj):
+    def doubleClicked(self, vobj):
         import FemGui
         if not FemGui.getActiveAnalysis() == self.Object:
             if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
@@ -198,19 +198,19 @@ class _ViewProviderFemAnalysis:
     def __getstate__(self):
         return None
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         return None
 
 
 class _JobControlTaskPanel:
     '''The editmode TaskPanel for Material objects'''
-    def __init__(self,object):
+    def __init__(self, object):
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        ccx_binary = self.fem_prefs.GetString("ccxBinaryPath","")
+        ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
         if ccx_binary:
             self.CalculixBinary = ccx_binary
             print "Using ccx binary path from FEM preferences: {}".format(ccx_binary)
@@ -222,7 +222,7 @@ class _JobControlTaskPanel:
                 self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
             else:
                 self.CalculixBinary = 'ccx'
-        self.TempDir = FreeCAD.ActiveDocument.TransientDir.replace('\\','/') + '/FemAnl_' + object.Uid[-4:]
+        self.TempDir = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + object.Uid[-4:]
         if not os.path.isdir(self.TempDir):
             os.mkdir(self.TempDir)
 
@@ -268,9 +268,9 @@ class _JobControlTaskPanel:
                 pos = rx.indexIn(out)
                 while not pos < 0:
                     match = rx.cap(0)
-                    FreeCAD.Console.PrintError(match.strip().replace('\n',' ') + '\n')
+                    FreeCAD.Console.PrintError(match.strip().replace('\n', ' ') + '\n')
                     pos = rx.indexIn(out, pos + 1)
-                self.femConsoleMessage(out.replace('\n','<br>'))
+                self.femConsoleMessage(out.replace('\n', '<br>'))
             except UnicodeDecodeError:
                 self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
 
@@ -296,8 +296,8 @@ class _JobControlTaskPanel:
         if (newState == QtCore.QProcess.ProcessState.NotRunning):
                 self.femConsoleMessage("CalculiX stopped.")
 
-    def calculixFinished(self,exitCode):
-        print "calculixFinished()",exitCode
+    def calculixFinished(self, exitCode):
+        print "calculixFinished()", exitCode
         print self.Calculix.state()
 
         # Restore previous cwd
@@ -315,7 +315,7 @@ class _JobControlTaskPanel:
 
         if os.path.isfile(self.Basename + '.frd'):
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            CalculixLib.importFrd(self.Basename + '.frd',FemGui.getActiveAnalysis())
+            CalculixLib.importFrd(self.Basename + '.frd', FemGui.getActiveAnalysis())
             QApplication.restoreOverrideCursor()
             self.femConsoleMessage("Loading results done!", "#00AA00")
         else:
@@ -338,9 +338,9 @@ class _JobControlTaskPanel:
 
     def chooseOutputDir(self):
         print "chooseOutputDir"
-        dirname = QtGui.QFileDialog.getExistingDirectory(None, 'Choose material directory',self.params.GetString("JobDir",'/'))
+        dirname = QtGui.QFileDialog.getExistingDirectory(None, 'Choose material directory', self.params.GetString("JobDir", '/'))
         if(dirname):
-            self.params.SetString("JobDir",str(dirname))
+            self.params.SetString("JobDir", str(dirname))
             self.form.lineEdit_outputDir.setText(dirname)
 
     def write_input_file_handler(self):
@@ -367,21 +367,21 @@ class _JobControlTaskPanel:
                 if i.isDerivedFrom("Fem::FemMeshObject"):
                     self.MeshObject = i
         else:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite","No active Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No active Analysis")
             return False
 
         if not self.MeshObject:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite","No mesh object in the Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No mesh object in the Analysis")
             return False
 
-        self.MaterialObjects = [] # [{'Object':MaterialObject}, {}, ...]
+        self.MaterialObjects = []  # [{'Object':MaterialObject}, {}, ...]
         for i in FemGui.getActiveAnalysis().Member:
             MaterialObjectDict = {}
             if i.isDerivedFrom("App::MaterialObjectPython"):
                 MaterialObjectDict['Object'] = i
                 self.MaterialObjects.append(MaterialObjectDict)
         if not self.MaterialObjects:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite","No material object in the Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No material object in the Analysis")
             return False
 
         self.FixedObjects = []    # [{'Object':FixedObject, 'NodeSupports':bool}, {}, ...]
@@ -391,7 +391,7 @@ class _JobControlTaskPanel:
                 FixedObjectDict['Object'] = i
                 self.FixedObjects.append(FixedObjectDict)
         if not self.FixedObjects:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite","No fixed-constraint nodes defined in the Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No fixed-constraint nodes defined in the Analysis")
             return False
 
         self.ForceObjects = []    # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...]
@@ -401,7 +401,7 @@ class _JobControlTaskPanel:
                 ForceObjectDict['Object'] = i
                 self.ForceObjects.append(ForceObjectDict)
         if not self.ForceObjects:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite","No force-constraint nodes defined in the Analysis")
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No force-constraint nodes defined in the Analysis")
             return False
         return True
 
@@ -410,7 +410,7 @@ class _JobControlTaskPanel:
 
         #dirName = self.form.lineEdit_outputDir.text()
         dirName = self.TempDir
-        print 'CalculiX run directory: ',dirName
+        print 'CalculiX run directory: ', dirName
 
         self.Basename = self.TempDir + '/' + self.MeshObject.Name
         filename = self.Basename + '.inp'
@@ -422,7 +422,7 @@ class _JobControlTaskPanel:
         self.MeshObject.FemMesh.writeABAQUS(filename)
 
         # reopen file with "append" and add the analysis definition
-        inpfile = open(filename,'a')
+        inpfile = open(filename, 'a')
         inpfile.write('\n\n')
 
         self.femConsoleMessage("Write loads & Co...")
@@ -432,7 +432,7 @@ class _JobControlTaskPanel:
         inpfile.write('** element sets for materials\n')
         for MaterialObject in self.MaterialObjects:
             print MaterialObject['Object'].Name, ':  ', MaterialObject['Object'].Material['Name']
-            inpfile.write('*ELSET,ELSET=' + MaterialObject['Object'].Name + '\n')   
+            inpfile.write('*ELSET,ELSET=' + MaterialObject['Object'].Name + '\n')
             if len(self.MaterialObjects) == 1:
                 inpfile.write('Eall\n')
             else:
@@ -446,7 +446,7 @@ class _JobControlTaskPanel:
         for FixedObject in self.FixedObjects:
             print FixedObject['Object'].Name
             inpfile.write('*NSET,NSET=' + FixedObject['Object'].Name + '\n')
-            for o,f in FixedObject['Object'].References:
+            for o, f in FixedObject['Object'].References:
                 fo = o.Shape.getElement(f)
                 n = []
                 if fo.ShapeType == 'Face':
@@ -469,7 +469,7 @@ class _JobControlTaskPanel:
             print ForceObject['Object'].Name
             inpfile.write('*NSET,NSET=' + ForceObject['Object'].Name + '\n')
             NbrForceNodes = 0
-            for o,f in ForceObject['Object'].References:
+            for o, f in ForceObject['Object'].References:
                 fo = o.Shape.getElement(f)
                 n = []
                 if fo.ShapeType == 'Face':
@@ -603,10 +603,10 @@ class _JobControlTaskPanel:
     def editCalculixInputFile(self):
         filename = self.Basename + '.inp'
         print 'editCalculixInputFile {}'.format(filename)
-        if self.fem_prefs.GetBool("UseInternalEditor",True):
+        if self.fem_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(filename)
         else:
-            ext_editor_path = self.fem_prefs.GetString("ExternalEditorPath","")
+            ext_editor_path = self.fem_prefs.GetString("ExternalEditorPath", "")
             if ext_editor_path:
                 self.start_ext_editor(ext_editor_path, filename)
             else:
@@ -627,14 +627,14 @@ class _JobControlTaskPanel:
         self.cwd = QtCore.QDir.currentPath()
         fi = QtCore.QFileInfo(self.Basename)
         QtCore.QDir.setCurrent(fi.path())
-        self.Calculix.start(self.CalculixBinary, ['-i',fi.baseName()])
+        self.Calculix.start(self.CalculixBinary, ['-i', fi.baseName()])
 
         QApplication.restoreOverrideCursor()
 
 
 class _ResultControlTaskPanel:
     '''The control for the displacement post-processing'''
-    def __init__(self,object):
+    def __init__(self, object):
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
@@ -679,22 +679,22 @@ class _ResultControlTaskPanel:
 
         QtGui.qApp.restoreOverrideCursor()
 
-    def showDisplacementClicked(self,bool):
+    def showDisplacementClicked(self, bool):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setDisplacement()
         QtGui.qApp.restoreOverrideCursor()
 
-    def sliderValue(self,value):
+    def sliderValue(self, value):
         if(self.form.checkBox_ShowDisplacement.isChecked()):
             self.MeshObject.ViewObject.animate(value)
 
         self.form.spinBox_DisplacementFactor.setValue(value)
 
-    def sliderMaxValue(self,value):
+    def sliderMaxValue(self, value):
         #print 'sliderMaxValue()'
         self.form.horizontalScrollBar_Factor.setMaximum(value)
 
-    def displacementFactorValue(self,value):
+    def displacementFactorValue(self, value):
         #print 'displacementFactorValue()'
         self.form.horizontalScrollBar_Factor.setValue(value)
 
@@ -741,6 +741,6 @@ class _ResultControlTaskPanel:
     def reject(self):
         FreeCADGui.Control.closeDialog()
 
-FreeCADGui.addCommand('Fem_NewMechanicalAnalysis',_CommandNewMechanicalAnalysis())
-FreeCADGui.addCommand('Fem_MechanicalJobControl',_CommandMechanicalJobControl())
-FreeCADGui.addCommand('Fem_ShowResult',_CommandMechanicalShowResult())
+FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
+FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
+FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())
