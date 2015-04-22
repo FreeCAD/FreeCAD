@@ -110,7 +110,7 @@ class _CommandMechanicalShowResult:
     def GetResources(self):
         return {'Pixmap': 'Fem_Result',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement", "Show result"),
-                'Accel': "A",
+                'Accel': "S, R",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement", "Show result information of an analysis")}
 
     def Activated(self):
