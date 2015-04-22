@@ -440,6 +440,18 @@ void InventorBuilder::addPointSet(void)
     result << Base::blanks(indent) << "PointSet { } " << std::endl;
 }
 
+/**
+ * Adds an SoLineSet node after creating an SoCordinate3 node with
+ * beginPoints() and endPoints().
+ * @see startPoints()
+ * @see beginPoints()
+ * @see endPoints()
+ */
+void InventorBuilder::addLineSet(void)
+{
+    result << Base::blanks(indent) << "LineSet { } " << std::endl;
+}
+
 //**************************************************************************
 // text handling
 

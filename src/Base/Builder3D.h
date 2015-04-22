@@ -166,6 +166,8 @@ public:
     void endPoints(void);
     /// add an SoPointSet node
     void addPointSet(void);
+    /// add an SoLineSet node
+    void addLineSet(void);
     //@}
 
     /** @name Line/Direction handling */
