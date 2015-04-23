@@ -510,17 +510,18 @@ class _JobControlTaskPanel:
             print 'YM = ', YM
             PR = float(MaterialObject['Object'].Material['PoissonRatio'])
             print 'PR = ', PR
+            material_name = MaterialObject['Object'].Material['Name'][:80]
             # write material properties
-            inpfile.write('*MATERIAL, NAME=' + MaterialObject['Object'].Material['Name'] + '\n')
+            inpfile.write('*MATERIAL, NAME=' + material_name + '\n')
             inpfile.write('*ELASTIC \n')
             inpfile.write('{0:.3f}, '.format(YM.Value * 1E-3))
             inpfile.write('{0:.3f}\n'.format(PR))
             # write element properties
             if len(self.MaterialObjects) == 1:
-                inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + MaterialObject['Object'].Material['Name'] + '\n\n')
+                inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + material_name + '\n\n')
             else:
                 if MaterialObject['Object'].Name == 'MechanicalMaterial':
-                    inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + MaterialObject['Object'].Material['Name'] + '\n\n')
+                    inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + material_name + '\n\n')
 
         # write step beginn
         inpfile.write('\n\n\n\n***********************************************************\n')
