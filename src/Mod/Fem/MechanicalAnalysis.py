@@ -84,7 +84,6 @@ class _CommandNewMechanicalAnalysis:
         return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is None
 
 
-
 class _CommandFemFromShape:
     def GetResources(self):
         return {'Pixmap': 'Fem_FemMesh',
@@ -340,9 +339,9 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("Loading result sets...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
-        if os.path.isfile(self.Basename + '.frd'):
+        if os.path.isfile(self.base_name + '.frd'):
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            CalculixLib.importFrd(self.Basename + '.frd', FemGui.getActiveAnalysis())
+            CalculixLib.importFrd(self.base_name + '.frd', FemGui.getActiveAnalysis())
             QApplication.restoreOverrideCursor()
             self.femConsoleMessage("Loading results done!", "#00AA00")
         else:
@@ -375,7 +374,14 @@ class _JobControlTaskPanel:
         if self.check_prerequisites():
             QApplication.setOverrideCursor(Qt.WaitCursor)
             try:
-                self.write_calculix_input_file()
+                import ccxInpWriter as iw
+                inp_writer = iw.inp_writer(self.TempDir, self.MeshObject, self.MaterialObjects,
+                                           self.FixedObjects, self.ForceObjects)
+                self.base_name = inp_writer.write_calculix_input_file()
+                if self.base_name != "":
+                    self.femConsoleMessage("Write completed.")
+                else:
+                    self.femConsoleMessage("Write .inp file failed!", "#FF0000")
             except:
                 print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
                 raise
@@ -432,195 +438,6 @@ class _JobControlTaskPanel:
             return False
         return True
 
-    def write_calculix_input_file(self):
-        print 'writeCalculixInputFile'
-
-        #dirName = self.form.lineEdit_outputDir.text()
-        dirName = self.TempDir
-        print 'CalculiX run directory: ', dirName
-
-        self.Basename = self.TempDir + '/' + self.MeshObject.Name
-        filename = self.Basename + '.inp'
-
-        self.femConsoleMessage(self.Basename)
-        self.femConsoleMessage("Write mesh...")
-
-        # write mesh
-        self.MeshObject.FemMesh.writeABAQUS(filename)
-
-        # reopen file with "append" and add the analysis definition
-        inpfile = open(filename, 'a')
-        inpfile.write('\n\n')
-
-        self.femConsoleMessage("Write loads & Co...")
-
-        # write material element sets
-        inpfile.write('\n\n***********************************************************\n')
-        inpfile.write('** element sets for materials\n')
-        for MaterialObject in self.MaterialObjects:
-            print MaterialObject['Object'].Name, ':  ', MaterialObject['Object'].Material['Name']
-            inpfile.write('*ELSET,ELSET=' + MaterialObject['Object'].Name + '\n')
-            if len(self.MaterialObjects) == 1:
-                inpfile.write('Eall\n')
-            else:
-                if MaterialObject['Object'].Name == 'MechanicalMaterial':
-                    inpfile.write('Eall\n')
-            inpfile.write('\n\n')
-
-        # write fixed node sets
-        inpfile.write('\n\n***********************************************************\n')
-        inpfile.write('** node set for fixed constraint\n')
-        for FixedObject in self.FixedObjects:
-            print FixedObject['Object'].Name
-            inpfile.write('*NSET,NSET=' + FixedObject['Object'].Name + '\n')
-            for o, f in FixedObject['Object'].References:
-                fo = o.Shape.getElement(f)
-                n = []
-                if fo.ShapeType == 'Face':
-                    print '  Face Support (fixed face) on: ', f
-                    n = self.MeshObject.FemMesh.getNodesByFace(fo)
-                elif fo.ShapeType == 'Edge':
-                    print '  Line Support (fixed edge) on: ', f
-                    n = self.MeshObject.FemMesh.getNodesByEdge(fo)
-                elif fo.ShapeType == 'Vertex':
-                    print '  Point Support (fixed vertex) on: ', f
-                    n = self.MeshObject.FemMesh.getNodesByVertex(fo)
-                for i in n:
-                    inpfile.write(str(i) + ',\n')
-            inpfile.write('\n\n')
-
-        # write load node sets and calculate node loads
-        inpfile.write('\n\n***********************************************************\n')
-        inpfile.write('** node sets for loads\n')
-        for ForceObject in self.ForceObjects:
-            print ForceObject['Object'].Name
-            inpfile.write('*NSET,NSET=' + ForceObject['Object'].Name + '\n')
-            NbrForceNodes = 0
-            for o, f in ForceObject['Object'].References:
-                fo = o.Shape.getElement(f)
-                n = []
-                if fo.ShapeType == 'Face':
-                    print '  AreaLoad (face load) on: ', f
-                    n = self.MeshObject.FemMesh.getNodesByFace(fo)
-                elif fo.ShapeType == 'Edge':
-                    print '  Line Load (edge load) on: ', f
-                    n = self.MeshObject.FemMesh.getNodesByEdge(fo)
-                elif fo.ShapeType == 'Vertex':
-                    print '  Point Load (vertex load) on: ', f
-                    n = self.MeshObject.FemMesh.getNodesByVertex(fo)
-                for i in n:
-                    inpfile.write(str(i) + ',\n')
-                    NbrForceNodes = NbrForceNodes + 1   # NodeSum of mesh-nodes of ALL reference shapes from ForceObject
-            # calculate node load
-            if NbrForceNodes == 0:
-                print '  Warning --> no FEM-Mesh-node to apply the load to was found?'
-            else:
-                ForceObject['NodeLoad'] = (ForceObject['Object'].Force) / NbrForceNodes
-                inpfile.write('** concentrated load [N] distributed on all mesh nodes of the given shapes\n')
-                inpfile.write('** ' + str(ForceObject['Object'].Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(ForceObject['NodeLoad']) + ' N on each node\n')
-            if ForceObject['Object'].Force == 0:
-                print '  Warning --> Force = 0'
-            inpfile.write('\n\n')
-
-        # write materials
-        inpfile.write('\n\n***********************************************************\n')
-        inpfile.write('** materials\n')
-        inpfile.write('** youngs modulus unit is MPa = N/mm2\n')
-        for MaterialObject in self.MaterialObjects:
-            # get material properties
-            YM = FreeCAD.Units.Quantity(MaterialObject['Object'].Material['YoungsModulus'])
-            if YM.Unit.Type == '':
-                print 'Material "YoungsModulus" has no Unit, asuming kPa!'
-                YM = FreeCAD.Units.Quantity(YM.Value, FreeCAD.Units.Unit('Pa'))
-            else:
-                print 'YM unit: ', YM.Unit.Type
-            print 'YM = ', YM
-            PR = float(MaterialObject['Object'].Material['PoissonRatio'])
-            print 'PR = ', PR
-            material_name = MaterialObject['Object'].Material['Name'][:80]
-            # write material properties
-            inpfile.write('*MATERIAL, NAME=' + material_name + '\n')
-            inpfile.write('*ELASTIC \n')
-            inpfile.write('{0:.3f}, '.format(YM.Value * 1E-3))
-            inpfile.write('{0:.3f}\n'.format(PR))
-            # write element properties
-            if len(self.MaterialObjects) == 1:
-                inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + material_name + '\n\n')
-            else:
-                if MaterialObject['Object'].Name == 'MechanicalMaterial':
-                    inpfile.write('*SOLID SECTION, ELSET=' + MaterialObject['Object'].Name + ', MATERIAL=' + material_name + '\n\n')
-
-        # write step beginn
-        inpfile.write('\n\n\n\n***********************************************************\n')
-        inpfile.write('** one step is needed to calculate the mechanical analysis of FreeCAD\n')
-        inpfile.write('** loads are applied quasi-static, means without involving the time dimension\n')
-        inpfile.write('*STEP\n')
-        inpfile.write('*STATIC\n\n')
-
-        # write constaints
-        inpfile.write('\n** constaints\n')
-        for FixedObject in self.FixedObjects:
-            inpfile.write('*BOUNDARY\n')
-            inpfile.write(FixedObject['Object'].Name + ',1\n')
-            inpfile.write(FixedObject['Object'].Name + ',2\n')
-            inpfile.write(FixedObject['Object'].Name + ',3\n\n')
-
-        # write loads
-        #inpfile.write('*DLOAD\n')
-        #inpfile.write('Eall,NEWTON\n')
-        inpfile.write('\n** loads\n')
-        inpfile.write('** node loads, see load node sets for how the value is calculated!\n')
-        for ForceObject in self.ForceObjects:
-            if 'NodeLoad' in ForceObject:
-                vec = ForceObject['Object'].DirectionVector
-                inpfile.write('*CLOAD\n')
-                inpfile.write('** force: ' + str(ForceObject['NodeLoad']) + ' N,  direction: ' + str(vec) + '\n')
-                v1 = "{:.15}".format(repr(vec.x * ForceObject['NodeLoad']))
-                v2 = "{:.15}".format(repr(vec.y * ForceObject['NodeLoad']))
-                v3 = "{:.15}".format(repr(vec.z * ForceObject['NodeLoad']))
-                inpfile.write(ForceObject['Object'].Name + ',1,' + v1 + '\n')
-                inpfile.write(ForceObject['Object'].Name + ',2,' + v2 + '\n')
-                inpfile.write(ForceObject['Object'].Name + ',3,' + v3 + '\n\n')
-
-        # write outputs, both are needed by FreeCAD
-        inpfile.write('\n** outputs --> frd file\n')
-        inpfile.write('*NODE FILE\n')
-        inpfile.write('U\n')
-        inpfile.write('*EL FILE\n')
-        inpfile.write('S, E\n')
-        inpfile.write('** outputs --> dat file\n')
-        inpfile.write('*NODE PRINT , NSET=Nall \n')
-        inpfile.write('U \n')
-        inpfile.write('*EL PRINT , ELSET=Eall \n')
-        inpfile.write('S \n')
-        inpfile.write('\n\n')
-
-        # write step end
-        inpfile.write('*END STEP \n')
-
-        # write some informations
-        FcVersionInfo = FreeCAD.Version()
-        inpfile.write('\n\n\n\n***********************************************************\n')
-        inpfile.write('**\n')
-        inpfile.write('**   CalculiX Inputfile\n')
-        inpfile.write('**\n')
-        inpfile.write('**   written by    --> FreeCAD ' + FcVersionInfo[0] + '.' + FcVersionInfo[1] + '.' + FcVersionInfo[2] + '\n')
-        inpfile.write('**   written on    --> ' + time.ctime() + '\n')
-        inpfile.write('**   file name     --> ' + os.path.basename(FreeCAD.ActiveDocument.FileName) + '\n')
-        inpfile.write('**   analysis name --> ' + FemGui.getActiveAnalysis().Name + '\n')
-        inpfile.write('**\n')
-        inpfile.write('**\n')
-        inpfile.write('**   Units\n')
-        inpfile.write('**\n')
-        inpfile.write('**   Geometry (mesh data)        --> mm\n')
-        inpfile.write("**   Materials (young's modulus) --> N/mm2 = MPa\n")
-        inpfile.write('**   Loads (nodal loads)         --> N\n')
-        inpfile.write('**\n')
-        inpfile.write('**\n')
-
-        inpfile.close()
-        self.femConsoleMessage("Write completed.")
-
     def start_ext_editor(self, ext_editor_path, filename):
         if not hasattr(self, "ext_editor_process"):
             self.ext_editor_process = QtCore.QProcess()
@@ -628,7 +445,7 @@ class _JobControlTaskPanel:
             self.ext_editor_process.start(ext_editor_path, [filename])
 
     def editCalculixInputFile(self):
-        filename = self.Basename + '.inp'
+        filename = self.base_name + '.inp'
         print 'editCalculixInputFile {}'.format(filename)
         if self.fem_prefs.GetBool("UseInternalEditor", True):
             FemGui.open(filename)
@@ -648,11 +465,11 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("Run Calculix...")
 
         # run Calculix
-        print 'run Calculix at: ', self.CalculixBinary, '  with: ', self.Basename
+        print 'run Calculix at: ', self.CalculixBinary, '  with: ', self.base_name
         # change cwd because ccx may crash if directory has no write permission
         # there is also a limit of the length of file names so jump to the document directory
         self.cwd = QtCore.QDir.currentPath()
-        fi = QtCore.QFileInfo(self.Basename)
+        fi = QtCore.QFileInfo(self.base_name)
         QtCore.QDir.setCurrent(fi.path())
         self.Calculix.start(self.CalculixBinary, ['-i', fi.baseName()])
 
