@@ -20,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import CalculixLib
+import ccxFrdReader
 import FreeCAD
 import os
 import sys
@@ -341,7 +341,7 @@ class _JobControlTaskPanel:
 
         if os.path.isfile(self.base_name + '.frd'):
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            CalculixLib.importFrd(self.base_name + '.frd', FemGui.getActiveAnalysis())
+            ccxFrdReader.importFrd(self.base_name + '.frd', FemGui.getActiveAnalysis())
             QApplication.restoreOverrideCursor()
             self.femConsoleMessage("Loading results done!", "#00AA00")
         else:
