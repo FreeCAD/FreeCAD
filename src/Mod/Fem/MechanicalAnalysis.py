@@ -84,6 +84,32 @@ class _CommandNewMechanicalAnalysis:
         return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is None
 
 
+
+class _CommandFemFromShape:
+    def GetResources(self):
+        return {'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_CreateFromShape", "Create FEM mesh from shape")}
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh")
+        FreeCADGui.addModule("FemGui")
+        FreeCADGui.addModule("MechanicalAnalysis")
+        sel = FreeCADGui.Selection.getSelection()
+        if (len(sel) == 1):
+            if(sel[0].isDerivedFrom("Part::Feature")):
+                FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
+                FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
+                FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
+
+        FreeCADGui.Selection.clearSelection()
+
+    def IsActive(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if len(sel) == 1:
+            return sel[0].isDerivedFrom("Part::Feature")
+        return False
+
+
 class _CommandMechanicalJobControl:
     "the Fem JobControl command definition"
     def GetResources(self):
@@ -753,5 +779,6 @@ class _ResultControlTaskPanel:
         FreeCADGui.Control.closeDialog()
 
 FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
+FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
 FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
 FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())
