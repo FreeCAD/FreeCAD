@@ -317,7 +317,7 @@ class _JobControlTaskPanel:
 
     def calculixStateChanged(self, newState):
         if (newState == QtCore.QProcess.ProcessState.Starting):
-                self.femConsoleMessage("Staring CalculiX...")
+                self.femConsoleMessage("Starting CalculiX...")
         if (newState == QtCore.QProcess.ProcessState.Running):
                 self.femConsoleMessage("CalculiX is running...")
         if (newState == QtCore.QProcess.ProcessState.NotRunning):
