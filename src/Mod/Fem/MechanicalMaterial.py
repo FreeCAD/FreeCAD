@@ -222,7 +222,10 @@ class _MechanicalMaterialTaskPanel:
 
     def set_mat_params_in_combo_box(self, matmap):
         if 'YoungsModulus' in matmap:
-            self.form.input_fd_young_modulus.setText(matmap['YoungsModulus'])
+            ym_new_unit = "MPa"
+            ym = FreeCAD.Units.Quantity(matmap['YoungsModulus'])
+            ym_with_new_unit = ym.getValueAs(ym_new_unit)
+            self.form.input_fd_young_modulus.setText("{} {}".format(ym_with_new_unit, ym_new_unit))
         if 'PoissonRatio' in matmap:
             self.form.spinBox_poisson_ratio.setValue(float(matmap['PoissonRatio']))
 
