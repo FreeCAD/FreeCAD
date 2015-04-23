@@ -158,14 +158,6 @@ class _MechanicalMaterialTaskPanel:
         self.print_mat_data(self.previous_material)
         FreeCADGui.ActiveDocument.resetEdit()
 
-# Function not yet used
-#    def saveMat(self):
-#        self.transferTo()
-#        filename = QtGui.QFileDialog.getSaveFileName(None, 'Save Material file file',self.params.GetString("MaterialDir",'/'),'FreeCAD material file (*.FCMat)')
-#        if(filename):
-#            import Material
-#            Material.exportFCMat(filename,self.obj.Material)
-
     def goMatWeb(self):
         import webbrowser
         webbrowser.open("http://matweb.com")
