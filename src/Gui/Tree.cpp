@@ -390,6 +390,9 @@ QMimeData * TreeWidget::mimeData (const QList<QTreeWidgetItem *> items) const
                 if (!vp->canDragObjects()) {
                     return 0;
                 }
+                else if (!vp->canDragObject(obj)) {
+                    return 0;
+                }
             }
         }
     }
@@ -476,6 +479,12 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent *event)
 
             // if the item is already a child of the target item there is nothing to do
             if (children.contains(item)) {
+                event->ignore();
+                return;
+            }
+
+            // let the view provider decide to accept the object or ignore it
+            if (!vp->canDropObject(obj)) {
                 event->ignore();
                 return;
             }
