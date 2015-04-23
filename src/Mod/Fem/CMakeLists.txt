@@ -12,7 +12,6 @@ INSTALL(
         convert2TetGen.py
         CalculixLib.py
         FemExample.py
-        FemLib.py
         MechanicalAnalysis.py
         MechanicalMaterial.py
         MechanicalMaterial.ui
