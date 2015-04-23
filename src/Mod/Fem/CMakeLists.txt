@@ -10,7 +10,7 @@ INSTALL(
         Init.py
         InitGui.py
         convert2TetGen.py
-        CalculixLib.py
+        ccxFrdReader.py
         ccxInpWriter.py
         FemExample.py
         MechanicalAnalysis.py
