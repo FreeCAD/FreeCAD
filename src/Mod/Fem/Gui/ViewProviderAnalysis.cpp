@@ -25,7 +25,6 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
-
 #endif
 
 #include "ViewProviderAnalysis.h"
@@ -35,6 +34,9 @@
 
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemMeshObject.h>
+#include <Mod/Fem/App/FemSetObject.h>
+#include <Mod/Fem/App/FemConstraint.h>
+#include <App/MaterialObject.h>
 
 #include "TaskDlgAnalysis.h"
 
@@ -52,7 +54,6 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemAnalysis, Gui::ViewProviderDocumentObject
 ViewProviderFemAnalysis::ViewProviderFemAnalysis()
 {
     sPixmap = "Fem_Analysis";
-
 }
 
 ViewProviderFemAnalysis::~ViewProviderFemAnalysis()
@@ -165,6 +166,22 @@ bool ViewProviderFemAnalysis::canDragObjects() const
     return true;
 }
 
+bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
+{
+    if (!obj)
+        return false;
+    if (obj->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Fem::Constraint::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Fem::FemSetObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(App::MaterialObject::getClassTypeId()))
+        return true;
+    else
+        return false;
+}
+
 void ViewProviderFemAnalysis::dragObject(App::DocumentObject* obj)
 {
     Fem::FemAnalysis* analyze = static_cast<Fem::FemAnalysis*>(getObject());
@@ -183,10 +200,13 @@ bool ViewProviderFemAnalysis::canDropObjects() const
     return true;
 }
 
+bool ViewProviderFemAnalysis::canDropObject(App::DocumentObject* obj) const
+{
+    return canDragObject(obj);
+}
+
 void ViewProviderFemAnalysis::dropObject(App::DocumentObject* obj)
 {
-    if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
-        return;
     Fem::FemAnalysis* analyze = static_cast<Fem::FemAnalysis*>(getObject());
     std::vector<App::DocumentObject*> fem = analyze->Member.getValues();
     fem.push_back(obj);
