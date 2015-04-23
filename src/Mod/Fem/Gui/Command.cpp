@@ -40,6 +40,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
+#include <Gui/SelectionFilter.h>
 #include <Gui/Document.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/View3DInventor.h>
@@ -57,8 +58,6 @@
 #include <Mod/Fem/App/FemConstraint.h>
 #include <Mod/Fem/App/FemAnalysis.h>
 
-
-#include "Hypothesis.h"
 #include "ActiveAnalysisObserver.h"
 
 using namespace std;
@@ -142,10 +141,8 @@ bool CmdFemCreateAnalysis::isActive(void)
     return !FemGui::ActiveAnalysisObserver::instance()->hasActiveObject();
 }
 
-
-
-
 //=====================================================================================
+
 DEF_STD_CMD_A(CmdFemAddPart);
 
 CmdFemAddPart::CmdFemAddPart()
@@ -206,7 +203,6 @@ bool CmdFemAddPart::isActive(void)
     Base::Type type = Base::Type::fromName("Part::Feature");
     return Gui::Selection().countObjectsOfType(type) > 0;
 }
-
 
 //=====================================================================================
 

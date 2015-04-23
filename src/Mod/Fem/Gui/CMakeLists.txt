@@ -42,7 +42,6 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 set(FemGui_MOC_HDRS
     DlgSettingsFemImp.h
-    Hypothesis.h
     TaskObjectName.h
     TaskCreateNodeSet.h
     TaskDlgCreateNodeSet.h
@@ -63,7 +62,6 @@ SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 
 set(FemGui_UIC_SRCS
     DlgSettingsFem.ui
-    Hypothesis.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
     TaskFemConstraint.ui
@@ -81,9 +79,6 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFem.ui
     DlgSettingsFemImp.cpp
     DlgSettingsFemImp.h
-    Hypothesis.ui
-    Hypothesis.cpp
-    Hypothesis.h
     TaskFemConstraint.ui
     TaskFemConstraint.cpp
     TaskFemConstraint.h
