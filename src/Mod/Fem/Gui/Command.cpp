@@ -591,7 +591,7 @@ void CmdFemCreateNodesSet::activated(int iMsg)
 
 bool CmdFemCreateNodesSet::isActive(void)
 {
-    return true;
+    return hasActiveDocument();
 }
 
 //--------------------------------------------------------------------------------------
