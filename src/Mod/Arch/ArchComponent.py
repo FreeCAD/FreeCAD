@@ -306,7 +306,8 @@ class Component:
         obj.Role = Roles
 
     def execute(self,obj):
-        return
+        if obj.Base:
+            obj.Shape = obj.Base.Shape
 
     def __getstate__(self):
         return self.Type
@@ -378,7 +379,13 @@ class Component:
         wires = []
         n,l,w,h = self.getDefaultValues(obj)
         if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
+            if obj.Base.isDerivedFrom("Part::Extrusion"):
+                if obj.Base.Base:
+                    base = obj.Base.Base.Shape.copy()
+                    if noplacement:
+                        base.Placement = FreeCAD.Placement()
+                    return [base]
+            elif obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape:
                     base = obj.Base.Shape.copy()
                     if noplacement:
@@ -469,6 +476,9 @@ class Component:
     def getExtrusionVector(self,obj,noplacement=False):
         "Returns an extrusion vector of this component, if applicable"
         n,l,w,h = self.getDefaultValues(obj)
+        if obj.Base:
+            if obj.Base.isDerivedFrom("Part::Extrusion"):
+                return obj.Base.Dir
         if Draft.getType(obj) == "Structure":
             if l > h:
                 v = n.multiply(l)
