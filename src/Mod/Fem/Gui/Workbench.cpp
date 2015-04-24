@@ -56,6 +56,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
     fem->setCommand("FEM");
     *fem << "Fem_NewMechanicalAnalysis"
+         << "Fem_CreateFromShape"
          << "Fem_MechanicalMaterial"
          << "Separator"
          << "Fem_CreateNodesSet"
