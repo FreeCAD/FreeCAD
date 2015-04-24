@@ -118,7 +118,7 @@ class inp_writer:
                 if material_object['Object'].Name == 'MechanicalMaterial':
                     inpfile.write('*SOLID SECTION, ELSET=' + material_object['Object'].Name + ', MATERIAL=' + material_name + '\n\n')
 
-        # write step beginn
+        # write step begin
         inpfile.write('\n\n\n\n***********************************************************\n')
         inpfile.write('** one step is needed to calculate the mechanical analysis of FreeCAD\n')
         inpfile.write('** loads are applied quasi-static, means without involving the time dimension\n')
@@ -134,8 +134,6 @@ class inp_writer:
             inpfile.write(fixed_object['Object'].Name + ',3\n\n')
 
         # write loads
-        #inpfile.write('*DLOAD\n')
-        #inpfile.write('Eall,NEWTON\n')
         inpfile.write('\n** loads\n')
         inpfile.write('** node loads, see load node sets for how the value is calculated!\n')
         for force_object in self.force_objects:
