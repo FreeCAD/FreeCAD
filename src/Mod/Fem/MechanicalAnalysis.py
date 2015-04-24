@@ -304,7 +304,6 @@ class _JobControlTaskPanel:
 
     def UpdateText(self):
         if(self.Calculix.state() == QtCore.QProcess.ProcessState.Running):
-            self.printCalculiXstdout()
             self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
     def calculixError(self, error):
