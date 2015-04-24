@@ -208,6 +208,10 @@ def makeComponent(baseobj=None,name="Component",delete=False):
             obj.Placement = baseobj.Placement
             if delete:
                 FreeCAD.ActiveDocument.removeObject(baseobj.Name)
+            else:
+                obj.Base = baseobj
+                if FreeCAD.GuiUp:
+                    baseobj.ViewObject.hide()
         elif isinstance(baseobj,Part.Shape):
             obj.Shape = baseobj
     return obj
@@ -897,7 +901,45 @@ def rebuildArchShape(objects=None):
             print "Failed"
     FreeCAD.ActiveDocument.recompute()
 
+
+def getExtrusionData(shape):
+    """getExtrusionData(shape): returns a base face and an extrusion vector
+    if this shape can be described as a perpendicular extrusion, or None if not."""
+    if shape.isNull():
+        return None
+    if not shape.Solids:
+        return None
+    if len(shape.Faces) < 5:
+        return None
+    # build faces list with normals
+    faces = []
+    for f in shape.Faces:
+        faces.append([f,f.normalAt(0,0)])
+    # find opposite normals pairs
+    pairs = []
+    for i1, f1 in enumerate(faces):
+        for i2, f2 in enumerate(faces):
+            if f1[0].hashCode() != f2[0].hashCode():
+                if round(f1[1].getAngle(f2[1]),8) == 3.14159265:
+                    pairs.append([i1,i2])
+    if not pairs:
+        return None
+    for p in pairs:
+        hc = [faces[p[0]][0].hashCode(),faces[p[1]][0].hashCode()]
+        ok = True
+        # check if other normals are all at 90 degrees
+        for f in faces:
+            if f[0].hashCode() not in hc:
+                if round(f[1].getAngle(faces[p[0]][1]),8) != 1.57079633:
+                    ok = False
+        if ok:
+            return [faces[p[0]][0],faces[p[1]][0].CenterOfMass.sub(faces[p[0]][0].CenterOfMass)]
+    return None
+
+
 # command definitions ###############################################
+
+
 class _CommandAdd:
     "the Arch Add command definition"
     def GetResources(self):
@@ -1053,6 +1095,7 @@ class _CommandSelectNonSolidMeshes:
             for o in sel:
                 FreeCADGui.Selection.addSelection(o)
 
+
 class _CommandRemoveShape:
     "the Arch RemoveShape command definition"
     def GetResources(self):
@@ -1066,6 +1109,7 @@ class _CommandRemoveShape:
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
         removeShape(sel)
+
 
 class _CommandCloseHoles:
     "the Arch CloseHoles command definition"
@@ -1082,6 +1126,7 @@ class _CommandCloseHoles:
             s = closeHole(o.Shape)
             if s:
                 o.Shape = s
+
 
 class _CommandCheck:
     "the Arch Check command definition"
@@ -1146,8 +1191,8 @@ class _ToggleIfcBrepFlag:
     def Activated(self):
         for o in FreeCADGui.Selection.getSelection():
             toggleIfcBrepFlag(o)
-            
-            
+
+
 class _CommandComponent:
     "the Arch Component command definition"
     def GetResources(self):

@@ -138,6 +138,26 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_2">
+          <property name="toolTip">
+           <string>If this is checked, the importer will try to detect extrusions. This might slow things down...</string>
+          </property>
+          <property name="text">
+           <string>Detect extrusions</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcGetExtrusions</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
