@@ -192,8 +192,8 @@ class _MechanicalMaterialTaskPanel:
         self.print_mat_data(self.obj.Material)
 
     def get_material_name(self, material):
-        if 'General_name' in self.previous_material:
-            return self.previous_material['General_name']
+        if 'Name' in self.previous_material:
+            return self.previous_material['Name']
         else:
             return 'None'
 
