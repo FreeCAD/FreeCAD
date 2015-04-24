@@ -186,8 +186,8 @@ class _MechanicalMaterialTaskPanel:
         self.form.cb_materials.setCurrentIndex(index)
         self.set_mat_params_in_combo_box(self.obj.Material)
         gen_mat_desc = ""
-        if 'General_description' in self.obj.Material:
-            gen_mat_desc = self.obj.Material['General_description']
+        if 'Description' in self.obj.Material:
+            gen_mat_desc = self.obj.Material['Description']
         self.form.l_mat_description.setText(gen_mat_desc)
         self.print_mat_data(self.obj.Material)
 
