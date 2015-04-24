@@ -270,11 +270,13 @@ def insert(filename,docname,skip=[],only=[],root=None):
     SKIP = p.GetString("ifcSkip","").split(",")
     SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
     ROOT_ELEMENT = p.GetString("ifcRootElement","IfcProduct")
+    GET_EXTRUSIONS = p.GetBool("ifcGetExtrusions",False)
     if root:
         ROOT_ELEMENT = root
     MERGE_MODE = p.GetInt("ifcImportMode",0)
     if MERGE_MODE > 0:
         SEPARATE_OPENINGS = False
+        GET_EXTRUSIONS = False
     if not SEPARATE_OPENINGS:
         SKIP.append("IfcOpeningElement")
     
@@ -418,13 +420,25 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         if DEBUG: print shape.Solids
                         baseobj = shape
                 else:
-                    baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
-                    baseobj.Shape = shape
+                    if GET_EXTRUSIONS:
+                        ex = Arch.getExtrusionData(shape)
+                        if ex:
+                            print "extrusion ",
+                            baseface = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_footprint")
+                            baseface.Shape = ex[0]
+                            baseobj = FreeCAD.ActiveDocument.addObject("Part::Extrusion",name+"_body")
+                            baseobj.Base = baseface
+                            baseobj.Dir = ex[1]
+                            if FreeCAD.GuiUp:
+                                baseface.ViewObject.hide()
+                    if not baseobj:        
+                        baseobj = FreeCAD.ActiveDocument.addObject("Part::Feature",name+"_body")
+                        baseobj.Shape = shape
             else:
                 if DEBUG: print  "null shape ",
             if not shape.isValid():
-                if DEBUG: print "invalid shape. Skipping"
-                continue
+                if DEBUG: print "invalid shape ",
+                #continue
                 
         else:
             if DEBUG: print " no brep ",
@@ -436,6 +450,8 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 if ptype in ifctypes:
                     obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                     obj.Label = name
+                    if FreeCAD.GuiUp and baseobj:
+                        baseobj.ViewObject.hide()
                     # setting role
                     try:
                         r = ptype[3:]
@@ -455,7 +471,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         obj.IfcAttributes = a
                     break
             if not obj:
-                obj = Arch.makeComponent(baseobj,name=name,delete=True)
+                obj = Arch.makeComponent(baseobj,name=name)
             if obj:
                 sols = str(obj.Shape.Solids) if hasattr(obj,"Shape") else "[]"
                 if DEBUG: print sols
@@ -469,7 +485,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if ptype in ifctypes:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=None,name=name)
             elif baseobj:
-                obj = Arch.makeComponent(baseobj,name=name)
+                obj = Arch.makeComponent(baseobj,name=name,delete=True)
                 
         elif MERGE_MODE == 2:
             
@@ -545,7 +561,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
         if SEPARATE_OPENINGS:
             for subtraction in subtractions:
                 if (subtraction[0] in objects.keys()) and (subtraction[1] in objects.keys()):
-                    if DEBUG: print "subtracting ",objects[subtraction[0]].Name, " from ", objects[subtraction[1]].Name
+                    if DEBUG: print "subtracting ",objects[subtraction[0]].Label, " from ", objects[subtraction[1]].Label
                     Arch.removeComponents(objects[subtraction[0]],objects[subtraction[1]])
                     if DEBUG: FreeCAD.ActiveDocument.recompute()
                     
@@ -558,14 +574,12 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         # avoid huge fusions
                         print "more than 10 shapes to add: skipping."
                     else:
-                        if DEBUG: print "adding ",cobs, " to ", objects[host].Name
+                        if DEBUG: print "adding ",len(cobs), " object(s) to ", objects[host].Label
                         Arch.addComponents(cobs,objects[host])
                         if DEBUG: FreeCAD.ActiveDocument.recompute()
                     
         FreeCAD.ActiveDocument.recompute()
         
-        if DEBUG: print "Cleaning..."
-            
         # cleaning bad shapes
         for obj in objects.values():
             if obj.isDerivedFrom("Part::Feature"):
