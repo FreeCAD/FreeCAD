@@ -279,6 +279,7 @@ class _JobControlTaskPanel:
         self.fem_console_message = self.fem_console_message + '<font color="#0000FF">{0:4.1f}:</font> <font color="{1}">{2}</font><br>'.\
             format(time.time() - self.Start, color, message.encode('utf-8', 'replace'))
         self.form.textEdit_Output.setText(self.fem_console_message)
+        self.form.textEdit_Output.moveCursor(QtGui.QTextCursor.End)
 
     def printCalculiXstdout(self):
         #There is probably no need to show user output from CalculiX. It should be
