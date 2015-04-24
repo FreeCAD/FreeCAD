@@ -297,6 +297,7 @@ class _JobControlTaskPanel:
                     match = rx.cap(0)
                     FreeCAD.Console.PrintError(match.strip().replace('\n', ' ') + '\n')
                     pos = rx.indexIn(out, pos + 1)
+                out = os.linesep.join([s for s in out.splitlines() if s])
                 self.femConsoleMessage(out.replace('\n', '<br>'))
             except UnicodeDecodeError:
                 self.femConsoleMessage("Error converting stdout from CalculiX", "#FF0000")
