@@ -42,13 +42,18 @@ class BaseExport Matrix4D
   typedef float_traits<double> traits_type;
 
 public:
-  /// default constructor
+  /// Default constructor
+  /*!
+   * Initialises to an identity matrix
+   */
   Matrix4D(void);
+
   /// Construction
   Matrix4D (float a11, float a12, float a13, float a14, 
             float a21, float a22, float a23, float a24,
             float a31, float a32, float a33, float a34,
             float a41, float a42, float a43, float a44 );
+  /// Construction
   Matrix4D (double a11, double a12, double a13, double a14, 
             double a21, double a22, double a23, double a24,
             double a31, double a32, double a33, double a34,
@@ -123,17 +128,19 @@ public:
   /// scale for the x,y,z value
   void scale        (const Vector3f& rclVct);
   void scale        (const Vector3d& rclVct);
-  /// rotate around the X axis for the given value
+  /// Rotate around the X axis (in transformed space) for the given value in radians
   void rotX         (double fAngle);
-  /// rotate around the Y axis for the given value
+  /// Rotate around the Y axis (in transformed space) for the given value in radians
   void rotY         (double fAngle);
-  /// rotate around the Z axis for the given value
+  /// Rotate around the Z axis (in transformed space) for the given value in radians
   void rotZ         (double fAngle);
-  /// Rotation around an arbitrary axis passing the origin.
+  /// Rotate around an arbitrary axis passing the origin in radians
   void rotLine      (const Vector3f& rclVct, float fAngle);
+  /// Rotate around an arbitrary axis passing the origin in radians
   void rotLine      (const Vector3d& rclVct, double fAngle);
-  /// Rotation around an arbitrary axis that needn't necessarily pass the origin.
+  /// Rotate around an arbitrary axis that needn't necessarily pass the origin in radians
   void rotLine      (const Vector3f& rclBase, const Vector3f& rclDir, float fAngle);
+  /// Rotate around an arbitrary axis that needn't necessarily pass the origin in radians
   void rotLine      (const Vector3d& rclBase, const Vector3d& rclDir, double fAngle);
   /// Extract the rotation axis and angle. Therefore the 3x3 submatrix must be orthogonal.
   bool toAxisAngle (Vector3f& rclBase, Vector3f& rclDir, float& fAngle, float& fTranslation) const;
