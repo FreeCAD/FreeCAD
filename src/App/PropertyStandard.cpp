@@ -265,9 +265,13 @@ TYPESYSTEM_SOURCE(App::PropertyEnumeration, App::PropertyInteger);
 
 
 PropertyEnumeration::PropertyEnumeration()
-  : _CustomEnum(false), _EnumArray(0)
 {
 
+}
+
+PropertyEnumeration::PropertyEnumeration(const App::Enumeration &e)
+{
+    _enum = e;
 }
 
 PropertyEnumeration::~PropertyEnumeration()
@@ -275,148 +279,68 @@ PropertyEnumeration::~PropertyEnumeration()
 
 }
 
-void PropertyEnumeration::setEnums(const char** plEnums)
+void PropertyEnumeration::setEnums(const char **plEnums)
 {
-    _EnumArray = plEnums;
-# ifdef FC_DEBUG
-    if (_EnumArray) {
-        // check for NULL termination
-        const char* p = *_EnumArray;
-        unsigned int i=0;
-        while(*(p++) != 0)i++;
-            // very unlikely to have enums with more then 5000 entries!
-            assert(i<5000);
-    }
-# endif
+    _enum.setEnums(plEnums);
 }
 
-void PropertyEnumeration::setValue(const char* value)
+void PropertyEnumeration::setValue(const char *value)
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-
-    // set zero if there is no enum array
-    if(!_EnumArray){
-        PropertyInteger::setValue(0);
-        return;
-    }
-
-    unsigned int i=0;
-    const char** plEnums = _EnumArray;
-
-    // search for the right entry
-    while(1){
-        // end of list? set zero
-        if(*plEnums==NULL){
-            PropertyInteger::setValue(0);
-            break;
-        }
-        if(strcmp(*plEnums,value)==0){
-            PropertyInteger::setValue(i);
-            break;
-        }
-        plEnums++;
-        i++;
-    }
+    _enum.setValue(value);
 }
 
 void PropertyEnumeration::setValue(long value)
 {
-# ifdef FC_DEBUG
-    assert(value>=0 && value<5000);
-    if(_EnumArray){
-        const char** plEnums = _EnumArray;
-        long i=0;
-        while(*(plEnums++) != NULL)i++;
-        // very unlikely to have enums with more then 5000 entries!
-        // Note: Do NOT call assert() because this code might be executed from Python console!
-        if ( value < 0 || i <= value )
-            throw Base::Exception("Out of range");
-    }
-# endif
-    PropertyInteger::setValue(value);
+    _enum.setValue(value);
 }
 
-/// checks if the property is set to a certain string value
-bool PropertyEnumeration::isValue(const char* value) const
+void PropertyEnumeration::setValue(const Enumeration &source)
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-    return strcmp(_EnumArray[getValue()],value)==0;
+    _enum = source;
 }
 
-/// checks if a string is included in the enumeration
-bool PropertyEnumeration::isPartOf(const char* value) const
+long PropertyEnumeration::getValue(void) const
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-
-    const char** plEnums = _EnumArray;
-
-    // search for the right entry
-    while(1){
-        // end of list?
-        if(*plEnums==NULL) 
-            return false;
-        if(strcmp(*plEnums,value)==0) 
-            return true;
-        plEnums++;
-    }
+    return _enum.getInt();
 }
 
-/// get the value as string
-const char* PropertyEnumeration::getValueAsString(void) const
+bool PropertyEnumeration::isValue(const char *value) const
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-    return _EnumArray[getValue()];
+    return _enum.isValue(value);
+}
+
+bool PropertyEnumeration::isPartOf(const char *value) const
+{
+    return _enum.contains(value);
+}
+
+const char * PropertyEnumeration::getValueAsString(void) const
+{
+    return _enum.getCStr();
+}
+
+Enumeration PropertyEnumeration::getEnum(void) const
+{
+    return _enum;
 }
 
 std::vector<std::string> PropertyEnumeration::getEnumVector(void) const
 {
-    // using string methods without set, use setEnums(const char** plEnums) first!
-    assert(_EnumArray);
-
-    std::vector<std::string> result;
-    const char** plEnums = _EnumArray;
-
-    // end of list?
-    while(*plEnums!=NULL){ 
-        result.push_back(*plEnums);
-        plEnums++;
-    }
-
-    return result;
+    return _enum.getEnumVector();
 }
 
-void PropertyEnumeration::setEnumVector(const std::vector<std::string>& values)
+const char ** PropertyEnumeration::getEnums(void) const
 {
-    delete [] _EnumArray;
-    _EnumArray = new const char*[values.size()+1];
-    int i=0;
-    for (std::vector<std::string>::const_iterator it = values.begin(); it != values.end(); ++it) {
-#if defined (_MSC_VER)
-        _EnumArray[i++] = _strdup(it->c_str());
-#else
-        _EnumArray[i++] = strdup(it->c_str());
-#endif
-    }
-
-    _EnumArray[i] = 0; // null termination
-}
-
-const char** PropertyEnumeration::getEnums(void) const
-{
-    return _EnumArray;
+    return _enum.getEnums();
 }
 
 void PropertyEnumeration::Save(Base::Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Integer value=\"" <<  _lValue <<"\"";
-    if (_CustomEnum)
+    writer.Stream() << writer.ind() << "<Integer value=\"" <<  _enum.getInt() <<"\"";
+    if (_enum.isCustom())
         writer.Stream() << " CustomEnum=\"true\"";
     writer.Stream() << "/>" << std::endl;
-    if (_CustomEnum) {
+    if (_enum.isCustom()) {
         std::vector<std::string> items = getEnumVector();
         writer.Stream() << writer.ind() << "<CustomEnumList count=\"" <<  items.size() <<"\">" << endl;
         writer.incInd();
@@ -440,6 +364,7 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
         reader.readElement("CustomEnumList");
         int count = reader.getAttributeAsInteger("count");
         std::vector<std::string> values(count);
+
         for(int i = 0; i < count; i++) {
             reader.readElement("Enum");
             values[i] = reader.getAttribute("value");
@@ -447,16 +372,15 @@ void PropertyEnumeration::Restore(Base::XMLReader &reader)
 
         reader.readEndElement("CustomEnumList");
 
-        _CustomEnum = true;
-        setEnumVector(values);
+        _enum.setEnums(values);
     }
 
     setValue(val);
 }
 
-PyObject *PropertyEnumeration::getPyObject(void)
+PyObject * PropertyEnumeration::getPyObject(void)
 {
-    if (!_EnumArray) {
+    if (!_enum.isValid()) {
         PyErr_SetString(PyExc_AssertionError, "The enum is empty");
         return 0;
     }
@@ -468,19 +392,14 @@ void PropertyEnumeration::setPyObject(PyObject *value)
 { 
     if (PyInt_Check(value)) {
         long val = PyInt_AsLong(value);
-        if (_EnumArray) {
-            const char** plEnums = _EnumArray;
-            long i=0;
-            while(*(plEnums++) != NULL)i++;
-            if (val < 0 || i <= val)
-                throw Base::ValueError("Out of range");
-            PropertyInteger::setValue(val);
+        if (_enum.isValid()) {
+            _enum.setValue(val, true);
         }
     }
     else if (PyString_Check(value)) {
         const char* str = PyString_AsString (value);
-        if (_EnumArray && isPartOf(str)) {
-            setValue(PyString_AsString (value));
+        if (_enum.contains(str)) {
+            _enum.setValue(PyString_AsString (value));
         }
         else {
             std::stringstream out;
@@ -493,47 +412,38 @@ void PropertyEnumeration::setPyObject(PyObject *value)
         std::vector<std::string> values;
         values.resize(nSize);
 
-        for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PyList_GetItem(value, i);
-            if (!PyString_Check(item)) {
+        for (Py_ssize_t i = 0; i < nSize; ++i) {
+            PyObject *item = PyList_GetItem(value, i);
+
+            if ( !PyString_Check(item) ) {
                 std::string error = std::string("type in list must be str, not ");
-                error += item->ob_type->tp_name;
-                throw Base::TypeError(error);
+                throw Base::TypeError(error + item->ob_type->tp_name);
             }
+
             values[i] = PyString_AsString(item);
         }
 
-        _CustomEnum = true;
-        setEnumVector(values);
+        _enum.setEnums(values);
         setValue((long)0);
     }
     else {
         std::string error = std::string("type must be int or str, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
+        throw Base::TypeError(error + value->ob_type->tp_name);
     }
 }
 
-Property *PropertyEnumeration::Copy(void) const
+Property * PropertyEnumeration::Copy(void) const
 {
-    PropertyEnumeration *p= new PropertyEnumeration();
-    p->_lValue = _lValue;
-    if (_CustomEnum) {
-        p->_CustomEnum = true;
-        p->setEnumVector(getEnumVector());
-    }
-    return p;
+    return new PropertyEnumeration(_enum);
 }
 
 void PropertyEnumeration::Paste(const Property &from)
 {
     aboutToSetValue();
+
     const PropertyEnumeration& prop = dynamic_cast<const PropertyEnumeration&>(from);
-    _lValue = prop._lValue;
-    if (prop._CustomEnum) {
-        this->_CustomEnum = true;
-        this->setEnumVector(prop.getEnumVector());
-    }
+    _enum = prop._enum;
+
     hasSetValue();
 }
 

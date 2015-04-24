@@ -160,8 +160,9 @@ private:
     std::vector<Base::Vector3d> _lValueList;
 };
 
-/** Vector properties
- * This is the father of all properties handling Integers.
+/// Property representing a 4x4 matrix
+/*!
+ * Encapsulates a Base::Matrix4D in a Property
  */
 class AppExport PropertyMatrix: public Property
 {
@@ -170,7 +171,7 @@ class AppExport PropertyMatrix: public Property
 public:
     /**
      * A constructor.
-     * A more elaborate description of the constructor.
+     * Intitialises to an identity matrix
      */
     PropertyMatrix();
 
