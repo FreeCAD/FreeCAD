@@ -388,8 +388,9 @@ class _JobControlTaskPanel:
                 raise
             finally:
                 QApplication.restoreOverrideCursor()
-            self.form.pushButton_edit.setEnabled(True)
-            self.form.pushButton_generate.setEnabled(True)
+            if self.base_name:
+                self.form.pushButton_edit.setEnabled(True)
+                self.form.pushButton_generate.setEnabled(True)
 
     def check_prerequisites(self):
         self.Start = time.time()
