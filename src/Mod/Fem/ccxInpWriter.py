@@ -181,7 +181,7 @@ class inp_writer:
         inpfile.write('**   Units\n')
         inpfile.write('**\n')
         inpfile.write('**   Geometry (mesh data)        --> mm\n')
-        inpfile.write("**   Materials (young's modulus) --> N/mm2 = MPa\n")
+        inpfile.write("**   Materials (Young's modulus) --> N/mm2 = MPa\n")
         inpfile.write('**   Loads (nodal loads)         --> N\n')
         inpfile.write('**\n')
         inpfile.write('**\n')
