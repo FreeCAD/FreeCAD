@@ -286,17 +286,23 @@ void PropertyEnumeration::setEnums(const char **plEnums)
 
 void PropertyEnumeration::setValue(const char *value)
 {
+    aboutToSetValue();
     _enum.setValue(value);
+    hasSetValue();
 }
 
 void PropertyEnumeration::setValue(long value)
 {
+    aboutToSetValue();
     _enum.setValue(value);
+    hasSetValue();
 }
 
 void PropertyEnumeration::setValue(const Enumeration &source)
 {
+    aboutToSetValue();
     _enum = source;
+    hasSetValue();
 }
 
 long PropertyEnumeration::getValue(void) const
@@ -393,13 +399,17 @@ void PropertyEnumeration::setPyObject(PyObject *value)
     if (PyInt_Check(value)) {
         long val = PyInt_AsLong(value);
         if (_enum.isValid()) {
+            aboutToSetValue();
             _enum.setValue(val, true);
+            hasSetValue();
         }
     }
     else if (PyString_Check(value)) {
         const char* str = PyString_AsString (value);
         if (_enum.contains(str)) {
+            aboutToSetValue();
             _enum.setValue(PyString_AsString (value));
+            hasSetValue();
         }
         else {
             std::stringstream out;
