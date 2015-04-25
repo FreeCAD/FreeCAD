@@ -113,8 +113,8 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(L1.ConstraintFloat - 0.0 < 0.001)
 
     # test enum property
+    L1.Enum = "Four"
     self.failUnless(L1.Enum  == "Four")
-    L1.Enum = "One"
     L1.Enum = 2
     self.failUnless(L1.Enum  == "Two",     "Different value to 'Two'")
     try:
