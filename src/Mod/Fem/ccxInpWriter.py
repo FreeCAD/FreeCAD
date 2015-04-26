@@ -97,12 +97,13 @@ class inp_writer:
         for material_object in self.material_objects:
             # get material properties
             YM = FreeCAD.Units.Quantity(material_object['Object'].Material['YoungsModulus'])
+            YM_in_MPa = YM.getValueAs('MPa')
             PR = float(material_object['Object'].Material['PoissonRatio'])
             material_name = material_object['Object'].Material['Name'][:80]
             # write material properties
             inpfile.write('*MATERIAL, NAME=' + material_name + '\n')
             inpfile.write('*ELASTIC \n')
-            inpfile.write('{0:.3f}, '.format(YM.Value * 1E-3))
+            inpfile.write('{}, '.format(YM_in_MPa))
             inpfile.write('{0:.3f}\n'.format(PR))
             # write element properties
             if len(self.material_objects) == 1:
