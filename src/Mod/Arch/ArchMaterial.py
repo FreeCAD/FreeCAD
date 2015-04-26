@@ -120,8 +120,8 @@ class _ArchMaterial:
 
     def execute(self,obj):
         if obj.Material and FreeCAD.GuiUp:
-            if "Color" in obj.Material:
-                c = tuple([float(f) for f in obj.Material['Color'].strip("()").split(",")])
+            if "DiffuseColor" in obj.Material:
+                c = tuple([float(f) for f in obj.Material['DiffuseColor'].strip("()").split(",")])
                 for p in obj.InList:
                     if hasattr(p,"BaseMaterial"):
                         if p.BaseMaterial.Name == obj.Name:
@@ -191,9 +191,9 @@ class _ArchMaterialTaskPanel:
             self.form.FieldName.setText(self.obj.Label)
         if 'Description' in self.material:
             self.form.FieldDescription.setText(self.material['Description'])
-        if 'Color' in self.material:
-            if "(" in self.material['Color']:
-                c = tuple([float(f) for f in self.material['Color'].strip("()").split(",")])
+        if 'DiffuseColor' in self.material:
+            if "(" in self.material['DiffuseColor']:
+                c = tuple([float(f) for f in self.material['DiffuseColor'].strip("()").split(",")])
                 self.color = QtGui.QColor()
                 self.color.setRgbF(c[0],c[1],c[2])
                 colorPix = QtGui.QPixmap(16,16)
@@ -208,7 +208,7 @@ class _ArchMaterialTaskPanel:
         "sets self.material from the contents of the task box"
         self.material['Name'] = self.form.FieldName.text()
         self.material['Description'] = self.form.FieldDescription.text()
-        self.material['Color'] = str(self.color.getRgbF()[:3])
+        self.material['DiffuseColor'] = str(self.color.getRgbF()[:3])
         self.material['StandardCode'] = self.form.FieldCode.text()
         self.material['ProductURL'] = self.form.FieldUrl.text()
 
