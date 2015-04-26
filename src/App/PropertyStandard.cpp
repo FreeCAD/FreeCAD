@@ -281,7 +281,12 @@ PropertyEnumeration::~PropertyEnumeration()
 
 void PropertyEnumeration::setEnums(const char **plEnums)
 {
+    // Setting the enum is done only once inside the constructor
+    // but before the current index is already set. So, this needs
+    // to be preserved.
+    int index = _enum._index;
     _enum.setEnums(plEnums);
+    _enum._index = index;
 }
 
 void PropertyEnumeration::setValue(const char *value)
