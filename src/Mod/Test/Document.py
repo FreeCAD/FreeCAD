@@ -113,8 +113,10 @@ class DocumentBasicCases(unittest.TestCase):
     self.failUnless(L1.ConstraintFloat - 0.0 < 0.001)
 
     # test enum property
-    L1.Enum = "Four"
+    # in App::FeatureTest the current value is set to 4
     self.failUnless(L1.Enum  == "Four")
+    L1.Enum = "Three"
+    self.failUnless(L1.Enum  == "Three",     "Different value to 'Three'")
     L1.Enum = 2
     self.failUnless(L1.Enum  == "Two",     "Different value to 'Two'")
     try:
