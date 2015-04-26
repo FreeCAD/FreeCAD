@@ -21,8 +21,20 @@ class inp_writer:
         # reopen file with "append" and add the analysis definition
         inpfile = open(self.file_name, 'a')
         inpfile.write('\n\n')
+        self.write_material_element_sets(inpfile)
+        self.write_fixed_node_sets(inpfile)
+        self.write_load_node_sets(inpfile)
+        self.write_materials(inpfile)
+        self.write_step_begin(inpfile)
+        self.write_constraints_fixed(inpfile)
+        self.write_constraints_force(inpfile)
+        self.write_outputs_types(inpfile)
+        self.write_step_end(inpfile)
+        self.write_footer(inpfile)
+        inpfile.close()
+        return self.base_name
 
-        # write material element sets
+    def write_material_element_sets(self, inpfile):
         inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** element sets for materials\n')
         for material_object in self.material_objects:
@@ -35,7 +47,7 @@ class inp_writer:
                     inpfile.write('Eall\n')
             inpfile.write('\n\n')
 
-        # write fixed node sets
+    def write_fixed_node_sets(self, inpfile):
         inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** node set for fixed constraint\n')
         for fixed_object in self.fixed_objects:
@@ -57,7 +69,7 @@ class inp_writer:
                     inpfile.write(str(i) + ',\n')
             inpfile.write('\n\n')
 
-        # write load node sets and calculate node loads
+    def write_load_node_sets(self, inpfile):
         inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** node sets for loads\n')
         for force_object in self.force_objects:
@@ -90,7 +102,7 @@ class inp_writer:
                 print '  Warning --> Force = 0'
             inpfile.write('\n\n')
 
-        # write materials
+    def write_materials(self, inpfile):
         inpfile.write('\n\n***********************************************************\n')
         inpfile.write('** materials\n')
         inpfile.write('** youngs modulus unit is MPa = N/mm2\n')
@@ -112,14 +124,14 @@ class inp_writer:
                 if material_object['Object'].Name == 'MechanicalMaterial':
                     inpfile.write('*SOLID SECTION, ELSET=' + material_object['Object'].Name + ', MATERIAL=' + material_name + '\n\n')
 
-        # write step begin
+    def write_step_begin(self, inpfile):
         inpfile.write('\n\n\n\n***********************************************************\n')
         inpfile.write('** one step is needed to calculate the mechanical analysis of FreeCAD\n')
         inpfile.write('** loads are applied quasi-static, means without involving the time dimension\n')
         inpfile.write('*STEP\n')
         inpfile.write('*STATIC\n\n')
 
-        # write constaints
+    def write_constraints_fixed(self, inpfile):
         inpfile.write('\n** constaints\n')
         for fixed_object in self.fixed_objects:
             inpfile.write('*BOUNDARY\n')
@@ -127,7 +139,7 @@ class inp_writer:
             inpfile.write(fixed_object['Object'].Name + ',2\n')
             inpfile.write(fixed_object['Object'].Name + ',3\n\n')
 
-        # write loads
+    def write_constraints_force(self, inpfile):
         inpfile.write('\n** loads\n')
         inpfile.write('** node loads, see load node sets for how the value is calculated!\n')
         for force_object in self.force_objects:
@@ -142,7 +154,7 @@ class inp_writer:
                 inpfile.write(force_object['Object'].Name + ',2,' + v2 + '\n')
                 inpfile.write(force_object['Object'].Name + ',3,' + v3 + '\n\n')
 
-        # write outputs, both are needed by FreeCAD
+    def write_outputs_types(self, inpfile):
         inpfile.write('\n** outputs --> frd file\n')
         inpfile.write('*NODE FILE\n')
         inpfile.write('U\n')
@@ -155,10 +167,10 @@ class inp_writer:
         inpfile.write('S \n')
         inpfile.write('\n\n')
 
-        # write step end
+    def write_step_end(self, inpfile):
         inpfile.write('*END STEP \n')
 
-        # write some informations
+    def write_footer(self, inpfile):
         FcVersionInfo = FreeCAD.Version()
         inpfile.write('\n\n\n\n***********************************************************\n')
         inpfile.write('**\n')
@@ -177,6 +189,3 @@ class inp_writer:
         inpfile.write('**   Loads (nodal loads)         --> N\n')
         inpfile.write('**\n')
         inpfile.write('**\n')
-
-        inpfile.close()
-        return self.base_name
