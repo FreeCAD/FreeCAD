@@ -145,10 +145,11 @@ class inp_writer:
     def write_constraints_fixed(self, f):
         f.write('\n** constaints\n')
         for fixed_object in self.fixed_objects:
+            fix_obj_name = fixed_object['Object'].Name
             f.write('*BOUNDARY\n')
-            f.write(fixed_object['Object'].Name + ',1\n')
-            f.write(fixed_object['Object'].Name + ',2\n')
-            f.write(fixed_object['Object'].Name + ',3\n\n')
+            f.write(fix_obj_name + ',1\n')
+            f.write(fix_obj_name + ',2\n')
+            f.write(fix_obj_name + ',3\n\n')
 
     def write_constraints_force(self, f):
         f.write('\n** loads\n')
