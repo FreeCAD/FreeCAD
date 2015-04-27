@@ -40,7 +40,7 @@ class inp_writer:
         for m in self.material_objects:
             mat_obj = m['Object']
             mat_obj_name = mat_obj.Name
-            mat_name = mat_obj.Material['Name']
+            mat_name = mat_obj.Material['Name'][:80]
 
             print mat_obj_name, ':  ', mat_name
             f.write('*ELSET,ELSET=' + mat_obj_name + '\n')
