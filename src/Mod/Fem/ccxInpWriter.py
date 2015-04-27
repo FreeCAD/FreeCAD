@@ -37,13 +37,17 @@ class inp_writer:
     def write_material_element_sets(self, f):
         f.write('\n\n***********************************************************\n')
         f.write('** element sets for materials\n')
-        for material_object in self.material_objects:
-            print material_object['Object'].Name, ':  ', material_object['Object'].Material['Name']
-            f.write('*ELSET,ELSET=' + material_object['Object'].Name + '\n')
+        for m in self.material_objects:
+            mat_obj = m['Object']
+            mat_obj_name = mat_obj.Name
+            mat_name = mat_obj.Material['Name']
+
+            print mat_obj_name, ':  ', mat_name
+            f.write('*ELSET,ELSET=' + mat_obj_name + '\n')
             if len(self.material_objects) == 1:
                 f.write('Eall\n')
             else:
-                if material_object['Object'].Name == 'MechanicalMaterial':
+                if mat_obj_name == 'MechanicalMaterial':
                     f.write('Eall\n')
             f.write('\n\n')
 
