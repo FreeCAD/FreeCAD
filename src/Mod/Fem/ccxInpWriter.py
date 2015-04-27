@@ -154,17 +154,20 @@ class inp_writer:
     def write_constraints_force(self, f):
         f.write('\n** loads\n')
         f.write('** node loads, see load node sets for how the value is calculated!\n')
-        for force_object in self.force_objects:
-            if 'NodeLoad' in force_object:
-                vec = force_object['Object'].DirectionVector
+        for fobj in self.force_objects:
+            if 'NodeLoad' in fobj:
+                frc_obj = fobj['Object']
+                node_load = fobj['NodeLoad']
+                frc_obj_name = frc_obj.Name
+                vec = frc_obj.DirectionVector
                 f.write('*CLOAD\n')
-                f.write('** force: ' + str(force_object['NodeLoad']) + ' N,  direction: ' + str(vec) + '\n')
-                v1 = "{:.15}".format(repr(vec.x * force_object['NodeLoad']))
-                v2 = "{:.15}".format(repr(vec.y * force_object['NodeLoad']))
-                v3 = "{:.15}".format(repr(vec.z * force_object['NodeLoad']))
-                f.write(force_object['Object'].Name + ',1,' + v1 + '\n')
-                f.write(force_object['Object'].Name + ',2,' + v2 + '\n')
-                f.write(force_object['Object'].Name + ',3,' + v3 + '\n\n')
+                f.write('** force: ' + str(node_load) + ' N,  direction: ' + str(vec) + '\n')
+                v1 = "{:.15}".format(repr(vec.x * node_load))
+                v2 = "{:.15}".format(repr(vec.y * node_load))
+                v3 = "{:.15}".format(repr(vec.z * node_load))
+                f.write(frc_obj_name + ',1,' + v1 + '\n')
+                f.write(frc_obj_name + ',2,' + v2 + '\n')
+                f.write(frc_obj_name + ',3,' + v3 + '\n\n')
 
     def write_outputs_types(self, f):
         f.write('\n** outputs --> frd file\n')
