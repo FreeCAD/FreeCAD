@@ -115,23 +115,25 @@ class inp_writer:
         f.write('\n\n***********************************************************\n')
         f.write('** materials\n')
         f.write('** youngs modulus unit is MPa = N/mm2\n')
-        for material_object in self.material_objects:
+        for m in self.material_objects:
+            mat_obj = m['Object']
             # get material properties
-            YM = FreeCAD.Units.Quantity(material_object['Object'].Material['YoungsModulus'])
+            YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
             YM_in_MPa = YM.getValueAs('MPa')
-            PR = float(material_object['Object'].Material['PoissonRatio'])
-            material_name = material_object['Object'].Material['Name'][:80]
+            PR = float(mat_obj.Material['PoissonRatio'])
+            mat_obj_name = mat_obj.Name
+            mat_name = mat_obj.Material['Name'][:80]
             # write material properties
-            f.write('*MATERIAL, NAME=' + material_name + '\n')
+            f.write('*MATERIAL, NAME=' + mat_name + '\n')
             f.write('*ELASTIC \n')
             f.write('{}, '.format(YM_in_MPa))
             f.write('{0:.3f}\n'.format(PR))
             # write element properties
             if len(self.material_objects) == 1:
-                f.write('*SOLID SECTION, ELSET=' + material_object['Object'].Name + ', MATERIAL=' + material_name + '\n\n')
+                f.write('*SOLID SECTION, ELSET=' + mat_obj_name + ', MATERIAL=' + mat_name + '\n\n')
             else:
-                if material_object['Object'].Name == 'MechanicalMaterial':
-                    f.write('*SOLID SECTION, ELSET=' + material_object['Object'].Name + ', MATERIAL=' + material_name + '\n\n')
+                if mat_obj_name == 'MechanicalMaterial':
+                    f.write('*SOLID SECTION, ELSET=' + mat_obj_name + ', MATERIAL=' + mat_name + '\n\n')
 
     def write_step_begin(self, f):
         f.write('\n\n\n\n***********************************************************\n')
