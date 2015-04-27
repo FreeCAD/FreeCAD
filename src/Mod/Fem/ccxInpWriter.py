@@ -77,11 +77,12 @@ class inp_writer:
     def write_load_node_sets(self, f):
         f.write('\n\n***********************************************************\n')
         f.write('** node sets for loads\n')
-        for force_object in self.force_objects:
-            print force_object['Object'].Name
-            f.write('*NSET,NSET=' + force_object['Object'].Name + '\n')
+        for fobj in self.force_objects:
+            frc_obj = fobj['Object']
+            print frc_obj.Name
+            f.write('*NSET,NSET=' + frc_obj.Name + '\n')
             NbrForceNodes = 0
-            for o, elem in force_object['Object'].References:
+            for o, elem in frc_obj.References:
                 fo = o.Shape.getElement(elem)
                 n = []
                 if fo.ShapeType == 'Face':
@@ -100,10 +101,13 @@ class inp_writer:
             if NbrForceNodes == 0:
                 print '  Warning --> no FEM-Mesh-node to apply the load to was found?'
             else:
-                force_object['NodeLoad'] = (force_object['Object'].Force) / NbrForceNodes
+                fobj['NodeLoad'] = (frc_obj.Force) / NbrForceNodes
+                #  FIXME this method is incorrect, but we don't have anything else right now
+                #  Please refer to thread "CLOAD and DLOAD for the detailed description
+                #  http://forum.freecadweb.org/viewtopic.php?f=18&t=10692
                 f.write('** concentrated load [N] distributed on all mesh nodes of the given shapes\n')
-                f.write('** ' + str(force_object['Object'].Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(force_object['NodeLoad']) + ' N on each node\n')
-            if force_object['Object'].Force == 0:
+                f.write('** ' + str(frc_obj.Force) + ' N / ' + str(NbrForceNodes) + ' Nodes = ' + str(fobj['NodeLoad']) + ' N on each node\n')
+            if frc_obj.Force == 0:
                 print '  Warning --> Force = 0'
             f.write('\n\n')
 
