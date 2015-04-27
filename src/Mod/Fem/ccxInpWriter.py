@@ -54,10 +54,11 @@ class inp_writer:
     def write_fixed_node_sets(self, f):
         f.write('\n\n***********************************************************\n')
         f.write('** node set for fixed constraint\n')
-        for fixed_object in self.fixed_objects:
-            print fixed_object['Object'].Name
-            f.write('*NSET,NSET=' + fixed_object['Object'].Name + '\n')
-            for o, elem in fixed_object['Object'].References:
+        for fobj in self.fixed_objects:
+            fix_obj = fobj['Object']
+            print fix_obj.Name
+            f.write('*NSET,NSET=' + fix_obj.Name + '\n')
+            for o, elem in fix_obj.References:
                 fo = o.Shape.getElement(elem)
                 n = []
                 if fo.ShapeType == 'Face':
