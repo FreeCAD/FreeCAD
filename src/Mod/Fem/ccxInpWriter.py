@@ -2,6 +2,7 @@ import FemGui
 import FreeCAD
 import os
 import time
+import sys
 
 
 class inp_writer:
@@ -37,6 +38,7 @@ class inp_writer:
     def write_material_element_sets(self, f):
         f.write('\n\n***********************************************************\n')
         f.write('** element sets for materials\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for m in self.material_objects:
             mat_obj = m['Object']
             mat_obj_name = mat_obj.Name
@@ -54,6 +56,7 @@ class inp_writer:
     def write_fixed_node_sets(self, f):
         f.write('\n\n***********************************************************\n')
         f.write('** node set for fixed constraint\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fobj in self.fixed_objects:
             fix_obj = fobj['Object']
             print fix_obj.Name
@@ -77,6 +80,7 @@ class inp_writer:
     def write_load_node_sets(self, f):
         f.write('\n\n***********************************************************\n')
         f.write('** node sets for loads\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fobj in self.force_objects:
             frc_obj = fobj['Object']
             print frc_obj.Name
@@ -114,6 +118,7 @@ class inp_writer:
     def write_materials(self, f):
         f.write('\n\n***********************************************************\n')
         f.write('** materials\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('** youngs modulus unit is MPa = N/mm2\n')
         for m in self.material_objects:
             mat_obj = m['Object']
@@ -139,11 +144,13 @@ class inp_writer:
         f.write('\n\n\n\n***********************************************************\n')
         f.write('** one step is needed to calculate the mechanical analysis of FreeCAD\n')
         f.write('** loads are applied quasi-static, means without involving the time dimension\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('*STEP\n')
         f.write('*STATIC\n\n')
 
     def write_constraints_fixed(self, f):
         f.write('\n** constaints\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fixed_object in self.fixed_objects:
             fix_obj_name = fixed_object['Object'].Name
             f.write('*BOUNDARY\n')
@@ -153,6 +160,7 @@ class inp_writer:
 
     def write_constraints_force(self, f):
         f.write('\n** loads\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('** node loads, see load node sets for how the value is calculated!\n')
         for fobj in self.force_objects:
             if 'NodeLoad' in fobj:
@@ -171,6 +179,7 @@ class inp_writer:
 
     def write_outputs_types(self, f):
         f.write('\n** outputs --> frd file\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('*NODE FILE\n')
         f.write('U\n')
         f.write('*EL FILE\n')
@@ -183,11 +192,13 @@ class inp_writer:
         f.write('\n\n')
 
     def write_step_end(self, f):
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('*END STEP \n')
 
     def write_footer(self, f):
         FcVersionInfo = FreeCAD.Version()
         f.write('\n\n\n\n***********************************************************\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('**\n')
         f.write('**   CalculiX Inputfile\n')
         f.write('**\n')
