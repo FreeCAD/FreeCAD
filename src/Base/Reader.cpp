@@ -41,7 +41,9 @@
 #include "Console.h"
 #include "Sequencer.h"
 
+#ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
+#endif
 #include <zipios++/zipfile.h>
 #include <zipios++/zipinputstream.h>
 #include <zipios++/zipoutputstream.h>
