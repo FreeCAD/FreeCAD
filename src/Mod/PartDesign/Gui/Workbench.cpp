@@ -77,7 +77,7 @@ PartDesign::Body *getBody(void)
 {
 	PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
 
-	if (activeBody){
+	if (!activeBody){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
             QObject::tr("In order to use PartDesign you need an active Body object in the document. "
 			"Please make one active (double click) or create one. If you have a legacy document "
