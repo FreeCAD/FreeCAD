@@ -123,7 +123,7 @@ void CmdPartDesignBody::activated(int iMsg)
     //doCommand(Doc,"App.activeDocument().%s.Model = []",FeatName.c_str());
     //doCommand(Doc,"App.activeDocument().%s.Tip = None",FeatName.c_str());
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-    doCommand(Gui,"PartDesignGui.setActiveBody(App.ActiveDocument.%s)", FeatName.c_str());
+    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Body',App.activeDocument().%s)", FeatName.c_str());
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", FeatName.c_str());
@@ -174,7 +174,7 @@ void CmdPartDesignMoveTip::activated(int iMsg)
             // Switch to other body
             pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
             if (pcActiveBody != NULL)
-                Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActiveBody(App.activeDocument().%s)",
+                Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Body',App.activeDocument().%s)",
                                         pcActiveBody->getNameInDocument());
             else
                 return;
@@ -244,7 +244,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
         // Switch to other body
         pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
         if (pcActiveBody != NULL)
-            Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActiveBody(App.activeDocument().%s)",
+            Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Body',App.activeDocument().%s)",
                                     pcActiveBody->getNameInDocument());
         else
             return;
