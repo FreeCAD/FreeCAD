@@ -396,6 +396,11 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObj
 
 namespace SketcherGui {
 
+struct SelIdPair{
+    int GeoId;
+    Sketcher::PointPos PosId;
+};
+
 struct SketchSelection{
     enum GeoType {
         Point,
@@ -1011,50 +1016,47 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() < 1 || SubNames.size() > 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select exactly one point and one object from the sketch."));
-        return;
+    //count curves and points
+    std::vector<SelIdPair> points;
+    std::vector<SelIdPair> curves;
+    for (int i = 0  ;  i < SubNames.size()  ;  i++){
+        SelIdPair id;
+        getIdsFromName(SubNames[i], Obj, id.GeoId, id.PosId);
+        if (isEdge(id.GeoId, id.PosId))
+            curves.push_back(id);
+        if (isVertex(id.GeoId, id.PosId))
+            points.push_back(id);
     }
 
-    int GeoId1, GeoId2=Constraint::GeoUndef;
-    Sketcher::PointPos PosId1, PosId2=Sketcher::none;
-    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
-    if (SubNames.size() == 2)
-        getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
+    if (points.size() == 1 && curves.size() >= 1
+        || points.size() >= 1 && curves.size() == 1) {
 
-    if (checkBothExternal(GeoId1, GeoId2))
-        return;
-
-    if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
-        (isEdge(GeoId1,PosId1) && isVertex(GeoId2,PosId2))) {
-        if (isVertex(GeoId2,PosId2)) {
-            std::swap(GeoId1,GeoId2);
-            std::swap(PosId1,PosId2);
-        }
-
-        const Part::Geometry *geom = Obj->getGeometry(GeoId2);
-
-        // Currently only accepts line segments and circles
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
-            geom->getTypeId() == Part::GeomCircle::getClassTypeId() || 
-            geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
-            geom->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
-            geom->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ) {
-
-            openCommand("add point on object constraint");
+        openCommand("add point on object constraint");
+        int cnt = 0;
+        for (int iPnt = 0  ;  iPnt < points.size()  ;  iPnt++)
+          for (int iCrv = 0  ;  iCrv < curves.size()  ;  iCrv++){
+            if (checkBothExternal(points[iPnt].GeoId, curves[iCrv].GeoId))
+                continue;
+            if (points[iPnt].GeoId == curves[iCrv].GeoId)
+                continue; //constraining a point of an element onto the element is a bad idea...
+            cnt++;
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2);
-            commitCommand();
-            //updateActive();
-            getSelection().clearSelection();
-            return;
+                selection[0].getFeatName(),points[iPnt].GeoId, points[iPnt].PosId, curves[iCrv].GeoId);
         }
+        if (cnt) {
+            commitCommand();
+            getSelection().clearSelection();
+        } else {
+            abortCommand();
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry."));
+        }
+        return;
     }
 
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("Select exactly one point and one object from the sketch."));
+        QObject::tr("Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.").arg(curves.size()).arg(points.size()));
     return;
 }
 
