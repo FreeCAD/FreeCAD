@@ -242,14 +242,14 @@ PyObject*  DocumentPy::removeObject(PyObject *args)
 
 PyObject*  DocumentPy::copyObject(PyObject *args)
 {
+    // 'keep' is not needed any more but leave it there for backward compatibility
     PyObject *obj, *rec=Py_False, *keep=Py_False;
     if (!PyArg_ParseTuple(args, "O!|O!O!",&(DocumentObjectPy::Type),&obj,&PyBool_Type,&rec,&PyBool_Type,&keep))
         return NULL;    // NULL triggers exception
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(obj);
     DocumentObject* copy = getDocumentPtr()->copyObject(docObj->getDocumentObjectPtr(),
-        PyObject_IsTrue(rec) ? true : false,
-        PyObject_IsTrue(keep)? true : false);
+        PyObject_IsTrue(rec) ? true : false);
     if (copy) {
         return copy->getPyObject();
     }
