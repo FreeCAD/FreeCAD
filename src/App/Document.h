@@ -168,7 +168,7 @@ public:
      * are copied as well. By default \a recursive is false.
      * Returns the copy of the object or 0 if the creation failed.
      */
-    DocumentObject* copyObject(DocumentObject* obj, bool recursive=false, bool keepdigitsatend=false);
+    DocumentObject* copyObject(DocumentObject* obj, bool recursive=false);
     /** Move an object from another document to this document
      * If \a recursive is true then all objects this object depends on
      * are moved as well. By default \a recursive is false.

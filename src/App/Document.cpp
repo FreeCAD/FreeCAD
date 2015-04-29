@@ -890,6 +890,7 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
 {
+    bool keepDigits = d->keepTrailingDigits;
     d->keepTrailingDigits = !reader.doNameMapping();
     std::vector<App::DocumentObject*> objs;
 
@@ -919,6 +920,7 @@ Document::readObjects(Base::XMLReader& reader)
         }
     }
     reader.readEndElement("Objects");
+    d->keepTrailingDigits = keepDigits;
 
     // read the features itself
     reader.readElement("ObjectData");
@@ -1757,7 +1759,7 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
     }
 }
 
-DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive,  bool /*keepdigitsatend*/)
+DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
 {
     std::vector<DocumentObject*> objs;
     objs.push_back(obj);
@@ -1862,14 +1864,6 @@ std::string Document::getUniqueObjectName(const char *Name) const
     if (!Name || *Name == '\0')
         return std::string();
     std::string CleanName = Base::Tools::getIdentifier(Name);
-    // remove also trailing digits from clean name which is to avoid to create lengthy names
-    // like 'Box001001'
-    if (!d->keepTrailingDigits) {
-        std::string::size_type index = CleanName.find_last_not_of("0123456789");
-        if (index+1 < CleanName.size()) {
-            CleanName = CleanName.substr(0,index+1);
-        }
-    }
 
     // name in use?
     std::map<std::string,DocumentObject*>::const_iterator pos;
@@ -1880,6 +1874,15 @@ std::string Document::getUniqueObjectName(const char *Name) const
         return CleanName;
     }
     else {
+        // remove also trailing digits from clean name which is to avoid to create lengthy names
+        // like 'Box001001'
+        if (!d->keepTrailingDigits) {
+            std::string::size_type index = CleanName.find_last_not_of("0123456789");
+            if (index+1 < CleanName.size()) {
+                CleanName = CleanName.substr(0,index+1);
+            }
+        }
+
         std::vector<std::string> names;
         names.reserve(d->objectMap.size());
         for (pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
