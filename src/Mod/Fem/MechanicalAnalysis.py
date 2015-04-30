@@ -22,6 +22,7 @@
 
 import ccxFrdReader
 import FreeCAD
+import FemGui
 import os
 import sys
 import tempfile
@@ -29,7 +30,6 @@ import time
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    import FemGui
     from PySide import QtCore, QtGui
     from PySide.QtCore import Qt
     from PySide.QtGui import QApplication
@@ -119,15 +119,12 @@ class _CommandMechanicalJobControl:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_JobControl", "Dialog to start the calculation of the mechanical anlysis")}
 
     def Activated(self):
-        import FemGui
-
         taskd = _JobControlTaskPanel(FemGui.getActiveAnalysis())
         #taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
 
     def IsActive(self):
-        import FemGui
         return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
 
 
@@ -156,7 +153,6 @@ class _CommandMechanicalShowResult:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement", "Show result information of an analysis")}
 
     def Activated(self):
-        import FemGui
         DisplacementObject = None
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemResultVector"):
@@ -224,7 +220,6 @@ class _ViewProviderFemAnalysis:
         return
 
     def doubleClicked(self, vobj):
-        import FemGui
         if not FemGui.getActiveAnalysis() == self.Object:
             if FreeCADGui.activeWorkbench().name() != 'FemWorkbench':
                 FreeCADGui.activateWorkbench("FemWorkbench")
@@ -633,7 +628,6 @@ class _ResultControlTaskPanel:
 
 
 def results_present():
-    import FemGui
     results = False
     analysis_members = FemGui.getActiveAnalysis().Member
     for o in analysis_members:
@@ -645,7 +639,6 @@ def results_present():
 
 
 def purge_fem_results(Analysis=None):
-    import FemGui
     if Analysis is None:
         analysis_members = FemGui.getActiveAnalysis().Member
     else:
@@ -658,7 +651,6 @@ def purge_fem_results(Analysis=None):
 
 
 def reset_mesh_color(mesh=None):
-    import FemGui
     if mesh is None:
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemMeshObject"):
@@ -669,7 +661,6 @@ def reset_mesh_color(mesh=None):
 
 
 def reset_mesh_deformation(mesh=None):
-    import FemGui
     if mesh is None:
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemMeshObject"):
