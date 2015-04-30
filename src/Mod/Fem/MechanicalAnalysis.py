@@ -131,6 +131,20 @@ class _CommandMechanicalJobControl:
         return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
 
 
+class _CommandPurgeFemResults:
+    def GetResources(self):
+        return {'Pixmap': 'Fem_Purge_Results',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results"),
+                'Accel': "S, S",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_PurgeResults", "Purge results from an analysis")}
+
+    def Activated(self):
+        purge_fem_results()
+
+    def IsActive(self):
+        return FreeCADGui.ActiveDocument is not None and results_present()
+
+
 class _CommandMechanicalShowResult:
     "the Fem JobControl command definition"
     def GetResources(self):
@@ -617,7 +631,36 @@ class _ResultControlTaskPanel:
     def reject(self):
         FreeCADGui.Control.closeDialog()
 
+# Helpers
+
+
+def results_present():
+    import FemGui
+    results = False
+    analysis_members = FemGui.getActiveAnalysis().Member
+    for o in analysis_members:
+        if o.isDerivedFrom('Fem::FemResultVector'):
+            results = True
+        elif o.isDerivedFrom("Fem::FemResultValue") and o.DataType == 'VonMisesStress':
+            results = True
+    return results
+
+
+def purge_fem_results(Analysis=None):
+    import FemGui
+    if Analysis is None:
+        analysis_members = FemGui.getActiveAnalysis().Member
+    else:
+        analysis_members = FemGui.Analysis().Member
+    for o in analysis_members:
+        if (o.isDerivedFrom('Fem::FemResultVector') or
+           (o.isDerivedFrom("Fem::FemResultValue") and o.DataType == 'VonMisesStress') or
+           (o.isDerivedFrom("Fem::FemResultValue") and o.DataType == 'AnalysisStats')):
+            FreeCAD.ActiveDocument.removeObject(o.Name)
+
+
 FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
 FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
 FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
+FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
 FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())

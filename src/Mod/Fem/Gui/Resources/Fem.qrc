@@ -15,6 +15,7 @@
         <file>icons/Fem_Inp_Editor.svg</file>
         <file>icons/Fem_Material.svg</file>
         <file>icons/Fem_NewAnalysis.svg</file>
+        <file>icons/Fem_Purge_Results.svg</file>
         <file>icons/Fem_Result.svg</file>
         <file>icons/Fem_ResultDisplacement.svg</file>
         <file>icons/Fem_ResultStress.svg</file>
