@@ -174,8 +174,7 @@ class _CommandMechanicalShowResult:
         FreeCADGui.Control.showDialog(taskd)
 
     def IsActive(self):
-        import FemGui
-        return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
+        return FreeCADGui.ActiveDocument is not None and results_present()
 
 
 class _FemAnalysis:
