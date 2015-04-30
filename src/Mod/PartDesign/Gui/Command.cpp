@@ -792,7 +792,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         if (!pcActiveBody->hasFeature(feat)) {
             bool isBasePlane = false;
             for (unsigned i = 0; i < 3; i++) {
-                if (strcmp(PartDesignGui::BaseplaneNames[i], feat->getNameInDocument()) == 0) {
+                if (strcmp(App::Part::BaseplaneTypes[i], feat->getNameInDocument()) == 0) {
                     isBasePlane = true;
                     break;
                 }
