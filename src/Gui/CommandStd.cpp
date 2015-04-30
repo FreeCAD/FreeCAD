@@ -209,7 +209,7 @@ Action * StdCmdAbout::createAction(void)
     pcAction->setShortcut(QString::fromAscii(sAccel));
     //Prevent Qt from using AboutRole -- fixes issue #0001485
     pcAction->setMenuRole(QAction::ApplicationSpecificRole);
-	
+
     return pcAction;
 }
 

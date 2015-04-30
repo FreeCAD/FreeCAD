@@ -306,7 +306,7 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
     const int button = e->getButton();
     const SbBool press = e->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
 
-    if(press) {
+    if (press) {
         switch(button)
         {
         case SoMouseButtonEvent::BUTTON1:
@@ -664,4 +664,3 @@ void BoxZoomSelection::terminate()
     SbBox2s box(xmin, ymin, xmax, ymax);
     _pcView3D->boxZoom(box);
 }
-

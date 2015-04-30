@@ -171,7 +171,7 @@ class GuiExport BrushSelection : public PolyPickerSelection
 {
 public:
     BrushSelection();
-    ~BrushSelection();
+    virtual ~BrushSelection();
 
     void setLineWidth(float l);
     void setClosed(bool c);
