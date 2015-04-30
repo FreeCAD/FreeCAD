@@ -370,7 +370,9 @@ void Workbench::_switchToDocument(const App::Document* doc)
     else 
     {
 		activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+                assert(activeBody);
 		activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("Part");
+                assert(activePart);
 
 		// document change not implemented yet
 		assert(activePart->getDocument() == doc);
