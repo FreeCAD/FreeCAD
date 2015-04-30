@@ -682,7 +682,6 @@ void Workbench::deactivated()
     removeTaskWatcher();
     // reset the active Body
     Gui::Command::doCommand(Gui::Command::Doc,"import PartDesignGui");
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Body',App.activeDocument().%s)", "None");
 
     Gui::Workbench::deactivated();
 
