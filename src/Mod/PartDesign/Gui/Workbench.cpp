@@ -184,7 +184,8 @@ void Workbench::_doMigration(const App::Document* doc)
     // Always create at least the first body, even if the document is empty
     // This adds both the base planes and the body
     Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
-	PartDesign::Body *activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+    PartDesign::Body *activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+    assert(activeBody);
 
 
     // Create one Body for every root and put the appropriate features into it
@@ -359,9 +360,12 @@ void Workbench::_switchToDocument(const App::Document* doc)
 			// body have to be created
 			assert(activeBody);
 
-		} else
+		} else {
 			// empty document with no tip, so do migration
 			_doMigration(doc);
+                        activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+                        assert(activeBody);
+                }
     }
     else 
     {
