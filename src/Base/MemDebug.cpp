@@ -219,7 +219,7 @@ int __cdecl MemDebug::sAllocHook(
    if ( pvData != NULL )
       fprintf( logFile, " at %p\n", pvData );
    else
-     fprintf( logFile, "\n", pvData );
+     fprintf( logFile, "\n" );
 
    return( 7 );         // Allow the memory operation to proceed (True = 7, False = 0)
 }

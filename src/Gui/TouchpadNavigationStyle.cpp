@@ -192,18 +192,6 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->centerTime = ev->getTime();
                 processed = TRUE;
             }
-            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                if (tmp.getValue() < dci) {
-                    newmode = NavigationStyle::ZOOMING;
-                }
-                processed = TRUE;
-            }
-            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                this->setViewing(false);
-                processed = TRUE;
-            }
             else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
                 processed = TRUE;
             }
@@ -231,14 +219,6 @@ SbBool TouchpadNavigationStyle::processSoEvent(const SoEvent * const ev)
                 newmode = NavigationStyle::DRAGGING;
                 saveCursorPosition(ev);
                 this->centerTime = ev->getTime();
-                processed = TRUE;
-            }
-            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                SbTime tmp = (ev->getTime() - this->centerTime);
-                float dci = (float)QApplication::doubleClickInterval()/1000.0f;
-                if (tmp.getValue() < dci) {
-                    newmode = NavigationStyle::ZOOMING;
-                }
                 processed = TRUE;
             }
             this->button2down = press;

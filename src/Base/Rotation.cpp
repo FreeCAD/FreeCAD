@@ -257,7 +257,6 @@ Rotation & Rotation::invert(void)
     this->quat[0] = -this->quat[0];
     this->quat[1] = -this->quat[1];
     this->quat[2] = -this->quat[2];
-    this->quat[3] =  this->quat[3];
     return *this;
 }
 

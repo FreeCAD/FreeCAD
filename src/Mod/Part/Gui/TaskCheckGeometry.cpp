@@ -183,10 +183,10 @@ ResultEntry::ResultEntry()
 
 ResultEntry::~ResultEntry()
 {
-    if (boxSep)
+    if (boxSep && viewProviderRoot)
         viewProviderRoot->removeChild(boxSep);
     if (viewProviderRoot)
-      viewProviderRoot->unref();
+        viewProviderRoot->unref();
     qDeleteAll(children);
 }
 

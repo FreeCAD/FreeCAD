@@ -777,7 +777,7 @@ bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &fa
         return false;
 
     if (surfaceOne->IsURational() != surfaceTwo->IsURational()) return false;
-    if (surfaceTwo->IsVRational() != surfaceTwo->IsVRational()) return false;
+    if (surfaceOne->IsVRational() != surfaceTwo->IsVRational()) return false;
     if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic()) return false;
     if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic()) return false;
     if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed()) return false;
