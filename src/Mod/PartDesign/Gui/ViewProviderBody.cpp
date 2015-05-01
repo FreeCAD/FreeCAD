@@ -105,7 +105,7 @@ bool ViewProviderBody::doubleClicked(void)
     // assure the PartDesign workbench
     Gui::Command::assureWorkbench("PartDesignWorkbench");
 	//Gui::Command::doCommand(Gui::Command::Gui,"PartDesignGui.setActiveBody(App.activeDocument().%s)",this->getObject()->getNameInDocument());
-	Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Body',App.activeDocument().%s)",this->getObject()->getNameInDocument());
+	Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, this->getObject()->getNameInDocument());
 
     return true;
 }

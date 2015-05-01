@@ -91,7 +91,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
 
 void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 	App::DocumentObject* prevSolid = activeBody->getPrevSolidFeature(vp->getObject(), false);
 	App::DocumentObject* curSolid = activeBody->getPrevSolidFeature();
 
@@ -136,7 +136,7 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
     if (obj == NULL)
         return QByteArray();
 
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
         return QByteArray();
@@ -245,7 +245,7 @@ bool TaskDlgSketchBasedParameters::reject()
     }
 
     // Body housekeeping
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 	if (activeBody != NULL) {
         // Make the new Tip and the previous solid feature visible again
 		App::DocumentObject* tip = activeBody->Tip.getValue();

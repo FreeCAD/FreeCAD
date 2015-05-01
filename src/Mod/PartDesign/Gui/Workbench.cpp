@@ -75,7 +75,7 @@ namespace PartDesignGui {
 
 PartDesign::Body *getBody(void)
 {
-	PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
 	if (!activeBody){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
@@ -118,7 +118,7 @@ PartDesign::Body *Workbench::setUpPart(const App::Part *part)
 	Gui::Command::addModule(Gui::Command::Doc, "PartDesign");
 	Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('PartDesign::Body','%s')", BodyName.c_str());
 	Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
-	Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Body',App.activeDocument().%s)", BodyName.c_str());
+	Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, BodyName.c_str());
 
 	return NULL;
 }
@@ -184,7 +184,7 @@ void Workbench::_doMigration(const App::Document* doc)
     // Always create at least the first body, even if the document is empty
     // This adds both the base planes and the body
     Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
-    PartDesign::Body *activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+    PartDesign::Body *activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     assert(activeBody);
 
 
@@ -192,7 +192,7 @@ void Workbench::_doMigration(const App::Document* doc)
     for (std::vector<App::DocumentObject*>::iterator r = roots.begin(); r != roots.end(); r++) {
         if (r != roots.begin()) {
             Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
-			activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+			activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
         }
 
         std::set<App::DocumentObject*> inList;
@@ -355,7 +355,7 @@ void Workbench::_switchToDocument(const App::Document* doc)
 			Gui::Command::doCommand(Gui::Command::Doc, "PartDesignGui.setUpPart(App.activeDocument().%s)", PartName.c_str());
 			Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Part',App.activeDocument().%s)", PartName.c_str());
 
-			activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+			activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
 			// body have to be created
 			assert(activeBody);
@@ -363,13 +363,13 @@ void Workbench::_switchToDocument(const App::Document* doc)
 		} else {
 			// empty document with no tip, so do migration
 			_doMigration(doc);
-                        activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+                        activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
                         assert(activeBody);
                 }
     }
     else 
     {
-		activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+		activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
                 assert(activeBody);
 		activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("Part");
                 assert(activePart);
