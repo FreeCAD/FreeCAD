@@ -123,7 +123,7 @@ void CmdPartDesignBody::activated(int iMsg)
     //doCommand(Doc,"App.activeDocument().%s.Model = []",FeatName.c_str());
     //doCommand(Doc,"App.activeDocument().%s.Tip = None",FeatName.c_str());
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
-    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Body',App.activeDocument().%s)", FeatName.c_str());
+    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, FeatName.c_str());
     // Make the "Create sketch" prompt appear in the task panel
     doCommand(Gui,"Gui.Selection.clearSelection()");
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", FeatName.c_str());
@@ -174,8 +174,8 @@ void CmdPartDesignMoveTip::activated(int iMsg)
             // Switch to other body
             pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
             if (pcActiveBody != NULL)
-                Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Body',App.activeDocument().%s)",
-                                        pcActiveBody->getNameInDocument());
+                Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s',App.activeDocument().%s)",
+                                        PDBODYKEY, pcActiveBody->getNameInDocument());
             else
                 return;
         }
@@ -244,8 +244,8 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
         // Switch to other body
         pcActiveBody = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(selFeature));
         if (pcActiveBody != NULL)
-            Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Body',App.activeDocument().%s)",
-                                    pcActiveBody->getNameInDocument());
+            Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)",
+                                    PDBODYKEY, pcActiveBody->getNameInDocument());
         else
             return;
     }
@@ -1868,7 +1868,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
 
     openCommand("Create Boolean");
 
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     // Make sure we are working on the selected body
 	if (body != activeBody) {
         Gui::Selection().clearSelection();

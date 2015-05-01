@@ -276,7 +276,7 @@ bool ViewProviderDatum::doubleClicked(void)
     std::string Msg("Edit ");
     Msg += this->pcObject->Label.getValue();
     Gui::Command::openCommand(Msg.c_str());
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 	if (activeBody != NULL) {
         // Drop into insert mode so that the user doesn't see all the geometry that comes later in the tree
         // Also, this way the user won't be tempted to use future geometry as external references for the sketch
@@ -301,7 +301,7 @@ void ViewProviderDatum::unsetEdit(int ModNum)
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
         Gui::Control().closeDialog();
-		PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+		PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
 		if ((activeBody != NULL) && (oldTip != NULL)) {
             Gui::Selection().clearSelection();

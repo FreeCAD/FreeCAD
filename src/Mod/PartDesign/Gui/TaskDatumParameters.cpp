@@ -435,7 +435,7 @@ void TaskDatumParameters::onCheckFlip(bool on)
 void TaskDatumParameters::onButtonRef(const bool pressed, const int idx)
 {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 	App::DocumentObject* solid = activeBody->getPrevSolidFeature();
 
     if (pressed) {
@@ -507,7 +507,7 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
     if (obj == NULL) return;
 
     std::string subElement;
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
@@ -715,7 +715,7 @@ bool TaskDlgDatumParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
         //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Checked = %i",name.c_str(),parameter->getCheckBox1()?1:0);
 
-		PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+		PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 		App::DocumentObject* solid = activeBody->getPrevSolidFeature();
         if (solid != NULL) {
             QString buf = QString::fromAscii("[");
@@ -749,7 +749,7 @@ bool TaskDlgDatumParameters::reject()
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>("Body");
+	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     // Body housekeeping
 	if (activeBody != NULL) {
         // Make the new Tip and the previous solid feature visible again
