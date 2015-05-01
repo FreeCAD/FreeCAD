@@ -105,7 +105,6 @@ void PartGuiExport initPartGui()
     PartGui::SoBrepEdgeSet                  ::initClass();
     PartGui::SoBrepPointSet                 ::initClass();
     PartGui::SoFCControlPoints              ::initClass();
-    PartGui::ViewProviderPartBase           ::init();
     PartGui::ViewProviderPartExt            ::init();
     PartGui::ViewProviderPart               ::init();
     PartGui::ViewProviderEllipsoid          ::init();
