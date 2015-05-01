@@ -251,6 +251,16 @@ PolyPickerSelection::PolyPickerSelection()
 {
 }
 
+void PolyPickerSelection::setColor(float r, float g, float b, float a)
+{
+    polyline.setColor(r,g,b,a);
+}
+
+void PolyPickerSelection::setLineWidth(float l)
+{
+    polyline.setLineWidth(l);
+}
+
 void PolyPickerSelection::initialize()
 {
     QPixmap p(cursor_cut_scissors);
@@ -258,8 +268,7 @@ void PolyPickerSelection::initialize()
     _pcView3D->getWidget()->setCursor(cursor);
 
     polyline.setViewer(_pcView3D);
-    polyline.setColor(0.0,0.0,1.0,1.0);
-    
+
     _pcView3D->addGraphicsItem(&polyline);
     _pcView3D->setRenderType(View3DInventorViewer::Image);
     _pcView3D->redraw();
@@ -456,25 +465,15 @@ BrushSelection::BrushSelection()
 {
 }
 
-
 BrushSelection::~BrushSelection()
 {
 
 }
 
-void BrushSelection::setColor(float r, float g, float b, float a)
-{
-    polyline.setColor(r,g,b,a);
-}
-
-void BrushSelection::setLineWidth(float l)
-{
-    polyline.setLineWidth(l);
-}
-
 void BrushSelection::setClosed(bool on)
 {
-   //TODO: closed = false is not supported yet
+    polyline.setClosed(on);
+    polyline.setCloseStippled(true);
 }
 
 int BrushSelection::popupMenu()
@@ -484,17 +483,90 @@ int BrushSelection::popupMenu()
     menu.addAction(QObject::tr("Clear"));
     QAction* ca = menu.addAction(QObject::tr("Cancel"));
 
-    if(getPositions().size() < 3)
+    if (getPositions().size() < 3)
         fi->setEnabled(false);
 
     QAction* id = menu.exec(QCursor::pos());
-
     if (id == fi)
         return Finish;
     else if (id == ca)
         return Cancel;
     else
         return Restart;
+}
+
+int BrushSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos)
+{
+    const int button = e->getButton();
+    const SbBool press = e->getState() == SoButtonEvent::DOWN ? TRUE : FALSE;
+
+    if (press) {
+        switch(button)
+        {
+        case SoMouseButtonEvent::BUTTON1:
+        {
+            if (!polyline.isWorking()) {
+                polyline.setWorking(true);
+                polyline.clear();
+            };
+            polyline.addNode(pos);
+            polyline.setCoords(pos.x(), pos.y());
+            m_iXnew = pos.x();  m_iYnew = pos.y();
+            m_iXold = pos.x();  m_iYold = pos.y();
+        }
+        break;
+
+        case SoMouseButtonEvent::BUTTON2:
+        {
+             polyline.addNode(pos);
+             m_iXnew = pos.x();  m_iYnew = pos.y();
+             m_iXold = pos.x();  m_iYold = pos.y();
+        }
+        break;
+
+        default:
+        {
+        }   break;
+        }
+    }
+    // release
+    else {
+        switch(button)
+        {
+        case SoMouseButtonEvent::BUTTON1:
+            if (polyline.isWorking()) {
+                releaseMouseModel();
+                return Finish;
+            }
+        case SoMouseButtonEvent::BUTTON2:
+        {
+            QCursor cur = _pcView3D->getWidget()->cursor();
+            _pcView3D->getWidget()->setCursor(m_cPrevCursor);
+
+            // The pop-up menu should be shown when releasing mouse button because
+            // otherwise the navigation style doesn't get the UP event and gets into
+            // an inconsistent state.
+            int id = popupMenu();
+
+            if (id == Finish || id == Cancel) {
+                releaseMouseModel();
+            }
+            else if (id == Restart) {
+                _pcView3D->getWidget()->setCursor(cur);
+            }
+
+            polyline.setWorking(false);
+            return id;
+        }
+        break;
+
+        default:
+        {
+        }   break;
+        }
+    }
+
+    return Continue;
 }
 
 int BrushSelection::locationEvent(const SoLocation2Event* const e, const QPoint& pos)
@@ -541,30 +613,24 @@ int BrushSelection::locationEvent(const SoLocation2Event* const e, const QPoint&
 
 // -----------------------------------------------------------------------------------
 
-RectangleSelection::RectangleSelection() : RubberbandSelection()
-{
-    rubberband.setColor(0.0,0.0,1.0,1.0);
-}
-
-RectangleSelection::~RectangleSelection()
-{
-}
-
-// -----------------------------------------------------------------------------------
-
 RubberbandSelection::RubberbandSelection()
 {
+    rubberband.setColor(1.0, 1.0, 0.0, 0.5);
 }
 
 RubberbandSelection::~RubberbandSelection()
 {
 }
 
+void RubberbandSelection::setColor(float r, float g, float b, float a)
+{
+    rubberband.setColor(r,g,b,a);
+}
+
 void RubberbandSelection::initialize()
 {
     rubberband.setViewer(_pcView3D);
     rubberband.setWorking(false);
-    rubberband.setColor(1.0, 1.0, 0.0, 0.5);
     _pcView3D->addGraphicsItem(&rubberband);
     if (QGLFramebufferObject::hasOpenGLFramebufferObjects()) {
         _pcView3D->setRenderType(View3DInventorViewer::Image);
@@ -641,6 +707,17 @@ int RubberbandSelection::locationEvent(const SoLocation2Event* const e, const QP
 int RubberbandSelection::keyboardEvent(const SoKeyboardEvent* const e)
 {
     return Continue;
+}
+
+// -----------------------------------------------------------------------------------
+
+RectangleSelection::RectangleSelection() : RubberbandSelection()
+{
+    rubberband.setColor(0.0,0.0,1.0,1.0);
+}
+
+RectangleSelection::~RectangleSelection()
+{
 }
 
 // -----------------------------------------------------------------------------------
