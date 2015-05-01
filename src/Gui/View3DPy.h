@@ -101,8 +101,9 @@ public:
     Py::Object setAxisCross(const Py::Tuple&);
     Py::Object hasAxisCross(const Py::Tuple&);
     Py::Object addDraggerCallback(const Py::Tuple&);
-	Py::Object removeDraggerCallback(const Py::Tuple&);
-	Py::Object setActiveObject(const Py::Tuple&);
+    Py::Object removeDraggerCallback(const Py::Tuple&);
+    Py::Object setActiveObject(const Py::Tuple&);
+    Py::Object getActiveObject(const Py::Tuple&);
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);
