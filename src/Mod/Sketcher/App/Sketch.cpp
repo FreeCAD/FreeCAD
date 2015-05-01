@@ -182,8 +182,7 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         // create the definition struct for that geom
         return addArcOfEllipse(*aoe, fixed);
     } else {
-        Base::Exception("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
-        return 0;
+        throw Base::TypeError("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
     }
 }
 

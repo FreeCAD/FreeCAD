@@ -89,7 +89,7 @@ namespace GCS
     class Curve //a base class for all curve-based objects (line, circle/arc, ellipse/arc)
     {
     public:
-
+        virtual ~Curve(){}
         //returns normal vector. The vector should point to the left when one
         // walks along the curve from start to end. Ellipses and circles are
         // assumed to be walked counterclockwise, so the vector should point
@@ -111,6 +111,7 @@ namespace GCS
     {
     public:
         Line(){}
+        virtual ~Line(){}
         Point p1;
         Point p2;
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
@@ -123,6 +124,7 @@ namespace GCS
     {
     public:
         Circle(){rad = 0;}
+        virtual ~Circle(){}
         Point center;
         double *rad;
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
@@ -135,6 +137,7 @@ namespace GCS
     {
     public:
         Arc(){startAngle=0;endAngle=0;rad=0;}
+        virtual ~Arc(){}
         double *startAngle;
         double *endAngle;
         //double *rad; //inherited
@@ -150,6 +153,7 @@ namespace GCS
     {
     public:
         Ellipse(){ radmin = 0;}
+        virtual ~Ellipse(){}
         Point center; 
         Point focus1;
         double *radmin;
@@ -166,6 +170,7 @@ namespace GCS
     {
     public:
         ArcOfEllipse(){startAngle=0;endAngle=0;radmin = 0;}
+        virtual ~ArcOfEllipse(){}
         double *startAngle;
         double *endAngle;
         //double *radmin; //inherited

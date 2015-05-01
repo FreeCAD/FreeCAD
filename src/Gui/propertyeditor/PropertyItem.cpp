@@ -1007,12 +1007,14 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
         return;
     const Base::Vector3d& value = variant.value<Base::Vector3d>();
 
-    Base::Quantity q = Base::Quantity(value.x, Base::Unit::Length);
-    QString unit = QString::fromLatin1("('%1 %2'").arg(q.getValue()).arg(q.getUnit().getString());
-    q = Base::Quantity(value.y, Base::Unit::Length);
-    unit + QString::fromLatin1("'%1 %2'").arg(q.getValue()).arg(q.getUnit().getString());
-
-    setPropertyValue(unit);
+    Base::Quantity x = Base::Quantity(value.x, Base::Unit::Length);
+    Base::Quantity y = Base::Quantity(value.y, Base::Unit::Length);
+    Base::Quantity z = Base::Quantity(value.z, Base::Unit::Length);
+    QString data = QString::fromAscii("(%1, %2, %3)")
+                    .arg(x.getUserString())
+                    .arg(y.getUserString())
+                    .arg(z.getUserString());
+    setPropertyValue(data);
 }
 
 void PropertyVectorDistanceItem::setEditorData(QWidget *editor, const QVariant& data) const

@@ -224,10 +224,6 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 }
                 processed = TRUE;
             }
-            else if (!press && (this->currentmode == NavigationStyle::DRAGGING)) {
-                this->setViewing(false);
-                processed = TRUE;
-            }
             else if (viewer->isEditing() && (this->currentmode == NavigationStyle::SPINNING)) {
                 processed = TRUE;
             }

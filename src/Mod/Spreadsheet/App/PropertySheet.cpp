@@ -992,7 +992,7 @@ void PropertySheet::recomputeDependants(const Property *prop)
 
     assert(name != 0);
 
-    if (owner && name) {
+    if (name) {
         const char * docName = owner->getDocument()->Label.getValue();
         const char * nameInDoc = owner->getNameInDocument();
 

@@ -689,9 +689,10 @@ void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vect
 
 inline void insEdgeVec(std::map<int,std::set<int> > &map, int n1, int n2)
 {
-    if(n1<n2)
-        map[n2].insert(n1);
-    else
+    //FIXME: The if-else distinction doesn't make sense
+    //if (n1<n2)
+    //    map[n2].insert(n1);
+    //else
         map[n2].insert(n1);
 };
 
