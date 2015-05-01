@@ -79,12 +79,10 @@ void MDIView::deleteSelf()
     //
     // #0001023: Crash when quitting after using Windows > Tile
     // Use deleteLater() instead of delete operator.
-#if !defined (NO_USE_QT_MDI_AREA)
     QWidget* parent = this->parentWidget();
     if (qobject_cast<QMdiSubWindow*>(parent))
         parent->deleteLater();
     else
-#endif
         this->deleteLater();
     _pcDocument = 0;
 }
@@ -167,10 +165,6 @@ void MDIView::closeEvent(QCloseEvent *e)
         // This odd behaviour is caused by the invocation of 
         // d->mdiArea->removeSubWindow(parent) which we must let there
         // because otherwise other parts don't work as they should.
-#if defined (NO_USE_QT_MDI_AREA)
-        // avoid flickering
-        getMainWindow()->removeWindow(this);
-#endif
         QMainWindow::closeEvent(e);
     }
     else
@@ -261,9 +255,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
         case TopLevel:
             {
                 if (this->currentMode == Child) {
-#if !defined (NO_USE_QT_MDI_AREA)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-#endif
                         getMainWindow()->removeWindow(this);
                     setWindowFlags(windowFlags() | Qt::Window);
                     setParent(0, Qt::Window | Qt::WindowTitleHint | Qt::WindowSystemMenuHint | 
@@ -293,9 +285,7 @@ void MDIView::setCurrentViewMode(ViewMode mode)
         case FullScreen:
             {
                 if (this->currentMode == Child) {
-#if !defined (NO_USE_QT_MDI_AREA)
                     if (qobject_cast<QMdiSubWindow*>(this->parentWidget()))
-#endif
                         getMainWindow()->removeWindow(this);
                     setWindowFlags(windowFlags() | Qt::Window);
                     setParent(0, Qt::Window);

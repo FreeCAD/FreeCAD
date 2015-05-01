@@ -150,7 +150,6 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
         _viewer->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
 
     // create the inventor widget and set the defaults
-#if !defined (NO_USE_QT_MDI_AREA)
     _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
@@ -160,10 +159,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     // By default, the wheel events are processed by the 3d view AND the mdi area.
     //_viewer->getGLWidget()->setAttribute(Qt::WA_NoMousePropagation);
     setCentralWidget(stack);
-#else
-    _viewer->setDocument(this->_pcDocument);
-#endif
-    
+
     // apply the user settings
     OnChange(*hGrp,"EyeDistance");
     OnChange(*hGrp,"CornerCoordSystem");

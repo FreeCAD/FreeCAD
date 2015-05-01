@@ -809,12 +809,8 @@ void ManualAlignment::closeViewer()
     if (!myViewer)
         return;
     // Close the viewer
-#if !defined(NO_USE_QT_MDI_AREA)
     if (myViewer->parentWidget())
         myViewer->parentWidget()->deleteLater();
-#else
-    myViewer->deleteLater();
-#endif
     myViewer = 0;
 }
 
