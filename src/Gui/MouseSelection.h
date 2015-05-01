@@ -113,7 +113,7 @@ class GuiExport BaseMouseSelection : public AbstractMouseSelection
 {
 public:
     BaseMouseSelection();
-    virtual ~BaseMouseSelection() {};
+    virtual ~BaseMouseSelection(){}
 };
 
 // -----------------------------------------------------------------------------------
@@ -128,6 +128,9 @@ class GuiExport PolyPickerSelection : public BaseMouseSelection
 public:
     PolyPickerSelection();
     virtual ~PolyPickerSelection();
+
+    void setLineWidth(float l);
+    void setColor(float r, float g, float b, float a = 1.0);
 
     virtual void initialize();
     virtual void terminate();
@@ -173,12 +176,11 @@ public:
     BrushSelection();
     virtual ~BrushSelection();
 
-    void setLineWidth(float l);
     void setClosed(bool c);
-    void setColor(float r, float g, float b, float a = 1.0);
 
 protected:
     virtual int popupMenu();
+    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
     virtual int locationEvent(const SoLocation2Event*  const e, const QPoint& pos);
 };
 
@@ -195,9 +197,9 @@ public:
     RubberbandSelection();
     virtual ~RubberbandSelection();
 
-    /// do nothing
+    void setColor(float r, float g, float b, float a = 1.0);
+
     virtual void initialize();
-    /// do nothing
     virtual void terminate();
 
 protected:

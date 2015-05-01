@@ -119,7 +119,7 @@ class Polyline : public Gui::GLGraphicsItem
     std::vector<QPoint> _cNodeVector;
     int x_new, y_new;
     float rgb_r, rgb_g, rgb_b, rgb_a, line;
-    bool working, closed;
+    bool working, closed, stippled;
     GLPainter p;
 
 public:
@@ -127,12 +127,13 @@ public:
     Polyline();
     ~Polyline();
     void setWorking(bool on);
-    bool isWorking();
+    bool isWorking() const;
     void setViewer(View3DInventorViewer* v);
     void setCoords(int x, int y);
     void setColor(int r, int g, int b, int a=0);
     void setLineWidth(float l);
     void setClosed(bool c);
+    void setCloseStippled(bool c);
     void addNode(const QPoint& p);
     void clear();
     void paintGL();
