@@ -1028,21 +1028,22 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             points.push_back(id);
     }
 
-    if (points.size() == 1 && curves.size() >= 1
-        || points.size() >= 1 && curves.size() == 1) {
+    if (points.size() == 1 && curves.size() >= 1 ||
+        points.size() >= 1 && curves.size() == 1) {
 
         openCommand("add point on object constraint");
         int cnt = 0;
-        for (int iPnt = 0  ;  iPnt < points.size()  ;  iPnt++)
-          for (int iCrv = 0  ;  iCrv < curves.size()  ;  iCrv++){
-            if (checkBothExternal(points[iPnt].GeoId, curves[iCrv].GeoId))
-                continue;
-            if (points[iPnt].GeoId == curves[iCrv].GeoId)
-                continue; //constraining a point of an element onto the element is a bad idea...
-            cnt++;
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
-                selection[0].getFeatName(),points[iPnt].GeoId, points[iPnt].PosId, curves[iCrv].GeoId);
+        for (int iPnt = 0;  iPnt < points.size();  iPnt++) {
+            for (int iCrv = 0;  iCrv < curves.size();  iCrv++) {
+                if (checkBothExternal(points[iPnt].GeoId, curves[iCrv].GeoId))
+                    continue;
+                if (points[iPnt].GeoId == curves[iCrv].GeoId)
+                    continue; //constraining a point of an element onto the element is a bad idea...
+                cnt++;
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    selection[0].getFeatName(),points[iPnt].GeoId, points[iPnt].PosId, curves[iCrv].GeoId);
+            }
         }
         if (cnt) {
             commitCommand();
@@ -1050,13 +1051,15 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
         } else {
             abortCommand();
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry."));
+                QObject::tr("None of the selected points were constrained onto the respective curves, either "
+                            "because they are parts of the same element, or because they are both external geometry."));
         }
         return;
     }
 
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-        QObject::tr("Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.").arg(curves.size()).arg(points.size()));
+        QObject::tr("Select either one point and several curves, or one curve and several points. "
+                    "You have selected %1 curves and %2 points.").arg(curves.size()).arg(points.size()));
     return;
 }
 
