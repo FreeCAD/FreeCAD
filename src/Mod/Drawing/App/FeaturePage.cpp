@@ -106,6 +106,9 @@ void FeaturePage::onChanged(const App::Property* prop)
 
 void FeaturePage::onDocumentRestored()
 {
+    // Needs to be tmp. set because otherwise the custom text gets overridden (#0002064)
+    this->StatusBits.set(4); // the 'Restore' flag
+
     Base::FileInfo fi(PageResult.getValue());
     std::string path = App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName();
     // try to find the template in user dir/Templates first
@@ -113,6 +116,8 @@ void FeaturePage::onDocumentRestored()
     if (tempfi.exists())
         path = tempfi.filePath();
     Template.setValue(path);
+
+    this->StatusBits.reset(4); // the 'Restore' flag
 }
 
 App::DocumentObjectExecReturn *FeaturePage::execute(void)
