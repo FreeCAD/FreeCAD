@@ -526,6 +526,13 @@ void AboutDialog::on_copyButton_clicked()
     }
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit" << endl;
     str << "Version: " << major << "." << minor << "." << build << endl;
+#if defined(_DEBUG)
+    str << "Build type: Debug" << endl;
+#elif defined(NDEBUG)
+    str << "Build type: Release" << endl;
+#else
+    str << "Build type: Unknown" << endl;
+#endif
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
         str << "Branch: " << it->second.c_str() << endl;
