@@ -526,10 +526,12 @@ void AboutDialog::on_copyButton_clicked()
     }
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit" << endl;
     str << "Version: " << major << "." << minor << "." << build << endl;
-#if defined(_DEBUG)
+#if defined(_DEBUG) || defined(DEBUG)
     str << "Build type: Debug" << endl;
 #elif defined(NDEBUG)
     str << "Build type: Release" << endl;
+#elif defined(CMAKE_BUILD_TYPE)
+    str << "Build type: " << CMAKE_BUILD_TYPE << endl;
 #else
     str << "Build type: Unknown" << endl;
 #endif
