@@ -58,7 +58,7 @@ ViewProviderDatumPlane::ViewProviderDatumPlane()
 {
     SoMaterial* material = new SoMaterial();
     material->diffuseColor.setValue(0.9f, 0.9f, 0.13f);
-    material->transparency.setValue(0.2f);
+    material->transparency.setValue(0.5f);
     pShapeSep->addChild(material);
 }
 
