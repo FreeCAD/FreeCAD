@@ -102,6 +102,16 @@ Workbench::~Workbench()
 {
 }
 
+static void buildDefaultPartAndBody(const App::Document* doc)
+{
+  // This adds both the base planes and the body
+    std::string PartName = doc->getUniqueObjectName("Part");
+    //// create a PartDesign Part for now, can be later any kind of Part or an empty one
+    Gui::Command::addModule(Gui::Command::Doc, "PartDesignGui");
+    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')", PartName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "PartDesignGui.setUpPart(App.activeDocument().%s)", PartName.c_str());
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Part',App.activeDocument().%s)", PartName.c_str());
+}
 
 PartDesign::Body *Workbench::setUpPart(const App::Part *part)
 {
@@ -183,11 +193,9 @@ void Workbench::_doMigration(const App::Document* doc)
     }
 
     // Always create at least the first body, even if the document is empty
-    // This adds both the base planes and the body
-    Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
+    buildDefaultPartAndBody(doc);
     PartDesign::Body *activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     assert(activeBody);
-
 
     // Create one Body for every root and put the appropriate features into it
     for (std::vector<App::DocumentObject*>::iterator r = roots.begin(); r != roots.end(); r++) {
@@ -349,16 +357,8 @@ void Workbench::_switchToDocument(const App::Document* doc)
 	if (!doc->Tip.getValue())
     {
 		if (doc->countObjects() == 0){
-			std::string PartName = doc->getUniqueObjectName("Part");
-			//// create a PartDesign Part for now, can be later any kind of Part or an empty one
-			Gui::Command::addModule(Gui::Command::Doc, "PartDesignGui");
-			Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')", PartName.c_str());
-			Gui::Command::doCommand(Gui::Command::Doc, "PartDesignGui.setUpPart(App.activeDocument().%s)", PartName.c_str());
-			Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('Part',App.activeDocument().%s)", PartName.c_str());
-
+			buildDefaultPartAndBody(doc);
 			activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-
-			// body have to be created
 			assert(activeBody);
 
 		} else {
