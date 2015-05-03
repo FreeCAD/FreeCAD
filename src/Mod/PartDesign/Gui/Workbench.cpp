@@ -290,7 +290,7 @@ void Workbench::_doMigration(const App::Document* doc)
                 if (fabs(offset) < Precision::Confusion()) {
                     // One of the base planes
                     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
-                                            sketch->getNameInDocument(), BaseplaneNames[index], side.c_str());
+                                            sketch->getNameInDocument(), App::Part::BaseplaneTypes[index], side.c_str());
                 } else {
                     // Offset to base plane
                     // Find out which direction we need to offset
@@ -307,7 +307,7 @@ void Workbench::_doMigration(const App::Document* doc)
 
                     std::string Datum = doc->getUniqueObjectName("DatumPlane");
                     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",Datum.c_str());
-                    QString refStr = QString::fromAscii("[(App.activeDocument().") + QString::fromAscii(BaseplaneNames[index]) +
+                    QString refStr = QString::fromAscii("[(App.activeDocument().") + QString::fromAscii(App::Part::BaseplaneTypes[index]) +
                                      QString::fromAscii(",'')]");
                     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.References = %s",Datum.c_str(), refStr.toStdString().c_str());
                     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Offset = %f",Datum.c_str(), offset);

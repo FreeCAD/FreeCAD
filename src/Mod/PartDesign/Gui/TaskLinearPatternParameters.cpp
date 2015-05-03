@@ -36,6 +36,7 @@
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -182,11 +183,11 @@ void TaskLinearPatternParameters::updateUI()
             ui->comboDirection->setCurrentIndex(0);
         else if (directions.front() == "V_Axis")
             ui->comboDirection->setCurrentIndex(1);
-        else if (strcmp(directionFeature->getNameInDocument(), PartDesignGui::BaseplaneNames[0]) == 0)
+        else if (strcmp(directionFeature->getNameInDocument(), App::Part::BaseplaneTypes[0]) == 0)
             ui->comboDirection->setCurrentIndex(2);
-        else if (strcmp(directionFeature->getNameInDocument(), PartDesignGui::BaseplaneNames[1]) == 0)
+        else if (strcmp(directionFeature->getNameInDocument(), App::Part::BaseplaneTypes[1]) == 0)
             ui->comboDirection->setCurrentIndex(3);
-        else if (strcmp(directionFeature->getNameInDocument(), PartDesignGui::BaseplaneNames[2]) == 0)
+        else if (strcmp(directionFeature->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
             ui->comboDirection->setCurrentIndex(4);
         else if (directions.front().size() > 4 && directions.front().substr(0,4) == "Axis") {
             int pos = 5 + std::atoi(directions.front().substr(4,4000).c_str());
@@ -328,17 +329,17 @@ void TaskLinearPatternParameters::onDirectionChanged(int num) {
         exitSelectionMode();
     }
     else if (num == 2) {
-        pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(PartDesignGui::BaseplaneNames[0]),
+        pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[0]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
     else if (num == 3) {
-        pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(PartDesignGui::BaseplaneNames[1]),
+        pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[1]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
     else if (num == 4) {
-        pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(PartDesignGui::BaseplaneNames[2]),
+        pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[2]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
@@ -405,11 +406,11 @@ void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj, std::v
     else if (num == 1)
         sub[0] = "V_Axis";
     else if (num == 2)
-        obj = getObject()->getDocument()->getObject(PartDesignGui::BaseplaneNames[0]);
+        obj = getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[0]);
     else if (num == 3)
-        obj = getObject()->getDocument()->getObject(PartDesignGui::BaseplaneNames[1]);
+        obj = getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[1]);
     else if (num == 4)
-        obj = getObject()->getDocument()->getObject(PartDesignGui::BaseplaneNames[2]);
+        obj = getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[2]);
     else if (num >= 5 && num < maxcount) {
         QString buf = QString::fromUtf8("Axis%1").arg(num-5);
         sub[0] = buf.toStdString();
