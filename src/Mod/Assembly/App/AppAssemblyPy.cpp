@@ -41,13 +41,6 @@
 #include "Workbench.h"
 
 
-namespace PartDesignGui {
-
-// The names of the base planes. Note: The user-visible label is different from this
-const char* BaseplaneNames[3] = {"BaseplaneXY", "BaseplaneXZ", "BaseplaneYZ"};
-
-}
-
 //static PyObject * setActiveBody(PyObject *self, PyObject *args)
 //{
 //    PyObject *object=0;
