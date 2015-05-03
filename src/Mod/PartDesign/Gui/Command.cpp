@@ -528,7 +528,7 @@ const QString getReferenceString(Gui::Command* cmd)
             // Check whether this reference is a base plane
             bool base = false;
             for (unsigned i = 0; i < 3; i++) {
-                if (strcmp(PartDesignGui::BaseplaneNames[i], (*r)->getNameInDocument()) == 0) {
+                if (strcmp(App::Part::BaseplaneTypes[i], (*r)->getNameInDocument()) == 0) {
                     status.push_back(PartDesignGui::FeaturePickDialog::basePlane);
                     if (chosenRefs.empty())
                         chosenRefs.push_back(*r);
@@ -834,7 +834,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             // Check whether this plane is a base plane
             bool base = false;
             for (unsigned i = 0; i < 3; i++) {
-                if (strcmp(PartDesignGui::BaseplaneNames[i], (*p)->getNameInDocument()) == 0) {
+                if (strcmp(App::Part::BaseplaneTypes[i], (*p)->getNameInDocument()) == 0) {
                     status.push_back(PartDesignGui::FeaturePickDialog::basePlane);
                     if (firstValidPlane == planes.end())
                         firstValidPlane = p;
