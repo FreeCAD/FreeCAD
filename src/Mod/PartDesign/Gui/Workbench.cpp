@@ -119,6 +119,7 @@ PartDesign::Body *Workbench::setUpPart(const App::Part *part)
 	Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('PartDesign::Body','%s')", BodyName.c_str());
 	Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
 	Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, BodyName.c_str());
+        Gui::Command::updateActive();
 
 	return NULL;
 }
