@@ -18,6 +18,7 @@
         <file>icons/PartDesign_Plane.svg</file>
         <file>icons/PartDesign_Line.svg</file>
         <file>icons/PartDesign_Point.svg</file>
+        <file>icons/PartDesign_MoveTip.svg</file>
         <file>icons/Tree_PartDesign_Pad.svg</file>
         <file>icons/Tree_PartDesign_Revolution.svg</file>	
         <file>icons/PartDesign_InternalExternalGear.svg</file>
