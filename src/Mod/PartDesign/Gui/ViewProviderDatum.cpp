@@ -97,12 +97,8 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
     hints->shapeType.setValue(SoShapeHints::UNKNOWN_SHAPE_TYPE);
     hints->vertexOrdering.setValue(SoShapeHints::COUNTERCLOCKWISE);
     SoMaterialBinding* bind = new SoMaterialBinding();
-    SoTransparencyType* ttype = new SoTransparencyType();
-    ttype->value.setValue(SoGLRenderAction::BLEND);
     SoDrawStyle* fstyle = new SoDrawStyle();
     fstyle->style = SoDrawStyle::FILLED;
-    SoNormalBinding* normb = new SoNormalBinding();
-    normb->value = SoNormalBinding::PER_VERTEX_INDEXED;
     SoBaseColor* color = new SoBaseColor();
     color->rgb.setValue(0.9f, 0.9f, 0.3f);
     SoSeparator* sep = new SoSeparator();
@@ -111,9 +107,7 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
 
     sep->addChild(hints);
     sep->addChild(bind);
-    sep->addChild(ttype);
     sep->addChild(fstyle);
-    sep->addChild(normb);
     sep->addChild(color);
     sep->addChild(ps);
     sep->addChild(pShapeSep);
