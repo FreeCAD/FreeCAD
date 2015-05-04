@@ -54,3 +54,18 @@ bool Gui::ActiveObjectList::hasObject(const char*name)const
 {
 	return _ObjectMap.find(name) != _ObjectMap.end();
 }
+
+void ActiveObjectList::objectDeleted(const ViewProviderDocumentObject& viewProviderIn)
+{
+  App::DocumentObject* object = viewProviderIn.getObject();
+  //maybe boost::bimap or boost::multi_index
+  std::map<std::string, App::DocumentObject*>::iterator it;
+  for (it = _ObjectMap.begin(); it != _ObjectMap.end(); ++it)
+  {
+    if (it->second == object)
+    {
+      _ObjectMap.erase(it);
+      return;
+    }
+  }
+}
