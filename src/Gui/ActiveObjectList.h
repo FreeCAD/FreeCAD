@@ -36,6 +36,7 @@ namespace Gui
 {
 
 	class Document;
+        class ViewProviderDocumentObject;
 
 	/** List of active or special objects
 	* This class holds a list of objects with a special name.
@@ -56,6 +57,7 @@ namespace Gui
 		}
 		void setObject(App::DocumentObject*, const char*, const Gui::HighlightMode& m = Gui::LightBlue);
 		bool hasObject(const char*)const;
+                void objectDeleted(const ViewProviderDocumentObject& viewProviderIn);
 	protected:
 		std::map<std::string, App::DocumentObject*> _ObjectMap;
 

@@ -35,6 +35,7 @@ QT_END_NAMESPACE
 namespace Gui 
 {
 class Document;
+class ViewProviderDocumentObject;
 
 /** Base class of all windows belonging to a document.
  * There are two ways of belonging to a document:
@@ -147,8 +148,10 @@ protected:
 private:
     ViewMode currentMode;
     Qt::WindowStates wstate;
-	// list of active objects of this view
-	ActiveObjectList ActiveObjects;
+    // list of active objects of this view
+    ActiveObjectList ActiveObjects;
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection connectDelObject; //remove active object upon delete.
 };
 
 } // namespace Gui
