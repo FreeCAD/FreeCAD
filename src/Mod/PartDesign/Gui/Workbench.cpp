@@ -350,7 +350,6 @@ void Workbench::_switchToDocument(const App::Document* doc)
     if (doc == NULL) return;        
 
     PartDesign::Body* activeBody = NULL;
-	App::Part*        activePart = NULL;
     std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
 
     // No tip, so build up structure or migrate
@@ -370,61 +369,26 @@ void Workbench::_switchToDocument(const App::Document* doc)
     }
     else 
     {
-		activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-                assert(activeBody);
-		activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("Part");
-                assert(activePart);
-
-		// document change not implemented yet
-		assert(activePart->getDocument() == doc);
-
-        //// Find active body
-        //for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
-        //    PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
-        //    if (body->IsActive.getValue()) {
-        //        activeBody = body;
-        //        break;
-        //    }
-        //}
-
-        //// Do the base planes exist in this document?
-        //bool found = false;
-        //std::vector<App::DocumentObject*> planes = doc->getObjectsOfType(App::Plane::getClassTypeId());
-        //for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
-        //    for (unsigned i = 0; i < 3; i++) {
-        //        if (strcmp(PartDesignGui::BaseplaneNames[i], (*p)->getNameInDocument()) == 0) {
-        //            found = true;
-        //            break;
-        //        }
-        //    }
-        //    if (found) break;
-        //}
-
-        //if (!found) {
-        //    // Add the planes ...
-        //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[0]);
-        //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XY-Plane").toStdString().c_str());
-        //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[1]);
-        //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
-        //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
-        //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", PartDesignGui::BaseplaneNames[2]);
-        //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
-        //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
-        //    // ... and put them in the 'Origin' group
-        //    Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::DocumentObjectGroup','%s')", QObject::tr("Origin").toStdString().c_str());
-        //    for (unsigned i = 0; i < 3; i++)
-        //        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Origin.addObject(App.activeDocument().getObject('%s'))", PartDesignGui::BaseplaneNames[i]);
-        //    // TODO: Fold the group (is that possible through the Python interface?)
-        //}
+      App::Part *docPart = dynamic_cast<App::Part *>(doc->Tip.getValue());
+      assert(docPart);
+      App::Part *viewPart = Gui::Application::Instance->activeView()->getActiveObject<App::Part *>("Part");
+      if (viewPart != docPart)
+        Gui::Application::Instance->activeView()->setActiveObject(docPart, "Part");
+      if (docPart->countObjectsOfType(PartDesign::Body::getClassTypeId()) < 1)
+        setUpPart(docPart);
+      
+      PartDesign::Body *tempBody = dynamic_cast<PartDesign::Body *> (docPart->getObjectsOfType(PartDesign::Body::getClassTypeId()).front());
+      assert(tempBody);
+      PartDesign::Body *viewBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+      activeBody = viewBody;
+      if (!viewBody)
+        activeBody = tempBody;
+      else if (!docPart->hasObject(viewBody))
+        activeBody = tempBody;
+      
+      if (activeBody != viewBody)
+        Gui::Application::Instance->activeView()->setActiveObject(activeBody, PDBODYKEY);
     }
-
-    //// If there is only one body, make it active
-    //if ((activeBody == NULL) && (bodies.size() == 1))
-    //    activeBody = static_cast<PartDesign::Body*>(bodies.front());
-
-    //// add the non PartDesign feature group to the Part 
-    //if( groupCreated && doc->Tip.getValue() != NULL)
-    //     Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().Tip.addObject(App.activeDocument().NonBodyFeatures)");
 
     if (activeBody == NULL) {
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Could not create body"),
@@ -432,8 +396,6 @@ void Workbench::_switchToDocument(const App::Document* doc)
                         "We recommend you do not use this document with the PartDesign workbench until the bug has been fixed."
                         ));
     }
-
-	std::string bodyName = activeBody->getNameInDocument();
 }
 
 void Workbench::slotActiveDocument(const Gui::Document& Doc)
