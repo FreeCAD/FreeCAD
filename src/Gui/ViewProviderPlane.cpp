@@ -155,6 +155,7 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
 {
     ViewProviderGeometryObject::attach(pcObject);
 
+    SoSeparator  *sep = new SoSeparator();
     SoAnnotation *lineSep = new SoAnnotation();
 
     SoDrawStyle* style = new SoDrawStyle();
@@ -163,18 +164,25 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
     SoMaterialBinding* matBinding = new SoMaterialBinding;
     matBinding->value = SoMaterialBinding::PER_FACE;
     
+    sep->addChild(style);
+    sep->addChild(matBinding);
+    sep->addChild(pMat);
+    sep->addChild(pCoords);
+    sep->addChild(pLines);
+   
+    style = new SoDrawStyle();
+    style->lineWidth = 1.0f;
+    style->linePattern.setValue(0x00FF);
     lineSep->addChild(style);
-    lineSep->addChild(matBinding);
-    lineSep->addChild(pMat);
-    lineSep->addChild(pCoords);
     lineSep->addChild(pLines);
-    lineSep->addChild(pFont);
-    
+    lineSep->addChild(pFont);    
     pText->string.setValue(SbString(pcObject->Label.getValue()));
     lineSep->addChild(pTranslation);
     lineSep->addChild(pText);
+    sep->addChild(lineSep);
+    
  
-    addDisplayMaskMode(lineSep, "Base");
+    addDisplayMaskMode(sep, "Base");
 }
 
 void ViewProviderPlane::updateData(const App::Property* prop)
