@@ -35,6 +35,8 @@ class SoCoordinate3;
 class SoIndexedLineSet;
 class SoEventCallback;
 class SoMaterial;
+class SoAsciiText;
+class SoFont;
 
 namespace Gui
 {
@@ -49,7 +51,7 @@ public:
     ViewProviderPlane(void);
     virtual ~ViewProviderPlane();
 
-    App::PropertyFloat Size;
+    App::PropertyFloat  Size;
 
     void attach(App::DocumentObject *);
     void updateData(const App::Property*);
@@ -71,6 +73,9 @@ private:
     SoCoordinate3    * pCoords;
     SoMaterial       * pMat;
     SoIndexedLineSet * pLines;
+    SoAsciiText      * pText;
+    SoFont           * pFont;
+    SoTranslation    * pTranslation;
 };
 
 } //namespace Gui

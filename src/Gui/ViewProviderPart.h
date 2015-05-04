@@ -56,11 +56,6 @@ public:
 
     virtual bool doubleClicked(void);
 
-    std::vector<std::string> getDisplayModes(void) const;
-    void hide(void);
-    void show(void);
-    bool isShow(void) const;
-
     virtual bool onDelete(const std::vector<std::string> &);
 
     /// get called if the user hover over a object in the tree 
@@ -74,6 +69,7 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop);
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;
+    void onObjectChanged(const App::DocumentObject&, const App::Property&);
 
 private:
     

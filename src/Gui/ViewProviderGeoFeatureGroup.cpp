@@ -54,10 +54,14 @@ PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroup, Gui::ViewProviderGeometryObjec
 ViewProviderGeoFeatureGroup::ViewProviderGeoFeatureGroup()
 {
 
+    pcGroupChildren = new SoGroup();
+    pcGroupChildren->ref();
 }
 
 ViewProviderGeoFeatureGroup::~ViewProviderGeoFeatureGroup()
 {
+    pcGroupChildren->unref();
+    pcGroupChildren = 0;
 }
 
 
@@ -95,6 +99,30 @@ QIcon ViewProviderGeoFeatureGroup::getIcon() const
     return groupIcon;
 }
 
+void ViewProviderGeoFeatureGroup::attach(App::DocumentObject* pcObject)
+{
+    addDisplayMaskMode(pcGroupChildren, "Part");
+    Gui::ViewProviderGeometryObject::attach(pcObject);
+}
+
+void ViewProviderGeoFeatureGroup::setDisplayMode(const char* ModeName)
+{
+    if ( strcmp("Part",ModeName)==0 )
+        setDisplayMaskMode("Part");
+
+    ViewProviderGeometryObject::setDisplayMode( ModeName );
+}
+
+std::vector<std::string> ViewProviderGeoFeatureGroup::getDisplayModes(void) const
+{
+    // get the modes of the father
+    std::vector<std::string> StrList = ViewProviderGeometryObject::getDisplayModes();
+
+    // add your own modes
+    StrList.push_back("Part");
+
+    return StrList;
+}
 
 // Python feature -----------------------------------------------------------------------
 

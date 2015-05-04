@@ -34,6 +34,7 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "ViewProviderPart.h"
+#include "ViewProviderPlane.h"
 #include "Application.h"
 #include "Command.h"
 #include "BitmapFactory.h"
@@ -42,6 +43,10 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 
+#include "Base/Console.h"
+#include <boost/bind.hpp>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/nodes/SoSeparator.h>
 
 using namespace Gui;
 
@@ -67,17 +72,73 @@ ViewProviderPart::~ViewProviderPart()
  */
 void ViewProviderPart::onChanged(const App::Property* prop)
 {
-    ViewProviderDocumentObject::onChanged(prop);
+    ViewProviderGeoFeatureGroup::onChanged(prop);
 }
 
 void ViewProviderPart::attach(App::DocumentObject *pcObj)
 {
-    ViewProviderDocumentObject::attach(pcObj);
+    pcObj->getDocument()->signalChangedObject.connect(boost::bind(&ViewProviderPart::onObjectChanged, this, _1, _2));
+    ViewProviderGeoFeatureGroup::attach(pcObj);
 }
 
 void ViewProviderPart::updateData(const App::Property* prop)
 {
+    ViewProviderGeoFeatureGroup::updateData(prop);
+}
 
+void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App::Property&)
+{
+    App::Part* part = static_cast<App::Part*>(pcObject);
+    if(static_cast<App::Part*>(pcObject)->hasObject(&obj) && obj.getTypeId() != App::Plane::getClassTypeId()) {
+        
+        View3DInventorViewer* viewer = static_cast<View3DInventor*>(this->getActiveView())->getViewer();
+        SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
+        
+        //calculate for everything but planes
+        SbBox3f bbox(0.0001f,0.0001f,0.0001f,0.0001f,0.0001f,0.0001f);
+        for(App::DocumentObject* obj : part->getObjects()) {
+            if(obj->getTypeId() != App::Plane::getClassTypeId()) {
+                bboxAction.apply(Gui::Application::Instance->getViewProvider(obj)->getRoot());
+                bbox.extendBy(bboxAction.getBoundingBox());
+            }
+        };
+        
+        //get the bounding box values
+        SbVec3f size = bbox.getSize()*1.3;
+        SbVec3f max = bbox.getMax()*1.3;
+        SbVec3f min = bbox.getMin()*1.3;
+       
+        //get the planes and set their values
+        std::vector<App::DocumentObject*> planes = part->getObjectsOfType(App::Plane::getClassTypeId());
+        for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
+ 
+             Gui::ViewProviderPlane* vp = dynamic_cast<Gui::ViewProviderPlane*>(Gui::Application::Instance->getViewProvider(*p));
+             if (strcmp(App::Part::BaseplaneTypes[0], dynamic_cast<App::Plane*>(*p)->getNameInDocument()) == 0) {
+                    
+                    Base::Placement cpl = dynamic_cast<App::Plane*>(*p)->Placement.getValue();
+                    cpl = Base::Placement(-cpl.getPosition() + Base::Vector3d((max[0]+min[0])/2., (max[1]+min[1])/2., 0), Base::Rotation());
+                    //dynamic_cast<App::Plane*>(*p)->Placement.setValue(cpl);
+                    if(vp)
+                        vp->Size.setValue(std::max(std::abs(std::min(min[0], min[1])),std::max(max[0], max[1])));
+            }
+            if (strcmp(App::Part::BaseplaneTypes[1], dynamic_cast<App::Plane*>(*p)->getNameInDocument()) == 0) {
+                    
+                    Base::Placement cpl = dynamic_cast<App::Plane*>(*p)->Placement.getValue();
+                    cpl = Base::Placement(-cpl.getPosition() + Base::Vector3d((max[0]+min[0])/2., 0, (max[2]+min[2])/2.), Base::Rotation());
+                    //dynamic_cast<App::Plane*>(*p)->Placement.setValue(cpl);
+                    if(vp)
+                       vp->Size.setValue(std::max(std::abs(std::min(min[0], min[2])),std::max(max[0], max[2])));
+            }
+            if (strcmp(App::Part::BaseplaneTypes[2], dynamic_cast<App::Plane*>(*p)->getNameInDocument()) == 0) {
+                    
+                    Base::Placement cpl = dynamic_cast<App::Plane*>(*p)->Placement.getValue();
+                    cpl = Base::Placement(-cpl.getPosition() + Base::Vector3d(0, (max[1]+min[1])/2., (max[2]+min[2])/2.), Base::Rotation());
+                    //dynamic_cast<App::Plane*>(*p)->Placement.setValue(cpl);
+                    if(vp)
+                       vp->Size.setValue(std::max(std::abs(std::min(min[1], min[2])),std::max(max[1], max[2])));
+            }
+        }
+    }
 }
 
 
@@ -91,33 +152,11 @@ bool ViewProviderPart::doubleClicked(void)
 }
 
 
-std::vector<std::string> ViewProviderPart::getDisplayModes(void) const
-{
-    // empty
-    return std::vector<std::string>();
-}
-
 bool ViewProviderPart::onDelete(const std::vector<std::string> &)
 {
     //Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
     //                                 ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
     return true;
-}
-
-
-void ViewProviderPart::hide(void)
-{
-
-}
-
-void ViewProviderPart::show(void)
-{
-
-}
-
-bool ViewProviderPart::isShow(void) const
-{
-    return Visibility.getValue();
 }
 
 void ViewProviderPart::Restore(Base::XMLReader &reader)
@@ -168,19 +207,19 @@ void ViewProviderPart::setUpPart(const App::Part *part)
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
         //Gui::Command::doCommand(Gui::Command::Doc,"OGroup.addObject(App.activeDocument().ActiveObject)");
         
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", App::Part::BaseplaneTypes[1]);
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),-90))");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", App::Part::BaseplaneTypes[1]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,0,0),90))");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("XZ-Plane").toStdString().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
         //Gui::Command::doCommand(Gui::Command::Doc,"OGroup.addObject(App.activeDocument().ActiveObject)");
 
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", App::Part::BaseplaneTypes[2]);
-		Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(0,1,0),90))");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('App::Plane','%s')", App::Part::BaseplaneTypes[2]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Placement = App.Placement(App.Vector(),App.Rotation(App.Vector(1,1,1),120))");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr("YZ-Plane").toStdString().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
         //Gui::Command::doCommand(Gui::Command::Doc,"OGroup.addObject(App.activeDocument().ActiveObject)");
         
-		//Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(OGroup)", part->getNameInDocument());
+        //Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(OGroup)", part->getNameInDocument());
         // TODO: Fold the group (is that possible through the Python interface?)
     }
 
