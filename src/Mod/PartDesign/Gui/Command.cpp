@@ -1219,6 +1219,8 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
             QObject::tr("Select an edge, face or body. Only one body is allowed."));
         return;
     }
+    
+    Gui::Selection().clearSelection();
 
     if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong object type"),

@@ -238,6 +238,7 @@ bool TaskDlgDressUpParameters::reject()
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");    
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
 
     // Body housekeeping
 	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
