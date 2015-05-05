@@ -83,8 +83,11 @@ SET(Document_CPP_SRCS
     MeasureDistance.cpp
     Placement.cpp
     Plane.cpp
+<<<<<<< 328aeaab9aed22c3b94c79bd7e49404342a44cea
     Range.cpp
+=======
     Line.cpp
+>>>>>>> add base lines
     Transactions.cpp
     VRMLObject.cpp
     MaterialObject.cpp
@@ -114,8 +117,11 @@ SET(Document_HPP_SRCS
     MeasureDistance.h
     Placement.h
     Plane.h
+<<<<<<< 328aeaab9aed22c3b94c79bd7e49404342a44cea
     Range.h
+=======
     Line.h
+>>>>>>> add base lines
     Transactions.h
     VRMLObject.h
     MaterialObject.h
