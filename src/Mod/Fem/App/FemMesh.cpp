@@ -404,9 +404,10 @@ std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) 
     return result;
 }
 
-std::set<long> FemMesh::getNodesByFace(const TopoDS_Face &face) const
 {
-    std::set<long> result;
+std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
+{
+    std::set<int> result;
 
     Bnd_Box box;
     BRepBndLib::Add(face, box);
