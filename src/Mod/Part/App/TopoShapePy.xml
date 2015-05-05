@@ -326,7 +326,9 @@ As a result, this shape becomes null.</UserDocu>
     </Methode>
     <Methode Name="fix">
       <Documentation>
-        <UserDocu>Tries t fix a broken shape. True is returned if the operation succeeded, False otherwise.</UserDocu>
+        <UserDocu>Tries to fix a broken shape. True is returned if the operation succeeded, False otherwise.
+fix(working precision, minimum precision, maximum precision)
+        </UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="hashCode" Const="true">

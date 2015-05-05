@@ -253,17 +253,18 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const Base::Reference<Par
 {
     std::vector<Base::Reference<ParameterGrp> > hGrps = hGrp->GetGroups();
     CommandManager& rMgr = Application::Instance->commandManager();
+    std::string separator = "Separator";
     for (std::vector<Base::Reference<ParameterGrp> >::iterator it = hGrps.begin(); it != hGrps.end(); ++it) {
         bool active = (*it)->GetBool("Active", true);
         if (!active) // ignore this toolbar
             continue;
         ToolBarItem* bar = new ToolBarItem(root);
         bar->setCommand("Custom");
-   
+
         // get the elements of the subgroups
         std::vector<std::pair<std::string,std::string> > items = hGrp->GetGroup((*it)->GetGroupName())->GetASCIIMap();
         for (std::vector<std::pair<std::string,std::string> >::iterator it2 = items.begin(); it2 != items.end(); ++it2) {
-            if (it2->first == "Separator") {
+            if (it2->first.substr(0, separator.size()) == separator) {
                 *bar << "Separator";
             }
             else if (it2->first == "Name") {
