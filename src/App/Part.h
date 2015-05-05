@@ -90,6 +90,7 @@ public:
     virtual PyObject *getPyObject(void);
 
     static const char* BaseplaneTypes[3];
+    static const char* BaselineTypes[3];
 };
 
 //typedef App::FeaturePythonT<Part> PartPython;

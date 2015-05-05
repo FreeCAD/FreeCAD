@@ -46,6 +46,7 @@ PROPERTY_SOURCE(App::Part, App::GeoFeatureGroup)
 
 
 const char* Part::BaseplaneTypes[3] = {"XY_Plane", "XZ_Plane", "YZ_Plane"};
+const char* Part::BaselineTypes[3] = {"X_Axis", "Y_Axis", "Z_Axis"};
 
 Part::Part(void)
 {
