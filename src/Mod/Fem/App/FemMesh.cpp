@@ -481,9 +481,9 @@ std::set<int> FemMesh::getNodesByEdge(const TopoDS_Edge &edge) const
     return result;
 }
 
-std::set<long> FemMesh::getNodesByVertex(const TopoDS_Vertex &vertex) const
+std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex &vertex) const
 {
-    std::set<long> result;
+    std::set<int> result;
 
     double limit = BRep_Tool::Tolerance(vertex);
     limit *= limit; // use square to improve speed
