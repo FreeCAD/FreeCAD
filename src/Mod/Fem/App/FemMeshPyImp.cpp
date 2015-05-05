@@ -603,8 +603,8 @@ PyObject* FemMeshPy::getNodesByVertex(PyObject *args)
             return 0;
         }
         Py::List ret;
-        std::set<long> resultSet = getFemMeshPtr()->getNodesByVertex(fc);
-        for (std::set<long>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
+        std::set<int> resultSet = getFemMeshPtr()->getNodesByVertex(fc);
+        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
             ret.append(Py::Int(*it));
 
         return Py::new_reference_to(ret);
