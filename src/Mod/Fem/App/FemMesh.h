@@ -88,7 +88,7 @@ public:
     /// retrieving by region growing
     std::set<long> getSurfaceNodes(long ElemId, short FaceId, float Angle=360)const;
     /// retrieving by face
-    std::set<long> getNodesByFace(const TopoDS_Face &face) const;
+    std::set<int> getNodesByFace(const TopoDS_Face &face) const;
     /// retrieving by edge
     std::set<long> getNodesByEdge(const TopoDS_Edge &edge) const;
     /// retrieving by vertex
