@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) Stefan TrÃ¶ger          (stefantroeger@gmx.net) 2015     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,49 +21,33 @@
  ***************************************************************************/
 
 
+#ifndef GUI_VIEWPROVIDER_ViewProviderOrigin_H
+#define GUI_VIEWPROVIDER_ViewProviderOrigin_H
 
 
-#ifndef _AppLine_h_
-#define _AppLine_h_
+#include "ViewProviderGeoFeatureGroup.h"
 
-
-#include "GeoFeature.h"
-#include "PropertyGeo.h"
+#include <App/PropertyStandard.h>
+#include <App/Origin.h>
 
 
 
-namespace App
+namespace Gui {
+
+class GuiExport ViewProviderOrigin : public ViewProviderGeoFeatureGroup
 {
-
-
-/** Line Object
- *  Used to define planar support for all kind of operations in the document space
- */
-class AppExport Line: public App::GeoFeature
-{
-    PROPERTY_HEADER(App::Line);
+    PROPERTY_HEADER(Gui::ViewProviderOrigin);
 
 public:
-
-  /// Constructor
-  Line(void);
-  virtual ~Line();
-  /// additional information about the plane usage (e.g. "BaseLine-xy" in a Part)
-  PropertyString LineType;
-
-
-  /// returns the type name of the ViewProvider
-  virtual const char* getViewProviderName(void) const {
-      return "Gui::ViewProviderLine";
-  }
-
-  /// Return the bounding box of the plane (this is always a fixed size)
-  static Base::BoundBox3d getBoundBox();
+    /// constructor.
+    ViewProviderOrigin();
+    /// destructor.
+    virtual ~ViewProviderOrigin(); 
 };
 
+typedef ViewProviderPythonFeatureT<ViewProviderOrigin> ViewProviderOriginPython;
 
-} //namespace App
+} // namespace Gui
 
+#endif // GUI_VIEWPROVIDER_DOCUMENTOBJECTGROUP_H
 
-
-#endif

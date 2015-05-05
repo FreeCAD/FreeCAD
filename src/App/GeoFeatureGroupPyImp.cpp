@@ -52,10 +52,6 @@ PyObject*  GeoFeatureGroupPy::addObject(PyObject *args)
         PyErr_SetString(PyExc_Exception, "Cannot add a GeoFeatureGroup to itself");
         return NULL;
     }
-    if (docObj->getDocumentObjectPtr()->getTypeId().isDerivedFrom(GeoFeatureGroup::getClassTypeId())) {
-        PyErr_SetString(PyExc_Exception, "Cannot add a GeoFeatureGroup to a GeoFeatureGroup");
-        return NULL;
-    }
 
     getGeoFeatureGroupPtr()->addObject(docObj->getDocumentObjectPtr());
 

@@ -21,49 +21,34 @@
  ***************************************************************************/
 
 
+#include "PreCompiled.h"
 
-
-#ifndef _AppLine_h_
-#define _AppLine_h_
-
-
-#include "GeoFeature.h"
-#include "PropertyGeo.h"
-
-
-
-namespace App
-{
-
-
-/** Line Object
- *  Used to define planar support for all kind of operations in the document space
- */
-class AppExport Line: public App::GeoFeature
-{
-    PROPERTY_HEADER(App::Line);
-
-public:
-
-  /// Constructor
-  Line(void);
-  virtual ~Line();
-  /// additional information about the plane usage (e.g. "BaseLine-xy" in a Part)
-  PropertyString LineType;
-
-
-  /// returns the type name of the ViewProvider
-  virtual const char* getViewProviderName(void) const {
-      return "Gui::ViewProviderLine";
-  }
-
-  /// Return the bounding box of the plane (this is always a fixed size)
-  static Base::BoundBox3d getBoundBox();
-};
-
-
-} //namespace App
-
-
-
+#ifndef _PreComp_
 #endif
+
+#include <App/Document.h>
+#include <App/Plane.h>
+
+#include "Origin.h"
+
+
+using namespace App;
+
+
+PROPERTY_SOURCE(App::Origin, App::GeoFeatureGroup)
+
+
+
+//===========================================================================
+// Feature
+//===========================================================================
+
+Origin::Origin(void)
+{
+
+}
+
+Origin::~Origin(void)
+{
+}
+

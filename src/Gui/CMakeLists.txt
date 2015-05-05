@@ -824,6 +824,7 @@ SET(Viewprovider_CPP_SRCS
     ViewProviderLine.cpp
     ViewProviderGeoFeatureGroup.cpp
     ViewProviderPart.cpp
+    ViewProviderOrigin.cpp
     ViewProviderMaterialObject.cpp
 )
 SET(Viewprovider_SRCS
@@ -845,6 +846,7 @@ SET(Viewprovider_SRCS
     ViewProviderLine.h
     ViewProviderGeoFeatureGroup.h
     ViewProviderPart.h
+    ViewProviderOrigin.h
     ViewProviderMaterialObject.h
 )
 SOURCE_GROUP("View3D\\Viewprovider" FILES ${Viewprovider_SRCS})
