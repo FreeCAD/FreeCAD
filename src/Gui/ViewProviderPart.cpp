@@ -29,6 +29,7 @@
 #endif
 
 #include <App/Part.h>
+#include <App/Origin.h>
 #include <App/Plane.h>
 #include <App/Line.h>
 #include <App/Document.h>
@@ -92,6 +93,7 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
 {
     App::Part* part = static_cast<App::Part*>(pcObject);
     if(static_cast<App::Part*>(pcObject)->hasObject(&obj) && 
+        obj.getTypeId() != App::Origin::getClassTypeId() &&
         obj.getTypeId() != App::Plane::getClassTypeId() &&
         obj.getTypeId() != App::Line::getClassTypeId()) {
         
@@ -101,7 +103,8 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
         //calculate for everything but planes
         SbBox3f bbox(0.0001f,0.0001f,0.0001f,0.0001f,0.0001f,0.0001f);
         for(App::DocumentObject* obj : part->getObjects()) {
-            if(obj->getTypeId() != App::Plane::getClassTypeId() && 
+            if(obj->getTypeId() != App::Origin::getClassTypeId() &&
+               obj->getTypeId() != App::Plane::getClassTypeId() && 
                obj->getTypeId() != App::Line::getClassTypeId() ) {
                 bboxAction.apply(Gui::Application::Instance->getViewProvider(obj)->getRoot());
                 bbox.extendBy(bboxAction.getBoundingBox());
@@ -113,8 +116,12 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
         SbVec3f max = bbox.getMax()*1.3;
         SbVec3f min = bbox.getMin()*1.3;
        
+        App::Origin* origin = static_cast<App::Origin*>(part->getObjectsOfType(App::Origin::getClassTypeId()).front());
+        if(!origin)
+            return;
+        
         //get the planes and set their values
-        std::vector<App::DocumentObject*> planes = part->getObjectsOfType(App::Plane::getClassTypeId());
+        std::vector<App::DocumentObject*> planes = origin->getObjectsOfType(App::Plane::getClassTypeId());
         for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
  
              Gui::ViewProviderPlane* vp = dynamic_cast<Gui::ViewProviderPlane*>(Gui::Application::Instance->getViewProvider(*p));
@@ -145,7 +152,7 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
         }
         
         //get the lines and set their values
-        std::vector<App::DocumentObject*> lines = part->getObjectsOfType(App::Line::getClassTypeId());
+        std::vector<App::DocumentObject*> lines = origin->getObjectsOfType(App::Line::getClassTypeId());
         for (std::vector<App::DocumentObject*>::const_iterator p = lines.begin(); p != lines.end(); p++) {
  
              Gui::ViewProviderLine* vp = dynamic_cast<Gui::ViewProviderLine*>(Gui::Application::Instance->getViewProvider(*p));

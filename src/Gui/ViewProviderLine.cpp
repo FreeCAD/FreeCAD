@@ -226,6 +226,17 @@ bool ViewProviderLine::isSelectable(void) const
 {
     return true;
 }
+
+bool ViewProviderLine::setEdit(int ModNum)
+{
+    return true;
+}
+
+void ViewProviderLine::unsetEdit(int ModNum)
+{
+   
+}
+
 // ----------------------------------------------------------------------------
 
 

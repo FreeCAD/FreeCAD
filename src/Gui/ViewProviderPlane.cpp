@@ -229,6 +229,17 @@ bool ViewProviderPlane::isSelectable(void) const
 {
     return true;
 }
+
+bool ViewProviderPlane::setEdit(int ModNum)
+{
+    return true;
+}
+
+void ViewProviderPlane::unsetEdit(int ModNum)
+{
+    
+}
+
 // ----------------------------------------------------------------------------
 
 

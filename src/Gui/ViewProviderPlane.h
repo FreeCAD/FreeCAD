@@ -66,6 +66,9 @@ public:
     virtual std::string getElement(const SoDetail *) const;
     virtual SoDetail* getDetail(const char*) const;
 
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    
 protected:
     void onChanged(const App::Property* prop);
 

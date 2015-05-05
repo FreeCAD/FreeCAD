@@ -42,7 +42,10 @@ public:
     /// constructor.
     ViewProviderOrigin();
     /// destructor.
-    virtual ~ViewProviderOrigin(); 
+    virtual ~ViewProviderOrigin();
+    
+    virtual bool setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderOrigin> ViewProviderOriginPython;
