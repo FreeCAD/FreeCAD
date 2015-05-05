@@ -68,6 +68,17 @@ ViewProviderOrigin::~ViewProviderOrigin()
 {
 }
 
+bool ViewProviderOrigin::setEdit(int ModNum)
+{
+    return true;
+}
+
+void ViewProviderOrigin::unsetEdit(int ModNum)
+{
+
+}
+
+
 // Python feature -----------------------------------------------------------------------
 
 namespace Gui {
