@@ -90,7 +90,7 @@ public:
     /// retrieving by face
     std::set<int> getNodesByFace(const TopoDS_Face &face) const;
     /// retrieving by edge
-    std::set<long> getNodesByEdge(const TopoDS_Edge &edge) const;
+    std::set<int> getNodesByEdge(const TopoDS_Edge &edge) const;
     /// retrieving by vertex
     std::set<long> getNodesByVertex(const TopoDS_Vertex &vertex) const;
     //@}
