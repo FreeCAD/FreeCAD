@@ -404,7 +404,89 @@ std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) 
     return result;
 }
 
+/* That function returns map containing volume ID and face number
+ * as per CalculiX definition for tetrahedral elements. See CalculiX
+ * documentation for the details.
+ */
+std::map<int, int> FemMesh::getccxVolumesByFace(const TopoDS_Face &face) const
 {
+    std::map<int, int> result;
+    std::set<int> nodes_on_face = FemMesh::getNodesByFace(face);
+
+    static std::map<int, std::vector<int> > elem_order;
+    if (elem_order.empty()) {
+        std::vector<int> c3d4  = boost::assign::list_of(1)(0)(2)(3);
+        std::vector<int> c3d10 = boost::assign::list_of(1)(0)(2)(3)(4)(6)(5)(8)(7)(9);
+
+        elem_order.insert(std::make_pair(c3d4.size(), c3d4));
+        elem_order.insert(std::make_pair(c3d10.size(), c3d10));
+    }
+
+    SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
+    std::set<int> element_nodes;
+    int num_of_nodes;
+    while (vol_iter->more()) {
+        const SMDS_MeshVolume* vol = vol_iter->next();
+        num_of_nodes = vol->NbNodes();
+        std::pair<int, std::vector<int> > apair;
+        apair.first = vol->GetID();
+
+        std::map<int, std::vector<int> >::iterator it = elem_order.find(num_of_nodes);
+        if (it != elem_order.end()) {
+            const std::vector<int>& order = it->second;
+            for (std::vector<int>::const_iterator jt = order.begin(); jt != order.end(); ++jt) {
+                int vid = vol->GetNode(*jt)->GetID();
+                apair.second.push_back(vid);
+            }
+        }
+
+        // Get volume nodes on face
+        std::vector<int> element_face_nodes;
+        std::set<int> element_nodes;
+        element_nodes.insert(apair.second.begin(), apair.second.end());
+        std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), element_nodes.begin(), element_nodes.end(),
+        std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+        if ((element_face_nodes.size() == 3 && num_of_nodes == 4) ||
+            (element_face_nodes.size() == 6 && num_of_nodes == 10)) {
+            int missing_node = 0;
+            for (int i=0; i<4; i++) {
+                // search for the ID of the volume which is not part of 'element_face_nodes'
+                if (std::find(element_face_nodes.begin(), element_face_nodes.end(), apair.second[i]) == element_face_nodes.end()) {
+                    missing_node = i + 1;
+                    break;
+                }
+            }
+            /* for tetrahedral elements as per CalculiX definition:
+             Face 1: 1-2-3, missing point 4 means it's face P1
+             Face 2: 1-4-2, missing point 3 means it's face P2
+             Face 3: 2-4-3, missing point 1 means it's face P3
+             Face 4: 3-4-1, missing point 2 means it's face P4 */
+            int face_ccx;
+            switch (missing_node) {
+            case 1:
+                face_ccx = 3;
+                break;
+            case 2:
+                face_ccx = 4;
+                break;
+            case 3:
+                face_ccx = 2;
+                break;
+            case 4:
+                face_ccx = 1;
+                break;
+            default:
+                assert(false); // should never happen
+                break;
+            }
+            result[apair.first] = face_ccx;
+        }
+    }
+
+    return result;
+}
+
 std::set<int> FemMesh::getNodesByFace(const TopoDS_Face &face) const
 {
     std::set<int> result;
