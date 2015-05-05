@@ -29,6 +29,7 @@ class inp_writer:
         self.write_step_begin(inpfile)
         self.write_constraints_fixed(inpfile)
         self.write_constraints_force(inpfile)
+        self.write_face_load(inpfile)
         self.write_outputs_types(inpfile)
         self.write_step_end(inpfile)
         self.write_footer(inpfile)
@@ -89,10 +90,7 @@ class inp_writer:
             for o, elem in frc_obj.References:
                 fo = o.Shape.getElement(elem)
                 n = []
-                if fo.ShapeType == 'Face':
-                    print '  AreaLoad (face load) on: ', elem
-                    n = self.mesh_object.FemMesh.getNodesByFace(fo)
-                elif fo.ShapeType == 'Edge':
+                if fo.ShapeType == 'Edge':
                     print '  Line Load (edge load) on: ', elem
                     n = self.mesh_object.FemMesh.getNodesByEdge(fo)
                 elif fo.ShapeType == 'Vertex':
@@ -176,6 +174,21 @@ class inp_writer:
                 f.write(frc_obj_name + ',1,' + v1 + '\n')
                 f.write(frc_obj_name + ',2,' + v2 + '\n')
                 f.write(frc_obj_name + ',3,' + v3 + '\n\n')
+
+    def write_face_load(self, f):
+        f.write('***********************************************************\n')
+        f.write('** element + CalculiX face + load in [MPa]\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for fobj in self.force_objects:
+            frc_obj = fobj['Object']
+            f.write('*DLOAD\n')
+            for o, e in frc_obj.References:
+                elem = o.Shape.getElement(e)
+                if elem.ShapeType == 'Face':
+                    v = self.mesh_object.FemMesh.getccxVolumesByFace(elem)
+                    f.write("** Load on face {}\n".format(e))
+                    for i in v:
+                        f.write("{},P{},{}\n".format(i[0], i[1], frc_obj.Force))
 
     def write_outputs_types(self, f):
         f.write('\n** outputs --> frd file\n')

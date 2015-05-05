@@ -514,6 +514,38 @@ PyObject* FemMeshPy::setTransform(PyObject *args)
     Py_Return;
 }
 
+PyObject* FemMeshPy::getccxVolumesByFace(PyObject *args)
+{
+    PyObject *pW;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapeFacePy::Type), &pW))
+         return 0;
+
+    try {
+        const TopoDS_Shape& sh = static_cast<Part::TopoShapeFacePy*>(pW)->getTopoShapePtr()->_Shape;
+        const TopoDS_Face& fc = TopoDS::Face(sh);
+        if (sh.IsNull()) {
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Face is empty");
+            return 0;
+        }
+        Py::List ret;
+        std::map<int, int> resultSet = getFemMeshPtr()->getccxVolumesByFace(fc);
+        for (std::map<int, int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it) {
+		Py::List vol_face;
+                vol_face.append(Py::Int(it->first));
+                vol_face.append(Py::Int(it->second));
+                ret.append(vol_face);
+	}
+
+        return Py::new_reference_to(ret);
+
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        return 0;
+    }
+}
+
 PyObject* FemMeshPy::getNodeById(PyObject *args)
 {
     int id;
