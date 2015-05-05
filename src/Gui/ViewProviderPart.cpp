@@ -106,7 +106,11 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
             if(obj->getTypeId() != App::Origin::getClassTypeId() &&
                obj->getTypeId() != App::Plane::getClassTypeId() && 
                obj->getTypeId() != App::Line::getClassTypeId() ) {
-                bboxAction.apply(Gui::Application::Instance->getViewProvider(obj)->getRoot());
+                //getting crash on deletion PartDesign::Body object. no viewprovider.
+                ViewProvider *viewProvider = Gui::Application::Instance->getViewProvider(obj);
+                if (!viewProvider)
+                  continue;
+                bboxAction.apply(viewProvider->getRoot());
                 bbox.extendBy(bboxAction.getBoundingBox());
             }
         };
