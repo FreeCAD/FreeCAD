@@ -38,7 +38,7 @@ namespace Part
   */
 class PartExport BodyBase : public Part::Feature
 {
-    PROPERTY_HEADER(PartDesign::BodyBase);
+    PROPERTY_HEADER(Part::BodyBase);
 
 public:
     BodyBase();
