@@ -67,7 +67,7 @@ ViewProviderPlane::ViewProviderPlane()
 {
 
     ADD_PROPERTY(Size,(1.0));
- 
+
     pMat = new SoMaterial();
     pMat->ref();
 
@@ -97,16 +97,16 @@ ViewProviderPlane::ViewProviderPlane()
     pLines->ref();
     pLines->coordIndex.setNum(6);
     pLines->coordIndex.setValues(0, 6, lines);
-    
+
     pFont = new SoFont();
     pFont->size.setValue(Size.getValue()/10.);
-    
+
     pTranslation = new SoTranslation();
     pTranslation->translation.setValue(SbVec3f(-1,9./10.,0));
-    
+
     pText = new SoAsciiText();
     pText->width.setValue(-1);
-    
+
     sPixmap = "view-measurement";
 }
 
@@ -157,21 +157,23 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
 
     SoSeparator  *sep = new SoSeparator();
     SoAnnotation *lineSep = new SoAnnotation();
+    SoFCSelection *highlight = new SoFCSelection();
 
     SoDrawStyle* style = new SoDrawStyle();
-    style->lineWidth = 1.0f;
+    style->lineWidth = 2.0f;
 
     SoMaterialBinding* matBinding = new SoMaterialBinding;
-    matBinding->value = SoMaterialBinding::PER_FACE;
-    
-    sep->addChild(style);
+    matBinding->value = SoMaterialBinding::OVERALL;
+
     sep->addChild(matBinding);
     sep->addChild(pMat);
-    sep->addChild(pCoords);
-    sep->addChild(pLines);
+    sep->addChild(highlight);
+    highlight->addChild(style);
+    highlight->addChild(pCoords);
+    highlight->addChild(pLines);
    
     style = new SoDrawStyle();
-    style->lineWidth = 1.0f;
+    style->lineWidth = 2.0f;
     style->linePattern.setValue(0x00FF);
     lineSep->addChild(style);
     lineSep->addChild(pLines);
@@ -179,9 +181,9 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
     pText->string.setValue(SbString(pcObject->Label.getValue()));
     lineSep->addChild(pTranslation);
     lineSep->addChild(pText);
-    sep->addChild(lineSep);
-    
- 
+    highlight->addChild(lineSep);
+
+    highlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
     addDisplayMaskMode(sep, "Base");
 }
 
