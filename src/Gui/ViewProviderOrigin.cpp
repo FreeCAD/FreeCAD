@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2015     *
+ *   Copyright (c) Stefan TrÃ¶ger          (stefantroeger@gmx.net) 2015     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,49 +21,60 @@
  ***************************************************************************/
 
 
+#include "PreCompiled.h"
 
-
-#ifndef _AppLine_h_
-#define _AppLine_h_
-
-
-#include "GeoFeature.h"
-#include "PropertyGeo.h"
-
-
-
-namespace App
-{
-
-
-/** Line Object
- *  Used to define planar support for all kind of operations in the document space
- */
-class AppExport Line: public App::GeoFeature
-{
-    PROPERTY_HEADER(App::Line);
-
-public:
-
-  /// Constructor
-  Line(void);
-  virtual ~Line();
-  /// additional information about the plane usage (e.g. "BaseLine-xy" in a Part)
-  PropertyString LineType;
-
-
-  /// returns the type name of the ViewProvider
-  virtual const char* getViewProviderName(void) const {
-      return "Gui::ViewProviderLine";
-  }
-
-  /// Return the bounding box of the plane (this is always a fixed size)
-  static Base::BoundBox3d getBoundBox();
-};
-
-
-} //namespace App
-
-
-
+#ifndef _PreComp_
+# include <QApplication>
+# include <QPixmap>
 #endif
+
+#include <App/Origin.h>
+#include <App/Plane.h>
+#include <App/Line.h>
+#include <App/Document.h>
+
+/// Here the FreeCAD includes sorted by Base,App,Gui......
+#include "ViewProviderOrigin.h"
+#include "ViewProviderPlane.h"
+#include "ViewProviderLine.h"
+#include "Application.h"
+#include "Command.h"
+#include "BitmapFactory.h"
+#include "Document.h"
+#include "Tree.h"
+#include "View3DInventor.h"
+#include "View3DInventorViewer.h"
+
+#include "Base/Console.h"
+#include <boost/bind.hpp>
+#include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/nodes/SoSeparator.h>
+
+using namespace Gui;
+
+
+PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderGeometryObject)
+
+
+/**
+ * Creates the view provider for an object group.
+ */
+ViewProviderOrigin::ViewProviderOrigin() 
+{
+    sPixmap = ":icon/delete.svg";
+}
+
+ViewProviderOrigin::~ViewProviderOrigin()
+{
+}
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderOriginPython, Gui::ViewProviderOrigin)
+/// @endcond
+
+// explicit template instantiation
+template class GuiExport ViewProviderPythonFeatureT<ViewProviderOrigin>;
+}

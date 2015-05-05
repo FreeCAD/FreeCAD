@@ -107,6 +107,7 @@
 #include "ViewProviderPlane.h"
 #include "ViewProviderLine.h"
 #include "ViewProviderPart.h"
+#include "ViewProviderOrigin.h"
 #include "ViewProviderMaterialObject.h"
 
 #include "Language/Translator.h"
@@ -1546,6 +1547,7 @@ void Application::initTypes(void)
     Gui::ViewProviderPlane                      ::init();
     Gui::ViewProviderLine                       ::init();
     Gui::ViewProviderPart                       ::init();
+    Gui::ViewProviderOrigin                     ::init();
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
 

@@ -21,14 +21,11 @@
  ***************************************************************************/
 
 
+#ifndef APP_Origin_H
+#define APP_Origin_H
 
-
-#ifndef _AppLine_h_
-#define _AppLine_h_
-
-
-#include "GeoFeature.h"
-#include "PropertyGeo.h"
+#include "GeoFeatureGroup.h"
+#include "PropertyLinks.h"
 
 
 
@@ -36,34 +33,27 @@ namespace App
 {
 
 
-/** Line Object
- *  Used to define planar support for all kind of operations in the document space
+/** Base class of all geometric document objects.
  */
-class AppExport Line: public App::GeoFeature
+class AppExport Origin : public App::GeoFeatureGroup
 {
-    PROPERTY_HEADER(App::Line);
+    PROPERTY_HEADER(App::Origin);
 
 public:
 
-  /// Constructor
-  Line(void);
-  virtual ~Line();
-  /// additional information about the plane usage (e.g. "BaseLine-xy" in a Part)
-  PropertyString LineType;
+    /// Constructor
+    Origin(void);
+    virtual ~Origin();
 
-
-  /// returns the type name of the ViewProvider
-  virtual const char* getViewProviderName(void) const {
-      return "Gui::ViewProviderLine";
-  }
-
-  /// Return the bounding box of the plane (this is always a fixed size)
-  static Base::BoundBox3d getBoundBox();
+    /// returns the type name of the ViewProvider
+    virtual const char* getViewProviderName(void) const {
+        return "Gui::ViewProviderOrigin";
+    }
 };
 
+//typedef App::FeaturePythonT<Origin> OriginPython;
 
 } //namespace App
 
 
-
-#endif
+#endif // APP_Origin_H
