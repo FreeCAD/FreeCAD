@@ -46,6 +46,8 @@ public:
     
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
+    
+    virtual QIcon getIcon(void) const;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderOrigin> ViewProviderOriginPython;

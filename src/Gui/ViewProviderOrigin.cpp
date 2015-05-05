@@ -61,7 +61,8 @@ PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderGeometryObject)
  */
 ViewProviderOrigin::ViewProviderOrigin() 
 {
-    sPixmap = ":icon/delete.svg";
+    sPixmap = "CoordinateSystem";
+    Visibility.setValue(false);
 }
 
 ViewProviderOrigin::~ViewProviderOrigin()
@@ -76,6 +77,11 @@ bool ViewProviderOrigin::setEdit(int ModNum)
 void ViewProviderOrigin::unsetEdit(int ModNum)
 {
 
+}
+
+QIcon ViewProviderOrigin::getIcon(void) const
+{
+    return Gui::ViewProvider::getIcon();
 }
 
 
