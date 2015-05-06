@@ -63,7 +63,7 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderPlane, Gui::ViewProviderGeometryObject)
 
 
-ViewProviderPlane::ViewProviderPlane() 
+ViewProviderPlane::ViewProviderPlane()
 {
 
     ADD_PROPERTY(Size,(1.0));
@@ -171,13 +171,13 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
     highlight->addChild(style);
     highlight->addChild(pCoords);
     highlight->addChild(pLines);
-   
+
     style = new SoDrawStyle();
     style->lineWidth = 2.0f;
     style->linePattern.setValue(0x00FF);
     lineSep->addChild(style);
     lineSep->addChild(pLines);
-    lineSep->addChild(pFont);    
+    lineSep->addChild(pFont);
     pText->string.setValue(SbString(pcObject->Label.getValue()));
     lineSep->addChild(pTranslation);
     lineSep->addChild(pText);
@@ -212,7 +212,7 @@ std::string ViewProviderPlane::getElement(const SoDetail* detail) const
 SoDetail* ViewProviderPlane::getDetail(const char* subelement) const
 {
     SoLineDetail* detail = 0;
-    std::string subelem(subelement); 
+    std::string subelem(subelement);
     int edge = -1;
 
     if(subelem == "Main") edge = 0;
@@ -225,7 +225,7 @@ SoDetail* ViewProviderPlane::getDetail(const char* subelement) const
     return detail;
 }
 
-bool ViewProviderPlane::isSelectable(void) const 
+bool ViewProviderPlane::isSelectable(void) const
 {
     return true;
 }
@@ -237,7 +237,7 @@ bool ViewProviderPlane::setEdit(int ModNum)
 
 void ViewProviderPlane::unsetEdit(int ModNum)
 {
-    
+
 }
 
 // ----------------------------------------------------------------------------
