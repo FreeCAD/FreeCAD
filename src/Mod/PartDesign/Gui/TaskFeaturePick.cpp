@@ -198,6 +198,19 @@ std::vector<App::DocumentObject*> TaskFeaturePick::getFeatures() {
 
 void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
 {    
+    ui->listWidget->clearSelection();
+    for(Gui::SelectionSingleton::SelObj obj :  Gui::Selection().getSelection()) {
+        
+        for(int row = 0; row < ui->listWidget->count(); row++) {
+            
+            QListWidgetItem *item = ui->listWidget->item(row);
+            QString t = item->text();
+            t = t.left(t.indexOf(QString::fromAscii("(")) - 1);
+            if(t.compare(QString::fromAscii(obj.FeatName))==0) {
+                ui->listWidget->setItemSelected(item, true);
+            }
+        }
+    }
     
 }
 
