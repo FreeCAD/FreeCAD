@@ -166,9 +166,9 @@ class inp_writer:
                 vec = frc_obj.DirectionVector
                 f.write('*CLOAD\n')
                 f.write('** force: ' + str(node_load) + ' N,  direction: ' + str(vec) + '\n')
-                v1 = "{:.15}".format(repr(vec.x * node_load))
-                v2 = "{:.15}".format(repr(vec.y * node_load))
-                v3 = "{:.15}".format(repr(vec.z * node_load))
+                v1 = "{:.13E}".format(vec.x * node_load)
+                v2 = "{:.13E}".format(vec.y * node_load)
+                v3 = "{:.13E}".format(vec.z * node_load)
                 f.write(frc_obj_name + ',1,' + v1 + '\n')
                 f.write(frc_obj_name + ',2,' + v2 + '\n')
                 f.write(frc_obj_name + ',3,' + v3 + '\n\n')
