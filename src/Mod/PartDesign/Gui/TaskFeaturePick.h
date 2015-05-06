@@ -26,12 +26,14 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <App/DocumentObject.h>
 
 #include <boost/function.hpp>
 
 namespace PartDesignGui {
 
+class SoSwitch;
 class Ui_TaskFeaturePick;
 class TaskFeaturePick : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
@@ -68,6 +70,8 @@ protected Q_SLOTS:
 private:
     Ui_TaskFeaturePick* ui;
     QWidget* proxy;
+    SoSwitch* featureswitch;
+    std::vector<Gui::ViewProviderOrigin*> origins;
 
     std::vector<QString> features;
     std::vector<featureStatus> statuses;

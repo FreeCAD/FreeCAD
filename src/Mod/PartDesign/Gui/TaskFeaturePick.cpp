@@ -31,6 +31,8 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <App/Document.h>
 #include <Base/Tools.h>
 
@@ -81,6 +83,9 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     // These are not implemented yet
     ui->radioDependent->setEnabled(false);
     ui->radioXRef->setEnabled(false);
+    
+    auto guidoc = Gui::Application::Instance->activeDocument();
+    auto origin_obj = App::GetApplication().getActiveDocument()->getObjectsOfType<App::Origin>();
 
     std::vector<featureStatus>::const_iterator st = status.begin();
     for (std::vector<App::DocumentObject*>::const_iterator o = objects.begin(); o != objects.end(); o++) {
@@ -88,6 +93,19 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
                                                     QString::fromAscii(" (") + getFeatureStatusString(*st) + QString::fromAscii(")"));
         ui->listWidget->addItem(item);
         st++;
+        
+        //check if we need to set any origin in temporary visibility mode
+        for(App::Origin* obj : origin_obj) {
+            if(obj->hasObject(*o)) {
+                Gui::ViewProviderOrigin* vpo = static_cast<Gui::ViewProviderOrigin*>(guidoc->getViewProvider(obj));
+                if(!vpo->isTemporaryVisibilityMode())
+                    vpo->setTemporaryVisibilityMode(true, guidoc);
+                
+                vpo->setTemporaryVisibility(*o, true);
+                origins.push_back(vpo);
+                break;
+            }
+        }
     }
 
     groupLayout()->addWidget(proxy);
@@ -97,13 +115,18 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
 
 TaskFeaturePick::~TaskFeaturePick()
 {
+    for(Gui::ViewProviderOrigin* vpo : origins)
+        vpo->setTemporaryVisibilityMode(false, NULL);
 
 }
 
 void TaskFeaturePick::updateList()
 {
     int index = 0;
-
+    
+    //get all origins in temporary mode
+    
+    
     for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
         QListWidgetItem* item = ui->listWidget->item(index);
 
@@ -174,8 +197,8 @@ std::vector<App::DocumentObject*> TaskFeaturePick::getFeatures() {
 }
 
 void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
-{
-
+{    
+    
 }
 
 //**************************************************************************

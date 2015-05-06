@@ -34,6 +34,8 @@
 
 namespace Gui {
 
+class Document;  
+  
 class GuiExport ViewProviderOrigin : public ViewProviderGeoFeatureGroup
 {
     PROPERTY_HEADER(Gui::ViewProviderOrigin);
@@ -48,6 +50,16 @@ public:
     virtual void unsetEdit(int ModNum);
     
     virtual QIcon getIcon(void) const;
+    
+    //temporary mode to override visibility of grouped objects
+    void setTemporaryVisibilityMode(bool onoff, Gui::Document* doc = NULL);
+    bool isTemporaryVisibilityMode();
+    void setTemporaryVisibility(App::DocumentObject* obj, bool onoff);
+    
+private:
+    bool tempVisMode = false;
+    Gui::Document* tempVisDoc;
+    std::map<Gui::ViewProvider*, bool> tempVisMap; 
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderOrigin> ViewProviderOriginPython;
