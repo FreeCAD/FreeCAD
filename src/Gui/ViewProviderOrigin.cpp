@@ -84,6 +84,48 @@ QIcon ViewProviderOrigin::getIcon(void) const
     return Gui::ViewProvider::getIcon();
 }
 
+void ViewProviderOrigin::setTemporaryVisibilityMode(bool onoff, Gui::Document* doc)
+{
+    tempVisDoc = doc;
+    
+    if(tempVisMode == onoff)
+        return;
+    
+    tempVisMode = onoff;
+    if(onoff && doc) {
+        App::Origin* origin = static_cast<App::Origin*>(pcObject);
+        tempVisMap.clear();
+        
+        for(App::DocumentObject* obj : origin->getObjects()) {
+            Gui::ViewProvider* vp = doc->getViewProvider(obj);
+            if(vp) {
+                tempVisMap[vp] = vp->isVisible();
+                vp->setVisible(false);
+            }
+        }
+        tempVisMap[this] = isVisible();
+        setVisible(true);
+    }
+    else if(!onoff) {    
+        for(std::pair<Gui::ViewProvider*, bool> pair : tempVisMap) 
+            pair.first->setVisible(pair.second);
+    }
+}
+
+void ViewProviderOrigin::setTemporaryVisibility(App::DocumentObject* obj, bool onoff)
+{
+    Gui::ViewProvider* vp = tempVisDoc->getViewProvider(obj);
+    if(vp) {
+        vp->setVisible(onoff);
+    }
+}
+
+bool ViewProviderOrigin::isTemporaryVisibilityMode()
+{
+    return tempVisMode;
+}
+
+
 
 // Python feature -----------------------------------------------------------------------
 
