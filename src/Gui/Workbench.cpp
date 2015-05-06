@@ -789,7 +789,7 @@ ToolBarItem* TestWorkbench::setupCommandBars() const
 
 // -----------------------------------------------------------------------
 
-TYPESYSTEM_SOURCE(Gui::PythonBaseWorkbench, Gui::Workbench)
+TYPESYSTEM_SOURCE_ABSTRACT(Gui::PythonBaseWorkbench, Gui::Workbench)
 
 PythonBaseWorkbench::PythonBaseWorkbench()
   : _menuBar(0), _contextMenu(0), _toolBar(0), _commandBar(0), _workbenchPy(0)
@@ -858,10 +858,13 @@ void PythonBaseWorkbench::appendMenu(const std::list<std::string>& menu, const s
     MenuItem* item = _menuBar->findItem( *jt );
     if (!item)
     {
-        Gui::MenuItem* wnd = _menuBar->findItem( "&Windows" );
         item = new MenuItem;
         item->setCommand( *jt );
-        _menuBar->insertItem( wnd, item );
+        Gui::MenuItem* wnd = _menuBar->findItem( "&Windows" );
+        if (wnd)
+            _menuBar->insertItem(wnd, item);
+        else
+            _menuBar->appendItem(item);
     }
 
     // create sub menus
