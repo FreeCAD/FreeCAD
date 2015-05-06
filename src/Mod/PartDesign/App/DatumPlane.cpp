@@ -60,6 +60,8 @@
 
 #include <QObject>
 #include <App/Plane.h>
+#include <App/Part.h>
+#include <App/Line.h>
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -220,6 +222,17 @@ void Plane::onChanged(const App::Property *prop)
                 Base::Vector3d base = l->getBasePoint();
                 Base::Vector3d dir = l->getDirection();
                 line = new gp_Lin(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
+            } else if (refs[i]->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+                App::Line* l = static_cast<App::Line*>(refs[i]);
+                Base::Vector3d base = Base::Vector3d(0,0,0);
+                gp_Dir dir;
+                if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[0]) == 0)
+                    dir = gp_Dir(1,0,0);
+                else if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[1]) == 0)
+                    dir = gp_Dir(0,1,0);
+                else if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
+                    dir = gp_Dir(0,0,1);
+                line = new gp_Lin(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.X(), dir.Y(), dir.Z()));
             } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
                 p1 = new Base::Vector3d(p->getBasePoint());
@@ -229,11 +242,11 @@ void Plane::onChanged(const App::Property *prop)
                 // Note: We only handle the three base planes here
                 p1 = new Base::Vector3d(0,0,0);
                 normal = new Base::Vector3d;
-                if (strcmp(p->getNameInDocument(), "BaseplaneXY") == 0)
+                if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[0]) == 0)
                     *normal = Base::Vector3d(0,0,1);
-                else if (strcmp(p->getNameInDocument(), "BaseplaneXZ") == 0)
+                else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
                     *normal = Base::Vector3d(0,1,0);
-                else if (strcmp(p->getNameInDocument(), "BaseplaneYZ") == 0)
+                else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[1]) == 0)
                     *normal = Base::Vector3d(1,0,0);
             } else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);

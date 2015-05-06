@@ -54,6 +54,8 @@ public:
     //temporary mode to override visibility of grouped objects
     void setTemporaryVisibilityMode(bool onoff, Gui::Document* doc = NULL);
     bool isTemporaryVisibilityMode();
+    void setTemporaryVisibilityAxis(bool onoff);
+    void setTemporaryVisibilityPlanes(bool onoff);
     void setTemporaryVisibility(App::DocumentObject* obj, bool onoff);
     
 private:

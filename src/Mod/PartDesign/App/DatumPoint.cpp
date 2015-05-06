@@ -60,6 +60,8 @@
 
 #include <QObject>
 #include <App/Plane.h>
+#include <App/Line.h>
+#include <App/Part.h>
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -197,16 +199,34 @@ void Point::onChanged(const App::Property* prop)
                     s2 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
                 else
                     s3 = new Geom_Plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
+                
+            } else if (refs[i]->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+                App::Line* l = static_cast<App::Line*>(refs[i]);
+                // Note: We only handle the three base planes here
+                gp_Pnt base(0,0,0);
+                gp_Dir normal;
+                if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[0]) == 0)
+                    normal = gp_Dir(1,0,0);
+                else if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[1]) == 0)
+                    normal = gp_Dir(0,1,0);
+                else if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
+                    normal = gp_Dir(0,0,1);
+
+                if (s1.IsNull())
+                    c1 = new Geom_Line(base, normal);
+                else if (s2.IsNull())
+                    c2 = new Geom_Line(base, normal);
+                
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
                 App::Plane* p = static_cast<App::Plane*>(refs[i]);
                 // Note: We only handle the three base planes here
                 gp_Pnt base(0,0,0);
                 gp_Dir normal;
-                if (strcmp(p->getNameInDocument(), "BaseplaneXY") == 0)
+                if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[0]) == 0)
                     normal = gp_Dir(0,0,1);
-                else if (strcmp(p->getNameInDocument(), "BaseplaneYZ") == 0)
+                else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
                     normal = gp_Dir(1,0,0);
-                else if (strcmp(p->getNameInDocument(), "BaseplaneXZ") == 0)
+                else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[1]) == 0)
                     normal = gp_Dir(0,1,0);
 
                 if (s1.IsNull())
@@ -391,7 +411,7 @@ const QString getRefType(const App::DocumentObject* obj, const std::string& subn
 
     if ((type == App::Plane::getClassTypeId()) || (type == PartDesign::Plane::getClassTypeId()))
         return PLANE;
-    else if (type == PartDesign::Line::getClassTypeId())
+    else if ((type == App::Line::getClassTypeId()) || (type == PartDesign::Line::getClassTypeId()))
         return LINE;
     else if (type == PartDesign::Point::getClassTypeId())
         return POINT;
