@@ -62,6 +62,8 @@
 
 #include <QObject>
 #include <App/Plane.h>
+#include <App/Part.h>
+#include <App/Line.h>
 #include "DatumPoint.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -207,7 +209,38 @@ void Line::onChanged(const App::Property *prop)
                         s3 = new Geom_Plane(base, normal);
                     }
                 }
-            } else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+            } else if (refs[i]->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+                App::Line* l = static_cast<App::Line*>(refs[i]);
+                gp_Dir ldir;
+                if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[0]) == 0)
+                    ldir = gp_Dir(1,0,0);
+                else if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[1]) == 0)
+                    ldir = gp_Dir(0,1,0);
+                else if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
+                    ldir = gp_Dir(0,0,1);
+                
+                if (s1.IsNull()) {
+                    base = new Base::Vector3d (0,0,0);
+                    direction = new Base::Vector3d (ldir.X(), ldir.Y(), ldir.Z());
+                } else {
+                    // Create plane through line normal to s1
+                    Handle_Geom_Plane pl = Handle_Geom_Plane::DownCast(s1);
+                    if (pl.IsNull())
+                        return; // Non-planar first surface
+                    gp_Dir normal = ldir.Crossed(pl->Axis().Direction());
+                    double offset1 = Offset.getValue();
+                    double offset2 = Offset2.getValue();
+                    gp_Pnt base = gp_Pnt(0,0,0);
+                    if (s2.IsNull()) {
+                        base.Translate(offset1 * normal);
+                        s2 = new Geom_Plane(base, normal);
+                    } else {
+                        base.Translate(offset2 * normal);
+                        s3 = new Geom_Plane(base, normal);
+                    }
+                }
+                
+            }else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
                 Base::Vector3d base = p->getBasePoint();
                 Base::Vector3d normal = p->getNormal();
@@ -226,11 +259,11 @@ void Line::onChanged(const App::Property *prop)
                 // Note: We only handle the three base planes here
                 gp_Pnt base(0,0,0);
                 gp_Dir normal;
-                if (strcmp(p->getNameInDocument(), "BaseplaneXY") == 0)
+                if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[0]) == 0)
                     normal = gp_Dir(0,0,1);
-                else if (strcmp(p->getNameInDocument(), "BaseplaneYZ") == 0)
+                else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
                     normal = gp_Dir(1,0,0);
-                else if (strcmp(p->getNameInDocument(), "BaseplaneXZ") == 0)
+                else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[1]) == 0)
                     normal = gp_Dir(0,1,0);
 
                 double offset1 = Offset.getValue();
