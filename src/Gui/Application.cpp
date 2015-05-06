@@ -1006,6 +1006,8 @@ bool Application::activateWorkbench(const char* name)
             type = result.as_std_string("ascii");
             if (Base::Type::fromName(type.c_str()).isDerivedFrom(Gui::PythonBaseWorkbench::getClassTypeId())) {
                 Workbench* wb = WorkbenchManager::instance()->createWorkbench(name, type);
+                if (!wb)
+                    throw Py::RuntimeError("Failed to instantiate workbench of type " + type);
                 handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
             }
 
