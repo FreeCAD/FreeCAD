@@ -38,6 +38,8 @@
 
 using namespace Gui;
 
+/* TRANSLATOR Gui::Assistant */
+
 Assistant::Assistant()
     : proc(0)
 {
@@ -100,8 +102,8 @@ bool Assistant::startAssistant()
 
         Base::FileInfo fi ( (const char*)qhc.toUtf8() );
         if (!fi.isReadable()) {
-            QMessageBox::critical(0, QObject::tr("%1 Help").arg(exe),
-            QObject::tr("FreeCAD help files not found (%1). You might need to install the FreeCAD documentation package.").arg(qhc));
+            QMessageBox::critical(0, tr("%1 Help").arg(exe),
+                tr("%1 help files not found (%2). You might need to install the %1 documentation package.").arg(exe).arg(qhc));
             return false;
         }
 
@@ -110,7 +112,7 @@ bool Assistant::startAssistant()
             Base::Console().Log("Help file at %s\n", (const char*)qhc.toUtf8());
             first = false;
         }
-        
+
         QStringList args;
 
         args << QLatin1String("-collectionFile") << qhc
@@ -119,8 +121,8 @@ bool Assistant::startAssistant()
         proc->start(app, args);
 
         if (!proc->waitForStarted()) {
-            QMessageBox::critical(0, QObject::tr("%1 Help").arg(exe),
-            QObject::tr("Unable to launch Qt Assistant (%1)").arg(app));
+            QMessageBox::critical(0, tr("%1 Help").arg(exe),
+                tr("Unable to launch Qt Assistant (%1)").arg(app));
             return false;
         }
     }
