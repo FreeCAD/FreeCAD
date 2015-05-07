@@ -38,6 +38,7 @@
 #include <Base/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
+#include <App/Line.h>
 
 using namespace PartDesign;
 
@@ -112,6 +113,12 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         axbase = gp_Pnt(base.x, base.y, base.z);
         Base::Vector3d dir = line->getDirection();
         axdir = gp_Dir(dir.x, dir.y, dir.z);
+    } else if (refObject->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+        App::Line* line = static_cast<App::Line*>(refObject);
+        Base::Rotation rot = line->Placement.getValue().getRotation();
+        Base::Vector3d d(1,0,0);
+        rot.multVec(d, d);
+        axdir = gp_Dir(d.x, d.y, d.z);
     } else if (refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         if (subStrings[0].empty())
             throw Base::Exception("No axis reference specified");

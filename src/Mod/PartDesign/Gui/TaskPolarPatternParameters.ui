@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>253</width>
-    <height>333</height>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,6 +55,21 @@
        <item>
         <property name="text">
          <string>Normal sketch axis</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Base X axis</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Base Y axis</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Base Z axis</string>
         </property>
        </item>
        <item>
