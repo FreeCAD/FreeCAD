@@ -37,6 +37,7 @@
 #include <App/Document.h>
 #include <App/Plane.h>
 #include <App/Line.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -187,14 +188,21 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     ui->lineRef3->blockSignals(false);
     updateUI();
     
-    //temporary show all coordinate systems for selection
-    for(auto origin : Gui::Application::Instance->activeDocument()->getViewProvidersOfType(Gui::ViewProviderOrigin::getClassTypeId())) {
+    //temporary show coordinate systems for selection
+    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
     
-        static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
-        static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityAxis(true);
-        static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityPlanes(true);
-    }
-    
+        if(part->hasObject(DatumView->getObject(), true)) {
+            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+            if(!app_origin.empty()) {
+                ViewProviderOrigin* origin;
+                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+                static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
+                static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityAxis(true);
+                static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityPlanes(true);
+            }            
+            break;
+        }
+    }    
 }
 
 const QString makeRefText(std::set<QString> hint)
@@ -641,10 +649,18 @@ QString TaskDatumParameters::getReference(const int idx) const
 
 TaskDatumParameters::~TaskDatumParameters()
 {
-    //end temporary view mode of all coordinate systems
-    for(auto origin : Gui::Application::Instance->activeDocument()->getViewProvidersOfType(Gui::ViewProviderOrigin::getClassTypeId())) {
+    //end temporary view mode of coordinate system
+     for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
     
-        static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityMode(false);
+        if(part->hasObject(DatumView->getObject(), true)) {
+            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+            if(!app_origin.empty()) {
+                ViewProviderOrigin* origin;
+                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+                static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityMode(false);
+            }            
+            break;
+        }
     }
     
     delete ui;

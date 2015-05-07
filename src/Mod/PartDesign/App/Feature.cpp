@@ -37,6 +37,7 @@
 #include <Base/Exception.h>
 #include "App/Document.h"
 #include "App/Plane.h"
+#include <App/Line.h>
 #include "Body.h"
 #include "Feature.h"
 #include "Mod/Part/App/DatumFeature.h"
@@ -129,6 +130,7 @@ const Part::TopoShape Feature::getBaseTopoShape() const {
 bool Feature::isDatum(const App::DocumentObject* feature)
 {
     return feature->getTypeId().isDerivedFrom(App::Plane::getClassTypeId()) ||
+           feature->getTypeId().isDerivedFrom(App::Line::getClassTypeId()) ||
            feature->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId());
 }
 

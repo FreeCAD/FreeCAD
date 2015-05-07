@@ -72,7 +72,7 @@ public:
     /**
      * Checks whether the object \a obj is GeoFeatureGroup of this group.
      */
-    bool hasObject(const DocumentObject* obj) const;
+    bool hasObject(const App::DocumentObject* obj, bool recursive = false) const;
     /**
      * Checks whether this group object is a child (or sub-child)
      * of the given group object.

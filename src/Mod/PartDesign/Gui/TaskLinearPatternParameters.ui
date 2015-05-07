@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>266</width>
-    <height>333</height>
+    <width>270</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -64,17 +64,17 @@
        </item>
        <item>
         <property name="text">
-         <string>Base plane XY</string>
+         <string>Base X axis</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Base plane XZ</string>
+         <string>Base Y axis</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Base plane YZ</string>
+         <string>Base Z axis</string>
         </property>
        </item>
        <item>
