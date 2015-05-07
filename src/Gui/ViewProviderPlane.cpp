@@ -86,7 +86,7 @@ ViewProviderPlane::ViewProviderPlane()
     };
 
     pMat->diffuseColor.setNum(1);
-    pMat->diffuseColor.set1Value(0, SbColor(1.0f, 1.0f, 1.0f));
+    pMat->diffuseColor.set1Value(0, SbColor(50./255., 150./255., 250./255.));
 
     pCoords = new SoCoordinate3();
     pCoords->ref();
@@ -174,7 +174,7 @@ void ViewProviderPlane::attach(App::DocumentObject* pcObject)
 
     style = new SoDrawStyle();
     style->lineWidth = 2.0f;
-    style->linePattern.setValue(0x00FF);
+    style->linePattern.setValue(0xF000);
     lineSep->addChild(style);
     lineSep->addChild(pLines);
     lineSep->addChild(pFont);
