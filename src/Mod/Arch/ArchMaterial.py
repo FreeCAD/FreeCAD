@@ -168,7 +168,7 @@ class _ArchMaterialTaskPanel:
     def __init__(self,obj=None):
         self.cards = None
         self.obj = obj
-        self.form = FreeCADGui.PySideUic.loadUi(os.path.splitext(__file__)[0]+".ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchMaterial.ui")
         self.color = QtGui.QColor(128,128,128)
         colorPix = QtGui.QPixmap(16,16)
         colorPix.fill(self.color)
