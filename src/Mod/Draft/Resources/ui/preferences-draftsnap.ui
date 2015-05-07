@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Snapping settings</string>
+   <string>Grid and snapping</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">

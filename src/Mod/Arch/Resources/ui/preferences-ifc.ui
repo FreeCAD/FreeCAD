@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>463</width>
-    <height>516</height>
+    <width>376</width>
+    <height>399</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>IFC / DAE / WebGL</string>
+   <string>IFC</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -21,9 +21,38 @@
     <number>9</number>
    </property>
    <item>
+    <widget class="QGroupBox" name="groupBox_3">
+     <property name="title">
+      <string>General options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+          <property name="toolTip">
+           <string>Show verbose information during import and export of IFC files</string>
+          </property>
+          <property name="text">
+           <string>Show debug messages</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcDebug</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>IFC import</string>
+      <string>Import options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -89,26 +118,6 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcRootElement</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
-          <property name="toolTip">
-           <string>Show verbose information during import and export of IFC files</string>
-          </property>
-          <property name="text">
-           <string>Show debug messages</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ifcDebug</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -213,20 +222,9 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>IFC export</string>
+      <string>Export options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <item>
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>&quot;Show debug messages&quot; option above will apply to export too</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
@@ -239,81 +237,6 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ifcExportAsBrep</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_4">
-     <property name="title">
-      <string>Bim server</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Address</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefLineEdit" name="lineEdit">
-          <property name="toolTip">
-           <string>The URL of a bim server instance (www.bimserver.org)  to connect to.</string>
-          </property>
-          <property name="text">
-           <string>http://localhost:8082</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BimServerUrl</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>Collada export</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Scaling factor</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
-          <property name="decimals">
-           <number>4</number>
-          </property>
-          <property name="maximum">
-           <double>999999.989999999990687</double>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ColladaScalingFactor</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -339,10 +262,6 @@
     </spacer>
    </item>
   </layout>
-  <zorder>groupBox_4</zorder>
-  <zorder>groupBox_2</zorder>
-  <zorder>groupBox</zorder>
-  <zorder>groupBox_3</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
@@ -360,11 +279,6 @@
   <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>505</width>
-    <height>510</height>
+    <width>460</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -335,6 +335,42 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>archHiddenPattern</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="title">
+      <string>Bim server</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Address</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefLineEdit" name="lineEdit_2">
+          <property name="toolTip">
+           <string>The URL of a bim server instance (www.bimserver.org)  to connect to.</string>
+          </property>
+          <property name="text">
+           <string>http://localhost:8082</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BimServerUrl</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
