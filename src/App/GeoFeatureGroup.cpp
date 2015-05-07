@@ -109,12 +109,16 @@ DocumentObject *GeoFeatureGroup::getObject(const char *Name) const
     return 0;
 }
 
-bool GeoFeatureGroup::hasObject(const DocumentObject* obj) const
+bool GeoFeatureGroup::hasObject(const DocumentObject* obj, bool recursive) const
 {
     const std::vector<DocumentObject*>& grp = Items.getValues();
     for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
         if (*it == obj)
             return true;
+        if (recursive && (*it)->getTypeId().isDerivedFrom(GeoFeatureGroup::getClassTypeId())) {
+            if (this->hasObject(static_cast<GeoFeatureGroup*>(*it), recursive))
+                return true;
+        }
     }
 
     return false;

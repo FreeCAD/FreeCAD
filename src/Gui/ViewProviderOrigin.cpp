@@ -127,7 +127,7 @@ bool ViewProviderOrigin::isTemporaryVisibilityMode()
 
 void ViewProviderOrigin::setTemporaryVisibilityAxis(bool onoff)
 {
-    for(App::DocumentObject* obj : static_cast<App::Origin*>(pcObject)->getObjectsOfType(App::Plane::getClassTypeId())) {
+    for(App::DocumentObject* obj : static_cast<App::Origin*>(pcObject)->getObjectsOfType(App::Line::getClassTypeId())) {
      
         Gui::ViewProvider* vp = tempVisDoc->getViewProvider(obj);
         vp->setVisible(onoff);        
@@ -136,7 +136,7 @@ void ViewProviderOrigin::setTemporaryVisibilityAxis(bool onoff)
 
 void ViewProviderOrigin::setTemporaryVisibilityPlanes(bool onoff)
 {
-    for(App::DocumentObject* obj : static_cast<App::Origin*>(pcObject)->getObjectsOfType(App::Line::getClassTypeId())) {
+    for(App::DocumentObject* obj : static_cast<App::Origin*>(pcObject)->getObjectsOfType(App::Plane::getClassTypeId())) {
      
         Gui::ViewProvider* vp = tempVisDoc->getViewProvider(obj);
         vp->setVisible(onoff);        
