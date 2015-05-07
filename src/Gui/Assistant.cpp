@@ -33,6 +33,7 @@
 
 #include "Assistant.h"
 #include <Base/Console.h>
+#include <Base/FileInfo.h>
 #include <App/Application.h>
 
 using namespace Gui;
@@ -97,12 +98,19 @@ bool Assistant::startAssistant()
         QString doc = QString::fromUtf8(App::Application::getHelpDir().c_str());
         QString qhc = doc + exe.toLower() + QLatin1String(".qhc");
 
+        Base::FileInfo fi ( (const char*)qhc.toUtf8() );
+        if (!fi.isReadable()) {
+            QMessageBox::critical(0, QObject::tr("%1 Help").arg(exe),
+            QObject::tr("FreeCAD help files not found (%1). You might need to install the FreeCAD documentation package.").arg(qhc));
+            return false;
+        }
+
         static bool first = true;
         if (first) {
             Base::Console().Log("Help file at %s\n", (const char*)qhc.toUtf8());
             first = false;
         }
-
+        
         QStringList args;
 
         args << QLatin1String("-collectionFile") << qhc
