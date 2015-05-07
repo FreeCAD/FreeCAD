@@ -899,7 +899,7 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
 #if (COIN_MAJOR_VERSION >= 4)
     // The behaviour in Coin4 has changed so that when using the same instance of 'SoFCOffscreenRenderer'
     // multiple times internally the biggest viewport size is stored and set to the SoGLRenderAction.
-    // The trick is to add a callback node and override the viewport size with wath we want.
+    // The trick is to add a callback node and override the viewport size with what we want.
     //SoCallback* cbvp = new SoCallback;
     //cbvp->setCallback(setViewportCB);
     //root->addChild(cbvp);
