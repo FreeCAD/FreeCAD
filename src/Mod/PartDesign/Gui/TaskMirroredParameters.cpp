@@ -43,6 +43,7 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/FeatureMirrored.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -125,6 +126,21 @@ void TaskMirroredParameters::setupUI()
 
     ui->comboPlane->setEnabled(true);
     updateUI();
+    
+    //show the parts coordinate system axis for selection
+    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
+    
+        if(part->hasObject(getObject(), true)) {
+            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+            if(!app_origin.empty()) {
+                ViewProviderOrigin* origin;
+                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+                origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
+                origin->setTemporaryVisibilityPlanes(true);
+            }            
+            break;
+        }
+    } 
 }
 
 void TaskMirroredParameters::updateUI()
@@ -226,6 +242,18 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
                 ui->comboPlane->setCurrentIndex(maxcount);
                 ui->comboPlane->addItem(tr("Select reference..."));
             }
+        } else if( strcmp(msg.pObjectName, App::Part::BaseplaneTypes[0]) == 0 || 
+                   strcmp(msg.pObjectName, App::Part::BaseplaneTypes[1]) == 0 ||
+                   strcmp(msg.pObjectName, App::Part::BaseplaneTypes[2]) == 0) {
+           
+            std::vector<std::string> planes;
+            App::DocumentObject* selObj;
+            PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+            getReferencedSelection(pcMirrored, msg, selObj, planes);
+            pcMirrored->MirrorPlane.setValue(selObj, planes);
+
+            recomputeFeature();
+            updateUI();
         }
     }
 }
@@ -353,6 +381,21 @@ void TaskMirroredParameters::apply()
 
 TaskMirroredParameters::~TaskMirroredParameters()
 {
+    //hide the parts coordinate system axis for selection
+    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
+    
+        if(part->hasObject(getObject(), true)) {
+            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+            if(!app_origin.empty()) {
+                ViewProviderOrigin* origin;
+                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+                origin->setTemporaryVisibilityMode(false);
+            }            
+            break;
+        }
+    } 
+    
+    
     delete ui;
     if (proxy)
         delete proxy;
