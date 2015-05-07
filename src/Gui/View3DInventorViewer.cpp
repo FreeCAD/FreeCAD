@@ -76,6 +76,7 @@
 # include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <QEventLoop>
 # include <QGLFramebufferObject>
+# include <QGLPixelBuffer>
 # include <QKeyEvent>
 # include <QWheelEvent>
 # include <QMessageBox>
@@ -862,6 +863,11 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
 
 void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& img) const
 {
+    // If 'QGLPixelBuffer::hasOpenGLPbuffers()' returns false then
+    // SoQtOffscreenRenderer won't work. In this case we try to use
+    // Coin's implementation of the off-screen rendering.
+    bool useCoinOffscreenRenderer = !QGLPixelBuffer::hasOpenGLPbuffers();
+
     // if no valid color use the current background
     bool useBackground = false;
     SbViewportRegion vp(getSoRenderManager()->getViewportRegion());
@@ -873,15 +879,14 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
     //The default value is 72.0.
     //If we need to support grayscale images with must either use SoOffscreenRenderer::LUMINANCE or
     //SoOffscreenRenderer::LUMINANCE_TRANSPARENCY.
-    SoQtOffscreenRenderer renderer(vp);
-    renderer.setNumPasses(4);
+
     SoCallback* cb = 0;
 
     // for an invalid color use the viewer's current background color
+    QColor bgColor;
     if (!bg.isValid()) {
         if (backgroundroot->findChild(pcBackGround) == -1) {
-            const QColor col = this->backgroundColor();
-            renderer.setBackgroundColor(SbColor(col.redF(), col.greenF(), col.blueF()));
+            bgColor = this->backgroundColor();
         }
         else {
             useBackground = true;
@@ -890,7 +895,7 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
         }
     }
     else {
-        renderer.setBackgroundColor(SbColor(bg.redF(), bg.greenF(), bg.blueF()));
+        bgColor = bg;
     }
 
     SoSeparator* root = new SoSeparator;
@@ -900,9 +905,11 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
     // The behaviour in Coin4 has changed so that when using the same instance of 'SoFCOffscreenRenderer'
     // multiple times internally the biggest viewport size is stored and set to the SoGLRenderAction.
     // The trick is to add a callback node and override the viewport size with what we want.
-    //SoCallback* cbvp = new SoCallback;
-    //cbvp->setCallback(setViewportCB);
-    //root->addChild(cbvp);
+    if (useCoinOffscreenRenderer) {
+        SoCallback* cbvp = new SoCallback;
+        cbvp->setCallback(setViewportCB);
+        root->addChild(cbvp);
+    }
 #endif
 
     SoCamera* camera = getSoRenderManager()->getCamera();
@@ -926,11 +933,28 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
 
     try {
         // render the scene
-        if (!renderer.render(root))
-            throw Base::Exception("Offscreen rendering failed");
+        if (!useCoinOffscreenRenderer) {
+            SoQtOffscreenRenderer renderer(vp);
+            renderer.setNumPasses(4);
+            if (bgColor.isValid())
+                renderer.setBackgroundColor(SbColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF()));
+            if (!renderer.render(root))
+                throw Base::Exception("Offscreen rendering failed");
 
-        renderer.writeToImage(img);
-        root->unref();
+            renderer.writeToImage(img);
+            root->unref();
+        }
+        else {
+            SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
+            renderer.setViewportRegion(vp);
+            if (bgColor.isValid())
+                renderer.setBackgroundColor(SbColor(bgColor.redF(), bgColor.greenF(), bgColor.blueF()));
+            if (!renderer.render(root))
+                throw Base::Exception("Offscreen rendering failed");
+
+            renderer.writeToImage(img);
+            root->unref();
+        }
     }
     catch (...) {
         root->unref();
