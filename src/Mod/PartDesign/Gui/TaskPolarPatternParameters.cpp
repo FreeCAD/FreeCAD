@@ -36,6 +36,7 @@
 #include <Base/UnitsApi.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -44,6 +45,7 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <Mod/PartDesign/App/FeaturePolarPattern.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -145,6 +147,21 @@ void TaskPolarPatternParameters::setupUI()
     ui->polarAngle->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
     updateUI();
+    
+    //show the parts coordinate system axis for selection
+    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
+    
+        if(part->hasObject(getObject(), true)) {
+            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+            if(!app_origin.empty()) {
+                ViewProviderOrigin* origin;
+                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+                origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
+                origin->setTemporaryVisibilityAxis(true);
+            }            
+            break;
+        }
+    } 
 }
 
 void TaskPolarPatternParameters::updateUI()
@@ -176,8 +193,14 @@ void TaskPolarPatternParameters::updateUI()
     if (axisFeature != NULL && !axes.empty()) {
         if (axes.front() == "N_Axis") {
             ui->comboAxis->setCurrentIndex(0);
+        } else if (strcmp(axes.front().c_str(), App::Part::BaselineTypes[0]) == 0) {
+            ui->comboAxis->setCurrentIndex(1);
+        } else if (strcmp(axes.front().c_str(), App::Part::BaselineTypes[1]) == 0) {
+            ui->comboAxis->setCurrentIndex(2);
+        } else if (strcmp(axes.front().c_str(), App::Part::BaselineTypes[2]) == 0) {
+            ui->comboAxis->setCurrentIndex(3);
         } else if (axes.front().size() > 4 && axes.front().substr(0,4) == "Axis") {
-            int pos = 1 + std::atoi(axes.front().substr(4,4000).c_str());
+            int pos = 4 + std::atoi(axes.front().substr(4,4000).c_str());
             if (pos <= maxcount)
                 ui->comboAxis->setCurrentIndex(pos);
             else
@@ -257,6 +280,18 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
                 ui->comboAxis->setCurrentIndex(1);
                 ui->comboAxis->addItem(tr("Select reference..."));
             }
+        } else if( strcmp(msg.pObjectName, App::Part::BaselineTypes[0]) == 0 || 
+                   strcmp(msg.pObjectName, App::Part::BaselineTypes[1]) == 0 ||
+                   strcmp(msg.pObjectName, App::Part::BaselineTypes[2]) == 0) {
+           
+            std::vector<std::string> axes;
+            App::DocumentObject* selObj;
+            PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+            getReferencedSelection(pcPolarPattern, msg, selObj, axes);
+            pcPolarPattern->Axis.setValue(selObj, axes);
+
+            recomputeFeature();
+            updateUI();
         }
     }
 }
@@ -402,6 +437,20 @@ const unsigned TaskPolarPatternParameters::getOccurrences(void) const
 
 TaskPolarPatternParameters::~TaskPolarPatternParameters()
 {
+    //hide the parts coordinate system axis for selection
+    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
+    
+        if(part->hasObject(getObject(), true)) {
+            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+            if(!app_origin.empty()) {
+                ViewProviderOrigin* origin;
+                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+                origin->setTemporaryVisibilityMode(false);
+            }            
+            break;
+        }
+    } 
+    
     delete ui;
     if (proxy)
         delete proxy;
