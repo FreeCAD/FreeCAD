@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QEvent>
 # include <QGridLayout>
+# include <QSizePolicy>
 # include <QPushButton>
 #endif
 
@@ -49,7 +50,8 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WFlags fl)
   : QDialog(parent, fl)
 {
     setModal(false);
-    resize( 434, 365 ); 
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    resize( 690, 365 ); 
 
     setWindowTitle(tr("Customize"));
     setSizeGripEnabled( true );

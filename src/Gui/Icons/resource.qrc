@@ -15,6 +15,8 @@
         <file>button_left.svg</file>
         <file>button_right.svg</file>
         <file>button_up.svg</file>
+        <file>button_sort.svg</file>
+        <file>button_add_all.svg</file>
         <file>button_valid.svg</file>
         <file>button_invalid.svg</file>
         <file>macro-execute.svg</file>
