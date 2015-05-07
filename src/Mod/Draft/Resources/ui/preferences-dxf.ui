@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>505</width>
-    <height>543</height>
+    <width>506</width>
+    <height>560</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DXF / DWG</string>
+   <string>DXF</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -52,7 +52,7 @@
    <item>
     <widget class="QGroupBox" name="GroupBox12">
      <property name="title">
-      <string>DXF format options</string>
+      <string>Import options</string>
      </property>
      <layout class="QVBoxLayout">
       <property name="spacing">
@@ -256,26 +256,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
-          <property name="toolTip">
-           <string>If this is checked, all objects containing faces will be exported as 3d polyfaces</string>
-          </property>
-          <property name="text">
-           <string>Export 3D objects as polyface meshes</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dxfmesh</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_14">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_12">
@@ -452,25 +432,21 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>DWG format options</string>
+      <string>Export options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Path to Teigha File Converter</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser_2">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
           <property name="toolTip">
-           <string>The path to your Teigha File Converter executable</string>
+           <string>If this is checked, all objects containing faces will be exported as 3d polyfaces</string>
+          </property>
+          <property name="text">
+           <string>Export 3D objects as polyface meshes</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>TeighaFileConverter</cstring>
+           <cstring>dxfmesh</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -500,16 +476,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
-  <customwidget>
-   <class>Gui::FileChooser</class>
-   <extends>QWidget</extends>
-   <header>Gui/FileDialog.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefFileChooser</class>
-   <extends>Gui::FileChooser</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
   <customwidget>
    <class>Gui::PrefRadioButton</class>
    <extends>QRadioButton</extends>
