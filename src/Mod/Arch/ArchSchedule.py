@@ -54,7 +54,7 @@ class _CommandArchSchedule:
 class _ArchScheduleTaskPanel:
     '''The editmode TaskPanel for MechanicalMaterial objects'''
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(os.path.splitext(__file__)[0]+".ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/ui/ArchSchedule.ui")
         QtCore.QObject.connect(self.form.ComboType, QtCore.SIGNAL("currentIndexChanged(int)"), self.changeType)
 
     def changeType(self,idx):

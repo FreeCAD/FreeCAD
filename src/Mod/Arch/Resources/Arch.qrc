@@ -61,6 +61,8 @@
         <file>ui/preferences-archdefaults.ui</file>
         <file>ui/preferences-ifc.ui</file>
         <file>ui/preferences-dae.ui</file>
+        <file>ui/ArchMaterial.ui</file>
+        <file>ui/ArchSchedule.ui</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
