@@ -683,6 +683,28 @@ PyObject* FemMeshPy::getNodesByVertex(PyObject *args)
     }
 }
 
+PyObject* FemMeshPy::getElementNodes(PyObject *args)
+{
+    int id;
+    if (!PyArg_ParseTuple(args, "i", &id))
+         return 0;
+
+    try {
+        std::set<int> resultSet = getFemMeshPtr()->getElementNodes(id);
+        Py::Tuple ret(resultSet.size());
+        int index = 0;
+        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
+            ret.setItem(index++, Py::Int(*it));
+
+        return Py::new_reference_to(ret);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e->GetMessageString());
+        return 0;
+    }
+}
+
 
 // ===== Atributes ============================================================
 
@@ -714,12 +736,48 @@ Py::Int FemMeshPy::getNodeCount(void) const
     return Py::Int(getFemMeshPtr()->getSMesh()->NbNodes());
 }
 
+Py::Tuple FemMeshPy::getEdges(void) const
+{
+    std::set<int> ids;
+    SMDS_EdgeIteratorPtr aEdgeIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->edgesIterator();
+    while (aEdgeIter->more()) {
+        const SMDS_MeshEdge* aEdge = aEdgeIter->next();
+        ids.insert(aEdge->GetID());
+    }
+
+    Py::Tuple tuple(ids.size());
+    int index = 0;
+    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
+        tuple.setItem(index++, Py::Int(*it));
+    }
+
+    return tuple;
+}
+
 Py::Int FemMeshPy::getEdgeCount(void) const
 {
     return Py::Int(getFemMeshPtr()->getSMesh()->NbEdges());
 }
 
-Py::Int FemMeshPy::getFacesCount(void) const
+Py::Tuple FemMeshPy::getFaces(void) const
+{
+    std::set<int> ids;
+    SMDS_FaceIteratorPtr aFaceIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->facesIterator();
+    while (aFaceIter->more()) {
+        const SMDS_MeshFace* aFace = aFaceIter->next();
+        ids.insert(aFace->GetID());
+    }
+
+    Py::Tuple tuple(ids.size());
+    int index = 0;
+    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
+        tuple.setItem(index++, Py::Int(*it));
+    }
+
+    return tuple;
+}
+
+Py::Int FemMeshPy::getFaceCount(void) const
 {
     return Py::Int(getFemMeshPtr()->getSMesh()->NbFaces());
 }
@@ -737,6 +795,24 @@ Py::Int FemMeshPy::getQuadrangleCount(void) const
 Py::Int FemMeshPy::getPolygonCount(void) const
 {
     return Py::Int(getFemMeshPtr()->getSMesh()->NbPolygons());
+}
+
+Py::Tuple FemMeshPy::getVolumes(void) const
+{
+    std::set<int> ids;
+    SMDS_VolumeIteratorPtr aVolIter = getFemMeshPtr()->getSMesh()->GetMeshDS()->volumesIterator();
+    while (aVolIter->more()) {
+        const SMDS_MeshVolume* aVol = aVolIter->next();
+        ids.insert(aVol->GetID());
+    }
+
+    Py::Tuple tuple(ids.size());
+    int index = 0;
+    for (std::set<int>::iterator it = ids.begin(); it != ids.end(); ++it) {
+        tuple.setItem(index++, Py::Int(*it));
+    }
+
+    return tuple;
 }
 
 Py::Int FemMeshPy::getVolumeCount(void) const
