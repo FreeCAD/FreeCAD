@@ -625,6 +625,17 @@ std::set<int> FemMesh::getNodesByVertex(const TopoDS_Vertex &vertex) const
     return result;
 }
 
+std::set<int> FemMesh::getElementNodes(int id) const
+{
+    std::set<int> result;
+    const SMDS_MeshElement* elem = myMesh->GetMeshDS()->FindElement(id);
+    if (elem) {
+        for (int i = 0; i < elem->NbNodes(); i++)
+            result.insert(elem->GetNode(i)->GetID());
+    }
+    return result;
+}
+
 void FemMesh::readNastran(const std::string &Filename)
 {
     Base::TimeInfo Start;
