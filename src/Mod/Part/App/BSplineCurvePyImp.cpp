@@ -435,6 +435,38 @@ PyObject* BSplineCurvePy::getPoles(PyObject * args)
     }
 }
 
+PyObject* BSplineCurvePy::getPolesAndWeights(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
+            (getGeometryPtr()->handle());
+        TColgp_Array1OfPnt p(1,curve->NbPoles());
+        curve->Poles(p);
+        TColStd_Array1OfReal w(1,curve->NbPoles());
+        curve->Weights(w);
+
+        Py::List poles;
+        for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
+            gp_Pnt pnt = p(i);
+            double weight = w(i);
+            Py::Tuple t(4);
+            t.setItem(0, Py::Float(pnt.X()));
+            t.setItem(1, Py::Float(pnt.Y()));
+            t.setItem(2, Py::Float(pnt.Z()));
+            t.setItem(3, Py::Float(weight));
+            poles.append(t);
+        }
+        return Py::new_reference_to(poles);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+}
+
 PyObject* BSplineCurvePy::setWeight(PyObject * args)
 {
     int index;
