@@ -84,9 +84,14 @@
               <UserDocu>Make a copy of this FEM mesh.</UserDocu>
           </Documentation>
       </Methode>
+    <Methode Name="getVolumesByFace" Const="true">
+      <Documentation>
+        <UserDocu>Return a dict of volume IDs and face IDs which belong to a TopoFace</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getccxVolumesByFace" Const="true">
       <Documentation>
-        <UserDocu>Return a list of volume IDs which belong to a TopoFace</UserDocu>
+        <UserDocu>Return a dict of volume IDs and ccx face numbers which belong to a TopoFace</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getNodeById" Const="true">

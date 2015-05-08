@@ -404,14 +404,50 @@ std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) 
     return result;
 }
 
-/* That function returns map containing volume ID and face number
+/*! That function returns map containing volume ID and face ID.
+ */
+std::map<int, int> FemMesh::getVolumesByFace(const TopoDS_Face &face) const
+{
+    std::map<int, int> result;
+    std::set<int> nodes_on_face = getNodesByFace(face);
+
+    SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
+    while (vol_iter->more()) {
+        const SMDS_MeshVolume* vol = vol_iter->next();
+        int numFaces = vol->NbFaces();
+        SMDS_ElemIteratorPtr face_iter = vol->facesIterator();
+
+        while (face_iter->more()) {
+            const SMDS_MeshFace* face = static_cast<const SMDS_MeshFace*>(face_iter->next());
+            int numNodes = face->NbNodes();
+
+            std::set<int> face_nodes;
+            for (int i=0; i<numNodes; i++) {
+                face_nodes.insert(face->GetNode(i)->GetID());
+            }
+
+            std::vector<int> element_face_nodes;
+            std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), face_nodes.begin(), face_nodes.end(),
+                std::back_insert_iterator<std::vector<int> >(element_face_nodes));
+
+            if (element_face_nodes.size() == numNodes) {
+                result[vol->GetID()] = face->GetID();
+                break;
+            }
+        }
+    }
+
+    return result;
+}
+
+/*! That function returns map containing volume ID and face number
  * as per CalculiX definition for tetrahedral elements. See CalculiX
  * documentation for the details.
  */
 std::map<int, int> FemMesh::getccxVolumesByFace(const TopoDS_Face &face) const
 {
     std::map<int, int> result;
-    std::set<int> nodes_on_face = FemMesh::getNodesByFace(face);
+    std::set<int> nodes_on_face = getNodesByFace(face);
 
     static std::map<int, std::vector<int> > elem_order;
     if (elem_order.empty()) {

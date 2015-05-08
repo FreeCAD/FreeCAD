@@ -93,6 +93,8 @@ public:
     std::set<int> getNodesByEdge(const TopoDS_Edge &edge) const;
     /// retrieving by vertex
     std::set<int> getNodesByVertex(const TopoDS_Vertex &vertex) const;
+    /// retrieving volume IDs and face IDs number by face
+    std::map<int, int> getVolumesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and CalculiX face number by face
     std::map<int, int> getccxVolumesByFace(const TopoDS_Face &face) const;
     //@}
