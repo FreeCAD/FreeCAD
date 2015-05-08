@@ -917,6 +917,42 @@ PyObject* BSplineSurfacePy::getWeights(PyObject *args)
     }
 }
 
+PyObject* BSplineSurfacePy::getPolesAndWeights(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+            (getGeometryPtr()->handle());
+        TColgp_Array2OfPnt p(1,surf->NbUPoles(),1,surf->NbVPoles());
+        surf->Poles(p);
+        TColStd_Array2OfReal w(1,surf->NbUPoles(),1,surf->NbVPoles());
+        surf->Weights(w);
+
+        Py::List poles;
+        for (Standard_Integer i=p.LowerRow(); i<=p.UpperRow(); i++) {
+            Py::List row;
+            for (Standard_Integer j=p.LowerCol(); j<=p.UpperCol(); j++) {
+                const gp_Pnt& pole = p(i,j);
+                double weight = w(i,j);
+                Py::Tuple t(4);
+                t.setItem(0, Py::Float(pole.X()));
+                t.setItem(1, Py::Float(pole.Y()));
+                t.setItem(2, Py::Float(pole.Z()));
+                t.setItem(3, Py::Float(weight));
+                row.append(t);
+            }
+            poles.append(row);
+        }
+        return Py::new_reference_to(poles);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+}
+
 PyObject* BSplineSurfacePy::getResolution(PyObject *args)
 {
     double tol;

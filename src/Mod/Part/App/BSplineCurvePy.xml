@@ -201,6 +201,11 @@ to the pole of index Index in the poles table.</UserDocu>
 				<UserDocu>Get all weights of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="getPolesAndWeights">
+			<Documentation>
+				<UserDocu>Returns the table of poles and weights in homogenous ccordinates.</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="getResolution" Const="true">
 			<Documentation>
 				<UserDocu>Computes for this B-Spline curve the parametric tolerance (UTolerance)
