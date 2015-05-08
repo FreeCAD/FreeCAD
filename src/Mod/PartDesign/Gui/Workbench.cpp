@@ -400,17 +400,17 @@ void Workbench::_switchToDocument(const App::Document* doc)
 
 void Workbench::slotActiveDocument(const Gui::Document& Doc)
 {
-    _switchToDocument(Doc.getDocument());
+//     _switchToDocument(Doc.getDocument());
 }
 
 void Workbench::slotNewDocument(const App::Document& Doc)
 {
-    _switchToDocument(&Doc);
+//     _switchToDocument(&Doc);
 }
 
 void Workbench::slotFinishRestoreDocument(const App::Document& Doc)
 {    
-    _switchToDocument(&Doc);
+//     _switchToDocument(&Doc);
 }
 
 void Workbench::slotDeleteDocument(const App::Document&)
