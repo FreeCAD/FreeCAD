@@ -549,9 +549,9 @@ void WorkbenchGroup::refreshWorkbenchList()
 
     // if less workbenches than actions
     for (int index = numWorkbenches; index < workbenches.count(); index++) {
-        workbenches[i]->setObjectName(QString());
-        workbenches[i]->setIcon(QIcon());
-        workbenches[i]->setText(QString());
+        workbenches[index]->setObjectName(QString());
+        workbenches[index]->setIcon(QIcon());
+        workbenches[index]->setText(QString());
         workbenches[index]->setVisible(false);
     }
 }
