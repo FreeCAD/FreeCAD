@@ -83,6 +83,9 @@ public:
 
     /// Remove the feature from the body
     void removeFeature(App::DocumentObject* feature);
+    
+    /// Checks if the given document object is a feaure of this body
+    bool isFeature(App::DocumentObject* feature);
 
     /// Return true if the given feature is member of a MultiTransform feature
     static const bool isMemberOfMultiTransform(const App::DocumentObject* f);
