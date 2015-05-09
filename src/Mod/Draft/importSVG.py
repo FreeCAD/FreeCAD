@@ -1004,12 +1004,14 @@ class svgHandler(xml.sax.ContentHandler):
                 if isinstance(sh,Part.Shape):
                         if self.transform:
                                 FreeCAD.Console.PrintMessage("applying object transform: %s\n" % self.transform)
-                                sh = transformCopyShape(sh,self.transform)
-                                #sh = sh.transformGeometry(self.transform)
+                                #sh = transformCopyShape(sh,self.transform)
+                                # see issue #2062
+                                sh = sh.transformGeometry(self.transform)
                         for transform in self.grouptransform[::-1]:
                                 FreeCAD.Console.PrintMessage("applying group transform: %s\n" % transform)
-                                sh = transformCopyShape(sh,transform)
-                                #sh = sh.transformGeometry(transform)
+                                #sh = transformCopyShape(sh,transform)
+                                # see issue 2062
+                                sh = sh.transformGeometry(transform)
                         return sh
                 elif Draft.getType(sh) == "Dimension":
                         pts = []
