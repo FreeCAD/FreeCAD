@@ -32,6 +32,7 @@
 # include <gp_Dir.hxx>
 # include <gp_Vec.hxx>
 # include <gp_Ax1.hxx>
+#include <BRepBuilderAPI_GTransform.hxx>
 #endif
 
 #include "Body.h"
@@ -39,6 +40,8 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
+#include <App/Document.h>
+#include <App/Part.h>
 
 using namespace PartDesign;
 
@@ -81,15 +84,43 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     Part::TopoShape baseTopShape = baseFeature->Shape.getShape();
     if (baseTopShape._Shape.IsNull())
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
+      
+    //get the body this boolean feature belongs to
+    PartDesign::Body* baseBody = NULL;
+    for(PartDesign::Body* b : this->getDocument()->getObjectsOfType<PartDesign::Body>()) {
+        if(b->isFeature(this)) {
+            baseBody = b;
+            break;
+        }            
+    }
+    if(!baseBody)
+         return new App::DocumentObjectExecReturn("Cannot do boolean on feature which is not in a body");
 
-    // Position this feature by the base feature
-    this->Placement.setValue(baseFeature->Placement.getValue());
-    TopLoc_Location invObjLoc = this->getLocation().Inverted();
+    //get the part every body should belong to
+    App::Part* part = NULL;
+    for(App::Part* p : this->getDocument()->getObjectsOfType<App::Part>()) {
+        if(p->hasObject(baseBody)) {
+            part = p;
+            break;
+        }            
+    }
+    if(!part)
+         return new App::DocumentObjectExecReturn("Cannot do boolean on body which is not in a part");
 
-    // create an untransformed copy of the base shape
-    Part::TopoShape baseShape(baseTopShape);
-    baseShape.setTransform(Base::Matrix4D());
-    TopoDS_Shape result = baseShape._Shape;
+    
+    // TODO: Why is Feature::getLocation() protected?
+    Base::Placement place = baseBody->Placement.getValue();
+    Base::Rotation rot(place.getRotation());
+    Base::Vector3d axis;
+    double angle;
+    rot.getValue(axis, angle);
+    gp_Trsf trf;
+    trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
+    trf.SetTranslationPart(gp_Vec(place.getPosition().x,place.getPosition().y,place.getPosition().z));
+    TopLoc_Location objLoc(trf);
+
+    TopoDS_Shape result = baseTopShape._Shape;
+    result.Move(objLoc);
 
     // Get the operation type
     std::string type = Type.getValueAsString();
@@ -99,12 +130,12 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         // Extract the body shape. Its important to get the actual feature that provides the last solid in the body
         // so that the placement will be right
         PartDesign::Body* body = static_cast<PartDesign::Body*>(*b);
-        Part::Feature* tipSolid = static_cast<Part::Feature*>(body->getPrevSolidFeature());
-        if (tipSolid == NULL)
-            continue;
-        TopoDS_Shape shape = tipSolid->Shape.getValue();
+        if(!part->hasObject(body))
+            return new App::DocumentObjectExecReturn("Cannot do boolean on bodies of different parts");
+        
+        TopoDS_Shape shape = body->getTipShape()._Shape;
 
-        // Move the shape to the location of the base shape
+        // Move the shape to the location of the base shape in the other body
         Base::Placement pl = body->Placement.getValue();
         // TODO: Why is Feature::getLocation() protected?
         Base::Rotation rot(pl.getRotation());
@@ -115,7 +146,7 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
         trf.SetTranslationPart(gp_Vec(pl.getPosition().x,pl.getPosition().y,pl.getPosition().z));
         TopLoc_Location bLoc(trf);
-        shape.Move(invObjLoc.Multiplied(bLoc));
+        shape.Move(bLoc);
 
         TopoDS_Shape boolOp;
 
@@ -150,6 +181,9 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
         }
 
         result = boolOp; // Use result of this operation for fuse/cut of next body
+        //bring the result geometry into the correct coordinance of the body the boolean belongs to
+        BRepBuilderAPI_GTransform mkTrf(result, objLoc.Inverted().Transformation());
+        result = mkTrf.Shape();
     }
 
     this->Shape.setValue(result);
