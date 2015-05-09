@@ -84,7 +84,7 @@ def getTeighaConverter():
     
 def convertToDxf(dwgfilename):
     "converts a DWG file to DXF"
-    import os,tempfile
+    import os,tempfile,subprocess     #import os,tempfile
     teigha = getTeighaConverter()
     if teigha:
         indir = os.path.dirname(dwgfilename)
@@ -92,7 +92,7 @@ def convertToDxf(dwgfilename):
         basename = os.path.basename(dwgfilename)
         cmdline = '"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"' % (teigha, indir, outdir, basename)
         print("Converting: " + cmdline)
-        os.system(cmdline)
+        subprocess.call(cmdline,  shell=True)     #os.system(cmdline)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
         if os.path.exists(result):
             print("Conversion successful")
@@ -104,7 +104,7 @@ def convertToDxf(dwgfilename):
     
 def convertToDwg(dxffilename,dwgfilename):
     "converts a DXF file to DWG"
-    import os
+    import os,subprocess     #import os
     teigha = getTeighaConverter()
     if teigha:
         indir = os.path.dirname(dxffilename)
@@ -112,7 +112,7 @@ def convertToDwg(dxffilename,dwgfilename):
         basename = os.path.basename(dxffilename)
         cmdline = '"%s" "%s" "%s" "ACAD2000" "DWG" "0" "1" "%s"' % (teigha, indir, outdir, basename)
         print("converting " + cmdline)
-        os.system(cmdline)
+        subprocess.call(cmdline,  shell=True)     #os.system(cmdline)
         return dwgfilename
     return None
     
