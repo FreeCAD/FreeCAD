@@ -530,8 +530,8 @@ PyObject* FemMeshPy::getVolumesByFace(PyObject *args)
         const TopoDS_Face& fc = TopoDS::Face(sh);
 
         Py::List ret;
-        std::map<int, int> resultSet = getFemMeshPtr()->getVolumesByFace(fc);
-        for (std::map<int, int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it) {
+        std::list<std::pair<int, int> > resultSet = getFemMeshPtr()->getVolumesByFace(fc);
+        for (std::list<std::pair<int, int> >::const_iterator it = resultSet.begin();it!=resultSet.end();++it) {
             Py::Tuple vol_face(2);
             vol_face.setItem(0, Py::Int(it->first));
             vol_face.setItem(1, Py::Int(it->second));
