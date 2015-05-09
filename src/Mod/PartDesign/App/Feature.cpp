@@ -53,7 +53,7 @@ PROPERTY_SOURCE(PartDesign::Feature,Part::Feature)
 Feature::Feature()
 {
     ADD_PROPERTY(BaseFeature,(0));
-    Placement.StatusBits.set(2, true);
+    Placement.StatusBits.set(3, true);
 }
 
 short Feature::mustExecute() const
