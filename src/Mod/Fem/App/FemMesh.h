@@ -96,7 +96,7 @@ public:
     /// retrieving node IDs by element ID
     std::set<int> getElementNodes(int id) const;
     /// retrieving volume IDs and face IDs number by face
-    std::map<int, int> getVolumesByFace(const TopoDS_Face &face) const;
+    std::list<std::pair<int, int> > getVolumesByFace(const TopoDS_Face &face) const;
     /// retrieving volume IDs and CalculiX face number by face
     std::map<int, int> getccxVolumesByFace(const TopoDS_Face &face) const;
     //@}

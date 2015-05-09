@@ -406,9 +406,9 @@ std::set<long> FemMesh::getSurfaceNodes(long ElemId, short FaceId, float Angle) 
 
 /*! That function returns map containing volume ID and face ID.
  */
-std::map<int, int> FemMesh::getVolumesByFace(const TopoDS_Face &face) const
+std::list<std::pair<int, int> > FemMesh::getVolumesByFace(const TopoDS_Face &face) const
 {
-    std::map<int, int> result;
+    std::list<std::pair<int, int> > result;
     std::set<int> nodes_on_face = getNodesByFace(face);
 
     SMDS_VolumeIteratorPtr vol_iter = myMesh->GetMeshDS()->volumesIterator();
@@ -430,13 +430,14 @@ std::map<int, int> FemMesh::getVolumesByFace(const TopoDS_Face &face) const
             std::set_intersection(nodes_on_face.begin(), nodes_on_face.end(), face_nodes.begin(), face_nodes.end(),
                 std::back_insert_iterator<std::vector<int> >(element_face_nodes));
 
+            // For curved faces it is possible that a volume contributes more than one face
             if (element_face_nodes.size() == numNodes) {
-                result[vol->GetID()] = face->GetID();
-                break;
+                result.push_back(std::make_pair(vol->GetID(), face->GetID()));
             }
         }
     }
 
+    result.sort();
     return result;
 }
 
