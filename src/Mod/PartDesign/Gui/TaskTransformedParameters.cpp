@@ -45,9 +45,8 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
-#include <Mod/PartDesign/App/FeatureAdditive.h>
-#include <Mod/PartDesign/App/FeatureSubtractive.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeatureAddSub.h>
 #include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
@@ -105,8 +104,7 @@ const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChang
 
         PartDesign::Transformed* pcTransformed = getObject();
         App::DocumentObject* selectedObject = pcTransformed->getDocument()->getObject(msg.pObjectName);
-        if (selectedObject->isDerivedFrom(PartDesign::Additive::getClassTypeId()) ||
-            selectedObject->isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
+        if (selectedObject->isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
 
             // Do the same like in TaskDlgTransformedParameters::accept() but without doCommand
             std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();

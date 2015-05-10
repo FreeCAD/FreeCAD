@@ -52,10 +52,12 @@ const char* Hole::TypeEnums[]    = {"Dimension","UpToLast","UpToFirst",NULL};
 const char* Hole::HoleTypeEnums[]= {"Simple","Counterbore","Countersunk",NULL};
 const char* Hole::ThreadEnums[]  = {"None","Metric","MetricFine",NULL};
 
-PROPERTY_SOURCE(PartDesign::Hole, PartDesign::Subtractive)
+PROPERTY_SOURCE(PartDesign::Hole, PartDesign::SketchBased)
 
 Hole::Hole()
 {
+    addSubType = FeatureAddSub::Subtractive;
+    
     ADD_PROPERTY(Type,((long)0));
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(HoleType,((long)0));

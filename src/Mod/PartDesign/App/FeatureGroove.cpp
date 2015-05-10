@@ -49,10 +49,12 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
-PROPERTY_SOURCE(PartDesign::Groove, PartDesign::Subtractive)
+PROPERTY_SOURCE(PartDesign::Groove, PartDesign::SketchBased)
 
 Groove::Groove()
 {
+    addSubType = FeatureAddSub::Subtractive;
+    
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0f,0.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0f,1.0f,0.0f)),"Groove", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Groove", App::Prop_None, "Angle");
@@ -67,7 +69,7 @@ short Groove::mustExecute() const
         Base.isTouched() ||
         Angle.isTouched())
         return 1;
-    return Subtractive::mustExecute();
+    return SketchBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Groove::execute(void)
@@ -143,7 +145,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             TopoDS_Shape result = RevolMaker.Shape();
             // set the subtractive shape property for later usage in e.g. pattern
             result = refineShapeIfActive(result);
-            this->SubShape.setValue(result);
+            this->AddSubShape.setValue(result);
 
             // cut out groove to get one result object
             BRepAlgoAPI_Cut mkCut(base, result);

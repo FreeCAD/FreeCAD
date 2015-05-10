@@ -56,9 +56,8 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/PartDesign/App/FeatureAdditive.h>
-#include <Mod/PartDesign/App/FeatureSubtractive.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
+#include <Mod/PartDesign/App/FeatureAddSub.h>
 
 using namespace PartDesignGui;
 
@@ -209,12 +208,9 @@ void ViewProviderTransformed::recomputeFeature(void)
         if (o->second.empty()) continue;
 
         TopoDS_Shape shape;
-        if ((o->first)->getTypeId().isDerivedFrom(PartDesign::Additive::getClassTypeId())) {
-            PartDesign::Additive* addFeature = static_cast<PartDesign::Additive*>(o->first);
-            shape = addFeature->AddShape.getShape()._Shape;
-        } else if ((o->first)->getTypeId().isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
-            PartDesign::Subtractive* subFeature = static_cast<PartDesign::Subtractive*>(o->first);
-            shape = subFeature->SubShape.getShape()._Shape;
+        if ((o->first)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+            PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(o->first);
+            shape = feature->AddSubShape.getShape()._Shape;
         }
 
         if (shape.IsNull()) continue;

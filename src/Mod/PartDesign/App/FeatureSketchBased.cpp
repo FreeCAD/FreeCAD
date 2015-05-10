@@ -99,7 +99,7 @@ public:
     }
 };
 
-PROPERTY_SOURCE(PartDesign::SketchBased, PartDesign::Feature)
+PROPERTY_SOURCE(PartDesign::SketchBased, PartDesign::FeatureAddSub)
 
 SketchBased::SketchBased()
 {
@@ -116,7 +116,7 @@ short SketchBased::mustExecute() const
         Reversed.isTouched() ||
         UpToFace.isTouched())
         return 1;
-    return PartDesign::Feature::mustExecute();
+    return PartDesign::FeatureAddSub::mustExecute();
 }
 
 void SketchBased::positionBySketch(void)
@@ -265,7 +265,7 @@ void SketchBased::onChanged(const App::Property* prop)
         this->Placement.setStatus(App::Property::ReadOnly, Sketch.getValue() != 0);
     }
 
-    Feature::onChanged(prop);
+    FeatureAddSub::onChanged(prop);
 }
 
 bool SketchBased::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire2) const
