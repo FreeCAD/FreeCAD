@@ -42,6 +42,7 @@ PROPERTY_SOURCE(App::Line, App::GeoFeature)
 Line::Line(void)
 {
     ADD_PROPERTY(LineType,(""));
+    Placement.StatusBits.set(3, true);
 
 }
 
