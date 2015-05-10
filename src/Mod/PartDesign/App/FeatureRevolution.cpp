@@ -49,10 +49,12 @@ using namespace PartDesign;
 namespace PartDesign {
 
 
-PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::Additive)
+PROPERTY_SOURCE(PartDesign::Revolution, PartDesign::SketchBased)
 
 Revolution::Revolution()
 {
+    addSubType = FeatureAddSub::Additive;
+    
     ADD_PROPERTY_TYPE(Base,(Base::Vector3d(0.0,0.0,0.0)),"Revolution", App::Prop_ReadOnly, "Base");
     ADD_PROPERTY_TYPE(Axis,(Base::Vector3d(0.0,1.0,0.0)),"Revolution", App::Prop_ReadOnly, "Axis");
     ADD_PROPERTY_TYPE(Angle,(360.0),"Revolution", App::Prop_None, "Angle");
@@ -67,7 +69,7 @@ short Revolution::mustExecute() const
         Base.isTouched() ||
         Angle.isTouched())
         return 1;
-    return Additive::mustExecute();
+    return SketchBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Revolution::execute(void)
@@ -145,7 +147,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             TopoDS_Shape result = RevolMaker.Shape();
             result = refineShapeIfActive(result);
             // set the additive shape property for later usage in e.g. pattern
-            this->AddShape.setValue(result);            
+            this->AddSubShape.setValue(result);            
 
             if (!base.IsNull()) {
                 // Let's call algorithm computing a fuse operation:

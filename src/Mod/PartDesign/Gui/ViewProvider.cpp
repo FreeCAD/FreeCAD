@@ -103,13 +103,10 @@ void ViewProvider::unsetEdit(int ModNum)
 void ViewProvider::updateData(const App::Property* prop)
 {
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && 
-        strcmp(prop->getName(),"AddShape") == 0) {
+        strcmp(prop->getName(),"AddSubShape") == 0) {
         return;
     }
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && 
-        strcmp(prop->getName(),"SubShape") == 0) {
-        return;
-    }
+
     inherited::updateData(prop);
 }
 

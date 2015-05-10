@@ -26,7 +26,7 @@
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/Part2DObject.h>
-#include "Feature.h"
+#include "FeatureAddSub.h"
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -37,7 +37,7 @@ class gp_Lin;
 namespace PartDesign
 {
 
-class PartDesignExport SketchBased : public PartDesign::Feature
+class PartDesignExport SketchBased : public PartDesign::FeatureAddSub
 {
     PROPERTY_HEADER(PartDesign::SketchBased);
 

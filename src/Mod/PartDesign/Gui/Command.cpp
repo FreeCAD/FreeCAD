@@ -67,8 +67,6 @@
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/Gui/SketchOrientationDialog.h>
-#include <Mod/PartDesign/App/FeatureAdditive.h>
-#include <Mod/PartDesign/App/FeatureSubtractive.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
@@ -1559,14 +1557,10 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
     
     // Get a valid original from the user
     // First check selections
-    std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::Additive::getClassTypeId());
-    std::vector<App::DocumentObject*> subtractive = cmd->getSelection().getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-    features.insert(features.end(), subtractive.begin(), subtractive.end());
+    std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::FeatureAddSub::getClassTypeId());
     // Next create a list of all eligible objects
     if (features.size() == 0) {
-        features = cmd->getDocument()->getObjectsOfType(PartDesign::Additive::getClassTypeId());
-        subtractive = cmd->getDocument()->getObjectsOfType(PartDesign::Subtractive::getClassTypeId());
-        features.insert(features.end(), subtractive.begin(), subtractive.end());
+        features = cmd->getDocument()->getObjectsOfType(PartDesign::FeatureAddSub::getClassTypeId());
         // If there is more than one selected or eligible object, show dialog and let user pick one
         if (features.size() > 1) {
             std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;

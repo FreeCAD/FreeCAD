@@ -21,30 +21,39 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureSubtractive_H
-#define PARTDESIGN_FeatureSubtractive_H
+#ifndef PARTDESIGN_FeatureAdditive_H
+#define PARTDESIGN_FeatureAdditive_H
 
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/PropertyTopoShape.h>
 
-#include "FeatureSketchBased.h"
+#include "Feature.h"
 
+/// Base class of all additive features in PartDesign
 namespace PartDesign
 {
 
-class PartDesignExport Subtractive : public SketchBased
+class PartDesignExport FeatureAddSub : public PartDesign::Feature
 {
-    PROPERTY_HEADER(PartDesign::Subtractive);
+    PROPERTY_HEADER(PartDesign::FeatureAddSub);
 
 public:
-    Subtractive();
+    enum Type {
+        Additive = 0,
+        Subtractive 
+    };
+    
+    FeatureAddSub();
 
-    Part::PropertyPartShape   SubShape;
+    Type getAddSubType();
+    
+    Part::PropertyPartShape   AddSubShape;
 
 protected:
+    Type addSubType = Additive;
 };
 
 } //namespace PartDesign
 
 
-#endif // PARTDESIGN_FeatureSubtractive_H
+#endif // PARTDESIGN_FeatureAdditive_H

@@ -54,10 +54,12 @@ using namespace PartDesign;
 
 const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace",NULL};
 
-PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::Subtractive)
+PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::SketchBased)
 
 Pocket::Pocket()
 {
+    addSubType = FeatureAddSub::Subtractive;
+    
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
@@ -72,7 +74,7 @@ short Pocket::mustExecute() const
         Length.isTouched() ||
         UpToFace.isTouched())
         return 1;
-    return Subtractive::mustExecute();
+    return SketchBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Pocket::execute(void)
@@ -176,7 +178,8 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
-            this->SubShape.setValue(mkCut.Shape());
+            TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
+            this->AddSubShape.setValue(result);
             this->Shape.setValue(prism);
         } else {
             TopoDS_Shape prism;
@@ -187,7 +190,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             // set the subtractive shape property for later usage in e.g. pattern
             prism = refineShapeIfActive(prism);
-            this->SubShape.setValue(prism);
+            this->AddSubShape.setValue(prism);
 
             // Cut the SubShape out of the base feature
             BRepAlgoAPI_Cut mkCut(base, prism);
