@@ -148,6 +148,7 @@ def explore(filename=None):
     entities += ifc.by_type("IfcPlacement")
     entities += ifc.by_type("IfcProperty")
     entities += ifc.by_type("IfcPhysicalSimpleQuantity")
+    entities += ifc.by_type("IfcMaterial")
     entities = sorted(entities, key=lambda eid: eid.id())
     
     done = []
@@ -183,6 +184,8 @@ def explore(filename=None):
                 item.setIcon(1,QtGui.QIcon(":icons/Draft_Draft.svg"))
             elif entity.is_a() in ["IfcPropertySingleValue","IfcQuantityArea","IfcQuantityVolume"]:
                 item.setIcon(1,QtGui.QIcon(":icons/Tree_Annotation.svg"))
+            elif entity.is_a() in ["IfcMaterial"]:
+                item.setIcon(1,QtGui.QIcon(":icons/Arch_Material.svg"))
             item.setText(2,str(entity.is_a()))
             item.setFont(2,bold);
             
@@ -615,7 +618,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     # Materials
     
     if DEBUG and materials: print "Creating materials..."
-    
+        
     for material in materials:
         name = material.Name or "Material"
         mat = Arch.makeMaterial(name=name)

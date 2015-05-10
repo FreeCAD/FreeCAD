@@ -35,13 +35,15 @@ __title__="FreeCAD Panel"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+#           Description                 l    w    t
 
 Presets = [None,
-           ["Plywoood 12mm, 1220 x 2440",1200,2400,18],
-           ["Plywoood 15mm, 1220 x 2440",1200,2400,18],
-           ["Plywoood 18mm, 1220 x 2440",1200,2400,18],
-           ["Plywoood 25mm, 1220 x 2440",1200,2400,18]]
-
+           ["Plywood 12mm, 1220 x 2440",1200,2400,12],
+           ["Plywood 15mm, 1220 x 2440",1200,2400,15],
+           ["Plywood 18mm, 1220 x 2440",1200,2400,18],
+           ["Plywood 25mm, 1220 x 2440",1200,2400,25],
+           ["MDF 3mm, 900 x 600",       900, 600, 3],
+           ["MDF 6mm, 900 x 600",       900, 600, 6]]
 
 def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Panel"):
     '''makePanel([obj],[length],[width],[thickness],[placement]): creates a
