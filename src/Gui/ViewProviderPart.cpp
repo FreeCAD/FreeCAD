@@ -101,19 +101,23 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
         SoGetBoundingBoxAction bboxAction(viewer->getSoRenderManager()->getViewportRegion());
         
         //calculate for everything but planes
-        SbBox3f bbox(0.0001f,0.0001f,0.0001f,0.0001f,0.0001f,0.0001f);
+        SbBox3f bbox(1e-9, 1e-9, 1e-9, 1e-9, 1e-9, 1e-9);
         for(App::DocumentObject* obj : part->getObjects()) {
             if(obj->getTypeId() != App::Origin::getClassTypeId() &&
                obj->getTypeId() != App::Plane::getClassTypeId() && 
                obj->getTypeId() != App::Line::getClassTypeId() ) {
+
                 //getting crash on deletion PartDesign::Body object. no viewprovider.
                 ViewProvider *viewProvider = Gui::Application::Instance->getViewProvider(obj);
                 if (!viewProvider)
                   continue;
+                
                 bboxAction.apply(viewProvider->getRoot());
                 bbox.extendBy(bboxAction.getBoundingBox());
             }
         };
+        if(bbox.getSize().length() < 1e-6);
+            bbox = SbBox3f(1e2, 1e2, 1e2, 1e2, 1e2, 1e2);
         
         //get the bounding box values
         SbVec3f size = bbox.getSize()*1.3;
