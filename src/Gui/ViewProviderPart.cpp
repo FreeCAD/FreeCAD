@@ -116,8 +116,10 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
                 bbox.extendBy(bboxAction.getBoundingBox());
             }
         };
-        if(bbox.getSize().length() < 1e-6);
-            bbox = SbBox3f(1e2, 1e2, 1e2, 1e2, 1e2, 1e2);
+        
+        if(bbox.getSize().length() < 1e-7) {
+            bbox = SbBox3f(10., 10., 10., 10., 10., 10.);
+        }
         
         //get the bounding box values
         SbVec3f size = bbox.getSize()*1.3;
@@ -133,30 +135,14 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
         for (std::vector<App::DocumentObject*>::const_iterator p = planes.begin(); p != planes.end(); p++) {
  
              Gui::ViewProviderPlane* vp = dynamic_cast<Gui::ViewProviderPlane*>(Gui::Application::Instance->getViewProvider(*p));
-             if (strcmp(App::Part::BaseplaneTypes[0], dynamic_cast<App::Plane*>(*p)->getNameInDocument()) == 0) {
-                    
-                    Base::Placement cpl = dynamic_cast<App::Plane*>(*p)->Placement.getValue();
-                    cpl = Base::Placement(-cpl.getPosition() + Base::Vector3d((max[0]+min[0])/2., (max[1]+min[1])/2., 0), Base::Rotation());
-                    //dynamic_cast<App::Plane*>(*p)->Placement.setValue(cpl);
-                    if(vp)
+             if(vp) {
+                if (strcmp(App::Part::BaseplaneTypes[0], dynamic_cast<App::Plane*>(*p)->getNameInDocument()) == 0)
                         vp->Size.setValue(std::max(std::abs(std::min(min[0], min[1])),std::max(max[0], max[1])));
-            }
-            if (strcmp(App::Part::BaseplaneTypes[1], dynamic_cast<App::Plane*>(*p)->getNameInDocument()) == 0) {
-                    
-                    Base::Placement cpl = dynamic_cast<App::Plane*>(*p)->Placement.getValue();
-                    cpl = Base::Placement(-cpl.getPosition() + Base::Vector3d((max[0]+min[0])/2., 0, (max[2]+min[2])/2.), Base::Rotation());
-                    //dynamic_cast<App::Plane*>(*p)->Placement.setValue(cpl);
-                    if(vp)
-                       vp->Size.setValue(std::max(std::abs(std::min(min[0], min[2])),std::max(max[0], max[2])));
-            }
-            if (strcmp(App::Part::BaseplaneTypes[2], dynamic_cast<App::Plane*>(*p)->getNameInDocument()) == 0) {
-                    
-                    Base::Placement cpl = dynamic_cast<App::Plane*>(*p)->Placement.getValue();
-                    cpl = Base::Placement(-cpl.getPosition() + Base::Vector3d(0, (max[1]+min[1])/2., (max[2]+min[2])/2.), Base::Rotation());
-                    //dynamic_cast<App::Plane*>(*p)->Placement.setValue(cpl);
-                    if(vp)
-                       vp->Size.setValue(std::max(std::abs(std::min(min[1], min[2])),std::max(max[1], max[2])));
-            }
+                else if (strcmp(App::Part::BaseplaneTypes[1], dynamic_cast<App::Plane*>(*p)->getNameInDocument()) == 0)
+                        vp->Size.setValue(std::max(std::abs(std::min(min[0], min[2])),std::max(max[0], max[2])));
+                else if (strcmp(App::Part::BaseplaneTypes[2], dynamic_cast<App::Plane*>(*p)->getNameInDocument()) == 0)               
+                        vp->Size.setValue(std::max(std::abs(std::min(min[1], min[2])),std::max(max[1], max[2]))); 
+             }
         }
         
         //get the lines and set their values
@@ -164,30 +150,14 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
         for (std::vector<App::DocumentObject*>::const_iterator p = lines.begin(); p != lines.end(); p++) {
  
              Gui::ViewProviderLine* vp = dynamic_cast<Gui::ViewProviderLine*>(Gui::Application::Instance->getViewProvider(*p));
-             if (strcmp(App::Part::BaselineTypes[0], dynamic_cast<App::Line*>(*p)->getNameInDocument()) == 0) {
-                    
-                    Base::Placement cpl = dynamic_cast<App::Line*>(*p)->Placement.getValue();
-                    cpl = Base::Placement(-cpl.getPosition() + Base::Vector3d((max[0]+min[0])/2., (max[1]+min[1])/2., 0), Base::Rotation());
-                    //dynamic_cast<App::Plane*>(*p)->Placement.setValue(cpl);
-                    if(vp)
+             if(vp) {
+                if (strcmp(App::Part::BaselineTypes[0], dynamic_cast<App::Line*>(*p)->getNameInDocument()) == 0)
                         vp->Size.setValue(std::max(std::abs(std::min(min[0], min[1])),std::max(max[0], max[1])));
-            }
-            if (strcmp(App::Part::BaselineTypes[1], dynamic_cast<App::Line*>(*p)->getNameInDocument()) == 0) {
-                    
-                    Base::Placement cpl = dynamic_cast<App::Line*>(*p)->Placement.getValue();
-                    cpl = Base::Placement(-cpl.getPosition() + Base::Vector3d((max[0]+min[0])/2., 0, (max[2]+min[2])/2.), Base::Rotation());
-                    //dynamic_cast<App::Plane*>(*p)->Placement.setValue(cpl);
-                    if(vp)
-                       vp->Size.setValue(std::max(std::abs(std::min(min[0], min[2])),std::max(max[0], max[2])));
-            }
-            if (strcmp(App::Part::BaselineTypes[2], dynamic_cast<App::Line*>(*p)->getNameInDocument()) == 0) {
-                    
-                    Base::Placement cpl = dynamic_cast<App::Line*>(*p)->Placement.getValue();
-                    cpl = Base::Placement(-cpl.getPosition() + Base::Vector3d(0, (max[1]+min[1])/2., (max[2]+min[2])/2.), Base::Rotation());
-                    //dynamic_cast<App::Plane*>(*p)->Placement.setValue(cpl);
-                    if(vp)
-                       vp->Size.setValue(std::max(std::abs(std::min(min[1], min[2])),std::max(max[1], max[2])));
-            }
+                else if (strcmp(App::Part::BaselineTypes[1], dynamic_cast<App::Line*>(*p)->getNameInDocument()) == 0) 
+                        vp->Size.setValue(std::max(std::abs(std::min(min[0], min[2])),std::max(max[0], max[2])));
+                else if (strcmp(App::Part::BaselineTypes[2], dynamic_cast<App::Line*>(*p)->getNameInDocument()) == 0)
+                        vp->Size.setValue(std::max(std::abs(std::min(min[1], min[2])),std::max(max[1], max[2])));
+             }
         }
     }
 }
