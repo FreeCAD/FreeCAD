@@ -75,7 +75,7 @@ set(PartDesignGui_UIC_SRCS
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
-SET(PartDesignGuiViewProvider_SRCS
+SET(PartDesignGuiViewProvider_SRCS CommandPrimitive.cpp
     ViewProvider.cpp
     ViewProvider.h
     ViewProviderBody.cpp
@@ -120,6 +120,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderDatumPlane.h
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
+    ViewProviderPrimitive.h
+    ViewProviderPrimitive.cpp
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
@@ -189,6 +191,7 @@ SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 SET(PartDesignGuiModule_SRCS
     AppPartDesignGui.cpp
     Command.cpp
+    CommandPrimitive.cpp
     Resources/PartDesign.qrc
     PreCompiled.cpp
     PreCompiled.h

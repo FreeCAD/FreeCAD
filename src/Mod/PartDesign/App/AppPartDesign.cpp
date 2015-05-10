@@ -51,6 +51,7 @@
 #include "DatumLine.h"
 #include "DatumPoint.h"
 #include "FeatureBoolean.h"
+#include "FeaturePrimitive.h"
 
 namespace PartDesign {
 extern PyObject* initModule();
@@ -101,6 +102,10 @@ PyMODINIT_FUNC init_PartDesign()
     PartDesign::Line               ::init();
     PartDesign::Point              ::init();
     PartDesign::Boolean            ::init();
+    PartDesign::FeaturePrimitive   ::init();
+    PartDesign::Box                ::init();
+    PartDesign::AdditiveBox        ::init();
+    PartDesign::SubtractiveBox     ::init();
 
     PartDesign::Point::initHints();
     PartDesign::Line ::initHints();

@@ -54,9 +54,11 @@
 #include "ViewProviderDatumLine.h"
 #include "ViewProviderDatumPlane.h"
 #include "ViewProviderBoolean.h"
+#include "ViewProviderPrimitive.h"
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
+void CreatePartDesignPrimitiveCommands(void);
 
 void loadPartDesignResource()
 {
@@ -109,6 +111,7 @@ PyMODINIT_FUNC initPartDesignGui()
 
     // instantiating the commands
     CreatePartDesignCommands();
+    CreatePartDesignPrimitiveCommands();
 
     PartDesignGui::Workbench                 ::init();
     PartDesignGui::ViewProvider              ::init();
@@ -132,6 +135,7 @@ PyMODINIT_FUNC initPartDesignGui()
     PartDesignGui::ViewProviderDatumLine     ::init();
     PartDesignGui::ViewProviderDatumPlane    ::init();
     PartDesignGui::ViewProviderBoolean       ::init();
+    PartDesignGui::ViewProviderPrimitive     ::init();
 
      // add resources and reloads the translators
     loadPartDesignResource();

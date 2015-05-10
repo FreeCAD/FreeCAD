@@ -746,6 +746,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
           << "PartDesign_Pocket"
           << "PartDesign_Revolution"
           << "PartDesign_Groove"
+          << "PartDesign_CompPrimitiveAdditive"
+          << "PartDesign_CompPrimitiveSubtractive"
           << "PartDesign_Fillet"
           << "PartDesign_Chamfer"
           << "PartDesign_Draft"
