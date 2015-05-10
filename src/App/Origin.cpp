@@ -45,7 +45,7 @@ PROPERTY_SOURCE(App::Origin, App::GeoFeatureGroup)
 
 Origin::Origin(void)
 {
-
+    Placement.StatusBits.set(3, true);
 }
 
 Origin::~Origin(void)

@@ -53,6 +53,7 @@ PROPERTY_SOURCE(PartDesign::Body, Part::BodyBase)
 
 Body::Body()
 {
+    Placement.StatusBits.set(3, true);
     //ADD_PROPERTY(IsActive,(0));
 }
 

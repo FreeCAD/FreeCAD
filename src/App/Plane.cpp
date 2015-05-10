@@ -42,6 +42,7 @@ PROPERTY_SOURCE(App::Plane, App::GeoFeature)
 Plane::Plane(void)
 {
     ADD_PROPERTY(PlaneType,(""));
+    Placement.StatusBits.set(3, true);
 
 }
 
