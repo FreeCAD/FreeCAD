@@ -14,7 +14,7 @@
    height="64px"
    id="svg3364"
    sodipodi:version="0.32"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r"
    sodipodi:docname="PartDesign_Chamfer.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
@@ -150,8 +150,8 @@
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1680"
-     inkscape:window-height="988"
+     inkscape:window-width="1280"
+     inkscape:window-height="962"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
@@ -176,7 +176,7 @@
        transform="matrix(0.82780005,0,0,0.83717425,-0.2499405,9.0601524)">
       <path
          style="fill:url(#linearGradient3799);fill-opacity:1;stroke:#000137;stroke-width:2.55445004;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         d="M 6.9752755,21.473063 8.3764789,43.983419 38.969419,59.685905 68.861758,45.599851 70.730028,5.6508767 37.801749,-3.5858797 21.877105,0.78915639 z"
+         d="M 8.0734766,34.829683 8.3764789,43.983419 38.969419,59.685905 68.861758,45.599851 70.730028,5.6508767 37.801749,-3.5858797 28.795772,-0.73110929 z"
          id="path3783"
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="cccccccc" />
@@ -187,7 +187,7 @@
          inkscape:connector-curvature="0" />
       <path
          style="fill:url(#linearGradient5146);fill-opacity:1;stroke:#000137;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         d="M 5.4545455,26.90909 31.181818,40 43.363637,19.363636 17.818182,9.6363636 z"
+         d="m 6.3636364,37.999999 c 2.7272727,1 24.8181816,13.181819 24.8181816,13.181819 L 50.454546,16.545454 23.636364,8.2727272 z"
          id="path3841"
          inkscape:connector-curvature="0"
          transform="matrix(1.2080212,0,0,1.1944945,0.30193342,-10.822302)"
