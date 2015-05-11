@@ -223,7 +223,7 @@ TaskDlgFeaturePick::TaskDlgFeaturePick(std::vector<App::DocumentObject*> &object
                                         const std::vector<TaskFeaturePick::featureStatus> &status,
                                         boost::function<bool (std::vector<App::DocumentObject*>)> afunc,
                                         boost::function<void (std::vector<App::DocumentObject*>)> wfunc)
-    : TaskDialog()      
+    : TaskDialog(), accepted(false)
 {
     pick  = new TaskFeaturePick(objects, status);
     Content.push_back(pick);

@@ -59,7 +59,7 @@ public:
     void setTemporaryVisibility(App::DocumentObject* obj, bool onoff);
     
 private:
-    bool tempVisMode = false;
+    bool tempVisMode;
     Gui::Document* tempVisDoc;
     std::map<Gui::ViewProvider*, bool> tempVisMap; 
 };

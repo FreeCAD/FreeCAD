@@ -113,7 +113,7 @@ public:
 
 protected:
     TaskFeaturePick  *pick;
-    bool accepted = false;
+    bool accepted;
     boost::function<bool (std::vector<App::DocumentObject*>)>  acceptFunction;
     boost::function<void (std::vector<App::DocumentObject*>)>  workFunction;
 };

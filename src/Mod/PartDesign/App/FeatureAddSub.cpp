@@ -37,6 +37,7 @@ namespace PartDesign {
 PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::Feature)
 
 FeatureAddSub::FeatureAddSub()
+  :  addSubType(Additive)
 {
     ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
 }

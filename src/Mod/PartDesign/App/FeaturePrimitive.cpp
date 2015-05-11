@@ -38,6 +38,7 @@ namespace PartDesign {
 PROPERTY_SOURCE(PartDesign::FeaturePrimitive, PartDesign::FeatureAddSub)
 
 FeaturePrimitive::FeaturePrimitive()
+  :  primitiveType(Box)
 {
     ADD_PROPERTY_TYPE(References, (0,0), "Primitive", (App::PropertyType)(App::Prop_None), "References to build the location of the primitive");
 }
