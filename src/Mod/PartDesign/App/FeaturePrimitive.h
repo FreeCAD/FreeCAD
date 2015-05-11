@@ -46,7 +46,7 @@ public:
     FeaturePrimitive();
     
     virtual const char* getViewProviderName(void) const {
-        return "getViewProviderPrimitive";
+        return "PartDesignGui::ViewProviderPrimitive";
     }
     Type getPrimitiveType() {return primitiveType;};
     
@@ -65,7 +65,7 @@ protected:
 
 class PartDesignExport Box : public PartDesign::FeaturePrimitive {
 
-    PROPERTY_HEADER(Part::Box);
+    PROPERTY_HEADER(PartDesign::Box);
 
 public:
     

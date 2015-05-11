@@ -27,10 +27,14 @@
 
 
 #include "FeaturePrimitive.h"
+#include <Base/Exception.h>
+#include <App/Document.h>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
+
+using namespace PartDesign;
 
 namespace PartDesign {
 
@@ -40,7 +44,7 @@ PROPERTY_SOURCE(PartDesign::FeaturePrimitive, PartDesign::FeatureAddSub)
 FeaturePrimitive::FeaturePrimitive()
   :  primitiveType(Box)
 {
-    ADD_PROPERTY_TYPE(References, (0,0), "Primitive", (App::PropertyType)(App::Prop_None), "References to build the location of the primitive");
+    ADD_PROPERTY(References, (0,0));//, "Primitive", (App::PropertyType)(App::Prop_None), "References to build the location of the primitive");
 }
 
 App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& primitiveShape)
@@ -51,8 +55,12 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         const TopoDS_Shape primitiveShape = mkTrf.Shape();
         
         //if we have no base we just add the standart primitive shape
-        const TopoDS_Shape base = getBaseShape();
-        if(base.IsNull()) {
+        TopoDS_Shape base;
+        try{
+             base = getBaseShape();
+        }
+        catch(const Base::Exception&) {
+
              if(getAddSubType() == FeatureAddSub::Additive)
                  Shape.setValue(primitiveShape);
              else 
@@ -63,6 +71,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         }
          
         if(getAddSubType() == FeatureAddSub::Additive) {
+            
             BRepAlgoAPI_Fuse mkFuse(base, primitiveShape);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Adding the primitive failed");
@@ -104,8 +113,6 @@ TopLoc_Location FeaturePrimitive::calculateLocation()
 {
     return TopLoc_Location();
 }
-
-
 
 PROPERTY_SOURCE(PartDesign::Box, PartDesign::FeaturePrimitive)
 

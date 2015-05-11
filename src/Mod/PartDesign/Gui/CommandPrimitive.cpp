@@ -66,7 +66,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         Gui::Command::openCommand("Make additive box");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\'PartDesign::AdditiveBox\',\'%s\')",
             FeatName.c_str());
-        Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+        Gui::Command::doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)"
                         ,pcActiveBody->getNameInDocument(), FeatName.c_str());
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());       
     }
