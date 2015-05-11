@@ -50,7 +50,7 @@ public:
     Part::PropertyPartShape   AddSubShape;
 
 protected:
-    Type addSubType = Additive;
+    Type addSubType;
 };
 
 } //namespace PartDesign

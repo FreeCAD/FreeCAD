@@ -88,6 +88,8 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
     else {
         return PartGui::ViewProviderPart::setEdit(ModNum);
     }*/
+
+    return false;
 }
 
 

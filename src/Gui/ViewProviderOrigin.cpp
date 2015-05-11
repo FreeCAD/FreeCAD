@@ -60,6 +60,7 @@ PROPERTY_SOURCE(Gui::ViewProviderOrigin, Gui::ViewProviderGeometryObject)
  * Creates the view provider for an object group.
  */
 ViewProviderOrigin::ViewProviderOrigin() 
+  : tempVisMode(false)
 {
     sPixmap = "CoordinateSystem";
     Visibility.setValue(false);

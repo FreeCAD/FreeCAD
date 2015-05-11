@@ -60,7 +60,7 @@ protected:
     //calculate the position of the primitive from the support and the exis
     TopLoc_Location calculateLocation();
     
-    Type primitiveType = Box;
+    Type primitiveType;
 };
 
 class PartDesignExport Box : public PartDesign::FeaturePrimitive {

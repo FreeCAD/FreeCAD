@@ -213,6 +213,7 @@ const bool Body::isSolidFeature(const App::DocumentObject* f)
         // Transformed Features inside a MultiTransform are not solid features
         return !isMemberOfMultiTransform(f);
     }
+    return false;//DeepSOIC: work-in-progress?
 }
 
 const bool Body::isAllowed(const App::DocumentObject* f)
