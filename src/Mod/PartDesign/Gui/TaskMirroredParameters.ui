@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>253</width>
-    <height>235</height>
+    <height>260</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,38 +51,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboPlane">
-       <item>
-        <property name="text">
-         <string>Horizontal sketch axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Vertical sketch axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Base plane XY</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Base plane XZ</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Base plane YZ</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Select reference...</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="comboPlane"/>
      </item>
     </layout>
    </item>

@@ -151,6 +151,18 @@ void TaskLinearPatternParameters::setupUI()
     ui->spinLength->setUnit(Base::Unit::Length);
     ui->spinLength->blockSignals(false);
     ui->spinOccurrences->setEnabled(true);
+    
+    
+    App::DocumentObject* sketch = getSketchObject();
+    if (sketch) {
+        ui->comboDirection->addItem(QString::fromAscii("Horizontal sketch axis"));
+        ui->comboDirection->addItem(QString::fromAscii("Vertical sketch axis"));
+    }
+    //add the base axes to the selection combo box
+    ui->comboDirection->addItem(QString::fromAscii("Base X axis"));
+    ui->comboDirection->addItem(QString::fromAscii("Base Y axis"));    
+    ui->comboDirection->addItem(QString::fromAscii("Base Z axis")); 
+    ui->comboDirection->addItem(QString::fromAscii("Select reference..."));
     updateUI();
     
     //show the parts coordinate system axis for selection
@@ -185,11 +197,13 @@ void TaskLinearPatternParameters::updateUI()
 
     // Add user-defined sketch axes to the reference selection combo box
     App::DocumentObject* sketch = getSketchObject();
-    int maxcount=5;
-    if (sketch)
+    int maxcount=3;
+    if (sketch) {
+        maxcount = 5;
         maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+    }
 
-    for (int i=ui->comboDirection->count()-1; i >= 5; i--)
+    for (int i=ui->comboDirection->count()-1; i >= maxcount; i--)
         ui->comboDirection->removeItem(i);
     for (int i=ui->comboDirection->count(); i < maxcount; i++)
         ui->comboDirection->addItem(QString::fromLatin1("Sketch axis %1").arg(i-5));
@@ -201,13 +215,13 @@ void TaskLinearPatternParameters::updateUI()
         else if (directions.front() == "V_Axis")
             ui->comboDirection->setCurrentIndex(1);
         else if (strcmp(directionFeature->getNameInDocument(), App::Part::BaselineTypes[0]) == 0)
-            ui->comboDirection->setCurrentIndex(2);
+            ui->comboDirection->setCurrentIndex( sketch ? 2 : 0);
         else if (strcmp(directionFeature->getNameInDocument(), App::Part::BaselineTypes[1]) == 0)
-            ui->comboDirection->setCurrentIndex(3);
+            ui->comboDirection->setCurrentIndex(sketch ? 3 : 1);
         else if (strcmp(directionFeature->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
-            ui->comboDirection->setCurrentIndex(4);
-        else if (directions.front().size() > 4 && directions.front().substr(0,4) == "Axis") {
-            int pos = 5 + std::atoi(directions.front().substr(4,4000).c_str());
+            ui->comboDirection->setCurrentIndex(sketch ? 4 : 2);
+        else if (directions.front().size() > (sketch ? 4 : 2)  && directions.front().substr(0,4) == "Axis") {
+            int pos = (sketch ? 5 : 3) + std::atoi(directions.front().substr(4,4000).c_str());
             if (pos <= maxcount)
                 ui->comboDirection->setCurrentIndex(pos);
             else
@@ -345,35 +359,39 @@ void TaskLinearPatternParameters::onDirectionChanged(int num) {
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
 
     App::DocumentObject* pcSketch = getSketchObject();
-    int maxcount=5;
-    if (pcSketch)
+    int maxcount=3;
+    if (pcSketch)  {
+        maxcount = 5;
         maxcount += static_cast<Part::Part2DObject*>(pcSketch)->getAxisCount();
+    }
 
-    if (num == 0) {
-        pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
-        exitSelectionMode();
+    if(pcSketch) {
+        if (num == 0) {
+            pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
+            exitSelectionMode();
+        }
+        else if (num == 1) {
+            pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
+            exitSelectionMode();
+        }
     }
-    else if (num == 1) {
-        pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
-        exitSelectionMode();
-    }
-    else if (num == 2) {
+    if (num == (pcSketch ? 2 : 0)) {
         pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(App::Part::BaselineTypes[0]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
-    else if (num == 3) {
+    else if (num == (pcSketch ? 3 : 1)) {
         pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(App::Part::BaselineTypes[1]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
-    else if (num == 4) {
+    else if (num == (pcSketch ? 4 : 2)) {
         pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(App::Part::BaselineTypes[2]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
-    else if (num >= 5 && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-5);
+    else if (num >= (pcSketch ? 5 : 3) && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-(pcSketch ? 5 : 3));
         std::string str = buf.toStdString();
         pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,str));
         exitSelectionMode();
@@ -425,23 +443,27 @@ void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj, std::v
 {
     obj = getSketchObject();
     sub = std::vector<std::string>(1,"");
-    int maxcount=5;
-    if (obj)
+    int maxcount=3;
+    if (obj) {
+        maxcount = 5;
         maxcount += static_cast<Part::Part2DObject*>(obj)->getAxisCount();
+    }
 
     int num = ui->comboDirection->currentIndex();
-    if (num == 0)
-        sub[0] = "H_Axis";
-    else if (num == 1)
-        sub[0] = "V_Axis";
-    else if (num == 2)
+    if(obj) {
+        if (num == 0)
+            sub[0] = "H_Axis";
+        else if (num == 1)
+            sub[0] = "V_Axis";
+    }
+    if (num == (obj ? 2 : 0))
         obj = getObject()->getDocument()->getObject(App::Part::BaselineTypes[0]);
-    else if (num == 3)
+    else if (num == (obj ? 3 : 1))
         obj = getObject()->getDocument()->getObject(App::Part::BaselineTypes[1]);
-    else if (num == 4)
+    else if (num == (obj ? 4 : 2))
         obj = getObject()->getDocument()->getObject(App::Part::BaselineTypes[2]);
-    else if (num >= 5 && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-5);
+    else if (num >= (obj ? 5 : 3) && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-(obj ? 5 : 3));
         sub[0] = buf.toStdString();
     } else if (num == maxcount && ui->comboDirection->count() == maxcount + 2) {
         QStringList parts = ui->comboDirection->currentText().split(QChar::fromAscii(':'));

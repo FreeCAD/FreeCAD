@@ -90,6 +90,9 @@ App::DocumentObject* Transformed::getSketchObject() const
     if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
         return (static_cast<PartDesign::SketchBased*>(originals.front()))->getVerifiedSketch();
     }
+    else if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+        return NULL;
+    }
     else if (this->getTypeId().isDerivedFrom(LinearPattern::getClassTypeId())) {
         // if Originals is empty then try the linear pattern's Direction property
         const LinearPattern* pattern = static_cast<const LinearPattern*>(this);

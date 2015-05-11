@@ -51,38 +51,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboDirection">
-       <item>
-        <property name="text">
-         <string>Horizontal sketch axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Vertical sketch axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Base X axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Base Y axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Base Z axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Select reference...</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="comboDirection"/>
      </item>
     </layout>
    </item>

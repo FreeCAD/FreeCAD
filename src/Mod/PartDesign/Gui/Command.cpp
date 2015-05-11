@@ -1645,10 +1645,16 @@ void CmdPartDesignMirrored::activated(int iMsg)
         if (features.empty())
         return;
         
-        Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
-        if (sketch)
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"V_Axis\"])",
-                    FeatName.c_str(), sketch->getNameInDocument());
+        if(features.front()->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
+            Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
+            if (sketch)
+                Gui::Command::doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"V_Axis\"])",
+                        FeatName.c_str(), sketch->getNameInDocument());
+        }
+        else {
+            doCommand(Doc,"App.activeDocument().%s.MirrorPlane = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
+                      App::Part::BaseplaneTypes[0]);
+        }
 
         finishTransformed(cmd, FeatName);
     };
@@ -1684,12 +1690,18 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
     auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
         
         if (features.empty())
-        return;
+            return;
 
-        Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
-        if (sketch)
-            doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"H_Axis\"])",
-                    FeatName.c_str(), sketch->getNameInDocument());
+        if(features.front()->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
+            Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
+            if (sketch)
+                doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"H_Axis\"])",
+                        FeatName.c_str(), sketch->getNameInDocument());
+        }
+        else {
+            doCommand(Doc,"App.activeDocument().%s.Direction = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
+                      App::Part::BaselineTypes[0]);
+        }
         doCommand(Doc,"App.activeDocument().%s.Length = 100", FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
 
@@ -1728,10 +1740,17 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
         if (features.empty())
             return;
         
-        Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
-        if (sketch)
-            doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"N_Axis\"])",
-                    FeatName.c_str(), sketch->getNameInDocument());
+        if(features.front()->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
+            Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
+            if (sketch)
+                doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"N_Axis\"])",
+                        FeatName.c_str(), sketch->getNameInDocument());
+        }
+        else {
+            doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
+                      App::Part::BaselineTypes[0]);
+        }
+        
         doCommand(Doc,"App.activeDocument().%s.Angle = 360", FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
 
