@@ -146,6 +146,16 @@ void TaskPolarPatternParameters::setupUI()
     ui->checkReverse->setEnabled(true);
     ui->polarAngle->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
+    
+    App::DocumentObject* sketch = getSketchObject();
+    if (sketch) {
+        ui->comboAxis->addItem(QString::fromAscii("Normal sketch axis"));
+    }
+    //add the base axes to the selection combo box
+    ui->comboAxis->addItem(QString::fromAscii("Base X axis"));
+    ui->comboAxis->addItem(QString::fromAscii("Base Y axis"));    
+    ui->comboAxis->addItem(QString::fromAscii("Base Z axis")); 
+    ui->comboAxis->addItem(QString::fromAscii("Select reference..."));
     updateUI();
     
     //show the parts coordinate system axis for selection
@@ -180,11 +190,13 @@ void TaskPolarPatternParameters::updateUI()
 
     // Add user-defined sketch axes to the reference selection combo box
     App::DocumentObject* sketch = getSketchObject();
-    int maxcount=1;
-    if (sketch)
+    int maxcount=3;
+    if (sketch) {
+        maxcount = 4;
         maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+    }
 
-    for (int i=ui->comboAxis->count()-1; i >= 1; i--)
+    for (int i=ui->comboAxis->count()-1; i >= (sketch ? 4 : 3); i--)
         ui->comboAxis->removeItem(i);
     for (int i=ui->comboAxis->count(); i < maxcount; i++)
         ui->comboAxis->addItem(QString::fromAscii("Sketch axis %1").arg(i-1));
@@ -193,14 +205,14 @@ void TaskPolarPatternParameters::updateUI()
     if (axisFeature != NULL && !axes.empty()) {
         if (axes.front() == "N_Axis") {
             ui->comboAxis->setCurrentIndex(0);
-        } else if (strcmp(axes.front().c_str(), App::Part::BaselineTypes[0]) == 0) {
-            ui->comboAxis->setCurrentIndex(1);
-        } else if (strcmp(axes.front().c_str(), App::Part::BaselineTypes[1]) == 0) {
-            ui->comboAxis->setCurrentIndex(2);
-        } else if (strcmp(axes.front().c_str(), App::Part::BaselineTypes[2]) == 0) {
-            ui->comboAxis->setCurrentIndex(3);
-        } else if (axes.front().size() > 4 && axes.front().substr(0,4) == "Axis") {
-            int pos = 4 + std::atoi(axes.front().substr(4,4000).c_str());
+        } else if (strcmp(axisFeature->getNameInDocument(), App::Part::BaselineTypes[0]) == 0) {
+            ui->comboAxis->setCurrentIndex((sketch ? 1 : 0));
+        } else if (strcmp(axisFeature->getNameInDocument(), App::Part::BaselineTypes[1]) == 0) {
+            ui->comboAxis->setCurrentIndex((sketch ? 2 : 1));
+        } else if (strcmp(axisFeature->getNameInDocument(), App::Part::BaselineTypes[2]) == 0) {
+            ui->comboAxis->setCurrentIndex((sketch ? 3 : 2));
+        } else if (axes.front().size() > (sketch ? 4 : 3) && axes.front().substr(0,4) == "Axis") {
+            int pos = (sketch ? 4 : 3) + std::atoi(axes.front().substr(4,4000).c_str());
             if (pos <= maxcount)
                 ui->comboAxis->setCurrentIndex(pos);
             else
@@ -338,16 +350,35 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
     App::DocumentObject* pcSketch = getSketchObject();
-    int maxcount=1;
-    if (pcSketch)
+    int maxcount=3;
+    if (pcSketch) {
+        maxcount = 4;
         maxcount += static_cast<Part::Part2DObject*>(pcSketch)->getAxisCount();
+    }
 
-    if (num == 0) {
-        pcPolarPattern->Axis.setValue(getSketchObject(), std::vector<std::string>(1,"N_Axis"));
+    if(pcSketch) {
+        if (num == 0) {
+            pcPolarPattern->Axis.setValue(getSketchObject(), std::vector<std::string>(1,"N_Axis"));
+            exitSelectionMode();
+        }
+    }
+    if (num == (pcSketch ? 1 : 0)) {
+        pcPolarPattern->Axis.setValue(getObject()->getDocument()->getObject(App::Part::BaselineTypes[0]),
+                                         std::vector<std::string>(1,""));
         exitSelectionMode();
     }
-    else if (num >= 1 && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-1);
+    else if (num == (pcSketch ? 2 : 1)) {
+        pcPolarPattern->Axis.setValue(getObject()->getDocument()->getObject(App::Part::BaselineTypes[1]),
+                                         std::vector<std::string>(1,""));
+        exitSelectionMode();
+    }
+    else if (num == (pcSketch ? 3 : 2)) {
+        pcPolarPattern->Axis.setValue(getObject()->getDocument()->getObject(App::Part::BaselineTypes[2]),
+                                         std::vector<std::string>(1,""));
+        exitSelectionMode();
+    }
+    else if (num >= (pcSketch ? 4 : 3) && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-(pcSketch ? 4 : 3));
         std::string str = buf.toStdString();
         pcPolarPattern->Axis.setValue(pcSketch, std::vector<std::string>(1,str));
         exitSelectionMode();
@@ -360,7 +391,7 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
         Gui::Selection().clearSelection();
         addReferenceSelectionGate(true, false);
     }
-    else if (num == 1)
+    else if (num == maxcount)
         exitSelectionMode();
 
     kickUpdateViewTimer();
@@ -400,16 +431,28 @@ void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<
     obj = getSketchObject();
     sub = std::vector<std::string>(1,"");
     int maxcount=1;
-    if (obj)
+    if (obj) {
+        maxcount = 4;
         maxcount += static_cast<Part::Part2DObject*>(obj)->getAxisCount();
+    }
 
     int num = ui->comboAxis->currentIndex();
-    if (ui->comboAxis->currentIndex() == 0) {
-        sub[0] = "N_Axis";
-    } else if (num >= 1 && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-1);
+    if(obj) {
+        if (ui->comboAxis->currentIndex() == 0) {
+            sub[0] = "N_Axis";
+        }
+    }
+    if (num == (obj ? 1 : 0))
+        obj = getObject()->getDocument()->getObject(App::Part::BaselineTypes[0]);
+    else if (num == (obj ? 2 : 1))
+        obj = getObject()->getDocument()->getObject(App::Part::BaselineTypes[1]);
+    else if (num == (obj ? 3 : 2))
+        obj = getObject()->getDocument()->getObject(App::Part::BaselineTypes[2]);
+    else if (num >= (obj ? 4 : 3) && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-(obj ? 4 : 3));
         sub[0] = buf.toStdString();
-    } else if (num == maxcount && ui->comboAxis->count() == maxcount + 2) {
+    }
+    else if (num == maxcount && ui->comboAxis->count() == maxcount + 2) {
         QStringList parts = ui->comboAxis->currentText().split(QChar::fromAscii(':'));
         obj = getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
         if (parts.size() > 1)

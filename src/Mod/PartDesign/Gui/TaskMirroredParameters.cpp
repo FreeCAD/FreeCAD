@@ -125,6 +125,17 @@ void TaskMirroredParameters::setupUI()
     // ---------------------
 
     ui->comboPlane->setEnabled(true);
+    
+    App::DocumentObject* sketch = getSketchObject();
+    if (sketch) {
+        ui->comboPlane->addItem(QString::fromAscii("Horizontal sketch axis"));
+        ui->comboPlane->addItem(QString::fromAscii("Vertical sketch axis"));
+    }
+    //add the base axes to the selection combo box
+    ui->comboPlane->addItem(QString::fromAscii("Base XY axis"));
+    ui->comboPlane->addItem(QString::fromAscii("Base XZ axis"));    
+    ui->comboPlane->addItem(QString::fromAscii("Base YZ axis")); 
+    ui->comboPlane->addItem(QString::fromAscii("Select reference..."));
     updateUI();
     
     //show the parts coordinate system axis for selection
@@ -156,11 +167,13 @@ void TaskMirroredParameters::updateUI()
 
     // Add user-defined sketch axes to the reference selection combo box
     App::DocumentObject* sketch = getSketchObject();
-    int maxcount=5;
-    if (sketch)
+    int maxcount=3;
+    if (sketch) {
+        maxcount = 5;
         maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+    }
 
-    for (int i=ui->comboPlane->count()-1; i >= 5; i--)
+    for (int i=ui->comboPlane->count()-1; i >= (sketch ? 5 : 3); i--)
         ui->comboPlane->removeItem(i);
     for (int i=ui->comboPlane->count(); i < maxcount; i++)
         ui->comboPlane->addItem(QString::fromLatin1("Sketch axis %1").arg(i-5));
@@ -172,13 +185,13 @@ void TaskMirroredParameters::updateUI()
         else if (mirrorPlanes.front() == "V_Axis")
             ui->comboPlane->setCurrentIndex(1);
         else if (strcmp(mirrorPlaneFeature->getNameInDocument(), App::Part::BaseplaneTypes[0]) == 0)
-            ui->comboPlane->setCurrentIndex(2);
+            ui->comboPlane->setCurrentIndex((sketch ? 2 : 0));
         else if (strcmp(mirrorPlaneFeature->getNameInDocument(), App::Part::BaseplaneTypes[1]) == 0)
-            ui->comboPlane->setCurrentIndex(3);
+            ui->comboPlane->setCurrentIndex((sketch ? 3 : 1));
         else if (strcmp(mirrorPlaneFeature->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
-            ui->comboPlane->setCurrentIndex(4);
-        else if (mirrorPlanes.front().size() > 4 && mirrorPlanes.front().substr(0,4) == "Axis") {
-            int pos = 5 + std::atoi(mirrorPlanes.front().substr(4,4000).c_str());
+            ui->comboPlane->setCurrentIndex((sketch ? 4 : 2));
+        else if (mirrorPlanes.front().size() > (sketch ? 4 : 2) && mirrorPlanes.front().substr(0,4) == "Axis") {
+            int pos = (sketch ? 5 : 3) + std::atoi(mirrorPlanes.front().substr(4,4000).c_str());
             if (pos <= maxcount)
                 ui->comboPlane->setCurrentIndex(pos);
             else
@@ -228,9 +241,11 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             }
             else {
                 App::DocumentObject* sketch = getSketchObject();
-                int maxcount=5;
-                if (sketch)
+                int maxcount=3;
+                if (sketch) {
+                    maxcount = 5;
                     maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+                }
                 for (int i=ui->comboPlane->count()-1; i >= maxcount; i--)
                     ui->comboPlane->removeItem(i);
 
@@ -270,35 +285,39 @@ void TaskMirroredParameters::onPlaneChanged(int num) {
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
 
     App::DocumentObject* pcSketch = getSketchObject();
-    int maxcount=5;
-    if (pcSketch)
+    int maxcount=3;
+    if (pcSketch) {
+        maxcount = 5;
         maxcount += static_cast<Part::Part2DObject*>(pcSketch)->getAxisCount();
+    }
 
-    if (num == 0) {
-        pcMirrored->MirrorPlane.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
-        exitSelectionMode();
+    if(pcSketch) {
+        if (num == 0) {
+            pcMirrored->MirrorPlane.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
+            exitSelectionMode();
+        }
+        else if (num == 1) {
+            pcMirrored->MirrorPlane.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
+            exitSelectionMode();
+        }
     }
-    else if (num == 1) {
-        pcMirrored->MirrorPlane.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
-        exitSelectionMode();
-    }
-    else if (num == 2) {
+    if (num == (pcSketch ? 2 : 0)) {
         pcMirrored->MirrorPlane.setValue(getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[0]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
-    else if (num == 3) {
+    else if (num == (pcSketch ? 3 : 1)) {
         pcMirrored->MirrorPlane.setValue(getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[1]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
-    else if (num == 4) {
+    else if (num == (pcSketch ? 4 : 2)) {
         pcMirrored->MirrorPlane.setValue(getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[2]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
-    else if (num >= 5 && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-5);
+    else if (num >= (pcSketch ? 5 : 3) && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-(pcSketch ? 5 : 3));
         std::string str = buf.toStdString();
         pcMirrored->MirrorPlane.setValue(pcSketch, std::vector<std::string>(1,str));
         exitSelectionMode();
@@ -347,23 +366,27 @@ void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj, std::vect
 {
     obj = getSketchObject();
     sub = std::vector<std::string>(1,"");
-    int maxcount=5;
-    if (obj)
+    int maxcount=3;
+    if (obj) {
+        maxcount = 5;
         maxcount += static_cast<Part::Part2DObject*>(obj)->getAxisCount();
+    }
 
     int num = ui->comboPlane->currentIndex();
-    if (num == 0)
-        sub[0] = "H_Axis";
-    else if (num == 1)
-        sub[0] = "V_Axis";
-    else if (num == 2)
+    if(obj) {
+        if (num == 0)
+            sub[0] = "H_Axis";
+        else if (num == 1)
+            sub[0] = "V_Axis";
+    }
+    if (num == (obj ? 2 : 0))
         obj = getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[0]);
-    else if (num == 3)
+    else if (num == (obj ? 3 : 1))
         obj = getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[1]);
-    else if (num == 4)
+    else if (num == (obj ? 4 : 2))
         obj = getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[2]);
-    else if (num >= 5 && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-5);
+    else if (num >= (obj ? 5 : 3) && num < maxcount) {
+        QString buf = QString::fromUtf8("Axis%1").arg(num-(obj ? 5 : 3));
         sub[0] = buf.toStdString();
     } else if (num == maxcount && ui->comboPlane->count() == maxcount + 2) {
         QStringList parts = ui->comboPlane->currentText().split(QChar::fromAscii(':'));
