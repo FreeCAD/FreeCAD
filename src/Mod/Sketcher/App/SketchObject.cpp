@@ -2760,12 +2760,18 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
     const std::vector<DocumentObject*> originalObjects = Objects;
     const std::vector<std::string>     originalSubElements = SubElements;
 
-    std::vector<std::string>::iterator it;
-    it = std::find(SubElements.begin(), SubElements.end(), SubName);
-
-    // avoid duplicates
-    if (it != SubElements.end())
+    if (Objects.size() != SubElements.size()) {
+        assert(0 /*counts of objects and subelements in external geometry links do not match*/);
+        Base::Console().Error("Internal error: counts of objects and subelements in external geometry links do not match\n");
         return -1;
+    }
+    for (int i = 0  ;  i < Objects.size()  ;  i++){
+        if (Objects[i] == Obj   &&   std::string(SubName) == SubElements[i]){
+            Base::Console().Error("Link to %s already exists in this sketch.\n",SubName);
+            return -1;
+        }
+    }
+
 
     // add the new ones
     Objects.push_back(Obj);
