@@ -160,7 +160,17 @@ def importFrd(filename,Analysis=None):
                 mstress = []
                 for i in stress.values():
                     # van mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
-                    mstress.append( sqrt( pow( i[0] - i[1] ,2) + pow( i[1] - i[2] ,2) + pow( i[2] - i[0] ,2) + 6 * (pow(i[3],2)+pow(i[4],2)+pow(i[5],2)  )  ) )
+                    s11 = i[0]
+                    s22 = i[1]
+                    s33 = i[2]
+                    s12 = i[3]
+                    s23 = i[4]
+                    s31 = i[5]
+                    s11s22 = pow(s11 - s22, 2)
+                    s22s33 = pow(s22 - s33, 2)
+                    s33s11 = pow(s33 - s11, 2)
+                    s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) * pow(s31, 2))
+                    mstress.append(sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31)))
                 
                 o.Values = mstress
                 o.DataType = 'VonMisesStress'
