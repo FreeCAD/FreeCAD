@@ -153,7 +153,7 @@ CmdPartDesignMoveTip::CmdPartDesignMoveTip()
 
 void CmdPartDesignMoveTip::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if(!pcActiveBody) return;
 
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
@@ -229,7 +229,7 @@ CmdPartDesignDuplicateSelection::CmdPartDesignDuplicateSelection()
 
 void CmdPartDesignDuplicateSelection::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if(!pcActiveBody) return;
 
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
@@ -301,7 +301,7 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
 
 void CmdPartDesignMoveFeature::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if(!pcActiveBody) return;
 
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
@@ -381,7 +381,7 @@ CmdPartDesignMoveFeatureInTree::CmdPartDesignMoveFeatureInTree()
 
 void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if(!pcActiveBody) return;
 
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
@@ -445,11 +445,19 @@ bool CmdPartDesignMoveFeatureInTree::isActive(void)
 // PartDesign_Datum
 //===========================================================================
 
+/**
+ * @brief getReferenceString Prepares selection to be fed through Python to a datum feature.
+ * @param cmd
+ * @return string representing the selection, in format
+ * "[(App.activeDocument().Pad,'Vertex8'),(App.activeDocument().Pad,'Vertex9')]".
+ * Zero-length string if there is no selection, or the selection is
+ * inappropriate.
+ */
 const QString getReferenceString(Gui::Command* cmd)
 {
     QString referenceString;
 
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     if(!pcActiveBody) return QString::fromAscii("");
 
     Gui::SelectionFilter GeometryFilter("SELECT Part::Feature SUBELEMENT Face COUNT 1");
@@ -534,7 +542,9 @@ void CmdPartDesignPlane::activated(int iMsg)
     // create Datum plane
     std::string FeatName = getUniqueObjectName("DatumPlane");
     QString refStr = getReferenceString(this);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+    if (pcActiveBody == 0)
+        return;
 
     openCommand("Create a datum plane");
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",FeatName.c_str());
@@ -576,7 +586,9 @@ void CmdPartDesignLine::activated(int iMsg)
     // create Datum line
     std::string FeatName = getUniqueObjectName("DatumLine");
     QString refStr = getReferenceString(this);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+    if (pcActiveBody == 0)
+        return;
 
     openCommand("Create a datum line");
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Line','%s')",FeatName.c_str());
@@ -616,7 +628,9 @@ void CmdPartDesignPoint::activated(int iMsg)
     // create Datum point
     std::string FeatName = getUniqueObjectName("DatumPoint");
     QString refStr = getReferenceString(this);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+    if (pcActiveBody == 0)
+        return;
 
     openCommand("Create a datum point");
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Point','%s')",FeatName.c_str());
@@ -659,7 +673,7 @@ CmdPartDesignNewSketch::CmdPartDesignNewSketch()
 
 void CmdPartDesignNewSketch::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
 
     // No PartDesign feature without Body past FreeCAD 0.13
     if(!pcActiveBody) return;
@@ -866,7 +880,9 @@ bool CmdPartDesignNewSketch::isActive(void)
 
 void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const bool hidePrevSolid = true)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
+    if (pcActiveBody == 0)
+        throw Base::Exception("No active body!");
 
     cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                    pcActiveBody->getNameInDocument(), FeatName.c_str());
@@ -924,7 +940,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
         }
 
         // Check whether this sketch belongs to the active body
-        PartDesign::Body* body = PartDesignGui::getBody();
+        PartDesign::Body* body = PartDesignGui::getBody(/*messageIfNot = */false);
         if (!body->hasFeature(*s)) {
             status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
             continue;
@@ -962,7 +978,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
 void prepareSketchBased(Gui::Command* cmd, const std::string& which, 
                         boost::function<void (Part::Part2DObject*, std::string)> func)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
 
     // Get a valid sketch from the user
@@ -1223,7 +1239,7 @@ bool CmdPartDesignGroove::isActive(void)
 
 void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     if (!pcActiveBody) 
         return;
 
@@ -1427,7 +1443,7 @@ CmdPartDesignDraft::CmdPartDesignDraft()
 
 void CmdPartDesignDraft::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
@@ -1788,7 +1804,7 @@ CmdPartDesignMultiTransform::CmdPartDesignMultiTransform()
 
 void CmdPartDesignMultiTransform::activated(int iMsg)
 {
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
 
     std::vector<App::DocumentObject*> features;

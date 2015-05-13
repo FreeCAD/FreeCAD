@@ -51,7 +51,7 @@ namespace PartDesignGui {
 //extern Gui::ViewProviderDocumentObject *ActiveVp;
 
 /// Return active body or show a warning message
-PartDesign::Body *getBody(void);
+PartDesign::Body *getBody(bool messageIfNot);
 
 /**
  * @author Werner Mayer

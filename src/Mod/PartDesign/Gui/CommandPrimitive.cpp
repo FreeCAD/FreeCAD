@@ -56,7 +56,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
 {
     Base::Console().Message("activated msg %i\n", iMsg);
     
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
     
     if(iMsg == 0) {
