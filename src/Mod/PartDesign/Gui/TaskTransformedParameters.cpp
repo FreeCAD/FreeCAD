@@ -243,7 +243,7 @@ void TaskTransformedParameters::showObject()
 void TaskTransformedParameters::hideBase()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    PartDesign::Body* pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     if (doc && pcActiveBody) {
         App::DocumentObject* prevFeature;
         if (insideMultiTransform) {
@@ -259,7 +259,7 @@ void TaskTransformedParameters::hideBase()
 void TaskTransformedParameters::showBase()
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    PartDesign::Body* pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
     if (doc && pcActiveBody) {
         App::DocumentObject* prevFeature;
         if (insideMultiTransform) {

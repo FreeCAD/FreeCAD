@@ -73,11 +73,11 @@ namespace PartDesignGui {
 // Helper for Body
 //===========================================================================
 
-PartDesign::Body *getBody(void)
+PartDesign::Body *getBody(bool messageIfNot)
 {
 	PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
-	if (!activeBody){
+    if (!activeBody && messageIfNot){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
             QObject::tr("In order to use PartDesign you need an active Body object in the document. "
 			"Please make one active (double click) or create one. If you have a legacy document "
