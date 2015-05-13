@@ -47,6 +47,7 @@
 #include "FemConstraintBearing.h"
 #include "FemConstraintFixed.h"
 #include "FemConstraintForce.h"
+#include "FemConstraintPressure.h"
 #include "FemConstraintGear.h"
 #include "FemConstraintPulley.h"
 
@@ -135,6 +136,7 @@ void AppFemExport initFem()
     Fem::ConstraintBearing          ::init();
     Fem::ConstraintFixed            ::init();
     Fem::ConstraintForce            ::init();
+    Fem::ConstraintPressure         ::init();
     Fem::ConstraintGear             ::init();
     Fem::ConstraintPulley           ::init();
 
