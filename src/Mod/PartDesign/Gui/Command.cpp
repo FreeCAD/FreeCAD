@@ -778,9 +778,10 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
                 continue;
             } else {
-                if (pcActiveBody->isAfterTip(*p))
+                if (pcActiveBody->isAfterTip(*p)){
                     status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
-                continue;
+                    continue;
+                }
             }
 
             // All checks passed - found a valid plane
@@ -1165,7 +1166,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
         //adjustCameraPosition();
     };
     
-    prepareSketchBased(this, "Pocket", worker);
+    prepareSketchBased(this, "Revolution", worker);
 }
 
 bool CmdPartDesignRevolution::isActive(void)
@@ -1208,7 +1209,7 @@ void CmdPartDesignGroove::activated(int iMsg)
         //adjustCameraPosition();
     };
 
-    prepareSketchBased(this, "Pocket", worker);
+    prepareSketchBased(this, "Groove", worker);
 }
 
 bool CmdPartDesignGroove::isActive(void)
