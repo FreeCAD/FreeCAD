@@ -2622,7 +2622,7 @@ class Downgrade(Modifier):
         return {'Pixmap'  : 'Draft_Downgrade',
                 'Accel' : "D, N",
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_Downgrade", "Downgrade"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Downgrade", "Explodes the selected objects into simpler objects, or subtract faces")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_Downgrade", "Explodes the selected objects into simpler objects, or subtracts faces")}
 
     def Activated(self):
         Modifier.Activated(self,"Downgrade")
