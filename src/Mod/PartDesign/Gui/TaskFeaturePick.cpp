@@ -87,6 +87,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     auto guidoc = Gui::Application::Instance->activeDocument();
     auto origin_obj = App::GetApplication().getActiveDocument()->getObjectsOfType<App::Origin>();
 
+    assert(status.size() == objects.size());
     std::vector<featureStatus>::const_iterator st = status.begin();
     for (std::vector<App::DocumentObject*>::const_iterator o = objects.begin(); o != objects.end(); o++) {
         QListWidgetItem* item = new QListWidgetItem(QString::fromAscii((*o)->getNameInDocument()) +
