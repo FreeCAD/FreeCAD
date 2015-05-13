@@ -377,7 +377,7 @@ class _JobControlTaskPanel:
             try:
                 import ccxInpWriter as iw
                 inp_writer = iw.inp_writer(self.TempDir, self.MeshObject, self.MaterialObjects,
-                                           self.FixedObjects, self.ForceObjects)
+                                           self.FixedObjects, self.ForceObjects, self.PressureObjects)
                 self.base_name = inp_writer.write_calculix_input_file()
                 if self.base_name != "":
                     self.femConsoleMessage("Write completed.")
@@ -435,8 +435,16 @@ class _JobControlTaskPanel:
             if i.isDerivedFrom("Fem::ConstraintForce"):
                 ForceObjectDict['Object'] = i
                 self.ForceObjects.append(ForceObjectDict)
-        if not self.ForceObjects:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No force-constraint nodes defined in the Analysis")
+
+        self.PressureObjects = []    # [{'Object':PressureObject, 'xxxxxxxx':value}, {}, ...]
+        for i in FemGui.getActiveAnalysis().Member:
+            PressureObjectDict = {}
+            if i.isDerivedFrom("Fem::ConstraintPressure"):
+                PressureObjectDict['Object'] = i
+                self.PressureObjects.append(PressureObjectDict)
+
+        if not (self.ForceObjects or self.PressureObjects):
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No force-constraint or pressure-constraint defined in the Analysis")
             return False
         return True
 

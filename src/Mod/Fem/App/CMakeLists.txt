@@ -121,6 +121,8 @@ SET(FemConstraints_SRCS
     FemConstraintFixed.h
     FemConstraintForce.cpp
     FemConstraintForce.h
+    FemConstraintPressure.cpp
+    FemConstraintPressure.h
     FemConstraintGear.cpp
     FemConstraintGear.h
     FemConstraintPulley.cpp

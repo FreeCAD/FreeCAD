@@ -6,11 +6,12 @@ import sys
 
 
 class inp_writer:
-    def __init__(self, dir_name, mesh_obj, mat_obj, fixed_obj, force_obj):
+    def __init__(self, dir_name, mesh_obj, mat_obj, fixed_obj, force_obj, pressure_obj):
         self.mesh_object = mesh_obj
         self.material_objects = mat_obj
         self.fixed_objects = fixed_obj
         self.force_objects = force_obj
+        self.pressure_objects = pressure_obj
         self.base_name = dir_name + '/' + self.mesh_object.Name
         self.file_name = self.base_name + '.inp'
         print 'CalculiX .inp file will be written to: ', self.file_name
@@ -29,7 +30,7 @@ class inp_writer:
         self.write_step_begin(inpfile)
         self.write_constraints_fixed(inpfile)
         self.write_constraints_force(inpfile)
-        #self.write_face_load(inpfile)
+        self.write_face_load(inpfile)
         self.write_outputs_types(inpfile)
         self.write_step_end(inpfile)
         self.write_footer(inpfile)
@@ -306,16 +307,17 @@ class inp_writer:
         f.write('\n***********************************************************\n')
         f.write('** Element + CalculiX face + load in [MPa]\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for fobj in self.force_objects:
-            frc_obj = fobj['Object']
+        for fobj in self.pressure_objects:
+            prs_obj = fobj['Object']
             f.write('*DLOAD\n')
-            for o, e in frc_obj.References:
+            for o, e in prs_obj.References:
+                rev = -1 if prs_obj.Reversed else 1
                 elem = o.Shape.getElement(e)
                 if elem.ShapeType == 'Face':
                     v = self.mesh_object.FemMesh.getccxVolumesByFace(elem)
                     f.write("** Load on face {}\n".format(e))
                     for i in v:
-                        f.write("{},P{},{}\n".format(i[0], i[1], frc_obj.Force))
+                        f.write("{},P{},{}\n".format(i[0], i[1], rev * prs_obj.Pressure))
 
     def write_outputs_types(self, f):
         f.write('\n***********************************************************\n')

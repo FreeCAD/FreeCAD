@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFemConstraintPressure</class>
+ <widget class="QWidget" name="TaskFemConstraintPressure">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>257</width>
+    <height>250</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QPushButton" name="b_add_reference">
+     <property name="text">
+      <string>Add reference</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListWidget" name="lw_references"/>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="layoutPressure">
+     <item>
+      <widget class="QLabel" name="l_pressure">
+       <property name="text">
+        <string>Pressure</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::InputField" name="if_pressure">
+       <property name="text">
+        <string>1 MPa</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true"/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="cb_reverse_direction">
+     <property name="text">
+      <string>Reverse direction</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>17</width>
+       <height>56</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
