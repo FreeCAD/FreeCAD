@@ -597,7 +597,14 @@ def getMovableChildren(objectslist,recursive=False):
             for child in children:
                 if hasattr(child,"MoveWithHost"):
                     if child.MoveWithHost:
-                        added.append(child)
+                        if hasattr(obj,"CloneOf"):
+                            if obj.CloneOf:
+                                if obj.CloneOf.Name != child.Name:
+                                    added.append(child)
+                            else:
+                                added.append(child)
+                        else:
+                            added.append(child)
             if recursive:
                 added.extend(getMovableChildren(children))
     return added
