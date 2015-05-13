@@ -176,7 +176,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
 
         if windowtype == "Fixed":
             wp = outerFrame(s,width,height,h1,w1,o1)
-            wp.extend(["Glass","Glass panel","Wire1",str(w1/gla),str(w1/2)])
+            wp.extend(["Glass","Glass panel","Wire1",str(w1/gla),str(w1+w1/2)])
 
         elif windowtype == "Open 1-pane":
             wp = outerFrame(s,width,height,h1,w1,o1)
@@ -811,6 +811,10 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
     def colorize(self,obj):
         "setting different part colors"
+        if hasattr(obj,"CloneOf"):
+            if obj.CloneOf:
+                obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+                return
         solids = obj.Shape.copy().Solids
         #print "Colorizing ", solids
         colors = []
