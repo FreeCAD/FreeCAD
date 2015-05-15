@@ -26,6 +26,7 @@
 #include <algorithm>
 #include <iterator>
 #include <Geom_Surface.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
 #include <GeomAdaptor_Surface.hxx>
 #include <Geom_Plane.hxx>
 #include <Geom_CylindricalSurface.hxx>
@@ -343,12 +344,31 @@ FaceTypedPlane::FaceTypedPlane() : FaceTypedBase(GeomAbs_Plane)
 {
 }
 
+static Handle(Geom_Plane) getGeomPlane(const TopoDS_Face &faceIn)
+{
+  Handle_Geom_Plane planeSurfaceOut;
+  Handle_Geom_Surface surface = BRep_Tool::Surface(faceIn);
+  if (!surface.IsNull())
+  {
+    planeSurfaceOut = Handle(Geom_Plane)::DownCast(surface);
+    if (planeSurfaceOut.IsNull())
+    {
+      Handle_Geom_RectangularTrimmedSurface trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
+      if (!trimmedSurface.IsNull())
+        planeSurfaceOut = Handle(Geom_Plane)::DownCast(trimmedSurface->BasisSurface());
+    }
+  }
+
+  return planeSurfaceOut;
+}
+
 bool FaceTypedPlane::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
 {
-    Handle(Geom_Plane) planeSurfaceOne = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(faceOne));
-    Handle(Geom_Plane) planeSurfaceTwo = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(faceTwo));
-    if (planeSurfaceOne.IsNull() || planeSurfaceTwo.IsNull())
-        return false;//error?
+  Handle(Geom_Plane) planeSurfaceOne = getGeomPlane(faceOne);
+  Handle(Geom_Plane) planeSurfaceTwo = getGeomPlane(faceTwo);
+  if (planeSurfaceOne.IsNull() || planeSurfaceTwo.IsNull())
+      return false;//error?
+
     gp_Pln planeOne(planeSurfaceOne->Pln());
     gp_Pln planeTwo(planeSurfaceTwo->Pln());
     return (planeOne.Position().Direction().IsParallel(planeTwo.Position().Direction(), Precision::Confusion()) &&
