@@ -690,10 +690,10 @@ PyObject* FemMeshPy::getElementNodes(PyObject *args)
          return 0;
 
     try {
-        std::set<int> resultSet = getFemMeshPtr()->getElementNodes(id);
+        std::list<int> resultSet = getFemMeshPtr()->getElementNodes(id);
         Py::Tuple ret(resultSet.size());
         int index = 0;
-        for (std::set<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
+        for (std::list<int>::const_iterator it = resultSet.begin();it!=resultSet.end();++it)
             ret.setItem(index++, Py::Int(*it));
 
         return Py::new_reference_to(ret);
