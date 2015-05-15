@@ -126,7 +126,10 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
         SbVec3f max = bbox.getMax()*1.3;
         SbVec3f min = bbox.getMin()*1.3;
        
-        App::Origin* origin = static_cast<App::Origin*>(part->getObjectsOfType(App::Origin::getClassTypeId()).front());
+        auto origins = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if (origins.empty())
+          return;
+        App::Origin* origin = dynamic_cast<App::Origin*>(origins.front());
         if(!origin)
             return;
         
