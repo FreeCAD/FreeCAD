@@ -517,7 +517,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     obj.IfcAttributes = a
             
             # color
-            if FreeCAD.GuiUp and (pid in colors):
+            if FreeCAD.GuiUp and (pid in colors) and hasattr(obj.ViewObject,"ShapeColor"):
                 if DEBUG: print "    setting color: ",colors[pid]
                 obj.ViewObject.ShapeColor = colors[pid]
         
