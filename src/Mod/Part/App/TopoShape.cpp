@@ -1964,21 +1964,18 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
         selfInter ? Standard_True : Standard_False,
         GeomAbs_JoinType(join));
     if (!mkOffset.IsDone())
-        return TopoDS_Shape(); //maybe throw exception?
+        Standard_Failure::Raise("BRepOffsetAPI_MakeOffsetShape not done");
     const TopoDS_Shape& res = mkOffset.Shape();
     if (!fill)
         return res;
-    
+
     //get perimeter wire of original shape.
     //Wires returned seem to have edges in connection order.
     ShapeAnalysis_FreeBoundsProperties freeCheck(this->_Shape);
     freeCheck.Perform();
     if (freeCheck.NbClosedFreeBounds() < 1)
     {
-        std::ostringstream stream;
-        stream << "no closed bounds" << std::endl;
-        Base::Console().Message(stream.str().c_str());
-        return TopoDS_Shape(); //maybe throw exception?
+        Standard_Failure::Raise("no closed bounds");
     }
 
     BRep_Builder builder;
@@ -1997,10 +1994,7 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
         {
             if (!img.HasImage(xp.Current()))
             {
-                std::ostringstream stream;
-                stream << "no image for shape" << std::endl;
-                Base::Console().Message(stream.str().c_str());
-                return TopoDS_Shape();
+                Standard_Failure::Raise("no image for shape");
             }
             const TopTools_ListOfShape& currentImage = img.Image(xp.Current());
             TopTools_ListIteratorOfListOfShape listIt;
@@ -2018,8 +2012,7 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
             {
                 std::ostringstream stream;
                 stream << "wrong edge count: " << edgeCount << std::endl;
-                Base::Console().Message(stream.str().c_str());
-                return TopoDS_Shape();
+                Standard_Failure::Raise(stream.str().c_str());
             }
             builder.Add(offsetWire, mappedEdge);
         }
@@ -2033,10 +2026,7 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
         aGenerator.Build();
         if (!aGenerator.IsDone())
         {
-            std::ostringstream stream;
-            stream << "ThruSections failed" << std::endl;
-            Base::Console().Message(stream.str().c_str());
-            return TopoDS_Shape();
+            Standard_Failure::Raise("ThruSections failed");
         }
 
         builder.Add(perimeterCompound, aGenerator.Shape());
