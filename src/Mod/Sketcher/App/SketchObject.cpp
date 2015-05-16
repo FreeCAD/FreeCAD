@@ -129,10 +129,8 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
 {
     try {
         App::DocumentObject* support = Support.getValue();
-        if (support == NULL)
-            return new App::DocumentObjectExecReturn("Sketch support has been deleted");
-
-        this->positionBySupport();
+        if (support)
+            this->positionBySupport();
     }
     catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
