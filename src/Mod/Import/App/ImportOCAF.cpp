@@ -78,6 +78,8 @@
 using namespace Import;
 
 
+#define OCAF_KEEP_PLACEMENT
+
 ImportOCAF::ImportOCAF(Handle_TDocStd_Document h, App::Document* d, const std::string& name)
     : pDoc(h), doc(d), default_name(name)
 {
@@ -152,10 +154,14 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
     );
 #endif
 
+#if defined(OCAF_KEEP_PLACEMENT)
+    std::string asm_name = part_name;
+#else
     std::string asm_name = assembly;
     if (aShapeTool->IsAssembly(label)) {
         asm_name = part_name;
     }
+#endif
 
     TDF_Label ref;
     if (aShapeTool->IsReference(label) && aShapeTool->GetReferredShape(label, ref)) {
@@ -268,18 +274,16 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 
 // ----------------------------------------------------------------------------
 
-//#define OCAF_KEEP_PLACEMENT
-
 ExportOCAF::ExportOCAF(Handle_TDocStd_Document h)
     : pDoc(h)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
+    aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
+
 #if defined(OCAF_KEEP_PLACEMENT)
     rootLabel = aShapeTool->NewShape();
     TDataStd_Name::Set(rootLabel, "ASSEMBLY");
-    aColorTool = XCAFDoc_DocumentTool::ColorTool(rootLabel);
 #else
-    aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
     rootLabel = TDF_TagSource::NewChild(pDoc->Main());
 #endif
 }
@@ -305,9 +309,7 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
     TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
 
 #if defined(OCAF_KEEP_PLACEMENT)
-    TDF_Label component = aShapeTool->AddComponent(rootLabel, shapeLabel, aLoc);
-#else
-    TDF_Label component = shapeLabel;
+    aShapeTool->AddComponent(rootLabel, shapeLabel, aLoc);
 #endif
 
     // Add color information
@@ -351,7 +353,7 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
         mat[1] = color.g;
         mat[2] = color.b;
         col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
-        aColorTool->SetColor(component, col, XCAFDoc_ColorGen);
+        aColorTool->SetColor(shapeLabel, col, XCAFDoc_ColorGen);
     }
 }
 
