@@ -82,7 +82,7 @@ void Part2DObject::positionBySupport(void)
     gp_Pln plane;
     App::DocumentObject* support = Support.getValue();
     if (support == NULL)
-        throw Base::Exception("Sketch support has been deleted");
+        return;
 
     if (support->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         // Find the name of the Baseplane without having to access PartDesignGui::BaseplaneNames[]
