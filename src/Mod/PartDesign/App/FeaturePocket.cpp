@@ -134,15 +134,21 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
             }
             getUpToFace(upToFace, support, supportface, sketchshape, method, dir);
 
-            // Special treatment because often the created stand-alone prism is invalid (empty) because
-            // BRepFeat_MakePrism(..., 2, 1) is buggy
-            BRepFeat_MakePrism PrismMaker;
-            PrismMaker.Init(support, sketchshape, supportface, dir, 0, 1);
-            PrismMaker.Perform(upToFace);
+            // #0001655: When 'supportshape' consists of several faces BRepFeat_MakePrism uses only the first face.
+            // Thus, we have to iterate over the faces and use the algorithm for each of them.
+            TopoDS_Shape prism = support;
+            for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
+                // Special treatment because often the created stand-alone prism is invalid (empty) because
+                // BRepFeat_MakePrism(..., 2, 1) is buggy
+                BRepFeat_MakePrism PrismMaker;
+                PrismMaker.Init(prism, xp.Current(), supportface, dir, 0, 1);
+                PrismMaker.Perform(upToFace);
 
-            if (!PrismMaker.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
-            TopoDS_Shape prism = PrismMaker.Shape();
+                if (!PrismMaker.IsDone())
+                    return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
+                prism = PrismMaker.Shape();
+            }
+
             prism = refineShapeIfActive(prism);
 
             // And the really expensive way to get the SubShape...
