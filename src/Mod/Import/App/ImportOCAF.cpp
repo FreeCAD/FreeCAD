@@ -268,12 +268,20 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 
 // ----------------------------------------------------------------------------
 
+//#define OCAF_KEEP_PLACEMENT
+
 ExportOCAF::ExportOCAF(Handle_TDocStd_Document h)
     : pDoc(h)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
+#if defined(OCAF_KEEP_PLACEMENT)
+    rootLabel = aShapeTool->NewShape();
+    TDataStd_Name::Set(rootLabel, "ASSEMBLY");
+    aColorTool = XCAFDoc_DocumentTool::ColorTool(rootLabel);
+#else
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
     rootLabel = TDF_TagSource::NewChild(pDoc->Main());
+#endif
 }
 
 void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& colors)
@@ -282,22 +290,32 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
     if (shape.IsNull())
         return;
 
-    // Add shape and name
-    //TDF_Label shapeLabel = hShapeTool->AddShape(shape, Standard_False);
-    TDF_Label shapeLabel= TDF_TagSource::NewChild(rootLabel);
-#if OCC_VERSION_HEX >= 0x060500
-    TDataXtd_Shape::Set(shapeLabel, shape);
+#if defined(OCAF_KEEP_PLACEMENT)
+    // http://www.opencascade.org/org/forum/thread_18813/?forum=3
+    TopLoc_Location aLoc = shape.Location();
+    TopoDS_Shape baseShape = shape.Located(TopLoc_Location());
 #else
-    TDataStd_Shape::Set(shapeLabel, shape);
+    TopoDS_Shape baseShape = shape;
 #endif
+
+    // Add shape and name
+    TDF_Label shapeLabel = aShapeTool->NewShape();
+    aShapeTool->SetShape(shapeLabel, baseShape);
+
     TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
+
+#if defined(OCAF_KEEP_PLACEMENT)
+    TDF_Label component = aShapeTool->AddComponent(rootLabel, shapeLabel, aLoc);
+#else
+    TDF_Label component = shapeLabel;
+#endif
 
     // Add color information
     Quantity_Color col;
 
     std::set<int> face_index;
     TopTools_IndexedMapOfShape faces;
-    TopExp_Explorer xp(shape,TopAbs_FACE);
+    TopExp_Explorer xp(baseShape,TopAbs_FACE);
     while (xp.More()) {
         face_index.insert(faces.Add(xp.Current()));
         xp.Next();
@@ -305,17 +323,16 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
 
     // define color per face?
     if (colors.size() == face_index.size()) {
-        xp.Init(shape,TopAbs_FACE);
+        xp.Init(baseShape,TopAbs_FACE);
         while (xp.More()) {
             int index = faces.FindIndex(xp.Current());
             if (face_index.find(index) != face_index.end()) {
                 face_index.erase(index);
+
+                //TDF_Label faceLabel = aShapeTool->AddSubShape(shapeLabel, xp.Current());
                 TDF_Label faceLabel= TDF_TagSource::NewChild(shapeLabel);
-#if OCC_VERSION_HEX >= 0x060500
-                TDataXtd_Shape::Set(faceLabel, xp.Current());
-#else
-                TDataStd_Shape::Set(faceLabel, xp.Current());
-#endif
+                aShapeTool->SetShape(faceLabel, xp.Current());
+
                 const App::Color& color = colors[index-1];
                 Quantity_Parameter mat[3];
                 mat[0] = color.r;
@@ -334,7 +351,7 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
         mat[1] = color.g;
         mat[2] = color.b;
         col.SetValues(mat[0],mat[1],mat[2],Quantity_TOC_RGB);
-        aColorTool->SetColor(shapeLabel, col, XCAFDoc_ColorGen);
+        aColorTool->SetColor(component, col, XCAFDoc_ColorGen);
     }
 }
 
