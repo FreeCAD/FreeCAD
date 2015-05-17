@@ -92,6 +92,7 @@ class MyIterator: public SMDS_ElemIterator
       else
         myElem = 0;
     }
+	return res;
   }
 };
 
