@@ -274,6 +274,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
     SEPARATE_OPENINGS = p.GetBool("ifcSeparateOpenings",False)
     ROOT_ELEMENT = p.GetString("ifcRootElement","IfcProduct")
     GET_EXTRUSIONS = p.GetBool("ifcGetExtrusions",False)
+    MERGE_MATERIALS = p.GetBool("ifcMergeMaterials",False)
     if root:
         ROOT_ELEMENT = root
     MERGE_MODE = p.GetInt("ifcImportMode",0)
@@ -340,7 +341,15 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 properties.setdefault(obj.id(),[]).extend([e.id() for e in r.RelatingPropertyDefinition.HasProperties])
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         for o in r.RelatedObjects:
-            mattable[o.id()] = r.RelatingMaterial.id()
+            if MERGE_MATERIALS:
+                for k,v in mattable.items():
+                    if ifcfile[v].Name == r.RelatingMaterial.Name:
+                        mattable[o.id()] = v
+                        break
+                else:
+                    mattable[o.id()] = r.RelatingMaterial.id()
+            else:
+                mattable[o.id()] = r.RelatingMaterial.id()
     for r in ifcfile.by_type("IfcStyledItem"):
         if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
             if r.Styles[0].Styles[0].is_a("IfcSurfaceStyle"):

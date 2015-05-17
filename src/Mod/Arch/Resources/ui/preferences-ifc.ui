@@ -187,6 +187,26 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_3">
+          <property name="toolTip">
+           <string>If several materials with the same name are found in the IFC file, they will be treated as one.</string>
+          </property>
+          <property name="text">
+           <string>Merge materials with same name</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ifcMergeMaterials</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
          <widget class="QLabel" name="label_4">
