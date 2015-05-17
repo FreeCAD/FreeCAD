@@ -23,7 +23,7 @@
 #include "frames_io.hpp"
 
 namespace KDL{
-    
+
     ChainIdSolver_RNE::ChainIdSolver_RNE(const Chain& chain_,Vector grav):
         chain(chain_),nj(chain.getNrOfJoints()),ns(chain.getNrOfSegments()),
         X(ns),S(ns),v(ns),a(ns),f(ns)
@@ -48,10 +48,10 @@ namespace KDL{
                 j++;
             }else
                 q_=qdot_=qdotdot_=0.0;
-            
+
             //Calculate segment properties: X,S,vj,cj
-            X[i]=chain.getSegment(i).pose(q_);//Remark this is the inverse of the 
-                                                //frame for transformations from 
+            X[i]=chain.getSegment(i).pose(q_);//Remark this is the inverse of the
+                                                //frame for transformations from
                                                 //the parent to the current coord frame
             //Transform velocity and unit velocity to segment frame
             Twist vj=X[i].M.Inverse(chain.getSegment(i).twist(q_,qdot_));
@@ -69,7 +69,7 @@ namespace KDL{
             //Collect RigidBodyInertia and external forces
             RigidBodyInertia Ii=chain.getSegment(i).getInertia();
             f[i]=Ii*a[i]+v[i]*(Ii*v[i])-f_ext[i];
-	    //std::cout << "a[i]=" << a[i] << "\n f[i]=" << f[i] << "\n S[i]" << S[i] << std::endl;
+            //std::cout << "a[i]=" << a[i] << "\n f[i]=" << f[i] << "\n S[i]" << S[i] << std::endl;
         }
         //Sweep from leaf to root
         j=nj-1;
@@ -79,5 +79,6 @@ namespace KDL{
             if(i!=0)
                 f[i-1]=f[i-1]+X[i]*f[i];
         }
+        return 0;
     }
 }//namespace
