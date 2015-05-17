@@ -2402,7 +2402,7 @@ bool LogicalOR::IsSatisfy( long theId )
     (myPredicate2!=NULL) && (
       myPredicate1->IsSatisfy( theId ) ||
       myPredicate2->IsSatisfy( theId )
-	);
+    );
 }
 
 
