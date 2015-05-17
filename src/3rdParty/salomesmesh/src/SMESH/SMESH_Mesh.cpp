@@ -527,7 +527,7 @@ SMESH_Hypothesis::Hypothesis_Status
 
   // shape 
 
-  bool isAlgo = ( !anHyp->GetType() == SMESHDS_Hypothesis::PARAM_ALGO );
+  bool isAlgo = ( anHyp->GetType() != SMESHDS_Hypothesis::PARAM_ALGO );
   int event = isAlgo ? SMESH_subMesh::ADD_ALGO : SMESH_subMesh::ADD_HYP;
 
   SMESH_Hypothesis::Hypothesis_Status ret = subMesh->AlgoStateEngine(event, anHyp);
@@ -614,7 +614,7 @@ SMESH_Hypothesis::Hypothesis_Status
   
   // shape 
   
-  bool isAlgo = ( !anHyp->GetType() == SMESHDS_Hypothesis::PARAM_ALGO );
+  bool isAlgo = ( anHyp->GetType() != SMESHDS_Hypothesis::PARAM_ALGO );
   int event = isAlgo ? SMESH_subMesh::REMOVE_ALGO : SMESH_subMesh::REMOVE_HYP;
 
   SMESH_Hypothesis::Hypothesis_Status ret = subMesh->AlgoStateEngine(event, anHyp);
