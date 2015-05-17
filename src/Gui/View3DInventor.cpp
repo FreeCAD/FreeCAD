@@ -70,6 +70,7 @@
 #include "Application.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
+#include "ViewProvider.h"
 #include "WaitCursor.h"
 #include "SoFCVectorizeSVGAction.h"
 
@@ -83,6 +84,8 @@
 #include "SoFCDB.h"
 #include "NavigationStyle.h"
 #include "PropertyView.h"
+#include "Selection.h"
+#include "SelectionObject.h"
 
 #include <locale>
 
@@ -873,9 +876,36 @@ void View3DInventor::dump(const char* filename)
     action.apply(_viewer->getSceneGraph());
 
     if ( action.getTriangleCount() > 100000 || action.getPointCount() > 30000 || action.getLineCount() > 10000 )
-        _viewer->dumpToFile(filename,true);
+        _viewer->dumpToFile(_viewer->getSceneGraph(), filename, true);
     else
-        _viewer->dumpToFile(filename,false);
+        _viewer->dumpToFile(_viewer->getSceneGraph(), filename, false);
+}
+
+void View3DInventor::dumpSelection(const char* filename)
+{
+    if (!_pcDocument)
+        return;
+
+    SoSeparator* sep = new SoSeparator();
+    sep->ref();
+
+    std::vector<Gui::SelectionObject> sel = Selection().getSelectionEx();
+    for (std::vector<Gui::SelectionObject>::iterator it = sel.begin(); it != sel.end(); ++it) {
+        App::DocumentObject* obj = it->getObject();
+        Gui::ViewProvider* vp = _pcDocument->getViewProvider(obj);
+        if (vp)
+            sep->addChild(vp->getRoot());
+    }
+
+    SoGetPrimitiveCountAction action;
+    action.setCanApproximate(true);
+    action.apply(sep);
+
+    if ( action.getTriangleCount() > 100000 || action.getPointCount() > 30000 || action.getLineCount() > 10000 )
+        _viewer->dumpToFile(sep, filename, true);
+    else
+        _viewer->dumpToFile(sep, filename, false);
+    sep->unref();
 }
 
 void View3DInventor::windowStateChanged(MDIView* view)

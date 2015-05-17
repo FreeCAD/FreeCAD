@@ -203,7 +203,7 @@ public:
     /**
      * Writes the current scenegraph to an Inventor file, either in ascii or binary. 
      */
-    bool dumpToFile(const char* filename, bool binary) const;
+    bool dumpToFile(SoNode* node, const char* filename, bool binary) const;
 
     /** @name Selection methods */
     //@{
