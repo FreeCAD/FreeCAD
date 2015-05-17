@@ -65,6 +65,7 @@ public:
     Py::Object setAnimationEnabled(const Py::Tuple&);
     Py::Object isAnimationEnabled(const Py::Tuple&);
     Py::Object dump(const Py::Tuple&);
+    Py::Object dumpSelection(const Py::Tuple&);
     Py::Object dumpNode(const Py::Tuple&);
     Py::Object setStereoType(const Py::Tuple&);
     Py::Object getStereoType(const Py::Tuple&);
