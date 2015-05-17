@@ -785,9 +785,9 @@ Expression * FunctionExpression::eval() const
             if (!p)
                 continue;
 
-            if (qp = freecad_dynamic_cast<PropertyQuantity>(p))
+            if ( (qp = freecad_dynamic_cast<PropertyQuantity>(p)) )
                 value = qp->getQuantityValue();
-            else if (fp = freecad_dynamic_cast<PropertyFloat>(p))
+            else if ( (fp = freecad_dynamic_cast<PropertyFloat>(p)) )
                 value = fp->getValue();
             else
                 throw Exception("Invalid property type for aggregate");
