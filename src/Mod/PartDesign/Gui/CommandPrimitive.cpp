@@ -175,7 +175,7 @@ CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
 
 void CmdPrimtiveCompSubtractive::activated(int iMsg)
 {  
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
     
     std::string FeatName;
