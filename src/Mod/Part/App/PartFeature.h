@@ -68,9 +68,10 @@ public:
     virtual PyObject* getPyObject(void);
     virtual std::vector<PyObject *> getPySubObjects(const std::vector<std::string>&) const;
 
+    TopLoc_Location getLocation() const;
+    
 protected:
     void onChanged(const App::Property* prop);
-    TopLoc_Location getLocation() const;
     /**
      * Build a history of changes
      * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common

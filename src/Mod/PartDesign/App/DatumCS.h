@@ -21,32 +21,45 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPrimitive_H
-#define PARTGUI_ViewProviderPrimitive_H
+#ifndef PARTDESIGN_DATUMCS_H
+#define PARTDESIGN_DATUMCS_H
 
-#include "ViewProvider.h"
+#include <QString>
+#include <App/PropertyLinks.h>
+#include <Mod/Part/App/DatumFeature.h>
 
-
-namespace PartDesignGui {
-
-class PartDesignGuiExport ViewProviderPrimitive : public ViewProvider
+namespace PartDesign
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPrimitive);
+
+class PartDesignExport CoordinateSystem : public Part::Datum
+{
+    PROPERTY_HEADER(PartDesign::CoordinateSystem);
 
 public:
-    /// constructor
-    ViewProviderPrimitive();
-    /// destructor
-    virtual ~ViewProviderPrimitive();
-    
-    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
-    
+    CoordinateSystem();
+    virtual ~CoordinateSystem();
+
+    const char* getViewProviderName(void) const {
+        return "PartDesignGui::ViewProviderDatumCoordinateSystem";
+    }
+
+    static void initHints();
+    const std::set<QString> getHint() const;
+    const int offsetsAllowed() const;
+
+    Base::Vector3d getXAxis();
+    Base::Vector3d getYAxis();
+    Base::Vector3d getZAxis();
+
 protected:
-    virtual QIcon getIcon(void) const;
-    virtual bool  setEdit(int ModNum);
+    virtual void onChanged(const App::Property* prop);
+
+private:
+    // Hints on what further references are required/possible on this feature for a given set of references
+    static std::map<std::multiset<QString>, std::set<QString> > hints;
 };
 
-} // namespace PartDesignGui
+} //namespace PartDesign
 
 
-#endif // PARTGUI_ViewProviderBoolean_H
+#endif // PARTDESIGN_DATUMCS_H

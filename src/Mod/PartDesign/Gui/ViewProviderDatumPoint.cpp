@@ -41,6 +41,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPoint,PartDesignGui::ViewProvide
 
 ViewProviderDatumPoint::ViewProviderDatumPoint()
 {
+    sPixmap = "PartDesign_Point.svg";
+    
     SoMFVec3f v;
     v.setNum(1);
     v.set1Value(0, 0,0,0);

@@ -34,6 +34,7 @@
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Base/Console.h>
 
 
@@ -43,7 +44,7 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPrimitive,PartDesignGui::ViewProvider
 
 ViewProviderPrimitive::ViewProviderPrimitive()
 {
-    sPixmap = "Part_Box.svg";
+
 }
 
 ViewProviderPrimitive::~ViewProviderPrimitive()
@@ -94,10 +95,35 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
 
 std::vector< App::DocumentObject* > ViewProviderPrimitive::claimChildren(void) const {
     
-//    Base::Console().Message("claim children\n");
     std::vector< App::DocumentObject* > vec;
     vec.push_back(static_cast<PartDesign::FeaturePrimitive*>(getObject())->CoordinateSystem.getValue());
     
     return vec;
+}
+
+QIcon ViewProviderPrimitive::getIcon(void) const {
+    
+    QString str = QString::fromAscii("PartDesign_");
+    auto* prim = static_cast<PartDesign::FeaturePrimitive*>(getObject());
+    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+        str += QString::fromAscii("Additive_");
+    else
+        str += QString::fromAscii("Subtractive_");
+    
+    switch(prim->getPrimitiveType()) {
+        
+        case PartDesign::FeaturePrimitive::Box: 
+            str += QString::fromAscii("Box");
+            break;
+        case PartDesign::FeaturePrimitive::Cylinder: 
+            str += QString::fromAscii("Cylinder");
+            break;
+        case PartDesign::FeaturePrimitive::Sphere: 
+            str += QString::fromAscii("Sphere");
+            break;
+    }
+   
+    str += QString::fromAscii(".svg");
+    return Gui::BitmapFactory().pixmap(str.toStdString().c_str());
 }
 

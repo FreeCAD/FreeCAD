@@ -97,6 +97,85 @@ class PartDesignExport SubtractiveBox : public Box {
     }
 };
 
+
+class PartDesignExport Cylinder : public PartDesign::FeaturePrimitive {
+
+    PROPERTY_HEADER(PartDesign::Cylinder);
+
+public:
+    
+    Cylinder();
+    
+    App::PropertyLength Radius;
+    App::PropertyLength Height;
+    App::PropertyAngle Angle;
+    
+    /** @name methods override feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    
+protected:
+    
+};
+
+class PartDesignExport AdditiveCylinder : public Cylinder {
+    PROPERTY_HEADER(PartDesign::AdditiveCylinder);
+    
+    AdditiveCylinder() {
+        addSubType = FeatureAddSub::Additive;
+    }
+};
+
+class PartDesignExport SubtractiveCylinder : public Cylinder {
+    PROPERTY_HEADER(PartDesign::SubtractiveCylinder);
+    
+    SubtractiveCylinder() {
+        addSubType = FeatureAddSub::Subtractive;
+    }
+};
+
+
+class PartDesignExport Sphere : public PartDesign::FeaturePrimitive {
+
+    PROPERTY_HEADER(PartDesign::Sphere);
+
+public:
+    
+    Sphere();
+    
+    App::PropertyLength Radius;
+    App::PropertyAngle Angle1;
+    App::PropertyAngle Angle2;
+    App::PropertyAngle Angle3;
+    
+    /** @name methods override feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn *execute(void);
+    short mustExecute() const;
+    
+protected:
+    
+};
+
+class PartDesignExport AdditiveSphere : public Sphere {
+    PROPERTY_HEADER(PartDesign::AdditiveSphere);
+    
+    AdditiveSphere() {
+        addSubType = FeatureAddSub::Additive;
+    }
+};
+
+class PartDesignExport SubtractiveSphere : public Sphere {
+    PROPERTY_HEADER(PartDesign::SubtractiveSphere);
+    
+    SubtractiveSphere() {
+        addSubType = FeatureAddSub::Subtractive;
+    }
+};
+
 } //namespace PartDesign
 
 

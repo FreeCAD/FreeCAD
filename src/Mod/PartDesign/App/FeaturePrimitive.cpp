@@ -28,6 +28,7 @@
 
 #include "FeaturePrimitive.h"
 #include "DatumPoint.h"
+#include "DatumCS.h"
 #include <Mod/Part/App/modelRefine.h>
 #include <Base/Exception.h>
 #include <App/Document.h>
@@ -36,6 +37,9 @@
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepPrimAPI_MakeCylinder.hxx>
+#include <BRepPrimAPI_MakeSphere.hxx>
 #include <QObject>
 
 using namespace PartDesign;
@@ -67,13 +71,18 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 {
     try {
         //transform the primitive in the correct coordinance
-        //BRepBuilderAPI_GTransform mkTrf(primitiveShape, getLocation().Transformation());
-        //const TopoDS_Shape primitiveShape = mkTrf.Shape();
+        App::DocumentObject* cs =  CoordinateSystem.getValue();
+        if(cs && cs->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId())
+            Placement.setValue(static_cast<PartDesign::CoordinateSystem*>(cs)->Placement.getValue());
+        else 
+            Placement.setValue(Base::Placement());
         
         //if we have no base we just add the standart primitive shape
         TopoDS_Shape base;
         try{
-             base = getBaseShape();
+             //if we have a base shape we need to make sure that it does not get our transformation to
+             BRepBuilderAPI_Transform trsf(getBaseShape(), getLocation().Transformation().Inverted(), true);
+             base = trsf.Shape();
         }
         catch(const Base::Exception&) {
 
@@ -128,47 +137,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 }
 
 void FeaturePrimitive::onChanged(const App::Property* prop)
-{/*
-    if ((prop == &CoordinateSystem)) {
-        std::multiset<QString> refTypes;
-        std::vector<App::DocumentObject*> refs = References.getValues();
-        std::vector<std::string> refnames = References.getSubValues();
-        if (refs.size() != refnames.size())
-            return;
-
-        for (int r = 0; r < refs.size(); r++)
-            refTypes.insert(getRefType(refs[r], refnames[r]));
-
-        std::set<QString> hint;
-        if (hints.find(refTypes) != hints.end())
-           hint = hints[refTypes];
-        
-        if (!((hint.size() == 1) && (hint.find(QObject::tr("Done")) != hint.end())))
-            return; // incomplete references
-        
-        std::pair<Base::Vector3d, bool> origin = {Base::Vector3d(), false};
-        std::pair<Base::Vector3d, bool> dirX = {Base::Vector3d(), false};
-        std::pair<Base::Vector3d, bool> dirY = {Base::Vector3d(), false};
-        
-        for (int i = 0; i < refs.size(); i++) {
-            
-            if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
-                Base::Vector3d point = static_cast<PartDesign::Point*>(refs[i])->getPoint();
-                if (!origin.second)
-                    origin = {point, true};
-                else if(!dirX.second) {
-                    if((point-dirX.first).Sqr() < Precision::Confusion()) 
-                        return;
-                    dirX = {point, true};
-                }                
-                else if(!dirY.second) {
-                    if((origin.first-dirX.first).Sqr() < Precision::Confusion()) 
-                        return;
-                    dirY = {point, true};
-                }                
-            }            
-        }
-    }    */    
+{
     FeatureAddSub::onChanged(prop);
 }
 
@@ -222,4 +191,97 @@ short int Box::mustExecute() const
 PROPERTY_SOURCE(PartDesign::AdditiveBox, PartDesign::Box)
 PROPERTY_SOURCE(PartDesign::SubtractiveBox, PartDesign::Box)
 
+
+PROPERTY_SOURCE(PartDesign::Cylinder, PartDesign::FeaturePrimitive)
+
+Cylinder::Cylinder()
+{
+    ADD_PROPERTY_TYPE(Radius,(10.0f),"Cylinder",App::Prop_None,"The radius of the cylinder");
+    ADD_PROPERTY_TYPE(Angle,(10.0f),"Cylinder",App::Prop_None,"The closing angel of the cylinder ");
+    ADD_PROPERTY_TYPE(Height,(10.0f),"Cylinder",App::Prop_None,"The height of the cylinder");
+    
+    primitiveType = FeaturePrimitive::Cylinder;
+}
+
+App::DocumentObjectExecReturn* Cylinder::execute(void)
+{
+    // Build a cylinder
+    if (Radius.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Radius of cylinder too small");
+    if (Height.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Height of cylinder too small");
+    try {
+        BRepPrimAPI_MakeCylinder mkCylr(Radius.getValue(),
+                                        Height.getValue(),
+                                        Angle.getValue()/180.0f*M_PI);
+        
+        return FeaturePrimitive::execute(mkCylr.Shape());
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
+short int Cylinder::mustExecute() const
+{
+     if ( Radius.isTouched() ||
+          Height.isTouched() ||
+          Angle.isTouched() )
+        return 1;
+     
+    return FeaturePrimitive::mustExecute();
+}
+
+PROPERTY_SOURCE(PartDesign::AdditiveCylinder, PartDesign::Cylinder)
+PROPERTY_SOURCE(PartDesign::SubtractiveCylinder, PartDesign::Cylinder)
+
+
+PROPERTY_SOURCE(PartDesign::Sphere, PartDesign::FeaturePrimitive)
+
+Sphere::Sphere()
+{
+    ADD_PROPERTY_TYPE(Radius,(5.0),"Sphere",App::Prop_None,"The radius of the sphere");
+    ADD_PROPERTY_TYPE(Angle1,(-90.0f),"Sphere",App::Prop_None,"The angle of the sphere");
+    ADD_PROPERTY_TYPE(Angle2,(90.0f),"Sphere",App::Prop_None,"The angle of the sphere");
+    ADD_PROPERTY_TYPE(Angle3,(360.0f),"Sphere",App::Prop_None,"The angle of the sphere");
+    
+    primitiveType = FeaturePrimitive::Sphere;
+}
+
+App::DocumentObjectExecReturn* Sphere::execute(void)
+{
+   // Build a sphere
+    if (Radius.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Radius of sphere too small");
+    try {
+        BRepPrimAPI_MakeSphere mkSphere(Radius.getValue(),
+                                        Angle1.getValue()/180.0f*M_PI,
+                                        Angle2.getValue()/180.0f*M_PI,
+                                        Angle3.getValue()/180.0f*M_PI);
+        return FeaturePrimitive::execute(mkSphere.Shape());
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+
+    return App::DocumentObject::StdReturn;
+}
+
+short int Sphere::mustExecute() const
+{
+     if ( Radius.isTouched() ||
+          Angle1.isTouched() ||
+          Angle2.isTouched() ||
+          Angle3.isTouched())
+        return 1;
+     
+    return FeaturePrimitive::mustExecute();
+}
+
+PROPERTY_SOURCE(PartDesign::AdditiveSphere, PartDesign::Sphere)
+PROPERTY_SOURCE(PartDesign::SubtractiveSphere, PartDesign::Sphere)
 }
