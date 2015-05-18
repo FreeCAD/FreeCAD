@@ -1232,7 +1232,7 @@ int Sketch::addAngleAtPointConstraint(
             if (angleErr < -M_PI) angleErr += M_PI*2;
 
             //the autodetector
-            if(abs(angleErr) > M_PI/2 )
+            if(fabs(angleErr) > M_PI/2 )
                 angleDesire += M_PI;
 
             *angle = angleDesire;
@@ -1681,7 +1681,7 @@ int Sketch::addSnellsLawConstraint(int geoIdRay1, PointPos posRay1,
     FixParameters.push_back(new double(0.0));
     double *n2 = FixParameters[FixParameters.size()-1];
 
-    if ( abs(n2divn1) >= 1.0 ){
+    if ( fabs(n2divn1) >= 1.0 ){
         *n2 = n2divn1;
         *n1 = 1.0;
     } else {
