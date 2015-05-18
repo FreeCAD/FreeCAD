@@ -277,7 +277,9 @@ void TaskDatumParameters::updateUI()
     std::set<QString> hint = pcDatum->getHint();    
 
     if (hint == std::set<QString>()) {
-        QMessageBox::warning(this, tr("Illegal selection"), tr("This feature cannot be created with this combination of references"));
+        if(!refs.empty())
+            QMessageBox::warning(this, tr("Illegal selection"), tr("This feature cannot be created with this combination of references"));
+        
         if (refs.size() == 1) {
             onButtonRef1(true);
         } else if (refs.size() == 2) {

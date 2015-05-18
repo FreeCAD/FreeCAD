@@ -37,6 +37,7 @@
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/DatumCS.h>
 #include <algorithm>
 
 #include "Base/Console.h"
@@ -184,7 +185,7 @@ void ViewProviderBody::updateData(const App::Property* prop)
     //    (prop->getTypeId() == App::PropertyLinkList::getClassTypeId() && strcmp(prop->getName(),"Model") == 0))
     //   // updateTree();
 
-    // Update the visual size of datum lines and planes
+    // Update the visual size of datums
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
     std::vector<App::DocumentObject*> features = body->Model.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
@@ -193,6 +194,8 @@ void ViewProviderBody::updateData(const App::Property* prop)
             plm = &(static_cast<PartDesign::Line*>(*f)->Placement);
         else if ((*f)->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId()))
             plm = &(static_cast<PartDesign::Plane*>(*f)->Placement);
+        else if ((*f)->getTypeId().isDerivedFrom(PartDesign::CoordinateSystem::getClassTypeId()))
+            plm = &(static_cast<PartDesign::CoordinateSystem*>(*f)->Placement);
 
         if (plm != NULL) {
             Gui::ViewProviderDocumentObject* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(Gui::Application::Instance->getViewProvider(*f));

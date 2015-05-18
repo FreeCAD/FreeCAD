@@ -54,7 +54,6 @@ CmdPrimtiveCompAdditive::CmdPrimtiveCompAdditive()
 
 void CmdPrimtiveCompAdditive::activated(int iMsg)
 {
-    Base::Console().Message("activated msg %i\n", iMsg);
     
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
@@ -62,13 +61,23 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     if(iMsg == 0) {
     
         std::string FeatName = getUniqueObjectName("Box");
+        std::string CSName = getUniqueObjectName("CoordinateSystem");
         
         Gui::Command::openCommand("Make additive box");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\'PartDesign::AdditiveBox\',\'%s\')",
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveBox\',\'%s\')",
             FeatName.c_str());
-        Gui::Command::doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)"
+        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
                         ,pcActiveBody->getNameInDocument(), FeatName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());       
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::CoordinateSystem\',\'%s\')",
+            CSName.c_str());
+        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
+                        ,pcActiveBody->getNameInDocument(), CSName.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.CoordinateSystem=(App.ActiveDocument.%s)",
+            FeatName.c_str(), CSName.c_str());
+        Gui::Command::updateActive();
+        
+        Gui::Command::doCommand(Gui, "Gui.activeDocument().hide(\'%s\')", CSName.c_str());
+        Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());    
     }
 }
 
@@ -135,17 +144,22 @@ CmdPrimtiveCompSubtractive::CmdPrimtiveCompSubtractive()
 }
 
 void CmdPrimtiveCompSubtractive::activated(int iMsg)
-{
-    Base::Console().Message("activated msg %i\n", iMsg);
-    return;
-
-    // Since the default icon is reset when enabing/disabling the command we have
-    // to explicitly set the icon of the used command.
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    assert(iMsg < a.size());
-    pcAction->setIcon(a[iMsg]->icon());
+{  
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
+    if (!pcActiveBody) return;
+    
+    if(iMsg == 0) {
+    
+        std::string FeatName = getUniqueObjectName("Box");
+        
+        Gui::Command::openCommand("Make subtractive box");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\'PartDesign::SubtractiveBox\',\'%s\')",
+            FeatName.c_str());
+        Gui::Command::doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)"
+                        ,pcActiveBody->getNameInDocument(), FeatName.c_str());
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());  
+        Gui::Command::updateActive();
+    }
 }
 
 Gui::Action * CmdPrimtiveCompSubtractive::createAction(void)

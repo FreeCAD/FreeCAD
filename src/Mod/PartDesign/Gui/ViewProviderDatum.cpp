@@ -62,6 +62,7 @@
 #include <Gui/Application.h>
 #include <Gui/MDIView.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/DatumCS.h>
 
 using namespace PartDesignGui;
 
@@ -92,6 +93,8 @@ void ViewProviderDatum::attach(App::DocumentObject *obj)
         datumType = QObject::tr("Line");
     else if (o->getTypeId() == PartDesign::Point::getClassTypeId())
         datumType = QObject::tr("Point");
+    else if (o->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId())
+        datumType = QObject::tr("CoordinateSystem");
 
     SoShapeHints* hints = new SoShapeHints();
     hints->shapeType.setValue(SoShapeHints::UNKNOWN_SHAPE_TYPE);

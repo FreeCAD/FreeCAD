@@ -27,32 +27,48 @@
 
 
 #include "FeaturePrimitive.h"
+#include "DatumPoint.h"
+#include <Mod/Part/App/modelRefine.h>
 #include <Base/Exception.h>
 #include <App/Document.h>
+#include <App/Application.h>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
+#include <QObject>
 
 using namespace PartDesign;
 
 namespace PartDesign {
-
 
 PROPERTY_SOURCE(PartDesign::FeaturePrimitive, PartDesign::FeatureAddSub)
 
 FeaturePrimitive::FeaturePrimitive()
   :  primitiveType(Box)
 {
-    ADD_PROPERTY(References, (0,0));//, "Primitive", (App::PropertyType)(App::Prop_None), "References to build the location of the primitive");
+    ADD_PROPERTY_TYPE(CoordinateSystem, (0), "Primitive", App::Prop_None, "References to build the location of the primitive");
+}
+
+TopoDS_Shape FeaturePrimitive::refineShapeIfActive(const TopoDS_Shape& oldShape) const
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
+    if (hGrp->GetBool("RefineModel", false)) {
+        Part::BRepBuilderAPI_RefineModel mkRefine(oldShape);
+        TopoDS_Shape resShape = mkRefine.Shape();
+        return resShape;
+    }
+
+    return oldShape;
 }
 
 App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& primitiveShape)
 {
     try {
         //transform the primitive in the correct coordinance
-        BRepBuilderAPI_GTransform mkTrf(primitiveShape, getLocation().Transformation());
-        const TopoDS_Shape primitiveShape = mkTrf.Shape();
+        //BRepBuilderAPI_GTransform mkTrf(primitiveShape, getLocation().Transformation());
+        //const TopoDS_Shape primitiveShape = mkTrf.Shape();
         
         //if we have no base we just add the standart primitive shape
         TopoDS_Shape base;
@@ -81,6 +97,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
             
+            boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(boolOp);
             AddSubShape.setValue(primitiveShape);
         }
@@ -95,6 +112,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             if (boolOp.IsNull())
                 return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
             
+            boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(boolOp);
             AddSubShape.setValue(primitiveShape);
         }
@@ -109,9 +127,49 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
     return App::DocumentObject::StdReturn;
 }
 
-TopLoc_Location FeaturePrimitive::calculateLocation()
-{
-    return TopLoc_Location();
+void FeaturePrimitive::onChanged(const App::Property* prop)
+{/*
+    if ((prop == &CoordinateSystem)) {
+        std::multiset<QString> refTypes;
+        std::vector<App::DocumentObject*> refs = References.getValues();
+        std::vector<std::string> refnames = References.getSubValues();
+        if (refs.size() != refnames.size())
+            return;
+
+        for (int r = 0; r < refs.size(); r++)
+            refTypes.insert(getRefType(refs[r], refnames[r]));
+
+        std::set<QString> hint;
+        if (hints.find(refTypes) != hints.end())
+           hint = hints[refTypes];
+        
+        if (!((hint.size() == 1) && (hint.find(QObject::tr("Done")) != hint.end())))
+            return; // incomplete references
+        
+        std::pair<Base::Vector3d, bool> origin = {Base::Vector3d(), false};
+        std::pair<Base::Vector3d, bool> dirX = {Base::Vector3d(), false};
+        std::pair<Base::Vector3d, bool> dirY = {Base::Vector3d(), false};
+        
+        for (int i = 0; i < refs.size(); i++) {
+            
+            if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
+                Base::Vector3d point = static_cast<PartDesign::Point*>(refs[i])->getPoint();
+                if (!origin.second)
+                    origin = {point, true};
+                else if(!dirX.second) {
+                    if((point-dirX.first).Sqr() < Precision::Confusion()) 
+                        return;
+                    dirX = {point, true};
+                }                
+                else if(!dirY.second) {
+                    if((origin.first-dirX.first).Sqr() < Precision::Confusion()) 
+                        return;
+                    dirY = {point, true};
+                }                
+            }            
+        }
+    }    */    
+    FeatureAddSub::onChanged(prop);
 }
 
 PROPERTY_SOURCE(PartDesign::Box, PartDesign::FeaturePrimitive)

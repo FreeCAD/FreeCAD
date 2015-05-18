@@ -37,6 +37,7 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <BRepBuilderAPI_MakeShape.hxx>
 
 
 namespace ModelRefine
