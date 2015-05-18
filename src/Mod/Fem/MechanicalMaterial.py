@@ -167,7 +167,8 @@ class _MechanicalMaterialTaskPanel:
         old_ym = Units.Quantity(self.obj.Material['YoungsModulus'])
         if old_ym != value:
             material = self.obj.Material
-            material['YoungsModulus'] = unicode(value)
+            # FreeCAD uses kPa internall for Stress
+            material['YoungsModulus'] = unicode(value) + " kPa"
             self.obj.Material = material
 
     def pr_changed(self, value):
