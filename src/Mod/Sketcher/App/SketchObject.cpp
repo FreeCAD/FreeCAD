@@ -2680,7 +2680,7 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
                 if (angleErr < -M_PI) angleErr += M_PI*2;
 
                 //the autodetector
-                if(std::abs(angleErr) > M_PI/2 )
+                if(abs(angleErr) > M_PI/2 )
                     angleDesire += M_PI;
 
                 cstr->Value = angleDesire + angleOffset; //external tangency. The angle stored is offset by Pi/2 so that a value of 0.0 is invalid and threated as "undecided".
