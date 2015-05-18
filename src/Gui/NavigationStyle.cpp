@@ -795,7 +795,7 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
 {
     // something is asking for big zoom factor. This func is made for interactive zooming,
     // where the changes are per mouse move and thus are small.
-    if (std::abs(logfactor)>4.0)
+    if (abs(logfactor)>4.0)
         return;
     SbBool zoomAtCur = this->zoomAtCursor;
     if (zoomAtCur) {
