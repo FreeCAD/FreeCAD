@@ -9,13 +9,16 @@
         <file>icons/Constraint_ExternalAngle.svg</file>
         <file>icons/Constraint_Horizontal.svg</file>
         <file>icons/Constraint_HorizontalDistance.svg</file>
+        <file>icons/Constraint_HorizontalDistance_Driven.svg</file>
         <file>icons/Constraint_InternalAlignment.svg</file>
         <file>icons/Constraint_InternalAlignment_Ellipse_Focus1.svg</file>
         <file>icons/Constraint_InternalAlignment_Ellipse_Focus2.svg</file>
         <file>icons/Constraint_InternalAlignment_Ellipse_MajorAxis.svg</file>
         <file>icons/Constraint_InternalAlignment_Ellipse_MinorAxis.svg</file>
         <file>icons/Constraint_InternalAngle.svg</file>
+        <file>icons/Constraint_InternalAngle_Driven.svg</file>
         <file>icons/Constraint_Length.svg</file>
+        <file>icons/Constraint_Length_Driven.svg</file>
         <file>icons/Constraint_Parallel.svg</file>
         <file>icons/Constraint_Perpendicular.svg</file>
         <file>icons/Constraint_PointOnEnd.svg</file>
@@ -25,13 +28,16 @@
         <file>icons/Constraint_PointOnStart.svg</file>
         <file>icons/Constraint_PointToObject.svg</file>
         <file>icons/Constraint_Radius.svg</file>
+        <file>icons/Constraint_Radius_Driven.svg</file>
         <file>icons/Constraint_SnellsLaw.svg</file>
+        <file>icons/Constraint_SnellsLaw_Driven.svg</file>
         <file>icons/Constraint_Symmetric.svg</file>
         <file>icons/Constraint_Tangent.svg</file>
         <file>icons/Constraint_TangentToEnd.svg</file>
         <file>icons/Constraint_TangentToStart.svg</file>
         <file>icons/Constraint_Vertical.svg</file>
         <file>icons/Constraint_VerticalDistance.svg</file>
+        <file>icons/Constraint_VerticalDistance_Driven.svg</file>
         <file>icons/Sketcher_AlterConstruction.svg</file>
         <file>icons/Sketcher_AlterFillet.svg</file>
         <file>icons/Sketcher_CloseShape.svg</file>
@@ -148,11 +154,11 @@
         <file>translations/Sketcher_ro.qm</file>
         <file>translations/Sketcher_ru.qm</file>
         <file>translations/Sketcher_sk.qm</file>
+        <file>translations/Sketcher_sr.qm</file>
         <file>translations/Sketcher_sv-SE.qm</file>
         <file>translations/Sketcher_tr.qm</file>
         <file>translations/Sketcher_uk.qm</file>
         <file>translations/Sketcher_zh-CN.qm</file>
         <file>translations/Sketcher_zh-TW.qm</file>
-        <file>translations/Sketcher_sr.qm</file>
     </qresource>
 </RCC> 
