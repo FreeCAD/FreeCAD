@@ -1168,8 +1168,8 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             points.push_back(id);
     }
 
-    if (points.size() == 1 && curves.size() >= 1 ||
-        points.size() >= 1 && curves.size() == 1) {
+    if ((points.size() == 1 && curves.size() >= 1) ||
+        (points.size() >= 1 && curves.size() == 1)) {
 
         openCommand("add point on object constraint");
         int cnt = 0;
