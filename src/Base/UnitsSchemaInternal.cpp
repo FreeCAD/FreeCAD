@@ -80,7 +80,7 @@ QString UnitsSchemaInternal::schemaTranslate(Base::Quantity quant,double &factor
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
         factor = 1.0;
-    }else if (unit == Unit::Pressure){
+    }else if ((unit == Unit::Pressure) || (unit == Unit::Stress)){
         if(UnitValue < 10.0){// Pa is the smallest
             unitString = QString::fromLatin1("Pa");
             factor = 0.001;
