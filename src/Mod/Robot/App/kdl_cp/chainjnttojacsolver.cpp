@@ -43,6 +43,7 @@ namespace KDL
             if(!locked_joints_[i])
                 nr_of_unlocked_joints_++;
         }
+        return 0;
     }
 
     int ChainJntToJacSolver::JntToJac(const JntArray& q_in,Jacobian& jac)
