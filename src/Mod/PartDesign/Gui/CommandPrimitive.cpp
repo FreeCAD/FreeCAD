@@ -58,27 +58,51 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
     
+    std::string FeatName;
+    std::string CSName = getUniqueObjectName("CoordinateSystem");;
     if(iMsg == 0) {
     
-        std::string FeatName = getUniqueObjectName("Box");
-        std::string CSName = getUniqueObjectName("CoordinateSystem");
-        
+        FeatName = getUniqueObjectName("Box");
+      
         Gui::Command::openCommand("Make additive box");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveBox\',\'%s\')",
             FeatName.c_str());
-        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
-                        ,pcActiveBody->getNameInDocument(), FeatName.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::CoordinateSystem\',\'%s\')",
-            CSName.c_str());
-        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
-                        ,pcActiveBody->getNameInDocument(), CSName.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.CoordinateSystem=(App.ActiveDocument.%s)",
-            FeatName.c_str(), CSName.c_str());
-        Gui::Command::updateActive();
-        
-        Gui::Command::doCommand(Gui, "Gui.activeDocument().hide(\'%s\')", CSName.c_str());
-        Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());    
     }
+    else if(iMsg == 1) {
+    
+        FeatName = getUniqueObjectName("Cylinder");
+         
+        Gui::Command::openCommand("Make additive cylinder");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveCylinder\',\'%s\')",
+            FeatName.c_str());
+    }
+    else if(iMsg == 3) {
+    
+        FeatName = getUniqueObjectName("Sphere");
+         
+        Gui::Command::openCommand("Make additive sphere");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::AdditiveSphere\',\'%s\')",
+            FeatName.c_str());
+    }
+    
+    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
+                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::CoordinateSystem\',\'%s\')",
+        CSName.c_str());
+    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
+                    ,pcActiveBody->getNameInDocument(), CSName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.CoordinateSystem=(App.ActiveDocument.%s)",
+        FeatName.c_str(), CSName.c_str());
+    Gui::Command::updateActive();
+    
+    if (isActiveObjectValid() && (pcActiveBody != NULL)) {
+        App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature(NULL, false);
+        if (prevSolidFeature != NULL && strcmp(prevSolidFeature->getNameInDocument(), FeatName.c_str())!=0)
+            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
+    }
+
+    Gui::Command::doCommand(Gui, "Gui.activeDocument().hide(\'%s\')", CSName.c_str());
+    Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());    
 }
 
 Gui::Action * CmdPrimtiveCompAdditive::createAction(void)
@@ -88,9 +112,11 @@ Gui::Action * CmdPrimtiveCompAdditive::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().pixmap("Part_Box"));
+    p1->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Box"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().pixmap("Part_Cylinder"));
+    p2->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Cylinder"));
+    QAction* p3 = pcAction->addAction(QString());
+    p3->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Additive_Sphere"));
 
     _pcAction = pcAction;
     languageChange();
@@ -112,13 +138,17 @@ void CmdPrimtiveCompAdditive::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdSketcherCompCreateArc","Center and end points"));
-    arc1->setToolTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
-    arc1->setStatusTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
+    arc1->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Box"));
+    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive box by its with, height and length"));
+    arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdSketcherCompCreateArc","End points and rim point"));
-    arc2->setToolTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
-    arc2->setStatusTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
+    arc2->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Cylinder"));
+    arc2->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive cylinder by its radius, height and angle"));
+    arc2->setStatusTip(arc2->toolTip());
+    QAction* arc3 = a[2];
+    arc3->setText(QApplication::translate("CmdPrimtiveCompAdditive","Additive Sphere"));
+    arc3->setToolTip(QApplication::translate("PartDesign_CompPrimitiveAdditive","Create an additive sphere by its radius and varius angles"));
+    arc3->setStatusTip(arc3->toolTip());
 }
 
 bool CmdPrimtiveCompAdditive::isActive(void)
@@ -148,18 +178,51 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody();
     if (!pcActiveBody) return;
     
+    std::string FeatName;
+    std::string CSName = getUniqueObjectName("CoordinateSystem");
     if(iMsg == 0) {
     
-        std::string FeatName = getUniqueObjectName("Box");
-        
+        FeatName = getUniqueObjectName("Box");
+                
         Gui::Command::openCommand("Make subtractive box");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\'PartDesign::SubtractiveBox\',\'%s\')",
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveBox\',\'%s\')",
             FeatName.c_str());
-        Gui::Command::doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)"
-                        ,pcActiveBody->getNameInDocument(), FeatName.c_str());
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());  
-        Gui::Command::updateActive();
     }
+    else if(iMsg == 1) {
+    
+        FeatName = getUniqueObjectName("Cylinder");
+                
+        Gui::Command::openCommand("Make subtractive cylinder");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveCylinder\',\'%s\')",
+            FeatName.c_str());
+    }
+    else if(iMsg == 2) {
+    
+        FeatName = getUniqueObjectName("Sphere");
+                
+        Gui::Command::openCommand("Make subtractive sphere");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::SubtractiveSphere\',\'%s\')",
+            FeatName.c_str());
+    }
+    
+    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
+                    ,pcActiveBody->getNameInDocument(), FeatName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::CoordinateSystem\',\'%s\')",
+        CSName.c_str());
+    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
+                    ,pcActiveBody->getNameInDocument(), CSName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.CoordinateSystem=(App.ActiveDocument.%s)",
+        FeatName.c_str(), CSName.c_str());
+    Gui::Command::updateActive();
+    
+    if (isActiveObjectValid() && (pcActiveBody != NULL)) {
+        App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature(NULL, false);
+        if (prevSolidFeature != NULL && strcmp(prevSolidFeature->getNameInDocument(), FeatName.c_str())!=0)
+            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
+    }
+
+    Gui::Command::doCommand(Gui, "Gui.activeDocument().hide(\'%s\')", CSName.c_str());
+    Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str()); 
 }
 
 Gui::Action * CmdPrimtiveCompSubtractive::createAction(void)
@@ -169,9 +232,11 @@ Gui::Action * CmdPrimtiveCompSubtractive::createAction(void)
     applyCommandData(this->className(), pcAction);
 
     QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().pixmap("Part_Box"));
+    p1->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Box"));
     QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().pixmap("Part_Cylinder"));
+    p2->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Cylinder"));
+    QAction* p3 = pcAction->addAction(QString());
+    p3->setIcon(Gui::BitmapFactory().pixmap("PartDesign_Subtractive_Sphere"));
 
     _pcAction = pcAction;
     languageChange();
@@ -193,13 +258,17 @@ void CmdPrimtiveCompSubtractive::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdSketcherCompCreateArc","Center and end points"));
-    arc1->setToolTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
-    arc1->setStatusTip(QApplication::translate("Sketcher_CreateArc","Create an arc by its center and by its end points"));
+    arc1->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Box"));
+    arc1->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create an subtractive box by its with, height and length"));
+    arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdSketcherCompCreateArc","End points and rim point"));
-    arc2->setToolTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
-    arc2->setStatusTip(QApplication::translate("Sketcher_Create3PointArc","Create an arc by its end points and a point along the arc"));
+    arc2->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Cylinder"));
+    arc2->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create an subtractive cylinder by its radius, height and angle"));
+    arc2->setStatusTip(arc2->toolTip());
+    QAction* arc3 = a[2];
+    arc3->setText(QApplication::translate("CmdPrimtiveCompSubtractive","Subtractive Sphere"));
+    arc3->setToolTip(QApplication::translate("PartDesign_CompPrimitiveSubtractive","Create an subtractive sphere by its radius and varius angles"));
+    arc3->setStatusTip(arc3->toolTip());
 }
 
 bool CmdPrimtiveCompSubtractive::isActive(void)

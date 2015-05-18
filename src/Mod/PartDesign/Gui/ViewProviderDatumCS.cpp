@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinlaender <jrheinlaender@users.sourceforge.net>        *
+ *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,7 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoMaterial.h>
 # include <Inventor/nodes/SoCoordinate3.h>
+# include <Inventor/nodes/SoLineSet.h>
 # include <TopoDS_Vertex.hxx>
 # include <TopoDS.hxx>
 # include <BRep_Tool.hxx>
@@ -37,64 +38,50 @@
 # include <GeomAPI_IntCS.hxx>
 #endif
 
-#include "ViewProviderDatumLine.h"
+#include "ViewProviderDatumCS.h"
 #include "TaskDatumParameters.h"
 #include "Workbench.h"
+#include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
 #include <Mod/Part/Gui/SoBrepPointSet.h>
-#include <Mod/PartDesign/App/DatumLine.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeaturePrimitive.h>
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumLine,PartDesignGui::ViewProviderDatum)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumCoordinateSystem,PartDesignGui::ViewProviderDatum)
 
-ViewProviderDatumLine::ViewProviderDatumLine()
+ViewProviderDatumCoordinateSystem::ViewProviderDatumCoordinateSystem()
 {
-    sPixmap = "PartDesign_Line.svg";
+    sPixmap = "PartDesign_CoordinateSystem.svg";
     
     SoMaterial* material = new SoMaterial();
     material->diffuseColor.setValue(0.9f, 0.9f, 0.13f);
-    material->transparency.setValue(0.2f);
+    material->transparency.setValue(0.5f);
     pShapeSep->addChild(material);
 }
 
-ViewProviderDatumLine::~ViewProviderDatumLine()
+ViewProviderDatumCoordinateSystem::~ViewProviderDatumCoordinateSystem()
 {
 
 }
 
-void ViewProviderDatumLine::updateData(const App::Property* prop)
+void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
 {
-    // Gets called whenever a property of the attached object changes
-    PartDesign::Line* pcDatum = static_cast<PartDesign::Line*>(this->getObject());
-
     if (strcmp(prop->getName(),"Placement") == 0) {
-        Base::Placement plm = pcDatum->Placement.getValue();
-        plm.invert();
+        
+        
         Base::Vector3d base(0,0,0);
         Base::Vector3d dir(0,0,1);
+        Base::Vector3d x, y, z;
+        getPointForDirection(Base::Vector3d(1,0,0), x);
+        getPointForDirection(Base::Vector3d(0,1,0), y);
+        getPointForDirection(Base::Vector3d(0,0,1), z);
 
-        // Get limits of the line from bounding box of the body
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
-        if (body == NULL)
-            return;
-        Base::BoundBox3d bbox = body->getBoundBox();
-        bbox = bbox.Transformed(plm.toMatrix());
-        bbox.Enlarge(0.1 * bbox.CalcDiagonalLength());
-        Base::Vector3d p1, p2;
-        if (bbox.IsInBox(base)) {
-            bbox.IntersectionPoint(base, dir, p1, Precision::Confusion());
-            bbox.IntersectionPoint(base, -dir, p2, Precision::Confusion());
-        } else {
-            bbox.IntersectWithLine(base, dir, p1, p2);
-            if ((p1 == Base::Vector3d(0,0,0)) && (p2 == Base::Vector3d(0,0,0)))
-                bbox.IntersectWithLine(base, -dir, p1, p2);
-        }
 
         // Display the line
         PartGui::SoBrepEdgeSet* lineSet;
@@ -102,22 +89,56 @@ void ViewProviderDatumLine::updateData(const App::Property* prop)
 
         if (pShapeSep->getNumChildren() == 1) {
             coord = new SoCoordinate3();
-            coord->point.setNum(2);
-            coord->point.set1Value(0, p1.x, p1.y, p1.z);
-            coord->point.set1Value(1, p2.x, p2.y, p2.z);
+            coord->point.setNum(4);
+            coord->point.set1Value(0, base.x, base.y, base.z);
+            coord->point.set1Value(1, x.x, x.y, x.z);
+            coord->point.set1Value(2, y.x, y.y, y.z);
+            coord->point.set1Value(3, z.x, z.y, z.z);
+
             pShapeSep->addChild(coord);
             lineSet = new PartGui::SoBrepEdgeSet();
-            lineSet->coordIndex.setNum(2);
+            lineSet->coordIndex.setNum(6);
             lineSet->coordIndex.set1Value(0, 0);
             lineSet->coordIndex.set1Value(1, 1);
+            lineSet->coordIndex.set1Value(2, 0);
+            lineSet->coordIndex.set1Value(3, 2);
+            lineSet->coordIndex.set1Value(4, 0);
+            lineSet->coordIndex.set1Value(5, 3);
             pShapeSep->addChild(lineSet);
         } else {
             coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(1));
-            coord->point.set1Value(0, p1.x, p1.y, p1.z);
-            coord->point.set1Value(1, p2.x, p2.y, p2.z);
+            coord->point.set1Value(0, base.x, base.y, base.z);
+            coord->point.set1Value(1, x.x, x.y, x.z);
+            coord->point.set1Value(2, y.x, y.y, y.z);
+            coord->point.set1Value(3, z.x, z.y, z.z);
         }
     }
-
+    
     ViewProviderDatum::updateData(prop);
+}
+
+void ViewProviderDatumCoordinateSystem::getPointForDirection(Base::Vector3d dir, Base::Vector3d& p) {
+
+    // Gets called whenever a property of the attached object changes
+    PartDesign::CoordinateSystem* pcDatum = static_cast<PartDesign::CoordinateSystem*>(this->getObject());
+    Base::Placement plm = pcDatum->Placement.getValue();
+    plm.invert();
+    
+    Base::Vector3d base(0,0,0);
+    // Get limits of the line from bounding box of the body
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
+    if (body == NULL)
+        return;
+    Base::BoundBox3d bbox = body->getBoundBox();
+    bbox = bbox.Transformed(plm.toMatrix());
+    bbox.Enlarge(0.1 * bbox.CalcDiagonalLength());
+    if (bbox.IsInBox(base)) {
+        bbox.IntersectionPoint(base, dir, p, Precision::Confusion());
+    } else {
+        Base::Vector3d p2;
+        if(!bbox.IntersectWithLine(base, dir, p, p2)) {
+            p = dir*bbox.CalcDiagonalLength();
+        }
+    }
 }
 

@@ -18,6 +18,7 @@
         <file>icons/PartDesign_Plane.svg</file>
         <file>icons/PartDesign_Line.svg</file>
         <file>icons/PartDesign_Point.svg</file>
+        <file>icons/PartDesign_CoordinateSystem.svg</file>
         <file>icons/PartDesign_MoveTip.svg</file>
         <file>icons/Tree_PartDesign_Pad.svg</file>
         <file>icons/Tree_PartDesign_Revolution.svg</file>	
@@ -26,6 +27,12 @@
         <file>icons/PartDesignWorkbench.svg</file>
         <file>icons/PartDesign_Body_Create_New.svg</file>	
         <file>icons/PartDesign_Body_Tree.svg</file>
+        <file>icons/PartDesign_Additive_Box.svg</file>	
+        <file>icons/PartDesign_Additive_Cylinder.svg</file>	
+        <file>icons/PartDesign_Additive_Sphere.svg</file>	
+        <file>icons/PartDesign_Subtractive_Box.svg</file>	
+        <file>icons/PartDesign_Subtractive_Cylinder.svg</file>
+        <file>icons/PartDesign_Subtractive_Sphere.svg</file>
         <file>translations/PartDesign_af.qm</file>
         <file>translations/PartDesign_de.qm</file>
         <file>translations/PartDesign_fi.qm</file>

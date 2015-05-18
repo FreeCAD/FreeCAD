@@ -21,32 +21,30 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPrimitive_H
-#define PARTGUI_ViewProviderPrimitive_H
+#ifndef PARTGUI_ViewProviderDatumCoordinateSystem_H
+#define PARTGUI_ViewProviderDatumCoordinateSystem_H
 
-#include "ViewProvider.h"
-
+#include "Gui/ViewProviderGeometryObject.h"
+#include "ViewProviderDatum.h"
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderPrimitive : public ViewProvider
+class PartDesignGuiExport ViewProviderDatumCoordinateSystem : public PartDesignGui::ViewProviderDatum
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPrimitive);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderDatumCoordinateSystem);
 
 public:
-    /// constructor
-    ViewProviderPrimitive();
-    /// destructor
-    virtual ~ViewProviderPrimitive();
+    /// Constructor
+    ViewProviderDatumCoordinateSystem();
+    virtual ~ViewProviderDatumCoordinateSystem();
+
+    virtual void updateData(const App::Property*);
     
-    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
-    
-protected:
-    virtual QIcon getIcon(void) const;
-    virtual bool  setEdit(int ModNum);
+private:
+    void getPointForDirection(Base::Vector3d Dir, Base::Vector3d& p);
 };
 
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderBoolean_H
+#endif // PARTGUI_ViewProviderDatumCoordinateSystem_H

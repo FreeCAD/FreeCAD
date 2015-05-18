@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
+ *   Copyright (c) 2015 Stefan Tröger <stefeantroeger@gmx.net>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,32 +21,53 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPrimitive_H
-#define PARTGUI_ViewProviderPrimitive_H
+#ifndef GUI_TASKVIEW_TaskPrimitiveParameters_H
+#define GUI_TASKVIEW_TaskPrimitiveParameters_H
 
-#include "ViewProvider.h"
+#include <Gui/TaskView/TaskView.h>
+#include <Gui/Selection.h>
+#include <Gui/TaskView/TaskDialog.h>
+
+#include "TaskSketchBasedParameters.h"
+#include "ViewProviderPrimitive.h"
+#include "TaskDatumParameters.h"
+#include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/Part/Gui/DlgPrimitives.h>
+
+class Ui_TaskPrimitiveParameters;
+
+namespace App {
+class Property;
+}
+
+namespace Gui {
+class ViewProvider;
+}
+
+namespace PartDesignGui { 
 
 
-namespace PartDesignGui {
-
-class PartDesignGuiExport ViewProviderPrimitive : public ViewProvider
+class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPrimitive);
+    Q_OBJECT
 
 public:
-    /// constructor
-    ViewProviderPrimitive();
-    /// destructor
-    virtual ~ViewProviderPrimitive();
-    
-    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
-    
+    TaskPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
+    ~TaskPrimitiveParameters();
+ 
 protected:
-    virtual QIcon getIcon(void) const;
-    virtual bool  setEdit(int ModNum);
+    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
+
+    virtual bool accept();
+    virtual bool reject();
+
+private:  
+    PartGui::DlgPrimitives* widget;
+    TaskDatumParameters* parameter;
+    PartDesign::CoordinateSystem* cs;
+    bool cs_visibility;
 };
 
-} // namespace PartDesignGui
+} //namespace PartDesignGui
 
-
-#endif // PARTGUI_ViewProviderBoolean_H
+#endif // GUI_TASKVIEW_TASKAPPERANCE_H

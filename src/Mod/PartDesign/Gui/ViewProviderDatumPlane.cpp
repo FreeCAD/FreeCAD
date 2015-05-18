@@ -56,6 +56,8 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderDatumPlane,PartDesignGui::ViewProvide
 
 ViewProviderDatumPlane::ViewProviderDatumPlane()
 {
+    sPixmap = "PartDesign_Plane.svg";
+    
     SoMaterial* material = new SoMaterial();
     material->diffuseColor.setValue(0.9f, 0.9f, 0.13f);
     material->transparency.setValue(0.5f);
