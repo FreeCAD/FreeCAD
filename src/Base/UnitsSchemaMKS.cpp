@@ -99,8 +99,11 @@ QString UnitsSchemaMKS::schemaTranslate(Base::Quantity quant,double &factor,QStr
             unitString = QString::fromLatin1("kPa");
             factor = 1.0;
         }else if(UnitValue < 10000000.0){
-            unitString = QString::fromLatin1("GPa");
+            unitString = QString::fromLatin1("MPa");
             factor = 1000.0;
+        }else if(UnitValue < 10000000000.0){
+            unitString = QString::fromLatin1("GPa");
+            factor = 1000000.0;
         }else{ // bigger then 1000 GPa -> scientific notation 
             unitString = QString::fromLatin1("Pa");
             factor = 1.0;
