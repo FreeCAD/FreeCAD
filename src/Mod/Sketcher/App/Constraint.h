@@ -95,6 +95,7 @@ public:
     PointPos ThirdPos;
     float LabelDistance;
     float LabelPosition;
+    bool isDriving;
 };
 
 } //namespace Sketcher
