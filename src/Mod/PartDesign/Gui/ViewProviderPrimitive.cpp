@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net>        *
+ *   Copyright (c) 2015 Stefan Tröger <stefantroeger@gmx.net>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,11 +28,13 @@
 #endif
 
 #include "ViewProviderPrimitive.h"
+#include "TaskPrimitiveParameters.h"
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
+#include <Base/Console.h>
 
 
 using namespace PartDesignGui;
@@ -49,16 +51,16 @@ ViewProviderPrimitive::~ViewProviderPrimitive()
 }
 
 bool ViewProviderPrimitive::setEdit(int ModNum)
-{/*
+{
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this fillet the
         // object unsets and sets its edit mode without closing
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgBooleanParameters *booleanDlg = qobject_cast<TaskDlgBooleanParameters *>(dlg);
-        if (booleanDlg && booleanDlg->getBooleanView() != this)
-            booleanDlg = 0; // another pad left open its task panel
-        if (dlg && !booleanDlg) {
+        TaskPrimitiveParameters *primitiveDlg = qobject_cast<TaskPrimitiveParameters *>(dlg);
+        if (primitiveDlg)
+            primitiveDlg = 0; // another pad left open its task panel
+        if (dlg && !primitiveDlg) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
             msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
@@ -78,18 +80,24 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
         oldWb = Gui::Command::assureWorkbench("PartDesignWorkbench");
 
         // start the edit dialog
-        if (booleanDlg)
-            Gui::Control().showDialog(booleanDlg);
+        if (primitiveDlg)
+            Gui::Control().showDialog(primitiveDlg);
         else
-            Gui::Control().showDialog(new TaskDlgBooleanParameters(this));
+            Gui::Control().showDialog(new TaskPrimitiveParameters(this));
 
         return true;
     }
     else {
         return PartGui::ViewProviderPart::setEdit(ModNum);
-    }*/
-
-    return false;
+    }
 }
 
+std::vector< App::DocumentObject* > ViewProviderPrimitive::claimChildren(void) const {
+    
+//    Base::Console().Message("claim children\n");
+    std::vector< App::DocumentObject* > vec;
+    vec.push_back(static_cast<PartDesign::FeaturePrimitive*>(getObject())->CoordinateSystem.getValue());
+    
+    return vec;
+}
 

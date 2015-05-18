@@ -39,6 +39,8 @@ public:
     /// destructor
     virtual ~ViewProviderPrimitive();
     
+    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
+    
 protected:
     virtual bool setEdit(int ModNum);
 };
