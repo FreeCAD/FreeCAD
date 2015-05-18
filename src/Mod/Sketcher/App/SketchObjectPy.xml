@@ -78,6 +78,16 @@
         <UserDocu>Get the value of a datum constraint</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setDriving">
+      <Documentation>
+        <UserDocu>set the Driving status of a datum constraint</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getDriving">
+      <Documentation>
+        <UserDocu>Get the Driving status of a datum constraint</UserDocu>
+      </Documentation>
+    </Methode>    
     <Methode Name="movePoint">
       <Documentation>
         <UserDocu>

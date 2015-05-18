@@ -117,18 +117,19 @@
 using namespace SketcherGui;
 using namespace Sketcher;
 
-SbColor ViewProviderSketch::VertexColor           (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor ViewProviderSketch::CurveColor            (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
-SbColor ViewProviderSketch::CurveDraftColor       (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
-SbColor ViewProviderSketch::CurveExternalColor    (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
-SbColor ViewProviderSketch::CrossColorH           (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
-SbColor ViewProviderSketch::CrossColorV           (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
-SbColor ViewProviderSketch::FullyConstrainedColor (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
-SbColor ViewProviderSketch::ConstrDimColor        (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor ViewProviderSketch::ConstrIcoColor        (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
-SbColor ViewProviderSketch::PreselectColor        (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
-SbColor ViewProviderSketch::SelectColor           (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
-SbColor ViewProviderSketch::PreselectSelectedColor(0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
+SbColor ViewProviderSketch::VertexColor                 (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::CurveColor                  (1.0f,1.0f,1.0f);     // #FFFFFF -> (255,255,255)
+SbColor ViewProviderSketch::CurveDraftColor             (0.0f,0.0f,0.86f);    // #0000DC -> (  0,  0,220)
+SbColor ViewProviderSketch::CurveExternalColor          (0.8f,0.2f,0.6f);     // #CC3399 -> (204, 51,153)
+SbColor ViewProviderSketch::CrossColorH                 (0.8f,0.4f,0.4f);     // #CC6666 -> (204,102,102)
+SbColor ViewProviderSketch::CrossColorV                 (0.4f,0.8f,0.4f);     // #66CC66 -> (102,204,102)
+SbColor ViewProviderSketch::FullyConstrainedColor       (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
+SbColor ViewProviderSketch::ConstrDimColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::ConstrIcoColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
+SbColor ViewProviderSketch::NonDrivingConstrDimColor    (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
+SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
+SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
+SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
 // Variables for holding previous click
 SbTime  ViewProviderSketch::prvClickTime;
 SbVec3f ViewProviderSketch::prvClickPoint;
@@ -2302,9 +2303,9 @@ void ViewProviderSketch::updateColor(void)
         else {
             if (hasDatumLabel) {
                 SoDatumLabel *l = dynamic_cast<SoDatumLabel *>(s->getChild(CONSTRAINT_SEPARATOR_INDEX_MATERIAL_OR_DATUMLABEL));
-                l->textColor = ConstrDimColor;
+                l->textColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
             } else if (hasMaterial) {
-                m->diffuseColor = ConstrDimColor;
+                m->diffuseColor = constraint->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
             }
         }
     }
@@ -2383,6 +2384,9 @@ QColor ViewProviderSketch::constrColor(int constraintId)
     static QColor constrIcoColor((int)(ConstrIcoColor [0] * 255.0f),
                                  (int)(ConstrIcoColor[1] * 255.0f),
                                  (int)(ConstrIcoColor[2] * 255.0f));
+    static QColor nonDrivingConstrIcoColor((int)(NonDrivingConstrDimColor[0] * 255.0f),
+                                 (int)(NonDrivingConstrDimColor[1] * 255.0f),
+                                 (int)(NonDrivingConstrDimColor[2] * 255.0f));
     static QColor constrIconSelColor ((int)(SelectColor[0] * 255.0f),
                                       (int)(SelectColor[1] * 255.0f),
                                       (int)(SelectColor[2] * 255.0f));
@@ -2390,12 +2394,17 @@ QColor ViewProviderSketch::constrColor(int constraintId)
                                          (int)(PreselectColor[1] * 255.0f),
                                          (int)(PreselectColor[2] * 255.0f));
 
+    const std::vector<Sketcher::Constraint *> &constraints = getSketchObject()->Constraints.getValues();
+    
     if (edit->PreselectConstraintSet.count(constraintId))
         return constrIconPreselColor;
     else if (edit->SelConstraintSet.find(constraintId) != edit->SelConstraintSet.end())
         return constrIconSelColor;
+    else if(!constraints[constraintId]->isDriving)
+        return nonDrivingConstrIcoColor;
     else
         return constrIcoColor;
+        
 }
 
 int ViewProviderSketch::constrColorPriority(int constraintId)
@@ -3872,7 +3881,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         // every constrained visual node gets its own material for preselection and selection
         SoMaterial *mat = new SoMaterial;
         mat->ref();
-        mat->diffuseColor = ConstrDimColor;
+        mat->diffuseColor = (*it)->isDriving?ConstrDimColor:NonDrivingConstrDimColor;
         // Get sketch normal
         Base::Vector3d RN(0,0,1);
 
@@ -3895,7 +3904,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
                 SoDatumLabel *text = new SoDatumLabel();
                 text->norm.setValue(norm);
                 text->string = "";
-                text->textColor = ConstrDimColor;
+                text->textColor = (*it)->isDriving?ConstrDimColor:NonDrivingConstrDimColor;;
                 text->size.setValue(fontSize);
                 text->useAntialiasing = false;
                 SoAnnotation *anno = new SoAnnotation();
@@ -4145,6 +4154,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     color = (unsigned long)(ConstrIcoColor.getPackedValue());
     color = hGrp->GetUnsigned("ConstrainedIcoColor", color);
     ConstrIcoColor.setPackedValue((uint32_t)color, transparency);
+    // set non-driving constraint color
+    color = (unsigned long)(NonDrivingConstrDimColor.getPackedValue());
+    color = hGrp->GetUnsigned("NonDrivingConstrDimColor", color);
+    NonDrivingConstrDimColor.setPackedValue((uint32_t)color, transparency);    
     // set the external geometry color
     color = (unsigned long)(CurveExternalColor.getPackedValue());
     color = hGrp->GetUnsigned("ExternalColor", color);

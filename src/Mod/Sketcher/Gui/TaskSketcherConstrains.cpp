@@ -62,7 +62,6 @@ QIcon icon_ ## FUNC( Gui::BitmapFactory().pixmap(ICONSTR) );                    
     QAction* constr_ ## FUNC = menu.addAction(icon_ ## FUNC,tr(NAMESTR), this, SLOT(FUNC()),    \
         QKeySequence(QString::fromUtf8(Gui::Application::Instance->commandManager().getCommandByName(CMDSTR)->getAccel())));        \
     if(ACTSONSELECTION) constr_ ## FUNC->setEnabled(!items.isEmpty()); else constr_ ## FUNC->setEnabled(true);
-
 /// Defines the member function corresponding to the CONTEXT_ITEM macro
 #define CONTEXT_MEMBER_DEF(CMDSTR,FUNC)                             \
 void ConstraintView::FUNC(){                               \
@@ -72,15 +71,15 @@ void ConstraintView::FUNC(){                               \
 class ConstraintItem : public QListWidgetItem
 {
 public:
-    ConstraintItem(const QIcon & icon, const QString & text,int ConstNbr,Sketcher::ConstraintType t)
-        : QListWidgetItem(icon,text),ConstraintNbr(ConstNbr),Type(t)
+    ConstraintItem(const QIcon & icon, const QString & text,int ConstNbr,Sketcher::ConstraintType t,bool isdriving=true, bool isenforceable=true)
+        : QListWidgetItem(icon,text),ConstraintNbr(ConstNbr),Type(t),isDriving(isdriving),isEnforceable(isenforceable)
     {
-        this->setFlags(this->flags() | Qt::ItemIsEditable);
+        this->setFlags(this->flags() | Qt::ItemIsEditable);        
     }
-    ConstraintItem(const QString & text,int ConstNbr,Sketcher::ConstraintType t)
-        : QListWidgetItem(text),ConstraintNbr(ConstNbr),Type(t)
+    ConstraintItem(const QString & text,int ConstNbr,Sketcher::ConstraintType t,bool isdriving=true, bool isenforceable=true)
+        : QListWidgetItem(text),ConstraintNbr(ConstNbr),Type(t),isDriving(isdriving),isEnforceable(isenforceable)
     {
-        this->setFlags(this->flags() | Qt::ItemIsEditable);
+        this->setFlags(this->flags() | Qt::ItemIsEditable);       
     }
     ~ConstraintItem()
     {
@@ -106,9 +105,12 @@ public:
 
     int ConstraintNbr;
     Sketcher::ConstraintType Type;
+    bool isDriving;
+    bool isEnforceable;
 
 private:
     QVariant quantity;
+    
 };
 
 ConstraintView::ConstraintView(QWidget *parent)
@@ -129,11 +131,32 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
     
     menu.addSeparator();
+       
+    if(item) // Non-driving-constraints/measurements
+    {
+        ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
+        
+        QAction* driven = menu.addAction(it->isDriving?tr("Disable"):tr("Enable"), this, SLOT(updateDrivingStatus()));
+        // if its the right constraint
+        if ((it->Type == Sketcher::Distance ||
+            it->Type == Sketcher::DistanceX ||
+            it->Type == Sketcher::DistanceY ||
+            it->Type == Sketcher::Radius ||
+            it->Type == Sketcher::Angle ||
+            it->Type == Sketcher::SnellsLaw) && it->isEnforceable) { 
 
-    QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
-    QVariant v = item ? item->data(Qt::UserRole) : QVariant();
-    change->setEnabled(v.isValid());
+            driven->setEnabled(true);    
+        }
+        else{
+            driven->setEnabled(false);   
+        }
+         
 
+        QAction* change = menu.addAction(tr("Change value"), this, SLOT(modifyCurrentItem()));
+        QVariant v = item ? item->data(Qt::UserRole) : QVariant();
+        change->setEnabled(v.isValid() && it->isDriving);
+
+    }
     QAction* rename = menu.addAction(tr("Rename"), this, SLOT(renameCurrentItem())
 #ifndef Q_WS_MAC // on Mac F2 doesn't seem to trigger an edit signal
         ,QKeySequence(Qt::Key_F2)
@@ -148,6 +171,17 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
 }
 
 CONTEXT_MEMBER_DEF("Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints)
+
+void ConstraintView::updateDrivingStatus()
+{
+    QListWidgetItem* item = currentItem();
+    
+    if (item){
+        ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
+        
+        onUpdateDrivingStatus(item, !it->isDriving);
+    }    
+}
 
 void ConstraintView::modifyCurrentItem()
 {
@@ -207,6 +241,10 @@ TaskSketcherConstrains::TaskSketcherConstrains(ViewProviderSketch *sketchView)
     QObject::connect(
         ui->listWidgetConstraints, SIGNAL(itemChanged(QListWidgetItem *)),
         this                     , SLOT  (on_listWidgetConstraints_itemChanged(QListWidgetItem *))
+       );
+    QObject::connect(
+        ui->listWidgetConstraints, SIGNAL(onUpdateDrivingStatus(QListWidgetItem *, bool)),
+        this                     , SLOT  (on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *, bool))
        );
 
     connectionConstraintsChanged = sketchView->signalConstraintsChanged.connect(
@@ -293,17 +331,41 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemActivated(QListWidgetI
     if (!item) return;
 
     // if its the right constraint
-    if (it->Type == Sketcher::Distance ||
+    if ((it->Type == Sketcher::Distance ||
         it->Type == Sketcher::DistanceX ||
         it->Type == Sketcher::DistanceY ||
         it->Type == Sketcher::Radius ||
         it->Type == Sketcher::Angle ||
-        it->Type == Sketcher::SnellsLaw) {
+        it->Type == Sketcher::SnellsLaw) && it->isDriving) {
 
         EditDatumDialog *editDatumDialog = new EditDatumDialog(this->sketchView, it->ConstraintNbr);
         editDatumDialog->exec(false);
         delete editDatumDialog;
     }
+}
+
+void TaskSketcherConstrains::on_listWidgetConstraints_updateDrivingStatus(QListWidgetItem *item, bool status)
+{
+    ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
+    if (!item) return;
+    
+    const std::vector< Sketcher::Constraint * > &vals = sketchView->getSketchObject()->Constraints.getValues();
+    
+    try {
+        Gui::Command::openCommand("Modify driving status of constraint");
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+            this->sketchView->getSketchObject()->getNameInDocument(),
+            it->ConstraintNbr,
+            status?"True":"False");
+        Gui::Command::commitCommand();
+        Gui::Command::updateActive();
+    }
+    catch (const Base::Exception& e) {
+        Gui::Command::abortCommand();
+    }
+    
+    slotConstraintsChanged();
+    
 }
 
 void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetItem *item)
@@ -381,6 +443,13 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
     QIcon iaellipsefocus1 ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment_Ellipse_Focus1") );
     QIcon iaellipsefocus2 ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment_Ellipse_Focus2") );
     QIcon iaellipseother ( Gui::BitmapFactory().pixmap("Constraint_InternalAlignment") );
+    
+    QIcon hdist_driven ( Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven") );
+    QIcon vdist_driven( Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven") );
+    QIcon dist_driven ( Gui::BitmapFactory().pixmap("Constraint_Length_Driven") );
+    QIcon radi_driven ( Gui::BitmapFactory().pixmap("Constraint_Radius_Driven") );
+    QIcon angl_driven ( Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven") );
+    QIcon snell_driven ( Gui::BitmapFactory().pixmap("Constraint_SnellsLaw_Driven") );
 
     assert(sketchView);
     // Build up ListView with the constraints
@@ -403,6 +472,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
       1 <=> Normal
       2 <=> Datums
       3 <=> Named
+      4 <=> Non-Driving
       */
         switch((*it)->Type){
             case Sketcher::Horizontal:
@@ -442,48 +512,48 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
                     ui->listWidgetConstraints->addItem(new ConstraintItem(symm,name,i-1,(*it)->Type));
                 break;
             case Sketcher::Distance:
-                if (Filter<3 || !(*it)->Name.empty()) {
-                    ConstraintItem* item = new ConstraintItem(dist,name,i-1,(*it)->Type);
+                if (((Filter<3 || !(*it)->Name.empty())) || (Filter==4 && !(*it)->isDriving)) {
+                    ConstraintItem* item = new ConstraintItem((*it)->isDriving?dist:dist_driven,name,i-1,(*it)->Type,(*it)->isDriving, ((*it)->First>=0 || (*it)->Second>=0 || (*it)->Third>=0));
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
-                    item->setData(Qt::UserRole, name);
+                    item->setData(Qt::UserRole, name);                    
                     ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             case Sketcher::DistanceX:
-                if (Filter<3 || !(*it)->Name.empty()) {
-                    ConstraintItem* item = new ConstraintItem(hdist,name,i-1,(*it)->Type);
+                if (((Filter<3 || !(*it)->Name.empty())) || (Filter==4 && !(*it)->isDriving)) {
+                    ConstraintItem* item = new ConstraintItem((*it)->isDriving?hdist:hdist_driven,name,i-1,(*it)->Type,(*it)->isDriving, ((*it)->First>=0 || (*it)->Second>=0 || (*it)->Third>=0));
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(std::abs((*it)->Value),Base::Unit::Length).getUserString());
                     item->setData(Qt::UserRole, name);
                     ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             case Sketcher::DistanceY:
-                if (Filter<3 || !(*it)->Name.empty()) {
-                    ConstraintItem* item = new ConstraintItem(vdist,name,i-1,(*it)->Type);
+                if (((Filter<3 || !(*it)->Name.empty())) || (Filter==4 && !(*it)->isDriving)) {
+                    ConstraintItem* item = new ConstraintItem((*it)->isDriving?vdist:vdist_driven,name,i-1,(*it)->Type,(*it)->isDriving, ((*it)->First>=0 || (*it)->Second>=0 || (*it)->Third>=0));
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(std::abs((*it)->Value),Base::Unit::Length).getUserString());
                     item->setData(Qt::UserRole, name);
                     ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             case Sketcher::Radius:
-                if (Filter<3 || !(*it)->Name.empty()) {
-                    ConstraintItem* item = new ConstraintItem(radi,name,i-1,(*it)->Type);
+                if (((Filter<3 || !(*it)->Name.empty())) || (Filter==4 && !(*it)->isDriving)) {
+                    ConstraintItem* item = new ConstraintItem((*it)->isDriving?radi:radi_driven,name,i-1,(*it)->Type,(*it)->isDriving, ((*it)->First>=0 || (*it)->Second>=0 || (*it)->Third>=0));
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity((*it)->Value,Base::Unit::Length).getUserString());
                     item->setData(Qt::UserRole, name);
                     ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             case Sketcher::Angle:
-                if (Filter<3 || !(*it)->Name.empty()) {
-                    ConstraintItem* item = new ConstraintItem(angl,name,i-1,(*it)->Type);
+                if (((Filter<3 || !(*it)->Name.empty())) || (Filter==4 && !(*it)->isDriving)) {
+                    ConstraintItem* item = new ConstraintItem((*it)->isDriving?angl:angl_driven,name,i-1,(*it)->Type,(*it)->isDriving, ((*it)->First>=0 || (*it)->Second>=0 || (*it)->Third>=0));
                     name = QString::fromLatin1("%1 (%2)").arg(name).arg(Base::Quantity(Base::toDegrees<double>(std::abs((*it)->Value)),Base::Unit::Angle).getUserString());
                     item->setData(Qt::UserRole, name);
                     ui->listWidgetConstraints->addItem(item);
                 }
                 break;
             case Sketcher::SnellsLaw:
-                if (Filter<3 || !(*it)->Name.empty()) {
-                    ConstraintItem* item = new ConstraintItem(snell,name,i-1,(*it)->Type);
+                if (((Filter<3 || !(*it)->Name.empty())) || (Filter==4 && !(*it)->isDriving)) {
+                    ConstraintItem* item = new ConstraintItem((*it)->isDriving?snell:snell_driven,name,i-1,(*it)->Type,(*it)->isDriving, ((*it)->First>=0 || (*it)->Second>=0 || (*it)->Third>=0));
 
                     double v = (*it)->Value;
                     double n1 = 1.0;

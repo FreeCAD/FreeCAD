@@ -219,6 +219,60 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     return err;
 }
 
+int SketchObject::setDriving(int ConstrId, bool isdriving)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+    
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+    
+    ConstraintType type = vals[ConstrId]->Type;
+    
+    if (type != Distance &&
+        type != DistanceX &&
+        type != DistanceY &&
+        type != Radius &&
+        type != Angle &&
+        type != SnellsLaw)
+        return -1;
+
+    // copy the list
+    std::vector<Constraint *> newVals(vals);
+    // clone the changed Constraint
+    Constraint *constNew = vals[ConstrId]->clone();
+    constNew->isDriving = isdriving;
+    newVals[ConstrId] = constNew;
+    this->Constraints.setValues(newVals);
+    delete constNew;
+
+    int err = solve();
+    if (err)
+        this->Constraints.setValues(vals);
+
+    return err;
+}
+
+int SketchObject::getDriving(int ConstrId, bool &isdriving)
+{
+    const std::vector<Constraint *> &vals = this->Constraints.getValues();
+    
+    if (ConstrId < 0 || ConstrId >= int(vals.size()))
+        return -1;
+    
+    ConstraintType type = vals[ConstrId]->Type;
+    
+    if (type != Distance &&
+        type != DistanceX &&
+        type != DistanceY &&
+        type != Radius &&
+        type != Angle &&
+        type != SnellsLaw)
+        return -1;
+
+    isdriving=vals[ConstrId]->isDriving;
+    return 0;
+}
+
 int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative)
 {
     Sketch sketch;

@@ -110,6 +110,10 @@ public:
     int solve();
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
+    /// set the driving status of this constraint and solve
+    int setDriving(int ConstrId, bool isdriving);
+    /// get the driving status of this constraint
+    int getDriving(int ConstrId, bool &isdriving);
     /// move this point to a new location and solve
     int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false);
     /// retrieves the coordinates of a point

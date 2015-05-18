@@ -568,6 +568,42 @@ PyObject* SketchObjectPy::getDatum(PyObject *args)
     return new Base::QuantityPy(new Base::Quantity(datum));
 }
 
+PyObject* SketchObjectPy::setDriving(PyObject *args)
+{
+    PyObject* driving;
+    int constrid;
+    
+    if (!PyArg_ParseTuple(args, "iO!", &constrid, &PyBool_Type, &driving))
+        return 0;
+
+    if (this->getSketchObjectPtr()->setDriving(constrid, PyObject_IsTrue(driving) ? true : false)) {
+        std::stringstream str;
+        str << "Not able set Driving for constraint with the given index: " << constrid;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject* SketchObjectPy::getDriving(PyObject *args)
+{
+    int constrid;
+    bool driving;
+    
+    if (!PyArg_ParseTuple(args, "i", &constrid))
+        return 0;
+
+    SketchObject* obj = this->getSketchObjectPtr();
+    if (this->getSketchObjectPtr()->getDriving(constrid, driving)) {
+        PyErr_SetString(PyExc_ValueError, "Invalid constraint id");
+        return 0;
+    }
+
+    return Py::new_reference_to(Py::Boolean(driving));
+}
+
+
 PyObject* SketchObjectPy::movePoint(PyObject *args)
 {
     PyObject *pcObj;

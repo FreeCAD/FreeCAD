@@ -158,7 +158,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
 }
 
 // Utility method to avoid repeating the same code over and over again
-void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch)
+void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch, bool isDriven=true)
 {
     // Get the latest constraint
     const std::vector<Sketcher::Constraint *> &ConStr = sketch->Constraints.getValues();
@@ -179,11 +179,11 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch)
     bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
 
     // Ask for the value of the distance immediately
-    if (show) {
+    if (show && isDriven) {
         openEditDatumDialog(sketch, ConStr.size() - 1);
     }
     else {
-        // now dialog was shown so commit the command
+        // no dialog was shown so commit the command
         cmd->commitCommand();
     }
 
@@ -191,17 +191,18 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch)
     cmd->getSelection().clearSelection();
 }
 
+void showNoConstraintBetweenExternal()
+{
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Cannot add a constraint between two external geometries!"));    
+}
+
 bool checkBothExternal(int GeoId1, int GeoId2)
 {
     if (GeoId1 == Constraint::GeoUndef || GeoId2 == Constraint::GeoUndef)
         return false;
-    else if (GeoId1 < 0 && GeoId2 < 0) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Cannot add a constraint between two external geometries!"));
-        return true;
-    }
     else
-        return false;
+        return (GeoId1 < 0 && GeoId2 < 0);
 }
 
 void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
@@ -711,9 +712,9 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     Sketcher::PointPos PosId;
     getIdsFromName(SubNames[0], Obj, GeoId, PosId);
 
-    if (isEdge(GeoId,PosId) || GeoId < 0) {
+    if (isEdge(GeoId,PosId) || (GeoId < 0 && GeoId >= -2)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one vertex from the sketch."));
+            QObject::tr("Select one vertex from the sketch other than the origin."));
         return;
     }
 
@@ -728,6 +729,16 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
         selection[0].getFeatName(),GeoId,PosId,pnt.y);
 
+    if (GeoId < -2) { // it is a constraint on a external line, make it non-driving
+        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+        
+        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+        selection[0].getFeatName(),ConStr.size()-2,"False");
+        
+        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+        selection[0].getFeatName(),ConStr.size()-1,"False");
+    }
+    
     // finish the transaction and update
     commitCommand();
     updateActive();
@@ -885,10 +896,10 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     if (SubNames.size() == 2)
         getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
-
-    if (checkBothExternal(GeoId1, GeoId2))
-        return;
-    else if (isVertex(GeoId1,PosId1) && (GeoId2 == -2 || GeoId2 == -1)) {
+    
+    bool bothexternal=checkBothExternal(GeoId1, GeoId2);
+    
+    if (isVertex(GeoId1,PosId1) && (GeoId2 == -2 || GeoId2 == -1)) {
         std::swap(GeoId1,GeoId2);
         std::swap(PosId1,PosId2);
     }
@@ -920,8 +931,16 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,(pnt2-pnt1).Length());
         }
-
-        finishDistanceConstraint(this, Obj);
+        
+        if (bothexternal) { // it is a constraint on a external line, make it non-driving
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+            
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+            selection[0].getFeatName(),ConStr.size()-1,"False");
+            finishDistanceConstraint(this, Obj,false);
+        }
+        else
+            finishDistanceConstraint(this, Obj,true);
         return;
     }
     else if ((isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) ||
@@ -945,15 +964,23 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,ActDist);
 
-            finishDistanceConstraint(this, Obj);
+            if (bothexternal) { // it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+                
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                selection[0].getFeatName(),ConStr.size()-1,"False");
+                finishDistanceConstraint(this, Obj,false);
+            }
+            else
+                finishDistanceConstraint(this, Obj,true);
+            
             return;
         }
     }
     else if (isEdge(GeoId1,PosId1)) { // line length
-        if (GeoId1 < 0) {
+        if (GeoId1 < 0 && GeoId1 >= -2) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                                 GeoId1 < 2 ? QObject::tr("Cannot add a length constraint on an external geometry!")
-                                            : QObject::tr("Cannot add a length constraint on an axis!"));
+                                 QObject::tr("Cannot add a length constraint on an axis!"));
             return;
         }
 
@@ -967,8 +994,17 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
-
-            finishDistanceConstraint(this, Obj);
+            
+            if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+                
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                selection[0].getFeatName(),ConStr.size()-1,"False");
+                finishDistanceConstraint(this, Obj,false);
+            }
+            else
+                finishDistanceConstraint(this, Obj,true);
+            
             return;
         }
     }
@@ -1035,8 +1071,10 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
         int cnt = 0;
         for (int iPnt = 0;  iPnt < points.size();  iPnt++) {
             for (int iCrv = 0;  iCrv < curves.size();  iCrv++) {
-                if (checkBothExternal(points[iPnt].GeoId, curves[iCrv].GeoId))
+                if (checkBothExternal(points[iPnt].GeoId, curves[iCrv].GeoId)){
+                    showNoConstraintBetweenExternal();
                     continue;
+                }
                 if (points[iPnt].GeoId == curves[iCrv].GeoId)
                     continue; //constraining a point of an element onto the element is a bad idea...
                 cnt++;
@@ -1112,9 +1150,9 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     if (SubNames.size() == 2)
         getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
-    if (checkBothExternal(GeoId1, GeoId2))
-        return;
-    else if (GeoId2 == -1 || GeoId2 == -2) {
+    bool bothexternal=checkBothExternal(GeoId1, GeoId2);
+
+    if (GeoId2 == -1 || GeoId2 == -2) {
         std::swap(GeoId1,GeoId2);
         std::swap(PosId1,PosId2);
     }
@@ -1137,15 +1175,23 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
 
-        finishDistanceConstraint(this, Obj);
+        if (bothexternal) { // it is a constraint on a external line, make it non-driving
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+            
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+            selection[0].getFeatName(),ConStr.size()-1,"False");
+            finishDistanceConstraint(this, Obj,false);
+        }
+        else
+            finishDistanceConstraint(this, Obj,true);
+
         return;
     }
     else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // horizontal length of a line
 
-        if (GeoId1 < 0) {
+        if (GeoId1 < 0 && GeoId1 >= -2) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                GeoId1 < -2 ? QObject::tr("Cannot add a horizontal length constraint on an external geometry!")
-                            : QObject::tr("Cannot add a horizontal length constraint on an axis!"));
+                            QObject::tr("Cannot add a horizontal length constraint on an axis!"));
             return;
         }
 
@@ -1160,16 +1206,24 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
 
-            finishDistanceConstraint(this, Obj);
+            if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+                
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                selection[0].getFeatName(),ConStr.size()-1,"False");
+                finishDistanceConstraint(this, Obj,false);
+            }
+            else
+                finishDistanceConstraint(this, Obj,true);
+            
             return;
         }
     }
     else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed x-coordinate
 
-        if (GeoId1 < 0) {
+        if (GeoId1 < 0 && GeoId1 >= -2) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                GeoId1 < -2 ? QObject::tr("Cannot add a fixed x-coordinate constraint on an external geometry!")
-                            : QObject::tr("Cannot add a fixed x-coordinate constraint on the root point!"));
+                    QObject::tr("Cannot add a fixed x-coordinate constraint on the root point!"));
             return;
         }
 
@@ -1180,8 +1234,17 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         Gui::Command::doCommand(
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,ActX);
-
-        finishDistanceConstraint(this, Obj);
+        
+        if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+            
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+            selection[0].getFeatName(),ConStr.size()-1,"False");
+            finishDistanceConstraint(this, Obj,false);
+        }
+        else
+            finishDistanceConstraint(this, Obj,true);
+            
         return;
     }
 
@@ -1240,9 +1303,9 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     if (SubNames.size() == 2)
         getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
-    if (checkBothExternal(GeoId1, GeoId2))
-        return;
-    else if (GeoId2 == -1 || GeoId2 == -2) {
+    bool bothexternal=checkBothExternal(GeoId1, GeoId2);
+    
+    if (GeoId2 == -1 || GeoId2 == -2) {
         std::swap(GeoId1,GeoId2);
         std::swap(PosId1,PosId2);
     }
@@ -1263,15 +1326,23 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
 
-        finishDistanceConstraint(this, Obj);
+        if (bothexternal) { // it is a constraint on a external line, make it non-driving
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+            
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+            selection[0].getFeatName(),ConStr.size()-1,"False");
+            finishDistanceConstraint(this, Obj,false);
+        }
+        else
+            finishDistanceConstraint(this, Obj,true);
+        
         return;
     }
     else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
 
-        if (GeoId1 < 0) {
+        if (GeoId1 < 0 && GeoId1 >= -2) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                GeoId1 < -2 ? QObject::tr("Cannot add a vertical length constraint on an external geometry!")
-                            : QObject::tr("Cannot add a vertical length constraint on an axis!"));
+                        QObject::tr("Cannot add a vertical length constraint on an axis!"));
             return;
         }
 
@@ -1286,16 +1357,24 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
 
-            finishDistanceConstraint(this, Obj);
+            if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+                
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                selection[0].getFeatName(),ConStr.size()-1,"False");
+                finishDistanceConstraint(this, Obj,false);
+            }
+            else
+                finishDistanceConstraint(this, Obj,true);
+            
             return;
         }
     }
     else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed y-coordinate
 
-        if (GeoId1 < 0) {
+        if (GeoId1 < 0 && GeoId1 >= -2) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                GeoId1 < -2 ? QObject::tr("Cannot add a fixed y-coordinate constraint on an external geometry!")
-                            : QObject::tr("Cannot add a fixed y-coordinate constraint on the root point!"));
+                QObject::tr("Cannot add a fixed y-coordinate constraint on the root point!"));
             return;
         }
 
@@ -1307,7 +1386,16 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,ActY);
 
-        finishDistanceConstraint(this, Obj);
+        if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+            
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+            selection[0].getFeatName(),ConStr.size()-1,"False");
+            finishDistanceConstraint(this, Obj,false);
+        }
+        else
+            finishDistanceConstraint(this, Obj,true);
+        
         return;
     }
 
@@ -1377,7 +1465,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
         }
         else if (GeoId < 0) {
             if (hasAlreadyExternal) {
-                checkBothExternal(-1,-2); // just for printing the error message
+                showNoConstraintBetweenExternal();
                 return;
             }
             else
@@ -1469,8 +1557,10 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
-    if (checkBothExternal(GeoId1, GeoId2)) //checkBothExternal displays error message
+    if (checkBothExternal(GeoId1, GeoId2)){ //checkBothExternal displays error message
+        showNoConstraintBetweenExternal();
         return;
+    }
 
     if (SubNames.size() == 3) { //perpendicular via point
         getIdsFromName(SubNames[2], Obj, GeoId3, PosId3);
@@ -1740,8 +1830,10 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
-    if (checkBothExternal(GeoId1, GeoId2)) //checkBothExternal displays error message
+    if (checkBothExternal(GeoId1, GeoId2)){ //checkBothExternal displays error message
+        showNoConstraintBetweenExternal();
         return;
+    }
     if (SubNames.size() == 3) { //tangent via point
         getIdsFromName(SubNames[2], Obj, GeoId3, PosId3);
         //let's sink the point to be GeoId3. We want to keep the order the two curves have been selected in.
@@ -1957,6 +2049,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
     // check for which selected geometry the constraint can be applied
     std::vector< std::pair<int, double> > geoIdRadiusMap;
+    std::vector< std::pair<int, double> > externalGeoIdRadiusMap;
+    
     for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
         if (it->size() > 4 && it->substr(0,4) == "Edge") {
             int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
@@ -1972,13 +2066,74 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                 geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
             }
         }
+        if (it->size() > 4 && it->substr(0,12) == "ExternalEdge") {
+            int GeoId = -std::atoi(it->substr(12,4000).c_str()) - 2;
+            const Part::Geometry *geom = Obj->getGeometry(GeoId);
+            if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
+                double radius = arc->getRadius();
+                externalGeoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+            }
+            else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
+                const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geom);
+                double radius = circle->getRadius();
+                externalGeoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
+            }
+        }
     }
 
-    if (geoIdRadiusMap.empty()) {
+    if (geoIdRadiusMap.empty() && externalGeoIdRadiusMap.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one or more arcs or circles from the sketch."));
     }
-    else {
+    
+    bool commitNeeded=false;
+    bool updateNeeded=false;
+    bool commandopened=false;
+    
+    if(!externalGeoIdRadiusMap.empty()) {
+        // Create the non-driving radius constraints now
+        openCommand("Add radius constraint");
+        commandopened=true;
+        unsigned int constrSize;
+        
+        for (std::vector< std::pair<int, double> >::iterator it = externalGeoIdRadiusMap.begin(); it != externalGeoIdRadiusMap.end(); ++it) {
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                selection[0].getFeatName(),it->first,it->second);
+
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+            
+            constrSize=ConStr.size();
+            
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+            selection[0].getFeatName(),constrSize-1,"False");            
+        }
+        
+        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+        
+        std::size_t indexConstr = constrSize - externalGeoIdRadiusMap.size();
+
+        // Guess some reasonable distance for placing the datum text
+        Gui::Document *doc = getActiveGuiDocument();
+        float sf = 1.f;
+        if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            SketcherGui::ViewProviderSketch *vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+            sf = vp->getScaleFactor();
+
+            for (std::size_t i=0; i<externalGeoIdRadiusMap.size();i++) {
+                Sketcher::Constraint *constr = ConStr[indexConstr + i];
+                constr->LabelDistance = 2. * sf;
+            }
+            vp->draw(); // Redraw
+        }
+        
+        commitNeeded=true;
+        updateNeeded=true;
+    }
+    
+    if(!geoIdRadiusMap.empty())
+    {
         bool constrainEqual = false;
         if (geoIdRadiusMap.size() > 1) {
             int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Constrain equal"),
@@ -1998,7 +2153,10 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             // Create the one radius constraint now
             int refGeoId = geoIdRadiusMap.front().first;
             double radius = geoIdRadiusMap.front().second;
-            openCommand("Add radius constraint");
+            
+            if(!commandopened)
+                openCommand("Add radius constraint");
+            
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                 selection[0].getFeatName(),refGeoId,radius);
@@ -2012,7 +2170,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         }
         else {
             // Create the radius constraints now
-            openCommand("Add radius constraint");
+            if(!commandopened)
+                openCommand("Add radius constraint");
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin(); it != geoIdRadiusMap.end(); ++it) {
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
@@ -2072,6 +2231,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                     }
                     commitCommand();
                     updateActive();
+                    commitNeeded=false;
+                    updateNeeded=false;
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
@@ -2086,11 +2247,17 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         else {
             // now dialog was shown so commit the command
             commitCommand();
+            commitNeeded=false;            
         }
-
         //updateActive();
         getSelection().clearSelection();
     }
+    
+    if(commitNeeded)
+        commitCommand();
+    
+    if(updateNeeded)
+        updateActive();
 }
 
 bool CmdSketcherConstrainRadius::isActive(void)
@@ -2159,6 +2326,8 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             std::swap(GeoId2,GeoId3);
             std::swap(PosId2,PosId3);
         };
+        
+        bool bothexternal=checkBothExternal(GeoId1, GeoId2);
 
         if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
             double ActAngle = 0.0;
@@ -2190,15 +2359,24 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
-
-            finishDistanceConstraint(this, Obj);
+            
+            if (bothexternal) { // it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+                
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                selection[0].getFeatName(),ConStr.size()-1,"False");
+                finishDistanceConstraint(this, Obj,false);
+            }
+            else
+                finishDistanceConstraint(this, Obj,true);
+            
             return;
         };
 
     } else if (SubNames.size() < 3) {
 
-        if (checkBothExternal(GeoId1, GeoId2))
-            return;
+        bool bothexternal=checkBothExternal(GeoId1, GeoId2);
+        
         if (isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) {
             std::swap(GeoId1,GeoId2);
             std::swap(PosId1,PosId2);
@@ -2260,14 +2438,22 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActAngle);
 
-                finishDistanceConstraint(this, Obj);
+                if (bothexternal) { // it is a constraint on a external line, make it non-driving
+                    const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+                    
+                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                    selection[0].getFeatName(),ConStr.size()-1,"False");
+                    finishDistanceConstraint(this, Obj,false);
+                }
+                else
+                    finishDistanceConstraint(this, Obj,true);
+        
                 return;
             }
         } else if (isEdge(GeoId1,PosId1)) { // line angle
-            if (GeoId1 < 0) {
+            if (GeoId1 < 0 && GeoId1 >= -2) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                    GeoId1 < -2 ? QObject::tr("Cannot add an angle constraint on an external geometry!")
-                                : QObject::tr("Cannot add an angle constraint on an axis!"));
+                    QObject::tr("Cannot add an angle constraint on an axis!"));
                 return;
             }
 
@@ -2283,7 +2469,16 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,ActAngle);
 
-                finishDistanceConstraint(this, Obj);
+                if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+                    const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+                    
+                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                    selection[0].getFeatName(),ConStr.size()-1,"False");
+                    finishDistanceConstraint(this, Obj,false);
+                }
+                else
+                    finishDistanceConstraint(this, Obj,true);
+                
                 return;
             }
             else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
@@ -2298,7 +2493,16 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,angle);
 
-                finishDistanceConstraint(this, Obj);
+                if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+                    const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+                    
+                    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                    selection[0].getFeatName(),ConStr.size()-1,"False");
+                    finishDistanceConstraint(this, Obj,false);
+                }
+                else
+                    finishDistanceConstraint(this, Obj,true);
+                
                 return;
             }
         }
@@ -2375,7 +2579,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
                 return;
             }
             else if (hasAlreadyExternal) {
-                checkBothExternal(-1,-2); // just for printing the error message
+                showNoConstraintBetweenExternal();
                 return;
             }
             else
@@ -2642,10 +2846,10 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             std::swap(PosId2,PosId3);
         }
 
+        bool allexternal=false;
         //a bunch of validity checks
         if ((GeoId1 < 0 && GeoId2 < 0 && GeoId3 < 0)) {
-            strError = QObject::tr("Cannot add a constraint between external geometries!", dmbg);
-            throw(Base::Exception(""));
+            allexternal=true;
         }
 
         if (!(isVertex(GeoId1,PosId1) && !isSimpleVertex(Obj, GeoId1, PosId1) &&
@@ -2655,27 +2859,31 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             throw(Base::Exception(""));
         };
 
-        //the essence.
-        //Unlike other constraints, we'll ask for a value immediately.
-        QDialog dlg(Gui::getMainWindow());
-        Ui::InsertDatum ui_Datum;
-        ui_Datum.setupUi(&dlg);
-        dlg.setWindowTitle(EditDatumDialog::tr("Refractive index ratio", dmbg));
-        ui_Datum.label->setText(EditDatumDialog::tr("Ratio n2/n1:", dmbg));
-        Base::Quantity init_val;
-        init_val.setUnit(Base::Unit());
-        init_val.setValue(0.0);
+        double n2divn1=0;
+        
+        if(!allexternal){
+            //the essence.
+            //Unlike other constraints, we'll ask for a value immediately.
+            QDialog dlg(Gui::getMainWindow());
+            Ui::InsertDatum ui_Datum;
+            ui_Datum.setupUi(&dlg);
+            dlg.setWindowTitle(EditDatumDialog::tr("Refractive index ratio", dmbg));
+            ui_Datum.label->setText(EditDatumDialog::tr("Ratio n2/n1:", dmbg));
+            Base::Quantity init_val;
+            init_val.setUnit(Base::Unit());
+            init_val.setValue(0.0);
 
-        ui_Datum.labelEdit->setValue(init_val);
-        ui_Datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
-        ui_Datum.labelEdit->setToLastUsedValue();
-        ui_Datum.labelEdit->selectNumber();
+            ui_Datum.labelEdit->setValue(init_val);
+            ui_Datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+            ui_Datum.labelEdit->setToLastUsedValue();
+            ui_Datum.labelEdit->selectNumber();
 
-        if (dlg.exec() != QDialog::Accepted) return;
-        ui_Datum.labelEdit->pushToHistory();
+            if (dlg.exec() != QDialog::Accepted) return;
+            ui_Datum.labelEdit->pushToHistory();
 
-        Base::Quantity newQuant = ui_Datum.labelEdit->value();
-        double n2divn1 = newQuant.getValue();
+            Base::Quantity newQuant = ui_Datum.labelEdit->value();
+            n2divn1 = newQuant.getValue();
+        }
 
         //add constraint
         openCommand("add Snell's law constraint");
@@ -2694,6 +2902,13 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('SnellsLaw',%d,%d,%d,%d,%d,%.12f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,n2divn1);
 
+        if (allexternal) { // it is a constraint on a external line, make it non-driving
+            const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+            
+            Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+            selection[0].getFeatName(),ConStr.size()-1,"False");
+        }            
+        
         commitCommand();
         updateActive();
 
@@ -2771,7 +2986,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
                 return;
             }
             else if (hasAlreadyExternal) {
-                checkBothExternal(-1,-2); // just for printing the error message
+                showNoConstraintBetweenExternal();
                 return;
             }
             else
