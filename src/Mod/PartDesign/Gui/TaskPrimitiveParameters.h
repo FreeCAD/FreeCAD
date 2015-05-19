@@ -53,12 +53,25 @@ class TaskBoxPrimitives : public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    TaskBoxPrimitives(PartDesign::FeaturePrimitive::Type t, QWidget* parent = 0);
+    TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = 0);
     ~TaskBoxPrimitives();
 
+public Q_SLOTS:
+    void onBoxLengthChanged(double);
+    void onBoxWidthChanged(double);
+    void onBoxHeightChanged(double);
+    void onCylinderRadiusChanged(double);
+    void onCylinderHeightChanged(double);
+    void onCylinderAngleChanged(double);
+    void onSphereRadiusChanged(double);
+    void onSphereAngle1Changed(double);
+    void onSphereAngle2Changed(double);
+    void onSphereAngle3Changed(double);
+    
 private:
     QWidget* proxy;
     Ui_DlgPrimitives ui;
+    ViewProviderPrimitive* vp;
 };
 
 class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog
