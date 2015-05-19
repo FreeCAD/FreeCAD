@@ -341,15 +341,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                 properties.setdefault(obj.id(),[]).extend([e.id() for e in r.RelatingPropertyDefinition.HasProperties])
     for r in ifcfile.by_type("IfcRelAssociatesMaterial"):
         for o in r.RelatedObjects:
-            if MERGE_MATERIALS:
-                for k,v in mattable.items():
-                    if ifcfile[v].Name == r.RelatingMaterial.Name:
-                        mattable[o.id()] = v
-                        break
-                else:
-                    mattable[o.id()] = r.RelatingMaterial.id()
-            else:
-                mattable[o.id()] = r.RelatingMaterial.id()
+            mattable[o.id()] = r.RelatingMaterial.id()
     for r in ifcfile.by_type("IfcStyledItem"):
         if r.Styles[0].is_a("IfcPresentationStyleAssignment"):
             if r.Styles[0].Styles[0].is_a("IfcSurfaceStyle"):
@@ -628,14 +620,19 @@ def insert(filename,docname,skip=[],only=[],root=None):
     
     if DEBUG and materials: print "Creating materials..."
         
+    fcmats = {}
     for material in materials:
         name = material.Name or "Material"
-        mat = Arch.makeMaterial(name=name)
-        mdict = {}
-        if material.id() in colors:
-            mdict["Color"] = str(colors[material.id()])
-        if mdict:
-            mat.Material = mdict
+        if MERGE_MATERIALS and (name in fcmats.keys()):
+            mat = fcmats[name]
+        else:
+            mat = Arch.makeMaterial(name=name)
+            mdict = {}
+            if material.id() in colors:
+                mdict["Color"] = str(colors[material.id()])
+            if mdict:
+                mat.Material = mdict
+            fcmats[name] = mat
         for o,m in mattable.items():
             if m == material.id():
                 if o in objects:
