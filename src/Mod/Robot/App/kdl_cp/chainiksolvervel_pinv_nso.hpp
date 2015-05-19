@@ -28,6 +28,10 @@
 
 namespace KDL
 {
+
+    // FIXME: seems this class is unused/unmaintained/unfinished for several years
+    //        it supposed to be either fixer or removed
+
     /**
      * Implementation of a inverse velocity kinematics algorithm based
      * on the generalize pseudo inverse to calculate the velocity
@@ -60,8 +64,10 @@ namespace KDL
          * @param alpha the null-space velocity gain
          *
          */
+
+        // FIXME: alpha is int but is initialized with a float value.
         ChainIkSolverVel_pinv_nso(const Chain& chain, JntArray opt_pos, JntArray weights, double eps=0.00001,int maxiter=150, int alpha = 0.25);
-	ChainIkSolverVel_pinv_nso(const Chain& chain, double eps=0.00001,int maxiter=150, int alpha = 0.25);
+        ChainIkSolverVel_pinv_nso(const Chain& chain, double eps=0.00001,int maxiter=150, int alpha = 0.25);
         ~ChainIkSolverVel_pinv_nso();
 
         virtual int CartToJnt(const JntArray& q_in, const Twist& v_in, JntArray& qdot_out);
@@ -72,29 +78,29 @@ namespace KDL
         virtual int CartToJnt(const JntArray& q_init, const FrameVel& v_in, JntArrayVel& q_out){return -1;};
 
 
-	/**
-	 *Set joint weights for optimization criterion
-	 *
-	 *@param weights the joint weights
-	 *
-	 */
-	virtual int setWeights(const JntArray &weights);
+        /**
+         *Set joint weights for optimization criterion
+         *
+         *@param weights the joint weights
+         *
+         */
+        virtual int setWeights(const JntArray &weights);
 
-	/**
-	 *Set optimal joint positions
-	 *
-	 *@param opt_pos optimal joint positions
-	 *
-	 */
-	virtual int setOptPos(const JntArray &opt_pos);
+        /**
+         *Set optimal joint positions
+         *
+         *@param opt_pos optimal joint positions
+         *
+         */
+        virtual int setOptPos(const JntArray &opt_pos);
 
-	/**
-	 *Set null psace velocity gain
-	 *
-	 *@param alpha NUllspace velocity cgain
-	 *
-	 */
-	virtual int setAlpha(const int alpha);
+        /**
+         *Set null psace velocity gain
+         *
+         *@param alpha NUllspace velocity cgain
+         *
+         */
+        virtual int setAlpha(const int alpha);
 
     private:
         const Chain chain;
@@ -109,10 +115,10 @@ namespace KDL
         double eps;
         int maxiter;
 
-	int alpha;
-	JntArray weights;
-	JntArray opt_pos;
-	
+        int alpha;
+        JntArray weights;
+        JntArray opt_pos;
+
     };
 }
 #endif

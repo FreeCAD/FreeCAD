@@ -294,6 +294,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 }
             }
             break;
+        default: break; // suppress warnings
         }
     }
     if (processed)
@@ -343,6 +344,7 @@ SbBool GestureNavigationStyle::processSoEvent(const SoEvent * const ev)
                 }
                 processed = TRUE;
                 break;
+            default: break; // suppress warnings
             }//switch key
         }
         if (processed)
