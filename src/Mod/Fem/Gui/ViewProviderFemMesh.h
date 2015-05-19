@@ -51,8 +51,9 @@ public:
                     SoIndexedLineSet*,
                     std::vector<unsigned long>&,
                     std::vector<unsigned long>&,
-                    bool ShowInner=false
-                    ) const;
+                    bool &edgeOnly,
+                    bool ShowInner
+                   ) const;
 };
 
 class FemGuiExport ViewProviderFemMesh : public Gui::ViewProviderGeometryObject
@@ -157,6 +158,8 @@ protected:
     SoCoordinate3         * pcAnoCoords;
     SoIndexedFaceSet      * pcFaces;
     SoIndexedLineSet      * pcLines;
+
+    bool onlyEdges;
 };
 
 } //namespace FemGui
