@@ -32,7 +32,8 @@
 #include "ViewProviderPrimitive.h"
 #include "TaskDatumParameters.h"
 #include <Mod/PartDesign/App/DatumCS.h>
-#include <Mod/Part/Gui/DlgPrimitives.h>
+#include <Mod/PartDesign/App/FeaturePrimitive.h>
+#include "ui_TaskPrimitiveParameters.h"
 
 class Ui_TaskPrimitiveParameters;
 
@@ -46,6 +47,19 @@ class ViewProvider;
 
 namespace PartDesignGui { 
 
+
+class TaskBoxPrimitives : public Gui::TaskView::TaskBox
+{
+    Q_OBJECT
+
+public:
+    TaskBoxPrimitives(PartDesign::FeaturePrimitive::Type t, QWidget* parent = 0);
+    ~TaskBoxPrimitives();
+
+private:
+    QWidget* proxy;
+    Ui_DlgPrimitives ui;
+};
 
 class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog
 {
@@ -62,7 +76,7 @@ protected:
     virtual bool reject();
 
 private:  
-    PartGui::DlgPrimitives* widget;
+    TaskBoxPrimitives*   primitive;
     TaskDatumParameters* parameter;
     PartDesign::CoordinateSystem* cs;
     bool cs_visibility;
