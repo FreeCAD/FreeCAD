@@ -58,11 +58,11 @@ DlgWorkbenchesImp::DlgWorkbenchesImp(QWidget* parent)
     QStringList workbenches = Application::Instance->workbenches();
 
     for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it) {
-        if (workbenches.contains(*it)){
+        if (workbenches.contains(*it)) {
             QString wb = *it;
             add_workbench(lw_enabled_workbenches, wb);
         } else {
-            qDebug("Ignoring unknown " + it->toLatin1() + " workbench found in user preferences.");
+            qDebug() << "Ignoring unknown " << it->toLatin1() << " workbench found in user preferences.";
         }
     }
     for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
@@ -232,3 +232,4 @@ void DlgWorkbenchesImp::save_enabled_workbenches()
 }
 
 #include "moc_DlgWorkbenchesImp.cpp"
+
