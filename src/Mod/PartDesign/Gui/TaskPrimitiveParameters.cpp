@@ -43,29 +43,40 @@
 
 using namespace PartDesignGui;
 
-TaskBoxPrimitives::TaskBoxPrimitives(PartDesign::FeaturePrimitive::Type t, QWidget* parent)
-  : TaskBox(QPixmap(),tr("Primitive parameters"), true, parent)
+TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
+  : vp(vp), TaskBox(QPixmap(),tr("Primitive parameters"), true, parent)
 {
     proxy = new QWidget(this);
     ui.setupUi(proxy);
     
     // set limits
-    // plane
-    ui.planeLength->setMaximum(INT_MAX);
-    ui.planeWidth->setMaximum(INT_MAX);
     // box
-    ui.boxLength->setMaximum(INT_MAX);
+    ui.boxLength->setMaximum(INT_MAX);    
     ui.boxWidth->setMaximum(INT_MAX);
     ui.boxHeight->setMaximum(INT_MAX);
+    connect(ui.boxLength, SIGNAL(valueChanged(double)), this, SLOT(onBoxLengthChanged(double)));
+    connect(ui.boxWidth, SIGNAL(valueChanged(double)), this, SLOT(onBoxWidthChanged(double)));
+    connect(ui.boxHeight, SIGNAL(valueChanged(double)), this, SLOT(onBoxHeightChanged(double)));
+
     // cylinder
     ui.cylinderRadius->setMaximum(INT_MAX);
     ui.cylinderHeight->setMaximum(INT_MAX);
+    connect(ui.cylinderRadius, SIGNAL(valueChanged(double)), this, SLOT(onCylinderRadiusChanged(double)));
+    connect(ui.cylinderHeight, SIGNAL(valueChanged(double)), this, SLOT(onCylinderHeightChanged(double)));
+    connect(ui.cylinderAngle, SIGNAL(valueChanged(double)), this, SLOT(onCylinderAngleChanged(double)));
+
     // cone
     ui.coneRadius1->setMaximum(INT_MAX);
     ui.coneRadius2->setMaximum(INT_MAX);
     ui.coneHeight->setMaximum(INT_MAX);
+    
     // sphere
     ui.sphereRadius->setMaximum(INT_MAX);
+    connect(ui.sphereRadius, SIGNAL(valueChanged(double)), this, SLOT(onSphereRadiusChanged(double)));
+    connect(ui.sphereAngle1, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle1Changed(double)));
+    connect(ui.sphereAngle2, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle2Changed(double)));
+    connect(ui.sphereAngle3, SIGNAL(valueChanged(double)), this, SLOT(onSphereAngle3Changed(double)));
+    
     // ellipsoid
     ui.ellipsoidRadius1->setMaximum(INT_MAX);
     ui.ellipsoidRadius2->setMaximum(INT_MAX);
@@ -94,47 +105,30 @@ TaskBoxPrimitives::TaskBoxPrimitives(PartDesign::FeaturePrimitive::Type t, QWidg
     ui.wedgeX2max->setMaximum(INT_MAX);
     ui.wedgeZ2max->setMinimum(INT_MIN);
     ui.wedgeZ2max->setMaximum(INT_MAX);
-    // helix
-    ui.helixPitch->setMaximum(INT_MAX);
-    ui.helixHeight->setMaximum(INT_MAX);
-    ui.helixRadius->setMaximum(INT_MAX);
-    // circle
-    ui.circleRadius->setMaximum(INT_MAX);
-    // vertex
-    ui.vertexX->setMaximum(INT_MAX);
-    ui.vertexY->setMaximum(INT_MAX);
-    ui.vertexZ->setMaximum(INT_MAX);
-    ui.vertexX->setMinimum(INT_MIN);
-    ui.vertexY->setMinimum(INT_MIN);
-    ui.vertexZ->setMinimum(INT_MIN);
-    // line
-    ui.edgeX1->setMaximum(INT_MAX);
-    ui.edgeX1->setMinimum(INT_MIN);
-    ui.edgeY1->setMaximum(INT_MAX);
-    ui.edgeY1->setMinimum(INT_MIN);
-    ui.edgeZ1->setMaximum(INT_MAX);
-    ui.edgeZ1->setMinimum(INT_MIN);
-    ui.edgeX2->setMaximum(INT_MAX);
-    ui.edgeX2->setMinimum(INT_MIN);
-    ui.edgeY2->setMaximum(INT_MAX);
-    ui.edgeY2->setMinimum(INT_MIN);
-    ui.edgeZ2->setMaximum(INT_MAX);
-    ui.edgeZ2->setMinimum(INT_MIN);
-    // RegularPolygon
-    
+   
     this->groupLayout()->addWidget(proxy);
     
     int index = 0;
-    switch(t) {
+    switch(static_cast<PartDesign::FeaturePrimitive*>(vp->getObject())->getPrimitiveType()) {
         
         case PartDesign::FeaturePrimitive::Box:
             index = 1;
+            ui.boxLength->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Length.getValue());
+            ui.boxHeight->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Height.getValue());
+            ui.boxWidth->setValue(static_cast<PartDesign::Box*>(vp->getObject())->Width.getValue());
             break;
         case PartDesign::FeaturePrimitive::Cylinder:
             index = 2;
+            ui.cylinderAngle->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Angle.getValue());
+            ui.cylinderHeight->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Height.getValue());
+            ui.cylinderRadius->setValue(static_cast<PartDesign::Cylinder*>(vp->getObject())->Radius.getValue());
             break;
         case PartDesign::FeaturePrimitive::Sphere:
             index = 4;
+            ui.sphereAngle1->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle1.getValue());
+            ui.sphereAngle2->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle2.getValue());
+            ui.sphereAngle3->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Angle3.getValue());
+            ui.sphereRadius->setValue(static_cast<PartDesign::Sphere*>(vp->getObject())->Radius.getValue());
             break;
     }
     
@@ -153,6 +147,67 @@ TaskBoxPrimitives::TaskBoxPrimitives(PartDesign::FeaturePrimitive::Type t, QWidg
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
 }
+
+void TaskBoxPrimitives::onBoxHeightChanged(double v) {
+    PartDesign::Box* box = static_cast<PartDesign::Box*>(vp->getObject());
+    box->Height.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onBoxWidthChanged(double v) {
+    PartDesign::Box* box = static_cast<PartDesign::Box*>(vp->getObject());
+    box->Width.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onBoxLengthChanged(double v) {
+    PartDesign::Box* box = static_cast<PartDesign::Box*>(vp->getObject());
+    box->Length.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onCylinderAngleChanged(double v) {
+    PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
+    cyl->Angle.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onCylinderHeightChanged(double v) {
+    PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
+    cyl->Height.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onCylinderRadiusChanged(double v) {
+    PartDesign::Cylinder* cyl = static_cast<PartDesign::Cylinder*>(vp->getObject());
+    cyl->Radius.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onSphereAngle1Changed(double v) {
+    PartDesign::Sphere* sph = static_cast<PartDesign::Sphere*>(vp->getObject());
+    sph->Angle1.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onSphereAngle2Changed(double v) {
+    PartDesign::Sphere* sph = static_cast<PartDesign::Sphere*>(vp->getObject());
+    sph->Angle2.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onSphereAngle3Changed(double v) {
+    PartDesign::Sphere* sph = static_cast<PartDesign::Sphere*>(vp->getObject());
+    sph->Angle3.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
+void TaskBoxPrimitives::onSphereRadiusChanged(double  v) {
+    PartDesign::Sphere* sph = static_cast<PartDesign::Sphere*>(vp->getObject());
+    sph->Radius.setValue(v);
+    vp->getObject()->getDocument()->recomputeFeature(vp->getObject());
+}
+
 
 /*
 void  TaskBoxPrimitives::createPrimitive(const QString& placement)
@@ -498,7 +553,7 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     parameter  = new TaskDatumParameters(vp);
     Content.push_back(parameter);
     
-    primitive = new TaskBoxPrimitives(prm->getPrimitiveType());
+    primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
 }
 

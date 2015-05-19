@@ -20,12 +20,12 @@
    <item>
     <widget class="QStackedWidget" name="widgetStack">
      <property name="currentIndex">
-      <number>0</number>
+      <number>4</number>
      </property>
      <widget class="QWidget" name="page0_plane">
       <layout class="QGridLayout">
        <property name="margin">
-        <number>9</number>
+        <number>0</number>
        </property>
        <property name="spacing">
         <number>6</number>
@@ -81,8 +81,8 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>20</width>
-           <height>40</height>
+           <width>0</width>
+           <height>0</height>
           </size>
          </property>
         </spacer>
@@ -92,7 +92,7 @@
      <widget class="QWidget" name="Page1_box">
       <layout class="QGridLayout" name="_3">
        <property name="margin">
-        <number>9</number>
+        <number>0</number>
        </property>
        <property name="spacing">
         <number>6</number>
@@ -179,7 +179,7 @@
      <widget class="QWidget" name="Page2_cylinder">
       <layout class="QGridLayout" name="_5">
        <property name="margin">
-        <number>9</number>
+        <number>0</number>
        </property>
        <property name="spacing">
         <number>6</number>
@@ -286,7 +286,7 @@
      <widget class="QWidget" name="Page3_cone">
       <layout class="QGridLayout" name="_8">
        <property name="margin">
-        <number>9</number>
+        <number>0</number>
        </property>
        <property name="spacing">
         <number>6</number>
@@ -410,7 +410,7 @@
      <widget class="QWidget" name="Page4_sphere">
       <layout class="QGridLayout" name="_11">
        <property name="margin">
-        <number>9</number>
+        <number>0</number>
        </property>
        <property name="spacing">
         <number>6</number>
