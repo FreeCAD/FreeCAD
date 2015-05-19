@@ -347,6 +347,21 @@ protected:
     bool inGesture; //a flag that is used to filter out mouse events during gestures.
 };
 
+class GuiExport OpenCascadeNavigationStyle : public UserNavigationStyle {
+    typedef UserNavigationStyle inherited;
+
+    TYPESYSTEM_HEADER();
+
+public:
+    OpenCascadeNavigationStyle();
+    ~OpenCascadeNavigationStyle();
+    const char* mouseButtons(ViewerMode);
+
+protected:
+    SbBool processSoEvent(const SoEvent * const ev);
+
+};
+
 } // namespace Gui
 
 #endif // GUI_NAVIGATIONSTYLE_H 
