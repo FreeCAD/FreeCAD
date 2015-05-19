@@ -25,7 +25,9 @@
 #define PARTGUI_ViewProviderPrimitive_H
 
 #include "ViewProvider.h"
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
 
+class SoSwitch;
 
 namespace PartDesignGui {
 
@@ -40,10 +42,21 @@ public:
     virtual ~ViewProviderPrimitive();
     
     virtual std::vector< App::DocumentObject* > claimChildren(void) const;
+    virtual void attach(App::DocumentObject*);
+    virtual void updateData(const App::Property*);
     
 protected:
     virtual QIcon getIcon(void) const;
     virtual bool  setEdit(int ModNum);
+    virtual void unsetEdit(int ModNum);
+    
+    void updateAddSubShapeIndicator();
+    
+    SoSwitch*                   previewSwitch;
+    SoSeparator*                previewShape;
+    PartGui::SoBrepFaceSet*     previewFaceSet;
+    SoCoordinate3*              previewCoords;
+    SoNormal*                   previewNorm;
 };
 
 } // namespace PartDesignGui

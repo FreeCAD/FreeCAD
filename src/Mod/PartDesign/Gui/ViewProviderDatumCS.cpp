@@ -81,6 +81,13 @@ void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
         getPointForDirection(Base::Vector3d(1,0,0), x);
         getPointForDirection(Base::Vector3d(0,1,0), y);
         getPointForDirection(Base::Vector3d(0,0,1), z);
+        
+        //normalize all to equal lengths
+        Base::Vector3d axis = (x.Sqr() > y.Sqr()) ? x : y;
+        axis = (axis.Sqr() > z.Sqr()) ? axis : z;
+        x = x.Normalize()*axis.Length();
+        y = y.Normalize()*axis.Length();
+        z = z.Normalize()*axis.Length();
 
 
         // Display the line
@@ -97,13 +104,12 @@ void ViewProviderDatumCoordinateSystem::updateData(const App::Property* prop)
 
             pShapeSep->addChild(coord);
             lineSet = new PartGui::SoBrepEdgeSet();
-            lineSet->coordIndex.setNum(6);
-            lineSet->coordIndex.set1Value(0, 0);
-            lineSet->coordIndex.set1Value(1, 1);
-            lineSet->coordIndex.set1Value(2, 0);
-            lineSet->coordIndex.set1Value(3, 2);
-            lineSet->coordIndex.set1Value(4, 0);
-            lineSet->coordIndex.set1Value(5, 3);
+            lineSet->coordIndex.setNum(5);
+            lineSet->coordIndex.set1Value(0, 1);
+            lineSet->coordIndex.set1Value(1, 0);
+            lineSet->coordIndex.set1Value(2, 2);
+            lineSet->coordIndex.set1Value(3, 0);
+            lineSet->coordIndex.set1Value(4, 3);
             pShapeSep->addChild(lineSet);
         } else {
             coord = static_cast<SoCoordinate3*>(pShapeSep->getChild(1));
