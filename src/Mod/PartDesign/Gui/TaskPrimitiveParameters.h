@@ -92,6 +92,7 @@ private:
     TaskBoxPrimitives*   primitive;
     TaskDatumParameters* parameter;
     PartDesign::CoordinateSystem* cs;
+    ViewProviderPrimitive* vp_prm;
     bool cs_visibility;
 };
 

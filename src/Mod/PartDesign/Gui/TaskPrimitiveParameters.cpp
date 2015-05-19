@@ -528,7 +528,7 @@ void  TaskBoxPrimitives::createPrimitive(const QString& placement)
     }
 }*/
 
-TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* PrimitiveView)
+TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* PrimitiveView) : vp_prm(PrimitiveView)
 {
     
     assert(PrimitiveView);
@@ -548,8 +548,15 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
             Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
     
     assert(vp);    
+    
+    //make sure the relevant things are visible
     cs_visibility = vp->isVisible();
     vp->Visibility.setValue(true);
+    if(prm->BaseFeature.getValue()) {
+        Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(true); 
+        vp_prm->setVisible(false); 
+    }        
+    
     parameter  = new TaskDatumParameters(vp);
     Content.push_back(parameter);
     
@@ -562,6 +569,12 @@ TaskPrimitiveParameters::~TaskPrimitiveParameters()
     ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
             Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
     vp->setVisible(cs_visibility);
+    
+    auto* prm = static_cast<PartDesign::FeaturePrimitive*>(vp_prm->getObject());
+    if(prm->BaseFeature.getValue()) {
+        Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(false); 
+    }
+    vp_prm->setVisible(true); 
 }
 
 bool TaskPrimitiveParameters::accept()

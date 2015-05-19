@@ -127,7 +127,7 @@ using namespace PartGui;
 PROPERTY_SOURCE(PartGui::ViewProviderPartExt, Gui::ViewProviderGeometryObject)
 
 
-void GetNormals(const TopoDS_Face&  theFace,
+void ViewProviderPartExt::GetNormals(const TopoDS_Face&  theFace,
              const Handle(Poly_Triangulation)& aPolyTri,
              TColgp_Array1OfDir& theNormals)
 {

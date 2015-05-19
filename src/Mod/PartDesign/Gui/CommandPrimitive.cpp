@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #include "Workbench.h"
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeaturePrimitive.h>
 #ifndef _PreComp_
 # include <Inventor/nodes/SoPickStyle.h>
 # include <QApplication>
@@ -95,11 +96,9 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
         FeatName.c_str(), CSName.c_str());
     Gui::Command::updateActive();
     
-    if (isActiveObjectValid() && (pcActiveBody != NULL)) {
-        App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature(NULL, false);
-        if (prevSolidFeature != NULL && strcmp(prevSolidFeature->getNameInDocument(), FeatName.c_str())!=0)
-            doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
-    }
+    auto* prm = static_cast<PartDesign::FeaturePrimitive*>(getDocument()->getObject(FeatName.c_str()));
+    if (prm->BaseFeature.getValue())
+       doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prm->BaseFeature.getValue()->getNameInDocument());
 
     Gui::Command::doCommand(Gui, "Gui.activeDocument().hide(\'%s\')", CSName.c_str());
     Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());    

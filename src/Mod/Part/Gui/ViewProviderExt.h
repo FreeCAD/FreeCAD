@@ -27,6 +27,9 @@
 #include <Standard_math.hxx>
 #include <Standard_Boolean.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Face.hxx>
+#include <Poly_Triangulation.hxx>
+#include <TColgp_Array1OfDir.hxx>
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <map>
@@ -125,6 +128,8 @@ protected:
     virtual void onChanged(const App::Property* prop);
     bool loadParameter();
     void updateVisual(const TopoDS_Shape &);
+    void GetNormals(const TopoDS_Face&  theFace, const Handle(Poly_Triangulation)& aPolyTri,
+                    TColgp_Array1OfDir& theNormals);
 
     // nodes for the data representation
     SoMaterialBinding * pcShapeBind;
