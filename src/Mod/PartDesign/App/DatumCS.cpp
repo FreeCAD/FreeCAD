@@ -203,9 +203,9 @@ void CoordinateSystem::onChanged(const App::Property *prop)
         Base::Vector3d o1;
         plm.getRotation().multVec(Base::Vector3d(1,0,0), o1);
         Base::Vector3d o2;
-        plm.getRotation().multVec(Offset2.getValue()*Base::Vector3d(0,1,0), o2);
+        plm.getRotation().multVec(Base::Vector3d(0,1,0), o2);
         Base::Vector3d o3;
-        plm.getRotation().multVec(Offset3.getValue()*Base::Vector3d(0,0,1), o3);
+        plm.getRotation().multVec(Base::Vector3d(0,0,1), o3);
         plm.move(Offset.getValue()*o1+Offset2.getValue()*o2+Offset3.getValue()*o3);
 
         Placement.setValue(plm);
