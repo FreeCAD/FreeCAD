@@ -871,6 +871,9 @@ void View3DInventorViewer::savePicture(int w, int h, const QColor& bg, QImage& i
     // SoQtOffscreenRenderer won't work. In this case we try to use
     // Coin's implementation of the off-screen rendering.
     bool useCoinOffscreenRenderer = !QGLPixelBuffer::hasOpenGLPbuffers();
+    useCoinOffscreenRenderer = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->
+        GetBool("CoinOffscreenRenderer", useCoinOffscreenRenderer);
 
     // if no valid color use the current background
     bool useBackground = false;
