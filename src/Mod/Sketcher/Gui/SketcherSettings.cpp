@@ -103,6 +103,7 @@ void SketcherSettings::saveSettings()
     ui->FullyConstrainedColor->onSave();
 
     ui->ConstrainedColor->onSave();
+    ui->NonDrivingConstraintColor->onSave();
     ui->DatumColor->onSave();
 
     ui->SketcherDatumWidth->onSave();
@@ -134,6 +135,7 @@ void SketcherSettings::loadSettings()
     ui->FullyConstrainedColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
+    ui->NonDrivingConstraintColor->onRestore();
     ui->DatumColor->onRestore();
 
     ui->SketcherDatumWidth->onRestore();

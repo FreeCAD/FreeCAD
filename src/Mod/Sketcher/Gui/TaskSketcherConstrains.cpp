@@ -136,7 +136,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     {
         ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
         
-        QAction* driven = menu.addAction(it->isDriving?tr("Disable"):tr("Enable"), this, SLOT(updateDrivingStatus()));
+        QAction* driven = menu.addAction(it->isDriving?tr("Change to reference"):tr("Change to driving"), this, SLOT(updateDrivingStatus()));
         // if its the right constraint
         if ((it->Type == Sketcher::Distance ||
             it->Type == Sketcher::DistanceX ||
