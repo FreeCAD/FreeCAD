@@ -39,7 +39,7 @@ class TaskDressUpParameters : public Gui::TaskView::TaskBox, public Gui::Selecti
     Q_OBJECT
 
 public:
-    TaskDressUpParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
+    TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget* parent = 0);
     virtual ~TaskDressUpParameters();
 
     const std::vector<std::string> getReferences(void) const;
@@ -73,6 +73,7 @@ protected:
     QWidget* proxy;
     ViewProviderDressUp *DressUpView;
 
+    bool allowFaces, allowEdges;
     selectionModes selectionMode;    
 };
 

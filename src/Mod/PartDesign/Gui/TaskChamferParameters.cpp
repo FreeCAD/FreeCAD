@@ -51,7 +51,7 @@ using namespace Gui;
 /* TRANSLATOR PartDesignGui::TaskChamferParameters */
 
 TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
-    : TaskDressUpParameters(DressUpView, parent)
+    : TaskDressUpParameters(DressUpView, true, true, parent)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
