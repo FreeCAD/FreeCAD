@@ -355,6 +355,21 @@ QIcon ViewProviderPrimitive::getIcon(void) const {
         case PartDesign::FeaturePrimitive::Sphere: 
             str += QString::fromAscii("Sphere");
             break;
+       case PartDesign::FeaturePrimitive::Cone: 
+            str += QString::fromAscii("Cone");
+            break;
+       case PartDesign::FeaturePrimitive::Ellipsoid: 
+            str += QString::fromAscii("Ellipsoid");
+            break;
+      case PartDesign::FeaturePrimitive::Torus: 
+            str += QString::fromAscii("Torus");
+            break;
+      case PartDesign::FeaturePrimitive::Prism: 
+            str += QString::fromAscii("Prism");
+            break;
+      case PartDesign::FeaturePrimitive::Wedge: 
+            str += QString::fromAscii("Wedge");
+            break;
     }
    
     str += QString::fromAscii(".svg");

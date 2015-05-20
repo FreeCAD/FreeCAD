@@ -30,9 +30,19 @@
         <file>icons/PartDesign_Additive_Box.svg</file>	
         <file>icons/PartDesign_Additive_Cylinder.svg</file>	
         <file>icons/PartDesign_Additive_Sphere.svg</file>	
+        <file>icons/PartDesign_Additive_Cone.svg</file>	
+        <file>icons/PartDesign_Additive_Torus.svg</file>	
+        <file>icons/PartDesign_Additive_Ellipsoid.svg</file>
+        <file>icons/PartDesign_Additive_Prism.svg</file>	
+        <file>icons/PartDesign_Additive_Wedge.svg</file>
         <file>icons/PartDesign_Subtractive_Box.svg</file>	
         <file>icons/PartDesign_Subtractive_Cylinder.svg</file>
         <file>icons/PartDesign_Subtractive_Sphere.svg</file>
+        <file>icons/PartDesign_Subtractive_Cone.svg</file>	
+        <file>icons/PartDesign_Subtractive_Torus.svg</file>	
+        <file>icons/PartDesign_Subtractive_Ellipsoid.svg</file>
+        <file>icons/PartDesign_Subtractive_Prism.svg</file>	
+        <file>icons/PartDesign_Subtractive_Wedge.svg</file>
         <file>translations/PartDesign_af.qm</file>
         <file>translations/PartDesign_de.qm</file>
         <file>translations/PartDesign_fi.qm</file>
