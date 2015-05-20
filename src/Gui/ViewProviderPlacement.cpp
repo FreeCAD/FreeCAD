@@ -44,7 +44,6 @@
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/details/SoLineDetail.h>
 #include "ViewProviderPlacement.h"
-#include "SoFCSelection.h"
 #include "Application.h"
 #include "Document.h"
 #include "View3DInventorViewer.h"

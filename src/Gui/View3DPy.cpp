@@ -43,7 +43,6 @@
 #include "Application.h"
 #include "Document.h"
 #include "NavigationStyle.h"
-#include "SoFCSelection.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCOffscreenRenderer.h"
 #include "SoFCVectorizeSVGAction.h"

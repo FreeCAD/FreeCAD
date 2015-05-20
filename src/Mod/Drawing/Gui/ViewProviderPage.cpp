@@ -41,7 +41,6 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Gui/Application.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>

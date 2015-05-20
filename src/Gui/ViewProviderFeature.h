@@ -33,7 +33,6 @@ class SbVec2s;
 
 namespace Gui {
 
-class SoFCSelection;
 class View3DInventorViewer;
 
 class GuiExport ViewProviderFeature:public ViewProviderDocumentObject

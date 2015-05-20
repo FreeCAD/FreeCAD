@@ -51,7 +51,6 @@
 #include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>

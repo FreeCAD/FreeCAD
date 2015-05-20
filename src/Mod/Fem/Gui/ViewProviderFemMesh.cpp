@@ -55,7 +55,6 @@
 
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemMesh.h>
-#include <Gui/SoFCSelection.h>
 #include <App/Document.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>

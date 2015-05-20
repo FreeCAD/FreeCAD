@@ -41,7 +41,6 @@
 #endif
 
 #include "ViewProviderMeasureDistance.h"
-#include "SoFCSelection.h"
 #include "Application.h"
 #include "Document.h"
 #include "View3DInventorViewer.h"

@@ -58,7 +58,6 @@ struct EditData;
 
 namespace Gui {
     class View3DInventorViewer;
-    class SoFCSelection;
 }
 
 namespace Sketcher {

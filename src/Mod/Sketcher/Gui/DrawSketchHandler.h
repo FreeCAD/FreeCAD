@@ -30,11 +30,6 @@
 
 class QPixmap;
 
-namespace Gui {
-    class View3DInventorViewer;
-    class SoFCSelection;
-}
-
 namespace Sketcher {
     class Sketch;
     class SketchObject;

@@ -37,7 +37,6 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 
 #include <Mod/Drawing/App/FeatureView.h>
