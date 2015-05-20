@@ -43,6 +43,9 @@ public:
     /// updates the Placement property from the Placement of the BaseFeature
     void positionByBaseFeature(void);
     Part::TopoShape getBaseShape();
+    /// extracts all edges from the subshapes (inkluding face edges) and furthermore adds
+    /// all C0 continius edges to the vector
+    void getContiniusEdges(Part::TopoShape, std::vector< std::string >&);
 
 protected:
     void onChanged(const App::Property* prop);

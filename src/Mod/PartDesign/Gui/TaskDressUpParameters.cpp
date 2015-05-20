@@ -50,8 +50,9 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskDressUpParameters */
 
-TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName).c_str()),
+TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, bool selectEdges, bool selectFaces, QWidget *parent)
+    : allowFaces(selectFaces), allowEdges(selectEdges), 
+      TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName).c_str()),
               QString::fromAscii((DressUpView->featureName + " parameters").c_str()),
               true,
               parent),
@@ -113,9 +114,7 @@ void TaskDressUpParameters::onButtonRefAdd(bool checked)
         hideObject();
         selectionMode = refAdd;
         Gui::Selection().clearSelection();
-        bool edge = (DressUpView->featureName != "Draft");
-        bool face = (DressUpView->featureName == "Draft");
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), edge, face, false));
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
         DressUpView->highlightReferences(true);
     }
 }
@@ -127,9 +126,7 @@ void TaskDressUpParameters::onButtonRefRemove(const bool checked)
         hideObject();
         selectionMode = refRemove;
         Gui::Selection().clearSelection();        
-        bool edge = (DressUpView->featureName != "Draft");
-        bool face = (DressUpView->featureName == "Draft");
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), edge, face, false));
+        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), allowEdges, allowFaces, false));
         DressUpView->highlightReferences(true);
     }
 }
