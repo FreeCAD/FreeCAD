@@ -34,8 +34,6 @@ class SoDragger;
 class SoNode;
 
 namespace Gui {
-class SoFCSelection;
-class SoFCBoundingBox;
 
 class GuiExport ViewProviderPythonFeatureImp
 {

@@ -41,10 +41,6 @@ namespace App {
   class PropertyColorList;
 }
 
-namespace Gui {
-  class SoFCSelection;
-}
-
 namespace Points {
   class PropertyGreyValueList;
   class PropertyNormalList;

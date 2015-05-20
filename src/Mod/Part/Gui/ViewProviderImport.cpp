@@ -34,7 +34,6 @@
 #include <Base/Exception.h>
 #include <Base/Sequencer.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/SoFCSelection.h>
 #include <App/Application.h>
 
 #include "ViewProviderImport.h"

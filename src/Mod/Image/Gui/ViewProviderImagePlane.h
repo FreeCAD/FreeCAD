@@ -25,7 +25,6 @@
 #define IMAGE_ViewProviderImagePlane_H
 
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/SoFCSelection.h>
 
 class SoCoordinate3;
 class SoDrawStyle;

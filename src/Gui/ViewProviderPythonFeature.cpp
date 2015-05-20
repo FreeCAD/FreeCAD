@@ -53,8 +53,6 @@
 
 #include "ViewProviderPythonFeature.h"
 #include "ViewProviderPythonFeaturePy.h"
-#include "SoFCSelection.h"
-#include "SoFCBoundingBox.h"
 #include "Tree.h"
 #include "Window.h"
 #include "Application.h"

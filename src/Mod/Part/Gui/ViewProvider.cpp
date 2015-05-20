@@ -83,7 +83,6 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Gui/Command.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 #include <Gui/View3DInventorViewer.h>
 

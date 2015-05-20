@@ -37,7 +37,6 @@
 #include <App/Document.h>
 
 #include "Window.h"
-#include "SoFCSelection.h"
 #include "ViewProviderFeature.h"
 #include "View3DInventorViewer.h"
 
