@@ -561,13 +561,13 @@ Do you want to continue?</source>
     </message>
     <message>
         <location line="+125"/>
-        <source>Show hidden</source>
-        <translation>Zeige versteckte</translation>
+        <source>Show hidden lines</source>
+        <translation>Zeige verdeckte Kanten</translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>Show smooth</source>
-        <translation>Zeige glatte</translation>
+        <source>Show smooth lines</source>
+        <translation>Zeige glatte Kanten</translation>
     </message>
     <message>
         <location line="+11"/>
