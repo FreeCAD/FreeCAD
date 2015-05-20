@@ -42,7 +42,7 @@ using namespace Gui::Dialog;
 
 const QString DlgWorkbenchesImp::all_workbenches = QString::fromAscii("ALL");
 
-/* TRANSLATOR Gui::Dialog::DlgWorkbenches */
+/* TRANSLATOR Gui::Dialog::DlgWorkbenchesImp */
 
 DlgWorkbenchesImp::DlgWorkbenchesImp(QWidget* parent)
     : CustomizeActionPage(parent)
@@ -59,16 +59,14 @@ DlgWorkbenchesImp::DlgWorkbenchesImp(QWidget* parent)
 
     for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it) {
         if (workbenches.contains(*it)) {
-            QString wb = *it;
-            add_workbench(lw_enabled_workbenches, wb);
+            add_workbench(lw_enabled_workbenches, *it);
         } else {
-            qDebug() << "Ignoring unknown " << it->toLatin1() << " workbench found in user preferences.";
+            qDebug() << "Ignoring unknown" << *it << "workbench found in user preferences.";
         }
     }
     for (QStringList::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         if (!enabled_wbs_list.contains(*it)){
-            QString wb = *it;
-            add_workbench(lw_disabled_workbenches, wb);
+            add_workbench(lw_disabled_workbenches, *it);
         }
     }
     lw_enabled_workbenches->setCurrentRow(0);
@@ -90,7 +88,7 @@ void DlgWorkbenchesImp::set_lw_properties(QListWidgetCustom *lw)
     lw->setDefaultDropAction(Qt::MoveAction);
 }
 
-void DlgWorkbenchesImp::add_workbench(QListWidgetCustom *lw, QString it)
+void DlgWorkbenchesImp::add_workbench(QListWidgetCustom *lw, const QString& it)
 {
     QPixmap px = Application::Instance->workbenchIcon(it);
     QString mt = Application::Instance->workbenchMenuText(it);
@@ -139,7 +137,7 @@ void DlgWorkbenchesImp::on_add_to_enabled_workbenches_btn_clicked()
 {
     QListWidgetItem* ci = lw_disabled_workbenches->currentItem();
     if (ci) {
-	move_workbench(lw_enabled_workbenches, ci);
+        move_workbench(lw_enabled_workbenches, ci);
     }
 }
 
@@ -147,7 +145,7 @@ void DlgWorkbenchesImp::on_remove_from_enabled_workbenches_btn_clicked()
 {
     QListWidgetItem* ci = lw_enabled_workbenches->currentItem();
     if (ci) {
-	move_workbench(lw_disabled_workbenches, ci);
+        move_workbench(lw_disabled_workbenches, ci);
     }
 }
 

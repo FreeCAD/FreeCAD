@@ -28,11 +28,13 @@
 #include <QDragMoveEvent>
 #include <QString>
 
-class QListWidgetCustom : public QListWidget {
+class QListWidgetCustom : public QListWidget
+{
+    Q_OBJECT
 
 public:
     QListWidgetCustom (QWidget *parent);
-    ~QListWidgetCustom ();
+    virtual ~QListWidgetCustom ();
 
 protected:
     void dragMoveEvent(QDragMoveEvent *e);
