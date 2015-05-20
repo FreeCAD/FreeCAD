@@ -67,6 +67,34 @@ public Q_SLOTS:
     void onSphereAngle1Changed(double);
     void onSphereAngle2Changed(double);
     void onSphereAngle3Changed(double);
+    void onConeRadius1Changed(double);
+    void onConeRadius2Changed(double);
+    void onConeAngleChanged(double);
+    void onConeHeightChanged(double);
+    void onEllipsoidRadius1Changed(double);
+    void onEllipsoidRadius2Changed(double);
+    void onEllipsoidRadius3Changed(double);
+    void onEllipsoidAngle1Changed(double);
+    void onEllipsoidAngle2Changed(double);
+    void onEllipsoidAngle3Changed(double);
+    void onTorusRadius1Changed(double);
+    void onTorusRadius2Changed(double);
+    void onTorusAngle1Changed(double);
+    void onTorusAngle2Changed(double);
+    void onTorusAngle3Changed(double);
+    void onPrismCircumradiusChanged(double);
+    void onPrismHeightChanged(double);
+    void onPrismPolygonChanged(int);
+    void onWedgeXmaxChanged(double);
+    void onWedgeXinChanged(double);
+    void onWedgeYmaxChanged(double);
+    void onWedgeYinChanged(double);
+    void onWedgeZmaxChanged(double);
+    void onWedgeZinChanged(double);
+    void onWedgeX2maxChanged(double);
+    void onWedgeX2inChanged(double);
+    void onWedgeZ2maxChanged(double);
+    void onWedgeZ2inChanged(double);
     
 private:
     QWidget* proxy;
