@@ -41,6 +41,10 @@ namespace App {
   class PropertyColorList;
 }
 
+namespace Gui {
+  class SoFCSelection;
+}
+
 namespace Points {
   class PropertyGreyValueList;
   class PropertyNormalList;
@@ -96,6 +100,7 @@ public:
     static void clipPointsCallback(void * ud, SoEventCallback * n);
 
 protected:
+    Gui::SoFCSelection* createFromSettings() const;
     void onChanged(const App::Property* prop);
     void setVertexColorMode(App::PropertyColorList*);
     void setVertexGreyvalueMode(Points::PropertyGreyValueList*);
@@ -103,11 +108,12 @@ protected:
     virtual void cut( const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer);
 
 protected:
-    SoCoordinate3     *pcPointsCoord;
-    SoPointSet        *pcPoints;
-    SoMaterial        *pcColorMat;
-    SoNormal          *pcPointsNormal;
-    SoDrawStyle       *pcPointStyle;
+    Gui::SoFCSelection  * pcHighlight;
+    SoCoordinate3       * pcPointsCoord;
+    SoPointSet          * pcPoints;
+    SoMaterial          * pcColorMat;
+    SoNormal            * pcPointsNormal;
+    SoDrawStyle         * pcPointStyle;
 
 private:
     static App::PropertyFloatConstraint::Constraints floatRange;

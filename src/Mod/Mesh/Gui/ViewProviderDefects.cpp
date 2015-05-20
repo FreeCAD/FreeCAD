@@ -41,7 +41,6 @@
 #include <Base/Sequencer.h>
 #include <App/Application.h>
 #include <Gui/Selection.h>
-#include <Gui/SoFCSelection.h>
 
 #include <Mod/Mesh/App/Core/Degeneration.h>
 #include <Mod/Mesh/App/Core/Evaluation.h>
