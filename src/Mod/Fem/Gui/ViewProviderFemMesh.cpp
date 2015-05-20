@@ -254,8 +254,6 @@ void ViewProviderFemMesh::attach(App::DocumentObject *pcObj)
     SoPointSet * pointset = new SoPointSet;
     pcAnotRoot->addChild(pointset);
 
-    //pcHighlight->addChild(pcFaces);
-
     // flat
     SoGroup* pcFlatRoot = new SoGroup();
     // face nodes

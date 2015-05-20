@@ -315,7 +315,7 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
             // get the view provider of the associated mesh feature
             App::Document* rDoc = pcObject->getDocument();
             Gui::Document* pDoc = Gui::Application::Instance->getDocument(rDoc);
-            Gui::ViewProviderGeometryObject* view = static_cast<Gui::ViewProviderGeometryObject*>(pDoc->getViewProvider(object));
+            ViewProviderMesh* view = static_cast<ViewProviderMesh*>(pDoc->getViewProvider(object));
             this->pcLinkRoot->addChild(view->getHighlightNode());
         }
     }

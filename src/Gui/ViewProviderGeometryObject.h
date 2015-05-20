@@ -67,11 +67,10 @@ public:
     void attach(App::DocumentObject *pcObject);
     void updateData(const App::Property*);
 
-    SoFCSelection* getHighlightNode() const { return pcHighlight; }
     bool isSelectable(void) const {return Selectable.getValue();}
 
     /**
-     * Returns a list of picked points from the geometry under \a pcHighlight.
+     * Returns a list of picked points from the geometry under \a getRoot().
      * If \a pickAll is false (the default) only the intersection point closest to the camera will be picked, otherwise
      * all intersection points will be picked. 
      */
@@ -98,7 +97,6 @@ protected:
     void showBoundingBox(bool);
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop);
-    SoFCSelection* createFromSettings() const;
     void setSelectable(bool Selectable=true);
 
 private:
@@ -108,7 +106,6 @@ private:
     static void dragMotionCallback(void * data, SoDragger * d);
 
 protected:
-    SoFCSelection    * pcHighlight;
     SoMaterial       * pcShapeMaterial;
     SoFCBoundingBox  * pcBoundingBox;
     SoSwitch         * pcBoundSwitch;

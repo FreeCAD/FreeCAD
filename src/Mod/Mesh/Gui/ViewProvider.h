@@ -123,6 +123,7 @@ public:
 
     virtual void attach(App::DocumentObject *);
     virtual bool useNewSelectionModel(void) const {return false;}
+    Gui::SoFCSelection* getHighlightNode() const { return pcHighlight; }
     virtual QIcon getIcon() const;
     /// Sets the correct display mode
     virtual void setDisplayMode(const char* ModeName);
@@ -175,6 +176,7 @@ protected:
 
     virtual SoShape* getShapeNode() const;
     virtual SoNode* getCoordNode() const;
+    Gui::SoFCSelection* createFromSettings() const;
 
 public:
     static void faceInfoCallback(void * ud, SoEventCallback * n);
@@ -195,6 +197,7 @@ private:
     static void panCamera(SoCamera*, float, const SbPlane&, const SbVec2f&, const SbVec2f&);
 
 protected:
+    Gui::SoFCSelection  * pcHighlight;
     SoDrawStyle         * pcLineStyle;
     SoDrawStyle         * pcPointStyle;
     SoSeparator         * pcOpenEdge;
