@@ -57,7 +57,7 @@ protected Q_SLOTS:
 
 private:
     void set_lw_properties(QListWidgetCustom *lw);
-    void add_workbench(QListWidgetCustom *lw, QString it);
+    void add_workbench(QListWidgetCustom *lw, const QString& it);
     void move_workbench(QListWidgetCustom *lwc_dest,
                         QListWidgetItem *wi);
     void save_enabled_workbenches();

@@ -60,3 +60,5 @@ void QListWidgetCustom::dragMoveEvent(QDragMoveEvent *e)
         e->ignore();
     }
 }
+
+#include "moc_QListWidgetCustom.cpp"
