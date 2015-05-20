@@ -28,6 +28,7 @@
 #ifndef _PreComp_
 # include <Inventor/nodes/SoPickStyle.h>
 # include <QApplication>
+# include <QMessageBox>
 #endif
 
 #include <Gui/Command.h>
@@ -247,6 +248,14 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
 {  
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
+    
+    //check if we already have a feature as subtractive ones work only if we have 
+    //something to subtract from.
+    if(!pcActiveBody->getPrevSolidFeature()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No previous feature found"),
+                QObject::tr("It is not possible to create a subtractive feature without a base feature available"));
+            return;
+    }
     
     std::string FeatName;
     std::string CSName = getUniqueObjectName("CoordinateSystem");
