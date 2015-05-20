@@ -929,12 +929,12 @@ void ViewProviderSketch::editDoubleClicked(void)
             Constraint *Constr = constrlist[*it];
 
             // if its the right constraint
-            if (Constr->Type == Sketcher::Distance ||
+            if ((Constr->Type == Sketcher::Distance ||
                 Constr->Type == Sketcher::DistanceX || 
                 Constr->Type == Sketcher::DistanceY ||
                 Constr->Type == Sketcher::Radius ||
                 Constr->Type == Sketcher::Angle ||
-                Constr->Type == Sketcher::SnellsLaw ) {
+                Constr->Type == Sketcher::SnellsLaw) && Constr->isDriving ) {
 
                 // Coin's SoIdleSensor causes problems on some platform while Qt seems to work properly (#0001517)
                 EditDatumDialog *editDatumDialog = new EditDatumDialog(this, *it);
