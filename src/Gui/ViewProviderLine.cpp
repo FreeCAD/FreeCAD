@@ -101,9 +101,11 @@ ViewProviderLine::ViewProviderLine()
     pFont->size.setValue(Size.getValue()/10.);
 
     pTranslation = new SoTranslation();
+    pTranslation->ref();
     pTranslation->translation.setValue(SbVec3f(-1,0,0));
 
     pText = new SoAsciiText();
+    pText->ref();
     pText->width.setValue(-1);
 
     sPixmap = "view-measurement";
@@ -114,6 +116,8 @@ ViewProviderLine::~ViewProviderLine()
     pCoords->unref();
     pLines->unref();
     pMat->unref();
+    pTranslation->unref();
+    pText->unref();
 }
 
 void ViewProviderLine::onChanged(const App::Property* prop)

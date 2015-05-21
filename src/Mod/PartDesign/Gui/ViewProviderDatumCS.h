@@ -27,6 +27,9 @@
 #include "Gui/ViewProviderGeometryObject.h"
 #include "ViewProviderDatum.h"
 
+class SoFont;
+class SoTranslation;
+
 namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderDatumCoordinateSystem : public PartDesignGui::ViewProviderDatum
@@ -42,6 +45,9 @@ public:
     
 private:
     void getPointForDirection(Base::Vector3d Dir, Base::Vector3d& p);
+    
+    SoTranslation *transX, *transY, *transZ;
+    SoFont* font;
 };
 
 } // namespace PartDesignGui
