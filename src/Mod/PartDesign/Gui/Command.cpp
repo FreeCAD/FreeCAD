@@ -1468,6 +1468,108 @@ bool CmdPartDesignDraft::isActive(void)
     return hasActiveDocument();
 }
 
+
+//===========================================================================
+// PartDesign_Thickness
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignThickness);
+
+CmdPartDesignThickness::CmdPartDesignThickness()
+  :Command("PartDesign_Thickness")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Thickness");
+    sToolTipText  = QT_TR_NOOP("Make a thick solid");
+    sWhatsThis    = "PartDesign_Thickness";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Thickness";
+}
+
+void CmdPartDesignThickness::activated(int iMsg)
+{
+    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+    if (!pcActiveBody) return;
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    if (selection.size() < 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select one or more faces."));
+        return;
+    }
+
+    if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong object type"),
+            QObject::tr("Thickness works only on parts"));
+        return;
+    }
+
+    Part::Feature *base = static_cast<Part::Feature*>(selection[0].getObject());
+
+    if (base != pcActiveBody->getPrevSolidFeature(NULL, true)) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong base feature"),
+            QObject::tr("Only the current Tip of the active Body can be selected as the base feature"));
+        return;
+    }
+
+    const Part::TopoShape& TopShape = base->Shape.getShape();
+    if (TopShape._Shape.IsNull()){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Shape of selected Part is empty"));
+        return;
+    }
+
+    std::vector<std::string> SubNames = std::vector<std::string>(selection[0].getSubNames());
+    unsigned int i = 0;
+
+    while(i < SubNames.size())
+    {
+        std::string aSubName = static_cast<std::string>(SubNames.at(i));
+
+        if(aSubName.size() > 4 && aSubName.substr(0,4) != "Face") {
+            // empty name or any other sub-element
+            SubNames.erase(SubNames.begin()+i);
+        }
+        i++;
+    }
+
+    if (SubNames.size() == 0) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+        QObject::tr("No thickness possible with selected faces"));
+        return;
+    }
+
+    std::string SelString;
+    SelString += "(App.";
+    SelString += "ActiveDocument";
+    SelString += ".";
+    SelString += selection[0].getFeatName();
+    SelString += ",[";
+    for(std::vector<std::string>::const_iterator it = SubNames.begin();it!=SubNames.end();++it){
+        SelString += "\"";
+        SelString += *it;
+        SelString += "\"";
+        if(it != --SubNames.end())
+            SelString += ",";
+    }
+    SelString += "])";
+
+    std::string FeatName = getUniqueObjectName("Thickness");
+
+    openCommand("Make Thickness");
+    doCommand(Doc,"App.activeDocument().addObject(\"PartDesign::Thickness\",\"%s\")",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Base = %s",FeatName.c_str(),SelString.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Value = %f",FeatName.c_str(), 1.);
+
+    finishFeature(this, FeatName);
+}
+
+bool CmdPartDesignThickness::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // Common functions for all Transformed features
 //===========================================================================
@@ -1930,6 +2032,7 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
     rcCmdMgr.addCommand(new CmdPartDesignDraft());    
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
+    rcCmdMgr.addCommand(new CmdPartDesignThickness());    
 
     rcCmdMgr.addCommand(new CmdPartDesignMirrored());
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());

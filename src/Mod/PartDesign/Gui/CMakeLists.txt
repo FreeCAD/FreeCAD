@@ -35,6 +35,7 @@ set(PartDesignGui_MOC_HDRS
     TaskChamferParameters.h
     TaskFilletParameters.h
     TaskDraftParameters.h
+    TaskThicknessParameters.h
     TaskDressUpParameters.h
     TaskHoleParameters.h
     TaskRevolutionParameters.h
@@ -62,6 +63,7 @@ set(PartDesignGui_UIC_SRCS
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskDraftParameters.ui
+    TaskThicknessParameters.ui
     TaskBooleanParameters.ui
     TaskHoleParameters.ui
     TaskRevolutionParameters.ui
@@ -94,6 +96,8 @@ SET(PartDesignGuiViewProvider_SRCS CommandPrimitive.cpp
     ViewProviderFillet.h
     ViewProviderDraft.cpp
     ViewProviderDraft.h
+    ViewProviderThickness.cpp
+    ViewProviderThickness.h
     ViewProviderDressUp.cpp
     ViewProviderDressUp.h
     ViewProviderRevolution.cpp
@@ -152,6 +156,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskDraftParameters.ui
     TaskDraftParameters.cpp
     TaskDraftParameters.h
+    TaskThicknessParameters.ui
+    TaskThicknessParameters.cpp
+    TaskThicknessParameters.h
     TaskDressUpParameters.cpp
     TaskDressUpParameters.h
     TaskRevolutionParameters.ui
