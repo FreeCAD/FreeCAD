@@ -131,7 +131,7 @@ def importFrd(filename, Analysis=None):
         else:
             AnalysisObject = Analysis
 
-        if(m.has_key('Tet10Elem') and m.has_key('Nodes') and not Analysis):
+        if ('Tet10Elem' in m) and ('Nodes' in m) and (not Analysis):
             mesh = Fem.FemMesh()
             nds = m['Nodes']
             for i in nds:
@@ -146,7 +146,7 @@ def importFrd(filename, Analysis=None):
                 MeshObject.FemMesh = mesh
                 AnalysisObject.Member = AnalysisObject.Member + [MeshObject]
 
-        if(m.has_key('Displacement')):
+        if 'Displacement' in m:
             disp = m['Displacement']
             if len(disp) > 0:
                 o = FreeCAD.ActiveDocument.addObject('Fem::FemResultVector', 'Displacement')
@@ -156,7 +156,7 @@ def importFrd(filename, Analysis=None):
                 if(MeshObject):
                     o.Mesh = MeshObject
                 AnalysisObject.Member = AnalysisObject.Member + [o]
-        if(m.has_key('Stress')):
+        if 'Stress' in m:
             stress = m['Stress']
             if len(stress) > 0:
                 o = FreeCAD.ActiveDocument.addObject('Fem::FemResultValue', 'MisesStress')
