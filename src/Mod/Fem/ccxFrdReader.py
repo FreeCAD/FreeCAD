@@ -49,10 +49,7 @@ def readResult(frd_input):
     elem = -1
     elemType = 0
 
-    while True:
-        line = frd_file.readline()
-        if not line:
-            break
+    for line in frd_file:
         #Check if we found nodes section
         if line[4:6] == "2C":
             nodes_found = True
