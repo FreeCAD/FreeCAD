@@ -34,6 +34,10 @@ if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
 
 
+displacement = []
+mstress = []
+
+
 # read a calculix result file and extract the nodes, displacement vectores and stress values.
 def readResult(frd_input):
     frd_file = pyopen(frd_input, "r")
@@ -90,6 +94,7 @@ def readResult(frd_input):
             disp_y = float(line[25:37])
             disp_z = float(line[37:49])
             disp[elem] = FreeCAD.Vector(disp_x, disp_y, disp_z)
+            displacement.append((disp_x, disp_y, disp_z))
         if line[5:11] == "STRESS":
             stress_found = True
         #we found a displacement line in the frd file
@@ -157,7 +162,6 @@ def importFrd(filename, Analysis=None):
             stress = m['Stress']
             if len(stress) > 0:
                 o = FreeCAD.ActiveDocument.addObject('Fem::FemResultValue', 'MisesStress')
-                mstress = []
                 for i in stress.values():
                     # Von mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
                     s11 = i[0]
@@ -178,6 +182,31 @@ def importFrd(filename, Analysis=None):
                 if(MeshObject):
                     o.Mesh = MeshObject
                 AnalysisObject.Member = AnalysisObject.Member + [o]
+
+        l = len(displacement)
+        x_max, y_max, z_max = map(max, zip(*displacement))
+        x_min, y_min, z_min = map(min, zip(*displacement))
+        sum_list = map(sum, zip(*displacement))
+        x_avg, y_avg, z_avg = [i / l for i in sum_list]
+        s_max = max(mstress)
+        s_min = min(mstress)
+        s_avg = sum(mstress) / l
+        disp_abs = []
+        for d in displacement:
+            disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+        a_max = max(disp_abs)
+        a_min = min(disp_abs)
+        a_avg = sum(disp_abs) / l
+        stats = FreeCAD.ActiveDocument.addObject('Fem::FemResultValue', 'AnalysisStats')
+        stats.Values = [x_min, x_avg, x_max,
+                        y_min, y_avg, y_max,
+                        z_min, z_avg, z_max,
+                        a_min, a_avg, a_max,
+                        s_min, s_avg, s_max]
+        stats.DataType = 'AnalysisStats'
+        stats.ElementNumbers = len(stats.Values)
+        AnalysisObject.Member = AnalysisObject.Member + [stats]
+
         if(FreeCAD.GuiUp):
             import FemGui
             import FreeCADGui
