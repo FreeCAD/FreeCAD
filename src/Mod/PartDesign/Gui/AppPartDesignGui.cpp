@@ -56,6 +56,7 @@
 #include "ViewProviderBoolean.h"
 #include "ViewProviderPrimitive.h"
 #include "ViewProviderDatumCS.h"
+#include "ViewProviderThickness.h"
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
@@ -125,6 +126,7 @@ PyMODINIT_FUNC initPartDesignGui()
     PartDesignGui::ViewProviderChamfer       ::init();
     PartDesignGui::ViewProviderFillet        ::init();
     PartDesignGui::ViewProviderDraft         ::init();
+    PartDesignGui::ViewProviderThickness     ::init();
     PartDesignGui::ViewProviderTransformed   ::init();
     PartDesignGui::ViewProviderMirrored      ::init();
     PartDesignGui::ViewProviderLinearPattern ::init();
