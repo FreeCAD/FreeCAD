@@ -48,6 +48,7 @@
 #include "propertyeditor/PropertyItem.h"
 #include "NavigationStyle.h"
 #include "Flag.h"
+#include "SelectionObject.h"
 
 using namespace Gui;
 using namespace Gui::Inventor;
@@ -139,6 +140,8 @@ void Gui::SoFCDB::init()
 
     GLGraphicsItem                  ::init();
     GLFlagWindow                    ::init();
+
+    SelectionObject                 ::init();
 
     qRegisterMetaType<Base::Vector3f>("Base::Vector3f");
     qRegisterMetaType<Base::Vector3d>("Base::Vector3d");
