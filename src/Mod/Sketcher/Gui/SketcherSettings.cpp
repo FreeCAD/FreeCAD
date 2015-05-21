@@ -115,6 +115,7 @@ void SketcherSettings::saveSettings()
     // Sketch editing
     ui->EditSketcherFontSize->onSave();
     ui->dialogOnDistanceConstraint->onSave();
+    ui->continueMode->onSave();
     form->saveSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
@@ -147,6 +148,7 @@ void SketcherSettings::loadSettings()
     // Sketch editing
     ui->EditSketcherFontSize->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
+    ui->continueMode->onRestore();
     form->loadSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
