@@ -811,6 +811,14 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
 
 TaskPrimitiveParameters::~TaskPrimitiveParameters()
 {
+
+}
+
+bool TaskPrimitiveParameters::accept()
+{
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+
     ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
             Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
     vp->setVisible(cs_visibility);
@@ -820,20 +828,30 @@ TaskPrimitiveParameters::~TaskPrimitiveParameters()
         Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(false); 
     }
     vp_prm->setVisible(true); 
-}
-
-bool TaskPrimitiveParameters::accept()
-{
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-        
+    
     return true;
 }
 
 bool TaskPrimitiveParameters::reject() {
     
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    // roll back the done things
+    Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    
+    //if we did not delete the document object we  need to set the visibilities right
+    ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
+            Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
+    
+    if(vp) {
+        vp->setVisible(cs_visibility);
+    
+        auto* prm = static_cast<PartDesign::FeaturePrimitive*>(vp_prm->getObject());
+        if(prm->BaseFeature.getValue()) {
+            Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(false); 
+        }
+        vp_prm->setVisible(true); 
+    }
+    
     return true;
 }
 
