@@ -28,8 +28,11 @@
 #include "DatumCS.h"
 #include "DatumPoint.h"
 #include "DatumPlane.h"
+#include "DatumLine.h"
 #include <App/Plane.h>
 #include <App/Part.h>
+#include <App/Line.h>
+#include <Base/Exception.h>
 #include <gp_Pln.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopoDS.hxx>
@@ -37,6 +40,11 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <Geom_Plane.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <GeomAbs_CurveType.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRep_Tool.hxx>
+#include <gp_Quaternion.hxx>
+#include <TopoDS_Vertex.hxx>
 #include <QObject>
 
 #ifndef M_PI
@@ -64,8 +72,32 @@ void CoordinateSystem::initHints()
     std::multiset<QString> key;
     std::set<QString> value;
     key.insert(POINT);
-    hints[key] = Done;  
+    value.insert(PLANE);
+    value.insert(LINE);
+    value.insert(DONE);
+    hints[key] = value;  
     
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(PLANE);
+    value.insert(LINE);
+    value.insert(DONE);
+    hints[key] = value;
+    
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(PLANE);
+    key.insert(LINE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(LINE);
+
+    value.insert(DONE);
+    hints[key] = value;
+    
+    /*
     key.clear(); value.clear();
     key.insert(PLANE);
     value.insert(LINE);
@@ -77,11 +109,18 @@ void CoordinateSystem::initHints()
     key.insert(LINE);
     value.insert(LINE);
     value.insert(DONE);
-    hints[key] = value;
+    hints[key] = value;*/
 }
 
 // ============================================================================
 
+#define GP_POINT(p) \
+    gp_Pnt(p[0], p[1], p[2])
+
+#define GP_DIR(p) \
+    gp_Dir(p[0], p[1], p[2])
+    
+    
 PROPERTY_SOURCE(PartDesign::CoordinateSystem, Part::Datum)
 
 CoordinateSystem::CoordinateSystem()
@@ -109,7 +148,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
         const std::vector<std::string>&          subrefs = References.getSubValues();
         
         if (refs.size() != subrefs.size())
-            return;
+            return; //throw Base::Exception("Size of references and subreferences do not match");
         
         refTypes.clear();
         for (int r = 0; r < refs.size(); r++)
@@ -117,61 +156,124 @@ void CoordinateSystem::onChanged(const App::Property *prop)
 
         std::set<QString> hint = getHint();
         if (refs.size() != 0 && !(hint.find(QObject::tr("Done")) != hint.end()))
-            return; // incomplete references
+            return; //throw Base::Exception("Can not build coordinate system from given references"); // incomplete references
             
         //build the placement from the references
-        bool plane = false;
-        Base::Vector3d pl_base(0,0,0), pl_normal(0,0,1);
+        bool plane = false, lineX = false, lineY = false, origin = false;
+        gp_Pln pln;
+        gp_Lin linX, linY;
+        gp_Pnt org;
         
         int count = 0;
         for(int i = 0; i < refs.size(); i++) {
             
-            if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+            if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
+                PartDesign::Point* p = static_cast<PartDesign::Point*>(refs[i]);
+                if(!origin) {
+                    org = GP_POINT(p->getPoint());
+                    origin=true;
+                }
+                else 
+                    return; //throw Base::Exception("Too many points in coordinate system references"); //too much points selected
+            }
+            else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
                 if(!plane) {
-                    pl_base = p->getBasePoint();
-                    pl_normal = p->getNormal();
+                    pln = gp_Pln(GP_POINT(p->getBasePoint()), GP_DIR(p->getNormal()));
                     plane=true;
                 }
+                else 
+                    return; //throw Base::Exception("Too many planes in coordinate syste references");
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
-                PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
+                App::Plane* p = static_cast<App::Plane*>(refs[i]);
                 if(!plane) {
-                    pl_base = Base::Vector3d(0,0,0);
+                    gp_Pnt base(0,0,0);
+                    gp_Dir dir(0,0,1);
                     if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[0]) == 0)
-                        pl_normal = Base::Vector3d(0,0,1);
-                    else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
-                        pl_normal = Base::Vector3d(1,0,0);
+                        dir = gp_Dir(0,0,1);
                     else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[1]) == 0)
-                        pl_normal = Base::Vector3d(0,1,0);
+                        dir = gp_Dir(0,1,0);
+                    else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
+                        dir = gp_Dir(1,0,0);
                     
+                    pln = gp_Pln(base, dir);
                     plane=true;
                 }
+                else 
+                    return; //throw Base::Exception("Too many planes in coordinate syste references"); //too much planes selected
+            }
+            else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+                PartDesign::Line* p = static_cast<PartDesign::Line*>(refs[i]);
+                if(!lineX) {
+                    linX = gp_Lin(GP_POINT(p->getBasePoint()), GP_DIR(p->getDirection()));
+                    lineX = true;
+                }
+                else if(!lineY) {
+                    linY = gp_Lin(GP_POINT(p->getBasePoint()), GP_DIR(p->getDirection()));
+                    lineY = true;
+                }
+                else 
+                    return; //throw Base::Exception("Too many lines in coordinate syste references");; //too much lines selected
+                
+            } else if (refs[i]->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+                App::Line* p = static_cast<App::Line*>(refs[i]);
+                gp_Pnt base(0,0,0);
+                gp_Dir dir(0,0,1);
+                if (strcmp(p->getNameInDocument(), App::Part::BaselineTypes[0]) == 0)
+                    dir = gp_Dir(1,0,0);
+                else if (strcmp(p->getNameInDocument(), App::Part::BaselineTypes[1]) == 0)
+                    dir = gp_Dir(0,1,0);
+                else if (strcmp(p->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
+                    dir = gp_Dir(0,0,1);
+                
+                if(!lineX) {    
+                    linX = gp_Lin(base, dir);
+                    lineX=true;
+                }
+                else if(!lineY) {    
+                    linY = gp_Lin(base, dir);
+                    lineY=true;
+                }
+                else 
+                    return; //throw Base::Exception("Too many lines in coordinate syste references");
             }
             else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
                 const TopoDS_Shape& sh = feature->Shape.getValue();
                 if (sh.IsNull())
-                    return; // "PartDesign::Plane: Reference has NULL shape"
+                    return; //throw Base::Exception("Invalid shape in reference");
                 // Get subshape
                 TopoDS_Shape subshape = feature->Shape.getShape().getSubShape(subrefs[i].c_str());
                 if (subshape.IsNull())
-                    return; // "PartDesign::Plane: Reference has NULL subshape";
+                    return; //throw Base::Exception("Reference has Null shape");
 
-                if (subshape.ShapeType() == TopAbs_VERTEX) {/*
+                if (subshape.ShapeType() == TopAbs_VERTEX) {
                     TopoDS_Vertex v = TopoDS::Vertex(subshape);
-                    gp_Pnt p = BRep_Tool::Pnt(v);
-                    if (p1 == NULL)
-                        p1 = new Base::Vector3d(p.X(), p.Y(), p.Z());
-                    else if (p2 == NULL)
-                        p2 = new Base::Vector3d(p.X(), p.Y(), p.Z());
-                    else
-                        p3 = new Base::Vector3d(p.X(), p.Y(), p.Z());*/
-                } else if (subshape.ShapeType() == TopAbs_EDGE) { /*
+
+                    if(!origin) {
+                        org = BRep_Tool::Pnt(v);
+                        origin=true;
+                    }
+                    else 
+                        return; //throw Base::Exception("Too many points in coordinate system references");
+                }
+                else if (subshape.ShapeType() == TopAbs_EDGE) { 
                     TopoDS_Edge e = TopoDS::Edge(subshape);
                     BRepAdaptor_Curve adapt(e);
                     if (adapt.GetType() != GeomAbs_Line)
-                        return; // Non-linear edge
-                    line = new gp_Lin(adapt.Line());*/
+                        return; //throw Base::Exception("Only straight edges are supported");
+                        
+                    if(!lineX) {    
+                        linX = adapt.Line();
+                        lineX=true;
+                    }
+                    else if(!lineY) {    
+                        linY = adapt.Line();
+                        lineY=true;
+                    }
+                    else 
+                        return; //throw Base::Exception("Too many lines in coordinate system references");           
+                        
                 } else if (subshape.ShapeType() == TopAbs_FACE) {
                     TopoDS_Face f = TopoDS::Face(subshape);
                     BRepAdaptor_Surface adapt(f);
@@ -183,11 +285,15 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                         const gp_Pnt& p = pl.Location();
                         if (reverse) d.Reverse();
                        
-                        pl_base   = Base::Vector3d(p.X(), p.Y(), p.Z());
-                        pl_normal = Base::Vector3d(d.X(), d.Y(), d.Z());
-                        plane     = true;
+                        if(!plane) {
+                            pln = gp_Pln(p, d);
+                            plane     = true;
+                        }
+                        else 
+                            return; //throw Base::Exception("Too many planes in coordinate system references");
+                            
                     } else {
-                        return; // invalid surface type
+                        return; //throw Base::Exception("Only planar faces allowed");
                     }
                 }
             }
@@ -195,10 +301,51 @@ void CoordinateSystem::onChanged(const App::Property *prop)
             count++;
         };
         
-        if(plane) {
-            plm = Base::Placement(pl_base, Base::Rotation(Base::Vector3d(0,0,1), pl_normal));            
+        gp_Ax3 ax;
+        if(origin) {            
+            Base::Vector3d base(org.X(), org.Y(), org.Z());
+            
+            if(plane) {
+                if(!pln.Contains(org, Precision::Confusion()))
+                    return; //throw Base::Exception("Point must lie on plane");
+                    
+                if(lineX) {
+                    if(!pln.Contains(linX, Precision::Confusion(), Precision::Confusion()))
+                        return; //throw Base::Exception("Line must lie on plane");
+                    
+                    ax = gp_Ax3(org, pln.Axis().Direction(), linX.Direction());         
+                }
+                else {
+                    ax = gp_Ax3(org, pln.Axis().Direction(), pln.XAxis().Direction());
+                }
+            }
+            else if(lineX) {
+                
+                if(lineY) {
+                    if(linY.Angle(linX)<Precision::Angular())
+                        return;
+                    
+                    ax = gp_Ax3(org, linX.Direction().Crossed(linY.Direction()), linX.Direction());
+                }
+                else if(!linX.Contains(org, Precision::Confusion())) {
+                    gp_Lin nor = linX.Normal(org);
+                    ax = gp_Ax3(nor.Location(), nor.Direction().Crossed(linX.Direction()), linX.Direction());
+                }
+                else 
+                    return;
+            }
+            else
+                ax = gp_Ax3(org, gp_Dir(0,0,1), gp_Dir(1,0,0));
         }
             
+        //build the placement
+        gp_Trsf trans;
+        trans.SetTransformation(ax);
+        trans.Invert();
+        gp_XYZ p = trans.TranslationPart();
+        gp_Quaternion q = trans.GetRotation();        
+        plm = Base::Placement(Base::Vector3d(p.X(), p.Y(), p.Z()), Base::Rotation(q.X(), q.Y(), q.Z(), q.W()));
+        
         //add the offsets 
         Base::Vector3d o1;
         plm.getRotation().multVec(Base::Vector3d(1,0,0), o1);
