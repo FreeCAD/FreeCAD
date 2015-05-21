@@ -19,7 +19,7 @@
         <UserDocu>Remove this selection item from the selection. This object becomes invalid.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="isA">
+    <Methode Name="isObjectTypeOf">
       <Documentation>
         <UserDocu>Test for a certain father class.</UserDocu>
       </Documentation>
@@ -34,7 +34,7 @@
 	  <Documentation>
 	    <UserDocu>Name of the selected sub-element if any</UserDocu>
 	  </Documentation>
-	  <Parameter Name="SubElementNames" Type="List" />
+	  <Parameter Name="SubElementNames" Type="Tuple" />
 	</Attribute>
 	<Attribute Name="FullName" ReadOnly="true">
 	  <Documentation>
@@ -42,7 +42,13 @@
 	  </Documentation>
 	  <Parameter Name="FullName" Type="String" />
 	</Attribute>
-	  <Attribute Name="DocumentName" ReadOnly="true">
+    <Attribute Name="TypeName" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Type name of the selected object</UserDocu>
+      </Documentation>
+      <Parameter Name="TypeName" Type="String" />
+    </Attribute>
+    <Attribute Name="DocumentName" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Name of the document of the selected object</UserDocu>
 		  </Documentation>
@@ -64,9 +70,15 @@
 		  <Documentation>
 			  <UserDocu>Selected sub-element, if any</UserDocu>
 		  </Documentation>
-		  <Parameter Name="SubObjects" Type="List" />
+		  <Parameter Name="SubObjects" Type="Tuple" />
 	  </Attribute>
-	  <Attribute Name="HasSubObjects" ReadOnly="true">
+    <Attribute Name="SubPoints" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Selection points</UserDocu>
+      </Documentation>
+      <Parameter Name="SubPoints" Type="Tuple" />
+    </Attribute>
+    <Attribute Name="HasSubObjects" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>Selected sub-element, if any</UserDocu>
 		  </Documentation>
