@@ -124,7 +124,7 @@ def importFrd(filename, Analysis=None):
     MeshObject = None
     if(len(m) > 0):
         import Fem
-        if Analysis == None:
+        if Analysis is None:
             AnalysisName = os.path.splitext(os.path.basename(filename))[0]
             AnalysisObject = FreeCAD.ActiveDocument.addObject('Fem::FemAnalysis', 'Analysis')
             AnalysisObject.Label = AnalysisName
