@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>404</width>
-    <height>652</height>
+    <height>680</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -559,6 +559,19 @@
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowDialogOnDistanceConstraint</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="continueMode">
+        <property name="text">
+         <string>Geometry Creation &quot;Continue Mode&quot;</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ContinuousCreationMode</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/Sketcher</cstring>

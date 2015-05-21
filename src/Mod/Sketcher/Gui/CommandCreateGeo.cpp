@@ -252,7 +252,23 @@ public:
 
             EditCurve.clear();
             sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                EditCurve.resize(2);
+                applyCursor();
+                /* It is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */                
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }
         }
         return true;
     }
@@ -456,9 +472,26 @@ public:
                 sugConstr2.clear();
             }
 
-            EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+            // This code enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(5);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }
+            
+                
         }
         return true;
     }
@@ -803,11 +836,35 @@ public:
             // exit on clicking exactly at the same position (e.g. double click)
             if (onSketchPos == EditCurve[0]) {
                 unsetCursor();
-                EditCurve.clear();
                 resetPositionText();
+                EditCurve.clear();
                 sketchgui->drawEdit(EditCurve);
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
-                return true; // 'this' instance is destroyed now!
+                
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+                
+                if(continuousMode){
+                    // This code enables the continuous creation mode.
+                    Mode=STATUS_SEEK_First;
+                    SegmentMode=SEGMENT_MODE_Line;
+                    TransitionMode=TRANSITION_MODE_Free;
+                    suppressTransition=false;
+                    firstCurve=-1;
+                    previousCurve=-1;
+                    firstPosId=Sketcher::none;
+                    previousPosId=Sketcher::none;
+                    EditCurve.resize(2);
+                    applyCursor();                
+                    /* this is ok not to call to purgeHandler
+                    * in continuous creation mode because the 
+                    * handler is destroyed by the quit() method on pressing the
+                    * right button of the mouse */                
+                    return true;
+                }
+                else{
+                    sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                    return true;
+                } 
             }
 
             Mode = STATUS_Do;
@@ -911,10 +968,34 @@ public:
                 }
 
                 unsetCursor();
-                EditCurve.clear();
+                
                 resetPositionText();
-                sketchgui->drawEdit(EditCurve);
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);                
+                
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+                
+                if(continuousMode){
+                    // This code enables the continuous creation mode.
+                    Mode=STATUS_SEEK_First;
+                    SegmentMode=SEGMENT_MODE_Line;
+                    TransitionMode=TRANSITION_MODE_Free;
+                    suppressTransition=false;
+                    firstCurve=-1;
+                    previousCurve=-1;
+                    firstPosId=Sketcher::none;
+                    previousPosId=Sketcher::none;
+                    EditCurve.resize(2);
+                    applyCursor();                
+                    /* this is ok not to call to purgeHandler
+                    * in continuous creation mode because the 
+                    * handler is destroyed by the quit() method on pressing the
+                    * right button of the mouse */                
+                }
+                else{
+                    sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                }
             }
             else {
                 Gui::Command::commitCommand();
@@ -1230,9 +1311,24 @@ public:
                 sugConstr3.clear();
             }
 
-            EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(2);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }                        
         }
         return true;
     }
@@ -1503,9 +1599,24 @@ public:
                 sugConstr3.clear();
             }
 
-            EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(2);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }            
         }
         return true;
     }
@@ -1760,9 +1871,24 @@ public:
                 sugConstr2.clear();
             }
 
-            EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(34);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }            
         }
         return true;
     }
@@ -2054,6 +2180,18 @@ public:
     {
         if (mode == STATUS_Close) {
             saveEllipse();
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                if (constrMethod == 0) {
+                    method = CENTER_PERIAPSIS_B;
+                    mode = STATUS_SEEK_CENTROID;
+                } else {
+                    method = PERIAPSIS_APOAPSIS_B;
+                    mode = STATUS_SEEK_PERIAPSIS;
+                }
+            }
         }
         return true;
     }
@@ -2556,10 +2694,34 @@ private:
             }
         }
 
-        // delete the temp construction curve from the sketch
-        editCurve.clear();
-        sketchgui->drawEdit(editCurve);
-        sketchgui->purgeHandler(); // no code after this line, Handler gets deleted in ViewProvider
+            // This code enables the continuous creation mode.
+            if (constrMethod == 0) {
+                method = CENTER_PERIAPSIS_B;
+                mode = STATUS_SEEK_CENTROID;
+            } else {
+                method = PERIAPSIS_APOAPSIS_B;
+                mode = STATUS_SEEK_PERIAPSIS;
+            }
+            editCurve.clear();
+            sketchgui->drawEdit(editCurve);
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                editCurve.resize(33);
+                applyCursor();
+                /* It is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */                
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }
+            
     }
 };
 
@@ -2929,9 +3091,24 @@ public:
                 sugConstr4.clear();
             }
 
-            EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(34);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }            
         }
         return true;
     }
@@ -3246,10 +3423,25 @@ public:
                 createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::none);
                 sugConstr3.clear();
             }
-
-            EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(2);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }
         }
         return true;
     }
@@ -3453,7 +3645,20 @@ public:
                 sugConstr.clear();
             }
 
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                applyCursor();
+                /* It is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */                
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }               
         }
         return true;
     }
@@ -4332,10 +4537,24 @@ public:
                 Gui::Command::abortCommand();
                 Gui::Command::updateActive();
             }
-
-            EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(36);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }
         }
         return true;
     }
@@ -4529,10 +4748,24 @@ public:
                 Gui::Command::abortCommand();
                 Gui::Command::updateActive();
             }
-
-            EditCurve.clear();
-            sketchgui->drawEdit(EditCurve);
-            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", false);
+            
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(Corners+1);
+                applyCursor();
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            } 
         }
         return true;
     }
