@@ -100,12 +100,14 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         }
         catch(const Base::Exception&) {
 
+             //as we use this for preview we can add it even if useless for subtractive
+             AddSubShape.setValue(primitiveShape);
+             
              if(getAddSubType() == FeatureAddSub::Additive)
                  Shape.setValue(primitiveShape);
              else 
-                 return new App::DocumentObjectExecReturn("Cannot subtract primitive feature without base feature");
-                 
-             AddSubShape.setValue(base);
+                 return new App::DocumentObjectExecReturn("Cannot subtract primitive feature without base feature");   
+             
              return  App::DocumentObject::StdReturn;
         }
          
