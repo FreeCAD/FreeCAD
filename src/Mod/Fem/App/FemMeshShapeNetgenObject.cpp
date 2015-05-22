@@ -118,8 +118,8 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 
 
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
-	const SMDS_MeshInfo& info = data->GetMeshInfo();
-	int numFaces = data->NbFaces();
+    const SMDS_MeshInfo& info = data->GetMeshInfo();
+    int numFaces = data->NbFaces();
     int numNode = info.NbNodes();
     int numTria = info.NbTriangles();
     int numQuad = info.NbQuadrangles();
@@ -135,9 +135,11 @@ App::DocumentObjectExecReturn *FemMeshShapeNetgenObject::execute(void)
 
     // set the value to the object
     FemMesh.setValue(newMesh);
-#endif
 
     return App::DocumentObject::StdReturn;
+#else
+    return new App::DocumentObjectExecReturn("The FEM module is built without NETGEN support. Meshing will not work!!!", this);
+#endif
 }
 
 //short FemMeshShapeNetgenObject::mustExecute(void) const

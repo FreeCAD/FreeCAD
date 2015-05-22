@@ -34,6 +34,7 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
+#include <Gui/MainWindow.h>
 #include <Gui/WaitCursor.h>
 
 #include "ViewProviderFemMeshShapeNetgen.h"
@@ -98,7 +99,13 @@ bool TaskDlgMeshShapeNetgen::accept()
         if(param->touched)
         {
             Gui::WaitCursor wc;
-            FemMeshShapeNetgenObject->recompute();
+            App::DocumentObjectExecReturn* ret = FemMeshShapeNetgenObject->recompute();
+            if (ret) {
+                wc.restoreCursor();
+                QMessageBox::critical(Gui::getMainWindow(), tr("Meshing failure"), QString::fromStdString(ret->Why));
+                delete ret;
+                return true;
+            }
         }
 
         // hide the input object
