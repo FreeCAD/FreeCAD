@@ -310,7 +310,7 @@ void Point::onChanged(const App::Property* prop)
                 // Point from intersection of two curves                                    
                 GeomAPI_ExtremaCurveCurve intersector(c1, c2);
                 if ((intersector.LowerDistance() > Precision::Confusion()) || (intersector.NbExtrema() == 0))
-                    return; // No intersection
+                    throw Base::Exception("Curve-Curve intersection failed"); // No intersection
                 // Note: We don't check for multiple intersection points
                 gp_Pnt p, p2;
                 intersector.Points(1, p, p2);
@@ -330,7 +330,7 @@ void Point::onChanged(const App::Property* prop)
                     // Intersect again
                     intersector = GeomAPI_ExtremaCurveCurve(c1, c2);
                     if ((intersector.LowerDistance() > Precision::Confusion()) || (intersector.NbExtrema() == 0))
-                        return; // No intersection
+                        throw Base::Exception("Curve-Curve intersection failed"); // No intersection
                     // Note: We don't check for multiple intersection points
                     intersector.Points(1, p, p2);
                 }
@@ -339,7 +339,7 @@ void Point::onChanged(const App::Property* prop)
             } else if (!s1.IsNull()) {
                 GeomAPI_IntCS intersector(c1, s1);
                 if (!intersector.IsDone() || (intersector.NbPoints() == 0))
-                    return;
+                    throw Base::Exception("Curve-Surface intersection failed");
                 if (intersector.NbPoints() > 1)
                     Base::Console().Warning("More than one intersection point for datum point from curve and surface\n");
 

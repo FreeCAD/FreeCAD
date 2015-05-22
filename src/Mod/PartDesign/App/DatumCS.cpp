@@ -124,16 +124,9 @@ void CoordinateSystem::initHints()
     key.insert(PLANE);
     key.insert(LINE);
     value.insert(POINT);
-    value.insert(LINE);
     value.insert(DONE);
     hints[key] = value;
-    
-    key.clear(); value.clear();
-    key.insert(PLANE);
-    key.insert(LINE);
-    key.insert(LINE);
-    hints[key] = Done;
-    
+        
     key.clear(); value.clear();
     key.insert(PLANE);
     key.insert(LINE);
@@ -167,16 +160,9 @@ void CoordinateSystem::initHints()
     key.insert(LINE);
     key.insert(PLANE);
     value.insert(POINT);
-    value.insert(LINE);
     value.insert(DONE);
     hints[key] = value;
-    
-    key.clear(); value.clear();
-    key.insert(LINE);
-    key.insert(PLANE);
-    key.insert(LINE);
-    hints[key] = Done;
-    
+       
     key.clear(); value.clear();
     key.insert(LINE);
     key.insert(PLANE);
@@ -186,16 +172,9 @@ void CoordinateSystem::initHints()
     key.clear(); value.clear();
     key.insert(LINE);
     key.insert(LINE);
-    value.insert(PLANE);
     value.insert(POINT);
     value.insert(DONE);
     hints[key] = value;
-    
-    key.clear(); value.clear();
-    key.insert(LINE);
-    key.insert(LINE);
-    key.insert(PLANE);
-    hints[key] = Done;
     
     key.clear(); value.clear();
     key.insert(LINE);
@@ -260,7 +239,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
         const std::vector<std::string>&          subrefs = References.getSubValues();
         
         if (refs.size() != subrefs.size())
-            return; //throw Base::Exception("Size of references and subreferences do not match");
+            throw Base::Exception("Size of references and subreferences do not match");
         
         refTypes.clear();
         for (int r = 0; r < refs.size(); r++)
@@ -268,7 +247,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
 
         std::set<QString> hint = getHint();
         if (refs.size() != 0 && !(hint.find(QObject::tr("Done")) != hint.end()))
-            return; //throw Base::Exception("Can not build coordinate system from given references"); // incomplete references
+            throw Base::Exception("Can not build coordinate system from given references"); // incomplete references
             
         //build the placement from the references
         bool plane = false, line1 = false, line2 = false, origin = false;
@@ -286,7 +265,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                     origin=true;
                 }
                 else 
-                    return; //throw Base::Exception("Too many points in coordinate system references"); //too much points selected
+                    throw Base::Exception("Too many points in coordinate system references"); //too much points selected
             }
             else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 PartDesign::Plane* p = static_cast<PartDesign::Plane*>(refs[i]);
@@ -295,7 +274,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                     plane=true;
                 }
                 else 
-                    return; //throw Base::Exception("Too many planes in coordinate syste references");
+                    throw Base::Exception("Too many planes in coordinate syste references");
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
                 App::Plane* p = static_cast<App::Plane*>(refs[i]);
                 if(!plane) {
@@ -312,7 +291,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                     plane=true;
                 }
                 else 
-                    return; //throw Base::Exception("Too many planes in coordinate syste references"); //too much planes selected
+                    throw Base::Exception("Too many planes in coordinate syste references"); //too much planes selected
             }
             else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
                 PartDesign::Line* p = static_cast<PartDesign::Line*>(refs[i]);
@@ -325,7 +304,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                     line2 = true;
                 }
                 else 
-                    return; //throw Base::Exception("Too many lines in coordinate syste references");; //too much lines selected
+                    throw Base::Exception("Too many lines in coordinate syste references");; //too much lines selected
                 
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
                 App::Line* p = static_cast<App::Line*>(refs[i]);
@@ -347,17 +326,17 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                     line2=true;
                 }
                 else 
-                    return; //throw Base::Exception("Too many lines in coordinate syste references");
+                    throw Base::Exception("Too many lines in coordinate syste references");
             }
             else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
                 const TopoDS_Shape& sh = feature->Shape.getValue();
                 if (sh.IsNull())
-                    return; //throw Base::Exception("Invalid shape in reference");
+                    throw Base::Exception("Invalid shape in reference");
                 // Get subshape
                 TopoDS_Shape subshape = feature->Shape.getShape().getSubShape(subrefs[i].c_str());
                 if (subshape.IsNull())
-                    return; //throw Base::Exception("Reference has Null shape");
+                    throw Base::Exception("Reference has Null shape");
 
                 if (subshape.ShapeType() == TopAbs_VERTEX) {
                     TopoDS_Vertex v = TopoDS::Vertex(subshape);
@@ -367,13 +346,13 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                         origin=true;
                     }
                     else 
-                        return; //throw Base::Exception("Too many points in coordinate system references");
+                        throw Base::Exception("Too many points in coordinate system references");
                 }
                 else if (subshape.ShapeType() == TopAbs_EDGE) { 
                     TopoDS_Edge e = TopoDS::Edge(subshape);
                     BRepAdaptor_Curve adapt(e);
                     if (adapt.GetType() != GeomAbs_Line)
-                        return; //throw Base::Exception("Only straight edges are supported");
+                        throw Base::Exception("Only straight edges are supported");
                         
                     if(!line1) {    
                         lin1 = adapt.Line();
@@ -384,7 +363,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                         line2=true;
                     }
                     else 
-                        return; //throw Base::Exception("Too many lines in coordinate system references");           
+                        throw Base::Exception("Too many lines in coordinate system references");           
                         
                 } else if (subshape.ShapeType() == TopAbs_FACE) {
                     TopoDS_Face f = TopoDS::Face(subshape);
@@ -402,10 +381,10 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                             plane     = true;
                         }
                         else 
-                            return; //throw Base::Exception("Too many planes in coordinate system references");
+                            throw Base::Exception("Too many planes in coordinate system references");
                             
                     } else {
-                        return; //throw Base::Exception("Only planar faces allowed");
+                        throw Base::Exception("Only planar faces allowed");
                     }
                 }
             }
@@ -418,11 +397,14 @@ void CoordinateSystem::onChanged(const App::Property *prop)
             
             if(plane) {
                 if(!pln.Contains(org, Precision::Confusion()))
-                    return; //throw Base::Exception("Point must lie on plane");
+                    throw Base::Exception("Point must lie on plane");
                     
                 if(line1) {
                     if(!pln.Contains(lin1, Precision::Confusion(), Precision::Confusion()))
-                        return; //throw Base::Exception("Line must lie on plane");
+                        throw Base::Exception("Line must lie on plane");
+                    
+                    if(line2)
+                        throw Base::Exception("Two lines and a plain are not supportet");
                     
                     ax = gp_Ax3(org, pln.Axis().Direction(), lin1.Direction());         
                 }
@@ -448,7 +430,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                 
             if(line1) {
                 if(!pln.Contains(lin1, Precision::Confusion(), Precision::Confusion()))
-                        return; //throw Base::Exception("Line must lie on plane");
+                        throw Base::Exception("Line must lie on plane");
                 
                 ax = gp_Ax3(pln.Location(), pln.Axis().Direction(), lin1.Direction());        
             }
@@ -459,6 +441,8 @@ void CoordinateSystem::onChanged(const App::Property *prop)
         else if(line1) {
             
             if(line2) {
+                if(! ((lin1.Angle(lin2) - M_PI<2) < Precision::Angular()) )
+                        throw Base::Exception("Lines must be perpendicular");
                 ax = gp_Ax3(lin1.Location(), lin1.Direction(), lin2.Direction());
             }
             else 
