@@ -81,6 +81,43 @@ using namespace std;
 #include "TaskFeaturePick.h"
 #include "ReferenceSelection.h"
 
+
+//===========================================================================
+// PartDesign_Part
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignPart);
+
+CmdPartDesignPart::CmdPartDesignPart()
+  : Command("PartDesign_Part")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Create part");
+    sToolTipText  = QT_TR_NOOP("Create a new part feature");
+    sWhatsThis    = sToolTipText;
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Tree_Annotation";
+}
+
+void CmdPartDesignPart::activated(int iMsg)
+{
+    openCommand("Add a body feature");
+    std::string FeatName = getUniqueObjectName("Part");
+
+    std::string PartName;
+    PartName = getUniqueObjectName("Part");
+    doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
+    doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr(PartName.c_str()).toStdString().c_str());
+    PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
+    
+    updateActive();
+}
+
+bool CmdPartDesignPart::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // PartDesign_Body
 //===========================================================================
@@ -2011,6 +2048,7 @@ void CreatePartDesignCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdPartDesignPart());
     rcCmdMgr.addCommand(new CmdPartDesignBody());
     rcCmdMgr.addCommand(new CmdPartDesignMoveTip());
 
