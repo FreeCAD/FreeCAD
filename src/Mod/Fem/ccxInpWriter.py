@@ -29,7 +29,7 @@ class inp_writer:
         self.write_step_begin(inpfile)
         self.write_constraints_fixed(inpfile)
         self.write_constraints_force(inpfile)
-        self.write_face_load(inpfile)
+        #self.write_face_load(inpfile)
         self.write_outputs_types(inpfile)
         self.write_step_end(inpfile)
         self.write_footer(inpfile)
@@ -155,12 +155,17 @@ class inp_writer:
             f.write(fix_obj_name + ',3\n\n')
 
     def write_constraints_force(self, f):
+        def getTriangleArea(P1,P2,P3):
+            vec1 = P2 - P1
+            vec2 = P3 - P1
+            vec3 = vec1.cross(vec2)
+            return 0.5 * vec3.Length
         f.write('\n***********************************************************\n')
-        f.write('** Node loads, see load node sets for how the value is calculated!\n')
+        f.write('** Node loads\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fobj in self.force_objects:
+            frc_obj = fobj['Object']
             if 'NodeLoad' in fobj:
-                frc_obj = fobj['Object']
                 node_load = fobj['NodeLoad']
                 frc_obj_name = frc_obj.Name
                 vec = frc_obj.DirectionVector
@@ -172,6 +177,130 @@ class inp_writer:
                 f.write(frc_obj_name + ',1,' + v1 + '\n')
                 f.write(frc_obj_name + ',2,' + v2 + '\n')
                 f.write(frc_obj_name + ',3,' + v3 + '\n\n')
+
+            # area load on faces of volume elements --> CLOAD is used
+            sum_ref_face_area = 0
+            sum_ref_face_node_area = 0
+            sum_node_load = 0
+            for o, elem in frc_obj.References:
+                elem_o = o.Shape.getElement(elem)
+                if elem_o.ShapeType == 'Face':
+                    sum_ref_face_area += elem_o.Area
+            if sum_ref_face_area != 0:
+                print frc_obj.Name, ', AreaLoad on faces, CLOAD is used'
+                force_per_sum_ref_face_area = frc_obj.Force / sum_ref_face_area
+                print '  force_per_sum_ref_face_area: ', force_per_sum_ref_face_area
+
+            for o, elem in frc_obj.References:
+                elem_o = o.Shape.getElement(elem)
+                if elem_o.ShapeType == 'Face':
+                    ref_face = elem_o
+                    print '  ', o.Name, '.', elem,
+                    f.write('** ' + frc_obj.Name + '\n')
+                    f.write('*CLOAD\n')
+                    f.write('** node loads on element face: ' + o.Name + '.' + elem + '\n')
+
+                    volume_faces = self.mesh_object.FemMesh.getVolumesByFace(ref_face)
+                    face_table = {} # { meshfaceID : ( nodeID, ... , nodeID ) }
+                    for mv,mf in volume_faces:
+                        face_table[mf] = self.mesh_object.FemMesh.getElementNodes(mf)
+
+                    # calulate the appropriate node_areas for every node of every mesh face (mf)
+                    # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
+                    node_area_table = []     #  [ (nodeID,Area), ... , (nodeID,Area) ]  some nodes will have more than one entries
+                    node_sumarea_table = {}  #  { nodeID : Area, ... , nodeID:Area }  AreaSum for each node, one entry for each node                        
+                    mesh_face_area = 0
+                    for mf in face_table:
+                        # print '    ', mf, ' --> ', face_table[mf]
+                        if len(face_table[mf]) == 3:  # 3 node mesh face triangle
+                            # corner_node_area = mesh_face_area / 3.0
+                            #      P3
+                            #      /\
+                            #     /  \
+                            #    /____\
+                            #  P1      P2
+                            P1 = self.mesh_object.FemMesh.Nodes[face_table[mf][0]]
+                            P2 = self.mesh_object.FemMesh.Nodes[face_table[mf][1]]
+                            P3 = self.mesh_object.FemMesh.Nodes[face_table[mf][2]]
+
+                            mesh_face_area = getTriangleArea(P1,P2,P3)
+                            corner_node_area = mesh_face_area / 3.0
+
+                            node_area_table.append((face_table[mf][0], corner_node_area))
+                            node_area_table.append((face_table[mf][1], corner_node_area))
+                            node_area_table.append((face_table[mf][2], corner_node_area))
+
+                        if len(face_table[mf]) == 6:  # 6 node mesh face triangle
+                            # corner_node_area = 0
+                            # middle_node_area = mesh_face_area / 3.0
+                            #         P3
+                            #         /\
+                            #        /t3\
+                            #       /    \
+                            #     P6------P5
+                            #     / \ t4 / \
+                            #    /t1 \  /t2 \
+                            #   /_____\/_____\
+                            # P1      P4      P2
+                            P1 = self.mesh_object.FemMesh.Nodes[face_table[mf][0]]
+                            P2 = self.mesh_object.FemMesh.Nodes[face_table[mf][1]]
+                            P3 = self.mesh_object.FemMesh.Nodes[face_table[mf][2]]
+                            P4 = self.mesh_object.FemMesh.Nodes[face_table[mf][3]]
+                            P5 = self.mesh_object.FemMesh.Nodes[face_table[mf][4]]
+                            P6 = self.mesh_object.FemMesh.Nodes[face_table[mf][5]]
+
+                            mesh_face_t1_area = getTriangleArea(P1,P4,P6)
+                            mesh_face_t2_area = getTriangleArea(P2,P5,P4)
+                            mesh_face_t3_area = getTriangleArea(P3,P6,P5)
+                            mesh_face_t4_area = getTriangleArea(P4,P5,P6)
+                            mesh_face_area = mesh_face_t1_area +  mesh_face_t2_area + mesh_face_t3_area + mesh_face_t4_area
+                            middle_node_area = mesh_face_area / 3.0
+
+                            node_area_table.append((face_table[mf][0], 0))
+                            node_area_table.append((face_table[mf][1], 0))
+                            node_area_table.append((face_table[mf][2], 0))
+                            node_area_table.append((face_table[mf][3], middle_node_area))
+                            node_area_table.append((face_table[mf][4], middle_node_area))
+                            node_area_table.append((face_table[mf][5], middle_node_area))
+
+                    # node_sumarea_table
+                    for n, A in node_area_table:
+                        # print n, ' --> ', A
+                        if n in node_sumarea_table:
+                            node_sumarea_table[n] = node_sumarea_table[n] + A
+                        else: 
+                            node_sumarea_table[n] = A
+
+                    sum_node_areas = 0
+                    for n in node_sumarea_table:
+                        # print n, ' --> ', node_sumarea_table[n] 
+                        sum_node_areas = sum_node_areas + node_sumarea_table[n]
+                    print '    sum_node_areas ', sum_node_areas, ' ref_face.Area: ', ref_face.Area
+                    sum_ref_face_node_area += sum_node_areas
+
+                    # write CLOAD lines to CalculiX file
+                    vec = frc_obj.DirectionVector
+                    for n in sorted(node_sumarea_table):
+                        node_load = node_sumarea_table[n] * force_per_sum_ref_face_area
+                        sum_node_load += node_load
+                        #print '    nodeID: ', n, '  nodeload: ', node_load
+                        if (vec.x != 0.0):
+                            v1 = "{:.13E}".format(vec.x * node_load)
+                            f.write(str(n) + ',1,' + v1 + '\n')
+                        if (vec.y != 0.0):
+                            v2 = "{:.13E}".format(vec.y * node_load)
+                            f.write(str(n) + ',2,' + v2 + '\n')
+                        if (vec.z != 0.0):
+                            v3 = "{:.13E}".format(vec.z * node_load)
+                            f.write(str(n) + ',3,' + v3 + '\n')
+                f.write('\n')
+
+            # print '  sum_ref_face_node_area: ', sum_ref_face_node_area
+            # print '  sum_ref_face_area     : ', sum_ref_face_area
+            # print '  sum_ref_face_node_area * force_per_sum_ref_face_area: ', sum_ref_face_node_area * force_per_sum_ref_face_area
+            # print '  sum_node_load:                                        ', sum_node_load
+            # print '  frc_obj.Force:                                        ', frc_obj.Force  
+            f.write('\n')
 
     def write_face_load(self, f):
         f.write('\n***********************************************************\n')
