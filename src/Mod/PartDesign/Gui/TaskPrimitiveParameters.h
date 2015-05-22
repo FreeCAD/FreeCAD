@@ -47,6 +47,7 @@ class ViewProvider;
 
 namespace PartDesignGui { 
 
+namespace s = boost::signals;
 
 class TaskBoxPrimitives : public Gui::TaskView::TaskBox
 {
@@ -56,6 +57,8 @@ public:
     TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent = 0);
     ~TaskBoxPrimitives();
 
+    void setPrimitive(QString name);
+    
 public Q_SLOTS:
     void onBoxLengthChanged(double);
     void onBoxWidthChanged(double);
@@ -109,14 +112,17 @@ class TaskPrimitiveParameters : public Gui::TaskView::TaskDialog
 public:
     TaskPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
     ~TaskPrimitiveParameters();
- 
+
+    void objectChanged(const App::DocumentObject&, const App::Property&);
+
 protected:
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
 
     virtual bool accept();
     virtual bool reject();
-
+    
 private:  
+    s::connection connection;
     TaskBoxPrimitives*   primitive;
     TaskDatumParameters* parameter;
     PartDesign::CoordinateSystem* cs;

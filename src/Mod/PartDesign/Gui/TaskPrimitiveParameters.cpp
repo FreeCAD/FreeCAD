@@ -29,6 +29,7 @@
 # include <QTextStream>
 # include <QMessageBox>
 # include <Precision.hxx>
+#include <boost/bind/bind.hpp>
 #endif
 
 #include "TaskPrimitiveParameters.h"
@@ -40,6 +41,9 @@
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/BitmapFactory.h>
+#include <Base/Interpreter.h>
+#include <Base/Console.h>
+#include <boost/bind.hpp>
 
 using namespace PartDesignGui;
 
@@ -454,324 +458,145 @@ void TaskBoxPrimitives::onWedgeZmaxChanged(double v) {
 
 
 
-/*
-void  TaskBoxPrimitives::createPrimitive(const QString& placement)
+
+void  TaskBoxPrimitives::setPrimitive(QString name)
 {
     try {
-        QString cmd; QString name;
+        QString cmd;
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) {
-            QMessageBox::warning(this, tr("Create %1")
-                .arg(ui.comboBox1->currentText()), tr("No active document"));
             return;
         }
-        if (ui.comboBox1->currentIndex() == 0) {         // plane
-            name = QString::fromAscii(doc->getUniqueObjectName("Plane").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Plane\",\"%1\")\n"
-                "App.ActiveDocument.%1.Length=%2\n"
-                "App.ActiveDocument.%1.Width=%3\n"
-                "App.ActiveDocument.%1.Placement=%4\n"
-                "App.ActiveDocument.%1.Label='%5'\n")
-                .arg(name)
-                .arg(ui.planeLength->value().getValue(),0,'f',2)
-                .arg(ui.planeWidth->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Plane"));
-        }
-        else if (ui.comboBox1->currentIndex() == 1) {         // box
-            name = QString::fromAscii(doc->getUniqueObjectName("Box").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Box\",\"%1\")\n"
-                "App.ActiveDocument.%1.Length=%2\n"
-                "App.ActiveDocument.%1.Width=%3\n"
-                "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui.boxLength->value().getValue(),0,'f',2)
-                .arg(ui.boxWidth->value().getValue(),0,'f',2)
-                .arg(ui.boxHeight->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Box"));
-        }
-        else if (ui.comboBox1->currentIndex() == 2) {  // cylinder
-            name = QString::fromAscii(doc->getUniqueObjectName("Cylinder").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Cylinder\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius=%2\n"
-                "App.ActiveDocument.%1.Height=%3\n"
-                "App.ActiveDocument.%1.Angle=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui.cylinderRadius->value().getValue(),0,'f',2)
-                .arg(ui.cylinderHeight->value().getValue(),0,'f',2)
-                .arg(ui.cylinderAngle->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Cylinder"));
-        }
-        else if (ui.comboBox1->currentIndex() == 3) {  // cone
-            name = QString::fromAscii(doc->getUniqueObjectName("Cone").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Cone\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius1=%2\n"
-                "App.ActiveDocument.%1.Radius2=%3\n"
-                "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.Angle=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n"
-                "App.ActiveDocument.%1.Label='%7'\n")
-                .arg(name)
-                .arg(ui.coneRadius1->value().getValue(),0,'f',2)
-                .arg(ui.coneRadius2->value().getValue(),0,'f',2)
-                .arg(ui.coneHeight->value().getValue(),0,'f',2)
-                .arg(ui.coneAngle->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Cone"));
-        }
-        else if (ui.comboBox1->currentIndex() == 4) {  // sphere
-            name = QString::fromAscii(doc->getUniqueObjectName("Sphere").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Sphere\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius=%2\n"
-                "App.ActiveDocument.%1.Angle1=%3\n"
-                "App.ActiveDocument.%1.Angle2=%4\n"
-                "App.ActiveDocument.%1.Angle3=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n"
-                "App.ActiveDocument.%1.Label='%7'\n")
-                .arg(name)
-                .arg(ui.sphereRadius->value().getValue(),0,'f',2)
-                .arg(ui.sphereAngle1->value().getValue(),0,'f',2)
-                .arg(ui.sphereAngle2->value().getValue(),0,'f',2)
-                .arg(ui.sphereAngle3->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Sphere"));
-        }
-        else if (ui.comboBox1->currentIndex() == 5) {  // ellipsoid
-            name = QString::fromAscii(doc->getUniqueObjectName("Ellipsoid").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Ellipsoid\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius1=%2\n"
-                "App.ActiveDocument.%1.Radius2=%3\n"
-                "App.ActiveDocument.%1.Radius3=%4\n"
-                "App.ActiveDocument.%1.Angle1=%5\n"
-                "App.ActiveDocument.%1.Angle2=%6\n"
-                "App.ActiveDocument.%1.Angle3=%7\n"
-                "App.ActiveDocument.%1.Placement=%8\n"
-                "App.ActiveDocument.%1.Label='%9'\n")
-                .arg(name)
-                .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidRadius3->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',2)
-                .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Ellipsoid"));
-        }
-        else if (ui.comboBox1->currentIndex() == 6) {  // torus
-            name = QString::fromAscii(doc->getUniqueObjectName("Torus").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Torus\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius1=%2\n"
-                "App.ActiveDocument.%1.Radius2=%3\n"
-                "App.ActiveDocument.%1.Angle1=%4\n"
-                "App.ActiveDocument.%1.Angle2=%5\n"
-                "App.ActiveDocument.%1.Angle3=%6\n"
-                "App.ActiveDocument.%1.Placement=%7\n"
-                "App.ActiveDocument.%1.Label='%8'\n")
-                .arg(name)
-                .arg(ui.torusRadius1->value().getValue(),0,'f',2)
-                .arg(ui.torusRadius2->value().getValue(),0,'f',2)
-                .arg(ui.torusAngle1->value().getValue(),0,'f',2)
-                .arg(ui.torusAngle2->value().getValue(),0,'f',2)
-                .arg(ui.torusAngle3->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Torus"));
-        }
-        else if (ui.comboBox1->currentIndex() == 7) {  // prism
-            name = QString::fromAscii(doc->getUniqueObjectName("Prism").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Prism\",\"%1\")\n"
-                "App.ActiveDocument.%1.Polygon=%2\n"
-                "App.ActiveDocument.%1.Circumradius=%3\n"
-                "App.ActiveDocument.%1.Height=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui.prismPolygon->value())
-                .arg(ui.prismCircumradius->value().getValue(),0,'f',2)
-                .arg(ui.prismHeight->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Prism"));
-        }
-        else if (ui.comboBox1->currentIndex() == 8) {  // wedge
-            name = QString::fromAscii(doc->getUniqueObjectName("Wedge").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Wedge\",\"%1\")\n"
-                "App.ActiveDocument.%1.Xmin=%2\n"
-                "App.ActiveDocument.%1.Ymin=%3\n"
-                "App.ActiveDocument.%1.Zmin=%4\n"
-                "App.ActiveDocument.%1.X2min=%5\n"
-                "App.ActiveDocument.%1.Z2min=%6\n"
-                "App.ActiveDocument.%1.Xmax=%7\n"
-                "App.ActiveDocument.%1.Ymax=%8\n"
-                "App.ActiveDocument.%1.Zmax=%9\n"
-                "App.ActiveDocument.%1.X2max=%10\n"
-                "App.ActiveDocument.%1.Z2max=%11\n"
-                "App.ActiveDocument.%1.Placement=%12\n"
-                "App.ActiveDocument.%1.Label='%13'\n")
-                .arg(name)
-                .arg(ui.wedgeXmin->value().getValue(),0,'f',2)
-                .arg(ui.wedgeYmin->value().getValue(),0,'f',2)
-                .arg(ui.wedgeZmin->value().getValue(),0,'f',2)
-                .arg(ui.wedgeX2min->value().getValue(),0,'f',2)
-                .arg(ui.wedgeZ2min->value().getValue(),0,'f',2)
-                .arg(ui.wedgeXmax->value().getValue(),0,'f',2)
-                .arg(ui.wedgeYmax->value().getValue(),0,'f',2)
-                .arg(ui.wedgeZmax->value().getValue(),0,'f',2)
-                .arg(ui.wedgeX2max->value().getValue(),0,'f',2)
-                .arg(ui.wedgeZ2max->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Wedge"));
-        }
-        else if (ui.comboBox1->currentIndex() == 9) {  // helix
-            name = QString::fromAscii(doc->getUniqueObjectName("Helix").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Helix\",\"%1\")\n"
-                "App.ActiveDocument.%1.Pitch=%2\n"
-                "App.ActiveDocument.%1.Height=%3\n"
-                "App.ActiveDocument.%1.Radius=%4\n"
-                "App.ActiveDocument.%1.Angle=%5\n"
-                "App.ActiveDocument.%1.LocalCoord=%6\n"
-                "App.ActiveDocument.%1.Style=1\n"
-                "App.ActiveDocument.%1.Placement=%7\n"
-                "App.ActiveDocument.%1.Label='%8'\n")
-                .arg(name)
-                .arg(ui.helixPitch->value().getValue(),0,'f',2)
-                .arg(ui.helixHeight->value().getValue(),0,'f',2)
-                .arg(ui.helixRadius->value().getValue(),0,'f',2)
-                .arg(ui.helixAngle->value().getValue(),0,'f',2)
-                .arg(ui.helixLocalCS->currentIndex())
-                .arg(placement)
-                .arg(tr("Helix"));
-        }
-        else if (ui.comboBox1->currentIndex() == 10) {  // spiral
-            name = QString::fromAscii(doc->getUniqueObjectName("Spiral").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Spiral\",\"%1\")\n"
-                "App.ActiveDocument.%1.Growth=%2\n"
-                "App.ActiveDocument.%1.Rotations=%3\n"
-                "App.ActiveDocument.%1.Radius=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui.spiralGrowth->value().getValue(),0,'f',2)
-                .arg(ui.spiralRotation->value(),0,'f',2)
-                .arg(ui.spiralRadius->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Spiral"));
-        }
-        else if (ui.comboBox1->currentIndex() == 11) {  // circle
-            name = QString::fromAscii(doc->getUniqueObjectName("Circle").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Circle\",\"%1\")\n"
-                "App.ActiveDocument.%1.Radius=%2\n"
-                "App.ActiveDocument.%1.Angle0=%3\n"
-                "App.ActiveDocument.%1.Angle1=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui.circleRadius->value().getValue(),0,'f',2)
-                .arg(ui.circleAngle0->value().getValue(),0,'f',2)
-                .arg(ui.circleAngle1->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Circle"));
-        }
-        else if (ui.comboBox1->currentIndex() == 12) {  // ellipse
-            name = QString::fromAscii(doc->getUniqueObjectName("Ellipse").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Ellipse\",\"%1\")\n"
-                "App.ActiveDocument.%1.MajorRadius=%2\n"
-                "App.ActiveDocument.%1.MinorRadius=%3\n"
-                "App.ActiveDocument.%1.Angle0=%4\n"
-                "App.ActiveDocument.%1.Angle1=%5\n"
-                "App.ActiveDocument.%1.Placement=%6\n"
-                "App.ActiveDocument.%1.Label='%7'\n")
-                .arg(name)
-                .arg(ui.ellipseMajorRadius->value().getValue(),0,'f',2)
-                .arg(ui.ellipseMinorRadius->value().getValue(),0,'f',2)
-                .arg(ui.ellipseAngle0->value().getValue(),0,'f',2)
-                .arg(ui.ellipseAngle1->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Ellipse"));
-        }
-        else if (ui.comboBox1->currentIndex() == 13) {  // vertex
-            name = QString::fromAscii(doc->getUniqueObjectName("Vertex").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Vertex\",\"%1\")\n"
-                "App.ActiveDocument.%1.X=%2\n"
-                "App.ActiveDocument.%1.Y=%3\n"
-                "App.ActiveDocument.%1.Z=%4\n"
-                "App.ActiveDocument.%1.Placement=%5\n"
-                "App.ActiveDocument.%1.Label='%6'\n")
-                .arg(name)
-                .arg(ui.vertexX->value().getValue(),0,'f',2)
-                .arg(ui.vertexY->value().getValue(),0,'f',2)
-                .arg(ui.vertexZ->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Vertex"));
-        }
-        else if (ui.comboBox1->currentIndex() == 14) {  // line
-            name = QString::fromAscii(doc->getUniqueObjectName("Line").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::Line\",\"%1\")\n"
-                "App.ActiveDocument.%1.X1=%2\n"
-                "App.ActiveDocument.%1.Y1=%3\n"
-                "App.ActiveDocument.%1.Z1=%4\n"
-                "App.ActiveDocument.%1.X2=%5\n"
-                "App.ActiveDocument.%1.Y2=%6\n"
-                "App.ActiveDocument.%1.Z2=%7\n"
-                "App.ActiveDocument.%1.Placement=%8\n"
-                "App.ActiveDocument.%1.Label='%9'\n")
-                .arg(name)
-                .arg(ui.edgeX1->value().getValue(),0,'f',2)
-                .arg(ui.edgeY1->value().getValue(),0,'f',2)
-                .arg(ui.edgeZ1->value().getValue(),0,'f',2)
-                .arg(ui.edgeX2->value().getValue(),0,'f',2)
-                .arg(ui.edgeY2->value().getValue(),0,'f',2)
-                .arg(ui.edgeZ2->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Line"));
-        }
-        else if (ui.comboBox1->currentIndex() == 15) {  // RegularPolygon
-            name = QString::fromAscii(doc->getUniqueObjectName("RegularPolygon").c_str());
-            cmd = QString::fromAscii(
-                "App.ActiveDocument.addObject(\"Part::RegularPolygon\",\"%1\")\n"
-                "App.ActiveDocument.%1.Polygon=%2\n"
-                "App.ActiveDocument.%1.Circumradius=%3\n"
-                "App.ActiveDocument.%1.Placement=%4\n"
-                "App.ActiveDocument.%1.Label='%5'\n")
-                .arg(name)
-                .arg(ui.regularPolygonPolygon->value())
-                .arg(ui.regularPolygonCircumradius->value().getValue(),0,'f',2)
-                .arg(placement)
-                .arg(tr("Regular polygon"));
+        switch(ui.widgetStack->currentIndex()) {
+            case 1:         // box
+                cmd = QString::fromAscii(
+                    "App.ActiveDocument.%1.Length=%2\n"
+                    "App.ActiveDocument.%1.Width=%3\n"
+                    "App.ActiveDocument.%1.Height=%4\n")
+                    .arg(name)
+                    .arg(ui.boxLength->value().getValue(),0,'f',2)
+                    .arg(ui.boxWidth->value().getValue(),0,'f',2)
+                    .arg(ui.boxHeight->value().getValue(),0,'f',2);
+                break;
+        
+            case 2:  // cylinder
+                cmd = QString::fromAscii(
+                    "App.ActiveDocument.%1.Radius=%2\n"
+                    "App.ActiveDocument.%1.Height=%3\n"
+                    "App.ActiveDocument.%1.Angle=%4\n")
+                    .arg(name)
+                    .arg(ui.cylinderRadius->value().getValue(),0,'f',2)
+                    .arg(ui.cylinderHeight->value().getValue(),0,'f',2)
+                    .arg(ui.cylinderAngle->value().getValue(),0,'f',2);
+                break;
+                
+            case 3:  // cone
+                cmd = QString::fromAscii(
+                    "App.ActiveDocument.%1.Radius1=%2\n"
+                    "App.ActiveDocument.%1.Radius2=%3\n"
+                    "App.ActiveDocument.%1.Height=%4\n"
+                    "App.ActiveDocument.%1.Angle=%5\n")
+                    .arg(name)
+                    .arg(ui.coneRadius1->value().getValue(),0,'f',2)
+                    .arg(ui.coneRadius2->value().getValue(),0,'f',2)
+                    .arg(ui.coneHeight->value().getValue(),0,'f',2)
+                    .arg(ui.coneAngle->value().getValue(),0,'f',2);
+                 break;
+
+            case 4:  // sphere
+                cmd = QString::fromAscii(
+                    "App.ActiveDocument.%1.Radius=%2\n"
+                    "App.ActiveDocument.%1.Angle1=%3\n"
+                    "App.ActiveDocument.%1.Angle2=%4\n"
+                    "App.ActiveDocument.%1.Angle3=%5\n")
+                    .arg(name)
+                    .arg(ui.sphereRadius->value().getValue(),0,'f',2)
+                    .arg(ui.sphereAngle1->value().getValue(),0,'f',2)
+                    .arg(ui.sphereAngle2->value().getValue(),0,'f',2)
+                    .arg(ui.sphereAngle3->value().getValue(),0,'f',2);
+                break;
+            case 5:  // ellipsoid
+                cmd = QString::fromAscii(
+                    "App.ActiveDocument.%1.Radius1=%2\n"
+                    "App.ActiveDocument.%1.Radius2=%3\n"
+                    "App.ActiveDocument.%1.Radius3=%4\n"
+                    "App.ActiveDocument.%1.Angle1=%5\n"
+                    "App.ActiveDocument.%1.Angle2=%6\n"
+                    "App.ActiveDocument.%1.Angle3=%7\n")
+                    .arg(name)
+                    .arg(ui.ellipsoidRadius1->value().getValue(),0,'f',2)
+                    .arg(ui.ellipsoidRadius2->value().getValue(),0,'f',2)
+                    .arg(ui.ellipsoidRadius3->value().getValue(),0,'f',2)
+                    .arg(ui.ellipsoidAngle1->value().getValue(),0,'f',2)
+                    .arg(ui.ellipsoidAngle2->value().getValue(),0,'f',2)
+                    .arg(ui.ellipsoidAngle3->value().getValue(),0,'f',2);
+                break;
+                
+            case 6:  // torus
+                cmd = QString::fromAscii(
+                    "App.ActiveDocument.addObject(\"Part::Torus\",\"%1\")\n"
+                    "App.ActiveDocument.%1.Radius1=%2\n"
+                    "App.ActiveDocument.%1.Radius2=%3\n"
+                    "App.ActiveDocument.%1.Angle1=%4\n"
+                    "App.ActiveDocument.%1.Angle2=%5\n"
+                    "App.ActiveDocument.%1.Angle3=%6\n")
+                    .arg(name)
+                    .arg(ui.torusRadius1->value().getValue(),0,'f',2)
+                    .arg(ui.torusRadius2->value().getValue(),0,'f',2)
+                    .arg(ui.torusAngle1->value().getValue(),0,'f',2)
+                    .arg(ui.torusAngle2->value().getValue(),0,'f',2)
+                    .arg(ui.torusAngle3->value().getValue(),0,'f',2);
+                break;
+            case 7:  // prism
+                cmd = QString::fromAscii(
+                    "App.ActiveDocument.%1.Polygon=%2\n"
+                    "App.ActiveDocument.%1.Circumradius=%3\n"
+                    "App.ActiveDocument.%1.Height=%4\n")
+                    .arg(name)
+                    .arg(ui.prismPolygon->value())
+                    .arg(ui.prismCircumradius->value().getValue(),0,'f',2)
+                    .arg(ui.prismHeight->value().getValue(),0,'f',2);
+                break;
+            case 8:  // wedge
+                cmd = QString::fromAscii(
+                    "App.ActiveDocument.%1.Xmin=%2\n"
+                    "App.ActiveDocument.%1.Ymin=%3\n"
+                    "App.ActiveDocument.%1.Zmin=%4\n"
+                    "App.ActiveDocument.%1.X2min=%5\n"
+                    "App.ActiveDocument.%1.Z2min=%6\n"
+                    "App.ActiveDocument.%1.Xmax=%7\n"
+                    "App.ActiveDocument.%1.Ymax=%8\n"
+                    "App.ActiveDocument.%1.Zmax=%9\n"
+                    "App.ActiveDocument.%1.X2max=%10\n"
+                    "App.ActiveDocument.%1.Z2max=%11\n")
+                    .arg(name)
+                    .arg(ui.wedgeXmin->value().getValue(),0,'f',2)
+                    .arg(ui.wedgeYmin->value().getValue(),0,'f',2)
+                    .arg(ui.wedgeZmin->value().getValue(),0,'f',2)
+                    .arg(ui.wedgeX2min->value().getValue(),0,'f',2)
+                    .arg(ui.wedgeZ2min->value().getValue(),0,'f',2)
+                    .arg(ui.wedgeXmax->value().getValue(),0,'f',2)
+                    .arg(ui.wedgeYmax->value().getValue(),0,'f',2)
+                    .arg(ui.wedgeZmax->value().getValue(),0,'f',2)
+                    .arg(ui.wedgeX2max->value().getValue(),0,'f',2)
+                    .arg(ui.wedgeZ2max->value().getValue(),0,'f',2);
+                break;
+            
+            default:
+                break;
         }
 
         // Execute the Python block
-        QString prim = tr("Create %1").arg(ui.comboBox1->currentText());
+        QString prim = tr("Create primitive");
         Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());
         Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toUtf8());
         Gui::Application::Instance->activeDocument()->commitCommand();
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
     catch (const Base::PyException& e) {
-        QMessageBox::warning(this, tr("Create %1")
-            .arg(ui.comboBox1->currentText()), QString::fromLatin1(e.what()));
+        QMessageBox::warning(this, tr("Create primitive"), QString::fromLatin1(e.what()));
     }
-}*/
+}
 
 TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* PrimitiveView) : vp_prm(PrimitiveView)
 {
@@ -806,6 +631,10 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     
     primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
+    
+    //make sure we track changes from the coordinate system to the primitive position
+    auto bnd = boost::bind(&TaskPrimitiveParameters::objectChanged, this, _1, _2);
+    connection = vp_prm->getObject()->getDocument()->signalChangedObject.connect(bnd);
 }
 
 TaskPrimitiveParameters::~TaskPrimitiveParameters()
@@ -813,8 +642,18 @@ TaskPrimitiveParameters::~TaskPrimitiveParameters()
 
 }
 
+void TaskPrimitiveParameters::objectChanged(const App::DocumentObject& obj, const App::Property& p) {
+
+    if(&obj == cs && strcmp(p.getName(), "Placement")==0) {
+        
+        vp_prm->getObject()->recompute();
+    }
+}
+
+
 bool TaskPrimitiveParameters::accept()
 {
+    primitive->setPrimitive(QString::fromUtf8(vp_prm->getObject()->getNameInDocument()));
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
 
@@ -827,6 +666,7 @@ bool TaskPrimitiveParameters::accept()
         Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(false); 
     }
     
+    connection.disconnect();    
     return true;
 }
 
@@ -849,6 +689,7 @@ bool TaskPrimitiveParameters::reject() {
         }
     }
     
+    connection.disconnect();
     return true;
 }
 
