@@ -76,6 +76,7 @@ void CoordinateSystem::initHints()
     key.insert(POINT);
     value.insert(PLANE);
     value.insert(LINE);
+    value.insert(POINT);
     value.insert(DONE);
     hints[key] = value;  
     
@@ -83,6 +84,7 @@ void CoordinateSystem::initHints()
     key.insert(POINT);
     key.insert(PLANE);
     value.insert(LINE);
+    value.insert(POINT);
     value.insert(DONE);
     hints[key] = value;
     
@@ -90,6 +92,12 @@ void CoordinateSystem::initHints()
     key.insert(POINT);
     key.insert(PLANE);
     key.insert(LINE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(PLANE);
+    key.insert(POINT);
     hints[key] = Done;
     
     key.clear(); value.clear();
@@ -97,6 +105,7 @@ void CoordinateSystem::initHints()
     key.insert(LINE);
     value.insert(PLANE);
     value.insert(LINE);
+    value.insert(POINT);
     value.insert(DONE);
     hints[key] = value;
     
@@ -110,6 +119,39 @@ void CoordinateSystem::initHints()
     key.insert(POINT);
     key.insert(LINE);
     key.insert(LINE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(LINE);
+    key.insert(POINT);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(POINT);
+    value.insert(PLANE);
+    value.insert(LINE);
+    value.insert(POINT);
+    value.insert(DONE);
+    hints[key] = value;
+    
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(POINT);
+    key.insert(PLANE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(POINT);
+    key.insert(LINE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(POINT);
+    key.insert(POINT);
     hints[key] = Done;
    
     //Plane First -------------------------
@@ -137,6 +179,7 @@ void CoordinateSystem::initHints()
     key.insert(PLANE);
     key.insert(POINT);
     value.insert(LINE);
+    value.insert(POINT);
     value.insert(DONE);
     hints[key] = value;
     
@@ -144,6 +187,12 @@ void CoordinateSystem::initHints()
     key.insert(PLANE);
     key.insert(POINT);
     key.insert(LINE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(PLANE);
+    key.insert(POINT);
+    key.insert(POINT);
     hints[key] = Done;
     
     
@@ -187,6 +236,7 @@ void CoordinateSystem::initHints()
     key.insert(POINT);
     value.insert(PLANE);
     value.insert(LINE);
+    value.insert(POINT);
     value.insert(DONE);
     hints[key] = value;
     
@@ -194,6 +244,12 @@ void CoordinateSystem::initHints()
     key.insert(LINE);
     key.insert(POINT);
     key.insert(PLANE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(POINT);
+    key.insert(POINT);
     hints[key] = Done;
     
     key.clear(); value.clear();
@@ -250,19 +306,25 @@ void CoordinateSystem::onChanged(const App::Property *prop)
             throw Base::Exception("Can not build coordinate system from given references"); // incomplete references
             
         //build the placement from the references
-        bool plane = false, line1 = false, line2 = false, origin = false;
+        bool plane = false, line1 = false, line2 = false, point1 = false, point2=false, point3=false;
         gp_Pln pln;
         gp_Lin lin1, lin2;
-        gp_Pnt org;
+        gp_Pnt p1,  p2, p3;
         
         int count = 0;
         for(int i = 0; i < refs.size(); i++) {
             
             if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Point::getClassTypeId())) {
                 PartDesign::Point* p = static_cast<PartDesign::Point*>(refs[i]);
-                if(!origin) {
-                    org = GP_POINT(p->getPoint());
-                    origin=true;
+                if(!point1) {
+                    p1 = GP_POINT(p->getPoint());
+                    point1=true;
+                } else if(!point2) {
+                    p2 = GP_POINT(p->getPoint());
+                    point2=true;
+                } else if(!point3) {
+                    p3 = GP_POINT(p->getPoint());
+                    point3=true;
                 }
                 else 
                     throw Base::Exception("Too many points in coordinate system references"); //too much points selected
@@ -341,9 +403,15 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                 if (subshape.ShapeType() == TopAbs_VERTEX) {
                     TopoDS_Vertex v = TopoDS::Vertex(subshape);
 
-                    if(!origin) {
-                        org = BRep_Tool::Pnt(v);
-                        origin=true;
+                    if(!point1) {
+                        p1 = BRep_Tool::Pnt(v);
+                        point1=true;
+                    } else if(!point2) {
+                        p2 = BRep_Tool::Pnt(v);
+                        point2=true;
+                    } else if(!point3) {
+                        p3 = BRep_Tool::Pnt(v);
+                        point3=true;
                     }
                     else 
                         throw Base::Exception("Too many points in coordinate system references");
@@ -393,38 +461,71 @@ void CoordinateSystem::onChanged(const App::Property *prop)
         };
         
         gp_Ax3 ax;
-        if(origin) {            
+        if(point1) {            
             
             if(plane) {
-                if(!pln.Contains(org, Precision::Confusion()))
+                if(!pln.Contains(p1, Precision::Confusion()))
                     throw Base::Exception("Point must lie on plane");
                     
-                if(line1) {
+                if(point2) {
+                    if(!pln.Contains(p2, Precision::Confusion()))
+                        throw Base::Exception("Point must lie on plane");
+                    
+                    if(p1.Distance(p2) < Precision::Confusion())
+                        throw Base::Exception("Point must not be coincident");
+                    
+                    ax = gp_Ax3(p1, pln.Axis().Direction(), gp_Dir((p2.XYZ()-p1.XYZ())));
+                }
+                else if(line1) {
                     if(!pln.Contains(lin1, Precision::Confusion(), Precision::Confusion()))
                         throw Base::Exception("Line must lie on plane");
                     
                     if(line2)
                         throw Base::Exception("Two lines and a plain are not supportet");
                     
-                    ax = gp_Ax3(org, pln.Axis().Direction(), lin1.Direction());         
+                    ax = gp_Ax3(p1, pln.Axis().Direction(), lin1.Direction());         
                 }
                 else {
-                    ax = gp_Ax3(org, pln.Axis().Direction(), pln.XAxis().Direction());
+                    ax = gp_Ax3(p1, pln.Axis().Direction(), pln.XAxis().Direction());
                 }
             }
             else if(line1) {
                 
-                if(line2) {
+                if(point2) {
+                    if(!gp_Lin(p1, lin1.Direction()).Contains(p2, Precision::Confusion()))
+                        throw Base::Exception("Second Point must not lie on z-axis");
+                    
+                    if(p1.Distance(p2) < Precision::Confusion())
+                        throw Base::Exception("Points must not be coincident");
+                    
+                    ax = gp_Ax3(p1, lin1.Direction(), gp_Dir((p2.XYZ()-p1.XYZ())));
+                } 
+                else if(line2) {
                     if(lin2.Angle(lin1)<Precision::Angular())
                         return;
                     
-                    ax = gp_Ax3(org, lin1.Direction(), lin2.Direction());
+                    ax = gp_Ax3(p1, lin1.Direction(), lin2.Direction());
                 }
                 else 
-                    ax = gp_Ax3(org, lin1.Direction());
+                    ax = gp_Ax3(p1, lin1.Direction());
+            }
+            else if(point2) {
+             
+                if(p1.Distance(p2) < Precision::Confusion())
+                        throw Base::Exception("Points must not be coincident");
+                
+                if(point3) {
+                    if(p1.Distance(p3) < 2*Precision::Confusion())
+                        throw Base::Exception("Points must not be coincident");
+                    
+                    ax = gp_Ax3(p1, gp_Dir((p2.XYZ()-p1.XYZ())), gp_Dir((p3.XYZ()-p2.XYZ())));
+                }
+                else {
+                    ax = gp_Ax3(p1, gp_Dir((p2.XYZ()-p1.XYZ())));
+                }
             }
             else
-                ax = gp_Ax3(org, gp_Dir(0,0,1), gp_Dir(1,0,0));
+                ax = gp_Ax3(p1, gp_Dir(0,0,1), gp_Dir(1,0,0));
         }
         else if(plane) {
                 
