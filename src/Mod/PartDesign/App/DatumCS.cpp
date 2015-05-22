@@ -71,6 +71,8 @@ void CoordinateSystem::initHints()
 
     std::multiset<QString> key;
     std::set<QString> value;
+    
+    //Point first ----------------------
     key.insert(POINT);
     value.insert(PLANE);
     value.insert(LINE);
@@ -93,13 +95,35 @@ void CoordinateSystem::initHints()
     key.clear(); value.clear();
     key.insert(POINT);
     key.insert(LINE);
-
+    value.insert(PLANE);
+    value.insert(LINE);
     value.insert(DONE);
     hints[key] = value;
     
-    /*
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(LINE);
+    key.insert(PLANE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(POINT);
+    key.insert(LINE);
+    key.insert(LINE);
+    hints[key] = Done;
+   
+    //Plane First -------------------------
     key.clear(); value.clear();
     key.insert(PLANE);
+    value.insert(LINE);
+    value.insert(POINT);
+    value.insert(DONE);
+    hints[key] = value;
+    
+    key.clear(); value.clear();
+    key.insert(PLANE);
+    key.insert(LINE);
+    value.insert(POINT);
     value.insert(LINE);
     value.insert(DONE);
     hints[key] = value;
@@ -107,9 +131,97 @@ void CoordinateSystem::initHints()
     key.clear(); value.clear();
     key.insert(PLANE);
     key.insert(LINE);
+    key.insert(LINE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(PLANE);
+    key.insert(LINE);
+    key.insert(POINT);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(PLANE);
+    key.insert(POINT);
     value.insert(LINE);
     value.insert(DONE);
-    hints[key] = value;*/
+    hints[key] = value;
+    
+    key.clear(); value.clear();
+    key.insert(PLANE);
+    key.insert(POINT);
+    key.insert(LINE);
+    hints[key] = Done;
+    
+    
+    //Line First -------------------------
+    key.clear(); value.clear();
+    key.insert(LINE);
+    value.insert(PLANE);
+    value.insert(LINE);
+    value.insert(POINT);
+    value.insert(DONE);
+    hints[key] = value;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(PLANE);
+    value.insert(POINT);
+    value.insert(LINE);
+    value.insert(DONE);
+    hints[key] = value;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(PLANE);
+    key.insert(LINE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(PLANE);
+    key.insert(POINT);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(LINE);
+    value.insert(PLANE);
+    value.insert(POINT);
+    value.insert(DONE);
+    hints[key] = value;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(LINE);
+    key.insert(PLANE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(LINE);
+    key.insert(POINT);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(POINT);
+    value.insert(PLANE);
+    value.insert(LINE);
+    value.insert(DONE);
+    hints[key] = value;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(POINT);
+    key.insert(PLANE);
+    hints[key] = Done;
+    
+    key.clear(); value.clear();
+    key.insert(LINE);
+    key.insert(PLANE);
+    key.insert(POINT);
+    hints[key] = Done;
 }
 
 // ============================================================================
@@ -159,9 +271,9 @@ void CoordinateSystem::onChanged(const App::Property *prop)
             return; //throw Base::Exception("Can not build coordinate system from given references"); // incomplete references
             
         //build the placement from the references
-        bool plane = false, lineX = false, lineY = false, origin = false;
+        bool plane = false, line1 = false, line2 = false, origin = false;
         gp_Pln pln;
-        gp_Lin linX, linY;
+        gp_Lin lin1, lin2;
         gp_Pnt org;
         
         int count = 0;
@@ -204,13 +316,13 @@ void CoordinateSystem::onChanged(const App::Property *prop)
             }
             else if (refs[i]->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
                 PartDesign::Line* p = static_cast<PartDesign::Line*>(refs[i]);
-                if(!lineX) {
-                    linX = gp_Lin(GP_POINT(p->getBasePoint()), GP_DIR(p->getDirection()));
-                    lineX = true;
+                if(!line1) {
+                    lin1 = gp_Lin(GP_POINT(p->getBasePoint()), GP_DIR(p->getDirection()));
+                    line1 = true;
                 }
-                else if(!lineY) {
-                    linY = gp_Lin(GP_POINT(p->getBasePoint()), GP_DIR(p->getDirection()));
-                    lineY = true;
+                else if(!line2) {
+                    lin2 = gp_Lin(GP_POINT(p->getBasePoint()), GP_DIR(p->getDirection()));
+                    line2 = true;
                 }
                 else 
                     return; //throw Base::Exception("Too many lines in coordinate syste references");; //too much lines selected
@@ -226,13 +338,13 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                 else if (strcmp(p->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
                     dir = gp_Dir(0,0,1);
                 
-                if(!lineX) {    
-                    linX = gp_Lin(base, dir);
-                    lineX=true;
+                if(!line1) {    
+                    lin1 = gp_Lin(base, dir);
+                    line1=true;
                 }
-                else if(!lineY) {    
-                    linY = gp_Lin(base, dir);
-                    lineY=true;
+                else if(!line2) {    
+                    lin2 = gp_Lin(base, dir);
+                    line2=true;
                 }
                 else 
                     return; //throw Base::Exception("Too many lines in coordinate syste references");
@@ -263,13 +375,13 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                     if (adapt.GetType() != GeomAbs_Line)
                         return; //throw Base::Exception("Only straight edges are supported");
                         
-                    if(!lineX) {    
-                        linX = adapt.Line();
-                        lineX=true;
+                    if(!line1) {    
+                        lin1 = adapt.Line();
+                        line1=true;
                     }
-                    else if(!lineY) {    
-                        linY = adapt.Line();
-                        lineY=true;
+                    else if(!line2) {    
+                        lin2 = adapt.Line();
+                        line2=true;
                     }
                     else 
                         return; //throw Base::Exception("Too many lines in coordinate system references");           
@@ -303,39 +415,54 @@ void CoordinateSystem::onChanged(const App::Property *prop)
         
         gp_Ax3 ax;
         if(origin) {            
-            Base::Vector3d base(org.X(), org.Y(), org.Z());
             
             if(plane) {
                 if(!pln.Contains(org, Precision::Confusion()))
                     return; //throw Base::Exception("Point must lie on plane");
                     
-                if(lineX) {
-                    if(!pln.Contains(linX, Precision::Confusion(), Precision::Confusion()))
+                if(line1) {
+                    if(!pln.Contains(lin1, Precision::Confusion(), Precision::Confusion()))
                         return; //throw Base::Exception("Line must lie on plane");
                     
-                    ax = gp_Ax3(org, pln.Axis().Direction(), linX.Direction());         
+                    ax = gp_Ax3(org, pln.Axis().Direction(), lin1.Direction());         
                 }
                 else {
                     ax = gp_Ax3(org, pln.Axis().Direction(), pln.XAxis().Direction());
                 }
             }
-            else if(lineX) {
+            else if(line1) {
                 
-                if(lineY) {
-                    if(linY.Angle(linX)<Precision::Angular())
+                if(line2) {
+                    if(lin2.Angle(lin1)<Precision::Angular())
                         return;
                     
-                    ax = gp_Ax3(org, linX.Direction().Crossed(linY.Direction()), linX.Direction());
-                }
-                else if(!linX.Contains(org, Precision::Confusion())) {
-                    gp_Lin nor = linX.Normal(org);
-                    ax = gp_Ax3(nor.Location(), nor.Direction().Crossed(linX.Direction()), linX.Direction());
+                    ax = gp_Ax3(org, lin1.Direction(), lin2.Direction());
                 }
                 else 
-                    return;
+                    ax = gp_Ax3(org, lin1.Direction());
             }
             else
                 ax = gp_Ax3(org, gp_Dir(0,0,1), gp_Dir(1,0,0));
+        }
+        else if(plane) {
+                
+            if(line1) {
+                if(!pln.Contains(lin1, Precision::Confusion(), Precision::Confusion()))
+                        return; //throw Base::Exception("Line must lie on plane");
+                
+                ax = gp_Ax3(pln.Location(), pln.Axis().Direction(), lin1.Direction());        
+            }
+            else {
+                ax = gp_Ax3(pln.Location(), pln.Axis().Direction(), pln.XAxis().Direction());
+            }            
+        }
+        else if(line1) {
+            
+            if(line2) {
+                ax = gp_Ax3(lin1.Location(), lin1.Direction(), lin2.Direction());
+            }
+            else 
+                ax = gp_Ax3(lin1.Location(), lin1.Direction());
         }
             
         //build the placement
