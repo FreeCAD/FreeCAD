@@ -19,6 +19,9 @@
      <property name="text">
       <string>Selection accepted</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
      <property name="wordWrap">
       <bool>true</bool>
      </property>

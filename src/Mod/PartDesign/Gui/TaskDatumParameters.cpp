@@ -233,7 +233,11 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
 {
     //set text if available
     if(!message.empty()) {
-        ui->message->setText(QString::fromStdString(message));            
+        ui->message->setText(QString::fromStdString(message));
+        if(error)
+            ui->message->setStyleSheet(QString::fromAscii("QLabel{color: red;}"));
+        else 
+            ui->message->setStyleSheet(QString::fromAscii("QLabel{color: green;}"));
     }
     
     ui->checkBoxFlip->setVisible(false);
