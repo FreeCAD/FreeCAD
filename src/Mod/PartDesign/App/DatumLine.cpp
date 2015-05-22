@@ -159,14 +159,14 @@ void Line::onChanged(const App::Property *prop)
         std::vector<App::DocumentObject*> refs = References.getValues();
         std::vector<std::string> refnames = References.getSubValues();
         if (refs.size() != refnames.size())
-            return;
+            throw Base::Exception("Reference Missmatch");
 
         for (int r = 0; r < refs.size(); r++)
             refTypes.insert(getRefType(refs[r], refnames[r]));
 
         std::set<QString> hint = getHint();
         if (!((hint.size() == 1) && (hint.find(QObject::tr("Done")) != hint.end())))
-            return; // incomplete references
+            throw Base::Exception("Incomplete References"); // incomplete references
 
         // Extract the geometry of the references
         Base::Vector3d* base = NULL;
@@ -226,7 +226,7 @@ void Line::onChanged(const App::Property *prop)
                     // Create plane through line normal to s1
                     Handle_Geom_Plane pl = Handle_Geom_Plane::DownCast(s1);
                     if (pl.IsNull())
-                        return; // Non-planar first surface
+                        throw Base::Exception("Non-planar first surface"); // Non-planar first surface
                     gp_Dir normal = ldir.Crossed(pl->Axis().Direction());
                     double offset1 = Offset.getValue();
                     double offset2 = Offset2.getValue();
@@ -375,7 +375,7 @@ void Line::onChanged(const App::Property *prop)
             // Line from two surfaces
             GeomAPI_IntSS intersectorSS(s1, s2, Precision::Confusion());
             if (!intersectorSS.IsDone() || (intersectorSS.NbLines() == 0))
-                return;
+                throw Base::Exception("Intersection of surfaces failed");
             if (intersectorSS.NbLines() > 1)
                 Base::Console().Warning("More than one intersection curve for datum line from surfaces\n");
             Handle_Geom_Line l = Handle_Geom_Line::DownCast(intersectorSS.Line(1));

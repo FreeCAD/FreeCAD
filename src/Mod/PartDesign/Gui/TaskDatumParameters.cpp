@@ -229,8 +229,13 @@ const QString makeRefText(std::set<QString> hint)
     return result;
 }
 
-void TaskDatumParameters::updateUI()
+void TaskDatumParameters::updateUI(std::string message, bool error)
 {
+    //set text if available
+    if(!message.empty()) {
+        ui->message->setText(QString::fromStdString(message));            
+    }
+    
     ui->checkBoxFlip->setVisible(false);
 
     int numOffsets = static_cast<Part::Datum*>(DatumView->getObject())->offsetsAllowed();
@@ -401,8 +406,16 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             refs.push_back(selObj);
             refnames.push_back(subname);
         }
-        pcDatum->References.setValues(refs, refnames);
-        //pcDatum->getDocument()->recomputeFeature(pcDatum);
+        
+        bool error = false;
+        std::string message("Selection accepted");
+        try {
+            pcDatum->References.setValues(refs, refnames);
+        }
+        catch(Base::Exception& e) {
+            error = true;
+            message = std::string(e.what());
+        }
 
         QLineEdit* line = getLine(refSelectionMode);
         if (line != NULL) {
@@ -412,7 +425,7 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             line->blockSignals(false);
         }
 
-        updateUI();
+        updateUI(message, error);
     }
 }
 

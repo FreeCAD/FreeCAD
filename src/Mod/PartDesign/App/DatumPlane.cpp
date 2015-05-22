@@ -326,7 +326,7 @@ void Plane::onChanged(const App::Property *prop)
             // Intersect a line through the base point of the cylinder and normal to the plane with the cylinder itself
             GeomAPI_IntCS intersector(normalLine, cylinder);
             if (!intersector.IsDone() || (intersector.NbPoints() == 0))
-                return;
+                throw Base::Exception("Curve - Surface intersection failed");
             if (intersector.NbPoints() > 1)
                 Base::Console().Warning("More than one intersection point for datum plane from cylinder and plane\n");
 
@@ -349,7 +349,7 @@ void Plane::onChanged(const App::Property *prop)
             Base::Vector3d vec2 = *p3 - *p1;
             normal = new Base::Vector3d(vec1 % vec2);
         } else {
-            return;
+            throw Base::Exception("Unvalid references");
         }
 
         *normal = normal->Normalize();
