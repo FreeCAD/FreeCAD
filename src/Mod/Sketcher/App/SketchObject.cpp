@@ -472,7 +472,7 @@ int SketchObject::toggleConstruction(int GeoId)
     newVals[GeoId]=geoNew;
 
     this->Geometry.setValues(newVals);
-    this->Constraints.acceptGeometry(getCompleteGeometry());
+    //this->Constraints.acceptGeometry(getCompleteGeometry()); <= This is not necessary for a toggle. Reducing redundant solving. Abdullah
     return 0;
 }
 

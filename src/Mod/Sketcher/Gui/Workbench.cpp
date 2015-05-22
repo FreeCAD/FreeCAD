@@ -177,6 +177,7 @@ inline void SketcherAddWorkbenchGeometries(T& geom){
             << "Sketcher_Trimming"
             << "Sketcher_External"
             << "Sketcher_ToggleConstruction"
+            << "Sketcher_GeometryCreationMode"
             /*<< "Sketcher_CreateText"*/
             /*<< "Sketcher_CreateDraftLine"*/;
 }
