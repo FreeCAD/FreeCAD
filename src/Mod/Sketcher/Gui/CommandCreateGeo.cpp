@@ -53,9 +53,21 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/SoFCUnifiedSelection.h>
 
+#include <Gui/ToolBarManager.h>
+
 using namespace std;
 using namespace SketcherGui;
 
+/***** Creation Mode ************/
+namespace SketcherGui
+{
+    enum GeometryCreationMode {
+        Normal,
+        Construction
+    };
+}
+
+GeometryCreationMode geometryCreationMode=Normal;
 
 /* helper functions ======================================================*/
 
@@ -230,11 +242,21 @@ public:
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
-
+            
+            int currentgeoid= getHighestCurveIndex();
+            
             Gui::Command::openCommand("Add sketch line");
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
                       sketchgui->getObject()->getNameInDocument(),
                       EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
+            
+            if(geometryCreationMode==Construction) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    currentgeoid+1);
+            }
+            
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
 
@@ -456,6 +478,26 @@ public:
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
                      ,sketchgui->getObject()->getNameInDocument()
                      ,firstCurve+3);
+            
+            if(geometryCreationMode==Construction) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    firstCurve);                
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    firstCurve+1);
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    firstCurve+2);
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    firstCurve+3);                
+            }
+            
 
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
@@ -887,7 +929,7 @@ public:
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
         if (Mode == STATUS_Do || Mode == STATUS_Close) {
-            bool addedGeometry = true;
+            bool addedGeometry = true;            
             if (SegmentMode == SEGMENT_MODE_Line) {
                 // open the transaction
                 Gui::Command::openCommand("Add line to sketch wire");
@@ -897,6 +939,7 @@ public:
                         "App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
                         sketchgui->getObject()->getNameInDocument(),
                         EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY);
+                    
                 }
                 catch (const Base::Exception& e) {
                     addedGeometry = false;
@@ -924,9 +967,9 @@ public:
                     Gui::Command::abortCommand();
                 }
             }
+            int lastCurve = getHighestCurveIndex();
             // issue the constraint
             if (addedGeometry && (previousPosId != Sketcher::none)) {
-                int lastCurve = getHighestCurveIndex();
                 Sketcher::PointPos lastStartPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
                                                     Sketcher::end : Sketcher::start;
                 Sketcher::PointPos lastEndPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle) ?
@@ -953,6 +996,13 @@ public:
                 }
                 Gui::Command::commitCommand();
                 Gui::Command::updateActive();
+            }
+            
+            if(addedGeometry && geometryCreationMode==Construction) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    lastCurve);
             }
 
             if (Mode == STATUS_Close) {
@@ -1281,6 +1331,8 @@ public:
         if (Mode==STATUS_End) {
             unsetCursor();
             resetPositionText();
+            int currentgeoid= getHighestCurveIndex();
+            
             Gui::Command::openCommand("Add sketch arc");
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
@@ -1290,6 +1342,13 @@ public:
                       CenterPoint.fX, CenterPoint.fY, sqrt(rx*rx + ry*ry),
                       startAngle, endAngle); //arcAngle > 0 ? 0 : 1);
 
+            if(geometryCreationMode==Construction) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    currentgeoid+1);
+            }                    
+                      
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
 
@@ -1569,6 +1628,8 @@ public:
         if (Mode==STATUS_End) {
             unsetCursor();
             resetPositionText();
+            int currentgeoid= getHighestCurveIndex();
+            
             Gui::Command::openCommand("Add sketch arc");
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
@@ -1577,6 +1638,13 @@ public:
                       sketchgui->getObject()->getNameInDocument(),
                       CenterPoint.fX, CenterPoint.fY, radius,
                       startAngle, endAngle);
+
+            if(geometryCreationMode==Construction) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    currentgeoid+1);
+            }            
 
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
@@ -1848,6 +1916,8 @@ public:
             double ry = EditCurve[1].fY - EditCurve[0].fY;
             unsetCursor();
             resetPositionText();
+            int currentgeoid= getHighestCurveIndex();
+            
             Gui::Command::openCommand("Add sketch circle");
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.Circle"
@@ -1855,6 +1925,13 @@ public:
                       sketchgui->getObject()->getNameInDocument(),
                       EditCurve[0].fX, EditCurve[0].fY,
                       sqrt(rx*rx + ry*ry));
+
+            if(geometryCreationMode==Construction) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    currentgeoid+1);
+            }            
 
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
@@ -2644,9 +2721,16 @@ private:
                                 periapsis.fX, periapsis.fY,
                                 positiveB.fX, positiveB.fY,
                                 centroid.fX, centroid.fY);
-
+        
         currentgeoid++;
-
+        
+        if(geometryCreationMode==Construction) {
+            Gui::Command::doCommand(Gui::Command::Doc,
+                "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                sketchgui->getObject()->getNameInDocument(),
+                currentgeoid);
+        }
+        
         try {
             Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
@@ -3051,6 +3135,14 @@ public:
             
             currentgeoid++;
             
+            if(geometryCreationMode==Construction) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    currentgeoid);
+            }
+            
+            
             try {                 
                 Gui::Command::doCommand(Gui::Command::Doc,
                                         "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
@@ -3395,6 +3487,7 @@ public:
         if (Mode==STATUS_End) {
             unsetCursor();
             resetPositionText();
+            int currentgeoid= getHighestCurveIndex();
             Gui::Command::openCommand("Add sketch circle");
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.Circle"
@@ -3402,6 +3495,13 @@ public:
                       sketchgui->getObject()->getNameInDocument(),
                       CenterPoint.fX, CenterPoint.fY,
                       radius);
+            
+            if(geometryCreationMode==Construction) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    currentgeoid+1);
+            }
 
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
@@ -3631,11 +3731,21 @@ public:
         if (selectionDone){
             unsetCursor();
             resetPositionText();
+            
+            int currentgeoid= getHighestCurveIndex();
 
             Gui::Command::openCommand("Add sketch point");
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
                       sketchgui->getObject()->getNameInDocument(),
                       EditPoint.fX,EditPoint.fY);
+            
+            if(geometryCreationMode==Construction) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                    sketchgui->getObject()->getNameInDocument(),
+                    currentgeoid+1);
+            }            
+            
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
 
@@ -4522,6 +4632,25 @@ public:
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%i,%i)) "
                          ,sketchgui->getObject()->getNameInDocument()
                          ,firstCurve,firstCurve+1);
+                
+                if(geometryCreationMode==Construction) {
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                        sketchgui->getObject()->getNameInDocument(),
+                        firstCurve);
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                        sketchgui->getObject()->getNameInDocument(),
+                        firstCurve+1);
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                        sketchgui->getObject()->getNameInDocument(),
+                        firstCurve+2);
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                        sketchgui->getObject()->getNameInDocument(),
+                        firstCurve+3);                    
+                }
 
                 Gui::Command::commitCommand();
                 Gui::Command::updateActive();
@@ -4683,7 +4812,7 @@ public:
             double rx = dV.fX;
             double ry = dV.fY;
             for (int i=1; i < static_cast<int>(Corners); i++) {
-            	const double old_rx = rx;
+                const double old_rx = rx;
                 rx = cos_v * rx - sin_v * ry;
                 ry = cos_v * ry + sin_v * old_rx;
                 EditCurve[i] = Base::Vector2D(StartPos.fX + rx, StartPos.fY + ry);
@@ -4726,14 +4855,26 @@ public:
             resetPositionText();
             Gui::Command::openCommand("Add hexagon");
 
+            int currentgeoid= getHighestCurveIndex();
+            
             try {
-            	Gui::Command::doCommand(Gui::Command::Doc,
-            			"import ProfileLib.RegularPolygon\n"
-            			"ProfileLib.RegularPolygon.makeRegularPolygon('%s',%i,App.Vector(%f,%f,0),App.Vector(%f,%f,0))",
-            	                            sketchgui->getObject()->getNameInDocument(),
-            	                            Corners,
-            	                            StartPos.fX,StartPos.fY,EditCurve[0].fX,EditCurve[0].fY);
+                Gui::Command::doCommand(Gui::Command::Doc,
+                        "import ProfileLib.RegularPolygon\n"
+                        "ProfileLib.RegularPolygon.makeRegularPolygon('%s',%i,App.Vector(%f,%f,0),App.Vector(%f,%f,0))",
+                                            sketchgui->getObject()->getNameInDocument(),
+                                            Corners,
+                                            StartPos.fX,StartPos.fY,EditCurve[0].fX,EditCurve[0].fY);
 
+                if(geometryCreationMode==Construction) {
+                    int i;
+                    for(i=0;i<Corners;i++) {
+                        Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                            sketchgui->getObject()->getNameInDocument(),
+                            currentgeoid+1+i);                    
+                    }
+                }
+                
                 Gui::Command::commitCommand();
                 Gui::Command::updateActive();
 
@@ -5049,7 +5190,155 @@ bool CmdSketcherCompCreateRegularPolygon::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 }
 
+/*** Creation Mode ***/
+DEF_STD_CMD_A(CmdSketcherGeometryCreationMode);
 
+CmdSketcherGeometryCreationMode::CmdSketcherGeometryCreationMode()
+  : Command("Sketcher_GeometryCreationMode")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Toogle construction/normal creation mode");
+    sToolTipText    = QT_TR_NOOP("Toogle between creating construction or normal geometry");
+    sWhatsThis      = "Sketcher_GeometryCreationMode";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_ToggleNormal";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherGeometryCreationMode::activated(int iMsg)
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    
+    if(geometryCreationMode==Construction) {
+        geometryCreationMode=Normal;
+        rcCmdMgr.getCommandByName("Sketcher_GeometryCreationMode")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_ToggleNormal"));
+        
+        rcCmdMgr.getCommandByName("Sketcher_CreateLine")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
+        rcCmdMgr.getCommandByName("Sketcher_CreateRectangle")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle"));
+        rcCmdMgr.getCommandByName("Sketcher_CreatePolyline")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline"));     
+        rcCmdMgr.getCommandByName("Sketcher_CreateSlot")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_CreateSlot")); 
+        // Comp commands require a distinctive treatment
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(rcCmdMgr.getCommandByName("Sketcher_CompCreateArc")->getAction());
+        QList<QAction*> a = pcAction->actions();
+        int index = pcAction->property("defaultAction").toInt();
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateArc"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc"));
+        rcCmdMgr.getCommandByName("Sketcher_CompCreateArc")->getAction()->setIcon(
+            index==0?Gui::BitmapFactory().pixmap("Sketcher_CreateArc"):
+            Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc"));
+        // Conics
+        pcAction = qobject_cast<Gui::ActionGroup*>(rcCmdMgr.getCommandByName("Sketcher_CompCreateConic")->getAction());
+        a = pcAction->actions();
+        index = pcAction->property("defaultAction").toInt();
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points"));
+        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc"));        
+        rcCmdMgr.getCommandByName("Sketcher_CompCreateConic")->getAction()->setIcon(
+            index==0?Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse"):
+            index==1?Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points"):
+            Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc"));
+        // Circle
+        pcAction = qobject_cast<Gui::ActionGroup*>(rcCmdMgr.getCommandByName("Sketcher_CompCreateCircle")->getAction());
+        a = pcAction->actions();
+        index = pcAction->property("defaultAction").toInt();
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle"));
+        rcCmdMgr.getCommandByName("Sketcher_CompCreateCircle")->getAction()->setIcon(
+            index==0?Gui::BitmapFactory().pixmap("Sketcher_CreateCircle"):
+            Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle"));
+        // Polygon
+        pcAction = qobject_cast<Gui::ActionGroup*>(rcCmdMgr.getCommandByName("Sketcher_CompCreateRegularPolygon")->getAction());
+        a = pcAction->actions();
+        index = pcAction->property("defaultAction").toInt();
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSquare"));
+        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon"));
+        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon"));
+        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"));
+        a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));        
+        rcCmdMgr.getCommandByName("Sketcher_CompCreateRegularPolygon")->getAction()->setIcon(
+            index==0?Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle"):
+            index==1?Gui::BitmapFactory().pixmap("Sketcher_CreateSquare"):
+            index==2?Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon"):
+            index==3?Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon"):
+            index==4?Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"):          
+            Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));      
+    }
+    else {
+        geometryCreationMode=Construction;
+        rcCmdMgr.getCommandByName("Sketcher_GeometryCreationMode")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_ToggleConstruction"));        
+        
+        rcCmdMgr.getCommandByName("Sketcher_CreateLine")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_CreateLine_Constr"));
+        rcCmdMgr.getCommandByName("Sketcher_CreateRectangle")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle_Constr"));
+        rcCmdMgr.getCommandByName("Sketcher_CreatePolyline")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline_Constr"));
+        rcCmdMgr.getCommandByName("Sketcher_CreateSlot")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_CreateSlot_Constr"));
+        // Comp commands require a distinctive treatment
+        // Arc
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(rcCmdMgr.getCommandByName("Sketcher_CompCreateArc")->getAction());
+        QList<QAction*> a = pcAction->actions();
+        int index = pcAction->property("defaultAction").toInt();
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateArc_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc_Constr"));
+        rcCmdMgr.getCommandByName("Sketcher_CompCreateArc")->getAction()->setIcon(
+            index==0?Gui::BitmapFactory().pixmap("Sketcher_CreateArc_Constr"):
+            Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc_Constr"));        
+        // Conics
+        pcAction = qobject_cast<Gui::ActionGroup*>(rcCmdMgr.getCommandByName("Sketcher_CompCreateConic")->getAction());
+        a = pcAction->actions();
+        index = pcAction->property("defaultAction").toInt();
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc_Constr"));        
+        rcCmdMgr.getCommandByName("Sketcher_CompCreateConic")->getAction()->setIcon(
+            index==0?Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_Constr"):
+            index==1?Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points_Constr"):
+            Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc_Constr"));
+        // Circle
+        pcAction = qobject_cast<Gui::ActionGroup*>(rcCmdMgr.getCommandByName("Sketcher_CompCreateCircle")->getAction());
+        a = pcAction->actions();
+        index = pcAction->property("defaultAction").toInt();
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle_Constr"));
+        rcCmdMgr.getCommandByName("Sketcher_CompCreateCircle")->getAction()->setIcon(
+            index==0?Gui::BitmapFactory().pixmap("Sketcher_CreateCircle_Constr"):
+            Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle_Constr"));
+        // Polygon
+        pcAction = qobject_cast<Gui::ActionGroup*>(rcCmdMgr.getCommandByName("Sketcher_CompCreateRegularPolygon")->getAction());
+        a = pcAction->actions();
+        index = pcAction->property("defaultAction").toInt();
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSquare_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon_Constr"));
+        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon_Constr"));
+        a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon_Constr"));        
+        rcCmdMgr.getCommandByName("Sketcher_CompCreateRegularPolygon")->getAction()->setIcon(
+            index==0?Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle_Constr"):
+            index==1?Gui::BitmapFactory().pixmap("Sketcher_CreateSquare_Constr"):
+            index==2?Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon_Constr"):
+            index==3?Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon_Constr"):
+            index==4?Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon_Constr"):          
+            Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon_Constr"));
+               
+    }
+}
+
+bool CmdSketcherGeometryCreationMode::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
 
 void CreateSketcherCommandsCreateGeo(void)
 {
@@ -5082,4 +5371,5 @@ void CreateSketcherCommandsCreateGeo(void)
     //rcCmdMgr.addCommand(new CmdSketcherCreateDraftLine());
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExternal());
+    rcCmdMgr.addCommand(new CmdSketcherGeometryCreationMode());
 }
