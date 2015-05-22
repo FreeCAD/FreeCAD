@@ -230,6 +230,7 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
     if (!hGrp->HasGroup(subgroup))
         return;
     hGrp = hGrp->GetGroup(subgroup);
+    std::string separator = "Separator";
 
     std::vector<Base::Reference<ParameterGrp> > hGrps = hGrp->GetGroups();
     CommandManager& rMgr = Application::Instance->commandManager();
@@ -242,15 +243,20 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
         // get the elements of the subgroups
         std::vector<std::pair<std::string,std::string> > items = (*it)->GetASCIIMap();
         for (std::vector<std::pair<std::string,std::string> >::iterator it2 = items.begin(); it2 != items.end(); ++it2) {
-            if (it2->first == "Separator") {
+            // since we have stored the separators to the user parameters as (key, pair) we had to
+            // make sure to use a unique key because otherwise we cannot store more than
+            // one.
+            if (it2->first.substr(0, separator.size()) == separator) {
                 QTreeWidgetItem* item = new QTreeWidgetItem(toplevel);
                 item->setText(0, tr("<Separator>"));
                 item->setData(0, Qt::UserRole, QByteArray("Separator"));
                 item->setSizeHint(0, QSize(32, 32));
-            } else if (it2->first == "Name") {
+            }
+            else if (it2->first == "Name") {
                 QString toolbarName = QString::fromUtf8(it2->second.c_str());
                 toplevel->setText(0, toolbarName);
-            } else {
+            }
+            else {
                 Command* pCmd = rMgr.getCommandByName(it2->first.c_str());
                 if (pCmd) {
                     // command name
@@ -281,12 +287,20 @@ void DlgCustomToolbars::exportCustomToolbars(const QByteArray& workbench)
         ParameterGrp::handle hToolGrp = hGrp->GetGroup(groupName.toAscii());
         hToolGrp->SetASCII("Name", toolbarName.constData());
         hToolGrp->SetBool("Active", toplevel->checkState(0) == Qt::Checked);
+
+        // since we store the separators to the user parameters as (key, pair) we must
+        // make sure to use a unique key because otherwise we cannot store more than
+        // one.
+        int suffixSeparator = 1;
         for (int j=0; j<toplevel->childCount(); j++) {
             QTreeWidgetItem* child = toplevel->child(j);
             QByteArray commandName = child->data(0, Qt::UserRole).toByteArray();
             if (commandName == "Separator") {
-                hToolGrp->SetASCII(commandName, commandName);
-            } else {
+                QByteArray key = commandName + QByteArray::number(suffixSeparator);
+                suffixSeparator++;
+                hToolGrp->SetASCII(key, commandName);
+            }
+            else {
                 Command* pCmd = rMgr.getCommandByName(commandName);
                 if (pCmd) {
                     hToolGrp->SetASCII(pCmd->getName(), pCmd->getAppModuleName());
@@ -330,7 +344,23 @@ void DlgCustomToolbars::on_moveActionLeftButton_clicked()
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         parent->takeChild(index);
+
+        // In case a separator should be moved we have to count the separators
+        // which come before this one.
+        // This is needed so that we can distinguish in removeCustomCommand
+        // which separator it is.
         QByteArray data = item->data(0, Qt::UserRole).toByteArray();
+        if (data == "Separator") {
+            int countSep = 1;
+            for (int i=0; i<index-1; i++) {
+                QByteArray d = parent->child(i)->data(0, Qt::UserRole).toByteArray();
+                if (d == "Separator") {
+                    countSep++;
+                }
+            }
+
+            data += QByteArray::number(countSep);
+        }
         removeCustomCommand(parent->text(0), data);
         delete item;
     }
@@ -340,7 +370,7 @@ void DlgCustomToolbars::on_moveActionLeftButton_clicked()
     exportCustomToolbars(workbench.toAscii());
 }
 
-/** Noves up an action */
+/** Moves up an action */
 void DlgCustomToolbars::on_moveActionUpButton_clicked()
 {
     QTreeWidgetItem* item = toolbarTreeWidget->currentItem();
@@ -348,10 +378,27 @@ void DlgCustomToolbars::on_moveActionUpButton_clicked()
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         if (index > 0) {
+            // In case a separator should be moved we have to count the separators
+            // which come before this one.
+            // This is needed so that we can distinguish in moveUpCustomCommand
+            // which separator it is.
+            QByteArray data = item->data(0, Qt::UserRole).toByteArray();
+            if (data == "Separator") {
+                int countSep = 1;
+                for (int i=0; i<index; i++) {
+                    QByteArray d = parent->child(i)->data(0, Qt::UserRole).toByteArray();
+                    if (d == "Separator") {
+                        countSep++;
+                    }
+                }
+
+                data += QByteArray::number(countSep);
+            }
+
             parent->takeChild(index);
             parent->insertChild(index-1, item);
             toolbarTreeWidget->setCurrentItem(item);
-            QByteArray data = item->data(0, Qt::UserRole).toByteArray();
+
             moveUpCustomCommand(parent->text(0), data);
         }
     }
@@ -369,10 +416,27 @@ void DlgCustomToolbars::on_moveActionDownButton_clicked()
         QTreeWidgetItem* parent = item->parent();
         int index = parent->indexOfChild(item);
         if (index < parent->childCount()-1) {
+            // In case a separator should be moved we have to count the separators
+            // which come before this one.
+            // This is needed so that we can distinguish in moveDownCustomCommand
+            // which separator it is.
+            QByteArray data = item->data(0, Qt::UserRole).toByteArray();
+            if (data == "Separator") {
+                int countSep = 1;
+                for (int i=0; i<index; i++) {
+                    QByteArray d = parent->child(i)->data(0, Qt::UserRole).toByteArray();
+                    if (d == "Separator") {
+                        countSep++;
+                    }
+                }
+
+                data += QByteArray::number(countSep);
+            }
+
             parent->takeChild(index);
             parent->insertChild(index+1, item);
             toolbarTreeWidget->setCurrentItem(item);
-            QByteArray data = item->data(0, Qt::UserRole).toByteArray();
+
             moveDownCustomCommand(parent->text(0), data);
         }
     }
@@ -592,7 +656,9 @@ void DlgCustomToolbarsImp::removeCustomToolbar(const QString& name)
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);
-        if (bars.size() != 1) return;
+        if (bars.size() != 1)
+            return;
+
         QToolBar* tb = bars.front();
         getMainWindow()->removeToolBar(tb);
         delete tb;
@@ -605,7 +671,9 @@ void DlgCustomToolbarsImp::renameCustomToolbar(const QString& old_name, const QS
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(old_name);
-        if (bars.size() != 1) return;
+        if (bars.size() != 1)
+            return;
+
         QToolBar* tb = bars.front();
         tb->setObjectName(new_name);
         tb->setWindowTitle(new_name);
@@ -618,22 +686,43 @@ void DlgCustomToolbarsImp::addCustomCommand(const QString& name, const QByteArra
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);
-        if (bars.size() != 1) return;
-        CommandManager& mgr = Application::Instance->commandManager();
-        mgr.addTo(cmd, bars.front());
+        if (bars.size() != 1)
+            return;
+
+        if (cmd == "Separator") {
+            QAction* action = bars.front()->addSeparator();
+            action->setData(QByteArray("Separator"));
+        }
+        else {
+            CommandManager& mgr = Application::Instance->commandManager();
+            mgr.addTo(cmd, bars.front());
+        }
     }
 }
 
-void DlgCustomToolbarsImp::removeCustomCommand(const QString& name, const QByteArray& cmd)
+void DlgCustomToolbarsImp::removeCustomCommand(const QString& name, const QByteArray& userdata)
 {
     QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);
-        if (bars.size() != 1) return;
+        if (bars.size() != 1)
+            return;
+
+        QByteArray cmd = userdata;
+        int numSep = 0, indexSep = 0;
+        if (cmd.startsWith("Separator")) {
+            numSep = cmd.mid(9).toInt();
+            cmd = "Separator";
+        }
         QList<QAction*> actions = bars.front()->actions();
         for (QList<QAction*>::ConstIterator it = actions.begin(); it != actions.end(); ++it) {
             if ((*it)->data().toByteArray() == cmd) {
+                // if we move a separator then make sure to pick up the right one
+                if (numSep > 0) {
+                    if (++indexSep < numSep)
+                        continue;
+                }
                 bars.front()->removeAction(*it);
                 break;
             }
@@ -641,17 +730,32 @@ void DlgCustomToolbarsImp::removeCustomCommand(const QString& name, const QByteA
     }
 }
 
-void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteArray& cmd)
+void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteArray& userdata)
 {
     QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);
-        if (bars.size() != 1) return;
+        if (bars.size() != 1)
+            return;
+
+        QByteArray cmd = userdata;
+        int numSep = 0, indexSep = 0;
+        if (cmd.startsWith("Separator")) {
+            numSep = cmd.mid(9).toInt();
+            cmd = "Separator";
+        }
         QList<QAction*> actions = bars.front()->actions();
         QAction* before=0;
         for (QList<QAction*>::ConstIterator it = actions.begin(); it != actions.end(); ++it) {
             if ((*it)->data().toByteArray() == cmd) {
+                // if we move a separator then make sure to pick up the right one
+                if (numSep > 0) {
+                    if (++indexSep < numSep) {
+                        before = *it;
+                        continue;
+                    }
+                }
                 if (before != 0) {
                     bars.front()->removeAction(*it);
                     bars.front()->insertAction(before, *it);
@@ -664,16 +768,29 @@ void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteA
     }
 }
 
-void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByteArray& cmd)
+void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByteArray& userdata)
 {
     QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
     Workbench* w = WorkbenchManager::instance()->active();
     if (w && w->name() == std::string((const char*)data.toByteArray())) {
         QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>(name);
-        if (bars.size() != 1) return;
+        if (bars.size() != 1)
+            return;
+
+        QByteArray cmd = userdata;
+        int numSep = 0, indexSep = 0;
+        if (cmd.startsWith("Separator")) {
+            numSep = cmd.mid(9).toInt();
+            cmd = "Separator";
+        }
         QList<QAction*> actions = bars.front()->actions();
         for (QList<QAction*>::ConstIterator it = actions.begin(); it != actions.end(); ++it) {
             if ((*it)->data().toByteArray() == cmd) {
+                // if we move a separator then make sure to pick up the right one
+                if (numSep > 0) {
+                    if (++indexSep < numSep)
+                        continue;
+                }
                 QAction* act = *it;
                 if (*it == actions.back())
                     break; // we're already on the last element
