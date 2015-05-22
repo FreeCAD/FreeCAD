@@ -4270,7 +4270,10 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
-        sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+        /* this is ok not to call to purgeHandler
+        * in continuous creation mode because the 
+        * handler is destroyed by the quit() method on pressing the
+        * right button of the mouse */
         return true;
     }
 
@@ -4288,7 +4291,10 @@ public:
                     Gui::Command::commitCommand();
                     Gui::Command::updateActive();
                     Gui::Selection().clearSelection();
-                    sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider
+                /* this is ok not to call to purgeHandler
+                * in continuous creation mode because the 
+                * handler is destroyed by the quit() method on pressing the
+                * right button of the mouse */
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("%s\n", e.what());
