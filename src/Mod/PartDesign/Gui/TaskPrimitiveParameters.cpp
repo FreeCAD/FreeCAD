@@ -799,7 +799,6 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     vp->Visibility.setValue(true);
     if(prm->BaseFeature.getValue()) {
         Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(true); 
-        vp_prm->setVisible(false); 
     }        
     
     parameter  = new TaskDatumParameters(vp);
@@ -827,7 +826,6 @@ bool TaskPrimitiveParameters::accept()
     if(prm->BaseFeature.getValue()) {
         Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(false); 
     }
-    vp_prm->setVisible(true); 
     
     return true;
 }
@@ -849,7 +847,6 @@ bool TaskPrimitiveParameters::reject() {
         if(prm->BaseFeature.getValue()) {
             Gui::Application::Instance->activeDocument()->getViewProvider(prm->BaseFeature.getValue())->setVisible(false); 
         }
-        vp_prm->setVisible(true); 
     }
     
     return true;

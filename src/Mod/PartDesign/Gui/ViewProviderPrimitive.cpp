@@ -57,8 +57,6 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPrimitive,PartDesignGui::ViewProvider
 ViewProviderPrimitive::ViewProviderPrimitive()
 {
     
-    previewSwitch = new SoSwitch();
-    previewSwitch->ref();
     previewShape = new SoSeparator();
     previewShape->ref();
     previewFaceSet = new PartGui::SoBrepFaceSet();
@@ -76,7 +74,6 @@ ViewProviderPrimitive::~ViewProviderPrimitive()
     previewCoords->unref();
     previewNorm->unref();
     previewShape->unref();
-    previewSwitch->unref();
 }
 
 void ViewProviderPrimitive::attach(App::DocumentObject* obj) {
@@ -101,9 +98,8 @@ void ViewProviderPrimitive::attach(App::DocumentObject* obj) {
     previewShape->addChild(previewCoords);
     previewShape->addChild(previewNorm);
     previewShape->addChild(previewFaceSet);
-    previewSwitch->addChild(previewShape);
-    previewSwitch->whichChild = -1;
-    getRoot()->addChild(previewSwitch);
+    
+    addDisplayMaskMode(previewShape, "Shape preview");
     updateAddSubShapeIndicator();
 }
 
@@ -272,7 +268,8 @@ void ViewProviderPrimitive::updateAddSubShapeIndicator() {
 
 bool ViewProviderPrimitive::setEdit(int ModNum)
 {
-    previewSwitch->whichChild = 0;
+    displayMode = getActiveDisplayMode();
+    setDisplayMaskMode("Shape preview");
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this fillet the
         // object unsets and sets its edit mode without closing
@@ -314,7 +311,7 @@ bool ViewProviderPrimitive::setEdit(int ModNum)
 }
 
 void ViewProviderPrimitive::unsetEdit(int ModNum) {
-    previewSwitch->whichChild = -1;
+    setDisplayMaskMode(displayMode.c_str());
 }
 
 void ViewProviderPrimitive::updateData(const App::Property* p) {
@@ -375,4 +372,3 @@ QIcon ViewProviderPrimitive::getIcon(void) const {
     str += QString::fromAscii(".svg");
     return Gui::BitmapFactory().pixmap(str.toStdString().c_str());
 }
-

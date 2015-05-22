@@ -27,8 +27,6 @@
 #include "ViewProvider.h"
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 
-class SoSwitch;
-
 namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPrimitive : public ViewProvider
@@ -52,7 +50,7 @@ protected:
     
     void updateAddSubShapeIndicator();
     
-    SoSwitch*                   previewSwitch;
+    std::string                 displayMode;
     SoSeparator*                previewShape;
     PartGui::SoBrepFaceSet*     previewFaceSet;
     SoCoordinate3*              previewCoords;
