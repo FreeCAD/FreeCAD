@@ -36,6 +36,8 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/DlgEditFileIncludeProptertyExternal.h>
+#include <Gui/Action.h>
+#include <Gui/BitmapFactory.h>
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -49,6 +51,17 @@
 using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
+
+/***** Creation Mode ************/
+namespace SketcherGui
+{
+    enum ConstraintCreationMode {
+        Driving,
+        Reference
+    };
+}
+
+ConstraintCreationMode constraintCreationMode=Driving;
 
 bool isCreateConstraintActive(Gui::Document *doc)
 {
@@ -729,7 +742,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
         selection[0].getFeatName(),GeoId,PosId,pnt.y);
 
-    if (GeoId < -2) { // it is a constraint on a external line, make it non-driving
+    if (GeoId < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
         
         Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -932,7 +945,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,(pnt2-pnt1).Length());
         }
         
-        if (bothexternal) { // it is a constraint on a external line, make it non-driving
+        if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
             
             Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -964,7 +977,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,ActDist);
 
-            if (bothexternal) { // it is a constraint on a external line, make it non-driving
+            if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                 
                 Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -995,7 +1008,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
             
-            if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+            if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                 
                 Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -1175,7 +1188,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
 
-        if (bothexternal) { // it is a constraint on a external line, make it non-driving
+        if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
             
             Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -1206,7 +1219,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
 
-            if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+            if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                 
                 Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -1235,7 +1248,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,ActX);
         
-        if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+        if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
             
             Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -1326,7 +1339,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
 
-        if (bothexternal) { // it is a constraint on a external line, make it non-driving
+        if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
             
             Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -1357,7 +1370,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
 
-            if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+            if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                 
                 Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -1386,7 +1399,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,ActY);
 
-        if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+        if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
             
             Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -2135,7 +2148,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     if(!geoIdRadiusMap.empty())
     {
         bool constrainEqual = false;
-        if (geoIdRadiusMap.size() > 1) {
+        if (geoIdRadiusMap.size() > 1 && constraintCreationMode==Driving) {
             int ret = QMessageBox::question(Gui::getMainWindow(), QObject::tr("Constrain equal"),
                 QObject::tr("Do you want to share the same radius for all selected elements?"),
                 QMessageBox::Yes, QMessageBox::No, QMessageBox::Cancel);
@@ -2160,7 +2173,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                 selection[0].getFeatName(),refGeoId,radius);
-
+            
             // Add the equality constraints
             for (std::vector< std::pair<int, double> >::iterator it = geoIdRadiusMap.begin()+1; it != geoIdRadiusMap.end(); ++it) {
                 Gui::Command::doCommand(
@@ -2176,6 +2189,16 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
                     selection[0].getFeatName(),it->first,it->second);
+
+                    if(constraintCreationMode==Reference) {
+
+                        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+                        
+                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+                        selection[0].getFeatName(),ConStr.size()-1,"False");                            
+                        
+                    }
+                
             }
         }
 
@@ -2199,7 +2222,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
         bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
         // Ask for the value of the radius immediately
-        if (show) {
+        if (show && constraintCreationMode==Driving) {
             QDialog dlg(Gui::getMainWindow());
             Ui::InsertDatum ui_Datum;
             ui_Datum.setupUi(&dlg);
@@ -2360,7 +2383,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
             
-            if (bothexternal) { // it is a constraint on a external line, make it non-driving
+            if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                 
                 Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -2438,7 +2461,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,ActAngle);
 
-                if (bothexternal) { // it is a constraint on a external line, make it non-driving
+                if (bothexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                     
                     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -2469,7 +2492,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,ActAngle);
 
-                if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+                if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                     
                     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -2493,7 +2516,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,angle);
 
-                if (GeoId1 < -2) { // it is a constraint on a external line, make it non-driving
+                if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                     
                     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -2902,7 +2925,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('SnellsLaw',%d,%d,%d,%d,%d,%.12f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,n2divn1);
 
-        if (allexternal) { // it is a constraint on a external line, make it non-driving
+        if (allexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
             
             Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -3334,6 +3357,86 @@ bool CmdSketcherConstrainInternalAlignment::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+/*** Creation Mode ***/
+DEF_STD_CMD_A(CmdSketcherConstraintCreationMode);
+
+CmdSketcherConstraintCreationMode::CmdSketcherConstraintCreationMode()
+  : Command("Sketcher_ConstraintCreationMode")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Toggle driving/reference constraint mode");
+    sToolTipText    = QT_TR_NOOP("Toggle between inserting driving or reference constraints");
+    sWhatsThis      = "Sketcher_ConstraintCreationMode";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Toggle_Constraint_Driving";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherConstraintCreationMode::activated(int iMsg)
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    
+    if(constraintCreationMode==Driving) {
+        constraintCreationMode=Reference;
+        
+        rcCmdMgr.getCommandByName("Sketcher_ConstraintCreationMode")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_Toggle_Constraint_Driven"));
+        
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainLock")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistance")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceX")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceY")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainRadius")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainAngle")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainSnellsLaw")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_SnellsLaw_Driven"));         
+    }
+    else {
+        constraintCreationMode=Driving;
+        
+        rcCmdMgr.getCommandByName("Sketcher_ConstraintCreationMode")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_Toggle_Constraint_Driving"));
+        
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainLock")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistance")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_Length"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceX")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceY")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));     
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainRadius")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_Radius"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainAngle")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
+        rcCmdMgr.getCommandByName("Sketcher_ConstrainSnellsLaw")->getAction()->setIcon(
+            Gui::BitmapFactory().pixmap("Constraint_SnellsLaw"));         
+    }
+}
+
+bool CmdSketcherConstraintCreationMode::isActive(void)
+{
+    Gui::Document * doc=getActiveGuiDocument();
+    if (doc) {
+        // checks if a Sketch Viewprovider is in Edit and is in no special mode
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
+            (SketcherGui::ViewProviderSketch::getClassTypeId())) {
+            if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->
+                getSketchMode() == ViewProviderSketch::STATUS_NONE)
+                return true;
+        }
+    }
+    return false;
+}
+
 void CreateSketcherCommandsConstraints(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -3355,5 +3458,6 @@ void CreateSketcherCommandsConstraints(void)
     rcCmdMgr.addCommand(new CmdSketcherConstrainSymmetric());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
     rcCmdMgr.addCommand(new CmdSketcherConstrainInternalAlignment());
+    rcCmdMgr.addCommand(new CmdSketcherConstraintCreationMode());
 
 }
