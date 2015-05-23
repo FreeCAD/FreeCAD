@@ -175,7 +175,7 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch)
         vp->draw(); // Redraw
     }
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
     bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
 
     // Ask for the value of the distance immediately
@@ -2037,7 +2037,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             vp->draw(); // Redraw
         }
 
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
         bool show = hGrp->GetBool("ShowDialogOnDistanceConstraint", true);
         // Ask for the value of the radius immediately
         if (show) {
