@@ -27,26 +27,6 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_19">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_12">
-          <property name="toolTip">
-           <string>If this is checked, the Draft workbench won't appear. Useful since all of the Draft tools are also in the Arch workbench.</string>
-          </property>
-          <property name="text">
-           <string>Hide Draft workbench</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>hideDraftWorkbench</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label_19">

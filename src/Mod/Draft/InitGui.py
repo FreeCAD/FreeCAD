@@ -175,9 +175,7 @@ class DraftWorkbench (Workbench):
     def GetClassName(self): 
         return "Gui::PythonWorkbench"
 
-# ability to turn off the Draft workbench (since it is also all included in Arch)
-if not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("hideDraftWorkbench"):
-    FreeCADGui.addWorkbench(DraftWorkbench)
+FreeCADGui.addWorkbench(DraftWorkbench)
 
 # add Import/Export types
 App.addImportType("Autodesk DXF (*.dxf)","importDXF") 
