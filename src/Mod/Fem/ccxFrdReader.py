@@ -36,7 +36,7 @@ if open.__module__ == '__builtin__':
 
 # read a calculix result file and extract the nodes, displacement vectores and stress values.
 def readResult(frd_input):
-    input = pyopen(frd_input, "r")
+    frd_file = pyopen(frd_input, "r")
     nodes = {}
     disp = {}
     stress = {}
@@ -50,7 +50,7 @@ def readResult(frd_input):
     elemType = 0
 
     while True:
-        line = input.readline()
+        line = frd_file.readline()
         if not line:
             break
         #Check if we found nodes section
@@ -113,7 +113,7 @@ def readResult(frd_input):
             stress_found = False
             elements_found = False
 
-    input.close()
+    frd_file.close()
     FreeCAD.Console.PrintLog('Read CalculiX result: {} Nodes, {} Displacements and {} Stress values\n'.format(len(nodes), len(disp), len(stress)))
 
     return {'Nodes': nodes, 'Tet10Elem': elements, 'Displacement': disp, 'Stress': stress}
