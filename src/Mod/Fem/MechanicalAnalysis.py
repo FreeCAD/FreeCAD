@@ -512,6 +512,19 @@ class _ResultControlTaskPanel:
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
 
+    def get_stats(self, type_name):
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("Fem::FemResultValue"):
+                if i.DataType == 'AnalysisStats':
+                    match_table = {"U1": (i.Values[0], i.Values[1], i.Values[2]),
+                                   "U2": (i.Values[3], i.Values[4], i.Values[5]),
+                                   "U3": (i.Values[6], i.Values[7], i.Values[8]),
+                                   "Uabs": (i.Values[9], i.Values[10], i.Values[11]),
+                                   "Sabs": (i.Values[12], i.Values[13], i.Values[14]),
+                                   "None": (0.0, 0.0, 0.0)}
+                    return match_table[type_name]
+        return (0.0, 0.0, 0.0)
+
     def typeChanged(self, index):
         selected = self.form.comboBox_Type.itemData(index)
         if selected[0] == "None":
@@ -528,13 +541,14 @@ class _ResultControlTaskPanel:
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.DisplacementObject:
             if selected[0] in ("U1", "U2", "U3", "Uabs"):
-                (minm, maxm, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject, selected[1])
+                self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject, selected[1])
                 unit = "mm"
         if self.StressObject:
             if selected[0] in ("Sabs"):
-                (minm, maxm, avg) = self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
+                self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
                 unit = "MPa"
 
+        (minm, avg, maxm) = self.get_stats(selected[0])
         self.form.lineEdit_Max.setProperty("unit", unit)
         self.form.lineEdit_Max.setText("{:.6} {}".format(maxm, unit))
         self.form.lineEdit_Min.setProperty("unit", unit)
