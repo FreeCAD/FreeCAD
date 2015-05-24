@@ -50,6 +50,7 @@
         <file>icons/Sketcher_ConstrainDistance.svg</file>
         <file>icons/Sketcher_ConstrainHorizontal.svg</file>
         <file>icons/Sketcher_ConstrainLock.svg</file>
+        <file>icons/Sketcher_ConstrainLock_Driven.svg</file>
         <file>icons/Sketcher_ConstrainParallel.svg</file>
         <file>icons/Sketcher_ConstrainVertical.svg</file>
         <file>icons/Sketcher_Create3PointArc.svg</file>
@@ -130,6 +131,8 @@
         <file>icons/Sketcher_Sketch.svg</file>
         <file>icons/Sketcher_ToggleConstruction.svg</file>
         <file>icons/Sketcher_ToggleNormal.svg</file>
+        <file>icons/Sketcher_Toggle_Constraint_Driven.svg</file>
+        <file>icons/Sketcher_Toggle_Constraint_Driving.svg</file>
         <file>icons/Sketcher_Trimming.svg</file>
         <file>icons/Sketcher_ViewSketch.svg</file>
         <file>icons/small/Constraint_Concentric_sm.xpm</file>
