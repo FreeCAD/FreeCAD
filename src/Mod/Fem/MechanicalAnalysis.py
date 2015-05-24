@@ -530,13 +530,8 @@ class _ResultControlTaskPanel:
         if selected[0] == "None":
             self.MeshObject.ViewObject.NodeColor = {}
             self.MeshObject.ViewObject.ElementColor = {}
-            self.form.lineEdit_Max.setProperty("unit", "mm")
-            self.form.lineEdit_Max.setText(" 0 mm")
-            self.form.lineEdit_Min.setProperty("unit", "mm")
-            self.form.lineEdit_Min.setText(" 0 mm")
-            self.form.lineEdit_Avg.setProperty("unit", "mm")
-            self.form.lineEdit_Avg.setText(" 0 mm")
-            return
+            self.MeshObject.ViewObject.setNodeColorByResult()
+            unit = "mm"
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
         if self.DisplacementObject:
