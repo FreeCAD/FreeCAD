@@ -564,9 +564,7 @@ class _ResultControlTaskPanel:
         QtGui.qApp.restoreOverrideCursor()
 
     def sliderValue(self, value):
-        if(self.form.checkBox_ShowDisplacement.isChecked()):
-            self.MeshObject.ViewObject.animate(value)
-
+        self.MeshObject.ViewObject.animate(value)
         self.form.spinBox_DisplacementFactor.setValue(value)
 
     def sliderMaxValue(self, value):
