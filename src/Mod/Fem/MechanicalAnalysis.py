@@ -558,7 +558,7 @@ class _ResultControlTaskPanel:
 
         QtGui.qApp.restoreOverrideCursor()
 
-    def showDisplacementClicked(self, bool):
+    def showDisplacementClicked(self, checked):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         self.setDisplacement()
         QtGui.qApp.restoreOverrideCursor()
