@@ -560,7 +560,11 @@ class _ResultControlTaskPanel:
 
     def showDisplacementClicked(self, checked):
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        factor = 0.0
+        if checked:
+            factor = self.form.horizontalScrollBar_Factor.value()
         self.setDisplacement()
+        self.MeshObject.ViewObject.animate(factor)
         QtGui.qApp.restoreOverrideCursor()
 
     def sliderValue(self, value):
