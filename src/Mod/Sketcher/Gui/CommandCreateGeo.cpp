@@ -3976,6 +3976,7 @@ public:
         int VtId = sketchgui->getPreselectPoint();
         if (Mode == STATUS_SEEK_First && VtId != -1) {
             int GeoId;
+            bool construction=false;
             Sketcher::PointPos PosId=Sketcher::none;
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId,PosId);
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
@@ -3990,6 +3991,7 @@ public:
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0  && GeoIdList[1] >= 0) {
                     const Part::Geometry *geom1 = sketchgui->getSketchObject()->getGeometry(GeoIdList[0]);
                     const Part::Geometry *geom2 = sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
+                    construction=geom1->Construction && geom2->Construction;
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                         const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geom1);
@@ -4009,11 +4011,20 @@ public:
                 if (radius < 0)
                     return false;
 
+                int currentgeoid= getHighestCurveIndex();
                 // create fillet at point
                 Gui::Command::openCommand("Create fillet");
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.fillet(%d,%d,%f)",
                           sketchgui->getObject()->getNameInDocument(),
                           GeoId, PosId, radius);
+
+                if(construction) {
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                        sketchgui->getObject()->getNameInDocument(),
+                        currentgeoid+1);                        
+                }
+                    
                 Gui::Command::commitCommand();
                 Gui::Command::updateActive();
             }
@@ -4055,6 +4066,7 @@ public:
 
                     // create fillet between lines
                     Gui::Command::openCommand("Create fillet");
+                    int currentgeoid= getHighestCurveIndex();
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f)",
                               sketchgui->getObject()->getNameInDocument(),
                               firstCurve, secondCurve,
@@ -4062,6 +4074,14 @@ public:
                               secondPos.fX, secondPos.fY, radius);
                     Gui::Command::commitCommand();
                     Gui::Command::updateActive();
+                    
+                    if(lineSeg1->Construction && lineSeg2->Construction) {
+                        Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.ActiveDocument.%s.toggleConstruction(%d) ",
+                            sketchgui->getObject()->getNameInDocument(),
+                            currentgeoid+1);                        
+                    }
+                    
 
                     Gui::Selection().clearSelection();
                     Mode = STATUS_SEEK_First;
