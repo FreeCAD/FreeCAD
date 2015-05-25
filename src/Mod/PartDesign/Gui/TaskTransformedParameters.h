@@ -102,6 +102,9 @@ protected:
     virtual void clearButtons()=0;
     static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
 
+    App::DocumentObject* getPartPlanes(const char* str) const;
+    App::DocumentObject* getPartLines(const char* str) const;
+
 protected:
     QWidget* proxy;
     ViewProviderTransformed *TransformedView;

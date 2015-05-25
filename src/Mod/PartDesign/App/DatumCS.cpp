@@ -342,11 +342,11 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                 if(!plane) {
                     gp_Pnt base(0,0,0);
                     gp_Dir dir(0,0,1);
-                    if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[0]) == 0)
+                    if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[0]) == 0)
                         dir = gp_Dir(0,0,1);
-                    else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[1]) == 0)
+                    else if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[1]) == 0)
                         dir = gp_Dir(0,1,0);
-                    else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
+                    else if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[2]) == 0)
                         dir = gp_Dir(1,0,0);
                     
                     pln = gp_Pln(base, dir);
@@ -372,11 +372,11 @@ void CoordinateSystem::onChanged(const App::Property *prop)
                 App::Line* p = static_cast<App::Line*>(refs[i]);
                 gp_Pnt base(0,0,0);
                 gp_Dir dir(0,0,1);
-                if (strcmp(p->getNameInDocument(), App::Part::BaselineTypes[0]) == 0)
+                if (strcmp(p->LineType.getValue(), App::Part::BaselineTypes[0]) == 0)
                     dir = gp_Dir(1,0,0);
-                else if (strcmp(p->getNameInDocument(), App::Part::BaselineTypes[1]) == 0)
+                else if (strcmp(p->LineType.getValue(), App::Part::BaselineTypes[1]) == 0)
                     dir = gp_Dir(0,1,0);
-                else if (strcmp(p->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
+                else if (strcmp(p->LineType.getValue(), App::Part::BaselineTypes[2]) == 0)
                     dir = gp_Dir(0,0,1);
                 
                 if(!line1) {    

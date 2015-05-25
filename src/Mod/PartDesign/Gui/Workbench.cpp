@@ -89,6 +89,49 @@ PartDesign::Body *getBody(bool messageIfNot)
 
 }
 
+PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
+{
+    PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    if(activeBody && activeBody->hasFeature(obj))
+        return activeBody;
+
+    //try to find the part the object is in
+    for(PartDesign::Body* b : obj->getDocument()->getObjectsOfType<PartDesign::Body>()) {
+        if(b->isFeature(obj)) {
+            return b;
+        }            
+    }
+        
+    if (messageIfNot){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Feature is not in a body"),
+            QObject::tr("In order to use this feature it needs to belong to a body object in the document."));
+    }
+    
+    return nullptr;
+}
+
+App::Part* getPartFor(App::DocumentObject* obj, bool messageIfNot) {
+
+    PartDesign::Body* body = getBodyFor(obj, false);
+    if(body)
+        obj = body;
+    
+    //get the part every body should belong to
+    for(App::Part* p : obj->getDocument()->getObjectsOfType<App::Part>()) {
+        if(p->hasObject(obj)) {
+            return p;
+        }            
+    }
+    
+    if (messageIfNot){
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Feature is not in a part"),
+            QObject::tr("In order to use this feature it needs to belong to a part object in the document."));
+    }
+    
+    return nullptr;
+}
+
+
 }
 
 /// @namespace PartDesignGui @class Workbench

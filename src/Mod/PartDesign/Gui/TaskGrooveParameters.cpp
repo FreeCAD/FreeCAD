@@ -33,6 +33,7 @@
 #include <App/Document.h>
 #include <App/Part.h>
 #include <App/Origin.h>
+#include <App/Line.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -105,19 +106,16 @@ TaskGrooveParameters::TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidge
     setFocus ();
     
     //show the parts coordinate system axis for selection
-    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
-    
-        if(part->hasObject(vp->getObject(), true)) {
-            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-            if(!app_origin.empty()) {
-                ViewProviderOrigin* origin;
-                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-                origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
-                origin->setTemporaryVisibilityAxis(true);
-            }            
-            break;
-        }
-    } 
+    App::Part* part = getPartFor(vp->getObject(), false);
+    if(part) {        
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
+            origin->setTemporaryVisibilityAxis(true);
+        }            
+     }
 }
 
 void TaskGrooveParameters::updateUI()
@@ -145,11 +143,13 @@ void TaskGrooveParameters::updateUI()
     bool undefined = false; 
     if (pcReferenceAxis != NULL) {
         
-        if(strcmp(pcReferenceAxis->getNameInDocument(), App::Part::BaselineTypes[0])==0)
+        bool is_base_line = pcReferenceAxis->isDerivedFrom(App::Line::getClassTypeId());
+        
+        if(is_base_line && strcmp(static_cast<App::Line*>(pcReferenceAxis)->LineType.getValue(), App::Part::BaselineTypes[0])==0)
             ui->axis->setCurrentIndex(0);
-        else if(strcmp(pcReferenceAxis->getNameInDocument(), App::Part::BaselineTypes[1])==0)
+        else if(is_base_line && strcmp(static_cast<App::Line*>(pcReferenceAxis)->LineType.getValue(), App::Part::BaselineTypes[1])==0)
             ui->axis->setCurrentIndex(1);
-        else if(strcmp(pcReferenceAxis->getNameInDocument(), App::Part::BaselineTypes[2])==0)
+        else if(is_base_line && strcmp(static_cast<App::Line*>(pcReferenceAxis)->LineType.getValue(), App::Part::BaselineTypes[2])==0)
             ui->axis->setCurrentIndex(2);
         else if (!sub.empty() && sub.front() == "H_Axis")
             ui->axis->setCurrentIndex(3);
@@ -228,15 +228,15 @@ void TaskGrooveParameters::onAxisChanged(int num)
 
         int maxcount = pcSketch->getAxisCount()+2;
         if (num == 0) {
-            pcGroove->ReferenceAxis.setValue(pcGroove->getDocument()->getObject(App::Part::BaselineTypes[0]),
+            pcGroove->ReferenceAxis.setValue(getPartLines(App::Part::BaselineTypes[0]),
                                                  std::vector<std::string>(1,""));
         }
         else if (num == 1) {
-            pcGroove->ReferenceAxis.setValue(pcGroove->getDocument()->getObject(App::Part::BaselineTypes[1]),
+            pcGroove->ReferenceAxis.setValue(getPartLines(App::Part::BaselineTypes[1]),
                                                  std::vector<std::string>(1,""));
         }
         else if (num == 2) {
-            pcGroove->ReferenceAxis.setValue(pcGroove->getDocument()->getObject(App::Part::BaselineTypes[2]),
+            pcGroove->ReferenceAxis.setValue(getPartLines(App::Part::BaselineTypes[2]),
                                                  std::vector<std::string>(1,""));
         }
         else if (num == 3) {
@@ -307,11 +307,11 @@ void TaskGrooveParameters::getReferenceAxis(App::DocumentObject*& obj, std::vect
     if (obj) {
         int num = ui->axis->currentIndex();
         if(num  == 0) 
-            obj = pcGroove->getDocument()->getObject(App::Part::BaselineTypes[0]);
+            obj = getPartLines(App::Part::BaselineTypes[0]);
         else if(num == 1)
-            obj = pcGroove->getDocument()->getObject(App::Part::BaselineTypes[1]);
+            obj = getPartLines(App::Part::BaselineTypes[1]);
         else if(num == 2)
-            obj = pcGroove->getDocument()->getObject(App::Part::BaselineTypes[2]);
+            obj = getPartLines(App::Part::BaselineTypes[2]);
         else if (num == 3)
             sub[0] = "H_Axis";
         else if (num == 4)
@@ -345,18 +345,15 @@ bool   TaskGrooveParameters::getReversed(void) const
 TaskGrooveParameters::~TaskGrooveParameters()
 {
     //hide the parts coordinate system axis for selection
-    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
-    
-        if(part->hasObject(vp->getObject(), true)) {
-            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-            if(!app_origin.empty()) {
-                ViewProviderOrigin* origin;
-                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-                origin->setTemporaryVisibilityMode(false);
-            }            
-            break;
+    App::Part* part = getPartFor(vp->getObject(), false);
+    if(part) {
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(false);
         }
-    } 
+    }
     
     delete ui;
 }

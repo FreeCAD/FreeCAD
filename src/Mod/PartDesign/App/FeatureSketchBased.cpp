@@ -1048,11 +1048,11 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
     else if (pcReferenceAxis->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
         const App::Line* line = static_cast<const App::Line*>(pcReferenceAxis);
         base = Base::Vector3d(0,0,0);
-        if( strcmp(line->getNameInDocument(), App::Part::BaselineTypes[0]) == 0)
+        if( strcmp(line->LineType.getValue(), App::Part::BaselineTypes[0]) == 0)
             dir = Base::Vector3d(1,0,0);
-        else if( strcmp(line->getNameInDocument(), App::Part::BaselineTypes[1]) == 0)
+        else if( strcmp(line->LineType.getValue(), App::Part::BaselineTypes[1]) == 0)
             dir = Base::Vector3d(0,1,0);
-        else if( strcmp(line->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
+        else if( strcmp(line->LineType.getValue(), App::Part::BaselineTypes[2]) == 0)
             dir = Base::Vector3d(0,0,1);
 
         // Check that axis is perpendicular with sketch plane!
