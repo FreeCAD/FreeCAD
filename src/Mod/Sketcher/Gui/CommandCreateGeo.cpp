@@ -3737,14 +3737,7 @@ public:
             Gui::Command::openCommand("Add sketch point");
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
                       sketchgui->getObject()->getNameInDocument(),
-                      EditPoint.fX,EditPoint.fY);
-            
-            if(geometryCreationMode==Construction) {
-                Gui::Command::doCommand(Gui::Command::Doc,
-                    "App.ActiveDocument.%s.toggleConstruction(%d) ",
-                    sketchgui->getObject()->getNameInDocument(),
-                    currentgeoid+1);
-            }            
+                      EditPoint.fX,EditPoint.fY);                       
             
             Gui::Command::commitCommand();
             Gui::Command::updateActive();
