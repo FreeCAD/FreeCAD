@@ -72,7 +72,7 @@ protected:
     void onObjectChanged(const App::DocumentObject&, const App::Property&);
 
 private:
-    
+    boost::signals::connection connection;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderPart> ViewProviderPartPython;

@@ -189,20 +189,16 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     updateUI();
     
     //temporary show coordinate systems for selection
-    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
-    
-        if(part->hasObject(DatumView->getObject(), true)) {
-            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-            if(!app_origin.empty()) {
-                ViewProviderOrigin* origin;
-                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-                static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
-                static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityAxis(true);
-                static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityPlanes(true);
-            }            
-            break;
-        }
-    }    
+    App::Part* part = getPartFor(DatumView->getObject(), false);
+    if(part) {        
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
+            origin->setTemporaryVisibilityAxis(true);
+        }            
+    }   
 }
 
 const QString makeRefText(std::set<QString> hint)
@@ -669,17 +665,14 @@ QString TaskDatumParameters::getReference(const int idx) const
 TaskDatumParameters::~TaskDatumParameters()
 {
     //end temporary view mode of coordinate system
-     for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
-    
-        if(part->hasObject(DatumView->getObject(), true)) {
-            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-            if(!app_origin.empty()) {
-                ViewProviderOrigin* origin;
-                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-                static_cast<Gui::ViewProviderOrigin*>(origin)->setTemporaryVisibilityMode(false);
-            }            
-            break;
-        }
+    App::Part* part = getPartFor(DatumView->getObject(), false);
+    if(part) {
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(false);
+        }            
     }
     
     delete ui;

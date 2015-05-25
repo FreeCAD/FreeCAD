@@ -166,7 +166,7 @@ void Line::onChanged(const App::Property *prop)
 
         std::set<QString> hint = getHint();
         if (!((hint.size() == 1) && (hint.find(QObject::tr("Done")) != hint.end())))
-            throw Base::Exception("Incomplete References"); // incomplete references
+            return; // incomplete references
 
         // Extract the geometry of the references
         Base::Vector3d* base = NULL;
@@ -212,11 +212,11 @@ void Line::onChanged(const App::Property *prop)
             } else if (refs[i]->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
                 App::Line* l = static_cast<App::Line*>(refs[i]);
                 gp_Dir ldir;
-                if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[0]) == 0)
+                if (strcmp(l->LineType.getValue(), App::Part::BaselineTypes[0]) == 0)
                     ldir = gp_Dir(1,0,0);
-                else if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[1]) == 0)
+                else if (strcmp(l->LineType.getValue(), App::Part::BaselineTypes[1]) == 0)
                     ldir = gp_Dir(0,1,0);
-                else if (strcmp(l->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
+                else if (strcmp(l->LineType.getValue(), App::Part::BaselineTypes[2]) == 0)
                     ldir = gp_Dir(0,0,1);
                 
                 if (s1.IsNull()) {
@@ -259,11 +259,11 @@ void Line::onChanged(const App::Property *prop)
                 // Note: We only handle the three base planes here
                 gp_Pnt base(0,0,0);
                 gp_Dir normal;
-                if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[0]) == 0)
+                if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[0]) == 0)
                     normal = gp_Dir(0,0,1);
-                else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
+                else if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[2]) == 0)
                     normal = gp_Dir(1,0,0);
-                else if (strcmp(p->getNameInDocument(), App::Part::BaseplaneTypes[1]) == 0)
+                else if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[1]) == 0)
                     normal = gp_Dir(0,1,0);
 
                 double offset1 = Offset.getValue();

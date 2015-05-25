@@ -38,6 +38,7 @@
 #include <App/Document.h>
 #include <App/Part.h>
 #include <App/Origin.h>
+#include <App/Line.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -166,19 +167,16 @@ void TaskLinearPatternParameters::setupUI()
     updateUI();
     
     //show the parts coordinate system axis for selection
-    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
-    
-        if(part->hasObject(getObject(), true)) {
-            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-            if(!app_origin.empty()) {
-                ViewProviderOrigin* origin;
-                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-                origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
-                origin->setTemporaryVisibilityAxis(true);
-            }            
-            break;
-        }
-    } 
+    App::Part* part = getPartFor(getObject(), false);
+    if(part) {        
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
+            origin->setTemporaryVisibilityAxis(true);
+        }            
+     }
 }
 
 void TaskLinearPatternParameters::updateUI()
@@ -210,15 +208,17 @@ void TaskLinearPatternParameters::updateUI()
 
     bool undefined = false;
     if (directionFeature != NULL && !directions.empty()) {
+        bool is_base_line = directionFeature->isDerivedFrom(App::Line::getClassTypeId());
+        
         if (directions.front() == "H_Axis")
             ui->comboDirection->setCurrentIndex(0);
         else if (directions.front() == "V_Axis")
             ui->comboDirection->setCurrentIndex(1);
-        else if (strcmp(directionFeature->getNameInDocument(), App::Part::BaselineTypes[0]) == 0)
+        else if (is_base_line && strcmp(static_cast<App::Line*>(directionFeature)->LineType.getValue(), App::Part::BaselineTypes[0]) == 0)
             ui->comboDirection->setCurrentIndex( sketch ? 2 : 0);
-        else if (strcmp(directionFeature->getNameInDocument(), App::Part::BaselineTypes[1]) == 0)
+        else if (is_base_line && strcmp(static_cast<App::Line*>(directionFeature)->LineType.getValue(), App::Part::BaselineTypes[1]) == 0)
             ui->comboDirection->setCurrentIndex(sketch ? 3 : 1);
-        else if (strcmp(directionFeature->getNameInDocument(), App::Part::BaselineTypes[2]) == 0)
+        else if (is_base_line && strcmp(static_cast<App::Line*>(directionFeature)->LineType.getValue(), App::Part::BaselineTypes[2]) == 0)
             ui->comboDirection->setCurrentIndex(sketch ? 4 : 2);
         else if (directions.front().size() > (sketch ? 4 : 2)  && directions.front().substr(0,4) == "Axis") {
             int pos = (sketch ? 5 : 3) + std::atoi(directions.front().substr(4,4000).c_str());
@@ -301,9 +301,9 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
                 ui->comboDirection->setCurrentIndex(maxcount);
                 ui->comboDirection->addItem(tr("Select reference..."));
             }
-        } else if( strcmp(msg.pObjectName, App::Part::BaselineTypes[0]) == 0 || 
-                   strcmp(msg.pObjectName, App::Part::BaselineTypes[1]) == 0 ||
-                   strcmp(msg.pObjectName, App::Part::BaselineTypes[2]) == 0) {
+        } else if( strstr(msg.pObjectName, App::Part::BaselineTypes[0]) == nullptr || 
+                   strstr(msg.pObjectName, App::Part::BaselineTypes[1]) == nullptr ||
+                   strstr(msg.pObjectName, App::Part::BaselineTypes[2]) == nullptr) {
            
             std::vector<std::string> directions;
             App::DocumentObject* selObj;
@@ -376,17 +376,17 @@ void TaskLinearPatternParameters::onDirectionChanged(int num) {
         }
     }
     if (num == (pcSketch ? 2 : 0)) {
-        pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(App::Part::BaselineTypes[0]),
+        pcLinearPattern->Direction.setValue(getPartLines(App::Part::BaselineTypes[0]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
     else if (num == (pcSketch ? 3 : 1)) {
-        pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(App::Part::BaselineTypes[1]),
+        pcLinearPattern->Direction.setValue(getPartLines(App::Part::BaselineTypes[1]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
     else if (num == (pcSketch ? 4 : 2)) {
-        pcLinearPattern->Direction.setValue(getObject()->getDocument()->getObject(App::Part::BaselineTypes[2]),
+        pcLinearPattern->Direction.setValue(getPartLines(App::Part::BaselineTypes[2]),
                                          std::vector<std::string>(1,""));
         exitSelectionMode();
     }
@@ -457,11 +457,11 @@ void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj, std::v
             sub[0] = "V_Axis";
     }
     if (num == (obj ? 2 : 0))
-        obj = getObject()->getDocument()->getObject(App::Part::BaselineTypes[0]);
+        obj = getPartLines(App::Part::BaselineTypes[0]);
     else if (num == (obj ? 3 : 1))
-        obj = getObject()->getDocument()->getObject(App::Part::BaselineTypes[1]);
+        obj = getPartLines(App::Part::BaselineTypes[1]);
     else if (num == (obj ? 4 : 2))
-        obj = getObject()->getDocument()->getObject(App::Part::BaselineTypes[2]);
+        obj = getPartLines(App::Part::BaselineTypes[2]);
     else if (num >= (obj ? 5 : 3) && num < maxcount) {
         QString buf = QString::fromUtf8("Axis%1").arg(num-(obj ? 5 : 3));
         sub[0] = buf.toStdString();
@@ -494,18 +494,15 @@ const unsigned TaskLinearPatternParameters::getOccurrences(void) const
 TaskLinearPatternParameters::~TaskLinearPatternParameters()
 {
     //hide the parts coordinate system axis for selection
-    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
-    
-        if(part->hasObject(getObject(), true)) {
-            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-            if(!app_origin.empty()) {
-                ViewProviderOrigin* origin;
-                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-                origin->setTemporaryVisibilityMode(false);
-            }            
-            break;
-        }
-    } 
+    App::Part* part = getPartFor(getObject(), false);
+    if(part) {
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(false);
+        }            
+    }
     
     delete ui;
     if (proxy)

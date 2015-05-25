@@ -35,6 +35,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Part.h>
+#include <App/Plane.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
@@ -139,19 +140,16 @@ void TaskMirroredParameters::setupUI()
     updateUI();
     
     //show the parts coordinate system axis for selection
-    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
-    
-        if(part->hasObject(getObject(), true)) {
-            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-            if(!app_origin.empty()) {
-                ViewProviderOrigin* origin;
-                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-                origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
-                origin->setTemporaryVisibilityPlanes(true);
-            }            
-            break;
-        }
-    } 
+    App::Part* part = getPartFor(getObject(), false);
+    if(part) {        
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
+            origin->setTemporaryVisibilityAxis(true);
+        }            
+     }
 }
 
 void TaskMirroredParameters::updateUI()
@@ -180,15 +178,17 @@ void TaskMirroredParameters::updateUI()
 
     bool undefined = false;
     if (mirrorPlaneFeature != NULL && !mirrorPlanes.empty()) {
+        bool is_base_plane = mirrorPlaneFeature->isDerivedFrom(App::Plane::getClassTypeId());
+        
         if (mirrorPlanes.front() == "H_Axis")
             ui->comboPlane->setCurrentIndex(0);
         else if (mirrorPlanes.front() == "V_Axis")
             ui->comboPlane->setCurrentIndex(1);
-        else if (strcmp(mirrorPlaneFeature->getNameInDocument(), App::Part::BaseplaneTypes[0]) == 0)
+        else if (is_base_plane && strcmp(static_cast<App::Plane*>(mirrorPlaneFeature)->PlaneType.getValue(), App::Part::BaseplaneTypes[0]) == 0)
             ui->comboPlane->setCurrentIndex((sketch ? 2 : 0));
-        else if (strcmp(mirrorPlaneFeature->getNameInDocument(), App::Part::BaseplaneTypes[1]) == 0)
+        else if (is_base_plane && strcmp(static_cast<App::Plane*>(mirrorPlaneFeature)->PlaneType.getValue(), App::Part::BaseplaneTypes[1]) == 0)
             ui->comboPlane->setCurrentIndex((sketch ? 3 : 1));
-        else if (strcmp(mirrorPlaneFeature->getNameInDocument(), App::Part::BaseplaneTypes[2]) == 0)
+        else if (is_base_plane && strcmp(static_cast<App::Plane*>(mirrorPlaneFeature)->PlaneType.getValue(), App::Part::BaseplaneTypes[2]) == 0)
             ui->comboPlane->setCurrentIndex((sketch ? 4 : 2));
         else if (mirrorPlanes.front().size() > (sketch ? 4 : 2) && mirrorPlanes.front().substr(0,4) == "Axis") {
             int pos = (sketch ? 5 : 3) + std::atoi(mirrorPlanes.front().substr(4,4000).c_str());
@@ -257,9 +257,9 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
                 ui->comboPlane->setCurrentIndex(maxcount);
                 ui->comboPlane->addItem(tr("Select reference..."));
             }
-        } else if( strcmp(msg.pObjectName, App::Part::BaseplaneTypes[0]) == 0 || 
-                   strcmp(msg.pObjectName, App::Part::BaseplaneTypes[1]) == 0 ||
-                   strcmp(msg.pObjectName, App::Part::BaseplaneTypes[2]) == 0) {
+        } else if( strstr(msg.pObjectName, App::Part::BaseplaneTypes[0]) == nullptr || 
+                   strstr(msg.pObjectName, App::Part::BaseplaneTypes[1]) == nullptr ||
+                   strstr(msg.pObjectName, App::Part::BaseplaneTypes[2]) == nullptr) {
            
             std::vector<std::string> planes;
             App::DocumentObject* selObj;
@@ -405,18 +405,15 @@ void TaskMirroredParameters::apply()
 TaskMirroredParameters::~TaskMirroredParameters()
 {
     //hide the parts coordinate system axis for selection
-    for(App::Part* part : App::GetApplication().getActiveDocument()->getObjectsOfType<App::Part>()) {
-    
-        if(part->hasObject(getObject(), true)) {
-            auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
-            if(!app_origin.empty()) {
-                ViewProviderOrigin* origin;
-                origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
-                origin->setTemporaryVisibilityMode(false);
-            }            
-            break;
-        }
-    } 
+    App::Part* part = getPartFor(getObject(), false);
+    if(part) {
+        auto app_origin = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(!app_origin.empty()) {
+            ViewProviderOrigin* origin;
+            origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
+            origin->setTemporaryVisibilityMode(false);
+        }            
+    }
     
     
     delete ui;

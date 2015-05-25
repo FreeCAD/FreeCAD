@@ -52,6 +52,8 @@ namespace PartDesignGui {
 
 /// Return active body or show a warning message
 PartDesign::Body *getBody(bool messageIfNot);
+PartDesign::Body *getBodyFor(App::DocumentObject*, bool messageIfNot);
+App::Part        *getPartFor(App::DocumentObject*, bool messageIfNot);
 
 /**
  * @author Werner Mayer

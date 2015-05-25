@@ -732,10 +732,16 @@ void CmdPartDesignNewSketch::activated(int iMsg)
     else if (FaceFilter.match() || PlaneFilter.match()) {
         // get the selected object
         std::string supportString;
-        Part::Feature* feat;
+        App::DocumentObject* obj;
 
         if (FaceFilter.match()) {
-            feat = static_cast<Part::Feature*>(FaceFilter.Result[0][0].getObject());
+            obj = FaceFilter.Result[0][0].getObject();
+            
+            if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
+                return;
+            
+            Part::Feature* feat = static_cast<Part::Feature*>(obj);
+            
             // FIXME: Reject or warn about feature that is outside of active body, and feature
             // that comes after the current insert point (Tip)
             const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
@@ -765,17 +771,20 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
             supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
         } else {
-            feat = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
+            obj = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
             // TODO: Find out whether the user picked front or back of this plane
-            supportString = std::string("(App.activeDocument().") + feat->getNameInDocument() + ", ['front'])";
+            supportString = std::string("(App.activeDocument().") + obj->getNameInDocument() + ", ['front'])";
         }
 
-        if (!pcActiveBody->hasFeature(feat)) {
+        if (!pcActiveBody->hasFeature(obj)) {
             bool isBasePlane = false;
-            for (unsigned i = 0; i < 3; i++) {
-                if (strcmp(App::Part::BaseplaneTypes[i], feat->getNameInDocument()) == 0) {
-                    isBasePlane = true;
-                    break;
+            if(obj->isDerivedFrom(App::Plane::getClassTypeId()))  {
+                App::Plane* pfeat = static_cast<App::Plane*>(obj);
+                for (unsigned i = 0; i < 3; i++) {
+                    if (strcmp(App::Part::BaseplaneTypes[i], pfeat->PlaneType.getValue()) == 0) {
+                        isBasePlane = true;
+                        break;
+                    }
                 }
             }
             if (!isBasePlane) {
@@ -783,7 +792,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     QObject::tr("You have to select a face or plane from the active body!"));
                 return;
             }
-        } else if (pcActiveBody->isAfterTip(feat)) {
+        } else if (pcActiveBody->isAfterTip(obj)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from inactive feature"),
                 QObject::tr("You have to select a face or plane before the current insert point, or move the insert point"));
             return;
@@ -814,14 +823,17 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         for (std::vector<App::DocumentObject*>::iterator p = planes.begin(); p != planes.end(); p++) {
             // Check whether this plane is a base plane
             bool base = false;
-            for (unsigned i = 0; i < 3; i++) {
-                if (strcmp(App::Part::BaseplaneTypes[i], (*p)->getNameInDocument()) == 0) {
-                    status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
-                    if (firstValidPlane == planes.end())
-                        firstValidPlane = p;
-                    validPlanes++;
-                    base = true;
-                    break;
+            if((*p)->isDerivedFrom(App::Plane::getClassTypeId()))  {
+                App::Plane* pfeat = static_cast<App::Plane*>(*p);
+                for (unsigned i = 0; i < 3; i++) {
+                    if (strcmp(App::Part::BaseplaneTypes[i], pfeat->PlaneType.getValue()) == 0) {
+                        status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
+                        if (firstValidPlane == planes.end())
+                            firstValidPlane = p;
+                        validPlanes++;
+                        base = true;
+                        break;
+                    }
                 }
             }
             if (base) continue;
