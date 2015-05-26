@@ -29,26 +29,27 @@
 
 namespace Fem {
 
-	class AppFemExport ConstraintPressure : public Fem::Constraint {
-		PROPERTY_HEADER(Fem::ConstraintPressure);
+class AppFemExport ConstraintPressure : public Fem::Constraint
+{
+    PROPERTY_HEADER(Fem::ConstraintPressure);
 
-		public:
-		ConstraintPressure(void);
+public:
+    ConstraintPressure(void);
 
-		App::PropertyFloat Pressure;
-		App::PropertyBool Reversed;
-		App::PropertyVectorList Points;
-		App::PropertyVectorList Normals;
+    App::PropertyFloat Pressure;
+    App::PropertyBool Reversed;
+    App::PropertyVectorList Points;
+    App::PropertyVectorList Normals;
 
-		/// recalculate the object
-		virtual App::DocumentObjectExecReturn *execute(void);
+    /// recalculate the object
+    virtual App::DocumentObjectExecReturn *execute(void);
 
-		/// returns the type name of the ViewProvider
-		const char* getViewProviderName(void) const;
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName(void) const;
 
-		protected:
-		virtual void onChanged(const App::Property* prop);
-	};
+protected:
+    virtual void onChanged(const App::Property* prop);
+};
 
 }
 

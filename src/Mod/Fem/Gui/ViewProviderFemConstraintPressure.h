@@ -28,25 +28,20 @@
 #include <TopoDS_Shape.hxx>
 #include "ViewProviderFemConstraint.h"
 
-namespace Gui {
-	class View3DInventorViewer;
-	namespace TaskView {
-		class TaskDialog;
-	}
-}
-
 namespace FemGui {
-	class FemGuiExport ViewProviderFemConstraintPressure : public FemGui::ViewProviderFemConstraint {
-		PROPERTY_HEADER(FemGui::ViewProviderFemConstraintPressure);
+class FemGuiExport ViewProviderFemConstraintPressure : public FemGui::ViewProviderFemConstraint
+{
+    PROPERTY_HEADER(FemGui::ViewProviderFemConstraintPressure);
 
-		public:
-		ViewProviderFemConstraintPressure();
-		virtual ~ViewProviderFemConstraintPressure();
-		virtual void updateData(const App::Property*);
+public:
+    ViewProviderFemConstraintPressure();
+    virtual ~ViewProviderFemConstraintPressure();
+    virtual void updateData(const App::Property*);
 
-		protected:
-		virtual bool setEdit(int ModNum);
-	};
+protected:
+    virtual bool setEdit(int ModNum);
+};
+
 }
 
 #endif // GUI_VIEWPROVIDERFEMCONSTRAINTPRESSURE_H
