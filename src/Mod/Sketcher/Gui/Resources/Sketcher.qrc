@@ -129,6 +129,7 @@
         <file>icons/Sketcher_SelectRedundantConstraints.svg</file>
         <file>icons/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/Sketcher_Sketch.svg</file>
+        <file>icons/Sketcher_ToggleConstraint.svg</file>
         <file>icons/Sketcher_ToggleConstruction.svg</file>
         <file>icons/Sketcher_ToggleNormal.svg</file>
         <file>icons/Sketcher_Toggle_Constraint_Driven.svg</file>
