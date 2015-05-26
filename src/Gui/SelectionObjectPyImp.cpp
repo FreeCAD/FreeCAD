@@ -125,9 +125,9 @@ Py::Boolean SelectionObjectPy::getHasSubObjects(void) const
     return Py::Boolean(getSelectionObjectPtr()->hasSubNames());
 }
 
-Py::Tuple SelectionObjectPy::getSubPoints(void) const
+Py::Tuple SelectionObjectPy::getPickedPoints(void) const
 {
-    const std::vector<Base::Vector3d>& points = getSelectionObjectPtr()->getSubPoints();
+    const std::vector<Base::Vector3d>& points = getSelectionObjectPtr()->getPickedPoints();
 
     Py::Tuple temp(points.size());
     Py::sequence_index_type index = 0;
