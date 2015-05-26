@@ -91,6 +91,9 @@ PartDesign::Body *getBody(bool messageIfNot)
 
 PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
 {
+    if(!obj || !obj->isValid())
+        return nullptr;
+    
     PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     if(activeBody && activeBody->hasFeature(obj))
         return activeBody;
@@ -112,6 +115,9 @@ PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
 
 App::Part* getPartFor(App::DocumentObject* obj, bool messageIfNot) {
 
+    if(!obj || !obj->isValid())
+        return nullptr;
+    
     PartDesign::Body* body = getBodyFor(obj, false);
     if(body)
         obj = body;
