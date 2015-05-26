@@ -515,10 +515,10 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
                                 if (d->_editViewProvider == ChildViewProvider)
                                     resetEdit();
                                 //remove the viewprovider serves the purpose of detaching the inventor nodes from the 
-				//top level root in the viewer. However, if some of the children were grouped beneath the object 
-				//earlier they are not anymore part of the toplevel inventor node. we need to check for that.
-				if(activeView->getViewer()->hasViewProvider(ChildViewProvider))
-				    activeView->getViewer()->removeViewProvider(ChildViewProvider);
+                                //top level root in the viewer. However, if some of the children were grouped beneath the object 
+                                //earlier they are not anymore part of the toplevel inventor node. we need to check for that.
+                                if(activeView->getViewer()->hasViewProvider(ChildViewProvider))
+                                    activeView->getViewer()->removeViewProvider(ChildViewProvider);
                             }
                         }
                     }
@@ -1035,13 +1035,25 @@ void Document::createView(const Base::Type& typeId)
             view3D->getViewer()->setOverrideMode(overrideMode);
         }
 
-        // attach the viewprovider
+        // attach the viewproviders. we need to make sure that we only attach the toplevel ones
+        // and not viewproviders which are claimed by other providers. To ensure this we first
+        // add all providers and then remove the ones already claimed
         std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
-        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1)
+        std::vector<App::DocumentObject*> child_vps;
+        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {
             view3D->getViewer()->addViewProvider(It1->second);
+            std::vector<App::DocumentObject*> children = It1->second->claimChildren3D();
+            child_vps.insert(child_vps.end(), children.begin(), children.end());
+        }
         std::map<std::string,ViewProvider*>::const_iterator It2;
-        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2)
+        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2) {
             view3D->getViewer()->addViewProvider(It2->second);
+            std::vector<App::DocumentObject*> children = It2->second->claimChildren3D();
+            child_vps.insert(child_vps.end(), children.begin(), children.end());
+        }
+        
+        for(App::DocumentObject* obj : child_vps) 
+            view3D->getViewer()->removeViewProvider(getViewProvider(obj));
 
         const char* name = getDocument()->Label.getValue();
         QString title = QString::fromLatin1("%1 : %2[*]")
