@@ -72,11 +72,11 @@
 		  </Documentation>
 		  <Parameter Name="SubObjects" Type="Tuple" />
 	  </Attribute>
-    <Attribute Name="SubPoints" ReadOnly="true">
+    <Attribute Name="PickedPoints" ReadOnly="true">
       <Documentation>
-        <UserDocu>Selection points</UserDocu>
+        <UserDocu>Picked points for selection</UserDocu>
       </Documentation>
-      <Parameter Name="SubPoints" Type="Tuple" />
+      <Parameter Name="PickedPoints" Type="Tuple" />
     </Attribute>
     <Attribute Name="HasSubObjects" ReadOnly="true">
 		  <Documentation>

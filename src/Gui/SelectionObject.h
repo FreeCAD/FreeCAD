@@ -61,7 +61,7 @@ public:
     /// get the Type of the selected Object
     inline const char* getTypeName(void) const { return TypeName.c_str(); }
     /// get the selection points
-    inline const std::vector<Base::Vector3d> getSubPoints(void) const { return SelPoses; }
+    inline const std::vector<Base::Vector3d> getPickedPoints(void) const { return SelPoses; }
 
     /// returns the selected DocumentObject or NULL if the object is already deleted
     const App::DocumentObject *getObject(void) const;
