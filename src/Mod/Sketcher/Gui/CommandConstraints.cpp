@@ -3355,87 +3355,7 @@ bool CmdSketcherConstrainInternalAlignment::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
-/*** Creation Mode ***/
-DEF_STD_CMD_A(CmdSketcherConstraintCreationMode);
-
-CmdSketcherConstraintCreationMode::CmdSketcherConstraintCreationMode()
-  : Command("Sketcher_ConstraintCreationMode")
-{
-    sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Toggle driving/reference constraint mode");
-    sToolTipText    = QT_TR_NOOP("Toggle between inserting driving or reference constraints");
-    sWhatsThis      = "Sketcher_ConstraintCreationMode";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_Toggle_Constraint_Driving";
-    sAccel          = "";
-    eType           = ForEdit;
-}
-
-void CmdSketcherConstraintCreationMode::activated(int iMsg)
-{
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    
-    if(constraintCreationMode==Driving) {
-        constraintCreationMode=Reference;
-        
-        rcCmdMgr.getCommandByName("Sketcher_ConstraintCreationMode")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Sketcher_Toggle_Constraint_Driven"));
-        
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainLock")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistance")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceX")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceY")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainRadius")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainAngle")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainSnellsLaw")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_SnellsLaw_Driven"));         
-    }
-    else {
-        constraintCreationMode=Driving;
-        
-        rcCmdMgr.getCommandByName("Sketcher_ConstraintCreationMode")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Sketcher_Toggle_Constraint_Driving"));
-        
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainLock")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistance")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_Length"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceX")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceY")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));     
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainRadius")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_Radius"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainAngle")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
-        rcCmdMgr.getCommandByName("Sketcher_ConstrainSnellsLaw")->getAction()->setIcon(
-            Gui::BitmapFactory().pixmap("Constraint_SnellsLaw"));         
-    }
-}
-
-bool CmdSketcherConstraintCreationMode::isActive(void)
-{
-    Gui::Document * doc=getActiveGuiDocument();
-    if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
-        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
-            (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->
-                getSketchMode() == ViewProviderSketch::STATUS_NONE)
-                return true;
-        }
-    }
-    return false;
-}
-
-/* Constrain commands =======================================================*/
+/*** Creation Mode / Toggle to or from Reference ***/
 DEF_STD_CMD_A(CmdSketcherToggleDrivingConstraint);
 
 CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
@@ -3444,67 +3364,134 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
     sMenuText       = QT_TR_NOOP("Toggle reference/driving constraint");
-    sToolTipText    = QT_TR_NOOP("Toggles the currently selected constraint to/from reference mode");
+    sToolTipText    = QT_TR_NOOP("Toggles the toolbar or selected constraints to/from reference mode");
     sWhatsThis      = "Sketcher_ToggleDrivingConstraint";
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_ToggleDrivingConstraint";
+    sPixmap         = "Sketcher_ToggleConstraint";
     sAccel          = "";
     eType           = ForEdit;
 }
 
 void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 {
-    // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    bool modeChange=true;
+    
+    std::vector<Gui::SelectionObject> selection;
+    
+    if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0){
+        // Now we check whether we have a constraint selected or not.
+        
+        // get the selection
+        selection = getSelection().getSelectionEx();
 
-    // only one sketch with its subelements are allowed to be selected
-    if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select constraint(s) from the sketch."));
-        return;
+        // only one sketch with its subelements are allowed to be selected
+        if (selection.size() != 1) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Select constraint(s) from the sketch."));
+            return;
+        }
+        
+        // get the needed lists and objects
+        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        if (SubNames.empty()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Select constraint(s) from the sketch."));
+            return;
+        }
+        
+        for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+            // see if we have constraints, if we do it is not a mode change, but a toggle.
+            if (it->size() > 10 && it->substr(0,10) == "Constraint")
+                modeChange=false;
+        }
+ 
+    }   
+    
+    if (modeChange){    
+        // Here starts the code for mode change 
+        Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+        
+        if(constraintCreationMode==Driving) {
+            constraintCreationMode=Reference;
+            
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainLock")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistance")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceX")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceY")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainRadius")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainAngle")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
+            /*rcCmdMgr.getCommandByName("Sketcher_ConstrainSnellsLaw")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_SnellsLaw_Driven"));*/        
+        }
+        else {
+            constraintCreationMode=Driving;
+            
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainLock")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistance")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_Length"));
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceX")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceY")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));     
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainRadius")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_Radius"));
+            rcCmdMgr.getCommandByName("Sketcher_ConstrainAngle")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
+            /*rcCmdMgr.getCommandByName("Sketcher_ConstrainSnellsLaw")->getAction()->setIcon(
+                Gui::BitmapFactory().pixmap("Constraint_SnellsLaw"));*/       
+        }        
     }
+    else // toggle the selected constraint(s)
+    {
+        // get the needed lists and objects
+        const std::vector<std::string> &SubNames = selection[0].getSubNames();
+        if (SubNames.empty()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Select constraint(s) from the sketch."));
+            return;
+        }
 
-    // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    if (SubNames.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select constraint(s) from the sketch."));
-        return;
-    }
+        // make sure the selected object is the sketch in edit mode
+        const App::DocumentObject* obj = selection[0].getObject();
+        ViewProviderSketch* sketchView = static_cast<ViewProviderSketch*>
+            (Gui::Application::Instance->getViewProvider(obj));
 
-    // make sure the selected object is the sketch in edit mode
-    const App::DocumentObject* obj = selection[0].getObject();
-    ViewProviderSketch* sketchView = static_cast<ViewProviderSketch*>
-        (Gui::Application::Instance->getViewProvider(obj));
+        // undo command open
+        openCommand("Toggle driving from/to non-driving");
 
-    // undo command open
-    openCommand("Toggle driving from/to non-driving");
-
-    int succesful=SubNames.size();
-    // go through the selected subelements
-    for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
-        // only handle constraints
-        if (it->size() > 10 && it->substr(0,10) == "Constraint") {
-            int ConstrId = std::atoi(it->substr(10,4000).c_str()) - 1;
-            try {
-                // issue the actual commands to toggle
-                doCommand(Doc,"App.ActiveDocument.%s.toggleDriving(%d) ",selection[0].getFeatName(),ConstrId);
-            }
-            catch(const Base::Exception& e) {
-                succesful--;
+        int succesful=SubNames.size();
+        // go through the selected subelements
+        for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+            // only handle constraints
+            if (it->size() > 10 && it->substr(0,10) == "Constraint") {
+                int ConstrId = std::atoi(it->substr(10,4000).c_str()) - 1;
+                try {
+                    // issue the actual commands to toggle
+                    doCommand(Doc,"App.ActiveDocument.%s.toggleDriving(%d) ",selection[0].getFeatName(),ConstrId);
+                }
+                catch(const Base::Exception& e) {
+                    succesful--;
+                }
             }
         }
+        
+        if(succesful>0) 
+            commitCommand();
+        else
+            abortCommand();
+
+        updateActive();
+
+        // clear the selection (convenience)
+        getSelection().clearSelection();
     }
-    
-    if(succesful>0) 
-        commitCommand();
-    else
-        abortCommand();
-
-    updateActive();
-
-    // clear the selection (convenience)
-    getSelection().clearSelection();
 }
 
 bool CmdSketcherToggleDrivingConstraint::isActive(void)
@@ -3533,6 +3520,5 @@ void CreateSketcherCommandsConstraints(void)
     rcCmdMgr.addCommand(new CmdSketcherConstrainSymmetric());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
     rcCmdMgr.addCommand(new CmdSketcherConstrainInternalAlignment());
-    rcCmdMgr.addCommand(new CmdSketcherConstraintCreationMode());
     rcCmdMgr.addCommand(new CmdSketcherToggleDrivingConstraint());
 }

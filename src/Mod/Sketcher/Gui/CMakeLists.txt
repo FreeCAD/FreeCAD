@@ -60,6 +60,7 @@ SET(SketcherGui_SRCS
     ${SketcherGui_UIC_HDRS}
     AppSketcherGui.cpp
     AppSketcherGuiPy.cpp
+    GeometryCreationMode.h
     Command.cpp
     CommandCreateGeo.cpp
     CommandConstraints.h

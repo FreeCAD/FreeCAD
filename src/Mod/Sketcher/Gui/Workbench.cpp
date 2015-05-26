@@ -177,7 +177,6 @@ inline void SketcherAddWorkbenchGeometries(T& geom){
             << "Sketcher_Trimming"
             << "Sketcher_External"
             << "Sketcher_ToggleConstruction"
-            << "Sketcher_GeometryCreationMode"
             /*<< "Sketcher_CreateText"*/
             /*<< "Sketcher_CreateDraftLine"*/;
 }
@@ -206,8 +205,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons){
             << "Sketcher_ConstrainSnellsLaw"
             << "Sketcher_ConstrainInternalAlignment"
             << "Separator"
-            << "Sketcher_ToggleDrivingConstraint"
-            << "Sketcher_ConstraintCreationMode";
+            << "Sketcher_ToggleDrivingConstraint";
 }
 
 template <>
@@ -230,8 +228,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
             << "Separator"
-            << "Sketcher_ToggleDrivingConstraint"            
-            << "Sketcher_ConstraintCreationMode";            
+            << "Sketcher_ToggleDrivingConstraint";            
 }
 
 template <typename T>
