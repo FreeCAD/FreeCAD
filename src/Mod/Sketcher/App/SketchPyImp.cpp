@@ -141,8 +141,11 @@ PyObject* SketchPy::addConstraint(PyObject *args)
 
 PyObject* SketchPy::clear(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
     getSketchPtr()->clear();
-    
+
     Py_RETURN_NONE;
 }
 
