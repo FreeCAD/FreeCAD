@@ -534,7 +534,6 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
                 
             case 6:  // torus
                 cmd = QString::fromAscii(
-                    "App.ActiveDocument.addObject(\"Part::Torus\",\"%1\")\n"
                     "App.ActiveDocument.%1.Radius1=%2\n"
                     "App.ActiveDocument.%1.Radius2=%3\n"
                     "App.ActiveDocument.%1.Angle1=%4\n"
