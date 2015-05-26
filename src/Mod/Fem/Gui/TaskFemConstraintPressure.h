@@ -34,45 +34,43 @@
 
 class Ui_TaskFemConstraintPressure;
 
-namespace App {
-	class Property;
-}
-
-namespace Gui {
-	class ViewProvider;
-}
-
 namespace FemGui {
-	class TaskFemConstraintPressure : public TaskFemConstraint {
-		Q_OBJECT public:
-		TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = 0);
-		virtual ~TaskFemConstraintPressure();
-		double getPressure(void) const;
-		virtual const std::string getReferences() const;
-		bool getReverse(void) const;
+class TaskFemConstraintPressure : public TaskFemConstraint
+{
+    Q_OBJECT
 
-		private Q_SLOTS:
-		void onReferenceDeleted(void);
-		void onPressureChanged(const Base::Quantity & f);
-		void onCheckReverse(bool);
+public:
+    TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = 0);
+    virtual ~TaskFemConstraintPressure();
+    double getPressure(void) const;
+    virtual const std::string getReferences() const;
+    bool getReverse(void) const;
 
-		protected:
-		virtual void changeEvent(QEvent *e);
+private Q_SLOTS:
+    void onReferenceDeleted(void);
+    void onPressureChanged(const Base::Quantity & f);
+    void onCheckReverse(bool);
 
-		private:
-		virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-		void updateUI();
-		Ui_TaskFemConstraintPressure* ui;
-	};
+protected:
+    virtual void changeEvent(QEvent *e);
 
-	class TaskDlgFemConstraintPressure : public TaskDlgFemConstraint {
-		Q_OBJECT public:
-		TaskDlgFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView);
-		virtual void open();
-		virtual bool accept();
-		virtual bool reject();
+private:
+    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void updateUI();
+    Ui_TaskFemConstraintPressure* ui;
+};
 
-	};
+class TaskDlgFemConstraintPressure : public TaskDlgFemConstraint
+{
+    Q_OBJECT
+
+public:
+    TaskDlgFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView);
+    virtual void open();
+    virtual bool accept();
+    virtual bool reject();
+};
+
 } //namespace FemGui
 
 #endif // GUI_TASKVIEW_TaskFemConstraintPressure_H
