@@ -184,13 +184,17 @@ void TaskFemConstraintForce::onSelectionChanged(const Gui::SelectionChanges& msg
 
             // Avoid duplicates
             std::size_t pos = 0;
-            for (; pos < Objects.size(); pos++)
-                if (obj == Objects[pos])
+            for (; pos < Objects.size(); pos++) {
+                if (obj == Objects[pos]) {
                     break;
+		}
+            }
 
-            if (pos != Objects.size())
-                if (subName == SubElements[pos])
+            if (pos != Objects.size()) {
+                if (subName == SubElements[pos]) {
                     return;
+                }
+            }
 
             // add the new reference
             Objects.push_back(obj);
