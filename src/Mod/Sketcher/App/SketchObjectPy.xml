@@ -87,6 +87,11 @@
       <Documentation>
         <UserDocu>Get the Driving status of a datum constraint</UserDocu>
       </Documentation>
+    </Methode>
+    <Methode Name="toggleDriving">
+      <Documentation>
+        <UserDocu>toggle the Driving status of a datum constraint</UserDocu>
+      </Documentation>
     </Methode>    
     <Methode Name="movePoint">
       <Documentation>

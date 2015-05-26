@@ -49,7 +49,7 @@ using namespace Sketcher;
 
 // returns a string which represents the object e.g. when printed in python
 std::string SketchObjectPy::representation(void) const
-{
+{        
     return "<Sketcher::SketchObject>";
 }
 
@@ -578,7 +578,7 @@ PyObject* SketchObjectPy::setDriving(PyObject *args)
 
     if (this->getSketchObjectPtr()->setDriving(constrid, PyObject_IsTrue(driving) ? true : false)) {
         std::stringstream str;
-        str << "Not able set Driving for constraint with the given index: " << constrid;
+        str << "Not able set Driving/reference for constraint with the given index: " << constrid;
         PyErr_SetString(PyExc_ValueError, str.str().c_str());
         return 0;
     }
@@ -601,6 +601,23 @@ PyObject* SketchObjectPy::getDriving(PyObject *args)
     }
 
     return Py::new_reference_to(Py::Boolean(driving));
+}
+
+PyObject* SketchObjectPy::toggleDriving(PyObject *args)
+{
+    int constrid;
+    
+    if (!PyArg_ParseTuple(args, "i", &constrid))
+        return 0;
+
+    if (this->getSketchObjectPtr()->toggleDriving(constrid)) {
+        std::stringstream str;
+        str << "Not able toggle Driving for constraint with the given index: " << constrid;
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return 0;
+    }
+
+    Py_Return;
 }
 
 
