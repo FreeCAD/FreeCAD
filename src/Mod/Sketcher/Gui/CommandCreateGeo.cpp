@@ -5350,7 +5350,16 @@ void CmdSketcherGeometryCreationMode::activated(int iMsg)
 
 bool CmdSketcherGeometryCreationMode::isActive(void)
 {
-    return isCreateGeoActive(getActiveGuiDocument());
+   Gui::Document * doc=getActiveGuiDocument();
+   
+   if (doc) {
+        // checks if a Sketch Viewprovider is in Edit and is in no special mode
+        if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
+            (SketcherGui::ViewProviderSketch::getClassTypeId())) {
+                return true;
+        }
+    }
+    return false;
 }
 
 void CreateSketcherCommandsCreateGeo(void)

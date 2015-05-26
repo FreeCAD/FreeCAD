@@ -2869,10 +2869,10 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             std::swap(PosId2,PosId3);
         }
 
-        bool allexternal=false;
         //a bunch of validity checks
         if ((GeoId1 < 0 && GeoId2 < 0 && GeoId3 < 0)) {
-            allexternal=true;
+            strError = QObject::tr("Can not create constraint with external geometry only!!", dmbg);
+            throw(Base::Exception(""));
         }
 
         if (!(isVertex(GeoId1,PosId1) && !isSimpleVertex(Obj, GeoId1, PosId1) &&
@@ -2884,29 +2884,27 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 
         double n2divn1=0;
         
-        if(!allexternal){
-            //the essence.
-            //Unlike other constraints, we'll ask for a value immediately.
-            QDialog dlg(Gui::getMainWindow());
-            Ui::InsertDatum ui_Datum;
-            ui_Datum.setupUi(&dlg);
-            dlg.setWindowTitle(EditDatumDialog::tr("Refractive index ratio", dmbg));
-            ui_Datum.label->setText(EditDatumDialog::tr("Ratio n2/n1:", dmbg));
-            Base::Quantity init_val;
-            init_val.setUnit(Base::Unit());
-            init_val.setValue(0.0);
+        //the essence.
+        //Unlike other constraints, we'll ask for a value immediately.
+        QDialog dlg(Gui::getMainWindow());
+        Ui::InsertDatum ui_Datum;
+        ui_Datum.setupUi(&dlg);
+        dlg.setWindowTitle(EditDatumDialog::tr("Refractive index ratio", dmbg));
+        ui_Datum.label->setText(EditDatumDialog::tr("Ratio n2/n1:", dmbg));
+        Base::Quantity init_val;
+        init_val.setUnit(Base::Unit());
+        init_val.setValue(0.0);
 
-            ui_Datum.labelEdit->setValue(init_val);
-            ui_Datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
-            ui_Datum.labelEdit->setToLastUsedValue();
-            ui_Datum.labelEdit->selectNumber();
+        ui_Datum.labelEdit->setValue(init_val);
+        ui_Datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
+        ui_Datum.labelEdit->setToLastUsedValue();
+        ui_Datum.labelEdit->selectNumber();
 
-            if (dlg.exec() != QDialog::Accepted) return;
-            ui_Datum.labelEdit->pushToHistory();
+        if (dlg.exec() != QDialog::Accepted) return;
+        ui_Datum.labelEdit->pushToHistory();
 
-            Base::Quantity newQuant = ui_Datum.labelEdit->value();
-            n2divn1 = newQuant.getValue();
-        }
+        Base::Quantity newQuant = ui_Datum.labelEdit->value();
+        n2divn1 = newQuant.getValue();
 
         //add constraint
         openCommand("add Snell's law constraint");
@@ -2925,12 +2923,12 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('SnellsLaw',%d,%d,%d,%d,%d,%.12f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,n2divn1);
 
-        if (allexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+        /*if (allexternal || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
             
             Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
             selection[0].getFeatName(),ConStr.size()-1,"False");
-        }            
+        }*/            
         
         commitCommand();
         updateActive();
@@ -3437,6 +3435,83 @@ bool CmdSketcherConstraintCreationMode::isActive(void)
     return false;
 }
 
+/* Constrain commands =======================================================*/
+DEF_STD_CMD_A(CmdSketcherToggleDrivingConstraint);
+
+CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
+    :Command("Sketcher_ToggleDrivingConstraint")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Toggle reference/driving constraint");
+    sToolTipText    = QT_TR_NOOP("Toggles the currently selected constraint to/from reference mode");
+    sWhatsThis      = "Sketcher_ToggleDrivingConstraint";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_ToggleDrivingConstraint";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
+{
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select constraint(s) from the sketch."));
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    if (SubNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select constraint(s) from the sketch."));
+        return;
+    }
+
+    // make sure the selected object is the sketch in edit mode
+    const App::DocumentObject* obj = selection[0].getObject();
+    ViewProviderSketch* sketchView = static_cast<ViewProviderSketch*>
+        (Gui::Application::Instance->getViewProvider(obj));
+
+    // undo command open
+    openCommand("Toggle driving from/to non-driving");
+
+    int succesful=SubNames.size();
+    // go through the selected subelements
+    for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
+        // only handle constraints
+        if (it->size() > 10 && it->substr(0,10) == "Constraint") {
+            int ConstrId = std::atoi(it->substr(10,4000).c_str()) - 1;
+            try {
+                // issue the actual commands to toggle
+                doCommand(Doc,"App.ActiveDocument.%s.toggleDriving(%d) ",selection[0].getFeatName(),ConstrId);
+            }
+            catch(const Base::Exception& e) {
+                succesful--;
+            }
+        }
+    }
+    
+    if(succesful>0) 
+        commitCommand();
+    else
+        abortCommand();
+
+    updateActive();
+
+    // clear the selection (convenience)
+    getSelection().clearSelection();
+}
+
+bool CmdSketcherToggleDrivingConstraint::isActive(void)
+{
+    return isCreateConstraintActive( getActiveGuiDocument() );
+}
+
 void CreateSketcherCommandsConstraints(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -3459,5 +3534,5 @@ void CreateSketcherCommandsConstraints(void)
     rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
     rcCmdMgr.addCommand(new CmdSketcherConstrainInternalAlignment());
     rcCmdMgr.addCommand(new CmdSketcherConstraintCreationMode());
-
+    rcCmdMgr.addCommand(new CmdSketcherToggleDrivingConstraint());
 }

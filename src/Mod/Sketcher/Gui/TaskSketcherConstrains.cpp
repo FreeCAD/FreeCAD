@@ -136,7 +136,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     {
         ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
         
-        QAction* driven = menu.addAction(it->isDriving?tr("Change to reference"):tr("Change to driving"), this, SLOT(updateDrivingStatus()));
+        QAction* driven = menu.addAction(tr("Toggle to/from reference"), this, SLOT(updateDrivingStatus()));
         // if its the right constraint
         if ((it->Type == Sketcher::Distance ||
             it->Type == Sketcher::DistanceX ||
@@ -349,21 +349,8 @@ void TaskSketcherConstrains::on_listWidgetConstraints_updateDrivingStatus(QListW
     ConstraintItem *it = dynamic_cast<ConstraintItem*>(item);
     if (!item) return;
     
-    const std::vector< Sketcher::Constraint * > &vals = sketchView->getSketchObject()->Constraints.getValues();
-    
-    try {
-        Gui::Command::openCommand("Modify driving status of constraint");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-            this->sketchView->getSketchObject()->getNameInDocument(),
-            it->ConstraintNbr,
-            status?"True":"False");
-        Gui::Command::commitCommand();
-        Gui::Command::updateActive();
-    }
-    catch (const Base::Exception& e) {
-        Gui::Command::abortCommand();
-    }
-    
+    Gui::Application::Instance->commandManager().runCommandByName("Sketcher_ToggleDrivingConstraint");
+       
     slotConstraintsChanged();
     
 }
