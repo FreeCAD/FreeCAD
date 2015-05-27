@@ -15,7 +15,7 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="Juergen.Riegel@web.de" />
       <UserDocu>ViewProviderFemMesh class</UserDocu>
     </Documentation>
-    <Methode Name="animate">
+    <Methode Name="applyDisplacement">
       <Documentation>
         <UserDocu></UserDocu>
       </Documentation>
