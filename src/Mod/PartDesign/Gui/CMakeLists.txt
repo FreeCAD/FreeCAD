@@ -50,6 +50,7 @@ set(PartDesignGui_MOC_HDRS
     TaskDatumParameters.h
     TaskBooleanParameters.h
     TaskPrimitiveParameters.h
+    TaskPipeParameters.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
@@ -76,6 +77,7 @@ set(PartDesignGui_UIC_SRCS
     TaskMultiTransformParameters.ui
     TaskDatumParameters.ui
     TaskPrimitiveParameters.ui
+    TaskPipeParameters.ui
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
@@ -130,6 +132,8 @@ SET(PartDesignGuiViewProvider_SRCS CommandPrimitive.cpp
     ViewProviderBoolean.h
     ViewProviderPrimitive.h
     ViewProviderPrimitive.cpp
+    ViewProviderPipe.h
+    ViewProviderPipe.cpp
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
@@ -198,6 +202,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskBooleanParameters.h
     TaskPrimitiveParameters.h
     TaskPrimitiveParameters.cpp
+    TaskPipeParameters.ui
+    TaskPipeParameters.h
+    TaskPipeParameters.cpp
 )
 SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 

@@ -54,6 +54,7 @@
 #include "FeaturePrimitive.h"
 #include "DatumCS.h"
 #include "FeatureThickness.h"
+#include "FeaturePipe.h"
 
 namespace PartDesign {
 extern PyObject* initModule();
@@ -101,6 +102,9 @@ PyMODINIT_FUNC init_PartDesign()
     PartDesign::Chamfer            ::init();
     PartDesign::Draft              ::init();
     PartDesign::Thickness          ::init();
+    PartDesign::Pipe               ::init();
+    PartDesign::AdditivePipe       ::init();
+    PartDesign::SubtractivePipe    ::init();
     PartDesign::Plane              ::init();
     PartDesign::Line               ::init();
     PartDesign::Point              ::init();

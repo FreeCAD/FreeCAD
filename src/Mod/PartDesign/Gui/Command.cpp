@@ -1285,6 +1285,101 @@ bool CmdPartDesignGroove::isActive(void)
 }
 
 //===========================================================================
+// PartDesign_Additive_Pipe
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignAdditivePipe);
+
+CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
+  : Command("PartDesign_AdditivePipe")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Additive pipe");
+    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
+    sWhatsThis    = "PartDesign_Additive_Pipe";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Additive_Pipe";
+}
+
+void CmdPartDesignAdditivePipe::activated(int iMsg)
+{          
+    Gui::Command* cmd = this;
+    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+        
+        if (FeatName.empty()) return;
+        
+        // specific parameters for Pad
+        //Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
+        App::DocumentObjectGroup* grp = sketch->getGroup();
+        if (grp) {
+            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                        ,grp->getNameInDocument(),FeatName.c_str());
+            Gui::Command::doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
+                        ,grp->getNameInDocument(),sketch->getNameInDocument());
+        }
+        Gui::Command::updateActive();
+
+        finishSketchBased(cmd, sketch, FeatName);
+        //adjustCameraPosition();
+    };
+    
+    prepareSketchBased(this, "AdditivePipe", worker);
+}
+
+bool CmdPartDesignAdditivePipe::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
+//===========================================================================
+// PartDesign_Subtractive_Pipe
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignSubtractivePipe);
+
+CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
+  : Command("PartDesign_SubtractivePipe")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Subtractive pipe");
+    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles and remove it from the body");
+    sWhatsThis    = "PartDesign_Subtractive_Pipe";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Subtractive_Pipe";
+}
+
+void CmdPartDesignSubtractivePipe::activated(int iMsg)
+{          
+    Gui::Command* cmd = this;
+    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+        
+        if (FeatName.empty()) return;
+        
+        // specific parameters for Pad
+        //Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
+        App::DocumentObjectGroup* grp = sketch->getGroup();
+        if (grp) {
+            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
+                        ,grp->getNameInDocument(),FeatName.c_str());
+            Gui::Command::doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
+                        ,grp->getNameInDocument(),sketch->getNameInDocument());
+        }
+        Gui::Command::updateActive();
+
+        finishSketchBased(cmd, sketch, FeatName);
+        //adjustCameraPosition();
+    };
+    
+    prepareSketchBased(this, "SubtractivePipe", worker);
+}
+
+bool CmdPartDesignSubtractivePipe::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+//===========================================================================
 // Common utility functions for Dressup features
 //===========================================================================
 
@@ -2091,4 +2186,6 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
 
     rcCmdMgr.addCommand(new CmdPartDesignBoolean());
+    rcCmdMgr.addCommand(new CmdPartDesignAdditivePipe);
+    rcCmdMgr.addCommand(new CmdPartDesignSubtractivePipe);
  }
