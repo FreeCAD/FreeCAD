@@ -309,10 +309,14 @@ void ViewProviderSketch::activateHandler(DrawSketchHandler *newHandler)
 void ViewProviderSketch::deactivateHandler()
 {
     assert(edit);
-    assert(edit->sketchHandler != 0);
-    edit->sketchHandler->deactivated(this);
-    edit->sketchHandler->unsetCursor();
-    delete(edit->sketchHandler);
+    if(edit->sketchHandler != 0){
+        std::vector<Base::Vector2D> editCurve;
+        editCurve.clear();
+        drawEdit(editCurve); // erase any line
+        edit->sketchHandler->deactivated(this);
+        edit->sketchHandler->unsetCursor();
+        delete(edit->sketchHandler);
+    }
     edit->sketchHandler = 0;
     Mode = STATUS_NONE;
 }
