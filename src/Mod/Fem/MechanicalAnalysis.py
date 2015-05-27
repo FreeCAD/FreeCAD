@@ -591,14 +591,6 @@ class _ResultControlTaskPanel:
         if self.DisplacementObject:
             self.MeshObject.ViewObject.setNodeDisplacementByResult(self.DisplacementObject)
 
-    def setColorStress(self):
-        if self.StressObject:
-            values = self.StressObject.Values
-            maxVal = max(values)
-            self.form.doubleSpinBox_MinValueColor.setValue(maxVal)
-
-            self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
-
     def update(self):
         'fills the widgets'
         #print "Update-------------------------------"
