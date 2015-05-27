@@ -572,11 +572,11 @@ class _ResultControlTaskPanel:
         if checked:
             factor = self.form.horizontalScrollBar_Factor.value()
         self.setDisplacement()
-        self.MeshObject.ViewObject.animate(factor)
+        self.MeshObject.ViewObject.applyDisplacement(factor)
         QtGui.qApp.restoreOverrideCursor()
 
     def sliderValue(self, value):
-        self.MeshObject.ViewObject.animate(value)
+        self.MeshObject.ViewObject.applyDisplacement(value)
         self.form.spinBox_DisplacementFactor.setValue(value)
 
     def sliderMaxValue(self, value):

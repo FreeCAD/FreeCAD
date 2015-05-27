@@ -24,13 +24,13 @@ std::string ViewProviderFemMeshPy::representation(void) const
 
 
 
-PyObject* ViewProviderFemMeshPy::animate(PyObject * args)
+PyObject* ViewProviderFemMeshPy::applyDisplacement(PyObject * args)
 {
     double factor;
     if (!PyArg_ParseTuple(args, "d", &factor))
         return 0;
 
-    this->getViewProviderFemMeshPtr()->animateNodes(factor);
+    this->getViewProviderFemMeshPtr()->applyDisplacementToNodes(factor);
 
     Py_Return;
 }
