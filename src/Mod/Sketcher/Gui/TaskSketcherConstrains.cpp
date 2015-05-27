@@ -333,7 +333,7 @@ void TaskSketcherConstrains::on_listWidgetConstraints_itemChanged(QListWidgetIte
         {
             double n1 = 1.0;
             double n2 = 1.0;
-            if(abs(v->Value)>=1) {
+            if(fabs(v->Value)>=1) {
                 n2 = v->Value;
             } else {
                 n1 = 1/v->Value;
@@ -488,7 +488,7 @@ void TaskSketcherConstrains::slotConstraintsChanged(void)
                     double v = (*it)->Value;
                     double n1 = 1.0;
                     double n2 = 1.0;
-                    if(abs(v)>=1) {
+                    if(fabs(v)>=1) {
                         n2 = v;
                     } else {
                         n1 = 1/v;

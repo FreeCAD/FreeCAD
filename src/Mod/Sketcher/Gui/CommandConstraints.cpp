@@ -129,7 +129,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                 double newDatum = newQuant.getValue();
                 if (Constr->Type == Sketcher::Angle ||
                     ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-                     Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)) {
+                     (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))) {
                     // Permit negative values to flip the sign of the constraint
                     if (newDatum >= 0) // keep the old sign
                         newDatum = ((datum >= 0) ? 1 : -1) * std::abs(newDatum);
@@ -1028,8 +1028,8 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
             points.push_back(id);
     }
 
-    if (points.size() == 1 && curves.size() >= 1 ||
-        points.size() >= 1 && curves.size() == 1) {
+    if ((points.size() == 1 && curves.size() >= 1) ||
+        (points.size() >= 1 && curves.size() == 1)) {
 
         openCommand("add point on object constraint");
         int cnt = 0;
