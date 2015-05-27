@@ -4512,15 +4512,15 @@ public:
                 Gui::Command::commitCommand();
                 Gui::Command::updateActive();
 
-                // add auto constraints at the start of the first side
+                // add auto constraints at the center of the polygon
                 if (sugConstr1.size() > 0) {
-                    createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::mid);
+                    createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
                     sugConstr1.clear();
                 }
 
-                // add auto constraints at the end of the second side
+                // add auto constraints to the last side of the polygon
                 if (sugConstr2.size() > 0) {
-                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
+                    createAutoConstraints(sugConstr2, getHighestCurveIndex() - 1, Sketcher::end);
                     sugConstr2.clear();
                 }
             }
