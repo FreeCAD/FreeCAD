@@ -38,6 +38,7 @@ public:
     DlgWorkbenchesImp(QWidget* parent = 0);
     ~DlgWorkbenchesImp();
     static QStringList load_enabled_workbenches();
+    static QStringList load_disabled_workbenches();
     static const QString all_workbenches;
 
 protected:
@@ -60,7 +61,7 @@ private:
     void add_workbench(QListWidgetCustom *lw, const QString& it);
     void move_workbench(QListWidgetCustom *lwc_dest,
                         QListWidgetItem *wi);
-    void save_enabled_workbenches();
+    void save_workbenches();
     void shift_workbench(bool up);
 };
 
