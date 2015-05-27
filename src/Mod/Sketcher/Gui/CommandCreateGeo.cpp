@@ -103,9 +103,11 @@ void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler)
 {
     if (doc) {
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
-            (SketcherGui::ViewProviderSketch::getClassTypeId()))
-            dynamic_cast<SketcherGui::ViewProviderSketch*>
-            (doc->getInEdit())->activateHandler(handler);
+            (SketcherGui::ViewProviderSketch::getClassTypeId())) {
+                SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+                vp->purgeHandler();                
+                vp->activateHandler(handler);
+        }
     }
 }
 
@@ -115,8 +117,8 @@ bool isCreateGeoActive(Gui::Document *doc)
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
             (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->
-                getSketchMode() == ViewProviderSketch::STATUS_NONE)
+            /*if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->
+                getSketchMode() == ViewProviderSketch::STATUS_NONE)*/
                 return true;
         }
     }
