@@ -197,6 +197,7 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
             origin = static_cast<ViewProviderOrigin*>(Gui::Application::Instance->activeDocument()->getViewProvider(app_origin[0]));
             origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
             origin->setTemporaryVisibilityAxis(true);
+            origin->setTemporaryVisibilityPlanes(true);
         }            
     }   
 }

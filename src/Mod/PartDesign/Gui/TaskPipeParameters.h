@@ -30,8 +30,12 @@
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderPipe.h"
+#include "TaskDressUpParameters.h"
 
 class Ui_TaskPipeParameters;
+class Ui_TaskPipeOrientation;
+class Ui_TaskPipeScaling;
+
 
 namespace App {
 class Property;
@@ -55,18 +59,99 @@ public:
 
  
 private Q_SLOTS:
+    void onTangentChanged(bool checked);
+    void onTransitionChanged(int);
+    void onButtonRefAdd(bool checked);
+    void onButtonRefRemove(bool checked);
+    void onBaseButton(bool checked);
   
 protected:
-    void changeEvent(QEvent *e);
+    enum selectionModes { none, refAdd, refRemove, refObjAdd };
+    selectionModes selectionMode = none;
+    
+    void removeFromListWidget(QListWidget*w, QString name);
+    bool referenceSelected(const Gui::SelectionChanges& msg) const;
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
-    void updateUI(int index);
+    void updateUI();
+    void clearButtons();
+    void exitSelectionMode();
 
 private:
     QWidget* proxy;
     Ui_TaskPipeParameters* ui;
 };
+
+class TaskPipeOrientation : public TaskSketchBasedParameters
+{
+    Q_OBJECT
+
+public:
+    TaskPipeOrientation(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
+    virtual ~TaskPipeOrientation();
+
+ 
+private Q_SLOTS:
+    void onOrientationChanged(int);
+    void onButtonRefAdd(bool checked);
+    void onButtonRefRemove(bool checked);
+    void updateUI(int idx);
+    void onBaseButton(bool checked);
+    void onTangentChanged(bool checked);
+    void onCurvelinearChanged(bool checked);
+    void onBinormalChanged(double);
+  
+protected:
+    enum selectionModes { none, refAdd, refRemove, refObjAdd };
+    selectionModes selectionMode = none;
+    
+    void removeFromListWidget(QListWidget*w, QString name);
+    bool referenceSelected(const Gui::SelectionChanges& msg) const;
+
+private:
+    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void clearButtons();
+    void exitSelectionMode();
+
+private:
+    QWidget* proxy;
+    Ui_TaskPipeOrientation* ui;
+};
+
+
+class TaskPipeScaling : public TaskSketchBasedParameters
+{
+    Q_OBJECT
+
+public:
+    TaskPipeScaling(ViewProviderPipe *PipeView,bool newObj=false,QWidget *parent = 0);
+    virtual ~TaskPipeScaling();
+
+ 
+private Q_SLOTS:
+    void onScalingChanged(int);
+    void onButtonRefAdd(bool checked);
+    void onButtonRefRemove(bool checked);
+    void updateUI(int idx);
+  
+protected:
+    enum selectionModes { none, refAdd, refRemove };
+    selectionModes selectionMode = none;
+    
+    void removeFromListWidget(QListWidget*w, QString name);
+    bool referenceSelected(const Gui::SelectionChanges& msg) const;
+
+private:
+    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void clearButtons();
+    void exitSelectionMode();
+
+private:
+    QWidget* proxy;
+    Ui_TaskPipeScaling* ui;
+};
+
 
 /// simulation dialog for the TaskView
 class TaskDlgPipeParameters : public TaskDlgSketchBasedParameters
@@ -88,6 +173,8 @@ public:
 
 protected:
     TaskPipeParameters  *parameter;
+    TaskPipeOrientation *orientation;
+    TaskPipeScaling     *scaling;
 };
 
 } //namespace PartDesignGui

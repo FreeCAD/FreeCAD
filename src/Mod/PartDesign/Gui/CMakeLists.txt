@@ -78,6 +78,8 @@ set(PartDesignGui_UIC_SRCS
     TaskDatumParameters.ui
     TaskPrimitiveParameters.ui
     TaskPipeParameters.ui
+    TaskPipeOrientation.ui
+    TaskPipeScaling.ui
 )
 qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
 
@@ -203,6 +205,8 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskPrimitiveParameters.h
     TaskPrimitiveParameters.cpp
     TaskPipeParameters.ui
+    TaskPipeOrientation.ui
+    TaskPipeScaling.ui
     TaskPipeParameters.h
     TaskPipeParameters.cpp
 )

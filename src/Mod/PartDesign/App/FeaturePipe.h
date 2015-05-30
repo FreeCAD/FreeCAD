@@ -37,10 +37,17 @@ class PartDesignExport Pipe : public SketchBased
 public:
     Pipe();
 
-    App::PropertyLinkList    Sections;
-    App::PropertyLinkSubList Spine;
+    
+    App::PropertyLinkSub     Spine;
+    App::PropertyBool        SpineTangent;
+    App::PropertyLinkSub     AuxillerySpine;
+    App::PropertyBool        AuxillerySpineTangent;
+    App::PropertyBool        AuxilleryCurvelinear;
     App::PropertyEnumeration Mode;
+    App::PropertyVector      Binormal;
     App::PropertyEnumeration Transition;
+    App::PropertyEnumeration Transformation;
+    App::PropertyLinkList    Sections;
 
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
@@ -49,11 +56,17 @@ public:
         return "PartDesignGui::ViewProviderPipe";
     }
     //@}
+    
+protected:
+    ///get the given edges and all their tangent ones
+    void getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
+    void buildPipePath(const Part::TopoShape& input, const  std::vector<std::string>& edges, TopoDS_Shape& result);
 
 private:
     static const char* TypeEnums[];
     static const char* TransitionEnums[];
     static const char* ModeEnums[];
+    static const char* TransformEnums[];
 };
 
 class PartDesignExport AdditivePipe : public Pipe {
