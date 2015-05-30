@@ -482,13 +482,7 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool newObj, QWidge
             this, SLOT(updateUI(int)));
     
     this->groupLayout()->addWidget(proxy);
-      
-//     ui->comboBoxTransition->clear();
-//     ui->comboBoxTransition->insertItem(0, tr("Transformed"));
-//     ui->comboBoxTransition->insertItem(1, tr("Right Corner"));
-//     ui->comboBoxTransition->insertItem(2, tr("Round Corner"));
-//     ui->comboBoxTransition->setCurrentIndex(0);
-    
+   
 
     updateUI(0);
 }

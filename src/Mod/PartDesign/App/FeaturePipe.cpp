@@ -50,6 +50,8 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopExp.hxx>
 #include <BRepAlgoAPI_Cut.hxx>
+#include <BRepBuilderAPI_Sewing.hxx>
+#include <BRepBuilderAPI_MakeSolid.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -155,53 +157,46 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             buildPipePath(auxshape, auxsubedge, auxpath);
         }
         
-        //build the outer wire first
-        BRepOffsetAPI_MakePipeShell mkPipeShell(TopoDS::Wire(path));
-        setupAlgorithm(mkPipeShell, auxpath);
-        mkPipeShell.Add(wires.front());
-
-        if (!mkPipeShell.IsReady())
-            Standard_Failure::Raise("shape is not ready to build");
-         mkPipeShell.Build();
-         mkPipeShell.MakeSolid();
-        
-        //now remove all inner wires
-        TopoDS_Compound comp;
-        TopoDS_Builder mkCmp;
-        mkCmp.MakeCompound(comp);
-        for(int i=1; i<wires.size();++i) {
+        //build all shells
+        std::vector<TopoDS_Shape> shells;
+        std::vector<TopoDS_Wire> frontwires, backwires;
+        for(TopoDS_Wire& wire : wires) {
             
             BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
             setupAlgorithm(mkPS, auxpath);
-            mkPS.Add(wires[i]);
+            mkPS.Add(wire);
 
             if (!mkPS.IsReady())
-                Standard_Failure::Raise("shape is not ready to build");
-            mkPS.Build();
-            mkPS.MakeSolid();
+                return new App::DocumentObjectExecReturn("pipe could not be build");
             
-            mkCmp.Add(comp, mkPS.Shape());
+            //build the shell use simulate to get the top and bottom wires in an easy way
+            shells.push_back(mkPS.Shape());
+            TopTools_ListOfShape sim;
+            mkPS.Simulate(2, sim);
+            frontwires.push_back(TopoDS::Wire(sim.First()));
+            backwires.push_back(TopoDS::Wire(sim.Last()));            
         }
         
-        //TODO: This method is very slow. It wuld be better to build the individual pipes as shells 
-        //and create the solid by hand from the shells. As we can assume no intersection between inner and outer 
-        //shell this should work.
-        BRepAlgoAPI_Cut cut(mkPipeShell.Shape(), comp);
-        if (!cut.IsDone())
-            return new App::DocumentObjectExecReturn("Building inner wire failed");
-            
-/*
-        TopTools_ListOfShape sim;
-        mkPipeShell.Simulate(5, sim);
-        BRep_Builder builder;
-        TopoDS_Compound Comp;
-        builder.MakeCompound(Comp);
+        //build the top and bottom face, sew the shell and build the final solid
+        TopoDS_Shape front = makeFace(frontwires);
+        TopoDS_Shape back  = makeFace(backwires);
         
-        TopTools_ListIteratorOfListOfShape simIt;
-        for (simIt.Initialize(sim); simIt.More(); simIt.Next())
-            builder.Add(Comp, simIt.Value()) ;
-        */
-        this->Shape.setValue(cut.Shape());
+        BRepBuilderAPI_Sewing sewer;
+        sewer.SetTolerance(Precision::Confusion());
+        sewer.Add(front);
+        sewer.Add(back);
+        for(TopoDS_Shape& s : shells)
+            sewer.Add(s);      
+        
+        sewer.Perform();
+        
+        //build the solid
+        BRepBuilderAPI_MakeSolid mkSolid;
+        mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+        if(!mkSolid.IsDone())
+            return new App::DocumentObjectExecReturn("Result is not a solid");
+        
+        this->Shape.setValue(mkSolid.Shape());
         return App::DocumentObject::StdReturn;
         
         return SketchBased::execute();   
