@@ -632,40 +632,41 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
 
 int Sketch::addConstraint(const Constraint *constraint)
 {
-    if(int(Geoms.size()) <= 0)
+    if (Geoms.empty())
         throw Base::Exception("Sketch::addConstraint. Can't add constraint to a sketch with no geometry!");
     int rtn = -1;
-    
+
     ConstrDef c;
     c.constr=const_cast<Constraint *>(constraint);
     c.driving=constraint->isDriving;
-        
+
     switch (constraint->Type) {
     case DistanceX:
         if (constraint->FirstPos == none){ // horizontal length of a line
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
                 Parameters.push_back(c.value);
+
             rtn = addDistanceXConstraint(constraint->First,c.value);
         }
         else if (constraint->Second == Constraint::GeoUndef) {// point on fixed x-coordinate
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
-                Parameters.push_back(c.value);            
-            
+                Parameters.push_back(c.value);
+
             rtn = addCoordinateXConstraint(constraint->First,constraint->FirstPos,c.value);
-            }
+        }
         else if (constraint->SecondPos != none) {// point to point horizontal distance
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
                 Parameters.push_back(c.value);
-            
+
             rtn = addDistanceXConstraint(constraint->First,constraint->FirstPos,
                                          constraint->Second,constraint->SecondPos,c.value);
         }
@@ -674,15 +675,16 @@ int Sketch::addConstraint(const Constraint *constraint)
         if (constraint->FirstPos == none){ // vertical length of a line
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
                 Parameters.push_back(c.value);
+
             rtn = addDistanceYConstraint(constraint->First,c.value);
         }
         else if (constraint->Second == Constraint::GeoUndef){ // point on fixed y-coordinate
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
                 Parameters.push_back(c.value);
 
@@ -691,10 +693,10 @@ int Sketch::addConstraint(const Constraint *constraint)
         else if (constraint->SecondPos != none){ // point to point vertical distance
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
                 Parameters.push_back(c.value);
-            
+
             rtn = addDistanceYConstraint(constraint->First,constraint->FirstPos,
                                          constraint->Second,constraint->SecondPos,c.value);
         }
@@ -732,18 +734,16 @@ int Sketch::addConstraint(const Constraint *constraint)
             //any other point-wise perpendicularity
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
                 Parameters.push_back(c.value);
-            
+
             rtn = addAngleAtPointConstraint(
                         constraint->First, constraint->FirstPos,
                         constraint->Second, constraint->SecondPos,
                         constraint->Third, constraint->ThirdPos,
                         c.value, constraint->Type);
         }
-
-
         break;
     case Tangent:
         if (constraint->FirstPos == none &&
@@ -755,10 +755,10 @@ int Sketch::addConstraint(const Constraint *constraint)
             //any other point-wise tangency (endpoint-to-curve, endpoint-to-endpoint, tangent-via-point)
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
                 Parameters.push_back(c.value);
-            
+
             rtn = addAngleAtPointConstraint(
                         constraint->First, constraint->FirstPos,
                         constraint->Second, constraint->SecondPos,
@@ -770,9 +770,9 @@ int Sketch::addConstraint(const Constraint *constraint)
         if (constraint->SecondPos != none){ // point to point distance
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
-                Parameters.push_back(c.value);            
+                Parameters.push_back(c.value);
             rtn = addDistanceConstraint(constraint->First,constraint->FirstPos,
                                         constraint->Second,constraint->SecondPos,
                                         c.value);
@@ -781,7 +781,7 @@ int Sketch::addConstraint(const Constraint *constraint)
             if (constraint->FirstPos != none) { // point to line distance
                 c.value = new double(constraint->Value);
                 if(c.driving)
-                    FixParameters.push_back(c.value);            
+                    FixParameters.push_back(c.value);
                 else
                     Parameters.push_back(c.value);
                 rtn = addDistanceConstraint(constraint->First,constraint->FirstPos,
@@ -791,10 +791,10 @@ int Sketch::addConstraint(const Constraint *constraint)
         else {// line length
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
-                Parameters.push_back(c.value);  
-            
+                Parameters.push_back(c.value);
+
             rtn = addDistanceConstraint(constraint->First,c.value);
         }
         break;
@@ -802,9 +802,9 @@ int Sketch::addConstraint(const Constraint *constraint)
         if (constraint->Third != Constraint::GeoUndef){
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
-                Parameters.push_back(c.value); 
+                Parameters.push_back(c.value);
             
             rtn = addAngleAtPointConstraint (
                         constraint->First, constraint->FirstPos,
@@ -814,27 +814,28 @@ int Sketch::addConstraint(const Constraint *constraint)
         } else if (constraint->SecondPos != none){ // angle between two lines (with explicit start points)
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
                 Parameters.push_back(c.value); 
-            
+
             rtn = addAngleConstraint(constraint->First,constraint->FirstPos,
                                      constraint->Second,constraint->SecondPos,c.value);
         }
         else if (constraint->Second != Constraint::GeoUndef){ // angle between two lines
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
-                Parameters.push_back(c.value); 
+                Parameters.push_back(c.value);
             rtn = addAngleConstraint(constraint->First,constraint->Second,c.value);
         }
         else if (constraint->First != Constraint::GeoUndef) {// orientation angle of a line
             c.value = new double(constraint->Value);
             if(c.driving)
-                FixParameters.push_back(c.value);            
+                FixParameters.push_back(c.value);
             else
-                Parameters.push_back(c.value); 
+                Parameters.push_back(c.value);
+
             rtn = addAngleConstraint(constraint->First,c.value);
         }
         break;
@@ -842,9 +843,10 @@ int Sketch::addConstraint(const Constraint *constraint)
     {
         c.value = new double(constraint->Value);
         if(c.driving)
-            FixParameters.push_back(c.value);            
+            FixParameters.push_back(c.value);
         else
-            Parameters.push_back(c.value); 
+            Parameters.push_back(c.value);
+
         rtn = addRadiusConstraint(constraint->First, c.value);
         break;
     }
@@ -877,30 +879,30 @@ int Sketch::addConstraint(const Constraint *constraint)
         }
         break;
     case SnellsLaw:
-    {
-        c.value = new double(constraint->Value);
-        c.secondvalue = new double(constraint->Value);
+        {
+            c.value = new double(constraint->Value);
+            c.secondvalue = new double(constraint->Value);
 
-        if(c.driving) {
-            FixParameters.push_back(c.value);
-            FixParameters.push_back(c.secondvalue);            
-        }
-        else {
-            Parameters.push_back(c.value);
-            Parameters.push_back(c.secondvalue);
-        }
+            if(c.driving) {
+                FixParameters.push_back(c.value);
+                FixParameters.push_back(c.secondvalue);
+            }
+            else {
+                Parameters.push_back(c.value);
+                Parameters.push_back(c.secondvalue);
+            }
 
-        //assert(constraint->ThirdPos==none); //will work anyway...
-        rtn = addSnellsLawConstraint(constraint->First, constraint->FirstPos,
-                                     constraint->Second, constraint->SecondPos,
-                                     constraint->Third,
-                                     c.value, c.secondvalue);
-    }
+            //assert(constraint->ThirdPos==none); //will work anyway...
+            rtn = addSnellsLawConstraint(constraint->First, constraint->FirstPos,
+                                         constraint->Second, constraint->SecondPos,
+                                         constraint->Third,
+                                         c.value, c.secondvalue);
+        }
         break;
     case None:
         break;
     }
-    
+
     Constrs.push_back(c);
     return rtn;
 }

@@ -105,7 +105,7 @@ void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler)
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
             (SketcherGui::ViewProviderSketch::getClassTypeId())) {
                 SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
-                vp->purgeHandler();                
+                vp->purgeHandler();
                 vp->activateHandler(handler);
         }
     }
