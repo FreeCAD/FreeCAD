@@ -49,6 +49,7 @@
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopExp.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -65,7 +66,7 @@ using namespace PartDesign;
 
 const char* Pipe::TypeEnums[] = {"FullPath","UpToFace",NULL};
 const char* Pipe::TransitionEnums[] = {"Transformed","Right corner", "Round corner",NULL};
-const char* Pipe::ModeEnums[] = {"Standart", "Fixed", "Binormal", "Frenet", "Auxillery", NULL};
+const char* Pipe::ModeEnums[] = {"Standart", "Fixed", "Frenet", "Auxillery", "Binormal", NULL};
 const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Auxillery", NULL};
 
 
@@ -133,18 +134,91 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
     }
  
     try {
+        //build the paths
         App::DocumentObject* spine = Spine.getValue();
         if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
             return new App::DocumentObjectExecReturn("No spine linked.");
         std::vector<std::string> subedge = Spine.getSubValues();
-
         TopoDS_Shape path;
         const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
         buildPipePath(shape, subedge, path);
         
+        
+        TopoDS_Shape auxpath;
+        if(Mode.getValue()==3) {
+            App::DocumentObject* auxspine = AuxillerySpine.getValue();
+            if (!(auxspine && auxspine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+                return new App::DocumentObjectExecReturn("No auxillery spine linked.");
+            std::vector<std::string> auxsubedge = AuxillerySpine.getSubValues();
+            TopoDS_Shape path;
+            const Part::TopoShape& auxshape = static_cast<Part::Feature*>(auxspine)->Shape.getValue();
+            buildPipePath(auxshape, auxsubedge, auxpath);
+        }
+        
+        //build the outer wire first
         BRepOffsetAPI_MakePipeShell mkPipeShell(TopoDS::Wire(path));
+        setupAlgorithm(mkPipeShell, auxpath);
+        mkPipeShell.Add(wires.front());
+
+        if (!mkPipeShell.IsReady())
+            Standard_Failure::Raise("shape is not ready to build");
+         mkPipeShell.Build();
+         mkPipeShell.MakeSolid();
+        
+        //now remove all inner wires
+        TopoDS_Compound comp;
+        TopoDS_Builder mkCmp;
+        mkCmp.MakeCompound(comp);
+        for(int i=1; i<wires.size();++i) {
+            
+            BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
+            setupAlgorithm(mkPS, auxpath);
+            mkPS.Add(wires[i]);
+
+            if (!mkPS.IsReady())
+                Standard_Failure::Raise("shape is not ready to build");
+            mkPS.Build();
+            mkPS.MakeSolid();
+            
+            mkCmp.Add(comp, mkPS.Shape());
+        }
+        
+        //TODO: This method is very slow. It wuld be better to build the individual pipes as shells 
+        //and create the solid by hand from the shells. As we can assume no intersection between inner and outer 
+        //shell this should work.
+        BRepAlgoAPI_Cut cut(mkPipeShell.Shape(), comp);
+        if (!cut.IsDone())
+            return new App::DocumentObjectExecReturn("Building inner wire failed");
+            
+/*
+        TopTools_ListOfShape sim;
+        mkPipeShell.Simulate(5, sim);
+        BRep_Builder builder;
+        TopoDS_Compound Comp;
+        builder.MakeCompound(Comp);
+        
+        TopTools_ListIteratorOfListOfShape simIt;
+        for (simIt.Initialize(sim); simIt.More(); simIt.Next())
+            builder.Add(Comp, simIt.Value()) ;
+        */
+        this->Shape.setValue(cut.Shape());
+        return App::DocumentObject::StdReturn;
+        
+        return SketchBased::execute();   
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        return new App::DocumentObjectExecReturn(e->GetMessageString());
+    }
+    catch (...) {
+        return new App::DocumentObjectExecReturn("A fatal error occurred when making the sweep");
+    }
+}
+
+void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape) {
+
         mkPipeShell.SetTolerance(Precision::Confusion());
-        //mkPipeShell.SetMode(isFrenet);
+
         switch(Transition.getValue()) {
             case 0:
                 mkPipeShell.SetTransitionMode(BRepBuilderAPI_Transformed);
@@ -164,67 +238,24 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 mkPipeShell.SetMode(gp_Ax2(gp_Pnt(0,0,0), gp_Dir(0,0,1), gp_Dir(1,0,0)));
                 break;
             case 2:
-                mkPipeShell.SetMode(gp_Dir(bVec.x,bVec.y,bVec.z));
-                break;
-            case 3:
                 mkPipeShell.SetMode(true);
                 break;
-            case 4:
+            case 3:
                 auxillery = true;
+            case 4:
+                mkPipeShell.SetMode(gp_Dir(bVec.x,bVec.y,bVec.z));
+                break;
         }
         
         if(auxillery) {
-            TopoDS_Shape auxpath;
-            App::DocumentObject* auxspine = AuxillerySpine.getValue();
-            if (!(auxspine && auxspine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
-                return new App::DocumentObjectExecReturn("No auxillery spine linked.");
-            std::vector<std::string> auxsubedge = AuxillerySpine.getSubValues();
-
-            TopoDS_Shape path;
-            const Part::TopoShape& auxshape = static_cast<Part::Feature*>(auxspine)->Shape.getValue();
-            buildPipePath(auxshape, auxsubedge, auxpath);
             
             if(Transformation.getValue()!=2)
-                mkPipeShell.SetMode(TopoDS::Wire(auxshape._Shape), AuxilleryCurvelinear.getValue());
+                mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue());
             else
-                mkPipeShell.SetMode(TopoDS::Wire(auxshape._Shape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
+                mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
         }
-        
-    //     TopTools_ListIteratorOfListOfShape iter;
-    //     for (iter.Initialize(profiles); iter.More(); iter.Next()) {
-    //         mkPipeShell.Add(TopoDS_Shape(iter.Value()));
-    //     }
-
-        mkPipeShell.Add(wires.front());
-
-        if (!mkPipeShell.IsReady())
-            Standard_Failure::Raise("shape is not ready to build");
-         mkPipeShell.Build();
-         mkPipeShell.MakeSolid();
-/*
-        TopTools_ListOfShape sim;
-        mkPipeShell.Simulate(5, sim);
-        BRep_Builder builder;
-        TopoDS_Compound Comp;
-        builder.MakeCompound(Comp);
-        
-        TopTools_ListIteratorOfListOfShape simIt;
-        for (simIt.Initialize(sim); simIt.More(); simIt.Next())
-            builder.Add(Comp, simIt.Value()) ;
-        */
-        this->Shape.setValue(mkPipeShell.Shape());
-        return App::DocumentObject::StdReturn;
-        
-        return SketchBased::execute();   
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        return new App::DocumentObjectExecReturn(e->GetMessageString());
-    }
-    catch (...) {
-        return new App::DocumentObjectExecReturn("A fatal error occurred when making the sweep");
-    }
 }
+
 
 void Pipe::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
 
