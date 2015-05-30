@@ -32,6 +32,8 @@
 #endif
 
 #include "ui_TaskPipeParameters.h"
+#include "ui_TaskPipeOrientation.h"
+#include "ui_TaskPipeScaling.h"
 #include "TaskPipeParameters.h"
 #include <App/Application.h>
 #include <App/Document.h>
@@ -55,6 +57,12 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPipeParameters */
 
+
+//**************************************************************************
+//**************************************************************************
+// Task Parameter
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj, QWidget *parent)
     : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Pipe",tr("Pipe parameters"))
 {
@@ -63,195 +71,68 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj, Q
     ui = new Ui_TaskPipeParameters();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
-/*
-    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onLengthChanged(double)));
-    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
-            this, SLOT(onMidplane(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onReversed(bool)));
-    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
-            this, SLOT(onLength2Changed(double)));
-    connect(ui->spinOffset, SIGNAL(valueChanged(double)),
-            this, SLOT(onOffsetChanged(double)));
-    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onModeChanged(int)));
-    connect(ui->buttonFace, SIGNAL(clicked()),
-            this, SLOT(onButtonFace()));
-    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
-            this, SLOT(onFaceName(QString)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
-*/
+
+    connect(ui->comboBoxTransition, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onTransitionChanged(int)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
+    connect(ui->tangent, SIGNAL(toggled(bool)), 
+            this, SLOT(onTangentChanged(bool)));
+    connect(ui->buttonProfileBase, SIGNAL(toggled(bool)),
+            this, SLOT(onBaseButton(bool)));
+    
     this->groupLayout()->addWidget(proxy);
-/*
-    // Temporarily prevent unnecessary feature recomputes
-    ui->lengthEdit->blockSignals(true);
-    ui->lengthEdit2->blockSignals(true);
-    ui->checkBoxMidplane->blockSignals(true);
-    ui->checkBoxReversed->blockSignals(true);
-    ui->buttonFace->blockSignals(true);
-    ui->lineFaceName->blockSignals(true);
-    ui->changeMode->blockSignals(true);
+         
+    //add initial values
+    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
+    std::vector<std::string> strings = pipe->Spine.getSubValues();
+    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
+        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
+        
+    ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
+    ui->tangent->setChecked(pipe->SpineTangent.getValue());
 
-    // set the history path
-    ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PipeLength"));
-    ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PipeLength2"));
-
-    // Get the feature data
-    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
-    Base::Quantity l = pcPipe->Length.getQuantityValue();
-    bool midplane = pcPipe->Midplane.getValue();
-    bool reversed = pcPipe->Reversed.getValue();
-    Base::Quantity l2 = pcPipe->Length2.getQuantityValue();
-    int index = pcPipe->Type.getValue(); // must extract value here, clear() kills it!
-    App::DocumentObject* obj = pcPipe->UpToFace.getValue();
-    std::vector<std::string> subStrings = pcPipe->UpToFace.getSubValues();
-    std::string upToFace;
-    int faceId = -1;
-    if ((obj != NULL) && !subStrings.empty()) {
-        upToFace = subStrings.front();
-        if (upToFace.substr(0,4) == "Face")
-            faceId = std::atoi(&upToFace[4]);
-    }
-
-    // Fill data into dialog elements
-    ui->lengthEdit->setMinimum(0);
-    ui->lengthEdit->setMaximum(INT_MAX);
-    ui->lengthEdit->setValue(l);
-    ui->lengthEdit2->setMinimum(0);
-    ui->lengthEdit2->setMaximum(INT_MAX);
-    ui->lengthEdit2->setValue(l2);
-
-
-    ui->checkBoxMidplane->setChecked(midplane);
-    // According to bug #0000521 the reversed option
-    // shouldn't be de-activated if the pad has a support face
-    ui->checkBoxReversed->setChecked(reversed);
-    if ((obj != NULL) && PartDesign::Feature::isDatum(obj))
-        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()));
-    else if (faceId >= 0)
-        ui->lineFaceName->setText(QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + tr("Face") +
-                                  QString::number(faceId));
-    else
-        ui->lineFaceName->setText(tr("No face selected"));
-    ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
-    ui->changeMode->clear();
-    ui->changeMode->insertItem(0, tr("Dimension"));
-    ui->changeMode->insertItem(1, tr("To last"));
-    ui->changeMode->insertItem(2, tr("To first"));
-    ui->changeMode->insertItem(3, tr("Up to face"));
-    ui->changeMode->insertItem(4, tr("Two dimensions"));
-    ui->changeMode->setCurrentIndex(index);
-
-    // activate and de-activate dialog elements as appropriate
-    ui->lengthEdit->blockSignals(false);
-    ui->lengthEdit2->blockSignals(false);
-    ui->checkBoxMidplane->blockSignals(false);
-    ui->checkBoxReversed->blockSignals(false);
-    ui->buttonFace->blockSignals(false);
-    ui->lineFaceName->blockSignals(false);
-    ui->changeMode->blockSignals(false);
-    updateUI(index);
-
-    // if it is a newly created object use the last value of the history
-    if(newObj){
-        ui->lengthEdit->setToLastUsedValue();
-        ui->lengthEdit->selectNumber();
-        ui->lengthEdit2->setToLastUsedValue();
-        ui->lengthEdit2->selectNumber();
-    }*/
+    updateUI();
 }
 
-void TaskPipeParameters::updateUI(int index)
-{/*
-    if (index == 0) {  // dimension
-        ui->labelLength->setVisible(true);
-        ui->spinOffset->setVisible(false);
-        ui->spinOffset->setEnabled(false);
-        ui->labelOffset->setVisible(false);
-        ui->lengthEdit->setEnabled(true);
-        ui->lengthEdit->selectNumber();
-        // Make sure that the spin box has the focus to get key events
-        // Calling setFocus() directly doesn't work because the spin box is not
-        // yet visible.
-        QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        ui->checkBoxMidplane->setEnabled(true);
-        // Reverse only makes sense if Midplane is not true
-        ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked());
-        ui->lengthEdit2->setEnabled(false);
-        ui->buttonFace->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
-        onButtonFace(false);
-    } else if (index == 1 || index == 2) { // up to first/last
-        ui->labelLength->setVisible(false);
-        ui->spinOffset->setVisible(true);
-        ui->spinOffset->setEnabled(true);
-        ui->labelOffset->setVisible(true);
-        ui->lengthEdit->setEnabled(false);
-        ui->checkBoxMidplane->setEnabled(false);
-        ui->checkBoxReversed->setEnabled(true);
-        ui->lengthEdit2->setEnabled(false);
-        ui->buttonFace->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
-        onButtonFace(false);
-    } else if (index == 3) { // up to face
-        ui->labelLength->setVisible(false);
-        ui->spinOffset->setVisible(true);
-        ui->spinOffset->setEnabled(true);
-        ui->labelOffset->setVisible(true);
-        ui->lengthEdit->setEnabled(false);
-        ui->checkBoxMidplane->setEnabled(false);
-        ui->checkBoxReversed->setEnabled(false);
-        ui->lengthEdit2->setEnabled(false);
-        ui->buttonFace->setEnabled(true);
-        ui->lineFaceName->setEnabled(true);
-        QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
-        // Go into reference selection mode if no face has been selected yet
-        if (ui->lineFaceName->text().isEmpty() || (ui->lineFaceName->text() == tr("No face selected")))
-            onButtonFace(true);
-    } else { // two dimensions
-        ui->labelLength->setVisible(true);
-        ui->spinOffset->setVisible(false);
-        ui->spinOffset->setEnabled(false);
-        ui->labelOffset->setVisible(false);
-        ui->lengthEdit->setEnabled(true);
-        ui->lengthEdit->selectNumber();
-        QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        ui->checkBoxMidplane->setEnabled(false);
-        ui->checkBoxReversed->setEnabled(false);
-        ui->lengthEdit2->setEnabled(true);
-        ui->buttonFace->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
-        onButtonFace(false);
-    }*/
+void TaskPipeParameters::updateUI()
+{
+    
 }
 
 void TaskPipeParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
-{/*
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        QString refText = onAddSelection(msg);
-        if (refText.length() != 0) {
-            ui->lineFaceName->blockSignals(true);
-            ui->lineFaceName->setText(refText);
-            ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
-            ui->lineFaceName->blockSignals(false);
-            // Turn off reference selection mode
-            onButtonFace(false);
-        } else {
-            ui->lineFaceName->blockSignals(true);
-            ui->lineFaceName->setText(tr("No face selected"));
-            ui->lineFaceName->setProperty("FaceName", QByteArray());
-            ui->lineFaceName->blockSignals(false);
-        }
-    }
+{
+    if (selectionMode == none)
+        return;
 
-    else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
-        ui->lineFaceName->blockSignals(true);
-        ui->lineFaceName->setText(tr(""));
-        ui->lineFaceName->setProperty("FaceName", QByteArray());
-        ui->lineFaceName->blockSignals(false);
-    }*/
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (referenceSelected(msg)) {
+            if (selectionMode == refAdd) {
+                QString sub = QString::fromStdString(msg.pSubName);
+                if(!sub.isEmpty())
+                    ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
+                
+                ui->profileBaseEdit->setText(QString::fromStdString(msg.pObjectName));
+            }
+            else if (selectionMode == refRemove) {
+                QString sub = QString::fromStdString(msg.pSubName);
+                if(!sub.isEmpty())
+                    removeFromListWidget(ui->listWidgetReferences, QString::fromAscii(msg.pSubName));
+                else {
+                    ui->profileBaseEdit->clear();
+                }                
+            } else if(selectionMode == refObjAdd) {
+                ui->listWidgetReferences->clear();
+                ui->profileBaseEdit->setText(QString::fromAscii(msg.pObjectName));
+            }
+            //clearButtons(none);
+            recomputeFeature();
+        } 
+        clearButtons();
+        exitSelectionMode();
+    }
 }
 
 TaskPipeParameters::~TaskPipeParameters()
@@ -259,44 +140,404 @@ TaskPipeParameters::~TaskPipeParameters()
     delete ui;
 }
 
-void TaskPipeParameters::changeEvent(QEvent *e)
-{/*
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        ui->spinOffset->blockSignals(true);
-        ui->lengthEdit->blockSignals(true);
-        ui->lengthEdit2->blockSignals(true);
-        ui->lineFaceName->blockSignals(true);
-        ui->changeMode->blockSignals(true);
-        int index = ui->changeMode->currentIndex();
-        ui->retranslateUi(proxy);
-        ui->changeMode->clear();
-        ui->changeMode->addItem(tr("Dimension"));
-        ui->changeMode->addItem(tr("To last"));
-        ui->changeMode->addItem(tr("To first"));
-        ui->changeMode->addItem(tr("Up to face"));
-        ui->changeMode->addItem(tr("Two dimensions"));
-        ui->changeMode->setCurrentIndex(index);
+void TaskPipeParameters::onTransitionChanged(int idx) {
+    
+    static_cast<PartDesign::Pipe*>(vp->getObject())->Transition.setValue(idx);
+    recomputeFeature();
+}
 
-        QStringList parts = ui->lineFaceName->text().split(QChar::fromAscii(':'));
-        QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
-        int faceId = -1;
-        bool ok = false;
-        if (upToFace.indexOf("Face") == 0) {
-            faceId = upToFace.remove(0,4).toInt(&ok);
+void TaskPipeParameters::onButtonRefAdd(bool checked) {
+    
+    if (checked) {
+        //clearButtons(refAdd);
+        //hideObject();
+        Gui::Selection().clearSelection();
+        selectionMode = refAdd;
+        //DressUpView->highlightReferences(true);
+    }
+}
+
+void TaskPipeParameters::onButtonRefRemove(bool checked) {
+
+    if (checked) {
+        //clearButtons(refRemove);
+        //hideObject();
+        Gui::Selection().clearSelection();        
+        selectionMode = refRemove;
+        //DressUpView->highlightReferences(true);
+    }
+}
+
+void TaskPipeParameters::onBaseButton(bool checked) {
+
+    if (checked) {
+        //clearButtons(refRemove);
+        //hideObject();
+        Gui::Selection().clearSelection();        
+        selectionMode = refObjAdd;
+        //DressUpView->highlightReferences(true);
+    }
+}
+
+
+void TaskPipeParameters::onTangentChanged(bool checked) {
+
+    static_cast<PartDesign::Pipe*>(vp->getObject())->SpineTangent.setValue(checked);
+    recomputeFeature();
+}
+
+
+void TaskPipeParameters::removeFromListWidget(QListWidget* widget, QString itemstr) {
+
+    QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
+    if (!items.empty()) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+            delete it;
         }
-#if QT_VERSION >= 0x040700
-        ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-#endif
-        ui->lineFaceName->setText(ok ?
-                                  parts[0] + QString::fromAscii(":") + tr("Face") + QString::number(faceId) :
-                                  tr("No face selected"));
-        ui->spinOffset->blockSignals(false);
-        ui->lengthEdit->blockSignals(false);
-        ui->lengthEdit2->blockSignals(false);
-        ui->lineFaceName->blockSignals(false);
-        ui->changeMode->blockSignals(false);
-    }*/
+    }
+}
+
+bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const {
+    
+    if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
+                (selectionMode == refAdd) || (selectionMode == refRemove) 
+                || (selectionMode == refObjAdd))) {
+
+        if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
+            return false;
+
+        // not allowed to reference ourself
+        const char* fname = vp->getObject()->getNameInDocument();        
+        if (strcmp(msg.pObjectName, fname) == 0)
+            return false;
+       
+        //change the references 
+        std::string subName(msg.pSubName);
+        std::vector<std::string> refs = static_cast<PartDesign::Pipe*>(vp->getObject())->Spine.getSubValues();
+        std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
+
+        if(selectionMode != refObjAdd) {
+            if (selectionMode == refAdd) {
+                if (f == refs.end())
+                    refs.push_back(subName);
+                else
+                    return false; // duplicate selection
+            } else {
+                if (f != refs.end())
+                    refs.erase(f);
+                else
+                    return false;
+            }        
+        }
+        else {
+            refs.clear();
+        }
+        static_cast<PartDesign::Pipe*>(vp->getObject())->Spine.setValue(vp->getObject()->getDocument()->getObject(msg.pObjectName),
+                                                                        refs);
+        return true;
+    }
+
+    return false;
+}
+
+void TaskPipeParameters::clearButtons() {
+
+    ui->buttonRefAdd->setChecked(false);
+    ui->buttonRefRemove->setChecked(false);
+    ui->buttonProfileBase->setChecked(false);
+}
+
+void TaskPipeParameters::exitSelectionMode() {
+
+    selectionMode = none;
+    Gui::Selection().clearSelection();
+}
+
+
+//**************************************************************************
+//**************************************************************************
+// Tassk Orientation
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool newObj, QWidget* parent)
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Pipe", tr("Section orientation")) {
+
+    // we need a separate container widget to add all controls to
+    proxy = new QWidget(this);
+    ui = new Ui_TaskPipeOrientation();
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->comboBoxMode, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onOrientationChanged(int)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
+    connect(ui->tangent, SIGNAL(toggled(bool)), 
+            this, SLOT(onTangentChanged(bool)));
+    connect(ui->buttonProfileBase, SIGNAL(toggled(bool)),
+            this, SLOT(onBaseButton(bool)));
+    connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
+            this, SLOT(updateUI(int)));
+    connect(ui->curvelinear, SIGNAL(toggled(bool)),
+            this, SLOT(onCurvelinearChanged(bool)));
+    connect(ui->doubleSpinBoxX, SIGNAL(valueChanged(double)),
+            this, SLOT(onBinormalChanged(double)));
+    connect(ui->doubleSpinBoxY, SIGNAL(valueChanged(double)),
+            this, SLOT(onBinormalChanged(double)));
+    connect(ui->doubleSpinBoxZ, SIGNAL(valueChanged(double)),
+            this, SLOT(onBinormalChanged(double)));
+    
+    this->groupLayout()->addWidget(proxy);
+
+    //add initial values
+    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
+    std::vector<std::string> strings = pipe->AuxillerySpine.getSubValues();
+    for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); i++)
+        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
+        
+    ui->comboBoxMode->setCurrentIndex(pipe->Mode.getValue());
+    ui->tangent->setChecked(pipe->AuxillerySpineTangent.getValue());
+    ui->curvelinear->setChecked(pipe->AuxilleryCurvelinear.getValue());    
+
+    updateUI(0);
+}
+
+TaskPipeOrientation::~TaskPipeOrientation() {
+
+}
+
+void TaskPipeOrientation::onOrientationChanged(int idx) {
+
+    static_cast<PartDesign::Pipe*>(vp->getObject())->Mode.setValue(idx);
+    recomputeFeature();
+}
+
+void TaskPipeOrientation::clearButtons() {
+
+}
+
+void TaskPipeOrientation::exitSelectionMode() {
+
+}
+
+void TaskPipeOrientation::onButtonRefAdd(bool checked) {
+
+    if (checked) {
+        Gui::Selection().clearSelection();        
+        selectionMode = refAdd;
+    }
+}
+
+void TaskPipeOrientation::onButtonRefRemove(bool checked) {
+
+    if (checked) {
+        Gui::Selection().clearSelection();        
+        selectionMode = refRemove;
+    }
+}
+
+void TaskPipeOrientation::onBaseButton(bool checked) {
+
+    if (checked) {
+        Gui::Selection().clearSelection();        
+        selectionMode = refObjAdd;
+    }
+}
+
+void TaskPipeOrientation::onTangentChanged(bool checked) {
+
+}
+
+void TaskPipeOrientation::onCurvelinearChanged(bool checked) {
+
+    static_cast<PartDesign::Pipe*>(vp->getObject())->AuxilleryCurvelinear.setValue(checked);
+    recomputeFeature();
+}
+
+void TaskPipeOrientation::onBinormalChanged(double) {
+
+    Base::Vector3d vec(ui->doubleSpinBoxX->value(),
+                       ui->doubleSpinBoxY->value(),
+                       ui->doubleSpinBoxZ->value());
+    
+    static_cast<PartDesign::Pipe*>(vp->getObject())->Binormal.setValue(vec);
+    recomputeFeature();
+}
+
+
+
+void TaskPipeOrientation::onSelectionChanged(const SelectionChanges& msg) {
+
+    if (selectionMode == none)
+        return;
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (referenceSelected(msg)) {
+            if (selectionMode == refAdd) {
+                QString sub = QString::fromStdString(msg.pSubName);
+                if(!sub.isEmpty())
+                    ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
+                
+                ui->profileBaseEdit->setText(QString::fromStdString(msg.pObjectName));
+            }
+            else if (selectionMode == refRemove) {
+                QString sub = QString::fromStdString(msg.pSubName);
+                if(!sub.isEmpty())
+                    removeFromListWidget(ui->listWidgetReferences, QString::fromAscii(msg.pSubName));
+                else {
+                    ui->profileBaseEdit->clear();
+                }                
+            } else if(selectionMode == refObjAdd) {
+                ui->listWidgetReferences->clear();
+                ui->profileBaseEdit->setText(QString::fromAscii(msg.pObjectName));
+            }
+            //clearButtons(none);
+            recomputeFeature();
+        } 
+        clearButtons();
+        exitSelectionMode();
+    }
+}
+
+bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const {
+
+    if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
+                (selectionMode == refAdd) || (selectionMode == refRemove) 
+                || (selectionMode == refObjAdd))) {
+
+        if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
+            return false;
+
+        // not allowed to reference ourself
+        const char* fname = vp->getObject()->getNameInDocument();        
+        if (strcmp(msg.pObjectName, fname) == 0)
+            return false;
+       
+        //change the references 
+        std::string subName(msg.pSubName);
+        std::vector<std::string> refs = static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.getSubValues();
+        std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);
+
+        if(selectionMode != refObjAdd) {
+            if (selectionMode == refAdd) {
+                if (f == refs.end())
+                    refs.push_back(subName);
+                else
+                    return false; // duplicate selection
+            } else {
+                if (f != refs.end())
+                    refs.erase(f);
+                else
+                    return false;
+            }        
+        }
+        else {
+            refs.clear();
+        }
+        static_cast<PartDesign::Pipe*>(vp->getObject())->AuxillerySpine.setValue(vp->getObject()->getDocument()->getObject(msg.pObjectName),
+                                                                        refs);
+        return true;
+    }
+
+    return false;
+}
+
+void TaskPipeOrientation::removeFromListWidget(QListWidget* w, QString name) {
+
+}
+
+void TaskPipeOrientation::updateUI(int idx) {
+
+    //make sure we resize to the size of the current page
+    for(int i=0; i<ui->stackedWidget->count(); ++i)
+        ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    
+    ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+}
+
+
+//**************************************************************************
+//**************************************************************************
+// Task Scaling
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool newObj, QWidget* parent)
+    : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Pipe", tr("Section transformation")) {
+
+            // we need a separate container widget to add all controls to
+    proxy = new QWidget(this);
+    ui = new Ui_TaskPipeScaling();
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->comboBoxScaling, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onScalingChanged(int)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
+    connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
+            this, SLOT(updateUI(int)));
+    
+    this->groupLayout()->addWidget(proxy);
+      
+//     ui->comboBoxTransition->clear();
+//     ui->comboBoxTransition->insertItem(0, tr("Transformed"));
+//     ui->comboBoxTransition->insertItem(1, tr("Right Corner"));
+//     ui->comboBoxTransition->insertItem(2, tr("Round Corner"));
+//     ui->comboBoxTransition->setCurrentIndex(0);
+    
+
+    updateUI(0);
+}
+
+TaskPipeScaling::~TaskPipeScaling() {
+
+}
+
+void TaskPipeScaling::clearButtons() {
+
+}
+
+void TaskPipeScaling::exitSelectionMode() {
+
+}
+
+void TaskPipeScaling::onButtonRefAdd(bool checked) {
+
+}
+
+void TaskPipeScaling::onButtonRefRemove(bool checked) {
+
+}
+
+void TaskPipeScaling::onScalingChanged(int idx) {
+
+    static_cast<PartDesign::Pipe*>(vp->getObject())->Transformation.setValue(idx);
+    recomputeFeature();
+}
+
+void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
+
+}
+
+bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
+
+}
+
+void TaskPipeScaling::removeFromListWidget(QListWidget* w, QString name) {
+
+}
+
+void TaskPipeScaling::updateUI(int idx) {
+
+    //make sure we resize to the size of the current page
+    for(int i=0; i<ui->stackedWidget->count(); ++i)
+        ui->stackedWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    
+    ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 
@@ -309,9 +550,13 @@ TaskDlgPipeParameters::TaskDlgPipeParameters(ViewProviderPipe *PipeView,bool new
    : TaskDlgSketchBasedParameters(PipeView)
 {
     assert(PipeView);
-    parameter  = new TaskPipeParameters(PipeView,newObj);
+    parameter    = new TaskPipeParameters(PipeView,newObj);
+    orientation  = new TaskPipeOrientation(PipeView,newObj);
+    scaling      = new TaskPipeScaling(PipeView,newObj);
 
     Content.push_back(parameter);
+    Content.push_back(orientation);
+    Content.push_back(scaling);
 }
 
 TaskDlgPipeParameters::~TaskDlgPipeParameters()

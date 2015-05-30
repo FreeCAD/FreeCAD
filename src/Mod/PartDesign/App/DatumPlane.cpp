@@ -244,9 +244,9 @@ void Plane::onChanged(const App::Property *prop)
                 normal = new Base::Vector3d;
                 if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[0]) == 0)
                     *normal = Base::Vector3d(0,0,1);
-                else if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[2]) == 0)
-                    *normal = Base::Vector3d(0,1,0);
                 else if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[1]) == 0)
+                    *normal = Base::Vector3d(0,1,0);
+                else if (strcmp(p->PlaneType.getValue(), App::Part::BaseplaneTypes[2]) == 0)
                     *normal = Base::Vector3d(1,0,0);
             } else if (refs[i]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 Part::Feature* feature = static_cast<Part::Feature*>(refs[i]);
