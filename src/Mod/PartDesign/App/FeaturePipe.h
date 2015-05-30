@@ -26,6 +26,7 @@
 
 #include <App/PropertyStandard.h>
 #include "FeatureSketchBased.h"
+#include <BRepOffsetAPI_MakePipeShell.hxx>
 
 namespace PartDesign
 {
@@ -61,6 +62,7 @@ protected:
     ///get the given edges and all their tangent ones
     void getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames);
     void buildPipePath(const Part::TopoShape& input, const  std::vector<std::string>& edges, TopoDS_Shape& result);
+    void setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape& auxshape);
 
 private:
     static const char* TypeEnums[];
