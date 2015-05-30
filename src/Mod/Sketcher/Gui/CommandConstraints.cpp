@@ -3476,7 +3476,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
                     // issue the actual commands to toggle
                     doCommand(Doc,"App.ActiveDocument.%s.toggleDriving(%d) ",selection[0].getFeatName(),ConstrId);
                 }
-                catch(const Base::Exception& e) {
+                catch(const Base::Exception&) {
                     succesful--;
                 }
             }
