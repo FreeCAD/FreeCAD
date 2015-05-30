@@ -40,7 +40,7 @@
           <property name="toolTip">
            <string>The color of edges being edited</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>255</green>
@@ -73,7 +73,7 @@
           <property name="toolTip">
            <string>The color of vertices being edited</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>255</green>
@@ -106,7 +106,7 @@
           <property name="toolTip">
            <string>The color of edges being edited</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>255</green>
@@ -139,7 +139,7 @@
           <property name="toolTip">
            <string>The color of vertices being edited</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>38</green>
@@ -172,7 +172,7 @@
           <property name="toolTip">
            <string>The color of fully constrained geometry in edit mode</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>38</green>
@@ -192,7 +192,7 @@
           <property name="toolTip">
            <string>The color of construction geometry in edit mode</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -225,7 +225,7 @@
           <property name="toolTip">
            <string>The color of external geometry in edit mode</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>204</red>
             <green>51</green>
@@ -271,7 +271,7 @@
           <property name="toolTip">
            <string>The color of fully constrained geometry in edit mode</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>255</green>
@@ -397,7 +397,7 @@
         </item>
         <item row="13" column="1">
          <widget class="Gui::PrefColorButton" name="CursorTextColor">
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>0</green>
@@ -446,7 +446,7 @@
           <property name="toolTip">
            <string>The color of driving constraints in edit mode</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>255</red>
             <green>38</green>
@@ -466,7 +466,7 @@
           <property name="toolTip">
            <string>The color of non-driving constrains or dimensions in edit mode</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>0</red>
             <green>38</green>
@@ -569,6 +569,9 @@
        <widget class="Gui::PrefCheckBox" name="continueMode">
         <property name="text">
          <string>Geometry Creation &quot;Continue Mode&quot;</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ContinuousCreationMode</cstring>
