@@ -131,19 +131,20 @@ void Constraint::Restore(XMLReader &reader)
         AlignmentType = (InternalAlignmentType) reader.getAttributeAsInteger("InternalAlignmentType");
     else
         AlignmentType = Undef;
-    
+
     // read the third geo group if present
     if (reader.hasAttribute("Third")) {
         Third    = reader.getAttributeAsInteger("Third");
         ThirdPos = (PointPos)  reader.getAttributeAsInteger("ThirdPos");
     }
+
     // Read the distance a constraint label has been moved
     if (reader.hasAttribute("LabelDistance"))
         LabelDistance = (float)reader.getAttributeAsFloat("LabelDistance");
 
     if (reader.hasAttribute("LabelPosition"))
         LabelPosition = (float)reader.getAttributeAsFloat("LabelPosition");
-   
+
     if (reader.hasAttribute("IsDriving"))
-        isDriving = (bool)reader.getAttributeAsInteger("IsDriving");
+        isDriving = reader.getAttributeAsInteger("IsDriving") ? true : false;
 }
