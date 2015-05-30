@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>203</width>
-    <height>379</height>
+    <width>331</width>
+    <height>431</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,48 +17,71 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <widget class="QGroupBox" name="groupBox_Color">
+      <widget class="QGroupBox" name="gb_result_type">
        <property name="title">
-        <string>Colors</string>
+        <string>Result type</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QComboBox" name="comboBox_Type">
-          <item>
-           <property name="text">
-            <string>None</string>
-           </property>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="1" column="0">
+           <widget class="QRadioButton" name="rb_y_displacement">
+            <property name="text">
+             <string>Y displacement</string>
+            </property>
+           </widget>
           </item>
-         </widget>
+          <item row="0" column="0">
+           <widget class="QRadioButton" name="rb_x_displacement">
+            <property name="text">
+             <string>X displacement</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QRadioButton" name="rb_z_displacement">
+            <property name="text">
+             <string>Z displacement</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QRadioButton" name="rb_none">
+            <property name="text">
+             <string>None</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QRadioButton" name="rb_vm_stress">
+            <property name="text">
+             <string>Von Mises stress</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QRadioButton" name="rb_abs_displacement">
+            <property name="text">
+             <string>Abs displacement</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QFormLayout" name="formLayout">
-          <item row="0" column="0">
+          <item row="1" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
              <string>Avg:</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="Gui::InputField" name="lineEdit_Avg">
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Max:</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="1">
-           <widget class="Gui::InputField" name="lineEdit_Max">
+           <widget class="Gui::InputField" name="le_avg">
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -68,19 +91,36 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="label">
             <property name="text">
-             <string>Min:</string>
+             <string>Max:</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="Gui::InputField" name="lineEdit_Min">
+           <widget class="Gui::InputField" name="le_max">
             <property name="readOnly">
              <bool>true</bool>
             </property>
             <property name="unit" stdset="0">
              <string notr="true">mm</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="Gui::InputField" name="le_min">
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Min:</string>
             </property>
            </widget>
           </item>
@@ -90,20 +130,40 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBox_3">
+      <widget class="QGroupBox" name="gb_displacement">
        <property name="title">
         <string>Displacement</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QCheckBox" name="checkBox_ShowDisplacement">
-          <property name="text">
-           <string>Show</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QCheckBox" name="cb_show_displacement">
+            <property name="text">
+             <string>Show</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QScrollBar" name="hsb_factor">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -118,7 +178,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_DisplacementFactor">
+           <widget class="QSpinBox" name="sb_displacement_factor">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -151,7 +211,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_SliderFactor">
+           <widget class="QSpinBox" name="sb_slider_factor">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -170,16 +230,6 @@
            </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <widget class="QScrollBar" name="horizontalScrollBar_Factor">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
         </item>
        </layout>
       </widget>
@@ -211,7 +261,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>checkBox_ShowDisplacement</sender>
+   <sender>cb_show_displacement</sender>
    <signal>toggled(bool)</signal>
    <receiver>label_3</receiver>
    <slot>setEnabled(bool)</slot>
@@ -227,9 +277,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_ShowDisplacement</sender>
+   <sender>cb_show_displacement</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_DisplacementFactor</receiver>
+   <receiver>sb_displacement_factor</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -243,7 +293,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_ShowDisplacement</sender>
+   <sender>cb_show_displacement</sender>
    <signal>toggled(bool)</signal>
    <receiver>label_7</receiver>
    <slot>setEnabled(bool)</slot>
@@ -259,9 +309,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_ShowDisplacement</sender>
+   <sender>cb_show_displacement</sender>
    <signal>toggled(bool)</signal>
-   <receiver>spinBox_SliderFactor</receiver>
+   <receiver>sb_slider_factor</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -275,9 +325,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_ShowDisplacement</sender>
+   <sender>cb_show_displacement</sender>
    <signal>toggled(bool)</signal>
-   <receiver>horizontalScrollBar_Factor</receiver>
+   <receiver>hsb_factor</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
