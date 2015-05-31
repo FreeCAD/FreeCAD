@@ -1462,8 +1462,8 @@ void MainWindow::changeEvent(QEvent *e)
         if (isActiveWindow()) {
             QMdiSubWindow* mdi = d->mdiArea->currentSubWindow();
             if (mdi) {
-                MDIView* view =dynamic_cast<MDIView*>(mdi->widget());
-                if (getMainWindow()->activeWindow() != view) {
+                MDIView* view = dynamic_cast<MDIView*>(mdi->widget());
+                if (view && getMainWindow()->activeWindow() != view) {
                     d->activeView = view;
                     Application::Instance->viewActivated(view);
                 }
