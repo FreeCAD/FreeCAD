@@ -50,8 +50,10 @@ class TaskPanel:
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
         form.trim = self.widget(QtGui.QLineEdit, "Trim")
-        draft = Units.Quantity(form.draft.text()).getValueAs('m').Value
-        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+        draft = Units.Quantity(Locale.fromString(
+            form.draft.text())).getValueAs('m').Value
+        trim = Units.Quantity(Locale.fromString(
+            form.trim.text())).getValueAs('deg').Value
         data = Hydrostatics.displacement(self.ship,
                                          draft,
                                          0.0,
@@ -263,7 +265,8 @@ class TaskPanel:
 
         # Get the values (or fix them in bad setting case)
         try:
-            draft = Units.Quantity(form.draft.text()).getValueAs('m').Value
+            draft = Units.Quantity(Locale.fromString(
+                form.draft.text())).getValueAs('m').Value
         except:
             draft = self.ship.Draft.getValueAs(USys.getLengthUnits()).Value
             input_format = USys.getLengthFormat()
@@ -271,7 +274,8 @@ class TaskPanel:
             widget.setText(Locale.toString(input_format.format(
                 qty.getValueAs(USys.getLengthUnits()).Value)))
         try:
-            trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+            trim = Units.Quantity(Locale.fromString(
+                form.trim.text())).getValueAs('deg').Value
         except:
             trim = 0.0
             input_format = USys.getAngleFormat()
@@ -301,8 +305,10 @@ class TaskPanel:
         form.trim = self.widget(QtGui.QLineEdit, "Trim")
         form.output = self.widget(QtGui.QTextEdit, "OutputData")
 
-        draft = Units.Quantity(form.draft.text()).getValueAs('m').Value
-        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+        draft = Units.Quantity(Locale.fromString(
+            form.draft.text())).getValueAs('m').Value
+        trim = Units.Quantity(Locale.fromString(
+            form.trim.text())).getValueAs('deg').Value
 
         # Calculate the drafts at each perpendicular
         angle = math.radians(trim)
@@ -342,8 +348,10 @@ class TaskPanel:
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
         form.trim = self.widget(QtGui.QLineEdit, "Trim")
 
-        draft = Units.Quantity(form.draft.text()).getValueAs('m').Value
-        trim = Units.Quantity(form.trim.text()).getValueAs('deg').Value
+        draft = Units.Quantity(Locale.fromString(
+            form.draft.text())).getValueAs('m').Value
+        trim = Units.Quantity(Locale.fromString(
+            form.trim.text())).getValueAs('deg').Value
 
         props = self.ship.PropertiesList
         try:
