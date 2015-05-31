@@ -44,11 +44,14 @@ public:
     bool doubleClicked();
 
     virtual bool onDelete(const std::vector<std::string> &);
-
+    void highlightReferences(const bool on, bool auxillery);
+    
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
-
+    
+private:
+    std::vector<App::Color> originalLineColors;
 };
 
 

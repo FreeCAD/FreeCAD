@@ -37,6 +37,8 @@
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
+#include <TopExp.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 
 using namespace PartDesignGui;
 
@@ -140,5 +142,50 @@ bool ViewProviderPipe::onDelete(const std::vector<std::string> &s)
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
 
     return ViewProvider::onDelete(s);*/
+}
+
+
+
+void ViewProviderPipe::highlightReferences(const bool on, bool auxillery)
+{
+    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getObject());
+    Part::Feature* base;
+    if(!auxillery)
+        base = static_cast<Part::Feature*>(pcPipe->Spine.getValue());
+    else 
+        base = static_cast<Part::Feature*>(pcPipe->AuxillerySpine.getValue());
+    
+    if (base == NULL) return;
+    PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(
+                Gui::Application::Instance->getViewProvider(base));
+    if (svp == NULL) return;
+
+    std::vector<std::string> edges;
+    if(!auxillery)
+        edges = pcPipe->Spine.getSubValuesStartsWith("Edge");
+    else 
+        edges = pcPipe->AuxillerySpine.getSubValuesStartsWith("Edge");
+
+    if (on) {        
+         if (!edges.empty() && originalLineColors.empty()) {
+            TopTools_IndexedMapOfShape eMap;
+            TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
+            originalLineColors = svp->LineColorArray.getValues();
+            std::vector<App::Color> colors = originalLineColors;
+            colors.resize(eMap.Extent(), LineColor.getValue());
+
+            for (std::string e : edges) {
+                int idx = atoi(e.substr(4).c_str()) - 1;
+                if (idx < colors.size())
+                    colors[idx] = App::Color(1.0,0.0,1.0); // magenta
+            }
+            svp->LineColorArray.setValues(colors);
+        }
+    } else {
+        if (!edges.empty() && !originalLineColors.empty()) {
+            svp->LineColorArray.setValues(originalLineColors);
+            originalLineColors.clear();
+        }
+    }
 }
 

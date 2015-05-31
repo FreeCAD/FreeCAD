@@ -166,7 +166,6 @@ protected:
     /// Applies the menu text, tool and status tip to the passed action object
     void applyCommandData(const char* context, Action* );
     const char* keySequenceToAccel(int) const;
-    void adjustCameraPosition();
     //@}
 
 public:
@@ -285,6 +284,12 @@ public:
     /// Get the name of the grouping of the command
     const char* getGroupName() const { return sGroup; }
     void setGroupName(const char*);
+    //@}
+    
+    
+    /** @name arbitrary helper methods */
+    //@{
+    void adjustCameraPosition();
     //@}
 
 protected:

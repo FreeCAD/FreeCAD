@@ -938,7 +938,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
     cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                    pcActiveBody->getNameInDocument(), FeatName.c_str());
 
-    if (cmd->isActiveObjectValid() && (pcActiveBody != NULL)) {
+    if (pcActiveBody != NULL) {
         App::DocumentObject* prevSolidFeature = pcActiveBody->getPrevSolidFeature(NULL, false);
         if (hidePrevSolid && (prevSolidFeature != NULL))
             cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
@@ -1108,9 +1108,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
 
 void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch, const std::string& FeatName)
 {
-    if (cmd->isActiveObjectValid())
-        cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
-
+    cmd->doCommand(cmd->Gui,"Gui.activeDocument().hide(\"%s\")", sketch->getNameInDocument());
     finishFeature(cmd, FeatName);
 }
 
@@ -1308,15 +1306,7 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
         
         if (FeatName.empty()) return;
         
-        // specific parameters for Pad
-        //Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
-        App::DocumentObjectGroup* grp = sketch->getGroup();
-        if (grp) {
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
-                        ,grp->getNameInDocument(),FeatName.c_str());
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
-                        ,grp->getNameInDocument(),sketch->getNameInDocument());
-        }
+        // specific parameters for pipe
         Gui::Command::updateActive();
 
         finishSketchBased(cmd, sketch, FeatName);
@@ -1356,15 +1346,7 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
         
         if (FeatName.empty()) return;
         
-        // specific parameters for Pad
-        //Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
-        App::DocumentObjectGroup* grp = sketch->getGroup();
-        if (grp) {
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)"
-                        ,grp->getNameInDocument(),FeatName.c_str());
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)"
-                        ,grp->getNameInDocument(),sketch->getNameInDocument());
-        }
+        // specific parameters for pipe
         Gui::Command::updateActive();
 
         finishSketchBased(cmd, sketch, FeatName);
