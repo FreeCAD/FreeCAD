@@ -473,6 +473,9 @@ void TaskDatumParameters::onButtonRef(const bool pressed, const int idx)
 {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
 	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+        if(!activeBody)
+            throw Base::Exception("No active body");
+        
 	App::DocumentObject* solid = activeBody->getPrevSolidFeature();
 
     if (pressed) {

@@ -158,14 +158,47 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             buildPipePath(auxshape, auxsubedge, auxpath);
         }
         
+        //build up multisections
+        auto multisections = Sections.getValues();
+        std::vector<std::vector<TopoDS_Wire>> wiresections;
+        for(TopoDS_Wire& wire : wires)
+            wiresections.push_back(std::vector<TopoDS_Wire>(1, wire));
+            
+        if(Transformation.getValue() == 1) {
+            
+            //we need to order the sections to prevent occ from crahsing, as makepieshell connects
+            //the sections in the order of adding
+            
+                
+            for(App::DocumentObject* obj : multisections) {
+                if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
+                    return  new App::DocumentObjectExecReturn("All sections need to be part features");
+                
+                TopExp_Explorer ex;
+                int i=0;
+                for (ex.Init(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_WIRE); ex.More(); ex.Next()) {
+                    wiresections[i].push_back(TopoDS::Wire(ex.Current()));
+                    if(i>=wiresections.size())
+                        return new App::DocumentObjectExecReturn("Multisections need to have the same amount of inner wires as the base section");
+                    
+                    ++i;
+                }
+                if(i<wiresections.size())
+                        return new App::DocumentObjectExecReturn("Multisections need to have the same amount of inner wires as the base section");
+                
+            }
+        }
+        
         //build all shells
         std::vector<TopoDS_Shape> shells;
         std::vector<TopoDS_Wire> frontwires, backwires;
-        for(TopoDS_Wire& wire : wires) {
+        for(std::vector<TopoDS_Wire>& wires : wiresections) {
             
             BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
             setupAlgorithm(mkPS, auxpath);
-            mkPS.Add(wire);
+            
+            for(TopoDS_Wire& wire : wires)  
+                mkPS.Add(wire);
 
             if (!mkPS.IsReady())
                 return new App::DocumentObjectExecReturn("pipe could not be build");
@@ -254,7 +287,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
     catch (...) {
-        return new App::DocumentObjectExecReturn("A fatal error occurred when making the sweep");
+        return new App::DocumentObjectExecReturn("A fatal error occurred when making the pipe");
     }
 }
 
