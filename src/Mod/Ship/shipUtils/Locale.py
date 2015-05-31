@@ -29,3 +29,9 @@ def toString(valueStr):
     conveniently transforming a value string"""
     dec_sep = QtCore.QLocale.system().decimalPoint()
     return valueStr.replace(".", dec_sep)
+
+def fromString(valueStr):
+    """Natural extension of QtCore.QLocale.toFloat method, in this case
+    conveniently transforming a value string"""
+    grp_sep = QtCore.QLocale.system().groupSeparator()
+    return valueStr.replace(grp_sep, "")
