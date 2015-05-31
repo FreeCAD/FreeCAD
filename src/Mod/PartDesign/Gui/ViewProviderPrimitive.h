@@ -25,11 +25,12 @@
 #define PARTGUI_ViewProviderPrimitive_H
 
 #include "ViewProvider.h"
+#include "ViewProviderAddSub.h"
 #include <Mod/Part/Gui/SoBrepFaceSet.h>
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderPrimitive : public ViewProvider
+class PartDesignGuiExport ViewProviderPrimitive : public ViewProviderAddSub
 {
     PROPERTY_HEADER(PartDesignGui::ViewProviderPrimitive);
 
