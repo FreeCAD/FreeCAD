@@ -78,6 +78,8 @@ private:
     void clearButtons();
     void exitSelectionMode();
 
+    bool spineShow = false;
+    
 private:
     QWidget* proxy;
     Ui_TaskPipeParameters* ui;
@@ -113,6 +115,8 @@ private:
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void clearButtons();
     void exitSelectionMode();
+    
+    bool auxSpineShow = false;
 
 private:
     QWidget* proxy;
