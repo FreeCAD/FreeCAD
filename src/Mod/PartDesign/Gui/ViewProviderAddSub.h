@@ -21,38 +21,39 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPipe_H
-#define PARTGUI_ViewProviderPipe_H
+#ifndef PARTGUI_ViewProviderAddSub_H
+#define PARTGUI_ViewProviderAddSub_H
 
-#include "ViewProviderAddSub.h"
+#include "ViewProvider.h"
+#include <Mod/Part/Gui/SoBrepFaceSet.h>
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderPipe : public ViewProviderAddSub
+class PartDesignGuiExport ViewProviderAddSub : public ViewProvider
 {
-    PROPERTY_HEADER(PartDesignGui::ViewProviderPipe);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderAddSub);
 
 public:
     /// constructor
-    ViewProviderPipe();
+    ViewProviderAddSub();
     /// destructor
-    virtual ~ViewProviderPipe();
-
-    /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
-    void setupContextMenu(QMenu*, QObject*, const char*);
-    bool doubleClicked();
-
-    virtual bool onDelete(const std::vector<std::string> &);
-
-protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
-
+    virtual ~ViewProviderAddSub();
+    
+    virtual void attach(App::DocumentObject*);
+    virtual void updateData(const App::Property*);
+    
+protected: 
+    void updateAddSubShapeIndicator();
+    void setPreviewDisplayMode(bool);
+    
+    std::string                 displayMode;
+    SoSeparator*                previewShape;
+    PartGui::SoBrepFaceSet*     previewFaceSet;
+    SoCoordinate3*              previewCoords;
+    SoNormal*                   previewNorm;
 };
-
 
 } // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderPipe_H
+#endif // PARTGUI_ViewProviderBoolean_H

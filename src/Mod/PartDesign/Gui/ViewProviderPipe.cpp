@@ -78,6 +78,9 @@ bool ViewProviderPipe::doubleClicked(void)
 bool ViewProviderPipe::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default || ModNum == 1 ) {
+        
+        setPreviewDisplayMode(true);
+        
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -116,6 +119,12 @@ bool ViewProviderPipe::setEdit(int ModNum)
         return ViewProviderPart::setEdit(ModNum);
     }
 }
+
+void ViewProviderPipe::unsetEdit(int ModNum) {
+    setPreviewDisplayMode(false);
+    PartDesignGui::ViewProvider::unsetEdit(ModNum);
+}
+
 
 bool ViewProviderPipe::onDelete(const std::vector<std::string> &s)
 {/*

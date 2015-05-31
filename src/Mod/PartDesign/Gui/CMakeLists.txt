@@ -132,6 +132,8 @@ SET(PartDesignGuiViewProvider_SRCS CommandPrimitive.cpp
     ViewProviderDatumCS.h
     ViewProviderBoolean.cpp
     ViewProviderBoolean.h
+    ViewProviderAddSub.cpp
+    ViewProviderAddSub.h
     ViewProviderPrimitive.h
     ViewProviderPrimitive.cpp
     ViewProviderPipe.h

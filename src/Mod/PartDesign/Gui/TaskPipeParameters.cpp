@@ -483,7 +483,9 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool newObj, QWidge
     
     this->groupLayout()->addWidget(proxy);
    
-
+    PartDesign::Pipe* pipe = static_cast<PartDesign::Pipe*>(PipeView->getObject());
+    ui->comboBoxScaling->setCurrentIndex(pipe->Transformation.getValue());
+    
     updateUI(0);
 }
 
@@ -562,26 +564,10 @@ TaskDlgPipeParameters::~TaskDlgPipeParameters()
 
 
 bool TaskDlgPipeParameters::accept()
-{/*
+{
     std::string name = vp->getObject()->getNameInDocument();
 
-    // save the history 
-    parameter->saveHistory();
-
     try {
-        //Gui::Command::openCommand("Pipe changed");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length2 = %f",name.c_str(),parameter->getLength2());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset = %f",name.c_str(),parameter->getOffset());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
-        std::string facename = (const char*)parameter->getFaceName();
-
-        if (!facename.empty()) {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), facename.c_str());
-        } else
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
         if (!vp->getObject()->isValid())
             throw Base::Exception(vp->getObject()->getStatusString());
@@ -593,7 +579,7 @@ bool TaskDlgPipeParameters::accept()
         return false;
     }
 
-    return true;*/
+    return true;
 }
 
 //bool TaskDlgPipeParameters::reject()

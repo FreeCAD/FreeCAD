@@ -196,7 +196,42 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         if(!mkSolid.IsDone())
             return new App::DocumentObjectExecReturn("Result is not a solid");
         
-        this->Shape.setValue(mkSolid.Shape());
+        AddSubShape.setValue(mkSolid.Shape());
+        
+        if(base.IsNull()) {
+            Shape.setValue(mkSolid.Shape());
+            return App::DocumentObject::StdReturn;
+        }
+        
+        if(getAddSubType() == FeatureAddSub::Additive) {
+            
+            BRepAlgoAPI_Fuse mkFuse(base, mkSolid.Shape());
+            if (!mkFuse.IsDone())
+                return new App::DocumentObjectExecReturn("Adding the pipe failed");
+            // we have to get the solids (fuse sometimes creates compounds)
+            TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+            // lets check if the result is a solid
+            if (boolOp.IsNull())
+                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+            
+            boolOp = refineShapeIfActive(boolOp);
+            Shape.setValue(boolOp);
+        }
+        else if(getAddSubType() == FeatureAddSub::Subtractive) {
+            
+            BRepAlgoAPI_Cut mkCut(base, mkSolid.Shape());
+            if (!mkCut.IsDone())
+                return new App::DocumentObjectExecReturn("Subtracting the pipe failed");
+            // we have to get the solids (fuse sometimes creates compounds)
+            TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
+            // lets check if the result is a solid
+            if (boolOp.IsNull())
+                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+            
+            boolOp = refineShapeIfActive(boolOp);
+            Shape.setValue(boolOp);
+        }
+        
         return App::DocumentObject::StdReturn;
         
         return SketchBased::execute();   
