@@ -52,6 +52,7 @@
 #include <BRepAlgoAPI_Cut.hxx>
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
+#include <BRepClass3d_SolidClassifier.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -196,16 +197,28 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         if(!mkSolid.IsDone())
             return new App::DocumentObjectExecReturn("Result is not a solid");
         
-        AddSubShape.setValue(mkSolid.Shape());
+        TopoDS_Shape result = mkSolid.Shape();
+        BRepClass3d_SolidClassifier SC(result);
+        SC.PerformInfinitePoint(Precision::Confusion());
+        if ( SC.State() == TopAbs_IN) {
+            result.Reverse();
+        }
+        
+        AddSubShape.setValue(result);
         
         if(base.IsNull()) {
-            Shape.setValue(mkSolid.Shape());
+            Shape.setValue(result);
             return App::DocumentObject::StdReturn;
         }
         
         if(getAddSubType() == FeatureAddSub::Additive) {
             
-            BRepAlgoAPI_Fuse mkFuse(base, mkSolid.Shape());
+            auto* b = getDocument()->addObject("Part::Feature", "base");
+            static_cast<Part::Feature*>(b)->Shape.setValue(base);
+            b = getDocument()->addObject("Part::Feature", "pipe");
+            static_cast<Part::Feature*>(b)->Shape.setValue(result);
+            
+            BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Adding the pipe failed");
             // we have to get the solids (fuse sometimes creates compounds)
@@ -219,7 +232,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         }
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
             
-            BRepAlgoAPI_Cut mkCut(base, mkSolid.Shape());
+            BRepAlgoAPI_Cut mkCut(base, result);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Subtracting the pipe failed");
             // we have to get the solids (fuse sometimes creates compounds)
