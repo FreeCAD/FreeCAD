@@ -366,10 +366,15 @@ void TaskPipeOrientation::onOrientationChanged(int idx) {
 
 void TaskPipeOrientation::clearButtons() {
 
+    ui->buttonRefAdd->setChecked(false);
+    ui->buttonRefRemove->setChecked(false);
+    ui->buttonProfileBase->setChecked(false);
 }
 
 void TaskPipeOrientation::exitSelectionMode() {
 
+    selectionMode = none;
+    Gui::Selection().clearSelection();
 }
 
 void TaskPipeOrientation::onButtonRefAdd(bool checked) {
@@ -547,18 +552,32 @@ TaskPipeScaling::~TaskPipeScaling() {
 
 void TaskPipeScaling::clearButtons() {
 
+    ui->buttonRefAdd->setChecked(false);
+    ui->buttonRefRemove->setChecked(false);
 }
 
 void TaskPipeScaling::exitSelectionMode() {
 
+    selectionMode = none;
+    Gui::Selection().clearSelection();
 }
 
 void TaskPipeScaling::onButtonRefAdd(bool checked) {
 
+    if (checked) {
+        Gui::Selection().clearSelection();        
+        selectionMode = refAdd;
+        //static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
+    }
 }
 
 void TaskPipeScaling::onButtonRefRemove(bool checked) {
 
+    if (checked) {
+        Gui::Selection().clearSelection();        
+        selectionMode = refRemove;
+        //static_cast<ViewProviderPipe*>(vp)->highlightReferences(true, true);
+    }
 }
 
 void TaskPipeScaling::onScalingChanged(int idx) {
@@ -569,10 +588,69 @@ void TaskPipeScaling::onScalingChanged(int idx) {
 
 void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
 
+    if (selectionMode == none)
+        return;
+
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (referenceSelected(msg)) {
+            if (selectionMode == refAdd) {
+                QString objn = QString::fromStdString(msg.pObjectName);
+                if(!objn.isEmpty())
+                    ui->listWidgetReferences->addItem(objn);
+            }
+            else if (selectionMode == refRemove) {
+                QString objn = QString::fromStdString(msg.pObjectName);
+                if(!objn.isEmpty())
+                    removeFromListWidget(ui->listWidgetReferences, objn);               
+            }
+            clearButtons();
+            //static_cast<ViewProviderPipe*>(vp)->highlightReferences(false, true);
+            recomputeFeature();
+        } 
+        clearButtons();
+        exitSelectionMode();
+    }
 }
 
 bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
 
+    
+    if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
+                (selectionMode == refAdd) || (selectionMode == refRemove))) {
+
+        if (strcmp(msg.pDocName, vp->getObject()->getDocument()->getName()) != 0)
+            return false;
+
+        // not allowed to reference ourself
+        const char* fname = vp->getObject()->getNameInDocument();        
+        if (strcmp(msg.pObjectName, fname) == 0)
+            return false;
+       
+        //every selection needs to be a profile in itself, hence currently only full objects are 
+        //supported, not individual edges of a part
+        
+        //change the references 
+        std::vector<App::DocumentObject*> refs = static_cast<PartDesign::Pipe*>(vp->getObject())->Sections.getValues();
+        App::DocumentObject* obj = vp->getObject()->getDocument()->getObject(msg.pObjectName);
+        std::vector<App::DocumentObject*>::iterator f = std::find(refs.begin(), refs.end(), obj);
+
+        if (selectionMode == refAdd) {
+            if (f == refs.end())
+                refs.push_back(obj);
+            else
+                return false; // duplicate selection
+        } else {
+            if (f != refs.end())
+                refs.erase(f);
+            else
+                return false;
+        }        
+
+        static_cast<PartDesign::Pipe*>(vp->getObject())->Sections.setValues(refs);
+        return true;
+    }
+
+    return false;
 }
 
 void TaskPipeScaling::removeFromListWidget(QListWidget* w, QString name) {
