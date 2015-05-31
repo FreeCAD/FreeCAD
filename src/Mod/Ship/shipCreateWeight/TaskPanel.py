@@ -28,6 +28,7 @@ from PySide import QtGui, QtCore
 import WeightInstance as Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
+import shipUtils.Locale as Locale
 
 class TaskPanel:
     def __init__(self):
@@ -50,7 +51,7 @@ class TaskPanel:
         # Set the mass/density
         m_unit = USys.getMassUnits()
         l_unit = USys.getLengthUnits()
-        qty = Units.parseQuantity(form.weight.text())
+        qty = Units.parseQuantity(Locale.fromString(form.weight.text()))
         if self.elem_type == 1:
             w_unit = m_unit
             obj.Mass = qty.getValueAs(w_unit).Value
