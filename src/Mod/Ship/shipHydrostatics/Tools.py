@@ -228,7 +228,7 @@ def wettedArea(shape, draft, trim):
         except Part.OCCError:
             continue
         area = area + common.Area
-    return area
+    return area / Units.Metre.Value**2
 
 
 def moment(ship, draft, trim, disp, xcb):
