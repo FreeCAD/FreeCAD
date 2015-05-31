@@ -49,9 +49,9 @@ class TaskPanel:
         form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
-        obj.Length = form.length.text()
-        obj.Breadth = form.breadth.text()
-        obj.Draft = form.draft.text()
+        obj.Length = Locale.fromString(form.length.text())
+        obj.Breadth = Locale.fromString(form.breadth.text())
+        obj.Draft = Locale.fromString(form.draft.text())
         App.ActiveDocument.recompute()
         return True
 
