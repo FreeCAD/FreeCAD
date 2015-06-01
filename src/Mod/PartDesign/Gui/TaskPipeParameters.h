@@ -138,6 +138,8 @@ private Q_SLOTS:
     void onButtonRefAdd(bool checked);
     void onButtonRefRemove(bool checked);
     void updateUI(int idx);
+    void onLinearSpinBox(double val);
+    void onSshapeChanged(double val);
   
 protected:
     enum selectionModes { none, refAdd, refRemove };
