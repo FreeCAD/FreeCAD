@@ -350,24 +350,22 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape
                 break;
             case 3:
                 auxillery = true;
+                break;
             case 4:
                 mkPipeShell.SetMode(gp_Dir(bVec.x,bVec.y,bVec.z));
                 break;
         }
         
-        if(auxillery) {
-            
-            if(Transformation.getValue()!=2)
+        if(auxillery) {            
                 mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue());
-            else
-                mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
+              //mkPipeShell.SetMode(TopoDS::Wire(auxshape), AuxilleryCurvelinear.getValue(), BRepFill_ContactOnBorder);
         }
 }
 
 
 void Pipe::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
 
-    
+    /*
     TopTools_IndexedMapOfShape mapOfEdges;
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeEdge;
     TopExp::MapShapesAndAncestors(TopShape._Shape, TopAbs_EDGE, TopAbs_EDGE, mapEdgeEdge);
@@ -413,6 +411,7 @@ void Pipe::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string 
     Base::Console().Message("Final edges:\n");
     for(int i=0; i<SubNames.size(); ++i)
         Base::Console().Message("Subname: %s\n", SubNames[i].c_str());
+    */
 }
 
 void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::string >& subedge, TopoDS_Shape& path) {

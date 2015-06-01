@@ -145,13 +145,6 @@
           <item>
            <widget class="QListWidget" name="listWidgetReferences"/>
           </item>
-          <item>
-           <widget class="QCheckBox" name="tangent">
-            <property name="text">
-             <string>Extend to tangent edges</string>
-            </property>
-           </widget>
-          </item>
          </layout>
         </widget>
        </item>
