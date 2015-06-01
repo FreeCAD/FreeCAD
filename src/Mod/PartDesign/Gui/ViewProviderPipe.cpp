@@ -172,7 +172,7 @@ void ViewProviderPipe::highlightReferences(const bool on, bool auxillery)
             TopExp::MapShapes(base->Shape.getValue(), TopAbs_EDGE, eMap);
             originalLineColors = svp->LineColorArray.getValues();
             std::vector<App::Color> colors = originalLineColors;
-            colors.resize(eMap.Extent(), LineColor.getValue());
+            colors.resize(eMap.Extent(), svp->LineColor.getValue());
 
             for (std::string e : edges) {
                 int idx = atoi(e.substr(4).c_str()) - 1;

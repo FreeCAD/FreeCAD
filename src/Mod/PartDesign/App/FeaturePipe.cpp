@@ -53,6 +53,9 @@
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
+#include <Law_Function.hxx>
+#include <Law_Linear.hxx>
+#include <Law_S.hxx>
 #endif
 
 #include <Base/Exception.h>
@@ -70,7 +73,7 @@ using namespace PartDesign;
 const char* Pipe::TypeEnums[] = {"FullPath","UpToFace",NULL};
 const char* Pipe::TransitionEnums[] = {"Transformed","Right corner", "Round corner",NULL};
 const char* Pipe::ModeEnums[] = {"Standart", "Fixed", "Frenet", "Auxillery", "Binormal", NULL};
-const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Auxillery", NULL};
+const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Linear", "S-shape", "Interpolation", NULL};
 
 
 PROPERTY_SOURCE(PartDesign::Pipe, PartDesign::SketchBased)
@@ -88,6 +91,7 @@ Pipe::Pipe()
     ADD_PROPERTY_TYPE(Binormal,(Base::Vector3d()),"Sweep",App::Prop_None,"Binormal vector for coresponding orientation mode");
     ADD_PROPERTY_TYPE(Transition,(long(0)),"Sweep",App::Prop_None,"Transition mode");
     ADD_PROPERTY_TYPE(Transformation,(long(0)),"Sweep",App::Prop_None,"Section transformation mode");
+    ADD_PROPERTY_TYPE(ScalingData, (), "Sweep", App::Prop_None, "Data for scaling laws");
     Mode.setEnums(ModeEnums);
     Transition.setEnums(TransitionEnums);
     Transformation.setEnums(TransformEnums);
@@ -163,7 +167,10 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         std::vector<std::vector<TopoDS_Wire>> wiresections;
         for(TopoDS_Wire& wire : wires)
             wiresections.push_back(std::vector<TopoDS_Wire>(1, wire));
-            
+        //maybe we need a sacling law
+        Handle(Law_Function) scalinglaw;
+        
+        //see if we shall use multiple sections
         if(Transformation.getValue() == 1) {
             
             //we need to order the sections to prevent occ from crahsing, as makepieshell connects
@@ -188,6 +195,25 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 
             }
         }
+        //build the law functions instead
+        else if(Transformation.getValue() == 2) {
+            if(ScalingData.getValues().size()<1)
+                return new App::DocumentObjectExecReturn("No valid data given for liinear scaling mode");
+            
+            Handle(Law_Linear) lin = new Law_Linear();
+            lin->Set(0,1,1,ScalingData[0].x);
+            
+            scalinglaw = lin;
+        }
+        else if(Transformation.getValue() == 3) {
+            if(ScalingData.getValues().size()<1)
+                return new App::DocumentObjectExecReturn("No valid data given for liinear scaling mode");
+            
+            Handle(Law_S) s = new Law_S();
+            s->Set(0,1,ScalingData[0].y, 1, ScalingData[0].x, ScalingData[0].z);
+            
+            scalinglaw = s;
+        }
         
         //build all shells
         std::vector<TopoDS_Shape> shells;
@@ -197,8 +223,14 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
             setupAlgorithm(mkPS, auxpath);
             
-            for(TopoDS_Wire& wire : wires)  
-                mkPS.Add(wire);
+            if(!scalinglaw) {
+                for(TopoDS_Wire& wire : wires)  
+                    mkPS.Add(wire);
+            }
+            else {
+                for(TopoDS_Wire& wire : wires)  
+                    mkPS.SetLaw(wire, scalinglaw);
+            }
 
             if (!mkPS.IsReady())
                 return new App::DocumentObjectExecReturn("pipe could not be build");

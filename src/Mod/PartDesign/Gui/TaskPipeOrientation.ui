@@ -212,6 +212,9 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimum">
+            <double>-99.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="2" column="1">
@@ -222,6 +225,9 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="minimum">
+            <double>-99.000000000000000</double>
+           </property>
           </widget>
          </item>
          <item row="3" column="1">
@@ -231,6 +237,9 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="minimum">
+            <double>-99.000000000000000</double>
            </property>
           </widget>
          </item>
