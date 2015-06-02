@@ -652,6 +652,8 @@ void Workbench::activated()
         "PartDesign_Pocket",
         "PartDesign_Revolution",
         "PartDesign_Groove",
+        "PartDesign_AdditivePipe",
+        "PartDesign_SubtractivePipe",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommands(
         "SELECT Sketcher::SketchObject COUNT 1",

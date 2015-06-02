@@ -37,6 +37,7 @@
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 
@@ -46,7 +47,6 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderPipe,PartDesignGui::ViewProvider)
 
 ViewProviderPipe::ViewProviderPipe()
 {
-    sPixmap = "PartDesign_Additive_Pipe.svg"; 
 }
 
 ViewProviderPipe::~ViewProviderPipe()
@@ -187,5 +187,17 @@ void ViewProviderPipe::highlightReferences(const bool on, bool auxillery)
             originalLineColors.clear();
         }
     }
+}
+
+QIcon ViewProviderPipe::getIcon(void) const {
+    QString str = QString::fromAscii("PartDesign_");
+    auto* prim = static_cast<PartDesign::Pipe*>(getObject());
+    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+        str += QString::fromAscii("Additive_");
+    else
+        str += QString::fromAscii("Subtractive_");
+ 
+    str += QString::fromAscii("Pipe.svg");
+    return Gui::BitmapFactory().pixmap(str.toStdString().c_str());
 }
 

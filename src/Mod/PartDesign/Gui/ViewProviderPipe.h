@@ -49,6 +49,7 @@ public:
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
+    virtual QIcon getIcon(void) const;
     
 private:
     std::vector<App::Color> originalLineColors;
