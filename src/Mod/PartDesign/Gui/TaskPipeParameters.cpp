@@ -78,8 +78,6 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj, Q
             this, SLOT(onButtonRefAdd(bool)));
     connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
             this, SLOT(onButtonRefRemove(bool)));
-    connect(ui->tangent, SIGNAL(toggled(bool)), 
-            this, SLOT(onTangentChanged(bool)));
     connect(ui->buttonProfileBase, SIGNAL(toggled(bool)),
             this, SLOT(onBaseButton(bool)));
     
@@ -106,8 +104,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj, Q
         ui->listWidgetReferences->addItem(QString::fromStdString(*i));
         
     ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
-    ui->tangent->setChecked(pipe->SpineTangent.getValue());
-
+ 
     updateUI();
 }
 
