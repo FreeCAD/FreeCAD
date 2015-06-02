@@ -261,7 +261,7 @@ class _MechanicalMaterialTaskPanel:
 
         use_mat_from_custom_dir = self.fem_preferences.GetBool("UseMaterialsFromCustomDir", True)
         if use_mat_from_custom_dir:
-            custom_mat_dir = self.fem_preferences.GetString("CustomMaterialsDir","")
+            custom_mat_dir = self.fem_preferences.GetString("CustomMaterialsDir", "")
             self.add_mat_dir(custom_mat_dir, ":/icons/user.svg")
 
 
