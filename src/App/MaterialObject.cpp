@@ -36,7 +36,7 @@ PROPERTY_SOURCE(App::MaterialObject, App::DocumentObject)
 
 MaterialObject::MaterialObject() 
 {
-    ADD_PROPERTY_TYPE(Material,(),"Material",Prop_None,"Material key/valu map");
+    ADD_PROPERTY_TYPE(Material,(),"Material",Prop_None,"Material key/value map");
 
 }
 
