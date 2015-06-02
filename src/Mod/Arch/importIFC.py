@@ -702,7 +702,7 @@ def export(exportList,filename):
     for obj in objectslist:
         
         # getting generic data
-        name = str(obj.Label)
+        name = str(obj.Label.encode("utf8"))
         description = str(obj.Description) if hasattr(obj,"Description") else ""
             
         # getting uid
