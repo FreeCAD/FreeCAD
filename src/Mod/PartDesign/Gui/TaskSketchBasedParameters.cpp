@@ -201,6 +201,8 @@ App::DocumentObject* TaskSketchBasedParameters::getPartPlanes(const char* str) c
     //TODO: Adjust to GRAPH handling when available
     App::DocumentObject* obj = vp->getObject();
     App::Part* part = getPartFor(obj, true);
+    if(!part)
+        return nullptr;
     
     std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
     if(origs.size()<1)
@@ -223,6 +225,8 @@ App::DocumentObject* TaskSketchBasedParameters::getPartLines(const char* str) co
     //TODO: Adjust to GRAPH handling when available
     App::DocumentObject* obj = vp->getObject();
     App::Part* part = getPartFor(obj, true);
+    if(!part)
+        return nullptr;
     
     std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
     if(origs.size()<1)

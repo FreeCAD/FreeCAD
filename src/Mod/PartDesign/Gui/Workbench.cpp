@@ -75,7 +75,7 @@ namespace PartDesignGui {
 
 PartDesign::Body *getBody(bool messageIfNot)
 {
-	PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
     if (!activeBody && messageIfNot){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
@@ -85,13 +85,13 @@ PartDesign::Body *getBody(bool messageIfNot)
                         "PartDesign to put them into a Body."
                         ));
     }
-	return activeBody;
+    return activeBody;
 
 }
 
 PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
 {
-    if(!obj || !obj->isValid())
+    if(!obj)
         return nullptr;
     
     PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
@@ -115,7 +115,7 @@ PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
 
 App::Part* getPartFor(App::DocumentObject* obj, bool messageIfNot) {
 
-    if(!obj || !obj->isValid())
+    if(!obj)
         return nullptr;
     
     PartDesign::Body* body = getBodyFor(obj, false);
