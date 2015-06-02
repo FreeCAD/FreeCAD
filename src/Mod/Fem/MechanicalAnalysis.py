@@ -140,6 +140,8 @@ class _CommandPurgeFemResults:
 
     def Activated(self):
         purge_fem_results()
+        reset_mesh_color()
+        reset_mesh_deformation()
 
     def IsActive(self):
         return FreeCADGui.ActiveDocument is not None and results_present()
@@ -352,6 +354,8 @@ class _JobControlTaskPanel:
         self.femConsoleMessage("Loading result sets...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         purge_fem_results()
+        reset_mesh_color()
+        reset_mesh_deformation()
         if os.path.isfile(self.base_name + '.frd'):
             QApplication.setOverrideCursor(Qt.WaitCursor)
             ccxFrdReader.importFrd(self.base_name + '.frd', FemGui.getActiveAnalysis())
@@ -538,9 +542,7 @@ class _ResultControlTaskPanel:
     def typeChanged(self, index):
         selected = self.form.comboBox_Type.itemData(index)
         if selected[0] == "None":
-            self.MeshObject.ViewObject.NodeColor = {}
-            self.MeshObject.ViewObject.ElementColor = {}
-            self.MeshObject.ViewObject.setNodeColorByResult()
+            reset_mesh_color()
             unit = "mm"
 
         QApplication.setOverrideCursor(Qt.WaitCursor)
@@ -646,6 +648,25 @@ def purge_fem_results(Analysis=None):
            (o.isDerivedFrom("Fem::FemResultValue") and o.DataType == 'AnalysisStats')):
             FreeCAD.ActiveDocument.removeObject(o.Name)
 
+
+def reset_mesh_color(mesh=None):
+    import FemGui
+    if mesh is None:
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("Fem::FemMeshObject"):
+                mesh = i
+    mesh.ViewObject.NodeColor = {}
+    mesh.ViewObject.ElementColor = {}
+    mesh.ViewObject.setNodeColorByResult()
+
+
+def reset_mesh_deformation(mesh=None):
+    import FemGui
+    if mesh is None:
+        for i in FemGui.getActiveAnalysis().Member:
+            if i.isDerivedFrom("Fem::FemMeshObject"):
+                mesh = i
+    mesh.ViewObject.applyDisplacement(0.0)
 
 FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
 FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
