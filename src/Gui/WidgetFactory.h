@@ -49,6 +49,11 @@ public:
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
     Py::Object fromQWidget(QWidget*, const char* className=0);
+    /*!
+      Create a Python wrapper for the icon. The icon must be created on the heap
+      and the Python wrapper takes ownership of it.
+     */
+    Py::Object fromQIcon(const QIcon*);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
 };

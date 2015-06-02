@@ -44,6 +44,7 @@
 # undef _POSIX_C_SOURCE
 # undef _XOPEN_SOURCE
 # include <basewrapper.h>
+# include <conversions.h>
 # include <sbkmodule.h>
 # include <typeresolver.h>
 # include <shiboken.h>
@@ -177,6 +178,16 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 #endif
 
     return 0;
+}
+
+Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    PyObject* pyobj = Shiboken::createWrapper<QIcon>(icon, true);
+    if (pyobj)
+        return Py::asObject(pyobj);
+#endif
+    throw Py::RuntimeError("Failed to wrap icon");
 }
 
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)

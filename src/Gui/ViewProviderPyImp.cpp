@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Inventor/nodes/SoSeparator.h>
+# include <QByteArray>
+# include <QDataStream>
 #endif
 
 #include <Inventor/SoDB.h>
@@ -32,6 +34,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 
 #include "ViewProvider.h"
+#include "WidgetFactory.h"
 
 // inclusion of the generated files (generated out of ViewProviderPy2.xml)
 #include "ViewProviderPy.h"
@@ -231,4 +234,20 @@ Py::String ViewProviderPy::getIV(void) const
 {
     SbString buf = buffer_writeaction(getViewProviderPtr()->getRoot());
     return Py::String(buf.getString());
+}
+
+Py::Object ViewProviderPy::getIcon(void) const
+{
+#if 0
+    QByteArray ba;
+    QDataStream str(&ba, QIODevice::WriteOnly);
+    QIcon icon = getViewProviderPtr()->getIcon();
+    str << icon;
+    return Py::String(ba.constData(), ba.size());
+#else
+    PythonWrapper wrap;
+    wrap.loadGuiModule();
+    QIcon icon = getViewProviderPtr()->getIcon();
+    return wrap.fromQIcon(new QIcon(icon));
+#endif
 }
