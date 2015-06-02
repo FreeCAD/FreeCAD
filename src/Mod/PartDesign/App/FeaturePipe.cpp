@@ -131,16 +131,16 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
     try {
         base = getBaseShape();
     } catch (const Base::Exception&) {
-        try {
-            // fall back to support (for legacy features)
-            base = getSupportShape();
-        } catch (const Base::Exception&) {
-            // ignore, because support isn't mandatory
-            base = TopoDS_Shape();
-        }
+        base = TopoDS_Shape();
     }
  
     try {
+        //setup the location
+        this->positionBySketch();
+        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+        if(!base.IsNull())
+            base.Move(invObjLoc);
+        
         //build the paths
         App::DocumentObject* spine = Spine.getValue();
         if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
@@ -269,6 +269,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             result.Reverse();
         }
         
+        result.Move(invObjLoc);
         AddSubShape.setValue(result);
         
         if(base.IsNull()) {
