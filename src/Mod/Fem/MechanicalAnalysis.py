@@ -184,7 +184,6 @@ class _FemAnalysis:
         obj.Proxy = self
         #obj.Material = StartMat
         obj.addProperty("App::PropertyString", "OutputDir", "Base", "Directory where the jobs get generated")
-        obj.addProperty("App::PropertyFloat", "PlateThickness", "Base", "Thickness of the plate")
 
     def execute(self, obj):
         return
