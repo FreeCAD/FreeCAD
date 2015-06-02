@@ -64,6 +64,12 @@
 			</Documentation>
 			<Parameter Name="Annotation" Type="Object" />
 		</Attribute>
+    <Attribute Name="Icon" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The icon of this ViewProvider</UserDocu>
+      </Documentation>
+      <Parameter Name="Icon" Type="Object" />
+    </Attribute>
     <Attribute Name="RootNode" ReadOnly="false">
       <Documentation>
         <UserDocu>A pivy Separator with the root of this ViewProvider</UserDocu>
