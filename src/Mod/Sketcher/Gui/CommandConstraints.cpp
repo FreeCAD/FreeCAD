@@ -684,7 +684,7 @@ bool CmdSketcherConstrainVertical::isActive(void)
 }
 
 
-DEF_STD_CMD_A(CmdSketcherConstrainLock);
+DEF_STD_CMD_AU(CmdSketcherConstrainLock);
 
 CmdSketcherConstrainLock::CmdSketcherConstrainLock()
     :Command("Sketcher_ConstrainLock")
@@ -758,6 +758,18 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
     // clear the selection (convenience)
     getSelection().clearSelection();
+}
+
+void CmdSketcherConstrainLock::updateAction(int mode)
+{
+    switch (mode) {
+    case Reference:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
+        break;
+    case Driving:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
+        break;
+    }
 }
 
 bool CmdSketcherConstrainLock::isActive(void)
@@ -866,7 +878,7 @@ bool CmdSketcherConstrainCoincident::isActive(void)
 }
 
 
-DEF_STD_CMD_A(CmdSketcherConstrainDistance);
+DEF_STD_CMD_AU(CmdSketcherConstrainDistance);
 
 CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
     :Command("Sketcher_ConstrainDistance")
@@ -1027,6 +1039,18 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     return;
 }
 
+void CmdSketcherConstrainDistance::updateAction(int mode)
+{
+    switch (mode) {
+    case Reference:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
+        break;
+    case Driving:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length"));
+        break;
+    }
+}
+
 bool CmdSketcherConstrainDistance::isActive(void)
 {
     return isCreateConstraintActive( getActiveGuiDocument() );
@@ -1119,7 +1143,7 @@ bool CmdSketcherConstrainPointOnObject::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
-DEF_STD_CMD_A(CmdSketcherConstrainDistanceX);
+DEF_STD_CMD_AU(CmdSketcherConstrainDistanceX);
 
 CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
     :Command("Sketcher_ConstrainDistanceX")
@@ -1266,13 +1290,25 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     return;
 }
 
+void CmdSketcherConstrainDistanceX::updateAction(int mode)
+{
+    switch (mode) {
+    case Reference:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
+        break;
+    case Driving:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
+        break;
+    }
+}
+
 bool CmdSketcherConstrainDistanceX::isActive(void)
 {
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
 
-DEF_STD_CMD_A(CmdSketcherConstrainDistanceY);
+DEF_STD_CMD_AU(CmdSketcherConstrainDistanceY);
 
 CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
     :Command("Sketcher_ConstrainDistanceY")
@@ -1415,6 +1451,18 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
         QObject::tr("Select exactly one line or up to two points from the sketch."));
     return;
+}
+
+void CmdSketcherConstrainDistanceY::updateAction(int mode)
+{
+    switch (mode) {
+    case Reference:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
+        break;
+    case Driving:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));
+        break;
+    }
 }
 
 bool CmdSketcherConstrainDistanceY::isActive(void)
@@ -2022,7 +2070,7 @@ bool CmdSketcherConstrainTangent::isActive(void)
 }
 
 
-DEF_STD_CMD_A(CmdSketcherConstrainRadius);
+DEF_STD_CMD_AU(CmdSketcherConstrainRadius);
 
 CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
     :Command("Sketcher_ConstrainRadius")
@@ -2283,12 +2331,24 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         updateActive();
 }
 
+void CmdSketcherConstrainRadius::updateAction(int mode)
+{
+    switch (mode) {
+    case Reference:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
+        break;
+    case Driving:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
+        break;
+    }
+}
+
 bool CmdSketcherConstrainRadius::isActive(void)
 {
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
-DEF_STD_CMD_A(CmdSketcherConstrainAngle);
+DEF_STD_CMD_AU(CmdSketcherConstrainAngle);
 
 CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
     :Command("Sketcher_ConstrainAngle")
@@ -2534,6 +2594,18 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
     QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
         QObject::tr("Select one or two lines from the sketch. Or select two edges and a point."));
     return;
+}
+
+void CmdSketcherConstrainAngle::updateAction(int mode)
+{
+    switch (mode) {
+    case Reference:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
+        break;
+    case Driving:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
+        break;
+    }
 }
 
 bool CmdSketcherConstrainAngle::isActive(void)
@@ -3370,14 +3442,24 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     sPixmap         = "Sketcher_ToggleConstraint";
     sAccel          = "";
     eType           = ForEdit;
+
+    // list of toggle driving constraint commands
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainLock");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainDistance");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainDistanceX");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainDistanceY");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainRadius");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainAngle");
+  //rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainSnellsLaw");
 }
 
 void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 {
     bool modeChange=true;
-    
+
     std::vector<Gui::SelectionObject> selection;
-    
+
     if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0){
         // Now we check whether we have a constraint selected or not.
         
@@ -3390,7 +3472,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
                 QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
-        
+
         // get the needed lists and objects
         const std::vector<std::string> &SubNames = selection[0].getSubNames();
         if (SubNames.empty()) {
@@ -3398,55 +3480,26 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
                 QObject::tr("Select constraint(s) from the sketch."));
             return;
         }
-        
+
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
             // see if we have constraints, if we do it is not a mode change, but a toggle.
             if (it->size() > 10 && it->substr(0,10) == "Constraint")
                 modeChange=false;
         }
- 
-    }   
-    
-    if (modeChange){    
+    }
+
+    if (modeChange) {
         // Here starts the code for mode change 
         Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-        
-        if(constraintCreationMode==Driving) {
-            constraintCreationMode=Reference;
-            
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainLock")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistance")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceX")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceY")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainRadius")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainAngle")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
-            /*rcCmdMgr.getCommandByName("Sketcher_ConstrainSnellsLaw")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_SnellsLaw_Driven"));*/        
+
+        if (constraintCreationMode == Driving) {
+            constraintCreationMode = Reference;
         }
         else {
-            constraintCreationMode=Driving;
-            
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainLock")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistance")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_Length"));
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceX")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainDistanceY")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));     
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainRadius")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_Radius"));
-            rcCmdMgr.getCommandByName("Sketcher_ConstrainAngle")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
-            /*rcCmdMgr.getCommandByName("Sketcher_ConstrainSnellsLaw")->getAction()->setIcon(
-                Gui::BitmapFactory().pixmap("Constraint_SnellsLaw"));*/       
-        }        
+            constraintCreationMode = Driving;
+        }
+
+        rcCmdMgr.updateCommands("ToggleDrivingConstraint", static_cast<int>(constraintCreationMode));
     }
     else // toggle the selected constraint(s)
     {
@@ -3481,8 +3534,8 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
                 }
             }
         }
-        
-        if(succesful>0) 
+
+        if (succesful > 0)
             commitCommand();
         else
             abortCommand();
