@@ -84,9 +84,12 @@ public:
 protected:
     /// Creates the used Action when adding to a widget. The default implementation does nothing.
     virtual Action * createAction(void);
+
 public:
     /// Reassigns QAction stuff after the language has changed. 
     virtual void languageChange() = 0;
+    /// Updates the QAction with respect to the passed mode.
+    virtual void updateAction(int mode) = 0;
     /// The C++ class name is needed as context for the translation framework
     virtual const char* className() const = 0;
     //@}
@@ -219,6 +222,8 @@ public:
     static bool isActiveObjectValid(void);
     /// Translate command
     void languageChange();
+    /// Updates the QAction with respect to the passed mode.
+    void updateAction(int mode);
     //@}
 
     /** @name Helper methods for issuing commands to the Python interpreter */
@@ -464,14 +469,19 @@ public:
      */
     void runCommandByName (const char* sName) const;
 
-    /// method is OBSOLET use GetModuleCommands() or GetAllCommands()
+    /// method is OBSOLETE use GetModuleCommands() or GetAllCommands()
     const std::map<std::string, Command*>& getCommands() const { return _sCommands; }
     /// get frequently called by the AppWnd to check the commands are active.
     void testActive(void);
+
+    void addCommandMode(const char* sContext, const char* sName);
+    void updateCommands(const char* sContext, int mode);
+
 private:
     /// Destroys all commands in the manager and empties the list.
     void clearCommands();
-    std::map<std::string,Command*> _sCommands;
+    std::map<std::string, Command*> _sCommands;
+    std::map<std::string, std::list<std::string> > _sCommandModes;
 };
 
 } // namespace Gui
@@ -544,6 +554,24 @@ protected: \
     virtual Gui::Action * createAction(void);\
 };
 
+/** The Command Macro Standard + isActive() + updateAction()
+ *  This macro makes it easier to define a new command.
+ *  The parameters are the class name
+ *  @author Werner Mayer
+ */
+#define DEF_STD_CMD_AU(X) class X : public Gui::Command \
+{\
+public:\
+    X();\
+    virtual ~X(){}\
+    virtual void updateAction(int mode); \
+    virtual const char* className() const\
+    { return #X; }\
+protected: \
+    virtual void activated(int iMsg);\
+    virtual bool isActive(void);\
+};
+
 /** The Command Macro Standard + isActive() + createAction()
  *  + languageChange()
  *  This macro makes it easier to define a new command.
@@ -556,6 +584,27 @@ public:\
     X();\
     virtual ~X(){}\
     virtual void languageChange(); \
+    virtual const char* className() const\
+    { return #X; }\
+protected: \
+    virtual void activated(int iMsg);\
+    virtual bool isActive(void);\
+    virtual Gui::Action * createAction(void);\
+};
+
+/** The Command Macro Standard + isActive() + createAction()
+ *  + languageChange() + updateAction()
+ *  This macro makes it easier to define a new command.
+ *  The parameters are the class name
+ *  @author Werner Mayer
+ */
+#define DEF_STD_CMD_ACLU(X) class X : public Gui::Command \
+{\
+public:\
+    X();\
+    virtual ~X(){}\
+    virtual void languageChange(); \
+    virtual void updateAction(int mode); \
     virtual const char* className() const\
     { return #X; }\
 protected: \
