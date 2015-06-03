@@ -31,6 +31,7 @@ class QMainWindow;
 
 
 #ifdef _USE_3DCONNEXION_SDK
+
 #ifdef Q_WS_WIN
 #include "3Dconnexion/MouseParameters.h"
 
@@ -41,7 +42,9 @@ class QMainWindow;
 
 #include <Windows.h>
 #endif // Q_WS_WIN
+
 #ifdef Q_WS_MACX
+#include <IOKit/IOKitLib.h>
 #include <3DconnexionClient/ConnexionClientAPI.h>
 extern OSErr InstallConnexionHandlers(ConnexionMessageHandlerProc messageHandler, ConnexionAddedHandlerProc addedHandler, ConnexionRemovedHandlerProc removedHandler)
   __attribute__((weak_import));
@@ -49,6 +52,7 @@ extern UInt16 RegisterConnexionClient(UInt32 signature, UInt8 *name, UInt16 mode
 extern void UnregisterConnexionClient(UInt16 clientID) __attribute__((weak_import));
 extern void CleanupConnexionHandlers(void) __attribute__((weak_import));
 #endif // Q_WS_MACX
+
 #endif // _USE_3DCONNEXION_SDK
 
 namespace Gui
