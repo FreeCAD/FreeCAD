@@ -22,6 +22,17 @@
   <defs
      id="defs3366">
     <linearGradient
+       id="linearGradient4187">
+      <stop
+         id="stop4189"
+         offset="0"
+         style="stop-color:#7a6600;stop-opacity:1" />
+      <stop
+         id="stop4191"
+         offset="1"
+         style="stop-color:#ffe400;stop-opacity:0.60843372" />
+    </linearGradient>
+    <linearGradient
        osb:paint="gradient"
        id="linearGradient4178">
       <stop
@@ -179,6 +190,15 @@
        id="linearGradient3845"
        xlink:href="#linearGradient4166"
        inkscape:collect="always" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4187"
+       id="linearGradient4179"
+       x1="-6.8978205"
+       y1="38.9702"
+       x2="27.605837"
+       y2="48.850491"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -188,8 +208,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="9.0078335"
-     inkscape:cx="15.654969"
-     inkscape:cy="23.838428"
+     inkscape:cx="-1.1082183"
+     inkscape:cy="23.949442"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -247,8 +267,8 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccc" />
     <path
-       style="fill:none;stroke:#ff0900;stroke-width:2.55299997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       d="m 11.380951,37.174463 14.558836,5.397865 0.389553,17.96064 C 22.550473,59.403098 14.498258,55.027369 11.414853,53.551374"
+       style="display:inline;overflow:visible;visibility:visible;fill:url(#linearGradient4179);fill-opacity:1;stroke:#ff0900;stroke-width:2.55299997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+       d="m 12.380081,37.174463 13.559706,5.397865 0.389553,17.96064 C 22.550473,59.403098 15.386374,55.360412 12.302969,53.884417"
        id="path3918-3-1"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc" />
