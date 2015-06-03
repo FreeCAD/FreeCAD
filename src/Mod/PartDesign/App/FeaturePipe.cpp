@@ -278,12 +278,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         }
         
         if(getAddSubType() == FeatureAddSub::Additive) {
-            
-            auto* b = getDocument()->addObject("Part::Feature", "base");
-            static_cast<Part::Feature*>(b)->Shape.setValue(base);
-            b = getDocument()->addObject("Part::Feature", "pipe");
-            static_cast<Part::Feature*>(b)->Shape.setValue(result);
-            
+                        
             BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Adding the pipe failed");
