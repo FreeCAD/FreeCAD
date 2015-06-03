@@ -517,8 +517,44 @@ class _ResultControlTaskPanel:
 
         self.DisplacementObject = None
         self.StressObject = None
-
         self.update()
+        self.restore_result_dialog()
+
+    def restore_result_dialog(self):
+        try:
+            rt = FreeCAD.FEM_dialog["results_type"]
+            if rt == "None":
+                self.form.rb_none.setChecked(True)
+                self.none_selected(True)
+            elif rt == "Uabs":
+                self.form.rb_abs_displacement.setChecked(True)
+                self.abs_displacement_selected(True)
+            elif rt == "U1":
+                self.form.rb_x_displacement.setChecked(True)
+                self.x_displacement_selected(True)
+            elif rt == "U2":
+                self.form.rb_y_displacement.setChecked(True)
+                self.y_displacement_selected(True)
+            elif rt == "U3":
+                self.form.rb_z_displacement.setChecked(True)
+                self.z_displacement_selected(True)
+            elif rt == "Sabs":
+                self.form.rb_vm_stress.setChecked(True)
+                self.vm_stress_selected(True)
+
+            sd = FreeCAD.FEM_dialog["show_disp"]
+            self.form.cb_show_displacement.setChecked(sd)
+            self.show_displacement(sd)
+
+            df = FreeCAD.FEM_dialog["disp_factor"]
+            dfm = FreeCAD.FEM_dialog["disp_factor_max"]
+            self.form.hsb_displacement_factor.setMaximum(dfm)
+            self.form.hsb_displacement_factor.setValue(df)
+            self.form.sb_displacement_factor_max.setValue(dfm)
+            self.form.sb_displacement_factor.setValue(df)
+        except:
+            FreeCAD.FEM_dialog = {"results_type": "None", "show_disp": False,
+                                  "disp_factor": 0, "disp_factor_max": 100}
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
@@ -539,22 +575,28 @@ class _ResultControlTaskPanel:
         return (0.0, 0.0, 0.0)
 
     def none_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "None"
         self.set_result_stats("mm", 0.0, 0.0, 0.0)
         reset_mesh_color()
 
     def abs_displacement_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "Uabs"
         self.select_displacement_type("Uabs")
 
     def x_displacement_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "U1"
         self.select_displacement_type("U1")
 
     def y_displacement_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "U2"
         self.select_displacement_type("U2")
 
     def z_displacement_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "U3"
         self.select_displacement_type("U3")
 
     def vm_stress_selected(self, state):
+        FreeCAD.FEM_dialog["results_type"] = "Sabs"
         QApplication.setOverrideCursor(Qt.WaitCursor)
         (minm, avg, maxm) = (0.0, 0.0, 0.0)
         if self.StressObject:
@@ -583,6 +625,7 @@ class _ResultControlTaskPanel:
 
     def show_displacement(self, checked):
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        FreeCAD.FEM_dialog["show_disp"] = checked
         factor = 0.0
         if checked:
             factor = self.form.hsb_displacement_factor.value()
@@ -595,9 +638,11 @@ class _ResultControlTaskPanel:
         self.form.sb_displacement_factor.setValue(value)
 
     def sb_disp_factor_max_changed(self, value):
+        FreeCAD.FEM_dialog["disp_factor_max"] = value
         self.form.hsb_displacement_factor.setMaximum(value)
 
     def sb_disp_factor_changed(self, value):
+        FreeCAD.FEM_dialog["disp_factor"] = value
         self.form.hsb_displacement_factor.setValue(value)
 
     def update(self):
