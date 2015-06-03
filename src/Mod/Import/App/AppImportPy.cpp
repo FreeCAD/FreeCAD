@@ -52,7 +52,7 @@
 #include <CXX/Objects.hxx>
 
 #include "ImportOCAF.h"
-#include "ImportOCAFAssembly.h"
+//#include "ImportOCAFAssembly.h"
 #include <Base/PyObjectBase.h>
 #include <Base/Console.h>
 #include <App/Application.h>
@@ -76,9 +76,9 @@ public:
         add_varargs_method("insert",&Module::importer,
             "insert(string,string) -- Insert the file into the given document."
         );
-        add_varargs_method("openAssembly",&Module::importAssembly,
-            "openAssembly(string) -- Open the assembly file and create a new document."
-        );
+//        add_varargs_method("openAssembly",&Module::importAssembly,
+//            "openAssembly(string) -- Open the assembly file and create a new document."
+//        );
         add_varargs_method("export",&Module::exporter,
             "export(list,string) -- Export a list of objects into a single file."
         );
@@ -304,10 +304,8 @@ private:
 
         return Py::None();
     }
-    {"importAssembly"     ,importAssembly  ,METH_VARARGS,
-     "importAssembly(FileName,Target) -- Import a Assembly file and creates a Assembly structure."},
 };
-
+/*
 static PyObject * importAssembly(PyObject *self, PyObject *args)
 {
     char* Name;
@@ -414,7 +412,7 @@ static PyObject * importAssembly(PyObject *self, PyObject *args)
     PY_CATCH
 
     Py_Return;
-}
+}*/
 
 
 
