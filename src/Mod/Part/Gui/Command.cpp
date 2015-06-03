@@ -39,6 +39,7 @@
 #include <Base/Exception.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -488,6 +489,101 @@ void CmdPartFuse::activated(int iMsg)
 bool CmdPartFuse::isActive(void)
 {
     return getSelection().countObjectsOfType(Part::Feature::getClassTypeId())>=2;
+}
+
+//===========================================================================
+// Part_CompJoinFeatures (dropdown toolbar button for Connect, Embed and Cutout)
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdPartCompJoinFeatures);
+
+CmdPartCompJoinFeatures::CmdPartCompJoinFeatures()
+  : Command("Part_CompJoinFeatures")
+{
+    sAppModule      = "Part";
+    sGroup          = QT_TR_NOOP("Part");
+    sMenuText       = QT_TR_NOOP("Join objects...");
+    sToolTipText    = QT_TR_NOOP("Join walled objects");
+    sWhatsThis      = "Part_CompJoinFeatures";
+    sStatusTip      = sToolTipText;
+}
+
+void CmdPartCompJoinFeatures::activated(int iMsg)
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    if (iMsg==0)
+        rcCmdMgr.runCommandByName("Part_JoinConnect");
+    else if (iMsg==1)
+        rcCmdMgr.runCommandByName("Part_JoinEmbed");
+    else if (iMsg==2)
+        rcCmdMgr.runCommandByName("Part_JoinCutout");
+    else
+        return;
+
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdPartCompJoinFeatures::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* cmd0 = pcAction->addAction(QString());
+    cmd0->setIcon(Gui::BitmapFactory().pixmap("Part_JoinConnect"));
+    QAction* cmd1 = pcAction->addAction(QString());
+    cmd1->setIcon(Gui::BitmapFactory().pixmap("Part_JoinEmbed"));
+    QAction* cmd2 = pcAction->addAction(QString());
+    cmd2->setIcon(Gui::BitmapFactory().pixmap("Part_JoinCutout"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    pcAction->setIcon(cmd0->icon());
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdPartCompJoinFeatures::languageChange()
+{
+    Command::languageChange();
+
+    if (!_pcAction)
+        return;
+
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    QAction* cmd0 = a[0];
+    cmd0->setText(QApplication::translate("PartCompJoinFeatures", rcCmdMgr.getCommandByName("Part_JoinConnect")->getMenuText()));
+    cmd0->setToolTip(QApplication::translate("Part_JoinConnect", rcCmdMgr.getCommandByName("Part_JoinConnect")->getToolTipText()));
+    cmd0->setStatusTip(QApplication::translate("Part_JoinConnect", rcCmdMgr.getCommandByName("Part_JoinConnect")->getStatusTip()));
+    QAction* cmd1 = a[1];
+    cmd1->setText(QApplication::translate("PartCompJoinFeatures", rcCmdMgr.getCommandByName("Part_JoinEmbed")->getMenuText()));
+    cmd1->setToolTip(QApplication::translate("Part_JoinEmbed", rcCmdMgr.getCommandByName("Part_JoinEmbed")->getToolTipText()));
+    cmd1->setStatusTip(QApplication::translate("Part_JoinEmbed", rcCmdMgr.getCommandByName("Part_JoinEmbed")->getStatusTip()));
+    QAction* cmd2 = a[2];
+    cmd2->setText(QApplication::translate("PartCompJoinFeatures", rcCmdMgr.getCommandByName("Part_JoinCutout")->getMenuText()));
+    cmd2->setToolTip(QApplication::translate("Part_JoinCutout", rcCmdMgr.getCommandByName("Part_JoinCutout")->getToolTipText()));
+    cmd2->setStatusTip(QApplication::translate("Part_JoinCutout", rcCmdMgr.getCommandByName("Part_JoinCutout")->getStatusTip()));
+}
+
+bool CmdPartCompJoinFeatures::isActive(void)
+{
+    if (getActiveGuiDocument())
+        return true;
+    else
+        return false;
 }
 
 //===========================================================================
@@ -1747,6 +1843,7 @@ void CreatePartCommands(void)
     rcCmdMgr.addCommand(new CmdPartCommon());
     rcCmdMgr.addCommand(new CmdPartCut());
     rcCmdMgr.addCommand(new CmdPartFuse());
+    rcCmdMgr.addCommand(new CmdPartCompJoinFeatures());
     rcCmdMgr.addCommand(new CmdPartCompound());
     rcCmdMgr.addCommand(new CmdPartSection());
     //rcCmdMgr.addCommand(new CmdPartBox2());

@@ -32,8 +32,8 @@
 
 
 class PartWorkbench ( Workbench ):
-	"Part workbench object"
-	Icon = """
+    "Part workbench object"
+    Icon = """
                 /* XPM */
                 static char * part_xpm[] = {
                 "16 16 9 1",
@@ -62,15 +62,20 @@ class PartWorkbench ( Workbench ):
                 ".@$%&****%.%..  ",
                 " ......@##..    ",
                 "        ...     "};
-		"""
-	MenuText = "Part"
-	ToolTip = "Part workbench"
+        """
+    MenuText = "Part"
+    ToolTip = "Part workbench"
 
-	def Initialize(self):
-		# load the module
-		import PartGui
-		import Part
-	def GetClassName(self):
-		return "PartGui::Workbench"
+    def Initialize(self):
+        # load the module
+        import PartGui
+        import Part
+        try:
+            import JoinFeatures
+        except ImportError:
+            print "JoinFeatures module cannot be loaded"
+
+    def GetClassName(self):
+        return "PartGui::Workbench"
 
 Gui.addWorkbench(PartWorkbench())

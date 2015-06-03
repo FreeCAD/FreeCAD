@@ -265,6 +265,7 @@ SET(Part_Scripts
     Init.py
     TestPartApp.py
     MakeBottle.py
+    JoinFeatures.py
 )
 
 add_library(Part SHARED ${Part_SRCS})
