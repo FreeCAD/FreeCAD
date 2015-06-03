@@ -297,7 +297,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateLine);
+DEF_STD_CMD_AU(CmdSketcherCreateLine);
 
 CmdSketcherCreateLine::CmdSketcherCreateLine()
   : Command("Sketcher_CreateLine")
@@ -316,6 +316,18 @@ CmdSketcherCreateLine::CmdSketcherCreateLine()
 void CmdSketcherCreateLine::activated(int iMsg)
 {
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerLine() );
+}
+
+void CmdSketcherCreateLine::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
+        break;
+    case Construction:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine_Constr"));
+        break;
+    }
 }
 
 bool CmdSketcherCreateLine::isActive(void)
@@ -540,7 +552,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateRectangle);
+DEF_STD_CMD_AU(CmdSketcherCreateRectangle);
 
 CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
   : Command("Sketcher_CreateRectangle")
@@ -559,6 +571,18 @@ CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
 void CmdSketcherCreateRectangle::activated(int iMsg)
 {
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBox() );
+}
+
+void CmdSketcherCreateRectangle::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle"));
+        break;
+    case Construction:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateRectangle_Constr"));
+        break;
+    }
 }
 
 bool CmdSketcherCreateRectangle::isActive(void)
@@ -1134,7 +1158,7 @@ protected:
     }
 };
 
-DEF_STD_CMD_A(CmdSketcherCreatePolyline);
+DEF_STD_CMD_AU(CmdSketcherCreatePolyline);
 
 CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
   : Command("Sketcher_CreatePolyline")
@@ -1152,6 +1176,18 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
 void CmdSketcherCreatePolyline::activated(int iMsg)
 {
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerLineSet() );
+}
+
+void CmdSketcherCreatePolyline::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline"));
+        break;
+    case Construction:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePolyline_Constr"));
+        break;
+    }
 }
 
 bool CmdSketcherCreatePolyline::isActive(void)
@@ -1720,7 +1756,7 @@ bool CmdSketcherCreate3PointArc::isActive(void)
 }
 
 
-DEF_STD_CMD_ACL(CmdSketcherCompCreateArc);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateArc);
 
 CmdSketcherCompCreateArc::CmdSketcherCompCreateArc()
   : Command("Sketcher_CompCreateArc")
@@ -1771,6 +1807,25 @@ Gui::Action * CmdSketcherCompCreateArc::createAction(void)
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
     return pcAction;
+}
+
+void CmdSketcherCompCreateArc::updateAction(int mode)
+{
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    switch (mode) {
+    case Normal:
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateArc"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    case Construction:
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateArc_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointArc_Constr"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    }
 }
 
 void CmdSketcherCompCreateArc::languageChange()
@@ -3236,7 +3291,7 @@ bool CmdSketcherCreateArcOfEllipse::isActive(void)
 }
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateEllipse'
-DEF_STD_CMD_ACL(CmdSketcherCompCreateConic);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateConic);
 
 /**
  * @brief ctor
@@ -3302,6 +3357,27 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
     return pcAction;
+}
+
+void CmdSketcherCompCreateConic::updateAction(int mode)
+{
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    switch (mode) {
+    case Normal:
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points"));
+        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    case Construction:
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc_Constr"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    }
 }
 
 void CmdSketcherCompCreateConic::languageChange()
@@ -3576,7 +3652,7 @@ bool CmdSketcherCreate3PointCircle::isActive(void)
 }
 
 
-DEF_STD_CMD_ACL(CmdSketcherCompCreateCircle);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateCircle);
 
 CmdSketcherCompCreateCircle::CmdSketcherCompCreateCircle()
   : Command("Sketcher_CompCreateCircle")
@@ -3627,6 +3703,25 @@ Gui::Action * CmdSketcherCompCreateCircle::createAction(void)
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
     return pcAction;
+}
+
+void CmdSketcherCompCreateCircle::updateAction(int mode)
+{
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    switch (mode) {
+    case Normal:
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    case Construction:
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create3PointCircle_Constr"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    }
 }
 
 void CmdSketcherCompCreateCircle::languageChange()
@@ -4711,7 +4806,7 @@ protected:
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateSlot);
+DEF_STD_CMD_AU(CmdSketcherCreateSlot);
 
 CmdSketcherCreateSlot::CmdSketcherCreateSlot()
   : Command("Sketcher_CreateSlot")
@@ -4730,6 +4825,18 @@ CmdSketcherCreateSlot::CmdSketcherCreateSlot()
 void CmdSketcherCreateSlot::activated(int iMsg)
 {
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerSlot() );
+}
+
+void CmdSketcherCreateSlot::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot"));
+        break;
+    case Construction:
+        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSlot_Constr"));
+        break;
+    }
 }
 
 bool CmdSketcherCreateSlot::isActive(void)
@@ -5089,7 +5196,7 @@ bool CmdSketcherCreateOctagon::isActive(void)
 }
 
 
-DEF_STD_CMD_ACL(CmdSketcherCompCreateRegularPolygon);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateRegularPolygon);
 
 CmdSketcherCompCreateRegularPolygon::CmdSketcherCompCreateRegularPolygon()
   : Command("Sketcher_CompCreateRegularPolygon")
@@ -5158,6 +5265,33 @@ Gui::Action * CmdSketcherCompCreateRegularPolygon::createAction(void)
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
     return pcAction;
+}
+
+void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
+{
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    switch (mode) {
+    case Normal:
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSquare"));
+        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon"));
+        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon"));
+        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon"));
+        a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    case Construction:
+        a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateTriangle_Constr"));
+        a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateSquare_Constr"));
+        a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreatePentagon_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHexagon_Constr"));
+        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateHeptagon_Constr"));
+        a[5]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateOctagon_Constr"));
+        getAction()->setIcon(a[index]->icon());
+        break;
+    }
 }
 
 void CmdSketcherCompCreateRegularPolygon::languageChange()
