@@ -160,6 +160,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
                     Gui::Command::abortCommand();
+                    Gui::Command::updateActive();
                 }
             }
         }
@@ -866,7 +867,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
     else
         abortCommand();
 
-    updateActive();
+    //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -1552,7 +1553,8 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
     }
     // finish the transaction and update
     commitCommand();
-    updateActive();
+    //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -1673,7 +1675,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             }
 
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
             getSelection().clearSelection();
 
             return;
@@ -1697,7 +1700,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
             getSelection().clearSelection();
             return;
         }
@@ -1719,7 +1723,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2);
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
             getSelection().clearSelection();
             return;
         }
@@ -1806,7 +1810,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 }
 
                 commitCommand();
-                updateActive();
+                //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
                 getSelection().clearSelection();
                 return;
 
@@ -1817,7 +1821,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,GeoId2);
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
             getSelection().clearSelection();
             return;
         }
@@ -1945,7 +1949,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
             }
 
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
             getSelection().clearSelection();
 
             return;
@@ -1969,7 +1973,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
             getSelection().clearSelection();
             return;
         }
@@ -1991,7 +1995,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2);
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
             getSelection().clearSelection();
             return;
         }
@@ -2051,7 +2055,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d)) ",
                 selection[0].getFeatName(),GeoId1,GeoId2);
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
             getSelection().clearSelection();
             return;
         }
@@ -2301,13 +2305,14 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                         }
                     }
                     commitCommand();
-                    updateActive();
+                    //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
                     commitNeeded=false;
                     updateNeeded=false;
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
                     abortCommand();
+                    updateActive();
                 }
             }
             else {
@@ -2327,8 +2332,9 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     if(commitNeeded)
         commitCommand();
     
-    if(updateNeeded)
-        updateActive();
+    //if(updateNeeded)
+        //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
 }
 
 void CmdSketcherConstrainRadius::updateAction(int mode)
@@ -2715,7 +2721,8 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     }
     // finish the transaction and update
     commitCommand();
-    updateActive();
+    //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -2795,7 +2802,8 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
                 // finish the transaction and update
                 commitCommand();
-                updateActive();
+                //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
 
                 // clear the selection (convenience)
                 getSelection().clearSelection();
@@ -2846,7 +2854,8 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
                 // finish the transaction and update
                 commitCommand();
-                updateActive();
+                //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
 
                 // clear the selection (convenience)
                 getSelection().clearSelection();
@@ -2862,7 +2871,8 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
             // finish the transaction and update
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
 
             // clear the selection (convenience)
             getSelection().clearSelection();
@@ -3003,7 +3013,8 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         }*/            
         
         commitCommand();
-        updateActive();
+        //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
 
         // clear the selection (convenience)
         getSelection().clearSelection();
@@ -3245,7 +3256,8 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
             // finish the transaction and update
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
             
             if(extra_elements){
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Extra elements"),
@@ -3401,7 +3413,8 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
             // finish the transaction and update
             commitCommand();
-            updateActive();
+            //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
             
             if(extra_elements){
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Extra elements"),
@@ -3540,7 +3553,8 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         else
             abortCommand();
 
-        updateActive();
+        //updateActive(); on adding constraints the updateActive's are unnecessary and introduce extra recomputes
+
 
         // clear the selection (convenience)
         getSelection().clearSelection();

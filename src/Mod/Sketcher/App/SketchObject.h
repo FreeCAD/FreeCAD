@@ -32,6 +32,8 @@
 #include <Mod/Part/App/PropertyGeometryList.h>
 #include <Mod/Sketcher/App/PropertyConstraintList.h>
 
+#include "Sketch.h"
+
 namespace Sketcher
 {
 
@@ -104,7 +106,7 @@ public:
     std::vector<Part::Geometry*> getCompleteGeometry(void) const;
 
     /// returns non zero if the sketch contains conflicting constraints
-    int hasConflicts(void) const;
+    int hasConflicts(void);
 
     /// solves the sketch and updates the Geometry
     int solve();
@@ -190,6 +192,23 @@ public:
     bool evaluateConstraints() const;
     /// Remove constraints with invalid indexes
     void validateConstraints();
+    
+    /// gets DoF of last solver execution
+    int getLastDoF() {return lastDoF;}
+    /// gets HasConflicts status of last solver execution
+    bool getLastHasConflicts() {return lastHasConflict;}
+    /// gets HasRedundancies status of last solver execution
+    bool getLastHasRedundancies() {return lastHasRedundancies;}
+    /// gets solver status of last solver execution
+    int getLastSolverStatus() {return lastSolverStatus;}
+    /// gets solver SolveTime of last solver execution
+    float getLastSolveTime() {return lastSolveTime;}
+    /// gets the conflicting constraints of the last solver execution
+    const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
+    /// gets the redundant constraints of last solver execution
+    const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
+    
+    Sketch &getSolvedSketch(void) {return solvedSketch;}
 
 protected:
     /// get called by the container when a property has changed
@@ -201,6 +220,17 @@ private:
 
     std::vector<int> VertexId2GeoId;
     std::vector<PointPos> VertexId2PosId;
+    
+    Sketch solvedSketch;
+    
+    int lastDoF;
+    bool lastHasConflict;
+    bool lastHasRedundancies;
+    int lastSolverStatus;
+    float lastSolveTime;
+
+    std::vector<int> lastConflicting;
+    std::vector<int> lastRedundant;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 };
