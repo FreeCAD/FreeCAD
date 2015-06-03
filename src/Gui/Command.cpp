@@ -672,6 +672,10 @@ void Command::languageChange()
     }
 }
 
+void Command::updateAction(int)
+{
+}
+
 //===========================================================================
 // MacroCommand
 //===========================================================================
@@ -1049,3 +1053,20 @@ void CommandManager::testActive(void)
     }
 }
 
+void CommandManager::addCommandMode(const char* sContext, const char* sName)
+{
+    _sCommandModes[sContext].push_back(sName);
+}
+
+void CommandManager::updateCommands(const char* sContext, int mode)
+{
+    std::map<std::string, std::list<std::string> >::iterator it = _sCommandModes.find(sContext);
+    if (it != _sCommandModes.end()) {
+        for (std::list<std::string>::iterator jt = it->second.begin(); jt != it->second.end(); ++jt) {
+            Command* cmd = getCommandByName(jt->c_str());
+            if (cmd) {
+                cmd->updateAction(mode);
+            }
+        }
+    }
+}
