@@ -148,7 +148,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QScrollBar" name="hsb_factor">
+           <widget class="QScrollBar" name="hsb_displacement_factor">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -211,7 +211,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="sb_slider_factor">
+           <widget class="QSpinBox" name="sb_displacement_factor_max">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -311,7 +311,7 @@
   <connection>
    <sender>cb_show_displacement</sender>
    <signal>toggled(bool)</signal>
-   <receiver>sb_slider_factor</receiver>
+   <receiver>sb_displacement_factor_max</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -327,7 +327,7 @@
   <connection>
    <sender>cb_show_displacement</sender>
    <signal>toggled(bool)</signal>
-   <receiver>hsb_factor</receiver>
+   <receiver>hsb_displacement_factor</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
