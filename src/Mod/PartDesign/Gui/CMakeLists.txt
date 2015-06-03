@@ -138,6 +138,8 @@ SET(PartDesignGuiViewProvider_SRCS CommandPrimitive.cpp
     ViewProviderPrimitive.cpp
     ViewProviderPipe.h
     ViewProviderPipe.cpp
+    ViewProviderLoft.h
+    ViewProviderLoft.cpp
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
