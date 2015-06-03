@@ -510,10 +510,10 @@ class _ResultControlTaskPanel:
         QtCore.QObject.connect(self.form.rb_abs_displacement, QtCore.SIGNAL("toggled(bool)"), self.abs_displacement_selected)
         QtCore.QObject.connect(self.form.rb_vm_stress, QtCore.SIGNAL("toggled(bool)"), self.vm_stress_selected)
 
-        QtCore.QObject.connect(self.form.cb_show_displacement, QtCore.SIGNAL("clicked(bool)"), self.showDisplacementClicked)
-        QtCore.QObject.connect(self.form.hsb_factor, QtCore.SIGNAL("valueChanged(int)"), self.sliderValue)
-        QtCore.QObject.connect(self.form.sb_slider_factor, QtCore.SIGNAL("valueChanged(int)"), self.sliderMaxValue)
-        QtCore.QObject.connect(self.form.sb_displacement_factor, QtCore.SIGNAL("valueChanged(int)"), self.displacementFactorValue)
+        QtCore.QObject.connect(self.form.cb_show_displacement, QtCore.SIGNAL("clicked(bool)"), self.show_displacement)
+        QtCore.QObject.connect(self.form.hsb_displacement_factor, QtCore.SIGNAL("valueChanged(int)"), self.hsb_disp_factor_changed)
+        QtCore.QObject.connect(self.form.sb_displacement_factor, QtCore.SIGNAL("valueChanged(int)"), self.sb_disp_factor_changed)
+        QtCore.QObject.connect(self.form.sb_displacement_factor_max, QtCore.SIGNAL("valueChanged(int)"), self.sb_disp_factor_max_changed)
 
         self.DisplacementObject = None
         self.StressObject = None
@@ -581,30 +581,24 @@ class _ResultControlTaskPanel:
         self.form.le_max.setProperty("unit", unit)
         self.form.le_max.setText("{:.6} {}".format(maxm, unit))
 
-    def showDisplacementClicked(self, checked):
+    def show_displacement(self, checked):
         QApplication.setOverrideCursor(Qt.WaitCursor)
         factor = 0.0
         if checked:
-            factor = self.form.hsb_factor.value()
-        self.setDisplacement()
+            factor = self.form.hsb_displacement_factor.value()
+        self.MeshObject.ViewObject.setNodeDisplacementByResult(self.DisplacementObject)
         self.MeshObject.ViewObject.applyDisplacement(factor)
         QtGui.qApp.restoreOverrideCursor()
 
-    def sliderValue(self, value):
+    def hsb_disp_factor_changed(self, value):
         self.MeshObject.ViewObject.applyDisplacement(value)
         self.form.sb_displacement_factor.setValue(value)
 
-    def sliderMaxValue(self, value):
-        #print 'sliderMaxValue()'
-        self.form.hsb_factor.setMaximum(value)
+    def sb_disp_factor_max_changed(self, value):
+        self.form.hsb_displacement_factor.setMaximum(value)
 
-    def displacementFactorValue(self, value):
-        #print 'displacementFactorValue()'
-        self.form.hsb_factor.setValue(value)
-
-    def setDisplacement(self):
-        if self.DisplacementObject:
-            self.MeshObject.ViewObject.setNodeDisplacementByResult(self.DisplacementObject)
+    def sb_disp_factor_changed(self, value):
+        self.form.hsb_displacement_factor.setValue(value)
 
     def update(self):
         self.MeshObject = None
