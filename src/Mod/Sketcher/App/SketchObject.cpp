@@ -82,6 +82,12 @@ SketchObject::SketchObject()
     ExternalGeo.push_back(HLine);
     ExternalGeo.push_back(VLine);
     rebuildVertexIndex();
+    
+    lastDoF=0;
+    lastHasConflict=false;
+    lastHasRedundancies=false;
+    lastSolverStatus=0;
+    lastSolveTime=0;
 }
 
 SketchObject::~SketchObject()
@@ -110,49 +116,69 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
         delConstraintsToExternal();
     }
 
-    Sketch sketch;
-    
-    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+    // We should have an updated Sketcher geometry or this execute should not have happened
+    // therefore we update our sketch object geometry with the SketchObject one.
+    //
+    // set up a sketch (including dofs counting and diagnosing of conflicts)    
+    lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
-    if (dofs < 0) { // over-constrained sketch
+    lastHasConflict = solvedSketch.hasConflicts();
+    lastHasRedundancies = solvedSketch.hasRedundancies();
+    lastConflicting=solvedSketch.getConflicting();
+    lastRedundant=solvedSketch.getRedundant();    
+    
+    if (lastDoF < 0) { // over-constrained sketch
         std::string msg="Over-constrained sketch\n";
-        appendConflictMsg(sketch.getConflicting(), msg);
+        appendConflictMsg(lastConflicting, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
-    if (sketch.hasConflicts()) { // conflicting constraints
+    if (lastHasConflict) { // conflicting constraints
         std::string msg="Sketch with conflicting constraints\n";
-        appendConflictMsg(sketch.getConflicting(), msg);
+        appendConflictMsg(lastConflicting, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
-    if (sketch.hasRedundancies()) { // redundant constraints
+    if (lastHasRedundancies) { // redundant constraints
         std::string msg="Sketch with redundant constraints\n";
-        appendRedundantMsg(sketch.getRedundant(), msg);
+        appendRedundantMsg(lastRedundant, msg);
         return new App::DocumentObjectExecReturn(msg.c_str(),this);
     }
-
     // solve the sketch
-    if (sketch.solve() != 0)
+    lastSolverStatus=solvedSketch.solve();
+    lastSolveTime=solvedSketch.SolveTime;
+    
+    if (lastSolverStatus != 0)
         return new App::DocumentObjectExecReturn("Solving the sketch failed",this);
 
-    std::vector<Part::Geometry *> geomlist = sketch.extractGeometry();
+    std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
     Geometry.setValues(geomlist);
     for (std::vector<Part::Geometry *>::iterator it=geomlist.begin(); it != geomlist.end(); ++it)
         if (*it) delete *it;
 
-    Shape.setValue(sketch.toShape());
+    // this is not necessary for sketch representation in edit mode, unless we want to trigger an update of 
+    // the objects that depend on this sketch (like pads)
+    Shape.setValue(solvedSketch.toShape()); 
 
     return App::DocumentObject::StdReturn;
 }
 
-int SketchObject::hasConflicts(void) const
+int SketchObject::hasConflicts(void)
 {
+    // TODO: This must be reviewed to see if we are not setting an already set geometry again (and calculating again)
+    // it is unclear if we need to know if there are conflicts of an updated geometry that has not been already solved
+    // or not.
+    
     // set up a sketch (including dofs counting and diagnosing of conflicts)
-    Sketch sketch;
-    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+    /*lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
-    if (dofs < 0) // over-constrained sketch
+    
+    lastHasConflict = solvedSketch.hasConflicts();
+    lastHasRedundancies = solvedSketch.hasRedundancies();
+    lastConflicting=solvedSketch.getConflicting();
+    lastRedundant=solvedSketch.getRedundant();*/
+    
+    if (lastDoF < 0) // over-constrained sketch
         return -2;
-    if (sketch.hasConflicts()) // conflicting constraints
+    if (solvedSketch.hasConflicts()) // conflicting constraints
         return -1;
 
     return 0;
@@ -160,21 +186,35 @@ int SketchObject::hasConflicts(void) const
 
 int SketchObject::solve()
 {
+    // We should have an updated Sketcher geometry or this solver should not have happened
+    // therefore we update our sketch object geometry with the SketchObject one.
+    //
     // set up a sketch (including dofs counting and diagnosing of conflicts)
-    Sketch sketch;
-    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+    lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
+    
+    lastHasConflict = solvedSketch.hasConflicts();
+    
     int err=0;
-    if (dofs < 0) // over-constrained sketch
+    if (lastDoF < 0) // over-constrained sketch
         err = -3;
-    else if (sketch.hasConflicts()) // conflicting constraints
+    else if (lastHasConflict) // conflicting constraints
         err = -3;
-    else if (sketch.solve() != 0) // solving
-        err = -2;
+    else {
+        lastSolverStatus=solvedSketch.solve();
+        if (lastSolverStatus != 0) // solving
+            err = -2;
+    }
+    
+    lastHasRedundancies = solvedSketch.hasRedundancies();
+    
+    lastConflicting=solvedSketch.getConflicting();
+    lastRedundant=solvedSketch.getRedundant();
+    lastSolveTime=solvedSketch.SolveTime;
 
     if (err == 0) {
         // set the newly solved geometry
-        std::vector<Part::Geometry *> geomlist = sketch.extractGeometry();
+        std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
         for (std::vector<Part::Geometry *>::iterator it = geomlist.begin(); it != geomlist.end(); ++it)
             if (*it) delete *it;
@@ -306,18 +346,30 @@ int SketchObject::toggleDriving(int ConstrId)
 
 int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative)
 {
-    Sketch sketch;
-    int dofs = sketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+    // if we are moving a point, we need to start from a solved sketch
+    // if we have conflicts we can forget about moving
+    
+    /*lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
-    if (dofs < 0) // over-constrained sketch
+    
+    lastHasConflict = solvedSketch.hasConflicts();
+    lastHasRedundancies = solvedSketch.hasRedundancies();
+    lastConflicting=solvedSketch.getConflicting();
+    lastRedundant=solvedSketch.getRedundant();*/
+    
+    if (lastDoF < 0) // over-constrained sketch
         return -1;
-    if (sketch.hasConflicts()) // conflicting constraints
+    if (lastHasConflict) // conflicting constraints
         return -1;
 
     // move the point and solve
-    int ret = sketch.movePoint(GeoId, PosId, toPoint, relative);
-    if (ret == 0) {
-        std::vector<Part::Geometry *> geomlist = sketch.extractGeometry();
+    lastSolverStatus = solvedSketch.movePoint(GeoId, PosId, toPoint, relative);
+    
+    // moving the point can not result in a conflict that we did not have
+    // or a redundancy that we did not have before, or a change of DoF
+    
+    if (lastSolverStatus == 0) {
+        std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
         //Constraints.acceptGeometry(getCompleteGeometry());
         for (std::vector<Part::Geometry *>::iterator it=geomlist.begin(); it != geomlist.end(); ++it) {
@@ -325,7 +377,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
         }
     }
 
-    return ret;
+    return lastSolverStatus;
 }
 
 Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const

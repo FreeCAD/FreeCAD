@@ -477,7 +477,7 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
     std::stringstream ss;
     
     // get the needed lists and objects
-    const std::vector< int > &solverredundant = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getRedundant();
+    const std::vector< int > &solverredundant = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchObject()->getLastRedundant();
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
        
     getSelection().clearSelection();
@@ -532,7 +532,7 @@ void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
     std::stringstream ss;
     
     // get the needed lists and objects
-    const std::vector< int > &solverconflicting = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getConflicting();
+    const std::vector< int > &solverconflicting = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchObject()->getLastConflicting();
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
     
     getSelection().clearSelection();

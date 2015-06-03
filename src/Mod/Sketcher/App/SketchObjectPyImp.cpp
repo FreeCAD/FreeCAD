@@ -241,7 +241,20 @@ PyObject* SketchObjectPy::addConstraint(PyObject *args)
             return 0;
         }
         int ret = this->getSketchObjectPtr()->addConstraint(constr);
-        this->getSketchObjectPtr()->solve();
+        // this solve is necessary because:
+        // 1. The addition of constraint is part of a command addition
+        // 2. This solve happens before the command is committed
+        // 3. A constraint, may effect a geometry change (think of coincident,
+        // a line's point moves to meet the other line's point
+        // 4. The transaction is comitted before any other solve, for example
+        // the one of execute() triggered by a recompute (UpdateActive) is generated.
+        // 5. Upon "undo", the constraint is removed (it was before the command was committed)
+        //    however, the geometry changed after the command was committed, so the point that
+        //    moved do not go back to the position where it was.
+        //
+        // N.B.: However, the solve itself may be inhibited in cases where groups of geometry/constraints
+        //      are added together, because in that case undoing will also make the geometry disappear.
+        this->getSketchObjectPtr()->solve(); 
         return Py::new_reference_to(Py::Int(ret));
     }
     else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
