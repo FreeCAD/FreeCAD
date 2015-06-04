@@ -288,7 +288,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
 
     if (periodic) {
         // in case both points coincide, cancel the selection of one of both
-        if (abs(param2-param1-period) < 1e-10) {
+        if (fabs(param2-param1-period) < 1e-10) {
             if (param2 - pickedParam >= pickedParam - param1)
                 GeoId2 = -1;
             else

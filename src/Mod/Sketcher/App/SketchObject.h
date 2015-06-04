@@ -134,8 +134,14 @@ public:
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
     /// Exposes all internal geometry of an object supporting internal geometry
+    /*!
+     * \return -1 on error
+     */
     int ExposeInternalGeometry(int GeoId);
     /// Deletes all unused (not further constrained) internal geometry
+    /*!
+     * \return -1 on error
+     */
     int DeleteUnusedInternalGeometry(int GeoId);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
