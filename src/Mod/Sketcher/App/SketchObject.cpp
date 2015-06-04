@@ -42,7 +42,9 @@
 # include <BRepOffsetAPI_NormalProjection.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <Standard_Version.hxx>
-#endif
+# include <cmath>
+# include <vector>
+#endif  // #ifndef _PreComp_
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -50,8 +52,6 @@
 #include <Base/Console.h>
 
 #include <Mod/Part/App/Geometry.h>
-
-#include <vector>
 
 #include "SketchObject.h"
 #include "SketchObjectPy.h"
@@ -1527,6 +1527,8 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
                         focus2=true;
                         focus2elementindex=(*it)->First;
                         break;
+                    default:
+                        return -1;
                 }
             }
         }
@@ -1690,6 +1692,8 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
                         focus2=true;
                         focus2elementindex=(*it)->First;
                         break;
+                    default:
+                        return -1;
                 }
             }
         }
@@ -2765,7 +2769,7 @@ bool SketchObject::AutoLockTangencyAndPerpty(Constraint *cstr, bool bForce, bool
                 if (angleErr < -M_PI) angleErr += M_PI*2;
 
                 //the autodetector
-                if(abs(angleErr) > M_PI/2 )
+                if(fabs(angleErr) > M_PI/2 )
                     angleDesire += M_PI;
 
                 cstr->Value = angleDesire + angleOffset; //external tangency. The angle stored is offset by Pi/2 so that a value of 0.0 is invalid and threated as "undecided".
