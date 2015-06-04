@@ -82,7 +82,7 @@ bool ViewProviderLoft::setEdit(int ModNum)
     if (ModNum == ViewProvider::Default || ModNum == 1 ) {
         
         setPreviewDisplayMode(true);
-        /*
+        
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
@@ -114,7 +114,7 @@ bool ViewProviderLoft::setEdit(int ModNum)
             Gui::Control().showDialog(padDlg);
         else
             Gui::Control().showDialog(new TaskDlgLoftParameters(this,ModNum == 1));
-        */
+        
         return true;
     }
     else {

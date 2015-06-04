@@ -104,25 +104,28 @@ App::DocumentObjectExecReturn *Loft::execute(void)
              
         //build up multisections
         auto multisections = Sections.getValues();
+        if(multisections.empty())
+            return new App::DocumentObjectExecReturn("Loft: At least one section is needed");
+        
         std::vector<std::vector<TopoDS_Wire>> wiresections;
         for(TopoDS_Wire& wire : wires)
             wiresections.push_back(std::vector<TopoDS_Wire>(1, wire));
                 
         for(App::DocumentObject* obj : multisections) {
             if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
-                return  new App::DocumentObjectExecReturn("All sections need to be part features");
+                return  new App::DocumentObjectExecReturn("Loft: All sections need to be part features");
             
             TopExp_Explorer ex;
             int i=0;
             for (ex.Init(static_cast<Part::Feature*>(obj)->Shape.getValue(), TopAbs_WIRE); ex.More(); ex.Next()) {
                 wiresections[i].push_back(TopoDS::Wire(ex.Current()));
                 if(i>=wiresections.size())
-                    return new App::DocumentObjectExecReturn("Sections need to have the same amount of inner wires as the base section");
+                    return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
                 
                 ++i;
             }
             if(i<wiresections.size())
-                    return new App::DocumentObjectExecReturn("Sections need to have the same amount of inner wires as the base section");
+                    return new App::DocumentObjectExecReturn("Loft: Sections need to have the same amount of inner wires as the base section");
             
         }
         
@@ -135,6 +138,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             for(TopoDS_Wire& wire : wires)  
                  mkTS.AddWire(wire);
 
+            mkTS.Build();
             if (!mkTS.IsDone())
                 return new App::DocumentObjectExecReturn("Loft could not be build");
             
@@ -163,7 +167,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         BRepBuilderAPI_MakeSolid mkSolid;
         mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
         if(!mkSolid.IsDone())
-            return new App::DocumentObjectExecReturn("Result is not a solid");
+            return new App::DocumentObjectExecReturn("Loft: Result is not a solid");
         
         TopoDS_Shape result = mkSolid.Shape();
         BRepClass3d_SolidClassifier SC(result);
@@ -184,12 +188,12 @@ App::DocumentObjectExecReturn *Loft::execute(void)
                        
             BRepAlgoAPI_Fuse mkFuse(base, result);
             if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn("Adding the loft failed");
+                return new App::DocumentObjectExecReturn("Loft: Adding the loft failed");
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn("Loft: Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(boolOp);
@@ -198,12 +202,12 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             
             BRepAlgoAPI_Cut mkCut(base, result);
             if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Subtracting the loft failed");
+                return new App::DocumentObjectExecReturn("Loft: Subtracting the loft failed");
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
             // lets check if the result is a solid
             if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn("Resulting shape is not a solid");
+                return new App::DocumentObjectExecReturn("Loft: Resulting shape is not a solid");
             
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(boolOp);
@@ -218,7 +222,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
     catch (...) {
-        return new App::DocumentObjectExecReturn("A fatal error occurred when making the loft");
+        return new App::DocumentObjectExecReturn("Loft: A fatal error occurred when making the loft");
     }
 }
 

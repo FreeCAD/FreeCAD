@@ -1363,6 +1363,86 @@ bool CmdPartDesignSubtractivePipe::isActive(void)
     return hasActiveDocument();
 }
 
+
+//===========================================================================
+// PartDesign_Additive_Loft
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignAdditiveLoft);
+
+CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
+  : Command("PartDesign_AdditiveLoft")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Additive pipe");
+    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles");
+    sWhatsThis    = "PartDesign_Additive_Loft";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Additive_Loft";
+}
+
+void CmdPartDesignAdditiveLoft::activated(int iMsg)
+{          
+    Gui::Command* cmd = this;
+    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+        
+        if (FeatName.empty()) return;
+        
+        // specific parameters for pipe
+        Gui::Command::updateActive();
+
+        finishSketchBased(cmd, sketch, FeatName);
+        cmd->adjustCameraPosition();
+    };
+    
+    prepareSketchBased(this, "AdditiveLoft", worker);
+}
+
+bool CmdPartDesignAdditiveLoft::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+
+//===========================================================================
+// PartDesign_Subtractive_Loft
+//===========================================================================
+DEF_STD_CMD_A(CmdPartDesignSubtractiveLoft);
+
+CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
+  : Command("PartDesign_SubtractiveLoft")
+{
+    sAppModule    = "PartDesign";
+    sGroup        = QT_TR_NOOP("PartDesign");
+    sMenuText     = QT_TR_NOOP("Subtractive pipe");
+    sToolTipText  = QT_TR_NOOP("Sweep a selected sketch along a path or to other profiles and remove it from the body");
+    sWhatsThis    = "PartDesign_Subtractive_Loft";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "PartDesign_Subtractive_Loft";
+}
+
+void CmdPartDesignSubtractiveLoft::activated(int iMsg)
+{          
+    Gui::Command* cmd = this;
+    auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
+        
+        if (FeatName.empty()) return;
+        
+        // specific parameters for pipe
+        Gui::Command::updateActive();
+
+        finishSketchBased(cmd, sketch, FeatName);
+        cmd->adjustCameraPosition();
+    };
+    
+    prepareSketchBased(this, "SubtractiveLoft", worker);
+}
+
+bool CmdPartDesignSubtractiveLoft::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 //===========================================================================
 // Common utility functions for Dressup features
 //===========================================================================
@@ -2157,6 +2237,10 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignPocket());
     rcCmdMgr.addCommand(new CmdPartDesignRevolution());
     rcCmdMgr.addCommand(new CmdPartDesignGroove());
+    rcCmdMgr.addCommand(new CmdPartDesignAdditivePipe);
+    rcCmdMgr.addCommand(new CmdPartDesignSubtractivePipe);
+    rcCmdMgr.addCommand(new CmdPartDesignAdditiveLoft);
+    rcCmdMgr.addCommand(new CmdPartDesignSubtractiveLoft);
 
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
     rcCmdMgr.addCommand(new CmdPartDesignDraft());    
@@ -2170,6 +2254,4 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignMultiTransform());
 
     rcCmdMgr.addCommand(new CmdPartDesignBoolean());
-    rcCmdMgr.addCommand(new CmdPartDesignAdditivePipe);
-    rcCmdMgr.addCommand(new CmdPartDesignSubtractivePipe);
  }

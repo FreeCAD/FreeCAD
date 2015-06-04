@@ -500,8 +500,15 @@ bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const {
     return false;
 }
 
-void TaskPipeOrientation::removeFromListWidget(QListWidget* w, QString name) {
+void TaskPipeOrientation::removeFromListWidget(QListWidget* widget, QString name) {
 
+    QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
+    if (!items.empty()) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+            delete it;
+        }
+    }
 }
 
 void TaskPipeOrientation::updateUI(int idx) {
@@ -664,8 +671,15 @@ bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const {
     return false;
 }
 
-void TaskPipeScaling::removeFromListWidget(QListWidget* w, QString name) {
+void TaskPipeScaling::removeFromListWidget(QListWidget* widget, QString name) {
 
+    QList<QListWidgetItem*> items = widget->findItems(name, Qt::MatchExactly);
+    if (!items.empty()) {
+        for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
+            QListWidgetItem* it = widget->takeItem(widget->row(*i));
+            delete it;
+        }
+    }
 }
 
 void TaskPipeScaling::updateUI(int idx) {
