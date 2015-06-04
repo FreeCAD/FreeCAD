@@ -35,7 +35,6 @@ if open.__module__ == '__builtin__':
 
 
 displacement = []
-mstress = []
 
 
 # read a calculix result file and extract the nodes, displacement vectores and stress values.
@@ -122,6 +121,9 @@ def readResult(frd_input):
 
 
 def importFrd(filename, Analysis=None):
+    mstress = []
+    global displacement
+    displacement = []
     m = readResult(filename)
     MeshObject = None
     if(len(m) > 0):
