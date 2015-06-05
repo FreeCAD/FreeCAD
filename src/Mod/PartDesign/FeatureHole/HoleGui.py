@@ -61,7 +61,7 @@ class HoleGui:
         #       It is done in TaskHole.updateUI() instead
 
         # Show feature preview
-        body = PartDesignGui.getActivePart()
+        body = FreeCADGui.activeView().getActiveObject("pdbody");
         if body == None:
             QtGui.QMessageBox.critical(mw, "No active body", "Please create a body or make a body active")
     
