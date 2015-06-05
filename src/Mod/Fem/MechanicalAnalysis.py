@@ -393,6 +393,29 @@ class _JobControlTaskPanel:
         self.Start = time.time()
         self.femConsoleMessage("Check dependencies...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
+        if not FemGui.getActiveAnalysis():
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No active Analysis")
+            return False
+        self.prepare_analysis_objects()
+
+        if not self.MeshObject:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No mesh object in the Analysis")
+            return False
+
+        if not self.MaterialObjects:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No material object in the Analysis")
+            return False
+
+        if not self.FixedObjects:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No fixed-constraint nodes defined in the Analysis")
+            return False
+
+        if not (self.ForceObjects or self.PressureObjects):
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No force-constraint or pressure-constraint defined in the Analysis")
+            return False
+        return True
+
+    def prepare_analysis_objects(self):
         self.MeshObject = None
         # [{'Object':MaterialObject}, {}, ...]
         self.MaterialObjects = []
@@ -402,9 +425,6 @@ class _JobControlTaskPanel:
         self.ForceObjects = []
         # [{'Object':PressureObject, 'xxxxxxxx':value}, {}, ...]
         self.PressureObjects = []
-        if not FemGui.getActiveAnalysis():
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No active Analysis")
-            return False
 
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemMeshObject"):
@@ -425,23 +445,6 @@ class _JobControlTaskPanel:
                 PressureObjectDict = {}
                 PressureObjectDict['Object'] = i
                 self.PressureObjects.append(PressureObjectDict)
-
-        if not self.MeshObject:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No mesh object in the Analysis")
-            return False
-
-        if not self.MaterialObjects:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No material object in the Analysis")
-            return False
-
-        if not self.FixedObjects:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No fixed-constraint nodes defined in the Analysis")
-            return False
-
-        if not (self.ForceObjects or self.PressureObjects):
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No force-constraint or pressure-constraint defined in the Analysis")
-            return False
-        return True
 
     def start_ext_editor(self, ext_editor_path, filename):
         if not hasattr(self, "ext_editor_process"):
