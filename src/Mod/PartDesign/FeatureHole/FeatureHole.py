@@ -56,7 +56,7 @@ class Hole():
         self.feature.addProperty("App::PropertyLinkSub","Support","Hole","Support of hole feature").Support=None
         self.feature.addProperty("App::PropertyLink","HoleGroove","Hole","Revolution feature creating the hole").HoleGroove=None
         # Create new HoleGroove feature
-        body = PartDesignGui.getActivePart()
+        body = FreeCADGui.activeView().getActiveObject("pdbody");
         self.sketchaxis = self.feature.Document.addObject("PartDesign::Line", "HoleSketchAxis")
         body.addFeature(self.sketchaxis)
         self.Gui.ActiveDocument.hide(self.sketchaxis.Name)

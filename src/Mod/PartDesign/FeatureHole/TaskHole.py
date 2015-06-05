@@ -49,7 +49,7 @@ class TaskHole:
         if (self.feature != None):
             self.hideFeature() # Show the support again
             document = self.feature.Document
-            body = PartDesignGui.getActivePart()
+            body = FreeCADGui.activeView().getActiveObject("pdbody");
             groove = self.feature.HoleGroove
             sketch = groove.Sketch
             plane = sketch.Support[0]
