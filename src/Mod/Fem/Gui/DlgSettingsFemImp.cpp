@@ -43,6 +43,7 @@ DlgSettingsFemImp::~DlgSettingsFemImp()
 
 void DlgSettingsFemImp::saveSettings()
 {
+    fc_ccx_working_directory->onSave();
     cb_int_editor->onSave();
     fc_ext_editor->onSave();
     fc_ccx_binary->onSave();
@@ -54,6 +55,7 @@ void DlgSettingsFemImp::saveSettings()
 
 void DlgSettingsFemImp::loadSettings()
 {
+    fc_ccx_working_directory->onRestore();
     cb_int_editor->onRestore();
     fc_ext_editor->onRestore();
     fc_ccx_binary->onRestore();

@@ -247,6 +247,8 @@ class _JobControlTaskPanel:
                 self.CalculixBinary = FreeCAD.getHomePath() + 'bin/ccx.exe'
             else:
                 self.CalculixBinary = 'ccx'
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        self.working_dir = self.fem_prefs.GetString("WorkingDir", '/tmp')
 
         self.obj = object
         self.Calculix = QtCore.QProcess()
@@ -256,7 +258,7 @@ class _JobControlTaskPanel:
         self.fem_console_message = ''
 
         #Connect Signals and Slots
-        QtCore.QObject.connect(self.form.toolButton_chooseOutputDir, QtCore.SIGNAL("clicked()"), self.chooseOutputDir)
+        QtCore.QObject.connect(self.form.tb_choose_working_dir, QtCore.SIGNAL("clicked()"), self.choose_working_dir)
         QtCore.QObject.connect(self.form.pushButton_write, QtCore.SIGNAL("clicked()"), self.write_input_file_handler)
         QtCore.QObject.connect(self.form.pushButton_edit, QtCore.SIGNAL("clicked()"), self.editCalculixInputFile)
         QtCore.QObject.connect(self.form.pushButton_generate, QtCore.SIGNAL("clicked()"), self.runCalculix)
@@ -351,7 +353,7 @@ class _JobControlTaskPanel:
 
     def update(self):
         'fills the widgets'
-        self.form.lineEdit_outputDir.setText(tempfile.gettempdir())
+        self.form.le_working_dir.setText(self.working_dir)
         return
 
     def accept(self):
@@ -360,12 +362,14 @@ class _JobControlTaskPanel:
     def reject(self):
         FreeCADGui.Control.closeDialog()
 
-    def chooseOutputDir(self):
-        print "chooseOutputDir"
-        dirname = QtGui.QFileDialog.getExistingDirectory(None, 'Choose material directory', self.params.GetString("JobDir", '/'))
-        if(dirname):
-            self.params.SetString("JobDir", str(dirname))
-            self.form.lineEdit_outputDir.setText(dirname)
+    def choose_working_dir(self):
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        self.working_dir = QtGui.QFileDialog.getExistingDirectory(None,
+                                                                  'Choose CalculiX working directory',
+                                                                  self.fem_prefs.GetString("WorkingDir", '/tmp'))
+        if self.working_dir:
+            self.fem_prefs.SetString("WorkingDir", str(self.working_dir))
+            self.form.le_working_dir.setText(self.working_dir)
 
     def write_input_file_handler(self):
         QApplication.restoreOverrideCursor()
@@ -374,7 +378,7 @@ class _JobControlTaskPanel:
             try:
                 import ccxInpWriter as iw
                 inp_writer = iw.inp_writer(self.obj, self.MeshObject, self.MaterialObjects,
-                                           self.FixedObjects, self.ForceObjects, self.PressureObjects)
+                                           self.FixedObjects, self.ForceObjects, self.PressureObjects, self.working_dir)
                 self.base_name = inp_writer.write_calculix_input_file()
                 if self.base_name != "":
                     self.femConsoleMessage("Write completed.")
