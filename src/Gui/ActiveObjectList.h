@@ -69,5 +69,6 @@ namespace Gui
 } //namespace Gui
 
 static const char PDBODYKEY[] = "pdbody";
+static const char PARTKEY[] = "part";
 
 #endif 

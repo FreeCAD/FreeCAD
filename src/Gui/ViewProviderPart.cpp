@@ -170,8 +170,11 @@ void ViewProviderPart::onObjectChanged(const App::DocumentObject& obj, const App
 bool ViewProviderPart::doubleClicked(void)
 {
     if(Workbench.getValue() != "")
-        // assure the PartDesign workbench
+        // assure the given workbench
         Gui::Command::assureWorkbench( Workbench.getValue() );
+
+    //make the part the active one
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PARTKEY, this->getObject()->getNameInDocument());
 
     return true;
 }
@@ -179,8 +182,9 @@ bool ViewProviderPart::doubleClicked(void)
 
 bool ViewProviderPart::onDelete(const std::vector<std::string> &)
 {
-    //Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-    //                                 ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
+    if(getActiveView()->getActiveObject<App::Part*>(PARTKEY) == getObject())
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', None)", PARTKEY);
+
     return true;
 }
 

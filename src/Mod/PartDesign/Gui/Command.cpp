@@ -109,6 +109,7 @@ void CmdPartDesignPart::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
     doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr(PartName.c_str()).toStdString().c_str());
     PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
+    doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PARTKEY, PartName.c_str());
     
     updateActive();
 }
@@ -151,6 +152,8 @@ void CmdPartDesignBody::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().Tip = App.activeDocument().addObject('App::Part','%s')",PartName.c_str());
         doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr(PartName.c_str()).toStdString().c_str());
         PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
+        doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PARTKEY, PartName.c_str());
+
     } else {
         PartName = actPart->getNameInDocument();
         // add the Body feature itself, and make it active
@@ -159,6 +162,7 @@ void CmdPartDesignBody::activated(int iMsg)
         //doCommand(Doc,"App.activeDocument().%s.Tip = None",FeatName.c_str());
         addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
         doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, FeatName.c_str());
+   
         // Make the "Create sketch" prompt appear in the task panel
         doCommand(Gui,"Gui.Selection.clearSelection()");
         doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", FeatName.c_str());
