@@ -6,13 +6,15 @@ import sys
 
 
 class inp_writer:
-    def __init__(self, analysis_obj, mesh_obj, mat_obj, fixed_obj, force_obj, pressure_obj):
+    def __init__(self, analysis_obj, mesh_obj, mat_obj, fixed_obj, force_obj, pressure_obj, dir_name=None):
+        self.dir_name = dir_name
         self.mesh_object = mesh_obj
         self.material_objects = mat_obj
         self.fixed_objects = fixed_obj
         self.force_objects = force_obj
         self.pressure_objects = pressure_obj
-        self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
+        if not dir_name:
+            self.dir_name = FreeCAD.ActiveDocument.TransientDir.replace('\\', '/') + '/FemAnl_' + analysis_obj.Uid[-4:]
         if not os.path.isdir(self.dir_name):
             os.mkdir(self.dir_name)
         self.base_name = self.dir_name + '/' + self.mesh_object.Name

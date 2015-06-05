@@ -17,9 +17,9 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLineEdit" name="lineEdit_outputDir">
+      <widget class="QLineEdit" name="le_working_dir">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="readOnly">
         <bool>true</bool>
@@ -27,9 +27,9 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="toolButton_chooseOutputDir">
+      <widget class="QToolButton" name="tb_choose_working_dir">
        <property name="enabled">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <property name="text">
         <string>...</string>

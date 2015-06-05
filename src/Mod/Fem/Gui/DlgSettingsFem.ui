@@ -142,6 +142,50 @@
               </property>
              </widget>
             </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="l_ccx_working_directory">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Working directory</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="2">
+             <widget class="Gui::PrefFileChooser" name="fc_ccx_working_directory">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="mode">
+               <enum>Gui::FileChooser::Directory</enum>
+              </property>
+              <property name="prefEntry" stdset="0">
+               <cstring>WorkingDir</cstring>
+              </property>
+              <property name="prefPath" stdset="0">
+               <cstring>Mod/Fem</cstring>
+              </property>
+             </widget>
+            </item>
            </layout>
           </item>
          </layout>
