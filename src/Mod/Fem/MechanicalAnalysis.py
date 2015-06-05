@@ -399,7 +399,16 @@ class _JobControlTaskPanel:
         if not FemGui.getActiveAnalysis():
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No active Analysis")
             return False
-        self.prepare_analysis_objects()
+        self.MeshObject = None
+        # [{'Object':MaterialObject}, {}, ...]
+        self.MaterialObjects = []
+        # [{'Object':FixedObject, 'NodeSupports':bool}, {}, ...]
+        self.FixedObjects = []
+        # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...
+        self.ForceObjects = []
+        # [{'Object':PressureObject, 'xxxxxxxx':value}, {}, ...]
+        self.PressureObjects = []
+        (self.MeshObject, self.MaterialObjects, self.FixedObjects, self.ForceObjects, self.PressureObjects) = prepare_analysis_objects()
 
         if not self.MeshObject:
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No mesh object in the Analysis")
@@ -417,37 +426,6 @@ class _JobControlTaskPanel:
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No force-constraint or pressure-constraint defined in the Analysis")
             return False
         return True
-
-    def prepare_analysis_objects(self):
-        self.MeshObject = None
-        # [{'Object':MaterialObject}, {}, ...]
-        self.MaterialObjects = []
-        # [{'Object':FixedObject, 'NodeSupports':bool}, {}, ...]
-        self.FixedObjects = []
-        # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...
-        self.ForceObjects = []
-        # [{'Object':PressureObject, 'xxxxxxxx':value}, {}, ...]
-        self.PressureObjects = []
-
-        for i in FemGui.getActiveAnalysis().Member:
-            if i.isDerivedFrom("Fem::FemMeshObject"):
-                self.MeshObject = i
-            elif i.isDerivedFrom("App::MaterialObjectPython"):
-                MaterialObjectDict = {}
-                MaterialObjectDict['Object'] = i
-                self.MaterialObjects.append(MaterialObjectDict)
-            elif i.isDerivedFrom("Fem::ConstraintFixed"):
-                FixedObjectDict = {}
-                FixedObjectDict['Object'] = i
-                self.FixedObjects.append(FixedObjectDict)
-            elif i.isDerivedFrom("Fem::ConstraintForce"):
-                ForceObjectDict = {}
-                ForceObjectDict['Object'] = i
-                self.ForceObjects.append(ForceObjectDict)
-            elif i.isDerivedFrom("Fem::ConstraintPressure"):
-                PressureObjectDict = {}
-                PressureObjectDict['Object'] = i
-                self.PressureObjects.append(PressureObjectDict)
 
     def start_ext_editor(self, ext_editor_path, filename):
         if not hasattr(self, "ext_editor_process"):
@@ -687,6 +665,35 @@ def reset_mesh_deformation(mesh=None):
             if i.isDerivedFrom("Fem::FemMeshObject"):
                 mesh = i
     mesh.ViewObject.applyDisplacement(0.0)
+
+
+def prepare_analysis_objects():
+    MeshObject = None
+    MaterialObjects = []
+    FixedObjects = []
+    ForceObjects = []
+    PressureObjects = []
+
+    for i in FemGui.getActiveAnalysis().Member:
+        if i.isDerivedFrom("Fem::FemMeshObject"):
+            MeshObject = i
+        elif i.isDerivedFrom("App::MaterialObjectPython"):
+            MaterialObjectDict = {}
+            MaterialObjectDict['Object'] = i
+            MaterialObjects.append(MaterialObjectDict)
+        elif i.isDerivedFrom("Fem::ConstraintFixed"):
+            FixedObjectDict = {}
+            FixedObjectDict['Object'] = i
+            FixedObjects.append(FixedObjectDict)
+        elif i.isDerivedFrom("Fem::ConstraintForce"):
+            ForceObjectDict = {}
+            ForceObjectDict['Object'] = i
+            ForceObjects.append(ForceObjectDict)
+        elif i.isDerivedFrom("Fem::ConstraintPressure"):
+            PressureObjectDict = {}
+            PressureObjectDict['Object'] = i
+            PressureObjects.append(PressureObjectDict)
+    return (MeshObject, MaterialObjects, FixedObjects, ForceObjects, PressureObjects)
 
 FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
 FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
