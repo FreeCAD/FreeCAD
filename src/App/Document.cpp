@@ -2079,6 +2079,12 @@ void Document::remObject(const char* sName)
 
     // Before deleting we must nullify all dependant objects
     breakDependency(pos->second, true);
+    
+    //and remove the tip if needed
+    if(Tip.getValue() && strcmp(Tip.getValue()->getNameInDocument(), sName)==0) {
+        Tip.setValue(nullptr);
+        TipName.setValue("");
+    }
 
     // do no transactions if we do a rollback!
     if(!d->rollback){
@@ -2122,6 +2128,12 @@ void Document::_remObject(DocumentObject* pcObject)
         d->activeObject = 0;
 
     signalDeletedObject(*pcObject);
+    
+    //remove the tip if needed
+    if(Tip.getValue() == pcObject) {
+        Tip.setValue(nullptr);
+        TipName.setValue("");
+    }
 
     // do no transactions if we do a rollback!
     if(!d->rollback){
