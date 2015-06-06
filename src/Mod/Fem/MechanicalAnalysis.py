@@ -231,7 +231,7 @@ class _ViewProviderFemAnalysis:
 
 
 class _JobControlTaskPanel:
-    def __init__(self, object):
+    def __init__(self, analysis_object):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/MechanicalAnalysis.ui")
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
@@ -249,7 +249,7 @@ class _JobControlTaskPanel:
         self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
         self.working_dir = self.fem_prefs.GetString("WorkingDir", '/tmp')
 
-        self.obj = object
+        self.analysis_object = analysis_object
         self.Calculix = QtCore.QProcess()
         self.Timer = QtCore.QTimer()
         self.Timer.start(300)
@@ -376,7 +376,7 @@ class _JobControlTaskPanel:
             QApplication.setOverrideCursor(Qt.WaitCursor)
             try:
                 import ccxInpWriter as iw
-                inp_writer = iw.inp_writer(self.obj, self.MeshObject, self.MaterialObjects,
+                inp_writer = iw.inp_writer(self.analysis_object, self.MeshObject, self.MaterialObjects,
                                            self.FixedObjects, self.ForceObjects, self.PressureObjects, self.working_dir)
                 self.base_name = inp_writer.write_calculix_input_file()
                 if self.base_name != "":
