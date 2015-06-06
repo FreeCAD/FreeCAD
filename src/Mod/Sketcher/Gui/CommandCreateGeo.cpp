@@ -255,7 +255,6 @@ public:
             }
             
             Gui::Command::commitCommand();
-            Gui::Command::updateActive();
 
             // add auto constraints for the line segment start
             if (sugConstr1.size() > 0) {
@@ -268,11 +267,17 @@ public:
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
                 sugConstr2.clear();
             }
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+            
+            if(autoRecompute)
+                Gui::Command::updateActive();
 
             EditCurve.clear();
             sketchgui->drawEdit(EditCurve);
             
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             
             if(continuousMode){
@@ -507,10 +512,8 @@ public:
                     firstCurve+3);                
             }
             
-
             Gui::Command::commitCommand();
-            Gui::Command::updateActive();
-
+            
             // add auto constraints at the start of the first side
             if (sugConstr1.size() > 0) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex() - 3 , Sketcher::start);
@@ -522,8 +525,14 @@ public:
                 createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
                 sugConstr2.clear();
             }
-
+            
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+            
+            if(autoRecompute)
+                Gui::Command::updateActive();
+
+            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             
             if(continuousMode){
@@ -1016,7 +1025,12 @@ public:
                         lastCurve,lastEndPosId,firstCurve,firstPosId);
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::updateActive();
+                
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+            
+                if(autoRecompute)
+                    Gui::Command::updateActive();
             }
             
             if(addedGeometry && geometryCreationMode==Construction) {
@@ -1070,8 +1084,7 @@ public:
             }
             else {
                 Gui::Command::commitCommand();
-                Gui::Command::updateActive();
-
+                            
                 // Add auto constraints
                 if (sugConstr1.size() > 0) { // this is relevant only to the very first point
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::start);
@@ -1082,6 +1095,12 @@ public:
                     createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::end);
                     sugConstr2.clear();
                 }
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                
+                if(autoRecompute)
+                    Gui::Command::updateActive();                
 
                 // remember the vertex for the next rounds constraint..
                 previousCurve = getHighestCurveIndex();
@@ -1383,8 +1402,7 @@ public:
             }                    
                       
             Gui::Command::commitCommand();
-            Gui::Command::updateActive();
-
+            
             // Auto Constraint center point
             if (sugConstr1.size() > 0) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
@@ -1404,6 +1422,12 @@ public:
             }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+            if(autoRecompute)
+                Gui::Command::updateActive();            
+
+            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             
             if(continuousMode){
@@ -1680,8 +1704,7 @@ public:
             }            
 
             Gui::Command::commitCommand();
-            Gui::Command::updateActive();
-
+            
             // Auto Constraint first picked point
             if (sugConstr1.size() > 0) {
                 createAutoConstraints(sugConstr1, getHighestCurveIndex(), arcPos1);
@@ -1699,8 +1722,14 @@ public:
                 createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::none);
                 sugConstr3.clear();
             }
-
+            
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+            if(autoRecompute)
+                Gui::Command::updateActive();            
+
+            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             
             if(continuousMode){
@@ -1986,7 +2015,6 @@ public:
             }            
 
             Gui::Command::commitCommand();
-            Gui::Command::updateActive();
 
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
@@ -1999,8 +2027,14 @@ public:
                 createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::none);
                 sugConstr2.clear();
             }
-
+            
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+            if(autoRecompute)
+                Gui::Command::updateActive();            
+
+            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             
             if(continuousMode){
@@ -2797,7 +2831,6 @@ private:
         }
         
         Gui::Command::commitCommand();
-        Gui::Command::updateActive();
 
         if (method == CENTER_PERIAPSIS_B) {
             // add auto constraints for the center point
@@ -2829,34 +2862,40 @@ private:
                 sugConstr3.clear();
             }
         }
+        
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+    
+        if(autoRecompute)
+            Gui::Command::updateActive();
 
+        // This code enables the continuous creation mode.
+        if (constrMethod == 0) {
+            method = CENTER_PERIAPSIS_B;
+            mode = STATUS_SEEK_CENTROID;
+        } else {
+            method = PERIAPSIS_APOAPSIS_B;
+            mode = STATUS_SEEK_PERIAPSIS;
+        }
+        editCurve.clear();
+        sketchgui->drawEdit(editCurve);
+        
+        //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+
+        
+        if(continuousMode){
             // This code enables the continuous creation mode.
-            if (constrMethod == 0) {
-                method = CENTER_PERIAPSIS_B;
-                mode = STATUS_SEEK_CENTROID;
-            } else {
-                method = PERIAPSIS_APOAPSIS_B;
-                mode = STATUS_SEEK_PERIAPSIS;
-            }
-            editCurve.clear();
-            sketchgui->drawEdit(editCurve);
-            
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
-
-            
-            if(continuousMode){
-                // This code enables the continuous creation mode.
-                editCurve.resize(33);
-                applyCursor();
-                /* It is ok not to call to purgeHandler
-                * in continuous creation mode because the 
-                * handler is destroyed by the quit() method on pressing the
-                * right button of the mouse */                
-            }
-            else{
-                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
-            }
+            editCurve.resize(33);
+            applyCursor();
+            /* It is ok not to call to purgeHandler
+            * in continuous creation mode because the 
+            * handler is destroyed by the quit() method on pressing the
+            * right button of the mouse */                
+        }
+        else{
+            sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+        }
             
     }
 };
@@ -3209,7 +3248,6 @@ public:
             }
 
             Gui::Command::commitCommand();
-            Gui::Command::updateActive();
             
             // add auto constraints for the center point
             if (sugConstr1.size() > 0) {
@@ -3234,8 +3272,14 @@ public:
                 createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
                 sugConstr4.clear();
             }
-
+            
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+            if(autoRecompute)
+                Gui::Command::updateActive();            
+
+            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             
             if(continuousMode){
@@ -3577,7 +3621,6 @@ public:
             }
 
             Gui::Command::commitCommand();
-            Gui::Command::updateActive();
 
             // Auto Constraint first picked point
             if (sugConstr1.size() > 0) {
@@ -3598,6 +3641,12 @@ public:
             }
             
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+            if(autoRecompute)
+                Gui::Command::updateActive();            
+            
+            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             
             if(continuousMode){
@@ -3832,15 +3881,20 @@ public:
                       EditPoint.fX,EditPoint.fY);                       
             
             Gui::Command::commitCommand();
-            Gui::Command::updateActive();
 
             // add auto constraints for the line segment start
             if (sugConstr.size() > 0) {
                 createAutoConstraints(sugConstr, getHighestCurveIndex(), Sketcher::start);
                 sugConstr.clear();
             }
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+            if(autoRecompute)
+                Gui::Command::updateActive();            
 
-                        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             
             if(continuousMode){
@@ -4058,10 +4112,10 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        bool construction=false;
         int VtId = sketchgui->getPreselectPoint();
         if (Mode == STATUS_SEEK_First && VtId != -1) {
             int GeoId;
-            bool construction=false;
             Sketcher::PointPos PosId=Sketcher::none;
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId,PosId);
             const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
@@ -4111,7 +4165,12 @@ public:
                 }
                     
                 Gui::Command::commitCommand();
-                Gui::Command::updateActive();
+                
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+            
+                if(autoRecompute)
+                    Gui::Command::updateActive();
             }
             return true;
         }
@@ -4148,6 +4207,8 @@ public:
                     double radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
                     if (radius < 0)
                         return false;
+                    
+                    construction=lineSeg1->Construction && lineSeg2->Construction;
 
                     // create fillet between lines
                     Gui::Command::openCommand("Create fillet");
@@ -4158,9 +4219,14 @@ public:
                               firstPos.fX, firstPos.fY,
                               secondPos.fX, secondPos.fY, radius);
                     Gui::Command::commitCommand();
-                    Gui::Command::updateActive();
                     
-                    if(lineSeg1->Construction && lineSeg2->Construction) {
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                
+                    if(autoRecompute)
+                        Gui::Command::updateActive();
+                    
+                    if(construction) {
                         Gui::Command::doCommand(Gui::Command::Doc,
                             "App.ActiveDocument.%s.toggleConstruction(%d) ",
                             sketchgui->getObject()->getNameInDocument(),
@@ -4330,7 +4396,12 @@ public:
                               sketchgui->getObject()->getNameInDocument(),
                               GeoId, onSketchPos.fX, onSketchPos.fY);
                     Gui::Command::commitCommand();
-                    Gui::Command::updateActive();
+                    
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+                    if(autoRecompute)
+                        Gui::Command::updateActive();
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("%s\n", e.what());
@@ -4504,7 +4575,13 @@ public:
                               sketchgui->getObject()->getNameInDocument(),
                               msg.pObjectName, msg.pSubName);
                     Gui::Command::commitCommand();
-                    Gui::Command::updateActive();
+                    
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                
+                    if(autoRecompute)
+                        Gui::Command::updateActive();
+                    
                     Gui::Selection().clearSelection();
                 /* this is ok not to call to purgeHandler
                 * in continuous creation mode because the 
@@ -4758,7 +4835,6 @@ public:
                 }
 
                 Gui::Command::commitCommand();
-                Gui::Command::updateActive();
 
                 // add auto constraints at the start of the first side
                 if (sugConstr1.size() > 0) {
@@ -4771,6 +4847,12 @@ public:
                     createAutoConstraints(sugConstr2, getHighestCurveIndex() - 2, Sketcher::end);
                     sugConstr2.clear();
                 }
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+                if(autoRecompute)
+                    Gui::Command::updateActive();                
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4993,8 +5075,10 @@ public:
                 }
                 
                 Gui::Command::commitCommand();
-                Gui::Command::updateActive();
-
+                
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
                 // add auto constraints at the center of the polygon
                 if (sugConstr1.size() > 0) {
                     createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::mid);
@@ -5006,6 +5090,9 @@ public:
                     createAutoConstraints(sugConstr2, getHighestCurveIndex() - 1, Sketcher::end);
                     sugConstr2.clear();
                 }
+                
+                if(autoRecompute)
+                    Gui::Command::updateActive();                
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());

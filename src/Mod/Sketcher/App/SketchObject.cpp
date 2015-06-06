@@ -88,6 +88,8 @@ SketchObject::SketchObject()
     lastHasRedundancies=false;
     lastSolverStatus=0;
     lastSolveTime=0;
+    
+    noRecomputes=false;
 }
 
 SketchObject::~SketchObject()
@@ -344,18 +346,25 @@ int SketchObject::toggleDriving(int ConstrId)
     return 0;
 }
 
-int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative)
+int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative, bool updateGeometry)
 {
-    // if we are moving a point, we need to start from a solved sketch
-    // if we have conflicts we can forget about moving
+    // if we are moving a point at SketchObject level, we need to start from a solved sketch
+    // if we have conflicts we can forget about moving. However, there is the possibility that we
+    // need to do programatically moves of new geometry that has not been solved yet and that because
+    // they were programmetically generated won't generate a conflict. This is the case of Fillet for
+    // example. This is why exceptionally, it may be required to update the sketch geometry to that of
+    // of SketchObject upon moving. => use updateGeometry parameter = true then
     
-    /*lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                                  getExternalGeometryCount());
     
-    lastHasConflict = solvedSketch.hasConflicts();
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();*/
+    if(updateGeometry) {
+        lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
+                                    getExternalGeometryCount());
+        
+        lastHasConflict = solvedSketch.hasConflicts();
+        lastHasRedundancies = solvedSketch.hasRedundancies();
+        lastConflicting=solvedSketch.getConflicting();
+        lastRedundant=solvedSketch.getRedundant();    
+    }
     
     if (lastDoF < 0) // over-constrained sketch
         return -1;
@@ -479,6 +488,10 @@ int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList)
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
+    
+    if(noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
+        solve();
+    
     return Geometry.getSize()-1;
 }
 
@@ -493,6 +506,10 @@ int SketchObject::addGeometry(const Part::Geometry *geo)
     Constraints.acceptGeometry(getCompleteGeometry());
     delete geoNew;
     rebuildVertexIndex();
+    
+    if(noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
+        solve();
+        
     return Geometry.getSize()-1;
 }
 
@@ -871,14 +888,14 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             if (dist1.Length() < dist2.Length()) {
                 tangent1->SecondPos = start;
                 tangent2->SecondPos = end;
-                movePoint(GeoId1, PosId1, arc->getStartPoint(/*emulateCCW=*/true));
-                movePoint(GeoId2, PosId2, arc->getEndPoint(/*emulateCCW=*/true));
+                movePoint(GeoId1, PosId1, arc->getStartPoint(/*emulateCCW=*/true),false,true);
+                movePoint(GeoId2, PosId2, arc->getEndPoint(/*emulateCCW=*/true),false,true);
             }
             else {
                 tangent1->SecondPos = end;
                 tangent2->SecondPos = start;
-                movePoint(GeoId1, PosId1, arc->getEndPoint(/*emulateCCW=*/true));
-                movePoint(GeoId2, PosId2, arc->getStartPoint(/*emulateCCW=*/true));
+                movePoint(GeoId1, PosId1, arc->getEndPoint(/*emulateCCW=*/true),false,true);
+                movePoint(GeoId2, PosId2, arc->getStartPoint(/*emulateCCW=*/true),false,true);
             }
 
             addConstraint(tangent1);
@@ -887,6 +904,10 @@ int SketchObject::fillet(int GeoId1, int GeoId2,
             delete tangent2;
         }
         delete arc;
+        
+        if(noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
+            solve();
+        
         return 0;
     }
     return -1;
@@ -930,8 +951,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     // go through all constraints and replace the point (GeoId,end) with (newGeoId,end)
                     transferConstraints(GeoId, end, newGeoId, end);
 
-                    movePoint(GeoId, end, point1);
-                    movePoint(newGeoId, start, point2);
+                    movePoint(GeoId, end, point1,false,true);
+                    movePoint(newGeoId, start, point2,false,true);
 
                     PointPos secondPos1 = Sketcher::none, secondPos2 = Sketcher::none;
                     ConstraintType constrType1 = Sketcher::PointOnObject, constrType2 = Sketcher::PointOnObject;
@@ -1017,7 +1038,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                 if (x1 > x0) { // trim line start
                     delConstraintOnPoint(GeoId, start, false);
-                    movePoint(GeoId, start, point1);
+                    movePoint(GeoId, start, point1,false,true);
 
                     // constrain the trimming point on the corresponding geometry
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
@@ -1035,7 +1056,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                 }
                 else if (x1 < x0) { // trim line end
                     delConstraintOnPoint(GeoId, end, false);
-                    movePoint(GeoId, end, point1);
+                    movePoint(GeoId, end, point1,false,true);
                     Sketcher::Constraint *newConstr = new Sketcher::Constraint();
                     newConstr->Type = constrType;
                     newConstr->First = GeoId;
@@ -2459,11 +2480,18 @@ double SketchObject::calculateAngleViaPoint(int GeoId1, int GeoId2, double px, d
 {
     // Temporary sketch based calculation. Slow, but guaranteed consistency with constraints.
     Sketcher::Sketch sk;
-    int i1 = sk.addGeometry(this->getGeometry(GeoId1));
-    int i2 = sk.addGeometry(this->getGeometry(GeoId2));
+    
+    const Part::Geometry *p1=this->getGeometry(GeoId1);
+    const Part::Geometry *p2=this->getGeometry(GeoId2);
+    
+    if(p1!=0 && p2!=0) {
+        int i1 = sk.addGeometry(this->getGeometry(GeoId1));
+        int i2 = sk.addGeometry(this->getGeometry(GeoId2));
 
-    return sk.calculateAngleViaPoint(i1,i2,px,py);
-
+        return sk.calculateAngleViaPoint(i1,i2,px,py);
+    }
+    else
+        throw Base::Exception("Null geometry in calculateAngleViaPoint");
 
 /*
     // OCC-based calculation. It is faster, but it was removed due to problems

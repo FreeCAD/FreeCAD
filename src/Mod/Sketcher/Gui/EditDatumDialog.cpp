@@ -161,7 +161,12 @@ void EditDatumDialog::exec(bool atCursor)
                                 sketch->getNameInDocument(),
                                 ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
                     Gui::Command::commitCommand();
-                    Gui::Command::updateActive();
+                    
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+                    if(autoRecompute)
+                        Gui::Command::updateActive();
                 }
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
