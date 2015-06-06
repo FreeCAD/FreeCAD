@@ -706,7 +706,12 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        ,GeoId, PosId, x-xInit, y-yInit, relative ? 1 : 0
                                                        );
                                 Gui::Command::commitCommand();
-                                Gui::Command::updateActive();
+                                
+                                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                            
+                                if(autoRecompute)
+                                    Gui::Command::updateActive();
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
@@ -735,7 +740,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                                                        ,edit->DragCurve, Sketcher::none, x-xInit, y-yInit, relative ? 1 : 0
                                                        );
                                 Gui::Command::commitCommand();
-                                Gui::Command::updateActive();
+                                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                            
+                                if(autoRecompute)
+                                    Gui::Command::updateActive();
                             }
                             catch (const Base::Exception& e) {
                                 Gui::Command::abortCommand();
@@ -4744,7 +4753,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
         
-        Gui::Command::updateActive();
+        getSketchObject()->getSolvedSketch().solve();
 
         this->drawConstraintIcons();
         this->updateColor();

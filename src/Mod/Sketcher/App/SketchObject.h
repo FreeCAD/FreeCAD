@@ -59,6 +59,16 @@ public:
         return "SketcherGui::ViewProviderSketch";
     }
     //@}
+    
+    /** SketchObject can work in two modes: Recompute Mode and noRecomputes Mode
+        - In Recompute Mode, a recompute is necessary after each geometry addition to update the solver DoF (default)
+        - In NoRecomputes Mode, no recompute is necessary after a geometry addition. If a recompute is triggered
+          it is just less efficient.
+          
+        This flag does not regulate whether this object will recompute or not if execute() or a recompute() is actually executed,
+        it just regulates whether the solver is called upon geometry addition or not (relies on the solve of execute for the calculation)
+    */
+    bool noRecomputes;
 
     /// add unspecified geometry
     int addGeometry(const Part::Geometry *geo);
@@ -119,7 +129,7 @@ public:
     /// toggle the driving status of this constraint
     int toggleDriving(int ConstrId);
     /// move this point to a new location and solve
-    int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false);
+    int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false, bool updateGeometry=false);
     /// retrieves the coordinates of a point
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
 

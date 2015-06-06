@@ -38,6 +38,8 @@
 
 #include <boost/bind.hpp>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
 #include "ViewProviderSketch.h"
 
 using namespace SketcherGui;
@@ -60,10 +62,25 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
     
     ui->labelConstrainStatus->setOpenExternalLinks(false);
     
-    QObject::connect(
+    ui->autoUpdate->onRestore();
+    
+    if(ui->autoUpdate->isChecked())
+        sketchView->getSketchObject()->noRecomputes=false;
+    else
+        sketchView->getSketchObject()->noRecomputes=true;
+    
+    /*QObject::connect(
         ui->labelConstrainStatus, SIGNAL(linkActivated(const QString &)),
         this                     , SLOT  (on_labelConstrainStatus_linkActivated(const QString &))
        );
+    QObject::connect(
+        ui->autoUpdate, SIGNAL(stateChanged(int)),
+        this                     , SLOT  (on_autoUpdate_stateChanged(int))
+       );
+    QObject::connect(
+        ui->manualUpdate, SIGNAL(clicked(bool)),
+        this                     , SLOT  (on_manualUpdate_clicked(bool))
+       );*/   
 }
 
 TaskSketcherMessages::~TaskSketcherMessages()
@@ -92,5 +109,21 @@ void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &
         Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");            
 }
 
+void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)
+{
+    if(state==Qt::Checked) {
+        sketchView->getSketchObject()->noRecomputes=false;
+        ui->autoUpdate->onSave();
+    }
+    else if (state==Qt::Unchecked) {
+        sketchView->getSketchObject()->noRecomputes=true;
+        ui->autoUpdate->onSave();
+    }
+}
+
+void TaskSketcherMessages::on_manualUpdate_clicked(bool checked)
+{
+    Gui::Command::updateActive();
+}
 
 #include "moc_TaskSketcherMessages.cpp"
