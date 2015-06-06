@@ -372,7 +372,7 @@ class _JobControlTaskPanel:
 
     def write_input_file_handler(self):
         QApplication.restoreOverrideCursor()
-        if self.check_prerequisites():
+        if self.check_prerequisites_helper():
             QApplication.setOverrideCursor(Qt.WaitCursor)
             try:
                 import ccxInpWriter as iw
@@ -392,13 +392,11 @@ class _JobControlTaskPanel:
                 self.form.pushButton_edit.setEnabled(True)
                 self.form.pushButton_generate.setEnabled(True)
 
-    def check_prerequisites(self):
+    def check_prerequisites_helper(self):
         self.Start = time.time()
         self.femConsoleMessage("Check dependencies...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-        if not FemGui.getActiveAnalysis():
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No active Analysis")
-            return False
+        active_analysis = FemGui.getActiveAnalysis()
         self.MeshObject = None
         # [{'Object':MaterialObject}, {}, ...]
         self.MaterialObjects = []
@@ -410,20 +408,10 @@ class _JobControlTaskPanel:
         self.PressureObjects = []
         (self.MeshObject, self.MaterialObjects, self.FixedObjects, self.ForceObjects, self.PressureObjects) = prepare_analysis_objects()
 
-        if not self.MeshObject:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No mesh object in the Analysis")
-            return False
-
-        if not self.MaterialObjects:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No material object in the Analysis")
-            return False
-
-        if not self.FixedObjects:
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No fixed-constraint nodes defined in the Analysis")
-            return False
-
-        if not (self.ForceObjects or self.PressureObjects):
-            QtGui.QMessageBox.critical(None, "Missing prerequisite", "No force-constraint or pressure-constraint defined in the Analysis")
+        message =  check_prerequisites(active_analysis, self.MeshObject, self.MaterialObjects,
+                                       self.FixedObjects, self.ForceObjects, self.PressureObjects)
+        if message != "":
+            QtGui.QMessageBox.critical(None, "Missing prerequisit(s)", message)
             return False
         return True
 
@@ -694,6 +682,22 @@ def prepare_analysis_objects():
             PressureObjectDict['Object'] = i
             PressureObjects.append(PressureObjectDict)
     return (MeshObject, MaterialObjects, FixedObjects, ForceObjects, PressureObjects)
+
+
+def check_prerequisites(analysis_obj, mesh_obj, material_obj,
+                        fixed_obj, force_obj, pressure_obj):
+    message = ""
+    if not analysis_obj:
+        message += "No active Analysis\n"
+    if not mesh_obj:
+        message += "No mesh object in the Analysis\n"
+    if not material_obj:
+        message += "No material object in the Analysis\n"
+    if not fixed_obj:
+        message += "No fixed-constraint nodes defined in the Analysis\n"
+    if not (force_obj or pressure_obj):
+        message += "No force-constraint or pressure-constraint defined in the Analysis\n"
+    return message
 
 FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
 FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
