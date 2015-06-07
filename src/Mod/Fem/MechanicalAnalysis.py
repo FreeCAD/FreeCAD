@@ -25,7 +25,6 @@ import FreeCAD
 from FemTools import FemTools
 import FemGui
 import os
-import sys
 import time
 
 if FreeCAD.GuiUp:
@@ -377,23 +376,18 @@ class _JobControlTaskPanel:
         QApplication.restoreOverrideCursor()
         if self.check_prerequisites_helper():
             QApplication.setOverrideCursor(Qt.WaitCursor)
-            try:
-                import ccxInpWriter as iw
-                inp_writer = iw.inp_writer(self.analysis_object, self.MeshObject, self.MaterialObjects,
-                                           self.FixedObjects, self.ForceObjects, self.PressureObjects, self.working_dir)
-                self.base_name = inp_writer.write_calculix_input_file()
-                if self.base_name != "":
-                    self.femConsoleMessage("Write completed.")
-                else:
-                    self.femConsoleMessage("Write .inp file failed!", "#FF0000")
-            except:
-                print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
-                raise
-            finally:
-                QApplication.restoreOverrideCursor()
-            if self.base_name:
+            self.base_name = ""
+            fea = FemTools()
+            fea.update_objects()
+            fea.write_inp_file(self.working_dir)
+            if fea.base_name != "":
+                self.base_name = fea.base_name
+                self.femConsoleMessage("Write completed.")
                 self.form.pushButton_edit.setEnabled(True)
                 self.form.pushButton_generate.setEnabled(True)
+            else:
+                self.femConsoleMessage("Write .inp file failed!", "#FF0000")
+            QApplication.restoreOverrideCursor()
 
     def check_prerequisites_helper(self):
         self.Start = time.time()
