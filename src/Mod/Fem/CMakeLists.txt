@@ -12,6 +12,7 @@ INSTALL(
         convert2TetGen.py
         ccxFrdReader.py
         ccxInpWriter.py
+        FemTools.py
         FemExample.py
         MechanicalAnalysis.py
         MechanicalMaterial.py
