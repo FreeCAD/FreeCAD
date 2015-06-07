@@ -67,10 +67,11 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %left NUM
      %left INTEGER
      %left CONSTANT
-     %left '-' '+'
+     %left MINUSSIGN '+'
      %left '*' '/'
      %left '?' ':' EQ NEQ LT GT GTE LTE
      %left NEG     /* negation--unary minus */
+     %left POS     /* unary plus */
      %right '^'    /* exponentiation */
      %right EXPONENT
 
@@ -88,15 +89,14 @@ input:     exp                			{ ScanResult = $1; valueExpression = true;     
 exp:      num                			{ $$ = $1;                                                                        }
         | STRING                                { $$ = new StringExpression(DocumentObject, $1);                                  }
         | identifier                            { $$ = new VariableExpression(DocumentObject, $1);                                }
+        | MINUSSIGN exp %prec NEG               { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, -1)); }
+        | '+' exp %prec POS                     { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, 1)); }
         | exp '+' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::ADD, $3);   }
-        | exp '-' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::SUB, $3);   }
+        | exp MINUSSIGN exp                     { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::SUB, $3);   }
         | exp '*' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
         | exp '/' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | exp '/' unit_exp                      { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
-        | MINUSSIGN exp  %prec NEG 		{ $$ = new OperatorExpression(DocumentObject,
-                                                                              new NumberExpression(DocumentObject, -1.0),
-                                                                              OperatorExpression::MUL, $2);        	          }
-        | exp '^' exp %prec NUM                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
+        | exp '^' exp %prec EXPONENT            { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
         | '(' exp ')'     			{ $$ = $2;                                                                        }
         | FUNC  args ')'  		        { $$ = new FunctionExpression(DocumentObject, $1, $2);                            }
         | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
@@ -133,10 +133,7 @@ cond: exp EQ exp                                { $$ = new OperatorExpression(Do
 unit_exp: UNIT                                          { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
         | unit_exp '/' unit_exp                         { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | unit_exp '*' unit_exp                         { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
-        | unit_exp '^' NUM %prec EXPONENT               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, $3));                 }
-        | unit_exp '^' '-' NUM %prec EXPONENT           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, -$4));                }
-        | unit_exp '^' INTEGER %prec EXPONENT           { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, (double)$3));         }
-        | unit_exp '^' MINUSSIGN INTEGER %prec EXPONENT { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, -(double)$4));  }
+        | unit_exp '^' exp %prec EXPONENT               { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, $3);   }
         | '(' unit_exp ')'                              { $$ = $2;                                                                        }
         ;
 

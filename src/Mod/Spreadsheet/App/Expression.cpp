@@ -507,10 +507,9 @@ Expression * OperatorExpression::eval() const
     case DIV:
         output = new NumberExpression(owner, v1->getQuantity() / v2->getQuantity());
         break;
-    case POW: {
+    case POW:
         output = new NumberExpression(owner, v1->getQuantity().pow(v2->getQuantity()) );
         break;
-    }
     case EQ:
         if (v1->getUnit() != v2->getUnit())
             throw Exception("Incompatible units for + operator");
@@ -540,6 +539,12 @@ Expression * OperatorExpression::eval() const
         if (v1->getUnit() != v2->getUnit())
             throw Exception("Incompatible units for + operator");
         output = new NumberExpression(owner, Quantity(v2->getValue() - v1->getValue()) < 1e-7);
+        break;
+    case NEG:
+        output = new NumberExpression(owner, -v1->getQuantity() );
+        break;
+    case POS:
+        output = new NumberExpression(owner, v1->getQuantity() );
         break;
     default:
         assert(0);
@@ -580,6 +585,15 @@ Expression *OperatorExpression::simplify() const
 std::string OperatorExpression::toString() const
 {
     std::stringstream s;
+
+    switch (op) {
+    case NEG:
+        s << "-";
+        break;
+    case POS:
+        s << "+";
+        break;
+    }
 
     if (left->priority() < priority())
         s << "(" << left->toString() << ")";
@@ -622,6 +636,9 @@ std::string OperatorExpression::toString() const
         break;
     case UNIT:
         break;
+    case POS:
+    case NEG:
+        return s.str();
     default:
         assert(0);
     }
@@ -664,6 +681,9 @@ int OperatorExpression::priority() const
         return 10;
     case POW:
         return 10;
+    case NEG:
+    case POS:
+        return 15;
     default:
         return 0;
     }

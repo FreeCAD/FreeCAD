@@ -236,7 +236,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 10; }
+    virtual int priority() const { return 20; }
 
     void setUnit(const Base::Quantity &_quantity);
 
@@ -270,7 +270,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 10; }
+    virtual int priority() const { return 20; }
 
     void negate();
 
@@ -288,7 +288,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 10; }
+    virtual int priority() const { return 20; }
 
     std::string getName() const { return name; }
 
@@ -318,7 +318,9 @@ public:
         GT,
         LTE,
         GTE,
-        UNIT
+        UNIT,
+        NEG,
+        POS
     };
     OperatorExpression(const App::DocumentObject *_owner = 0, Expression * _left = 0, Operator _op = NONE, Expression * _right = 0);
 
@@ -361,7 +363,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 0; }
+    virtual int priority() const { return 20; }
 
     virtual void getDeps(std::set<Path> &props) const;
 
@@ -458,7 +460,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 10; }
+    virtual int priority() const { return 20; }
 
     virtual void getDeps(std::set<Path> &props) const;
 
@@ -494,7 +496,7 @@ public:
 
     virtual Expression * copy() const;
 
-    virtual int priority() const { return 10; }
+    virtual int priority() const { return 20; }
 
     virtual void getDeps(std::set<Path> &props) const;
 
@@ -534,6 +536,8 @@ public:
     virtual std::string toString() const;
 
     virtual std::string getText() const { return text; }
+
+    virtual int priority() const { return 20; }
 
     virtual Expression * copy() const;
 
