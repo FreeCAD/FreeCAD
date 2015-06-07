@@ -556,6 +556,10 @@ int SketchObject::delGeometry(int GeoId)
     this->Constraints.setValues(newConstraints);
     this->Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
+    
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+        
     return 0;
 }
 
@@ -647,6 +651,10 @@ int SketchObject::delConstraint(int ConstrId)
     std::vector< Constraint * > newVals(vals);
     newVals.erase(newVals.begin()+ConstrId);
     this->Constraints.setValues(newVals);
+    
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
+    
     return 0;
 }
 
@@ -659,6 +667,7 @@ int SketchObject::delConstraintOnPoint(int VertexId, bool onlyCoincident)
         PosId = start;
     } else
         getGeoVertexIndex(VertexId, GeoId, PosId);
+    
     return delConstraintOnPoint(GeoId, PosId, onlyCoincident);
 }
 
@@ -764,6 +773,10 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     }
     if (newVals.size() < vals.size()) {
         this->Constraints.setValues(newVals);
+        
+        if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+            solve();
+        
         return 0;
     }
 
@@ -1934,6 +1947,9 @@ int SketchObject::delConstraintsToExternal()
 
     Constraints.setValues(newConstraints);
     Constraints.acceptGeometry(getCompleteGeometry());
+    
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
 
     return 0;
 }
