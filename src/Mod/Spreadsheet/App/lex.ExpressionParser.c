@@ -5596,7 +5596,7 @@ char *ExpressionParsertext;
 #line 2 "ExpressionParser.l"
 /* Lexer for the FreeCAD  Expression language   */
 /* (c) 2010 Juergen Riegel  LGPL           */
-/* (c) 2013 Eivind Kvedalen LGPL           */
+/* (c) 2015 Eivind Kvedalen LGPL           */
 
 
 /* This disables inclusion of unistd.h, which is not available under Visual C++
