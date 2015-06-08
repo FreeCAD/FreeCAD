@@ -51,6 +51,8 @@
 #include <Base/Tools.h>
 #include <Base/Console.h>
 
+#include <App/Document.h>
+
 #include <Mod/Part/App/Geometry.h>
 
 #include "SketchObject.h"

@@ -70,6 +70,10 @@
 # include <QTextStream>
 #endif
 
+#ifndef _PreComp_
+# include <boost/bind.hpp>
+#endif
+
 #include <Inventor/SbTime.h>
 #include <boost/scoped_ptr.hpp>
 
@@ -291,6 +295,22 @@ ViewProviderSketch::ViewProviderSketch()
 ViewProviderSketch::~ViewProviderSketch()
 {
     delete rubberband;
+}
+    
+void ViewProviderSketch::slotUndoDocument(const Gui::Document& doc)
+{
+    if(getSketchObject()->noRecomputes) 
+        getSketchObject()->solve();    // the sketch must be solved to update the DoF of the solver
+    else
+        getSketchObject()->getDocument()->recompute(); // or fully recomputed if applicable
+}
+
+void ViewProviderSketch::slotRedoDocument(const Gui::Document& doc) 
+{
+    if(getSketchObject()->noRecomputes) 
+        getSketchObject()->solve();    // the sketch must be solved to update the DoF of the solver
+    else
+        getSketchObject()->getDocument()->recompute();  // or fully recomputed if applicable
 }
 
 // handler management ***************************************************************
@@ -4205,6 +4225,11 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     getSketchObject()->solve(); // This call to the solver is needed to initialize the DoF and solve time controls
     //draw(); is not necessary, because a solve triggers an updateData.
+    
+    connectUndoDocument = Gui::Application::Instance->activeDocument()
+        ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, _1));
+    connectRedoDocument = Gui::Application::Instance->activeDocument()
+        ->signalRedoDocument.connect(boost::bind(&ViewProviderSketch::slotRedoDocument, this, _1));
 
     return true;
 }
@@ -4494,7 +4519,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     std::string ObjName = getSketchObject()->getNameInDocument();
     std::string DocName = getSketchObject()->getDocument()->getName();
     Gui::Selection().addSelection(DocName.c_str(),ObjName.c_str());
-
+    
+    connectUndoDocument.disconnect();
+    connectRedoDocument.disconnect();
+    
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
 }
