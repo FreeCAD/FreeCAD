@@ -165,7 +165,14 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
                     Gui::Command::abortCommand();
-                    Gui::Command::updateActive();
+                    
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                    
+                    if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+                        Gui::Command::updateActive();
+                    else
+                        sketch->solve(); // we have to update the solver after this aborted addition.
                 }
             }
         }
@@ -349,7 +356,13 @@ void SketcherGui::makeTangentToEllipseviaNewPoint(const Sketcher::SketchObject* 
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
         Gui::Command::abortCommand();
-        Gui::Command::updateActive();
+        
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+        if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+            Gui::Command::updateActive();
+        
         return;
     }
 
@@ -416,7 +429,13 @@ void SketcherGui::makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObj
     catch (const Base::Exception& e) {
         Base::Console().Error("%s\n", e.what());
         Gui::Command::abortCommand();
-        Gui::Command::updateActive();
+        
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+        if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+            Gui::Command::updateActive();
+        
         return;
     }
 
@@ -1714,7 +1733,13 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                                      QObject::tr("Error"),
                                      QString::fromLatin1(e.what()));
                 Gui::Command::abortCommand();
-                Gui::Command::updateActive();
+                
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                
+                if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+                    Gui::Command::updateActive();
+                
                 return;
             }
 
@@ -1865,7 +1890,13 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 catch (const Base::Exception& e) {
                     Base::Console().Error("%s\n", e.what());
                     Gui::Command::abortCommand();
-                    Gui::Command::updateActive();
+                    
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                    
+                    if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+                        Gui::Command::updateActive();
+                    
                     return;
                 }
 
@@ -2016,8 +2047,13 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                                      QObject::tr("Error"),
                                      QString::fromLatin1(e.what()));
                 Gui::Command::abortCommand();
-                Gui::Command::updateActive();
-                return;
+                
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                
+                if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+                    Gui::Command::updateActive();
+                        return;
             }
 
             commitCommand();
@@ -2414,7 +2450,14 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                 catch (const Base::Exception& e) {
                     QMessageBox::critical(qApp->activeWindow(), QObject::tr("Dimensional constraint"), QString::fromUtf8(e.what()));
                     abortCommand();
-                    updateActive();
+                    
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                    
+                    if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+                        Gui::Command::updateActive();
+                    else
+                        Obj->solve(); // we have to update the solver after this aborted addition.
                 }
             }
             else {

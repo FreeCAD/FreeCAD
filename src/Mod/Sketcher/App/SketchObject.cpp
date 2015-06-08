@@ -289,6 +289,9 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(newVals);
     delete constNew;
+    
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
 
     return 0;
 }
@@ -342,6 +345,9 @@ int SketchObject::toggleDriving(int ConstrId)
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(newVals);
     delete constNew;
+    
+    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+        solve();
 
     return 0;
 }

@@ -145,7 +145,12 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
         }
         // finish the transaction and update
         commitCommand();
-        updateActive();
+        
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+        
+        if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+            Gui::Command::updateActive();
 
         // clear the selection (convenience)
         getSelection().clearSelection();

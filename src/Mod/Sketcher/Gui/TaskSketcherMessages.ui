@@ -63,6 +63,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="Gui::PrefCheckBox" name="autoUpdate">
+       <property name="toolTip">
+        <string>Executes a recompute of the active document after every command</string>
+       </property>
        <property name="text">
         <string>Auto Update</string>
        </property>
@@ -79,6 +82,9 @@
      </item>
      <item>
       <widget class="QPushButton" name="manualUpdate">
+       <property name="toolTip">
+        <string>Forces a recompute of the active document</string>
+       </property>
        <property name="text">
         <string>Update</string>
        </property>
