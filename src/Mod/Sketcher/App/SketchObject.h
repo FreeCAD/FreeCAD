@@ -51,7 +51,7 @@ public:
     App     ::PropertyLinkSubList    ExternalGeometry;
     /** @name methods overide Feature */
     //@{
-    /// recalculate the Feature
+    /// recalculate the Feature (if no recompute is needed see also solve() and updateSolverGeometry() )
     App::DocumentObjectExecReturn *execute(void);
 
     /// returns the type name of the ViewProvider
@@ -118,7 +118,10 @@ public:
     /// returns non zero if the sketch contains conflicting constraints
     int hasConflicts(void);
 
-    /// solves the sketch and updates the Geometry
+    /** solves the sketch and updates the geometry, but not all the dependent features (does not recompute)
+        When a recompute is necessary, recompute triggers execute() which solves the sketch and updates all dependent features
+        When a solve only is necessary (e.g. DoF changed), solve() solves the sketch and updates the geometry, but does not trigger any updates
+    */
     int solve();
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
@@ -232,6 +235,11 @@ private:
     std::vector<PointPos> VertexId2PosId;
     
     Sketch solvedSketch;
+    
+    /** this internal flag indicate that an operation modifying the geometry, but not the DoF of the sketch took place (e.g. toggle construction), 
+        so if next action is a movement of a point (movePoint), the geometry must be updated first.
+    */
+    bool solverNeedsUpdate;
     
     int lastDoF;
     bool lastHasConflict;

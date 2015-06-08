@@ -89,6 +89,8 @@ SketchObject::SketchObject()
     lastSolverStatus=0;
     lastSolveTime=0;
     
+    solverNeedsUpdate=false;
+    
     noRecomputes=false;
 }
 
@@ -127,7 +129,9 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     lastHasConflict = solvedSketch.hasConflicts();
     lastHasRedundancies = solvedSketch.hasRedundancies();
     lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();    
+    lastRedundant=solvedSketch.getRedundant();
+    
+    solverNeedsUpdate=false;
     
     if (lastDoF < 0) { // over-constrained sketch
         std::string msg="Over-constrained sketch\n";
@@ -194,6 +198,8 @@ int SketchObject::solve()
     // set up a sketch (including dofs counting and diagnosing of conflicts)
     lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                   getExternalGeometryCount());
+    
+    solverNeedsUpdate=false;
     
     lastHasConflict = solvedSketch.hasConflicts();
     
@@ -362,14 +368,16 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
     // of SketchObject upon moving. => use updateGeometry parameter = true then
     
     
-    if(updateGeometry) {
+    if(updateGeometry || solverNeedsUpdate) {
         lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                     getExternalGeometryCount());
         
         lastHasConflict = solvedSketch.hasConflicts();
         lastHasRedundancies = solvedSketch.hasRedundancies();
         lastConflicting=solvedSketch.getConflicting();
-        lastRedundant=solvedSketch.getRedundant();    
+        lastRedundant=solvedSketch.getRedundant();  
+        
+        solverNeedsUpdate=false;
     }
     
     if (lastDoF < 0) // over-constrained sketch
@@ -583,6 +591,7 @@ int SketchObject::toggleConstruction(int GeoId)
 
     this->Geometry.setValues(newVals);
     //this->Constraints.acceptGeometry(getCompleteGeometry()); <= This is not necessary for a toggle. Reducing redundant solving. Abdullah
+    solverNeedsUpdate=true;
     return 0;
 }
 
@@ -600,6 +609,7 @@ int SketchObject::setConstruction(int GeoId, bool on)
 
     this->Geometry.setValues(newVals);
     //this->Constraints.acceptGeometry(getCompleteGeometry()); <= This is not necessary for a toggle. Reducing redundant solving. Abdullah
+    solverNeedsUpdate=true;
     return 0;
 }
 
