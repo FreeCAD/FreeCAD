@@ -33,6 +33,7 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/propertyeditor
     ${CMAKE_CURRENT_BINARY_DIR}/TaskView
     ${CMAKE_CURRENT_BINARY_DIR}/Quarter
+    ${CMAKE_CURRENT_BINARY_DIR}/DAGView
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
@@ -261,6 +262,8 @@ set(Gui_MOC_HDRS
     TaskView/TaskWatcher.h
     TaskView/TaskEditControl.h
     TaskView/TaskView.h
+    DAGView/DAGView.h
+    DAGView/DAGModel.h
 )
 #qt4_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
@@ -556,6 +559,8 @@ SET(Dock_Windows_CPP_SRCS
     Tree.cpp
     TreeView.cpp
     ProjectView.cpp
+    DAGView/DAGView.cpp
+    DAGView/DAGModel.cpp
 )
 SET(Dock_Windows_HPP_SRCS
     CombiView.h
@@ -568,6 +573,8 @@ SET(Dock_Windows_HPP_SRCS
     Tree.h
     TreeView.h
     ProjectView.h
+    DAGView/DAGView.h
+    DAGView/DAGModel.h
 )
 SET(Dock_Windows_SRCS
     ${Dock_Windows_CPP_SRCS}
