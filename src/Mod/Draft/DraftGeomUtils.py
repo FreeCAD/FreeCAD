@@ -670,10 +670,11 @@ def sortEdges(edges):
     edict = dict()
     nedges = []
     for e in edges:
-        if e.Length != 0:
-            sdict.setdefault( e.Vertexes[0].hashCode(), [] ).append(e)
-            edict.setdefault( e.Vertexes[-1].hashCode(),[] ).append(e)
-            nedges.append(e)
+        if hasattr(e,"Length"):
+            if e.Length != 0:
+                sdict.setdefault( e.Vertexes[0].hashCode(), [] ).append(e)
+                edict.setdefault( e.Vertexes[-1].hashCode(),[] ).append(e)
+                nedges.append(e)
     if not nedges:
         print "DraftGeomUtils.sortEdges: zero-length edges"
         return edges
@@ -824,6 +825,8 @@ def sortEdgesOld(lEdges, aVertex=None):
 
 def invert(edge):
     '''invert(edge): returns an inverted copy of this edge'''
+    if len(edge.Vertexes) == 1:
+        return edge
     if geomType(edge) == "Line":
         return Part.Line(edge.Vertexes[-1].Point,edge.Vertexes[0].Point).toShape()
     elif geomType(edge) == "Circle":

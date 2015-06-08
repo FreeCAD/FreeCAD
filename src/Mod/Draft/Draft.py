@@ -4369,7 +4369,8 @@ class _DrawingView(_DraftObject):
                     svg = ""
                     shapes = []
                     others = []
-                    for o in obj.Source.Group:
+                    objs = getGroupContents([obj.Source])
+                    for o in objs:
                         if o.ViewObject.isVisible():
                             svg += getSVG(o,obj.Scale,obj.LineWidth,obj.FontSize.Value,obj.FillStyle,obj.Direction,ls,lc)
                 else:
