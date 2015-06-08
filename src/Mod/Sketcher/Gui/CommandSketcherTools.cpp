@@ -157,7 +157,11 @@ void CmdSketcherCloseShape::activated(int iMsg)
     // finish the transaction and update
     commitCommand();
 
-    updateActive();
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+    
+    if(autoRecompute)
+        Gui::Command::updateActive();
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -239,7 +243,12 @@ void CmdSketcherConnect::activated(int iMsg)
 
     // finish the transaction and update
     commitCommand();
-    updateActive();
+    
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+    
+    if(autoRecompute)
+        Gui::Command::updateActive();
 
     // clear the selection (convenience)
     getSelection().clearSelection();
@@ -937,13 +946,23 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                     }
                     
                     Gui::Command::commitCommand();
-                    Gui::Command::updateActive();
+                    
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                    
+                    if(autoRecompute)
+                        Gui::Command::updateActive();
                 
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("%s\n", e.what());
                     Gui::Command::abortCommand();
-                    Gui::Command::updateActive();
+                    
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                    
+                    if(autoRecompute)
+                        Gui::Command::updateActive();
                 }
     
             } // if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) 
