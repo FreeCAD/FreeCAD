@@ -103,10 +103,5 @@ bool TaskDlgEditSketch::reject()
     return true;
 }
 
-void TaskDlgEditSketch::helpRequested()
-{
-
-}
-
 
 #include "moc_TaskDlgEditSketch.cpp"
