@@ -210,12 +210,12 @@ void DlgImportExportStep::saveSettings()
     // scheme
     if (ui->radioButtonAP203->isChecked()) {
         Interface_Static::SetCVal("write.step.schema","AP203");
-        hGrp->GetASCII("Scheme", "AP203");
+        hGrp->SetASCII("Scheme", "AP203");
     }
     else {
         // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002)
         Interface_Static::SetCVal("write.step.schema","AP214CD");
-        hGrp->GetASCII("Scheme", "AP214CD");
+        hGrp->SetASCII("Scheme", "AP214CD");
     }
 
     // header info
