@@ -77,6 +77,8 @@ protected:
     void slotActivatedObject(const App::DocumentObject&);
     void slotStartRestoreDocument(const App::Document&);
     void slotFinishRestoreDocument(const App::Document&);
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
     //@}
 
 public:
@@ -105,7 +107,10 @@ public:
     /// signal on changed Object, the 2nd argument is the highlite mode to use
     mutable boost::signal<void (const Gui::ViewProviderDocumentObject&,
                                 const Gui::TreeItemMode&)>               signalExpandObject;
-
+    /// signal on undo Document
+    mutable boost::signal<void (const Gui::Document& doc)> signalUndoDocument;
+    /// signal on redo Document
+    mutable boost::signal<void (const Gui::Document& doc)> signalRedoDocument;
     //@}
 
     /** @name I/O of the document */
