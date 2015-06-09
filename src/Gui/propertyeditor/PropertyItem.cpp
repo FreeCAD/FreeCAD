@@ -1706,14 +1706,12 @@ QVariant PropertyEnumItem::value(const App::Property* prop) const
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyEnumeration::getClassTypeId()));
 
     const App::PropertyEnumeration* prop_enum = static_cast<const App::PropertyEnumeration*>(prop);
-    if (prop_enum->getEnums() == 0) {
+    const std::vector<std::string>& value = prop_enum->getEnumVector();
+    long currentItem = prop_enum->getValue();
+
+    if (currentItem < 0 || currentItem >= value.size())
         return QVariant(QString());
-    }
-    else {
-        const std::vector<std::string>& value = prop_enum->getEnumVector();
-        long currentItem = prop_enum->getValue();
-        return QVariant(QString::fromUtf8(value[currentItem].c_str()));
-    }
+    return QVariant(QString::fromUtf8(value[currentItem].c_str()));
 }
 
 void PropertyEnumItem::setValue(const QVariant& value)
