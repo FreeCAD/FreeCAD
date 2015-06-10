@@ -172,8 +172,7 @@ protected:
     void customEvent(QEvent* e);
 
 private:
-	void add_workbench(QString wb, int i);
-
+    void addWorkbench(const QString& wb, int i);
 };
 
 // --------------------------------------------------------------------

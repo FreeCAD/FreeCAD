@@ -516,17 +516,18 @@ void WorkbenchGroup::addTo(QWidget *w)
     }
 }
 
-void WorkbenchGroup::add_workbench(QString wb, int i) {
-        QList<QAction*> workbenches = _group->actions();
-        QString name = Application::Instance->workbenchMenuText(wb);
-        QPixmap px = Application::Instance->workbenchIcon(wb);
-        QString tip = Application::Instance->workbenchToolTip(wb);
-        workbenches[i]->setObjectName(wb);
-        workbenches[i]->setIcon(px);
-        workbenches[i]->setText(name);
-        workbenches[i]->setToolTip(tip);
-        workbenches[i]->setStatusTip(tr("Select the '%1' workbench").arg(name));
-        workbenches[i]->setVisible(true);
+void WorkbenchGroup::addWorkbench(const QString& wb, int i)
+{
+    QList<QAction*> workbenches = _group->actions();
+    QString name = Application::Instance->workbenchMenuText(wb);
+    QPixmap px = Application::Instance->workbenchIcon(wb);
+    QString tip = Application::Instance->workbenchToolTip(wb);
+    workbenches[i]->setObjectName(wb);
+    workbenches[i]->setIcon(px);
+    workbenches[i]->setText(name);
+    workbenches[i]->setToolTip(tip);
+    workbenches[i]->setStatusTip(tr("Select the '%1' workbench").arg(name));
+    workbenches[i]->setVisible(true);
 }
 
 void WorkbenchGroup::refreshWorkbenchList()
@@ -537,12 +538,12 @@ void WorkbenchGroup::refreshWorkbenchList()
     int i=0;
 
     for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it, i++) {
-        add_workbench(*it, i);
+        addWorkbench(*it, i);
     }
 
     for (QStringList::Iterator it = items.begin(); it != items.end(); ++it) {
         if (!disabled_wbs_list.contains(*it) && !enabled_wbs_list.contains(*it)){
-            add_workbench(*it, i);
+            addWorkbench(*it, i);
             i++;
         }
     }
