@@ -516,12 +516,13 @@ void WorkbenchGroup::addTo(QWidget *w)
     }
 }
 
-void WorkbenchGroup::addWorkbench(const QString& wb, int i)
+void WorkbenchGroup::setWorkbenchData(int i, const QString& wb)
 {
     QList<QAction*> workbenches = _group->actions();
     QString name = Application::Instance->workbenchMenuText(wb);
     QPixmap px = Application::Instance->workbenchIcon(wb);
     QString tip = Application::Instance->workbenchToolTip(wb);
+
     workbenches[i]->setObjectName(wb);
     workbenches[i]->setIcon(px);
     workbenches[i]->setText(name);
@@ -537,15 +538,29 @@ void WorkbenchGroup::refreshWorkbenchList()
     QStringList disabled_wbs_list = DlgWorkbenchesImp::load_disabled_workbenches();
     int i=0;
 
-    for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it, i++) {
-        addWorkbench(*it, i);
+    // Go through the list of enabled workbenches and verify that they really exist because
+    // it might be possible that a workbench has been removed after setting up the list of
+    // enabled workbenches.
+    for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it) {
+        int index = items.indexOf(*it);
+        if (index >= 0) {
+            setWorkbenchData(i++, *it);
+            items.removeAt(index);
+        }
     }
 
-    for (QStringList::Iterator it = items.begin(); it != items.end(); ++it) {
-        if (!disabled_wbs_list.contains(*it) && !enabled_wbs_list.contains(*it)){
-            addWorkbench(*it, i);
-            i++;
+    // Filter out the actively disabled workbenches
+    for (QStringList::Iterator it = disabled_wbs_list.begin(); it != disabled_wbs_list.end(); ++it) {
+        int index = items.indexOf(*it);
+        if (index >= 0) {
+            items.removeAt(index);
         }
+    }
+
+    // Now add the remaining workbenches of 'items'. They have been added to the application
+    // after setting up the list of enabled workbenches.
+    for (QStringList::Iterator it = items.begin(); it != items.end(); ++it) {
+        setWorkbenchData(i++, *it);
     }
 }
 
