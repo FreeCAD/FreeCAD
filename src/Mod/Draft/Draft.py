@@ -5251,11 +5251,14 @@ class _Facebinder(_DraftObject):
         if not faces:
             return
         import Part
-        sh = faces.pop()
         try:
-            for f in faces:
-                sh = sh.fuse(f)
-            sh = sh.removeSplitter()
+            if len(faces) > 1:
+                sh = faces.pop()
+                sh = sh.multiFuse(faces)
+                sh = sh.removeSplitter()
+            else:
+                sh = faces[0]
+                sh.transformShape(sh.Matrix, True)
         except Part.OCCError:
             print("Draft: error building facebinder")
             return
