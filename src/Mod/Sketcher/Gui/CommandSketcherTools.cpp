@@ -896,7 +896,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                 try{
                     if(!major)
                     {
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
                         Obj->getNameInDocument(),
                         majorpositiveend.x,majorpositiveend.y,majornegativeend.x,majornegativeend.y); // create line for major axis
                         
@@ -907,7 +907,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                     }
                     if(!minor)
                     {                       
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))",
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
                         Obj->getNameInDocument(),
                         minorpositiveend.x,minorpositiveend.y,minornegativeend.x,minornegativeend.y); // create line for minor axis
                         
@@ -934,15 +934,6 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                         
                         Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
                         Obj->getNameInDocument(),currentgeoid+incrgeo+1,Sketcher::start,GeoId); // constrain major axis     
-                    }
-                    
-                    // Make lines construction lines
-                    if(majorindex!=-1){
-                        doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",Obj->getNameInDocument(),majorindex);
-                    }
-                    
-                    if(minorindex!=-1){
-                        doCommand(Doc,"App.ActiveDocument.%s.toggleConstruction(%d) ",Obj->getNameInDocument(),minorindex);
                     }
                     
                     Gui::Command::commitCommand();

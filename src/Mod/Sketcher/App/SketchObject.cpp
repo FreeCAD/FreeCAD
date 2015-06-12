@@ -51,8 +51,6 @@
 #include <Base/Tools.h>
 #include <Base/Console.h>
 
-#include <App/Document.h>
-
 #include <Mod/Part/App/Geometry.h>
 
 #include "SketchObject.h"
@@ -169,21 +167,8 @@ App::DocumentObjectExecReturn *SketchObject::execute(void)
     return App::DocumentObject::StdReturn;
 }
 
-int SketchObject::hasConflicts(void)
-{
-    // TODO: This must be reviewed to see if we are not setting an already set geometry again (and calculating again)
-    // it is unclear if we need to know if there are conflicts of an updated geometry that has not been already solved
-    // or not.
-    
-    // set up a sketch (including dofs counting and diagnosing of conflicts)
-    /*lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
-                                  getExternalGeometryCount());
-    
-    lastHasConflict = solvedSketch.hasConflicts();
-    lastHasRedundancies = solvedSketch.hasRedundancies();
-    lastConflicting=solvedSketch.getConflicting();
-    lastRedundant=solvedSketch.getRedundant();*/
-    
+int SketchObject::hasConflicts(void) const
+{    
     if (lastDoF < 0) // over-constrained sketch
         return -2;
     if (solvedSketch.hasConflicts()) // conflicting constraints
@@ -192,8 +177,12 @@ int SketchObject::hasConflicts(void)
     return 0;
 }
 
-int SketchObject::solve()
+int SketchObject::solve(bool updateGeoAfterSolving/*=true*/)
 {
+    // if updateGeoAfterSolving=false, the solver information is updated, but the Sketch is nothing
+    // updated. It is useful to avoid triggering an OnChange when the goeometry did not change but
+    // the solver needs to be updated.
+    
     // We should have an updated Sketcher geometry or this solver should not have happened
     // therefore we update our sketch object geometry with the SketchObject one.
     //
@@ -222,7 +211,7 @@ int SketchObject::solve()
     lastRedundant=solvedSketch.getRedundant();
     lastSolveTime=solvedSketch.SolveTime;
 
-    if (err == 0) {
+    if (err == 0 && updateGeoAfterSolving) {
         // set the newly solved geometry
         std::vector<Part::Geometry *> geomlist = solvedSketch.extractGeometry();
         Geometry.setValues(geomlist);
@@ -360,7 +349,7 @@ int SketchObject::toggleDriving(int ConstrId)
     return 0;
 }
 
-int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative, bool updateGeometry)
+int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative, bool updateGeoBeforeMoving)
 {
     // if we are moving a point at SketchObject level, we need to start from a solved sketch
     // if we have conflicts we can forget about moving. However, there is the possibility that we
@@ -370,7 +359,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
     // of SketchObject upon moving. => use updateGeometry parameter = true then
     
     
-    if(updateGeometry || solverNeedsUpdate) {
+    if(updateGeoBeforeMoving || solverNeedsUpdate) {
         lastDoF = solvedSketch.setUpSketch(getCompleteGeometry(), Constraints.getValues(),
                                     getExternalGeometryCount());
         
@@ -493,38 +482,39 @@ void SketchObject::acceptGeometry()
     rebuildVertexIndex();
 }
 
-int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList)
+int SketchObject::addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction/*=false*/)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals(vals);
     for (std::vector<Part::Geometry *>::const_iterator it = geoList.begin(); it != geoList.end(); ++it) {
+        if((*it)->getTypeId() != Part::GeomPoint::getClassTypeId())
+            const_cast<Part::Geometry *>(*it)->Construction = construction;
+        
         newVals.push_back(*it);
     }
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     
-    if(noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
-        solve();
-    
     return Geometry.getSize()-1;
 }
 
-int SketchObject::addGeometry(const Part::Geometry *geo)
+int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=false*/)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
 
     std::vector< Part::Geometry * > newVals(vals);
     Part::Geometry *geoNew = geo->clone();
+    
+    if(geoNew->getTypeId() != Part::GeomPoint::getClassTypeId())
+        geoNew->Construction = construction;
+    
     newVals.push_back(geoNew);
     Geometry.setValues(newVals);
     Constraints.acceptGeometry(getCompleteGeometry());
     delete geoNew;
     rebuildVertexIndex();
-    
-    if(noRecomputes) // if we do not have a recompute after the geometry creation, the sketch must be solved to update the DoF of the solver
-        solve();
         
     return Geometry.getSize()-1;
 }
@@ -1645,6 +1635,9 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         double minord;
         Base::Vector3d majdir;
         
+        std::vector<Part::Geometry *> igeo;
+        std::vector<Constraint *> icon;
+        
         if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId()){
             const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo);
             
@@ -1679,9 +1672,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             Part::GeomLineSegment *lmajor = new Part::GeomLineSegment();
             lmajor->setPoints(majorpositiveend,majornegativeend);
             
-            this->addGeometry(lmajor); // create line for major axis                
-            this->setConstruction(currentgeoid+incrgeo+1,true);
-            delete lmajor;
+            igeo.push_back(lmajor);
             
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
             newConstr->Type = Sketcher::InternalAlignment;
@@ -1689,8 +1680,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             newConstr->First = currentgeoid+incrgeo+1;
             newConstr->Second = GeoId;
 
-            addConstraint(newConstr);
-            delete newConstr;
+            icon.push_back(newConstr);
             incrgeo++;
         }
         if(!minor)
@@ -1698,9 +1688,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             Part::GeomLineSegment *lminor = new Part::GeomLineSegment();
             lminor->setPoints(minorpositiveend,minornegativeend);
             
-            this->addGeometry(lminor); // create line for major axis                
-            this->setConstruction(currentgeoid+incrgeo+1,true);
-            delete lminor;
+            igeo.push_back(lminor);
             
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
             newConstr->Type = Sketcher::InternalAlignment;
@@ -1708,16 +1696,15 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             newConstr->First = currentgeoid+incrgeo+1;
             newConstr->Second = GeoId;
 
-            addConstraint(newConstr);
-            delete newConstr;
+            icon.push_back(newConstr);
             incrgeo++;
         }
         if(!focus1)
         {
             Part::GeomPoint *pf1 = new Part::GeomPoint();
             pf1->setPoint(focus1P);
-            this->addGeometry(pf1); 
-            delete pf1;
+            
+            igeo.push_back(pf1);
             
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
             newConstr->Type = Sketcher::InternalAlignment;
@@ -1726,16 +1713,14 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             newConstr->FirstPos = Sketcher::start;
             newConstr->Second = GeoId;
 
-            addConstraint(newConstr);
-            delete newConstr;
+            icon.push_back(newConstr);
             incrgeo++;
         }
         if(!focus2)
         {
             Part::GeomPoint *pf2 = new Part::GeomPoint();
             pf2->setPoint(focus2P);
-            this->addGeometry(pf2);                 
-            delete pf2;
+            igeo.push_back(pf2);
             
             Sketcher::Constraint *newConstr = new Sketcher::Constraint();
             newConstr->Type = Sketcher::InternalAlignment;
@@ -1744,9 +1729,22 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             newConstr->FirstPos = Sketcher::start;
             newConstr->Second = GeoId;
 
-            addConstraint(newConstr);
-            delete newConstr;  
+            icon.push_back(newConstr); 
         }
+        
+        this->addGeometry(igeo,true);
+        this->addConstraints(icon);
+        
+        for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it)
+            if (*it) 
+                delete *it;
+            
+        for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
+            if (*it) 
+                delete *it;
+
+        icon.clear();
+        igeo.clear();
         
         return incrgeo; //number of added elements
     }

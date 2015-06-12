@@ -4084,21 +4084,17 @@ void ViewProviderSketch::updateData(const App::Property *prop)
     if (edit && (prop == &(getSketchObject()->Geometry) ||
                  prop == &(getSketchObject()->Constraints))) {
         edit->FullyConstrained = false;
+        // At this point, we do not need to solve the Sketch 
+        // If we are adding geometry an update can be triggered before the sketch is actually solved. 
+        // Because a solve is mandatory to any addition (at least to update the DoF of the solver),
+        // only when the solver geometry is the same in number than the sketch geometry an update
+        // should trigger a redraw. This reduces even more the number of redraws per insertion of geometry
     
-        // UpdateData is only called as a consequence of SketchObject having changed
-        // and triggered from SketchObject::onChanged. Therefore we have to assume that
-        // SketchObject is updated and solved , or will soon be updated and solved in the 
-        // still to be processed recompute (SketchObject::execute() that will trigger a 
-        // SketchObject::onChanged).
-        // 
-        // At this point, we do not need to solve the Sketch and we can draw directly from
-        // the SketchObject geometry.
-        // 
-        // This SketchObject::
-        //solveSketch();
-        //draw(true);
-        UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
-        draw();
+        if(getSketchObject()->getExternalGeometryCount()+getSketchObject()->getHighestCurveIndex() + 1 == 
+            getSketchObject()->getSolvedSketch().getGeometrySize()) {
+            UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
+            draw(false);
+        }
     }
     if (edit && &(getSketchObject()->Constraints)) {
         // send the signal for the TaskDlg.
@@ -4223,8 +4219,13 @@ bool ViewProviderSketch::setEdit(int ModNum)
     else
         Gui::Control().showDialog(new TaskDlgEditSketch(this));
 
-    getSketchObject()->solve(); // This call to the solver is needed to initialize the DoF and solve time controls
-    //draw(); is not necessary, because a solve triggers an updateData.
+    // This call to the solver is needed to initialize the DoF and solve time controls
+    // The false parameter indicates that the geometry of the SketchObject shall not be updateData
+    // so as not to trigger an onChanged that would set the document as modified and trigger a recompute
+    // if we just close the sketch without touching anything.
+    getSketchObject()->solve(false); 
+    draw(false);
+    UpdateSolverInformation();
     
     connectUndoDocument = Gui::Application::Instance->activeDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, _1));
@@ -4781,7 +4782,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
         
-        getSketchObject()->getSolvedSketch().solve();
+        getSketchObject()->solve();
 
         this->drawConstraintIcons();
         this->updateColor();
