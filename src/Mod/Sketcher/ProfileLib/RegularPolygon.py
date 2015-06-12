@@ -35,7 +35,8 @@ def makeRegularPolygon(
         sketchName, 
         sides, 
         centerPoint=App.Vector(0,0,0), 
-        firstCornerPoint=App.Vector(-20.00,34.64,0)):
+        firstCornerPoint=App.Vector(-20.00,34.64,0),
+	construction=False):
 
     if not sketchName:
         App.Console.PrintError("No sketch specified in 'makeRegularPolygon'")
@@ -64,7 +65,7 @@ def makeRegularPolygon(
         geoList.append(Part.Line(pointList[i],pointList[i+1]))
     geoList.append(Part.Line(pointList[sides-1],pointList[0]))
     geoList.append(Part.Circle(centerPoint,App.Vector(0,0,1),diffVec.Length))
-    geoIndices = sketch.addGeometry(geoList)
+    geoIndices = sketch.addGeometry(geoList,construction)
 
     sketch.setConstruction(geoIndices[-1],True)
 

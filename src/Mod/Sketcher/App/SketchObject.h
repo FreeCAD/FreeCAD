@@ -51,7 +51,7 @@ public:
     App     ::PropertyLinkSubList    ExternalGeometry;
     /** @name methods overide Feature */
     //@{
-    /// recalculate the Feature (if no recompute is needed see also solve() and updateSolverGeometry() )
+    /// recalculate the Feature (if no recompute is needed see also solve() and solverNeedsUpdate boolean)
     App::DocumentObjectExecReturn *execute(void);
 
     /// returns the type name of the ViewProvider
@@ -66,14 +66,15 @@ public:
           it is just less efficient.
           
         This flag does not regulate whether this object will recompute or not if execute() or a recompute() is actually executed,
-        it just regulates whether the solver is called upon geometry addition or not (relies on the solve of execute for the calculation)
+        it just regulates whether the solver is called or not (i.e. whether it relies on 
+        the solve of execute for the calculation)
     */
     bool noRecomputes;
 
     /// add unspecified geometry
-    int addGeometry(const Part::Geometry *geo);
+    int addGeometry(const Part::Geometry *geo, bool construction=false);
     /// add unspecified geometry
-    int addGeometry(const std::vector<Part::Geometry *> &geoList);
+    int addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction=false);
     /// delete geometry
     int delGeometry(int GeoId);
     /// add all constraints in the list
@@ -116,13 +117,14 @@ public:
     std::vector<Part::Geometry*> getCompleteGeometry(void) const;
 
     /// returns non zero if the sketch contains conflicting constraints
-    int hasConflicts(void);
+    int hasConflicts(void) const;
 
     /** solves the sketch and updates the geometry, but not all the dependent features (does not recompute)
         When a recompute is necessary, recompute triggers execute() which solves the sketch and updates all dependent features
-        When a solve only is necessary (e.g. DoF changed), solve() solves the sketch and updates the geometry, but does not trigger any updates
+        When a solve only is necessary (e.g. DoF changed), solve() solves the sketch and 
+        updates the geometry (if updateGeoAfterSolving==true), but does not trigger any updates
     */
-    int solve();
+    int solve(bool updateGeoAfterSolving=true);   
     /// set the datum of a Distance or Angle constraint and solve
     int setDatum(int ConstrId, double Datum);
     /// set the driving status of this constraint and solve
@@ -132,7 +134,7 @@ public:
     /// toggle the driving status of this constraint
     int toggleDriving(int ConstrId);
     /// move this point to a new location and solve
-    int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false, bool updateGeometry=false);
+    int movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toPoint, bool relative=false, bool updateGeoBeforeMoving=false);
     /// retrieves the coordinates of a point
     Base::Vector3d getPoint(int GeoId, PointPos PosId) const;
 
@@ -227,7 +229,7 @@ protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
     virtual void onDocumentRestored();
-    
+
 private:
     std::vector<Part::Geometry *> ExternalGeo;
 

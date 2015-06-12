@@ -64,9 +64,19 @@ PyObject* SketchObjectPy::solve(PyObject *args)
 
 PyObject* SketchObjectPy::addGeometry(PyObject *args)
 {
-    PyObject *pcObj;
-    if (!PyArg_ParseTuple(args, "O", &pcObj))
-        return 0;
+    PyObject *pcObj; 
+    PyObject* construction; // this is an optional argument default false
+    bool isConstruction;
+    if (!PyArg_ParseTuple(args, "OO!", &pcObj, &PyBool_Type, &construction)) {
+        PyErr_Clear();
+        if (!PyArg_ParseTuple(args, "O", &pcObj))
+            return 0;
+        else
+            isConstruction=false;
+    }
+    else {
+        isConstruction = PyObject_IsTrue(construction) ? true : false;
+    }
 
     if (PyObject_TypeCheck(pcObj, &(Part::GeometryPy::Type))) {
         Part::Geometry *geo = static_cast<Part::GeometryPy*>(pcObj)->getGeometryPtr();
@@ -80,13 +90,13 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
                 // create the definition struct for that geom
                 Part::GeomArcOfCircle aoc;
                 aoc.setHandle(trim);
-                ret = this->getSketchObjectPtr()->addGeometry(&aoc);
+                ret = this->getSketchObjectPtr()->addGeometry(&aoc,isConstruction);
             }
             else if (!ellipse.IsNull()) {
                 // create the definition struct for that geom
                 Part::GeomArcOfEllipse aoe;
                 aoe.setHandle(trim);
-                ret = this->getSketchObjectPtr()->addGeometry(&aoe);
+                ret = this->getSketchObjectPtr()->addGeometry(&aoe,isConstruction);
             }             
             else {
                 std::stringstream str;
@@ -101,7 +111,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
                  geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
                  geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                  geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            ret = this->getSketchObjectPtr()->addGeometry(geo);
+            ret = this->getSketchObjectPtr()->addGeometry(geo,isConstruction);
         }
         else {
             std::stringstream str;
@@ -163,7 +173,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
             }
         }
 
-        int ret = this->getSketchObjectPtr()->addGeometry(geoList) + 1;
+        int ret = this->getSketchObjectPtr()->addGeometry(geoList,isConstruction) + 1;
         std::size_t numGeo = geoList.size();
         Py::Tuple tuple(numGeo);
         for (std::size_t i=0; i<numGeo; ++i) {
