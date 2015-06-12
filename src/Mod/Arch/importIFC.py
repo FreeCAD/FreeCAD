@@ -855,7 +855,7 @@ def export(exportList,filename):
     # materials
     materials = {}
     for m in Arch.getDocumentMaterials():
-        mat = ifcfile.createIfcMaterial(str(m.Label))
+        mat = ifcfile.createIfcMaterial(m.Label.encode("utf8"))
         materials[m.Label] = mat
         if "Color" in m.Material:
             rgb = tuple([float(f) for f in m.Material['Color'].strip("()").split(",")])
