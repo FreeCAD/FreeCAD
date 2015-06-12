@@ -869,20 +869,5 @@ PyObject *SheetPy::getCustomAttributes(const char* attr) const
 
 int SheetPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
-    // Parse attr; if it looks like a cell address specifier, it probably is...
-    char *contents;
-
-    if (!PyArg_ParseTuple(obj, "s:setCustomAttributes", &contents))
-        return 0;
-
-    try {
-        CellAddress address(attr);
-
-        getSheetPtr()->setCell(address, contents);
-        return 0;
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
+    return 0;
 }
