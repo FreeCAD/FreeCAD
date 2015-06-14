@@ -169,5 +169,8 @@
 //#include <QWebSettings>
 #endif
 
+#include "qmath.h"
+#include <QGraphicsView>
+#include <QGraphicsScene>
 
 #endif

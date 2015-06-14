@@ -200,7 +200,7 @@ void Document::writeDependencyGraphViz(std::ostream &out)
     out << "}" << endl;
 }
 
-void Document::exportGraphviz(std::ostream& out)
+void Document::exportGraphviz(std::ostream& out) const
 {
     std::vector<std::string> names;
     names.reserve(d->objectMap.size());
@@ -1437,6 +1437,8 @@ void Document::recompute()
             it->second->purgeTouched();
     }
     d->vertexMap.clear();
+
+    signalRecomputed(*this);
 }
 
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const

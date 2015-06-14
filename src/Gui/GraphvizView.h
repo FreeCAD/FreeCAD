@@ -25,21 +25,29 @@
 #define GUI_GRAPHVIZVIEW_H
 
 #include "MDIView.h"
+#include <boost/shared_ptr.hpp>
+#include <boost/signals.hpp>
+
 
 class QGraphicsScene;
 class QGraphicsView;
+class QSvgRenderer;
+class QGraphicsSvgItem;
+class GraphicsViewZoom;
 
 namespace Gui 
 {
+
+class GraphvizWorker;
+
 class GuiExport GraphvizView : public MDIView
 {
     Q_OBJECT
 
 public:
-    GraphvizView(const QPixmap&, QWidget* parent=0);
+    GraphvizView(App::Document &_doc, QWidget* parent=0);
     ~GraphvizView();
 
-    void setDependencyGraph(const std::string&);
     QByteArray exportGraph(const QString& filter);
 
     /// Message handler
@@ -57,10 +65,29 @@ public:
     virtual void printPreview();
     //@}
 
+private Q_SLOTS:
+    void svgFileRead(const QByteArray & data);
+    void error();
+    void done();
+
 private:
+    void updateSvgItem(const App::Document &doc);
+    void disconnectSignals();
+
+    const App::Document& doc;
     std::string graphCode;
     QGraphicsScene* scene;
     QGraphicsView* view;
+    GraphicsViewZoom* zoomer;
+    QGraphicsSvgItem* svgItem;
+    QSvgRenderer* renderer;
+    GraphvizWorker* thread;
+    int nPending;
+
+    typedef boost::BOOST_SIGNALS_NAMESPACE::scoped_connection Connection;
+    Connection recomputeConnection;
+    Connection undoConnection;
+    Connection redoConnection;
 };
 
 } // namespace Gui
