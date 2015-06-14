@@ -24,32 +24,120 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QFile>
 # include <QPrinter>
 # include <QPrintDialog>
 # include <QPrintPreviewDialog>
 # include <QProcess>
 # include <QSvgRenderer>
-#endif
+# include <QGraphicsSvgItem>
+# include <QMessageBox>
 # include <QGraphicsScene>
 # include <QGraphicsView>
+# include <QThread>
+# include <QProcess>
+# include <boost/bind.hpp>
+#endif
+#include "GraphicsViewZoom.h"
 #include "FileDialog.h"
 
 
 #include "GraphvizView.h"
+#include "Application.h"
+#include "MainWindow.h"
 #include <App/Application.h>
+#include <App/Document.h>
 
 using namespace Gui;
 
+namespace Gui {
 
-GraphvizView::GraphvizView(const QPixmap& p, QWidget* parent)
+/**
+ * @brief The GraphvizWorker class
+ *
+ * Implements a QThread class that does the actual conversion from dot to
+ * svg. All critical communcation is done using queued signals.
+ *
+ */
+
+class GraphvizWorker : public QThread {
+    Q_OBJECT
+public:
+    GraphvizWorker(QObject * parent = 0)
+        : QThread(parent)
+    {
+        proc.moveToThread(this);
+    }
+
+    void setData(const QByteArray & data)
+    {
+        str = data;
+    }
+
+    void run() {
+        // Write data to process
+        proc.write(str);
+        proc.closeWriteChannel();
+        if (!proc.waitForFinished()) {
+            Q_EMIT error();
+            quit();
+        }
+
+        // Emit result; it will get queued for processing in the main thread
+        Q_EMIT svgFileRead(proc.readAll());
+    }
+
+    QProcess * process() {
+        return &proc;
+    }
+
+Q_SIGNALS:
+    void svgFileRead(const QByteArray & data);
+    void error();
+
+private:
+    QProcess proc;
+    QByteArray str;
+};
+
+}
+
+GraphvizView::GraphvizView(App::Document & _doc, QWidget* parent)
   : MDIView(0, parent)
+  , doc(_doc)
+  , nPending(0)
 {
+    // Create scene
     scene = new QGraphicsScene();
-    scene->addPixmap(p);
+
+    // Create item to hold the graph
+    svgItem = new QGraphicsSvgItem();
+    renderer = new QSvgRenderer(this);
+    svgItem->setSharedRenderer(renderer);
+    scene->addItem(svgItem);
+
+    // Create view and zoomer object
     view = new QGraphicsView(scene, this);
+    zoomer = new GraphicsViewZoom(view);
+    zoomer->set_modifiers(Qt::NoModifier);
     view->show();
+
+    // Set central widget to view
     setCentralWidget(view);
+
+    // Create worker thread
+    thread = new GraphvizWorker(this);
+    connect(thread, SIGNAL(finished()), this, SLOT(done()));
+    connect(thread, SIGNAL(error()), this, SLOT(error()));
+    connect(thread, SIGNAL(svgFileRead(const QByteArray &)), this, SLOT(svgFileRead(const QByteArray &)));
+
+    // Connect signal from document
+    recomputeConnection = _doc.signalRecomputed.connect(boost::bind(&GraphvizView::updateSvgItem, this, _1));
+    undoConnection = _doc.signalUndo.connect(boost::bind(&GraphvizView::updateSvgItem, this, _1));
+    redoConnection = _doc.signalRedo.connect(boost::bind(&GraphvizView::updateSvgItem, this, _1));
+
+    updateSvgItem(_doc);
 }
 
 GraphvizView::~GraphvizView()
@@ -58,10 +146,111 @@ GraphvizView::~GraphvizView()
     delete view;
 }
 
-void GraphvizView::setDependencyGraph(const std::string& s)
+void GraphvizView::updateSvgItem(const App::Document &doc)
 {
-    graphCode = s;
+    nPending++;
+
+    // Skip if thread is working now
+    if (nPending > 1)
+        return;
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Paths");
+    QProcess * proc = thread->process();
+    QStringList args;
+    args << QLatin1String("-Tsvg");
+#ifdef FC_OS_LINUX
+    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
+#else
+    QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
+#endif
+    bool pathChanged = false;
+#ifdef FC_OS_WIN32
+    QString exe = QString::fromAscii("\"%1/dot\"").arg(path);
+#else
+    QString exe = QString::fromAscii("%1/dot").arg(path);
+#endif
+    proc->setEnvironment(QProcess::systemEnvironment());
+    do {
+        proc->start(exe, args);
+        if (!proc->waitForStarted()) {
+            int ret = QMessageBox::warning(Gui::getMainWindow(),
+                                           qApp->translate("Std_ExportGraphviz","Graphviz not found"),
+                                           qApp->translate("Std_ExportGraphviz","Graphviz couldn't be found on your system.\n"
+                                                           "Do you want to specify its installation path if it's already installed?"),
+                                           QMessageBox::Yes, QMessageBox::No);
+            if (ret == QMessageBox::No) {
+                disconnectSignals();
+                return;
+            }
+            path = QFileDialog::getExistingDirectory(Gui::getMainWindow(),
+                                                     qApp->translate("Std_ExportGraphviz","Graphviz installation path"));
+            if (path.isEmpty()) {
+                disconnectSignals();
+                return;
+            }
+            pathChanged = true;
+#ifdef FC_OS_WIN32
+            exe = QString::fromAscii("\"%1/dot\"").arg(path);
+#else
+            exe = QString::fromAscii("%1/dot").arg(path);
+#endif
+        }
+        else {
+            if (pathChanged)
+                hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
+            break;
+        }
+    }
+    while(true);
+
+    // Create graph in dot format
+    std::stringstream stream;
+    doc.exportGraphviz(stream);
+    graphCode = stream.str();
+
+    // Update worker thread, and start it
+    thread->setData(QByteArray(graphCode.c_str(), graphCode.size()));
+    thread->start();
 }
+
+void GraphvizView::svgFileRead(const QByteArray & data)
+{
+    // Update renderer with new SVG file, and give message if something went wrong
+    if (renderer->load(data))
+        svgItem->setSharedRenderer(renderer);
+    else {
+        QMessageBox::warning(getMainWindow(),
+                             qApp->translate("Std_ExportGraphviz","Graphviz failed"),
+                             qApp->translate("Std_ExportGraphviz","Graphviz failed to create an image file"));
+        disconnectSignals();
+    }
+}
+
+void GraphvizView::error()
+{
+    // If the worker fails for some reason, stop giving it more data later
+    disconnectSignals();
+}
+
+void GraphvizView::done()
+{
+    nPending--;
+    if (nPending > 0) {
+        nPending = 0;
+        updateSvgItem(doc);
+        thread->start();
+    }
+}
+
+void GraphvizView::disconnectSignals()
+{
+    recomputeConnection.disconnect();
+    undoConnection.disconnect();
+    redoConnection.disconnect();
+}
+
+#include <QObject>
+#include <QGraphicsView>
 
 QByteArray GraphvizView::exportGraph(const QString& format)
 {
@@ -217,3 +406,4 @@ void GraphvizView::printPreview()
 }
 
 #include "moc_GraphvizView.cpp"
+#include "moc_GraphvizView-internal.cpp"

@@ -201,6 +201,7 @@ set(Gui_MOC_HDRS
     EditorView.h
     FileDialog.h
     Flag.h
+    GraphicsViewZoom.h
     GraphvizView.h
     GuiApplicationNativeEventAware.h
     HelpView.h
@@ -252,6 +253,12 @@ set(Gui_MOC_HDRS
 #qt4_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 #SOURCE_GROUP("Moc" FILES ${Gui_MOC_SRCS})
+
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
+    COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
+    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
+
+set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
 
 SET(Gui_UIC_SRCS
     AboutApplication.ui
@@ -915,6 +922,7 @@ SET(FreeCADGui_CPP_SRCS
     Document.cpp
     DocumentModel.cpp
     DocumentPyImp.cpp
+    GraphicsViewZoom.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
     Macro.cpp
@@ -934,6 +942,7 @@ SET(FreeCADGui_SRCS
     Document.h
     DocumentModel.h
     FreeCADGuiInit.py
+    GraphicsViewZoom.h
     GuiApplicationNativeEventAware.h
     GuiConsole.h
     InventorAll.h

@@ -129,6 +129,7 @@ public:
                         Base::XMLReader&)> signalImportObjects;
     boost::signal<void (const std::vector<App::DocumentObject*>&, Base::Reader&,
                         const std::map<std::string, std::string>&)> signalImportViewObjects;
+    boost::signal<void (const App::Document&)> signalRecomputed;
     //@}
 
     /** @name File handling of the document */
@@ -141,7 +142,7 @@ public:
     /// Restore the document from the file in Property Path
     void restore (void);
     void exportObjects(const std::vector<App::DocumentObject*>&, std::ostream&);
-    void exportGraphviz(std::ostream&);
+    void exportGraphviz(std::ostream&) const;
     std::vector<App::DocumentObject*> importObjects(Base::XMLReader& reader);
     /// Opens the document from its file name
     //void open (void);
