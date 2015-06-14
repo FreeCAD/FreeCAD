@@ -374,6 +374,33 @@ protected:
     bool isInitMove;
     bool isFine;
 
+public:
+    GCS::Algorithm defaultSolver;
+    GCS::Algorithm defaultSolverRedundant;
+    inline void setDebugMode(GCS::DebugMode mode) {debugMode=mode;GCSsys.debugMode=mode;}
+    inline GCS::DebugMode getDebugMode(void) {return debugMode;}
+    inline void setMaxIter(int maxiter){GCSsys.maxIter=maxiter;}
+    inline void setMaxIterRedundant(int maxiter){GCSsys.maxIterRedundant=maxiter;}
+    inline void setSketchSizeMultiplier(bool mult){GCSsys.sketchSizeMultiplier=mult;}
+    inline void setSketchSizeMultiplierRedundant(bool mult){GCSsys.sketchSizeMultiplierRedundant=mult;}
+    inline void setConvergence(double conv){GCSsys.convergence=conv;}
+    inline void setConvergenceRedundant(double conv){GCSsys.convergenceRedundant=conv;}
+    inline void setQRAlgorithm(GCS::QRAlgorithm alg){GCSsys.qrAlgorithm=alg;}
+    inline void setLM_eps(double val){GCSsys.LM_eps=val;}
+    inline void setLM_eps1(double val){GCSsys.LM_eps1=val;}
+    inline void setLM_tau(double val){GCSsys.LM_tau=val;}
+    inline void setDL_tolg(double val){GCSsys.DL_tolg=val;}
+    inline void setDL_tolx(double val){GCSsys.DL_tolx=val;}
+    inline void setDL_tolf(double val){GCSsys.DL_tolf=val;}
+    inline void setLM_epsRedundant(double val){GCSsys.LM_epsRedundant=val;}
+    inline void setLM_eps1Redundant(double val){GCSsys.LM_eps1Redundant=val;}
+    inline void setLM_tauRedundant(double val){GCSsys.LM_tauRedundant=val;}
+    inline void setDL_tolgRedundant(double val){GCSsys.DL_tolgRedundant=val;}
+    inline void setDL_tolxRedundant(double val){GCSsys.DL_tolxRedundant=val;}
+    inline void setDL_tolfRedundant(double val){GCSsys.DL_tolfRedundant=val;}
+    
+protected:
+    GCS::DebugMode debugMode;
 
 
 private:
