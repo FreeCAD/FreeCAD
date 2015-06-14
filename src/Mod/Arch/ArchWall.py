@@ -49,7 +49,6 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     _Wall(obj)
     if FreeCAD.GuiUp:
         _ViewProviderWall(obj.ViewObject)
-        obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Wall")
     if baseobj:
         obj.Base = baseobj
     if face:
@@ -487,6 +486,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.ShapeColor = ArchCommands.getDefaultColor("Wall")
 
     def getIcon(self):
         import Arch_rc

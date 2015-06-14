@@ -45,7 +45,6 @@ def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
     _Rebar(obj)
     if FreeCAD.GuiUp:
         _ViewProviderRebar(obj.ViewObject)
-        obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Rebar")
     if hasattr(sketch,"Support"):
         if sketch.Support:
             if isinstance(sketch.Support,tuple):
@@ -248,6 +247,7 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.ShapeColor = ArchCommands.getDefaultColor("Rebar")
 
     def getIcon(self):
         import Arch_rc

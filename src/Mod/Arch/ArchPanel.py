@@ -63,7 +63,6 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
         obj.Thickness = thickness
     if length:
         obj.Length = length
-    obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Panel")
     return obj
 
 
@@ -381,6 +380,7 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
+        vobj.ShapeColor = ArchCommands.getDefaultColor("Panel")
 
     def getIcon(self):
         import Arch_rc

@@ -781,6 +781,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             if obj.Shape:
                 if not obj.Shape.isNull():
                     self.colorize(obj)
+        ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
     def onChanged(self,vobj,prop):
         if (prop == "DiffuseColor") and vobj.Object:
@@ -788,6 +789,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 if vobj.Object.Shape:
                     if not vobj.Object.Shape.isNull():
                         self.colorize(vobj.Object)
+        ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
     def setEdit(self,vobj,mode):
         taskd = _ArchWindowTaskPanel()
@@ -811,10 +813,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
     def colorize(self,obj):
         "setting different part colors"
-        if hasattr(obj,"CloneOf"):
-            if obj.CloneOf:
-                obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
-                return
+        if not obj.WindowParts:
+            return
         solids = obj.Shape.copy().Solids
         #print "Colorizing ", solids
         colors = []

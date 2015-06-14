@@ -298,7 +298,6 @@ def makeStructure(baseobj=None,length=None,width=None,height=None,name="Structur
     _Structure(obj)
     if FreeCAD.GuiUp:
         _ViewProviderStructure(obj.ViewObject)
-        obj.ViewObject.ShapeColor = ArchCommands.getDefaultColor("Structure")
     if baseobj:
         obj.Base = baseobj
         if FreeCAD.GuiUp:
@@ -678,6 +677,7 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
         vobj.addProperty("App::PropertyColor","NodeColor","Base","The color of the nodes line")
         vobj.NodeColor = (1.0,1.0,1.0,1.0)
         vobj.NodeSize = 6
+        vobj.ShapeColor = ArchCommands.getDefaultColor("Structure")
 
     def getIcon(self):
         import Arch_rc
