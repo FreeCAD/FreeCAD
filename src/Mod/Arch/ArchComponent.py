@@ -667,6 +667,7 @@ class ViewProviderComponent:
         self.Object = vobj.Object
         
     def updateData(self,obj,prop):
+        #print obj.Name," : updating ",prop
         if prop == "BaseMaterial":
             if obj.BaseMaterial:
                 if 'Color' in obj.BaseMaterial.Material:
@@ -674,6 +675,19 @@ class ViewProviderComponent:
                         c = tuple([float(f) for f in obj.BaseMaterial.Material['Color'].strip("()").split(",")])
                         if obj.ViewObject:
                             obj.ViewObject.ShapeColor = c
+        elif prop == "Shape":
+            if obj.Base:
+                if obj.Base.isDerivedFrom("Part::Compound"):
+                    if obj.ViewObject.DiffuseColor != obj.Base.ViewObject.DiffuseColor:
+                        obj.ViewObject.DiffuseColor = obj.Base.ViewObject.DiffuseColor
+                        obj.ViewObject.update()
+            self.onChanged(obj.ViewObject,"ShapeColor")
+        elif prop == "CloneOf":
+            if obj.CloneOf:
+                if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
+                        obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
+                        obj.ViewObject.update()
+            self.onChanged(obj.ViewObject,"ShapeColor")
         return
         
     def getIcon(self):
@@ -681,10 +695,22 @@ class ViewProviderComponent:
         return ":/icons/Arch_Component.svg"
 
     def onChanged(self,vobj,prop):
+        #print vobj.Object.Name, " : changing ",prop
         if prop == "Visibility":
             for obj in vobj.Object.Additions+vobj.Object.Subtractions:
                 if (Draft.getType(obj) == "Window") or (Draft.isClone(obj,"Window",True)):
                     obj.ViewObject.Visibility = vobj.Visibility
+        elif prop == "DiffuseColor":
+            if hasattr(vobj.Object,"CloneOf"):
+                if vobj.Object.CloneOf:
+                    if vobj.DiffuseColor != vobj.Object.CloneOf.ViewObject.DiffuseColor:
+                        vobj.DiffuseColor = vobj.Object.CloneOf.ViewObject.DiffuseColor
+                        vobj.update()
+        elif prop == "ShapeColor":
+            # restore DiffuseColor after overridden by ShapeColor
+            if len(vobj.DiffuseColor) > 1:
+                d = vobj.DiffuseColor
+                vobj.DiffuseColor = d
         return
 
     def attach(self,vobj):
