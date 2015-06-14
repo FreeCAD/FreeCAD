@@ -24,17 +24,15 @@
 #define PLANEGCS_GCS_H
 
 #include "SubSystem.h"
+#include <boost/concept_check.hpp>
 
 namespace GCS
 {
     ///////////////////////////////////////
-    // BFGS Solver parameters
+    // Other BFGS Solver parameters
     ///////////////////////////////////////
     #define XconvergenceRough 1e-8
-    #define XconvergenceFine  1e-10
     #define smallF            1e-20
-    #define MaxIterations     100 //Note that the total number of iterations allowed is MaxIterations *xLength
-
 
     ///////////////////////////////////////
     // Solver
@@ -50,6 +48,17 @@ namespace GCS
         BFGS = 0,
         LevenbergMarquardt = 1,
         DogLeg = 2
+    };
+    
+    enum QRAlgorithm {
+        EigenDenseQR = 0,
+        EigenSparseQR = 1
+    };
+    
+    enum DebugMode {
+        NoDebug = 0,
+        Minimal = 1,
+        IterationLevel = 2
     };
 
     class System
@@ -83,9 +92,31 @@ namespace GCS
         bool hasDiagnosis; // if dofs, conflictingTags, redundantTags are up to date
         bool isInit;       // if plists, clists, reductionmaps are up to date
 
-        int solve_BFGS(SubSystem *subsys, bool isFine);
-        int solve_LM(SubSystem *subsys);
-        int solve_DL(SubSystem *subsys);
+        int solve_BFGS(SubSystem *subsys, bool isFine=true, bool isRedundantsolving=false);
+        int solve_LM(SubSystem *subsys, bool isRedundantsolving=false);
+        int solve_DL(SubSystem *subsys, bool isRedundantsolving=false);
+    public:
+        int maxIter;
+        int maxIterRedundant;
+        bool sketchSizeMultiplier; // if true note that the total number of iterations allowed is MaxIterations *xLength
+        bool sketchSizeMultiplierRedundant;
+        double convergence;
+        double convergenceRedundant;
+        QRAlgorithm qrAlgorithm;
+        DebugMode debugMode;
+        double LM_eps;
+        double LM_eps1;          
+        double LM_tau;
+        double DL_tolg;
+        double DL_tolx;          
+        double DL_tolf;
+        double LM_epsRedundant;
+        double LM_eps1Redundant;          
+        double LM_tauRedundant;
+        double DL_tolgRedundant;
+        double DL_tolxRedundant;          
+        double DL_tolfRedundant;        
+    
     public:
         System();
         /*System(std::vector<Constraint *> clist_);*/
@@ -192,19 +223,22 @@ namespace GCS
         void rescaleConstraint(int id, double coeff);
 
         void declareUnknowns(VEC_pD &params);
-        void initSolution();
+        void initSolution(Algorithm alg=DogLeg);
 
-        int solve(bool isFine=true, Algorithm alg=DogLeg);
-        int solve(VEC_pD &params, bool isFine=true, Algorithm alg=DogLeg);
-        int solve(SubSystem *subsys, bool isFine=true, Algorithm alg=DogLeg);
-        int solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine=true);
+        int solve(bool isFine=true, Algorithm alg=DogLeg, bool isRedundantsolving=false);
+        int solve(VEC_pD &params, bool isFine=true, Algorithm alg=DogLeg, bool isRedundantsolving=false);
+        int solve(SubSystem *subsys, bool isFine=true, Algorithm alg=DogLeg, bool isRedundantsolving=false);
+        int solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine=true, bool isRedundantsolving=false);
 
         void applySolution();
         void undoSolution();
+        //FIXME: looks like XconvergenceFine is not the solver precision, at least in DogLeg solver.
+        // Note: Yes, every solver has a different way of interpreting precision
+        // but one has to study what is this needed for in order to decide
+        // what to return (this is unchanged from previous versions)
+        double getFinePrecision(){ return convergence;}
 
-        double getFinePrecision(){ return XconvergenceFine;}//FIXME: looks like XconvergenceFine is not the solver precision, at least in DogLeg slover.
-
-        int diagnose();
+        int diagnose(Algorithm alg=DogLeg);
         int dofsNumber() { return hasDiagnosis ? dofs : -1; }
         void getConflicting(VEC_I &conflictingOut) const
           { conflictingOut = hasDiagnosis ? conflictingTags : VEC_I(0); }

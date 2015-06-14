@@ -47,11 +47,25 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     Elements = new TaskSketcherElements(sketchView);
     General  = new TaskSketcherGeneral(sketchView);
     Messages  = new TaskSketcherMessages(sketchView);
+    SolverAdvanced = new TaskSketcherSolverAdvanced(sketchView);
 
     Content.push_back(Messages);
+    Content.push_back(SolverAdvanced);
     Content.push_back(General);
     Content.push_back(Constraints);
     Content.push_back(Elements);
+    
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    if( !hGrp->GetBool("ShowMessagesWidget",true))
+        Messages->hideGroupBox();
+    if( !hGrp->GetBool("ShowSolverAdvancedWidget",false))
+        SolverAdvanced->hideGroupBox();    
+    if( !hGrp->GetBool("ShowEditControlWidget",false))
+        General->hideGroupBox();
+    if( !hGrp->GetBool("ShowConstraintsWidget",true))
+        Constraints->hideGroupBox();  
+    if( !hGrp->GetBool("ShowElementsWidget",true))
+        Elements->hideGroupBox();     
 
     App::Document* document = sketchView->getObject()->getDocument();
     connectUndoDocument =
@@ -90,12 +104,19 @@ void TaskDlgEditSketch::clicked(int)
 }
 
 bool TaskDlgEditSketch::accept()
-{
+{    
     return true;
 }
 
 bool TaskDlgEditSketch::reject()
 {
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    hGrp->SetBool("ShowMessagesWidget",Messages->isGroupVisible());
+    hGrp->SetBool("ShowSolverAdvancedWidget",SolverAdvanced->isGroupVisible());
+    hGrp->SetBool("ShowEditControlWidget",General->isGroupVisible());
+    hGrp->SetBool("ShowConstraintsWidget",Constraints->isGroupVisible());
+    hGrp->SetBool("ShowElementsWidget",Elements->isGroupVisible());
+    
     std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').resetEdit()", document.c_str());
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').recompute()", document.c_str());
