@@ -209,20 +209,20 @@ public:
     void validateConstraints();
     
     /// gets DoF of last solver execution
-    int getLastDoF() {return lastDoF;}
+    int getLastDoF() const {return lastDoF;}
     /// gets HasConflicts status of last solver execution
-    bool getLastHasConflicts() {return lastHasConflict;}
+    bool getLastHasConflicts() const {return lastHasConflict;}
     /// gets HasRedundancies status of last solver execution
-    bool getLastHasRedundancies() {return lastHasRedundancies;}
+    bool getLastHasRedundancies() const {return lastHasRedundancies;}
     /// gets solver status of last solver execution
-    int getLastSolverStatus() {return lastSolverStatus;}
+    int getLastSolverStatus() const {return lastSolverStatus;}
     /// gets solver SolveTime of last solver execution
-    float getLastSolveTime() {return lastSolveTime;}
+    float getLastSolveTime() const {return lastSolveTime;}
     /// gets the conflicting constraints of the last solver execution
     const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
     /// gets the redundant constraints of last solver execution
     const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
-    
+
     Sketch &getSolvedSketch(void) {return solvedSketch;}
 
 protected:
