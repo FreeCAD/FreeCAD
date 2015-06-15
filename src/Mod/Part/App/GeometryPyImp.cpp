@@ -183,6 +183,33 @@ PyObject* GeometryPy::translate(PyObject *args)
     return 0;
 }
 
+PyObject* GeometryPy::copy(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    Part::Geometry* geom = this->getGeometryPtr();
+    PyTypeObject* type = this->GetType();
+    PyObject* cpy = 0;
+    // let the type object decide
+    if (type->tp_new)
+        cpy = type->tp_new(type, this, 0);
+    if (!cpy) {
+        PyErr_SetString(PyExc_TypeError, "failed to create copy of geometry");
+        return 0;
+    }
+
+    Part::GeometryPy* geompy = static_cast<Part::GeometryPy*>(cpy);
+    // the PyMake function must have created the corresponding instance of the 'Geometry' subclass
+    // so delete it now to avoid a memory leak
+    if (geompy->_pcTwinPointer) {
+        Part::Geometry* clone = static_cast<Part::Geometry*>(geompy->_pcTwinPointer);
+        delete clone;
+    }
+    geompy->_pcTwinPointer = geom->clone();
+    return cpy;
+}
+
 Py::Boolean GeometryPy::getConstruction(void) const
 {
     return Py::Boolean(getGeometryPtr()->Construction);
