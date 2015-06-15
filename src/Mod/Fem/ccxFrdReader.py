@@ -134,6 +134,7 @@ def importFrd(filename, Analysis=None):
             AnalysisObject.Label = AnalysisName
         else:
             AnalysisObject = Analysis
+        results = FreeCAD.ActiveDocument.addObject('Fem::FemResultObject', 'Results')
 
         if ('Tet10Elem' in m) and ('Nodes' in m) and (not Analysis):
             mesh = Fem.FemMesh()
@@ -153,17 +154,13 @@ def importFrd(filename, Analysis=None):
         if 'Displacement' in m:
             disp = m['Displacement']
             if len(disp) > 0:
-                o = FreeCAD.ActiveDocument.addObject('Fem::FemResultVector', 'Displacement')
-                o.Values = disp.values()
-                o.DataType = 'Displacement'
-                o.ElementNumbers = disp.keys()
+                results.DisplacementVectors = disp.values()
+                results.ElementNumbers = disp.keys()
                 if(MeshObject):
-                    o.Mesh = MeshObject
-                AnalysisObject.Member = AnalysisObject.Member + [o]
+                    results.Mesh = MeshObject
         if 'Stress' in m:
             stress = m['Stress']
             if len(stress) > 0:
-                o = FreeCAD.ActiveDocument.addObject('Fem::FemResultValue', 'MisesStress')
                 for i in stress.values():
                     # Von mises stress (http://en.wikipedia.org/wiki/Von_Mises_yield_criterion)
                     s11 = i[0]
@@ -178,12 +175,12 @@ def importFrd(filename, Analysis=None):
                     s12s23s31 = 6 * (pow(s12, 2) + pow(s23, 2) * pow(s31, 2))
                     mstress.append(sqrt(0.5 * (s11s22 + s22s33 + s33s11 + s12s23s31)))
 
-                o.Values = mstress
-                o.DataType = 'VonMisesStress'
-                o.ElementNumbers = stress.keys()
+                results.StressValues = mstress
+                if (results.ElementNumbers != 0 and results.ElementNumbers != stress.keys()):
+                    print "Inconsistent FEM results: element number for Stress doesn't equal element number for Displacement"
+                    results.ElementNumbers = stress.keys()
                 if(MeshObject):
-                    o.Mesh = MeshObject
-                AnalysisObject.Member = AnalysisObject.Member + [o]
+                    results.Mesh = MeshObject
 
         l = len(displacement)
         x_max, y_max, z_max = map(max, zip(*displacement))
@@ -196,18 +193,16 @@ def importFrd(filename, Analysis=None):
         disp_abs = []
         for d in displacement:
             disp_abs.append(sqrt(pow(d[0], 2) + pow(d[1], 2) + pow(d[2], 2)))
+        results.DisplacementLengths = disp_abs
         a_max = max(disp_abs)
         a_min = min(disp_abs)
         a_avg = sum(disp_abs) / l
-        stats = FreeCAD.ActiveDocument.addObject('Fem::FemResultValue', 'AnalysisStats')
-        stats.Values = [x_min, x_avg, x_max,
-                        y_min, y_avg, y_max,
-                        z_min, z_avg, z_max,
-                        a_min, a_avg, a_max,
-                        s_min, s_avg, s_max]
-        stats.DataType = 'AnalysisStats'
-        stats.ElementNumbers = len(stats.Values)
-        AnalysisObject.Member = AnalysisObject.Member + [stats]
+        results.Stats = [x_min, x_avg, x_max,
+                         y_min, y_avg, y_max,
+                         z_min, z_avg, z_max,
+                         a_min, a_avg, a_max,
+                         s_min, s_avg, s_max]
+        AnalysisObject.Member = AnalysisObject.Member + [results]
 
         if(FreeCAD.GuiUp):
             import FemGui
