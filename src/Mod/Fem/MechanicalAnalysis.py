@@ -153,18 +153,12 @@ class _CommandMechanicalShowResult:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ResultDisplacement", "Show result information of an analysis")}
 
     def Activated(self):
-        DisplacementObject = None
+        self.result_object = None
         for i in FemGui.getActiveAnalysis().Member:
-            if i.isDerivedFrom("Fem::FemResultVector"):
-                if i.DataType == 'Displacement':
-                    DisplacementObject = i
-        StressObject = None
-        for i in FemGui.getActiveAnalysis().Member:
-            if i.isDerivedFrom("Fem::FemResultValue"):
-                if i.DataType == 'VonMisesStress':
-                    StressObject = i
+            if i.isDerivedFrom("Fem::FemResultObject"):
+                self.result_object = i
 
-        if not DisplacementObject and not StressObject:
+        if not self.result_object:
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
             return
 
@@ -515,8 +509,6 @@ class _ResultControlTaskPanel:
         QtCore.QObject.connect(self.form.sb_displacement_factor, QtCore.SIGNAL("valueChanged(int)"), self.sb_disp_factor_changed)
         QtCore.QObject.connect(self.form.sb_displacement_factor_max, QtCore.SIGNAL("valueChanged(int)"), self.sb_disp_factor_max_changed)
 
-        self.DisplacementObject = None
-        self.StressObject = None
         self.update()
         self.restore_result_dialog()
 
@@ -563,15 +555,14 @@ class _ResultControlTaskPanel:
         if analysis is None:
             analysis = FemGui.getActiveAnalysis()
         for i in analysis.Member:
-            if i.isDerivedFrom("Fem::FemResultValue"):
-                if i.DataType == 'AnalysisStats':
-                    match_table = {"U1": (i.Values[0], i.Values[1], i.Values[2]),
-                                   "U2": (i.Values[3], i.Values[4], i.Values[5]),
-                                   "U3": (i.Values[6], i.Values[7], i.Values[8]),
-                                   "Uabs": (i.Values[9], i.Values[10], i.Values[11]),
-                                   "Sabs": (i.Values[12], i.Values[13], i.Values[14]),
-                                   "None": (0.0, 0.0, 0.0)}
-                    return match_table[type_name]
+            if (i.isDerivedFrom("Fem::FemResultObject")) and ("Stats" in i.PropertiesList):
+                match_table = {"U1": (i.Stats[0], i.Stats[1], i.Stats[2]),
+                               "U2": (i.Stats[3], i.Stats[4], i.Stats[5]),
+                               "U3": (i.Stats[6], i.Stats[7], i.Stats[8]),
+                               "Uabs": (i.Stats[9], i.Stats[10], i.Stats[11]),
+                               "Sabs": (i.Stats[12], i.Stats[13], i.Stats[14]),
+                               "None": (0.0, 0.0, 0.0)}
+                return match_table[type_name]
         return (0.0, 0.0, 0.0)
 
     def none_selected(self, state):
@@ -598,20 +589,21 @@ class _ResultControlTaskPanel:
     def vm_stress_selected(self, state):
         FreeCAD.FEM_dialog["results_type"] = "Sabs"
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        (minm, avg, maxm) = (0.0, 0.0, 0.0)
-        if self.StressObject:
-            self.MeshObject.ViewObject.setNodeColorByResult(self.StressObject)
-            (minm, avg, maxm) = self.get_result_stats("Sabs")
+        self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.StressValues)
+        (minm, avg, maxm) = self.get_result_stats("Sabs")
         self.set_result_stats("MPa", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
 
     def select_displacement_type(self, disp_type):
         QApplication.setOverrideCursor(Qt.WaitCursor)
-        (minm, avg, maxm) = (0.0, 0.0, 0.0)
-        if self.DisplacementObject:
-            match = {"Uabs": 0, "U1": 1, "U2": 2, "U3": 3}
-            self.MeshObject.ViewObject.setNodeColorByResult(self.DisplacementObject, match[disp_type])
-            (minm, avg, maxm) = self.get_result_stats(disp_type)
+        if disp_type == "Uabs":
+            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, self.result_object.DisplacementLengths)
+        else:
+            match = {"U1": 0, "U2": 1, "U3": 2}
+            d = zip(*self.result_object.DisplacementVectors)
+            displacements = list(d[match[disp_type]])
+            self.MeshObject.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, displacements)
+        (minm, avg, maxm) = self.get_result_stats(disp_type)
         self.set_result_stats("mm", minm, avg, maxm)
         QtGui.qApp.restoreOverrideCursor()
 
@@ -629,7 +621,7 @@ class _ResultControlTaskPanel:
         factor = 0.0
         if checked:
             factor = self.form.hsb_displacement_factor.value()
-        self.MeshObject.ViewObject.setNodeDisplacementByResult(self.DisplacementObject)
+        self.MeshObject.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers, self.result_object.DisplacementVectors)
         self.MeshObject.ViewObject.applyDisplacement(factor)
         QtGui.qApp.restoreOverrideCursor()
 
@@ -650,12 +642,8 @@ class _ResultControlTaskPanel:
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemMeshObject"):
                 self.MeshObject = i
-            elif i.isDerivedFrom("Fem::FemResultVector"):
-                if i.DataType == 'Displacement':
-                    self.DisplacementObject = i
-            elif i.isDerivedFrom("Fem::FemResultValue"):
-                if i.DataType == 'VonMisesStress':
-                    self.StressObject = i
+            elif i.isDerivedFrom('Fem::FemResultObject'):
+                self.result_object = i
 
     def accept(self):
         FreeCADGui.Control.closeDialog()
@@ -670,9 +658,7 @@ def results_present():
     results = False
     analysis_members = FemGui.getActiveAnalysis().Member
     for o in analysis_members:
-        if o.isDerivedFrom('Fem::FemResultVector'):
-            results = True
-        elif o.isDerivedFrom("Fem::FemResultValue") and o.DataType == 'VonMisesStress':
+        if o.isDerivedFrom('Fem::FemResultObject'):
             results = True
     return results
 
@@ -683,9 +669,7 @@ def purge_fem_results(Analysis=None):
     else:
         analysis_members = FemGui.Analysis().Member
     for o in analysis_members:
-        if (o.isDerivedFrom('Fem::FemResultVector') or
-           (o.isDerivedFrom("Fem::FemResultValue") and o.DataType == 'VonMisesStress') or
-           (o.isDerivedFrom("Fem::FemResultValue") and o.DataType == 'AnalysisStats')):
+        if o.isDerivedFrom("Fem::FemResultObject"):
             FreeCAD.ActiveDocument.removeObject(o.Name)
 
 
@@ -696,7 +680,7 @@ def reset_mesh_color(mesh=None):
                 mesh = i
     mesh.ViewObject.NodeColor = {}
     mesh.ViewObject.ElementColor = {}
-    mesh.ViewObject.setNodeColorByResult()
+    mesh.ViewObject.setNodeColorByScalars()
 
 
 def reset_mesh_deformation(mesh=None):

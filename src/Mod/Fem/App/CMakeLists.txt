@@ -131,10 +131,6 @@ SET(FemConstraints_SRCS
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
 SET(FemResult_SRCS
-    FemResultValue.cpp
-    FemResultValue.h
-    FemResultVector.cpp
-    FemResultVector.h
 	)
 SOURCE_GROUP("ResultObjects" FILES ${FemResult_SRCS})
 

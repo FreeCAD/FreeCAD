@@ -20,12 +20,12 @@
         <UserDocu></UserDocu>
       </Documentation>
     </Methode>
-      <Methode Name="setNodeColorByResult">
+      <Methode Name="setNodeColorByScalars">
           <Documentation>
-              <UserDocu></UserDocu>
+              <UserDocu>Sets mesh node colors using element list and value list.</UserDocu>
           </Documentation>
       </Methode>
-      <Methode Name="setNodeDisplacementByResult">
+      <Methode Name="setNodeDisplacementByVectors">
           <Documentation>
               <UserDocu></UserDocu>
           </Documentation>
