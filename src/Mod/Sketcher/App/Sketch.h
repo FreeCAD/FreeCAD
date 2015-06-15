@@ -316,8 +316,8 @@ public:
     double calculateConstraintError(int icstr) { return GCSsys.calculateConstraintErrorByTag(icstr);}
     
     /// Returns the size of the Geometry
-    int getGeometrySize(void) {return Geoms.size();}
-    
+    int getGeometrySize(void) const {return Geoms.size();}
+
     enum GeoType {
         None    = 0,
         Point   = 1, // 1 Point(start), 2 Parameters(x,y)
