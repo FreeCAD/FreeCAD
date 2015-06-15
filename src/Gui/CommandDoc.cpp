@@ -539,6 +539,39 @@ bool StdCmdSaveAs::isActive(void)
 }
 
 //===========================================================================
+// Std_Revert
+//===========================================================================
+DEF_STD_CMD_A(StdCmdRevert);
+
+StdCmdRevert::StdCmdRevert()
+  :Command("Std_Revert")
+{
+  sGroup        = QT_TR_NOOP("File");
+  sMenuText     = QT_TR_NOOP("Revert");
+  sToolTipText  = QT_TR_NOOP("Reverts to the saved version of this file");
+  sWhatsThis    = "Std_Revert";
+  sStatusTip    = QT_TR_NOOP("Reverts to the saved version of this file");
+}
+
+void StdCmdRevert::activated(int iMsg)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    QMessageBox msgBox;
+    msgBox.setText(qApp->translate("Std_Revert","This will discard all the changes since last file save."));
+    msgBox.setInformativeText(qApp->translate("Std_Revert","Are you sure?"));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Cancel);
+    int ret = msgBox.exec();
+    if (ret == QMessageBox::Yes)
+        doCommand(Command::App,"App.ActiveDocument.restore()");
+}
+
+bool StdCmdRevert::isActive(void)
+{
+  return ( getActiveGuiDocument() ? true : false );
+}
+
+//===========================================================================
 // Std_ProjectInfo
 //===========================================================================
 
@@ -1357,6 +1390,7 @@ void CreateDocCommands(void)
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());
+    rcCmdMgr.addCommand(new StdCmdRevert());
     rcCmdMgr.addCommand(new StdCmdProjectInfo());
     rcCmdMgr.addCommand(new StdCmdProjectUtil());
     rcCmdMgr.addCommand(new StdCmdUndo());
