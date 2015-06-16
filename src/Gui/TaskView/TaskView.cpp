@@ -191,6 +191,11 @@ void TaskBox::hideGroupBox()
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
+bool TaskBox::isGroupVisible() const
+{
+    return myGroup->isVisible();
+}
+
 void TaskBox::actionEvent (QActionEvent* e)
 {
     QAction *action = e->action();

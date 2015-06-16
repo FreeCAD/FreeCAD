@@ -78,6 +78,7 @@ public:
     TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent);
     ~TaskBox();
     void hideGroupBox();
+    bool isGroupVisible() const;
 
 protected:
     void showEvent(QShowEvent*);
