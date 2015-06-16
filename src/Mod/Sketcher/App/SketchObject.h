@@ -209,21 +209,21 @@ public:
     void validateConstraints();
     
     /// gets DoF of last solver execution
-    int getLastDoF() const {return lastDoF;}
+    inline int getLastDoF() const {return lastDoF;}
     /// gets HasConflicts status of last solver execution
-    bool getLastHasConflicts() const {return lastHasConflict;}
+    inline bool getLastHasConflicts() const {return lastHasConflict;}
     /// gets HasRedundancies status of last solver execution
-    bool getLastHasRedundancies() const {return lastHasRedundancies;}
+    inline bool getLastHasRedundancies() const {return lastHasRedundancies;}
     /// gets solver status of last solver execution
-    int getLastSolverStatus() const {return lastSolverStatus;}
+    inline int getLastSolverStatus() const {return lastSolverStatus;}
     /// gets solver SolveTime of last solver execution
-    float getLastSolveTime() const {return lastSolveTime;}
+    inline float getLastSolveTime() const {return lastSolveTime;}
     /// gets the conflicting constraints of the last solver execution
-    const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
+    inline const std::vector<int> &getLastConflicting(void) const { return lastConflicting; }
     /// gets the redundant constraints of last solver execution
-    const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
-
-    Sketch &getSolvedSketch(void) {return solvedSketch;}
+    inline const std::vector<int> &getLastRedundant(void) const { return lastRedundant; }
+    /// gets the solved sketch as a reference
+    inline Sketch &getSolvedSketch(void) {return solvedSketch;}
 
 protected:
     /// get called by the container when a property has changed
