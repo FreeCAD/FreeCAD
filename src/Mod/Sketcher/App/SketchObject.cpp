@@ -1887,6 +1887,7 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
         return -1;
     }
 
+    solverNeedsUpdate=true;
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     return ExternalGeometry.getValues().size()-1;
@@ -1938,7 +1939,8 @@ int SketchObject::delExternal(int ExtGeoId)
         ExternalGeometry.setValues(originalObjects,originalSubElements);
         return -1;
     }
-
+    
+    solverNeedsUpdate=true;
     Constraints.setValues(newConstraints);
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
