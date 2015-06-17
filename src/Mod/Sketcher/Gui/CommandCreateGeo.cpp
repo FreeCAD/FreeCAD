@@ -4545,6 +4545,14 @@ public:
                 
                     if(autoRecompute)
                         Gui::Command::updateActive();
+                    else {
+                        // adding external geometry does not require a solve() per se (the DoF is the same), 
+                        // however a solve is required to update the amount of solver geometry, because we only
+                        // redraw a changed Sketch if the solver geometry amount is the same as the SkethObject
+                        // geometry amount (as this avoids other issues).
+                        // This solver is a very low cost one anyway (there is actually nothing to solve).
+                        static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                    }
                     
                     Gui::Selection().clearSelection();
                 /* this is ok not to call to purgeHandler
