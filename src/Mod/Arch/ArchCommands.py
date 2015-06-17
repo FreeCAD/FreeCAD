@@ -358,6 +358,8 @@ def getCutVolume(cutplane,shapes):
     from the given shapes and the given cutting plane"""
     if not shapes:
         return None,None,None
+    if not cutplane.Faces:
+        return None,None,None
     import Part
     if not isinstance(shapes,list):
         shapes = [shapes]
