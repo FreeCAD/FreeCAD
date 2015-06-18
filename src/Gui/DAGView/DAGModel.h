@@ -25,6 +25,7 @@
 
 #include <memory>
 #include <vector>
+#include <bitset>
 
 #include <boost/signal.hpp>
 #include <boost/multi_index_container.hpp>
@@ -38,8 +39,10 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QBrush>
+#include <QLineEdit>
 
 class QGraphicsSceneHoverEvent;
+class QGraphicsProxyWidget;
 
 namespace App{class DocumentObject;}
 
@@ -51,6 +54,18 @@ namespace Gui
   
   namespace DAG
   {
+    class LineEdit : public QLineEdit
+    {
+    Q_OBJECT
+    public:
+      LineEdit(QWidget *parentIn = 0);
+    Q_SIGNALS:
+      void acceptedSignal();
+      void rejectedSignal();
+    protected:
+    virtual void keyPressEvent(QKeyEvent*);
+    };
+    
     /*all right I give up! the parenting combined with the zvalues is fubar!
      * you can't control any kind of layering between children of separate parents
      */
@@ -62,12 +77,16 @@ namespace Gui
       void setPreselectionBrush(const QBrush &brushIn){preSelectionBrush = brushIn;}
       void setSelectionBrush(const QBrush &brushIn){selectionBrush = brushIn;}
       void setBothBrush(const QBrush &brushIn){bothBrush = brushIn;}
+      void setEditingBrush(const QBrush &brushIn){editBrush = brushIn;}
       void preHighlightOn(){preSelected = true;}
       void preHighlightOff(){preSelected = false;}
       void selectionOn(){selected = true;}
       void selectionOff(){selected = false;}
       bool isSelected(){return selected;}
       bool isPreSelected(){return preSelected;}
+      void editingStart(){editing = true;}
+      void editingFinished(){editing = false;}
+      bool isEditing(){return editing;}
     protected:
       virtual void paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget = 0);
     private:
@@ -75,17 +94,31 @@ namespace Gui
       QBrush selectionBrush; //!< brush used when selected.
       QBrush preSelectionBrush; //!< brush used when pre selected.
       QBrush bothBrush; //!< brush for when both selected and preSelected.
+      QBrush editBrush; //!< brush used when object is in edit mode.
       //start with booleans, may expand to state.
       bool selected;
       bool preSelected;
+      bool editing;
     };
     
     enum class VisibilityState
     {
       None = 0, //<! not determined.
       On, //<! shown
-      Off, //<! hidden
+      Off //<! hidden
     };
+    
+    enum class FeatureState
+    {
+      None = 0, //<! not determined.
+      Pass,     //<! feature updated ok.
+      Fail     //<! feature failed to update.
+    };
+    
+    //limit of column width? boost::dynamic_bitset?
+    //did a trial run with this set at 4096, not much difference.
+    //going to leave a big number by default and see how it goes.
+    typedef std::bitset<1024> ColumnMask;
     
     /*! @brief Graph vertex information
    *
@@ -96,14 +129,16 @@ namespace Gui
       VertexProperty();
       std::shared_ptr<ViewEntryRectItem> rectangle; //!< background
       std::shared_ptr<QGraphicsEllipseItem> point; //!< point
+      std::shared_ptr<QGraphicsPixmapItem> visibleIcon; //!< visible Icon
+      std::shared_ptr<QGraphicsPixmapItem> stateIcon; //!< visible Icon
       std::shared_ptr<QGraphicsPixmapItem> icon; //!< icon
       std::shared_ptr<QGraphicsTextItem> text; //!< text
       int row; //!< row for this entry.
-      int column; //!< column number containing the point.
-      int colorIndex; //!< index in forground brushes
+      //TODO remove 64 column limit. Maybe boost dynamic bitset?
+      ColumnMask column; //!< column number containing the point.
+      int topoSortIndex;
       VisibilityState lastVisibleState; //!< visibility test.
-      QPixmap pixmapEnabled;
-      QPixmap pixmapDisabled;
+      FeatureState lastFeatureState;
     };
     /*! @brief boost data for each vertex.
      *
@@ -121,7 +156,7 @@ namespace Gui
     */
     struct EdgeProperty
     {
-      //! Feature relation meta data.
+      //! Feature relation meta data. Not used right now.
       enum class BranchTag
       {
         None = 0,       //!< not defined.
@@ -293,9 +328,16 @@ namespace Gui
     protected:
       virtual void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
       virtual void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+      virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) override;
+      virtual void contextMenuEvent(QGraphicsSceneContextMenuEvent* event) override;
       
     private Q_SLOTS:
       void updateSlot();
+      void onRenameSlot();
+      void renameAcceptedSlot();
+      void renameRejectedSlot();
+      void editingStartSlot();
+      void editingFinishedSlot();
       
     private:
       Model(){}
@@ -313,6 +355,8 @@ namespace Gui
       void slotNewObject(const Gui::ViewProviderDocumentObject &VPDObjectIn);
       void slotDeleteObject(const Gui::ViewProviderDocumentObject &VPDObjectIn);
       void slotChangeObject(const Gui::ViewProviderDocumentObject &VPDObjectIn, const App::Property& propertyIn);
+      void slotInEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
+      void slotResetEdit(const Gui::ViewProviderDocumentObject &VPDObjectIn);
       
       std::shared_ptr<GraphLinkContainer> graphLink;
       std::shared_ptr<Graph> theGraph;
@@ -327,7 +371,7 @@ namespace Gui
       
       void indexVerticesEdges();
       void removeAllItems();
-      void updateVisible();
+      void updateStates();
       
       ViewEntryRectItem* getRectFromPosition(const QPointF &position); //!< can be nullptr
       
@@ -339,14 +383,37 @@ namespace Gui
       float iconSize;                             //!< size of icon to match font.
       float pointSize;                            //!< size of the connection point.
       float pointSpacing;                         //!< spacing between pofloat columns.
-      float pointToIcon;                          //!< spacing from last column points to icon.
+      float pointToIcon;                          //!< spacing from last column points to first icon.
+      float iconToIcon;                           //!< spacing between icons.
+      float iconToText;                           //!< spacing between last icon and text.
       float rowPadding;                           //!< spaces added to rectangle bacground width ends.
-      std::vector<QBrush> backgroundBrushes;    //!< brushes to paint background rectangles.
-      std::vector<QBrush> forgroundBrushes;     //!< brushes to paint points, connectors, text.
+      std::vector<QBrush> backgroundBrushes;      //!< brushes to paint background rectangles.
+      std::vector<QBrush> forgroundBrushes;       //!< brushes to paint points, connectors, text.
       void setupViewConstants();
     //@}
       
       ViewEntryRectItem *currentPrehighlight;
+      
+      enum class SelectionMode
+      {
+        Single,
+        Multiple
+      };
+      SelectionMode selectionMode;
+      std::vector<Vertex> getAllSelected();
+      
+      QPointF lastPick;
+      bool lastPickValid = false;
+      
+      QPixmap visiblePixmapEnabled;
+      QPixmap visiblePixmapDisabled;
+      QPixmap passPixmap;
+      QPixmap failPixmap;
+      
+      QAction *renameAction;
+      QAction *editingFinishedAction;
+      QGraphicsProxyWidget *proxy = nullptr;
+      void finishRename();
     };
   }
 }

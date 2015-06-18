@@ -26,7 +26,6 @@
 #include <boost/bind.hpp>
 #include <boost/graph/topological_sort.hpp>
 
-#include <QAbstractEventDispatcher>
 #include <QApplication>
 #include <QString>
 #include <QGraphicsTextItem>
@@ -34,11 +33,17 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsRectItem>
 #include <QGraphicsSceneHoverEvent>
+#include <QGraphicsProxyWidget>
 #include <QPen>
 #include <QBrush>
 #include <QColor>
 #include <QPainter>
+#include <QKeyEvent>
+#include <QMenu>
+#include <QTimer>
 #endif
+
+#include <QAbstractEventDispatcher>
 
 #include <deque>
 #include <unordered_set>
@@ -48,16 +53,47 @@
 #include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/Selection.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/MenuManager.h>
+#include <Gui/MainWindow.h>
 
 #include "DAGModel.h"
 
 using namespace Gui;
 using namespace DAG;
 
+LineEdit::LineEdit(QWidget* parentIn): QLineEdit(parentIn)
+{
+
+}
+
+void LineEdit::keyPressEvent(QKeyEvent *eventIn)
+{
+  if (eventIn->key() == Qt::Key_Escape)
+  {
+    Q_EMIT rejectedSignal();
+    eventIn->accept();
+    return;
+  }
+  if (
+    (eventIn->key() == Qt::Key_Enter) ||
+    (eventIn->key() == Qt::Key_Return)
+  )
+  {
+    Q_EMIT acceptedSignal();
+    eventIn->accept();
+    return;
+  }
+  
+  QLineEdit::keyPressEvent(eventIn);
+}
+
+
 ViewEntryRectItem::ViewEntryRectItem(QGraphicsItem* parent) : QGraphicsRectItem(parent)
 {
   selected = false;
   preSelected = false;
+  editing = false;
 }
 
 //I dont think I should have to call invalidate
@@ -81,6 +117,8 @@ void ViewEntryRectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*
     brush = preSelectionBrush;
   if (selected && preSelected)
     brush = bothBrush;
+  if (editing)
+    brush = editBrush;
   
   //heights are negative.
   float radius = std::min(this->rect().width(), std::fabs(this->rect().height())) * 0.1;
@@ -94,11 +132,12 @@ void ViewEntryRectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem*
 VertexProperty::VertexProperty() : 
   rectangle(new ViewEntryRectItem()),
   point(new QGraphicsEllipseItem()), 
+  visibleIcon(new QGraphicsPixmapItem()),
+  stateIcon(new QGraphicsPixmapItem()),
   icon(new QGraphicsPixmapItem()),
   text(new QGraphicsTextItem()),
   row(0),
   column(0),
-  colorIndex(0),
   lastVisibleState(VisibilityState::None)
 {
   //All flags are disabled by default.
@@ -107,6 +146,8 @@ VertexProperty::VertexProperty() :
   //set z values.
   this->rectangle->setZValue(-1000.0);
   this->point->setZValue(1000.0);
+  this->visibleIcon->setZValue(0.0);
+  this->stateIcon->setZValue(0.0);
   this->icon->setZValue(0.0);
   this->text->setZValue(0.0);
 }
@@ -178,9 +219,37 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   graphDirty = false;
   currentPrehighlight = nullptr;
   
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+    selectionMode = static_cast<SelectionMode>(group->GetInt("SelectionMode", 0));
+    group->SetInt("SelectionMode", static_cast<int>(selectionMode)); //ensure entry exists.
+    
+  QIcon temp(Gui::BitmapFactory().pixmap("dagViewVisible"));
+  visiblePixmapEnabled = temp.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::On);
+  visiblePixmapDisabled = temp.pixmap(iconSize, iconSize, QIcon::Disabled, QIcon::Off);
+  
+  QIcon passIcon(Gui::BitmapFactory().pixmap("dagViewPass"));
+  passPixmap = passIcon.pixmap(iconSize, iconSize);
+  QIcon failIcon(Gui::BitmapFactory().pixmap("dagViewFail"));
+  failPixmap = failIcon.pixmap(iconSize, iconSize);
+  
+  renameAction = new QAction(this);
+  renameAction->setText(tr("Rename"));
+  renameAction->setStatusTip(tr("Rename object"));
+  renameAction->setShortcut(Qt::Key_F2);
+  connect(renameAction, SIGNAL(triggered()), this, SLOT(onRenameSlot()));
+  
+  editingFinishedAction = new QAction(this);
+  editingFinishedAction->setText(tr("Finish editing"));
+  editingFinishedAction->setStatusTip(tr("Finish editing object"));
+  connect(this->editingFinishedAction, SIGNAL(triggered()),
+          this, SLOT(editingFinishedSlot()));
+  
   connectNewObject = documentIn.signalNewObject.connect(boost::bind(&Model::slotNewObject, this, _1));
   connectDelObject = documentIn.signalDeletedObject.connect(boost::bind(&Model::slotDeleteObject, this, _1));
   connectChgObject = documentIn.signalChangedObject.connect(boost::bind(&Model::slotChangeObject, this, _1, _2));
+  connectEdtObject = documentIn.signalInEdit.connect(boost::bind(&Model::slotInEdit, this, _1));
+  connectResObject = documentIn.signalResetEdit.connect(boost::bind(&Model::slotResetEdit, this, _1));
 }
 
 Model::~Model()
@@ -191,6 +260,10 @@ Model::~Model()
     connectDelObject.disconnect();
   if (connectChgObject.connected())
     connectChgObject.disconnect();
+  if(connectEdtObject.connected())
+    connectEdtObject.disconnect();
+  if(connectResObject.connected())
+    connectResObject.disconnect();
   
   removeAllItems();
 }
@@ -205,6 +278,8 @@ void Model::setupViewConstants()
   pointSize = fontHeight / 2.0;
   pointSpacing = pointSize;
   pointToIcon = iconSize;
+  iconToIcon = iconSize * 0.25;
+  iconToText = iconSize / 2.0;
   rowPadding = fontHeight;
   backgroundBrushes = {qApp->palette().base(), qApp->palette().alternateBase()};
   forgroundBrushes = 
@@ -230,8 +305,11 @@ void Model::setupViewConstants()
 void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
 {
   Vertex virginVertex = boost::add_vertex(*theGraph);
+  
   this->addItem((*theGraph)[virginVertex].rectangle.get());
   this->addItem((*theGraph)[virginVertex].point.get());
+  this->addItem((*theGraph)[virginVertex].visibleIcon.get());
+  this->addItem((*theGraph)[virginVertex].stateIcon.get());
   this->addItem((*theGraph)[virginVertex].icon.get());
   this->addItem((*theGraph)[virginVertex].text.get());
   
@@ -243,11 +321,6 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   virginRecord.vertex = virginVertex;
   graphLink->insert(virginRecord);
   
-  //construct pixmaps.
-  QIcon baseIcon = VPDObjectIn.getIcon();
-  (*theGraph)[virginVertex].pixmapEnabled = baseIcon.pixmap(iconSize, iconSize, QIcon::Normal, QIcon::On);
-  (*theGraph)[virginVertex].pixmapDisabled = baseIcon.pixmap(iconSize, iconSize, QIcon::Disabled, QIcon::Off);
-  
   //setup rectangle.
   auto *rectangle = (*theGraph)[virginVertex].rectangle.get();
   rectangle->setPen(Qt::NoPen);
@@ -258,10 +331,10 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   QColor bothSelectionColor = qApp->palette().highlight().color();
   bothSelectionColor.setAlphaF(0.75);
   rectangle->setBothBrush(QBrush(bothSelectionColor));
+  rectangle->setEditingBrush(QBrush(Qt::yellow));
   
-  //setup point.
-  auto *point = (*theGraph)[virginVertex].point.get();
-  point->setPen(Qt::NoPen);
+  (*theGraph)[virginVertex].icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
+  (*theGraph)[virginVertex].stateIcon->setPixmap(passPixmap);
   
   graphDirty = true;
 }
@@ -273,6 +346,8 @@ void Model::slotDeleteObject(const ViewProviderDocumentObject &VPDObjectIn)
   //remove items from scene.
   this->removeItem((*theGraph)[vertex].rectangle.get());
   this->removeItem((*theGraph)[vertex].point.get());
+  this->removeItem((*theGraph)[vertex].visibleIcon.get());
+  this->removeItem((*theGraph)[vertex].stateIcon.get());
   this->removeItem((*theGraph)[vertex].icon.get());
   this->removeItem((*theGraph)[vertex].text.get());
   
@@ -326,6 +401,20 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
     boost::clear_vertex(record.vertex, *theGraph);
     graphDirty = true;
   }
+}
+
+void Model::slotInEdit(const ViewProviderDocumentObject& VPDObjectIn)
+{
+  ViewEntryRectItem *rect = (*theGraph)[findRecord(&VPDObjectIn).vertex].rectangle.get();
+  rect->editingStart();
+  this->invalidate();
+}
+
+void Model::slotResetEdit(const ViewProviderDocumentObject& VPDObjectIn)
+{
+  ViewEntryRectItem *rect = (*theGraph)[findRecord(&VPDObjectIn).vertex].rectangle.get();
+  rect->editingFinished();
+  this->invalidate();
 }
 
 void Model::selectionChanged(const SelectionChanges& msg)
@@ -392,7 +481,7 @@ void Model::awake()
     updateSlot();
     this->invalidate();
   }
-  updateVisible();
+  updateStates();
 }
 
 void Model::updateSlot()
@@ -405,34 +494,6 @@ void Model::updateSlot()
   
   BGL_FORALL_VERTICES_T(currentVertex, *theGraph, Graph)
   {
-    bool foundFirst = false; //temp hack.
-#if 0
-    //based on claim children. don't think this will be enough.
-    const auto *VPDObject = findRecord(currentVertex).VPDObject;
-    auto children = VPDObject->claimChildren();
-    for (const auto *currentChild : children)
-    {
-      Vertex otherVertex = findRecord(currentChild).vertex;
-      bool result;
-      Edge edge;
-      boost::tie(edge, result) = boost::add_edge(currentVertex, otherVertex, *theGraph);
-      if (result)
-      {
-        if (!foundFirst)
-        {
-          (*theGraph)[edge].relation = EdgeProperty::BranchTag::Continue;
-          foundFirst = true;
-        }
-        else
-          (*theGraph)[edge].relation = EdgeProperty::BranchTag::Terminate;
-        
-        (*theGraph)[edge].connector = std::shared_ptr<QGraphicsPathItem>(new QGraphicsPathItem());
-        (*theGraph)[edge].connector->setZValue(0.0);
-        this->addItem((*theGraph)[edge].connector.get());
-      }
-    }
-#else
-    //based on outlist. this won't be enough either.
     const App::DocumentObject *currentDObject = findRecord(currentVertex).DObject;
     std::vector<App::DocumentObject *> otherDObjects = currentDObject->getOutList();
     for (auto &currentOtherDObject : otherDObjects)
@@ -443,51 +504,79 @@ void Model::updateSlot()
       boost::tie(edge, result) = boost::add_edge(currentVertex, otherVertex, *theGraph);
       if (result)
       {
-        if (!foundFirst)
-        {
-          (*theGraph)[edge].relation = EdgeProperty::BranchTag::Continue;
-          foundFirst = true;
-        }
-        else
-          (*theGraph)[edge].relation = EdgeProperty::BranchTag::Terminate;
-        
         (*theGraph)[edge].connector = std::shared_ptr<QGraphicsPathItem>(new QGraphicsPathItem());
         (*theGraph)[edge].connector->setZValue(0.0);
         this->addItem((*theGraph)[edge].connector.get());
       }
     }
-#endif
   }
   
   indexVerticesEdges();
   Path sorted;
   boost::topological_sort(*theGraph, std::back_inserter(sorted));
+  //index the vertices in sort order.
+  int tempIndex = 0;
+  for (const auto &currentVertex : sorted)
+  {
+    (*theGraph)[currentVertex].topoSortIndex = tempIndex;
+    tempIndex++;
+  }
+  
   int currentRow = 0;
-  int currentColumn = -1; //we know the first one will be a root so we can assume it will get kicked up to 0.
+  int currentColumn = -1; //we know first column is going to be root so will be kicked up to 0.
   int maxColumn = currentColumn; //used for determining offset of icons and text.
   float maxTextLength = 0;
   for (const auto &currentVertex : sorted)
   {
+//     std::cout << std::endl << std::endl;
+    
     if (boost::out_degree(currentVertex, *theGraph) == 0)
-      currentColumn++;
+      currentColumn = 0;
     else
     {
-      bool foundTarget = false;
+      //loop parents and find an acceptable column.
+      int farthestParentIndex = sorted.size();
+      ColumnMask columnMask;
+      Path parentVertices;
       OutEdgeIterator it, itEnd;
       boost::tie(it, itEnd) = boost::out_edges(currentVertex, *theGraph);
       for (;it != itEnd; ++it)
       {
-        if ((*theGraph)[*it].relation == EdgeProperty::BranchTag::Continue)
+        Vertex target = boost::target(*it, *theGraph);
+        parentVertices.push_back(target);
+        int currentParentIndex = (*theGraph)[target].topoSortIndex;
+        if (currentParentIndex < farthestParentIndex)
         {
-          Vertex target = boost::target(*it, *theGraph);
-          currentColumn = (*theGraph)[target].column;
-          foundTarget = true;
+          Path::const_iterator start = sorted.begin() + currentParentIndex + 1; // 1 after
+          Path::const_iterator end = sorted.begin() + (*theGraph)[currentVertex].topoSortIndex; // 1 before
+          Path::const_iterator it;
+          for (it = start; it != end; ++it)
+            columnMask |= (*theGraph)[*it].column;
+          farthestParentIndex = currentParentIndex;
+        }
+      }
+      
+//       std::cout << "mask for " << findRecord(currentVertex).DObject->Label.getValue() << "      " <<
+//         columnMask.to_string() << std::endl;
+      
+      //now we should have a mask representing the columns that are being used.
+      //this is from the lowest parent, in the topo sort, to last entry.
+      //try to use the same column as one of the parents.
+      int destinationColumn = maxColumn + 1; //default to new column
+      for (const auto &currentParent : parentVertices)
+      {
+        if (((*theGraph)[currentParent].column & columnMask).none())
+        {
+          //go with first parent for now.
+          destinationColumn = static_cast<int>(std::log2((*theGraph)[currentParent].column.to_ulong()));
           break;
         }
       }
-      if (!foundTarget)
-        currentColumn++;
+
+      currentColumn = destinationColumn;
     }
+    
+    assert(currentColumn < static_cast<int>(ColumnMask().size())); //temp limitation.
     
     maxColumn = std::max(currentColumn, maxColumn);
     QBrush currentBrush(forgroundBrushes.at(currentColumn % forgroundBrushes.size()));
@@ -503,11 +592,18 @@ void Model::updateSlot()
                                                   rowHeight * currentRow + rowHeight / 2.0 + pointSize / 2.0));
     point->setBrush(currentBrush);
     
+    auto *visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
+    visiblePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + rowHeight)); //calculate x location later.
+    
+    auto *statePixmap = (*theGraph)[currentVertex].stateIcon.get();
+    statePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + rowHeight)); //calculate x location later.
+    
     auto *pixmap = (*theGraph)[currentVertex].icon.get();
     pixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + rowHeight)); //calculate x location later.
     
     auto *text = (*theGraph)[currentVertex].text.get();
     text->setPlainText(QString::fromUtf8(findRecord(currentVertex).DObject->Label.getValue()));
+    text->setDefaultTextColor(currentBrush.color());
     maxTextLength = std::max(maxTextLength, static_cast<float>(text->boundingRect().width()));
     text->setTransform(QTransform::fromTranslate
       (0.0, rowHeight * currentRow + rowHeight - verticalSpacing * 2.0)); //calculate x location later.
@@ -515,8 +611,7 @@ void Model::updateSlot()
     
     //store column and row int the graph. use for connectors later.
     (*theGraph)[currentVertex].row = currentRow;
-    (*theGraph)[currentVertex].column = currentColumn;
-    (*theGraph)[currentVertex].colorIndex = currentColumn % forgroundBrushes.size();
+    (*theGraph)[currentVertex].column.reset().set((currentColumn));
     
     //our list is topo sorted so all dependents should be located, so we can build the connectors.
     //will have some more logic for connector path, simple for now.
@@ -527,16 +622,37 @@ void Model::updateSlot()
     for (; it != itEnd; ++it)
     {
       Vertex target = boost::target(*it, *theGraph);
-      float dependentX = pointSpacing * (*theGraph)[target].column - pointSize / 2.0; //on center.
+      float dependentX = pointSpacing * static_cast<int>(std::log2((*theGraph)[target].column.to_ulong())) - pointSize / 2.0; //on center.
       float dependentY = rowHeight * (*theGraph)[target].row + rowHeight / 2.0;
       
       QGraphicsPathItem *pathItem = (*theGraph)[*it].connector.get();
       pathItem->setBrush(Qt::NoBrush);
       QPainterPath path;
       path.moveTo(currentX, currentY);
-      if (currentColumn != (*theGraph)[target].column)
-        path.lineTo(dependentX, currentY);
-      path.lineTo(dependentX, dependentY); //y is always different.
+      if (currentColumn == static_cast<int>(std::log2((*theGraph)[target].column.to_ulong())))
+        path.lineTo(currentX, dependentY); //straight connector in y.
+      else
+      {
+        //connector with bend.
+        float radius = pointSpacing / 1.9; //no zero length line.
+        
+        path.lineTo(currentX, dependentY - radius);
+      
+        float yPosition = dependentY - 2.0 * radius;
+        float width = 2.0 * radius;
+        float height = width;
+        if (dependentX > currentX) //radius to the right.
+        {
+          QRectF arcRect(currentX, yPosition, width, height);
+          path.arcTo(arcRect, 180.0, 90.0);
+        }
+        else //radius to the left.
+        {
+          QRectF arcRect(currentX - 2.0 * radius, yPosition, width, height);
+          path.arcTo(arcRect, 0.0, -90.0);
+        }
+        path.lineTo(dependentX, dependentY);
+      }
       pathItem->setPath(path);
     }
     
@@ -546,17 +662,30 @@ void Model::updateSlot()
   float columnSpacing = (maxColumn * pointSpacing);
   for (const auto &currentVertex : sorted)
   {
+    float currentX = columnSpacing;
+    currentX += pointToIcon;
+    auto *visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
+    QTransform visibleIconTransform = QTransform::fromTranslate(currentX, 0.0);
+    visiblePixmap->setTransform(visiblePixmap->transform() * visibleIconTransform);
+    
+    currentX += iconSize + iconToIcon;
+    auto *statePixmap = (*theGraph)[currentVertex].stateIcon.get();
+    QTransform stateIconTransform = QTransform::fromTranslate(currentX, 0.0);
+    statePixmap->setTransform(statePixmap->transform() * stateIconTransform);
+    
+    currentX += iconSize + iconToIcon;
     auto *pixmap = (*theGraph)[currentVertex].icon.get();
-    QTransform iconTransform = QTransform::fromTranslate(columnSpacing + pointToIcon, 0.0);
+    QTransform iconTransform = QTransform::fromTranslate(currentX, 0.0);
     pixmap->setTransform(pixmap->transform() * iconTransform);
     
+    currentX += iconSize + iconToText;
     auto *text = (*theGraph)[currentVertex].text.get();
-    QTransform textTransform = QTransform::fromTranslate(columnSpacing  + pointToIcon + iconSize, 0.0);
+    QTransform textTransform = QTransform::fromTranslate(currentX, 0.0);
     text->setTransform(text->transform() * textTransform);
     
     auto *rectangle = (*theGraph)[currentVertex].rectangle.get();
     QRectF rect = rectangle->rect();
-    rect.setWidth(columnSpacing  + pointToIcon + iconSize + maxTextLength + 2.0 * rowPadding);
+    rect.setWidth(currentX + maxTextLength + 2.0 * rowPadding);
     rectangle->setRect(rect);
   }
   
@@ -606,7 +735,7 @@ void Model::removeAllItems()
   }
 }
 
-void Model::updateVisible()
+void Model::updateStates()
 {
   //not sure I want to use the same pixmap merge for failing feature icons.
   //thinking maybe red background or another column of icons for state?
@@ -614,27 +743,36 @@ void Model::updateVisible()
   BGL_FORALL_VERTICES_T(currentVertex, *theGraph, Graph)
   {
     const GraphLinkRecord &record = findRecord(currentVertex);
-    auto *text = (*theGraph)[currentVertex].text.get();
-    auto *pixmap = (*theGraph)[currentVertex].icon.get();
-    QIcon baseIcon = record.VPDObject->getIcon();
-    VisibilityState currentState = (record.VPDObject->isShow()) ? (VisibilityState::On) : (VisibilityState::Off);
+    
+    auto *visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
+    VisibilityState currentVisibilityState = (record.VPDObject->isShow()) ? (VisibilityState::On) : (VisibilityState::Off);
     if
     (
-      (currentState != (*theGraph)[currentVertex].lastVisibleState) ||
+      (currentVisibilityState != (*theGraph)[currentVertex].lastVisibleState) ||
       ((*theGraph)[currentVertex].lastVisibleState == VisibilityState::None)
     )
     {
       if (record.VPDObject->isShow())
+        visiblePixmap->setPixmap(visiblePixmapEnabled);
+      else
+        visiblePixmap->setPixmap(visiblePixmapDisabled);
+      (*theGraph)[currentVertex].lastVisibleState = currentVisibilityState;
+    }
+    
+    FeatureState currentFeatureState = (record.DObject->isError()) ? FeatureState::Fail : FeatureState::Pass;
+    if (currentFeatureState != (*theGraph)[currentVertex].lastFeatureState)
+    {
+      if (currentFeatureState == FeatureState::Pass)
       {
-        text->setDefaultTextColor(forgroundBrushes.at((*theGraph)[currentVertex].colorIndex).color());
-        pixmap->setPixmap((*theGraph)[currentVertex].pixmapEnabled);
+        (*theGraph)[currentVertex].stateIcon->setPixmap(passPixmap);
+        (*theGraph)[currentVertex].stateIcon->setToolTip(QString());
       }
       else
       {
-        text->setDefaultTextColor(qApp->palette().color(QPalette::Disabled, QPalette::Text));
-        pixmap->setPixmap((*theGraph)[currentVertex].pixmapDisabled);
+        (*theGraph)[currentVertex].stateIcon->setPixmap(failPixmap);
+        (*theGraph)[currentVertex].stateIcon->setToolTip(QString::fromAscii(record.DObject->getStatusString()));
       }
-      (*theGraph)[currentVertex].lastVisibleState = currentState;
+      (*theGraph)[currentVertex].lastFeatureState = currentFeatureState;
     }
   }
 }
@@ -683,19 +821,238 @@ void Model::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
 void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
-  ViewEntryRectItem *rect = getRectFromPosition(event->scenePos());
-  if (rect)
+  auto goShiftSelect = [this, event]()
   {
-    const App::DocumentObject *dObject = findRecord(rect).DObject;
-    Gui::Selection().addSelection(dObject->getDocument()->getName(), dObject->getNameInDocument());
-  }
+    QPointF currentPickPoint = event->scenePos();
+    QGraphicsLineItem intersectionLine(QLineF(lastPick, currentPickPoint));
+    QList<QGraphicsItem *>selection = collidingItems(&intersectionLine);
+    for (auto currentItem = selection.begin(); currentItem != selection.end(); ++currentItem)
+    {
+      ViewEntryRectItem *rect = dynamic_cast<ViewEntryRectItem *>(*currentItem);
+      if (!rect) continue;
+      const GraphLinkRecord &selectionRecord = findRecord(rect);
+      Gui::Selection().addSelection(selectionRecord.DObject->getDocument()->getName(),
+                                    selectionRecord.DObject->getNameInDocument());
+    }
+  };
   
-  //need an else here to clear the selections.
-  //don't have current selection stored yet.
+  auto toggleSelect = [](const App::DocumentObject *dObjectIn, ViewEntryRectItem *rectIn)
+  {
+    if (rectIn->isSelected())
+      Gui::Selection().rmvSelection(dObjectIn->getDocument()->getName(), dObjectIn->getNameInDocument());
+    else
+      Gui::Selection().addSelection(dObjectIn->getDocument()->getName(), dObjectIn->getNameInDocument());
+  };
+  
+  if (proxy)
+    renameAcceptedSlot();
+  
+  if (event->button() == Qt::LeftButton)
+  {
+    ViewEntryRectItem *rect = getRectFromPosition(event->scenePos());
+    if (rect)
+    {
+        const GraphLinkRecord &record = findRecord(rect);
+        
+        //don't like that I am doing this again here after getRectFromPosition call.
+        QGraphicsItem *item = itemAt(event->scenePos());
+        QGraphicsPixmapItem *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
+        if (pixmapItem && (pixmapItem == (*theGraph)[record.vertex].visibleIcon.get()))
+        {
+          //get all selections, but for now just the current pick.
+          if ((*theGraph)[record.vertex].lastVisibleState == VisibilityState::Off)
+            const_cast<ViewProviderDocumentObject *>(record.VPDObject)->show(); //const hack
+          else
+            const_cast<ViewProviderDocumentObject *>(record.VPDObject)->hide(); //const hack
+            
+          return;
+        }
+        
+        const App::DocumentObject *dObject = record.DObject;
+        if (selectionMode == SelectionMode::Single)
+        {
+          if (event->modifiers() & Qt::ControlModifier)
+          {
+            toggleSelect(dObject, rect);
+          }
+          else if((event->modifiers() & Qt::ShiftModifier) && lastPickValid)
+          {
+            goShiftSelect();
+          }
+          else
+          {
+            Gui::Selection().clearSelection(dObject->getDocument()->getName());
+            Gui::Selection().addSelection(dObject->getDocument()->getName(), dObject->getNameInDocument());
+          }
+        }
+        if (selectionMode == SelectionMode::Multiple)
+        {
+          if((event->modifiers() & Qt::ShiftModifier) && lastPickValid)
+          {
+            goShiftSelect();
+          }
+          else
+          {
+            toggleSelect(dObject, rect);
+          }
+        }
+        lastPickValid = true;
+        lastPick = event->scenePos();
+    }
+    else
+    {
+      lastPickValid = false;
+      Gui::Selection().clearSelection(); //get document name?
+    }
+  }
   
   QGraphicsScene::mousePressEvent(event);
 }
 
+void Model::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+  auto selections = getAllSelected();
+  assert(selections.size() == 1);
+  const GraphLinkRecord &record = findRecord(selections.front());
+  Gui::Document* doc = Gui::Application::Instance->getDocument(record.DObject->getDocument());
+  MDIView *view = doc->getActiveView();
+  if (view)
+    getMainWindow()->setActiveWindow(view);
+  const_cast<ViewProviderDocumentObject*>(record.VPDObject)->doubleClicked();
+  
+  QGraphicsScene::mouseDoubleClickEvent(event);
+}
+
+
+std::vector<Gui::DAG::Vertex> Model::getAllSelected()
+{
+  std::vector<Gui::DAG::Vertex> out;
+  
+  BGL_FORALL_VERTICES_T(currentVertex, *theGraph, Graph)
+  {
+    if ((*theGraph)[currentVertex].rectangle->isSelected())
+      out.push_back(currentVertex);
+  }
+  
+  return out;
+}
+
+void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
+{
+  ViewEntryRectItem *rect = getRectFromPosition(event->scenePos());
+  if (rect)
+  {
+    const GraphLinkRecord &record = findRecord(rect);
+    if (!rect->isSelected())
+    {
+      Gui::Selection().clearSelection(record.DObject->getDocument()->getName());
+      Gui::Selection().addSelection(record.DObject->getDocument()->getName(), record.DObject->getNameInDocument());
+      lastPickValid = true;
+      lastPick = event->scenePos();
+    }
+    
+    MenuItem view;
+    Gui::Application::Instance->setupContextMenu("Tree", &view);
+    QMenu contextMenu;
+    MenuManager::getInstance()->setupContextMenu(&view, contextMenu);
+    
+    //actions for only one selection.
+    std::vector<Gui::DAG::Vertex> selections = getAllSelected();
+    if (selections.size() == 1)
+    {
+      contextMenu.addAction(renameAction);
+      //when we have only one selection then we know it is rect from above.
+      if (!rect->isEditing())
+        const_cast<Gui::ViewProviderDocumentObject*>(record.VPDObject)->setupContextMenu
+          (&contextMenu, this, SLOT(editingStartSlot())); //const hack.
+      else
+        contextMenu.addAction(editingFinishedAction);
+    }
+    
+    if (contextMenu.actions().count() > 0)
+        contextMenu.exec(event->screenPos());
+  }
+  
+  QGraphicsScene::contextMenuEvent(event);
+}
+
+void Model::onRenameSlot()
+{
+//   std::cout << std::endl << "inside rename slot" << std::endl << std::endl;
+  
+  assert(proxy == nullptr);
+  std::vector<Gui::DAG::Vertex> selections = getAllSelected();
+  assert(selections.size() == 1);
+  
+  LineEdit *lineEdit = new LineEdit();
+  auto *text = (*theGraph)[selections.front()].text.get();
+  lineEdit->setText(text->toPlainText());
+  connect(lineEdit, SIGNAL(acceptedSignal()), this, SLOT(renameAcceptedSlot()));
+  connect(lineEdit, SIGNAL(rejectedSignal()), this, SLOT(renameRejectedSlot()));
+  
+  proxy = this->addWidget(lineEdit);
+  proxy->setGeometry(text->sceneBoundingRect());
+  
+  lineEdit->selectAll();
+  QTimer::singleShot(0, lineEdit, SLOT(setFocus())); 
+}
+
+void Model::renameAcceptedSlot()
+{
+  assert(proxy);
+  
+  std::vector<Gui::DAG::Vertex> selections = getAllSelected();
+  assert(selections.size() == 1);
+  const GraphLinkRecord &record = findRecord(selections.front());
+  
+  LineEdit *lineEdit = dynamic_cast<LineEdit*>(proxy->widget());
+  assert(lineEdit);
+  const_cast<App::DocumentObject*>(record.DObject)->Label.setValue(lineEdit->text().toUtf8().constData()); //const hack
+  
+  finishRename();
+}
+
+void Model::renameRejectedSlot()
+{
+  finishRename();
+}
+
+void Model::finishRename()
+{
+  assert(proxy);
+  this->removeItem(proxy);
+  proxy->deleteLater();
+  proxy = nullptr;
+  this->invalidate();
+}
+
+void Model::editingStartSlot()
+{
+  QAction* action = qobject_cast<QAction*>(sender());
+  if (action)
+  {
+    int edit = action->data().toInt();
+    auto selections = getAllSelected();
+    assert(selections.size() == 1);
+    const GraphLinkRecord &record = findRecord(selections.front());
+    Gui::Document* doc = Gui::Application::Instance->getDocument(record.DObject->getDocument());
+    MDIView *view = doc->getActiveView();
+    if (view)
+      getMainWindow()->setActiveWindow(view);
+    doc->setEdit(const_cast<ViewProviderDocumentObject*>(record.VPDObject), edit);
+  }
+}
+
+void Model::editingFinishedSlot()
+{
+  auto selections = getAllSelected();
+  assert(selections.size() == 1);
+  const GraphLinkRecord &record = findRecord(selections.front());
+  Gui::Document* doc = Gui::Application::Instance->getDocument(record.DObject->getDocument());
+  doc->commitCommand();
+  doc->resetEdit();
+  doc->getDocument()->recompute();
+}
 
 
 
