@@ -50,6 +50,8 @@ DAG::DockWindow::DockWindow(Gui::Document* gDocumentIn, QWidget* parent): Gui::D
 
 View::View(QWidget* parentIn): QGraphicsView(parentIn)
 {
+  this->setRenderHint(QPainter::Antialiasing, true);
+  this->setRenderHint(QPainter::TextAntialiasing, true);
   Application::Instance->signalActiveDocument.connect(boost::bind(&View::slotActiveDocument, this, _1));
   Application::Instance->signalDeleteDocument.connect(boost::bind(&View::slotDeleteDocument, this, _1));
   
@@ -106,9 +108,11 @@ void View::onSelectionChanged(const SelectionChanges& msg)
   }
   
   //why am I getting a spontanous event with an empty name?
-  std::ostringstream stream;
-  stream << std::endl << "couldn't find document of name: " << std::string(msg.pDocName) << std::endl << std::endl;
-  Base::Console().Warning(stream.str().c_str());
+  //also getting events after document has been removed from modelMap.
+  //just ignore for now.
+//   std::ostringstream stream;
+//   stream << std::endl << "couldn't find document of name: " << std::string(msg.pDocName) << std::endl << std::endl;
+//   Base::Console().Warning(stream.str().c_str());
 //   assert(0); //no document of name.
 }
 
