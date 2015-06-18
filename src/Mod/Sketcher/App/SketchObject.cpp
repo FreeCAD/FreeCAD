@@ -782,9 +782,6 @@ int SketchObject::delConstraintOnPoint(int GeoId, PointPos PosId, bool onlyCoinc
     if (newVals.size() < vals.size()) {
         this->Constraints.setValues(newVals);
         
-        if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
-            solve();
-        
         return 0;
     }
 

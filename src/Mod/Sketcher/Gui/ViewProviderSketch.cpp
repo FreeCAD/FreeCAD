@@ -4223,9 +4223,10 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // The false parameter indicates that the geometry of the SketchObject shall not be updateData
     // so as not to trigger an onChanged that would set the document as modified and trigger a recompute
     // if we just close the sketch without touching anything.
-    getSketchObject()->solve(false); 
-    draw(false);
+    getSketchObject()->solve(false);
     UpdateSolverInformation();
+    draw(false);
+    
     
     connectUndoDocument = Gui::Application::Instance->activeDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, _1));
