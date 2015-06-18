@@ -102,6 +102,9 @@
         <file>Tree_Annotation.svg</file>
         <file>Tree_Dimension.svg</file>
         <file>Tree_Python.svg</file>
+        <file>dagViewVisible.svg</file>
+        <file>dagViewPass.svg</file>
+        <file>dagViewFail.svg</file>
         <file>Part_Measure_Clear_All.svg</file>
         <file>Part_Measure_Toggle_All.svg</file>
         <file>spaceball_button.svg</file>
