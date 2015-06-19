@@ -116,6 +116,7 @@ void SketcherSettings::saveSettings()
     ui->EditSketcherFontSize->onSave();
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
+    ui->checkBoxAdvancedSolverTaskBox->onSave();
     form->saveSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
@@ -149,6 +150,7 @@ void SketcherSettings::loadSettings()
     ui->EditSketcherFontSize->onRestore();
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
+    ui->checkBoxAdvancedSolverTaskBox->onRestore();
     form->loadSettings();
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");

@@ -49,22 +49,28 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     Messages  = new TaskSketcherMessages(sketchView);
     SolverAdvanced = new TaskSketcherSolverAdvanced(sketchView);
 
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+     
     Content.push_back(Messages);
-    Content.push_back(SolverAdvanced);
+
+    if( hGrp->GetBool("ShowSolverAdvancedWidget",false)) {    
+        Content.push_back(SolverAdvanced);
+    }
+    
     Content.push_back(General);
     Content.push_back(Constraints);
     Content.push_back(Elements);
     
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    if( !hGrp->GetBool("ShowMessagesWidget",true))
+   
+    if( !hGrp->GetBool("ExpandedMessagesWidget",true))
         Messages->hideGroupBox();
-    if( !hGrp->GetBool("ShowSolverAdvancedWidget",false))
-        SolverAdvanced->hideGroupBox();    
-    if( !hGrp->GetBool("ShowEditControlWidget",false))
+    if( !hGrp->GetBool("ExpandedSolverAdvancedWidget",false))
+        SolverAdvanced->hideGroupBox();  
+    if( !hGrp->GetBool("ExpandedEditControlWidget",false))
         General->hideGroupBox();
-    if( !hGrp->GetBool("ShowConstraintsWidget",true))
+    if( !hGrp->GetBool("ExpandedConstraintsWidget",true))
         Constraints->hideGroupBox();  
-    if( !hGrp->GetBool("ShowElementsWidget",true))
+    if( !hGrp->GetBool("ExpandedElementsWidget",true))
         Elements->hideGroupBox();     
 
     App::Document* document = sketchView->getObject()->getDocument();
@@ -111,11 +117,11 @@ bool TaskDlgEditSketch::accept()
 bool TaskDlgEditSketch::reject()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    hGrp->SetBool("ShowMessagesWidget",Messages->isGroupVisible());
-    hGrp->SetBool("ShowSolverAdvancedWidget",SolverAdvanced->isGroupVisible());
-    hGrp->SetBool("ShowEditControlWidget",General->isGroupVisible());
-    hGrp->SetBool("ShowConstraintsWidget",Constraints->isGroupVisible());
-    hGrp->SetBool("ShowElementsWidget",Elements->isGroupVisible());
+    hGrp->SetBool("ExpandedMessagesWidget",Messages->isGroupVisible());
+    hGrp->SetBool("ExpandedSolverAdvancedWidget",SolverAdvanced->isGroupVisible());
+    hGrp->SetBool("ExpandedEditControlWidget",General->isGroupVisible());
+    hGrp->SetBool("ExpandedConstraintsWidget",Constraints->isGroupVisible());
+    hGrp->SetBool("ExpandedElementsWidget",Elements->isGroupVisible());
     
     std::string document = getDocumentName(); // needed because resetEdit() deletes this instance
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').resetEdit()", document.c_str());
