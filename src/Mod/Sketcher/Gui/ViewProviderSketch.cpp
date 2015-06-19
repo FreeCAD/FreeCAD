@@ -4094,15 +4094,17 @@ void ViewProviderSketch::updateData(const App::Property *prop)
             getSketchObject()->getSolvedSketch().getGeometrySize()) {
             UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
             draw(false);
+            
+            if (edit && &(getSketchObject()->Constraints)) {
+                // send the signal for the TaskDlg.
+                signalConstraintsChanged();
+            }
+            if (edit && &(getSketchObject()->Geometry)) {
+                // send the signal for the TaskDlg.
+                signalElementsChanged();
+            }
+        
         }
-    }
-    if (edit && &(getSketchObject()->Constraints)) {
-        // send the signal for the TaskDlg.
-        signalConstraintsChanged();
-    }
-    if (edit && &(getSketchObject()->Geometry)) {
-        // send the signal for the TaskDlg.
-        signalElementsChanged();
     }
 }
 
