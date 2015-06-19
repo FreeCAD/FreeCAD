@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>404</width>
-    <height>680</height>
+    <height>744</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,7 +40,7 @@
           <property name="toolTip">
            <string>The color of edges being edited</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>255</green>
@@ -73,7 +73,7 @@
           <property name="toolTip">
            <string>The color of vertices being edited</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>255</green>
@@ -106,7 +106,7 @@
           <property name="toolTip">
            <string>The color of edges being edited</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>255</green>
@@ -139,7 +139,7 @@
           <property name="toolTip">
            <string>The color of vertices being edited</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>38</green>
@@ -172,7 +172,7 @@
           <property name="toolTip">
            <string>The color of fully constrained geometry in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>38</green>
@@ -192,7 +192,7 @@
           <property name="toolTip">
            <string>The color of construction geometry in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -225,7 +225,7 @@
           <property name="toolTip">
            <string>The color of external geometry in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>204</red>
             <green>51</green>
@@ -271,7 +271,7 @@
           <property name="toolTip">
            <string>The color of fully constrained geometry in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>255</green>
@@ -397,7 +397,7 @@
         </item>
         <item row="13" column="1">
          <widget class="Gui::PrefColorButton" name="CursorTextColor">
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>0</green>
@@ -446,7 +446,7 @@
           <property name="toolTip">
            <string>The color of driving constraints in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>255</red>
             <green>38</green>
@@ -466,7 +466,7 @@
           <property name="toolTip">
            <string>The color of non-driving constrains or dimensions in edit mode</string>
           </property>
-          <property name="color">
+          <property name="color" stdset="0">
            <color>
             <red>0</red>
             <green>38</green>
@@ -584,7 +584,29 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Sketch Solver</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxAdvancedSolverTaskBox">
+        <property name="text">
+         <string>Show Advanced Solver Control in the Task bar</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowSolverAdvancedWidget</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher</cstring>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
