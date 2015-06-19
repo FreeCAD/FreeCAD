@@ -1636,6 +1636,13 @@ void Application::runApplication(void)
     plugin += QLatin1String("/plugins");
     QCoreApplication::addLibraryPath(plugin);
 
+    // setup the search paths for Qt style sheets
+    QStringList qssPaths;
+    qssPaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str())
+             << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
+             << QLatin1String(":/stylesheets");
+    QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
+
     // check for OpenGL
     if (!QGLFormat::hasOpenGL()) {
         QMessageBox::critical(0, QObject::tr("No OpenGL"), QObject::tr("This system does not support OpenGL"));
