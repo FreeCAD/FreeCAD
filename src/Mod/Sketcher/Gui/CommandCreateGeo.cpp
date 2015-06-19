@@ -4365,7 +4365,7 @@ public:
                     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
         
                     if(autoRecompute)
-                        Gui::Command::updateActive();                    
+                        Gui::Command::updateActive();
                 }
                 catch (const Base::Exception& e) {
                     Base::Console().Error("%s\n", e.what());

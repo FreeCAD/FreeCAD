@@ -1024,8 +1024,11 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     newConstr->FirstPos = none;
                     newConstr->Second = newGeoId;
                     addConstraint(newConstr);
-
                     delete newConstr;
+                    
+                    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                        solve();
+                    
                     return 0;
                 }
             } else if (x1 < 0.001*length) { // drop the first intersection point
@@ -1070,6 +1073,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     addConstraint(newConstr);
                     delete newConstr;
+                    
+                    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                        solve();
+                    
                     return 0;
                 }
                 else if (x1 < x0) { // trim line end
@@ -1086,6 +1093,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     addConstraint(newConstr);
                     delete newConstr;
+                    
+                    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                        solve();
+                    
                     return 0;
                 }
             }
@@ -1166,6 +1177,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             addConstraint(newConstr);
 
             delete newConstr;
+            
+            if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                solve();
 
             return 0;
         }
@@ -1253,7 +1267,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
             addConstraint(newConstr);
 
             delete newConstr;
-
+            
+            if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                solve();
+            
             return 0;
         }
     } else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
@@ -1345,6 +1362,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     addConstraint(newConstr);
 
                     delete newConstr;
+                    
+                    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                        solve();
 
                     return 0;
                 } else
@@ -1391,6 +1411,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     addConstraint(newConstr);
                     delete newConstr;
+                    
+                    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                        solve();
+                    
                     return 0;
                 }
                 else { // trim arc end
@@ -1408,6 +1432,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     addConstraint(newConstr);
                     delete newConstr;
+                    
+                    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                        solve();
+                    
                     return 0;
                 }
             }
@@ -1511,6 +1539,9 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     addConstraint(newConstr);
 
                     delete newConstr;
+                    
+                    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                        solve();
 
                     return 0;
                 } else
@@ -1560,6 +1591,10 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
                     addConstraint(newConstr);
                     delete newConstr;
+                    
+                    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                        solve();
+                    
                     return 0;
                 }
                 else { // trim arc end
@@ -1567,6 +1602,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     Part::GeomArcOfEllipse *aoe1 = dynamic_cast<Part::GeomArcOfEllipse*>(geomlist[GeoId]);
                     aoe1->setRange(startAngle, startAngle + theta1, /*emulateCCW=*/true);
  
+                    if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
+                        solve();
                     return 0;
                 }
             }
