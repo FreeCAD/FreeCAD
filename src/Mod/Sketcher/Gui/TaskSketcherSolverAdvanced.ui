@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>326</width>
-    <height>619</height>
+    <height>628</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -138,7 +138,7 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::PrefLineEdit" name="lineEditCovergence">
+      <widget class="Gui::PrefLineEdit" name="lineEditConvergence">
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
        </property>
@@ -149,7 +149,7 @@
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
        <property name="prefEntry" stdset="0">
-        <cstring>Covergence</cstring>
+        <cstring>Convergence</cstring>
        </property>
        <property name="prefPath" stdset="0">
         <cstring>Mod/Sketcher/SolverAdvanced</cstring>
@@ -281,6 +281,9 @@
      </item>
      <item>
       <widget class="Gui::PrefComboBox" name="comboBoxRedundantDefaultSolver">
+       <property name="currentIndex">
+        <number>2</number>
+       </property>
        <property name="prefEntry" stdset="0">
         <cstring>RedundantDefaultSolver</cstring>
        </property>
@@ -512,6 +515,24 @@
          <string>Iteration Level</string>
         </property>
        </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_17">
+     <item>
+      <widget class="QPushButton" name="pushButtonSolve">
+       <property name="text">
+        <string>Solve</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonDefaults">
+       <property name="text">
+        <string>Set Defaults</string>
+       </property>
       </widget>
      </item>
     </layout>

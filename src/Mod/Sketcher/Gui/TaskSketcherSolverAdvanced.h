@@ -50,7 +50,7 @@ private Q_SLOTS:
     void on_comboBoxDefaultSolver_currentIndexChanged(int index);  
     void on_spinBoxMaxIter_valueChanged(int i);
     void on_checkBoxSketchSizeMultiplier_stateChanged(int state);    
-    void on_lineEditCovergence_editingFinished();
+    void on_lineEditConvergence_editingFinished();
     void on_comboBoxQRMethod_currentIndexChanged(int index);
     void on_comboBoxRedundantDefaultSolver_currentIndexChanged(int index);
     void on_lineEditRedundantConvergence_editingFinished();
@@ -62,8 +62,10 @@ private Q_SLOTS:
     void on_lineEditSolverParam2_editingFinished();
     void on_lineEditRedundantSolverParam2_editingFinished();
     void on_lineEditSolverParam3_editingFinished();
-    void on_lineEditRedundantSolverParam3_editingFinished();    
-    
+    void on_lineEditRedundantSolverParam3_editingFinished();
+    void on_pushButtonDefaults_clicked(bool checked = false);
+    void on_pushButtonSolve_clicked(bool checked = false);
+
 protected:
     void updateDefaultMethodParameters(void);
     void updateRedundantMethodParameters(void);
