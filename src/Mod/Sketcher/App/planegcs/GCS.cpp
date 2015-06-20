@@ -27,6 +27,10 @@
 #include "GCS.h"
 #include "qp_eq.h"
 
+// NOTE: In CMakeList.txt -DEIGEN_NO_DEBUG is set (it does not work with a define here), to solve this:
+// this is needed to fix this SparseQR crash http://forum.freecadweb.org/viewtopic.php?f=10&t=11341&p=92146#p92146, 
+// until Eigen library fixes its own problem with the assertion (definitely not solved in 3.2.0 branch)
+
 #include <Eigen/QR>
 #include <Eigen/Sparse>
 #include <Eigen/OrderingMethods>
