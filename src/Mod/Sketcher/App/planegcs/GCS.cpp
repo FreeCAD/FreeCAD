@@ -1112,6 +1112,18 @@ int System::solve_BFGS(SubSystem *subsys, bool isFine, bool isRedundantsolving)
     int maxIterNumber = isRedundantsolving?
         (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
         (sketchSizeMultiplier?maxIter * xsize:maxIter);
+
+    if(debugMode==IterationLevel) {
+        std::stringstream stream;
+        
+        stream  << "BFGS: convergence: "    << (isRedundantsolving?convergenceRedundant:convergence)
+                << ", xsize: "              << xsize        
+                << ", maxIter: "            << maxIterNumber  << "\n";
+
+        const std::string tmp = stream.str();
+        Base::Console().Log(tmp.c_str());
+    }
+
         
     double divergingLim = 1e6*err + 1e12;
     double h_norm;
@@ -1150,10 +1162,9 @@ int System::solve_BFGS(SubSystem *subsys, bool isFine, bool isRedundantsolving)
         
         if(debugMode==IterationLevel) {
             std::stringstream stream;
-            // Iteration: 1, residual: 1e-3, tolg: 1e-5, tolx: 1e-3
             
-            stream  << "BFGS, Iteration: "            << iter
-                    << ", err(eps): "               << err
+            stream  << "BFGS, Iteration: "          << iter
+                    << ", err: "                    << err
                     << ", h_norm: "                 << h_norm << "\n";
     
             const std::string tmp = stream.str();
@@ -1198,6 +1209,21 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     double eps=isRedundantsolving?LM_epsRedundant:LM_eps;
     double eps1=isRedundantsolving?LM_eps1Redundant:LM_eps1;
     double tau=isRedundantsolving?LM_tauRedundant:LM_tau;
+    
+    if(debugMode==IterationLevel) {
+        std::stringstream stream;
+        
+        stream  << "LM: eps: "          << eps
+                << ", eps1: "           << eps1
+                << ", tau: "            << tau
+                << ", convergence: "    << (isRedundantsolving?convergenceRedundant:convergence)
+                << ", xsize: "          << xsize                
+                << ", maxIter: "        << maxIterNumber  << "\n";
+
+        const std::string tmp = stream.str();
+        Base::Console().Log(tmp.c_str());
+    }
+    
     double nu=2, mu=0;
     int iter=0, stop=0;
     for (iter=0; iter < maxIterNumber && !stop; ++iter) {
@@ -1328,12 +1354,30 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     double tolg=isRedundantsolving?DL_tolgRedundant:DL_tolg;
     double tolx=isRedundantsolving?DL_tolxRedundant:DL_tolx;
     double tolf=isRedundantsolving?DL_tolfRedundant:DL_tolf;
-
+    
     int xsize = subsys->pSize();
     int csize = subsys->cSize();
 
     if (xsize == 0)
         return Success;
+    
+    int maxIterNumber = isRedundantsolving?
+        (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
+        (sketchSizeMultiplier?maxIter * xsize:maxIter);
+        
+    if(debugMode==IterationLevel) {
+        std::stringstream stream;
+        
+        stream  << "DL: tolg: "         << tolg
+                << ", tolx: "           << tolx
+                << ", tolf: "           << tolf
+                << ", convergence: "    << (isRedundantsolving?convergenceRedundant:convergence)
+                << ", xsize: "          << xsize
+                << ", maxIter: "        << maxIterNumber  << "\n";
+
+        const std::string tmp = stream.str();
+        Base::Console().Log(tmp.c_str());
+    }        
 
     Eigen::VectorXd x(xsize), x_new(xsize);
     Eigen::VectorXd fx(csize), fx_new(csize);
@@ -1352,10 +1396,6 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     // get the infinity norm fx_inf and g_inf
     double g_inf = g.lpNorm<Eigen::Infinity>();
     double fx_inf = fx.lpNorm<Eigen::Infinity>();
-
-    int maxIterNumber = isRedundantsolving?
-        (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
-        (sketchSizeMultiplier?maxIter * xsize:maxIter);
         
     double divergingLim = 1e6*err + 1e12;
 

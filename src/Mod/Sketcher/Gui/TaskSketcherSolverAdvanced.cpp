@@ -44,6 +44,20 @@
 
 #include "ViewProviderSketch.h"
 
+#define LM_EPS  1E-10
+#define LM_EPS1 1E-80
+#define LM_TAU  1E-3
+#define DL_TOLG 1E-80
+#define DL_TOLX 1E-80
+#define DL_TOLF 1E-10
+#define CONVERGENCE 1E-10
+#define MAX_ITER 100
+#define DEFAULT_SOLVER 2            // DL=2, LM=1, BFGS=0
+#define DEFAULT_RSOLVER 2           // DL=2, LM=1, BFGS=0
+#define DEFAULT_QRSOLVER 1          // DENSE=0, SPARSEQR=1
+#define DEFAULT_SOLVER_DEBUG 1      // None=0, Minimal=1, IterationLevel=2
+#define MAX_ITER_MULTIPLIER true    
+
 using namespace SketcherGui;
 using namespace Gui::TaskView;
 
@@ -62,7 +76,7 @@ TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketc
     ui->comboBoxDefaultSolver->onRestore();
     ui->spinBoxMaxIter->onRestore();
     ui->checkBoxSketchSizeMultiplier->onRestore();
-    ui->lineEditCovergence->onRestore();
+    ui->lineEditConvergence->onRestore();
     ui->comboBoxQRMethod->onRestore();
     ui->comboBoxRedundantDefaultSolver->onRestore();
     ui->spinBoxRedundantSolverMaxIterations->onRestore();
@@ -88,6 +102,9 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             ui->labelSolverParam1->setText(QString::fromLatin1(""));
             ui->labelSolverParam2->setText(QString::fromLatin1(""));
             ui->labelSolverParam3->setText(QString::fromLatin1(""));
+            ui->lineEditSolverParam1->clear();
+            ui->lineEditSolverParam2->clear();
+            ui->lineEditSolverParam3->clear();
             ui->lineEditSolverParam1->setDisabled(true);
             ui->lineEditSolverParam2->setDisabled(true);
             ui->lineEditSolverParam3->setDisabled(true);
@@ -100,9 +117,9 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             ui->lineEditSolverParam1->setEnabled(true);
             ui->lineEditSolverParam2->setEnabled(true);
             ui->lineEditSolverParam3->setEnabled(true);           
-            double eps = hGrp->GetFloat("LM_eps",1E-10);
-            double eps1 = hGrp->GetFloat("LM_eps1",1E-80);          
-            double tau = hGrp->GetFloat("LM_tau",1E-3);
+            double eps = ::atof(hGrp->GetASCII("LM_eps",QString::number(LM_EPS).toUtf8()).c_str());
+            double eps1 = ::atof(hGrp->GetASCII("LM_eps1",QString::number(LM_EPS1).toUtf8()).c_str());          
+            double tau = ::atof(hGrp->GetASCII("LM_tau",QString::number(LM_TAU).toUtf8()).c_str());
             ui->lineEditSolverParam1->setText(QString::number(eps).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));            
             ui->lineEditSolverParam2->setText(QString::number(eps1).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam3->setText(QString::number(tau).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
@@ -119,9 +136,9 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             ui->lineEditSolverParam1->setEnabled(true);
             ui->lineEditSolverParam2->setEnabled(true);
             ui->lineEditSolverParam3->setEnabled(true);
-            double tolg = hGrp->GetFloat("DL_tolg",1E-80);
-            double tolx = hGrp->GetFloat("DL_tolx",1E-80);          
-            double tolf = hGrp->GetFloat("DL_tolf",1E-10);
+            double tolg = ::atof(hGrp->GetASCII("DL_tolg",QString::number(DL_TOLG).toUtf8()).c_str());
+            double tolx = ::atof(hGrp->GetASCII("DL_tolx",QString::number(DL_TOLX).toUtf8()).c_str());          
+            double tolf = ::atof(hGrp->GetASCII("DL_tolf",QString::number(DL_TOLF).toUtf8()).c_str());
             ui->lineEditSolverParam1->setText(QString::number(tolg).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));           
             ui->lineEditSolverParam2->setText(QString::number(tolx).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditSolverParam3->setText(QString::number(tolf).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
@@ -143,6 +160,9 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             ui->labelRedundantSolverParam1->setText(QString::fromLatin1(""));
             ui->labelRedundantSolverParam2->setText(QString::fromLatin1(""));
             ui->labelRedundantSolverParam3->setText(QString::fromLatin1(""));
+            ui->lineEditRedundantSolverParam1->clear();
+            ui->lineEditRedundantSolverParam2->clear();
+            ui->lineEditRedundantSolverParam3->clear();            
             ui->lineEditRedundantSolverParam1->setDisabled(true);
             ui->lineEditRedundantSolverParam2->setDisabled(true);
             ui->lineEditRedundantSolverParam3->setDisabled(true);
@@ -155,9 +175,9 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             ui->lineEditRedundantSolverParam1->setEnabled(true);
             ui->lineEditRedundantSolverParam2->setEnabled(true);
             ui->lineEditRedundantSolverParam3->setEnabled(true);           
-            double eps = hGrp->GetFloat("Redundant_LM_eps",1E-10);
-            double eps1 = hGrp->GetFloat("Redundant_LM_eps1",1E-80);          
-            double tau = hGrp->GetFloat("Redundant_LM_tau",1E-3);
+            double eps = ::atof(hGrp->GetASCII("Redundant_LM_eps",QString::number(LM_EPS).toUtf8()).c_str());
+            double eps1 = ::atof(hGrp->GetASCII("Redundant_LM_eps1",QString::number(LM_EPS1).toUtf8()).c_str());       
+            double tau = ::atof(hGrp->GetASCII("Redundant_LM_tau",QString::number(LM_TAU).toUtf8()).c_str());
             ui->lineEditRedundantSolverParam1->setText(QString::number(eps).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));            
             ui->lineEditRedundantSolverParam2->setText(QString::number(eps1).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam3->setText(QString::number(tau).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
@@ -174,9 +194,9 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             ui->lineEditRedundantSolverParam1->setEnabled(true);
             ui->lineEditRedundantSolverParam2->setEnabled(true);
             ui->lineEditRedundantSolverParam3->setEnabled(true);
-            double tolg = hGrp->GetFloat("Redundant_DL_tolg",1E-80);
-            double tolx = hGrp->GetFloat("Redundant_DL_tolx",1E-80);          
-            double tolf = hGrp->GetFloat("Redundant_DL_tolf",1E-10);
+            double tolg = ::atof(hGrp->GetASCII("Redundant_DL_tolg",QString::number(DL_TOLG).toUtf8()).c_str());
+            double tolx = ::atof(hGrp->GetASCII("Redundant_DL_tolx",QString::number(DL_TOLX).toUtf8()).c_str());         
+            double tolf = ::atof(hGrp->GetASCII("Redundant_DL_tolf",QString::number(DL_TOLF).toUtf8()).c_str());
             ui->lineEditRedundantSolverParam1->setText(QString::number(tolg).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));           
             ui->lineEditRedundantSolverParam2->setText(QString::number(tolx).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
             ui->lineEditRedundantSolverParam3->setText(QString::number(tolf).remove(QString::fromLatin1("+").replace(QString::fromLatin1("e0"),QString::fromLatin1("E")).toUpper()));
@@ -381,16 +401,16 @@ void TaskSketcherSolverAdvanced::on_checkBoxSketchSizeMultiplier_stateChanged(in
     }
 }
 
-void TaskSketcherSolverAdvanced::on_lineEditCovergence_editingFinished()
+void TaskSketcherSolverAdvanced::on_lineEditConvergence_editingFinished()
 {
-    QString text = ui->lineEditCovergence->text();
+    QString text = ui->lineEditConvergence->text();
     double val = text.toDouble();
     QString sci = QString::number(val);
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
-    ui->lineEditCovergence->setText(sci.toUpper());
+    ui->lineEditConvergence->setText(sci.toUpper());
     
-    ui->lineEditCovergence->onSave();
+    ui->lineEditConvergence->onSave();
     
     sketchView->getSketchObject()->getSolvedSketch().setConvergence(val);
 }
@@ -446,6 +466,53 @@ void TaskSketcherSolverAdvanced::on_comboBoxDebugMode_currentIndexChanged(int in
     sketchView->getSketchObject()->getSolvedSketch().setDebugMode((GCS::DebugMode) index);
 }
 
+void TaskSketcherSolverAdvanced::on_pushButtonSolve_clicked(bool checked/* = false*/)
+{
+    sketchView->getSketchObject()->solve();
+}
+
+void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = false*/)
+{
+    // Algorithm params for default solvers
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");         
+    hGrp->SetASCII("LM_eps",QString::number(LM_EPS).toUtf8());
+    hGrp->SetASCII("LM_eps1",QString::number(LM_EPS1).toUtf8());          
+    hGrp->SetASCII("LM_tau",QString::number(LM_TAU).toUtf8());
+    hGrp->SetASCII("DL_tolg",QString::number(DL_TOLG).toUtf8());
+    hGrp->SetASCII("DL_tolx",QString::number(DL_TOLX).toUtf8());          
+    hGrp->SetASCII("DL_tolf",QString::number(DL_TOLF).toUtf8());
+    hGrp->SetASCII("Redundant_LM_eps",QString::number(LM_EPS).toUtf8());
+    hGrp->SetASCII("Redundant_LM_eps1",QString::number(LM_EPS1).toUtf8());          
+    hGrp->SetASCII("Redundant_LM_tau",QString::number(LM_TAU).toUtf8()); 
+    hGrp->SetASCII("Redundant_DL_tolg",QString::number(DL_TOLG).toUtf8()); 
+    hGrp->SetASCII("Redundant_DL_tolx",QString::number(DL_TOLX).toUtf8());          
+    hGrp->SetASCII("Redundant_DL_tolf",QString::number(DL_TOLF).toUtf8()); 
+    // Set other settings
+    hGrp->SetInt("DefaultSolver",DEFAULT_SOLVER);
+    hGrp->SetInt("RedundantDefaultSolver",DEFAULT_RSOLVER);
+    hGrp->SetInt("MaxIter",MAX_ITER);
+    hGrp->SetInt("RedundantSolverMaxIterations",MAX_ITER);
+    hGrp->SetBool("SketchSizeMultiplier",MAX_ITER_MULTIPLIER);
+    hGrp->SetBool("RedundantSketchSizeMultiplier",MAX_ITER_MULTIPLIER);
+    hGrp->SetASCII("Convergence",QString::number(CONVERGENCE).toUtf8());
+    hGrp->SetASCII("RedundantConvergence",QString::number(CONVERGENCE).toUtf8());
+    hGrp->SetInt("QRMethod",DEFAULT_QRSOLVER);
+    hGrp->SetInt("DebugMode",DEFAULT_SOLVER_DEBUG);
+
+    ui->comboBoxDefaultSolver->onRestore();
+    ui->spinBoxMaxIter->onRestore();
+    ui->checkBoxSketchSizeMultiplier->onRestore();
+    ui->lineEditConvergence->onRestore();
+    ui->comboBoxQRMethod->onRestore();
+    ui->comboBoxRedundantDefaultSolver->onRestore();
+    ui->spinBoxRedundantSolverMaxIterations->onRestore();
+    ui->checkBoxRedundantSketchSizeMultiplier->onRestore();
+    ui->lineEditRedundantConvergence->onRestore();
+    ui->comboBoxDebugMode->onRestore();
+    
+    updateSketchObject();
+}
+
 void TaskSketcherSolverAdvanced::updateSketchObject(void)
 {
     sketchView->getSketchObject()->getSolvedSketch().setDebugMode((GCS::DebugMode) ui->comboBoxDebugMode->currentIndex());
@@ -454,7 +521,7 @@ void TaskSketcherSolverAdvanced::updateSketchObject(void)
     sketchView->getSketchObject()->getSolvedSketch().defaultSolverRedundant=(GCS::Algorithm) ui->comboBoxRedundantDefaultSolver->currentIndex();
     sketchView->getSketchObject()->getSolvedSketch().setQRAlgorithm((GCS::QRAlgorithm) ui->comboBoxQRMethod->currentIndex());
     sketchView->getSketchObject()->getSolvedSketch().setConvergenceRedundant(ui->lineEditRedundantConvergence->text().toDouble());
-    sketchView->getSketchObject()->getSolvedSketch().setConvergence(ui->lineEditCovergence->text().toDouble());
+    sketchView->getSketchObject()->getSolvedSketch().setConvergence(ui->lineEditConvergence->text().toDouble());
     sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplier(ui->checkBoxSketchSizeMultiplier->isChecked());
     sketchView->getSketchObject()->getSolvedSketch().setMaxIter(ui->spinBoxMaxIter->value());
     sketchView->getSketchObject()->getSolvedSketch().defaultSolver=(GCS::Algorithm) ui->comboBoxDefaultSolver->currentIndex();   
