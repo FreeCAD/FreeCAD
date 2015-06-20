@@ -1776,18 +1776,27 @@ int System::diagnose(Algorithm alg)
     
     if(debugMode==IterationLevel) {
         std::stringstream stream;
+        stream  << (qrAlgorithm==EigenSparseQR?"EigenSparseQR":(qrAlgorithm==EigenDenseQR?"DenseQR":""));        
         
-        stream  << (qrAlgorithm==EigenSparseQR?"EigenSparseQR":(qrAlgorithm==EigenDenseQR?"DenseQR":""));
-        stream  << ", Threads: " << Eigen::nbThreads()
-                #ifdef EIGEN_VECTORIZE
-                << ", Vectorization: On"
-                #endif                
-                << ", Params: " << paramsNum
-                << ", Constr: " << constrNum
-                << ", Rank: "   << rank         << "\n";
-
+        if (J.rows() > 0) {    
+            stream  << ", Threads: " << Eigen::nbThreads()
+                    #ifdef EIGEN_VECTORIZE
+                    << ", Vectorization: On"
+                    #endif                
+                    << ", Params: " << paramsNum
+                    << ", Constr: " << constrNum
+                    << ", Rank: "   << rank         << "\n";
+        }
+        else {
+            stream  << ", Threads: " << Eigen::nbThreads()
+                    #ifdef EIGEN_VECTORIZE
+                    << ", Vectorization: On"
+                    #endif                
+                    << ", Empty Sketch, nothing to solve" << "\n";            
+        }
+        
         const std::string tmp = stream.str();
-        Base::Console().Log(tmp.c_str());
+        Base::Console().Log(tmp.c_str());        
     }
         
     if (J.rows() > 0) {
@@ -1890,7 +1899,7 @@ int System::diagnose(Algorithm alg)
             SubSystem *subSysTmp = new SubSystem(clistTmp, plist);
             int res = solve(subSysTmp,true,alg,true);
             
-            if(debugMode==Minimal) {
+            if(debugMode==Minimal || debugMode==IterationLevel) {
                 std::string solvername;
                 switch (alg) {
                     case 0:
