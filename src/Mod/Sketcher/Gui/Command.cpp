@@ -467,7 +467,7 @@ bool CmdSketcherViewSketch::isActive(void)
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        if (vp && vp->getSketchMode() == ViewProviderSketch::STATUS_NONE)
+        if (vp /*&& vp->getSketchMode() == ViewProviderSketch::STATUS_NONE*/)
             return true;
     }
     return false;
