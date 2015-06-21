@@ -1109,9 +1109,9 @@ int System::solve_BFGS(SubSystem *subsys, bool isFine, bool isRedundantsolving)
     h = x - h; // = x - xold
 
     //double convergence = isFine ? convergence : XconvergenceRough;
-    int maxIterNumber = isRedundantsolving?
+    int maxIterNumber = (isRedundantsolving?
         (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
-        (sketchSizeMultiplier?maxIter * xsize:maxIter);
+        (sketchSizeMultiplier?maxIter * xsize:maxIter));
 
     if(debugMode==IterationLevel) {
         std::stringstream stream;
@@ -1130,10 +1130,32 @@ int System::solve_BFGS(SubSystem *subsys, bool isFine, bool isRedundantsolving)
 
     for (int iter=1; iter < maxIterNumber; iter++) {
         h_norm = h.norm();
-        if (h_norm <= isRedundantsolving?convergenceRedundant:convergence || err <= smallF)
+        if (h_norm <= (isRedundantsolving?convergenceRedundant:convergence) || err <= smallF){
+           if(debugMode==IterationLevel) {
+                std::stringstream stream;
+                
+                stream  << "BFGS Converged!!: "
+                        << ", err: "              << err        
+                        << ", h_norm: "           << h_norm  << "\n";
+
+                const std::string tmp = stream.str();
+                Base::Console().Log(tmp.c_str());
+            }            
             break;
-        if (err > divergingLim || err != err) // check for diverging and NaN
+        }
+        if (err > divergingLim || err != err) { // check for diverging and NaN
+            if(debugMode==IterationLevel) {
+                std::stringstream stream;
+                
+                stream  << "BFGS Failed: Diverging!!: "
+                        << ", err: "              << err        
+                        << ", divergingLim: "            << divergingLim  << "\n";
+
+                const std::string tmp = stream.str();
+                Base::Console().Log(tmp.c_str());
+            }
             break;
+        }
 
         y = grad;
         subsys->calcGrad(grad);
@@ -1176,7 +1198,7 @@ int System::solve_BFGS(SubSystem *subsys, bool isFine, bool isRedundantsolving)
 
     if (err <= smallF)
         return Success;
-    if (h.norm() <= isRedundantsolving?convergenceRedundant:convergence)
+    if (h.norm() <= (isRedundantsolving?convergenceRedundant:convergence))
         return Converged;
     return Failed;
 }
@@ -1200,15 +1222,15 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     subsys->calcResidual(e);
     e*=-1;
 
-    int maxIterNumber = isRedundantsolving?
+    int maxIterNumber = (isRedundantsolving?
         (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
-        (sketchSizeMultiplier?maxIter * xsize:maxIter);
+        (sketchSizeMultiplier?maxIter * xsize:maxIter));
         
     double divergingLim = 1e6*e.squaredNorm() + 1e12;
 
-    double eps=isRedundantsolving?LM_epsRedundant:LM_eps;
-    double eps1=isRedundantsolving?LM_eps1Redundant:LM_eps1;
-    double tau=isRedundantsolving?LM_tauRedundant:LM_tau;
+    double eps=(isRedundantsolving?LM_epsRedundant:LM_eps);
+    double eps1=(isRedundantsolving?LM_eps1Redundant:LM_eps1);
+    double tau=(isRedundantsolving?LM_tauRedundant:LM_tau);
     
     if(debugMode==IterationLevel) {
         std::stringstream stream;
@@ -1351,9 +1373,9 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
 int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 {
-    double tolg=isRedundantsolving?DL_tolgRedundant:DL_tolg;
-    double tolx=isRedundantsolving?DL_tolxRedundant:DL_tolx;
-    double tolf=isRedundantsolving?DL_tolfRedundant:DL_tolf;
+    double tolg=(isRedundantsolving?DL_tolgRedundant:DL_tolg);
+    double tolx=(isRedundantsolving?DL_tolxRedundant:DL_tolx);
+    double tolf=(isRedundantsolving?DL_tolfRedundant:DL_tolf);
     
     int xsize = subsys->pSize();
     int csize = subsys->cSize();
@@ -1361,9 +1383,9 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     if (xsize == 0)
         return Success;
     
-    int maxIterNumber = isRedundantsolving?
+    int maxIterNumber = (isRedundantsolving?
         (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
-        (sketchSizeMultiplier?maxIter * xsize:maxIter);
+        (sketchSizeMultiplier?maxIter * xsize:maxIter));
         
     if(debugMode==IterationLevel) {
         std::stringstream stream;
@@ -1580,9 +1602,9 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine, bool isRe
     subsysA->calcResidual(resA);
 
     //double convergence = isFine ? XconvergenceFine : XconvergenceRough;
-    int maxIterNumber = isRedundantsolving?
+    int maxIterNumber = (isRedundantsolving?
         (sketchSizeMultiplierRedundant?maxIterRedundant * xsize:maxIterRedundant):
-        (sketchSizeMultiplier?maxIter * xsize:maxIter);
+        (sketchSizeMultiplier?maxIter * xsize:maxIter));
         
     double divergingLim = 1e6*subsysA->error() + 1e12;
 
@@ -1677,7 +1699,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine, bool isRe
         }
 
         double err = subsysA->error();
-        if (h.norm() <= isRedundantsolving?convergenceRedundant:convergence && err <= smallF)
+        if (h.norm() <= (isRedundantsolving?convergenceRedundant:convergence) && err <= smallF)
             break;
         if (err > divergingLim || err != err) // check for diverging and NaN
             break;
@@ -1686,7 +1708,7 @@ int System::solve(SubSystem *subsysA, SubSystem *subsysB, bool isFine, bool isRe
     int ret;
     if (subsysA->error() <= smallF)
         ret = Success;
-    else if (h.norm() <= isRedundantsolving?convergenceRedundant:convergence)
+    else if (h.norm() <= (isRedundantsolving?convergenceRedundant:convergence))
         ret = Converged;
     else
         ret = Failed;
