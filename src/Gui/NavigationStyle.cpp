@@ -1357,7 +1357,8 @@ SbBool NavigationStyle::processEvent(const SoEvent * const ev)
     processed = this->processSoEvent(ev);
 
     // check for left click without selecting something
-    if (curmode == NavigationStyle::SELECTION && !processed) {
+    if ((curmode == NavigationStyle::SELECTION || curmode == NavigationStyle::IDLE)
+            && !processed) {
         if (ev->getTypeId().isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
             SoMouseButtonEvent * const e = (SoMouseButtonEvent *) ev;
             if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
