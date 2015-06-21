@@ -26,12 +26,6 @@ set(Robot_LIBS
     FreeCADApp
 )
 
-FILE( GLOB KDL_SRCS kdl_cp/[^.]*.cpp )
-FILE( GLOB KDL_HPPS kdl_cp/[^.]*.hpp kdl_cp/[^.]*.inl)
-
-FILE( GLOB UTIL_SRCS kdl_cp/utilities/[^.]*.cpp kdl_cp/utilities/[^.]*.cxx)
-FILE( GLOB UTIL_HPPS kdl_cp/utilities/[^.]*.h kdl_cp/utilities/[^.]*.hpp)
-
 generate_from_xml(Robot6AxisPy)
 generate_from_xml(TrajectoryPy)
 generate_from_xml(WaypointPy)
@@ -79,16 +73,46 @@ SET(Robot_SRCS
     Simulation.h
     Waypoint.cpp
     Waypoint.h
-    ${KDL_SRCS}
-    ${KDL_HPPS}
-    ${UTIL_SRCS}
-    ${UTIL_HPPS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
 
+# use external kdl
+if (FREECAD_USE_EXTERNAL_KDL)
+  find_library(KDL_LIBRARY orocos-kdl)
+  find_path(KDL_INCLUDES kdl/kdl.hpp)
+  if(KDL_LIBRARY)
+     message(STATUS "Found orocos-kdl: ${KDL_LIBRARY}")
+  endif()
+  if(KDL_INCLUDES)
+     message(STATUS "Found orocus_kdl headers: ${KDL_INCLUDES}")
+  endif()
+  if(KDL_LIBRARY AND KDL_INCLUDES)
+      list(APPEND Robot_LIBS ${KDL_LIBRARY})
+      include_directories(${KDL_INCLUDES})
+  else()
+      message(FATAL_ERROR "Using external orocos-kdl was specified but was not found.")
+  endif()
 
-SOURCE_GROUP("KDL" FILES ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS} )
+else(FREECAD_USE_EXTERNAL_KDL)
+  # here we use the internal supplied kdl
+  FILE( GLOB KDL_SRCS kdl_cp/[^.]*.cpp )
+  FILE( GLOB KDL_HPPS kdl_cp/[^.]*.hpp kdl_cp/[^.]*.inl)
+
+  FILE( GLOB UTIL_SRCS kdl_cp/utilities/[^.]*.cpp kdl_cp/utilities/[^.]*.cxx)
+  FILE( GLOB UTIL_HPPS kdl_cp/utilities/[^.]*.h kdl_cp/utilities/[^.]*.hpp)
+
+  SET(Robot_SRCS
+      ${Robot_SRCS}
+      ${KDL_SRCS}
+      ${KDL_HPPS}
+      ${UTIL_SRCS}
+      ${UTIL_HPPS}
+  )
+
+  SOURCE_GROUP("KDL" FILES ${KDL_SRCS} ${KDL_HPPS} ${UTIL_SRCS} ${UTIL_HPPS} )
+
+endif(FREECAD_USE_EXTERNAL_KDL)
 
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
