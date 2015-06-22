@@ -1395,6 +1395,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
                 << ", tolf: "           << tolf
                 << ", convergence: "    << (isRedundantsolving?convergenceRedundant:convergence)
                 << ", xsize: "          << xsize
+                << ", csize: "          << csize
                 << ", maxIter: "        << maxIterNumber  << "\n";
 
         const std::string tmp = stream.str();
@@ -1549,6 +1550,15 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     }
 
     subsys->revertParams();
+    
+    if(debugMode==IterationLevel) {
+        std::stringstream stream;
+        
+        stream  << "DL: stopcode: "     << stop << ((stop == 1) ? ", Success" : ", Failed") << "\n";
+
+        const std::string tmp = stream.str();
+        Base::Console().Log(tmp.c_str());
+    }    
 
     return (stop == 1) ? Success : Failed;
 }
@@ -1992,6 +2002,10 @@ int System::diagnose(Algorithm alg)
                         redundant.insert(*constr);
                 }
                 resetToReference();
+                
+                if(debugMode==Minimal || debugMode==IterationLevel) {                    
+                    Base::Console().Log("Sketcher Redundant solving: %d redundants\n",redundant.size());          
+                }
 
                 std::vector< std::vector<Constraint *> > conflictGroupsOrig=conflictGroups;
                 conflictGroups.clear();
