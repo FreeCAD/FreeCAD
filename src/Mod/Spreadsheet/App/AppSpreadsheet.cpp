@@ -46,6 +46,7 @@ void SpreadsheetExport initSpreadsheet() {
     Spreadsheet::VariableExpression::init();
     Spreadsheet::ConditionalExpression::init();
     Spreadsheet::StringExpression::init();
+    Spreadsheet::RangeExpression::init();
 
     return;
 }
