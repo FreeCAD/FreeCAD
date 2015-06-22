@@ -1432,6 +1432,7 @@ void Document::recompute()
     std::list<Vertex> make_order;
     DependencyList::out_edge_iterator j, jend;
 
+
     try {
         // this sort gives the execute
         boost::topological_sort(d->DepList, std::front_inserter(make_order));
@@ -1449,40 +1450,66 @@ void Document::recompute()
     std::clog << "make ordering: " << std::endl;
 #endif
 
+    std::set<DocumentObject*> recomputeList;
+
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
         if (!Cur) continue;
 #ifdef FC_LOGFEATUREUPDATE
-        std::clog << Cur->getNameInDocument() << " dep on: " ;
+        std::clog << Cur->getNameInDocument() << " dep on:" ;
 #endif
         bool NeedUpdate = false;
 
         // ask the object if it should be recomputed
-        if (Cur->mustExecute() == 1)
+        if (Cur->mustExecute() == 1 || Cur->ExpressionEngine.depsAreTouched()) {
+#ifdef FC_LOGFEATUREUPDATE
+            std::clog << "[touched]";
+#endif
             NeedUpdate = true;
+        }
         else {// if (Cur->mustExecute() == -1)
             // update if one of the dependencies is touched
             for (boost::tie(j, jend) = out_edges(*i, d->DepList); j != jend; ++j) {
                 DocumentObject* Test = d->vertexMap[target(*j, d->DepList)];
+
                 if (!Test) continue;
 #ifdef FC_LOGFEATUREUPDATE
-                std::clog << Test->getNameInDocument() << ", " ;
+                std::clog << " " << Test->getNameInDocument();
 #endif
                 if (Test->isTouched()) {
                     NeedUpdate = true;
-                    break;
+#ifdef FC_LOGFEATUREUPDATE
+                    std::clog << "[touched]";
+#endif
                 }
             }
-#ifdef FC_LOGFEATUREUPDATE
-            std::clog << std::endl;
-#endif
         }
         // if one touched recompute
         if (NeedUpdate) {
+            Cur->touch();
 #ifdef FC_LOGFEATUREUPDATE
-            std::clog << "Recompute" << std::endl;
+            std::clog << " => Recompute feature";
 #endif
-            if (_recomputeFeature(Cur)) {
+            recomputeList.insert(Cur);
+        }
+#ifdef FC_LOGFEATUREUPDATE
+        std::clog << std::endl;
+#endif
+    }
+
+#ifdef FC_LOGFEATUREUPDATE
+    std::clog << "Have to recompute the following document objects" << std::endl;
+    for (std::set<DocumentObject*>::const_iterator it = recomputeList.begin(); it != recomputeList.end(); ++it) {
+        std::clog << "  " << (*it)->getNameInDocument() << std::endl;
+    }
+#endif
+
+    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
+        DocumentObject* Cur = d->vertexMap[*i];
+
+        if (recomputeList.find(Cur) != recomputeList.end() ||
+                Cur->ExpressionEngine.depsAreTouched()) {
+            if ( _recomputeFeature(Cur)) {
                 // if somthing happen break execution of recompute
                 d->vertexMap.clear();
                 return;
@@ -1517,6 +1544,17 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 
     DocumentObjectExecReturn  *returnCode = 0;
     try {
+        returnCode = Feat->ExpressionEngine.execute();
+        if (returnCode != DocumentObject::StdReturn) {
+            returnCode->Which = Feat;
+            _RecomputeLog.push_back(returnCode);
+    #ifdef FC_DEBUG
+            Base::Console().Error("%s\n",returnCode->Why.c_str());
+    #endif
+            Feat->setError();
+            return true;
+        }
+
         returnCode = Feat->recompute();
     }
     catch(Base::AbortException &e){
