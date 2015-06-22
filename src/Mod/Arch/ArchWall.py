@@ -50,7 +50,10 @@ def makeWall(baseobj=None,length=None,width=None,height=None,align="Center",face
     if FreeCAD.GuiUp:
         _ViewProviderWall(obj.ViewObject)
     if baseobj:
-        obj.Base = baseobj
+        if baseobj.isDerivedFrom("Part::Feature") or baseobj.isDerivedFrom("Mesh::Feature"):
+            obj.Base = baseobj
+        else:
+            FreeCAD.Console.PrintWarning(str(translate("Arch","Walls can only be based on Part or Mesh objects")))
     if face:
         obj.Face = face
     if length:
