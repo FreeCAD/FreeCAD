@@ -55,6 +55,7 @@
 #define DEFAULT_SOLVER 2            // DL=2, LM=1, BFGS=0
 #define DEFAULT_RSOLVER 2           // DL=2, LM=1, BFGS=0
 #define DEFAULT_QRSOLVER 0          // DENSE=0, SPARSEQR=1
+#define QR_PIVOT_THRESHOLD 1E-13    // under this value a Jacobian value is regarded as zero
 #define DEFAULT_SOLVER_DEBUG 1      // None=0, Minimal=1, IterationLevel=2
 #define MAX_ITER_MULTIPLIER true    
 
@@ -78,6 +79,7 @@ TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketc
     ui->checkBoxSketchSizeMultiplier->onRestore();
     ui->lineEditConvergence->onRestore();
     ui->comboBoxQRMethod->onRestore();
+    ui->lineEditQRPivotThreshold->onRestore();
     ui->comboBoxRedundantDefaultSolver->onRestore();
     ui->spinBoxRedundantSolverMaxIterations->onRestore();
     ui->checkBoxRedundantSketchSizeMultiplier->onRestore();
@@ -401,6 +403,20 @@ void TaskSketcherSolverAdvanced::on_checkBoxSketchSizeMultiplier_stateChanged(in
     }
 }
 
+void TaskSketcherSolverAdvanced::on_lineEditQRPivotThreshold_editingFinished()
+{
+    QString text = ui->lineEditQRPivotThreshold->text();
+    double val = text.toDouble();
+    QString sci = QString::number(val);
+    sci.remove(QString::fromLatin1("+"));
+    sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
+    ui->lineEditQRPivotThreshold->setText(sci.toUpper());
+    
+    ui->lineEditQRPivotThreshold->onSave();
+    
+    sketchView->getSketchObject()->getSolvedSketch().setQRPivotThreshold(val);
+}
+
 void TaskSketcherSolverAdvanced::on_lineEditConvergence_editingFinished()
 {
     QString text = ui->lineEditConvergence->text();
@@ -497,6 +513,7 @@ void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = 
     hGrp->SetASCII("Convergence",QString::number(CONVERGENCE).toUtf8());
     hGrp->SetASCII("RedundantConvergence",QString::number(CONVERGENCE).toUtf8());
     hGrp->SetInt("QRMethod",DEFAULT_QRSOLVER);
+    hGrp->SetASCII("QRPivotThreshold",QString::number(QR_PIVOT_THRESHOLD).toUtf8());
     hGrp->SetInt("DebugMode",DEFAULT_SOLVER_DEBUG);
 
     ui->comboBoxDefaultSolver->onRestore();
@@ -504,6 +521,7 @@ void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = 
     ui->checkBoxSketchSizeMultiplier->onRestore();
     ui->lineEditConvergence->onRestore();
     ui->comboBoxQRMethod->onRestore();
+    ui->lineEditQRPivotThreshold->onRestore();
     ui->comboBoxRedundantDefaultSolver->onRestore();
     ui->spinBoxRedundantSolverMaxIterations->onRestore();
     ui->checkBoxRedundantSketchSizeMultiplier->onRestore();
@@ -520,6 +538,7 @@ void TaskSketcherSolverAdvanced::updateSketchObject(void)
     sketchView->getSketchObject()->getSolvedSketch().setMaxIterRedundant(ui->spinBoxRedundantSolverMaxIterations->value());
     sketchView->getSketchObject()->getSolvedSketch().defaultSolverRedundant=(GCS::Algorithm) ui->comboBoxRedundantDefaultSolver->currentIndex();
     sketchView->getSketchObject()->getSolvedSketch().setQRAlgorithm((GCS::QRAlgorithm) ui->comboBoxQRMethod->currentIndex());
+    sketchView->getSketchObject()->getSolvedSketch().setQRPivotThreshold(ui->lineEditQRPivotThreshold->text().toDouble());
     sketchView->getSketchObject()->getSolvedSketch().setConvergenceRedundant(ui->lineEditRedundantConvergence->text().toDouble());
     sketchView->getSketchObject()->getSolvedSketch().setConvergence(ui->lineEditConvergence->text().toDouble());
     sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplier(ui->checkBoxSketchSizeMultiplier->isChecked());

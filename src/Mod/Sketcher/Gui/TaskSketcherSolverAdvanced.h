@@ -52,6 +52,7 @@ private Q_SLOTS:
     void on_checkBoxSketchSizeMultiplier_stateChanged(int state);    
     void on_lineEditConvergence_editingFinished();
     void on_comboBoxQRMethod_currentIndexChanged(int index);
+    void on_lineEditQRPivotThreshold_editingFinished();
     void on_comboBoxRedundantDefaultSolver_currentIndexChanged(int index);
     void on_lineEditRedundantConvergence_editingFinished();
     void on_spinBoxRedundantSolverMaxIterations_valueChanged(int i);

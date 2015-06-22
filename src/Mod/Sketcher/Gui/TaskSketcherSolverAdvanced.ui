@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>326</width>
-    <height>628</height>
+    <height>630</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -245,7 +245,7 @@
      <item>
       <widget class="Gui::PrefComboBox" name="comboBoxQRMethod">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="prefEntry" stdset="0">
         <cstring>QRMethod</cstring>
@@ -263,6 +263,33 @@
          <string>Eigen Sparse QR</string>
         </property>
        </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <item>
+      <widget class="QLabel" name="labelPivotThreshold">
+       <property name="text">
+        <string>Pivot threshold</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="Gui::PrefLineEdit" name="lineEditQRPivotThreshold">
+       <property name="text">
+        <string>1E-13</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>QRPivotThreshold</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/Sketcher/SolverAdvanced</cstring>
+       </property>
       </widget>
      </item>
     </layout>

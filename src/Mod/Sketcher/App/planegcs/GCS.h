@@ -103,6 +103,7 @@ namespace GCS
         double convergence;
         double convergenceRedundant;
         QRAlgorithm qrAlgorithm;
+        double qrpivotThreshold;
         DebugMode debugMode;
         double LM_eps;
         double LM_eps1;          
