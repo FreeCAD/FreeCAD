@@ -51,12 +51,13 @@ public:
     TaskFilletParameters(ViewProviderFillet *FilletView, QWidget *parent=0);
     ~TaskFilletParameters();
 
-    double getLength(void) const;
+    void apply();
 
 private Q_SLOTS:
     void onLengthChanged(double);
 
 protected:
+    double getLength(void) const;
     void changeEvent(QEvent *e);
 
 private:

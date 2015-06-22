@@ -52,11 +52,9 @@ public:
     TaskPocketParameters(ViewProviderPocket *PocketView,QWidget *parent = 0);
     ~TaskPocketParameters();
 
-    double getLength(void) const;
-    bool getMidplane(void) const;
-    int getMode(void) const;
     QByteArray getFaceName(void) const;
     const bool updateView() const;
+    void apply();
 
 private Q_SLOTS:
     void onLengthChanged(double);
@@ -71,6 +69,9 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
+    double getLength(void) const;
+    bool getMidplane(void) const;
+    int getMode(void) const;
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI(int index);
 

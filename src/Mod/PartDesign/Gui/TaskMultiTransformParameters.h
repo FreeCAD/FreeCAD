@@ -63,6 +63,8 @@ public:
     /// Return the currently active subFeature
     PartDesign::Transformed* getSubFeature(void) { return subFeature; }
 
+    virtual void apply();
+
 private Q_SLOTS:
     void onTransformDelete();
     void onTransformEdit();

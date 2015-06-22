@@ -382,6 +382,10 @@ const std::vector<App::DocumentObject*> TaskMultiTransformParameters::getTransfo
     return pcMultiTransform->Transformations.getValues();
 }
 
+void TaskMultiTransformParameters::apply()
+{
+}
+
 TaskMultiTransformParameters::~TaskMultiTransformParameters()
 {
     closeSubTask();

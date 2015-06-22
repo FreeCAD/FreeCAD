@@ -117,6 +117,9 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     ui->lengthEdit2->setMaximum(INT_MAX);
     ui->lengthEdit2->setValue(l2);
 
+    // Bind input fields to properties
+    ui->lengthEdit->bind(pcPad->Length);
+    ui->lengthEdit2->bind(pcPad->Length2);
 
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
@@ -290,7 +293,7 @@ void TaskPadParameters::onModeChanged(int index)
         case 0:
             pcPad->Type.setValue("Length");
             // Avoid error message
-            if (ui->lengthEdit->value().getValue() < Precision::Confusion())
+            if (ui->lengthEdit->value() < Precision::Confusion())
                 ui->lengthEdit->setValue(5.0);
             break;
         case 1: pcPad->Type.setValue("UpToLast"); break;
@@ -457,6 +460,37 @@ void TaskPadParameters::saveHistory(void)
     ui->lengthEdit2->pushToHistory();
 }
 
+void TaskPadParameters::apply()
+{
+    std::string name = PadView->getObject()->getNameInDocument();
+    const char * cname = name.c_str();
+
+    ui->lengthEdit->apply();
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",cname,getReversed()?1:0);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",cname,getMidplane()?1:0);
+
+    ui->lengthEdit2->apply();
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",cname,getMode());
+    std::string facename = getFaceName().data();
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    Part::Feature* support = pcPad->getSupport();
+
+    if (support != NULL && !facename.empty()) {
+        QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+        buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
+        buf = buf.arg(QString::fromStdString(facename));
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", cname, buf.toStdString().c_str());
+    } else
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", cname);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    if (!PadView->getObject()->isValid())
+        throw Base::Exception(PadView->getObject()->getStatusString());
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::commitCommand();
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -494,34 +528,13 @@ void TaskDlgPadParameters::clicked(int)
 
 bool TaskDlgPadParameters::accept()
 {
-    std::string name = PadView->getObject()->getNameInDocument();
 
     // save the history 
     parameter->saveHistory();
 
     try {
         //Gui::Command::openCommand("Pad changed");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length2 = %f",name.c_str(),parameter->getLength2());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
-        std::string facename = parameter->getFaceName().data();
-        PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-        Part::Feature* support = pcPad->getSupport();
-
-        if (support != NULL && !facename.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-            buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
-            buf = buf.arg(QString::fromStdString(facename));
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), buf.toStdString().c_str());
-        } else
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-        if (!PadView->getObject()->isValid())
-            throw Base::Exception(PadView->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+        parameter->apply();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));

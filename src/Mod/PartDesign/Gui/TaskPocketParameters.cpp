@@ -120,6 +120,9 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->changeMode->setCurrentIndex(index);
     ui->checkBoxMidplane->setChecked(midplane);
 
+    // Bind input fields to properties
+    ui->pocketLength->bind(pcPocket->Length);
+
     ui->pocketLength->blockSignals(false);
     ui->checkBoxMidplane->blockSignals(false);
     ui->checkBoxReversed->blockSignals(false);
@@ -412,6 +415,30 @@ void TaskPocketParameters::changeEvent(QEvent *e)
     }
 }
 
+void TaskPocketParameters::apply()
+{
+    std::string name = PocketView->getObject()->getNameInDocument();
+
+    //Gui::Command::openCommand("Pocket changed");
+    ui->pocketLength->apply();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),getMode());
+    std::string facename = getFaceName().data();
+    PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
+    Part::Feature* support = pcPocket->getSupport();
+    if (support != NULL && !facename.empty()) {
+        QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
+        buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
+        buf = buf.arg(QString::fromStdString(facename));
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), buf.toStdString().c_str());
+    } else
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    if (!PocketView->getObject()->isValid())
+        throw Base::Exception(PocketView->getObject()->getStatusString());
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::commitCommand();
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -450,27 +477,8 @@ void TaskDlgPocketParameters::clicked(int)
 
 bool TaskDlgPocketParameters::accept()
 {
-    std::string name = PocketView->getObject()->getNameInDocument();
-
     try {
-        //Gui::Command::openCommand("Pocket changed");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Length = %f",name.c_str(),parameter->getLength());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",name.c_str(),parameter->getMode());
-        std::string facename = parameter->getFaceName().data();
-        PartDesign::Pocket* pcPocket = static_cast<PartDesign::Pocket*>(PocketView->getObject());
-        Part::Feature* support = pcPocket->getSupport();
-        if (support != NULL && !facename.empty()) {
-            QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-            buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
-            buf = buf.arg(QString::fromStdString(facename));
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", name.c_str(), buf.toStdString().c_str());
-        } else
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", name.c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-        if (!PocketView->getObject()->isValid())
-            throw Base::Exception(PocketView->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+        parameter->apply();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
