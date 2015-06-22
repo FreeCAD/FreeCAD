@@ -34,16 +34,24 @@
 
 namespace Base {
 
+#define UnitSignatureLengthBits 4
+#define UnitSignatureMassBits 4
+#define UnitSignatureTimeBits 4
+#define UnitSignatureElectricCurrentBits 4
+#define UnitSignatureThermodynamicTemperatureBits 4
+#define UnitSignatureAmountOfSubstanceBits 4
+#define UnitSignatureLuminoseIntensityBits 4
+#define UnitSignatureAngleBits 4
 
 struct UnitSignature{
-    int32_t Length:4;
-    int32_t Mass:4;
-    int32_t Time:4;
-    int32_t ElectricCurrent:4;
-    int32_t ThermodynamicTemperature:4;
-    int32_t AmountOfSubstance:4;
-    int32_t LuminoseIntensity:4;
-    int32_t Angle:4;
+    int32_t Length:UnitSignatureLengthBits;
+    int32_t Mass:UnitSignatureMassBits;
+    int32_t Time:UnitSignatureTimeBits;
+    int32_t ElectricCurrent:UnitSignatureElectricCurrentBits;
+    int32_t ThermodynamicTemperature:UnitSignatureThermodynamicTemperatureBits;
+    int32_t AmountOfSubstance:UnitSignatureAmountOfSubstanceBits;
+    int32_t LuminoseIntensity:UnitSignatureLuminoseIntensityBits;
+    int32_t Angle:UnitSignatureAngleBits;
 };
 /**
  * The Unit class.

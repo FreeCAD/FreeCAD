@@ -27,9 +27,32 @@
 #endif
 
 #include "Unit.h"
+#include "Exception.h"
 
 using namespace Base;
 
+static inline void checkRange(const char * op, int length, int mass, int time, int electricCurrent,
+                              int thermodynamicTemperature, int amountOfSubstance, int luminoseIntensity, int angle)
+{
+    if ( ( length                   >=  (1 << (UnitSignatureLengthBits                   - 1)) ) ||
+         ( mass                     >=  (1 << (UnitSignatureMassBits                     - 1)) ) ||
+         ( time                     >=  (1 << (UnitSignatureTimeBits                     - 1)) ) ||
+         ( electricCurrent          >=  (1 << (UnitSignatureElectricCurrentBits          - 1)) ) ||
+         ( thermodynamicTemperature >=  (1 << (UnitSignatureThermodynamicTemperatureBits - 1)) ) ||
+         ( amountOfSubstance        >=  (1 << (UnitSignatureAmountOfSubstanceBits        - 1)) ) ||
+         ( luminoseIntensity        >=  (1 << (UnitSignatureLuminoseIntensityBits        - 1)) ) ||
+         ( angle                    >=  (1 << (UnitSignatureAngleBits                    - 1)) ) )
+        throw Base::Exception((std::string("Unit overflow in ") + std::string(op)).c_str());
+    if ( ( length                   <  -(1 << (UnitSignatureLengthBits                   - 1)) ) ||
+         ( mass                     <  -(1 << (UnitSignatureMassBits                     - 1)) ) ||
+         ( time                     <  -(1 << (UnitSignatureTimeBits                     - 1)) ) ||
+         ( electricCurrent          <  -(1 << (UnitSignatureElectricCurrentBits          - 1)) ) ||
+         ( thermodynamicTemperature <  -(1 << (UnitSignatureThermodynamicTemperatureBits - 1)) ) ||
+         ( amountOfSubstance        <  -(1 << (UnitSignatureAmountOfSubstanceBits        - 1)) ) ||
+         ( luminoseIntensity        <  -(1 << (UnitSignatureLuminoseIntensityBits        - 1)) ) ||
+         ( angle                    <  -(1 << (UnitSignatureAngleBits                    - 1)) ) )
+        throw Base::Exception((std::string("Unit underflow in ") + std::string(op)).c_str());
+}
 
 Unit::Unit(int8_t Length,
            int8_t Mass,
@@ -40,7 +63,17 @@ Unit::Unit(int8_t Length,
            int8_t LuminoseIntensity,
            int8_t Angle)
 {
-    Sig.Length                   = Length;                   
+    checkRange("unit",
+               (int32_t)Length,
+               (int32_t)Mass,
+               (int32_t)Time,
+               (int32_t)ElectricCurrent,
+               (int32_t)ThermodynamicTemperature,
+               (int32_t)AmountOfSubstance,
+               (int32_t)LuminoseIntensity,
+               (int32_t)Angle);
+
+    Sig.Length                   = Length;
     Sig.Mass                     = Mass;                     
     Sig.Time                     = Time;                     
     Sig.ElectricCurrent          = ElectricCurrent;          
@@ -75,6 +108,16 @@ Unit::Unit(const std::string& Pars)
 
 Unit Unit::pow(char exp)const
 {
+    checkRange("pow()",
+               (int32_t)Sig.Length * (int32_t)exp,
+               (int32_t)Sig.Mass * (int32_t)exp,
+               (int32_t)Sig.Time * (int32_t)exp,
+               (int32_t)Sig.ElectricCurrent * (int32_t)exp,
+               (int32_t)Sig.ThermodynamicTemperature * (int32_t)exp,
+               (int32_t)Sig.AmountOfSubstance * (int32_t)exp,
+               (int32_t)Sig.LuminoseIntensity * (int32_t)exp,
+               (int32_t)Sig.Angle * (int32_t)exp);
+
     Unit result;
     result.Sig.Length                   = Sig.Length                    * exp;
     result.Sig.Mass                     = Sig.Mass                      * exp;
@@ -86,7 +129,6 @@ Unit Unit::pow(char exp)const
     result.Sig.Angle                    = Sig.Angle                     * exp;
 
     return result;
-
 }
 
 bool Unit::isEmpty(void)const
@@ -116,6 +158,16 @@ bool Unit::operator ==(const Unit& that) const
 
 Unit Unit::operator *(const Unit &right) const
 {
+    checkRange("* operator",
+               (int32_t)Sig.Length + (int32_t)right.Sig.Length,
+               (int32_t)Sig.Mass + (int32_t)right.Sig.Mass,
+               (int32_t)Sig.Time + (int32_t)right.Sig.Time,
+               (int32_t)Sig.ElectricCurrent + (int32_t)right.Sig.ElectricCurrent,
+               (int32_t)Sig.ThermodynamicTemperature + (int32_t)right.Sig.ThermodynamicTemperature,
+               (int32_t)Sig.AmountOfSubstance + (int32_t)right.Sig.AmountOfSubstance,
+               (int32_t)Sig.LuminoseIntensity + (int32_t)right.Sig.LuminoseIntensity,
+               (int32_t)Sig.Angle + (int32_t)right.Sig.Angle);
+
     Unit result;
     result.Sig.Length                   = Sig.Length                    + right.Sig.Length;
     result.Sig.Mass                     = Sig.Mass                      + right.Sig.Mass;
@@ -131,6 +183,16 @@ Unit Unit::operator *(const Unit &right) const
 
 Unit Unit::operator /(const Unit &right) const
 {
+    checkRange("/ operator",
+               (int32_t)Sig.Length - (int32_t)right.Sig.Length,
+               (int32_t)Sig.Mass - (int32_t)right.Sig.Mass,
+               (int32_t)Sig.Time - (int32_t)right.Sig.Time,
+               (int32_t)Sig.ElectricCurrent - (int32_t)right.Sig.ElectricCurrent,
+               (int32_t)Sig.ThermodynamicTemperature - (int32_t)right.Sig.ThermodynamicTemperature,
+               (int32_t)Sig.AmountOfSubstance - (int32_t)right.Sig.AmountOfSubstance,
+               (int32_t)Sig.LuminoseIntensity - (int32_t)right.Sig.LuminoseIntensity,
+               (int32_t)Sig.Angle - (int32_t)right.Sig.Angle);
+
     Unit result;
     result.Sig.Length                   = Sig.Length                    - right.Sig.Length;
     result.Sig.Mass                     = Sig.Mass                      - right.Sig.Mass;
