@@ -92,8 +92,8 @@ void TaskScaledParameters::setupUI()
 {
     connect(ui->spinFactor, SIGNAL(valueChanged(double)),
             this, SLOT(onFactor(double)));
-    connect(ui->spinOccurrences, SIGNAL(valueChanged(int)),
-            this, SLOT(onOccurrences(int)));
+    connect(ui->spinOccurrences, SIGNAL(valueChanged(double)),
+            this, SLOT(onOccurrences(double)));
     connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
             this, SLOT(onUpdateView(bool)));
 
@@ -112,9 +112,11 @@ void TaskScaledParameters::setupUI()
     }
     // ---------------------
 
+    ui->spinFactor->bind(pcScaled->Factor);
+    ui->spinOccurrences->bind(pcScaled->Occurrences);
     ui->spinFactor->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
-    ui->spinFactor->setDecimals(Base::UnitsApi::getDecimals());
+    //ui->spinFactor->setDecimals(Base::UnitsApi::getDecimals());
 
     updateUI();
 }
@@ -144,7 +146,8 @@ void TaskScaledParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 }
 
-void TaskScaledParameters::onFactor(const double f) {
+void TaskScaledParameters::onFactor(const double f)
+{
     if (blockUpdate)
         return;
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
@@ -152,11 +155,12 @@ void TaskScaledParameters::onFactor(const double f) {
     recomputeFeature();
 }
 
-void TaskScaledParameters::onOccurrences(const int n) {
+void TaskScaledParameters::onOccurrences(const double n)
+{
     if (blockUpdate)
         return;
     PartDesign::Scaled* pcScaled = static_cast<PartDesign::Scaled*>(getObject());
-    pcScaled->Occurrences.setValue(n);
+    pcScaled->Occurrences.setValue(round(n));
     recomputeFeature();
 }
 
@@ -174,14 +178,13 @@ void TaskScaledParameters::onUpdateView(bool on)
 
 const double TaskScaledParameters::getFactor(void) const
 {
-    return ui->spinFactor->value();
+    return ui->spinFactor->value().getValue();
 }
 
 const unsigned TaskScaledParameters::getOccurrences(void) const
 {
-    return ui->spinOccurrences->value();
+    return round(ui->spinOccurrences->value().getValue());
 }
-
 
 TaskScaledParameters::~TaskScaledParameters()
 {
@@ -196,6 +199,19 @@ void TaskScaledParameters::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
     }
+}
+
+void TaskScaledParameters::apply()
+{
+    std::string name = TransformedView->getObject()->getNameInDocument();
+
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Factor = %f",name.c_str(), getFactor());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Occurrences = %u",name.c_str(), getOccurrences());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    if (!TransformedView->getObject()->isValid())
+        throw Base::Exception(TransformedView->getObject()->getStatusString());
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::commitCommand();
 }
 
 //**************************************************************************
@@ -214,22 +230,13 @@ TaskDlgScaledParameters::TaskDlgScaledParameters(ViewProviderScaled *ScaledView)
 
 bool TaskDlgScaledParameters::accept()
 {
-    std::string name = TransformedView->getObject()->getNameInDocument();
-
     try {
         //Gui::Command::openCommand("Scaled changed");
         // Handle Originals
         if (!TaskDlgTransformedParameters::accept())
             return false;
 
-        TaskScaledParameters* scaledParameter = static_cast<TaskScaledParameters*>(parameter);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Factor = %f",name.c_str(),scaledParameter->getFactor());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Occurrences = %u",name.c_str(),scaledParameter->getOccurrences());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-        if (!TransformedView->getObject()->isValid())
-            throw Base::Exception(TransformedView->getObject()->getStatusString());
-        Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-        Gui::Command::commitCommand();
+        parameter->apply();
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));

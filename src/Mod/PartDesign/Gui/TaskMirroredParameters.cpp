@@ -291,6 +291,10 @@ const std::string TaskMirroredParameters::getMirrorPlane(void) const
     return std::string("");
 }
 
+void TaskMirroredParameters::apply()
+{
+}
+
 TaskMirroredParameters::~TaskMirroredParameters()
 {
     delete ui;

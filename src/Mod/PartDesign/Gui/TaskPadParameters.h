@@ -52,14 +52,9 @@ public:
     TaskPadParameters(ViewProviderPad *PadView,bool newObj=false,QWidget *parent = 0);
     ~TaskPadParameters();
 
-    int getMode(void) const;
-    double getLength(void) const;
-    double getLength2(void) const;
-    bool   getReversed(void) const;
-    bool   getMidplane(void) const;
-    QByteArray getFaceName(void) const;
     const bool updateView() const;
     void saveHistory(void);
+    void apply();
 
 private Q_SLOTS:
     void onLengthChanged(double);
@@ -75,6 +70,12 @@ protected:
     void changeEvent(QEvent *e);
 
 private:
+    int getMode(void) const;
+    double getLength(void) const;
+    double getLength2(void) const;
+    bool   getReversed(void) const;
+    bool   getMidplane(void) const;
+    QByteArray getFaceName(void) const;
     void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI(int index);
 

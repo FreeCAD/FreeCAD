@@ -69,6 +69,7 @@ TaskFilletParameters::TaskFilletParameters(ViewProviderFillet *FilletView,QWidge
     ui->filletRadius->setValue(r);
     ui->filletRadius->setMinimum(0);
     ui->filletRadius->selectNumber();
+    ui->filletRadius->bind(pcFillet->Radius);
     QMetaObject::invokeMethod(ui->filletRadius, "setFocus", Qt::QueuedConnection);
 }
 
@@ -95,6 +96,17 @@ void TaskFilletParameters::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
     }
+}
+
+void TaskFilletParameters::apply()
+{
+    std::string name = FilletView->getObject()->getNameInDocument();
+
+    //Gui::Command::openCommand("Fillet changed");
+    ui->filletRadius->apply();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::commitCommand();
 }
 
 //**************************************************************************
@@ -135,13 +147,7 @@ void TaskDlgFilletParameters::clicked(int)
 
 bool TaskDlgFilletParameters::accept()
 {
-    std::string name = FilletView->getObject()->getNameInDocument();
-
-    //Gui::Command::openCommand("Fillet changed");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Radius = %f",name.c_str(),parameter->getLength());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
+    parameter->apply();
 
     return true;
 }

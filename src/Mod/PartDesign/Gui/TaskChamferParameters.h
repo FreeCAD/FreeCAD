@@ -51,13 +51,14 @@ public:
     TaskChamferParameters(ViewProviderChamfer *ChamferView, QWidget *parent=0);
     ~TaskChamferParameters();
 
-    double getLength(void) const;
+    void apply();
 
 private Q_SLOTS:
     void onLengthChanged(double);
 
 protected:
     void changeEvent(QEvent *e);
+    double getLength(void) const;
 
 private:
 

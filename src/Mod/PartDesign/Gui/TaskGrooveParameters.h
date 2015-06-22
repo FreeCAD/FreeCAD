@@ -52,11 +52,7 @@ public:
     TaskGrooveParameters(ViewProviderGroove *GrooveView,QWidget *parent = 0);
     ~TaskGrooveParameters();
 
-    QString getReferenceAxis(void) const;
-    double  getAngle(void) const;
-    bool   getMidplane(void) const;
-    bool   getReversed(void) const;
-    const bool updateView() const;
+    void apply();
 
 private Q_SLOTS:
     void onAngleChanged(double);
@@ -67,6 +63,11 @@ private Q_SLOTS:
 
 protected:
     void changeEvent(QEvent *e);
+    QString getReferenceAxis(void) const;
+    double  getAngle(void) const;
+    bool   getMidplane(void) const;
+    bool   getReversed(void) const;
+    const bool updateView() const;
 
 private:
 

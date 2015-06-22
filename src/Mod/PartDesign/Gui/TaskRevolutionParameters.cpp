@@ -113,6 +113,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
 
     ui->checkBoxMidplane->setChecked(mirrored);
     ui->checkBoxReversed->setChecked(reversed);
+    ui->revolveAngle->bind(pcRevolution->Angle);
 
     ui->revolveAngle->blockSignals(false);
     ui->axis->blockSignals(false);
@@ -250,6 +251,38 @@ void TaskRevolutionParameters::changeEvent(QEvent *e)
     }
 }
 
+void TaskRevolutionParameters::apply()
+{
+    App::DocumentObject* revolve = RevolutionView->getObject();
+    std::string name = revolve->getNameInDocument();
+
+    // retrieve sketch and its support object
+    App::DocumentObject* sketch = 0;
+    App::DocumentObject* support = 0;
+    if (revolve->getTypeId().isDerivedFrom(PartDesign::Revolution::getClassTypeId())) {
+        sketch = static_cast<PartDesign::Revolution*>(revolve)->Sketch.getValue<Sketcher::SketchObject*>();
+        if (sketch) {
+            support = static_cast<Sketcher::SketchObject*>(sketch)->Support.getValue();
+        }
+    }
+
+    //Gui::Command::openCommand("Revolution changed");
+    ui->revolveAngle->apply();
+    std::string axis = getReferenceAxis().toStdString();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ReferenceAxis = %s",name.c_str(),axis.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(), getMidplane() ? 1 : 0);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(), getReversed() ? 1 : 0);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    if (revolve->isValid()) {
+        if (sketch)
+            Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
+        if (support)
+            Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
+    }
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::commitCommand();
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -288,35 +321,7 @@ void TaskDlgRevolutionParameters::clicked(int)
 
 bool TaskDlgRevolutionParameters::accept()
 {
-    App::DocumentObject* revolve = RevolutionView->getObject();
-    std::string name = revolve->getNameInDocument();
-
-    // retrieve sketch and its support object
-    App::DocumentObject* sketch = 0;
-    App::DocumentObject* support = 0;
-    if (revolve->getTypeId().isDerivedFrom(PartDesign::Revolution::getClassTypeId())) {
-        sketch = static_cast<PartDesign::Revolution*>(revolve)->Sketch.getValue<Sketcher::SketchObject*>();
-        if (sketch) {
-            support = static_cast<Sketcher::SketchObject*>(sketch)->Support.getValue();
-        }
-    }
-
-    //Gui::Command::openCommand("Revolution changed");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
-    std::string axis = parameter->getReferenceAxis().toStdString();
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ReferenceAxis = %s",name.c_str(),axis.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",name.c_str(),parameter->getMidplane()?1:0);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",name.c_str(),parameter->getReversed()?1:0);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    if (revolve->isValid()) {
-        if (sketch)
-            Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")",sketch->getNameInDocument());
-        if (support)
-            Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().hide(\"%s\")",support->getNameInDocument());
-    }
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
-
+    parameter->apply();
     return true;
 }
 

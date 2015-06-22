@@ -38,20 +38,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="spinFactor">
-       <property name="decimals">
-        <number>3</number>
-       </property>
-       <property name="maximum">
-        <double>999999.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>0.500000000000000</double>
-       </property>
-       <property name="value">
-        <double>2.000000000000000</double>
-       </property>
-      </widget>
+      <widget class="Gui::QuantitySpinBox" name="spinFactor" native="true"/>
      </item>
     </layout>
    </item>
@@ -65,14 +52,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinOccurrences">
-       <property name="minimum">
-        <number>2</number>
-       </property>
-       <property name="maximum">
-        <number>99999</number>
-       </property>
-      </widget>
+      <widget class="Gui::QuantitySpinBox" name="spinOccurrences" native="true"/>
      </item>
     </layout>
    </item>
@@ -112,6 +92,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

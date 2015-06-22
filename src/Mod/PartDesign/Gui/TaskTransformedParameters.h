@@ -66,6 +66,8 @@ public:
 
     void exitSelectionMode();
 
+    virtual void apply() = 0;
+
 protected Q_SLOTS:
     /// Connect the subTask OK button to the MultiTransform task
     virtual void onSubTaskButtonOK() {}

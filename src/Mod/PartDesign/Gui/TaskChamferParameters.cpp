@@ -69,6 +69,7 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderChamfer *ChamferView,QW
     ui->chamferDistance->setValue(r);
     ui->chamferDistance->setMinimum(0);
     ui->chamferDistance->selectNumber();
+    ui->chamferDistance->bind(pcChamfer->Size);
     QMetaObject::invokeMethod(ui->chamferDistance, "setFocus", Qt::QueuedConnection);
 }
 
@@ -95,6 +96,17 @@ void TaskChamferParameters::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(proxy);
     }
+}
+
+void TaskChamferParameters::apply()
+{
+    std::string name = ChamferView->getObject()->getNameInDocument();
+
+    //Gui::Command::openCommand("Chamfer changed");
+    ui->chamferDistance->apply();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
+    Gui::Command::commitCommand();
 }
 
 //**************************************************************************
@@ -135,13 +147,7 @@ void TaskDlgChamferParameters::clicked(int)
 
 bool TaskDlgChamferParameters::accept()
 {
-    std::string name = ChamferView->getObject()->getNameInDocument();
-
-    //Gui::Command::openCommand("Chamfer changed");
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Size = %f",name.c_str(),parameter->getLength());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
+    parameter->apply();
 
     return true;
 }
