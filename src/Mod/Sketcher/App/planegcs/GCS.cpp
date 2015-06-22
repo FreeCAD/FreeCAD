@@ -166,7 +166,8 @@ System::System()
   LM_eps(1E-10), LM_eps1(1E-80), LM_tau(1E-3),
   DL_tolg(1E-80), DL_tolx(1E-80), DL_tolf(1E-10),
   LM_epsRedundant(1E-10), LM_eps1Redundant(1E-80), LM_tauRedundant(1E-3),
-  DL_tolgRedundant(1E-80), DL_tolxRedundant(1E-80), DL_tolfRedundant(1E-10)
+  DL_tolgRedundant(1E-80), DL_tolxRedundant(1E-80), DL_tolfRedundant(1E-10),
+  qrpivotThreshold(1E-13)
 {
     // currently Eigen only supports multithreading for multiplications
     // There is no appreciable gain from using more threads
@@ -1818,7 +1819,7 @@ int System::diagnose(Algorithm alg)
             
             paramsNum = qrJT.rows();
             constrNum = qrJT.cols();
-            qrJT.setThreshold(1e-13);
+            qrJT.setThreshold(qrpivotThreshold);
             rank = qrJT.rank();
 
             if (constrNum >= paramsNum)
@@ -1839,7 +1840,7 @@ int System::diagnose(Algorithm alg)
             
             paramsNum = SqrJT.rows();
             constrNum = SqrJT.cols();
-            SqrJT.setPivotThreshold(1e-13);
+            SqrJT.setPivotThreshold(qrpivotThreshold);
             rank = SqrJT.rank();
             
             if (constrNum >= paramsNum)
@@ -1858,7 +1859,8 @@ int System::diagnose(Algorithm alg)
             stream  << ", Threads: " << Eigen::nbThreads()
                     #ifdef EIGEN_VECTORIZE
                     << ", Vectorization: On"
-                    #endif                
+                    #endif            
+                    << ", Pivot Threshold: " << qrpivotThreshold                    
                     << ", Params: " << paramsNum
                     << ", Constr: " << constrNum
                     << ", Rank: "   << rank         << "\n";

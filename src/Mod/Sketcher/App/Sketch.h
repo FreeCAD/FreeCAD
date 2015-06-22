@@ -386,6 +386,7 @@ public:
     inline void setConvergence(double conv){GCSsys.convergence=conv;}
     inline void setConvergenceRedundant(double conv){GCSsys.convergenceRedundant=conv;}
     inline void setQRAlgorithm(GCS::QRAlgorithm alg){GCSsys.qrAlgorithm=alg;}
+    inline void setQRPivotThreshold(double val){GCSsys.qrpivotThreshold=val;}
     inline void setLM_eps(double val){GCSsys.LM_eps=val;}
     inline void setLM_eps1(double val){GCSsys.LM_eps1=val;}
     inline void setLM_tau(double val){GCSsys.LM_tau=val;}
