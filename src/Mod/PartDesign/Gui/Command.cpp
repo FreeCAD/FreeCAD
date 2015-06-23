@@ -294,6 +294,8 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
     // Find the features that were added
     std::vector<App::DocumentObject*> afterFeatures = getDocument()->getObjects();
     std::vector<App::DocumentObject*> newFeatures;
+    std::sort(beforeFeatures.begin(), beforeFeatures.end());
+    std::sort(afterFeatures.begin(), afterFeatures.end());
     std::set_difference(afterFeatures.begin(), afterFeatures.end(), beforeFeatures.begin(), beforeFeatures.end(),
                         std::back_inserter(newFeatures));
 
