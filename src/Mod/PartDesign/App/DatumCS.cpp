@@ -542,7 +542,7 @@ void CoordinateSystem::onChanged(const App::Property *prop)
         else if(line1) {
             
             if(line2) {
-                if(! ((lin1.Angle(lin2) - M_PI<2) < Precision::Angular()) )
+                if(! (fabs(lin1.Angle(lin2) - M_PI/2.0) < Precision::Angular()) )
                         throw Base::Exception("Lines must be perpendicular");
                 ax = gp_Ax3(lin1.Location(), lin1.Direction(), lin2.Direction());
             }
