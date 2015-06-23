@@ -1673,7 +1673,7 @@ def arcFromSpline(edge):
 # Fillet code graciously donated by Jacques-Antoine Gaudin
 
 def fillet(lEdges,r,chamfer=False):
-    ''' Take a list of two Edges & a float as argument,
+    '''fillet(lEdges,r,chamfer=False): Take a list of two Edges & a float as argument,
     Returns a list of sorted edges describing a round corner'''
 
     def getCurveType(edge,existingCurveType = None):
