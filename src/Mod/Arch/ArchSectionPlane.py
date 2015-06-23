@@ -262,20 +262,19 @@ class _ViewProviderSectionPlane:
                     if self.clip:
                         sg.removeChild(self.clip)
                         self.clip = None
-                    else:
-                        for o in Draft.getGroupContents(vobj.Object.Objects,walls=True):
-                            if hasattr(o.ViewObject,"Lighting"):
-                                o.ViewObject.Lighting = "One side"
-                        self.clip = coin.SoClipPlane()
-                        self.clip.on.setValue(True)
-                        norm = vobj.Object.Proxy.getNormal(vobj.Object)
-                        mp = vobj.Object.Shape.CenterOfMass
-                        mp = DraftVecUtils.project(mp,norm)
-                        dist = mp.Length + 0.1 # to not clip exactly on the section object
-                        norm = norm.negative()
-                        plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),-dist)
-                        self.clip.plane.setValue(plane)
-                        sg.insertChild(self.clip,0)
+                    for o in Draft.getGroupContents(vobj.Object.Objects,walls=True):
+                        if hasattr(o.ViewObject,"Lighting"):
+                            o.ViewObject.Lighting = "One side"
+                    self.clip = coin.SoClipPlane()
+                    self.clip.on.setValue(True)
+                    norm = vobj.Object.Proxy.getNormal(vobj.Object)
+                    mp = vobj.Object.Shape.CenterOfMass
+                    mp = DraftVecUtils.project(mp,norm)
+                    dist = mp.Length + 0.1 # to not clip exactly on the section object
+                    norm = norm.negative()
+                    plane = coin.SbPlane(coin.SbVec3f(norm.x,norm.y,norm.z),-dist)
+                    self.clip.plane.setValue(plane)
+                    sg.insertChild(self.clip,0)
                 else:
                     if self.clip:
                         sg.removeChild(self.clip)
