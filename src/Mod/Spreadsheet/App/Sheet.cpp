@@ -856,6 +856,15 @@ void Sheet::clear(CellAddress address, bool all)
 
     cells.clear(address);
 
+    // Update dependencies
+    std::set<App::DocumentObject*> ds(cells.getDocDeps());
+
+    // Make sure we don't reference ourselves
+    ds.erase(this);
+
+    std::vector<App::DocumentObject*> dv(ds.begin(), ds.end());
+    docDeps.setValues(dv);
+
     propAddress.erase(prop);
     props.removeDynamicProperty(addr.c_str());
 }
