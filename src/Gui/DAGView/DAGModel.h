@@ -34,6 +34,7 @@
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/iteration_macros.hpp>
 #include <boost/graph/reverse_graph.hpp>
+#include <boost/graph/topological_sort.hpp>
 #include <boost/graph/graphviz.hpp>
 
 #include <QGraphicsScene>

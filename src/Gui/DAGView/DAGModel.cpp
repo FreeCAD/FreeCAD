@@ -425,7 +425,7 @@ void Model::selectionChanged(const SelectionChanges& msg)
   //lamda for clearing selections.
   auto clearSelection = [this]()
   {
-    BGL_FORALL_VERTICES_T(currentVertex, *theGraph, Graph)
+    BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
     {
       ViewEntryRectItem *rect = (*theGraph)[currentVertex].rectangle.get();
       assert(rect);
@@ -492,7 +492,7 @@ void Model::updateSlot()
   //empty outList means it is a root.
   //empty inList means it is a leaf.
   
-  BGL_FORALL_VERTICES_T(currentVertex, *theGraph, Graph)
+  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
   {
     const App::DocumentObject *currentDObject = findRecord(currentVertex).DObject;
     std::vector<App::DocumentObject *> otherDObjects = currentDObject->getOutList();
@@ -722,7 +722,7 @@ void Model::removeAllItems()
 {
   if (theGraph)
   {
-    BGL_FORALL_VERTICES_T(currentVertex, *theGraph, Graph)
+    BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
     {
       this->removeItem((*theGraph)[currentVertex].rectangle.get());
       this->removeItem((*theGraph)[currentVertex].point.get());
@@ -730,7 +730,7 @@ void Model::removeAllItems()
       this->removeItem((*theGraph)[currentVertex].text.get());
     }
       
-    BGL_FORALL_EDGES_T(currentEdge, *theGraph, Graph)
+    BGL_FORALL_EDGES(currentEdge, *theGraph, Graph)
       this->removeItem((*theGraph)[currentEdge].connector.get());
   }
 }
@@ -740,7 +740,7 @@ void Model::updateStates()
   //not sure I want to use the same pixmap merge for failing feature icons.
   //thinking maybe red background or another column of icons for state?
   
-  BGL_FORALL_VERTICES_T(currentVertex, *theGraph, Graph)
+  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
   {
     const GraphLinkRecord &record = findRecord(currentVertex);
     
@@ -928,7 +928,7 @@ std::vector<Gui::DAG::Vertex> Model::getAllSelected()
 {
   std::vector<Gui::DAG::Vertex> out;
   
-  BGL_FORALL_VERTICES_T(currentVertex, *theGraph, Graph)
+  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
   {
     if ((*theGraph)[currentVertex].rectangle->isSelected())
       out.push_back(currentVertex);
