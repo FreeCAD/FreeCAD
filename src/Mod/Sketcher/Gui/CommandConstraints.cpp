@@ -179,6 +179,14 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
         else {
             // command canceled
             Gui::Command::abortCommand();
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+                    
+            if(autoRecompute) // upon cancelling we have to solve again to remove the constraint from the solver
+                Gui::Command::updateActive();
+            else
+                sketch->solve(); // we have to update the solver after this aborted addition.            
         }
     }
 }
@@ -2463,6 +2471,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             else {
                 // command canceled
                 abortCommand();
+                
+                updateNeeded=true;
             }
         }
         else {
@@ -2483,6 +2493,8 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
     
         if(autoRecompute)
             Gui::Command::updateActive();
+        else
+            Obj->solve();
     }
 
 }
