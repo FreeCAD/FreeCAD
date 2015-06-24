@@ -31,9 +31,22 @@
 // this is needed to fix this SparseQR crash http://forum.freecadweb.org/viewtopic.php?f=10&t=11341&p=92146#p92146, 
 // until Eigen library fixes its own problem with the assertion (definitely not solved in 3.2.0 branch)
 
+#define EIGEN_VERSION (EIGEN_WORLD_VERSION * 10000 \
+                               + EIGEN_MAJOR_VERSION * 100 \
+                               + EIGEN_MINOR_VERSION)
+
+#if EIGEN_VERSION >= 30202                              
+#define EIGEN_SPARSEQR_COMPATIBLE
+#endif
+
+//#undef EIGEN_SPARSEQR_COMPATIBLE
+
 #include <Eigen/QR>
+
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
 #include <Eigen/Sparse>
 #include <Eigen/OrderingMethods>
+#endif
 
 #undef _GCS_DEBUG 
 #undef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX 
@@ -171,7 +184,9 @@ System::System()
 {
     // currently Eigen only supports multithreading for multiplications
     // There is no appreciable gain from using more threads
-    Eigen::setNbThreads(1); 
+    #ifdef EIGEN_SPARSEQR_COMPATIBLE
+    Eigen::setNbThreads(1);
+    #endif
 }
 
 /*DeepSOIC: seriously outdated, needs redesign
@@ -1781,6 +1796,7 @@ int System::diagnose(Algorithm alg)
         }
     }
     
+#ifdef EIGEN_SPARSEQR_COMPATIBLE
     Eigen::SparseMatrix<double> SJ;
     
     if(qrAlgorithm==EigenSparseQR){
@@ -1790,6 +1806,14 @@ int System::diagnose(Algorithm alg)
         SJ = J.sparseView();
         SJ.makeCompressed();
     }
+    
+    Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
+#else
+    if(qrAlgorithm==EigenSparseQR){        
+        Base::Console().Warning("SparseQR not supported by you current version of Eigen. It requires Eigen 3.2.2 or higher. Falling back to Dense QR\n");        
+        qrAlgorithm=EigenDenseQR;
+    }
+#endif
     
     #ifdef _GCS_DEBUG
     // Debug code starts
@@ -1810,7 +1834,6 @@ int System::diagnose(Algorithm alg)
     int constrNum;
     int rank;
     Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
-    Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> > SqrJT;
     
     if(qrAlgorithm==EigenDenseQR){
         if (J.rows() > 0) {
@@ -1829,6 +1852,7 @@ int System::diagnose(Algorithm alg)
                                 .triangularView<Eigen::Upper>();        
         }
     }
+    #ifdef EIGEN_SPARSEQR_COMPATIBLE    
     else if(qrAlgorithm==EigenSparseQR){
         if (SJ.rows() > 0) {
             SqrJT=Eigen::SparseQR<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int> >(SJ.topRows(count).transpose());
@@ -1850,13 +1874,17 @@ int System::diagnose(Algorithm alg)
                                     .triangularView<Eigen::Upper>();    
         }
     }
+    #endif
     
     if(debugMode==IterationLevel) {
         std::stringstream stream;
         stream  << (qrAlgorithm==EigenSparseQR?"EigenSparseQR":(qrAlgorithm==EigenDenseQR?"DenseQR":""));        
         
-        if (J.rows() > 0) {    
-            stream  << ", Threads: " << Eigen::nbThreads()
+        if (J.rows() > 0) {
+            stream
+            #ifdef EIGEN_SPARSEQR_COMPATIBLE
+                    << ", Threads: " << Eigen::nbThreads()
+            #endif
                     #ifdef EIGEN_VECTORIZE
                     << ", Vectorization: On"
                     #endif            
@@ -1866,7 +1894,10 @@ int System::diagnose(Algorithm alg)
                     << ", Rank: "   << rank         << "\n";
         }
         else {
-            stream  << ", Threads: " << Eigen::nbThreads()
+            stream  
+            #ifdef EIGEN_SPARSEQR_COMPATIBLE
+                    << ", Threads: " << Eigen::nbThreads()
+            #endif
                     #ifdef EIGEN_VECTORIZE
                     << ", Vectorization: On"
                     #endif                
@@ -1913,8 +1944,10 @@ int System::diagnose(Algorithm alg)
                         
                         if(qrAlgorithm==EigenDenseQR)
                             origCol=qrJT.colsPermutation().indices()[row];
+                        #ifdef EIGEN_SPARSEQR_COMPATIBLE
                         else if(qrAlgorithm==EigenSparseQR)
                             origCol=SqrJT.colsPermutation().indices()[row];
+                        #endif
                         
                         conflictGroups[j-rank].push_back(clist[origCol]);
                     }
@@ -1923,8 +1956,11 @@ int System::diagnose(Algorithm alg)
                         
                 if(qrAlgorithm==EigenDenseQR)
                     origCol=qrJT.colsPermutation().indices()[j];
+                
+                #ifdef EIGEN_SPARSEQR_COMPATIBLE
                 else if(qrAlgorithm==EigenSparseQR)
                     origCol=SqrJT.colsPermutation().indices()[j]; 
+                #endif
                 
                 conflictGroups[j-rank].push_back(clist[origCol]);
             }
