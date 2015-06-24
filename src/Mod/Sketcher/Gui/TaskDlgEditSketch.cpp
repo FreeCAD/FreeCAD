@@ -64,13 +64,13 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     if (!hGrp->GetBool("ExpandedMessagesWidget",true))
         Messages->hideGroupBox();
     if (!hGrp->GetBool("ExpandedSolverAdvancedWidget",false))
-        SolverAdvanced->hideGroupBox();  
+        SolverAdvanced->hideGroupBox();
     if (!hGrp->GetBool("ExpandedEditControlWidget",false))
         General->hideGroupBox();
     if (!hGrp->GetBool("ExpandedConstraintsWidget",true))
-        Constraints->hideGroupBox();  
+        Constraints->hideGroupBox();
     if (!hGrp->GetBool("ExpandedElementsWidget",true))
-        Elements->hideGroupBox();     
+        Elements->hideGroupBox();
 
     App::Document* document = sketchView->getObject()->getDocument();
     connectUndoDocument =
@@ -83,6 +83,12 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
 {
     connectUndoDocument.disconnect();
     connectRedoDocument.disconnect();
+
+    // to make sure to delete the advanced solver panel
+    // it must be part to the 'Content' array
+    std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
+    if (it == Content.end())
+        Content.push_back(SolverAdvanced);
 }
 
 void TaskDlgEditSketch::slotUndoDocument(const App::Document& doc)
