@@ -245,7 +245,7 @@
      <item>
       <widget class="Gui::PrefComboBox" name="comboBoxQRMethod">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="prefEntry" stdset="0">
         <cstring>QRMethod</cstring>

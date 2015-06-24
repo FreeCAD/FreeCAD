@@ -175,7 +175,7 @@ System::System()
   maxIter(100), maxIterRedundant(100), 
   sketchSizeMultiplier(true), sketchSizeMultiplierRedundant(true),
   convergence(1e-10), convergenceRedundant(1e-10),
-  qrAlgorithm(EigenDenseQR), debugMode(Minimal),
+  qrAlgorithm(EigenSparseQR), debugMode(Minimal),
   LM_eps(1E-10), LM_eps1(1E-80), LM_tau(1E-3),
   DL_tolg(1E-80), DL_tolx(1E-80), DL_tolf(1E-10),
   LM_epsRedundant(1E-10), LM_eps1Redundant(1E-80), LM_tauRedundant(1E-3),
