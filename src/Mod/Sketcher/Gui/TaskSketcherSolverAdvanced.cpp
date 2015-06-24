@@ -54,7 +54,7 @@
 #define MAX_ITER 100
 #define DEFAULT_SOLVER 2            // DL=2, LM=1, BFGS=0
 #define DEFAULT_RSOLVER 2           // DL=2, LM=1, BFGS=0
-#define DEFAULT_QRSOLVER 0          // DENSE=0, SPARSEQR=1
+#define DEFAULT_QRSOLVER 1          // DENSE=0, SPARSEQR=1
 #define QR_PIVOT_THRESHOLD 1E-13    // under this value a Jacobian value is regarded as zero
 #define DEFAULT_SOLVER_DEBUG 1      // None=0, Minimal=1, IterationLevel=2
 #define MAX_ITER_MULTIPLIER true    
