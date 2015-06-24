@@ -2072,7 +2072,7 @@ CmdPartDesignBoolean::CmdPartDesignBoolean()
     sAppModule      = "PartDesign";
     sGroup          = QT_TR_NOOP("PartDesign");
     sMenuText       = QT_TR_NOOP("Boolean operation");
-    sToolTipText    = QT_TR_NOOP("Boolean operation with two or more boies");
+    sToolTipText    = QT_TR_NOOP("Boolean operation with two or more bodies");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "PartDesign_Boolean";
