@@ -231,13 +231,13 @@ void BrowserView::onUnsupportedContent(QNetworkReply* reply)
 
 void BrowserView::load(const char* URL)
 {
-    QUrl url = QUrl(QString::fromUtf8(URL));
+    QUrl url = QUrl::fromUserInput(QString::fromUtf8(URL));
     load(url);
 }
 
 void BrowserView::load(const QUrl & url)
 {
-    if(isLoading)
+    if (isLoading)
         stop();
 
     view->load(url);
