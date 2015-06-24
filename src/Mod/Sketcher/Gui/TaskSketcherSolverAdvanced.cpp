@@ -57,7 +57,7 @@
 #define DEFAULT_QRSOLVER 1          // DENSE=0, SPARSEQR=1
 #define QR_PIVOT_THRESHOLD 1E-13    // under this value a Jacobian value is regarded as zero
 #define DEFAULT_SOLVER_DEBUG 1      // None=0, Minimal=1, IterationLevel=2
-#define MAX_ITER_MULTIPLIER true    
+#define MAX_ITER_MULTIPLIER true
 
 using namespace SketcherGui;
 using namespace Gui::TaskView;
@@ -73,7 +73,7 @@ TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketc
     QMetaObject::connectSlotsByName(this);
 
     this->groupLayout()->addWidget(proxy);
-    
+
     ui->comboBoxDefaultSolver->onRestore();
     ui->spinBoxMaxIter->onRestore();
     ui->checkBoxSketchSizeMultiplier->onRestore();
@@ -85,7 +85,7 @@ TaskSketcherSolverAdvanced::TaskSketcherSolverAdvanced(ViewProviderSketch *sketc
     ui->checkBoxRedundantSketchSizeMultiplier->onRestore();
     ui->lineEditRedundantConvergence->onRestore();
     ui->comboBoxDebugMode->onRestore();
-    
+
     updateSketchObject();
 }
 
@@ -97,7 +97,7 @@ TaskSketcherSolverAdvanced::~TaskSketcherSolverAdvanced()
 void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
-    
+
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 0: // BFGS
@@ -147,7 +147,7 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolg(tolg);
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolf(tolf);
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolx(tolx);
-            break;      
+            break;
         }
     }
 }
@@ -155,7 +155,7 @@ void TaskSketcherSolverAdvanced::updateDefaultMethodParameters(void)
 void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/SolverAdvanced");
-    
+
     switch(ui->comboBoxRedundantDefaultSolver->currentIndex())
     {
         case 0: // BFGS
@@ -205,7 +205,7 @@ void TaskSketcherSolverAdvanced::updateRedundantMethodParameters(void)
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolgRedundant(tolg);
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolfRedundant(tolf);
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolxRedundant(tolx);
-            break;      
+            break;
         }
     }
 }
@@ -218,7 +218,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam1_editingFinished()
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditSolverParam1->setText(sci.toUpper());
-    
+
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -233,7 +233,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam1_editingFinished()
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolg(val);
             ui->lineEditSolverParam1->setEntryName("DL_tolg");
             ui->lineEditSolverParam1->onSave();
-            break;      
+            break;
         }
     }
 }
@@ -246,7 +246,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam1_editingFinishe
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditRedundantSolverParam1->setText(sci.toUpper());
-    
+
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -261,7 +261,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam1_editingFinishe
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolgRedundant(val);
             ui->lineEditRedundantSolverParam1->setEntryName("Redundant_DL_tolg");
             ui->lineEditRedundantSolverParam1->onSave();
-            break;      
+            break;
         }
     }
 }
@@ -274,7 +274,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam2_editingFinished()
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditSolverParam2->setText(sci.toUpper());
-    
+
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -289,7 +289,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam2_editingFinished()
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolx(val);
             ui->lineEditSolverParam2->setEntryName("DL_tolx");
             ui->lineEditSolverParam2->onSave();
-            break;      
+            break;
         }
     }
 }
@@ -302,7 +302,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam2_editingFinishe
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditRedundantSolverParam2->setText(sci.toUpper());
-    
+
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -317,7 +317,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam2_editingFinishe
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolxRedundant(val);
             ui->lineEditRedundantSolverParam2->setEntryName("Redundant_DL_tolx");
             ui->lineEditRedundantSolverParam2->onSave();
-            break;      
+            break;
         }
     }
 }
@@ -330,7 +330,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam3_editingFinished()
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditSolverParam3->setText(sci.toUpper());
-    
+
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -345,7 +345,7 @@ void TaskSketcherSolverAdvanced::on_lineEditSolverParam3_editingFinished()
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolf(val);
             ui->lineEditSolverParam3->setEntryName("DL_tolf");
             ui->lineEditSolverParam3->onSave();
-            break;      
+            break;
         }
     }
 }
@@ -358,7 +358,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinishe
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditRedundantSolverParam3->setText(sci.toUpper());
-    
+
     switch(ui->comboBoxDefaultSolver->currentIndex())
     {
         case 1: // LM
@@ -373,7 +373,7 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantSolverParam3_editingFinishe
             sketchView->getSketchObject()->getSolvedSketch().setDL_tolfRedundant(val);
             ui->lineEditRedundantSolverParam3->setEntryName("Redundant_DL_tolf");
             ui->lineEditRedundantSolverParam3->onSave();
-            break;      
+            break;
         }
     }
 }
@@ -411,9 +411,9 @@ void TaskSketcherSolverAdvanced::on_lineEditQRPivotThreshold_editingFinished()
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditQRPivotThreshold->setText(sci.toUpper());
-    
+
     ui->lineEditQRPivotThreshold->onSave();
-    
+
     sketchView->getSketchObject()->getSolvedSketch().setQRPivotThreshold(val);
 }
 
@@ -425,9 +425,9 @@ void TaskSketcherSolverAdvanced::on_lineEditConvergence_editingFinished()
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditConvergence->setText(sci.toUpper());
-    
+
     ui->lineEditConvergence->onSave();
-    
+
     sketchView->getSketchObject()->getSolvedSketch().setConvergence(val);
 }
 
@@ -439,9 +439,9 @@ void TaskSketcherSolverAdvanced::on_lineEditRedundantConvergence_editingFinished
     sci.remove(QString::fromLatin1("+"));
     sci.replace(QString::fromLatin1("e0"),QString::fromLatin1("E"));
     ui->lineEditRedundantConvergence->setText(sci.toUpper());
-    
+
     ui->lineEditRedundantConvergence->onSave();
-    
+
     sketchView->getSketchObject()->getSolvedSketch().setConvergenceRedundant(val);
 }
 
@@ -527,7 +527,7 @@ void TaskSketcherSolverAdvanced::on_pushButtonDefaults_clicked(bool checked/* = 
     ui->checkBoxRedundantSketchSizeMultiplier->onRestore();
     ui->lineEditRedundantConvergence->onRestore();
     ui->comboBoxDebugMode->onRestore();
-    
+
     updateSketchObject();
 }
 
@@ -544,7 +544,7 @@ void TaskSketcherSolverAdvanced::updateSketchObject(void)
     sketchView->getSketchObject()->getSolvedSketch().setSketchSizeMultiplier(ui->checkBoxSketchSizeMultiplier->isChecked());
     sketchView->getSketchObject()->getSolvedSketch().setMaxIter(ui->spinBoxMaxIter->value());
     sketchView->getSketchObject()->getSolvedSketch().defaultSolver=(GCS::Algorithm) ui->comboBoxDefaultSolver->currentIndex();   
-    
+
     updateDefaultMethodParameters();
     updateRedundantMethodParameters();
 }

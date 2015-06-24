@@ -43,34 +43,33 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch *sketchView)
     : TaskDialog(),sketchView(sketchView)
 {
     assert(sketchView);
-    Constraints  = new TaskSketcherConstrains(sketchView);
+    Constraints = new TaskSketcherConstrains(sketchView);
     Elements = new TaskSketcherElements(sketchView);
-    General  = new TaskSketcherGeneral(sketchView);
-    Messages  = new TaskSketcherMessages(sketchView);
+    General = new TaskSketcherGeneral(sketchView);
+    Messages = new TaskSketcherMessages(sketchView);
     SolverAdvanced = new TaskSketcherSolverAdvanced(sketchView);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-     
+
     Content.push_back(Messages);
 
-    if( hGrp->GetBool("ShowSolverAdvancedWidget",false)) {    
+    if (hGrp->GetBool("ShowSolverAdvancedWidget",false)) {
         Content.push_back(SolverAdvanced);
     }
-    
+
     Content.push_back(General);
     Content.push_back(Constraints);
     Content.push_back(Elements);
-    
-   
-    if( !hGrp->GetBool("ExpandedMessagesWidget",true))
+
+    if (!hGrp->GetBool("ExpandedMessagesWidget",true))
         Messages->hideGroupBox();
-    if( !hGrp->GetBool("ExpandedSolverAdvancedWidget",false))
+    if (!hGrp->GetBool("ExpandedSolverAdvancedWidget",false))
         SolverAdvanced->hideGroupBox();  
-    if( !hGrp->GetBool("ExpandedEditControlWidget",false))
+    if (!hGrp->GetBool("ExpandedEditControlWidget",false))
         General->hideGroupBox();
-    if( !hGrp->GetBool("ExpandedConstraintsWidget",true))
+    if (!hGrp->GetBool("ExpandedConstraintsWidget",true))
         Constraints->hideGroupBox();  
-    if( !hGrp->GetBool("ExpandedElementsWidget",true))
+    if (!hGrp->GetBool("ExpandedElementsWidget",true))
         Elements->hideGroupBox();     
 
     App::Document* document = sketchView->getObject()->getDocument();
@@ -106,11 +105,11 @@ void TaskDlgEditSketch::open()
 
 void TaskDlgEditSketch::clicked(int)
 {
-    
+
 }
 
 bool TaskDlgEditSketch::accept()
-{    
+{
     return true;
 }
 
