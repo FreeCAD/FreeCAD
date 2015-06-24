@@ -156,9 +156,11 @@ const QString getRefStr(const App::DocumentObject* obj, const std::vector<std::s
 
     if (PartDesign::Feature::isDatum(obj))
         return QString::fromAscii(obj->getNameInDocument());
-    else
+    else if (sub.size()>0)
         return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") +
                QString::fromAscii(sub.front().c_str());
+    else
+        return QString();
 }
 
 const std::string getPythonStr(const App::DocumentObject* obj, const std::vector<std::string>& sub)
