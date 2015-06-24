@@ -1060,7 +1060,7 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
              throw Base::Exception("Rotation axis must not be perpendicular with the sketch plane");
     }
     else if (pcReferenceAxis->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
-        if (subReferenceAxis[0].empty())
+        if (subReferenceAxis.empty())
             throw Base::Exception("No rotation axis reference specified");
         const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
         Part::TopoShape refShape = refFeature->Shape.getShape();
