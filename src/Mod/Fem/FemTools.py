@@ -23,21 +23,29 @@
 
 import FreeCAD
 import FemGui
+from PySide import QtCore
 
 
-class FemTools:
-    def __init__(self, analysis_object=None):
-        if analysis_object:
-            self.analysis = analysis_object
+class FemTools(QtCore.QRunnable, QtCore.QObject):
+
+    finished = QtCore.Signal(int)
+
+    def __init__(self, analysis=None):
+        QtCore.QRunnable.__init__(self)
+        QtCore.QObject.__init__(self)
+
+        if analysis:
+            self.analysis = analysis
         else:
             self.analysis = FemGui.getActiveAnalysis()
-        self.mesh = None
-        for m in self.analysis.Member:
-            if m.isDerivedFrom("Fem::FemMeshObject"):
-                self.mesh = m
+        self.update_objects()
+        self.base_name = ""
+        self.results_present = False
+        self.setup_working_dir()
+        self.setup_ccx()
 
     def purge_results(self):
-        for m in self.fem_analysis.Member:
+        for m in self.analysis.Member:
             if (m.isDerivedFrom('Fem::FemResultObject')):
                 FreeCAD.ActiveDocument.removeObject(m.Name)
 
@@ -50,6 +58,22 @@ class FemTools:
             self.mesh.ViewObject.NodeColor = {}
             self.mesh.ViewObject.ElementColor = {}
             self.mesh.ViewObject.setNodeColorByScalars()
+
+    def set_result_type(self, result_type):
+        self.update_objects()
+        if result_type == "None":
+            self.reset_mesh_color()
+            return
+        if self.result_object:
+            if result_type == "Sabs":
+                values = self.result_object.StressValues
+            elif result_type == "Uabs":
+                values = self.result_object.DisplacementLengths
+            else:
+                match = {"U1": 0, "U2": 1, "U3": 2}
+                d = zip(*self.result_object.DisplacementVectors)
+                values = list(d[match[result_type]])
+            self.mesh.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, values)
 
     def update_objects(self):
         # [{'Object':material}, {}, ...]
@@ -96,10 +120,9 @@ class FemTools:
             message += "No force-constraint or pressure-constraint defined in the Analysis\n"
         return message
 
-    def write_inp_file(self, working_dir):
+    def write_inp_file(self):
         import ccxInpWriter as iw
         import sys
-        self.working_dir = working_dir
         self.base_name = ""
         try:
             inp_writer = iw.inp_writer(self.analysis, self.mesh, self.material,
@@ -109,3 +132,79 @@ class FemTools:
         except:
             print "Unexpected error when writing CalculiX input file:", sys.exc_info()[0]
             raise
+
+    def start_ccx(self):
+        import subprocess
+        if self.base_name != "":
+            # change cwd because ccx may crash if directory has no write permission
+            # there is also a limit of the length of file names so jump to the document directory
+            cwd = QtCore.QDir.currentPath()
+            f = QtCore.QFileInfo(self.base_name)
+            QtCore.QDir.setCurrent(f.path())
+            p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()], shell=False)
+            self.ccx_stdout, self.ccx_stderr = p.communicate()
+            QtCore.QDir.setCurrent(cwd)
+            return p.returncode
+        return -1
+
+    def setup_working_dir(self, working_dir=None):
+        if working_dir is None:
+            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+            self.working_dir = self.fem_prefs.GetString("WorkingDir", "/tmp")
+        else:
+            self.working_dir = working_dir
+
+    def setup_ccx(self, ccx_binary=None):
+        if not ccx_binary:
+            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+            ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
+        if not ccx_binary:
+            from platform import system
+            if system() == "Linux":
+                ccx_binary = "ccx"
+            elif system() == "Windows":
+                ccx_binary = FreeCAD.getHomePath() + "bin/ccx.exe"
+            else:
+                ccx_binary = "ccx"
+        self.ccx_binary = ccx_binary
+
+    def load_results(self):
+        import ccxFrdReader
+        import os
+        if os.path.isfile(self.base_name + ".frd"):
+            ccxFrdReader.importFrd(self.base_name + ".frd", self.analysis)
+            self.results_present = True
+            for m in self.analysis.Member:
+                if m.isDerivedFrom("Fem::FemResultObject"):
+                    self.result_object = m
+        else:
+            self.results_present = False
+
+    def run(self):
+        message = self.check_prerequisites()
+        if not message:
+            self.write_inp_file()
+            from FreeCAD import Base
+            progress_bar = Base.ProgressIndicator()
+            progress_bar.start("Running CalculiX ccx...", 0)
+            ret_code = self.start_ccx()
+            self.finished.emit(ret_code)
+            progress_bar.stop()
+        else:
+            print "Running analysis failed! " + message
+
+    ## returns minimum, average and maximum value for provided result type
+    #  @param self The python object self
+    #  @result_type Type of FEM result, allowed U1, U2, U3, Uabs, Sabs and None
+    def get_stats(self, result_type):
+        stats = (0.0, 0.0, 0.0)
+        for m in self.analysis.Member:
+            if m.isDerivedFrom("Fem::FemResultObject"):
+                match = {"U1": (m.Stats[0], m.Stats[1], m.Stats[2]),
+                         "U2": (m.Stats[3], m.Stats[4], m.Stats[5]),
+                         "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
+                         "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
+                         "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
+                         "None": (0.0, 0.0, 0.0)}
+                stats = match[result_type]
+        return stats
