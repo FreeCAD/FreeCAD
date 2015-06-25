@@ -144,6 +144,43 @@ class _CommandPurgeFemResults:
         return FreeCADGui.ActiveDocument is not None and results_present()
 
 
+class _CommandQuickAnalysis:
+    def GetResources(self):
+        return {'Pixmap': 'Fem_Quick_Analysis',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Run CalculiX ccx"),
+                'Accel': "R, C",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Quick_Analysis", "Write .inp file and run CalculiX ccx")}
+
+    def Activated(self):
+        def load_results(ret_code):
+            if ret_code == 0:
+                print "ccx finished {}".format(ret_code)
+                self.fea.load_results()
+                self.show_results_on_mesh()
+            else:
+                print "ccx finished with erro {}".format(ret_code)
+
+        self.fea = FemTools()
+        self.fea.purge_results()
+        self.fea.reset_mesh_color()
+        self.fea.reset_mesh_deformation()
+        message = self.fea.check_prerequisites()
+        if message:
+            QtGui.QMessageBox.critical(None, "Missing prerequisite", message)
+            return
+        self.fea.finished.connect(load_results)
+        QtCore.QThreadPool.globalInstance().start(self.fea)
+
+    def show_results_on_mesh(self):
+        #FIXME proprer mesh refreshing as per FreeCAD.FEM_dialog settings required
+        # or confirmation that it's safe to call restore_result_dialog
+        tp = _ResultControlTaskPanel()
+        tp.restore_result_dialog()
+
+    def IsActive(self):
+        return FreeCADGui.ActiveDocument is not None and FemGui.getActiveAnalysis() is not None
+
+
 class _CommandMechanicalShowResult:
     "the Fem JobControl command definition"
     def GetResources(self):
@@ -162,7 +199,7 @@ class _CommandMechanicalShowResult:
             QtGui.QMessageBox.critical(None, "Missing prerequisite", "No result found in active Analysis")
             return
 
-        taskd = _ResultControlTaskPanel(FemGui.getActiveAnalysis())
+        taskd = _ResultControlTaskPanel()
         FreeCADGui.Control.showDialog(taskd)
 
     def IsActive(self):
@@ -442,10 +479,8 @@ class _JobControlTaskPanel:
 
 class _ResultControlTaskPanel:
     '''The control for the displacement post-processing'''
-    def __init__(self, object):
+    def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/ShowDisplacement.ui")
-
-        self.obj = object
 
         #Connect Signals and Slots
         QtCore.QObject.connect(self.form.rb_none, QtCore.SIGNAL("toggled(bool)"), self.none_selected)
@@ -618,5 +653,6 @@ def results_present():
 FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
 FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
 FreeCADGui.addCommand('Fem_MechanicalJobControl', _CommandMechanicalJobControl())
+FreeCADGui.addCommand('Fem_Quick_Analysis', _CommandQuickAnalysis())
 FreeCADGui.addCommand('Fem_PurgeResults', _CommandPurgeFemResults())
 FreeCADGui.addCommand('Fem_ShowResult', _CommandMechanicalShowResult())

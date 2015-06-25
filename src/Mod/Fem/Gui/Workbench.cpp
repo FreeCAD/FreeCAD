@@ -69,6 +69,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "Fem_ConstraintPulley"
          << "Separator"
          << "Fem_MechanicalJobControl"
+         << "Fem_Quick_Analysis"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
     return root;
@@ -95,6 +96,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
          << "Fem_ConstraintPulley"
          << "Separator"
          << "Fem_MechanicalJobControl"
+         << "Fem_Quick_Analysis"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
 
