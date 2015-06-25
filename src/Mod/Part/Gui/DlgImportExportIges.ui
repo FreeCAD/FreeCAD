@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>515</width>
-    <height>349</height>
+    <height>446</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>IGES</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_4">
+  <layout class="QGridLayout" name="gridLayout_5">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Export</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
@@ -60,10 +60,29 @@
        </widget>
       </item>
       <item row="1" column="0" colspan="3">
-       <widget class="QCheckBox" name="checkBrepMode">
-        <property name="text">
-         <string>Enable B-REP mode</string>
+       <widget class="QGroupBox" name="groupBox_3">
+        <property name="title">
+         <string>Write solids and shells as</string>
         </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="radioButtonBRepOff">
+           <property name="text">
+            <string>Groups of Trimmed Surfaces (type 144)</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QRadioButton" name="radioButtonBRepOn">
+           <property name="text">
+            <string>Solids (type 186) and Shells (type 514) / B-REP mode</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -141,7 +160,8 @@
  </widget>
  <tabstops>
   <tabstop>comboBoxUnits</tabstop>
-  <tabstop>checkBrepMode</tabstop>
+  <tabstop>radioButtonBRepOff</tabstop>
+  <tabstop>radioButtonBRepOn</tabstop>
   <tabstop>checkSkipBlank</tabstop>
   <tabstop>lineEditCompany</tabstop>
   <tabstop>lineEditAuthor</tabstop>

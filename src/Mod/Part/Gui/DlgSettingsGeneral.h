@@ -26,6 +26,8 @@
 
 #include <Gui/PropertyPage.h>
 
+class QButtonGroup;
+
 namespace PartGui {
 
 class Ui_DlgSettingsGeneral;
@@ -62,6 +64,7 @@ protected:
 
 private:
     Ui_DlgImportExportIges* ui;
+    QButtonGroup* bg;
 };
 
 class Ui_DlgImportExportStep;

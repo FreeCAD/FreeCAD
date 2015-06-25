@@ -88,6 +88,10 @@ DlgImportExportIges::DlgImportExportIges(QWidget* parent)
     ui = new Ui_DlgImportExportIges();
     ui->setupUi(this);
     ui->lineEditProduct->setReadOnly(true);
+
+    bg = new QButtonGroup(this);
+    bg->addButton(ui->radioButtonBRepOff, 0);
+    bg->addButton(ui->radioButtonBRepOn, 1);
 }
 
 /** 
@@ -117,8 +121,8 @@ void DlgImportExportIges::saveSettings()
             break;
     }
 
-    hGrp->SetBool("BrepMode", ui->checkBrepMode->isChecked());
-    Interface_Static::SetIVal("write.iges.brep.mode",ui->checkBrepMode->isChecked() ? 1 : 0);
+    hGrp->SetBool("BrepMode", bg->checkedId() == 1);
+    Interface_Static::SetIVal("write.iges.brep.mode", bg->checkedId());
 
     // Import
     hGrp->SetBool("SkipBlankEntities", ui->checkSkipBlank->isChecked());
@@ -142,7 +146,10 @@ void DlgImportExportIges::loadSettings()
 
     int value = Interface_Static::IVal("write.iges.brep.mode");
     bool brep = hGrp->GetBool("BrepMode", value > 0);
-    ui->checkBrepMode->setChecked(brep);
+    if (brep)
+        ui->radioButtonBRepOn->setChecked(true);
+    else
+        ui->radioButtonBRepOff->setChecked(true);
 
     // Import
     ui->checkSkipBlank->setChecked(hGrp->GetBool("SkipBlankEntities", true));
