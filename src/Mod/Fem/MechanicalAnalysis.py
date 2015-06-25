@@ -379,7 +379,7 @@ class _JobControlTaskPanel:
             self.base_name = ""
             fea = FemTools()
             fea.update_objects()
-            fea.write_inp_file(self.working_dir)
+            fea.write_inp_file()
             if fea.base_name != "":
                 self.base_name = fea.base_name
                 self.femConsoleMessage("Write completed.")
