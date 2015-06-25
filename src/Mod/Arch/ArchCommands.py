@@ -140,27 +140,10 @@ def removeComponents(objectsList,host=None):
             for o in objectsList:
                 if not o in s:
                     s.append(o)
-                    if Draft.getType(o) == "Window":
-                        # fix for sketch-based windows
-                        if o.Base:
-                            if o.Base.Support:
-                                if isinstance(o.Base.Support,tuple):
-                                   if o.Base.Support[0].Name == host.Name:
-                                       FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                                       o.Base.Support = None
-                                elif o.Base.Support.Name == host.Name:
-                                    FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                                    o.Base.Support = None
-                            elif o.Base.ExternalGeometry:
-                                for i in range(len(o.Base.ExternalGeometry)):
-                                    if o.Base.ExternalGeometry[i][0].Name == host.Name:
-                                        o.Base.delExternal(i)
-                                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                                        break
-                    else:
-                        if FreeCAD.GuiUp:
-                            if not Draft.getType(o) == "Roof":
-                                o.ViewObject.hide()
+                    fixDAG(o)
+                    if FreeCAD.GuiUp:
+                        if not Draft.getType(o) in ["Window","Roof"]:
+                            o.ViewObject.hide()
             host.Subtractions = s
     else:
         for o in objectsList:
@@ -216,25 +199,20 @@ def makeComponent(baseobj=None,name="Component",delete=False):
             obj.Shape = baseobj
     return obj
 
-def fixWindow(obj):
-    '''fixWindow(object): Fixes non-DAG problems in windows
+def fixDAG(obj):
+    '''fixDAG(object): Fixes non-DAG problems in windows and rebars
     by removing supports and external geometry from underlying sketches'''
-    if Draft.getType(obj) == "Window":
+    if Draft.getType(obj) in ["Window","Rebar"]:
         if obj.Base:
             if hasattr(obj.Base,"Support"):
                 if obj.Base.Support:
-                    if isinstance(o.Base.Support,tuple):
-                       if obj.Base.Support[0]:
-                           FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                           obj.Base.Support = None
-                    elif obj.Base.Support:
-                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
-                        obj.Base.Support = None
+                    FreeCAD.Console.PrintMessage(translate("Arch","removing sketch support to avoid cross-referencing"))
+                    obj.Base.Support = None
             if hasattr(obj.Base,"ExternalGeometry"):
                 if obj.Base.ExternalGeometry:
-                    for i in range(len(obj.Base.ExternalGeometry)):
+                    for g in obj.Base.ExternalGeometry:
                         obj.Base.delExternal(0)
-                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch external references to avoid cross-referencing"))
+                        FreeCAD.Console.PrintMessage(translate("Arch","removing sketch external reference to avoid cross-referencing"))
 
 def copyProperties(obj1,obj2):
     '''copyProperties(obj1,obj2): Copies properties values from obj1 to obj2,
