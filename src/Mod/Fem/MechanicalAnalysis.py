@@ -393,20 +393,10 @@ class _JobControlTaskPanel:
         self.Start = time.time()
         self.femConsoleMessage("Check dependencies...")
         self.form.label_Time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
-        active_analysis = FemGui.getActiveAnalysis()
-        self.MeshObject = None
-        # [{'Object':MaterialObject}, {}, ...]
-        self.MaterialObjects = []
-        # [{'Object':FixedObject, 'NodeSupports':bool}, {}, ...]
-        self.FixedObjects = []
-        # [{'Object':ForceObject, 'NodeLoad':value}, {}, ...
-        self.ForceObjects = []
-        # [{'Object':PressureObject, 'xxxxxxxx':value}, {}, ...]
-        self.PressureObjects = []
-        (self.MeshObject, self.MaterialObjects, self.FixedObjects, self.ForceObjects, self.PressureObjects) = prepare_analysis_objects()
 
-        message = check_prerequisites(active_analysis, self.MeshObject, self.MaterialObjects,
-                                      self.FixedObjects, self.ForceObjects, self.PressureObjects)
+        fea = FemTools()
+        fea.update_objects()
+        message = fea.check_prerequisites()
         if message != "":
             QtGui.QMessageBox.critical(None, "Missing prerequisit(s)", message)
             return False
@@ -624,50 +614,6 @@ def results_present():
             results = True
     return results
 
-
-def prepare_analysis_objects():
-    MeshObject = None
-    MaterialObjects = []
-    FixedObjects = []
-    ForceObjects = []
-    PressureObjects = []
-
-    for i in FemGui.getActiveAnalysis().Member:
-        if i.isDerivedFrom("Fem::FemMeshObject"):
-            MeshObject = i
-        elif i.isDerivedFrom("App::MaterialObjectPython"):
-            MaterialObjectDict = {}
-            MaterialObjectDict['Object'] = i
-            MaterialObjects.append(MaterialObjectDict)
-        elif i.isDerivedFrom("Fem::ConstraintFixed"):
-            FixedObjectDict = {}
-            FixedObjectDict['Object'] = i
-            FixedObjects.append(FixedObjectDict)
-        elif i.isDerivedFrom("Fem::ConstraintForce"):
-            ForceObjectDict = {}
-            ForceObjectDict['Object'] = i
-            ForceObjects.append(ForceObjectDict)
-        elif i.isDerivedFrom("Fem::ConstraintPressure"):
-            PressureObjectDict = {}
-            PressureObjectDict['Object'] = i
-            PressureObjects.append(PressureObjectDict)
-    return (MeshObject, MaterialObjects, FixedObjects, ForceObjects, PressureObjects)
-
-
-def check_prerequisites(analysis_obj, mesh_obj, material_obj,
-                        fixed_obj, force_obj, pressure_obj):
-    message = ""
-    if not analysis_obj:
-        message += "No active Analysis\n"
-    if not mesh_obj:
-        message += "No mesh object in the Analysis\n"
-    if not material_obj:
-        message += "No material object in the Analysis\n"
-    if not fixed_obj:
-        message += "No fixed-constraint nodes defined in the Analysis\n"
-    if not (force_obj or pressure_obj):
-        message += "No force-constraint or pressure-constraint defined in the Analysis\n"
-    return message
 
 FreeCADGui.addCommand('Fem_NewMechanicalAnalysis', _CommandNewMechanicalAnalysis())
 FreeCADGui.addCommand('Fem_CreateFromShape', _CommandFemFromShape())
