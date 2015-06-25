@@ -4095,14 +4095,8 @@ void ViewProviderSketch::updateData(const App::Property *prop)
             UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
             draw(false);
             
-            if (edit && &(getSketchObject()->Constraints)) {
-                // send the signal for the TaskDlg.
-                signalConstraintsChanged();
-            }
-            if (edit && &(getSketchObject()->Geometry)) {
-                // send the signal for the TaskDlg.
-                signalElementsChanged();
-            }
+            signalConstraintsChanged();
+            signalElementsChanged();
         
         }
     }
@@ -4792,10 +4786,13 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             // onChanged did not update it.
             UpdateSolverInformation();
             draw();
+            
+            signalConstraintsChanged();
+            signalElementsChanged();
         }
         
-        this->drawConstraintIcons();
-        this->updateColor();
+        /*this->drawConstraintIcons();
+        this->updateColor();*/
 
         // if in edit not delete the object
         return false;
