@@ -28,11 +28,11 @@ import FemGui
 class FemTools:
     def __init__(self, analysis_object=None):
         if analysis_object:
-            self.fem_analysis = analysis_object
+            self.analysis = analysis_object
         else:
-            self.fem_analysis = FemGui.getActiveAnalysis()
+            self.analysis = FemGui.getActiveAnalysis()
         self.mesh = None
-        for m in self.fem_analysis.Member:
+        for m in self.analysis.Member:
             if m.isDerivedFrom("Fem::FemMeshObject"):
                 self.mesh = m
 
