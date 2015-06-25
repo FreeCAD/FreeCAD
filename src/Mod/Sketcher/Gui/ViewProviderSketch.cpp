@@ -4785,10 +4785,18 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             }
         }
         
-        getSketchObject()->solve();
-
+        int ret=getSketchObject()->solve();
+        
+        if(ret!=0){
+            // if the sketched could not be solved, we first redraw to update the UI geometry as
+            // onChanged did not update it.
+            UpdateSolverInformation();
+            draw();
+        }
+        
         this->drawConstraintIcons();
         this->updateColor();
+
         // if in edit not delete the object
         return false;
     }
