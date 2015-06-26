@@ -146,13 +146,17 @@ class _Rebar(ArchComponent.Component):
         self.Type = "Rebar"
         obj.setEditorMode("Spacing",1)
 
-    def getBaseAndAxis(self,obj):
-        "returns a base point and orientation axis from the base sketch"
+    def getBaseAndAxis(self,wire):
+        "returns a base point and orientation axis from the base wire"
+        import DraftGeomUtils
+        if wire:
+            e = wire.Edges[0]
+            v = DraftGeomUtils.vec(e).normalize()
+            return e.Vertexes[0].Point,v
         if obj.Base:
             if obj.Base.Shape:
                 if obj.Base.Shape.Wires:
                     e = obj.Base.Shape.Wires[0].Edges[0]
-                    import DraftGeomUtils
                     v = DraftGeomUtils.vec(e).normalize()
                     return e.Vertexes[0].Point,v
         return None,None
@@ -186,7 +190,7 @@ class _Rebar(ArchComponent.Component):
                 radius = obj.Rounding * obj.Diameter.Value
                 import DraftGeomUtils
                 wire = DraftGeomUtils.filletWire(wire,radius)
-        bpoint, bvec = self.getBaseAndAxis(obj)
+        bpoint, bvec = self.getBaseAndAxis(wire)
         if not bpoint:
             return
         axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
