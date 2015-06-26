@@ -4990,15 +4990,15 @@ class _Point(_DraftObject):
     "The Draft Point object"
     def __init__(self, obj,x=0,y=0,z=0):
         _DraftObject.__init__(self,obj,"Point")
-        obj.addProperty("App::PropertyFloat","X","Draft","Location").X = x
-        obj.addProperty("App::PropertyFloat","Y","Draft","Location").Y = y
-        obj.addProperty("App::PropertyFloat","Z","Draft","Location").Z = z
+        obj.addProperty("App::PropertyDistance","X","Draft","Location").X = x
+        obj.addProperty("App::PropertyDistance","Y","Draft","Location").Y = y
+        obj.addProperty("App::PropertyDistance","Z","Draft","Location").Z = z
         mode = 2
         obj.setEditorMode('Placement',mode)
 
     def execute(self, obj):
         import Part
-        shape = Part.Vertex(Vector(obj.X,obj.Y,obj.Z))
+        shape = Part.Vertex(Vector(obj.X.Value,obj.Y.Value,obj.Z.Value))
         obj.Shape = shape
 
 class _ViewProviderPoint(_ViewProviderDraft):
