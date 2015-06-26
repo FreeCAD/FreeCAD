@@ -216,7 +216,7 @@ def getcolor(color):
             b = float(int(color[3],16)*17/255.0)
         return (r,g,b,0.0)
     elif color.lower().startswith('rgb('):
-        cvalues=color[3:].lstrip('(').rstrip(')').replace('%',' ').split(',')
+        cvalues=color[3:].lstrip('(').rstrip(')').replace('%','').split(',')
         if '%' in color:
             r,g,b = [int(cv)/100.0 for cv in cvalues]
         else:
@@ -391,6 +391,8 @@ class svgHandler(xml.sax.ContentHandler):
                 self.grouptransform = []
                 self.lastdim = None
                 self.viewbox = None
+                self.symbols = {}
+                self.currentsymbol = None
 
                 global Part
                 import Part
@@ -428,8 +430,9 @@ class svgHandler(xml.sax.ContentHandler):
                 data = {}
                 for (keyword,content) in list(attrs.items()):
                         #print keyword,content
-                        content = content.replace(',',' ')
-                        content = content.split()
+                        if keyword != "style":
+                            content = content.replace(',',' ')
+                            content = content.split()
                         #print keyword,content
                         data[keyword]=content
 
@@ -570,6 +573,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                 obj = self.doc.addObject("Part::Feature",pathname)
                                                 obj.Shape = sh
                                                 self.format(obj)
+                                                if self.currentsymbol:
+                                                    self.symbols[self.currentsymbol].append(obj)
                                                 path = []
                                                 #if firstvec:
                                                 #        lastvec = firstvec #Move relative to last move command not last draw command
@@ -783,6 +788,8 @@ class svgHandler(xml.sax.ContentHandler):
                                                         lastvec = firstvec #Move relative to recent draw command
                                                 point = []
                                                 command = None
+                                                if self.currentsymbol:
+                                                    self.symbols[self.currentsymbol].append(obj)
                         if path:
                                 sh=makewire(path,checkclosed=False)
                                 #sh = Part.Wire(path)
@@ -792,6 +799,8 @@ class svgHandler(xml.sax.ContentHandler):
                                 obj = self.doc.addObject("Part::Feature",pathname)
                                 obj.Shape = sh
                                 self.format(obj)
+                                if self.currentsymbol:
+                                    self.symbols[self.currentsymbol].append(obj)
 
 
                 # processing rects
@@ -799,6 +808,10 @@ class svgHandler(xml.sax.ContentHandler):
                 if name == "rect":
                         if not pathname: pathname = 'Rectangle'
                         edges = []
+                        if not "x" in data:
+                            data["x"] = 0
+                        if not "y" in data:
+                            data["y"] = 0
                         if ('rx' not in data or data['rx'] < 10**(-1*Draft.precision())) and \
                            ('ry' not in data or data['ry'] < 10**(-1*Draft.precision())): #negative values are invalid
 #                        if True: 
@@ -865,6 +878,9 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
+                        
                 # processing lines
 
                 if name == "line":
@@ -876,6 +892,8 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
 
                 # processing polylines and polygons
 
@@ -905,6 +923,8 @@ class svgHandler(xml.sax.ContentHandler):
                                         sh = self.applyTrans(sh)
                                         obj = self.doc.addObject("Part::Feature",pathname)
                                         obj.Shape = sh
+                                        if self.currentsymbol:
+                                            self.symbols[self.currentsymbol].append(obj)
 
                 # processing ellipses
 
@@ -931,6 +951,8 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
 
 
                 # processing circles
@@ -948,6 +970,8 @@ class svgHandler(xml.sax.ContentHandler):
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
                         self.format(obj)
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
 
                 # processing texts
 
@@ -970,6 +994,32 @@ class svgHandler(xml.sax.ContentHandler):
                         else:
                                 if self.lastdim:
                                         self.lastdim.ViewObject.FontSize = int(getsize(data['font-size']))
+                                        
+                # processing symbols
+                
+                if name == "symbol":
+                    self.symbols[pathname] = []
+                    self.currentsymbol = pathname
+                    
+                if name == "use":
+                    if "xlink:href" in data:
+                        symbol = data["xlink:href"][0][1:]
+                        if symbol in self.symbols:
+                            FreeCAD.Console.PrintMessage("using symbol "+symbol+"\n")
+                            shapes = []
+                            for o in self.symbols[symbol]:
+                                if o.isDerivedFrom("Part::Feature"):
+                                    shapes.append(o.Shape)
+                            if shapes:
+                                sh = Part.makeCompound(shapes)
+                                v = FreeCAD.Vector(float(data['x']),-float(data['y']),0)
+                                sh.translate(v)
+                                sh = self.applyTrans(sh)
+                                obj = self.doc.addObject("Part::Feature",symbol)
+                                obj.Shape = sh
+                                self.format(obj)
+                        else:
+                            FreeCAD.Console.PrintMessage("no symbol data\n")
 
                 FreeCAD.Console.PrintMessage("done processing element %d\n"%self.count)
                 
@@ -978,6 +1028,8 @@ class svgHandler(xml.sax.ContentHandler):
                         FreeCAD.Console.PrintMessage("reading characters %s\n" % content)
                         obj=self.doc.addObject("App::Annotation",'Text')
                         obj.LabelText = content.encode('latin1')
+                        if self.currentsymbol:
+                            self.symbols[self.currentsymbol].append(obj)
                         vec = Vector(self.x,-self.y,0)
                         if self.transform:
                                 vec = self.translateVec(vec,self.transform)
@@ -993,12 +1045,21 @@ class svgHandler(xml.sax.ContentHandler):
                                 else: obj.ViewObject.TextColor = (0.0,0.0,0.0,0.0)
 
         def endElement(self, name):
-                if not name in ["tspan"]:
-                        self.transform = None
-                        self.text = None
-                if name == "g" or name == "svg":
-                        FreeCAD.Console.PrintMessage("closing group\n")
-                        self.grouptransform.pop()
+            if not name in ["tspan"]:
+                self.transform = None
+                self.text = None
+            if name == "g" or name == "svg":
+                FreeCAD.Console.PrintMessage("closing group\n")
+                self.grouptransform.pop()
+            if name == "symbol":
+                if self.doc.getObject("svgsymbols"):
+                    group = self.doc.getObject("svgsymbols")
+                else:
+                    group = self.doc.addObject("App::DocumentObjectGroup","svgsymbols")
+                for o in self.symbols[self.currentsymbol]:
+                    group.addObject(o)
+                self.currentsymbol = None
+                    
 
         def applyTrans(self,sh):
                 if isinstance(sh,Part.Shape):
