@@ -937,7 +937,8 @@ const char* PythonCommand::getStatusTip() const
 
 const char* PythonCommand::getPixmap() const
 {
-    return getResource("Pixmap");
+    const char* ret = getResource("Pixmap");
+    return (ret && ret[0] != '\0') ? ret : 0;
 }
 
 const char* PythonCommand::getAccel() const
@@ -1086,6 +1087,9 @@ Action * PythonGroupCommand::createAction(void)
     }
     else {
         QList<QAction*> a = pcAction->actions();
+        // if out of range then set to 0
+        if (defaultId < 0 || defaultId >= a.size())
+            defaultId = 0;
         if (a.size() > defaultId)
             pcAction->setIcon(a[defaultId]->icon());
     }
@@ -1169,7 +1173,8 @@ const char* PythonGroupCommand::getStatusTip() const
 
 const char* PythonGroupCommand::getPixmap() const
 {
-    return getResource("Pixmap");
+    const char* ret = getResource("Pixmap");
+    return (ret && ret[0] != '\0') ? ret : 0;
 }
 
 const char* PythonGroupCommand::getAccel() const
