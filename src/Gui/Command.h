@@ -322,7 +322,7 @@ private:
 class PythonCommand: public Command
 {
 public:
-    PythonCommand(const char* name,PyObject * pcPyCommand, const char* pActivationString);
+    PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString);
     virtual ~PythonCommand() {}
 
 protected:
@@ -362,6 +362,53 @@ protected:
     PyObject * _pcPyResourceDict;
     /// the activation sequence
     std::string Activation;
+};
+
+/** The Python group command class
+ * @see CommandManager
+ * @author Werner Mayer
+ */
+class PythonGroupCommand: public Command
+{
+public:
+    PythonGroupCommand(const char* name, PyObject * pcPyCommand);
+    virtual ~PythonGroupCommand();
+
+protected:
+    /** @name Methods reimplemented for Command Framework */
+    //@{
+    /// Method which gets called when activated
+    virtual void activated(int iMsg);
+    /// if the command is not always active
+    virtual bool isActive(void);
+    /// Get the help URL
+    const char* getHelpUrl(void) const;
+    /// Creates the used Action
+    virtual Action * createAction(void);
+    //@}
+
+public:
+    /** @name Methods to get the properties of the command */
+    //@{
+    /// Reassigns QAction stuff after the language has changed. 
+    void languageChange();
+    const char* className() const
+    { return "PythonGroupCommand"; }
+    const char* getWhatsThis  () const;
+    const char* getMenuText   () const;
+    const char* getToolTipText() const;
+    const char* getStatusTip  () const;
+    const char* getPixmap     () const;
+    const char* getAccel      () const;
+    //@}
+
+protected:
+    /// Returns the resource values
+    const char* getResource(const char* sName) const;
+    /// a pointer to the Python command object
+    PyObject * _pcPyCommand;
+    /// the command object resources
+    PyObject * _pcPyResource;
 };
 
 

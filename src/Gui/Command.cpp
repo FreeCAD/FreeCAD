@@ -793,7 +793,7 @@ void MacroCommand::save()
 // PythonCommand
 //===========================================================================
 
-PythonCommand::PythonCommand(const char* name,PyObject * pcPyCommand, const char* pActivationString)
+PythonCommand::PythonCommand(const char* name, PyObject * pcPyCommand, const char* pActivationString)
   : Command(name),_pcPyCommand(pcPyCommand)
 {
     if (pActivationString)
@@ -941,6 +941,238 @@ const char* PythonCommand::getPixmap() const
 }
 
 const char* PythonCommand::getAccel() const
+{
+    return getResource("Accel");
+}
+
+//===========================================================================
+// PythonGroupCommand
+//===========================================================================
+
+PythonGroupCommand::PythonGroupCommand(const char* name, PyObject * pcPyCommand)
+  : Command(name),_pcPyCommand(pcPyCommand)
+{
+    sGroup = "Python";
+
+    Py_INCREF(_pcPyCommand);
+
+    // call the method "GetResources()" of the command object
+    _pcPyResource = Interpreter().runMethodObject(_pcPyCommand, "GetResources");
+    // check if the "GetResources()" method returns a Dict object
+    if (!PyDict_Check(_pcPyResource)) {
+        throw Base::TypeError("PythonGroupCommand::PythonGroupCommand(): Method GetResources() of the Python "
+                              "command object returns the wrong type (has to be Py Dictonary)");
+    }
+
+    // check for command type
+    std::string cmdType = getResource("CmdType");
+    if (!cmdType.empty()) {
+        int type = 0;
+        if (cmdType.find("AlterDoc") != std::string::npos)
+            type += int(AlterDoc);
+        if (cmdType.find("Alter3DView") != std::string::npos)
+            type += int(Alter3DView);
+        if (cmdType.find("AlterSelection") != std::string::npos)
+            type += int(AlterSelection);
+        if (cmdType.find("ForEdit") != std::string::npos)
+            type += int(ForEdit);
+        eType = type;
+    }
+}
+
+PythonGroupCommand::~PythonGroupCommand()
+{
+    Base::PyGILStateLocker lock;
+    Py_DECREF(_pcPyCommand);
+}
+
+void PythonGroupCommand::activated(int iMsg)
+{
+    try {
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+        QList<QAction*> a = pcAction->actions();
+        assert(iMsg < a.size());
+        QAction* act = a[iMsg];
+
+        Base::PyGILStateLocker lock;
+        Py::Object cmd(_pcPyCommand);
+        if (cmd.hasAttr("Activated")) {
+            Py::Callable call(cmd.getAttr("Activated"));
+            Py::Tuple args(1);
+            args.setItem(0, Py::Int(iMsg));
+            Py::Object ret = call.apply(args);
+        }
+        // If the command group doesn't implement the 'Activated' method then invoke the command directly
+        else {
+            Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+            rcCmdMgr.runCommandByName(act->property("CommandName").toByteArray());
+        }
+
+        // Since the default icon is reset when enabing/disabling the command we have
+        // to explicitly set the icon of the used command.
+        pcAction->setIcon(a[iMsg]->icon());
+    }
+    catch(Py::Exception&) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        Base::Console().Error("Running the Python command '%s' failed:\n%s\n%s",
+                              sName, e.getStackTrace().c_str(), e.what());
+    }
+}
+
+bool PythonGroupCommand::isActive(void)
+{
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Object cmd(_pcPyCommand);
+        if (cmd.hasAttr("IsActive")) {
+            Py::Callable call(cmd.getAttr("IsActive"));
+            Py::Tuple args;
+            Py::Object ret = call.apply(args);
+            // if return type is not boolean or not true
+            if (!PyBool_Check(ret.ptr()) || ret.ptr() != Py_True)
+                return false;
+        }
+    }
+    catch(Py::Exception& e) {
+        Base::PyGILStateLocker lock;
+        e.clear();
+        return false;
+    }
+
+    return true;
+}
+
+Action * PythonGroupCommand::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+
+    applyCommandData(this->getName(), pcAction);
+
+    int defaultId = 0;
+
+    try {
+        Base::PyGILStateLocker lock;
+        Py::Object cmd(_pcPyCommand);
+
+        Py::Callable call(cmd.getAttr("GetCommands"));
+        Py::Tuple args;
+        Py::Tuple ret(call.apply(args));
+        for (Py::Tuple::iterator it = ret.begin(); it != ret.end(); ++it) {
+            Py::String str(*it);
+            QAction* cmd = pcAction->addAction(QString());
+            cmd->setProperty("CommandName", QByteArray(static_cast<std::string>(str).c_str()));
+        }
+
+        if (cmd.hasAttr("GetDefaultCommand")) {
+            Py::Callable call2(cmd.getAttr("GetDefaultCommand"));
+            Py::Int def(call2.apply(args));
+            defaultId = static_cast<int>(def);
+        }
+    }
+    catch(Py::Exception&) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        Base::Console().Error("createAction() of the Python command '%s' failed:\n%s\n%s",
+                              sName, e.getStackTrace().c_str(), e.what());
+    }
+
+    _pcAction = pcAction;
+    languageChange();
+
+    if (strcmp(getResource("Pixmap"),"") != 0) {
+        pcAction->setIcon(Gui::BitmapFactory().pixmap(getResource("Pixmap")));
+    }
+    else {
+        QList<QAction*> a = pcAction->actions();
+        if (a.size() > defaultId)
+            pcAction->setIcon(a[defaultId]->icon());
+    }
+
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void PythonGroupCommand::languageChange()
+{
+    if (!_pcAction)
+        return;
+
+    applyCommandData(this->getName(), _pcAction);
+
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    for (QList<QAction*>::iterator it = a.begin(); it != a.end(); ++it) {
+        Gui::Command* cmd = rcCmdMgr.getCommandByName((*it)->property("CommandName").toByteArray());
+        // Python command use getName as context
+        if (dynamic_cast<PythonCommand*>(cmd)) {
+            (*it)->setIcon(Gui::BitmapFactory().pixmap(cmd->getPixmap()));
+            (*it)->setText(QApplication::translate(cmd->getName(), cmd->getMenuText()));
+            (*it)->setToolTip(QApplication::translate(cmd->getName(), cmd->getToolTipText()));
+            (*it)->setStatusTip(QApplication::translate(cmd->getName(), cmd->getStatusTip()));
+        }
+        else if (cmd) {
+            (*it)->setIcon(Gui::BitmapFactory().pixmap(cmd->getPixmap()));
+            (*it)->setText(QApplication::translate(cmd->className(), cmd->getMenuText()));
+            (*it)->setToolTip(QApplication::translate(cmd->className(), cmd->getToolTipText()));
+            (*it)->setStatusTip(QApplication::translate(cmd->className(), cmd->getStatusTip()));
+        }
+    }
+}
+
+const char* PythonGroupCommand::getHelpUrl(void) const
+{
+    return "";
+}
+
+const char* PythonGroupCommand::getResource(const char* sName) const
+{
+    PyObject* pcTemp;
+
+    // get the "MenuText" resource string
+    pcTemp = PyDict_GetItemString(_pcPyResource, sName);
+    if (!pcTemp)
+        return "";
+    if (!PyString_Check(pcTemp)) {
+        throw Base::ValueError("PythonGroupCommand::getResource(): Method GetResources() of the Python "
+                               "group command object returns a dictionary which holds not only strings");
+    }
+
+    return PyString_AsString(pcTemp);
+}
+
+const char* PythonGroupCommand::getWhatsThis() const
+{
+    const char* whatsthis = getResource("WhatsThis");
+    if (!whatsthis || whatsthis[0] == '\0')
+        whatsthis = this->getName();
+    return whatsthis;
+}
+
+const char* PythonGroupCommand::getMenuText() const
+{
+    return getResource("MenuText");
+}
+
+const char* PythonGroupCommand::getToolTipText() const
+{
+    return getResource("ToolTip");
+}
+
+const char* PythonGroupCommand::getStatusTip() const
+{
+    return getResource("StatusTip");
+}
+
+const char* PythonGroupCommand::getPixmap() const
+{
+    return getResource("Pixmap");
+}
+
+const char* PythonGroupCommand::getAccel() const
 {
     return getResource("Accel");
 }

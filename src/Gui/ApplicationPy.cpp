@@ -812,37 +812,16 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
     PyObject*   pcCmdObj;
     if (!PyArg_ParseTuple(args, "sO|s", &pName,&pcCmdObj,&pSource))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception 
-#if 0
-    std::string source = (pSource ? pSource : "");
 
-    if (source.empty()) {
-        try {
-            Py::Module module(PyImport_ImportModule("inspect"),true);
-            Py::Dict dict = module.getDict();
-            Py::Callable call(dict.getItem("getsourcelines"));
-            Py::Tuple arg(1);
-            arg.setItem(0, Py::Object(pcCmdObj).getAttr("Activated"));
-            Py::Tuple tuple(call.apply(arg));
-            Py::List lines(tuple[0]);
-
-            int pos=0;
-            std::string code = (std::string)(Py::String(lines[1]));
-            while (code[pos] == ' ' || code[pos] == '\t')
-                pos++;
-            for (Py::List::iterator it = lines.begin()+1; it != lines.end(); ++it) {
-                Py::String str(*it);
-                source += ((std::string)str).substr(pos);
-            }
-        }
-        catch (Py::Exception& e) {
-            e.clear();
-        }
-    }
-
-    Application::Instance->commandManager().addCommand(new PythonCommand(pName,pcCmdObj,source.c_str()));
-#else
     try {
-        Application::Instance->commandManager().addCommand(new PythonCommand(pName,pcCmdObj,pSource));
+        Base::PyGILStateLocker lock;
+        Py::Object cmd(pcCmdObj);
+        if (cmd.hasAttr("GetCommands")) {
+            Application::Instance->commandManager().addCommand(new PythonGroupCommand(pName, pcCmdObj));
+        }
+        else {
+            Application::Instance->commandManager().addCommand(new PythonCommand(pName, pcCmdObj, pSource));
+        }
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
@@ -852,7 +831,7 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
         PyErr_SetString(Base::BaseExceptionFreeCADError, "Unknown C++ exception raised in Application::sAddCommand()");
         return 0;
     }
-#endif
+
     Py_INCREF(Py_None);
     return Py_None;
 }
