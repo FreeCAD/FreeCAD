@@ -81,9 +81,22 @@ public:
     /// Add the feature into the body at the current insert point (Tip feature)
     void addFeature(App::DocumentObject* feature);
 
+    /**
+     * Insert the feature into the body after the given feature.
+     *
+     * @param feature  The feature to insert into the body
+     * @param target   The feature relative which one should be inserted the given.
+     *                 If target is NULL than insert into the end if where is InsertBefore
+     *                 and into the begin if where is InsertAfter.
+     * @param after    if true insert the feature after the target. Default is false.
+     *
+     * @note the methode doesn't modifies the Tip unlike addFeature()
+     */
+    void insertFeature(App::DocumentObject* feature, App::DocumentObject* target, bool after=false);
+
     /// Remove the feature from the body
     void removeFeature(App::DocumentObject* feature);
-    
+
     /// Checks if the given document object is a feaure of this body
     bool isFeature(App::DocumentObject* feature);
 

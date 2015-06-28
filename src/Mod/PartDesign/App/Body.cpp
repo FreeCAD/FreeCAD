@@ -230,50 +230,63 @@ const bool Body::isAllowed(const App::DocumentObject* f)
             );
 }
 
+
 void Body::addFeature(App::DocumentObject *feature)
 {
-    // Set the BaseFeature property
-    if (feature->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
-        App::DocumentObject* prevSolidFeature = getPrevSolidFeature(NULL, true);
-        if (prevSolidFeature != NULL)
-            // Set BaseFeature property to previous feature (this might be the Tip feature)
-            static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
+    insertFeature (feature, Tip.getValue(), /*after = */ true);
+
+    // Move the Tip
+    Tip.setValue (feature);
+}
+
+
+void Body::insertFeature(App::DocumentObject* feature, App::DocumentObject* target, bool after)
+{
+    // Check if the after feature belongs to the body
+    if (target && !hasFeature (target)) {
+        throw Base::Exception("Body: the feature we should insert relative to is not part of that body");
     }
 
+    std::vector<App::DocumentObject*> model = Model.getValues();
+    std::vector<App::DocumentObject*>::iterator insertInto;
+
+    // Find out the position there to insert the feature
+    if (!target) {
+        if (after) {
+            insertInto = model.begin();
+        } else {
+            insertInto = model.end();
+        }
+    } else {
+        std::vector<App::DocumentObject*>::iterator targetIt = std::find (model.begin(), model.end(), target);
+        assert (targetIt != model.end());
+        if (after) {
+            insertInto = targetIt + 1;
+        } else {
+            insertInto = targetIt;
+        }
+    }
+
+    // Insert the new feature after the given
+    model.insert (insertInto, feature);
+
+    Model.setValues (model);
+
+    // Set the BaseFeature property
     if (Body::isSolidFeature(feature)) {
+        // Set BaseFeature property to previous feature (this might be the Tip feature)
+        App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature, false);
+        if (prevSolidFeature)
+            static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
+
         // Reroute the next solid feature's BaseFeature property to this feature
-        App::DocumentObject* nextSolidFeature = getNextSolidFeature(NULL, false);
-        if (nextSolidFeature != NULL)
+        App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature, false);
+        if (nextSolidFeature)
             static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(feature);
     }
 
-    // Insert the new feature after the current Tip feature
-    App::DocumentObject* tipFeature = Tip.getValue();
-    std::vector<App::DocumentObject*> model = Model.getValues();
-    if (tipFeature == NULL) {
-        if (model.empty())
-            // First feature in the body
-            model.push_back(feature);
-        else
-            // Insert feature as before all other features in the body
-            model.insert(model.begin(), feature);
-    } else {
-        // Insert after Tip
-        std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), tipFeature);
-        if (it == model.end())
-            throw Base::Exception("Body: Tip is not contained in model");
-
-        it++;
-        if (it == model.end())
-            model.push_back(feature);
-        else
-            model.insert(it, feature);
-    }
-    Model.setValues(model);
-
-    // Move the Tip
-    Tip.setValue(feature);
 }
+
 
 void Body::removeFeature(App::DocumentObject* feature)
 {
@@ -326,6 +339,7 @@ void Body::removeFeature(App::DocumentObject* feature)
     model.erase(it);
     Model.setValues(model);
 }
+
 
 
 App::DocumentObjectExecReturn *Body::execute(void)
