@@ -23,5 +23,20 @@
                     <UserDocu>removeFeature(feat) - Remove the given feature from the Body</UserDocu>
             </Documentation>
     </Methode>
+    <Methode Name="insertFeature">
+            <Documentation>
+                    <UserDocu>insertFeatureAfter(feature, target, after=False)
+                        Insert the feature into the body after the given feature.
+
+                        @param feature  The feature to insert into the body
+                        @param target   The feature relative which one should be inserted the given.
+                          If target is NULL than insert into the end if where is InsertBefore
+                          and into the begin if where is InsertAfter.
+                        @param after    if true insert the feature after the target. Default is false.
+
+                        @note the methode doesn't modifies the Tip unlike addFeature()
+                    </UserDocu>
+            </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

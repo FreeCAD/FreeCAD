@@ -1,6 +1,8 @@
 
 #include "PreCompiled.h"
 
+#include <cstring>
+
 #include "Mod/Part/App/Part2DObject.h"
 #include "Mod/PartDesign/App/Body.h"
 
@@ -40,10 +42,50 @@ PyObject* BodyPy::addFeature(PyObject *args)
         PyErr_SetString(PyExc_SystemError, "Only PartDesign features, datum features and sketches can be inserted into a Body");
         return 0;
     }
+
     Body* body = this->getBodyPtr();
 
     try {
         body->addFeature(feature);
+    } catch (Base::Exception& e) {
+        PyErr_SetString(PyExc_SystemError, e.what());
+        return 0;
+    }
+
+    Py_Return;
+}
+
+PyObject* BodyPy::insertFeature(PyObject *args)
+{
+    PyObject* featurePy;
+    PyObject* targetPy;
+    PyObject* afterPy = 0;
+    if (!PyArg_ParseTuple(args, "O!O|O", &(App::DocumentObjectPy::Type), &featurePy, &targetPy, &afterPy)) {
+        return 0;
+    }
+
+    App::DocumentObject* feature = static_cast<App::DocumentObjectPy*>(featurePy)->getDocumentObjectPtr();
+    App::DocumentObject* target = static_cast<App::DocumentObjectPy*>(targetPy)->getDocumentObjectPtr();
+    int after = 0;
+
+    if (!Body::isAllowed(feature)) {
+        PyErr_SetString(PyExc_SystemError, "Only PartDesign features, datum features and sketches can be inserted into a Body");
+        return 0;
+    }
+
+    if (afterPy) {
+        after = PyObject_IsTrue(afterPy);
+        if ( after == -1) {
+            // Note: shouldn't happen
+            PyErr_SetString(PyExc_ValueError, "The after parameter should be of boolean type");
+            return 0;
+        }
+    }
+
+    Body* body = this->getBodyPtr();
+
+    try {
+        body->insertFeature(feature, target, after);
     } catch (Base::Exception& e) {
         PyErr_SetString(PyExc_SystemError, e.what());
         return 0;
