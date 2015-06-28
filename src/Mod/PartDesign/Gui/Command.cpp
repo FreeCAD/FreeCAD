@@ -466,13 +466,6 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
 
     openCommand("Move an object inside tree");
 
-    // Set insert point at the selected feature
-    App::DocumentObject* oldTip = pcActiveBody->Tip.getValue();
-    Gui::Selection().clearSelection();
-    if (target != NULL)
-        Gui::Selection().addSelection(target->getDocument()->getName(), target->getNameInDocument());
-    Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-
     for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
         if (*f == target) continue;
 
@@ -481,17 +474,13 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         // feature as before!
         doCommand(Doc,"App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
                       pcActiveBody->getNameInDocument(), (*f)->getNameInDocument());
-        doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
-                      pcActiveBody->getNameInDocument(), (*f)->getNameInDocument());
+        doCommand(Doc,
+                "App.activeDocument().%s.insertFeature(App.activeDocument().%s, App.activeDocument().%s, True)",
+                pcActiveBody->getNameInDocument(), (*f)->getNameInDocument(), target->getNameInDocument());
     }
 
     // Recompute to update the shape
     doCommand(Gui,"App.activeDocument().recompute()");
-    // Set insert point where it was before
-    Gui::Selection().clearSelection();
-    Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
-    Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
-    Gui::Selection().clearSelection();
 }
 
 bool CmdPartDesignMoveFeatureInTree::isActive(void)
