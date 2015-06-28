@@ -266,8 +266,8 @@ void Workbench::_doMigration(const App::Document* doc)
                     features.erase(feat);
                 } else {
                     QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Non-linear tree"),
-                        QObject::tr("Please look at '") + QString::fromAscii((*o)->getNameInDocument()) +
-                        QObject::tr("' and make sure that the migration result is what you would expect."));
+                        QObject::tr("Please look at '%1' and make sure that the migration result is what you"
+                                    " would expect.").arg(QString::fromAscii((*o)->getNameInDocument())));
                 }
             }
             std::set<App::DocumentObject*> newInList;
