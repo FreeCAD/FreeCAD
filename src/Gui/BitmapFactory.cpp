@@ -188,6 +188,19 @@ bool BitmapFactoryInst::findPixmapInCache(const char* name, QPixmap& px) const
     return false;
 }
 
+QIcon BitmapFactoryInst::iconFromTheme(const char* name, const QIcon& fallback)
+{
+    QString iconName = QString::fromLatin1(name);
+    QIcon icon = QIcon::fromTheme(iconName, fallback);
+    if (icon.isNull()) {
+        QPixmap px = pixmap(name);
+        if (!px.isNull())
+            icon.addPixmap(px);
+    }
+
+    return icon;
+}
+
 bool BitmapFactoryInst::loadPixmap(const QString& filename, QPixmap& icon) const
 {
     QFileInfo fi(filename);

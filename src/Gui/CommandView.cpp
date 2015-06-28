@@ -563,20 +563,20 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
 
     QAction* a0 = pcAction->addAction(QString());
     a0->setCheckable(true);
-    a0->setIcon(BitmapFactory().pixmap("DrawStyleAsIs"));
+    a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
     a0->setChecked(true);
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
-    a1->setIcon(BitmapFactory().pixmap("DrawStyleFlatLines"));
+    a1->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
-    a2->setIcon(BitmapFactory().pixmap("DrawStyleShaded"));
+    a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
-    a3->setIcon(BitmapFactory().pixmap("DrawStyleWireFrame"));
+    a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
-    a4->setIcon(BitmapFactory().pixmap("DrawStylePoints"));
+    a4->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
     pcAction->setIcon(a0->icon());
 
     _pcAction = pcAction;
@@ -1364,7 +1364,7 @@ Action * StdViewDockUndockFullscreen::createAction(void)
         QCoreApplication::CodecForTr));
     fullscr->setShortcut(Qt::Key_F11);
     fullscr->setCheckable(true);
-    fullscr->setIcon(Gui::BitmapFactory().pixmap("view-fullscreen"));
+    fullscr->setIcon(Gui::BitmapFactory().iconFromTheme("view-fullscreen"));
 
     return pcAction;
 }
