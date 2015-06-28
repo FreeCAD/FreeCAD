@@ -13,5 +13,10 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>This object represents a 2D Shape in a 3D World</UserDocu>
     </Documentation>
+    <Methode Name="positionBySupport">
+      <Documentation>
+        <UserDocu>Reposition object based on Support, MapMode and MapPathParameter properties.</UserDocu>
+      </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>
