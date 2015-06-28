@@ -405,8 +405,16 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
             App::DocumentObject* prevSolidFeature = target->getPrevSolidFeature();
             doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prevSolidFeature->getNameInDocument());
             doCommand(Gui,"Gui.activeDocument().show(\"%s\")", (*f)->getNameInDocument());
+        } else if ((*f)->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+            Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(*f);
+            try {
+                PartDesignGui::Workbench::fixSketchSupport(sketch);
+            } catch (Base::Exception &) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Sketch plane cannot be migrated"),
+                        QObject::tr("Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.").
+                        arg(QString::fromAscii(sketch->getNameInDocument()) ) );
+            }
         }
-        // TODO: if we are inserting a sketch which wasn't part of any body try to set right support for it
     }
 }
 
