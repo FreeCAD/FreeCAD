@@ -660,7 +660,7 @@ Action * Command::createAction(void)
     pcAction->setShortcut(QString::fromAscii(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
-        pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
 
     return pcAction;
 }
@@ -907,7 +907,7 @@ Action * PythonCommand::createAction(void)
     pcAction->setShortcut(QString::fromAscii(getAccel()));
     applyCommandData(this->getName(), pcAction);
     if (strcmp(getResource("Pixmap"),"") != 0)
-        pcAction->setIcon(Gui::BitmapFactory().pixmap(getResource("Pixmap")));
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getResource("Pixmap")));
 
     return pcAction;
 }
@@ -1083,7 +1083,7 @@ Action * PythonGroupCommand::createAction(void)
     languageChange();
 
     if (strcmp(getResource("Pixmap"),"") != 0) {
-        pcAction->setIcon(Gui::BitmapFactory().pixmap(getResource("Pixmap")));
+        pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getResource("Pixmap")));
     }
     else {
         QList<QAction*> a = pcAction->actions();
@@ -1113,13 +1113,13 @@ void PythonGroupCommand::languageChange()
         Gui::Command* cmd = rcCmdMgr.getCommandByName((*it)->property("CommandName").toByteArray());
         // Python command use getName as context
         if (dynamic_cast<PythonCommand*>(cmd)) {
-            (*it)->setIcon(Gui::BitmapFactory().pixmap(cmd->getPixmap()));
+            (*it)->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
             (*it)->setText(QApplication::translate(cmd->getName(), cmd->getMenuText()));
             (*it)->setToolTip(QApplication::translate(cmd->getName(), cmd->getToolTipText()));
             (*it)->setStatusTip(QApplication::translate(cmd->getName(), cmd->getStatusTip()));
         }
         else if (cmd) {
-            (*it)->setIcon(Gui::BitmapFactory().pixmap(cmd->getPixmap()));
+            (*it)->setIcon(Gui::BitmapFactory().iconFromTheme(cmd->getPixmap()));
             (*it)->setText(QApplication::translate(cmd->className(), cmd->getMenuText()));
             (*it)->setToolTip(QApplication::translate(cmd->className(), cmd->getToolTipText()));
             (*it)->setStatusTip(QApplication::translate(cmd->className(), cmd->getStatusTip()));

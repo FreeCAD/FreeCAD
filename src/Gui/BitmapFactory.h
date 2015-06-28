@@ -26,6 +26,7 @@
 
 #include <Base/Factory.h>
 #include <QPixmap>
+#include <QIcon>
 
 // forward declaration
 class SoSFImage;
@@ -68,6 +69,10 @@ public:
     void addPixmapToCache(const char* name, const QPixmap& icon);
     /// Checks whether the pixmap is already registered.
     bool findPixmapInCache(const char* name, QPixmap& icon) const;
+    /** Returns the QIcon corresponding to name in the current icon theme.
+     * If no such icon is found in the current theme fallback is returned instead.
+     */
+    QIcon iconFromTheme(const char* name, const QIcon& fallback = QIcon());
     /// Retrieves a pixmap by name
     QPixmap pixmap(const char* name) const;
     /** Retrieves a pixmap by name and size created by an
