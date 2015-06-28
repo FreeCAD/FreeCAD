@@ -327,16 +327,6 @@ void Body::removeFeature(App::DocumentObject* feature)
     Model.setValues(model);
 }
 
-bool Body::isFeature(App::DocumentObject* feature)
-{
-    for(App::DocumentObject* obj : Model.getValues()) {
-        
-        if(obj == feature)
-            return true;
-    }
-    return false;
-}
-
 
 App::DocumentObjectExecReturn *Body::execute(void)
 {

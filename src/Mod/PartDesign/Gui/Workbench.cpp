@@ -100,7 +100,7 @@ PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
 
     //try to find the part the object is in
     for(PartDesign::Body* b : obj->getDocument()->getObjectsOfType<PartDesign::Body>()) {
-        if(b->isFeature(obj)) {
+        if(b->hasFeature(obj)) {
             return b;
         }            
     }
