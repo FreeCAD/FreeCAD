@@ -225,7 +225,7 @@ App::DocumentObjectExecReturn *Draft::execute(void)
                     if (refEdge.IsNull())
                         throw Base::Exception("Failed to extract neutral plane reference edge");
                     BRepAdaptor_Curve c(refEdge);
-                if (c.GetType() != GeomAbs_Line)
+                    if (c.GetType() != GeomAbs_Line)
                         throw Base::Exception("Neutral plane reference edge must be linear");
                     double a = c.Line().Angle(gp_Lin(c.Value(c.FirstParameter()), pullDirection));
                     if (std::fabs(a - M_PI_2) > Precision::Confusion())
