@@ -680,6 +680,41 @@ void DlgCustomToolbarsImp::renameCustomToolbar(const QString& old_name, const QS
     }
 }
 
+QList<QAction*> DlgCustomToolbarsImp::getActionGroup(QAction* action)
+{
+    QList<QAction*> group;
+    QList<QWidget*> widgets = action->associatedWidgets();
+    for (QList<QWidget*>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
+        QToolButton* tb = qobject_cast<QToolButton*>(*it);
+        if (tb) {
+            QMenu* menu = tb->menu();
+            if (menu) {
+                group = menu->actions();
+                break;
+            }
+        }
+    }
+    return group;
+}
+
+void DlgCustomToolbarsImp::setActionGroup(QAction* action, const QList<QAction*>& group)
+{
+    // See also ActionGroup::addTo()
+    QList<QWidget*> widgets = action->associatedWidgets();
+    for (QList<QWidget*>::iterator it = widgets.begin(); it != widgets.end(); ++it) {
+        QToolButton* tb = qobject_cast<QToolButton*>(*it);
+        if (tb) {
+            QMenu* menu = tb->menu();
+            if (!menu) {
+                tb->setPopupMode(QToolButton::MenuButtonPopup);
+                QMenu* menu = new QMenu(tb);
+                menu->addActions(group);
+                tb->setMenu(menu);
+            }
+        }
+    }
+}
+
 void DlgCustomToolbarsImp::addCustomCommand(const QString& name, const QByteArray& cmd)
 {
     QVariant data = workbenchBox->itemData(workbenchBox->currentIndex(), Qt::UserRole);
@@ -757,8 +792,11 @@ void DlgCustomToolbarsImp::moveUpCustomCommand(const QString& name, const QByteA
                     }
                 }
                 if (before != 0) {
+                    QList<QAction*> group = getActionGroup(*it);
                     bars.front()->removeAction(*it);
                     bars.front()->insertAction(before, *it);
+                    if (!group.isEmpty())
+                        setActionGroup(*it, group);
                     break;
                 }
             }
@@ -797,13 +835,19 @@ void DlgCustomToolbarsImp::moveDownCustomCommand(const QString& name, const QByt
                 ++it;
                 // second last item
                 if (*it == actions.back()) {
+                    QList<QAction*> group = getActionGroup(act);
                     bars.front()->removeAction(act);
                     bars.front()->addAction(act);
+                    if (!group.isEmpty())
+                        setActionGroup(act, group);
                     break;
                 }
                 ++it;
+                QList<QAction*> group = getActionGroup(act);
                 bars.front()->removeAction(act);
                 bars.front()->insertAction(*it, act);
+                if (!group.isEmpty())
+                    setActionGroup(act, group);
                 break;
             }
         }
