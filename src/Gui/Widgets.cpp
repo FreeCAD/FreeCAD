@@ -517,8 +517,14 @@ struct ColorButtonP
     bool allowChange;
     bool drawFrame;
     bool modal;
+    bool dirty;
 
-    ColorButtonP() : cd(0), allowChange(true), drawFrame(true), modal(true)
+    ColorButtonP()
+        : cd(0)
+        , allowChange(true)
+        , drawFrame(true)
+        , modal(true)
+        , dirty(true)
     {
     }
 };
@@ -533,6 +539,11 @@ ColorButton::ColorButton(QWidget* parent)
     d = new ColorButtonP();
     d->col = palette().color(QPalette::Active,QPalette::Midlight);
     connect(this, SIGNAL(clicked()), SLOT(onChooseColor()));
+
+#if 1
+    int e = style()->pixelMetric(QStyle::PM_ButtonIconSize);
+    setIconSize(QSize(2*e, e));
+#endif
 }
 
 /**
@@ -549,6 +560,7 @@ ColorButton::~ColorButton()
 void ColorButton::setColor(const QColor& c)
 {
     d->col = c;
+    d->dirty = true;
     update();
 }
 
@@ -595,6 +607,7 @@ bool ColorButton::isModal() const
  */
 void ColorButton::paintEvent (QPaintEvent * e)
 {
+#if 0
     // first paint the complete button
     QPushButton::paintEvent(e);
 
@@ -623,6 +636,31 @@ void ColorButton::paintEvent (QPaintEvent * e)
 
     QStylePainter p(this);
     p.drawControl(QStyle::CE_PushButtonLabel, opt);
+#else
+    if (d->dirty) {
+        QSize isize = iconSize();
+        QPixmap pix(isize);
+        pix.fill(palette().button().color());
+
+        QPainter p(&pix);
+
+        int w = pix.width();
+        int h = pix.height();
+        p.setPen(QPen(Qt::gray));
+        if (d->drawFrame) {
+            p.setBrush(d->col);
+            p.drawRect(2, 2, w - 5, h - 5);
+        }
+        else {
+            p.fillRect(0, 0, w, h, QBrush(d->col));
+        }
+        setIcon(QIcon(pix));
+
+        d->dirty = false;
+    }
+
+    QPushButton::paintEvent(e);
+#endif
 }
 
 /**
