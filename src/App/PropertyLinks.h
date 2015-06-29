@@ -247,11 +247,18 @@ public:
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
 
-    /** Sets the property
+    /** Sets the property.
+     * setValue(0, whatever) clears the property
      */
     void setValue(DocumentObject*,const char*);
     void setValues(const std::vector<DocumentObject*>&,const std::vector<const char*>&);
     void setValues(const std::vector<DocumentObject*>&,const std::vector<std::string>&);
+
+    /**
+     * @brief setValue: PropertyLinkSub-compatible overload
+     * @param SubList
+     */
+    void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>());
 
     // index operator
     SubSet operator[] (const int idx) const {
@@ -262,6 +269,16 @@ public:
         return _lValueList;
     }
 
+    const std::string getPyReprString();
+
+    /**
+     * @brief getValue emulates the action of a single-object link.
+     * @return reference to object, if the link os to only one object. NULL if
+     * the link is empty, or links to subelements of more than one documant
+     * object.
+     */
+    DocumentObject* getValue() const;
+
     const std::vector<std::string> &getSubValues(void) const {
         return _lSubList;
     }
@@ -271,6 +288,7 @@ public:
 
     virtual void Save (Base::Writer &writer) const;
     virtual void Restore(Base::XMLReader &reader);
+    virtual void Restore_FromLinkSub(Base::XMLReader &reader);
 
     virtual Property *Copy(void) const;
     virtual void Paste(const Property &from);
