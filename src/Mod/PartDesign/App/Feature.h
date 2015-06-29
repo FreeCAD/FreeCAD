@@ -56,13 +56,14 @@ public:
     /// Check whether the given feature is a datum feature
     static bool isDatum(const App::DocumentObject* feature);
 
-protected:    
     /// Returns the BaseFeature property's object (if any)
-    const Part::Feature* getBaseObject() const;
+    virtual Part::Feature* getBaseObject() const;
     /// Returns the BaseFeature property's shape (if any)
-    const TopoDS_Shape& getBaseShape() const;
+    virtual const TopoDS_Shape& getBaseShape() const;
     /// Returns the BaseFeature property's TopoShape (if any)
     const Part::TopoShape getBaseTopoShape() const;
+
+protected:
 
     /**
      * Get a solid of the given shape. If no solid is found an exception is raised.

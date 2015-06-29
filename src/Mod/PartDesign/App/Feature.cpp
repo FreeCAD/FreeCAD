@@ -91,7 +91,7 @@ const gp_Pnt Feature::getPointFromFace(const TopoDS_Face& f)
     throw Base::Exception("getPointFromFace(): Not implemented yet for this case");
 }
 
-const Part::Feature* Feature::getBaseObject() const {
+Part::Feature* Feature::getBaseObject() const {
     App::DocumentObject* BaseLink = BaseFeature.getValue();
     if (BaseLink == NULL) throw Base::Exception("Base property not set");
     Part::Feature* BaseObject = NULL;
@@ -136,14 +136,15 @@ bool Feature::isDatum(const App::DocumentObject* feature)
 
 gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
 {
-    const App::Plane* plane = static_cast<const App::Plane*>(obj);
+    const App::GeoFeature* plane = static_cast<const App::GeoFeature*>(obj);
     if (plane == NULL)
         throw Base::Exception("Feature: Null object");
 
+    Base::Vector3d pos = plane->Placement.getValue().getPosition();
     Base::Rotation rot = plane->Placement.getValue().getRotation();
     Base::Vector3d normal(0,0,1);
     rot.multVec(normal, normal);
-    return gp_Pln(gp_Pnt(0,0,0), gp_Dir(normal.x,normal.y,normal.z));
+    return gp_Pln(gp_Pnt(pos.x,pos.y,pos.z), gp_Dir(normal.x,normal.y,normal.z));
 }
 
 TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)

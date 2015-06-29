@@ -188,68 +188,41 @@ std::vector<TopoDS_Wire> SketchBased::getSketchWires() const {
     return result;
 }
 
-// TODO: This code is taken from and duplicates code in Part2DObject::positionBySupport()
 // Note: We cannot return a reference, because it will become Null.
 // Not clear where, because we check for IsNull() here, but as soon as it is passed out of
 // this method, it becomes null!
 const TopoDS_Face SketchBased::getSupportFace() const {
-    const App::PropertyLinkSub& Support = static_cast<Part::Part2DObject*>(Sketch.getValue())->Support;
-    App::DocumentObject* ref = Support.getValue();
+    const Part::Part2DObject* sketch = getVerifiedSketch();
+    if (sketch->Support.getValue()) {
+        const App::PropertyLinkSubList& Support = sketch->Support;
+        App::DocumentObject* ref = Support.getValue();
 
-    if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
-        TopoDS_Shape plane = Feature::makeShapeFromPlane(ref);
-        return TopoDS::Face(plane);
-    } else if (ref->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
-        PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(ref);
-        return TopoDS::Face(plane->getShape());
+        Part::Feature *part = static_cast<Part::Feature*>(ref);
+        if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            const std::vector<std::string> &sub = Support.getSubValues();
+            assert(sub.size()==1);
+            // get the selected sub shape (a Face)
+            const Part::TopoShape &shape = part->Shape.getShape();
+            if (shape._Shape.IsNull())
+                throw Base::Exception("Sketch support shape is empty!");
+
+            TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
+            if (sh.IsNull())
+                throw Base::Exception("Null shape in SketchBased::getSupportFace()!");
+
+            const TopoDS_Face face = TopoDS::Face(sh);
+            if (face.IsNull())
+                throw Base::Exception("Null face in SketchBased::getSupportFace()!");
+
+            BRepAdaptor_Surface adapt(face);
+            if (adapt.GetType() != GeomAbs_Plane)
+                throw Base::Exception("No planar face in SketchBased::getSupportFace()!");
+
+            return face;
+        }
     }
+    return TopoDS::Face(Feature::makeShapeFromPlane(sketch));
 
-    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
-    if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        throw Base::Exception("No support in sketch");
-
-    const std::vector<std::string> &sub = Support.getSubValues();
-    assert(sub.size()==1);
-    // get the selected sub shape (a Face)
-    const Part::TopoShape &shape = part->Shape.getShape();
-    if (shape._Shape.IsNull())
-        throw Base::Exception("Sketch support shape is empty!");
-
-    TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
-    if (sh.IsNull())
-        throw Base::Exception("Null shape in SketchBased::getSupportFace()!");
-
-    const TopoDS_Face face = TopoDS::Face(sh);
-    if (face.IsNull())
-        throw Base::Exception("Null face in SketchBased::getSupportFace()!");
-
-    BRepAdaptor_Surface adapt(face);
-    if (adapt.GetType() != GeomAbs_Plane)
-        throw Base::Exception("No planar face in SketchBased::getSupportFace()!");
-
-    return face;
-}
-
-const TopoDS_Shape& SketchBased::getSupportShape() const {
-    if (!Sketch.getValue())
-        throw Base::Exception("No Sketch!");
-
-    App::DocumentObject* SupportLink = static_cast<Part::Part2DObject*>(Sketch.getValue())->Support.getValue();
-    Part::Feature* SupportObject = NULL;
-    if (SupportLink && SupportLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        SupportObject = static_cast<Part::Feature*>(SupportLink);
-
-    if (SupportObject == NULL)
-        throw Base::Exception("No support in Sketch!");
-
-    const TopoDS_Shape& result = SupportObject->Shape.getValue();
-    if (result.IsNull())
-        throw Base::Exception("Support shape is invalid");
-    TopExp_Explorer xp (result, TopAbs_SOLID);
-    if (!xp.More())
-        throw Base::Exception("Support shape is not a solid");
-
-    return result;
 }
 
 int SketchBased::getSketchAxisCount(void) const
@@ -258,6 +231,21 @@ int SketchBased::getSketchAxisCount(void) const
     if (!sketch)
         return -1; // the link to the sketch is lost
     return sketch->getAxisCount();
+}
+
+Part::Feature *SketchBased::getBaseObject() const
+{
+    try{
+        return Feature::getBaseObject();
+    } catch (Base::Exception) {
+        Part::Part2DObject* sketch = getVerifiedSketch();
+        App::DocumentObject* spt = sketch->Support.getValue();
+        if(!spt)
+            throw Base::Exception ("No base set, no sketch support either");
+        if(!spt->isDerivedFrom(Part::Feature::getClassTypeId()))
+            throw Base::Exception ("No base set, sketch support is not Part::Feature");
+        return static_cast<Part::Feature*>(spt);
+    }
 }
 
 void SketchBased::onChanged(const App::Property* prop)
@@ -980,16 +968,6 @@ bool SketchBased::isParallelPlane(const TopoDS_Shape& s1, const TopoDS_Shape& s2
     return false;
 }
 
-bool SketchBased::isSupportDatum() const
-{
-    if (!Sketch.getValue())
-        return 0;
-    App::DocumentObject* SupportObject = static_cast<Part::Part2DObject*>(Sketch.getValue())->Support.getValue();
-    if (SupportObject == NULL)
-        throw Base::Exception("No support in Sketch!");
-
-    return isDatum(SupportObject);
-}
 
 const double SketchBased::getReversedAngle(const Base::Vector3d &b, const Base::Vector3d &v)
 {
