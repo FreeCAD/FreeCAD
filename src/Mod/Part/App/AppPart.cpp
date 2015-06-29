@@ -51,6 +51,7 @@
 #include "PartFeatures.h"
 #include "BodyBase.h"
 #include "PrimitiveFeature.h"
+#include "Attacher.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
 #include "TopoShapePy.h"
@@ -220,6 +221,7 @@ PyMODINIT_FUNC initPart()
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
+    Part::AttachableObject      ::init();
     Part::BodyBase              ::init();
     Part::FeaturePython         ::init();
     Part::FeatureGeometrySet    ::init();

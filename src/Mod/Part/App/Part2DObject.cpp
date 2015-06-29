@@ -59,7 +59,7 @@ const int Part2DObject::H_Axis = -1;
 const int Part2DObject::V_Axis = -2;
 const int Part2DObject::N_Axis = -3;
 
-PROPERTY_SOURCE(Part::Part2DObject, Part::Feature)
+PROPERTY_SOURCE(Part::Part2DObject, Part::AttachableObject)
 
 
 Part2DObject::Part2DObject()
@@ -69,170 +69,7 @@ Part2DObject::Part2DObject()
 
 App::DocumentObjectExecReturn *Part2DObject::execute(void)
 {
-    return App::DocumentObject::StdReturn;
-}
-
-void Part2DObject::positionBySupport(void)
-{
-    AttachableObject::positionBySupport();
-
-    return;
-    /*
-    // recalculate support:
-    Base::Placement Place;
-    TopoDS_Shape sh;
-    bool Reverse = false;
-    gp_Pln plane;
-    App::DocumentObject* support = Support.getValues();
-    if (support == NULL)
-        return;
-
-    if (support->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
-        // Find the name of the Baseplane without having to access PartDesignGui::BaseplaneNames[]
-        Place = static_cast<App::Plane*>(support)->Placement.getValue();
-        Base::Vector3d dir;
-        Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
-        const std::vector<std::string> &sub = Support.getSubValues();
-        if (!sub.empty() && (sub[0] == "back"))
-            Reverse = true;
-
-        // Set placement identical to the way it used to be done in the Sketcher::SketchOrientationDialog
-        if (dir == Base::Vector3d(0,0,1)) {
-            if (Reverse)
-                Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(-1.0, 0.0,0.0,0.0));
-            else
-                Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation());
-        } else if (dir == Base::Vector3d(0,1,0)) {
-            if (Reverse)
-                Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(0,sqrt(2.0)/2.0,sqrt(2.0)/2.0),M_PI));
-            else
-                Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Base::Vector3d(-1,0,0),1.5*M_PI));
-        } else if (dir == Base::Vector3d(1,0,0)) {
-            Place = Base::Placement(Base::Vector3d(0,0,0),Base::Rotation(Reverse ? -0.5 : 0.5,0.5,0.5, Reverse ? -0.5 : 0.5));
-        }
-
-        if (Reverse) {
-            dir *= -1.0;
-            Reverse = false; // We already reversed...
-        }
-
-        Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
-        Base::Vector3d pos = Place.getPosition();
-        plane = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(dir.x, dir.y, dir.z));
-    } else if (support->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        const std::vector<std::string> &sub = Support.getSubValues();
-        assert(sub.size()==1);
-
-        Part::Datum* pcDatum = static_cast<Part::Datum*>(support);
-        Place = pcDatum->Placement.getValue();
-        Base::Vector3d dir;
-        Place.getRotation().multVec(Base::Vector3d(0,0,1),dir);
-        if (!sub.empty() && (sub[0] == "back"))
-            dir *= -1.0;
-        Base::Vector3d pos = Place.getPosition();
-        plane = gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(dir.x, dir.y, dir.z));
-    } else {
-        Part::Feature *part = static_cast<Part::Feature*>(support);
-        if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-            return;
-
-        Place = part->Placement.getValue();
-        const std::vector<std::string> &sub = Support.getSubValues();
-        assert(sub.size()==1);
-        // get the selected sub shape (a Face)
-        const Part::TopoShape &shape = part->Shape.getShape();
-        if (shape._Shape.IsNull())
-            throw Base::Exception("Support shape is empty!");
-
-        try {
-            sh = shape.getSubShape(sub[0].c_str());
-        }
-        catch (Standard_Failure) {
-            throw Base::Exception("Face in support shape doesn't exist!");
-        }
-
-        const TopoDS_Face &face = TopoDS::Face(sh);
-        if (face.IsNull())
-            throw Base::Exception("Null face in Part2DObject::positionBySupport()!");
-
-        BRepAdaptor_Surface adapt(face);
-        if (adapt.GetType() != GeomAbs_Plane)
-            throw Base::Exception("No planar face in Part2DObject::positionBySupport()!");
-
-        if (face.Orientation() == TopAbs_REVERSED)
-            Reverse = true;
-
-        plane = adapt.Plane();
-        Standard_Boolean ok = plane.Direct();
-        if (!ok) {
-            // toggle if plane has a left-handed coordinate system
-            plane.UReverse();
-            Reverse = !Reverse;
-        }
-    }
-
-    gp_Ax1 Normal = plane.Axis();
-    if (Reverse)
-        Normal.Reverse();
-
-    gp_Pnt ObjOrg(Place.getPosition().x,Place.getPosition().y,Place.getPosition().z);
-
-    Handle (Geom_Plane) gPlane = new Geom_Plane(plane);
-    GeomAPI_ProjectPointOnSurf projector(ObjOrg,gPlane);
-    gp_Pnt SketchBasePoint = projector.NearestPoint();
-
-    gp_Dir dir = Normal.Direction();
-    gp_Ax3 SketchPos;
-
-    Base::Vector3d dX,dY,dZ;
-    Place.getRotation().multVec(Base::Vector3d(1,0,0),dX);
-    Place.getRotation().multVec(Base::Vector3d(0,1,0),dY);
-    Place.getRotation().multVec(Base::Vector3d(0,0,1),dZ);
-    gp_Dir dirX(dX.x, dX.y, dX.z);
-    gp_Dir dirY(dY.x, dY.y, dY.z);
-    gp_Dir dirZ(dZ.x, dZ.y, dZ.z);
-    double cosNX = dir.Dot(dirX);
-    double cosNY = dir.Dot(dirY);
-    double cosNZ = dir.Dot(dirZ);
-    std::vector<double> cosXYZ;
-    cosXYZ.push_back(fabs(cosNX));
-    cosXYZ.push_back(fabs(cosNY));
-    cosXYZ.push_back(fabs(cosNZ));
-
-    int pos = std::max_element(cosXYZ.begin(), cosXYZ.end()) - cosXYZ.begin();
-
-    // +X/-X
-    if (pos == 0) {
-        if (cosNX > 0)
-            SketchPos = gp_Ax3(SketchBasePoint, dir, dirY);
-        else
-            SketchPos = gp_Ax3(SketchBasePoint, dir, -dirY);
-    }
-    // +Y/-Y
-    else if (pos == 1) {
-        if (cosNY > 0)
-            SketchPos = gp_Ax3(SketchBasePoint, dir, -dirX);
-        else
-            SketchPos = gp_Ax3(SketchBasePoint, dir, dirX);
-    }
-    // +Z/-Z
-    else {
-        SketchPos = gp_Ax3(SketchBasePoint, dir, dirX);
-    }
-
-    gp_Trsf Trf;
-    Trf.SetTransformation(SketchPos);
-    Trf.Invert();
-    Trf.SetScaleFactor(Standard_Real(1.0));
-
-    Base::Matrix4D mtrx;
-    TopoShape::convertToMatrix(Trf,mtrx);
-
-    // check the angle against the Z Axis
-    //Standard_Real a = Normal.Angle(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,0,1)));
-
-    Placement.setValue(Base::Placement(mtrx));
-    */
+    return AttachableObject::execute();
 }
 
 void Part2DObject::transformPlacement(const Base::Placement &transform)
@@ -240,8 +77,9 @@ void Part2DObject::transformPlacement(const Base::Placement &transform)
     if (Support.getValues().size() > 0) {
         //part->transformPlacement(transform);
         positionBySupport();
-    } else
+    } else {
         GeoFeature::transformPlacement(transform);
+    }
 }
 
 int Part2DObject::getAxisCount(void) const
@@ -368,14 +206,6 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
 void Part2DObject::acceptGeometry()
 {
     // implemented in sub-classes
-}
-
-void Part2DObject::onChanged(const App::Property* prop)
-{
-    // Update the Placement if the Support changes
-    if ((prop == &Support) && (Support.getValues().size() > 0))
-        positionBySupport();
-    Part::Feature::onChanged(prop);
 }
 
 // Python Drawing feature ---------------------------------------------------------

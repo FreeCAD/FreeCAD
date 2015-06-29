@@ -57,8 +57,6 @@ class PartExport Part2DObject : public Part::AttachableObject
 public:
     Part2DObject();
 
-    void positionBySupport();
-
     virtual void transformPlacement(const Base::Placement &transform);
 
     /// returns the number of construction lines (to be used as axes)
@@ -95,9 +93,6 @@ public:
     }
     //@}
 
-protected:
-    /// get called by the container when a property has changed
-    virtual void onChanged(const App::Property* /*prop*/);
 };
 
 typedef App::FeaturePythonT<Part2DObject> Part2DObjectPython;
