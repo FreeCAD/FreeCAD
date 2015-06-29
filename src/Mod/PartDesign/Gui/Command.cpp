@@ -992,7 +992,9 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
         while (o != inList.end()) {
             //Base::Console().Error("Inlist: %s\n", (*o)->getNameInDocument());
             if ((*o)->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId()))
-                o = inList.erase(o);
+                o = inList.erase(o); //ignore bodies
+            else if (!(  (*o)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())  ))
+                o = inList.erase(o); //ignore non-partDesign
             else
                 ++o;
         }
@@ -1043,21 +1045,25 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
     if (!pcActiveBody) return;
 
+    bool bNoSketchWasSelected = false;
     // Get a valid sketch from the user
     // First check selections
+    std::vector<App::DocumentObject*> sketches = cmd->getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
+    if (sketches.size() == 0) {//no sketches were selected. Let user pick an object from valid ones available in document
+        sketches = cmd->getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
+        bNoSketchWasSelected = true;
+    }
     std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
     std::vector<App::DocumentObject*>::iterator firstValidSketch;
-    std::vector<App::DocumentObject*> sketches = cmd->getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    // Next let the user choose from a list of all eligible objects
     unsigned validSketches = validateSketches(sketches, status, firstValidSketch);
     if (validSketches == 0) {
-        status.clear();
-        sketches = cmd->getDocument()->getObjectsOfType(Part::Part2DObject::getClassTypeId());
-        validSketches = validateSketches(sketches, status, firstValidSketch);
-        if (validSketches == 0) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches in this document"),
-                QObject::tr("Please create a sketch or 2D object first."));
+        if (bNoSketchWasSelected) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No sketch to work on"),
+                QObject::tr("No sketch was selected. None of the sketches in the document is free."));
             return;
+        } else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No valid sketches selected"),
+                QObject::tr("Attention: none of selected sketches/2D objects is free."));
         }
     }
 
@@ -1088,8 +1094,10 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
     };
 
     // If there is more than one selection/possibility, show dialog and let user pick sketch
-    if (validSketches > 1) {
-
+    if (bNoSketchWasSelected && validSketches > 1
+            ||
+        !bNoSketchWasSelected && sketches.size() > 1) {
+        
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
@@ -1112,7 +1120,14 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
         Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, worker));
     }
     else {
-        worker(sketches);
+        std::vector<App::DocumentObject*> theSketch;
+        theSketch.reserve(1);
+        if (bNoSketchWasSelected && validSketches == 1){
+            theSketch.push_back(*firstValidSketch);
+        } else if(!bNoSketchWasSelected && sketches.size() == 1) {
+            theSketch = sketches;
+        }
+        worker(theSketch);
     }
 
 }
