@@ -71,13 +71,11 @@ public:
     std::vector<TopoDS_Wire> getSketchWires() const;
     /// Returns the face of the sketch support (if any)
     const TopoDS_Face getSupportFace() const;
-    /// Returns the sketch support shape (if any)
-    const TopoDS_Shape& getSupportShape() const;
-    /// Check whether the sketch support is a datum plane
-    bool isSupportDatum() const;
 
     /// retrieves the number of axes in the linked sketch (defined as construction lines)
     int getSketchAxisCount(void) const;    
+
+    virtual Part::Feature* getBaseObject() const;
 
 protected:
     void onChanged(const App::Property* prop);

@@ -145,8 +145,7 @@ TaskPocketParameters::TaskPocketParameters(ViewProviderPocket *PocketView,QWidge
     ui->lineFaceName->blockSignals(false);
     ui->changeMode->blockSignals(false);
 
-    // Activate the Reverse option only if the support is a datum plane
-    ui->checkBoxReversed->setVisible(pcPocket->isSupportDatum());
+    ui->checkBoxReversed->setVisible(true);
 
     updateUI(index);
  

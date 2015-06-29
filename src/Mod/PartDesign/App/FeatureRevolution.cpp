@@ -99,12 +99,7 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
         base = getBaseShape();
     } catch (const Base::Exception&) {
         // fall back to support (for legacy features)
-        try {
-            base = getSupportShape();
-        } catch (const Base::Exception&) {
-            // ignore, because support isn't mandatory
-            base = TopoDS_Shape();
-        }
+        base = TopoDS_Shape();
     }
 
     // update Axis from ReferenceAxis

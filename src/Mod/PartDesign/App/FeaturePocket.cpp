@@ -104,12 +104,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     try {
         base = getBaseShape();
     } catch (const Base::Exception&) {
-        try {
-            // fall back to support (for legacy features)
-            base = getSupportShape();
-        } catch (const Base::Exception&) {
-            return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the pocket!");
-        }
+        return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the pocket!");
     }
 
     // get the Sketch plane
