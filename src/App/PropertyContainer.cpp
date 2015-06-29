@@ -233,9 +233,18 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         // subclass of PropertyContainer might change the type of a property but
         // not its name. In this case we would force to read-in a wrong property
         // type and the behaviour would be undefined.
+        // Exception: PropertyLinkSubList can read PropertyLinkSub
         try {
-            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0)
-                prop->Restore(reader);
+            if(prop){
+                if (strcmp(prop->getTypeId().getName(), TypeName) == 0){
+                    prop->Restore(reader);
+                } else if (prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())){
+                    App::PropertyLinkSub tmp;//getTypeId() is not static =(
+                    if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
+                        static_cast<App::PropertyLinkSubList*>(prop)->Restore_FromLinkSub(reader);
+                    }
+                }
+            }
         }
         catch (const Base::XMLParseException&) {
             throw; // re-throw
