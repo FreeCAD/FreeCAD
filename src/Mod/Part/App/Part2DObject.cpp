@@ -64,7 +64,6 @@ PROPERTY_SOURCE(Part::Part2DObject, Part::Feature)
 
 Part2DObject::Part2DObject()
 {
-     ADD_PROPERTY_TYPE(Support,(0),   "2D",(App::PropertyType)(App::Prop_None),"Support of the 2D geometry");
 }
 
 
@@ -75,12 +74,16 @@ App::DocumentObjectExecReturn *Part2DObject::execute(void)
 
 void Part2DObject::positionBySupport(void)
 {
+    AttachableObject::positionBySupport();
+
+    return;
+    /*
     // recalculate support:
     Base::Placement Place;
     TopoDS_Shape sh;
     bool Reverse = false;
     gp_Pln plane;
-    App::DocumentObject* support = Support.getValue();
+    App::DocumentObject* support = Support.getValues();
     if (support == NULL)
         return;
 
@@ -229,13 +232,13 @@ void Part2DObject::positionBySupport(void)
     //Standard_Real a = Normal.Angle(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,0,1)));
 
     Placement.setValue(Base::Placement(mtrx));
+    */
 }
 
 void Part2DObject::transformPlacement(const Base::Placement &transform)
 {
-    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
-    if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        part->transformPlacement(transform);
+    if (Support.getValues().size() > 0) {
+        //part->transformPlacement(transform);
         positionBySupport();
     } else
         GeoFeature::transformPlacement(transform);
@@ -370,7 +373,7 @@ void Part2DObject::acceptGeometry()
 void Part2DObject::onChanged(const App::Property* prop)
 {
     // Update the Placement if the Support changes
-    if ((prop == &Support) && (Support.getValue() != NULL))
+    if ((prop == &Support) && (Support.getValues().size() > 0))
         positionBySupport();
     Part::Feature::onChanged(prop);
 }

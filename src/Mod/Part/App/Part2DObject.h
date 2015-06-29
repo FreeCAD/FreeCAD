@@ -29,6 +29,7 @@
 #include <Base/Axis.h>
 
 #include "PartFeature.h"
+#include "Attacher.h"
 
 class TopoDS_Face;
 
@@ -49,28 +50,15 @@ class Geometry;
   * geometry as its descend Sketcher::SketchObject .
   */
 
-class PartExport Part2DObject : public Part::Feature
+class PartExport Part2DObject : public Part::AttachableObject
 {
     PROPERTY_HEADER(Part::Part2DObject);
 
 public:
     Part2DObject();
 
-    /// if the 2DObject lies on the Face of an other object this links to it
-    App::PropertyLinkSub        Support;
+    void positionBySupport();
 
-    /** calculate and update the Placement property based on the Support
-      * this methode will calculate the position of the
-      * 2D shape on a supporting Face. The Normal(Orientation) get
-      * extracted from the Face and for the position an educated guess is made,
-      * by examining the placement of the support object (not only the face).
-      * If the support is changed this methode is called do determine a new
-      * postion of the 2D shape on the supporting Face
-      */
-    void positionBySupport(void);
-    /** applies a transform on the Placement of the Sketch or its
-     *  support if it has one
-      */
     virtual void transformPlacement(const Base::Placement &transform);
 
     /// returns the number of construction lines (to be used as axes)

@@ -128,8 +128,7 @@ SketchObject::~SketchObject()
 App::DocumentObjectExecReturn *SketchObject::execute(void)
 {
     try {
-        App::DocumentObject* support = Support.getValue();
-        if (support)
+        if (Support.getSize() > 0)
             this->positionBySupport();
     }
     catch (const Base::Exception& e) {
