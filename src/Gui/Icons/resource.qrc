@@ -113,5 +113,6 @@
         <file>DrawStyleShaded.svg</file>
         <file>DrawStyleWireFrame.svg</file>
         <file>user.svg</file>
+        <file>index.theme</file>
     </qresource>
 </RCC>

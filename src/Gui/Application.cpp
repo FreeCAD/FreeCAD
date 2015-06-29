@@ -1680,6 +1680,10 @@ void Application::runApplication(void)
     else if (version & QGLFormat::OpenGL_Version_None)
         Base::Console().Log("No OpenGL is present or no OpenGL context is current\n");
 
+#if !defined(Q_WS_X11)
+    QIcon::setThemeName(QLatin1String("FreeCAD-default"));
+#endif
+
     Application app(true);
     MainWindow mw;
     mw.setWindowTitle(mainApp.applicationName());
