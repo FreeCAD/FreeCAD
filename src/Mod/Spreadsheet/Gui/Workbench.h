@@ -28,6 +28,7 @@
 #include <Gui/Workbench.h>
 
 class QtColorPicker;
+class QColor;
 
 namespace SpreadsheetGui {
 

@@ -27,7 +27,6 @@
 
 #include "CombiView.h"
 #include "BitmapFactory.h"
-#include "iisTaskPanel/include/iisTaskPanel"
 #include "PropertyView.h"
 #include "ProjectView.h"
 #include "Application.h"

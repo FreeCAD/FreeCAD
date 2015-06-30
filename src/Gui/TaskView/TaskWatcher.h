@@ -29,7 +29,6 @@
 #include <vector>
 #include <QObject>
 
-#include <Gui/iisTaskPanel/include/iisTaskPanel>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
 

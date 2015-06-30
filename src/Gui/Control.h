@@ -32,6 +32,8 @@
 
 #include <Gui/TaskView/TaskDialog.h>
 
+class QTabWidget;
+
 namespace App
 {
   class DocumentObject;
