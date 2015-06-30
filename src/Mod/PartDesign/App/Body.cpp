@@ -276,8 +276,8 @@ void Body::insertFeature(App::DocumentObject* feature, App::DocumentObject* targ
     if (Body::isSolidFeature(feature)) {
         // Set BaseFeature property to previous feature (this might be the Tip feature)
         App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature, false);
-        if (prevSolidFeature)
-            static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
+        // NULL is ok here, it just means we made the current one fiature the base solid
+        static_cast<PartDesign::Feature*>(feature)->BaseFeature.setValue(prevSolidFeature);
 
         // Reroute the next solid feature's BaseFeature property to this feature
         App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature, false);
@@ -296,13 +296,10 @@ void Body::removeFeature(App::DocumentObject* feature)
         // This is a solid feature
         // If the next feature is solid, reroute its BaseFeature property to the previous solid feature
         App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature, false);
-        if (nextSolidFeature != NULL) {
+        if (nextSolidFeature) {
             App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature, false);
-            PartDesign::Feature* nextFeature = static_cast<PartDesign::Feature*>(nextSolidFeature);
-            if ((prevSolidFeature == NULL) && (nextFeature->BaseFeature.getValue() != NULL))
-                // sanity check
-                throw Base::Exception((std::string("Body: Base feature of ") + nextFeature->getNameInDocument() + " was removed!").c_str());
-            nextFeature->BaseFeature.setValue(prevSolidFeature);
+            // Note: It's ok to remove the first solid feature, that just mean the next feature become the base one 
+            static_cast<PartDesign::Feature*>(nextSolidFeature)->BaseFeature.setValue(prevSolidFeature);
         }
     }
 
