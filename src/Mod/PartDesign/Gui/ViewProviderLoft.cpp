@@ -142,6 +142,7 @@ bool ViewProviderLoft::onDelete(const std::vector<std::string> &s)
         Gui::Application::Instance->getViewProvider(pcSketch)->show();
 
     return ViewProvider::onDelete(s);*/
+    return true;
 }
 
 
