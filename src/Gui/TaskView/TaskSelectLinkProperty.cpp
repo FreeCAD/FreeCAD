@@ -56,10 +56,10 @@ TaskSelectLinkProperty::TaskSelectLinkProperty(const char *sFilter,App::Property
     this->groupLayout()->addWidget(proxy);
     Gui::Selection().Attach(this);
 
-    ui->Remove->setIcon(Gui::BitmapFactory().pixmap("delete"));
-    ui->Add->setIcon(Gui::BitmapFactory().pixmap("add"));
-    ui->Invert->setIcon(Gui::BitmapFactory().pixmap("edit_remove"));
-    ui->Help->setIcon(Gui::BitmapFactory().pixmap("help-browser"));
+    ui->Remove->setIcon(Gui::BitmapFactory().iconFromTheme("delete"));
+    ui->Add->setIcon(Gui::BitmapFactory().iconFromTheme("list-add"));
+    ui->Invert->setIcon(Gui::BitmapFactory().iconFromTheme("list-remove"));
+    ui->Help->setIcon(Gui::BitmapFactory().iconFromTheme("help-browser"));
 
     // deactivate not implemented stuff
     ui->Remove->setDisabled(true);

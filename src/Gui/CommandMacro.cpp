@@ -49,7 +49,7 @@ StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
     sToolTipText  = QT_TR_NOOP("Opens a dialog to record a macro");
     sWhatsThis    = "Std_DlgMacroRecord";
     sStatusTip    = QT_TR_NOOP("Opens a dialog to record a macro");
-    sPixmap       = "macro-record";
+    sPixmap       = "media-record";
     eType         = 0;
 }
 
@@ -77,7 +77,7 @@ StdCmdMacroStopRecord::StdCmdMacroStopRecord()
     sToolTipText  = QT_TR_NOOP("Stop the macro recording session");
     sWhatsThis    = "Std_MacroStopRecord";
     sStatusTip    = QT_TR_NOOP("Stop the macro recording session");
-    sPixmap       = "macro-stop";
+    sPixmap       = "media-playback-stop";
     eType         = 0;
 }
 
@@ -132,7 +132,7 @@ StdCmdDlgMacroExecuteDirect::StdCmdDlgMacroExecuteDirect()
     sToolTipText  = QT_TR_NOOP("Execute the macro in the editor");
     sWhatsThis    = "Std_DlgMacroExecuteDirect";
     sStatusTip    = QT_TR_NOOP("Execute the macro in the editor");
-    sPixmap       = "macro-execute";
+    sPixmap       = "media-playback-start";
     sAccel        = "Ctrl+F6";
     eType         = 0;
 }

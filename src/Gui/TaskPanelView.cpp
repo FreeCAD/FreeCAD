@@ -56,31 +56,31 @@ TaskPanelView::TaskPanelView(Gui::Document* pcDocument, QWidget *parent)
     gridLayout->addWidget(taskPanel, 0, 0, 2, 1);
 
     iisIconLabel *i1 = new iisIconLabel(
-        Gui::BitmapFactory().pixmap("view-zoom-in"), QLatin1String("Do Task 1"), tb1);
+        Gui::BitmapFactory().iconFromTheme("zoom-in"), QLatin1String("Do Task 1"), tb1);
     tb1->addIconLabel(i1);
     //connect(i1, SIGNAL(activated()), this, SLOT(task1()));
 
     iisIconLabel *i2 = new iisIconLabel(
-        Gui::BitmapFactory().pixmap("view-zoom-out"), QLatin1String("Do Task 2"), tb1);
+        Gui::BitmapFactory().iconFromTheme("zoom-out"), QLatin1String("Do Task 2"), tb1);
     tb1->addIconLabel(i2);
 
     QHBoxLayout *hbl = new QHBoxLayout();
     tb1->groupLayout()->addLayout(hbl);
 
     iisIconLabel *i3 = new iisIconLabel(
-        Gui::BitmapFactory().pixmap("edit-copy"), QLatin1String("Do Task 3"), tb1);
+        Gui::BitmapFactory().iconFromTheme("edit-copy"), QLatin1String("Do Task 3"), tb1);
     tb1->addIconLabel(i3, false);
     hbl->addWidget(i3);
 
     iisIconLabel *i4 = new iisIconLabel(
-        Gui::BitmapFactory().pixmap("edit-cut"), QLatin1String("Do Task 4"), tb1);
+        Gui::BitmapFactory().iconFromTheme("edit-cut"), QLatin1String("Do Task 4"), tb1);
     tb1->addIconLabel(i4, false);
     hbl->addWidget(i4);
     i4->setColors(Qt::red, Qt::green, Qt::gray);
     i4->setFocusPen(QPen());
 
     iisIconLabel *i5 = new iisIconLabel(
-        Gui::BitmapFactory().pixmap("edit-paste"), QLatin1String("Do Task 5"), tb1);
+        Gui::BitmapFactory().iconFromTheme("edit-paste"), QLatin1String("Do Task 5"), tb1);
     tb1->addIconLabel(i5);
 
     iisTaskBox *tb2 = new iisTaskBox(
@@ -88,16 +88,16 @@ TaskPanelView::TaskPanelView(Gui::Document* pcDocument, QWidget *parent)
     taskPanel->addWidget(tb2);
 
     iisIconLabel *i21 = new iisIconLabel(
-        Gui::BitmapFactory().pixmap("document-new"), QLatin1String("Do Task 2.1"), tb2);
+        Gui::BitmapFactory().iconFromTheme("document-new"), QLatin1String("Do Task 2.1"), tb2);
     tb2->addIconLabel(i21);
 
     iisIconLabel *i22 = new iisIconLabel(
-        Gui::BitmapFactory().pixmap("document-open"), QLatin1String("Do Task 2.2"), tb2);
+        Gui::BitmapFactory().iconFromTheme("document-open"), QLatin1String("Do Task 2.2"), tb2);
     tb2->addIconLabel(i22);
     i22->setEnabled(false);
 
     iisIconLabel *i23 = new iisIconLabel(
-        Gui::BitmapFactory().pixmap("document-save"), QLatin1String("Do Task 2.3"), tb2);
+        Gui::BitmapFactory().iconFromTheme("document-save"), QLatin1String("Do Task 2.3"), tb2);
     tb2->addIconLabel(i23);
 
     iisTaskBox *tb3 = new iisTaskBox(QPixmap(), QLatin1String("Group without Icons"), true, this);
@@ -121,7 +121,7 @@ TaskPanelView::TaskPanelView(Gui::Document* pcDocument, QWidget *parent)
     taskPanel->addWidget(tb4);
 
     iisIconLabel *i41 = new iisIconLabel(
-        Gui::BitmapFactory().pixmap("system-log-out"), QLatin1String("Do Task 4.1"), tb4);
+        Gui::BitmapFactory().iconFromTheme("application-exit"), QLatin1String("Do Task 4.1"), tb4);
     tb4->addIconLabel(i41);
 
     iisIconLabel *i42 = new iisIconLabel(QPixmap(), QLatin1String("Do Task 4.2"), tb4);
