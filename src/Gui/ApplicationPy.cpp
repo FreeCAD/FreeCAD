@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <qfileinfo.h>
 # include <qdir.h>
 # include <QPrinter>

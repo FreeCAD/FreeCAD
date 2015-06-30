@@ -26,6 +26,7 @@
 # ifdef FC_OS_WIN32
 # include <windows.h>
 # endif
+# include <QApplication>
 # include <QCalendarWidget>
 # include <QColorDialog>
 # include <QCryptographicHash>

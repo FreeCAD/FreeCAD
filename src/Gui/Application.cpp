@@ -41,7 +41,9 @@
 # include <QGLFramebufferObject>
 #endif
 # include <QSessionManager>
+# include <QStatusBar>
 # include <QTextStream>
+# include <QTimer>
 #endif
 
 #include <boost/interprocess/sync/file_lock.hpp>

@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <sstream>
+# include <QApplication>
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
