@@ -966,7 +966,7 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
             DocumentObjectItem* parent_of_group = it->second;
             std::set<QTreeWidgetItem*> children;
             std::vector<App::DocumentObject*> group = view.claimChildren();
-            int group_index = 0;
+                int group_index = 0; // counter of children inserted to the tree
             for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
                 if ((*jt) && view.getObject()->getDocument()->isIn(*jt)){
                     // Note: It is possible that we receive an invalid pointer from claimChildren(), e.g. if multiple properties
@@ -981,21 +981,34 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                             DocumentObjectItem* child_of_group = kt->second;
                             children.insert(child_of_group);
                             QTreeWidgetItem* parent_of_child = child_of_group->parent();
-                            if (parent_of_child && parent_of_child != parent_of_group) {
-                                if (parent_of_group != child_of_group) {
-                                    // This child's parent must be adjusted
-                                    int index = parent_of_child->indexOfChild(child_of_group);
-                                    parent_of_child->takeChild(index);
-                                    // Insert the child at the correct position according to the order of the children returned
-                                    // by claimChildren
-                                    if (group_index <= parent_of_group->childCount())
-                                        parent_of_group->insertChild(group_index, child_of_group);
-                                    else
-                                        parent_of_group->addChild(child_of_group);
+
+                            if (parent_of_child) {
+                                if (parent_of_child != parent_of_group) {
+                                    if (parent_of_group != child_of_group) {
+                                        // This child's parent must be adjusted
+                                        parent_of_child->removeChild(child_of_group);
+                                        // Insert the child at the correct position according to the order of the children returned
+                                        // by claimChildren
+                                        if (group_index <= parent_of_group->childCount())
+                                            parent_of_group->insertChild(group_index, child_of_group);
+                                        else
+                                            parent_of_group->addChild(child_of_group);
+                                        group_index++;
+                                    } else {
+                                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                    }
+                                } else {
+                                    // The child already in the right group, but we may need to ajust it's index to follow the order of claimChildren
+                                    int index=parent_of_group->indexOfChild (child_of_group);
+                                    if (index>group_index) {
+                                         parent_of_group->takeChild (index);
+                                         parent_of_group->insertChild (group_index, child_of_group);
+                                    }
+                                    group_index++;
                                 }
-                                else {
-                                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
-                                }
+                            } else {
+                                Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): "
+                                    "'%s' claimed a top level object '%s' to be it's child.\n", objectName.c_str(), internalName);
                             }
                         }
                     }
@@ -1006,8 +1019,6 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
                 else {
                     Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Group references unknown object.\n");
                 }
-                
-                group_index++;
             }
 
             // move all children which are not part of the group anymore to this item
