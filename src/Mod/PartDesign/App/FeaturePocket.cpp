@@ -117,7 +117,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     SketchVector *= -1;
 
     try {
-        this->positionBySketch();
+        this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
 
         base.Move(invObjLoc);

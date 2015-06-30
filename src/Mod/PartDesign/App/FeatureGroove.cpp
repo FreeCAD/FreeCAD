@@ -122,7 +122,7 @@ App::DocumentObjectExecReturn *Groove::execute(void)
             sketchshape.Move(loc);
         }
 
-        this->positionBySketch();
+        this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         pnt.Transform(invObjLoc.Transformation());
         dir.Transform(invObjLoc.Transformation());

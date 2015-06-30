@@ -97,7 +97,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
  
     try {
         //setup the location
-        this->positionBySketch();
+        this->positionByPrevious();
         TopLoc_Location invObjLoc = this->getLocation().Inverted();
         if(!base.IsNull())
             base.Move(invObjLoc);
