@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QGLWidget>
+# include <QGridLayout>
 # include <Inventor/actions/SoAction.h>
 # include <Inventor/elements/SoModelMatrixElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>

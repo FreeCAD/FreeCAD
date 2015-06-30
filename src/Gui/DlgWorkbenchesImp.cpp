@@ -25,6 +25,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QDebug>
 # include <QInputDialog>
 #endif
 
