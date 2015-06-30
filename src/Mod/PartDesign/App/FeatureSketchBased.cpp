@@ -121,36 +121,34 @@ short SketchBased::mustExecute() const
     return PartDesign::FeatureAddSub::mustExecute();
 }
 
-void SketchBased::positionBySketch(void)
+void SketchBased::positionByPrevious(void)
 {
-    Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());
-    if (sketch && sketch->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    try{
+        //use placement of base
+        Part::Feature* feat = getBaseObject();
+        this->Placement.setValue(feat->Placement.getValue());
+    } catch (Base::Exception) {
+        //no base. Use either Sketch support's placement, or sketch's placement itself.
+        Part::Part2DObject *sketch = getVerifiedSketch();
         App::DocumentObject* support = sketch->Support.getValue();
-        if (support == NULL)
-            throw Base::Exception("Sketch with NULL support");
-        if (support->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            Part::Feature *part = static_cast<Part::Feature*>(support);
-            this->Placement.setValue(part->Placement.getValue());
-        } else if (support->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
-            App::Plane *plane = static_cast<App::Plane*>(support);
-            this->Placement.setValue(plane->Placement.getValue());
+        if(support && support->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            this->Placement.setValue(static_cast<App::GeoFeature*>(support)->Placement.getValue());
         } else {
-            this->Placement.setValue(sketch->Placement.getValue());
+            this->Placement.setValue( sketch->Placement.getValue() );
         }
     }
 }
 
 void SketchBased::transformPlacement(const Base::Placement &transform)
 {
-    Part::Part2DObject *sketch = static_cast<Part::Part2DObject*>(Sketch.getValue());
-    if (sketch && sketch->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
-        Part::Feature *part = static_cast<Part::Feature*>(sketch->Support.getValue());
-        if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-            part->transformPlacement(transform);
-        else
-            sketch->transformPlacement(transform);
-        positionBySketch();
+    try{
+        Part::Feature* feat = getBaseObject();
+        feat->transformPlacement(transform);
+    } catch (Base::Exception) {
+        Part::Part2DObject *sketch = getVerifiedSketch();
+        sketch->transformPlacement(transform);
     }
+    positionByPrevious();
 }
 
 Part::Part2DObject* SketchBased::getVerifiedSketch() const {
@@ -194,7 +192,7 @@ std::vector<TopoDS_Wire> SketchBased::getSketchWires() const {
 const TopoDS_Face SketchBased::getSupportFace() const {
     const Part::Part2DObject* sketch = getVerifiedSketch();
     if (sketch->Support.getValue()) {
-        const App::PropertyLinkSubList& Support = sketch->Support;
+        const auto &Support = sketch->Support;
         App::DocumentObject* ref = Support.getValue();
 
         Part::Feature *part = static_cast<Part::Feature*>(ref);

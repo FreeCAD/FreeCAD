@@ -56,10 +56,12 @@ public:
 
     short mustExecute() const;
 
-    /** calculates and updates the Placement property based on the Sketch
-     *  or its support if it has one
-      */
-    void positionBySketch(void);
+    /** calculates and updates the Placement property based on the features
+     * this one is made from: either from Base, if there is one, or from sketch,
+     * if there is no base.
+     */
+    void positionByPrevious(void);
+
     /** applies a transform on the Placement of the Sketch or its
      *  support if it has one
       */
