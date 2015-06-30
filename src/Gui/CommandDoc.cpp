@@ -484,11 +484,12 @@ DEF_STD_CMD_A(StdCmdRevert);
 StdCmdRevert::StdCmdRevert()
   :Command("Std_Revert")
 {
-  sGroup        = QT_TR_NOOP("File");
-  sMenuText     = QT_TR_NOOP("Revert");
-  sToolTipText  = QT_TR_NOOP("Reverts to the saved version of this file");
-  sWhatsThis    = "Std_Revert";
-  sStatusTip    = QT_TR_NOOP("Reverts to the saved version of this file");
+    sGroup        = QT_TR_NOOP("File");
+    sMenuText     = QT_TR_NOOP("Revert");
+    sToolTipText  = QT_TR_NOOP("Reverts to the saved version of this file");
+    sWhatsThis    = "Std_Revert";
+    sStatusTip    = QT_TR_NOOP("Reverts to the saved version of this file");
+  //sPixmap       = "document-revert";
 }
 
 void StdCmdRevert::activated(int iMsg)
@@ -611,6 +612,7 @@ StdCmdPrintPreview::StdCmdPrintPreview()
     sToolTipText  = QT_TR_NOOP("Print the document");
     sWhatsThis    = "Std_PrintPreview";
     sStatusTip    = QT_TR_NOOP("Print preview");
+    sPixmap       = "document-print-preview";
 }
 
 void StdCmdPrintPreview::activated(int iMsg)
@@ -668,7 +670,7 @@ StdCmdQuit::StdCmdQuit()
   sWhatsThis    = "Std_Quit";
   sStatusTip    = QT_TR_NOOP("Quits the application");
 #if QT_VERSION >= 0x040200
-  sPixmap       = "system-log-out";
+  sPixmap       = "application-exit";
 #endif
   sAccel        = "Alt+F4";
 }

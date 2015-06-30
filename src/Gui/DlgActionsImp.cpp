@@ -559,7 +559,7 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
         edit->setReadOnly(true);
         gridLayout->addWidget(edit, row, 0, 1, 1);
         QPushButton* removeButton = new QPushButton(this);
-        removeButton->setIcon(BitmapFactory().pixmap("edit_remove"));
+        removeButton->setIcon(BitmapFactory().iconFromTheme("list-remove"));
         gridLayout->addWidget(removeButton, row, 1, 1, 1);
 
         if (row < numPaths) {
@@ -578,7 +578,7 @@ IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
     textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
     textLabel->setText(tr("Add or remove custom icon folders"));
     addButton = new QPushButton(this);
-    addButton->setIcon(BitmapFactory().pixmap("add"));
+    addButton->setIcon(BitmapFactory().iconFromTheme("list-add"));
     gridLayout->addWidget(textLabel, maxRow, 0, 1, 1);
     gridLayout->addWidget(addButton, maxRow, 1, 1, 1);
 

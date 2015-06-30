@@ -260,7 +260,7 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     deselectAction->setIcon(QIcon(QString::fromAscii(":/icons/view-unselectable.svg")));
     deselectAction->setToolTip(tr("Deselects this object"));
     QAction *zoomAction = menu.addAction(tr("Zoom fit"),this,SLOT(zoom()));
-    zoomAction->setIcon(QIcon(QString::fromAscii(":/icons/view-zoom-fit.svg")));
+    zoomAction->setIcon(QIcon::fromTheme(QString::fromAscii("zoom-fit-best")));
     zoomAction->setToolTip(tr("Selects and fits this object in the 3D window"));
     QAction *gotoAction = menu.addAction(tr("Go to selection"),this,SLOT(treeSelect()));
     gotoAction->setToolTip(tr("Selects and locates this object in the tree view"));

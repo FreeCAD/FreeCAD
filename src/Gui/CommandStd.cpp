@@ -678,7 +678,7 @@ StdCmdUnitsCalculator::StdCmdUnitsCalculator()
     sToolTipText  = QT_TR_NOOP("Start the units calculator");
     sWhatsThis    = QT_TR_NOOP("Start the units calculator");
     sStatusTip    = QT_TR_NOOP("Start the units calculator");
-    //sPixmap     = "";
+    sPixmap       = "accessories-calculator";
     eType         = 0;
 }
 
