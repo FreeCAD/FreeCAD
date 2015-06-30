@@ -191,7 +191,7 @@ std::vector<TopoDS_Wire> SketchBased::getSketchWires() const {
 // this method, it becomes null!
 const TopoDS_Face SketchBased::getSupportFace() const {
     const Part::Part2DObject* sketch = getVerifiedSketch();
-    if (sketch->Support.getValue()) {
+    if (sketch->MapMode.getValue() == Attacher::mmFlatFace  &&  sketch->Support.getValue()) {
         const auto &Support = sketch->Support;
         App::DocumentObject* ref = Support.getValue();
 

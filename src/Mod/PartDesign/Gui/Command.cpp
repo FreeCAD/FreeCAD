@@ -784,7 +784,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         } else {
             obj = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
             // TODO: Find out whether the user picked front or back of this plane
-            supportString = std::string("(App.activeDocument().") + obj->getNameInDocument() + ", ['front'])";
+            supportString = std::string("(App.activeDocument().") + obj->getNameInDocument() + ", '')";
         }
 
         if (!pcActiveBody->hasFeature(obj)) {
