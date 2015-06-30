@@ -25,7 +25,9 @@
 
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <QAction>
 # include <QCoreApplication>
+# include <QMenu>
 #endif
 
 #include "ViewProviderFemMeshShapeNetgen.h"
