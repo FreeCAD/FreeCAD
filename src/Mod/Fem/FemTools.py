@@ -48,6 +48,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         for m in self.analysis.Member:
             if (m.isDerivedFrom('Fem::FemResultObject')):
                 FreeCAD.ActiveDocument.removeObject(m.Name)
+        self.results_present = False
 
     def reset_mesh_deformation(self):
         if self.mesh:
