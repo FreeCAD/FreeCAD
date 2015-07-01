@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <qobject.h>
+# include <QDir>
 # include <QFileInfo>
 # include <QMessageBox>
 #endif

@@ -32,6 +32,7 @@
 #include "ViewProviderMultiTransform.h"
 
 class Ui_TaskMultiTransformParameters;
+class QModelIndex;
 
 namespace PartDesign {
 class Transformed;

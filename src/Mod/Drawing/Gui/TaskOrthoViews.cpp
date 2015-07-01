@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QMenu>
+#endif
 
 #include "TaskOrthoViews.h"
 #include "ui_TaskOrthoViews.h"

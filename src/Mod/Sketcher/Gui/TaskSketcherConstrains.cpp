@@ -25,6 +25,8 @@
 
 #ifndef _PreComp_
 # include <cmath>
+# include <QContextMenuEvent>
+# include <QMenu>
 # include <QRegExp>
 # include <QString>
 #endif

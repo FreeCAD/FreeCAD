@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QInputDialog>
 # include <QMessageBox>
 #endif
 

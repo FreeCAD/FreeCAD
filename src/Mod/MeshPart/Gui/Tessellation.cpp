@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <TopExp_Explorer.hxx>
+# include <QMessageBox>
 #endif
 
 #include "Tessellation.h"

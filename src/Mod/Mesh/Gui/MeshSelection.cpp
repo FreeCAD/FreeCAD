@@ -30,6 +30,7 @@
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <QBitmap>
 #endif
 
 #include "MeshSelection.h"

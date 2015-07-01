@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QKeyEvent>
 # include <QRegExp>
 # include <QTextStream>
 # include <QMessageBox>
