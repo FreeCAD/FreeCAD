@@ -26,6 +26,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <QDialog>
 #include <QStandardItemModel>
 #include <QItemDelegate>
 

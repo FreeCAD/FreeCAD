@@ -30,6 +30,7 @@
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoMultipleCopy.h>
 # include <Precision.hxx>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderFemConstraintFixed.h"

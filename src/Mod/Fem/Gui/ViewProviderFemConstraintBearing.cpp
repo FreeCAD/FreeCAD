@@ -29,6 +29,7 @@
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
 # include <Precision.hxx>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderFemConstraintBearing.h"

@@ -41,6 +41,9 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoShapeHints.h>
 # include <Inventor/nodes/SoTransparencyType.h>
+# include <QAction>
+# include <QMenu>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderTransformed.h"

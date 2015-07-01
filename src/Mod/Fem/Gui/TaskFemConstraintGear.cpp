@@ -38,6 +38,7 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <Geom_Line.hxx>
 # include <gp_Lin.hxx>
+# include <QMessageBox>
 #endif
 
 #include "ui_TaskFemConstraintBearing.h"
