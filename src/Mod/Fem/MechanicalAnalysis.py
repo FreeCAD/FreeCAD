@@ -154,11 +154,10 @@ class _CommandQuickAnalysis:
     def Activated(self):
         def load_results(ret_code):
             if ret_code == 0:
-                print "ccx finished {}".format(ret_code)
                 self.fea.load_results()
                 self.show_results_on_mesh()
             else:
-                print "ccx finished with erro {}".format(ret_code)
+                print "CalculiX failed ccx finished with error {}".format(ret_code)
 
         self.fea = FemTools()
         self.fea.purge_results()
