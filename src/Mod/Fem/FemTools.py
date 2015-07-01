@@ -75,6 +75,11 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 values = list(d[match[result_type]])
             self.mesh.ViewObject.setNodeColorByScalars(self.result_object.ElementNumbers, values)
 
+    def show_displacement(self, displacement_factor=0.0):
+        self.mesh.ViewObject.setNodeDisplacementByVectors(self.result_object.ElementNumbers,
+                                                          self.result_object.DisplacementVectors)
+        self.mesh.ViewObject.applyDisplacement(displacement_factor)
+
     def update_objects(self):
         # [{'Object':material}, {}, ...]
         # [{'Object':fixed_constraints, 'NodeSupports':bool}, {}, ...]
