@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Copyright: https://code.google.com/p/qsint/                           *
+ *   License:   LGPL                                                       *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef WinXPPanelScheme_H
 #define WinXPPanelScheme_H
 

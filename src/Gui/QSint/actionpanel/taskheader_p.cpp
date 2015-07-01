@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Copyright: https://code.google.com/p/qsint/                           *
+ *   License:   LGPL                                                       *
+ *                                                                         *
+ ***************************************************************************/
+
 #include "taskheader_p.h"
 #include "actionpanelscheme.h"
 #include "actionlabel.h"

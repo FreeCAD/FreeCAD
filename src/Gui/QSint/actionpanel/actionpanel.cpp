@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Copyright: https://code.google.com/p/qsint/                           *
+ *   License:   LGPL                                                       *
+ *                                                                         *
+ ***************************************************************************/
+
 #include "actionpanel.h"
 #include "actionpanelscheme.h"
 #include "actiongroup.h"

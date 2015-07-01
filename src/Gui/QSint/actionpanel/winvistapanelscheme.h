@@ -1,3 +1,10 @@
+/***************************************************************************
+ *                                                                         *
+ *   Copyright: https://code.google.com/p/qsint/                           *
+ *   License:   LGPL                                                       *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef WINVISTAPANELSCHEME_H
 #define WINVISTAPANELSCHEME_H
 
