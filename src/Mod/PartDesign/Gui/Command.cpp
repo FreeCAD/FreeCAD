@@ -110,7 +110,7 @@ void CmdPartDesignPart::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().ActiveObject.Label = '%s'", QObject::tr(PartName.c_str()).toStdString().c_str());
     PartDesignGui::Workbench::setUpPart(dynamic_cast<App::Part *>(getDocument()->getObject(PartName.c_str())));
     doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PARTKEY, PartName.c_str());
-    
+
     updateActive();
 }
 
@@ -144,7 +144,7 @@ void CmdPartDesignBody::activated(int iMsg)
     // first check if Part is already created:
     App::Part *actPart =  getDocument()->Tip.getValue<App::Part *>();
     std::string PartName;
-    
+
     if(!actPart){
         // if not, creating a part and set it up by calling the appropiated function in Workbench
         //if we create a new part we automaticly get a new body, there is no need to create a second one
@@ -568,9 +568,9 @@ const QString getReferenceString(Gui::Command* cmd)
                     QString::fromAscii(",'')]");
         }
     }
-    
-    //datum features task can start without reference, as every needed one can be set from 
-    //withing the task. 
+
+    //datum features task can start without reference, as every needed one can be set from
+    //withing the task.
     return QString::fromAscii("");
 }
 
@@ -750,12 +750,12 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
         if (FaceFilter.match()) {
             obj = FaceFilter.Result[0][0].getObject();
-            
+
             if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
                 return;
-            
+
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
-            
+
             // FIXME: Reject or warn about feature that is outside of active body, and feature
             // that comes after the current insert point (Tip)
             const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
@@ -816,7 +816,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Sketch");
 
         openCommand("Create a Sketch on Face");
-        doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());        
+        doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
         doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                        pcActiveBody->getNameInDocument(), FeatName.c_str());
@@ -877,15 +877,15 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         }
 
         auto accepter = [=](const std::vector<App::DocumentObject*>& features) -> bool {
-            
+
             if(features.empty())
                 return false;
-                            
+
             return true;
         };
-        
+
         auto worker = [=](const std::vector<App::DocumentObject*>& features) {
-            App::Plane* plane = static_cast<App::Plane*>(features.front());        
+            App::Plane* plane = static_cast<App::Plane*>(features.front());
             std::string FeatName = getUniqueObjectName("Sketch");
             std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() +
                                         ", ['" + (false ? "back" : "front") + "'])";
@@ -899,11 +899,11 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
             Gui::Command::doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
         };
-           
+
         // If there is more than one possibility, show dialog and let user pick plane
         bool reversed = false;
         if (validPlanes > 1) {
-        
+
            Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
            PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
            if (dlg && !pickDlg) {
@@ -918,7 +918,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 else
                     return;
             }
-            
+
             if(dlg)
                 Gui::Control().closeDialog();
 
@@ -980,7 +980,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
  const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                                  std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
                                  std::vector<App::DocumentObject*>::iterator& firstValidSketch)
-{    
+{
     // TODO: If the user previously opted to allow multiple use of sketches or use of sketches from other bodies,
     // then count these as valid sketches!
     unsigned validSketches = 0;
@@ -1040,7 +1040,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
     return validSketches;
 }
 
-void prepareSketchBased(Gui::Command* cmd, const std::string& which, 
+void prepareSketchBased(Gui::Command* cmd, const std::string& which,
                         boost::function<void (Part::Part2DObject*, std::string)> func)
 {
     PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
@@ -1051,7 +1051,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
     std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
     std::vector<App::DocumentObject*>::iterator firstValidSketch;
     std::vector<App::DocumentObject*> sketches = cmd->getSelection().getObjectsOfType(Part::Part2DObject::getClassTypeId());
-    // Next let the user choose from a list of all eligible objects    
+    // Next let the user choose from a list of all eligible objects
     unsigned validSketches = validateSketches(sketches, status, firstValidSketch);
     if (validSketches == 0) {
         status.clear();
@@ -1063,17 +1063,17 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
             return;
         }
     }
-    
+
     auto accepter = [=](const std::vector<App::DocumentObject*>& features) -> bool {
-        
+
         if(features.empty())
             return false;
-                        
+
         return true;
     };
-    
+
     auto worker = [which, cmd, func](std::vector<App::DocumentObject*> features) {
-        
+
         auto firstValidSketch = features.begin();
         Part::Part2DObject* sketch = static_cast<Part::Part2DObject*>(*firstValidSketch);
 
@@ -1089,10 +1089,10 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
 
         func(sketch, FeatName);
     };
-    
+
     // If there is more than one selection/possibility, show dialog and let user pick sketch
     if (validSketches > 1) {
-        
+
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
         if (dlg && !pickDlg) {
@@ -1107,7 +1107,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
             else
                 return;
         }
-        
+
         if(dlg)
             Gui::Control().closeDialog();
 
@@ -1117,7 +1117,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
     else {
         worker(sketches);
     }
-    
+
 }
 
 void finishSketchBased(const Gui::Command* cmd, const Part::Part2DObject* sketch, const std::string& FeatName)
@@ -1144,12 +1144,12 @@ CmdPartDesignPad::CmdPartDesignPad()
 }
 
 void CmdPartDesignPad::activated(int iMsg)
-{          
+{
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
-        
+
         if (FeatName.empty()) return;
-        
+
         // specific parameters for Pad
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 10.0",FeatName.c_str());
         App::DocumentObjectGroup* grp = sketch->getGroup();
@@ -1164,7 +1164,7 @@ void CmdPartDesignPad::activated(int iMsg)
         finishSketchBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
-    
+
     prepareSketchBased(this, "Pad", worker);
 }
 
@@ -1194,14 +1194,14 @@ void CmdPartDesignPocket::activated(int iMsg)
 {
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
-        
+
         if (FeatName.empty()) return;
-        
+
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.Length = 5.0",FeatName.c_str());
         finishSketchBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
-    
+
     prepareSketchBased(this, "Pocket", worker);
 }
 
@@ -1231,7 +1231,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
 {
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
-        
+
         if (FeatName.empty()) return;
 
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
@@ -1240,11 +1240,11 @@ void CmdPartDesignRevolution::activated(int iMsg)
         PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(cmd->getDocument()->getObject(FeatName.c_str()));
         if (pcRevolution && pcRevolution->suggestReversed())
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.Reversed = 1",FeatName.c_str());
-    
+
         finishSketchBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
-    
+
     prepareSketchBased(this, "Revolution", worker);
 }
 
@@ -1271,10 +1271,10 @@ CmdPartDesignGroove::CmdPartDesignGroove()
 }
 
 void CmdPartDesignGroove::activated(int iMsg)
-{   
+{
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
-        
+
         if (FeatName.empty()) return;
 
         Gui::Command::doCommand(Doc,"App.activeDocument().%s.ReferenceAxis = (App.activeDocument().%s,['V_Axis'])",
@@ -1314,19 +1314,19 @@ CmdPartDesignAdditivePipe::CmdPartDesignAdditivePipe()
 }
 
 void CmdPartDesignAdditivePipe::activated(int iMsg)
-{          
+{
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
-        
+
         if (FeatName.empty()) return;
-        
+
         // specific parameters for pipe
         Gui::Command::updateActive();
 
         finishSketchBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
-    
+
     prepareSketchBased(this, "AdditivePipe", worker);
 }
 
@@ -1354,19 +1354,19 @@ CmdPartDesignSubtractivePipe::CmdPartDesignSubtractivePipe()
 }
 
 void CmdPartDesignSubtractivePipe::activated(int iMsg)
-{          
+{
     Gui::Command* cmd = this;
     auto worker = [cmd](Part::Part2DObject* sketch, std::string FeatName) {
-        
+
         if (FeatName.empty()) return;
-        
+
         // specific parameters for pipe
         Gui::Command::updateActive();
 
         finishSketchBased(cmd, sketch, FeatName);
         cmd->adjustCameraPosition();
     };
-    
+
     prepareSketchBased(this, "SubtractivePipe", worker);
 }
 
@@ -1472,7 +1472,7 @@ void makeChamferOrFillet(Gui::Command* cmd, const std::string& which)
             QObject::tr("Select an edge, face or body. Only one body is allowed."));
         return;
     }
-    
+
     Gui::Selection().clearSelection();
 
     if (!selection[0].isObjectTypeOf(Part::Feature::getClassTypeId())){
@@ -1794,19 +1794,19 @@ bool CmdPartDesignThickness::isActive(void)
 // Common functions for all Transformed features
 //===========================================================================
 
-void prepareTransformed(Gui::Command* cmd, const std::string& which, 
+void prepareTransformed(Gui::Command* cmd, const std::string& which,
                         boost::function<void(std::string, std::vector<App::DocumentObject*>)> func)
 {
     std::string FeatName = cmd->getUniqueObjectName(which.c_str());
 
     auto accepter = [=](std::vector<App::DocumentObject*> features) -> bool{
-        
+
         if(features.empty())
             return false;
-        
+
         return true;
     };
-        
+
     auto worker = [=](std::vector<App::DocumentObject*> features) {
         std::stringstream str;
         str << "App.activeDocument()." << FeatName << ".Originals = [";
@@ -1821,10 +1821,10 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
         // Exception (Thu Sep  6 11:52:01 2012): 'App.Document' object has no attribute 'Mirrored'
         Gui::Command::updateActive(); // Helps to ensure that the object already exists when the next command comes up
         Gui::Command::doCommand(Gui::Command::Doc, str.str().c_str());
-        
+
         func(FeatName, features);
     };
-    
+
     // Get a valid original from the user
     // First check selections
     std::vector<App::DocumentObject*> features = cmd->getSelection().getObjectsOfType(PartDesign::FeatureAddSub::getClassTypeId());
@@ -1836,7 +1836,7 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
             std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
             for (unsigned i = 0; i < features.size(); i++)
                 status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
-            
+
             Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
             PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
             if (dlg && !pickDlg) {
@@ -1851,7 +1851,7 @@ void prepareTransformed(Gui::Command* cmd, const std::string& which,
                 else
                     return;
             }
-            
+
             if(dlg)
                 Gui::Control().closeDialog();
 
@@ -1894,10 +1894,10 @@ void CmdPartDesignMirrored::activated(int iMsg)
 {
     Gui::Command* cmd = this;
     auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
-        
+
         if (features.empty())
         return;
-        
+
         if(features.front()->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
             if (sketch)
@@ -1911,8 +1911,8 @@ void CmdPartDesignMirrored::activated(int iMsg)
 
         finishTransformed(cmd, FeatName);
     };
-    
-    prepareTransformed(this, "Mirrored", worker);    
+
+    prepareTransformed(this, "Mirrored", worker);
 }
 
 bool CmdPartDesignMirrored::isActive(void)
@@ -1941,7 +1941,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
 {
     Gui::Command* cmd = this;
     auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
-        
+
         if (features.empty())
             return;
 
@@ -1960,7 +1960,8 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
 
         finishTransformed(cmd, FeatName);
     };
-    prepareTransformed(this, "LinearPattern", worker); 
+
+    prepareTransformed(this, "LinearPattern", worker);
 }
 
 bool CmdPartDesignLinearPattern::isActive(void)
@@ -1986,13 +1987,13 @@ CmdPartDesignPolarPattern::CmdPartDesignPolarPattern()
 }
 
 void CmdPartDesignPolarPattern::activated(int iMsg)
-{    
+{
     Gui::Command* cmd = this;
     auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
-        
+
         if (features.empty())
             return;
-        
+
         if(features.front()->isDerivedFrom(PartDesign::SketchBased::getClassTypeId())) {
             Part::Part2DObject *sketch = (static_cast<PartDesign::SketchBased*>(features.front()))->getVerifiedSketch();
             if (sketch)
@@ -2003,14 +2004,14 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
             doCommand(Doc,"App.activeDocument().%s.Axis = (App.activeDocument().%s, [\"\"])", FeatName.c_str(),
                       App::Part::BaselineTypes[0]);
         }
-        
+
         doCommand(Doc,"App.activeDocument().%s.Angle = 360", FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
 
         finishTransformed(cmd, FeatName);
     };
-    
-    prepareTransformed(this, "PolarPattern", worker); 
+
+    prepareTransformed(this, "PolarPattern", worker);
 }
 
 bool CmdPartDesignPolarPattern::isActive(void)
@@ -2036,20 +2037,20 @@ CmdPartDesignScaled::CmdPartDesignScaled()
 }
 
 void CmdPartDesignScaled::activated(int iMsg)
-{    
+{
     Gui::Command* cmd = this;
     auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
-        
+
         if (features.empty())
         return;
-        
+
         doCommand(Doc,"App.activeDocument().%s.Factor = 2", FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Occurrences = 2", FeatName.c_str());
 
         finishTransformed(cmd, FeatName);
     };
-    
-    prepareTransformed(this, "Scaled", worker);    
+
+    prepareTransformed(this, "Scaled", worker);
 }
 
 bool CmdPartDesignScaled::isActive(void)
@@ -2127,10 +2128,10 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
             Gui::Selection().clearSelection();
         } // otherwise the insert point remains at the new MultiTransform, which is fine
     } else {
-        
+
         Gui::Command* cmd = this;
         auto worker = [cmd, pcActiveBody](std::string FeatName, std::vector<App::DocumentObject*> features) {
-            
+
             if (features.empty())
                 return;
 
@@ -2143,8 +2144,8 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
             }
             finishFeature(cmd, FeatName);
         };
-        
-        prepareTransformed(this, "MultiTransform", worker);   
+
+        prepareTransformed(this, "MultiTransform", worker);
     }
 }
 
@@ -2198,9 +2199,9 @@ void CmdPartDesignBoolean::activated(int iMsg)
 
     openCommand("Create Boolean");
 
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     // Make sure we are working on the selected body
-	if (body != activeBody) {
+    if (body != activeBody) {
         Gui::Selection().clearSelection();
         Gui::Selection().addSelection(body->getDocument()->getName(), body->Tip.getValue()->getNameInDocument());
         Gui::Command::doCommand(Gui::Command::Gui,"FreeCADGui.runCommand('PartDesign_MoveTip')");
@@ -2255,9 +2256,9 @@ void CreatePartDesignCommands(void)
     rcCmdMgr.addCommand(new CmdPartDesignSubtractiveLoft);
 
     rcCmdMgr.addCommand(new CmdPartDesignFillet());
-    rcCmdMgr.addCommand(new CmdPartDesignDraft());    
+    rcCmdMgr.addCommand(new CmdPartDesignDraft());
     rcCmdMgr.addCommand(new CmdPartDesignChamfer());
-    rcCmdMgr.addCommand(new CmdPartDesignThickness());    
+    rcCmdMgr.addCommand(new CmdPartDesignThickness());
 
     rcCmdMgr.addCommand(new CmdPartDesignMirrored());
     rcCmdMgr.addCommand(new CmdPartDesignLinearPattern());

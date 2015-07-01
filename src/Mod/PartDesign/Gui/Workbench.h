@@ -35,7 +35,7 @@ class ViewProviderDocumentObject;
 }
 
 namespace PartDesign {
-	class Body;
+    class Body;
 }
 
 namespace App {
@@ -78,14 +78,14 @@ public:
     /// Add custom entries to the context menu
     virtual void setupContextMenu(const char* recipient, Gui::MenuItem*) const;
 
-	/** Setup a Part for PartDesign
-	 * This methode is use to populate a Part object with all 
-	 * necesarry PartDesign and base objects to allow the use 
-	 * in PartDesign. Its called from within PartDesign as well 
-	 * as from other modules which wish to set up a Part for PartDesin
-	 * (e.g. Assembly):
-	 */
-	 static PartDesign::Body *setUpPart(const App::Part *);
+    /** Setup a Part for PartDesign
+     * This methode is use to populate a Part object with all
+     * necesarry PartDesign and base objects to allow the use
+     * in PartDesign. Its called from within PartDesign as well
+     * as from other modules which wish to set up a Part for PartDesin
+     * (e.g. Assembly):
+     */
+    static PartDesign::Body *setUpPart(const App::Part *);
 
     /// Fix sketch support after moving a free sketch into a body
     static void fixSketchSupport(Sketcher::SketchObject* sketch);
@@ -115,4 +115,4 @@ private:
 } // namespace PartDesignGui
 
 
-#endif // PARTDESIGN_WORKBENCH_H 
+#endif // PARTDESIGN_WORKBENCH_H
