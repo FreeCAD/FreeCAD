@@ -38,11 +38,14 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.analysis = analysis
         else:
             self.analysis = FemGui.getActiveAnalysis()
-        self.update_objects()
-        self.base_name = ""
-        self.results_present = False
-        self.setup_working_dir()
-        self.setup_ccx()
+        if self.analysis:
+            self.update_objects()
+            self.base_name = ""
+            self.results_present = False
+            self.setup_working_dir()
+            self.setup_ccx()
+        else:
+            raise Exception('FEM: No active analysis found!')
 
     def purge_results(self):
         for m in self.analysis.Member:
