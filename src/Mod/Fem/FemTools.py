@@ -59,7 +59,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.mesh.ViewObject.ElementColor = {}
             self.mesh.ViewObject.setNodeColorByScalars()
 
-    def set_result_type(self, result_type):
+    def show_result(self, result_type="Sabs"):
         self.update_objects()
         if result_type == "None":
             self.reset_mesh_color()
