@@ -192,6 +192,15 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         else:
             self.results_present = False
 
+    def use_results(self, results_name=None):
+        for m in self.analysis.Member:
+            if m.isDerivedFrom("Fem::FemResultObject") and m.Name == results_name:
+                ro = m
+        if not ro:
+            print "{} doesn't exist".format(results_name)
+        else:
+            self.result_object = ro
+
     def run(self):
         message = self.check_prerequisites()
         if not message:
