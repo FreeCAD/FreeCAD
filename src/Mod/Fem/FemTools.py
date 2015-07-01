@@ -206,6 +206,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.result_object = ro
 
     def run(self):
+        ret_code = 0
         message = self.check_prerequisites()
         if not message:
             self.write_inp_file()
@@ -217,6 +218,8 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             progress_bar.stop()
         else:
             print "Running analysis failed! " + message
+        if ret_code:
+            print "Analysis failed with exit code {}".format(ret_code)
 
     ## returns minimum, average and maximum value for provided result type
     #  @param self The python object self
