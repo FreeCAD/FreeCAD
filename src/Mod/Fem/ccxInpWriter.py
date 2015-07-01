@@ -19,10 +19,8 @@ class inp_writer:
             os.mkdir(self.dir_name)
         self.base_name = self.dir_name + '/' + self.mesh_object.Name
         self.file_name = self.base_name + '.inp'
-        print 'CalculiX .inp file will be written to: ', self.file_name
 
     def write_calculix_input_file(self):
-        print 'write_calculix_input_file'
         self.mesh_object.FemMesh.writeABAQUS(self.file_name)
 
         # reopen file with "append" and add the analysis definition
@@ -51,7 +49,6 @@ class inp_writer:
             mat_obj_name = mat_obj.Name
             mat_name = mat_obj.Material['Name'][:80]
 
-            print mat_obj_name, ':  ', mat_name
             f.write('*ELSET,ELSET=' + mat_obj_name + '\n')
             if len(self.material_objects) == 1:
                 f.write('Eall\n')
@@ -65,19 +62,15 @@ class inp_writer:
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for fobj in self.fixed_objects:
             fix_obj = fobj['Object']
-            print fix_obj.Name
             f.write('*NSET,NSET=' + fix_obj.Name + '\n')
             for o, elem in fix_obj.References:
                 fo = o.Shape.getElement(elem)
                 n = []
                 if fo.ShapeType == 'Face':
-                    print '  Face Support (fixed face) on: ', elem
                     n = self.mesh_object.FemMesh.getNodesByFace(fo)
                 elif fo.ShapeType == 'Edge':
-                    print '  Line Support (fixed edge) on: ', elem
                     n = self.mesh_object.FemMesh.getNodesByEdge(fo)
                 elif fo.ShapeType == 'Vertex':
-                    print '  Point Support (fixed vertex) on: ', elem
                     n = self.mesh_object.FemMesh.getNodesByVertex(fo)
                 for i in n:
                     f.write(str(i) + ',\n')
