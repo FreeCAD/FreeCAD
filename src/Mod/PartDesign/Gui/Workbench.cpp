@@ -80,7 +80,7 @@ PartDesign::Body *getBody(bool messageIfNot)
     if (!activeBody && messageIfNot){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
             QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-			"Please make one active (double click) or create one. If you have a legacy document "
+                        "Please make one active (double click) or create one. If you have a legacy document "
                         "with PartDesign objects without Body, use the transfer function in "
                         "PartDesign to put them into a Body."
                         ));
@@ -93,7 +93,7 @@ PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
 {
     if(!obj)
         return nullptr;
-    
+
     PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
     if(activeBody && activeBody->hasFeature(obj))
         return activeBody;
@@ -102,14 +102,14 @@ PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
     for(PartDesign::Body* b : obj->getDocument()->getObjectsOfType<PartDesign::Body>()) {
         if(b->hasFeature(obj)) {
             return b;
-        }            
+        }
     }
-        
+
     if (messageIfNot){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Feature is not in a body"),
             QObject::tr("In order to use this feature it needs to belong to a body object in the document."));
     }
-    
+
     return nullptr;
 }
 
@@ -117,23 +117,23 @@ App::Part* getPartFor(App::DocumentObject* obj, bool messageIfNot) {
 
     if(!obj)
         return nullptr;
-    
+
     PartDesign::Body* body = getBodyFor(obj, false);
     if(body)
         obj = body;
-    
+
     //get the part every body should belong to
     for(App::Part* p : obj->getDocument()->getObjectsOfType<App::Part>()) {
         if(p->hasObject(obj)) {
             return p;
-        }            
+        }
     }
-    
+
     if (messageIfNot){
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Feature is not in a part"),
             QObject::tr("In order to use this feature it needs to belong to a part object in the document."));
     }
-    
+
     return nullptr;
 }
 
@@ -164,33 +164,33 @@ static void buildDefaultPartAndBody(const App::Document* doc)
 
 PartDesign::Body *Workbench::setUpPart(const App::Part *part)
 {
-	// first do the general Part setup
-	Gui::ViewProviderPart::setUpPart(part);
+    // first do the general Part setup
+    Gui::ViewProviderPart::setUpPart(part);
 
-	// check for Bodies
-	std::vector<App::DocumentObject*> bodies = part->getObjectsOfType(PartDesign::Body::getClassTypeId());
-	assert(bodies.size() == 0);
-	
-	std::string PartName = part->getNameInDocument();
-	std::string BodyName = part->getDocument()->getUniqueObjectName("MainBody");
+    // check for Bodies
+    std::vector<App::DocumentObject*> bodies = part->getObjectsOfType(PartDesign::Body::getClassTypeId());
+    assert(bodies.size() == 0);
 
-	Gui::Command::addModule(Gui::Command::Doc, "PartDesign");
-	Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('PartDesign::Body','%s')", BodyName.c_str());
-	Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
-	Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, BodyName.c_str());
-        Gui::Command::updateActive();
+    std::string PartName = part->getNameInDocument();
+    std::string BodyName = part->getDocument()->getUniqueObjectName("MainBody");
 
-	return NULL;
+    Gui::Command::addModule(Gui::Command::Doc, "PartDesign");
+    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().addObject('PartDesign::Body','%s')", BodyName.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().ActiveObject)", part->getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeView().setActiveObject('%s', App.activeDocument().%s)", PDBODYKEY, BodyName.c_str());
+    Gui::Command::updateActive();
+
+    return NULL;
 }
 
 void Workbench::_doMigration(const App::Document* doc)
 {
-	bool groupCreated = false;
+    bool groupCreated = false;
 
     if(doc->countObjects() != 0) {
          // show a warning about the convertion
          Gui::Dialog::DlgCheckableMessageBox::showMessage(
-            QString::fromLatin1("PartDesign conversion warning"), 
+            QString::fromLatin1("PartDesign conversion warning"),
             QString::fromLatin1(
             "<h2>Converting PartDesign features to new Body centric schema</h2>"
             "If you are unsure what that mean save the document under a new name.<br>"
@@ -209,7 +209,7 @@ void Workbench::_doMigration(const App::Document* doc)
     Gui::Command::openCommand("Migrate part to Body feature");
 
     // Get the objects now, before adding the Body and the base planes
-    std::vector<App::DocumentObject*> features = doc->getObjects();        
+    std::vector<App::DocumentObject*> features = doc->getObjects();
 
     // Assign all non-PartDesign features to a new group
     for (std::vector<App::DocumentObject*>::iterator f = features.begin(); f != features.end(); ) {
@@ -250,7 +250,7 @@ void Workbench::_doMigration(const App::Document* doc)
     for (std::vector<App::DocumentObject*>::iterator r = roots.begin(); r != roots.end(); r++) {
         if (r != roots.begin()) {
             Gui::Command::runCommand(Gui::Command::Doc, "FreeCADGui.runCommand('PartDesign_Body')");
-			activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+            activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
         }
 
         std::set<App::DocumentObject*> inList;
@@ -402,27 +402,26 @@ void Workbench::_switchToDocument(const App::Document* doc)
     bool groupCreated = false;
 
 
-    if (doc == NULL) return;        
+    if (doc == NULL) return;
 
     PartDesign::Body* activeBody = NULL;
     std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(PartDesign::Body::getClassTypeId());
 
     // No tip, so build up structure or migrate
-	if (!doc->Tip.getValue())
+    if (!doc->Tip.getValue())
     {
-		if (doc->countObjects() == 0){
-			buildDefaultPartAndBody(doc);
-			activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-			assert(activeBody);
-
-		} else {
-			// empty document with no tip, so do migration
-			_doMigration(doc);
+        if (doc->countObjects() == 0){
+            buildDefaultPartAndBody(doc);
+            activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+            assert(activeBody);
+        } else {
+            // empty document with no tip, so do migration
+            _doMigration(doc);
                         activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
                         assert(activeBody);
                 }
     }
-    else 
+    else
     {
       App::Part *docPart = dynamic_cast<App::Part *>(doc->Tip.getValue());
       assert(docPart);
@@ -431,7 +430,7 @@ void Workbench::_switchToDocument(const App::Document* doc)
         Gui::Application::Instance->activeView()->setActiveObject(docPart, "Part");
       if (docPart->countObjectsOfType(PartDesign::Body::getClassTypeId()) < 1)
         setUpPart(docPart);
-      
+
       PartDesign::Body *tempBody = dynamic_cast<PartDesign::Body *> (docPart->getObjectsOfType(PartDesign::Body::getClassTypeId()).front());
       assert(tempBody);
       PartDesign::Body *viewBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
@@ -440,7 +439,7 @@ void Workbench::_switchToDocument(const App::Document* doc)
         activeBody = tempBody;
       else if (!docPart->hasObject(viewBody))
         activeBody = tempBody;
-      
+
       if (activeBody != viewBody)
         Gui::Application::Instance->activeView()->setActiveObject(activeBody, PDBODYKEY);
     }
@@ -464,7 +463,7 @@ void Workbench::slotNewDocument(const App::Document& Doc)
 }
 
 void Workbench::slotFinishRestoreDocument(const App::Document& Doc)
-{    
+{
 //     _switchToDocument(&Doc);
 }
 
@@ -529,7 +528,7 @@ void Workbench::activated()
         "Vertex tools",
         "Part_Box"
     ));
- 
+
     const char* Edge[] = {
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
@@ -545,7 +544,7 @@ void Workbench::activated()
     ));
 
     const char* Face[] = {
-        "PartDesign_NewSketch",        
+        "PartDesign_NewSketch",
         "PartDesign_Fillet",
         "PartDesign_Chamfer",
         "PartDesign_Draft",
@@ -729,7 +728,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* cons = new Gui::MenuItem();
     cons->setCommand("Sketcher constraints");
     SketcherGui::addSketcherWorkbenchConstraints( *cons );
-    
+
     Gui::MenuItem* consaccel = new Gui::MenuItem();
     consaccel->setCommand("Sketcher tools");
     SketcherGui::addSketcherWorkbenchTools(*consaccel);
@@ -844,7 +843,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* consaccel = new Gui::ToolBarItem(root);
     consaccel->setCommand("Sketcher tools");
     SketcherGui::addSketcherWorkbenchTools( *consaccel );
-    
+
     return root;
 }
 

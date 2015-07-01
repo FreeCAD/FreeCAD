@@ -27,7 +27,7 @@ PyObject *BodyPy::getCustomAttributes(const char* /*attr*/) const
 
 int BodyPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 PyObject* BodyPy::addFeature(PyObject *args)

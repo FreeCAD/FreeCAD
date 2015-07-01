@@ -226,7 +226,7 @@ const bool Body::isAllowed(const App::DocumentObject* f)
             f->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
             f->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
             //f->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
-            f->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()) 
+            f->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())
             );
 }
 
@@ -341,7 +341,6 @@ void Body::removeFeature(App::DocumentObject* feature)
 }
 
 
-
 App::DocumentObjectExecReturn *Body::execute(void)
 {
     /*
@@ -369,7 +368,7 @@ App::DocumentObjectExecReturn *Body::execute(void)
         return App::DocumentObject::StdReturn;
 
     Shape.setValue(TipShape);
-    
+
     return App::DocumentObject::StdReturn;
 }
 
@@ -420,7 +419,7 @@ PyObject *Body::getPyObject(void)
         // ref counter is set to 1
         PythonObject = Py::Object(new BodyPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 }
