@@ -39,7 +39,11 @@ namespace PartDesign {
 }
 
 namespace App {
-	class Part;
+    class Part;
+}
+
+namespace Sketcher {
+    class SketchObject;
 }
 
 namespace PartDesignGui {
@@ -83,6 +87,8 @@ public:
 	 */
 	 static PartDesign::Body *setUpPart(const App::Part *);
 
+    /// Fix sketch support after moving a free sketch into a body
+    static void fixSketchSupport(Sketcher::SketchObject* sketch);
 
 protected:
   Gui::MenuItem* setupMenuBar() const;
