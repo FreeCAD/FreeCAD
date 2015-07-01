@@ -156,7 +156,9 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             cwd = QtCore.QDir.currentPath()
             f = QtCore.QFileInfo(self.base_name)
             QtCore.QDir.setCurrent(f.path())
-            p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()], shell=False, env=_env)
+            p = subprocess.Popen([self.ccx_binary, "-i ", f.baseName()],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                 shell=False, env=_env)
             self.ccx_stdout, self.ccx_stderr = p.communicate()
             os.putenv('OMP_NUM_THREADS', ont_backup)
             QtCore.QDir.setCurrent(cwd)
@@ -218,8 +220,14 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             progress_bar.stop()
         else:
             print "Running analysis failed! " + message
-        if ret_code:
+        if ret_code or self.ccx_stderr:
             print "Analysis failed with exit code {}".format(ret_code)
+            print "--------start of stderr-------"
+            print self.stderr
+            print "--------end of stderr---------"
+            print "--------start of stdout-------"
+            print self.stdout
+            print "--------end of stdout---------"
 
     ## returns minimum, average and maximum value for provided result type
     #  @param self The python object self
