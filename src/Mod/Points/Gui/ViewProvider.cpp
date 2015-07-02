@@ -425,7 +425,7 @@ void ViewProviderPoints::clipPointsCallback(void * ud, SoEventCallback * n)
         }
     }
 
-    view->getSoRenderManager()->render();
+    view->redraw();
 }
 
 void ViewProviderPoints::cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer)

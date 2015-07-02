@@ -135,6 +135,7 @@ public:
     void setClosed(bool c);
     void setCloseStippled(bool c);
     void addNode(const QPoint& p);
+    void popNode();
     void clear();
     void paintGL();
 };
