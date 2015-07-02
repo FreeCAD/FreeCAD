@@ -49,6 +49,7 @@ namespace Attacher
 
 class AttachEngine;
 
+//Attention! The numbers assiciated to the modes are permanent, because they are what get written into files.
 enum eMapMode {
     mmDeactivated,
     mmTranslate,
@@ -66,6 +67,31 @@ enum eMapMode {
     mmThreePointsPlane,
     mmThreePointsNormal,
     mmFolding,
+
+    mm1AxisX,
+    mm1AxisY,
+    mm1AxisZ,
+    mm1AxisCurv,
+    mm1Directrix1,
+    mm1Directrix2,
+    mm1Asymptote1,
+    mm1Asymptote2,
+    mm1Tangent,
+    mm1Normal,
+    mm1Binormal,
+    mm1TangentU,
+    mm1TangentV,
+    mm1TwoPoints,
+    mm1Intersection,
+
+    mm0Origin,
+    mm0Focus1,
+    mm0Focus2,
+    mm0OnEdge,
+    mm0CenterOfCurvature,
+    mm0CenterOfMass,
+    mm0Intersection,
+    mm0Vertex,
     mmDummy_NumberOfModes//a value useful to check the validity of mode value
 };//see also eMapModeStrings[] definition in .cpp
 
@@ -79,7 +105,7 @@ enum eSuggestResult{
 
 /**
  * @brief The eRefType enum lists the types of references. If adding one, see
- * also AttachEngine::getShapeType() and AttachEngine::downgradeType()
+ * also AttachEngine::getShapeType(), AttachEngine::downgradeType(), TaskDatumParameters.cpp/getShTypeText()
  */
 enum eRefType {
     //topo              //ranks: (number of times the type is downgradable)
@@ -91,15 +117,23 @@ enum eRefType {
     rtLine,             //2
     rtCurve,            //2
      rtCircle,          //3
+     rtConic,           //3
+      rtEllipse,        //4
+      rtParabola,       //4
+      rtHyperbola,      //4
     //faces:
     rtFlatFace,         //2
-    rtCylindricalFace,  //2
-    rtSphericalFace,    //2
-    //shapes:
+    rtSphericalFace,    //2//flatface, shericalface are also surfaces of revolution, but the axis isn't defined.
+    rtSurfaceRev,       //2
+     rtCylindricalFace, //3
+     rtToroidalFace,    //3
+     rtConicalFace,     //3
+   //shapes:
    rtPart,              //1
     rtSolid,            //2
     rtWire,             //2
-  rtDummy_numberOfShapeTypes//a value useful to check the validity of value
+  rtDummy_numberOfShapeTypes,//a value useful to check the validity of value
+  rtFlagHasPlacement = 0x0100 //indicates that the linked shape is a whole FreeCAD object that has placement available.
 };
 
 
@@ -118,9 +152,55 @@ public: //methods
                       bool mapReverse = false,
                       double attachParameter = 0.0,
                       double surfU = 0.0, double surfV = 0.0,
-                      Base::Placement superPlacement = Base::Placement());
+                      const Base::Placement &superPlacement = Base::Placement());
+    virtual void setUp(const AttachEngine &another);
     virtual AttachEngine* copy() const = 0;
     virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const = 0;
+
+    /**
+     * @brief placementFactory calculates placement from Z axis direction,
+     * optional X axis direction, and origin point.
+     *
+     * @param ZAxis (input) mandatory. Z axis of the returned placement will
+     * strictly coincide with ZAxis.
+     *
+     * @param XAxis (input) optional (i.e., can be zero). Sets the preferred X
+     * axis orientation. If it is not perpendicular to ZAxis, it will be forced
+     * to be. If XAxis is zero, the effect is equivalent to setting
+     * makeYVertical to true.
+     *
+     * @param Origin (input) mandatory.
+     *
+     * @param refOrg (input). The point that will be used in case any of
+     * useRefOrg_XX parameters is true.
+     *
+     * @param useRefOrg_Line (input). If true, Origin will be moved along ZAxis
+     * to be as close as possible to refOrg.
+     *
+     * @param useRefOrg_Plane (input). If true, Origin will be moved in
+     * XAxis-YAxis plane to be as close as possible to refOrg.
+     *
+     * @param makeYVertical (input). If true, XAxis is ignored, and X and Y
+     * axes are defined in order to make Y axis go as upwards as possible. If
+     * ZAxis is strictly upwards, XY will match global XY. If ZAxis is strictly
+     * downwards, XAxis will be the reversed global X axis.
+     *
+     * @param makeLegacyFlatFaceOrientation (input). Modifies the behavior of
+     * makeYVertical to match the logic that was used in mapping of sketches to
+     * flat faces in FreeCAD prior to introduction of Attacher. Set
+     * makeYVertical to true if using this.
+     *
+     * @return the resulting placement. ReverseXY property of Attacher will be automatically applied.
+     */
+     Base::Placement placementFactory(const gp_Dir &ZAxis,
+                                      gp_Vec XAxis,
+                                      gp_Pnt Origin,
+                                      gp_Pnt refOrg = gp_Pnt(),
+                                      bool useRefOrg_Line = false,
+                                      bool useRefOrg_Plane = false,
+                                      bool makeYVertical = false,
+                                      bool makeLegacyFlatFaceOrientation = false,
+                                      Base::Placement* placeOfRef = 0) const;
 
     /**
      * @brief listMapModes is the procedure that knows everything about
@@ -154,10 +234,29 @@ public: //methods
      */
     virtual const std::set<eRefType> getHint(bool forCurrentModeOnly) const;
 
+    /**
+     * @brief EnableAllModes enables all modes that have shape type lists filled. The function acts on modeEnabled array.
+     */
+    void EnableAllSupportedModes(void);
+
     virtual ~AttachEngine(){};
 
 public://helper functions that may be useful outside of the class
+    /**
+     * @brief getShapeType by shape. Will never set rtFlagHasPlacement.
+     * @param sh
+     * @return
+     */
     static eRefType getShapeType(const TopoDS_Shape &sh);
+
+    /**
+     * @brief getShapeType by link content. Will include rtFlagHasPlacement, if applies.
+     * @param obj
+     * @param subshape (input). Can be empty string (then, whole object will be used for shape type testing)
+     * @return
+     */
+    static eRefType getShapeType(const App::DocumentObject* obj,
+                                 const std::string &subshape);
 
     /**
      * @brief downgradeType converts a more-specific type into a less-specific
@@ -218,7 +317,9 @@ protected:
     refTypeString cat(eRefType rt1, eRefType rt2){refTypeString ret; ret.push_back(rt1); ret.push_back(rt2); return ret;}
     refTypeString cat(eRefType rt1, eRefType rt2, eRefType rt3){refTypeString ret; ret.push_back(rt1); ret.push_back(rt2); ret.push_back(rt3); return ret;}
     refTypeString cat(eRefType rt1, eRefType rt2, eRefType rt3, eRefType rt4){refTypeString ret; ret.push_back(rt1); ret.push_back(rt2); ret.push_back(rt3); ret.push_back(rt4); return ret;}
-    void readLinks(std::vector<App::GeoFeature *> &geofs, std::vector<const TopoDS_Shape*>& shapes, std::vector<TopoDS_Shape> &storage) const;
+    static void readLinks(const App::PropertyLinkSubList &references, std::vector<App::GeoFeature *> &geofs, std::vector<const TopoDS_Shape*>& shapes, std::vector<TopoDS_Shape> &storage, std::vector<eRefType> &types);
+
+    static void throwWrongMode(eMapMode mmode);
 
 };
 
@@ -236,7 +337,7 @@ private:
 
 typedef AttachEngine3D AttachEnginePlane ;//no separate class for planes, for now. Can be added later, if required.
 /*
-class AttachEnginePlane : public AttachEngine
+class AttachEngine2D : public AttachEngine
 {
     AttachEnginePlane();
     virtual AttachEnginePlane* copy() const {return new AttachEnginePlane(*this);}
@@ -246,11 +347,27 @@ class AttachEnginePlane : public AttachEngine
 };
 */
 
-//class AttachEnginePoint : public AttachEngine
-//{
-//
-//};
+//attacher specialized for datum lines
+class PartExport AttachEngineLine : public AttachEngine
+{
+    TYPESYSTEM_HEADER();
+public:
+    AttachEngineLine();
+    virtual AttachEngineLine* copy() const;
+    virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const;
+};
 
+//attacher specialized for datum points
+class PartExport AttachEnginePoint : public AttachEngine
+{
+    TYPESYSTEM_HEADER();
+public:
+    AttachEnginePoint();
+    virtual AttachEnginePoint* copy() const;
+    virtual Base::Placement calculateAttachedPlacement(Base::Placement origPlacement) const;
+};
+
+//====================================================================
 
 class ExceptionCancel : public Base::Exception
 {

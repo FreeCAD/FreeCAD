@@ -70,7 +70,7 @@ public:
      * @param attacher. AttachableObject takes ownership and will delete it eventually.
      */
     virtual void setAttacher(AttachEngine* attacher);
-    AttachEngine* attacher(void) const {return _attacher;}
+    AttachEngine &attacher(void) const {return *_attacher;}
 
     /// if the 2DObject lies on the Face of an other object this links to it
     App::PropertyLinkSubList    Support;

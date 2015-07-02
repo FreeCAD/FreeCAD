@@ -43,6 +43,8 @@ AttachableObject::AttachableObject()
 
     ADD_PROPERTY_TYPE(MapMode, (mmDeactivated), "Attachment", App::Prop_None, "Mode of attachment to other object");
     MapMode.setEnums(AttachEngine::eMapModeStrings);
+    //a rough test if mode string list in Attacher.cpp is in sync with eMapMode enum.
+    assert(MapMode.getEnumVector().size() == mmDummy_NumberOfModes);
 
     ADD_PROPERTY_TYPE(MapReversed, (false), "Attachment", App::Prop_None, "Reverse Z direction (flip sketch upside down)");
 
@@ -50,7 +52,7 @@ AttachableObject::AttachableObject()
 
     ADD_PROPERTY_TYPE(superPlacement, (Base::Placement()), "Attachment", App::Prop_None, "Extra placement to apply in addition to attachment (in local coordinates)");
 
-    setAttacher(new AttachEngine3D);//default attacher
+    //setAttacher(new AttachEngine3D);//default attacher
 }
 
 AttachableObject::~AttachableObject()
@@ -70,7 +72,7 @@ void AttachableObject::setAttacher(AttachEngine* attacher)
 void AttachableObject::positionBySupport()
 {
     if (!_attacher)
-        return;
+        throw Base::Exception("AttachableObject: can't positionBySupport, because no AttachEngine is set.");
     updateAttacherVals();
     try{
         this->Placement.setValue(_attacher->calculateAttachedPlacement(this->Placement.getValue()));
@@ -105,11 +107,11 @@ void AttachableObject::onChanged(const App::Property* prop)
                 positionBySupport();
         } catch (Base::Exception &e) {
             this->setError();
-            Base::Console().Error("PositionBySupport: &s",e.what());
+            Base::Console().Error("PositionBySupport: %s",e.what());
             //set error message - how?
         } catch (Standard_Failure &e){
             this->setError();
-            Base::Console().Error("PositionBySupport: &s",e.GetMessageString());
+            Base::Console().Error("PositionBySupport: %s",e.GetMessageString());
         }
     }
     Part::Feature::onChanged(prop);

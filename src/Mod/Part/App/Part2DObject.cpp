@@ -67,6 +67,7 @@ PROPERTY_SOURCE(Part::Part2DObject, Part::AttachableObject)
 
 Part2DObject::Part2DObject()
 {
+    this->setAttacher(new AttachEngine3D);
 }
 
 
