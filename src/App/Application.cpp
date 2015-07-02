@@ -1501,6 +1501,8 @@ void Application::ParseOptions(int ac, char ** av)
     ("help,h", "Prints help message")
     ("console,c", "Starts in console mode")
     ("response-file", value<string>(),"Can be specified with '@name', too")
+    ("dump-config", "Dumps configuration")
+    ("get-config", value<string>(), "Prints the value of the requested configuration key")
     ;
 
     // Declare a group of options that will be
@@ -1740,6 +1742,25 @@ void Application::ParseOptions(int ac, char ** av)
         };
     }
 
+    if (vm.count("dump-config")) {
+        std::stringstream str;
+        for (std::map<std::string,std::string>::iterator it=mConfig.begin(); it != mConfig.end(); ++it) {
+            str << it->first << "=" << it->second << std::endl;
+        }
+        throw Base::ProgramInformation(str.str());
+    }
+
+    if (vm.count("get-config")) {
+        std::string configKey = vm["get-config"].as<string>();
+        std::stringstream str;
+        std::map<std::string,std::string>::iterator pos;
+        pos = mConfig.find(configKey);
+        if (pos != mConfig.end()) {
+            str << pos->second;
+        }
+        str << std::endl;
+        throw Base::ProgramInformation(str.str());
+    }
 }
 
 void Application::ExtractUserPath()
