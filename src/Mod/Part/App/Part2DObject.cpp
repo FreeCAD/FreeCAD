@@ -45,7 +45,10 @@
 
 
 #include <Base/Exception.h>
+#include <Base/Reader.h>
 #include <App/Plane.h>
+#include <App/Property.h>
+#include <App/PropertyLinks.h>
 #include "Part2DObject.h"
 #include "Geometry.h"
 #include "DatumFeature.h"
@@ -206,6 +209,58 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
 void Part2DObject::acceptGeometry()
 {
     // implemented in sub-classes
+}
+
+void Part2DObject::Restore(Base::XMLReader &reader)
+{
+    //override generic restoration to convert Support property from PropertyLinkSub to PropertyLinkSubList
+
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+        // NOTE: We must also check the type of the current property because a
+        // subclass of PropertyContainer might change the type of a property but
+        // not its name. In this case we would force to read-in a wrong property
+        // type and the behaviour would be undefined.
+        // Exception: PropertyLinkSubList can read PropertyLinkSub
+        try {
+            if(prop){
+                if (strcmp(prop->getTypeId().getName(), TypeName) == 0){
+                    prop->Restore(reader);
+                } else if (prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())){
+                    App::PropertyLinkSub tmp;//getTypeId() is not static =(
+                    if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
+                        static_cast<App::PropertyLinkSubList*>(prop)->Restore_FromLinkSub(reader);
+                    }
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
 }
 
 // Python Drawing feature ---------------------------------------------------------
