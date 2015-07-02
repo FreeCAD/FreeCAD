@@ -93,6 +93,7 @@ public:
     }
     //@}
 
+    void Restore(Base::XMLReader &reader);
 };
 
 typedef App::FeaturePythonT<Part2DObject> Part2DObjectPython;
