@@ -58,9 +58,11 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
+#include <Gui/MouseSelection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/NavigationStyle.h>
 #include <Gui/WaitCursor.h>
 #include <CXX/Objects.hxx>
 
@@ -835,7 +837,11 @@ void CmdMeshPolyCut::activated(int iMsg)
             if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
-                viewer->startSelection(Gui::View3DInventorViewer::Clip);
+
+                Gui::PolyClipSelection* clip = new Gui::PolyClipSelection();
+                clip->setColor(0.0f,0.0f,1.0f);
+                clip->setLineWidth(1.0f);
+                viewer->navigationStyle()->startSelection(clip);
                 viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::clipMeshCallback);
             }
             else {

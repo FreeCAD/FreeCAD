@@ -302,6 +302,11 @@ Polyline::Polyline(View3DInventorViewer* v) : viewer(v)
     closed = true;
     stippled = false;
     line = 2.0;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
 }
 
 Polyline::Polyline()
@@ -311,6 +316,11 @@ Polyline::Polyline()
     closed = true;
     stippled = false;
     line = 2.0;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
 }
 
 Polyline::~Polyline()
@@ -340,10 +350,10 @@ void Polyline::setCoords(int x, int y)
 
 void Polyline::setColor(int r, int g, int b, int a)
 {
-    rgb_a = a;
-    rgb_b = b;
-    rgb_g = g;
     rgb_r = r;
+    rgb_g = g;
+    rgb_b = b;
+    rgb_a = a;
 }
 
 void Polyline::setClosed(bool c)
@@ -364,6 +374,12 @@ void Polyline::setLineWidth(float l)
 void Polyline::addNode(const QPoint& p)
 {
     _cNodeVector.push_back(p);
+}
+
+void Polyline::popNode()
+{
+    if (!_cNodeVector.empty())
+        _cNodeVector.pop_back();
 }
 
 void Polyline::clear()

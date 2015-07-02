@@ -99,7 +99,6 @@ protected:
     int  m_iXold, m_iYold;
     int  m_iXnew, m_iYnew;
     SbBool m_bInner;
-    SbBool mustRedraw;
     std::vector<SbVec2s> _clPoly;
 };
 
@@ -145,6 +144,7 @@ protected:
     virtual int popupMenu();
 
     Gui::Polyline polyline;
+    bool lastConfirmed;
 };
 
 // -----------------------------------------------------------------------------------

@@ -48,7 +48,6 @@ using namespace Gui;
 AbstractMouseSelection::AbstractMouseSelection() : _pcView3D(0)
 {
     m_bInner = true;
-    mustRedraw = false;
 }
 
 void AbstractMouseSelection::grabMouseModel(Gui::View3DInventorViewer* viewer)
@@ -73,10 +72,7 @@ void AbstractMouseSelection::releaseMouseModel()
 
 void AbstractMouseSelection::redraw()
 {
-    // Note: For any reason it does not work to do a redraw in the actualRedraw() method of the
-    // viewer class. So, we do the redraw when the user continues moving the cursor. E.g. have
-    // a look to PolyPickerSelection::draw()
-    mustRedraw = true;
+    // obsolete
 }
 
 int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewportRegion& vp)
@@ -272,6 +268,8 @@ void PolyPickerSelection::initialize()
     _pcView3D->addGraphicsItem(&polyline);
     _pcView3D->setRenderType(View3DInventorViewer::Image);
     _pcView3D->redraw();
+
+    lastConfirmed = false;
 }
 
 void PolyPickerSelection::terminate()
@@ -325,7 +323,7 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
                 polyline.clear();
             };
             polyline.addNode(pos);
-            polyline.setCoords(pos.x(), pos.y());
+            lastConfirmed = true;
             m_iXnew = pos.x();  m_iYnew = pos.y();
             m_iXold = pos.x();  m_iYold = pos.y();
         }
@@ -406,10 +404,15 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const e, const QP
             QCursor::setPos(newPos);
 #endif
         }
-        polyline.setCoords(clPoint.x(), clPoint.y());
+
+        if (!lastConfirmed)
+            polyline.popNode();
+        polyline.addNode(clPoint);
+        lastConfirmed = false;
+
+        draw();
     }
-    
-    draw();
+
     m_iXnew = clPoint.x();
     m_iYnew = clPoint.y();
 
