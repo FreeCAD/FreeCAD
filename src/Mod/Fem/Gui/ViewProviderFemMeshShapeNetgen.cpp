@@ -28,6 +28,7 @@
 # include <QAction>
 # include <QCoreApplication>
 # include <QMenu>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderFemMeshShapeNetgen.h"
