@@ -25,6 +25,7 @@
 #include <boost/signals.hpp>
 #include <boost/bind.hpp>
 #include <boost/graph/topological_sort.hpp>
+#include <boost/graph/reverse_graph.hpp>
 
 #include <QApplication>
 #include <QString>
@@ -138,7 +139,8 @@ VertexProperty::VertexProperty() :
   text(new QGraphicsTextItem()),
   row(0),
   column(0),
-  lastVisibleState(VisibilityState::None)
+  lastVisibleState(VisibilityState::None),
+  dagVisible(true)
 {
   //All flags are disabled by default.
   this->rectangle->setFlags(QGraphicsItem::ItemIsSelectable);
@@ -150,6 +152,11 @@ VertexProperty::VertexProperty() :
   this->stateIcon->setZValue(0.0);
   this->icon->setZValue(0.0);
   this->text->setZValue(0.0);
+}
+
+EdgeProperty::EdgeProperty() : relation(BranchTag::None)
+{
+
 }
 
 const GraphLinkRecord& Model::findRecord(Vertex vertexIn)
@@ -306,12 +313,7 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
 {
   Vertex virginVertex = boost::add_vertex(*theGraph);
   
-  this->addItem((*theGraph)[virginVertex].rectangle.get());
-  this->addItem((*theGraph)[virginVertex].point.get());
-  this->addItem((*theGraph)[virginVertex].visibleIcon.get());
-  this->addItem((*theGraph)[virginVertex].stateIcon.get());
-  this->addItem((*theGraph)[virginVertex].icon.get());
-  this->addItem((*theGraph)[virginVertex].text.get());
+  addVertexItemsToScene(virginVertex);
   
   GraphLinkRecord virginRecord;
   virginRecord.DObject = VPDObjectIn.getObject();
@@ -344,12 +346,7 @@ void Model::slotDeleteObject(const ViewProviderDocumentObject &VPDObjectIn)
   Vertex vertex = findRecord(&VPDObjectIn).vertex;
   
   //remove items from scene.
-  this->removeItem((*theGraph)[vertex].rectangle.get());
-  this->removeItem((*theGraph)[vertex].point.get());
-  this->removeItem((*theGraph)[vertex].visibleIcon.get());
-  this->removeItem((*theGraph)[vertex].stateIcon.get());
-  this->removeItem((*theGraph)[vertex].icon.get());
-  this->removeItem((*theGraph)[vertex].text.get());
+  removeVertexItemsFromScene(vertex);
   
   //remove connector items 
   auto outRange = boost::out_edges(vertex, *theGraph);
@@ -422,14 +419,54 @@ void Model::selectionChanged(const SelectionChanges& msg)
   //note that treeview uses set selection which sends a message with just a document name
   //and no object name. Have to explore further.
   
+  auto getAllEdges = [this](const Vertex &vertexIn)
+  {
+    //is there really no function to get both in and out edges?
+    std::vector<Edge> out;
+    
+    OutEdgeIterator outIt, outItEnd;
+    for (boost::tie(outIt, outItEnd) = boost::out_edges(vertexIn, *theGraph); outIt != outItEnd; ++outIt)
+      out.push_back(*outIt);
+    
+    InEdgeIterator inIt, inItEnd;
+    for (boost::tie(inIt, inItEnd) = boost::in_edges(vertexIn, *theGraph); inIt != inItEnd; ++inIt)
+      out.push_back(*inIt);
+    
+    return out;
+  };
+  
+  auto highlightConnectorOn = [this, getAllEdges](const Vertex &vertexIn)
+  {
+    QColor color = (*theGraph)[vertexIn].text->defaultTextColor();
+    QPen pen(color);
+    pen.setWidth(3.0);
+    auto edges = getAllEdges(vertexIn);
+    for (auto edge : edges)
+    {
+      (*theGraph)[edge].connector->setPen(pen);
+      (*theGraph)[edge].connector->setZValue(1.0);
+    }
+  };
+  
+  auto highlightConnectorOff = [this, getAllEdges](const Vertex &vertexIn)
+  {
+    auto edges = getAllEdges(vertexIn);
+    for (auto edge : edges)
+    {
+      (*theGraph)[edge].connector->setPen(QPen());
+      (*theGraph)[edge].connector->setZValue(0.0);
+    }
+  };
+  
   //lamda for clearing selections.
-  auto clearSelection = [this]()
+  auto clearSelection = [this, highlightConnectorOff]()
   {
     BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
     {
       ViewEntryRectItem *rect = (*theGraph)[currentVertex].rectangle.get();
       assert(rect);
       rect->selectionOff();
+      highlightConnectorOff(currentVertex);
     }
   };
   
@@ -448,12 +485,20 @@ void Model::selectionChanged(const SelectionChanges& msg)
   if (msg.Type == SelectionChanges::AddSelection)
   {
     if (msg.pObjectName)
-      getRectangle(msg.pObjectName)->selectionOn();
+    {
+      ViewEntryRectItem *rect = getRectangle(msg.pObjectName);
+      rect->selectionOn();
+      highlightConnectorOn(findRecord(std::string(msg.pObjectName)).vertex);
+    }
   }
   else if(msg.Type == SelectionChanges::RmvSelection)
   {
     if (msg.pObjectName)
-      getRectangle(msg.pObjectName)->selectionOff();
+    {
+      ViewEntryRectItem *rect = getRectangle(msg.pObjectName);
+      rect->selectionOff();
+      highlightConnectorOff(findRecord(std::string(msg.pObjectName)).vertex);
+    }
   }
   else if(msg.Type == SelectionChanges::SetSelection)
   {
@@ -463,7 +508,9 @@ void Model::selectionChanged(const SelectionChanges& msg)
     for (const auto &selection : selections)
     {
       assert(selection.FeatName);
-      getRectangle(selection.FeatName)->selectionOn();
+      ViewEntryRectItem *rect = getRectangle(selection.FeatName);
+      rect->selectionOn();
+      highlightConnectorOn(findRecord(selection.FeatName).vertex);
     }
   }
   else if(msg.Type == SelectionChanges::ClrSelection)
@@ -486,12 +533,17 @@ void Model::awake()
 
 void Model::updateSlot()
 {
-  Base::TimeInfo startTime;
-  
-  //here we will cycle through the graph updating edges.
   //empty outList means it is a root.
   //empty inList means it is a leaf.
   
+  //NOTE: some of the following loops can/should be combined
+  //for speed. Not doing yet, as I want a simple algorithm until
+  //a more complete picture is formed.
+  
+  Base::TimeInfo startTime;
+  
+  //here we will cycle through the graph updating edges.
+  //we have to do this first and in isolation because everything is dependent on an up to date graph.
   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
   {
     const App::DocumentObject *currentDObject = findRecord(currentVertex).DObject;
@@ -506,10 +558,58 @@ void Model::updateSlot()
       {
         (*theGraph)[edge].connector = std::shared_ptr<QGraphicsPathItem>(new QGraphicsPathItem());
         (*theGraph)[edge].connector->setZValue(0.0);
-        this->addItem((*theGraph)[edge].connector.get());
       }
     }
   }
+  
+  
+  
+    //TODO apply filters.
+    
+  //test filter. just to test layout engine with dagVisible.
+//   Base::Type originType = Base::Type::fromName("App::Origin");
+//   assert (originType != Base::Type::badType());
+//   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
+//   {
+//     //if child of origin hide.
+//     InEdgeIterator it, itEnd;
+//     for (boost::tie(it, itEnd) = boost::in_edges(currentVertex, *theGraph); it != itEnd; ++it)
+//     {
+//       Vertex source = boost::source(*it, *theGraph);
+//       const GraphLinkRecord &sourceRecord = findRecord(source);
+//       if
+//       (
+//         (sourceRecord.DObject->getTypeId() == originType) &&
+//         (boost::in_degree(currentVertex, *theGraph) == 1)
+//       )
+//         (*theGraph)[currentVertex].dagVisible = false;
+//     }
+//   }
+  
+  
+  
+  //sync scene items to graph vertex dagVisible.
+  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
+  {
+    if ((*theGraph)[currentVertex].dagVisible && (!(*theGraph)[currentVertex].rectangle->scene()))
+      addVertexItemsToScene(currentVertex);
+    if ((!(*theGraph)[currentVertex].dagVisible) && (*theGraph)[currentVertex].rectangle->scene())
+      removeVertexItemsFromScene(currentVertex);
+  }
+  
+  //sync scene items for graph edge.
+  BGL_FORALL_EDGES(currentEdge, *theGraph, Graph)
+  {
+    Vertex source = boost::source(currentEdge, *theGraph);
+    Vertex target = boost::target(currentEdge, *theGraph);
+    
+    bool edgeVisible = (*theGraph)[source].dagVisible && (*theGraph)[target].dagVisible;
+    if (edgeVisible && (!(*theGraph)[currentEdge].connector->scene()))
+      this->addItem((*theGraph)[currentEdge].connector.get());
+    if ((!edgeVisible) && (*theGraph)[currentEdge].connector->scene())
+      this->removeItem((*theGraph)[currentEdge].connector.get());
+  }
+  
   
   indexVerticesEdges();
   Path sorted;
@@ -522,13 +622,15 @@ void Model::updateSlot()
     tempIndex++;
   }
   
+  //draw graph(nodes and connectors).
   int currentRow = 0;
   int currentColumn = -1; //we know first column is going to be root so will be kicked up to 0.
   int maxColumn = currentColumn; //used for determining offset of icons and text.
   float maxTextLength = 0;
   for (const auto &currentVertex : sorted)
   {
-//     std::cout << std::endl << std::endl;
+    if (!(*theGraph)[currentVertex].dagVisible)
+      continue;
     
     if (boost::out_degree(currentVertex, *theGraph) == 0)
       currentColumn = 0;
@@ -567,7 +669,9 @@ void Model::updateSlot()
       {
         if (((*theGraph)[currentParent].column & columnMask).none())
         {
-          //go with first parent for now.
+          //go with first visible parent for now.
+          if (!(*theGraph)[currentParent].dagVisible)
+            continue;
           destinationColumn = static_cast<int>(std::log2((*theGraph)[currentParent].column.to_ulong()));
           break;
         }
@@ -622,6 +726,8 @@ void Model::updateSlot()
     for (; it != itEnd; ++it)
     {
       Vertex target = boost::target(*it, *theGraph);
+      if (!(*theGraph)[target].dagVisible)
+        continue; //we don't make it here if source isn't visible. So don't have to worry about that.
       float dependentX = pointSpacing * static_cast<int>(std::log2((*theGraph)[target].column.to_ulong())) - pointSize / 2.0; //on center.
       float dependentY = rowHeight * (*theGraph)[target].row + rowHeight / 2.0;
       
@@ -659,37 +765,39 @@ void Model::updateSlot()
     currentRow++;
   }
   
+  //now that we have the graph drawn we know where to place icons and text.
   float columnSpacing = (maxColumn * pointSpacing);
   for (const auto &currentVertex : sorted)
   {
-    float currentX = columnSpacing;
-    currentX += pointToIcon;
+    float localCurrentX = columnSpacing;
+    localCurrentX += pointToIcon;
     auto *visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
-    QTransform visibleIconTransform = QTransform::fromTranslate(currentX, 0.0);
+    QTransform visibleIconTransform = QTransform::fromTranslate(localCurrentX, 0.0);
     visiblePixmap->setTransform(visiblePixmap->transform() * visibleIconTransform);
     
-    currentX += iconSize + iconToIcon;
+    localCurrentX += iconSize + iconToIcon;
     auto *statePixmap = (*theGraph)[currentVertex].stateIcon.get();
-    QTransform stateIconTransform = QTransform::fromTranslate(currentX, 0.0);
+    QTransform stateIconTransform = QTransform::fromTranslate(localCurrentX, 0.0);
     statePixmap->setTransform(statePixmap->transform() * stateIconTransform);
     
-    currentX += iconSize + iconToIcon;
+    localCurrentX += iconSize + iconToIcon;
     auto *pixmap = (*theGraph)[currentVertex].icon.get();
-    QTransform iconTransform = QTransform::fromTranslate(currentX, 0.0);
+    QTransform iconTransform = QTransform::fromTranslate(localCurrentX, 0.0);
     pixmap->setTransform(pixmap->transform() * iconTransform);
     
-    currentX += iconSize + iconToText;
+    localCurrentX += iconSize + iconToText;
     auto *text = (*theGraph)[currentVertex].text.get();
-    QTransform textTransform = QTransform::fromTranslate(currentX, 0.0);
+    QTransform textTransform = QTransform::fromTranslate(localCurrentX, 0.0);
     text->setTransform(text->transform() * textTransform);
     
     auto *rectangle = (*theGraph)[currentVertex].rectangle.get();
     QRectF rect = rectangle->rect();
-    rect.setWidth(currentX + maxTextLength + 2.0 * rowPadding);
+    rect.setWidth(localCurrentX + maxTextLength + 2.0 * rowPadding);
     rectangle->setRect(rect);
   }
   
   //Modeling_Challenge_Casting_ta4 with 59 features: "Initialize DAG View time: 0.007"
+  //keeping algo simple with extra loops only added 0.002 to above number.
 //   std::cout << "Initialize DAG View time: " << Base::TimeInfo::diffTimeF(startTime, Base::TimeInfo()) << std::endl;
   
 //   outputGraphviz<Graph>(*theGraph, "./graphviz.dot");
@@ -723,16 +831,40 @@ void Model::removeAllItems()
   if (theGraph)
   {
     BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
-    {
-      this->removeItem((*theGraph)[currentVertex].rectangle.get());
-      this->removeItem((*theGraph)[currentVertex].point.get());
-      this->removeItem((*theGraph)[currentVertex].icon.get());
-      this->removeItem((*theGraph)[currentVertex].text.get());
-    }
+      removeVertexItemsFromScene(currentVertex);
       
     BGL_FORALL_EDGES(currentEdge, *theGraph, Graph)
-      this->removeItem((*theGraph)[currentEdge].connector.get());
+    {
+      if ((*theGraph)[currentEdge].connector->scene())
+        this->removeItem((*theGraph)[currentEdge].connector.get());
+    }
   }
+}
+
+void Model::addVertexItemsToScene(const Gui::DAG::Vertex& vertexIn)
+{
+  //these are either all in or all out. so just test rectangle.
+  if ((*theGraph)[vertexIn].rectangle->scene()) //already in the scene.
+    return;
+  this->addItem((*theGraph)[vertexIn].rectangle.get());
+  this->addItem((*theGraph)[vertexIn].point.get());
+  this->addItem((*theGraph)[vertexIn].visibleIcon.get());
+  this->addItem((*theGraph)[vertexIn].stateIcon.get());
+  this->addItem((*theGraph)[vertexIn].icon.get());
+  this->addItem((*theGraph)[vertexIn].text.get());
+}
+
+void Model::removeVertexItemsFromScene(const Gui::DAG::Vertex& vertexIn)
+{
+  //these are either all in or all out. so just test rectangle.
+  if (!(*theGraph)[vertexIn].rectangle->scene()) //not in the scene.
+    return;
+  this->removeItem((*theGraph)[vertexIn].rectangle.get());
+  this->removeItem((*theGraph)[vertexIn].point.get());
+  this->removeItem((*theGraph)[vertexIn].visibleIcon.get());
+  this->removeItem((*theGraph)[vertexIn].stateIcon.get());
+  this->removeItem((*theGraph)[vertexIn].text.get());
+  this->removeItem((*theGraph)[vertexIn].icon.get());
 }
 
 void Model::updateStates()
@@ -911,14 +1043,18 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
 
 void Model::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
 {
-  auto selections = getAllSelected();
-  assert(selections.size() == 1);
-  const GraphLinkRecord &record = findRecord(selections.front());
-  Gui::Document* doc = Gui::Application::Instance->getDocument(record.DObject->getDocument());
-  MDIView *view = doc->getActiveView();
-  if (view)
-    getMainWindow()->setActiveWindow(view);
-  const_cast<ViewProviderDocumentObject*>(record.VPDObject)->doubleClicked();
+  if (event->button() == Qt::LeftButton)
+  {
+    auto selections = getAllSelected();
+    if(selections.size() != 1)
+      return;
+    const GraphLinkRecord &record = findRecord(selections.front());
+    Gui::Document* doc = Gui::Application::Instance->getDocument(record.DObject->getDocument());
+    MDIView *view = doc->getActiveView();
+    if (view)
+      getMainWindow()->setActiveWindow(view);
+    const_cast<ViewProviderDocumentObject*>(record.VPDObject)->doubleClicked();
+  }
   
   QGraphicsScene::mouseDoubleClickEvent(event);
 }
@@ -943,6 +1079,16 @@ void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
   if (rect)
   {
     const GraphLinkRecord &record = findRecord(rect);
+    
+    //don't like that I am doing this again here after getRectFromPosition call.
+    QGraphicsItem *item = itemAt(event->scenePos());
+    QGraphicsPixmapItem *pixmapItem = dynamic_cast<QGraphicsPixmapItem *>(item);
+    if (pixmapItem && (pixmapItem == (*theGraph)[record.vertex].visibleIcon.get()))
+    {
+      visiblyIsolate(record.vertex);
+      return;
+    }
+    
     if (!rect->isSelected())
     {
       Gui::Selection().clearSelection(record.DObject->getDocument()->getName());
@@ -1054,6 +1200,52 @@ void Model::editingFinishedSlot()
   doc->getDocument()->recompute();
 }
 
+void Model::visiblyIsolate(Gui::DAG::Vertex sourceIn)
+{
+  auto buildSkipTypes = []()
+  {
+    std::vector<Base::Type> out;
+    Base::Type type;
+    type = Base::Type::fromName("App::DocumentObjectGroup");
+    if (type != Base::Type::badType()) out.push_back(type);
+    type = Base::Type::fromName("App::Part");
+    if (type != Base::Type::badType()) out.push_back(type);
+    type = Base::Type::fromName("PartDesign::Body");
+    if (type != Base::Type::badType()) out.push_back(type);
+    
+    return out;
+  };
+  
+  auto testSkipType = [](const App::DocumentObject *dObject, const std::vector<Base::Type> &types)
+  {
+    for (const auto &currentType : types)
+    {
+      if (dObject->isDerivedFrom(currentType))
+        return true;
+    }
+    return false;
+  };
+  
+  indexVerticesEdges();
+  Path connectedVertices;
+  ConnectionVisitor visitor(connectedVertices);
+  boost::breadth_first_search(*theGraph, sourceIn, boost::visitor(visitor));
+  boost::breadth_first_search(boost::make_reverse_graph(*theGraph), sourceIn, boost::visitor(visitor));
+  
+  //note source vertex is added twice to Path. Once for each search.
+  static std::vector<Base::Type> skipTypes = buildSkipTypes();
+  for (const auto &currentVertex : connectedVertices)
+  {
+    const GraphLinkRecord &record = findRecord(currentVertex);
+    if (testSkipType(record.DObject, skipTypes))
+      continue;
+    const_cast<ViewProviderDocumentObject *>(record.VPDObject)->hide(); //const hack
+  }
+  
+  const GraphLinkRecord &sourceRecord = findRecord(sourceIn);
+  if (!testSkipType(sourceRecord.DObject, skipTypes))
+    const_cast<ViewProviderDocumentObject *>(sourceRecord.VPDObject)->show(); //const hack
+}
 
 
 #include <moc_DAGModel.cpp>

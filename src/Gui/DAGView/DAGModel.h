@@ -36,6 +36,7 @@
 #include <boost/graph/reverse_graph.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <boost/graph/graphviz.hpp>
+#include <boost/graph/breadth_first_search.hpp>
 
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
@@ -135,11 +136,11 @@ namespace Gui
       std::shared_ptr<QGraphicsPixmapItem> icon; //!< icon
       std::shared_ptr<QGraphicsTextItem> text; //!< text
       int row; //!< row for this entry.
-      //TODO remove 64 column limit. Maybe boost dynamic bitset?
       ColumnMask column; //!< column number containing the point.
       int topoSortIndex;
       VisibilityState lastVisibleState; //!< visibility test.
-      FeatureState lastFeatureState;
+      FeatureState lastFeatureState; //!< feature state test.
+      bool dagVisible; //!< should entry be visible in the DAG view.
     };
     /*! @brief boost data for each vertex.
      *
@@ -165,6 +166,7 @@ namespace Gui
         Continue,       //!< continue a branch.
         Terminate       //!< terminate a branch.
       };
+      EdgeProperty();
       BranchTag relation;
       std::shared_ptr <QGraphicsPathItem> connector; //!< line representing link between nodes.
     };
@@ -372,6 +374,8 @@ namespace Gui
       
       void indexVerticesEdges();
       void removeAllItems();
+      void addVertexItemsToScene(const Vertex &vertexIn);
+      void removeVertexItemsFromScene(const Vertex &vertexIn);
       void updateStates();
       
       ViewEntryRectItem* getRectFromPosition(const QPointF &position); //!< can be nullptr
@@ -402,6 +406,7 @@ namespace Gui
       };
       SelectionMode selectionMode;
       std::vector<Vertex> getAllSelected();
+      void visiblyIsolate(Vertex sourceIn); //!< hide any connected feature and turn on sourceIn.
       
       QPointF lastPick;
       bool lastPickValid = false;
@@ -416,7 +421,24 @@ namespace Gui
       QGraphicsProxyWidget *proxy = nullptr;
       void finishRename();
     };
+  
+    /*! @brief Get connected components.
+    */
+    class ConnectionVisitor : public boost::default_bfs_visitor
+    {
+    public:
+      ConnectionVisitor(std::vector<Vertex> &verticesIn) : vertices(verticesIn){}
+      
+      template<typename TVertex, typename TGraph>
+      void discover_vertex(TVertex vertex, TGraph &graph)
+      {
+        vertices.push_back(vertex);
+      }
+    private:
+      std::vector<Vertex> &vertices;
+    };
   }
+
 }
 
 #endif // DAGMODEL_H
