@@ -815,6 +815,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         openCommand("Create a Sketch on Face");
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
+        doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
         doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                        pcActiveBody->getNameInDocument(), FeatName.c_str());
         doCommand(Gui,"App.activeDocument().recompute()");  // recompute the sketch placement based on its support
@@ -890,6 +891,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             Gui::Command::openCommand("Create a new Sketch");
             Gui::Command::doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
+            Gui::Command::doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
             Gui::Command::updateActive(); // Make sure the Support's Placement property is updated
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                         pcActiveBody->getNameInDocument(), FeatName.c_str());

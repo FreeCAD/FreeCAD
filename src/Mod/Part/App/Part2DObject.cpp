@@ -233,10 +233,12 @@ void Part2DObject::Restore(Base::XMLReader &reader)
                 if (strcmp(prop->getTypeId().getName(), TypeName) == 0){
                     prop->Restore(reader);
                 } else if (prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())){
+                    //reading legacy Support - when the Support could only be a single flat face.
                     App::PropertyLinkSub tmp;//getTypeId() is not static =(
                     if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
                         static_cast<App::PropertyLinkSubList*>(prop)->Restore_FromLinkSub(reader);
                     }
+                    this->MapMode.setValue(Attacher::mmFlatFace);
                 }
             }
         }
