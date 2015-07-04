@@ -599,9 +599,10 @@ void CmdPartDesignPlane::activated(int iMsg)
     openCommand("Create a datum plane");
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",FeatName.c_str());
     if (refStr.length() > 0)
-        doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());
-    doCommand(Doc,"App.activeDocument().%s.Offset = 0.0",FeatName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Angle = 0.0",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),refStr.toStdString().c_str());
+    Datum* pcDatum = static_cast<Datum*>(getDocument()->getObject(FeatName.c_str()));
+    eSuggestResult msg;
+    pcDatum->MapMode.setValue(pcDatum->attacher().listMapModes(msg));
     doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                    pcActiveBody->getNameInDocument(), FeatName.c_str());
     doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
@@ -643,7 +644,10 @@ void CmdPartDesignLine::activated(int iMsg)
     openCommand("Create a datum line");
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Line','%s')",FeatName.c_str());
     if (refStr.length() > 0)
-        doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());
+        doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),refStr.toStdString().c_str());
+    Datum* pcDatum = static_cast<Datum*>(getDocument()->getObject(FeatName.c_str()));
+    eSuggestResult msg;
+    pcDatum->MapMode.setValue(pcDatum->attacher().listMapModes(msg));
     doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                    pcActiveBody->getNameInDocument(), FeatName.c_str());
     doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
@@ -685,12 +689,14 @@ void CmdPartDesignPoint::activated(int iMsg)
     openCommand("Create a datum point");
     doCommand(Doc,"App.activeDocument().addObject('PartDesign::Point','%s')",FeatName.c_str());
     if (refStr.length() > 0)
-        doCommand(Doc,"App.activeDocument().%s.References = %s",FeatName.c_str(),refStr.toStdString().c_str());
+        doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),refStr.toStdString().c_str());
+    Datum* pcDatum = static_cast<Datum*>(getDocument()->getObject(FeatName.c_str()));
+    eSuggestResult msg;
+    pcDatum->MapMode.setValue(pcDatum->attacher().listMapModes(msg));
     doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
                    pcActiveBody->getNameInDocument(), FeatName.c_str());
     doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-
 }
 
 bool CmdPartDesignPoint::isActive(void)
@@ -886,7 +892,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             App::Plane* plane = static_cast<App::Plane*>(features.front());
             std::string FeatName = getUniqueObjectName("Sketch");
             std::string supportString = std::string("(App.activeDocument().") + plane->getNameInDocument() +
-                                        ", ['" + (false ? "back" : "front") + "'])";
+                                        ", [''])";
 
             Gui::Command::openCommand("Create a new Sketch");
             Gui::Command::doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());

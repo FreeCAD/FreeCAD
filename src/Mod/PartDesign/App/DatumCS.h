@@ -43,10 +43,6 @@ public:
         return "PartDesignGui::ViewProviderDatumCoordinateSystem";
     }
 
-    static void initHints();
-    const std::set<QString> getHint() const;
-    const int offsetsAllowed() const;
-
     Base::Vector3d getXAxis();
     Base::Vector3d getYAxis();
     Base::Vector3d getZAxis();
@@ -54,9 +50,6 @@ public:
 protected:
     virtual void onChanged(const App::Property* prop);
 
-private:
-    // Hints on what further references are required/possible on this feature for a given set of references
-    static std::map<std::multiset<QString>, std::set<QString> > hints;
 };
 
 } //namespace PartDesign

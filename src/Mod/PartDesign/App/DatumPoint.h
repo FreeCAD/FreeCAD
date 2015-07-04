@@ -44,23 +44,11 @@ public:
         return "PartDesignGui::ViewProviderDatumPoint";
     }
 
-    static void initHints();
-    const std::set<QString> getHint() const;
-    const int offsetsAllowed() const;
-
     Base::Vector3d getPoint();
 
 protected:
     virtual void onChanged(const App::Property* prop);
-
-private:
-    // Hints on what further references are required/possible on this feature for a given set of references
-    static std::map<std::multiset<QString>, std::set<QString> > hints;
 };
-
-// This has to be declared somewhere... a good place would be Part::Datum but since the code requires
-// access to PartDesign::Point etc. that's not possible
-const QString getRefType(const App::DocumentObject* obj, const std::string& subname);
 
 } //namespace PartDesign
 
