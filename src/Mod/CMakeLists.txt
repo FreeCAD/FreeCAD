@@ -125,3 +125,7 @@ endif(BUILD_SPREADSHEET)
 if(BUILD_JTREADER)
   add_subdirectory(JtReader)
 endif(BUILD_JTREADER)
+
+if(BUILD_PATH)
+    add_subdirectory(Path)
+endif(BUILD_PATH)

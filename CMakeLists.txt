@@ -165,6 +165,7 @@ OPTION(BUILD_MESH_PART "Build the FreeCAD mesh part module" ON)
 OPTION(BUILD_OPENSCAD "Build the FreeCAD openscad module" ON)
 OPTION(BUILD_PART "Build the FreeCAD part module" ON)
 OPTION(BUILD_PART_DESIGN "Build the FreeCAD part design module" ON)
+OPTION(BUILD_PATH "Build the FreeCAD path module" ON)
 OPTION(BUILD_PLOT "Build the FreeCAD plot module" ON)
 OPTION(BUILD_POINTS "Build the FreeCAD points module" ON)
 OPTION(BUILD_RAYTRACING "Build the FreeCAD ray tracing module" ON)
@@ -296,6 +297,12 @@ endif(BUILD_DRAWING)
 if(BUILD_ROBOT)
   set(BUILD_PART ON)
 endif(BUILD_ROBOT)
+
+#path module dependencies.
+if(BUILD_PATH)
+  set(BUILD_PART ON)
+  set(BUILD_ROBOT ON)
+endif(BUILD_PATH)
 
 #inferred from cmakelists.txt. appears to be working.
 if(BUILD_SKETCHER)
