@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>272</width>
-    <height>352</height>
+    <height>560</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,6 +34,9 @@
        <property name="text">
         <string>Reference 1</string>
        </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -47,6 +50,9 @@
       <widget class="QPushButton" name="buttonRef2">
        <property name="text">
         <string>Reference 2</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -62,6 +68,9 @@
        <property name="text">
         <string>Reference 3</string>
        </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -70,11 +79,42 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <item>
+      <widget class="QPushButton" name="buttonRef4">
+       <property name="text">
+        <string>Reference 4</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineRef4"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Available modes:</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QListWidget" name="listOfModes">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
       <widget class="QLabel" name="labelOffset">
        <property name="text">
-        <string>Offset</string>
+        <string>OffsetZ</string>
        </property>
       </widget>
      </item>
@@ -101,7 +141,7 @@
      <item>
       <widget class="QLabel" name="labelOffset2">
        <property name="text">
-        <string>Offset</string>
+        <string>OffsetY</string>
        </property>
       </widget>
      </item>
@@ -128,7 +168,7 @@
      <item>
       <widget class="QLabel" name="labelOffset3">
        <property name="text">
-        <string>Offset</string>
+        <string>OffsetX</string>
        </property>
       </widget>
      </item>
@@ -155,7 +195,7 @@
      <item>
       <widget class="QLabel" name="labelAngle">
        <property name="text">
-        <string>Angle</string>
+        <string>RotateXY</string>
        </property>
       </widget>
      </item>

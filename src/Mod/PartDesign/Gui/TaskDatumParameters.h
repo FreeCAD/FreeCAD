@@ -27,6 +27,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Mod/Part/App/Attacher.h>
 
 #include "ViewProviderDatum.h"
 
@@ -59,6 +60,14 @@ public:
     double getOffset3(void) const;
     double getAngle(void) const;
     bool   getFlip(void) const;
+
+    /**
+     * @brief getActiveMapMode returns either the default mode for selected
+     * references, or the mode that was selected by the user in the list. If
+     * no modes fit current set of references, mmDeactivated is returned.
+     */
+    Attacher::eMapMode getActiveMapMode();
+
     const bool isCompleted() const { return completed; }
 
 private Q_SLOTS:
@@ -70,9 +79,12 @@ private Q_SLOTS:
     void onRefName1(const QString& text);
     void onRefName2(const QString& text);
     void onRefName3(const QString& text);
+    void onRefName4(const QString& text);
     void onButtonRef1(const bool pressed = true);
     void onButtonRef2(const bool pressed = true);
     void onButtonRef3(const bool pressed = true);
+    void onButtonRef4(const bool pressed = true);
+    void onModeSelect(void);
 
 protected:
     void changeEvent(QEvent *e);
@@ -86,12 +98,23 @@ private:
     void onButtonRef(const bool pressed, const int idx);
     void onRefName(const QString& text, const int idx);
 
+    /**
+     * @brief updateListOfModes Fills the mode list with modes that apply to
+     * current set of references.
+     * @param curMode the mode to select in the list. If the mode isn't
+     * contained in the list, nothing is selected. If mmDeactivated is passed,
+     * currently selected mode is kept.
+     */
+    void updateListOfModes(Attacher::eMapMode curMode = Attacher::mmDeactivated);
+
 private:
     QWidget* proxy;
     Ui_TaskDatumParameters* ui;
     ViewProviderDatum *DatumView;
 
-    int refSelectionMode;
+    int iActiveRef; //what reference is being picked in 3d view now? -1 means no one, 0-2 means a reference is being picked.
+    bool autoNext;//if we should automatically switch to next reference (true after dialog launch, false afterwards)
+    std::vector<Attacher::eMapMode> modesInList; //this list is synchronous to what is populated into listOfModes widget.
     bool completed;
 
 };
