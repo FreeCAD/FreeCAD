@@ -28,6 +28,7 @@
 #include <App/PropertyLinks.h>
 #include <App/GeoFeature.h>
 #include <Mod/Part/App/DatumFeature.h>
+#include <Mod/Part/App/AttachableObject.h>
 
 namespace PartDesign
 {
@@ -44,19 +45,12 @@ public:
         return "PartDesignGui::ViewProviderDatumLine";
     }
 
-    static void initHints();
-    const std::set<QString> getHint() const;
-    const int offsetsAllowed() const;
-
     Base::Vector3d getBasePoint() const;
     Base::Vector3d getDirection() const;
 
 protected:
     virtual void onChanged(const App::Property* prop);
 
-private:
-    // Hints on what further references are required/possible on this feature for a given set of references
-    static std::map<std::multiset<QString>, std::set<QString> > hints;
 };
 
 } //namespace PartDesign

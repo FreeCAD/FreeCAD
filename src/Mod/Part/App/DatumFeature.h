@@ -28,6 +28,7 @@
 #include <App/PropertyLinks.h>
 
 #include "PartFeature.h"
+#include "AttachableObject.h"
 
 namespace Part
 {
@@ -35,7 +36,7 @@ namespace Part
 // This generic class is defined here so that the Sketcher module can access datum features
 // without creating a dependency on PartDesign
 
-class PartExport Datum : public Part::Feature
+class PartExport Datum : public Part::AttachableObject
 {
     PROPERTY_HEADER(Part::Datum);
 
@@ -44,24 +45,11 @@ public:
     virtual ~Datum();
     //short mustExecute();
 
-    /// The references defining the datum object, e.g. three planes for a point, two planes for a line
-    App::PropertyLinkSubList References;
-    /// Offsets and angle for defining planes
-    App::PropertyFloat Offset;
-    App::PropertyFloat Offset2;
-    App::PropertyFloat Offset3;
-    App::PropertyFloat Angle;
-
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
 
     /// returns the type name of the view provider
     virtual const char* getViewProviderName(void) const = 0;
-
-    virtual const std::set<QString> getHint() const = 0;
-
-    /// Return the number of offset values that make sense for the current reference combination
-    virtual const int offsetsAllowed() const = 0;
 
     /// Return a shape including Placement representing the datum feature
     TopoDS_Shape getShape() const;
@@ -69,10 +57,6 @@ public:
 protected:
     void onChanged (const App::Property* prop);
     void onDocumentRestored();
-
-protected:
-    std::multiset<QString> refTypes;    
-
 };
 
 } //namespace Part

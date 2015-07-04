@@ -67,16 +67,12 @@
 #endif
 
 using namespace Part;
+using namespace Attacher;
 
-PROPERTY_SOURCE_ABSTRACT(Part::Datum, Part::Feature)
+PROPERTY_SOURCE_ABSTRACT(Part::Datum, Part::AttachableObject)
 
 Datum::Datum(void)
 {
-    ADD_PROPERTY_TYPE(References,(0,0),"References",(App::PropertyType)(App::Prop_None),"References defining the datum feature");
-    ADD_PROPERTY(Offset,(0.0));
-    ADD_PROPERTY(Offset2,(0.0));
-    ADD_PROPERTY(Offset3,(0.0));
-    ADD_PROPERTY(Angle,(0.0));
     touch();
 }
 
@@ -86,20 +82,19 @@ Datum::~Datum()
 
 void Datum::onChanged (const App::Property* prop)
 {
-    Part::Feature::onChanged(prop);
+    AttachableObject::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *Datum::execute(void)
 {
-    References.touch();
-    return StdReturn;
+    return AttachableObject::execute();
 }
 
 void Datum::onDocumentRestored()
 {
     // This seems to be the only way to make the ViewProvider display the datum feature
-    References.touch();
-    Part::Feature::onDocumentRestored();
+    Support.touch();
+    AttachableObject::onDocumentRestored();
 }
 
 TopoDS_Shape Datum::getShape() const
