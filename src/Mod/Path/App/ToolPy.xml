@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport 
+        Father="PersistencePy" 
+        Name="ToolPy" 
+        Twin="Tool" 
+        TwinPointer="Tool" 
+        Include="Mod/Path/App/Tooltable.h" 
+        Namespace="Path" 
+        FatherInclude="Base/PersistencePy.h" 
+        FatherNamespace="Base"
+        Constructor="true"
+        Delete="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Yorik van Havre" EMail="yorik@uncreated.net" />
+            <UserDocu>The Tool objects holds the properties of a CNC tool.
+optional attributes:
+  name: a user-defined name for this tool
+  tooltype: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap, EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined 
+  material: HighSpeedSteel, HighCarbonToolSteel, Carbide, CastAlloy, Ceramics, Diamond, Sialon or Undefined
+  diameter : the diameter of this tool
+  lengthOffset
+  flatRadius
+  cornerRadius
+  cuttingEdgeAngle
+  cuttingEdgeHeight</UserDocu>
+        </Documentation>
+        <Attribute Name="Name" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the name of this tool in mm</UserDocu>
+            </Documentation>
+            <Parameter Name="Name" Type="String"/>
+        </Attribute>
+        <Attribute Name="ToolType" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the type of this tool: Drill, CenterDrill, CounterSink, CounterBore, Reamer, Tap,
+EndMill, SlotCutter, BallEndMill, ChamferMill, CornerRound, Engraver or Undefined</UserDocu>
+            </Documentation>
+            <Parameter Name="ToolType" Type="String"/>
+        </Attribute>
+        <Attribute Name="Material" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the material of this tool: Steel, Carbide, HighSpeedSteel,
+HighCarbonToolSteel CastAlloy, Ceramics, Diamond, Sialon or Undefined</UserDocu>
+            </Documentation>
+            <Parameter Name="Material" Type="String"/>
+        </Attribute>
+        <Attribute Name="Diameter" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the diameter of this tool in mm</UserDocu>
+            </Documentation>
+            <Parameter Name="Diameter" Type="Float"/>
+        </Attribute>
+        <Attribute Name="LengthOffset" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the length offset of this tool in mm</UserDocu>
+            </Documentation>
+            <Parameter Name="LengthOffset" Type="Float"/>
+        </Attribute>
+        <Attribute Name="FlatRadius" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the flat radius of this tool in mm</UserDocu>
+            </Documentation>
+            <Parameter Name="FlatRadius" Type="Float"/>
+        </Attribute>
+        <Attribute Name="CornerRadius" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the corner radius of this tool in mm</UserDocu>
+            </Documentation>
+            <Parameter Name="CornerRadius" Type="Float"/>
+        </Attribute>
+        <Attribute Name="CuttingEdgeAngle" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the cutting edge angle of this tool</UserDocu>
+            </Documentation>
+            <Parameter Name="CuttingEdgeAngle" Type="Float"/>
+        </Attribute>
+        <Attribute Name="CuttingEdgeHeight" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the cutting edge height of this tool in mm</UserDocu>
+            </Documentation>
+            <Parameter Name="CuttingEdgeHeight" Type="Float"/>
+        </Attribute>
+        <Methode Name="copy">
+            <Documentation>
+                <UserDocu>returns a copy of this tool</UserDocu>
+            </Documentation>
+        </Methode>
+        <ClassDeclarations>
+            bool touched;
+        </ClassDeclarations>
+    </PythonExport>
+</GenerateModel>

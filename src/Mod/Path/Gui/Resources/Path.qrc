@@ -1,0 +1,27 @@
+<RCC>
+    <qresource> 
+        <file>icons/preferences-path.svg</file>
+        <file>icons/Path-Toolpath.svg</file>
+        <file>icons/Path-Compound.svg</file>
+        <file>icons/Path-Shape.svg</file>
+        <file>icons/Path-Profile.svg</file>
+        <file>icons/Path-Pocket.svg</file>
+        <file>icons/Path-Drilling.svg</file>
+        <file>icons/Path-Project.svg</file>
+        <file>icons/Path-Dressup.svg</file>
+        <file>icons/Path-Hop.svg</file>
+        <file>icons/Path-Datums.svg</file>
+        <file>icons/Path-Copy.svg</file>
+        <file>icons/Path-ToolTable.svg</file>
+        <file>icons/Path-LengthOffset.svg</file>
+        <file>icons/Path-Axis.svg</file>
+        <file>icons/Path-Stock.svg</file>
+        <file>icons/Path-Plane.svg</file>
+        <file>icons/Path-Post.svg</file>
+        <file>icons/Path-LoadTool.svg</file>
+        <file>icons/Path-Comment.svg</file>
+        <file>icons/Path-Stop.svg</file>
+        <file>icons/Path-Machine.svg</file>
+        <file>icons/Path-Kurve.svg</file>
+    </qresource>
+</RCC> 
