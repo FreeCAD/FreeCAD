@@ -387,9 +387,9 @@ void Workbench::fixSketchSupport (Sketcher::SketchObject* sketch)
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",Datum.c_str());
         QString refStr = QString::fromAscii("[(App.activeDocument().") + QString::fromAscii(App::Part::BaseplaneTypes[index]) +
             QString::fromAscii(",'')]");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.References = %s",Datum.c_str(), refStr.toStdString().c_str());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Offset = %f",Datum.c_str(), offset);
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Angle = 0.0",Datum.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",Datum.c_str(), refStr.toStdString().c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",Datum.c_str(), AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.superPlacement.Base.z = %f",Datum.c_str(), offset);
         Gui::Command::doCommand(Gui::Command::Doc,
                 "App.activeDocument().%s.insertFeature(App.activeDocument().%s, App.activeDocument().%s)",
                 body->getNameInDocument(), Datum.c_str(), sketch->getNameInDocument());
