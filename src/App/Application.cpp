@@ -100,6 +100,7 @@
 // or the Python script "SubWCRev.py" on Linux based systems which builds
 // src/Build/Version.h. Or create your own from src/Build/Version.h.in!
 #include <Build/Version.h>
+#include "Branding.h"
 
 #include <boost/tokenizer.hpp>
 #include <boost/token_functions.hpp>
@@ -107,6 +108,7 @@
 #include <boost/bind.hpp>
 #include <boost/version.hpp>
 #include <QDir>
+#include <QFileInfo>
 
 using namespace App;
 using namespace std;
@@ -1131,6 +1133,17 @@ void Application::initConfig(int argc, char ** argv)
 
     _argc = argc;
     _argv = argv;
+
+    // Now it's time to read-in the file branding.xml if it exists
+    Branding brand;
+    QString binDir = QString::fromUtf8((mConfig["AppHomePath"] + "bin").c_str());
+    QFileInfo fi(binDir, QString::fromAscii("branding.xml"));
+    if (brand.readFile(fi.absoluteFilePath())) {
+        Branding::XmlConfig cfg = brand.getUserDefines();
+        for (Branding::XmlConfig::iterator it = cfg.begin(); it != cfg.end(); ++it) {
+            App::Application::Config()[it.key()] = it.value();
+        }
+    }
 
     // extract home paths
     ExtractUserPath();
