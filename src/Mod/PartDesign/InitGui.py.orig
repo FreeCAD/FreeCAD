@@ -46,15 +46,17 @@ class PartDesignWorkbench ( Workbench ):
                     from FeatureHole import HoleGui
                 except:
                     pass
-<<<<<<< 1cdecc120fcdcd3447f72fdd734cf6c4f78b056b
+<<<<<<< b5588a8b68f0650311b83fab5cf5afffd31f9a5f
             import PartDesignGui
             import PartDesign
             try:
                 import InvoluteGearFeature
             except ImportError:
                 print "Involute gear module cannot be loaded"
-    def GetClassName(self):
-            return "PartDesignGui::Workbench"
+                try:
+                    from FeatureHole import HoleGui
+                except:
+                    pass
 =======
                 import PartDesignGui
                 import PartDesign
@@ -62,13 +64,13 @@ class PartDesignWorkbench ( Workbench ):
                     import InvoluteGearFeature
                 except ImportError:
                     print "Involute gear module cannot be loaded"
-                try:
-                    from FeatureHole import HoleGui
-                except:
-                    pass
+                #try:
+                #    from FeatureHole import HoleGui
+                #except:
+                #    pass
+>>>>>>> remove hole feature
 
-        def GetClassName(self):
-                return "PartDesignGui::Workbench"
->>>>>>> some fixes
+    def GetClassName(self):
+            return "PartDesignGui::Workbench"
 
 Gui.addWorkbench(PartDesignWorkbench())

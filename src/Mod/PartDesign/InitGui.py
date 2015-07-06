@@ -52,10 +52,10 @@ class PartDesignWorkbench ( Workbench ):
                 import InvoluteGearFeature
             except ImportError:
                 print "Involute gear module cannot be loaded"
-                try:
-                    from FeatureHole import HoleGui
-                except:
-                    pass
+                #try:
+                #    from FeatureHole import HoleGui
+                #except:
+                #    pass
 
     def GetClassName(self):
             return "PartDesignGui::Workbench"
