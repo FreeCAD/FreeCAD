@@ -47,6 +47,7 @@
 # include <BRepAdaptor_Curve.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepExtrema_DistShapeShape.hxx>
 #endif
 #include <BRepLProp_SLProps.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
@@ -92,6 +93,7 @@ const char* AttachEngine::eMapModeStrings[]= {
     "TangentV",
     "TwoPointLine",
     "IntersectionLine",
+    "ProximityLine",
 
     "ObjectOrigin",
     "Focus1",
@@ -101,6 +103,8 @@ const char* AttachEngine::eMapModeStrings[]= {
     "CenterOfMass",
     "IntersectionPoint",
     "Vertex",
+    "ProximityPoint1",
+    "ProximityPoint2",
     NULL};
 
 
@@ -1297,6 +1301,8 @@ AttachEngineLine::AttachEngineLine()
     modeRefTypes[mm1Directrix2].push_back(cat(rtEllipse));
     modeRefTypes[mm1Directrix2].push_back(cat(rtHyperbola));
 
+    modeRefTypes[mm1Proximity].push_back(cat(rtAnything, rtAnything));
+
     this->EnableAllSupportedModes();
 }
 
@@ -1461,6 +1467,26 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
                 LineBasePoint = dx2.Location();
             }
         }break;
+        case mm1Proximity:{
+            if (shapes.size() < 2)
+                throw Base::Exception("AttachEngineLine::calculateAttachedPlacement: Proximity mode requires two shapes; only one is supplied");
+            if (shapes[0]->IsNull())
+                throw Base::Exception("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+            if (shapes[1]->IsNull())
+                throw Base::Exception("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+            BRepExtrema_DistShapeShape distancer (*(shapes[0]), *(shapes[1]));
+            if (!distancer.IsDone())
+                throw Base::Exception("AttachEngineLine::calculateAttachedPlacement: proximity calculation failed.");
+            if (distancer.NbSolution()>1)
+                Base::Console().Warning("AttachEngineLine::calculateAttachedPlacement: proximity calculation gave %i solutions, ambiguous.\n",int(distancer.NbSolution()));
+            gp_Pnt p1 = distancer.PointOnShape1(1);
+            gp_Pnt p2 = distancer.PointOnShape2(1);
+            LineBasePoint = p1;
+            gp_Vec dist = gp_Vec(p1,p2);
+            if (dist.Magnitude() < Precision::Confusion())
+                throw Base::Exception("AttachEngineLine::calculateAttachedPlacement: can't make proximity line, because shapes touch or intersect");
+            LineDir = gp_Dir(dist);
+        }break;
         default:
             throwWrongMode(mmode);
         }
@@ -1502,6 +1528,10 @@ AttachEnginePoint::AttachEnginePoint()
 
     modeRefTypes[mm0Focus2].push_back(cat(rtEllipse));
     modeRefTypes[mm0Focus2].push_back(cat(rtHyperbola));
+
+    s = cat(rtAnything, rtAnything);
+    modeRefTypes[mm0ProximityPoint1].push_back(s);
+    modeRefTypes[mm0ProximityPoint2].push_back(s);
 
     this->EnableAllSupportedModes();
 }
@@ -1605,6 +1635,26 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
                 BasePoint = f1;
             else
                 BasePoint = f2;
+        }break;
+        case mm0ProximityPoint1:
+        case mm0ProximityPoint2:{
+            if (shapes.size() < 2)
+                throw Base::Exception("AttachEngineLine::calculateAttachedPlacement: Proximity mode requires two shapes; only one is supplied");
+            if (shapes[0]->IsNull())
+                throw Base::Exception("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+            if (shapes[1]->IsNull())
+                throw Base::Exception("Null shape in AttachEngineLine::calculateAttachedPlacement()!");
+            BRepExtrema_DistShapeShape distancer (*(shapes[0]), *(shapes[1]));
+            if (!distancer.IsDone())
+                throw Base::Exception("AttachEngineLine::calculateAttachedPlacement: proximity calculation failed.");
+            if (distancer.NbSolution()>1)
+                Base::Console().Warning("AttachEngineLine::calculateAttachedPlacement: proximity calculation gave %i solutions, ambiguous.\n",int(distancer.NbSolution()));
+            gp_Pnt p1 = distancer.PointOnShape1(1);
+            gp_Pnt p2 = distancer.PointOnShape2(1);
+            if (mmode == mm0ProximityPoint1)
+                BasePoint = p1;
+            else
+                BasePoint = p2;
         }break;
         default:
             throwWrongMode(mmode);
