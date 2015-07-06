@@ -89,17 +89,17 @@ SET(FeatureHole_UI
 
 SET(all_featurehole_files ${FeatureHole_SRCS} ${FeatureHole_UI})
 
-ADD_CUSTOM_TARGET(FeatureHole ALL
-    SOURCES ${all_featurehole_files}
-)
+#ADD_CUSTOM_TARGET(FeatureHole ALL
+#    SOURCES ${all_featurehole_files}
+#)
 
-SET(all_files ${all_featurehole_files})
+#SET(all_files ${all_featurehole_files})
 
 fc_copy_sources(Mod/PartDesign "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
 
-INSTALL(
-    FILES
-        ${FeatureHole_SRCS}
-    DESTINATION
-        Mod/PartDesign/FeatureHole
-)
+#INSTALL(
+#    FILES
+#        ${FeatureHole_SRCS}
+#    DESTINATION
+#        Mod/PartDesign/FeatureHole
+#)
