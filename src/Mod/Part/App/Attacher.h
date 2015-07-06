@@ -83,6 +83,7 @@ enum eMapMode {
     mm1TangentV,
     mm1TwoPoints,
     mm1Intersection,
+    mm1Proximity,
 
     mm0Origin,
     mm0Focus1,
@@ -92,6 +93,8 @@ enum eMapMode {
     mm0CenterOfMass,
     mm0Intersection,
     mm0Vertex,
+    mm0ProximityPoint1,
+    mm0ProximityPoint2,
     mmDummy_NumberOfModes//a value useful to check the validity of mode value
 };//see also eMapModeStrings[] definition in .cpp
 
