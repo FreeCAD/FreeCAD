@@ -640,6 +640,7 @@ void Workbench::activated()
 
     const char* NoSel[] = {
         "PartDesign_Body",
+        "PartDesign_Part",
         0};
     Watcher.push_back(new Gui::TaskView::TaskWatcherCommandsEmptySelection(
         NoSel,
