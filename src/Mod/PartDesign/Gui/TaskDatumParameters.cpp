@@ -170,7 +170,8 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
     double offset2 = pcDatum->superPlacement.getValue().getPosition().y;
     double offset3 = pcDatum->superPlacement.getValue().getPosition().x;
     double angle = 0;
-    pcDatum->superPlacement.getValue().getRotation().getValue(Base::Vector3d(),angle);
+    Base::Vector3d val;
+    pcDatum->superPlacement.getValue().getRotation().getValue(val, angle);
 
     // Fill data into dialog elements
     ui->spinOffset->setValue(offset);
@@ -317,7 +318,8 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     }
 
     double angle = 0;
-    pcDatum->superPlacement.getValue().getRotation().getValue(Base::Vector3d(), angle);
+    Base::Vector3d val;
+    pcDatum->superPlacement.getValue().getRotation().getValue(val, angle);
 
     // Enable the next reference button
     int numrefs = refs.size();
