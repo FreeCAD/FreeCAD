@@ -37,7 +37,7 @@ public:
 Q_SIGNALS:
   void activated();
 
-public slots:
+public Q_SLOTS:
   void fold();
 
 protected Q_SLOTS:

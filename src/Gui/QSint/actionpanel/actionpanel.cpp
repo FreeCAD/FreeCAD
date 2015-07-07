@@ -17,7 +17,7 @@ namespace QSint
 
 
 ActionPanel::ActionPanel(QWidget *parent) :
-    BaseClass(parent)
+    BaseClass(parent), mySpacer(0)
 {
     setProperty("class", "panel");
 
@@ -64,9 +64,28 @@ void ActionPanel::addWidget(QWidget *w)
     layout()->addWidget(w);
 }
 
+void ActionPanel::removeWidget(QWidget *w)
+{
+  if (w)
+    layout()->removeWidget(w);
+}
+
 void ActionPanel::addStretch(int s)
 {
-  ((QVBoxLayout*)layout())->addStretch(s);
+  //((QVBoxLayout*)layout())->addStretch(s);
+  if (!mySpacer) {
+    mySpacer = new QSpacerItem(0,0,QSizePolicy::Minimum, QSizePolicy::Expanding);
+    layout()->addItem(mySpacer);
+  }
+}
+
+void ActionPanel::removeStretch()
+{
+  if (mySpacer) {
+    layout()->removeItem(mySpacer);
+    delete mySpacer;
+    mySpacer = 0;
+  }
 }
 
 ActionGroup * ActionPanel::createGroup()

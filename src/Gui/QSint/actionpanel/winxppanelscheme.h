@@ -10,7 +10,6 @@
 
 #include "actionpanelscheme.h"
 
-
 namespace QSint
 {
 
