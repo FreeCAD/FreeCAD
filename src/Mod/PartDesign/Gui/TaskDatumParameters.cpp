@@ -874,7 +874,7 @@ bool TaskDlgDatumParameters::accept()
         auto btYes = msg.addButton(QMessageBox::Yes);
         auto btNo =  msg.addButton(QMessageBox::No);
         msg.setDefaultButton(btNo);
-        msg.setParent(parameter);
+        msg.setIcon(QMessageBox::Warning);
         msg.exec();
         if (msg.clickedButton() == btNo)
             return false;
