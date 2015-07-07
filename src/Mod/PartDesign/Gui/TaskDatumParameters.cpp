@@ -81,10 +81,11 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
         int subId = std::atoi(&sub[6]);
         return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + QObject::tr("Vertex") + QString::number(subId);
     } else {
-        return QString::fromAscii(obj->getNameInDocument()) + QString::fromAscii(":") + QString::fromLatin1(sub.c_str());
+        //something else that face/edge/vertex. Can be empty string.
+        return QString::fromAscii(obj->getNameInDocument())
+                + (sub.length()>0 ? QString::fromAscii(":") : QString())
+                + QString::fromLatin1(sub.c_str());
     }
-
-    return QObject::tr("No reference selected");
 }
 
 void TaskDatumParameters::makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames) {
@@ -123,20 +124,20 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
             this, SLOT(onAngleChanged(double)));
     connect(ui->checkBoxFlip, SIGNAL(toggled(bool)),
             this, SLOT(onCheckFlip(bool)));
-    connect(ui->buttonRef1, SIGNAL(pressed()),
-            this, SLOT(onButtonRef1()));
+    connect(ui->buttonRef1, SIGNAL(clicked(bool)),
+            this, SLOT(onButtonRef1(bool)));
     connect(ui->lineRef1, SIGNAL(textEdited(QString)),
             this, SLOT(onRefName1(QString)));
-    connect(ui->buttonRef2, SIGNAL(pressed()),
-            this, SLOT(onButtonRef2()));
+    connect(ui->buttonRef2, SIGNAL(clicked(bool)),
+            this, SLOT(onButtonRef2(bool)));
     connect(ui->lineRef2, SIGNAL(textEdited(QString)),
             this, SLOT(onRefName2(QString)));
-    connect(ui->buttonRef3, SIGNAL(pressed()),
-            this, SLOT(onButtonRef3()));
+    connect(ui->buttonRef3, SIGNAL(clicked(bool)),
+            this, SLOT(onButtonRef3(bool)));
     connect(ui->lineRef3, SIGNAL(textEdited(QString)),
             this, SLOT(onRefName3(QString)));
-    connect(ui->buttonRef4, SIGNAL(pressed()),
-            this, SLOT(onButtonRef4()));
+    connect(ui->buttonRef4, SIGNAL(clicked(bool)),
+            this, SLOT(onButtonRef4(bool)));
     connect(ui->lineRef4, SIGNAL(textEdited(QString)),
             this, SLOT(onRefName4(QString)));
     connect(ui->listOfModes,SIGNAL(itemSelectionChanged()),
@@ -264,7 +265,7 @@ QString getShTypeText(eRefType type)
     throw Base::Exception("getShTypeText: type value is wrong, or a string is missing in the list");
 }
 
-const QString makeRefText(std::set<eRefType> hint)
+const QString makeHintText(std::set<eRefType> hint)
 {
     QString result;
     for (std::set<eRefType>::const_iterator t = hint.begin(); t != hint.end(); t++) {
@@ -334,7 +335,7 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
     ui->labelAngle->setEnabled(true);
     ui->spinAngle->setEnabled(true);
 
-    QString hintText = makeRefText(hint);
+    QString hintText = makeHintText(hint);
 
     // Check if we have all required references
     if (hint.size() == 0) {
@@ -344,9 +345,7 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
         ui->lineRef3->setEnabled(numrefs >= 3);
         ui->buttonRef4->setEnabled(numrefs >= 4);
         ui->lineRef4->setEnabled(numrefs >= 4);
-        onButtonRef1(false); // No more references required
         completed = true;
-        return;
     }
 
     if (hintText.size() != 0 && autoNext) {
@@ -364,6 +363,9 @@ void TaskDatumParameters::updateUI(std::string message, bool error)
         } else if (numrefs == 3) {
             ui->buttonRef4->setText(hintText);
             onButtonRef4(true);
+            autoNext = true;
+        } else if (numrefs == 4) {
+            onButtonRef4(false);
             autoNext = false;
         }
     }
@@ -408,6 +410,16 @@ void TaskDatumParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             if ((refs[r] == selObj) && (refnames[r] == subname))
                 return;
 
+        if (autoNext && iActiveRef > 0 && iActiveRef == refnames.size()){
+            if (refs[iActiveRef-1] == selObj
+                && refnames[iActiveRef-1].length() != 0 && subname.length() == 0){
+                //A whole object was selected by clicking it twice. Fill it
+                //into previous reference, where a sub-named reference filled by
+                //the first click is already stored.
+
+                iActiveRef--;
+            }
+        }
         if (iActiveRef < refs.size()) {
             refs[iActiveRef] = selObj;
             refnames[iActiveRef] = subname;
@@ -507,14 +519,13 @@ void TaskDatumParameters::onCheckFlip(bool on)
     pcDatum->getDocument()->recomputeFeature(pcDatum);
 }
 
-void TaskDatumParameters::onButtonRef(const bool pressed, const int idx)
+void TaskDatumParameters::onButtonRef(const bool checked, const int idx)
 {
     autoNext = false;
-    if (pressed) {
+    if (checked) {
         Gui::Selection().clearSelection();
         iActiveRef = idx;
     } else {
-        Gui::Selection().rmvSelectionGate();
         iActiveRef = -1;
     }
     ui->buttonRef1->setChecked(iActiveRef==0);
@@ -523,17 +534,17 @@ void TaskDatumParameters::onButtonRef(const bool pressed, const int idx)
     ui->buttonRef4->setChecked(iActiveRef==3);
 }
 
-void TaskDatumParameters::onButtonRef1(const bool pressed) {
-    onButtonRef(pressed, 0);
+void TaskDatumParameters::onButtonRef1(const bool checked) {
+    onButtonRef(checked, 0);
 }
-void TaskDatumParameters::onButtonRef2(const bool pressed) {
-    onButtonRef(pressed, 1);
+void TaskDatumParameters::onButtonRef2(const bool checked) {
+    onButtonRef(checked, 1);
 }
-void TaskDatumParameters::onButtonRef3(const bool pressed) {
-    onButtonRef(pressed, 2);
+void TaskDatumParameters::onButtonRef3(const bool checked) {
+    onButtonRef(checked, 2);
 }
-void TaskDatumParameters::onButtonRef4(const bool pressed) {
-    onButtonRef(pressed, 3);
+void TaskDatumParameters::onButtonRef4(const bool checked) {
+    onButtonRef(checked, 3);
 }
 
 void TaskDatumParameters::onModeSelect()
@@ -597,8 +608,6 @@ void TaskDatumParameters::onRefName(const QString& text, const int idx)
         // everything is OK (we assume a Part can only have exactly 3 App::Line objects located at the base of the feature tree)
         subElement = "";
     } else if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        if (!activeBody->hasFeature(obj))
-            return;
         subElement = "";
     } else {
         // TODO: check validity of the text that was entered: Does subElement actually reference to an element on the obj?
@@ -709,7 +718,11 @@ Attacher::eMapMode TaskDatumParameters::getActiveMapMode()
     else {
         Part::Datum* pcDatum = static_cast<Part::Datum*>(DatumView->getObject());
         eSuggestResult msg;
-        return pcDatum->attacher().listMapModes(msg);
+        eMapMode suggMode = pcDatum->attacher().listMapModes(msg);
+        if (msg == srOK)
+            return suggMode;
+        else
+            return mmDeactivated;
     };
 }
 
@@ -753,32 +766,6 @@ double TaskDatumParameters::getAngle() const
 bool   TaskDatumParameters::getFlip() const
 {
     return ui->checkBoxFlip->isChecked();
-}
-
-QString TaskDatumParameters::getReference(const int idx) const
-{
-    QString obj, sub;
-
-    if (idx == 0) {
-        obj = ui->lineRef1->text();
-        sub =  ui->lineRef1->property("RefName").toString();
-    } else if (idx == 1) {
-        obj = ui->lineRef2->text();
-        sub = ui->lineRef2->property("RefName").toString();
-    } else if (idx == 2) {
-        obj = ui->lineRef3->text();
-        sub = ui->lineRef3->property("RefName").toString();
-    } else if (idx == 3) {
-        obj = ui->lineRef4->text();
-        sub = ui->lineRef4->property("RefName").toString();
-    }
-
-    obj = obj.left(obj.indexOf(QString::fromAscii(":")));
-
-    if (obj == tr("No reference selected"))
-        return QString::fromAscii("");
-    else
-        return QString::fromAscii("(App.activeDocument().") + obj + QString::fromAscii(", '") + sub + QString::fromAscii("')");
 }
 
 TaskDatumParameters::~TaskDatumParameters()
@@ -876,6 +863,7 @@ void TaskDlgDatumParameters::clicked(int)
 
 bool TaskDlgDatumParameters::accept()
 {
+    bool bIgnoreError = false;
     if (parameter->getActiveMapMode() == mmDeactivated) {
         QMessageBox msg;
         msg.setWindowTitle(tr("Incompatible reference set"));
@@ -902,7 +890,9 @@ bool TaskDlgDatumParameters::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.superPlacement.Rotation.Angle = %f",name.c_str(),parameter->getAngle());
         //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Checked = %i",name.c_str(),parameter->getCheckBox1()?1:0);
 
+        //here it is assumed that the support was already assigned, it just outputs a dummy Python command to the console
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Support = %s", name.c_str(), pcDatum->Support.getPyReprString().c_str());
+
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.MapMode = '%s'", name.c_str(), AttachEngine::eMapModeStrings[parameter->getActiveMapMode()]);
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
