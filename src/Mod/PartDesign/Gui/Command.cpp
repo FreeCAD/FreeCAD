@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Standard_Failure.hxx>
 # include <TopoDS_Shape.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS.hxx>
@@ -496,79 +497,66 @@ bool CmdPartDesignMoveFeatureInTree::isActive(void)
 //===========================================================================
 
 /**
- * @brief getReferenceString Prepares selection to be fed through Python to a datum feature.
- * @param cmd
- * @return string representing the selection, in format
- * "[(App.activeDocument().Pad,'Vertex8'),(App.activeDocument().Pad,'Vertex9')]".
- * Zero-length string if there is no selection, or the selection is
- * inappropriate.
+ * @brief UnifiedDatumCommand is a common routine called by datum plane, line and point commands
+ * @param cmd (i/o) command, to have shortcuts to doCommand, etc.
+ * @param type (input)
+ * @param name (input). Is used to generate new name for an object, and to fill undo messages.
+ *
  */
-const QString getReferenceString(Gui::Command* cmd)
+void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
 {
-    QString referenceString;
+    try{
+        std::string fullTypeName (type.getName());
 
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */false);
-    if(!pcActiveBody) return QString::fromAscii("");
+        App::PropertyLinkSubList support;
+        cmd.getSelection().getAsPropertyLinkSubList(support);
 
-    Gui::SelectionFilter GeometryFilter("SELECT Part::Feature SUBELEMENT Face COUNT 1");
-    Gui::SelectionFilter DatumFilter   ("SELECT PartDesign::Plane COUNT 1");
-    Gui::SelectionFilter EdgeFilter    ("SELECT Part::Feature SUBELEMENT Edge COUNT 1");
-    Gui::SelectionFilter LineFilter    ("SELECT PartDesign::Line COUNT 1");
-    Gui::SelectionFilter VertexFilter  ("SELECT Part::Feature SUBELEMENT Vertex COUNT 1");
-    Gui::SelectionFilter PointFilter   ("SELECT PartDesign::Point COUNT 1");
-    Gui::SelectionFilter PlaneFilter   ("SELECT App::Plane COUNT 1");
+        bool bEditSelected = false;
+        if (support.getSize() == 1 && support.getValue() ){
+            if (support.getValue()->isDerivedFrom(type))
+                bEditSelected = true;
+        }
 
+        if (bEditSelected) {
+            std::string tmp = std::string("Edit ")+name;
+            cmd.openCommand(tmp.c_str());
+            cmd.doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",support.getValue()->getNameInDocument());
+        } else {
+            PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+            if (pcActiveBody == 0)
+                return;
 
-    if (EdgeFilter.match())
-        GeometryFilter = EdgeFilter;
-    else if (VertexFilter.match())
-        GeometryFilter = VertexFilter;
+            std::string FeatName = cmd.getUniqueObjectName(name.c_str());
 
-    if (LineFilter.match())
-        DatumFilter = LineFilter;
-    else if (PointFilter.match())
-        DatumFilter = PointFilter;
-    else if (PlaneFilter.match())
-        DatumFilter = PlaneFilter;
+            std::string tmp = std::string("Create ")+name;
 
-    if (GeometryFilter.match() || DatumFilter.match()) {
-        // get the selected object
-        if (GeometryFilter.match()) {
-            Part::Feature *part = static_cast<Part::Feature*>(GeometryFilter.Result[0][0].getObject());
-            // FIXME: Reject or warn about feature that is outside of active body, and feature
-            // that comes after the current insert point (Tip)
-            const std::vector<std::string> &sub = GeometryFilter.Result[0][0].getSubNames();
-            referenceString = QString::fromAscii("[");
+            cmd.openCommand(tmp.c_str());
+            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().addObject('%s','%s')",fullTypeName.c_str(),FeatName.c_str());
 
-            for (int r = 0; r != sub.size(); r++) {
-                // get the selected sub shape
-                const Part::TopoShape &shape = part->Shape.getValue();
-                TopoDS_Shape sh = shape.getSubShape(sub[r].c_str());
-                if (!sh.IsNull()) {
-                    referenceString += QString::fromAscii(r == 0 ? "" : ",") +
-                                QString::fromAscii("(App.activeDocument().") + QString::fromAscii(part->getNameInDocument()) +
-                                QString::fromAscii(",'") + QString::fromStdString(sub[r]) + QString::fromAscii("')");
+            //test if current selection fits a mode.
+            if (support.getSize() > 0) {
+                AttachableObject* pcDatum = static_cast<AttachableObject*>(cmd.getDocument()->getObject(FeatName.c_str()));
+                pcDatum->attacher().references.Paste(support);
+                eSuggestResult msg;
+                eMapMode suggMode = pcDatum->attacher().listMapModes(msg);
+                if (msg == srOK) {
+                    //fits some mode. Populate support property.
+                    cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),support.getPyReprString().c_str());
+                    cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),AttachEngine::eMapModeStrings[suggMode]);
+                } else {
+                    QMessageBox::information(Gui::getMainWindow(),QObject::tr("Invalid selection"), QObject::tr("There are no attachment modes that fit seleted objects. Select something else."));
                 }
             }
-
-            referenceString += QString::fromAscii("]");
-            if (referenceString.length() == 2) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No sub shape selected"),
-                    QObject::tr("You have to select a face, edge, vertex or plane to define a datum feature!"));
-                return QString::fromAscii("");
-            }
-
-            return referenceString;
-        } else {
-            Part::Feature *part = static_cast<Part::Feature*>(DatumFilter.Result[0][0].getObject());
-            return QString::fromAscii("[(App.activeDocument().") + QString::fromAscii(part->getNameInDocument()) +
-                    QString::fromAscii(",'')]");
+            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                           pcActiveBody->getNameInDocument(), FeatName.c_str());
+            cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
+            cmd.doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
         }
+    } catch (Base::Exception &e) {
+        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.what()));
+    } catch (Standard_Failure &e) {
+        QMessageBox::warning(Gui::getMainWindow(),QObject::tr("Error"),QString::fromLatin1(e.GetMessageString()));
     }
-
-    //datum features task can start without reference, as every needed one can be set from
-    //withing the task.
-    return QString::fromAscii("");
 }
 
 /* Datum feature commands =======================================================*/
@@ -589,25 +577,7 @@ CmdPartDesignPlane::CmdPartDesignPlane()
 
 void CmdPartDesignPlane::activated(int iMsg)
 {
-    // create Datum plane
-    std::string FeatName = getUniqueObjectName("DatumPlane");
-    QString refStr = getReferenceString(this);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if (pcActiveBody == 0)
-        return;
-
-    openCommand("Create a datum plane");
-    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Plane','%s')",FeatName.c_str());
-    if (refStr.length() > 0)
-        doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),refStr.toStdString().c_str());
-    Datum* pcDatum = static_cast<Datum*>(getDocument()->getObject(FeatName.c_str()));
-    eSuggestResult msg;
-    pcDatum->MapMode.setValue(pcDatum->attacher().listMapModes(msg));
-    doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
-                   pcActiveBody->getNameInDocument(), FeatName.c_str());
-    doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-
+    UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::Plane"),"DatumPlane");
 }
 
 bool CmdPartDesignPlane::isActive(void)
@@ -634,25 +604,7 @@ CmdPartDesignLine::CmdPartDesignLine()
 
 void CmdPartDesignLine::activated(int iMsg)
 {
-    // create Datum line
-    std::string FeatName = getUniqueObjectName("DatumLine");
-    QString refStr = getReferenceString(this);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if (pcActiveBody == 0)
-        return;
-
-    openCommand("Create a datum line");
-    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Line','%s')",FeatName.c_str());
-    if (refStr.length() > 0)
-        doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),refStr.toStdString().c_str());
-    Datum* pcDatum = static_cast<Datum*>(getDocument()->getObject(FeatName.c_str()));
-    eSuggestResult msg;
-    pcDatum->MapMode.setValue(pcDatum->attacher().listMapModes(msg));
-    doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
-                   pcActiveBody->getNameInDocument(), FeatName.c_str());
-    doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
-
+    UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::Line"),"DatumLine");
 }
 
 bool CmdPartDesignLine::isActive(void)
@@ -679,24 +631,7 @@ CmdPartDesignPoint::CmdPartDesignPoint()
 
 void CmdPartDesignPoint::activated(int iMsg)
 {
-    // create Datum point
-    std::string FeatName = getUniqueObjectName("DatumPoint");
-    QString refStr = getReferenceString(this);
-    PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
-    if (pcActiveBody == 0)
-        return;
-
-    openCommand("Create a datum point");
-    doCommand(Doc,"App.activeDocument().addObject('PartDesign::Point','%s')",FeatName.c_str());
-    if (refStr.length() > 0)
-        doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),refStr.toStdString().c_str());
-    Datum* pcDatum = static_cast<Datum*>(getDocument()->getObject(FeatName.c_str()));
-    eSuggestResult msg;
-    pcDatum->MapMode.setValue(pcDatum->attacher().listMapModes(msg));
-    doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
-                   pcActiveBody->getNameInDocument(), FeatName.c_str());
-    doCommand(Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
-    doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    UnifiedDatumCommand(*this, Base::Type::fromName("PartDesign::Point"),"DatumPoint");
 }
 
 bool CmdPartDesignPoint::isActive(void)
