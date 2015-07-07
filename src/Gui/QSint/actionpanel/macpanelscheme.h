@@ -21,7 +21,7 @@ namespace QSint
 
     \image html ActionPanel6.png Example of the scheme
 */
-class MacPanelScheme : public ActionPanelScheme
+class QSINT_EXPORT MacPanelScheme : public ActionPanelScheme
 {
 public:
     explicit MacPanelScheme();

@@ -22,7 +22,7 @@ namespace QSint
 
     \image html ActionPanel5.png Example of the scheme
 */
-class AndroidPanelScheme : public ActionPanelScheme
+class QSINT_EXPORT AndroidPanelScheme : public ActionPanelScheme
 {
 public:
     AndroidPanelScheme();

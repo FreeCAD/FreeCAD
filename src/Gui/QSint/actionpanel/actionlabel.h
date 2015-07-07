@@ -9,6 +9,7 @@
 #define ACTIONLABEL_H
 
 #include <QToolButton>
+#include "qsint_global.h"
 
 
 namespace QSint
@@ -64,7 +65,7 @@ namespace QSint
 
     \endcode
 */
-class ActionLabel : public QToolButton
+class QSINT_EXPORT ActionLabel : public QToolButton
 {
     Q_OBJECT
 

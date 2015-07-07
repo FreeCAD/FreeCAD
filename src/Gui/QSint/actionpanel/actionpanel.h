@@ -9,6 +9,7 @@
 #define ACTIONPANEL_H
 
 #include <QFrame>
+#include "qsint_global.h"
 
 
 namespace QSint
@@ -34,7 +35,7 @@ class ActionGroup;
     WinVistaPanelScheme (Windows Vista variation), MacPanelScheme (MacOS variation),
     AndroidPanelScheme (Android variation).
 */
-class ActionPanel : public QFrame
+class QSINT_EXPORT ActionPanel : public QFrame
 {
     typedef QFrame BaseClass;
 

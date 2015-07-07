@@ -159,7 +159,7 @@ namespace QSint
     \endcode
 
 */
-class ActionBox : public QFrame
+class QSINT_EXPORT ActionBox : public QFrame
 {
     Q_OBJECT
 
