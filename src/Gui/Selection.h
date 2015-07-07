@@ -287,6 +287,13 @@ public:
      */
     std::vector<Gui::SelectionObject> getSelectionEx(const char* pDocName=0,Base::Type typeId=App::DocumentObject::getClassTypeId()) const;
 
+    /**
+     * @brief getAsPropertyLinkSubList fills PropertyLinkSubList with current selection.
+     * @param prop (output). The property object to recieve links
+     * @return the number of items written to the link
+     */
+    int getAsPropertyLinkSubList(App::PropertyLinkSubList &prop) const;
+
     /** Returns a vector of all selection objects of all documents. */
     std::vector<SelObj> getCompleteSelection() const;
     bool hasSelection() const;
