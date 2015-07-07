@@ -12,6 +12,7 @@
 #include <QtCore/QSize>
 
 #include <QtGui/QPixmap>
+#include "qsint_global.h"
 
 
 namespace QSint
@@ -24,7 +25,7 @@ namespace QSint
 
     \image html ActionPanel1.png Default ActionPanel scheme
 */
-class ActionPanelScheme
+class QSINT_EXPORT ActionPanelScheme
 {
 public:
     /** \enum TaskPanelFoldEffect

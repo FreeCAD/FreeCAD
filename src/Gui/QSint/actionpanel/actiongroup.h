@@ -11,6 +11,7 @@
 #include <QTimer>
 #include <QWidget>
 #include <QBoxLayout>
+#include "qsint_global.h"
 
 
 namespace QSint
@@ -31,7 +32,7 @@ class ActionPanelScheme;
     It can contain arbitrary widgets as well.
 */
 
-class ActionGroup : public QWidget
+class QSINT_EXPORT ActionGroup : public QWidget
 {
     Q_OBJECT
 
