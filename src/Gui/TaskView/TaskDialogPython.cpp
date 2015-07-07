@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QFile>
 # include <QPointer>
 #endif
 

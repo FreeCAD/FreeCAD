@@ -24,12 +24,19 @@
 #ifndef GUI_TASKVIEW_TASKVIEW_H
 #define GUI_TASKVIEW_TASKVIEW_H
 
+//#define QSINT_ACTIONPANEL
+
 #include <map>
 #include <string>
 #include <vector>
 #include <boost/signals.hpp>
+#include <QScrollArea>
 
+#if !defined (QSINT_ACTIONPANEL)
 #include <Gui/iisTaskPanel/include/iisTaskPanel>
+#else
+#include <Gui/QSint/include/QSint>
+#endif
 #include <Gui/Selection.h>
 #include "TaskWatcher.h"
 
@@ -57,6 +64,7 @@ public:
     //~TaskContent();
 };
 
+#if !defined (QSINT_ACTIONPANEL)
 class GuiExport TaskGroup : public iisTaskGroup, public TaskContent
 {
     Q_OBJECT
@@ -68,14 +76,58 @@ public:
 protected:
     void actionEvent (QActionEvent*);
 };
-
-/// Father class of content with header and Icon
-class GuiExport TaskBox : public iisTaskBox, public TaskContent
+#else
+class GuiExport TaskGroup : public QSint::ActionBox, public TaskContent
 {
     Q_OBJECT
 
 public:
+    explicit TaskGroup(QWidget *parent = 0);
+    explicit TaskGroup(const QString & headerText, QWidget *parent = 0);
+    explicit TaskGroup(const QPixmap & icon, const QString & headerText, QWidget *parent = 0);
+    ~TaskGroup();
+
+protected:
+    void actionEvent (QActionEvent*);
+};
+#endif
+
+/// Father class of content with header and Icon
+#if !defined (QSINT_ACTIONPANEL)
+class GuiExport TaskBox : public iisTaskBox, public TaskContent
+#else
+class GuiExport TaskBox : public QSint::ActionGroup, public TaskContent
+#endif
+{
+    Q_OBJECT
+
+public:
+#if !defined (QSINT_ACTIONPANEL)
     TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent);
+#else
+    /** Constructor. Creates TaskBox without header.
+      */
+    explicit TaskBox(QWidget *parent = 0);
+
+    /** Constructor. Creates TaskBox with header's
+        text set to \a title, but with no icon.
+
+        If \a expandable set to \a true (default), the group can be expanded/collapsed by the user.
+      */
+    explicit TaskBox(const QString& title,
+                     bool expandable = true,
+                     QWidget *parent = 0);
+
+    /** Constructor. Creates TaskBox with header's
+        text set to \a title and icon set to \a icon.
+
+        If \a expandable set to \a true (default), the group can be expanded/collapsed by the user.
+      */
+    explicit TaskBox(const QPixmap& icon,
+                     const QString& title,
+                     bool expandable = true,
+                     QWidget *parent = 0);
+#endif
     ~TaskBox();
     void hideGroupBox();
     bool isGroupVisible() const;
@@ -145,7 +197,11 @@ protected:
 
     std::vector<TaskWatcher*> ActiveWatcher;
 
+#if !defined (QSINT_ACTIONPANEL)
     iisTaskPanel* taskPanel;
+#else
+    QSint::ActionPanel* taskPanel;
+#endif
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
 
