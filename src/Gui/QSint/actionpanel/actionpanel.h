@@ -9,6 +9,7 @@
 #define ACTIONPANEL_H
 
 #include <QFrame>
+#include <QSpacerItem>
 #include "qsint_global.h"
 
 
@@ -50,11 +51,19 @@ public:
       */
     void addWidget(QWidget *w);
 
+    /** Removes the widget \a w from the ActionPanel's vertical layout.
+      */
+    void removeWidget(QWidget *w);
+
     /** Adds a spacer with width \a s to the ActionPanel's vertical layout.
         Normally you should do this after all the ActionGroups were added, in order to
         maintain some space below.
       */
     void addStretch(int s = 0);
+
+    /** Removes the spacer -- if added -- from the ActionPanel's vertical layout.
+      */
+    void removeStretch();
 
     /** Creates and adds to the ActionPanel's vertical layout an empty ActionGroup without header.
       */
@@ -86,6 +95,7 @@ protected:
     //virtual void paintEvent ( QPaintEvent * event );
 
     ActionPanelScheme *myScheme;
+    QSpacerItem *mySpacer;
 };
 
 

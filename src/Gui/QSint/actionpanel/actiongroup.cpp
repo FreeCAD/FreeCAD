@@ -167,7 +167,7 @@ void ActionGroup::processShow()
     myGroup->show();
     setFixedHeight(m_fullHeight+myHeader->height());
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    setMaximumHeight(9999);
+    setMaximumHeight(QWIDGETSIZE_MAX);
     setMinimumHeight(0);
     return;
   }
