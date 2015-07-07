@@ -227,7 +227,6 @@ set(Gui_MOC_HDRS
     SelectionView.h
     SpinBox.h
     Splashscreen.h
-    TaskPanelView.h
     TextEdit.h
     TextureMapping.h
     ToolBox.h
@@ -527,7 +526,6 @@ SET(Dock_Windows_CPP_SRCS
     PropertyView.cpp
     ReportView.cpp
     SelectionView.cpp
-    TaskPanelView.cpp
     ToolBox.cpp
     Tree.cpp
     TreeView.cpp
@@ -540,7 +538,6 @@ SET(Dock_Windows_HPP_SRCS
     PropertyView.h
     ReportView.h
     SelectionView.h
-    TaskPanelView.h
     ToolBox.h
     Tree.h
     TreeView.h

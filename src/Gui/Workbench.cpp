@@ -617,7 +617,6 @@ DockWindowItems* StdWorkbench::setupDockWindows() const
     root->addDockWidget("Std_SelectionView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_CombiView", Qt::LeftDockWidgetArea, false, false);
     root->addDockWidget("Std_ReportView", Qt::BottomDockWidgetArea, true, true);
-    //root->addDockWidget("Std_TaskPanelView", Qt::RightDockWidgetArea, false, false);
     root->addDockWidget("Std_PythonView", Qt::BottomDockWidgetArea, true, true);
     return root;
 }
