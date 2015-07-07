@@ -314,6 +314,7 @@ SET(Gui_RES_SRCS
     Icons/resource.qrc
     Language/translation.qrc
     iisTaskPanel/src/iisTaskPanel.qrc
+    QSint/actionpanel/schemes.qrc
 )
 QT4_ADD_RESOURCES(Gui_QRC_SRCS ${Gui_RES_SRCS})
 
@@ -664,6 +665,40 @@ set(iis_MOC_HDRS
 qt4_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
 SOURCE_GROUP("Widget\\iisTaskPanel\\Mocs" FILES ${iis_MOC_SRCS})
 
+SET(qsintActionPanel_SRCS
+    QSint/actionpanel/actionbox.cpp
+    QSint/actionpanel/actionbox.h
+    QSint/actionpanel/actionlabel.cpp
+    QSint/actionpanel/actionlabel.h
+    QSint/actionpanel/actiongroup.cpp
+    QSint/actionpanel/actiongroup.h
+    QSint/actionpanel/actionpanel.cpp
+    QSint/actionpanel/actionpanel.h
+    QSint/actionpanel/actionpanelscheme.cpp
+    QSint/actionpanel/actionpanelscheme.h
+    QSint/actionpanel/androidpanelscheme.cpp
+    QSint/actionpanel/androidpanelscheme.h
+    QSint/actionpanel/macpanelscheme.cpp
+    QSint/actionpanel/macpanelscheme.h
+    QSint/actionpanel/taskgroup_p.cpp
+    QSint/actionpanel/taskgroup_p.h
+    QSint/actionpanel/taskheader_p.cpp
+    QSint/actionpanel/taskheader_p.h
+    QSint/actionpanel/winvistapanelscheme.cpp
+    QSint/actionpanel/winvistapanelscheme.h
+    QSint/actionpanel/winxppanelscheme.cpp
+    QSint/actionpanel/winxppanelscheme.h
+)
+SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
+set(qsint_MOC_HDRS
+    QSint/actionpanel/actionbox.h
+    QSint/actionpanel/actionlabel.h
+    QSint/actionpanel/actiongroup.h
+    QSint/actionpanel/actionpanel.h
+    QSint/actionpanel/taskheader_p.h
+)
+qt4_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
+SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 
 #SET(Resource_RCS
 #   Icons/resource.qrc
@@ -962,6 +997,7 @@ SET(FreeCADGui_SRCS
     ${FreeCADGui_CPP_SRCS}
     ${FreeCADGui_XML_SRCS}
     ${iis_MOC_SRCS}
+    ${qsint_MOC_SRCS}
     ${Gui_QRC_SRCS}
     ${Gui_UIC_HDRS}
     ${Command_SRCS}
@@ -976,6 +1012,7 @@ SET(FreeCADGui_SRCS
     ${Propertyeditor_SRCS}
     ${Task_View_SRCS}
     ${iisTaskPanel_SRCS}
+    ${qsintActionPanel_SRCS}
     ${Resource_SRCS}
     ${Quarter_SRCS}
     ${View3D_SRCS}
