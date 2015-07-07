@@ -54,7 +54,6 @@ public:
     TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *parent = 0);
     ~TaskDatumParameters();
 
-    QString getReference(const int idx) const;
     double getOffset(void) const;
     double getOffset2(void) const;
     double getOffset3(void) const;
@@ -80,10 +79,10 @@ private Q_SLOTS:
     void onRefName2(const QString& text);
     void onRefName3(const QString& text);
     void onRefName4(const QString& text);
-    void onButtonRef1(const bool pressed = true);
-    void onButtonRef2(const bool pressed = true);
-    void onButtonRef3(const bool pressed = true);
-    void onButtonRef4(const bool pressed = true);
+    void onButtonRef1(const bool checked = true);
+    void onButtonRef2(const bool checked = true);
+    void onButtonRef3(const bool checked = true);
+    void onButtonRef4(const bool checked = true);
     void onModeSelect(void);
 
 protected:
@@ -95,7 +94,7 @@ private:
 
     void makeRefStrings(std::vector<QString>& refstrings, std::vector<std::string>& refnames);
     QLineEdit* getLine(const int idx);
-    void onButtonRef(const bool pressed, const int idx);
+    void onButtonRef(const bool checked, const int idx);
     void onRefName(const QString& text, const int idx);
 
     /**
