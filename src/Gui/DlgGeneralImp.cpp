@@ -36,6 +36,8 @@
 #include "MainWindow.h"
 #include "PrefWidgets.h"
 #include "Language/Translator.h"
+#include "Control.h"
+#include "TaskView/TaskView.h"
 
 using namespace Gui::Dialog;
 
@@ -162,6 +164,10 @@ void DlgGeneralImp::saveSettings()
                 mdi->setBackground(QBrush(Qt::NoBrush));
                 QTextStream str(&f);
                 qApp->setStyleSheet(str.readAll());
+
+                Gui::TaskView::TaskView* taskPanel = Control().taskPanel();
+                if (taskPanel)
+                    taskPanel->clearActionStyle();
             }
         }
     }
@@ -169,10 +175,16 @@ void DlgGeneralImp::saveSettings()
     if (sheet.toString().isEmpty()) {
         if (this->tiledBackground->isChecked()) {
             qApp->setStyleSheet(QString());
+            Gui::TaskView::TaskView* taskPanel = Control().taskPanel();
+            if (taskPanel)
+                taskPanel->restoreActionStyle();
             mdi->setBackground(QPixmap(QLatin1String(":/icons/background.png")));
         }
         else {
             qApp->setStyleSheet(QString());
+            Gui::TaskView::TaskView* taskPanel = Control().taskPanel();
+            if (taskPanel)
+                taskPanel->restoreActionStyle();
             mdi->setBackground(QBrush(QColor(160,160,160)));
         }
     }

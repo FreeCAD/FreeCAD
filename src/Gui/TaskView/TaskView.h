@@ -173,6 +173,9 @@ public:
     void addTaskWatcher(const std::vector<TaskWatcher*> &Watcher);
     void clearTaskWatcher(void);
 
+    void clearActionStyle();
+    void restoreActionStyle();
+
 protected Q_SLOTS:
     void accept();
     void reject();
