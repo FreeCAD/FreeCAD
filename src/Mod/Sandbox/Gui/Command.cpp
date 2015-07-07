@@ -77,7 +77,7 @@
 #include <Mod/Mesh/App/Core/Degeneration.h>
 #include "Workbench.h"
 #include "GLGraphicsView.h"
-
+#include "TaskPanelView.h"
 
 DEF_STD_CMD(CmdSandboxDocumentThread);
 
@@ -1382,6 +1382,28 @@ bool CmdTestGraphicsView::isActive(void)
     return (getActiveGuiDocument()!=NULL);
 }
 
+//===========================================================================
+// Std_TestTaskBox
+//===========================================================================
+DEF_STD_CMD(CmdTestTaskBox);
+
+CmdTestTaskBox::CmdTestTaskBox()
+  : Command("Std_TestTaskBox")
+{
+    sGroup          = "Standard-Test";
+    sMenuText       = "Task box";
+    sToolTipText    = "Task box";
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+}
+
+void CmdTestTaskBox::activated(int iMsg)
+{
+    QWidget* w = new SandboxGui::TaskPanelView();
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->show();
+}
+
 
 void CreateSandboxCommands(void)
 {
@@ -1413,4 +1435,5 @@ void CreateSandboxCommands(void)
     rcCmdMgr.addCommand(new CmdTestCryptographicHash());
     rcCmdMgr.addCommand(new CmdMengerSponge());
     rcCmdMgr.addCommand(new CmdTestGraphicsView());
+    rcCmdMgr.addCommand(new CmdTestTaskBox());
 }
