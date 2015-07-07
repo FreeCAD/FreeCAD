@@ -619,5 +619,21 @@ void TaskView::clicked (QAbstractButton * button)
     ActiveDialog->clicked(id);
 }
 
+void TaskView::clearActionStyle()
+{
+#if defined (QSINT_ACTIONPANEL)
+    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->clearActionStyle();
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
+}
+
+void TaskView::restoreActionStyle()
+{
+#if defined (QSINT_ACTIONPANEL)
+    static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->restoreActionStyle();
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
+}
+
 
 #include "moc_TaskView.cpp"
