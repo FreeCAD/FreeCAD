@@ -549,8 +549,6 @@ void DrawingPlane::draw ()
 
     glPopAttrib();
     glPopMatrix();
-
-        mustRedraw = false;
     }
 }
 

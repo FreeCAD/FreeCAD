@@ -46,6 +46,8 @@ SET(SandboxGui_SRCS
     Overlay.h
     PreCompiled.cpp
     PreCompiled.h
+    TaskPanelView.cpp
+    TaskPanelView.h
     Workbench.cpp
     Workbench.h
 )

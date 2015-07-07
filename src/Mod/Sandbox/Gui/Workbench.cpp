@@ -106,7 +106,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sandbox_WidgetShape"
           << "Sandbox_GDIWidget"
           << "Sandbox_RedirectPaint"
-          << "Std_TestGraphicsView";
+          << "Std_TestGraphicsView"
+          << "Std_TestTaskBox";
     return root;
 }
 
