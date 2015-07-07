@@ -351,8 +351,8 @@ void Workbench::fixSketchSupport (Sketcher::SketchObject* sketch)
     Base::Rotation rot = plm.getRotation();
     Base::Vector3d sketchVector(0,0,1);
     rot.multVec(sketchVector, sketchVector);
-    std::string  side = (sketchVector.x + sketchVector.y + sketchVector.z) < 0.0 ? "back" : "front";
-    if (side == "back") sketchVector *= -1.0;
+    bool reverseSketch = (sketchVector.x + sketchVector.y + sketchVector.z) < 0.0 ;
+    if (reverseSketch) sketchVector *= -1.0;
     int index;
 
     if (sketchVector == Base::Vector3d(0,0,1))
@@ -371,8 +371,10 @@ void Workbench::fixSketchSupport (Sketcher::SketchObject* sketch)
 
     if (fabs(offset) < Precision::Confusion()) {
         // One of the base planes
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
-                sketch->getNameInDocument(), App::Part::BaseplaneTypes[index], side.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,[''])",
+                sketch->getNameInDocument(), App::Part::BaseplaneTypes[index]);
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapReversed = %s",
+                sketch->getNameInDocument(), reverseSketch ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
                 sketch->getNameInDocument(), Attacher::AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
 
@@ -393,8 +395,10 @@ void Workbench::fixSketchSupport (Sketcher::SketchObject* sketch)
         Gui::Command::doCommand(Gui::Command::Doc,
                 "App.activeDocument().%s.insertFeature(App.activeDocument().%s, App.activeDocument().%s)",
                 body->getNameInDocument(), Datum.c_str(), sketch->getNameInDocument());
-        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,['%s'])",
-                sketch->getNameInDocument(), Datum.c_str(), side.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = (App.activeDocument().%s,[''])",
+                sketch->getNameInDocument(), Datum.c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapReversed = %s",
+                sketch->getNameInDocument(), reverseSketch ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.MapMode = '%s'",
                 sketch->getNameInDocument(),Attacher::AttachEngine::eMapModeStrings[Attacher::mmFlatFace]);
         Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");  // recompute the feature based on its references
