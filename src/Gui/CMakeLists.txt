@@ -688,6 +688,8 @@ SET(qsintActionPanel_SRCS
     QSint/actionpanel/winvistapanelscheme.h
     QSint/actionpanel/winxppanelscheme.cpp
     QSint/actionpanel/winxppanelscheme.h
+    QSint/actionpanel/freecadscheme.cpp
+    QSint/actionpanel/freecadscheme.h
 )
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
 set(qsint_MOC_HDRS
