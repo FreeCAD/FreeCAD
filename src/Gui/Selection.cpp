@@ -394,6 +394,30 @@ std::vector<SelectionObject> SelectionSingleton::getSelectionEx(const char* pDoc
     return temp;
 }
 
+int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList &prop) const
+{
+    std::vector<Gui::SelectionObject> sel = this->getSelectionEx();
+    std::vector<App::DocumentObject*> objs; objs.reserve(sel.size()*2);
+    std::vector<std::string> subs; subs.reserve(sel.size()*2);
+    for(  int iobj = 0  ;  iobj < sel.size()  ;  iobj++  ){
+        Gui::SelectionObject &selitem = sel[iobj];
+        App::DocumentObject* obj = selitem.getObject();
+        const std::vector<std::string> &subnames = selitem.getSubNames();
+        if (subnames.size() == 0){//whole object is selected
+            objs.push_back(obj);
+            subs.push_back(std::string());
+        } else {
+            for(  int isub = 0  ;  isub < subnames.size()  ;  isub++  ){
+                objs.push_back(obj);
+                subs.push_back(subnames[isub]);
+            }
+        }
+    }
+    assert(objs.size()==subs.size());
+    prop.setValues(objs, subs);
+    return objs.size();
+}
+
 vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(const Base::Type& typeId, const char* pDocName) const
 {
     std::vector<App::DocumentObject*> temp;
