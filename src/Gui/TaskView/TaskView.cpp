@@ -25,7 +25,9 @@
 
 #ifndef _PreComp_
 # include <boost/bind.hpp>
+# include <QActionEvent>
 # include <QCursor>
+# include <QPushButton>
 #endif
 
 #include "TaskView.h"
@@ -36,6 +38,12 @@
 #include <Gui/Application.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Control.h>
+
+#if defined (QSINT_ACTIONPANEL)
+#include <Gui/QSint/actionpanel/taskgroup_p.h>
+#include <Gui/QSint/actionpanel/taskheader_p.h>
+#include <Gui/QSint/actionpanel/freecadscheme.h>
+#endif
 
 using namespace Gui::TaskView;
 
@@ -67,6 +75,7 @@ TaskWidget::~TaskWidget()
 // TaskGroup
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+#if !defined (QSINT_ACTIONPANEL)
 TaskGroup::TaskGroup(QWidget *parent)
     : iisTaskGroup(parent, false)
 {
@@ -128,17 +137,76 @@ void TaskGroup::actionEvent (QActionEvent* e)
         break;
     }
 }
+#else
+TaskGroup::TaskGroup(QWidget *parent)
+    : QSint::ActionBox(parent)
+{
+}
 
+TaskGroup::TaskGroup(const QString & headerText, QWidget *parent)
+    : QSint::ActionBox(headerText, parent)
+{
+}
+
+TaskGroup::TaskGroup(const QPixmap & icon, const QString & headerText, QWidget *parent)
+    : QSint::ActionBox(icon, headerText, parent)
+{
+}
+
+TaskGroup::~TaskGroup()
+{
+}
+
+void TaskGroup::actionEvent (QActionEvent* e)
+{
+    QAction *action = e->action();
+    switch (e->type()) {
+    case QEvent::ActionAdded:
+        {
+            QSint::ActionLabel *label = this->createItem(action);
+            break;
+        }
+    case QEvent::ActionChanged:
+        {
+            break;
+        }
+    case QEvent::ActionRemoved:
+        {
+            // cannot change anything
+            break;
+        }
+    default:
+        break;
+    }
+}
+#endif
 //**************************************************************************
 //**************************************************************************
 // TaskBox
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+#if !defined (QSINT_ACTIONPANEL)
 TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent)
     : iisTaskBox(icon, title, expandable, parent), wasShown(false)
 {
     setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
 }
+#else
+TaskBox::TaskBox(QWidget *parent)
+  : QSint::ActionGroup(parent), wasShown(false)
+{
+}
+
+TaskBox::TaskBox(const QString &title, bool expandable, QWidget *parent)
+  : QSint::ActionGroup(title, expandable, parent), wasShown(false)
+{
+}
+
+TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent)
+    : QSint::ActionGroup(icon, title, expandable, parent), wasShown(false)
+{
+}
+#endif
 
 TaskBox::~TaskBox()
 {
@@ -202,14 +270,20 @@ void TaskBox::actionEvent (QActionEvent* e)
     switch (e->type()) {
     case QEvent::ActionAdded:
         {
+#if !defined (QSINT_ACTIONPANEL)
             TaskIconLabel *label = new TaskIconLabel(
                 action->icon(), action->text(), this);
             this->addIconLabel(label);
             connect(label,SIGNAL(clicked()),action,SIGNAL(triggered()));
+#else
+            QSint::ActionLabel *label = new QSint::ActionLabel(action, this);
+            this->addActionLabel(label, true, false);
+#endif
             break;
         }
     case QEvent::ActionChanged:
         {
+#if !defined (QSINT_ACTIONPANEL)
             // update label when action changes
             QBoxLayout* bl = myGroup->groupLayout();
             int index = this->actions().indexOf(action);
@@ -217,6 +291,7 @@ void TaskBox::actionEvent (QActionEvent* e)
             QWidgetItem* item = static_cast<QWidgetItem*>(bl->itemAt(index));
             TaskIconLabel* label = static_cast<TaskIconLabel*>(item->widget());
             label->setTitle(action->text());
+#endif
             break;
         }
     case QEvent::ActionRemoved:
@@ -241,8 +316,18 @@ TaskView::TaskView(QWidget *parent)
     //addWidget(new TaskEditControl(this));
     //addWidget(new TaskAppearance(this));
     //addStretch();
+#if !defined (QSINT_ACTIONPANEL)
     taskPanel = new iisTaskPanel(this);
     taskPanel->setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
+#else
+    taskPanel = new QSint::ActionPanel(this);
+    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(taskPanel->sizePolicy().hasHeightForWidth());
+    taskPanel->setSizePolicy(sizePolicy);
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
     this->setWidget(taskPanel);
     setWidgetResizable(true);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -408,6 +493,10 @@ void TaskView::showDialog(TaskDialog *dlg)
         taskPanel->addWidget(ActiveCtrl);
     }
 
+#if defined (QSINT_ACTIONPANEL)
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
+
     if (!dlg->needsFullSpace())
         taskPanel->addStretch();
 
@@ -487,6 +576,10 @@ void TaskView::addTaskWatcher(void)
     if (!ActiveWatcher.empty())
         taskPanel->addStretch();
     updateWatcher();
+
+#if defined (QSINT_ACTIONPANEL)
+    taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+#endif
 }
 
 void TaskView::removeTaskWatcher(void)
