@@ -77,37 +77,6 @@ namespace SketcherGui {
         QString ErrMsg;
     };
 
-    /**
-     * @brief Selection2LinkSubList converts selection into App::PropertyLinkSubList.
-     * Throws ExceptionWrongInput if fails.
-     * @param selection input
-     * @param support output
-     */
-    void Selection2LinkSubList(const Gui::SelectionSingleton &selection,
-                               App::PropertyLinkSubList &support){
-        std::vector<Gui::SelectionObject> sel = selection.getSelectionEx();
-        std::vector<App::DocumentObject*> objs; objs.reserve(sel.size()*2);
-        std::vector<std::string> subs; subs.reserve(sel.size()*2);
-        for(  int iobj = 0  ;  iobj < sel.size()  ;  iobj++  ){
-            Gui::SelectionObject &selitem = sel[iobj];
-            App::DocumentObject* obj = selitem.getObject();
-            if (!( obj->isDerivedFrom(Part::Feature::getClassTypeId())
-                   || obj->isDerivedFrom(App::Plane::getClassTypeId()) ))
-                throw ExceptionWrongInput(QT_TR_NOOP("Object of wrong type is selected, it is not suitable as a support"));
-            const std::vector<std::string> &subnames = selitem.getSubNames();
-            if (subnames.size() == 0){//whole object is selected
-                objs.push_back(obj);
-                subs.push_back(std::string());
-            } else {
-                for(  int isub = 0  ;  isub < subnames.size()  ;  isub++  ){
-                    objs.push_back(obj);
-                    subs.push_back(subnames[isub]);
-                }
-            }
-        }
-        assert(objs.size()==subs.size());
-        support.setValues(objs, subs);
-    }
 
     Attacher::eMapMode SuggestAutoMapMode(Attacher::eSuggestResult* pMsgId = 0,
                                       QString* message = 0,
@@ -123,13 +92,7 @@ namespace SketcherGui {
         QString &msg_str = *message;
 
         App::PropertyLinkSubList tmpSupport;
-        try{
-            Selection2LinkSubList(Gui::Selection(), tmpSupport);
-        } catch (ExceptionWrongInput &e ){
-            msg = Attacher::srLinkBroken;
-            msg_str = e.ErrMsg;
-            return Attacher::mmDeactivated;
-        }
+        Gui::Selection().getAsPropertyLinkSubList(tmpSupport);
 
         AttachEngine3D eng;
         eng.setUp(tmpSupport);
@@ -228,7 +191,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
         //assert (objects.size() == 1); //should have been filtered out by SuggestAutoMapMode
         //Gui::SelectionObject &sel_support = objects[0];
         App::PropertyLinkSubList support;
-        Selection2LinkSubList(Gui::Selection(),support);
+        Gui::Selection().getAsPropertyLinkSubList(support);
         std::string supportString = support.getPyReprString();
 
         // create Sketch on Face
@@ -594,7 +557,7 @@ void CmdSketcherMapSketch::activated(int iMsg)
         std::string featName = sketch.getNameInDocument();
         if (bAttach) {
             App::PropertyLinkSubList support;
-            Selection2LinkSubList(Gui::Selection(),support);
+            Gui::Selection().getAsPropertyLinkSubList(support);
             std::string supportString = support.getPyReprString();
 
             openCommand("Attach Sketch");
