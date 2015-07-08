@@ -143,6 +143,7 @@ void ActionGroup::processHide()
   if (!--m_foldStep) {
     myDummy->setFixedHeight(0);
     myDummy->hide();
+    myHeader->setFold(false);
     setFixedHeight(myHeader->height());
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     return;
@@ -165,6 +166,7 @@ void ActionGroup::processShow()
     myDummy->hide();
     m_foldPixmap = QPixmap();
     myGroup->show();
+    myHeader->setFold(true);
     setFixedHeight(m_fullHeight+myHeader->height());
     setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     setMaximumHeight(QWIDGETSIZE_MAX);
