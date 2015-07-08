@@ -37,6 +37,9 @@ public:
 Q_SIGNALS:
   void activated();
 
+public:
+  void setFold(bool);
+
 public Q_SLOTS:
   void fold();
 
