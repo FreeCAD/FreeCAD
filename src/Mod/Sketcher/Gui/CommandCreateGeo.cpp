@@ -4479,13 +4479,13 @@ namespace SketcherGui {
                 return false;
 
             // Note: its better to search the support of the sketch in case the sketch support is a base plane
-            Part::BodyBase* body = Part::BodyBase::findBodyOf(sketch);
-            if ( body && body->hasFeature ( pObj ) && body->isAfter ( pObj, sketch ) ) {
+            //Part::BodyBase* body = Part::BodyBase::findBodyOf(sketch);
+            //if ( body && body->hasFeature ( pObj ) && body->isAfter ( pObj, sketch ) ) {
                 // Don't allow selection after the sketch in the same body
                 // NOTE: allowness of features in other bodies is handled by SketchObject::isExternalAllowed()
                 // TODO may be this should be in SketchObject::isExternalAllowed() (2015-08-07, Fat-Zer)
-                return false;
-            }
+                //return false;
+            //}
 
             if (!sSubName || sSubName[0] == '\0')
                 return false;
