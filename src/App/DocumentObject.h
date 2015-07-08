@@ -26,6 +26,7 @@
 
 #include <App/PropertyContainer.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
 #include <App/PropertyExpressionEngine.h>
 
 #include <Base/TimeInfo.h>
@@ -131,6 +132,21 @@ public:
     std::vector<App::DocumentObject*> getInList(void) const;
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
+
+    /**
+     * @brief testIfLinkIsDAG tests a link that is about to be created for
+     * circular references.
+     * @param objToLinkIn (input). The object this object is to depend on after
+     * the link is going to be created.
+     * @return true if link can be created (no cycles will be made). False if
+     * the link will cause a circular dependency and break recomputes. Throws an
+     * error if the document already has a circular dependency.
+     * That is, if the return is true, the link is allowed.
+     */
+    bool testIfLinkDAGCompatible(DocumentObject* linkTo) const;
+    bool testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const;
+    bool testIfLinkDAGCompatible(App::PropertyLinkSubList &linksTo) const;
+    bool testIfLinkDAGCompatible(App::PropertyLinkSub &linkTo) const;
 
 
 public:

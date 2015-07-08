@@ -172,6 +172,41 @@ DocumentObjectGroup* DocumentObject::getGroup() const
     return DocumentObjectGroup::getGroupOfObject(this);
 }
 
+bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const
+{
+    std::vector<App::DocumentObject*> linkTo_in_vector;
+    linkTo_in_vector.reserve(1);
+    linkTo_in_vector.push_back(linkTo);
+    return this->testIfLinkDAGCompatible(linkTo_in_vector);
+}
+
+bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const
+{
+    Document* doc = this->getDocument();
+    if (!doc)
+        throw Base::Exception("DocumentObject::testIfLinkIsDAG: object is not in any document.");
+    std::vector<App::DocumentObject*> deplist = doc->getDependencyList(linksTo);
+    if( std::find(deplist.begin(),deplist.end(),this) != deplist.end() )
+        //found this in dependency list
+        return false;
+    else
+        return true;
+}
+
+bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSubList &linksTo) const
+{
+    const std::vector<App::DocumentObject*> &linksTo_in_vector = linksTo.getValues();
+    return this->testIfLinkDAGCompatible(linksTo_in_vector);
+}
+
+bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub &linkTo) const
+{
+    std::vector<App::DocumentObject*> linkTo_in_vector;
+    linkTo_in_vector.reserve(1);
+    linkTo_in_vector.push_back(linkTo.getValue());
+    return this->testIfLinkDAGCompatible(linkTo_in_vector);
+}
+
 void DocumentObject::onLostLinkToObject(DocumentObject*)
 {
 
