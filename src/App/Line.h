@@ -37,7 +37,7 @@ namespace App
 
 
 /** Line Object
- *  Used to define planar support for all kind of operations in the document space
+ *  Used to define linear support for all kind of operations in the document space
  */
 class AppExport Line: public App::GeoFeature
 {

@@ -42,7 +42,10 @@ PROPERTY_SOURCE(App::Line, App::GeoFeature)
 Line::Line(void)
 {
     ADD_PROPERTY(LineType,(""));
+    //placement can't be changed
     Placement.StatusBits.set(3, true);
+    //line can not be deleted by user
+    StatusBits.set(ObjectStatus::Undeletable, true);   
 
 }
 

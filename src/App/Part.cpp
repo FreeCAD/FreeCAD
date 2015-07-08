@@ -30,8 +30,9 @@
 #include <App/Plane.h>
 
 #include "Part.h"
+#include "Origin.h"
 #include "PartPy.h"
-
+#include <boost/bind.hpp>
 
 using namespace App;
 
@@ -64,7 +65,6 @@ Part::Part(void)
     ADD_PROPERTY_TYPE(LicenseURL, ("http://creativecommons.org/licenses/by/3.0/"), 0, App::Prop_None, "URL to the license text/contract");
     // color and apperance
     ADD_PROPERTY(Color, (1.0, 1.0, 1.0, 1.0)); // set transparent -> not used
-
 }
 
 Part::~Part(void)
@@ -79,6 +79,23 @@ PyObject *Part::getPyObject()
         PythonObject = Py::Object(new PartPy(this),true);
     }
     return Py::new_reference_to(PythonObject); 
+}
+
+void Part::onSettingDocument() {
+    
+    if(connection.connected())
+        connection.disconnect();
+    
+    getDocument()->signalDeletedObject.connect(boost::bind(&Part::onDelete, this, _1));
+    App::DocumentObject::onSettingDocument();
+}
+
+void Part::onDelete(const App::DocumentObject& obj) {
+    
+    if(&obj == this) {        
+        //delete all child objects if needed
+        this->removeObjectsFromDocument();        
+    }
 }
 
 

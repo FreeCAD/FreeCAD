@@ -45,7 +45,10 @@ PROPERTY_SOURCE(App::Origin, App::GeoFeatureGroup)
 
 Origin::Origin(void)
 {
+    //placement can't be changed
     Placement.StatusBits.set(3, true);
+    //origin can not be deleted by user
+    StatusBits.set(ObjectStatus::Undeletable, true);    
 }
 
 Origin::~Origin(void)

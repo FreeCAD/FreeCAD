@@ -98,7 +98,7 @@ void GeoFeatureGroup::removeObjectFromDocument(DocumentObject* obj)
         }
     }
 
-    this->getDocument()->remObject(obj->getNameInDocument());
+    this->getDocument()->remObject(obj->getNameInDocument(), true);
 }
 
 DocumentObject *GeoFeatureGroup::getObject(const char *Name) const

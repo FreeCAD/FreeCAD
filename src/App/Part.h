@@ -26,7 +26,7 @@
 
 #include "GeoFeatureGroup.h"
 #include "PropertyLinks.h"
-
+#include <boost/signals.hpp>
 
 
 namespace App
@@ -91,6 +91,13 @@ public:
 
     static const char* BaseplaneTypes[3];
     static const char* BaselineTypes[3];
+    
+protected:
+    virtual void onSettingDocument();
+    
+private:    
+    boost::signals::scoped_connection connection;
+    void onDelete(const App::DocumentObject& obj);
 };
 
 //typedef App::FeaturePythonT<Part> PartPython;
