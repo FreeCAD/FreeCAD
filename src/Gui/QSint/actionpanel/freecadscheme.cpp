@@ -34,7 +34,7 @@ namespace QSint
 {
 
 
-const char* ActionPaneFreeCAD =
+const char* ActionPanelFreeCAD =
 
     "QFrame[class='panel'] {"
         "background-color:qlineargradient(x1:1, y1:0.3, x2:1, y2:0, stop:0 rgb(51,51,101), stop:1 rgb(171,171,193));"
@@ -98,7 +98,7 @@ FreeCADPanelScheme::FreeCADPanelScheme() : ActionPanelScheme()
 #if defined(Q_OS_WIN32)
     ActionPanelScheme* panelStyle = WinXPPanelScheme2::defaultScheme();
 
-    actionStyle = QString(ActionPaneFreeCAD);
+    actionStyle = QString(ActionPanelFreeCAD);
 #elif defined(Q_OS_MAC)
     ActionPanelScheme* panelStyle = MacPanelScheme::defaultScheme();
 
@@ -123,19 +123,46 @@ FreeCADPanelScheme::FreeCADPanelScheme() : ActionPanelScheme()
     groupFoldDelay = panelStyle->groupFoldDelay;
     groupFoldEffect = panelStyle->groupFoldEffect;
     groupFoldThaw = panelStyle->groupFoldThaw;
+
+
+    builtinFold = headerButtonFold;
+    builtinFoldOver = headerButtonFoldOver;
+    builtinUnfold = headerButtonUnfold;
+    builtinUnfoldOver = headerButtonUnfoldOver;
 }
 
 void FreeCADPanelScheme::clearActionStyle()
 {
+    headerButtonFold = QPixmap();
+    headerButtonFoldOver = QPixmap();
+    headerButtonUnfold = QPixmap();
+    headerButtonUnfoldOver = QPixmap();
+
     actionStyle.clear();
 }
 
 void FreeCADPanelScheme::restoreActionStyle()
 {
+    headerButtonFold = builtinFold;
+    headerButtonFoldOver = builtinFoldOver;
+    headerButtonUnfold = builtinUnfold;
+    headerButtonUnfoldOver = builtinUnfoldOver;
+
     actionStyle = builtinScheme;
 }
 
-QPixmap FreeCADPanelScheme::drawFoldIcon(const QPalette& p) const
+/*!
+  \code
+    QPalette p = QApplication::palette();
+    QPalette p2 = p;
+    p2.setColor(QPalette::Highlight,p2.color(QPalette::Highlight).lighter());
+    headerButtonFold = drawFoldIcon(p, true);
+    headerButtonFoldOver = drawFoldIcon(p2, true);
+    headerButtonUnfold = drawFoldIcon(p, false);
+    headerButtonUnfoldOver = drawFoldIcon(p2, false);
+  \endcode
+ */
+QPixmap FreeCADPanelScheme::drawFoldIcon(const QPalette& p, bool fold) const
 {
     QImage img(17,17,QImage::Format_ARGB32_Premultiplied);
     img.fill(0x00000000);
@@ -155,48 +182,13 @@ QPixmap FreeCADPanelScheme::drawFoldIcon(const QPalette& p) const
     painter.drawLine(QLine(8,8,11,11));
     painter.drawLine(QLine(9,8,10,11));
     painter.end();
+
+    if (!fold) {
+        QTransform mat;
+        mat.rotate(180.0);
+        img = img.transformed(mat);
+    }
     return QPixmap::fromImage(img);
 }
 
 }
-#if 0
-iisFreeCADTaskPanelScheme::iisFreeCADTaskPanelScheme(QObject *parent)
-	: iisTaskPanelScheme(parent)
-{
-#ifdef Q_OS_WIN32
-#else
-    QPalette p = QApplication::palette();
-    QLinearGradient panelBackgroundGrd(0,0, 0,300);
-    panelBackgroundGrd.setColorAt(1, p.color(QPalette::Dark));
-    panelBackgroundGrd.setColorAt(0, p.color(QPalette::Midlight));
-    panelBackground = panelBackgroundGrd;
-
-    QLinearGradient headerBackgroundGrd(0,0,0,100);
-    headerBackgroundGrd.setColorAt(0, p.color(QPalette::Highlight));
-    headerBackgroundGrd.setColorAt(1, p.color(QPalette::Highlight).lighter());
-    headerBackground = headerBackgroundGrd;
-
-    headerLabelScheme.text = p.color(QPalette::HighlightedText);
-    headerLabelScheme.textOver = p.color(QPalette::BrightText);
-    headerLabelScheme.iconSize = 22;
-
-    headerButtonSize = QSize(17,17);
-    QPalette p2 = p;
-    p2.setColor(QPalette::Highlight,p2.color(QPalette::Highlight).lighter());
-    QPixmap px1 = drawFoldIcon(p);
-    QPixmap px2 = drawFoldIcon(p2);
-    headerButtonFold = px1;
-    headerButtonFoldOver = px2;
-    QTransform mat;
-    mat.rotate(180.0);
-    headerButtonUnfold = px1.transformed(mat);
-    headerButtonUnfoldOver = px2.transformed(mat);
-
-    groupBackground = p.window();
-    groupBorder = p.color(QPalette::Window);
-
-    taskLabelScheme.text = p.color(QPalette::Text);
-    taskLabelScheme.textOver = p.color(QPalette::Highlight);
-#endif
-}
-#endif

@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <boost/bind.hpp>
 # include <QActionEvent>
+# include <QApplication>
 # include <QCursor>
 # include <QPushButton>
 #endif
@@ -321,7 +322,7 @@ TaskView::TaskView(QWidget *parent)
     taskPanel->setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
 #else
     taskPanel = new QSint::ActionPanel(this);
-    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(taskPanel->sizePolicy().hasHeightForWidth());

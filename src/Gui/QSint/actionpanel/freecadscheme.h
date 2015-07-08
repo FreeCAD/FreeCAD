@@ -46,8 +46,12 @@ public:
     void restoreActionStyle();
 
 private:
-    QPixmap drawFoldIcon(const QPalette& p) const;
+    QPixmap drawFoldIcon(const QPalette& p, bool fold) const;
     QString builtinScheme;
+    QPixmap builtinFold;
+    QPixmap builtinFoldOver;
+    QPixmap builtinUnfold;
+    QPixmap builtinUnfoldOver;
 };
 
 
