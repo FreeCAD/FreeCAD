@@ -42,7 +42,10 @@ PROPERTY_SOURCE(App::Plane, App::GeoFeature)
 Plane::Plane(void)
 {
     ADD_PROPERTY(PlaneType,(""));
+    //placement can't be changed
     Placement.StatusBits.set(3, true);
+    //plane can not be deleted by user
+    StatusBits.set(ObjectStatus::Undeletable, true);   
 
 }
 

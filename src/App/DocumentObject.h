@@ -47,6 +47,7 @@ enum ObjectStatus {
     New = 2,
     Recompute = 3,
     Restore = 4,
+    Undeletable = 5,
     Expand = 16
 };
 
@@ -194,7 +195,7 @@ protected:
      *  2 - object is marked as 'new'
      *  3 - object is marked as 'recompute', i.e. the object gets recomputed now
      *  4 - object is marked as 'restoring', i.e. the object gets loaded at the moment
-     *  5 - reserved
+     *  5 - object is marked as 'undeletable', i.e. the user is not allowed to delete this object from the document
      *  6 - reserved
      *  7 - reserved
      * 16 - object is marked as 'expanded' in the tree view
