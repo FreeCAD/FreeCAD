@@ -1662,8 +1662,11 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         // this sort gives the execute
         boost::topological_sort(DepList, std::front_inserter(make_order));
     }
-    catch (const std::exception&) {
-        return std::vector<App::DocumentObject*>();
+    catch (const std::exception& e) {
+        std::stringstream ss;
+        ss << "Gathering all dependencies failed, probably due to circular dependencies. Error: ";
+        ss << e.what();
+        throw Base::Exception(ss.str().c_str());
     }
 
     std::set<Vertex> out;
