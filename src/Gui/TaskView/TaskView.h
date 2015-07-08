@@ -24,7 +24,7 @@
 #ifndef GUI_TASKVIEW_TASKVIEW_H
 #define GUI_TASKVIEW_TASKVIEW_H
 
-//#define QSINT_ACTIONPANEL
+#define QSINT_ACTIONPANEL
 
 #include <map>
 #include <string>

@@ -85,6 +85,8 @@
 #include "View3DPy.h"
 #include "DlgOnlineHelpImp.h"
 #include "SpaceballEvent.h"
+#include "Control.h"
+#include "TaskView/TaskView.h"
 
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
@@ -1792,6 +1794,10 @@ void Application::runApplication(void)
             mdi->setBackground(QBrush(Qt::NoBrush));
             QTextStream str(&f);
             qApp->setStyleSheet(str.readAll());
+
+            Gui::TaskView::TaskView* taskPanel = Control().taskPanel();
+            if (taskPanel)
+                taskPanel->clearActionStyle();
         }
     }
 
