@@ -17,6 +17,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QApplication>
+#include <QStyle>
 
 
 namespace QSint
@@ -69,6 +70,7 @@ void TaskHeader::setExpandable(bool expandable)
         myButton->setFixedSize(myScheme->headerButtonSize);
         layout()->addWidget(myButton);
         changeIcons();
+        myButton->setProperty("fold", m_fold);
 
     } else {
         myExpandable = false;
@@ -197,6 +199,14 @@ void TaskHeader::fold()
 
     m_fold = !m_fold;
     changeIcons();
+    if (myButton) {
+      myButton->setProperty("fold", m_fold);
+      if (myButton->style()) {
+        myButton->style()->unpolish(myButton);
+        myButton->style()->polish(myButton);
+        myButton->update();
+      }
+    }
   }
 }
 
