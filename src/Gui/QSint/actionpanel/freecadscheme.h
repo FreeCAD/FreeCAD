@@ -46,7 +46,6 @@ public:
     void restoreActionStyle();
 
 private:
-    QPixmap drawFoldIcon(const QPalette& p, bool fold) const;
     QString builtinScheme;
     QPixmap builtinFold;
     QPixmap builtinFoldOver;
@@ -54,6 +53,21 @@ private:
     QPixmap builtinUnfoldOver;
 };
 
+class QSINT_EXPORT SystemPanelScheme : public ActionPanelScheme
+{
+public:
+    explicit SystemPanelScheme();
+
+    static ActionPanelScheme* defaultScheme()
+    {
+        static SystemPanelScheme scheme;
+        return &scheme;
+    }
+
+private:
+    QPixmap drawFoldIcon(const QPalette& p, bool fold) const;
+    QString systemStyle(const QPalette& p) const;
+};
 
 }
 
