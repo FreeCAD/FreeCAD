@@ -25,6 +25,7 @@
 #include "macpanelscheme.h"
 #include "winxppanelscheme.h"
 #include "winvistapanelscheme.h"
+#include <QApplication>
 #include <QImage>
 #include <QPainter>
 #include <QPalette>
@@ -103,6 +104,10 @@ FreeCADPanelScheme::FreeCADPanelScheme() : ActionPanelScheme()
     ActionPanelScheme* panelStyle = MacPanelScheme::defaultScheme();
 
     actionStyle = panelStyle->actionStyle;
+#elif defined(Q_OS_LINUX)
+    ActionPanelScheme* panelStyle = SystemPanelScheme::defaultScheme();
+
+    actionStyle = panelStyle->actionStyle;
 #else
     ActionPanelScheme* panelStyle = ActionPanelScheme::defaultScheme();
 
@@ -151,6 +156,31 @@ void FreeCADPanelScheme::restoreActionStyle()
     actionStyle = builtinScheme;
 }
 
+// -----------------------------------------------------
+
+SystemPanelScheme::SystemPanelScheme()
+{
+    headerSize = 25;
+    headerAnimation = true;
+
+    QPalette p = QApplication::palette();
+    QPalette p2 = p;
+    p2.setColor(QPalette::Highlight,p2.color(QPalette::Highlight).lighter());
+
+    headerButtonFold = drawFoldIcon(p, true);
+    headerButtonFoldOver = drawFoldIcon(p2, true);
+    headerButtonUnfold = drawFoldIcon(p, false);
+    headerButtonUnfoldOver = drawFoldIcon(p2, false);
+    headerButtonSize = QSize(17,17);
+
+    groupFoldSteps = 20;
+    groupFoldDelay = 15;
+    groupFoldEffect = NoFolding;
+    groupFoldThaw = true;
+
+    actionStyle = systemStyle(QApplication::palette());
+}
+
 /*!
   \code
     QPalette p = QApplication::palette();
@@ -162,7 +192,7 @@ void FreeCADPanelScheme::restoreActionStyle()
     headerButtonUnfoldOver = drawFoldIcon(p2, false);
   \endcode
  */
-QPixmap FreeCADPanelScheme::drawFoldIcon(const QPalette& p, bool fold) const
+QPixmap SystemPanelScheme::drawFoldIcon(const QPalette& p, bool fold) const
 {
     QImage img(17,17,QImage::Format_ARGB32_Premultiplied);
     img.fill(0x00000000);
@@ -189,6 +219,95 @@ QPixmap FreeCADPanelScheme::drawFoldIcon(const QPalette& p, bool fold) const
         img = img.transformed(mat);
     }
     return QPixmap::fromImage(img);
+}
+
+QString SystemPanelScheme::systemStyle(const QPalette& p) const
+{
+  QColor panelBackground1 = p.color(QPalette::Dark);
+  QColor panelBackground2 = p.color(QPalette::Midlight);
+
+  QColor headerBackground1 = p.color(QPalette::Highlight);
+  QColor headerBackground2 = p.color(QPalette::Highlight).lighter();
+
+  QColor headerLabelText = p.color(QPalette::HighlightedText);
+  QColor headerLabelTextOver = p.color(QPalette::BrightText);
+
+  QColor groupBackground = p.window().color();
+  QColor groupBorder = p.color(QPalette::Window);
+
+  QColor taskLabelText = p.color(QPalette::Text);
+  QColor taskLabelTextOver = p.color(QPalette::Highlight);
+
+  QString style = QString::fromLatin1(
+    "QFrame[class='panel'] {"
+        "background-color:qlineargradient(x1:1, y1:0.3, x2:1, y2:0, stop:0 %1, stop:1 %2);"
+    "}"
+
+    "QSint--ActionGroup QFrame[class='header'] {"
+        "border: 1px solid #ffffff;"                                // todo
+        "border-top-left-radius: 4px;"
+        "border-top-right-radius: 4px;"
+        "background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 %3, stop: 1 %4);"
+    "}"
+
+    "QSint--ActionGroup QToolButton[class='header'] {"
+        "text-align: left;"
+        "color: %5;"
+        "background-color: transparent;"
+        "border: 1px solid transparent;"
+        "font-weight: bold;"
+    "}"
+
+    "QSint--ActionGroup QToolButton[class='header']:hover {"
+        "color: %6;"
+    "}"
+
+    "QSint--ActionGroup QFrame[class='content'] {"
+        "background-color: %7;"
+        "border: 1px solid %8;"
+    "}"
+
+    "QSint--ActionGroup QFrame[class='content'][header='true'] {"
+        "border-top: none;"
+    "}"
+
+    "QSint--ActionGroup QToolButton[class='action'] {"
+        "background-color: transparent;"
+        "border: 1px solid transparent;"
+        "color: %9;"
+        "text-align: left;"
+    "}"
+
+    "QSint--ActionGroup QToolButton[class='action']:!enabled {"
+        "color: #999999;"                                           // todo
+    "}"
+
+    "QSint--ActionGroup QToolButton[class='action']:hover {"
+        "color: %10;"
+    "}"
+
+    "QSint--ActionGroup QToolButton[class='action']:focus {"
+        "border: 1px dotted black;"
+    "}"
+
+    "QSint--ActionGroup QToolButton[class='action']:on {"
+        "background-color: #ddeeff;"                                // todo
+        "color: #006600;"                                           // todo
+    "}"
+  )
+  .arg(panelBackground1.name())
+  .arg(panelBackground2.name())
+  .arg(headerBackground1.name())
+  .arg(headerBackground2.name())
+  .arg(headerLabelText.name())
+  .arg(headerLabelTextOver.name())
+  .arg(groupBackground.name())
+  .arg(groupBorder.name())
+  .arg(taskLabelText.name())
+  .arg(taskLabelTextOver.name())
+  ;
+
+  return style;
 }
 
 }
