@@ -97,6 +97,7 @@
 #include "ReportView.h"
 #include "CombiView.h"
 #include "PythonConsole.h"
+#include "TaskView/TaskView.h"
 
 #include "DlgTipOfTheDayImp.h"
 #include "DlgUndoRedo.h"
@@ -1543,6 +1544,19 @@ void MainWindow::customEvent(QEvent* e)
             d->actionTimer->start(5000);
         }
     }
+    else if (e->type() == ActionStyleEvent::EventType) {
+        QList<TaskView::TaskView*> tasks = findChildren<TaskView::TaskView*>();
+        if (static_cast<ActionStyleEvent*>(e)->getType() == ActionStyleEvent::Clear) {
+            for (QList<TaskView::TaskView*>::iterator it = tasks.begin(); it != tasks.end(); ++it) {
+                (*it)->clearActionStyle();
+            }
+        }
+        else {
+            for (QList<TaskView::TaskView*>::iterator it = tasks.begin(); it != tasks.end(); ++it) {
+                (*it)->restoreActionStyle();
+            }
+        }
+    }
 }
 
 // ----------------------------------------------------------
@@ -1622,6 +1636,20 @@ void StatusBarObserver::Log(const char *m)
     // Send the event to the main window to allow thread-safety. Qt will delete it when done.
     CustomMessageEvent* ev = new CustomMessageEvent(CustomMessageEvent::Log, QString::fromUtf8(m));
     QApplication::postEvent(getMainWindow(), ev);
+}
+
+// -------------------------------------------------------------
+
+int ActionStyleEvent::EventType = -1;
+
+ActionStyleEvent::ActionStyleEvent(Style type)
+  : QEvent(QEvent::Type(EventType)), type(type)
+{
+}
+
+ActionStyleEvent::Style ActionStyleEvent::getType() const
+{
+    return type;
 }
 
 

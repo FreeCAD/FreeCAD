@@ -1647,6 +1647,9 @@ void Application::runApplication(void)
              << QLatin1String(":/stylesheets");
     QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
 
+    // register action style event type
+    ActionStyleEvent::EventType = QEvent::registerEventType(QEvent::User + 1);
+
     // check for OpenGL
     if (!QGLFormat::hasOpenGL()) {
         QMessageBox::critical(0, QObject::tr("No OpenGL"), QObject::tr("This system does not support OpenGL"));
@@ -1795,9 +1798,8 @@ void Application::runApplication(void)
             QTextStream str(&f);
             qApp->setStyleSheet(str.readAll());
 
-            Gui::TaskView::TaskView* taskPanel = Control().taskPanel();
-            if (taskPanel)
-                taskPanel->clearActionStyle();
+            ActionStyleEvent e(ActionStyleEvent::Clear);
+            qApp->sendEvent(&mw, &e);
         }
     }
 

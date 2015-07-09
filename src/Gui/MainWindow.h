@@ -29,6 +29,7 @@
 #include <string>
 #include <vector>
 
+#include <QEvent>
 #include <QMainWindow>
 #include <QMdiArea>
 
@@ -311,6 +312,24 @@ public:
 
 private:
     QString msg, wrn, err;
+};
+
+// -------------------------------------------------------------
+
+/** This is a helper class needed when a style sheet is restored or cleared.
+ * @author Werner Mayer
+ */
+class ActionStyleEvent : public QEvent
+{
+public:
+    static int EventType;
+    enum Style {Restore, Clear};
+
+    ActionStyleEvent(Style type);
+    Style getType() const;
+
+private:
+    Style type;
 };
 
 } // namespace Gui
