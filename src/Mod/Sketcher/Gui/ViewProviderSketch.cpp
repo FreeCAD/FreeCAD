@@ -4089,10 +4089,13 @@ void ViewProviderSketch::updateData(const App::Property *prop)
         // Because a solve is mandatory to any addition (at least to update the DoF of the solver),
         // only when the solver geometry is the same in number than the sketch geometry an update
         // should trigger a redraw. This reduces even more the number of redraws per insertion of geometry
-    
+	
+	// solver information is also updated when no matching geometry, so that if a solving fails
+	// this failed solving info is presented to the user
+	UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
+	
         if(getSketchObject()->getExternalGeometryCount()+getSketchObject()->getHighestCurveIndex() + 1 == 
             getSketchObject()->getSolvedSketch().getGeometrySize()) {
-            UpdateSolverInformation(); // just update the solver window with the last SketchObject solving information
             draw(false);
             
             signalConstraintsChanged();
