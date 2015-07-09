@@ -178,6 +178,14 @@ class GuiExport SelectionGate
 public:
     virtual ~SelectionGate(){}
     virtual bool allow(App::Document*,App::DocumentObject*, const char*)=0;
+
+    /**
+     * @brief notAllowedReason is a string that sets the message to be
+     * displayed in statusbar for cluing the user on why is the selection not
+     * allowed. Set this variable in allow() implementation. Enclose the
+     * literal into QT_TR_NOOP() for translatability.
+     */
+    std::string notAllowedReason;
 };
 
 
