@@ -22,7 +22,7 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-import FreeCAD, os, unittest
+import FreeCAD, os, unittest, sys
 
 	
 #---------------------------------------------------------------------------
@@ -58,7 +58,7 @@ def All():
     
 def TestText(s):
     s = unittest.defaultTestLoader.loadTestsFromName(s)
-    r = unittest.TextTestRunner()
+    r = unittest.TextTestRunner(stream=sys.stdout,verbosity=2)
     r.run(s)
 
 def Test(s):
