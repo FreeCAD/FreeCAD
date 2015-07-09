@@ -354,8 +354,13 @@ PyObject *TooltablePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 // constructor method
 int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (PyArg_ParseTuple(args, "")) {
+        return 0;
+    }
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+
     PyObject *pcObj;
-    if (PyArg_ParseTuple(args, "|O!", &(PyDict_Type), &pcObj)) {
+    if (PyArg_ParseTuple(args, "O!", &(PyDict_Type), &pcObj)) {
         PyObject *key, *value;
         Py_ssize_t pos = 0;
         while (PyDict_Next(pcObj, &pos, &key, &value)) {
@@ -370,8 +375,8 @@ int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    
-    if (PyArg_ParseTuple(args, "|O!", &(PyList_Type), &pcObj)) {
+
+    if (PyArg_ParseTuple(args, "O!", &(PyList_Type), &pcObj)) {
         Py::List list(pcObj);
         for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Path::ToolPy::Type))) {
@@ -381,9 +386,9 @@ int TooltablePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         return 0;
     }
-    
-    PyErr_SetString(PyExc_TypeError, "Argument must be a list or a dictionary");
-    return -1;    
+
+    PyErr_SetString(PyExc_TypeError, "Argument must be either empty or a list or a dictionary");
+    return -1;
 }
 
 // Commands get/set
