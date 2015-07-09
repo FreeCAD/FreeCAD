@@ -499,7 +499,11 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
                                 );
 
                     if (getMainWindow()) {
+<<<<<<< 18faa737da36035dd5ff84b1a5e26e38fd5194e1
+                        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+=======
                         getMainWindow()->showMessage(msg,3000);
+>>>>>>> SelectionGate: add capability to display why not allowed.
                         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                         mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
                     }
@@ -673,6 +677,9 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         if (ActiveGate) {
             if (!ActiveGate->allow(temp.pDoc,temp.pObject,pSubName)) {
                 if (getMainWindow()) {
+<<<<<<< 18faa737da36035dd5ff84b1a5e26e38fd5194e1
+                    getMainWindow()->showMessage(QString::fromLatin1("Selection not allowed by filter"),5000);
+=======
                     QString msg;
                     if (ActiveGate->notAllowedReason.length() > 0) {
                         msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
@@ -680,6 +687,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
                         msg = QCoreApplication::translate("SelectionFilter","Selection not allowed by filter");
                     }
                     getMainWindow()->showMessage(msg,5000);
+>>>>>>> SelectionGate: add capability to display why not allowed.
                     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                     mdi->setOverrideCursor(Qt::ForbiddenCursor);
                 }
