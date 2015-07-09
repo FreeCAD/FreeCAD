@@ -31,6 +31,7 @@
 import FreeCAD,FreeCADGui
 # import the App Test module
 import TestApp               #Test as Module name not possible
+import sys
 
 #---------------------------------------------------------------------------
 # define the Commands of the Test Application module
@@ -97,7 +98,7 @@ class TestAllTextCmd:
     "Test all commando object"
     def Activated(self):
         import unittest, TestApp
-        unittest.TextTestRunner().run(unittest.defaultTestLoader.loadTestsFromName("TestApp.All"))
+        unittest.TextTestRunner(stream=sys.stdout,verbosity=2).run(unittest.defaultTestLoader.loadTestsFromName("TestApp.All"))
 
     def GetResources(self):
         return {'Pixmap'  : 'Std_Tool1', 
