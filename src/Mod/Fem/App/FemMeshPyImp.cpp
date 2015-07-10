@@ -294,20 +294,33 @@ PyObject* FemMeshPy::addFace(PyObject *args)
                 if (!face)
                     throw std::runtime_error("Failed to add triangular face");
                 break;
-
-            default: throw std::runtime_error("Unknown node count, [3|4|6|8] are allowed"); //unknown face type
+            case 4:
+                face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2],Nodes[3]);
+                if (!face)
+                    throw std::runtime_error("Failed to add face");
+                break;
+            case 6:
+                face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5]);
+                if (!face)
+                    throw std::runtime_error("Failed to add face");
+                break;
+            case 8:
+                face = meshDS->AddFace(Nodes[0],Nodes[1],Nodes[2],Nodes[3],Nodes[4],Nodes[5],Nodes[6],Nodes[7]);
+                if (!face)
+                    throw std::runtime_error("Failed to add face");
+                break;
+            default:
+                throw std::runtime_error("Unknown node count, [3|4|6|8] are allowed"); //unknown face type
         }
 
         return Py::new_reference_to(Py::Int(face->GetID()));
 
     }
 
-    PyErr_SetString(PyExc_TypeError, "Line constructor accepts:\n"
-        "-- empty parameter list\n"
-        "-- Line\n"
-        "-- Point, Point");
+    PyErr_SetString(PyExc_TypeError, "addFace accepts:\n"
+        "-- int,int,int\n"
+        "-- [3|4|6|8 int],[int]\n");
     return 0;
-
 }
 
 PyObject* FemMeshPy::addQuad(PyObject *args)
@@ -425,10 +438,9 @@ PyObject* FemMeshPy::addVolume(PyObject *args)
 
     }
 
-    PyErr_SetString(PyExc_TypeError, "Line constructor accepts:\n"
-        "-- empty parameter list\n"
-        "-- Line\n"
-        "-- Point, Point");
+    PyErr_SetString(PyExc_TypeError, "addVolume accepts:\n"
+        "-- int,int,int,int\n"
+        "-- [4|8|10 int],[int]\n");
     return 0;
 
 }
