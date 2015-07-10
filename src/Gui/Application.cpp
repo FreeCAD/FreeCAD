@@ -1169,11 +1169,10 @@ QPixmap Application::workbenchIcon(const QString& wb) const
     QIcon icon = QApplication::windowIcon();
     if (!icon.isNull()) {
         QList<QSize> s = icon.availableSizes();
-        return icon.pixmap(s[0]);
+        if (!s.isEmpty())
+            return icon.pixmap(s[0]);
     }
-    else {
-        return QPixmap();
-    }
+    return QPixmap();
 }
 
 QString Application::workbenchToolTip(const QString& wb) const
