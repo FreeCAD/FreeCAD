@@ -340,7 +340,8 @@ void PartExport initPart()
     Interface_Static::SetIVal("write.iges.brep.mode",brep ? 1 : 0);
     Interface_Static::SetCVal("write.iges.header.company", hIgesGrp->GetASCII("Company").c_str());
     Interface_Static::SetCVal("write.iges.header.author", hIgesGrp->GetASCII("Author").c_str());
-  //Interface_Static::SetCVal("write.iges.header.product", hIgesGrp->GetASCII("Product").c_str());
+    Interface_Static::SetCVal("write.iges.header.product", hIgesGrp->GetASCII("Product",
+       Interface_Static::CVal("write.iges.header.product")).c_str());
 
     int unitIges = hIgesGrp->GetInt("Unit", 0);
     switch (unitIges) {
@@ -372,6 +373,8 @@ void PartExport initPart()
 
     std::string ap = hStepGrp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
     Interface_Static::SetCVal("write.step.schema", ap.c_str());
+    Interface_Static::SetCVal("write.step.product.name", hStepGrp->GetASCII("Product",
+       Interface_Static::CVal("write.step.product.name")).c_str());
 }
 
 } // extern "C"

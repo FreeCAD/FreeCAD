@@ -703,7 +703,7 @@ void TopoShape::exportIges(const char *filename) const
         IGESData_GlobalSection header = aWriter.Model()->GlobalSection();
         header.SetAuthorName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.author")));
         header.SetCompanyName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.company")));
-      //header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
+        header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
         aWriter.Model()->SetGlobalSection(header);
         aWriter.AddShape(this->_Shape);
         aWriter.ComputeModel();
