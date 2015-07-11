@@ -24,7 +24,6 @@ if(MSVC)
     set(Path_LIBS
         Robot
         ${QT_QTCORE_LIBRARY}
-        ${QT_QTCORE_LIBRARY_DEBUG}
         FreeCADApp
     )
 else(MSVC)
