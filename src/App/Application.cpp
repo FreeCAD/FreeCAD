@@ -1410,6 +1410,21 @@ void Application::LoadParameters(void)
 
     try {
         if (_pcUserParamMngr->LoadOrCreateDocument(mConfig["UserParameter"].c_str()) && !(mConfig["Verbose"] == "Strict")) {
+            // The user parameter file doesn't exist. When an alternative parameter file is offered
+            // this will be used.
+            std::map<std::string, std::string>::iterator it = mConfig.find("UserParameterTemplate");
+            if (it != mConfig.end()) {
+                QString path = QString::fromUtf8(it->second.c_str());
+                if (QDir(path).isRelative()) {
+                    QString home = QString::fromUtf8(mConfig["AppHomePath"].c_str());
+                    path = QFileInfo(QDir(home), path).absoluteFilePath();
+                }
+                QFileInfo fi(path);
+                if (fi.exists()) {
+                    _pcUserParamMngr->LoadDocument(path.toUtf8().constData());
+                }
+            }
+
             // Configuration file optional when using as Python module
             if (!Py_IsInitialized()) {
                 Console().Warning("   User settings not existing, write initial one\n");

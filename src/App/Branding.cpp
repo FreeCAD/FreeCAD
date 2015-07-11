@@ -60,6 +60,7 @@ Branding::Branding()
     filter.push_back("ExeName");
     filter.push_back("ExeVendor");
     filter.push_back("NavigationStyle");
+    filter.push_back("UserParameterTemplate");
 }
 
 bool Branding::readFile(const QString& fn)
