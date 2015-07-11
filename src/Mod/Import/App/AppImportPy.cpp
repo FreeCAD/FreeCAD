@@ -260,7 +260,7 @@ static PyObject * exporter(PyObject *self, PyObject *args)
             IGESData_GlobalSection header = writer.Model()->GlobalSection();
             header.SetAuthorName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.author")));
             header.SetCompanyName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.company")));
-          //header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
+            header.SetSendName(new TCollection_HAsciiString(Interface_Static::CVal("write.iges.header.product")));
             writer.Model()->SetGlobalSection(header);
             writer.Transfer(hDoc);
             Standard_Boolean ret = writer.Write(name8bit.c_str());
