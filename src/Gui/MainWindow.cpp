@@ -1156,13 +1156,29 @@ void MainWindow::stopSplasher(void)
 
 QPixmap MainWindow::splashImage() const
 {
+    // search in the UserAppData dir as very first
     QPixmap splash_image;
     QDir dir(QString::fromUtf8(App::Application::Config()["UserAppData"].c_str()));
     QFileInfo fi(dir.filePath(QString::fromAscii("pixmaps/splash_image.png")));
     if (fi.isFile() && fi.exists())
         splash_image.load(fi.filePath(), "PNG");
-    if (splash_image.isNull())
-        splash_image = Gui::BitmapFactory().pixmap(App::Application::Config()["SplashScreen"].c_str());
+
+    // if no image was found try the config
+    std::string splash_path = App::Application::Config()["SplashScreen"];
+    if (splash_image.isNull()) {
+        QString path = QString::fromUtf8(splash_path.c_str());
+        if (QDir(path).isRelative()) {
+            QString home = QString::fromUtf8(App::GetApplication().getHomePath());
+            path = QFileInfo(QDir(home), path).absoluteFilePath();
+        }
+
+        splash_image.load(path);
+    }
+
+    // now try the icon paths
+    if (splash_image.isNull()) {
+        splash_image = Gui::BitmapFactory().pixmap(splash_path.c_str());
+    }
 
     // include application name and version number
     std::map<std::string,std::string>::const_iterator tc = App::Application::Config().find("SplashInfoColor");
