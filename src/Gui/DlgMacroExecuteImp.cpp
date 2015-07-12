@@ -182,7 +182,7 @@ void DlgMacroExecuteImp::on_createButton_clicked()
             }
             file.close();
             PythonEditor* editor = new PythonEditor();
-            editor->setWindowIcon(Gui::BitmapFactory().pixmap("applications-python"));
+            editor->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
             PythonEditorView* edit = new PythonEditorView(editor, getMainWindow());
             edit->open(fi.absoluteFilePath());
             edit->setWindowTitle(QString::fromAscii("%1[*]").arg(fn));

@@ -254,10 +254,10 @@ void SelectionView::onItemContextMenu(const QPoint& point)
         return;
     QMenu menu;
     QAction *selectAction = menu.addAction(tr("Select only"),this,SLOT(select()));
-    selectAction->setIcon(QIcon(QString::fromAscii(":/icons/view-select.svg")));
+    selectAction->setIcon(QIcon::fromTheme(QString::fromAscii("view-select")));
     selectAction->setToolTip(tr("Selects only this object"));
     QAction *deselectAction = menu.addAction(tr("Deselect"),this,SLOT(deselect()));
-    deselectAction->setIcon(QIcon(QString::fromAscii(":/icons/view-unselectable.svg")));
+    deselectAction->setIcon(QIcon::fromTheme(QString::fromAscii("view-unselectable")));
     deselectAction->setToolTip(tr("Deselects this object"));
     QAction *zoomAction = menu.addAction(tr("Zoom fit"),this,SLOT(zoom()));
     zoomAction->setIcon(QIcon::fromTheme(QString::fromAscii("zoom-fit-best")));
@@ -265,7 +265,7 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     QAction *gotoAction = menu.addAction(tr("Go to selection"),this,SLOT(treeSelect()));
     gotoAction->setToolTip(tr("Selects and locates this object in the tree view"));
     QAction *toPythonAction = menu.addAction(tr("To python console"),this,SLOT(toPython()));
-    toPythonAction->setIcon(QIcon(QString::fromAscii(":/icons/applications-python.svg")));
+    toPythonAction->setIcon(QIcon::fromTheme(QString::fromAscii("applications-python")));
     toPythonAction->setToolTip(tr("Reveals this object and its subelements in the python console."));
     menu.exec(selectionView->mapToGlobal(point));
 }

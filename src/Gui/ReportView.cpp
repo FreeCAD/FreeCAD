@@ -75,7 +75,7 @@ ReportView::ReportView( QWidget* parent )
     tabPython = new PythonConsole();
     tabPython->setWordWrapMode(QTextOption::NoWrap);
     tabPython->setWindowTitle(trUtf8("Python console"));
-    tabPython->setWindowIcon(BitmapFactory().pixmap("applications-python"));
+    tabPython->setWindowIcon(BitmapFactory().iconFromTheme("applications-python"));
     int python = tabWidget->addTab(tabPython, tabPython->windowTitle());
     tabWidget->setTabIcon(python, tabPython->windowIcon());
     tabWidget->setCurrentIndex(0);
