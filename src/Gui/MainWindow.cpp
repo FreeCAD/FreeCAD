@@ -370,7 +370,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WFlags f)
     // Python console
     PythonConsole* pcPython = new PythonConsole(this);
     pcPython->setWordWrapMode(QTextOption::NoWrap);
-    pcPython->setWindowIcon(Gui::BitmapFactory().pixmap("applications-python"));
+    pcPython->setWindowIcon(Gui::BitmapFactory().iconFromTheme("applications-python"));
     pcPython->setObjectName
         (QString::fromAscii(QT_TRANSLATE_NOOP("QDockWidget","Python console")));
     pDockMgr->registerDockWindow("Std_PythonView", pcPython);
