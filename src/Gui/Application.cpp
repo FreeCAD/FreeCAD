@@ -1687,6 +1687,7 @@ void Application::runApplication(void)
         Base::Console().Log("No OpenGL is present or no OpenGL context is current\n");
 
 #if !defined(Q_WS_X11)
+    QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString::fromLatin1(":/icons/FreeCAD-default"));
     QIcon::setThemeName(QLatin1String("FreeCAD-default"));
 #endif
 
