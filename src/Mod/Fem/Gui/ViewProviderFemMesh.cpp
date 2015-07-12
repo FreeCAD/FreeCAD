@@ -467,8 +467,7 @@ std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* E
 
 void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
 {
-
-    if(HighlightedNodes.size()){
+    if(!HighlightedNodes.empty()){
         SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
 
         pcAnoCoords->point.setNum(HighlightedNodes.size());
@@ -476,14 +475,15 @@ void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNod
         int i=0;
         for(std::set<long>::const_iterator it=HighlightedNodes.begin();it!=HighlightedNodes.end();++it,i++){
             const SMDS_MeshNode *Node = data->FindNode(*it);
-            verts[i].setValue((float)Node->X(),(float)Node->Y(),(float)Node->Z());
+            if (Node)
+                verts[i].setValue((float)Node->X(),(float)Node->Y(),(float)Node->Z());
+            else
+                verts[i].setValue(0,0,0);
         }
         pcAnoCoords->point.finishEditing();
-
     }else{
         pcAnoCoords->point.setNum(0);
     }
-   
 }
 void ViewProviderFemMesh::resetHighlightNodes(void)
 {

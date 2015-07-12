@@ -6,8 +6,13 @@
 
 #include <App/DocumentObjectPy.h>
 
-#include "Mod/Fem/Gui/ViewProviderFemMesh.h"
-#include "Mod/Fem/App/FemResultObject.h"
+#include <Mod/Fem/Gui/ViewProviderFemMesh.h>
+#include <Mod/Fem/App/FemResultObject.h>
+#include <Mod/Fem/App/FemMeshObject.h>
+#include <Mod/Fem/App/FemMesh.h>
+#include <SMESH_Mesh.hxx>
+#include <SMESHDS_Mesh.hxx>
+#include <SMDSAbs_ElementType.hxx>
 
 // inclusion of the generated files (generated out of ViewProviderFemMeshPy.xml)
 #include "ViewProviderFemMeshPy.h"
@@ -218,13 +223,18 @@ Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
 
 void  ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 {
-    std::set<long> res;
+    ViewProviderFemMesh* vp = this->getViewProviderFemMeshPtr();
+    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>
+        (vp->getObject())->FemMesh).getValue().getSMesh())->GetMeshDS();
 
-    for( Py::List::iterator it = arg.begin(); it!= arg.end();++it){
-        Py::Int id(*it);
-        if(id)
+    std::set<long> res;
+    for(Py::List::iterator it = arg.begin(); it!= arg.end();++it){
+        long id = static_cast<long>(Py::Int(*it));
+        const SMDS_MeshNode *node = data->FindNode(id);
+        if(node)
             res.insert(id);
     }
+
     this->getViewProviderFemMeshPtr()->setHighlightNodes(res);
 }
 
