@@ -208,7 +208,7 @@ void DlgCustomToolbars::on_categoryBox_activated(int index)
         item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
         item->setSizeHint(0, QSize(32, 32));
         if ((*it)->getPixmap())
-            item->setIcon(0, BitmapFactory().pixmap((*it)->getPixmap()));
+            item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
     }
 }
 
@@ -266,7 +266,7 @@ void DlgCustomToolbars::importCustomToolbars(const QByteArray& name)
                     item->setText(0, qApp->translate(pCmd->className(), pCmd->getMenuText()));
                     item->setData(0, Qt::UserRole, QByteArray(it2->first.c_str()));
                     if (pCmd->getPixmap())
-                        item->setIcon(0, BitmapFactory().pixmap(pCmd->getPixmap()));
+                        item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                     item->setSizeHint(0, QSize(32, 32));
                 }
             }
@@ -540,7 +540,7 @@ void DlgCustomToolbars::onAddMacroAction(const QByteArray& macro)
         item->setSizeHint(0, QSize(32, 32));
         item->setBackgroundColor(0, Qt::lightGray);
         if (pCmd->getPixmap())
-            item->setIcon(0, BitmapFactory().pixmap(pCmd->getPixmap()));
+            item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
     }
 }
 
@@ -581,7 +581,7 @@ void DlgCustomToolbars::onModifyMacroAction(const QByteArray& macro)
                 item->setSizeHint(0, QSize(32, 32));
                 item->setBackgroundColor(0, Qt::lightGray);
                 if (pCmd->getPixmap())
-                    item->setIcon(0, BitmapFactory().pixmap(pCmd->getPixmap()));
+                    item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                 break;
             }
         }
@@ -594,7 +594,7 @@ void DlgCustomToolbars::onModifyMacroAction(const QByteArray& macro)
                 if (command == macro) {
                     item->setText(0, QString::fromUtf8(pCmd->getMenuText()));
                     if (pCmd->getPixmap())
-                        item->setIcon(0, BitmapFactory().pixmap(pCmd->getPixmap()));
+                        item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                 }
             }
         }

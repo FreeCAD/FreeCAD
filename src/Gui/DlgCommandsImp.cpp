@@ -151,7 +151,7 @@ void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* item)
         item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
         item->setSizeHint(0, QSize(32, 32));
         if ((*it)->getPixmap())
-            item->setIcon(0, BitmapFactory().pixmap((*it)->getPixmap()));
+            item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
     }
 
     textLabel->setText(QString());
@@ -177,7 +177,7 @@ void DlgCustomCommandsImp::onAddMacroAction(const QByteArray& macro)
         item->setSizeHint(0, QSize(32, 32));
         item->setBackgroundColor(0, Qt::lightGray);
         if (pCmd->getPixmap())
-            item->setIcon(0, BitmapFactory().pixmap(pCmd->getPixmap()));
+            item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
     }
 }
 
@@ -225,7 +225,7 @@ void DlgCustomCommandsImp::onModifyMacroAction(const QByteArray& macro)
                 item->setSizeHint(0, QSize(32, 32));
                 item->setBackgroundColor(0, Qt::lightGray);
                 if (pCmd->getPixmap())
-                    item->setIcon(0, BitmapFactory().pixmap(pCmd->getPixmap()));
+                    item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                 if (commandTreeWidget->isItemSelected(item))
                     onDescription(item);
                 break;
