@@ -181,7 +181,7 @@ void DlgCustomKeyboardImp::on_categoryBox_activated(int index)
         item->setData(1, Qt::UserRole, QByteArray((*it)->getName()));
         item->setSizeHint(0, QSize(32, 32));
         if ((*it)->getPixmap())
-            item->setIcon(0, BitmapFactory().pixmap((*it)->getPixmap()));
+            item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
     }
 }
 
@@ -319,7 +319,7 @@ void DlgCustomKeyboardImp::on_editShortcut_textChanged(const QString& sc)
                 item->setSizeHint(0, QSize(32, 32));
                 item->setBackgroundColor(0, Qt::lightGray);
                 if ((*it)->getPixmap())
-                    item->setIcon(0, BitmapFactory().pixmap((*it)->getPixmap()));
+                    item->setIcon(0, BitmapFactory().iconFromTheme((*it)->getPixmap()));
             }
         }
 
@@ -362,7 +362,7 @@ void DlgCustomKeyboardImp::onAddMacroAction(const QByteArray& macro)
         item->setSizeHint(0, QSize(32, 32));
         item->setBackgroundColor(0, Qt::lightGray);
         if (pCmd->getPixmap())
-            item->setIcon(0, BitmapFactory().pixmap(pCmd->getPixmap()));
+            item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
     }
 }
 
@@ -402,7 +402,7 @@ void DlgCustomKeyboardImp::onModifyMacroAction(const QByteArray& macro)
                 item->setSizeHint(0, QSize(32, 32));
                 item->setBackgroundColor(0, Qt::lightGray);
                 if (pCmd->getPixmap())
-                    item->setIcon(0, BitmapFactory().pixmap(pCmd->getPixmap()));
+                    item->setIcon(0, BitmapFactory().iconFromTheme(pCmd->getPixmap()));
                 if (commandTreeWidget->isItemSelected(item))
                     textLabelDescription->setText(item->toolTip(1));
                 break;
