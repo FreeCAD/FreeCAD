@@ -43,6 +43,7 @@
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/PartFeature.h>
 
+#include <boost/bind.hpp>
 
 using namespace PartDesign;
 
@@ -417,6 +418,25 @@ PyObject *Body::getPyObject(void)
         PythonObject = Py::Object(new BodyPy(this),true);
     }
     return Py::new_reference_to(PythonObject);
+}
+
+void Body::onSettingDocument() {
+    
+    if(connection.connected())
+        connection.disconnect();
+    
+    getDocument()->signalDeletedObject.connect(boost::bind(&Body::onDelete, this, _1));
+    App::DocumentObject::onSettingDocument();
+}
+
+void Body::onDelete(const App::DocumentObject& obj) {
+    
+    if(&obj == this) {        
+        //delete all child objects if needed
+        std::vector<DocumentObject*> grp = Model.getValues();
+        for (auto obj : grp)             
+            this->getDocument()->remObject(obj->getNameInDocument(), true);
+    }
 }
 
 }

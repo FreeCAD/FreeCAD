@@ -27,6 +27,7 @@
 #include <App/PropertyStandard.h>
 #include <Mod/Part/App/BodyBase.h>
 
+#include <boost/signals.hpp>
 
 namespace PartDesign
 {
@@ -121,8 +122,13 @@ public:
 
     PyObject *getPyObject(void);
 
+protected:
+    virtual void onSettingDocument();
+    
 private:
     App::DocumentObject* rememberTip;
+    boost::signals::scoped_connection connection;
+    void onDelete(const App::DocumentObject& obj);
 };
 
 } //namespace PartDesign

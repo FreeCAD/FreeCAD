@@ -1278,6 +1278,8 @@ std::vector<DocumentObjectItem*> DocumentItem::getAllParents(DocumentObjectItem*
 
     for (std::vector<App::DocumentObject*>::iterator it = inlist.begin(); it != inlist.end(); ++it) {
         Gui::ViewProvider* vp = pDocument->getViewProvider(*it);
+        if(!vp) 
+            continue;
         std::vector<App::DocumentObject*> child = vp->claimChildren();
         for (std::vector<App::DocumentObject*>::iterator jt = child.begin(); jt != child.end(); ++jt) {
             if (*jt == obj) {
