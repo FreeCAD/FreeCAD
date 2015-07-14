@@ -392,7 +392,7 @@ void ViewProviderPath::recomputeBoundingBox()
     Path::Feature* pcPathObj = static_cast<Path::Feature*>(pcObject);
     Base::Placement pl = *(&pcPathObj->Placement.getValue());
     Base::Vector3d pt;
-    for (unsigned int i=0;i<pcLineCoords->point.getNum();i++) {
+    for (int i=0;i<pcLineCoords->point.getNum();i++) {
         pt.x = pcLineCoords->point[i].getValue()[0];
         pt.y = pcLineCoords->point[i].getValue()[1];
         pt.z = pcLineCoords->point[i].getValue()[2];
