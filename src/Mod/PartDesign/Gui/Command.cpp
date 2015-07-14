@@ -94,7 +94,7 @@ CmdPartDesignPart::CmdPartDesignPart()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Create part");
-    sToolTipText  = QT_TR_NOOP("Create a new part feature");
+    sToolTipText  = QT_TR_NOOP("Create a new part and make it active");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "Tree_Annotation";
@@ -102,7 +102,7 @@ CmdPartDesignPart::CmdPartDesignPart()
 
 void CmdPartDesignPart::activated(int iMsg)
 {
-    openCommand("Add a body feature");
+    openCommand("Add a part");
     std::string FeatName = getUniqueObjectName("Part");
 
     std::string PartName;
@@ -131,7 +131,7 @@ CmdPartDesignBody::CmdPartDesignBody()
     sAppModule    = "PartDesign";
     sGroup        = QT_TR_NOOP("PartDesign");
     sMenuText     = QT_TR_NOOP("Create body");
-    sToolTipText  = QT_TR_NOOP("Create a new body feature");
+    sToolTipText  = QT_TR_NOOP("Create a new body and make it active");
     sWhatsThis    = sToolTipText;
     sStatusTip    = sToolTipText;
     sPixmap       = "PartDesign_Body_Create_New";
@@ -139,7 +139,7 @@ CmdPartDesignBody::CmdPartDesignBody()
 
 void CmdPartDesignBody::activated(int iMsg)
 {
-    openCommand("Add a body feature");
+    openCommand("Add a body");
     std::string FeatName = getUniqueObjectName("Body");
 
     // first check if Part is already created:
