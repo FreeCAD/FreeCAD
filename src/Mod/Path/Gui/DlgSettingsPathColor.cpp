@@ -30,7 +30,7 @@
 
 using namespace PathGui;
 
-/* TRANSLATOR PartGui::DlgSettingsPathColor */
+/* TRANSLATOR PathGui::DlgSettingsPathColor */
 
 /**
  *  Constructs a DlgSettingsObjectColor which is a child of 'parent', with the 

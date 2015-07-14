@@ -231,7 +231,7 @@ void ViewProviderPath::updateData(const App::Property* prop)
         bool absolute = true;
         bool first = true;
         
-        for (int  i = 0; i < tp.getSize(); i++) {
+        for (unsigned int  i = 0; i < tp.getSize(); i++) {
             Path::Command cmd = tp.getCommand(i);
             std::string name = cmd.Name;
             Base::Vector3d next = cmd.getPlacement().getPosition();
