@@ -89,14 +89,6 @@ void LineEdit::keyPressEvent(QKeyEvent *eventIn)
   QLineEdit::keyPressEvent(eventIn);
 }
 
-
-ViewEntryRectItem::ViewEntryRectItem(QGraphicsItem* parent) : QGraphicsRectItem(parent)
-{
-  selected = false;
-  preSelected = false;
-  editing = false;
-}
-
 //I dont think I should have to call invalidate
 //and definitely not on the whole scene!
 //if we have performance problems, this will definitely
@@ -107,112 +99,6 @@ ViewEntryRectItem::ViewEntryRectItem(QGraphicsItem* parent) : QGraphicsRectItem(
 //   update(boundingRect());
 //note: I haven't tried this again since I turned BSP off.
 
-void ViewEntryRectItem::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
-{
-  //TODO figure out how to mimic painting of itemviews. QStyle, QStyledItemDelegate.
-  
-  QBrush brush = backgroundBrush;
-  if (selected)
-    brush = selectionBrush;
-  if (preSelected)
-    brush = preSelectionBrush;
-  if (selected && preSelected)
-    brush = bothBrush;
-  if (editing)
-    brush = editBrush;
-  
-  //heights are negative.
-  float radius = std::min(this->rect().width(), std::fabs(this->rect().height())) * 0.1;
-  painter->setBrush(brush);
-  painter->setPen(this->pen()); //should be Qt::NoPen.
-  painter->drawRoundedRect(this->rect(), radius, radius);
-  
-//   QGraphicsRectItem::paint(painter, option, widget);
-}
-
-VertexProperty::VertexProperty() : 
-  rectangle(new ViewEntryRectItem()),
-  point(new QGraphicsEllipseItem()), 
-  visibleIcon(new QGraphicsPixmapItem()),
-  stateIcon(new QGraphicsPixmapItem()),
-  icon(new QGraphicsPixmapItem()),
-  text(new QGraphicsTextItem()),
-  row(0),
-  column(0),
-  lastVisibleState(VisibilityState::None),
-  dagVisible(true)
-{
-  //All flags are disabled by default.
-  this->rectangle->setFlags(QGraphicsItem::ItemIsSelectable);
-  
-  //set z values.
-  this->rectangle->setZValue(-1000.0);
-  this->point->setZValue(1000.0);
-  this->visibleIcon->setZValue(0.0);
-  this->stateIcon->setZValue(0.0);
-  this->icon->setZValue(0.0);
-  this->text->setZValue(0.0);
-}
-
-EdgeProperty::EdgeProperty() : relation(BranchTag::None)
-{
-
-}
-
-const GraphLinkRecord& Model::findRecord(Vertex vertexIn)
-{
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByVertex>::type List;
-  const List &list = graphLink->get<GraphLinkRecord::ByVertex>();
-  List::const_iterator it = list.find(vertexIn);
-  assert(it != list.end());
-  return *it;
-}
-
-const GraphLinkRecord& Model::findRecord(const App::DocumentObject* dObjectIn)
-{
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByDObject>::type List;
-  const List &list = graphLink->get<GraphLinkRecord::ByDObject>();
-  List::const_iterator it = list.find(dObjectIn);
-  assert(it != list.end());
-  return *it;
-}
-
-const GraphLinkRecord& Model::findRecord(const ViewProviderDocumentObject* VPDObjectIn)
-{
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByVPDObject>::type List;
-  const List &list = graphLink->get<GraphLinkRecord::ByVPDObject>();
-  List::const_iterator it = list.find(VPDObjectIn);
-  assert(it != list.end());
-  return *it;
-}
-
-const GraphLinkRecord& Model::findRecord(const ViewEntryRectItem* rectIn)
-{
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByRectItem>::type List;
-  const List &list = graphLink->get<GraphLinkRecord::ByRectItem>();
-  List::const_iterator it = list.find(rectIn);
-  assert(it != list.end());
-  return *it;
-}
-
-const GraphLinkRecord& Model::findRecord(const std::string &stringIn)
-{
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByUniqueName>::type List;
-  const List &list = graphLink->get<GraphLinkRecord::ByUniqueName>();
-  List::const_iterator it = list.find(stringIn);
-  assert(it != list.end());
-  return *it;
-}
-
-void Model::eraseRecord(const ViewProviderDocumentObject* VPDObjectIn)
-{
-  typedef GraphLinkContainer::index<GraphLinkRecord::ByVPDObject>::type List;
-  const List &list = graphLink->get<GraphLinkRecord::ByVPDObject>();
-  List::iterator it = list.find(VPDObjectIn);
-  assert(it != list.end());
-  graphLink->get<GraphLinkRecord::ByVPDObject>().erase(it);
-}
-
 Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScene(parentIn)
 {
   //turned off BSP as it was giving inconsistent discovery of items
@@ -222,6 +108,7 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   theGraph = std::shared_ptr<Graph>(new Graph());
   graphLink = std::shared_ptr<GraphLinkContainer>(new GraphLinkContainer());
   setupViewConstants();
+  setupFilters();
   
   graphDirty = false;
   currentPrehighlight = nullptr;
@@ -275,12 +162,38 @@ Model::~Model()
   removeAllItems();
 }
 
+void Model::setupFilters()
+{
+//   filters.push_back(std::shared_ptr<FilterOrigin>(new FilterOrigin()));
+//   filters.push_back(std::shared_ptr<FilterTyped>(new FilterTyped("PartDesign::Body")));
+//   filters.push_back(std::shared_ptr<FilterTyped>(new FilterTyped("App::Part")));
+}
+
 void Model::setupViewConstants()
 {
-  QFontMetrics fontMetric(qApp->font());
+  ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DAGView");
+          
+  //get font point size.
+  int fontPointSize = group->GetInt("FontPointSize", 0);
+  group->SetInt("FontPointSize", fontPointSize); //ensure entry exists.
+  if (fontPointSize != 0)
+  {
+    QFont tempFont(this->font());
+    tempFont.setPointSize(fontPointSize);
+    this->setFont(tempFont);
+  }
+          
+  //get direction
+  direction = group->GetFloat("Direction", 1.0);
+  if (direction != -1.0 && direction != 1.0)
+    direction = 1.0;
+  group->SetFloat("Direction", direction); //ensure entry exists.
+  
+  QFontMetrics fontMetric(this->font());
   fontHeight = fontMetric.height();
   verticalSpacing = 1.0;
-  rowHeight = (fontHeight + 2.0 * verticalSpacing) * -1.0; //pixel space top and bottom.
+  rowHeight = (fontHeight + 2.0 * verticalSpacing) * direction; //pixel space top and bottom.
   iconSize = fontHeight;
   pointSize = fontHeight / 2.0;
   pointSpacing = pointSize;
@@ -288,7 +201,7 @@ void Model::setupViewConstants()
   iconToIcon = iconSize * 0.25;
   iconToText = iconSize / 2.0;
   rowPadding = fontHeight;
-  backgroundBrushes = {qApp->palette().base(), qApp->palette().alternateBase()};
+  backgroundBrushes = {this->palette().base(), this->palette().alternateBase()};
   forgroundBrushes = 
   {
     QBrush(Qt::red),
@@ -337,13 +250,14 @@ void Model::slotNewObject(const ViewProviderDocumentObject &VPDObjectIn)
   
   (*theGraph)[virginVertex].icon->setPixmap(VPDObjectIn.getIcon().pixmap(iconSize, iconSize));
   (*theGraph)[virginVertex].stateIcon->setPixmap(passPixmap);
+  (*theGraph)[virginVertex].text->setFont(this->font());
   
   graphDirty = true;
 }
 
 void Model::slotDeleteObject(const ViewProviderDocumentObject &VPDObjectIn)
 {
-  Vertex vertex = findRecord(&VPDObjectIn).vertex;
+  Vertex vertex = findRecord(&VPDObjectIn, *graphLink).vertex;
   
   //remove items from scene.
   removeVertexItemsFromScene(vertex);
@@ -360,7 +274,7 @@ void Model::slotDeleteObject(const ViewProviderDocumentObject &VPDObjectIn)
   boost::clear_vertex(vertex, *theGraph);
   boost::remove_vertex(vertex, *theGraph);
   
-  eraseRecord(&VPDObjectIn);
+  eraseRecord(&VPDObjectIn, *graphLink);
   graphDirty = true;
 }
 
@@ -378,7 +292,7 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
   //renaming of objects.
   if (std::string("Label") == name)
   {
-    const GraphLinkRecord &record = findRecord(&VPDObjectIn);
+    const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
     auto *text = (*theGraph)[record.vertex].text.get();
     text->setPlainText(QString::fromUtf8(record.DObject->Label.getValue()));
   }
@@ -394,7 +308,7 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
   
   if (linkTypes.find(propertyIn.getTypeId().getName()) != linkTypes.end())
   {
-    const GraphLinkRecord &record = findRecord(&VPDObjectIn);
+    const GraphLinkRecord &record = findRecord(&VPDObjectIn, *graphLink);
     boost::clear_vertex(record.vertex, *theGraph);
     graphDirty = true;
   }
@@ -402,14 +316,14 @@ void Model::slotChangeObject(const ViewProviderDocumentObject &VPDObjectIn, cons
 
 void Model::slotInEdit(const ViewProviderDocumentObject& VPDObjectIn)
 {
-  ViewEntryRectItem *rect = (*theGraph)[findRecord(&VPDObjectIn).vertex].rectangle.get();
+  RectItem *rect = (*theGraph)[findRecord(&VPDObjectIn, *graphLink).vertex].rectangle.get();
   rect->editingStart();
   this->invalidate();
 }
 
 void Model::slotResetEdit(const ViewProviderDocumentObject& VPDObjectIn)
 {
-  ViewEntryRectItem *rect = (*theGraph)[findRecord(&VPDObjectIn).vertex].rectangle.get();
+  RectItem *rect = (*theGraph)[findRecord(&VPDObjectIn, *graphLink).vertex].rectangle.get();
   rect->editingFinished();
   this->invalidate();
 }
@@ -463,7 +377,7 @@ void Model::selectionChanged(const SelectionChanges& msg)
   {
     BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
     {
-      ViewEntryRectItem *rect = (*theGraph)[currentVertex].rectangle.get();
+      RectItem *rect = (*theGraph)[currentVertex].rectangle.get();
       assert(rect);
       rect->selectionOff();
       highlightConnectorOff(currentVertex);
@@ -476,8 +390,8 @@ void Model::selectionChanged(const SelectionChanges& msg)
     assert(in);
     std::string name(in);
     assert(!name.empty());
-    const GraphLinkRecord &record = findRecord(name);
-    ViewEntryRectItem *rect = (*theGraph)[record.vertex].rectangle.get();
+    const GraphLinkRecord &record = findRecord(name, *graphLink);
+    RectItem *rect = (*theGraph)[record.vertex].rectangle.get();
     assert(rect);
     return rect;
   };
@@ -486,18 +400,18 @@ void Model::selectionChanged(const SelectionChanges& msg)
   {
     if (msg.pObjectName)
     {
-      ViewEntryRectItem *rect = getRectangle(msg.pObjectName);
+      RectItem *rect = getRectangle(msg.pObjectName);
       rect->selectionOn();
-      highlightConnectorOn(findRecord(std::string(msg.pObjectName)).vertex);
+      highlightConnectorOn(findRecord(std::string(msg.pObjectName), *graphLink).vertex);
     }
   }
   else if(msg.Type == SelectionChanges::RmvSelection)
   {
     if (msg.pObjectName)
     {
-      ViewEntryRectItem *rect = getRectangle(msg.pObjectName);
+      RectItem *rect = getRectangle(msg.pObjectName);
       rect->selectionOff();
-      highlightConnectorOff(findRecord(std::string(msg.pObjectName)).vertex);
+      highlightConnectorOff(findRecord(std::string(msg.pObjectName), *graphLink).vertex);
     }
   }
   else if(msg.Type == SelectionChanges::SetSelection)
@@ -508,9 +422,9 @@ void Model::selectionChanged(const SelectionChanges& msg)
     for (const auto &selection : selections)
     {
       assert(selection.FeatName);
-      ViewEntryRectItem *rect = getRectangle(selection.FeatName);
+      RectItem *rect = getRectangle(selection.FeatName);
       rect->selectionOn();
-      highlightConnectorOn(findRecord(selection.FeatName).vertex);
+      highlightConnectorOn(findRecord(selection.FeatName, *graphLink).vertex);
     }
   }
   else if(msg.Type == SelectionChanges::ClrSelection)
@@ -546,11 +460,11 @@ void Model::updateSlot()
   //we have to do this first and in isolation because everything is dependent on an up to date graph.
   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
   {
-    const App::DocumentObject *currentDObject = findRecord(currentVertex).DObject;
+    const App::DocumentObject *currentDObject = findRecord(currentVertex, *graphLink).DObject;
     std::vector<App::DocumentObject *> otherDObjects = currentDObject->getOutList();
     for (auto &currentOtherDObject : otherDObjects)
     {
-      Vertex otherVertex = findRecord(currentOtherDObject).vertex;
+      Vertex otherVertex = findRecord(currentOtherDObject, *graphLink).vertex;
       bool result;
       Edge edge;
       boost::tie(edge, result) = boost::add_edge(currentVertex, otherVertex, *theGraph);
@@ -562,31 +476,31 @@ void Model::updateSlot()
     }
   }
   
-  
-  
-    //TODO apply filters.
-    
-  //test filter. just to test layout engine with dagVisible.
-//   Base::Type originType = Base::Type::fromName("App::Origin");
-//   assert (originType != Base::Type::badType());
-//   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
-//   {
-//     //if child of origin hide.
-//     InEdgeIterator it, itEnd;
-//     for (boost::tie(it, itEnd) = boost::in_edges(currentVertex, *theGraph); it != itEnd; ++it)
-//     {
-//       Vertex source = boost::source(*it, *theGraph);
-//       const GraphLinkRecord &sourceRecord = findRecord(source);
-//       if
-//       (
-//         (sourceRecord.DObject->getTypeId() == originType) &&
-//         (boost::in_degree(currentVertex, *theGraph) == 1)
-//       )
-//         (*theGraph)[currentVertex].dagVisible = false;
-//     }
-//   }
-  
-  
+  //apply filters.
+  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
+  {
+    (*theGraph)[currentVertex].dagVisible = true; //default to shown.
+    for (const auto &currentFilter : filters)
+    {
+      if (!currentFilter->enabled || currentFilter->type != FilterBase::Type::Exclusion)
+        continue;
+      if (currentFilter->goFilter(currentVertex, *theGraph, *graphLink))
+        (*theGraph)[currentVertex].dagVisible = false;
+    }
+  }
+  //inclusion takes precedence. Separate loop because filters might probe 
+  //children and parents. So we want to ensure all exclusions are done
+  //before inclusions start.
+  BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
+  {
+    for (const auto &currentFilter : filters)
+    {
+      if (!currentFilter->enabled || currentFilter->type != FilterBase::Type::Inclusion)
+        continue;
+      if (currentFilter->goFilter(currentVertex, *theGraph, *graphLink))
+        (*theGraph)[currentVertex].dagVisible = true;
+    }
+  }
   
   //sync scene items to graph vertex dagVisible.
   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
@@ -644,6 +558,8 @@ void Model::updateSlot()
       boost::tie(it, itEnd) = boost::out_edges(currentVertex, *theGraph);
       for (;it != itEnd; ++it)
       {
+//         std::cout << std::endl << "name: " << findRecord(currentVertex, *graphLink).DObject->Label.getValue() << std::endl;
+        
         Vertex target = boost::target(*it, *theGraph);
         parentVertices.push_back(target);
         int currentParentIndex = (*theGraph)[target].topoSortIndex;
@@ -653,18 +569,27 @@ void Model::updateSlot()
           Path::const_iterator end = sorted.begin() + (*theGraph)[currentVertex].topoSortIndex; // 1 before
           Path::const_iterator it;
           for (it = start; it != end; ++it)
+          {
+//             std::cout << "    parent: " << findRecord(*it, *graphLink).DObject->Label.getValue() << std::endl;
+            
             columnMask |= (*theGraph)[*it].column;
+          }
           farthestParentIndex = currentParentIndex;
         }
       }
       
-//       std::cout << "mask for " << findRecord(currentVertex).DObject->Label.getValue() << "      " <<
-//         columnMask.to_string() << std::endl;
+      //have to create a smaller subset to get through std::cout.
+//       std::bitset<8> testSet;
+//       for (unsigned int index = 0; index < testSet.size(); ++index)
+//         testSet[index]= columnMask[index];
+//       std::cout << "mask for " << findRecord(currentVertex, *graphLink).DObject->Label.getValue() << "      " <<
+//         testSet.to_string() << std::endl;
       
       //now we should have a mask representing the columns that are being used.
       //this is from the lowest parent, in the topo sort, to last entry.
-      //try to use the same column as one of the parents.
-      int destinationColumn = maxColumn + 1; //default to new column
+      
+      //try to use the same column as one of the parents.(*theGraph)[*it].column
+      int destinationColumn = 0; //default to first column
       for (const auto &currentParent : parentVertices)
       {
         if (((*theGraph)[currentParent].column & columnMask).none())
@@ -676,6 +601,18 @@ void Model::updateSlot()
           break;
         }
       }
+      //if destination not valid look for the first open column.
+      if (columnMask.test(destinationColumn))
+      {
+        for (std::size_t index = 0; index < columnMask.size(); ++index)
+        {
+          if (! columnMask.test(index))
+          {
+            destinationColumn = index;
+            break;
+          }
+        }
+      }
 
       currentColumn = destinationColumn;
     }
@@ -684,33 +621,37 @@ void Model::updateSlot()
     
     maxColumn = std::max(currentColumn, maxColumn);
     QBrush currentBrush(forgroundBrushes.at(currentColumn % forgroundBrushes.size()));
-    
+
     auto *rectangle = (*theGraph)[currentVertex].rectangle.get();
     rectangle->setRect(-rowPadding, 0.0, rowPadding, rowHeight); //calculate actual length later.
     rectangle->setTransform(QTransform::fromTranslate(0, rowHeight * currentRow));
     rectangle->setBackgroundBrush(backgroundBrushes[currentRow % backgroundBrushes.size()]);
     
     auto *point = (*theGraph)[currentVertex].point.get();
-    point->setRect(0.0, 0.0, -pointSize, -pointSize);
+    point->setRect(0.0, 0.0, pointSize, pointSize);
     point->setTransform(QTransform::fromTranslate(pointSpacing * currentColumn,
-                                                  rowHeight * currentRow + rowHeight / 2.0 + pointSize / 2.0));
+      rowHeight * currentRow + rowHeight / 2.0 - pointSize / 2.0));
     point->setBrush(currentBrush);
     
+    float cheat = 0.0;
+    if (direction == -1)
+      cheat = rowHeight;
+    
     auto *visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
-    visiblePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + rowHeight)); //calculate x location later.
+    visiblePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat)); //calculate x location later.
     
     auto *statePixmap = (*theGraph)[currentVertex].stateIcon.get();
-    statePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + rowHeight)); //calculate x location later.
+    statePixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat)); //calculate x location later.
     
     auto *pixmap = (*theGraph)[currentVertex].icon.get();
-    pixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + rowHeight)); //calculate x location later.
+    pixmap->setTransform(QTransform::fromTranslate(0.0, rowHeight * currentRow + cheat)); //calculate x location later.
     
     auto *text = (*theGraph)[currentVertex].text.get();
-    text->setPlainText(QString::fromUtf8(findRecord(currentVertex).DObject->Label.getValue()));
+    text->setPlainText(QString::fromUtf8(findRecord(currentVertex, *graphLink).DObject->Label.getValue()));
     text->setDefaultTextColor(currentBrush.color());
     maxTextLength = std::max(maxTextLength, static_cast<float>(text->boundingRect().width()));
     text->setTransform(QTransform::fromTranslate
-      (0.0, rowHeight * currentRow + rowHeight - verticalSpacing * 2.0)); //calculate x location later.
+      (0.0, rowHeight * currentRow - verticalSpacing * 2.0 + cheat)); //calculate x location later.
     (*theGraph)[currentVertex].lastVisibleState = VisibilityState::None; //force visual update for color.
     
     //store column and row int the graph. use for connectors later.
@@ -719,7 +660,7 @@ void Model::updateSlot()
     
     //our list is topo sorted so all dependents should be located, so we can build the connectors.
     //will have some more logic for connector path, simple for now.
-    float currentX = pointSpacing * currentColumn - pointSize / 2.0;
+    float currentX = pointSpacing * currentColumn + pointSize / 2.0;
     float currentY = rowHeight * currentRow + rowHeight / 2.0;
     OutEdgeIterator it, itEnd;
     boost::tie(it, itEnd) = boost::out_edges(currentVertex, *theGraph);
@@ -728,7 +669,7 @@ void Model::updateSlot()
       Vertex target = boost::target(*it, *theGraph);
       if (!(*theGraph)[target].dagVisible)
         continue; //we don't make it here if source isn't visible. So don't have to worry about that.
-      float dependentX = pointSpacing * static_cast<int>(std::log2((*theGraph)[target].column.to_ulong())) - pointSize / 2.0; //on center.
+      float dependentX = pointSpacing * static_cast<int>(std::log2((*theGraph)[target].column.to_ulong())) + pointSize / 2.0; //on center.
       float dependentY = rowHeight * (*theGraph)[target].row + rowHeight / 2.0;
       
       QGraphicsPathItem *pathItem = (*theGraph)[*it].connector.get();
@@ -742,20 +683,24 @@ void Model::updateSlot()
         //connector with bend.
         float radius = pointSpacing / 1.9; //no zero length line.
         
-        path.lineTo(currentX, dependentY - radius);
+        path.lineTo(currentX, dependentY + radius * direction);
       
-        float yPosition = dependentY - 2.0 * radius;
+        float yPosition;
+        if (direction == -1.0)
+          yPosition = dependentY - 2.0 * radius;
+        else
+          yPosition = dependentY;
         float width = 2.0 * radius;
         float height = width;
         if (dependentX > currentX) //radius to the right.
         {
           QRectF arcRect(currentX, yPosition, width, height);
-          path.arcTo(arcRect, 180.0, 90.0);
+          path.arcTo(arcRect, 180.0, 90.0 * -direction);
         }
         else //radius to the left.
         {
           QRectF arcRect(currentX - 2.0 * radius, yPosition, width, height);
-          path.arcTo(arcRect, 0.0, -90.0);
+          path.arcTo(arcRect, 0.0, 90.0 * direction);
         }
         path.lineTo(dependentX, dependentY);
       }
@@ -874,7 +819,7 @@ void Model::updateStates()
   
   BGL_FORALL_VERTICES(currentVertex, *theGraph, Graph)
   {
-    const GraphLinkRecord &record = findRecord(currentVertex);
+    const GraphLinkRecord &record = findRecord(currentVertex, *graphLink);
     
     auto *visiblePixmap = (*theGraph)[currentVertex].visibleIcon.get();
     VisibilityState currentVisibilityState = (record.VPDObject->isShow()) ? (VisibilityState::On) : (VisibilityState::Off);
@@ -909,13 +854,13 @@ void Model::updateStates()
   }
 }
 
-ViewEntryRectItem* Model::getRectFromPosition(const QPointF& position)
+RectItem* Model::getRectFromPosition(const QPointF& position)
 {
-  ViewEntryRectItem *rect = nullptr;
+  RectItem *rect = nullptr;
   auto theItems = this->items(position, Qt::IntersectsItemBoundingRect, Qt::DescendingOrder);
   for (auto *currentItem : theItems)
   {
-    rect = dynamic_cast<ViewEntryRectItem *>(currentItem);
+    rect = dynamic_cast<RectItem *>(currentItem);
     if (rect) break;
   }
   
@@ -933,7 +878,7 @@ void Model::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
     }
   };
   
-  ViewEntryRectItem *rect = getRectFromPosition(event->scenePos());
+  RectItem *rect = getRectFromPosition(event->scenePos());
   if (!rect)
   {
     clearPrehighlight();
@@ -960,15 +905,15 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
     QList<QGraphicsItem *>selection = collidingItems(&intersectionLine);
     for (auto currentItem = selection.begin(); currentItem != selection.end(); ++currentItem)
     {
-      ViewEntryRectItem *rect = dynamic_cast<ViewEntryRectItem *>(*currentItem);
+      RectItem *rect = dynamic_cast<RectItem *>(*currentItem);
       if (!rect) continue;
-      const GraphLinkRecord &selectionRecord = findRecord(rect);
+      const GraphLinkRecord &selectionRecord = findRecord(rect, *graphLink);
       Gui::Selection().addSelection(selectionRecord.DObject->getDocument()->getName(),
                                     selectionRecord.DObject->getNameInDocument());
     }
   };
   
-  auto toggleSelect = [](const App::DocumentObject *dObjectIn, ViewEntryRectItem *rectIn)
+  auto toggleSelect = [](const App::DocumentObject *dObjectIn, RectItem *rectIn)
   {
     if (rectIn->isSelected())
       Gui::Selection().rmvSelection(dObjectIn->getDocument()->getName(), dObjectIn->getNameInDocument());
@@ -981,10 +926,10 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
   
   if (event->button() == Qt::LeftButton)
   {
-    ViewEntryRectItem *rect = getRectFromPosition(event->scenePos());
+    RectItem *rect = getRectFromPosition(event->scenePos());
     if (rect)
     {
-        const GraphLinkRecord &record = findRecord(rect);
+        const GraphLinkRecord &record = findRecord(rect, *graphLink);
         
         //don't like that I am doing this again here after getRectFromPosition call.
         QGraphicsItem *item = itemAt(event->scenePos());
@@ -1048,7 +993,7 @@ void Model::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
     auto selections = getAllSelected();
     if(selections.size() != 1)
       return;
-    const GraphLinkRecord &record = findRecord(selections.front());
+    const GraphLinkRecord &record = findRecord(selections.front(), *graphLink);
     Gui::Document* doc = Gui::Application::Instance->getDocument(record.DObject->getDocument());
     MDIView *view = doc->getActiveView();
     if (view)
@@ -1075,10 +1020,10 @@ std::vector<Gui::DAG::Vertex> Model::getAllSelected()
 
 void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
-  ViewEntryRectItem *rect = getRectFromPosition(event->scenePos());
+  RectItem *rect = getRectFromPosition(event->scenePos());
   if (rect)
   {
-    const GraphLinkRecord &record = findRecord(rect);
+    const GraphLinkRecord &record = findRecord(rect, *graphLink);
     
     //don't like that I am doing this again here after getRectFromPosition call.
     QGraphicsItem *item = itemAt(event->scenePos());
@@ -1124,8 +1069,6 @@ void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 
 void Model::onRenameSlot()
 {
-//   std::cout << std::endl << "inside rename slot" << std::endl << std::endl;
-  
   assert(proxy == nullptr);
   std::vector<Gui::DAG::Vertex> selections = getAllSelected();
   assert(selections.size() == 1);
@@ -1149,7 +1092,7 @@ void Model::renameAcceptedSlot()
   
   std::vector<Gui::DAG::Vertex> selections = getAllSelected();
   assert(selections.size() == 1);
-  const GraphLinkRecord &record = findRecord(selections.front());
+  const GraphLinkRecord &record = findRecord(selections.front(), *graphLink);
   
   LineEdit *lineEdit = dynamic_cast<LineEdit*>(proxy->widget());
   assert(lineEdit);
@@ -1180,7 +1123,7 @@ void Model::editingStartSlot()
     int edit = action->data().toInt();
     auto selections = getAllSelected();
     assert(selections.size() == 1);
-    const GraphLinkRecord &record = findRecord(selections.front());
+    const GraphLinkRecord &record = findRecord(selections.front(), *graphLink);
     Gui::Document* doc = Gui::Application::Instance->getDocument(record.DObject->getDocument());
     MDIView *view = doc->getActiveView();
     if (view)
@@ -1193,7 +1136,7 @@ void Model::editingFinishedSlot()
 {
   auto selections = getAllSelected();
   assert(selections.size() == 1);
-  const GraphLinkRecord &record = findRecord(selections.front());
+  const GraphLinkRecord &record = findRecord(selections.front(), *graphLink);
   Gui::Document* doc = Gui::Application::Instance->getDocument(record.DObject->getDocument());
   doc->commitCommand();
   doc->resetEdit();
@@ -1236,13 +1179,13 @@ void Model::visiblyIsolate(Gui::DAG::Vertex sourceIn)
   static std::vector<Base::Type> skipTypes = buildSkipTypes();
   for (const auto &currentVertex : connectedVertices)
   {
-    const GraphLinkRecord &record = findRecord(currentVertex);
+    const GraphLinkRecord &record = findRecord(currentVertex, *graphLink);
     if (testSkipType(record.DObject, skipTypes))
       continue;
     const_cast<ViewProviderDocumentObject *>(record.VPDObject)->hide(); //const hack
   }
   
-  const GraphLinkRecord &sourceRecord = findRecord(sourceIn);
+  const GraphLinkRecord &sourceRecord = findRecord(sourceIn, *graphLink);
   if (!testSkipType(sourceRecord.DObject, skipTypes))
     const_cast<ViewProviderDocumentObject *>(sourceRecord.VPDObject)->show(); //const hack
 }
