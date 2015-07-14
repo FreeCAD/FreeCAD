@@ -127,6 +127,7 @@ public:
                      const QString& title,
                      bool expandable = true,
                      QWidget *parent = 0);
+    virtual QSize minimumSizeHint() const;
 #endif
     ~TaskBox();
     void hideGroupBox();
@@ -139,6 +140,18 @@ protected:
 private:
     bool wasShown;
 };
+
+#if defined (QSINT_ACTIONPANEL)
+class GuiExport TaskPanel : public QSint::ActionPanel
+{
+    Q_OBJECT
+
+public:
+    explicit TaskPanel(QWidget *parent = 0);
+    virtual ~TaskPanel();
+    virtual QSize minimumSizeHint() const;
+};
+#endif
 
 /// Father class of content of a Free widget (without header and Icon), shut be an exception!
 class GuiExport TaskWidget : public QWidget, public TaskContent
