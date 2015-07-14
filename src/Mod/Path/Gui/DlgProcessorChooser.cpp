@@ -40,6 +40,8 @@
 
 using namespace PathGui;
 
+/* TRANSLATOR PathGui::DlgProcessorChooser */
+
 DlgProcessorChooser::DlgProcessorChooser(std::vector<std::string> &scriptnames)
   : QDialog(Gui::getMainWindow()), ui(new Ui_DlgProcessorChooser)
 {
@@ -64,7 +66,7 @@ void DlgProcessorChooser::accept()
     if (ui->comboBox->currentText() == tr("None"))
         entry = "";
     else
-        entry = ui->comboBox->currentText().toStdString();
+        entry = ui->comboBox->currentText().toUtf8().data();
     QDialog::accept();
 }
 #include "moc_DlgProcessorChooser.cpp"
