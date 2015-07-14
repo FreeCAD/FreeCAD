@@ -49,7 +49,6 @@ public:
     App::PropertyEnumeration Transition;
     App::PropertyEnumeration Transformation;
     App::PropertyLinkList    Sections;
-    App::PropertyVectorList  ScalingData;
 
     App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;

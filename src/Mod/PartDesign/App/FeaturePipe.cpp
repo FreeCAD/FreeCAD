@@ -91,7 +91,6 @@ Pipe::Pipe()
     ADD_PROPERTY_TYPE(Binormal,(Base::Vector3d()),"Sweep",App::Prop_None,"Binormal vector for coresponding orientation mode");
     ADD_PROPERTY_TYPE(Transition,(long(0)),"Sweep",App::Prop_None,"Transition mode");
     ADD_PROPERTY_TYPE(Transformation,(long(0)),"Sweep",App::Prop_None,"Section transformation mode");
-    ADD_PROPERTY_TYPE(ScalingData, (), "Sweep", App::Prop_None, "Data for scaling laws");
     Mode.setEnums(ModeEnums);
     Transition.setEnums(TransitionEnums);
     Transformation.setEnums(TransformEnums);
@@ -195,7 +194,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
                 
             }
         }
-        //build the law functions instead
+        /*//build the law functions instead
         else if(Transformation.getValue() == 2) {
             if(ScalingData.getValues().size()<1)
                 return new App::DocumentObjectExecReturn("No valid data given for liinear scaling mode");
@@ -207,13 +206,13 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         }
         else if(Transformation.getValue() == 3) {
             if(ScalingData.getValues().size()<1)
-                return new App::DocumentObjectExecReturn("No valid data given for liinear scaling mode");
+                return new App::DocumentObjectExecReturn("No valid data given for S-shape scaling mode");
             
             Handle(Law_S) s = new Law_S();
             s->Set(0,1,ScalingData[0].y, 1, ScalingData[0].x, ScalingData[0].z);
             
             scalinglaw = s;
-        }
+        }*/
         
         //build all shells
         std::vector<TopoDS_Shape> shells;
