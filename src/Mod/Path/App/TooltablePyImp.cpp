@@ -58,7 +58,6 @@ PyObject *ToolPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 // constructor method
 int ToolPy::PyInit(PyObject* args, PyObject* kwd)
 {
-    PyObject *pos;
     char *name="Default tool";
     char *type = "Undefined";
     char *mat = "Undefined";
