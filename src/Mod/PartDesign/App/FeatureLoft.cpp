@@ -135,8 +135,10 @@ App::DocumentObjectExecReturn *Loft::execute(void)
             
             BRepOffsetAPI_ThruSections mkTS(false, Ruled.getValue(), Precision::Confusion());
 
-            for(TopoDS_Wire& wire : wires)  
+            for(TopoDS_Wire& wire : wires)   {
+                 wire.Move(invObjLoc);
                  mkTS.AddWire(wire);
+            }
 
             mkTS.Build();
             if (!mkTS.IsDone())
@@ -175,8 +177,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         if ( SC.State() == TopAbs_IN) {
             result.Reverse();
         }
-        
-        result.Move(invObjLoc);
+
         AddSubShape.setValue(result);
         
         if(base.IsNull()) {
