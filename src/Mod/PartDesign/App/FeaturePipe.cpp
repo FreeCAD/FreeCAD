@@ -148,6 +148,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         TopoDS_Shape path;
         const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getValue();
         buildPipePath(shape, subedge, path);
+        path.Move(invObjLoc);
         
         
         TopoDS_Shape auxpath;
@@ -159,7 +160,8 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             TopoDS_Shape path;
             const Part::TopoShape& auxshape = static_cast<Part::Feature*>(auxspine)->Shape.getValue();
             buildPipePath(auxshape, auxsubedge, auxpath);
-        }
+            auxpath.Move(invObjLoc);
+        }        
         
         //build up multisections
         auto multisections = Sections.getValues();
@@ -172,9 +174,8 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         //see if we shall use multiple sections
         if(Transformation.getValue() == 1) {
             
-            //we need to order the sections to prevent occ from crahsing, as makepieshell connects
-            //the sections in the order of adding
-            
+            //TODO: we need to order the sections to prevent occ from crahsing, as makepieshell connects
+            //the sections in the order of adding            
                 
             for(App::DocumentObject* obj : multisections) {
                 if(!obj->isDerivedFrom(Part::Feature::getClassTypeId()))
@@ -223,12 +224,16 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             setupAlgorithm(mkPS, auxpath);
             
             if(!scalinglaw) {
-                for(TopoDS_Wire& wire : wires)  
+                for(TopoDS_Wire& wire : wires) {
+                    wire.Move(invObjLoc);
                     mkPS.Add(wire);
+                }
             }
             else {
-                for(TopoDS_Wire& wire : wires)  
+                for(TopoDS_Wire& wire : wires)  {
+                    wire.Move(invObjLoc);
                     mkPS.SetLaw(wire, scalinglaw);
+                }
             }
 
             if (!mkPS.IsReady())
@@ -268,7 +273,7 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             result.Reverse();
         }
         
-        result.Move(invObjLoc);
+        //result.Move(invObjLoc);
         AddSubShape.setValue(result);
         
         if(base.IsNull()) {
