@@ -542,14 +542,6 @@ TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool newObj, QWidge
             this, SLOT(onButtonRefRemove(bool)));
     connect(ui->stackedWidget, SIGNAL(currentChanged(int)),
             this, SLOT(updateUI(int)));
-    connect(ui->linearSpinBox, SIGNAL(valueChanged(double)),
-            this, SLOT(onLinearSpinBox(double)));
-    connect(ui->sshapeSpinBox, SIGNAL(valueChanged(double)),
-            this, SLOT(onSshapeChanged(double)));
-    connect(ui->sshapeStartDeriSpinBox, SIGNAL(valueChanged(double)),
-            this, SLOT(onSshapeChanged(double)));
-    connect(ui->sshapeEndDeriSpinBox, SIGNAL(valueChanged(double)),
-            this, SLOT(onSshapeChanged(double)));
     
     this->groupLayout()->addWidget(proxy);
    
@@ -597,11 +589,6 @@ void TaskPipeScaling::onScalingChanged(int idx) {
 
     updateUI(idx);
     static_cast<PartDesign::Pipe*>(vp->getObject())->Transformation.setValue(idx);
-    
-    if(idx==2)
-        onLinearSpinBox(ui->linearSpinBox->value());
-    else if(idx==3)
-        onSshapeChanged(0);
 }
 
 void TaskPipeScaling::onSelectionChanged(const SelectionChanges& msg) {
@@ -690,23 +677,6 @@ void TaskPipeScaling::updateUI(int idx) {
     
     ui->stackedWidget->widget(idx)->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
-
-void TaskPipeScaling::onLinearSpinBox(double val) {
-
-    static_cast<PartDesign::Pipe*>(vp->getObject())->ScalingData.setValue(Base::Vector3d(val,0,0));
-    recomputeFeature();
-}
-
-void TaskPipeScaling::onSshapeChanged(double val) {
-
-    double f, d0, d1;
-    f = ui->sshapeSpinBox->value();
-    d0 = ui->sshapeStartDeriSpinBox->value();
-    d1 = ui->sshapeEndDeriSpinBox->value();
-    static_cast<PartDesign::Pipe*>(vp->getObject())->ScalingData.setValue(Base::Vector3d(f, d0, d1));
-    recomputeFeature();
-}
-
 
 
 //**************************************************************************
