@@ -196,16 +196,25 @@ TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWi
 TaskBox::TaskBox(QWidget *parent)
   : QSint::ActionGroup(parent), wasShown(false)
 {
+    // override vertical size policy because otherwise task dialogs
+    // whose needsFullSpace() returns true won't take full space.
+    myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 TaskBox::TaskBox(const QString &title, bool expandable, QWidget *parent)
   : QSint::ActionGroup(title, expandable, parent), wasShown(false)
 {
+    // override vertical size policy because otherwise task dialogs
+    // whose needsFullSpace() returns true won't take full space.
+    myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWidget *parent)
     : QSint::ActionGroup(icon, title, expandable, parent), wasShown(false)
 {
+    // override vertical size policy because otherwise task dialogs
+    // whose needsFullSpace() returns true won't take full space.
+    myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 }
 
 QSize TaskBox::minimumSizeHint() const
