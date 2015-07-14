@@ -47,6 +47,7 @@ public:
 
 private:
     QString builtinScheme;
+    QString minimumStyle;
     QPixmap builtinFold;
     QPixmap builtinFoldOver;
     QPixmap builtinUnfold;

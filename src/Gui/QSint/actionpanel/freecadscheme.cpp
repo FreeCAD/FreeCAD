@@ -82,6 +82,7 @@ const char* ActionPanelFreeCAD =
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
         "color: #428eff;"
+        "text-decoration: underline;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:focus {"
@@ -91,6 +92,26 @@ const char* ActionPanelFreeCAD =
     "QSint--ActionGroup QToolButton[class='action']:on {"
         "background-color: #ddeeff;"
         "color: #006600;"
+    "}"
+    ;
+
+const char* MinimumActionPanelFreeCAD =
+
+    "QSint--ActionGroup QToolButton[class='header'] {"
+        "text-align: left;"
+        "background-color: transparent;"
+        "border: 1px solid transparent;"
+        "font-weight: bold;"
+    "}"
+
+    "QSint--ActionGroup QToolButton[class='action'] {"
+        "background-color: transparent;"
+        "border: 1px solid transparent;"
+        "text-align: left;"
+    "}"
+
+    "QSint--ActionGroup QToolButton[class='action']:hover {"
+        "text-decoration: underline;"
     "}"
     ;
 
@@ -115,6 +136,7 @@ FreeCADPanelScheme::FreeCADPanelScheme() : ActionPanelScheme()
 #endif
 
     builtinScheme = actionStyle;
+    minimumStyle = QString(MinimumActionPanelFreeCAD);
 
     headerSize = panelStyle->headerSize;
     headerAnimation = panelStyle->headerAnimation;
@@ -143,7 +165,7 @@ void FreeCADPanelScheme::clearActionStyle()
     headerButtonUnfold = QPixmap();
     headerButtonUnfoldOver = QPixmap();
 
-    actionStyle.clear();
+    actionStyle = minimumStyle;
 }
 
 void FreeCADPanelScheme::restoreActionStyle()
@@ -284,6 +306,7 @@ QString SystemPanelScheme::systemStyle(const QPalette& p) const
 
     "QSint--ActionGroup QToolButton[class='action']:hover {"
         "color: %10;"
+        "text-decoration: underline;"
     "}"
 
     "QSint--ActionGroup QToolButton[class='action']:focus {"
