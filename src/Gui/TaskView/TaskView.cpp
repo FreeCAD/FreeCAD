@@ -207,6 +207,21 @@ TaskBox::TaskBox(const QPixmap &icon, const QString &title, bool expandable, QWi
     : QSint::ActionGroup(icon, title, expandable, parent), wasShown(false)
 {
 }
+
+QSize TaskBox::minimumSizeHint() const
+{
+    // ActionGroup returns a size of 200x100 which leads to problems
+    // when there are several task groups in a panel and the first
+    // one is collapsed. In this case the task panel doesn't expand to
+    // the actually required size and all the remaining groups are
+    // squeezed into the available space and thus the widgets in there
+    // often can't be used any more.
+    // To fix this problem minimumSizeHint() is implemented to again
+    // respect the layout's minimum size.
+    QSize s1 = QSint::ActionGroup::minimumSizeHint();
+    QSize s2 = QWidget::minimumSizeHint();
+    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+}
 #endif
 
 TaskBox::~TaskBox()
@@ -305,6 +320,36 @@ void TaskBox::actionEvent (QActionEvent* e)
     }
 }
 
+//**************************************************************************
+//**************************************************************************
+// TaskPanel
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#if defined (QSINT_ACTIONPANEL)
+TaskPanel::TaskPanel(QWidget *parent)
+  : QSint::ActionPanel(parent)
+{
+}
+
+TaskPanel::~TaskPanel()
+{
+}
+
+QSize TaskPanel::minimumSizeHint() const
+{
+    // ActionPanel returns a size of 200x150 which leads to problems
+    // when there are several task groups in the panel and the first
+    // one is collapsed. In this case the task panel doesn't expand to
+    // the actually required size and all the remaining groups are
+    // squeezed into the available space and thus the widgets in there
+    // often can't be used any more.
+    // To fix this problem minimumSizeHint() is implemented to again
+    // respect the layout's minimum size.
+    QSize s1 = QSint::ActionPanel::minimumSizeHint();
+    QSize s2 = QWidget::minimumSizeHint();
+    return QSize(qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height()));
+}
+#endif
 
 //**************************************************************************
 //**************************************************************************
@@ -321,8 +366,8 @@ TaskView::TaskView(QWidget *parent)
     taskPanel = new iisTaskPanel(this);
     taskPanel->setScheme(iisFreeCADTaskPanelScheme::defaultScheme());
 #else
-    taskPanel = new QSint::ActionPanel(this);
-    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    taskPanel = new TaskPanel(this);
+    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(taskPanel->sizePolicy().hasHeightForWidth());
