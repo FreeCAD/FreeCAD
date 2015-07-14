@@ -150,6 +150,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         
         //build the top and bottom face, sew the shell and build the final solid
         TopoDS_Shape front = makeFace(wires);
+        front.Move(invObjLoc);
         std::vector<TopoDS_Wire> backwires;
         for(std::vector<TopoDS_Wire>& wires : wiresections)
             backwires.push_back(wires.back());
