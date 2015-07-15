@@ -57,7 +57,8 @@ namespace Gui
     {
       None = 0, //<! not determined.
       Pass,     //<! feature updated ok.
-      Fail     //<! feature failed to update.
+      Fail,     //<! feature failed to update.
+      Pending   //<! feature is pending an update.
     };
     
     //limit of column width? boost::dynamic_bitset?
