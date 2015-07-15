@@ -532,20 +532,31 @@ PyObject* Application::sCreateDialog(PyObject * /*self*/, PyObject *args,PyObjec
 PyObject* Application::sAddPreferencePage(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     char *fn, *grp;
-    if (!PyArg_ParseTuple(args, "ss", &fn,&grp))     // convert args: Python->C 
-        return NULL;                                      // NULL triggers exception 
+    if (PyArg_ParseTuple(args, "ss", &fn,&grp)) {
+        QFileInfo fi(QString::fromUtf8(fn));
+        if (!fi.exists()) {
+            PyErr_SetString(PyExc_RuntimeError, "UI file does not exist");
+            return 0;
+        }
 
-    QFileInfo fi(QString::fromUtf8(fn));
-    if (!fi.exists()) {
-        PyErr_SetString(PyExc_RuntimeError, "UI file does not exist");
-        return 0;
+        // add to the preferences dialog
+        new PrefPageUiProducer(fn, grp);
+
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+    PyErr_Clear();
+
+    PyObject* dlg;
+    if (PyArg_ParseTuple(args, "O!s", &PyClass_Type, &dlg, &grp)) {
+        // add to the preferences dialog
+        new PrefPagePyProducer(Py::Object(dlg), grp);
+
+        Py_INCREF(Py_None);
+        return Py_None;
     }
 
-    // add to the preferences dialog
-    new PrefPageUiProducer(fn, grp);
-
-    Py_INCREF(Py_None);
-    return Py_None;
+    return 0;
 }
 
 PyObject* Application::sActivateWorkbenchHandler(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)

@@ -236,6 +236,28 @@ private:
     QString fn;
 };
 
+/**
+ * The PrefPagePyProducer class provides the ability to create preference pages
+ * dynamically from a Python class.
+ * @author Werner Mayer
+ */
+class GuiExport PrefPagePyProducer : public Base::AbstractProducer
+{
+public:
+    /** 
+     * Register a special type of preference page to the WidgetFactoryInst.
+     */
+    PrefPagePyProducer (const Py::Object&, const char* group);
+    virtual ~PrefPagePyProducer ();
+    /**
+     * Creates an instance of the specified widget.
+     */
+    virtual void* Produce () const;
+
+private:
+    Py::Object type;
+};
+
 // --------------------------------------------------------------------
 
 /**
@@ -434,6 +456,32 @@ private:
     PyObject* myCallback;
     QObject*  mySender;
 };
+
+// ----------------------------------------------------
+namespace Dialog {
+
+/** Subclass that embeds a form from a Python class.
+ * \author Werner Mayer
+ */
+class GuiExport PreferencePagePython : public PreferencePage
+{
+    Q_OBJECT
+
+public:
+    PreferencePagePython(const Py::Object& dlg, QWidget* parent = 0);
+    virtual ~PreferencePagePython();
+
+    void loadSettings();
+    void saveSettings();
+
+protected:
+    void changeEvent(QEvent *e);
+
+private:
+    Py::Object page;
+};
+
+} // namespace Dialog
 
 } // namespace Gui
 
