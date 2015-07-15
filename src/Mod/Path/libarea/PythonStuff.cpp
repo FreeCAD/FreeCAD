@@ -6,7 +6,6 @@
 
 #include "Area.h"
 #include "Point.h"
-#include "AreaDxf.h"
 #include "kurve/geometry.h"
 
 #if _DEBUG
@@ -113,13 +112,6 @@ static bool holes_linked()
 	return CArea::HolesLinked();
 }
 
-static CArea AreaFromDxf(const char* filepath)
-{
-	CArea area;
-	AreaDxfRead dxf(&area, filepath);
-	dxf.DoRead();
-	return area;
-}
 
 static void append_point(CCurve& c, const Point& p)
 {
@@ -160,10 +152,6 @@ boost::python::list SplitArea(const CArea& a)
 	return alist;
 }
 
-void dxfArea(CArea& area, const char* str)
-{
-	area = CArea();
-}
 
 boost::python::list getCurveSpans(const CCurve& c)
 {
@@ -404,6 +392,5 @@ BOOST_PYTHON_MODULE(area) {
     bp::def("set_units", set_units);
     bp::def("get_units", get_units);
     bp::def("holes_linked", holes_linked);
-    bp::def("AreaFromDxf", AreaFromDxf);
     bp::def("TangentialArc", TangentialArc);
 }
