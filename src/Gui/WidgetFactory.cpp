@@ -729,6 +729,106 @@ void* PrefPageUiProducer::Produce () const
 
 // ----------------------------------------------------
 
+PrefPagePyProducer::PrefPagePyProducer (const Py::Object& p, const char* group)
+  : type(p)
+{
+    std::string str;
+    Base::PyGILStateLocker lock;
+    if (type.hasAttr("__name__")) {
+        str = static_cast<std::string>(Py::String(type.getAttr("__name__")));
+    }
+
+    WidgetFactoryInst::instance().AddProducer(str.c_str(), this);
+    Gui::Dialog::DlgPreferencesImp::addPage(str, group);
+}
+
+PrefPagePyProducer::~PrefPagePyProducer ()
+{
+    Base::PyGILStateLocker lock;
+    type = Py::None();
+}
+
+void* PrefPagePyProducer::Produce () const
+{
+    Base::PyGILStateLocker lock;
+    Py::Callable method(type);
+    Py::Tuple args;
+    Py::Object page = method.apply(args);
+    return new Gui::Dialog::PreferencePagePython(page);
+}
+
+// ----------------------------------------------------
+
+using namespace Gui::Dialog;
+
+PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
+  : PreferencePage(parent), page(p)
+{
+    Base::PyGILStateLocker lock;
+    if (page.hasAttr(std::string("form"))) {
+        Py::Object widget(page.getAttr(std::string("form")));
+
+        Gui::PythonWrapper wrap;
+        if (wrap.loadCoreModule()) {
+            QObject* object = wrap.toQObject(widget);
+            if (object) {
+                QWidget* form = qobject_cast<QWidget*>(object);
+                if (form) {
+                    this->setWindowTitle(form->windowTitle());
+                    QVBoxLayout *layout = new QVBoxLayout;
+                    layout->addWidget(form);
+                    setLayout(layout);
+                }
+            }
+        }
+    }
+}
+
+PreferencePagePython::~PreferencePagePython()
+{
+    Base::PyGILStateLocker lock;
+    page = Py::None();
+}
+
+void PreferencePagePython::changeEvent(QEvent *e)
+{
+    QWidget::changeEvent(e);
+}
+
+void PreferencePagePython::loadSettings()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (page.hasAttr(std::string("loadSettings"))) {
+            Py::Callable method(page.getAttr(std::string("loadSettings")));
+            Py::Tuple args;
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void PreferencePagePython::saveSettings()
+{
+    Base::PyGILStateLocker lock;
+    try {
+        if (page.hasAttr(std::string("saveSettings"))) {
+            Py::Callable method(page.getAttr(std::string("saveSettings")));
+            Py::Tuple args;
+            method.apply(args);
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+// ----------------------------------------------------
+
 /* TRANSLATOR Gui::ContainerDialog */
 
 /**
