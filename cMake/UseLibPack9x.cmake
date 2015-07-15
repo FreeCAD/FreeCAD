@@ -110,6 +110,10 @@ set(QT_QTCORE_INCLUDE_DIR
     ${FREECAD_LIBPACK_DIR}/include/Qt-4.8.5/QtCore
 )
 
+set(QT_QTXML_INCLUDE_DIR
+    ${FREECAD_LIBPACK_DIR}/include/Qt-4.8.5/QtXml
+)
+
 set(QT_QT3SUPPORT_INCLUDE_DIR
     ${FREECAD_LIBPACK_DIR}/include/Qt-4.8.5/Qt3Support
 )
@@ -144,12 +148,14 @@ set(QT_QTCORE_LIBRARY
     debug QtCored4.lib
 )
 
-set(QT_QT3SUPPORT_LIBRARY_DEBUG 
-    debug Qt3Supportd4.lib
+set(QT_QTXML_LIBRARY 
+    optimized QtXml4.lib
+    debug QtXmld4.lib
 )
 
 set(QT_QT3SUPPORT_LIBRARY 
     optimized Qt3Support4.lib
+    debug Qt3Supportd4.lib
 )
 
 set(QT_UIC_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/uic.exe)
