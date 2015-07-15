@@ -703,6 +703,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     QObject::tr("You have to select a single face as support for a sketch!"));
                 return;
             }
+
             // get the selected sub shape (a Face)
             const Part::TopoShape &shape = feat->Shape.getValue();
             TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
@@ -773,6 +774,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         unsigned validPlanes = 0;
         std::vector<App::DocumentObject*>::const_iterator firstValidPlane = planes.end();
 
+        App::Part* pcActivePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>(PARTKEY);
         for (std::vector<App::DocumentObject*>::iterator p = planes.begin(); p != planes.end(); p++) {
             // Check whether this plane is a base plane
             bool base = false;
@@ -780,7 +782,11 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 App::Plane* pfeat = static_cast<App::Plane*>(*p);
                 for (unsigned i = 0; i < 3; i++) {
                     if (strcmp(App::Part::BaseplaneTypes[i], pfeat->PlaneType.getValue()) == 0) {
-                        status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
+                        if(pcActivePart->hasObject(pfeat, true))
+                            status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
+                        else
+                            status.push_back(PartDesignGui::TaskFeaturePick::invalidShape);
+                        
                         if (firstValidPlane == planes.end())
                             firstValidPlane = p;
                         validPlanes++;
@@ -793,7 +799,11 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
             // Check whether this plane belongs to the active body
             if (!pcActiveBody->hasFeature(*p)) {
-                status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
+                if(pcActivePart->hasObject(*p, true))
+                    status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
+                else 
+                    status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
+                
                 continue;
             } else {
                 if (pcActiveBody->isAfterTip(*p)){

@@ -116,7 +116,7 @@ bool GeoFeatureGroup::hasObject(const DocumentObject* obj, bool recursive) const
         if (*it == obj)
             return true;
         if (recursive && (*it)->getTypeId().isDerivedFrom(GeoFeatureGroup::getClassTypeId())) {
-            if (this->hasObject(static_cast<GeoFeatureGroup*>(*it), recursive))
+            if (static_cast<GeoFeatureGroup*>(*it)->hasObject(obj, recursive))
                 return true;
         }
     }
