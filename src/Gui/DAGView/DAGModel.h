@@ -149,6 +149,7 @@ namespace Gui
       QPixmap visiblePixmapDisabled;
       QPixmap passPixmap;
       QPixmap failPixmap;
+      QPixmap pendingPixmap;
       
       QAction *renameAction;
       QAction *editingFinishedAction;

@@ -126,6 +126,8 @@ Model::Model(QObject *parentIn, const Gui::Document &documentIn) : QGraphicsScen
   passPixmap = passIcon.pixmap(iconSize, iconSize);
   QIcon failIcon(Gui::BitmapFactory().pixmap("dagViewFail"));
   failPixmap = failIcon.pixmap(iconSize, iconSize);
+  QIcon pendingIcon(Gui::BitmapFactory().pixmap("dagViewPending"));
+  pendingPixmap = pendingIcon.pixmap(iconSize, iconSize);
   
   renameAction = new QAction(this);
   renameAction->setText(tr("Rename"));
@@ -844,19 +846,25 @@ void Model::updateStates()
       (*theGraph)[currentVertex].lastVisibleState = currentVisibilityState;
     }
     
-    FeatureState currentFeatureState = (record.DObject->isError()) ? FeatureState::Fail : FeatureState::Pass;
+    FeatureState currentFeatureState = FeatureState::Pass;
+    if (record.DObject->isError())
+      currentFeatureState = FeatureState::Fail;
+    else if ((record.DObject->mustExecute() == 1))
+      currentFeatureState = FeatureState::Pending;
     if (currentFeatureState != (*theGraph)[currentVertex].lastFeatureState)
     {
       if (currentFeatureState == FeatureState::Pass)
       {
         (*theGraph)[currentVertex].stateIcon->setPixmap(passPixmap);
-        (*theGraph)[currentVertex].stateIcon->setToolTip(QString());
       }
       else
       {
-        (*theGraph)[currentVertex].stateIcon->setPixmap(failPixmap);
-        (*theGraph)[currentVertex].stateIcon->setToolTip(QString::fromAscii(record.DObject->getStatusString()));
+        if (currentFeatureState == FeatureState::Fail)
+          (*theGraph)[currentVertex].stateIcon->setPixmap(failPixmap);
+        else
+          (*theGraph)[currentVertex].stateIcon->setPixmap(pendingPixmap);
       }
+      (*theGraph)[currentVertex].stateIcon->setToolTip(QString::fromAscii(record.DObject->getStatusString()));
       (*theGraph)[currentVertex].lastFeatureState = currentFeatureState;
     }
   }
