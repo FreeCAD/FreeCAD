@@ -66,7 +66,6 @@ add_executable(FreeCADMainCmd ${FreeCADMainCmd_SRCS})
 
 target_link_libraries(FreeCADMainCmd 
     FreeCADApp
-    ${QT_DEBUG_LIBRARIES}
     ${QT_LIBRARIES}
 )
 

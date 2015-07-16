@@ -12,7 +12,6 @@ include_directories(
 if(MSVC)
     set(Web_LIBS
          FreeCADApp
-         ${QT_DEBUG_LIBRARIES}
          ${QT_LIBRARIES}
     )
 else(MSVC)

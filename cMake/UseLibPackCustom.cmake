@@ -126,8 +126,6 @@ set(QT_LIBRARIES
     optimized QtXml4.lib
     optimized QtOpenGl4.lib
     optimized QtWebKit4.lib
-)
-set(QT_DEBUG_LIBRARIES 
     debug QtCored4.lib
     debug QtGuid4.lib
     debug QtDesignerd4.lib
