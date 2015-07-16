@@ -21,7 +21,7 @@ if(MSVC)
     set(FreeCADBase_LIBS
         ${Boost_LIBRARIES}
         ${Boost_DEBUG_LIBRARIES}
-        ${PYTHON_LIBRARY}
+        ${PYTHON_LIBRARIES}
         debug ${XERCESC_DEBUG_LIBRARIES}
         optimized ${XERCESC_LIBRARIES}
         ${QT_QTCORE_LIBRARY}
@@ -35,7 +35,7 @@ if(MSVC)
     )
 elseif(MINGW)
     set(FreeCADBase_LIBS
-        ${PYTHON_LIBRARY}
+        ${PYTHON_LIBRARIES}
         ${XERCESC_LIBRARIES}
         ${QT_QTCORE_LIBRARY}
         ${Boost_LIBRARIES}
@@ -44,7 +44,7 @@ elseif(MINGW)
     )
 else(MSVC)
     set(FreeCADBase_LIBS
-        ${PYTHON_LIBRARY}
+        ${PYTHON_LIBRARIES}
         ${XERCESC_LIBRARIES}
         ${QT_QTCORE_LIBRARY}
         ${Boost_LIBRARIES}

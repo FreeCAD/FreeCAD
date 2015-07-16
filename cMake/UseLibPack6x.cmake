@@ -11,8 +11,7 @@ include_directories(${FREECAD_LIBPACK_DIR}/include)
 set(OPENGL_gl_LIBRARY opengl32 glu32)
 
 # Python
-set(PYTHON_DEBUG_LIBRARY python25_d.lib)
-set(PYTHON_LIBRARY python25.lib)
+set(PYTHON_LIBRARIES optimized python25.lib debug python25_d.lib)
 set(PYTHON_INCLUDE_PATH ${FREECAD_LIBPACK_DIR}/include/python)
 set(PYTHON_EXECUTABLE   ${FREECAD_LIBPACK_DIR}/bin/python.exe)
 set(PYTHONLIBS_FOUND TRUE) 
