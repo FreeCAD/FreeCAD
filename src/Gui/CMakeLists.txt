@@ -44,7 +44,6 @@ if(MSVC)
          FreeCADApp
          debug ${COIN3D_LIBRARY_DEBUG}
          optimized ${COIN3D_LIBRARY_RELEASE}
-         ${QT_DEBUG_LIBRARIES}
          ${QT_LIBRARIES}
          optimized QtUiTools.lib
          debug QtUiToolsd.lib

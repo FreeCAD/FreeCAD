@@ -28,7 +28,6 @@ if(WIN32)
         FreeCADBase
         ${Boost_DEBUG_LIBRARIES}
         ${Boost_LIBRARIES}
-        ${QT_DEBUG_LIBRARIES}
         ${QT_LIBRARIES}
     )
 else(WIN32)
