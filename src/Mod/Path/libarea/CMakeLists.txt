@@ -54,7 +54,6 @@ set(AREA_SRC_COMMON
     AreaPocket.cpp
     Circle.cpp
     Curve.cpp
-
     kurve/Construction.cpp
     kurve/Finite.cpp
     kurve/kurve.cpp
@@ -65,7 +64,6 @@ set(AREA_SRC_COMMON
 
 set(AREA_SRC_CLIPPER
     AreaClipper.cpp
-
     clipper.cpp
 )
 
@@ -83,9 +81,9 @@ else(DEFINED INCLUDE_INSTALL_DIR)
 endif(DEFINED INCLUDE_INSTALL_DIR)
 
 file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/kurve/*.h")
-install(FILES ${headers} DESTINATION ${INCLUDE_INSTALL_DIR}/area/kurve COMPONENT headers)
+#install(FILES ${headers} DESTINATION ${INCLUDE_INSTALL_DIR}/area/kurve COMPONENT headers)
 file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-install(FILES ${headers} DESTINATION ${INCLUDE_INSTALL_DIR}/area COMPONENT headers)
+#install(FILES ${headers} DESTINATION ${INCLUDE_INSTALL_DIR}/area COMPONENT headers)
 
 # include directories
 
@@ -138,13 +136,13 @@ execute_process(
 
 # strip away /usr/local/ because that is what CMAKE_INSTALL_PREFIX is set to
 # also, since there is no leading "/", it makes ${Python_site_packages} a relative path.
-STRING(REGEX REPLACE "/usr/local/(.*)$" "\\1" Python_site_packages "${Python_site_packages}" )
-STRING(REGEX REPLACE "/usr/(.*)$" "\\1" Python_site_packages "${Python_site_packages}" )
+#STRING(REGEX REPLACE "/usr/local/(.*)$" "\\1" Python_site_packages "${Python_site_packages}" )
+#STRING(REGEX REPLACE "/usr/(.*)$" "\\1" Python_site_packages "${Python_site_packages}" )
 
-message(STATUS "Python module will be installed to: " ${CMAKE_INSTALL_PREFIX}/${Python_site_packages})
+message(STATUS "libarea module will be installed to: " ${CMAKE_INSTALL_LIBDIR})
 
 # this installs the python library
 install(
     TARGETS area
-    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${Python_site_packages}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
