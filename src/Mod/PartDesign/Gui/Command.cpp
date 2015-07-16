@@ -694,8 +694,6 @@ void CmdPartDesignNewSketch::activated(int iMsg)
 
             Part::Feature* feat = static_cast<Part::Feature*>(obj);
 
-            // FIXME: Reject or warn about feature that is outside of active body, and feature
-            // that comes after the current insert point (Tip)
             const std::vector<std::string> &sub = FaceFilter.Result[0][0].getSubNames();
             if (sub.size() > 1){
                 // No assert for wrong user input!
@@ -725,7 +723,6 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             supportString = FaceFilter.Result[0][0].getAsPropertyLinkSubString();
         } else {
             obj = static_cast<Part::Feature*>(PlaneFilter.Result[0][0].getObject());
-            // TODO: Find out whether the user picked front or back of this plane
             supportString = std::string("(App.activeDocument().") + obj->getNameInDocument() + ", '')";
         }
 
@@ -745,9 +742,9 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     QObject::tr("You have to select a face or plane from the active body!"));
                 return;
             }
-        } else if (pcActiveBody->isAfterTip(obj)) {
+        } else if (pcActiveBody->getNextSolidFeature() != obj) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Selection from inactive feature"),
-                QObject::tr("You have to select a face or plane before the current insert point, or move the insert point"));
+                QObject::tr("You can only use the last solid feature as sketch support"));
             return;
         }
 
@@ -948,6 +945,7 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
             else 
                 status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
             
+            ++validSketches;
             continue;
         }
         
@@ -1057,11 +1055,16 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
 
         func(sketch, FeatName);
     };
+    
+    //if there is a sketch selected which is from annother body or part we need to bring up the 
+    //pick task dialog to decide how those are handled
+    bool ext = std::find(status.begin(), status.end(), PartDesignGui::TaskFeaturePick::otherBody) != status.end();
+    ext |= std::find(status.begin(), status.end(), PartDesignGui::TaskFeaturePick::otherPart) != status.end();
 
     // If there is more than one selection/possibility, show dialog and let user pick sketch
-    if (bNoSketchWasSelected && validSketches > 1
-            ||
-        !bNoSketchWasSelected && sketches.size() > 1) {
+    if ((bNoSketchWasSelected && validSketches > 1)  ||
+        (!bNoSketchWasSelected && sketches.size() > 1) ||
+         ext ) {
         
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
@@ -1082,7 +1085,11 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
             Gui::Control().closeDialog();
 
         Gui::Selection().clearSelection();
-        Gui::Control().showDialog(new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, worker));
+        pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, worker);
+        if(ext)
+            pickDlg->showExternal(true);
+        
+        Gui::Control().showDialog(pickDlg);
     }
     else {
         std::vector<App::DocumentObject*> theSketch;

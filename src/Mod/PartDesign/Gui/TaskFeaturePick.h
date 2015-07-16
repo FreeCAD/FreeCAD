@@ -59,6 +59,7 @@ public:
 
     std::vector<App::DocumentObject*> getFeatures();
     std::vector<App::DocumentObject*> buildFeatures();
+    void showExternal(bool val);
     
 protected Q_SLOTS:
     void onUpdate(bool);
@@ -104,6 +105,8 @@ public:
     /// is called by the framework if the user presses the help button 
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
+    
+    void showExternal(bool val);
 
     /// returns for Close and Help button 
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const

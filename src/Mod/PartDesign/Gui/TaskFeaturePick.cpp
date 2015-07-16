@@ -291,6 +291,14 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
     }    
 }
 
+void TaskFeaturePick::showExternal(bool val) {
+
+    ui->checkOtherBody->setChecked(val);
+    ui->checkOtherPart->setChecked(val);
+    updateList();
+}
+
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -342,5 +350,10 @@ bool TaskDlgFeaturePick::reject()
     accepted = false;
     return true;
 }
+
+void TaskDlgFeaturePick::showExternal(bool val) {
+    pick->showExternal(val);
+}
+
 
 #include "moc_TaskFeaturePick.cpp"
