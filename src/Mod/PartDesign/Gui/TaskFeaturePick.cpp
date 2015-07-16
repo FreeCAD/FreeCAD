@@ -229,7 +229,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, bool in
 
     //we do know that the created instance is a document object, as obj is one. But we do not know which 
     //exact type
-    auto name = App::GetApplication().getActiveDocument()->getUniqueObjectName(obj->getNameInDocument());
+    auto name =  std::string("Copy") + std::string(obj->getNameInDocument());
     auto copy = App::GetApplication().getActiveDocument()->addObject(obj->getTypeId().getName(), name.c_str());
     
     if(copy) {
@@ -237,7 +237,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, bool in
         std::vector<App::Property*> props;
         std::vector<App::Property*> cprops;
         obj->getPropertyList(props);
-        obj->getPropertyList(cprops);        
+        copy->getPropertyList(cprops);        
         try{
             auto it = cprops.begin();
             for( App::Property* prop : props ) {
@@ -253,21 +253,15 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, bool in
                     ++it;
                     continue;
                 }
-                   
-                Base::StringWriter writer;
-                //the properties xml tag is often not correctly cosed and only has "</>". This leads
-                //to a end of document exception. To prevent this we add a dummy tag arround.
-                writer.Stream() << writer.ind() << "<Prop>" << std::endl;
-                writer.ind();
-                prop->Save(writer);
-                writer.decInd();
-                writer.Stream() << writer.ind() << "</Prop>" << std::endl;
                 
-                std::stringstream stream(writer.getString());
-                Base::XMLReader reader("test", stream);
-                reader.readElement("Prop");
                 App::Property* cprop = *it++; 
-                cprop->Restore(reader);
+                
+                if( strcmp(prop->getName(), "Label") == 0 ) {
+                    static_cast<App::PropertyString*>(cprop)->setValue("wuhahahahah");
+                    continue;
+                }
+                   
+                cprop->Paste(*prop);
             }   
         }
         catch(const Base::Exception& e) {
