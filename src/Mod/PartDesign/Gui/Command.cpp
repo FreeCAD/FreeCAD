@@ -930,13 +930,27 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
  const unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                                  std::vector<PartDesignGui::TaskFeaturePick::featureStatus>& status,
                                  std::vector<App::DocumentObject*>::iterator& firstValidSketch)
-{
+{        
+    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false);   
+    App::Part* pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false); 
+    
     // TODO: If the user previously opted to allow multiple use of sketches or use of sketches from other bodies,
     // then count these as valid sketches!
     unsigned validSketches = 0;
     firstValidSketch = sketches.end();
 
     for (std::vector<App::DocumentObject*>::iterator s = sketches.begin(); s != sketches.end(); s++) {
+ 
+        // Check whether this plane belongs to the active body   
+        if (!pcActiveBody->hasFeature(*s)) {
+            if(pcActivePart->hasObject(*s, true))
+                status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
+            else 
+                status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
+            
+            continue;
+        }
+        
         //Base::Console().Error("Checking sketch %s\n", (*s)->getNameInDocument());
         // Check whether this sketch is already being used by another feature
         // Body features don't count...
@@ -955,11 +969,9 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName, const b
             status.push_back(PartDesignGui::TaskFeaturePick::isUsed);
             continue;
         }
-
-        // Check whether this sketch belongs to the active body
-        PartDesign::Body* body = PartDesignGui::getBody(/*messageIfNot = */false);
-        if (!body->hasFeature(*s)) {
-            status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
+        
+        if (pcActiveBody->isAfterTip(*s)){
+            status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
             continue;
         }
 
