@@ -62,6 +62,7 @@ public:
     void onChanged(const App::Property* prop);
     void startRestoring();
     void finishRestoring();
+    bool onDelete(const std::vector<std::string> & sub);
     //@}
 
     /** @name Display methods */
@@ -155,6 +156,11 @@ public:
     }
     virtual void getTaskViewContent(std::vector<Gui::TaskView::TaskContent*>& c) const {
         ViewProviderT::getTaskViewContent(c);
+    }
+    virtual bool onDelete(const std::vector<std::string> & sub) {
+        bool ok = imp->onDelete(sub);
+        if (!ok) return ok;
+        return ViewProviderT::onDelete(sub);
     }
     //@}
 
