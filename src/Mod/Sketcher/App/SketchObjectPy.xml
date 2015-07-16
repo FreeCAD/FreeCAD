@@ -132,6 +132,11 @@
         <UserDocu>trim a curve with a given id at a given reference point</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="addSymmetric">
+      <Documentation>
+        <UserDocu>add a symmetric geometric objects to the sketch with respect to a reference point or line</UserDocu>
+      </Documentation>
+    </Methode>    
     <Methode Name="ExposeInternalGeometry">
       <Documentation>
         <UserDocu>Exposes all internal geometry of an object supporting internal geometry</UserDocu>

@@ -754,6 +754,44 @@ PyObject* SketchObjectPy::trim(PyObject *args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::addSymmetric(PyObject *args)
+{
+    PyObject *pcObj;
+    int refGeoId;
+    int refPosId = Sketcher::none;
+    if (!PyArg_ParseTuple(args, "Oi|i", &pcObj, &refGeoId, &refPosId))
+	return 0;
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<int> geoIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+	    if (PyInt_Check((*it).ptr()))
+		geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+        }
+
+        int ret = this->getSketchObjectPtr()->addSymmetric(geoIdList,refGeoId,(Sketcher::PointPos) refPosId) + 1;
+    
+	if(ret == -1)
+	    throw Py::TypeError("Symmetric operation unsuccessful!");    
+    
+	std::size_t numGeo = geoIdList.size();
+        Py::Tuple tuple(numGeo);
+        for (std::size_t i=0; i<numGeo; ++i) {
+            int geoId = ret - int(numGeo - i);
+            tuple.setItem(i, Py::Int(geoId));
+        }
+
+        return Py::new_reference_to(tuple);
+    }
+
+    std::string error = std::string("type must be list of GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
+}
+
+
 PyObject* SketchObjectPy::calculateAngleViaPoint(PyObject *args)
 {
     int GeoId1=0, GeoId2=0;

@@ -150,6 +150,8 @@ public:
 
     /// trim a curve
     int trim(int geoId, const Base::Vector3d& point);
+    /// adds symmetric geometric elements with respect to the refGeoId (line or point)
+    int addSymmetric(const std::vector<int> &geoIdList, int refGeoId, Sketcher::PointPos refPosId=Sketcher::none);
     /// Exposes all internal geometry of an object supporting internal geometry
     /*!
      * \return -1 on error
