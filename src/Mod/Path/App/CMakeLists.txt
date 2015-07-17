@@ -20,20 +20,12 @@ include_directories(
 )
 link_directories(${OCC_LIBRARY_DIR})
 
-if(MSVC)
-    set(Path_LIBS
-        Robot
-        ${QT_QTCORE_LIBRARY}
-        FreeCADApp
-    )
-else(MSVC)
-    set(Path_LIBS
-        Robot
-        Part
-        ${QT_QTCORE_LIBRARY}
-        FreeCADApp
-    )
-endif(MSVC)
+set(Path_LIBS
+    Robot
+    Part
+    ${QT_QTCORE_LIBRARY}
+    FreeCADApp
+)
 
 generate_from_xml(CommandPy)
 generate_from_xml(PathPy)

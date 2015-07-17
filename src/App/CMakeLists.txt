@@ -23,19 +23,11 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
 )
 
-if(WIN32)
-    set(FreeCADApp_LIBS
-        FreeCADBase
-        ${Boost_LIBRARIES}
-        ${QT_LIBRARIES}
-    )
-else(WIN32)
-    set(FreeCADApp_LIBS
-        FreeCADBase
-        ${Boost_LIBRARIES}
-        ${QT_LIBRARIES}
-    )
-endif(WIN32)
+set(FreeCADApp_LIBS
+    FreeCADBase
+    ${Boost_LIBRARIES}
+    ${QT_LIBRARIES}
+)
 
 generate_from_xml(DocumentPy)
 generate_from_xml(DocumentObjectPy)
