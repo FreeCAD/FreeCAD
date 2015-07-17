@@ -9,17 +9,10 @@ include_directories(
     ${QT_INCLUDE_DIR}
 )
 
-if(MSVC)
-    set(Web_LIBS
-         FreeCADApp
-         ${QT_LIBRARIES}
-    )
-else(MSVC)
-    set(Web_LIBS
-        FreeCADApp
-        ${QT_LIBRARIES}
-    )
-endif(MSVC)
+set(Web_LIBS
+     FreeCADApp
+     ${QT_LIBRARIES}
+)
 
 set(Web_MOC_HDRS
     Server.h
