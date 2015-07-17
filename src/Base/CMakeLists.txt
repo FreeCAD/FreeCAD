@@ -20,7 +20,6 @@ include_directories(
 if(MSVC)
     set(FreeCADBase_LIBS
         ${Boost_LIBRARIES}
-        ${Boost_DEBUG_LIBRARIES}
         ${PYTHON_LIBRARIES}
         debug ${XERCESC_DEBUG_LIBRARIES}
         optimized ${XERCESC_LIBRARIES}

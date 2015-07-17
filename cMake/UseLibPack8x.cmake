@@ -32,8 +32,6 @@ set(Boost_LIBRARIES
 	optimized boost_regex-vc90-mt-1_48.lib
 	optimized boost_signals-vc90-mt-1_48.lib
 	optimized boost_thread-vc90-mt-1_48.lib
-)
-set(Boost_DEBUG_LIBRARIES 
 	debug boost_filesystem-vc90-mt-gd-1_48.lib 
 	debug boost_date_time-vc90-mt-gd-1_48.lib
 	debug boost_filesystem-vc90-mt-gd-1_48.lib
