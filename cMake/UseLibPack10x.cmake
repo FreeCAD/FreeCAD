@@ -32,8 +32,6 @@ set(Boost_LIBRARIES
     optimized boost_regex-vc110-mt-1_55.lib
     optimized boost_signals-vc110-mt-1_55.lib
     optimized boost_thread-vc110-mt-1_55.lib
-)
-set(Boost_DEBUG_LIBRARIES 
     debug boost_filesystem-vc110-mt-gd-1_55.lib
     debug boost_system-vc110-mt-gd-1_55.lib
     debug boost_graph-vc110-mt-gd-1_55.lib 

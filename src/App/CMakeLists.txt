@@ -26,7 +26,6 @@ include_directories(
 if(WIN32)
     set(FreeCADApp_LIBS
         FreeCADBase
-        ${Boost_DEBUG_LIBRARIES}
         ${Boost_LIBRARIES}
         ${QT_LIBRARIES}
     )
