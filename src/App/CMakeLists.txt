@@ -26,7 +26,8 @@ include_directories(
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
-    ${QT_LIBRARIES}
+    ${QT_QTCORE_LIBRARY}
+    ${QT_QTXML_LIBRARY}
 )
 
 generate_from_xml(DocumentPy)
