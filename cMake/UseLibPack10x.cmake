@@ -131,8 +131,20 @@ set(QT_QTCORE_LIBRARY
     optimized QtCore4.lib debug QtCored4.lib
 )
 
+set(QT_QTXML_LIBRARY 
+    optimized QtXml4.lib debug QtXmld4.lib
+)
+
 set(QT_QT3SUPPORT_LIBRARY 
     optimized Qt3Support4.lib debug Qt3Supportd4.lib
+)
+
+set(QT_QTUITOOLS_LIBRARY 
+    optimized QtUiTools.lib debug QtUiToolsd.lib
+)
+
+set(QT_QTMAIN_LIBRARY 
+    debug qtmaind.lib optimized qtmain.lib
 )
 
 set(QT_UIC_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/uic.exe)

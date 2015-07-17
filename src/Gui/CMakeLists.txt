@@ -45,8 +45,7 @@ if(MSVC)
          debug ${COIN3D_LIBRARY_DEBUG}
          optimized ${COIN3D_LIBRARY_RELEASE}
          ${QT_LIBRARIES}
-         optimized QtUiTools.lib
-         debug QtUiToolsd.lib
+         ${QT_QTUITOOLS_LIBRARY}
          ${OPENGL_gl_LIBRARY}
     )
 else(MSVC)

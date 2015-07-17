@@ -150,6 +150,16 @@ set(QT_QT3SUPPORT_LIBRARY
     debug Qt3Supportd4.lib
 )
 
+set(QT_QTUITOOLS_LIBRARY 
+    optimized QtUiTools.lib
+    debug QtUiToolsd.lib
+)
+
+set(QT_QTMAIN_LIBRARY 
+    debug qtmaind.lib
+    optimized qtmain.lib
+)
+
 set(QT_UIC_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/uic.exe)
 set(QT_MOC_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/moc.exe)
 set(QT_RCC_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/rcc.exe)
