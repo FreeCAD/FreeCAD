@@ -111,12 +111,9 @@ set(QT_LIBRARIES
     debug QtWebKitd4.lib
 )
 
-set(QT_QTCORE_LIBRARY_DEBUG 
-    debug QtCored4.lib
- )
- 
 set(QT_QTCORE_LIBRARY 
     optimized QtCore4.lib
+    debug QtCored4.lib
 )
 
 set(QT_UIC_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/uic.exe)
