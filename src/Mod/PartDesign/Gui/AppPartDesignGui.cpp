@@ -60,6 +60,7 @@
 #include "ViewProviderThickness.h"
 #include "ViewProviderPipe.h"
 #include "ViewProviderLoft.h"
+#include "ViewProviderShapeBinder.h"
 
 // use a different name to CreateCommand()
 void CreatePartDesignCommands(void);
@@ -144,6 +145,7 @@ PyMODINIT_FUNC initPartDesignGui()
     PartDesignGui::ViewProviderDatumLine     ::init();
     PartDesignGui::ViewProviderDatumPlane    ::init();
     PartDesignGui::ViewProviderDatumCoordinateSystem::init();
+    PartDesignGui::ViewProviderShapeBinder   ::init();
     PartDesignGui::ViewProviderBoolean       ::init();
     PartDesignGui::ViewProviderAddSub        ::init();
     PartDesignGui::ViewProviderPrimitive     ::init();

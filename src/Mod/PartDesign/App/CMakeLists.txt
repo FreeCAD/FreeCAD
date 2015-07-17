@@ -40,6 +40,8 @@ SET(Features_SRCS
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
 SET(DatumFeatures_SRCS
+    ShapeBinder.h
+    ShapeBinder.cpp
     DatumPlane.cpp
     DatumPlane.h
     DatumLine.cpp
