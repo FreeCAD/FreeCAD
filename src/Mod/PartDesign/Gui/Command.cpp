@@ -667,7 +667,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
     // If there is more than one selection/possibility, show dialog and let user pick sketch
     if ((bNoSketchWasSelected && validSketches > 1)  ||
         (!bNoSketchWasSelected && sketches.size() > 1) ||
-         ext ) {
+        (!bNoSketchWasSelected && ext) ) {
 
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         PartDesignGui::TaskDlgFeaturePick *pickDlg = qobject_cast<PartDesignGui::TaskDlgFeaturePick *>(dlg);
@@ -689,7 +689,7 @@ void prepareSketchBased(Gui::Command* cmd, const std::string& which,
 
         Gui::Selection().clearSelection();
         pickDlg = new PartDesignGui::TaskDlgFeaturePick(sketches, status, accepter, worker);
-        if(ext)
+        if(!bNoSketchWasSelected && ext)
             pickDlg->showExternal(true);
 
         Gui::Control().showDialog(pickDlg);
