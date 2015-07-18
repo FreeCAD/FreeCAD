@@ -101,13 +101,13 @@ TopoShape ShapeBinder::buildShapeFromReferences(std::vector< App::DocumentObject
         if(objs[index] != obj)
             continue;
 
-        //in this mode the full shape is allowed, as we already started the subshape
-        //prcessing
+        //in this mode the full shape is not allowed, as we already started the subshape
+        //processing
         if(sub.empty())
             continue;
 
         if(base.isNull())
-            base = obj->Shape.getShape();
+            base = obj->Shape.getShape().getSubShape(sub.c_str());
         else
             operators.push_back(obj->Shape.getShape().getSubShape(sub.c_str()));
     }
