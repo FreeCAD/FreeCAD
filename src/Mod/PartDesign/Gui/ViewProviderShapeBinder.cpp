@@ -38,6 +38,24 @@ PROPERTY_SOURCE(PartDesignGui::ViewProviderShapeBinder,PartGui::ViewProviderPart
 ViewProviderShapeBinder::ViewProviderShapeBinder()
 {
     sPixmap = "PartDesign_ShapeBinder.svg";
+
+    //make the viewprovider more datum like
+    AngularDeflection.StatusBits.set(3, true);
+    Deviation.StatusBits.set(3, true);
+    DrawStyle.StatusBits.set(3, true);
+    Lighting.StatusBits.set(3, true);
+    LineColor.StatusBits.set(3, true);
+    LineWidth.StatusBits.set(3, true);
+    PointColor.StatusBits.set(3, true);
+    PointSize.StatusBits.set(3, true);
+    ShapeColor.StatusBits.set(3, true);
+    Transparency.StatusBits.set(3, true);
+
+    //get the datum coloring sheme
+    ShapeColor.setValue(App::Color(0.9f, 0.9f, 0.13f, 0.5f));
+    LineColor.setValue(App::Color(0.9f, 0.9f, 0.13f, 0.5f));
+    PointColor.setValue(App::Color(0.9f, 0.9f, 0.13f, 0.5f));
+    LineWidth.setValue(1);
 }
 
 ViewProviderShapeBinder::~ViewProviderShapeBinder()

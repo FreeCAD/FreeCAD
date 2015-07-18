@@ -55,6 +55,7 @@
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
+#include <Mod/PartDesign/App/ShapeBinder.h>
 
 #include "TaskFeaturePick.h"
 #include "ReferenceSelection.h"
@@ -212,6 +213,80 @@ bool CmdPartDesignPoint::isActive(void)
         return true;
     else
         return false;
+}
+
+//===========================================================================
+// PartDesign_ShapeBinder
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartDesignShapeBinder);
+
+CmdPartDesignShapeBinder::CmdPartDesignShapeBinder()
+  :Command("PartDesign_ShapeBinder")
+{
+    sAppModule      = "PartDesign";
+    sGroup          = QT_TR_NOOP("PartDesign");
+    sMenuText       = QT_TR_NOOP("Create a shape binder");
+    sToolTipText    = QT_TR_NOOP("Create a new shape binder");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "PartDesign_ShapeBinder";
+}
+
+void CmdPartDesignShapeBinder::activated(int iMsg)
+{
+    App::PropertyLinkSubList support;
+    getSelection().getAsPropertyLinkSubList(support);
+
+    bool bEditSelected = false;
+    if (support.getSize() == 1 && support.getValue() ){
+        if (support.getValue()->isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
+                support.getValue()->isDerivedFrom(PartDesign::ShapeBinder2D::getClassTypeId()))
+            bEditSelected = true;
+    }
+
+    if (bEditSelected) {
+        std::string tmp = std::string("Edit ShapeBinder");
+        openCommand(tmp.c_str());
+        doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",
+                support.getValue()->getNameInDocument());
+    } else {
+        PartDesign::Body *pcActiveBody = PartDesignGui::getBody(/*messageIfNot = */true);
+        if (pcActiveBody == 0)
+            return;
+
+        std::string FeatName = getUniqueObjectName("ShapeBinder");
+        std::string tmp = std::string("Create ShapeBinder");
+
+        openCommand(tmp.c_str());
+
+        if(support.getValue()->isDerivedFrom(PartDesign::ShapeBinder2D::getClassTypeId()) ||
+                support.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+            doCommand(Gui::Command::Doc,"App.activeDocument().addObject('%s','%s')",
+                    "PartDesign::ShapeBinder2D",FeatName.c_str());
+        } else {
+            doCommand(Gui::Command::Doc,"App.activeDocument().addObject('%s','%s')",
+                    "PartDesign::ShapeBinder",FeatName.c_str());
+        }
+
+        //test if current selection fits a mode.
+        if (support.getSize() > 0) {
+            AttachableObject* pcDatum = static_cast<AttachableObject*>(
+                    getDocument()->getObject(FeatName.c_str()));
+            doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
+                    FeatName.c_str(),support.getPyReprString().c_str());
+        }
+        doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                pcActiveBody->getNameInDocument(), FeatName.c_str());
+        doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
+        doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
+    }
+    // TODO do a proper error processing (2015-09-11, Fat-Zer)
+}
+
+bool CmdPartDesignShapeBinder::isActive(void)
+{
+    return hasActiveDocument ();
 }
 
 //===========================================================================
@@ -1741,6 +1816,7 @@ void CreatePartDesignCommands(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdPartDesignShapeBinder());
     rcCmdMgr.addCommand(new CmdPartDesignPlane());
     rcCmdMgr.addCommand(new CmdPartDesignLine());
     rcCmdMgr.addCommand(new CmdPartDesignPoint());
