@@ -89,15 +89,15 @@ file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
 # this makes the shared library
 
-add_library(
-  libarea
-  SHARED
-  ${AREA_SRC_COMMON}
-  ${AREA_SRC_CLIPPER}
-)
+#add_library(
+#  libarea
+#  SHARED
+#  ${AREA_SRC_COMMON}
+#  ${AREA_SRC_CLIPPER}
+#)
 
-set_target_properties(libarea PROPERTIES PREFIX "")
-set_target_properties(libarea PROPERTIES SOVERSION 0)
+#set_target_properties(libarea PROPERTIES PREFIX "")
+#set_target_properties(libarea PROPERTIES SOVERSION 0)
 
 # this part allow to support multi-arch
 # ie. Debian builder sets correctly the target path according to architecture
@@ -109,8 +109,8 @@ set_target_properties(libarea PROPERTIES SOVERSION 0)
 #    set(CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
 #endif(DEFINED CMAKE_INSTALL_LIBDIR)
 
-install(TARGETS libarea LIBRARY DESTINATION lib/ COMPONENT libraries)
-message(STATUS "Library will be installed to: " ${CMAKE_INSTALL_PREFIX}/lib)
+#install(TARGETS libarea LIBRARY DESTINATION lib/ COMPONENT libraries)
+#message(STATUS "Library will be installed to: " ${CMAKE_INSTALL_PREFIX}/lib)
 
 
 # this makes the Python module
@@ -139,7 +139,7 @@ execute_process(
 #STRING(REGEX REPLACE "/usr/local/(.*)$" "\\1" Python_site_packages "${Python_site_packages}" )
 #STRING(REGEX REPLACE "/usr/(.*)$" "\\1" Python_site_packages "${Python_site_packages}" )
 
-message(STATUS "libarea module will be installed to: " ${CMAKE_INSTALL_LIBDIR})
+message(STATUS "area module (for Path Workbench) will be installed to: " ${CMAKE_INSTALL_LIBDIR})
 
 # this installs the python library
 install(
