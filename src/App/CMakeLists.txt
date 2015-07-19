@@ -118,6 +118,7 @@ SET(Properties_CPP_SRCS
     PropertyPythonObject.cpp
     PropertyStandard.cpp
     PropertyUnits.cpp
+    PropertyExpressionEngine.cpp
 )
 SET(Properties_HPP_SRCS
     DynamicProperty.h
@@ -130,6 +131,7 @@ SET(Properties_HPP_SRCS
     PropertyPythonObject.h
     PropertyStandard.h
     PropertyUnits.h
+    PropertyExpressionEngine.h
 )
 SET(Properties_SRCS
     ${Properties_CPP_SRCS}
