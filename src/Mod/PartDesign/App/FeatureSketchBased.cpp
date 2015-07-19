@@ -1020,8 +1020,10 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
         // Check that axis is perpendicular with sketch plane!
         if (sketchplane.Axis().Direction().Angle(gp_Dir(dir.x, dir.y, dir.z))< Precision::Angular())
              throw Base::Exception("Rotation axis must not be perpendicular with the sketch plane");
+        return;
     }
-    else if (pcReferenceAxis->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+
+    if (pcReferenceAxis->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
         const App::Line* line = static_cast<const App::Line*>(pcReferenceAxis);
         base = Base::Vector3d(0,0,0);
         if( strcmp(line->LineType.getValue(), App::Part::BaselineTypes[0]) == 0)
@@ -1034,8 +1036,34 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
         // Check that axis is perpendicular with sketch plane!
         if (sketchplane.Axis().Direction().Angle(gp_Dir(dir.x, dir.y, dir.z)) < Precision::Angular())
              throw Base::Exception("Rotation axis must not be perpendicular with the sketch plane");
+        return;
     }
-    else if (pcReferenceAxis->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+
+    if (pcReferenceAxis == sketch){
+        bool hasValidAxis=false;
+        Base::Axis axis;
+        if (subReferenceAxis[0] == "V_Axis") {
+            hasValidAxis = true;
+            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
+        } else if (subReferenceAxis[0] == "H_Axis") {
+            hasValidAxis = true;
+            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
+        } else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
+            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
+            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
+                hasValidAxis = true;
+                axis = sketch->getAxis(AxId);
+            }
+        }
+        if (hasValidAxis) {
+            axis *= SketchPlm;
+            base=axis.getBase();
+            dir=axis.getDirection();
+            return;
+        } //else - an edge of the sketch was selected as an axis
+    }
+
+    if (pcReferenceAxis->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         if (subReferenceAxis.empty())
             throw Base::Exception("No rotation axis reference specified");
         const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
@@ -1058,33 +1086,13 @@ void SketchBased::getAxis(const App::DocumentObject *pcReferenceAxis, const std:
             // Check that axis is perpendicular with sketch plane!
             if (sketchplane.Axis().Direction().Angle(d) < Precision::Angular())
                 throw Base::Exception("Rotation axis must not be perpendicular with the sketch plane");
+            return;
         } else {
             throw Base::Exception("Rotation reference must be an edge");
         }
-    } else if (pcReferenceAxis && pcReferenceAxis == sketch) {
-        bool hasValidAxis=false;
-        Base::Axis axis;
-        if (subReferenceAxis[0] == "V_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::V_Axis);
-        }
-        else if (subReferenceAxis[0] == "H_Axis") {
-            hasValidAxis = true;
-            axis = sketch->getAxis(Part::Part2DObject::H_Axis);
-        }
-        else if (subReferenceAxis[0].size() > 4 && subReferenceAxis[0].substr(0,4) == "Axis") {
-            int AxId = std::atoi(subReferenceAxis[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < sketch->getAxisCount()) {
-                hasValidAxis = true;
-                axis = sketch->getAxis(AxId);
-            }
-        }
-        if (hasValidAxis) {
-            axis *= SketchPlm;
-            base=axis.getBase();
-            dir=axis.getDirection();
-        }
     }
+
+    throw Base::Exception("Rotation axis reference is invalid");
 }
 
 TopoDS_Shape SketchBased::refineShapeIfActive(const TopoDS_Shape& oldShape) const
