@@ -184,16 +184,17 @@ App::DocumentObject* TaskTransformedParameters::getPartPlanes(const char* str) c
     App::DocumentObject* obj = getObject();
     App::Part* part = getPartFor(obj, true);
     
-    std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
-    if(origs.size()<1)
-        return nullptr;
-    
-    App::Origin* orig = static_cast<App::Origin*>(origs[0]);
-    auto planes = orig->getObjectsOfType(App::Plane::getClassTypeId());
-    for(App::DocumentObject* plane : planes) {
-        
-        if( strcmp(static_cast<App::Plane*>(plane)->PlaneType.getValue(), str) == 0)
-            return plane;
+    if (part) {
+        std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(origs.size()<1)
+            return nullptr;
+
+        App::Origin* orig = static_cast<App::Origin*>(origs[0]);
+        auto planes = orig->getObjectsOfType(App::Plane::getClassTypeId());
+        for(App::DocumentObject* plane : planes) {
+            if( strcmp(static_cast<App::Plane*>(plane)->PlaneType.getValue(), str) == 0)
+                return plane;
+        }
     }
     
     return nullptr;
@@ -204,21 +205,90 @@ App::DocumentObject* TaskTransformedParameters::getPartLines(const char* str) co
 
     //TODO: Adjust to GRAPH handling when available
     App::DocumentObject* obj = getObject();
-    App::Part* part = getPartFor(obj, true);
-    
-    std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
-    if(origs.size()<1)
-        return nullptr;
-    
-    App::Origin* orig = static_cast<App::Origin*>(origs[0]);
-    auto lines = orig->getObjectsOfType(App::Line::getClassTypeId());
-    for(App::DocumentObject* line : lines) {
-        
-        if( strcmp(static_cast<App::Line*>(line)->LineType.getValue(), str) == 0)
-            return line;
+    App::Part* part = getPartFor(obj, false);
+    if (part) {
+        std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
+        if(origs.size()<1)
+            return nullptr;
+
+        App::Origin* orig = static_cast<App::Origin*>(origs[0]);
+        auto lines = orig->getObjectsOfType(App::Line::getClassTypeId());
+        for(App::DocumentObject* line : lines) {
+
+            if( strcmp(static_cast<App::Line*>(line)->LineType.getValue(), str) == 0)
+                return line;
+        }
     }
     
     return nullptr;
+}
+
+void TaskTransformedParameters::fillAxisCombo(ComboLinks &combolinks,
+                                              Part::Part2DObject* sketch)
+{
+    combolinks.clear();
+
+    //add sketch axes
+    if (sketch){
+        combolinks.addLink(sketch, "N_Axis",tr("Normal sketch axis"));
+        combolinks.addLink(sketch,"V_Axis",tr("Vertical sketch axis"));
+        combolinks.addLink(sketch,"H_Axis",tr("Horizontal sketch axis"));
+        for (int i=0; i < sketch->getAxisCount(); i++) {
+            QString itemText = tr("Construction line %1").arg(i+1);
+            std::stringstream sub;
+            sub << "Axis" << i;
+            combolinks.addLink(sketch,sub.str(),itemText);
+        }
+    }
+
+    //add part axes
+    App::DocumentObject* line = 0;
+    line = getPartLines(App::Part::BaselineTypes[0]);
+    if(line)
+        combolinks.addLink(line,"",tr("Base X axis"));
+    line = getPartLines(App::Part::BaselineTypes[1]);
+    if(line)
+        combolinks.addLink(line,"",tr("Base Y axis"));
+    line = getPartLines(App::Part::BaselineTypes[2]);
+    if(line)
+        combolinks.addLink(line,"",tr("Base Z axis"));
+
+    //add "Select reference"
+    combolinks.addLink(0,std::string(),tr("Select reference..."));
+}
+
+void TaskTransformedParameters::fillPlanesCombo(ComboLinks &combolinks,
+                                                Part::Part2DObject* sketch)
+{
+    combolinks.clear();
+
+    //add sketch axes
+    if (sketch){
+        combolinks.addLink(sketch,"V_Axis",QObject::tr("Vertical sketch axis"));
+        combolinks.addLink(sketch,"H_Axis",QObject::tr("Horizontal sketch axis"));
+        for (int i=0; i < sketch->getAxisCount(); i++) {
+            QString itemText = tr("Construction line %1").arg(i+1);
+            std::stringstream sub;
+            sub << "Axis" << i;
+            combolinks.addLink(sketch,sub.str(),itemText);
+        }
+    }
+
+    //add part baseplanes
+    App::DocumentObject* plane = 0;
+    plane = getPartPlanes(App::Part::BaseplaneTypes[0]);
+    if(plane)
+        combolinks.addLink(plane,"",tr("Base XY plane"));
+    plane = getPartPlanes(App::Part::BaseplaneTypes[1]);
+    if(plane)
+        combolinks.addLink(plane,"",tr("Base XZ plane"));
+    plane = getPartPlanes(App::Part::BaseplaneTypes[2]);
+    if(plane)
+        combolinks.addLink(plane,"",tr("Base YZ plane"));
+
+    //add "Select reference"
+    combolinks.addLink(0,std::string(),tr("Select reference..."));
+
 }
 
 void TaskTransformedParameters::recomputeFeature()
@@ -403,3 +473,76 @@ bool TaskDlgTransformedParameters::reject()
 
 
 #include "moc_TaskTransformedParameters.cpp"
+
+
+ComboLinks::ComboLinks(QComboBox &combo)
+    : doc(0)
+{
+    this->_combo = &combo;
+    _combo->clear();
+}
+
+int ComboLinks::addLink(const App::PropertyLinkSub &lnk, QString itemText)
+{
+    if(!_combo)
+        return 0;
+    _combo->addItem(itemText);
+    this->linksInList.push_back(new App::PropertyLinkSub());
+    App::PropertyLinkSub &newitem = *(linksInList[linksInList.size()-1]);
+    newitem.Paste(lnk);
+    if (newitem.getValue() && this->doc == 0)
+        this->doc = newitem.getValue()->getDocument();
+    return linksInList.size()-1;
+}
+
+int ComboLinks::addLink(App::DocumentObject *linkObj, std::string linkSubname, QString itemText)
+{
+    if(!_combo)
+        return 0;
+    _combo->addItem(itemText);
+    this->linksInList.push_back(new App::PropertyLinkSub());
+    App::PropertyLinkSub &newitem = *(linksInList[linksInList.size()-1]);
+    newitem.setValue(linkObj,std::vector<std::string>(1,linkSubname));
+    if (newitem.getValue() && this->doc == 0)
+        this->doc = newitem.getValue()->getDocument();
+    return linksInList.size()-1;
+}
+
+void ComboLinks::clear()
+{
+    for(int i = 0  ;  i < this->linksInList.size()  ;  i++){
+        delete linksInList[i];
+    }
+    if(this->_combo)
+        _combo->clear();
+}
+
+App::PropertyLinkSub &ComboLinks::getLink(int index) const
+{
+    if (index < 0 || index > linksInList.size()-1)
+        throw Base::Exception("ComboLinks::getLink:Index out of range");
+    if (linksInList[index]->getValue() && doc && !(doc->isIn(linksInList[index]->getValue())))
+        throw Base::Exception("Linked object is not in the document; it may have been deleted");
+    return *(linksInList[index]);
+}
+
+App::PropertyLinkSub &ComboLinks::getCurrentLink() const
+{
+    assert(_combo);
+    return getLink(_combo->currentIndex());
+}
+
+int ComboLinks::setCurrentLink(const App::PropertyLinkSub &lnk)
+{
+    for(int i = 0  ;  i < linksInList.size()  ;  i++) {
+        App::PropertyLinkSub &it = *(linksInList[i]);
+        if(lnk.getValue() == it.getValue() && lnk.getSubValues() == it.getSubValues()){
+            bool wasBlocked = _combo->signalsBlocked();
+            _combo->blockSignals(true);
+            _combo->setCurrentIndex(i);
+            _combo->blockSignals(wasBlocked);
+            return i;
+        }
+    }
+    return -1;
+}

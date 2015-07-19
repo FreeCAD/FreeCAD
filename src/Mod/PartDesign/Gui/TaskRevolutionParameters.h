@@ -55,6 +55,15 @@ public:
 
     void apply();
 
+    /**
+     * @brief fillAxisCombo fills the combo and selects the item according to
+     * current value of revolution object's axis reference.
+     * @param forceRefill if true, the combo box will be completely refilled. If
+     * false, the current value of revolution object's axis will be added to the
+     * list (if necessary), and selected. If the list is empty, it will be refilled anyway.
+     */
+    void fillAxisCombo(bool forceRefill = false);
+    void addAxisToCombo(App::DocumentObject *linkObj, std::string linkSubname, QString itemText);
 private Q_SLOTS:
     void onAngleChanged(double);
     void onAxisChanged(int);
@@ -76,6 +85,16 @@ private:
 private:
     QWidget* proxy;
     Ui_TaskRevolutionParameters* ui;    
+
+    /**
+     * @brief axesInList is the list of links corresponding to axis combo; must
+     * be kept in sync with the combo. A special value of zero-pointer link is
+     * for "Select axis" item.
+     *
+     * It is a list of pointers, because properties prohibit assignment. Use new
+     * when adding stuff, and delete when removing stuff.
+     */
+    std::vector<App::PropertyLinkSub*> axesInList;
 };
 
 /// simulation dialog for the TaskView
