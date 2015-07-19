@@ -153,19 +153,14 @@ void TaskLinearPatternParameters::setupUI()
     ui->spinLength->blockSignals(false);
     ui->spinOccurrences->setEnabled(true);
     
-    
+    dirLinks.setCombo(*(ui->comboDirection));
     App::DocumentObject* sketch = getSketchObject();
-    if (sketch) {
-        ui->comboDirection->addItem(QString::fromAscii("Horizontal sketch axis"));
-        ui->comboDirection->addItem(QString::fromAscii("Vertical sketch axis"));
-    }
-    //add the base axes to the selection combo box
-    ui->comboDirection->addItem(QString::fromAscii("Base X axis"));
-    ui->comboDirection->addItem(QString::fromAscii("Base Y axis"));    
-    ui->comboDirection->addItem(QString::fromAscii("Base Z axis")); 
-    ui->comboDirection->addItem(QString::fromAscii("Select reference..."));
+    if (!sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        sketch = 0;
+    this->fillAxisCombo(dirLinks,static_cast<Part::Part2DObject*>(sketch));
+
     updateUI();
-    
+
     //show the parts coordinate system axis for selection
     App::Part* part = getPartFor(getObject(), false);
     if(part) {        
@@ -176,7 +171,7 @@ void TaskLinearPatternParameters::setupUI()
             origin->setTemporaryVisibilityMode(true, Gui::Application::Instance->activeDocument());
             origin->setTemporaryVisibilityAxis(true);
         }            
-     }
+    }
 }
 
 void TaskLinearPatternParameters::updateUI()
@@ -187,61 +182,15 @@ void TaskLinearPatternParameters::updateUI()
 
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
 
-    App::DocumentObject* directionFeature = pcLinearPattern->Direction.getValue();
-    std::vector<std::string> directions = pcLinearPattern->Direction.getSubValues();
     bool reverse = pcLinearPattern->Reversed.getValue();
     double length = pcLinearPattern->Length.getValue();
     unsigned occurrences = pcLinearPattern->Occurrences.getValue();
 
-    // Add user-defined sketch axes to the reference selection combo box
-    App::DocumentObject* sketch = getSketchObject();
-    int maxcount=3;
-    if (sketch) {
-        maxcount = 5;
-        maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+    if (dirLinks.setCurrentLink(pcLinearPattern->Direction) == -1){
+        //failed to set current, because the link isnt in the list yet
+        dirLinks.addLink(pcLinearPattern->Direction, getRefStr(pcLinearPattern->Direction.getValue(),pcLinearPattern->Direction.getSubValues()));
+        dirLinks.setCurrentLink(pcLinearPattern->Direction);
     }
-
-    for (int i=ui->comboDirection->count()-1; i >= maxcount; i--)
-        ui->comboDirection->removeItem(i);
-    for (int i=ui->comboDirection->count(); i < maxcount; i++)
-        ui->comboDirection->addItem(QString::fromLatin1("Sketch axis %1").arg(i-5));
-
-    bool undefined = false;
-    if (directionFeature != NULL && !directions.empty()) {
-        bool is_base_line = directionFeature->isDerivedFrom(App::Line::getClassTypeId());
-        
-        if (directions.front() == "H_Axis")
-            ui->comboDirection->setCurrentIndex(0);
-        else if (directions.front() == "V_Axis")
-            ui->comboDirection->setCurrentIndex(1);
-        else if (is_base_line && strcmp(static_cast<App::Line*>(directionFeature)->LineType.getValue(), App::Part::BaselineTypes[0]) == 0)
-            ui->comboDirection->setCurrentIndex( sketch ? 2 : 0);
-        else if (is_base_line && strcmp(static_cast<App::Line*>(directionFeature)->LineType.getValue(), App::Part::BaselineTypes[1]) == 0)
-            ui->comboDirection->setCurrentIndex(sketch ? 3 : 1);
-        else if (is_base_line && strcmp(static_cast<App::Line*>(directionFeature)->LineType.getValue(), App::Part::BaselineTypes[2]) == 0)
-            ui->comboDirection->setCurrentIndex(sketch ? 4 : 2);
-        else if (directions.front().size() > (sketch ? 4 : 2)  && directions.front().substr(0,4) == "Axis") {
-            int pos = (sketch ? 5 : 3) + std::atoi(directions.front().substr(4,4000).c_str());
-            if (pos <= maxcount)
-                ui->comboDirection->setCurrentIndex(pos);
-            else
-                undefined = true;
-        } else {
-            ui->comboDirection->addItem(getRefStr(directionFeature, directions));
-            ui->comboDirection->setCurrentIndex(maxcount);
-        }
-    } else {
-        undefined = true;
-    }
-
-    if (selectionMode == reference) {
-        ui->comboDirection->addItem(tr("Select an edge/face or datum line/plane"));
-        ui->comboDirection->setCurrentIndex(ui->comboDirection->count() - 1);
-    } else if (undefined) {
-        ui->comboDirection->addItem(tr("Undefined"));
-        ui->comboDirection->setCurrentIndex(ui->comboDirection->count() - 1);
-    } else
-        ui->comboDirection->addItem(tr("Select reference..."));
 
     // Note: These three lines would trigger onLength(), on Occurrences() and another updateUI() if we
     // didn't check for blockUpdate
@@ -275,32 +224,14 @@ void TaskLinearPatternParameters::onSelectionChanged(const Gui::SelectionChanges
         } else if (selectionMode == reference) {
             // Note: ReferenceSelection has already checked the selection for validity
             exitSelectionMode();
-            if (!blockUpdate) {
-                std::vector<std::string> directions;
-                App::DocumentObject* selObj;
-                PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-                getReferencedSelection(pcLinearPattern, msg, selObj, directions);
-                pcLinearPattern->Direction.setValue(selObj, directions);
+            std::vector<std::string> directions;
+            App::DocumentObject* selObj;
+            PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+            getReferencedSelection(pcLinearPattern, msg, selObj, directions);
+            pcLinearPattern->Direction.setValue(selObj, directions);
 
-                recomputeFeature();
-                updateUI();
-            }
-            else {
-                App::DocumentObject* sketch = getSketchObject();
-                int maxcount=5;
-                if (sketch)
-                    maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
-                for (int i=ui->comboDirection->count()-1; i >= maxcount; i--)
-                    ui->comboDirection->removeItem(i);
-
-                std::vector<std::string> directions;
-                App::DocumentObject* selObj;
-                PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-                getReferencedSelection(pcLinearPattern, msg, selObj, directions);
-                ui->comboDirection->addItem(getRefStr(selObj, directions));
-                ui->comboDirection->setCurrentIndex(maxcount);
-                ui->comboDirection->addItem(tr("Select reference..."));
-            }
+            recomputeFeature();
+            updateUI();
         } else if( strstr(msg.pObjectName, App::Part::BaselineTypes[0]) == nullptr || 
                    strstr(msg.pObjectName, App::Part::BaselineTypes[1]) == nullptr ||
                    strstr(msg.pObjectName, App::Part::BaselineTypes[2]) == nullptr) {
@@ -357,55 +288,21 @@ void TaskLinearPatternParameters::onDirectionChanged(int num) {
     if (blockUpdate)
         return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-
-    App::DocumentObject* pcSketch = getSketchObject();
-    int maxcount=3;
-    if (pcSketch)  {
-        maxcount = 5;
-        maxcount += static_cast<Part::Part2DObject*>(pcSketch)->getAxisCount();
-    }
-
-    if(pcSketch) {
-        if (num == 0) {
-            pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
+    try{
+        if(dirLinks.getCurrentLink().getValue() == 0){
+            // enter reference selection mode
+            hideObject();
+            showBase();
+            selectionMode = reference;
+            Gui::Selection().clearSelection();
+            addReferenceSelectionGate(true, true);
+        } else {
             exitSelectionMode();
+            pcLinearPattern->Direction.Paste(dirLinks.getCurrentLink());
         }
-        else if (num == 1) {
-            pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
-            exitSelectionMode();
-        }
+    } catch (Base::Exception &e) {
+        QMessageBox::warning(0,tr("Error"),QString::fromAscii(e.what()));
     }
-    if (num == (pcSketch ? 2 : 0)) {
-        pcLinearPattern->Direction.setValue(getPartLines(App::Part::BaselineTypes[0]),
-                                         std::vector<std::string>(1,""));
-        exitSelectionMode();
-    }
-    else if (num == (pcSketch ? 3 : 1)) {
-        pcLinearPattern->Direction.setValue(getPartLines(App::Part::BaselineTypes[1]),
-                                         std::vector<std::string>(1,""));
-        exitSelectionMode();
-    }
-    else if (num == (pcSketch ? 4 : 2)) {
-        pcLinearPattern->Direction.setValue(getPartLines(App::Part::BaselineTypes[2]),
-                                         std::vector<std::string>(1,""));
-        exitSelectionMode();
-    }
-    else if (num >= (pcSketch ? 5 : 3) && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-(pcSketch ? 5 : 3));
-        std::string str = buf.toStdString();
-        pcLinearPattern->Direction.setValue(pcSketch, std::vector<std::string>(1,str));
-        exitSelectionMode();
-    }
-    else if (num == ui->comboDirection->count() - 1) {
-        // enter reference selection mode
-        hideObject();
-        showBase();
-        selectionMode = reference;
-        Gui::Selection().clearSelection();
-        addReferenceSelectionGate(true, true);
-    }
-    else if (num == maxcount)
-        exitSelectionMode();
 
     kickUpdateViewTimer();
 }
@@ -441,38 +338,9 @@ void TaskLinearPatternParameters::onFeatureDeleted(void)
 
 void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
-    obj = getSketchObject();
-    sub = std::vector<std::string>(1,"");
-    int maxcount=3;
-    if (obj) {
-        maxcount = 5;
-        maxcount += static_cast<Part::Part2DObject*>(obj)->getAxisCount();
-    }
-
-    int num = ui->comboDirection->currentIndex();
-    if(obj) {
-        if (num == 0)
-            sub[0] = "H_Axis";
-        else if (num == 1)
-            sub[0] = "V_Axis";
-    }
-    if (num == (obj ? 2 : 0))
-        obj = getPartLines(App::Part::BaselineTypes[0]);
-    else if (num == (obj ? 3 : 1))
-        obj = getPartLines(App::Part::BaselineTypes[1]);
-    else if (num == (obj ? 4 : 2))
-        obj = getPartLines(App::Part::BaselineTypes[2]);
-    else if (num >= (obj ? 5 : 3) && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-(obj ? 5 : 3));
-        sub[0] = buf.toStdString();
-    } else if (num == maxcount && ui->comboDirection->count() == maxcount + 2) {
-        QStringList parts = ui->comboDirection->currentText().split(QChar::fromAscii(':'));
-        obj = getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
-        if (parts.size() > 1)
-            sub[0] = parts[1].toStdString();
-    } else {
-        obj = NULL;
-    }
+    const App::PropertyLinkSub &lnk = dirLinks.getCurrentLink();
+    obj = lnk.getValue();
+    sub = lnk.getSubValues();
 }
 
 const bool TaskLinearPatternParameters::getReverse(void) const

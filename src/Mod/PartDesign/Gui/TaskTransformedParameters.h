@@ -24,6 +24,10 @@
 #ifndef GUI_TASKVIEW_TaskTransformedParameters_H
 #define GUI_TASKVIEW_TaskTransformedParameters_H
 
+#include <QComboBox>
+
+#include <Mod/Part/App/Part2DObject.h>
+
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -40,6 +44,63 @@ class Transformed;
 namespace PartDesignGui {
 
 class TaskMultiTransformParameters;
+
+/**
+ * @brief The ComboLinks class is a helper class that binds to a combo box and
+ * provides an interface to add links, retrieve links and select items by link
+ * value
+ */
+class ComboLinks
+{
+public:
+    /**
+     * @brief ComboLinks constructor.
+     * @param combo. It will be cleared as soon as it is bound. Don't add or
+     * remove items from the combo directly, otherwise internal tracking list
+     * will go out of sync, and crashes may result.
+     */
+    ComboLinks(QComboBox &combo);
+    ComboLinks() {_combo = 0; doc = 0;};
+    void setCombo(QComboBox &combo) {assert(_combo == 0); this->_combo = &combo; _combo->clear();}
+
+    /**
+     * @brief addLink adds an item to the combo. Doesn't check for duplicates.
+     * @param lnk can be a link to NULL, which is usually used for special item "Select Reference"
+     * @param itemText
+     * @return
+     */
+    int addLink(const App::PropertyLinkSub &lnk, QString itemText);
+    int addLink(App::DocumentObject* linkObj, std::string linkSubname, QString itemText);
+    void clear();
+    App::PropertyLinkSub& getLink(int index) const;
+
+    /**
+     * @brief getCurrentLink
+     * @return the link corresponding to the selected item. May be null link,
+     * which is usually used to indicate a "Select reference..." special item.
+     * Otherwise, the link is automatically tested for validity (oif an object
+     * doesn't exist in the document, an exception will be thrown.)
+     */
+    App::PropertyLinkSub& getCurrentLink() const;
+
+    /**
+     * @brief setCurrentLink selects the item with the link that matches the
+     * argument. If there is no such link in the list, -1 is returned and
+     * selected item is not changed. Signals from combo are blocked in this
+     * function.
+     * @param lnk
+     * @return the index of an item that was selected, -1 if link is not in the list yet.
+     */
+    int setCurrentLink(const App::PropertyLinkSub &lnk);
+
+    QComboBox& combo(void) const {assert(_combo); return *_combo;};
+
+    ~ComboLinks() {_combo = 0; clear();};
+private:
+    QComboBox* _combo;
+    App::Document* doc;
+    std::vector<App::PropertyLinkSub*> linksInList;
+};
 
 /**
   The transformed subclasses will be used in two different modes:
@@ -104,6 +165,9 @@ protected:
 
     App::DocumentObject* getPartPlanes(const char* str) const;
     App::DocumentObject* getPartLines(const char* str) const;
+
+    void fillAxisCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
+    void fillPlanesCombo(ComboLinks &combolinks, Part2DObject *sketch);
 
 protected:
     QWidget* proxy;

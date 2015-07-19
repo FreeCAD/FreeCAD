@@ -118,57 +118,96 @@ TaskRevolutionParameters::TaskRevolutionParameters(ViewProviderRevolution *Revol
      } 
 }
 
+void TaskRevolutionParameters::fillAxisCombo(bool forceRefill)
+{
+    bool oldVal_blockUpdate = blockUpdate;
+    blockUpdate = true;
+
+    if(axesInList.size() == 0)
+        forceRefill = true;//not filled yet, full refill
+
+    if (forceRefill){
+        ui->axis->clear();
+
+        for(int i = 0  ;  i < axesInList.size()  ;  i++ ){
+            delete axesInList[i];
+        }
+        this->axesInList.clear();
+
+        //add sketch axes
+        PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
+        Part::Part2DObject* pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
+        if (pcSketch){
+            addAxisToCombo(pcSketch,"V_Axis",QObject::tr("Vertical sketch axis"));
+            addAxisToCombo(pcSketch,"H_Axis",QObject::tr("Horizontal sketch axis"));
+            for (int i=0; i < pcSketch->getAxisCount(); i++) {
+                QString itemText = QObject::tr("Construction line %1").arg(i+1);
+                std::stringstream sub;
+                sub << "Axis" << i;
+                addAxisToCombo(pcSketch,sub.str(),itemText);
+            }
+        }
+
+        //add part axes
+        App::DocumentObject* line = 0;
+        line = getPartLines(App::Part::BaselineTypes[0]);
+        if(line)
+            addAxisToCombo(line,"",tr("Base X axis"));
+        line = getPartLines(App::Part::BaselineTypes[1]);
+        if(line)
+            addAxisToCombo(line,"",tr("Base Y axis"));
+        line = getPartLines(App::Part::BaselineTypes[2]);
+        if(line)
+            addAxisToCombo(line,"",tr("Base Z axis"));
+
+        //add "Select reference"
+        addAxisToCombo(0,std::string(),tr("Select reference..."));
+    }//endif forceRefill
+
+    //add current link, if not in list
+    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
+    //first, figure out the item number for current axis
+    int indexOfCurrent = -1;
+    App::DocumentObject* ax = pcRevolution->ReferenceAxis.getValue();
+    const std::vector<std::string> &subList = pcRevolution->ReferenceAxis.getSubValues();
+    for(int i = 0  ;  i < axesInList.size()  ;  i++) {
+        if(ax == axesInList[i]->getValue() && subList == axesInList[i]->getSubValues())
+            indexOfCurrent = i;
+    }
+    if ( indexOfCurrent == -1  &&  ax ){
+        const std::vector<std::string> &sublist = pcRevolution->ReferenceAxis.getSubValues();
+        assert(sublist.size() <= 1);
+        std::string sub;
+        if (sublist.size()>0)
+            sub = sublist[0];
+        addAxisToCombo(ax, sub, getRefStr(ax, sublist));
+        indexOfCurrent = axesInList.size()-1;
+    }
+
+    //highlight current.
+    if (indexOfCurrent != -1)
+        ui->axis->setCurrentIndex(indexOfCurrent);
+
+    blockUpdate = oldVal_blockUpdate;
+}
+
+void TaskRevolutionParameters::addAxisToCombo(App::DocumentObject* linkObj,
+                                              std::string linkSubname,
+                                              QString itemText)
+{
+    this->ui->axis->addItem(itemText);
+    this->axesInList.push_back(new App::PropertyLinkSub());
+    App::PropertyLinkSub &lnk = *(axesInList[axesInList.size()-1]);
+    lnk.setValue(linkObj,std::vector<std::string>(1,linkSubname));
+}
+
 void TaskRevolutionParameters::updateUI()
 {
     if (blockUpdate)
         return;
     blockUpdate = true;
 
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
-
-    App::DocumentObject* pcReferenceAxis = pcRevolution->ReferenceAxis.getValue();
-    std::vector<std::string> sub = pcRevolution->ReferenceAxis.getSubValues();
-
-    // Add user-defined sketch axes to the reference selection combo box
-    Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
-    int maxcount=5;
-    if (pcSketch)
-        maxcount += pcSketch->getAxisCount();
-
-    for (int i=ui->axis->count()-1; i >= 5; i--)
-        ui->axis->removeItem(i);
-    for (int i=ui->axis->count(); i < maxcount; i++)
-        ui->axis->addItem(QString::fromAscii("Sketch axis %1").arg(i-5));
-
-    bool undefined = false;
-    if (pcReferenceAxis != NULL) {
-        bool is_base_line = pcReferenceAxis->isDerivedFrom(App::Line::getClassTypeId());
-        
-        if(is_base_line && strcmp(static_cast<App::Line*>(pcReferenceAxis)->LineType.getValue(), App::Part::BaselineTypes[0])==0)
-            ui->axis->setCurrentIndex(0);
-        else if(is_base_line && strcmp(static_cast<App::Line*>(pcReferenceAxis)->LineType.getValue(), App::Part::BaselineTypes[1])==0)
-            ui->axis->setCurrentIndex(1);
-        else if(is_base_line && strcmp(static_cast<App::Line*>(pcReferenceAxis)->LineType.getValue(), App::Part::BaselineTypes[2])==0)
-            ui->axis->setCurrentIndex(2);
-        else if(!sub.empty() && sub.front() == "H_Axis")
-            ui->axis->setCurrentIndex(3);
-        else if(!sub.empty() && sub.front() == "V_Axis")
-            ui->axis->setCurrentIndex(4);
-        else if(!sub.empty() && sub.front().size() > 4 && sub.front().substr(0,4) == "Axis") {
-            int pos = 5 + std::atoi(sub.front().substr(4,4000).c_str());
-            if (pos <= maxcount)
-                ui->axis->setCurrentIndex(pos);
-            else
-                undefined = true;
-        } else {
-            ui->axis->addItem(getRefStr(pcReferenceAxis, sub));
-            ui->axis->setCurrentIndex(maxcount);
-        }
-    } else {
-        undefined = true;
-    }
-
-    ui->axis->addItem(tr("Select reference..."));
+    fillAxisCombo();
 
     blockUpdate = false;
 }
@@ -179,31 +218,13 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
         PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
 
         exitSelectionMode();
-        if (!blockUpdate) {
-            std::vector<std::string> axis;
-            App::DocumentObject* selObj;
-            getReferencedSelection(pcRevolution, msg, selObj, axis);
-            pcRevolution->ReferenceAxis.setValue(selObj, axis);
+        std::vector<std::string> axis;
+        App::DocumentObject* selObj;
+        getReferencedSelection(pcRevolution, msg, selObj, axis);
+        pcRevolution->ReferenceAxis.setValue(selObj, axis);
 
-
-            recomputeFeature();
-            updateUI();
-        }
-        else {
-            Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
-            int maxcount=5;
-            if (pcSketch)
-                maxcount += pcSketch->getAxisCount();
-            for (int i=ui->axis->count()-1; i >= maxcount; i--)
-                ui->axis->removeItem(i);
-
-            std::vector<std::string> sub;
-            App::DocumentObject* selObj;
-            getReferencedSelection(pcRevolution, msg, selObj, sub);
-            ui->axis->addItem(getRefStr(selObj, sub));
-            ui->axis->setCurrentIndex(maxcount);
-            ui->axis->addItem(tr("Select reference..."));
-        }
+        recomputeFeature();
+        updateUI();
     }
 }
 
@@ -221,37 +242,27 @@ void TaskRevolutionParameters::onAxisChanged(int num)
     if (blockUpdate)
         return;
     PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
+
+    if(axesInList.size() == 0)
+        return;
+
     Sketcher::SketchObject *pcSketch = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
     if (pcSketch) {
         App::DocumentObject *oldRefAxis = pcRevolution->ReferenceAxis.getValue();
         std::vector<std::string> oldSubRefAxis = pcRevolution->ReferenceAxis.getSubValues();
 
-        int maxcount = pcSketch->getAxisCount()+5;
-        if (num == 0) {
-            pcRevolution->ReferenceAxis.setValue(getPartLines(App::Part::BaselineTypes[0]), std::vector<std::string>(1,""));
-        }
-        else if (num == 1) {
-            pcRevolution->ReferenceAxis.setValue(getPartLines(App::Part::BaselineTypes[1]), std::vector<std::string>(1,""));
-        }
-        else if (num == 2) {
-            pcRevolution->ReferenceAxis.setValue(getPartLines(App::Part::BaselineTypes[2]), std::vector<std::string>(1,""));
-        }
-        else if (num == 3) {
-            pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
-            exitSelectionMode();
-        } else if (num == 4) {
-            pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
-            exitSelectionMode();
-        } else if (num >= 5 && num < maxcount) {
-            QString buf = QString::fromUtf8("Axis%1").arg(num-2);
-            std::string str = buf.toStdString();
-            pcRevolution->ReferenceAxis.setValue(pcSketch, std::vector<std::string>(1,str));
-            exitSelectionMode();
-        } else if (num == ui->axis->count() - 1) {
+        App::PropertyLinkSub &lnk = *(axesInList[num]);
+        if(lnk.getValue() == 0){
             // enter reference selection mode
             TaskSketchBasedParameters::onSelectReference(true, true, false, true);
-        } else if (num == maxcount)
+        } else {
+            if (! pcRevolution->getDocument()->isIn(lnk.getValue())){
+                Base::Console().Error("Object was deleted\n");
+                return;
+            }
+            pcRevolution->ReferenceAxis.Paste(lnk);
             exitSelectionMode();
+        }
 
         App::DocumentObject *newRefAxis = pcRevolution->ReferenceAxis.getValue();
         const std::vector<std::string> &newSubRefAxis = pcRevolution->ReferenceAxis.getSubValues();
@@ -293,40 +304,22 @@ double TaskRevolutionParameters::getAngle(void) const
 
 void TaskRevolutionParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
-    // get the support and Sketch
-    PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
-    obj = static_cast<Sketcher::SketchObject*>(pcRevolution->Sketch.getValue());
-    sub = std::vector<std::string>(1,"");
-    int maxcount=5;
-    if (obj)
-        maxcount += static_cast<Part::Part2DObject*>(obj)->getAxisCount();
+    if (axesInList.size() == 0)
+        throw Base::Exception("Not initialized!");
 
-    if (obj) {
-        int num = ui->axis->currentIndex();
-        if(num  == 0) 
-            obj = getPartLines(App::Part::BaselineTypes[0]);
-        else if(num == 1)
-            obj = getPartLines(App::Part::BaselineTypes[1]);
-        else if(num == 2)
-            obj = getPartLines(App::Part::BaselineTypes[2]);
-        else if (num == 3)
-            sub[0] = "H_Axis";
-        else if (num == 4)
-            sub[0] = "V_Axis";
-        else if (num >= 5  && num < maxcount) {
-            QString buf = QString::fromUtf8("Axis%1").arg(num-2);
-            sub[0] = buf.toStdString();
-        } else if (num == maxcount && ui->axis->count() == maxcount + 2) {
-            QStringList parts = ui->axis->currentText().split(QChar::fromAscii(':'));
-            obj = vp->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
-            if (parts.size() > 1)
-                sub[0] = parts[1].toStdString();
-        } else {
-            obj = NULL;
+    int num = ui->axis->currentIndex();
+    const App::PropertyLinkSub &lnk = *(axesInList[num]);
+    if(lnk.getValue() == 0){
+        throw Base::Exception("Still in reference selection mode; reference wasn't selected yet");
+    } else {
+        PartDesign::Revolution* pcRevolution = static_cast<PartDesign::Revolution*>(vp->getObject());
+        if (! pcRevolution->getDocument()->isIn(lnk.getValue())){
+            throw Base::Exception("Object was deleted");
+            return;
         }
+        obj = lnk.getValue();
+        sub = lnk.getSubValues();
     }
-    else
-        obj = NULL;
 }
 
 bool   TaskRevolutionParameters::getMidplane(void) const
@@ -353,6 +346,10 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
     }
     
     delete ui;
+
+    for(int i = 0  ;  i < axesInList.size()  ;  i++ ){
+        delete axesInList[i];
+    }
 }
 
 void TaskRevolutionParameters::changeEvent(QEvent *e)

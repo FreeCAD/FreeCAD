@@ -149,14 +149,10 @@ void TaskPolarPatternParameters::setupUI()
     ui->spinOccurrences->setEnabled(true);
     
     App::DocumentObject* sketch = getSketchObject();
-    if (sketch) {
-        ui->comboAxis->addItem(QString::fromAscii("Normal sketch axis"));
-    }
-    //add the base axes to the selection combo box
-    ui->comboAxis->addItem(QString::fromAscii("Base X axis"));
-    ui->comboAxis->addItem(QString::fromAscii("Base Y axis"));    
-    ui->comboAxis->addItem(QString::fromAscii("Base Z axis")); 
-    ui->comboAxis->addItem(QString::fromAscii("Select reference..."));
+    if (!(sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())))
+        sketch = 0;
+    this->axesLinks.setCombo(*(ui->comboAxis));
+    this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
     updateUI();
     
     //show the parts coordinate system axis for selection
@@ -180,59 +176,15 @@ void TaskPolarPatternParameters::updateUI()
 
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
-    App::DocumentObject* axisFeature = pcPolarPattern->Axis.getValue();
-    std::vector<std::string> axes = pcPolarPattern->Axis.getSubValues();
     bool reverse = pcPolarPattern->Reversed.getValue();
     double angle = pcPolarPattern->Angle.getValue();
     unsigned occurrences = pcPolarPattern->Occurrences.getValue();
 
-    // Add user-defined sketch axes to the reference selection combo box
-    App::DocumentObject* sketch = getSketchObject();
-    int maxcount=3;
-    if (sketch) {
-        maxcount = 4;
-        maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+    if (axesLinks.setCurrentLink(pcPolarPattern->Axis) == -1){
+        //failed to set current, because the link isnt in the list yet
+        axesLinks.addLink(pcPolarPattern->Axis, getRefStr(pcPolarPattern->Axis.getValue(),pcPolarPattern->Axis.getSubValues()));
+        axesLinks.setCurrentLink(pcPolarPattern->Axis);
     }
-
-    for (int i=ui->comboAxis->count()-1; i >= (sketch ? 4 : 3); i--)
-        ui->comboAxis->removeItem(i);
-    for (int i=ui->comboAxis->count(); i < maxcount; i++)
-        ui->comboAxis->addItem(QString::fromAscii("Sketch axis %1").arg(i-1));
-
-    bool undefined = false;
-    if (axisFeature != NULL && !axes.empty()) {
-        bool is_base_line = axisFeature->isDerivedFrom(App::Line::getClassTypeId());
-        
-        if (axes.front() == "N_Axis") {
-            ui->comboAxis->setCurrentIndex(0);
-        } else if (is_base_line && strcmp(static_cast<App::Line*>(axisFeature)->LineType.getValue(), App::Part::BaselineTypes[0]) == 0) {
-            ui->comboAxis->setCurrentIndex((sketch ? 1 : 0));
-        } else if (is_base_line && strcmp(static_cast<App::Line*>(axisFeature)->LineType.getValue(), App::Part::BaselineTypes[1]) == 0) {
-            ui->comboAxis->setCurrentIndex((sketch ? 2 : 1));
-        } else if (is_base_line && strcmp(static_cast<App::Line*>(axisFeature)->LineType.getValue(), App::Part::BaselineTypes[2]) == 0) {
-            ui->comboAxis->setCurrentIndex((sketch ? 3 : 2));
-        } else if (axes.front().size() > (sketch ? 4 : 3) && axes.front().substr(0,4) == "Axis") {
-            int pos = (sketch ? 4 : 3) + std::atoi(axes.front().substr(4,4000).c_str());
-            if (pos <= maxcount)
-                ui->comboAxis->setCurrentIndex(pos);
-            else
-                undefined = true;
-        } else {
-            ui->comboAxis->addItem(getRefStr(axisFeature, axes));
-            ui->comboAxis->setCurrentIndex(maxcount);
-        }
-    } else {
-        undefined = true;
-    }
-
-    if (selectionMode == reference) {
-        ui->comboAxis->addItem(tr("Select an edge or datum line"));
-        ui->comboAxis->setCurrentIndex(ui->comboAxis->count() - 1);
-    } else if (undefined) {
-        ui->comboAxis->addItem(tr("Undefined"));
-        ui->comboAxis->setCurrentIndex(ui->comboAxis->count() - 1);
-    } else
-        ui->comboAxis->addItem(tr("Select reference..."));
 
     // Note: These three lines would trigger onLength(), on Occurrences() and another updateUI() if we
     // didn't check for blockUpdate
@@ -266,32 +218,14 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
         } else if (selectionMode == reference) {
             // Note: ReferenceSelection has already checked the selection for validity
             exitSelectionMode();
-            if (!blockUpdate) {
-                std::vector<std::string> axes;
-                App::DocumentObject* selObj;
-                PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-                getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-                pcPolarPattern->Axis.setValue(selObj, axes);
+            std::vector<std::string> axes;
+            App::DocumentObject* selObj;
+            PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
+            getReferencedSelection(pcPolarPattern, msg, selObj, axes);
+            pcPolarPattern->Axis.setValue(selObj, axes);
 
-                recomputeFeature();
-                updateUI();
-            }
-            else {
-                App::DocumentObject* sketch = getSketchObject();
-                int maxcount=1;
-                if (sketch)
-                    maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
-                for (int i=ui->comboAxis->count()-1; i >= maxcount; i--)
-                    ui->comboAxis->removeItem(i);
-
-                std::vector<std::string> axes;
-                App::DocumentObject* selObj;
-                PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-                getReferencedSelection(pcPolarPattern, msg, selObj, axes);
-                ui->comboAxis->addItem(getRefStr(selObj, axes));
-                ui->comboAxis->setCurrentIndex(1);
-                ui->comboAxis->addItem(tr("Select reference..."));
-            }
+            recomputeFeature();
+            updateUI();
         } else if( strstr(msg.pObjectName, App::Part::BaselineTypes[0]) == nullptr || 
                    strstr(msg.pObjectName, App::Part::BaselineTypes[1]) == nullptr ||
                    strstr(msg.pObjectName, App::Part::BaselineTypes[2]) == nullptr) {
@@ -349,50 +283,21 @@ void TaskPolarPatternParameters::onAxisChanged(int num) {
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
 
-    App::DocumentObject* pcSketch = getSketchObject();
-    int maxcount=3;
-    if (pcSketch) {
-        maxcount = 4;
-        maxcount += static_cast<Part::Part2DObject*>(pcSketch)->getAxisCount();
-    }
-
-    if(pcSketch) {
-        if (num == 0) {
-            pcPolarPattern->Axis.setValue(getSketchObject(), std::vector<std::string>(1,"N_Axis"));
+    try{
+        if(axesLinks.getCurrentLink().getValue() == 0){
+            // enter reference selection mode
+            hideObject();
+            showBase();
+            selectionMode = reference;
+            Gui::Selection().clearSelection();
+            addReferenceSelectionGate(true, false);
+        } else {
             exitSelectionMode();
+            pcPolarPattern->Axis.Paste(axesLinks.getCurrentLink());
         }
+    } catch (Base::Exception &e) {
+        QMessageBox::warning(0,tr("Error"),QString::fromAscii(e.what()));
     }
-    if (num == (pcSketch ? 1 : 0)) {
-        pcPolarPattern->Axis.setValue(getPartLines(App::Part::BaselineTypes[0]),
-                                         std::vector<std::string>(1,""));
-        exitSelectionMode();
-    }
-    else if (num == (pcSketch ? 2 : 1)) {
-        pcPolarPattern->Axis.setValue(getPartLines(App::Part::BaselineTypes[1]),
-                                         std::vector<std::string>(1,""));
-        exitSelectionMode();
-    }
-    else if (num == (pcSketch ? 3 : 2)) {
-        pcPolarPattern->Axis.setValue(getPartLines(App::Part::BaselineTypes[2]),
-                                         std::vector<std::string>(1,""));
-        exitSelectionMode();
-    }
-    else if (num >= (pcSketch ? 4 : 3) && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-(pcSketch ? 4 : 3));
-        std::string str = buf.toStdString();
-        pcPolarPattern->Axis.setValue(pcSketch, std::vector<std::string>(1,str));
-        exitSelectionMode();
-    }
-    else if (num == ui->comboAxis->count() - 1) {
-        // enter reference selection mode
-        hideObject();
-        showBase();
-        selectionMode = reference;
-        Gui::Selection().clearSelection();
-        addReferenceSelectionGate(true, false);
-    }
-    else if (num == maxcount)
-        exitSelectionMode();
 
     kickUpdateViewTimer();
 }
@@ -428,38 +333,9 @@ void TaskPolarPatternParameters::onFeatureDeleted(void)
 
 void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {    
-    obj = getSketchObject();
-    sub = std::vector<std::string>(1,"");
-    int maxcount=1;
-    if (obj) {
-        maxcount = 4;
-        maxcount += static_cast<Part::Part2DObject*>(obj)->getAxisCount();
-    }
-
-    int num = ui->comboAxis->currentIndex();
-    if(obj) {
-        if (ui->comboAxis->currentIndex() == 0) {
-            sub[0] = "N_Axis";
-        }
-    }
-    if (num == (obj ? 1 : 0))
-        obj = getPartLines(App::Part::BaselineTypes[0]);
-    else if (num == (obj ? 2 : 1))
-        obj = getPartLines(App::Part::BaselineTypes[1]);
-    else if (num == (obj ? 3 : 2))
-        obj = getPartLines(App::Part::BaselineTypes[2]);
-    else if (num >= (obj ? 4 : 3) && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-(obj ? 4 : 3));
-        sub[0] = buf.toStdString();
-    }
-    else if (num == maxcount && ui->comboAxis->count() == maxcount + 2) {
-        QStringList parts = ui->comboAxis->currentText().split(QChar::fromAscii(':'));
-        obj = getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
-        if (parts.size() > 1)
-            sub[0] = parts[1].toStdString();
-    } else {
-        obj = NULL;
-    }
+    const App::PropertyLinkSub &lnk = axesLinks.getCurrentLink();
+    obj = lnk.getValue();
+    sub = lnk.getSubValues();
 }
 
 const bool TaskPolarPatternParameters::getReverse(void) const

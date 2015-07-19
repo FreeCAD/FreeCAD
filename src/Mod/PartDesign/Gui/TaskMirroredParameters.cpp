@@ -125,18 +125,15 @@ void TaskMirroredParameters::setupUI()
     }
     // ---------------------
 
+    this->planeLinks.setCombo(*(ui->comboPlane));
     ui->comboPlane->setEnabled(true);
+
     
     App::DocumentObject* sketch = getSketchObject();
-    if (sketch) {
-        ui->comboPlane->addItem(QString::fromAscii("Horizontal sketch axis"));
-        ui->comboPlane->addItem(QString::fromAscii("Vertical sketch axis"));
-    }
-    //add the base axes to the selection combo box
-    ui->comboPlane->addItem(QString::fromAscii("Base XY axis"));
-    ui->comboPlane->addItem(QString::fromAscii("Base XZ axis"));    
-    ui->comboPlane->addItem(QString::fromAscii("Base YZ axis")); 
-    ui->comboPlane->addItem(QString::fromAscii("Select reference..."));
+    if (!sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
+        sketch = 0;
+    this->fillPlanesCombo(planeLinks,static_cast<Part::Part2DObject*>(sketch));
+
     updateUI();
     
     //show the parts coordinate system axis for selection
@@ -160,58 +157,11 @@ void TaskMirroredParameters::updateUI()
 
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
 
-    App::DocumentObject* mirrorPlaneFeature = pcMirrored->MirrorPlane.getValue();
-    std::vector<std::string> mirrorPlanes = pcMirrored->MirrorPlane.getSubValues();
-
-    // Add user-defined sketch axes to the reference selection combo box
-    App::DocumentObject* sketch = getSketchObject();
-    int maxcount=3;
-    if (sketch) {
-        maxcount = 5;
-        maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
+    if (planeLinks.setCurrentLink(pcMirrored->MirrorPlane) == -1){
+        //failed to set current, because the link isnt in the list yet
+        planeLinks.addLink(pcMirrored->MirrorPlane, getRefStr(pcMirrored->MirrorPlane.getValue(),pcMirrored->MirrorPlane.getSubValues()));
+        planeLinks.setCurrentLink(pcMirrored->MirrorPlane);
     }
-
-    for (int i=ui->comboPlane->count()-1; i >= (sketch ? 5 : 3); i--)
-        ui->comboPlane->removeItem(i);
-    for (int i=ui->comboPlane->count(); i < maxcount; i++)
-        ui->comboPlane->addItem(QString::fromLatin1("Sketch axis %1").arg(i-5));
-
-    bool undefined = false;
-    if (mirrorPlaneFeature != NULL && !mirrorPlanes.empty()) {
-        bool is_base_plane = mirrorPlaneFeature->isDerivedFrom(App::Plane::getClassTypeId());
-        
-        if (mirrorPlanes.front() == "H_Axis")
-            ui->comboPlane->setCurrentIndex(0);
-        else if (mirrorPlanes.front() == "V_Axis")
-            ui->comboPlane->setCurrentIndex(1);
-        else if (is_base_plane && strcmp(static_cast<App::Plane*>(mirrorPlaneFeature)->PlaneType.getValue(), App::Part::BaseplaneTypes[0]) == 0)
-            ui->comboPlane->setCurrentIndex((sketch ? 2 : 0));
-        else if (is_base_plane && strcmp(static_cast<App::Plane*>(mirrorPlaneFeature)->PlaneType.getValue(), App::Part::BaseplaneTypes[1]) == 0)
-            ui->comboPlane->setCurrentIndex((sketch ? 3 : 1));
-        else if (is_base_plane && strcmp(static_cast<App::Plane*>(mirrorPlaneFeature)->PlaneType.getValue(), App::Part::BaseplaneTypes[2]) == 0)
-            ui->comboPlane->setCurrentIndex((sketch ? 4 : 2));
-        else if (mirrorPlanes.front().size() > (sketch ? 4 : 2) && mirrorPlanes.front().substr(0,4) == "Axis") {
-            int pos = (sketch ? 5 : 3) + std::atoi(mirrorPlanes.front().substr(4,4000).c_str());
-            if (pos <= maxcount)
-                ui->comboPlane->setCurrentIndex(pos);
-            else
-                undefined = true;
-        } else {
-            ui->comboPlane->addItem(getRefStr(mirrorPlaneFeature, mirrorPlanes));
-            ui->comboPlane->setCurrentIndex(maxcount);
-        }
-    } else {
-        undefined = true;
-    }
-
-    if (selectionMode == reference) {
-        ui->comboPlane->addItem(tr("Select a face or datum plane"));
-        ui->comboPlane->setCurrentIndex(ui->comboPlane->count() - 1);
-    } else if (undefined) {
-        ui->comboPlane->addItem(tr("Undefined"));
-        ui->comboPlane->setCurrentIndex(ui->comboPlane->count() - 1);
-    } else
-        ui->comboPlane->addItem(tr("Select reference..."));
 
     blockUpdate = false;
 }
@@ -229,34 +179,15 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
         } else if (selectionMode == reference) {
             // Note: ReferenceSelection has already checked the selection for validity
             exitSelectionMode();
-            if (!blockUpdate) {
-                std::vector<std::string> mirrorPlanes;
-                App::DocumentObject* selObj;
-                PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-                getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
-                pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
 
-                recomputeFeature();
-                updateUI();
-            }
-            else {
-                App::DocumentObject* sketch = getSketchObject();
-                int maxcount=3;
-                if (sketch) {
-                    maxcount = 5;
-                    maxcount += static_cast<Part::Part2DObject*>(sketch)->getAxisCount();
-                }
-                for (int i=ui->comboPlane->count()-1; i >= maxcount; i--)
-                    ui->comboPlane->removeItem(i);
+            std::vector<std::string> mirrorPlanes;
+            App::DocumentObject* selObj;
+            PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+            getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
+            pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
 
-                std::vector<std::string> mirrorPlanes;
-                App::DocumentObject* selObj;
-                PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-                getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
-                ui->comboPlane->addItem(getRefStr(selObj, mirrorPlanes));
-                ui->comboPlane->setCurrentIndex(maxcount);
-                ui->comboPlane->addItem(tr("Select reference..."));
-            }
+            recomputeFeature();
+            updateUI();
         } else if( strstr(msg.pObjectName, App::Part::BaseplaneTypes[0]) == nullptr || 
                    strstr(msg.pObjectName, App::Part::BaseplaneTypes[1]) == nullptr ||
                    strstr(msg.pObjectName, App::Part::BaseplaneTypes[2]) == nullptr) {
@@ -283,55 +214,21 @@ void TaskMirroredParameters::onPlaneChanged(int num) {
     if (blockUpdate)
         return;
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-
-    App::DocumentObject* pcSketch = getSketchObject();
-    int maxcount=3;
-    if (pcSketch) {
-        maxcount = 5;
-        maxcount += static_cast<Part::Part2DObject*>(pcSketch)->getAxisCount();
-    }
-
-    if(pcSketch) {
-        if (num == 0) {
-            pcMirrored->MirrorPlane.setValue(pcSketch, std::vector<std::string>(1,"H_Axis"));
+    try{
+        if(planeLinks.getCurrentLink().getValue() == 0){
+            // enter reference selection mode
+            hideObject();
+            showBase();
+            selectionMode = reference;
+            Gui::Selection().clearSelection();
+            addReferenceSelectionGate(false, true);
+        } else {
             exitSelectionMode();
+            pcMirrored->MirrorPlane.Paste(planeLinks.getCurrentLink());
         }
-        else if (num == 1) {
-            pcMirrored->MirrorPlane.setValue(pcSketch, std::vector<std::string>(1,"V_Axis"));
-            exitSelectionMode();
-        }
+    } catch (Base::Exception &e) {
+        QMessageBox::warning(0,tr("Error"),QString::fromAscii(e.what()));
     }
-    if (num == (pcSketch ? 2 : 0)) {
-        pcMirrored->MirrorPlane.setValue(getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[0]),
-                                         std::vector<std::string>(1,""));
-        exitSelectionMode();
-    }
-    else if (num == (pcSketch ? 3 : 1)) {
-        pcMirrored->MirrorPlane.setValue(getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[1]),
-                                         std::vector<std::string>(1,""));
-        exitSelectionMode();
-    }
-    else if (num == (pcSketch ? 4 : 2)) {
-        pcMirrored->MirrorPlane.setValue(getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[2]),
-                                         std::vector<std::string>(1,""));
-        exitSelectionMode();
-    }
-    else if (num >= (pcSketch ? 5 : 3) && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-(pcSketch ? 5 : 3));
-        std::string str = buf.toStdString();
-        pcMirrored->MirrorPlane.setValue(pcSketch, std::vector<std::string>(1,str));
-        exitSelectionMode();
-    }
-    else if (num == ui->comboPlane->count() - 1) {
-        // enter reference selection mode
-        hideObject();
-        showBase();
-        selectionMode = reference;
-        Gui::Selection().clearSelection();
-        addReferenceSelectionGate(false, true);
-    }
-    else if (num == maxcount)
-        exitSelectionMode();
 
     recomputeFeature();
 }
@@ -362,40 +259,11 @@ void TaskMirroredParameters::onFeatureDeleted(void)
     recomputeFeature();
 }
 
-void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const
+void TaskMirroredParameters::getMirrorPlane(App::DocumentObject*& obj, std::vector<std::string> &sub) const
 {
-    obj = getSketchObject();
-    sub = std::vector<std::string>(1,"");
-    int maxcount=3;
-    if (obj) {
-        maxcount = 5;
-        maxcount += static_cast<Part::Part2DObject*>(obj)->getAxisCount();
-    }
-
-    int num = ui->comboPlane->currentIndex();
-    if(obj) {
-        if (num == 0)
-            sub[0] = "H_Axis";
-        else if (num == 1)
-            sub[0] = "V_Axis";
-    }
-    if (num == (obj ? 2 : 0))
-        obj = getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[0]);
-    else if (num == (obj ? 3 : 1))
-        obj = getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[1]);
-    else if (num == (obj ? 4 : 2))
-        obj = getObject()->getDocument()->getObject(App::Part::BaseplaneTypes[2]);
-    else if (num >= (obj ? 5 : 3) && num < maxcount) {
-        QString buf = QString::fromUtf8("Axis%1").arg(num-(obj ? 5 : 3));
-        sub[0] = buf.toStdString();
-    } else if (num == maxcount && ui->comboPlane->count() == maxcount + 2) {
-        QStringList parts = ui->comboPlane->currentText().split(QChar::fromAscii(':'));
-        obj = getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
-        if (parts.size() > 1)
-            sub[0] = parts[1].toStdString();
-    } else {
-        obj = NULL;
-    }
+    const App::PropertyLinkSub &lnk = planeLinks.getCurrentLink();
+    obj = lnk.getValue();
+    sub = lnk.getSubValues();
 }
 
 void TaskMirroredParameters::apply()
