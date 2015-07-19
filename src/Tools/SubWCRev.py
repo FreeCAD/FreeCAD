@@ -156,7 +156,7 @@ class GitControl(VersionControl):
                     match = re.match('ssh://\S+?@(\S+)',url)
                     if match is not None:
                         url = 'git://%s' % match.group(1)
-                    entryscore=(url=='git://git.code.sf.net/p/free-cad/code',\
+                    entryscore=(url == "git://github.com/FreeCAD/FreeCAD.git",\
                             'github.com' in url,branch==self.branch,\
                             branch=='master', '@' not in url)
                             #used for sorting the list
@@ -178,8 +178,8 @@ the second part, seperated by " +"reflects the number of commits that are
 different form the master repository"""
         #referencecommit="f119e740c87918b103140b66b2316ae96f136b0e"
         #referencerevision=4138
-        referencecommit="49646282910aeef73db44943b88df06f0957422c"
-        referencerevision=4244
+        referencecommit="6b3d7b17a749e03bcbf2cf79bbbb903137298c44"
+        referencerevision=5235
 
         result = None
         countallfh=os.popen("git rev-list --count %s..HEAD" % \
@@ -251,9 +251,8 @@ merged."""
         remote='origin' #used to determine the url
         self.geturl()
         origin = None #remote for the blessed master
-        for fetchurl in ("git.code.sf.net/p/free-cad/code",\
-            "git@github.com:FreeCAD/FreeCAD_sf_master.git",\
-            "https://github.com/FreeCAD/FreeCAD_sf_master.git"):
+        for fetchurl in ("git@github.com:FreeCAD/FreeCAD.git",\
+            "https://github.com/FreeCAD/FreeCAD.git"):
             for key,url in self.remotes.iteritems():
                 if fetchurl in url:
                     origin = key
