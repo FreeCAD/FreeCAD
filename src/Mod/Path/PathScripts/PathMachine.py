@@ -44,6 +44,7 @@ class Machine:
         obj.addProperty("App::PropertyString",    "MachineName","Base",translate("Machine Name","Name of the Machine that will use the CNC program"))
 
         obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", translate("Post Processor","Select the Post Processor file for this machine"))
+        obj.setEditorMode("PostProcessor",1) #set to read only
         obj.addProperty("App::PropertyEnumeration", "MachineUnits","CodeOutput", translate( "Machine Units",  "Units that the machine works in, ie Metric or Inch"))
         obj.MachineUnits=['Metric', 'Inch']
 
