@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 \**************************************************************************/
 
-/*! \mainpage
+/*
 
   Quarter is a light-weight glue library that provides seamless
   integration between Systems in Motions's \COIN high-level 3D
