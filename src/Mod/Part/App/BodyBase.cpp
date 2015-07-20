@@ -65,7 +65,7 @@ const bool BodyBase::hasFeature(const App::DocumentObject* f) const
 
 BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
 {
-    App::Document* doc = App::GetApplication().getActiveDocument();
+    App::Document* doc = f->getDocument();
     if (doc != NULL) {
         std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(BodyBase::getClassTypeId());
         for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {

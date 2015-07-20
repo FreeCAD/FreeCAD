@@ -56,8 +56,12 @@ namespace PartDesignGui {
 
 /// Return active body or show a warning message
 PartDesign::Body *getBody(bool messageIfNot);
-PartDesign::Body *getBodyFor(App::DocumentObject*, bool messageIfNot);
-App::Part        *getPartFor(App::DocumentObject*, bool messageIfNot);
+/**
+ * Finds a body for the given feature. And shows a message if not found
+ * Also unlike Body::findBodyFor it checks if the active body has the feature first.
+ */
+PartDesign::Body *getBodyFor(const App::DocumentObject*, bool messageIfNot);
+App::Part        *getPartFor(const App::DocumentObject*, bool messageIfNot);
 
 /**
  * @author Werner Mayer

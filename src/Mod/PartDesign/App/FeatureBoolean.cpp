@@ -85,18 +85,13 @@ App::DocumentObjectExecReturn *Boolean::execute(void)
     if (baseTopShape._Shape.IsNull())
         return new App::DocumentObjectExecReturn("Cannot do boolean operation with invalid base shape");
       
-    // TODO: move PartDesignGui::getBodyFor() from Gui to App and use it here
     //get the body this boolean feature belongs to
-    PartDesign::Body* baseBody = NULL;
-    for(PartDesign::Body* b : this->getDocument()->getObjectsOfType<PartDesign::Body>()) {
-        if(b->hasFeature(this)) {
-            baseBody = b;
-            break;
-        }            
-    }
+    Part::BodyBase* baseBody = Part::BodyBase::findBodyOf(this);
+
     if(!baseBody)
          return new App::DocumentObjectExecReturn("Cannot do boolean on feature which is not in a body");
 
+    // TODO: share the code snippet with PartDesignGui::getPartFor()
     //get the part every body should belong to
     App::Part* part = NULL;
     for(App::Part* p : this->getDocument()->getObjectsOfType<App::Part>()) {

@@ -77,7 +77,7 @@ PartDesign::Body *getBody(bool messageIfNot)
 {
     PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
 
-    if (!activeBody && messageIfNot){
+    if (!activeBody && messageIfNot) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
             QObject::tr("In order to use PartDesign you need an active Body object in the document. "
                         "Please make one active (double click) or create one. If you have a legacy document "
@@ -85,24 +85,23 @@ PartDesign::Body *getBody(bool messageIfNot)
                         "PartDesign to put them into a Body."
                         ));
     }
+
     return activeBody;
 
 }
 
-PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
+PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
 {
     if(!obj)
         return nullptr;
 
-    PartDesign::Body * activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-    if(activeBody && activeBody->hasFeature(obj))
-        return activeBody;
+    PartDesign::Body * rv = getBody( /*messageIfNot =*/ false);
+    if(rv && rv->hasFeature(obj))
+        return rv;
 
-    //try to find the part the object is in
-    for(PartDesign::Body* b : obj->getDocument()->getObjectsOfType<PartDesign::Body>()) {
-        if(b->hasFeature(obj)) {
-            return b;
-        }
+    rv = PartDesign::Body::findBodyOf(obj);
+    if (rv) {
+        return rv;
     }
 
     if (messageIfNot){
@@ -113,7 +112,7 @@ PartDesign::Body *getBodyFor(App::DocumentObject* obj, bool messageIfNot)
     return nullptr;
 }
 
-App::Part* getPartFor(App::DocumentObject* obj, bool messageIfNot) {
+App::Part* getPartFor(const App::DocumentObject* obj, bool messageIfNot) {
 
     if(!obj)
         return nullptr;
