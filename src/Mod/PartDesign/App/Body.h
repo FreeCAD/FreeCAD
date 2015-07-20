@@ -117,6 +117,12 @@ public:
       */
     static const bool isAllowed(const App::DocumentObject* f);
 
+    /**
+     * Return the body which this feature belongs too, or NULL
+     * The only difference to BodyBase::findBodyOf() is that this one casts value to Body*
+     */
+    static Body *findBodyOf(const App::DocumentObject* feature);
+
     /// Return the bounding box of the Tip Shape, taking into account datum features
     Base::BoundBox3d getBoundBox();
 

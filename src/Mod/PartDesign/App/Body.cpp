@@ -232,6 +232,12 @@ const bool Body::isAllowed(const App::DocumentObject* f)
 }
 
 
+Body* Body::findBodyOf(const App::DocumentObject* feature)
+{
+    return static_cast<Body*>(BodyBase::findBodyOf(feature));
+}
+
+
 void Body::addFeature(App::DocumentObject *feature)
 {
     insertFeature (feature, Tip.getValue(), /*after = */ true);
