@@ -94,15 +94,28 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
 
 void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool edge, const bool face, const bool planar) {
     // Note: Even if there is no solid, App::Plane and Part::Datum can still be selected
-	PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-	App::DocumentObject* prevSolid = activeBody->getPrevSolidFeature(vp->getObject(), false);
-	App::DocumentObject* curSolid = activeBody->getPrevSolidFeature();
+
+    PartDesign::SketchBased* pcSketchBased = static_cast<PartDesign::SketchBased*>(vp->getObject());
+    PartDesign::Body* activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+
+    App::DocumentObject* curSolid = 0;//the last solid of the body, the one that is likely visible, but can't be used for up-to-face
+    if (activeBody)
+        curSolid = activeBody->getPrevSolidFeature();
+    else
+        curSolid = pcSketchBased;
+
+    App::DocumentObject* prevSolid = 0;//the solid this feature will be fused to
+    try {
+        prevSolid = pcSketchBased->getBaseObject();
+    } catch (Base::Exception) {
+        //this feature is a starting feature
+    }
 
     if (pressed) {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
             if (curSolid)
-            doc->setHide(curSolid->getNameInDocument());
+                doc->setHide(curSolid->getNameInDocument());
             if (prevSolid)
                 doc->setShow(prevSolid->getNameInDocument());
         }
@@ -114,7 +127,7 @@ void TaskSketchBasedParameters::onSelectReference(const bool pressed, const bool
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
             if (curSolid)
-            doc->setShow(curSolid->getNameInDocument());
+                doc->setShow(curSolid->getNameInDocument());
             if (prevSolid)
                 doc->setHide(prevSolid->getNameInDocument());
         }
@@ -200,7 +213,7 @@ App::DocumentObject* TaskSketchBasedParameters::getPartPlanes(const char* str) c
 
     //TODO: Adjust to GRAPH handling when available
     App::DocumentObject* obj = vp->getObject();
-    App::Part* part = getPartFor(obj, true);
+    App::Part* part = getPartFor(obj, false);
     if(!part)
         return nullptr;
     
@@ -224,11 +237,15 @@ App::DocumentObject* TaskSketchBasedParameters::getPartLines(const char* str) co
 
     //TODO: Adjust to GRAPH handling when available
     App::DocumentObject* obj = vp->getObject();
-    App::Part* part = getPartFor(obj, true);
-    if(!part)
-        return nullptr;
+    App::Part* part = getPartFor(obj, false);
     
-    std::vector<App::DocumentObject*> origs = part->getObjectsOfType(App::Origin::getClassTypeId());
+
+    std::vector<App::DocumentObject*> origs;
+    if(part)
+        origs = part->getObjectsOfType(App::Origin::getClassTypeId());
+    else
+        origs = vp->getObject()->getDocument()->getObjectsOfType(App::Origin::getClassTypeId());
+
     if(origs.size()<1)
         return nullptr;
     

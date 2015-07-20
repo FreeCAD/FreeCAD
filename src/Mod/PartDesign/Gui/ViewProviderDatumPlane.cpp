@@ -48,7 +48,6 @@
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
-#include <Mod/PartDesign/App/Body.h>
 
 using namespace PartDesignGui;
 
@@ -81,10 +80,7 @@ void ViewProviderDatumPlane::updateData(const App::Property* prop)
         Base::Vector3d normal(0,0,1);
 
         // Get limits of the plane from bounding box of the body
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
-        if (body == NULL)
-            return;
-        Base::BoundBox3d bbox = body->getBoundBox();
+        Base::BoundBox3d bbox = this->getRelevantExtents();
         bbox = bbox.Transformed(plm.toMatrix());
         double dlength = bbox.CalcDiagonalLength();
         if (dlength < Precision::Confusion())

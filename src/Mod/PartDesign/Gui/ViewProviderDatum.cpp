@@ -54,6 +54,7 @@
 #include "ViewProviderDatum.h"
 #include "TaskDatumParameters.h"
 #include "Workbench.h"
+#include <App/Part.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 #include <Mod/PartDesign/App/DatumLine.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
@@ -312,5 +313,41 @@ void ViewProviderDatum::unsetEdit(int ModNum)
     else {
         Gui::ViewProviderGeometryObject::unsetEdit(ModNum);
     }
+}
+
+Base::BoundBox3d ViewProviderDatum::getRelevantExtents()
+{
+    Base::BoundBox3d bbox;
+    PartDesign::Body* body = static_cast<PartDesign::Body*>(Part::BodyBase::findBodyOf(this->getObject()));
+    if (body != NULL)
+        bbox = body->getBoundBox();
+    else {
+        App::Part* part = getPartFor(this->getObject(),false);
+        std::vector<App::DocumentObject*> objs;
+
+        if(part)
+            objs = part->getObjectsOfType(Part::Feature::getClassTypeId());
+        else
+            objs = this->getObject()->getDocument()->getObjectsOfType(Part::Feature::getClassTypeId());
+
+        for(App::DocumentObject* obj: objs){
+            Part::Feature* feat = static_cast<Part::Feature*>(obj);
+            Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(feat);
+            if (vp->isVisible()){
+                Base::BoundBox3d bbf = feat->Shape.getBoundingBox();
+                if (bbf.CalcDiagonalLength() < Precision::Infinite())
+                    bbox.Add(bbf);
+            }
+
+        }
+        if (bbox.CalcDiagonalLength() < Precision::Confusion()){
+            bbox.Add(Base::Vector3d(-10.0,-10.0,-10.0));
+            bbox.Add(Base::Vector3d(10.0,10.0,10.0));
+        }
+
+    }
+    bbox.Enlarge(0.1 * bbox.CalcDiagonalLength());
+    return bbox;
+
 }
 
