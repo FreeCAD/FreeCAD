@@ -42,6 +42,7 @@
 #include "TaskFeaturePick.h"
 #include "Workbench.h"
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 
 using namespace PartDesignGui;
 
@@ -54,6 +55,7 @@ const QString TaskFeaturePick::getFeatureStatusString(const featureStatus st)
         case isUsed: return tr("Sketch already used by other feature");
         case otherBody: return tr("Belongs to another body");
         case otherPart: return tr("Belongs to another part");
+        case notInBody: return tr("Doesn't belongs to any body");
         case basePlane: return tr("Base plane");
         case afterTip: return tr("Feature is located after the tip feature");
     }
@@ -67,10 +69,11 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
   : TaskBox(Gui::BitmapFactory().pixmap("edit-select-box"),
             QString::fromAscii("Select feature"), true, parent), ui(new Ui_TaskFeaturePick)
 {
-    
+
     proxy = new QWidget(this);
     ui->setupUi(proxy);
 
+    connect(ui->checkUsed, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->checkOtherBody, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->bodyRadioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->bodyRadioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
@@ -78,7 +81,10 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     connect(ui->partRadioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->partRadioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->partRadioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
-    
+    connect(ui->checkNoBody, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
+    connect(ui->nobodyRadioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
+    connect(ui->nobodyRadioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
+
     auto guidoc = Gui::Application::Instance->activeDocument();
     auto origin_obj = App::GetApplication().getActiveDocument()->getObjectsOfType<App::Origin>();
 
@@ -88,20 +94,20 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
         QListWidgetItem* item = new QListWidgetItem(QString::fromAscii((*o)->getNameInDocument()) +
                                                     QString::fromAscii(" (") + getFeatureStatusString(*st) + QString::fromAscii(")"));
         ui->listWidget->addItem(item);
-        
+
         //check if we need to set any origin in temporary visibility mode
         for(App::Origin* obj : origin_obj) {
             if(obj->hasObject(*o) && (*st != invalidShape)) {
                 Gui::ViewProviderOrigin* vpo = static_cast<Gui::ViewProviderOrigin*>(guidoc->getViewProvider(obj));
                 if(!vpo->isTemporaryVisibilityMode())
                     vpo->setTemporaryVisibilityMode(true, guidoc);
-                
+
                 vpo->setTemporaryVisibility(*o, true);
                 origins.push_back(vpo);
                 break;
             }
         }
-        
+
         st++;
     }
 
@@ -120,19 +126,21 @@ TaskFeaturePick::~TaskFeaturePick()
 void TaskFeaturePick::updateList()
 {
     int index = 0;
-    
+
     //get all origins in temporary mode
-    
-    
+
+
     for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
         QListWidgetItem* item = ui->listWidget->item(index);
 
         switch (*st) {
             case validFeature: item->setHidden(false); break;
             case invalidShape: item->setHidden(true); break;
+            case isUsed: item->setHidden(!ui->checkUsed->isChecked()); break;
             case noWire: item->setHidden(true); break;
-            case otherBody: item->setHidden(ui->checkOtherBody->isChecked() ? false : true); break;
-            case otherPart: item->setHidden(ui->checkOtherPart->isChecked() ? false : true); break;
+            case otherBody: item->setHidden(!ui->checkOtherBody->isChecked()); break;
+            case otherPart: item->setHidden(!ui->checkOtherPart->isChecked()); break;
+            case notInBody: item->setHidden(!ui->checkNoBody->isChecked()); break;
             case basePlane: item->setHidden(false); break;
             case afterTip:  item->setHidden(true); break;
         }
@@ -170,52 +178,64 @@ std::vector<App::DocumentObject*> TaskFeaturePick::getFeatures() {
 }
 
 std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
-    
 
-    int index = 0; 
+    int index = 0;
     std::vector<App::DocumentObject*> result;
     auto activeBody = PartDesignGui::getBody(false);
     auto activePart = PartDesignGui::getPartFor(activeBody, false);
-    
+
     for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
         QListWidgetItem* item = ui->listWidget->item(index);
 
         if(item->isSelected() && !item->isHidden()) {
-            
+
             QString t = item->text();
             t = t.left(t.indexOf(QString::fromAscii("(")) - 1);
             auto obj = App::GetApplication().getActiveDocument()->getObject(t.toAscii().data());
-            
+
             //build the dependend copy if wanted by the user
             if(*st == otherBody) {
- 
-                if(ui->bodyRadioIndependent->isChecked()) {                    
+
+                if(ui->bodyRadioIndependent->isChecked()) {
                     auto copy = makeCopy(obj, true);
                     activeBody->addFeature(copy);
                     result.push_back(copy);
-                }
-                else 
+                } else {
                     result.push_back(obj);
+                }
             }
             else if(*st == otherPart) {
-            
-                if(!ui->partRadioXRef->isChecked()) {                    
+
+                if(!ui->partRadioXRef->isChecked()) {
                     auto copy = makeCopy(obj, ui->partRadioIndependent->isChecked());
-                    
+
                     auto oBody = PartDesignGui::getBodyFor(obj, false);
                     if(oBody)
                         activeBody->addFeature(copy);
-                    else 
+                    else
                         activePart->addObject(copy);
-                    
+
                     result.push_back(copy);
                 }
-                else 
-                    result.push_back(obj);                
+                else
+                    result.push_back(obj);
+            } else if(*st == notInBody) {
+                if(ui->bodyRadioIndependent->isChecked()) {
+                    auto copy = makeCopy(obj, true);
+                    activeBody->addFeature(copy);
+                    // doesn't supposed to get here anything but sketch but to be on the safe side better to check
+                    if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+                        Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(copy);
+                            Workbench::fixSketchSupport(sketch);
+                    }
+                    result.push_back(copy);
+                }
+                else
+                    result.push_back(obj);
             }
-            else 
+            else
                 result.push_back(obj);
-            
+
             break;
         }
 
@@ -227,7 +247,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
 
 App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, bool independent) {
 
-    //we do know that the created instance is a document object, as obj is one. But we do not know which 
+    //we do know that the created instance is a document object, as obj is one. But we do not know which
     //exact type
     auto name =  std::string("Copy") + std::string(obj->getNameInDocument());
     auto copy = App::GetApplication().getActiveDocument()->addObject(obj->getTypeId().getName(), name.c_str());
@@ -288,13 +308,14 @@ void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
                 ui->listWidget->setItemSelected(item, true);
             }
         }
-    }    
+    }
 }
 
 void TaskFeaturePick::showExternal(bool val) {
 
     ui->checkOtherBody->setChecked(val);
     ui->checkOtherPart->setChecked(val);
+    ui->checkNoBody->setChecked(val);
     updateList();
 }
 
