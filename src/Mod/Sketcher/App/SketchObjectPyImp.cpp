@@ -792,6 +792,77 @@ PyObject* SketchObjectPy::addSymmetric(PyObject *args)
 }
 
 
+PyObject* SketchObjectPy::addCopy(PyObject *args)
+{
+    PyObject *pcObj, *pcVect;
+
+    if (!PyArg_ParseTuple(args, "OO!", &pcObj, &(Base::VectorPy::Type), &pcVect))
+        return 0;
+
+    Base::Vector3d vect = static_cast<Base::VectorPy*>(pcVect)->value();
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<int> geoIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+	    if (PyInt_Check((*it).ptr()))
+		geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+        }
+
+        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect) + 1;
+    
+	if(ret == -1)
+	    throw Py::TypeError("Copy operation unsuccessful!");    
+    
+	std::size_t numGeo = geoIdList.size();
+        Py::Tuple tuple(numGeo);
+        for (std::size_t i=0; i<numGeo; ++i) {
+            int geoId = ret - int(numGeo - i);
+            tuple.setItem(i, Py::Int(geoId));
+        }
+
+        return Py::new_reference_to(tuple);
+    }
+
+    std::string error = std::string("type must be list of GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);    
+}
+
+PyObject* SketchObjectPy::addArray(PyObject *args)
+{
+    PyObject *pcObj, *pcVect;
+    int rows,cols;
+
+    if (!PyArg_ParseTuple(args, "OO!ii", &pcObj, &(Base::VectorPy::Type), &pcVect,&rows,&cols))
+        return 0;
+
+    Base::Vector3d vect = static_cast<Base::VectorPy*>(pcVect)->value();
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<int> geoIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+	    if (PyInt_Check((*it).ptr()))
+		geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+        }
+
+        int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect,rows,cols) + 1;
+    
+	if(ret == -1)
+	    throw Py::TypeError("Copy operation unsuccessful!");    
+    
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);    
+}
+
 PyObject* SketchObjectPy::calculateAngleViaPoint(PyObject *args)
 {
     int GeoId1=0, GeoId2=0;

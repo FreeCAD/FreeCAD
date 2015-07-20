@@ -2004,6 +2004,138 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
     return Geometry.getSize()-1;
 }
 
+int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3d& displacement, int csize/*=2*/, int rsize/*=1*/)
+{
+    const std::vector< Part::Geometry * > &geovals = getInternalGeometry();
+    std::vector< Part::Geometry * > newgeoVals(geovals);
+    
+    const std::vector< Constraint * > &constrvals = this->Constraints.getValues();
+    std::vector< Constraint * > newconstrVals(constrvals);
+    
+    int cgeoid = getHighestCurveIndex()+1;
+    
+    std::map<int, int> geoIdMap;
+    
+    Base::Vector3d perpendicularDisplacement = Base::Vector3d(displacement.y,-displacement.x,0);
+    
+    int x,y;
+    
+    for (y=0;y<rsize;y++) {
+	for (x=0;x<csize;x++) {
+	    if(x == 0 && y == 0)
+		continue; // the first element is already in place
+		
+	    for (std::vector<int>::const_iterator it = geoIdList.begin(); it != geoIdList.end(); ++it) {
+		const Part::Geometry *geo = getGeometry(*it);
+		Part::Geometry *geosym = geo->clone();
+		
+		// Handle Geometry
+		if(geosym->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
+		    Part::GeomLineSegment *geosymline = static_cast<Part::GeomLineSegment *>(geosym);
+		    Base::Vector3d sp = geosymline->getStartPoint();
+		    Base::Vector3d ep = geosymline->getEndPoint();
+		    
+		    geosymline->setPoints(sp+double(x)*displacement+double(y)*perpendicularDisplacement,
+					ep+double(x)*displacement+double(y)*perpendicularDisplacement);
+		}
+		else if(geosym->getTypeId() == Part::GeomCircle::getClassTypeId()){
+		    Part::GeomCircle *geosymcircle = static_cast<Part::GeomCircle *>(geosym);
+		    Base::Vector3d cp = geosymcircle->getCenter();	
+
+		    geosymcircle->setCenter(cp+double(x)*displacement+double(y)*perpendicularDisplacement);
+		}
+		else if(geosym->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()){
+		    Part::GeomArcOfCircle *geoaoc = static_cast<Part::GeomArcOfCircle *>(geosym);
+		    Base::Vector3d cp = geoaoc->getCenter();
+		    Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;
+		    
+		    geoaoc->setCenter(scp);
+		}
+		else if(geosym->getTypeId() == Part::GeomEllipse::getClassTypeId()){
+		    Part::GeomEllipse *geosymellipse = static_cast<Part::GeomEllipse *>(geosym);
+		    Base::Vector3d cp = geosymellipse->getCenter();
+		    Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;
+
+		    geosymellipse->setCenter(scp);
+		}
+		else if(geosym->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
+		    Part::GeomArcOfEllipse *geosymaoe = static_cast<Part::GeomArcOfEllipse *>(geosym);
+		    Base::Vector3d cp = geosymaoe->getCenter();
+		    Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;		
+
+		    geosymaoe->setCenter(scp);
+		}
+		else if(geosym->getTypeId() == Part::GeomPoint::getClassTypeId()){
+		    Part::GeomPoint *geosympoint = static_cast<Part::GeomPoint *>(geosym);
+		    Base::Vector3d cp = geosympoint->getPoint();
+
+		    geosympoint->setPoint(cp+double(x)*displacement+double(y)*perpendicularDisplacement);
+		}
+		else {
+		    Base::Console().Error("Unsupported Geometry!! Just copying it.\n");
+		}
+
+		newgeoVals.push_back(geosym);
+		geoIdMap.insert(std::make_pair(*it, cgeoid));
+		cgeoid++;
+	    }
+	    
+	    // handle constraints
+	    for (std::vector<Constraint *>::const_iterator it = constrvals.begin(); it != constrvals.end(); ++it) {
+		
+		std::vector<int>::const_iterator fit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->First);
+		
+		if(fit != geoIdList.end()) { // if First of constraint is in geoIdList
+		    
+		    if( (*it)->Second == Constraint::GeoUndef /*&& (*it)->Third == Constraint::GeoUndef*/) {	    
+			Constraint *constNew = (*it)->clone();
+			constNew->First = geoIdMap[(*it)->First];
+			newconstrVals.push_back(constNew);
+		    }
+		    else { // other geoids intervene in this constraint
+			
+			std::vector<int>::const_iterator sit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Second);
+			
+			if(sit != geoIdList.end()) { // Second is also in the list
+			
+			    if( (*it)->Third == Constraint::GeoUndef ) {
+				Constraint *constNew = (*it)->clone();
+				constNew->First = geoIdMap[(*it)->First];
+				constNew->Second = geoIdMap[(*it)->Second];
+				newconstrVals.push_back(constNew);
+			    }
+			    else {
+				std::vector<int>::const_iterator tit=std::find(geoIdList.begin(), geoIdList.end(), (*it)->Third);
+			
+				if(tit != geoIdList.end()) { // Third is also in the list
+				    Constraint *constNew = (*it)->clone();
+				    constNew->First = geoIdMap[(*it)->First];
+				    constNew->Second = geoIdMap[(*it)->Second];
+				    constNew->Third = geoIdMap[(*it)->Third];
+
+				    newconstrVals.push_back(constNew);
+				}
+			    }
+			}
+		    }  
+		}
+	    }
+	
+
+	    geoIdMap.clear(); // after each creation reset map so that the key-value is univoque
+	}
+    }
+    
+    Geometry.setValues(newgeoVals);
+    Constraints.acceptGeometry(getCompleteGeometry());
+    rebuildVertexIndex();
+
+    if( newconstrVals.size() > constrvals.size() ) 
+	Constraints.setValues(newconstrVals);
+    
+    return Geometry.getSize()-1;    
+    
+}
 
 int SketchObject::ExposeInternalGeometry(int GeoId)
 {
