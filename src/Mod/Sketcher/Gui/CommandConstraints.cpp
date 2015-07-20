@@ -95,7 +95,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
         Ui::InsertDatum ui_ins_datum;
         ui_ins_datum.setupUi(&dlg);
 
-        double datum = Constr->Value;
+        double datum = Constr->getValue();
         Base::Quantity init_val;
 
         if (Constr->Type == Sketcher::Angle) {
@@ -135,6 +135,8 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
 
         ui_ins_datum.labelEdit->setValue(init_val);
         ui_ins_datum.labelEdit->selectNumber();
+        ui_ins_datum.labelEdit->bind(sketch->Constraints.createPath(ConstrNbr));
+        ui_ins_datum.name->setText(Base::Tools::fromStdString(Constr->Name));
 
         if (dlg.exec()) {
             Base::Quantity newQuant = ui_ins_datum.labelEdit->value();
@@ -154,14 +156,30 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                 }
 
                 try {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                sketch->getNameInDocument(),
-                                ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
+                    if (ui_ins_datum.labelEdit->hasExpression())
+                        ui_ins_datum.labelEdit->apply();
+                    else
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
+                                                sketch->getNameInDocument(),
+                                                ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
+
+                    QString constraintName = ui_ins_datum.name->text().trimmed();
+                    if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
+                        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, '%s')",
+                                                sketch->getNameInDocument(),
+                                                ConstrNbr, escapedstr.c_str());
+                    }
                     Gui::Command::commitCommand();
 
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
                 
+                    if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
+                        sketch->ExpressionEngine.execute();
+                        sketch->solve();
+                    }
+
                     if(autoRecompute)
                         Gui::Command::updateActive();
                 }
@@ -2406,16 +2424,28 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
             ui_Datum.labelEdit->setValue(init_val);
             ui_Datum.labelEdit->selectNumber();
+            if (constrainEqual || geoIdRadiusMap.size() == 1)
+                ui_Datum.labelEdit->bind(Obj->Constraints.createPath(indexConstr));
+            else
+                ui_Datum.name->setDisabled(true);
 
             if (dlg.exec() == QDialog::Accepted) {
                 Base::Quantity newQuant = ui_Datum.labelEdit->value();
                 double newRadius = newQuant.getValue();
 
                 try {
-                    if (constrainEqual) {
+                    if (constrainEqual || geoIdRadiusMap.size() == 1) {
                         doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
                                     Obj->getNameInDocument(),
                                     indexConstr, newRadius, (const char*)newQuant.getUnit().getString().toUtf8());
+
+                        QString constraintName = ui_Datum.name->text().trimmed();
+                        if (Base::Tools::toStdString(constraintName) != Obj->Constraints[indexConstr]->Name) {
+                            std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
+                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, '%s')",
+                                                    Obj->getNameInDocument(),
+                                                    indexConstr, escapedstr.c_str());
+                        }
                     }
                     else {
                         for (std::size_t i=0; i<geoIdRadiusMap.size();i++) {
@@ -2424,11 +2454,17 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
                                         indexConstr+i, newRadius, (const char*)newQuant.getUnit().getString().toUtf8());
                         }
                     }
+
                     commitCommand();
                     
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
                 
+                    if (Obj->noRecomputes && Obj->ExpressionEngine.depsAreTouched()) {
+                        Obj->ExpressionEngine.execute();
+                        Obj->solve();
+                    }
+
                     if(autoRecompute)
                         Gui::Command::updateActive();
                     
@@ -3142,6 +3178,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
         ui_Datum.labelEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/SketcherRefrIndexRatio"));
         ui_Datum.labelEdit->setToLastUsedValue();
         ui_Datum.labelEdit->selectNumber();
+        // Unable to bind, because the constraint does not yet exist
 
         if (dlg.exec() != QDialog::Accepted) return;
         ui_Datum.labelEdit->pushToHistory();
@@ -3711,7 +3748,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
         for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it){
             // only handle constraints
             if (it->size() > 10 && it->substr(0,10) == "Constraint") {
-                int ConstrId = std::atoi(it->substr(10,4000).c_str()) - 1;
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
                 try {
                     // issue the actual commands to toggle
                     doCommand(Doc,"App.ActiveDocument.%s.toggleDriving(%d) ",selection[0].getFeatName(),ConstrId);

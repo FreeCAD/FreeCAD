@@ -319,7 +319,6 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
     
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
-    std::stringstream ss;
     
     getSelection().clearSelection();
     
@@ -330,13 +329,11 @@ void CmdSketcherSelectConstraints::activated(int iMsg)
             int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
             
             // push all the constraints
-            int i=1;
+            int i = 0;
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it,++i) {
                 if ( (*it)->First == GeoId || (*it)->Second == GeoId || (*it)->Third == GeoId){
-                  ss.str(std::string());
-                  ss << "Constraint" << i;
-                  Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+                  Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
                 }
             }
         }
@@ -507,7 +504,6 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
         
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
-    std::stringstream ss;
     
     // get the needed lists and objects
     const std::vector< int > &solverredundant = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchObject()->getLastRedundant();
@@ -516,13 +512,11 @@ void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
     getSelection().clearSelection();
     
     // push the constraints
-    int i=1;
+    int i = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();it != vals.end(); ++it,++i) {
         for(std::vector< int >::const_iterator itc= solverredundant.begin();itc != solverredundant.end(); ++itc) {
-            if ( (*itc) == i){
-                ss.str(std::string());
-                ss << "Constraint" << i;
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+            if ( (*itc) - 1 == i){
+                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
                 break;
             }
         }
@@ -571,13 +565,11 @@ void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
     getSelection().clearSelection();
     
     // push the constraints
-    int i=1;
+    int i = 0;
     for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();it != vals.end(); ++it,++i) {
         for(std::vector< int >::const_iterator itc= solverconflicting.begin();itc != solverconflicting.end(); ++itc) {
-            if ( (*itc) == i){
-                ss.str(std::string());
-                ss << "Constraint" << i;
-                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());
+            if ( (*itc) - 1 == i){
+                Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), Sketcher::PropertyConstraintList::getConstraintName(i).c_str());
                 break;
             }
         }
@@ -632,7 +624,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
     for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
         // only handle constraints
         if (it->size() > 10 && it->substr(0,10) == "Constraint") {
-            int ConstrId = std::atoi(it->substr(10,4000).c_str()) - 1;
+            int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
             
             if(ConstrId < static_cast<int>(vals.size())){
                 if(vals[ConstrId]->First!=Constraint::GeoUndef){

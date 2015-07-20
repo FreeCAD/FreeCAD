@@ -91,7 +91,7 @@ void EditDatumDialog::exec(bool atCursor)
 
         Ui::InsertDatum ui_ins_datum;
         ui_ins_datum.setupUi(&dlg);
-        double datum = Constr->Value;
+        double datum = Constr->getValue();
         Base::Quantity init_val;
 
         if (Constr->Type == Sketcher::Angle) {
@@ -132,8 +132,13 @@ void EditDatumDialog::exec(bool atCursor)
         else // show negative sign
             init_val.setValue(datum);
 
+        // Enable label if we are modifying a driving constraint
+        ui_ins_datum.labelEdit->setEnabled(Constr->isDriving);
+
         ui_ins_datum.labelEdit->setValue(init_val);
         ui_ins_datum.labelEdit->selectNumber();
+        ui_ins_datum.labelEdit->bind(sketch->Constraints.createPath(ConstrNbr));
+        ui_ins_datum.name->setText(Base::Tools::fromStdString(Constr->Name));
 
         if (atCursor)
             dlg.setGeometry(QCursor::pos().x() - dlg.geometry().width() / 2, QCursor::pos().y(), dlg.geometry().width(), dlg.geometry().height());
@@ -157,13 +162,33 @@ void EditDatumDialog::exec(bool atCursor)
 
                 try {
                     Gui::Command::openCommand("Modify sketch constraints");
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
-                                sketch->getNameInDocument(),
-                                ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
+
+                    if (Constr->isDriving) {
+                        if (ui_ins_datum.labelEdit->hasExpression())
+                            ui_ins_datum.labelEdit->apply();
+                        else
+                            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.setDatum(%i,App.Units.Quantity('%f %s'))",
+                                                    sketch->getNameInDocument(),
+                                                    ConstrNbr, newDatum, (const char*)newQuant.getUnit().getString().toUtf8());
+                    }
+
+                    QString constraintName = ui_ins_datum.name->text().trimmed();
+                    if (Base::Tools::toStdString(constraintName) != sketch->Constraints[ConstrNbr]->Name) {
+                        std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(constraintName.toUtf8().constData());
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.renameConstraint(%d, '%s')",
+                                                sketch->getNameInDocument(),
+                                                ConstrNbr, escapedstr.c_str());
+                    }
+
                     Gui::Command::commitCommand();
                     
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+                    if (sketch->noRecomputes && sketch->ExpressionEngine.depsAreTouched()) {
+                        sketch->ExpressionEngine.execute();
+                        sketch->solve();
+                    }
 
                     if(autoRecompute)
                         Gui::Command::updateActive();

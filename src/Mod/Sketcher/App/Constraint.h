@@ -26,6 +26,8 @@
 
 
 #include <Base/Persistence.h>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 
 namespace Sketcher
 {
@@ -80,13 +82,18 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    friend class Sketch;
+    void setValue(double newValue);
+    double getValue() const;
 
+    friend class Sketch;
+    friend class PropertyConstraintList;
+
+private:
+    double Value;
 public:
     ConstraintType Type;
     InternalAlignmentType AlignmentType;
     std::string Name;
-    double Value;
     int First;
     PointPos FirstPos;
     int Second;
@@ -96,6 +103,8 @@ public:
     float LabelDistance;
     float LabelPosition;
     bool isDriving;
+protected:
+    boost::uuids::uuid tag;
 };
 
 } //namespace Sketcher
