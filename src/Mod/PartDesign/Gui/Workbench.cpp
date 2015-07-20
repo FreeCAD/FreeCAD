@@ -408,9 +408,6 @@ void Workbench::fixSketchSupport (Sketcher::SketchObject* sketch)
 
 void Workbench::_switchToDocument(const App::Document* doc)
 {
-    bool groupCreated = false;
-
-
     if (doc == NULL) return;
 
     PartDesign::Body* activeBody = NULL;
@@ -419,7 +416,7 @@ void Workbench::_switchToDocument(const App::Document* doc)
     // No tip, so build up structure or migrate
     if (!doc->Tip.getValue())
     {
-        if (doc->countObjects() == 0){
+        ;/*if (doc->countObjects() == 0){
             buildDefaultPartAndBody(doc);
             activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
             assert(activeBody);
@@ -429,36 +426,39 @@ void Workbench::_switchToDocument(const App::Document* doc)
                         activeBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
                         assert(activeBody);
                 }
+                */
     }
     else
     {
       App::Part *docPart = dynamic_cast<App::Part *>(doc->Tip.getValue());
-      assert(docPart);
-      App::Part *viewPart = Gui::Application::Instance->activeView()->getActiveObject<App::Part *>("Part");
-      if (viewPart != docPart)
-        Gui::Application::Instance->activeView()->setActiveObject(docPart, "Part");
-      if (docPart->countObjectsOfType(PartDesign::Body::getClassTypeId()) < 1)
-        setUpPart(docPart);
+      if (docPart) {
+          App::Part *viewPart = Gui::Application::Instance->activeView()->getActiveObject<App::Part *>("Part");
+          if (viewPart != docPart)
+            Gui::Application::Instance->activeView()->setActiveObject(docPart, "Part");
+          //if (docPart->countObjectsOfType(PartDesign::Body::getClassTypeId()) < 1)
+          //  setUpPart(docPart);
 
-      PartDesign::Body *tempBody = dynamic_cast<PartDesign::Body *> (docPart->getObjectsOfType(PartDesign::Body::getClassTypeId()).front());
-      assert(tempBody);
-      PartDesign::Body *viewBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-      activeBody = viewBody;
-      if (!viewBody)
-        activeBody = tempBody;
-      else if (!docPart->hasObject(viewBody))
-        activeBody = tempBody;
+          PartDesign::Body *tempBody = dynamic_cast<PartDesign::Body *> (docPart->getObjectsOfType(PartDesign::Body::getClassTypeId()).front());
+          if (tempBody) {
+              PartDesign::Body *viewBody = Gui::Application::Instance->activeView()->getActiveObject<PartDesign::Body*>(PDBODYKEY);
+              activeBody = viewBody;
+              if (!viewBody)
+                activeBody = tempBody;
+              else if (!docPart->hasObject(viewBody))
+                activeBody = tempBody;
 
-      if (activeBody != viewBody)
-        Gui::Application::Instance->activeView()->setActiveObject(activeBody, PDBODYKEY);
+              if (activeBody != viewBody)
+                Gui::Application::Instance->activeView()->setActiveObject(activeBody, PDBODYKEY);
+          }
+      }
     }
 
-    if (activeBody == NULL) {
+    /*if (activeBody == NULL) {
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Could not create body"),
             QObject::tr("No body was found in this document, and none could be created. Please report this bug."
                         "We recommend you do not use this document with the PartDesign workbench until the bug has been fixed."
                         ));
-    }
+    }*/
 }
 
 void Workbench::slotActiveDocument(const Gui::Document& Doc)
