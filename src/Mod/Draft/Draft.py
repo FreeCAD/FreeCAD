@@ -592,7 +592,7 @@ def getMovableChildren(objectslist,recursive=False):
             children = obj.OutList
             if  hasattr(obj,"Proxy"):
                 if obj.Proxy:
-                    if hasattr(obj.Proxy,"getSiblings"):
+                    if hasattr(obj.Proxy,"getSiblings") and not(getType(obj) in ["Window"]):
                         children.extend(obj.Proxy.getSiblings(obj))
             for child in children:
                 if hasattr(child,"MoveWithHost"):
