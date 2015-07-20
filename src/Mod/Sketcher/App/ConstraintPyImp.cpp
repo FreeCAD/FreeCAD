@@ -150,7 +150,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
             if (valid) {
                 this->getConstraintPtr()->First    = FirstIndex;
-                this->getConstraintPtr()->Value    = Value;
+                this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
         }
@@ -218,7 +218,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type   = Angle;
                 this->getConstraintPtr()->First  = FirstIndex;
                 this->getConstraintPtr()->Second = SecondIndex;
-                this->getConstraintPtr()->Value  = Value;
+                this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
             else if (strcmp("DistanceX",ConstraintType) == 0) {
@@ -227,7 +227,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = DistanceX;
                 this->getConstraintPtr()->First    = FirstIndex;
                 this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) FirstPos;
-                this->getConstraintPtr()->Value    = Value;
+                this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
             else if (strcmp("DistanceY",ConstraintType) == 0) {
@@ -236,7 +236,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = DistanceY;
                 this->getConstraintPtr()->First    = FirstIndex;
                 this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) FirstPos;
-                this->getConstraintPtr()->Value    = Value;
+                this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
         }
@@ -306,7 +306,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->First    = intArg1;
                 this->getConstraintPtr()->FirstPos = (Sketcher::PointPos) intArg2;
                 this->getConstraintPtr()->Second   = intArg3;
-                this->getConstraintPtr()->Value    = Value;
+                this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
         }
@@ -366,7 +366,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->SecondPos = Sketcher::none;
                 this->getConstraintPtr()->Third     = intArg3;
                 this->getConstraintPtr()->ThirdPos  = (Sketcher::PointPos) intArg4;
-                this->getConstraintPtr()->Value     = Value;
+                this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
             if (valid) {
@@ -374,7 +374,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->FirstPos  = (Sketcher::PointPos) intArg2;
                 this->getConstraintPtr()->Second    = intArg3;
                 this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) intArg4;
-                this->getConstraintPtr()->Value     = Value;
+                this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
         }
@@ -406,7 +406,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->SecondPos = (Sketcher::PointPos) SecondPos;
                 this->getConstraintPtr()->Third     = ThirdIndex;
                 this->getConstraintPtr()->ThirdPos  = none;
-                this->getConstraintPtr()->Value = Value;
+                this->getConstraintPtr()->setValue(Value);
                 return 0;
             }
         }

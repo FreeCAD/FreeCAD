@@ -23,6 +23,7 @@
 #ifndef SKETCHER_SKETCHOBJECT_H
 #define SKETCHER_SKETCHOBJECT_H
 
+#include <boost/signals/connection.hpp>
 #include <App/PropertyStandard.h>
 #include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
@@ -248,6 +249,13 @@ protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
     virtual void onDocumentRestored();
+    
+    virtual void setExpression(const App::ObjectIdentifier &path, boost::shared_ptr<App::Expression> expr, const char * comment = 0);
+
+    std::string validateExpression(const App::ObjectIdentifier &path, boost::shared_ptr<const App::Expression> expr);
+
+    void constraintsRenamed(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renamed);
+    void constraintsRemoved(const std::set<App::ObjectIdentifier> &removed);
 
 private:
     std::vector<Part::Geometry *> ExternalGeo;
@@ -270,6 +278,9 @@ private:
 
     std::vector<int> lastConflicting;
     std::vector<int> lastRedundant;
+
+    boost::signals::scoped_connection constraintsRenamedConn;
+    boost::signals::scoped_connection constraintsRemovedConn;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 };

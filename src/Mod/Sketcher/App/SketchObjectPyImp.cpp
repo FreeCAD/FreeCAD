@@ -329,6 +329,24 @@ PyObject* SketchObjectPy::renameConstraint(PyObject *args)
         return 0;
     }
 
+    if (strcmp(Name, "") != 0) {
+
+        if (!Sketcher::PropertyConstraintList::validConstraintName(Name)) {
+            std::stringstream str;
+            str << "Invalid constraint name with the given index: " << Index;
+            PyErr_SetString(PyExc_IndexError, str.str().c_str());
+            return 0;
+        }
+
+        const std::vector< Sketcher::Constraint * > &vals = getSketchObjectPtr()->Constraints.getValues();
+        for (std::size_t i = 0; i < vals.size(); ++i) {
+            if (static_cast<int>(i) != Index && Name == vals[i]->Name) {
+                PyErr_SetString(PyExc_ValueError, "Duplicate constraint not allowed");
+                return 0;
+            }
+        }
+    }
+
     Constraint* copy = this->getSketchObjectPtr()->Constraints[Index]->clone();
     copy->Name = Name;
     this->getSketchObjectPtr()->Constraints.set1Value(Index, copy);
@@ -537,15 +555,9 @@ PyObject* SketchObjectPy::getDatum(PyObject *args)
         PyErr_Clear();
         char* name;
         if (PyArg_ParseTuple(args,"s", &name)) {
-            int id = 1;
+            int id = 0;
             for (std::vector<Constraint*>::const_iterator it = vals.begin(); it != vals.end(); ++it, ++id) {
-                std::string constrName = (*it)->Name;
-                if (constrName.empty()) {
-                    std::stringstream str;
-                    str << "Constraint" << id;
-                    constrName = str.str();
-                }
-                if (constrName == name) {
+                if (Sketcher::PropertyConstraintList::getConstraintName((*it)->Name, id) == name) {
                     constr = *it;
                     break;
                 }
@@ -579,7 +591,7 @@ PyObject* SketchObjectPy::getDatum(PyObject *args)
     }
 
     Base::Quantity datum;
-    datum.setValue(constr->Value);
+    datum.setValue(constr->getValue());
     if (type == Angle) {
         datum.setValue(Base::toDegrees<double>(datum.getValue()));
         datum.setUnit(Base::Unit::Angle);
